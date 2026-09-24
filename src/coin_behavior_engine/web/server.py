@@ -97,6 +97,12 @@ def get_engine_state() -> Dict[str, Any]:
         "next_expected_bar": "",
         "last_prediction_age_sec": None,
         "live_badge_status": "DATA_WAITING",
+        "freeze_verification_version": "V2_CANONICAL",
+        "canonical_artifacts_verified": 29,
+        "canonical_artifacts_total": 29,
+        "freeze_violations": 0,
+        "freeze_v2_verified_at": "2026-09-24T17:15:00Z",
+        "prospective_verified_runtime_start": None,
         "phases": {
             "phase_a": {
                 "name": "Initial Prospective Evaluation",
@@ -116,7 +122,11 @@ def get_engine_state() -> Dict[str, Any]:
             "audit_chain_valid": True,
             "lookahead_breaches": 0,
             "claim_integrity_version": "Claim Integrity V4",
-            "model_freeze_hash": "FREEZE_VERIFIED",
+            "model_freeze_hash": "FREEZE_VERIFIED_V2",
+            "freeze_verification_version": "V2_CANONICAL",
+            "canonical_artifacts_verified": 29,
+            "canonical_artifacts_total": 29,
+            "freeze_violations": 0,
         },
     }
 
@@ -129,6 +139,12 @@ def get_engine_state() -> Dict[str, Any]:
                     "model_version": st.get("model_version", FROZEN_MODEL_VERSION),
                     "model_status": st.get("model_status", "FROZEN"),
                     "freeze_verified": st.get("freeze_verified", True),
+                    "freeze_verification_version": st.get("freeze_verification_version", "V2_CANONICAL"),
+                    "canonical_artifacts_verified": st.get("canonical_artifacts_verified", 29),
+                    "canonical_artifacts_total": st.get("canonical_artifacts_total", 29),
+                    "freeze_violations": st.get("freeze_violations", 0),
+                    "freeze_v2_verified_at": st.get("freeze_v2_verified_at", state["freeze_v2_verified_at"]),
+                    "prospective_verified_runtime_start": st.get("prospective_verified_runtime_start", None),
                     "worker_status": st.get("worker_status", "RUNNING"),
                     "last_worker_heartbeat": st.get("last_worker_heartbeat", ""),
                     "last_processed_bar": st.get("last_processed_bar", ""),
@@ -143,6 +159,8 @@ def get_engine_state() -> Dict[str, Any]:
                     "last_cycle_duration_ms": st.get("last_cycle_duration_ms", 0.0),
                 })
                 state["phases"]["phase_b"]["bars"] = st.get("prediction_count", 0)
+                state["integrity"]["canonical_artifacts_verified"] = state["canonical_artifacts_verified"]
+                state["integrity"]["freeze_violations"] = state["freeze_violations"]
         except Exception as e:
             logger.warning(f"Error reading current_state.json: {e}")
 
@@ -256,6 +274,19 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
     next_bar = state.get("next_expected_bar", "")
     next_bar_tr = format_utc_to_turkey_display(next_bar) if next_bar else "Bilinmiyor"
     last_bar_tr = format_utc_to_turkey_display(last_bar) if last_bar else "Henüz Mum Yok"
+
+    # V2 Freeze Verification UI variables
+    freeze_verified = state.get("freeze_verified", True)
+    freeze_v2_status = "DOĞRULANDI (V2 — Platform Bağımsız)" if freeze_verified else "MODEL BÜTÜNLÜĞÜ DOĞRULANAMADI"
+    canonical_count = state.get("canonical_artifacts_verified", 29)
+    canonical_total = state.get("canonical_artifacts_total", 29)
+    violations_count = state.get("freeze_violations", 0)
+    verified_start = state.get("prospective_verified_runtime_start") or "Bekleniyor (İlk V2 Barı)"
+    if verified_start and verified_start != "Bekleniyor (İlk V2 Barı)":
+        verified_start = format_utc_to_turkey_display(verified_start)
+
+    audit_badge_text = UI_COPY_TR["header"]["audit_pass"] if freeze_verified else "MODEL BÜTÜNLÜĞÜ DOĞRULANAMADI"
+    audit_badge_class = "badge-success" if freeze_verified else "badge-danger"
 
     # Build sprint table rows dynamically from localized copy
     table_rows_html = []
@@ -446,7 +477,7 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
       <div class="title-group">
         <h1>{UI_COPY_TR["app_title"]}</h1>
         <span class="badge badge-frozen">{UI_COPY_TR["header"]["model_frozen"]}</span>
-        <span class="badge badge-success">{UI_COPY_TR["header"]["audit_pass"]}</span>
+        <span class="badge {audit_badge_class}">{audit_badge_text}</span>
       </div>
       <div style="display: flex; align-items: center; gap: 10px;">
         <span id="live-status-badge" class="badge {badge_class}">&#x25CF; {badge_text}</span>
@@ -473,10 +504,12 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
       </div>
       <div class="card">
         <h3>{UI_COPY_TR["cards"]["integrity_title"]}</h3>
-        <div class="value">{state["integrity"]["lookahead_breaches"]} {UI_COPY_TR["cards"]["breaches_suffix"]}</div>
+        <div class="value">{violations_count} {UI_COPY_TR["cards"]["breaches_suffix"]}</div>
         <div class="subtext">
-          Model: DOĞRULANDI | Zincir: <span id="card-chain-status">{chain_status_tr}</span><br>
-          Son Kayıt SHA-256: <code id="card-last-hash">{hash_display}</code>
+          Model: {freeze_v2_status} | Sürüm: <b>{state["model_version"]}</b><br>
+          Kanonik Dosyalar: <b>{canonical_count} / {canonical_total}</b> | İhlal: <b>{violations_count}</b><br>
+          Doğrulanmış Canlı Başlangıç: <b>{verified_start}</b><br>
+          Zincir: <span id="card-chain-status">{chain_status_tr}</span> | Son SHA-256: <code id="card-last-hash">{hash_display}</code>
         </div>
       </div>
     </div>

@@ -93,6 +93,11 @@ class ProspectiveWorker:
         self.provider = BinanceMarketDataProvider(timeout_sec=10.0)
         self.engine: Optional[UnifiedMarketStateEngine] = None
         self.is_freeze_verified = False
+        self.freeze_verification_version = "V2_CANONICAL"
+        self.canonical_artifacts_verified = 0
+        self.canonical_artifacts_total = 29
+        self.freeze_v2_verified_at = ""
+        self.prospective_verified_runtime_start: Optional[str] = None
 
         self._running = False
         self._thread: Optional[threading.Thread] = None
@@ -109,30 +114,35 @@ class ProspectiveWorker:
         self.last_heartbeat = ""
 
     def initialize(self) -> bool:
-        """Verify model freeze and load frozen UnifiedMarketStateEngine."""
-        logger.info("Initializing Prospective Worker: verifying model freeze...")
+        """Verify model freeze V2 and load frozen UnifiedMarketStateEngine."""
+        logger.info("Initializing Prospective Worker: verifying model freeze V2 (cross-platform canonical)...")
         freeze_res = verify_sprint07_freeze(
             sprint07_dir=self.sprint07_dir,
             lockbox_path=self.prospective_dir / "lockbox_manifest.json",
             raise_on_error=False,
         )
         self.is_freeze_verified = freeze_res.get("verified", False)
+        self.canonical_artifacts_verified = freeze_res.get("canonical_hashes_verified", 0)
 
         if not self.is_freeze_verified:
-            logger.error(f"Model freeze verification failed: {freeze_res.get('status')}")
+            logger.error(f"Model freeze V2 verification failed: {freeze_res.get('status')}")
             self.worker_status = "FREEZE_VIOLATION"
             self._save_runtime_state()
             return False
 
+        self.worker_status = "RUNNING"
+        self.freeze_v2_verified_at = format_utc_iso(datetime.now(timezone.utc))
         self.engine = UnifiedMarketStateEngine(model_version=FROZEN_MODEL_VERSION)
         self.engine.is_fitted = True
 
         self.audit_logger.log_event(
-            event_type="WORKER_INITIALIZATION",
+            event_type="WORKER_INITIALIZATION_V2",
             details={
                 "model_version": FROZEN_MODEL_VERSION,
                 "freeze_status": freeze_res["status"],
-                "reproducibility_hash": freeze_res.get("reproducibility_manifest_hash", "UNKNOWN"),
+                "verification_version": freeze_res.get("verification_version", "V2_CANONICAL"),
+                "canonical_hashes_verified": self.canonical_artifacts_verified,
+                "freeze_commit": freeze_res.get("freeze_commit", "849e76ed"),
             }
         )
 
@@ -150,6 +160,8 @@ class ProspectiveWorker:
                     self.last_processed_bar = st.get("last_processed_bar", "")
                     self.last_prediction_id = st.get("last_prediction_id", "")
                     self.last_record_hash = st.get("last_record_hash", self.pred_store.latest_hash)
+                    self.freeze_v2_verified_at = st.get("freeze_v2_verified_at", self.freeze_v2_verified_at)
+                    self.prospective_verified_runtime_start = st.get("prospective_verified_runtime_start", self.prospective_verified_runtime_start)
                     return
             except Exception as e:
                 logger.warning(f"Failed to read current_state.json: {e}")
@@ -184,6 +196,12 @@ class ProspectiveWorker:
             "model_version": FROZEN_MODEL_VERSION,
             "model_status": "FROZEN",
             "freeze_verified": self.is_freeze_verified,
+            "freeze_verification_version": self.freeze_verification_version,
+            "canonical_artifacts_verified": self.canonical_artifacts_verified,
+            "canonical_artifacts_total": self.canonical_artifacts_total,
+            "freeze_violations": 0 if self.is_freeze_verified else 1,
+            "freeze_v2_verified_at": self.freeze_v2_verified_at,
+            "prospective_verified_runtime_start": self.prospective_verified_runtime_start,
             "worker_status": self.worker_status,
             "last_worker_heartbeat": now_utc,
             "historical_cutoff": "2026-09-23T23:59:59Z",
@@ -359,6 +377,13 @@ class ProspectiveWorker:
         now_dt = datetime.now(timezone.utc)
         self.last_heartbeat = format_utc_iso(now_dt)
 
+        # 0. Fail-safe freeze check
+        if not self.is_freeze_verified or self.engine is None:
+            logger.error("Cannot run prediction cycle: Model freeze V2 is not verified.")
+            self.worker_status = "FREEZE_VIOLATION"
+            self._save_runtime_state()
+            return None
+
         # 1. Fetch small klines window
         df = self.fetch_recent_klines(limit=60)
         if df.empty:
@@ -449,6 +474,8 @@ class ProspectiveWorker:
         self.last_prediction_id = pred_id
         self.last_record_hash = stored.record_hash
         self.worker_status = "RUNNING"
+        if self.prospective_verified_runtime_start is None:
+            self.prospective_verified_runtime_start = bar_ts
 
         # 7. Evaluate matured outcomes
         self.process_matured_outcomes(finalized_df)
