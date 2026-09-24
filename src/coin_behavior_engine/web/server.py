@@ -19,6 +19,14 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any, Dict
 
+from coin_behavior_engine.web.localization import (
+    UI_COPY_TR,
+    format_number_tr,
+    format_time_window_tr,
+    format_utc_to_turkey_display,
+    status_formatter,
+)
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
@@ -29,7 +37,7 @@ START_TIME = time.time()
 
 
 def get_engine_state() -> Dict[str, Any]:
-    """Retrieve engine status and prospective telemetry."""
+    """Retrieve engine status and prospective telemetry (machine-readable, UTC)."""
     base_dir = Path(__file__).resolve().parents[3]
     lockbox_path = base_dir / "data" / "prospective" / "lockbox_manifest.json"
     audit_path = base_dir / "data" / "prospective" / "audit" / "audit_log.jsonl"
@@ -87,17 +95,63 @@ def get_engine_state() -> Dict[str, Any]:
 
 
 def render_dashboard_html(state: Dict[str, Any]) -> str:
-    """Generate dark-mode modern dashboard HTML."""
+    """Generate dark-mode modern dashboard HTML localized in Turkish (tr-TR)."""
     uptime_min = round(state["uptime_seconds"] / 60, 1)
-    lockbox_hash = state.get("integrity", {}).get("lockbox_manifest_hash", "38096f9bf04652...")
-    lockbox_short = lockbox_hash[:16] + "..." if len(lockbox_hash) > 16 else lockbox_hash
+    uptime_min_str = format_number_tr(uptime_min, 1)
+
+    raw_lockbox_hash = state.get("integrity", {}).get("lockbox_manifest_hash", "UNKNOWN")
+    if raw_lockbox_hash == "UNKNOWN":
+        lockbox_display = status_formatter("UNKNOWN")
+    elif len(raw_lockbox_hash) > 16:
+        lockbox_display = raw_lockbox_hash[:16] + "..."
+    else:
+        lockbox_display = raw_lockbox_hash
+
+    cutoff_display = format_utc_to_turkey_display(state["historical_cutoff"])
+    phase_a_window_display = format_time_window_tr(state["phases"]["phase_a"]["window"])
+    phase_b_window_display = format_time_window_tr(state["phases"]["phase_b"]["window"])
+
+    phase_a_status_tr = status_formatter(state["phases"]["phase_a"]["status"])
+    phase_b_status_tr = status_formatter(state["phases"]["phase_b"]["status"])
+
+    # Build sprint table rows dynamically from localized copy
+    table_rows_html = []
+    badge_map = {
+        "AUDITED": "badge-success",
+        "FROZEN": "badge-frozen",
+        "MONITORING": "badge-success",
+        "ACTIVE": "badge-warn",
+        "COMPLETE": "badge-success",
+    }
+
+    for row in UI_COPY_TR["sprint_table"]["rows"]:
+        status_tr = status_formatter(row["status"])
+        badge_cls = badge_map.get(row["status"], "badge-frozen")
+        table_rows_html.append(
+            f"          <tr>\n"
+            f"            <td><strong>{row['sprint']}</strong></td>\n"
+            f"            <td>{row['info_family']}</td>\n"
+            f"            <td>{row['directional']}</td>\n"
+            f"            <td>{row['volatility_risk']}</td>\n"
+            f'            <td><span class="badge {badge_cls}">{status_tr}</span></td>\n'
+            f"          </tr>"
+        )
+    table_body = "\n".join(table_rows_html)
+
+    # API endpoints HTML
+    api_items_html = []
+    for ep in UI_COPY_TR["api_section"]["endpoints"]:
+        api_items_html.append(
+            f"        <li><code>{ep['path']}</code> &mdash; {ep['description']}</li>"
+        )
+    api_list = "\n".join(api_items_html)
 
     return f"""<!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coin Behavior Engine | Prospective Monitor (CBE-0.7.0)</title>
+  <title>{UI_COPY_TR["page_title"]}</title>
   <style>
     :root {{
       --bg: #0b0f19;
@@ -224,7 +278,7 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
     }}
   </style>
   <script>
-    // Auto refresh every 15s
+    // 15 saniyede bir otomatik yenileme
     setTimeout(() => {{ window.location.reload(); }}, 15000);
   </script>
 </head>
@@ -232,123 +286,66 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
   <div class="container">
     <header>
       <div class="title-group">
-        <h1>Coin Behavior Engine</h1>
-        <span class="badge badge-frozen">MODEL FROZEN: {state["model_version"]}</span>
-        <span class="badge badge-success">AUDIT: 100% PASS</span>
+        <h1>{UI_COPY_TR["app_title"]}</h1>
+        <span class="badge badge-frozen">{UI_COPY_TR["header"]["model_frozen"]}</span>
+        <span class="badge badge-success">{UI_COPY_TR["header"]["audit_pass"]}</span>
       </div>
       <div>
-        <span class="badge badge-success">&#x25CF; LIVE MONITORING</span>
+        <span class="badge badge-success">&#x25CF; {UI_COPY_TR["header"]["live_monitoring"]}</span>
       </div>
     </header>
 
     <div class="grid">
       <div class="card">
-        <h3>Model Frozen State</h3>
+        <h3>{UI_COPY_TR["cards"]["frozen_model"]}</h3>
         <div class="value">{state["model_version"]}</div>
-        <div class="subtext">Cutoff: {state["historical_cutoff"]}</div>
+        <div class="subtext">{UI_COPY_TR["cards"]["cutoff_label"]} {cutoff_display}</div>
       </div>
       <div class="card">
-        <h3>Phase A (Prospective Initial)</h3>
-        <div class="value">72 Bars <span class="badge badge-success">COMPLETE</span></div>
-        <div class="subtext">Window: 2026-09-24 00:00 - 05:55 UTC</div>
+        <h3>{UI_COPY_TR["cards"]["phase_a_title"]}</h3>
+        <div class="value">{state["phases"]["phase_a"]["bars"]} {UI_COPY_TR["cards"]["bars_unit"]} <span class="badge badge-success">{phase_a_status_tr}</span></div>
+        <div class="subtext">{UI_COPY_TR["cards"]["window_label"]} {phase_a_window_display}</div>
       </div>
       <div class="card">
-        <h3>Phase B (Prospective Extended)</h3>
-        <div class="value">108 Bars <span class="badge badge-warn">ACTIVE</span></div>
-        <div class="subtext">Window: 2026-09-24 06:00 - 14:55 UTC</div>
+        <h3>{UI_COPY_TR["cards"]["phase_b_title"]}</h3>
+        <div class="value">{state["phases"]["phase_b"]["bars"]} {UI_COPY_TR["cards"]["bars_unit"]} <span class="badge badge-warn">{phase_b_status_tr}</span></div>
+        <div class="subtext">{UI_COPY_TR["cards"]["window_label"]} {phase_b_window_display}</div>
       </div>
       <div class="card">
-        <h3>Lockbox & Audit Integrity</h3>
-        <div class="value">0 Breaches</div>
-        <div class="subtext">SHA-256: <code>{lockbox_short}</code></div>
+        <h3>{UI_COPY_TR["cards"]["integrity_title"]}</h3>
+        <div class="value">{state["integrity"]["lookahead_breaches"]} {UI_COPY_TR["cards"]["breaches_suffix"]}</div>
+        <div class="subtext">SHA-256: <code>{lockbox_display}</code></div>
       </div>
     </div>
 
-    <div class="section-title">Sprint 01 &ndash; 08 Scientific Hierarchy & Verification</div>
+    <div class="section-title">{UI_COPY_TR["sprint_table"]["title"]}</div>
     <div class="card" style="padding: 0; overflow-x: auto;">
       <table>
         <thead>
           <tr>
-            <th>Sprint</th>
-            <th>Information Family</th>
-            <th>Verified Directional Edge?</th>
-            <th>Verified Volatility / Risk Edge?</th>
-            <th>Status</th>
+            <th>{UI_COPY_TR["sprint_table"]["headers"]["sprint"]}</th>
+            <th>{UI_COPY_TR["sprint_table"]["headers"]["info_family"]}</th>
+            <th>{UI_COPY_TR["sprint_table"]["headers"]["directional"]}</th>
+            <th>{UI_COPY_TR["sprint_table"]["headers"]["volatility_risk"]}</th>
+            <th>{UI_COPY_TR["sprint_table"]["headers"]["status"]}</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><strong>Sprint 01 / 01.1</strong></td>
-            <td>Spot Microstructure & Methodology</td>
-            <td>&#x274C; Refuted</td>
-            <td>&#x2705; Verified (Compression/Expansion)</td>
-            <td><span class="badge badge-success">AUDITED</span></td>
-          </tr>
-          <tr>
-            <td><strong>Sprint 02 / 02.1</strong></td>
-            <td>Historical Analogue Matching</td>
-            <td>&#x274C; Refuted (Overfitting)</td>
-            <td>&#x26A0;&#xFE0F; Regime dependent</td>
-            <td><span class="badge badge-success">AUDITED</span></td>
-          </tr>
-          <tr>
-            <td><strong>Sprint 03</strong></td>
-            <td>Derivatives (OI, Basis, Taker, Perp)</td>
-            <td>&#x274C; Refuted</td>
-            <td>&#x2705; Verified (Liquidation & Tail Risk)</td>
-            <td><span class="badge badge-success">AUDITED</span></td>
-          </tr>
-          <tr>
-            <td><strong>Sprint 04</strong></td>
-            <td>Session & Macro Calendar Context</td>
-            <td>&#x274C; Refuted</td>
-            <td>&#x2705; Verified (Diurnal Volatility)</td>
-            <td><span class="badge badge-success">AUDITED</span></td>
-          </tr>
-          <tr>
-            <td><strong>Sprint 05</strong></td>
-            <td>ETF Inflows & Institutional Flow</td>
-            <td>&#x274C; Refuted (Lagged, No Direction)</td>
-            <td>&#x2705; Verified (Tail Risk Modulator)</td>
-            <td><span class="badge badge-success">AUDITED</span></td>
-          </tr>
-          <tr>
-            <td><strong>Sprint 06</strong></td>
-            <td>News & Event Intelligence</td>
-            <td>&#x274C; Refuted</td>
-            <td>&#x2705; Verified (Post-event decay & volatility)</td>
-            <td><span class="badge badge-success">AUDITED</span></td>
-          </tr>
-          <tr>
-            <td><strong>Sprint 07</strong></td>
-            <td>Unified Probabilistic Engine (CBE-0.7.0)</td>
-            <td>&#x274C; No direction claimed</td>
-            <td>&#x2705; Calibrated Probabilistic State Engine</td>
-            <td><span class="badge badge-frozen">FROZEN</span></td>
-          </tr>
-          <tr>
-            <td><strong>Sprint 08</strong></td>
-            <td>Prospective Evaluation & Audit Logging</td>
-            <td>&mdash;</td>
-            <td>&#x2705; Forward Walk & Immutable Logging</td>
-            <td><span class="badge badge-success">MONITORING</span></td>
-          </tr>
+{table_body}
         </tbody>
       </table>
     </div>
 
-    <div class="section-title">API Endpoints</div>
+    <div class="section-title">{UI_COPY_TR["api_section"]["title"]}</div>
     <div class="card">
       <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px;">
-        <li><code>GET /health</code> &mdash; Container healthcheck endpoint (HTTP 200)</li>
-        <li><code>GET /api/status</code> &mdash; Real-time prospective engine status and freeze verification</li>
-        <li><code>GET /api/metrics</code> &mdash; Model calibration, Brier scores, and horizon statistics</li>
+{api_list}
       </ul>
     </div>
 
     <div class="footer">
-      <div>Server Uptime: {uptime_min} minutes | Port: 8000</div>
-      <div>Designed for Coolify, Docker & Kubernetes Deployments</div>
+      <div>{UI_COPY_TR["footer"]["uptime_label"]} {uptime_min_str} {UI_COPY_TR["footer"]["minutes"]} | {UI_COPY_TR["footer"]["port"]}</div>
+      <div>{UI_COPY_TR["footer"]["platform_note"]}</div>
     </div>
   </div>
 </body>
@@ -373,6 +370,7 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Content-Length", str(len(payload)))
+        self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
         self.wfile.write(payload)
 
@@ -397,12 +395,15 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
             self._send_response_json(HTTPStatus.OK, state)
         elif url_path == "/api/metrics":
             state = get_engine_state()
-            metrics = state.get("prospective_metrics", {
-                "brier_score_target": 0.0821,
-                "ece_calibration_error": 0.0435,
-                "horizons_monitored": ["1h", "4h", "24h"],
-                "total_evaluations": 180,
-            })
+            metrics = state.get(
+                "prospective_metrics",
+                {
+                    "brier_score_target": 0.0821,
+                    "ece_calibration_error": 0.0435,
+                    "horizons_monitored": ["1h", "4h", "24h"],
+                    "total_evaluations": 180,
+                },
+            )
             self._send_response_json(HTTPStatus.OK, metrics)
         elif url_path in ("/", "/dashboard"):
             state = get_engine_state()
@@ -411,7 +412,10 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
         else:
             self._send_response_json(
                 HTTPStatus.NOT_FOUND,
-                {"error": "Endpoint not found", "available": ["/", "/health", "/api/status", "/api/metrics"]},
+                {
+                    "error": "Endpoint not found",
+                    "available": ["/", "/health", "/api/status", "/api/metrics"],
+                },
             )
 
     def log_message(self, format: str, *args: Any) -> None:  # noqa: A002
