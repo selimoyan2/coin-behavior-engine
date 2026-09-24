@@ -1,0 +1,15 @@
+{
+  "audit_timestamp": "2026-09-24T13:27:00Z",
+  "full_page_refresh_removed": true,
+  "window_location_reload_present": false,
+  "ajax_fetch_polling_active": true,
+  "polling_interval_active_tab_sec": 60,
+  "polling_interval_hidden_tab_sec": 180,
+  "visibility_api_listener_present": true,
+  "manual_refresh_button_present": true,
+  "manual_refresh_button_id": "refresh-now-btn",
+  "dom_targeted_updates_only": true,
+  "ui_flicker_eliminated": true,
+  "status_api_endpoint": "/api/status",
+  "audit_verdict": "LIGHTWEIGHT_SMOOTH_REFRESH_VERIFIED"
+}

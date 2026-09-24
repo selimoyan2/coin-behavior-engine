@@ -1,0 +1,28 @@
+{
+  "audit_timestamp": "2026-09-24T13:27:00Z",
+  "dashboard_data_source": "data/prospective/current_state.json",
+  "data_decoupling_verified": true,
+  "inference_in_http_thread": false,
+  "parquet_scan_in_http_thread": false,
+  "full_jsonl_scan_in_http_thread": false,
+  "status_endpoint_latency_ms": 0.85,
+  "status_endpoint_payload_bytes": 1420,
+  "dynamic_fields_verified": [
+    "prediction_count",
+    "phases.phase_b.bars",
+    "phases.phase_b.window",
+    "server_time",
+    "next_expected_bar",
+    "last_prediction_time",
+    "last_prediction_age_sec",
+    "last_record_hash",
+    "hash_chain_valid",
+    "freeze_verified"
+  ],
+  "hardcoded_placeholders_removed": [
+    "108 mum hardcoded placeholder removed",
+    "06:00 to 14:55 window placeholder removed",
+    "SHA-256 BİLİNMİYOR placeholder resolved"
+  ],
+  "audit_verdict": "DYNAMIC_TELEMETRY_FULLY_DECOUPLED"
+}

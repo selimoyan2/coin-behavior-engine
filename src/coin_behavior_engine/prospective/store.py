@@ -353,6 +353,9 @@ class OutcomeStore:
     def get_outcome(self, prediction_id: str, horizon: str) -> Optional[OutcomeRecord]:
         return self._outcomes.get(prediction_id, {}).get(horizon)
 
+    def has_outcome(self, prediction_id: str, horizon: str) -> bool:
+        return prediction_id in self._outcomes and horizon in self._outcomes[prediction_id]
+
     def get_status(self, prediction_id: str, horizon: str, current_time: str, pred_time: str) -> str:
         """Return status: SCORED, MATURED, or PENDING."""
         if prediction_id in self._outcomes and horizon in self._outcomes[prediction_id]:

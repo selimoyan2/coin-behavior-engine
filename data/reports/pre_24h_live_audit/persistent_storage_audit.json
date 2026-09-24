@@ -1,0 +1,18 @@
+{
+  "audit_timestamp": "2026-09-24T13:27:00Z",
+  "volume_configured_in_dockerfile": true,
+  "volume_target_path": "/app/data/prospective",
+  "dockerfile_volume_directive": "VOLUME [\"/app/data/prospective\"]",
+  "coolify_persistent_storage_recommended": true,
+  "coolify_storage_mount_type": "Volume or Bind Mount",
+  "coolify_host_path_example": "/var/lib/docker/volumes/cbe_data/_data",
+  "coolify_container_path": "/app/data/prospective",
+  "protected_subdirectories": [
+    "/app/data/prospective/predictions",
+    "/app/data/prospective/outcomes",
+    "/app/data/prospective/audit",
+    "/app/data/prospective/daily_checkpoints"
+  ],
+  "redeploy_data_loss_risk": "ZERO_WHEN_COOLIFY_VOLUME_MAPPED",
+  "audit_verdict": "PERSISTENCE_READY"
+}

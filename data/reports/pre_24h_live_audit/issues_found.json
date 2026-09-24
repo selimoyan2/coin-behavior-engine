@@ -1,0 +1,48 @@
+{
+  "audit_timestamp": "2026-09-24T13:27:00Z",
+  "issues_count": 6,
+  "issues": [
+    {
+      "id": "ISSUE-01",
+      "severity": "HIGH",
+      "category": "TELEMETRY_ACCURACY",
+      "summary": "Hardcoded '108 Mum' and static time window in server.py",
+      "detail": "server.py had hardcoded values {'bars': 108, 'window': '2026-09-24T06:00:00Z to 14:55:00Z'} in get_engine_state(), preventing real live bar counts from appearing."
+    },
+    {
+      "id": "ISSUE-02",
+      "severity": "CRITICAL",
+      "category": "PROCESS_ARCHITECTURE",
+      "summary": "No live background worker executed inside Docker container",
+      "detail": "The container entrypoint only ran 'python -m coin_behavior_engine.web.server'. There was no background process fetching live 5m candles and generating prospective predictions."
+    },
+    {
+      "id": "ISSUE-03",
+      "severity": "MEDIUM",
+      "category": "USER_EXPERIENCE_AND_SERVER_LOAD",
+      "summary": "Hardcoded 15-second full-page reload (window.location.reload())",
+      "detail": "The dashboard used a full browser reload every 15 seconds, creating screen flickering, high DOM rebuild overhead, and unnecessary HTTP request floods."
+    },
+    {
+      "id": "ISSUE-04",
+      "severity": "MEDIUM",
+      "category": "CRYPTOGRAPHIC_TELEMETRY",
+      "summary": "Dashboard displayed 'SHA-256: BİLİNMİYOR'",
+      "detail": "lockbox_manifest.json lacked the key 'lockbox_manifest_hash', and the dashboard template did not bind the latest hash chain entry from the prediction store."
+    },
+    {
+      "id": "ISSUE-05",
+      "severity": "MEDIUM",
+      "category": "RESOURCE_EFFICIENCY",
+      "summary": "Missing decoupled atomic telemetry file",
+      "detail": "The web server attempted to scan directories directly rather than reading an isolated, atomic < 1 KB state file updated by the worker."
+    },
+    {
+      "id": "ISSUE-06",
+      "severity": "LOW",
+      "category": "TEST_DEPENDENCY",
+      "summary": "Test suite had external dependency on psutil in memory check",
+      "detail": "test_42 in test_pre_24h_audit.py attempted to import psutil which is not a required dependency in minimal environments."
+    }
+  ]
+}

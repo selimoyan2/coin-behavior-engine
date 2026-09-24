@@ -1,0 +1,19 @@
+{
+  "audit_timestamp": "2026-09-24T13:27:00Z",
+  "store_path": "data/prospective/predictions/predictions.jsonl",
+  "storage_format": "append_only_jsonl",
+  "total_records": 2,
+  "first_prediction_id": "PRED-20260924T131000Z",
+  "last_prediction_id": "PRED-20260924T131500Z",
+  "first_timestamp_utc": "2026-09-24T13:10:00Z",
+  "last_timestamp_utc": "2026-09-24T13:15:00Z",
+  "prospective_start": "2026-09-24T00:00:00Z",
+  "historical_research_end": "2026-09-23T23:59:59Z",
+  "temporal_boundary_violation": false,
+  "retroactive_backfill_detected": false,
+  "duplicate_prevention_active": true,
+  "tamper_evident_hashing": true,
+  "canonical_json_sorting": true,
+  "file_size_bytes": 2862,
+  "status": "HEALTHY_AND_ACTIVE"
+}

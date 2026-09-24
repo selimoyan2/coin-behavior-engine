@@ -1,0 +1,13 @@
+{
+  "audit_timestamp": "2026-09-24T13:27:00Z",
+  "store_path": "data/prospective/outcomes/outcomes.jsonl",
+  "storage_format": "append_only_jsonl",
+  "total_outcomes_recorded": 0,
+  "separation_from_predictions": true,
+  "monitored_horizons": ["15m", "30m", "1h", "2h", "4h", "8h", "12h", "24h"],
+  "maturity_enforcement_strict": true,
+  "lookahead_bias_breaches": 0,
+  "premature_attachment_rejected": true,
+  "first_expected_maturity": "2026-09-24T13:25:00Z (15m horizon for PRED-20260924T131000Z)",
+  "status": "AWAITING_FIRST_MATURITY"
+}

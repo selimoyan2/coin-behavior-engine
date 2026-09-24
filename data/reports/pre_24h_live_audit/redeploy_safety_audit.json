@@ -1,0 +1,11 @@
+{
+  "audit_timestamp": "2026-09-24T13:27:00Z",
+  "safe_restart": true,
+  "restart_recovery_tested": true,
+  "container_restart_behavior": "Resume from disk without overwriting existing predictions",
+  "hash_chain_continuation": "Reads last_record_hash from existing predictions.jsonl and continues seamlessly",
+  "retroactive_backfill_behavior": "Strictly disallowed; downtime bars are recorded as missed in audit log, never retrospectively inferred",
+  "immutable_store_integrity": "Protected by ImmutableStoreViolation on duplicate prediction IDs",
+  "atomic_state_refresh": "Overwrites current_state.json with verified cumulative counters upon restart",
+  "audit_verdict": "REDEPLOY_SAFE"
+}

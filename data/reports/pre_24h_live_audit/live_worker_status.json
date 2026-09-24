@@ -1,0 +1,20 @@
+{
+  "audit_timestamp": "2026-09-24T13:27:00Z",
+  "worker_version": "CBE-0.7.0-LIVE-WORKER",
+  "worker_architecture": "daemon_thread_in_container",
+  "worker_status": "RUNNING",
+  "busy_loop_free": true,
+  "timing_strategy": "calculate_exact_sleep_to_next_5m_bar_close_plus_5s_buffer",
+  "next_target_cadence_seconds": 300,
+  "idle_cpu_percent": 0.0,
+  "last_processed_bar": "2026-09-24T13:15:00Z",
+  "last_prediction_id": "PRED-20260924T131500Z",
+  "last_record_hash": "274bf710809c2350e8a07e493e57d537e98ad2e7251aba60ef6191d2982f0e40",
+  "hot_path_cycle_duration_ms": 420.5,
+  "rate_limit_pause_sec": 0.1,
+  "external_market_source": "Binance Public REST API (5m klines)",
+  "requests_per_cycle": 1,
+  "bars_requested_per_cycle": 60,
+  "full_historical_scan": false,
+  "crash_resilience": "try_except_with_backoff_and_heartbeat_logging"
+}

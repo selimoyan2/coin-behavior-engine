@@ -113,10 +113,12 @@ def test_render_dashboard_html_turkish_ui():
     assert "72 Mum" in html
     assert "TAMAMLANDI" in html
     assert "FAZ B — İLERİYE DÖNÜK CANLI GÖZLEM" in html
-    assert "108 Mum" in html
+    assert f"{state['prediction_count']} Mum" in html
     assert "AKTİF" in html
     assert "KİLİTLİ KAYIT & DENETİM BÜTÜNLÜĞÜ" in html
     assert "0 İhlal" in html
+    assert "window.location.reload" not in html
+    assert "schedulePolling" in html
 
     # Localized sprint table
     assert "Sprint 01–08 Bilimsel Araştırma ve Doğrulama Süreci" in html

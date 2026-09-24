@@ -1,0 +1,26 @@
+{
+  "audit_timestamp": "2026-09-24T13:27:00Z",
+  "hash_algorithm": "SHA-256 (canonical JSON, sorted keys)",
+  "genesis_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "chain_validity": true,
+  "total_chained_records": 2,
+  "chain_errors_count": 0,
+  "chain_errors": [],
+  "records": [
+    {
+      "index": 0,
+      "prediction_id": "PRED-20260924T131000Z",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_hash": "0e1a3f0d8a051e2025e1a1795e1e1279cf73f4e85749f7b1cb41f173ce183a93",
+      "valid": true
+    },
+    {
+      "index": 1,
+      "prediction_id": "PRED-20260924T131500Z",
+      "prev_hash": "0e1a3f0d8a051e2025e1a1795e1e1279cf73f4e85749f7b1cb41f173ce183a93",
+      "record_hash": "274bf710809c2350e8a07e493e57d537e98ad2e7251aba60ef6191d2982f0e40",
+      "valid": true
+    }
+  ],
+  "audit_verdict": "CRYPTOGRAPHICALLY_VALID_AND_UNBROKEN"
+}

@@ -30,6 +30,9 @@ COPY config/ ./config/
 # Install the engine package in editable/local mode
 RUN pip install --no-cache-dir -e .
 
+# Persistent volume mount for prospective data (predictions, outcomes, audit)
+VOLUME ["/app/data/prospective"]
+
 # Expose HTTP port for Coolify / Web monitoring
 EXPOSE 8000
 

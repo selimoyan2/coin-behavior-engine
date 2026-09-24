@@ -1,0 +1,18 @@
+{
+  "audit_timestamp": "2026-09-24T13:27:00Z",
+  "cadence_minutes": 5,
+  "cycles_per_hour": 12,
+  "cycles_per_day": 288,
+  "prediction_record_size_bytes": 1431,
+  "outcome_record_size_bytes_avg": 300,
+  "outcomes_per_day_across_all_horizons": 1152,
+  "daily_prediction_growth_bytes": 412128,
+  "daily_outcome_growth_bytes": 345600,
+  "daily_audit_log_growth_bytes": 30000,
+  "daily_total_growth_kb": 769.3,
+  "twenty_four_hour_estimate_mb": 0.77,
+  "seven_day_estimate_mb": 5.39,
+  "thirty_day_estimate_mb": 23.08,
+  "ninety_day_estimate_mb": 69.24,
+  "storage_impact_assessment": "NEGLIGIBLE (< 70 MB per quarter on shared VPS disk)"
+}

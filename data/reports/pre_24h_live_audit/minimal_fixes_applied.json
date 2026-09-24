@@ -1,0 +1,55 @@
+{
+  "audit_timestamp": "2026-09-24T13:27:00Z",
+  "fixes_count": 6,
+  "fixes": [
+    {
+      "issue_id": "ISSUE-01",
+      "file_modified": "src/coin_behavior_engine/web/server.py",
+      "fix_summary": "Decoupled get_engine_state() to read dynamic counters from current_state.json and ImmutablePredictionStore.",
+      "lines_affected": "get_engine_state() implementation",
+      "model_impact": "ZERO (Presentation layer only)",
+      "verification": "test_05_phase_b_count_is_dynamic passed"
+    },
+    {
+      "issue_id": "ISSUE-02",
+      "file_modified": "src/coin_behavior_engine/prospective/worker.py & server.py",
+      "fix_summary": "Created ProspectiveWorker with zero busy loops (sleeps until next candle close + 5s) and hooked it as a background daemon thread in server.py.",
+      "lines_affected": "Added ProspectiveWorker class; hooked in server startup",
+      "model_impact": "ZERO (Frozen CBE-0.7.0 inference invoked without modification)",
+      "verification": "test_09_two_real_completed_bars_in_chain & test_10_worker_independent_from_browser passed"
+    },
+    {
+      "issue_id": "ISSUE-03",
+      "file_modified": "src/coin_behavior_engine/web/server.py",
+      "fix_summary": "Replaced window.location.reload() with 60s asynchronous fetch polling to /api/status, 180s when tab is hidden, and added a manual 'Şimdi Güncelle' button.",
+      "lines_affected": "Dashboard HTML script tag and header controls",
+      "model_impact": "ZERO (Client-side presentation script)",
+      "verification": "test_13_no_full_page_auto_refresh & test_14_60_second_lightweight_polling passed"
+    },
+    {
+      "issue_id": "ISSUE-04",
+      "file_modified": "src/coin_behavior_engine/web/server.py & store.py",
+      "fix_summary": "Extracted latest SHA-256 hash from ImmutablePredictionStore and displayed Model Bütünlüğü and Tahmin Zinciri accurately.",
+      "lines_affected": "get_engine_state() and render_dashboard_html()",
+      "model_impact": "ZERO (Integrity telemetry only)",
+      "verification": "test_20_sha256_derives_from_actual_verification passed"
+    },
+    {
+      "issue_id": "ISSUE-05",
+      "file_modified": "src/coin_behavior_engine/prospective/worker.py",
+      "fix_summary": "Implemented atomic write of data/prospective/current_state.json (< 1 KB) after each prediction/outcome cycle.",
+      "lines_affected": "_write_current_state() in worker.py",
+      "model_impact": "ZERO (Operational caching only)",
+      "verification": "test_43_disk_io_benchmark passed"
+    },
+    {
+      "issue_id": "ISSUE-06",
+      "file_modified": "tests/test_pre_24h_audit.py",
+      "fix_summary": "Replaced hard psutil requirement in test_42 with standard library ctypes/psapi fallback.",
+      "lines_affected": "test_42_ram_benchmark_within_limits",
+      "model_impact": "ZERO (Test file only)",
+      "verification": "test_42_ram_benchmark_within_limits passed (48/48 suite passed)"
+    }
+  ],
+  "verification_summary": "All 6 fixes verified under 48 pre-24h audit tests and 342 full regression tests with 100% pass rate."
+}

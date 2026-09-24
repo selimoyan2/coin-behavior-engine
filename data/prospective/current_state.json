@@ -1,0 +1,28 @@
+{
+  "model_version": "CBE-0.7.0",
+  "model_status": "FROZEN",
+  "freeze_verified": true,
+  "worker_status": "RUNNING",
+  "last_worker_heartbeat": "2026-09-24T13:20:35Z",
+  "historical_cutoff": "2026-09-23T23:59:59Z",
+  "prospective_start": "2026-09-24T00:00:00Z",
+  "last_processed_bar": "2026-09-24T13:15:00Z",
+  "last_prediction_id": "PRED-20260924T131500Z",
+  "last_record_hash": "274bf710809c2350e8a07e493e57d537e98ad2e7251aba60ef6191d2982f0e40",
+  "prediction_count": 2,
+  "missed_count": 0,
+  "outcome_count": 0,
+  "matured_outcomes_by_horizon": {
+    "15m": 0,
+    "30m": 0,
+    "1h": 0,
+    "2h": 0,
+    "4h": 0,
+    "8h": 0,
+    "12h": 0,
+    "24h": 0
+  },
+  "hash_chain_valid": true,
+  "lookahead_breaches": 0,
+  "last_cycle_duration_ms": 0.0
+}

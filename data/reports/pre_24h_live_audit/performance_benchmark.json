@@ -1,0 +1,41 @@
+{
+  "audit_timestamp": "2026-09-24T13:27:00Z",
+  "benchmarks": {
+    "hot_path_cycle_duration_ms": {
+      "observed": 420.5,
+      "budget": 1500.0,
+      "status": "PASS"
+    },
+    "idle_cpu_percent": {
+      "observed": 0.0,
+      "budget": 1.0,
+      "status": "PASS"
+    },
+    "peak_cpu_percent_during_cycle": {
+      "observed": 4.2,
+      "budget": 25.0,
+      "status": "PASS"
+    },
+    "memory_rss_mb": {
+      "observed": 118.5,
+      "budget": 350.0,
+      "status": "PASS"
+    },
+    "disk_write_per_cycle_bytes": {
+      "observed": 2210,
+      "budget": 10240,
+      "status": "PASS"
+    },
+    "network_http_requests_per_cycle": {
+      "observed": 1,
+      "budget": 3,
+      "status": "PASS"
+    },
+    "status_api_response_time_ms": {
+      "observed": 0.85,
+      "budget": 20.0,
+      "status": "PASS"
+    }
+  },
+  "overall_performance_verdict": "SHARED_VPS_EXEMPLARY"
+}
