@@ -22,10 +22,10 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir hatchling && \
     pip install --no-cache-dir "pandas>=2.2.0" "numpy>=1.26.0" "scipy>=1.12.0" "scikit-learn>=1.4.0" "pyarrow>=15.0.0" "requests>=2.31.0" "httpx>=0.27.0" "pydantic>=2.6.0" "pyyaml>=6.0.1" "matplotlib>=3.8.0"
 
-# Copy source code and data configurations
+# Copy source code and configuration
 COPY src/ ./src/
 COPY data/ ./data/
-COPY configs/ ./configs/
+COPY config/ ./config/
 
 # Install the engine package in editable/local mode
 RUN pip install --no-cache-dir -e .
