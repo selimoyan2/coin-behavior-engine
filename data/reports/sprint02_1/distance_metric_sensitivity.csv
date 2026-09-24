@@ -1,0 +1,6 @@
+distance_metric,horizon,n_samples,concordance,ci_95_lower,ci_95_upper,lift_over_50
+Euclidean,4h,120,0.5,0.4119,0.5881,0.0
+Standardized_Euclidean,4h,120,0.5,0.4119,0.5881,0.0
+Manhattan,4h,120,0.4917,0.4039,0.58,-0.0083
+Cosine,4h,120,0.5083,0.42,0.5961,0.0083
+Mahalanobis,4h,120,0.5583,0.469,0.644,0.0583

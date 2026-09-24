@@ -1,0 +1,4 @@
+target_distribution,calibration_slope,calibration_intercept,expected_calibration_error,brier_score,calibration_status
+Tail Risk (95th percentile),0.968,0.003,0.012,0.0432,CALIBRATED
+Jump Risk (99th percentile),0.982,0.001,0.005,0.0094,CALIBRATED
+Expansion Probability,0.945,0.015,0.021,0.168,CALIBRATED

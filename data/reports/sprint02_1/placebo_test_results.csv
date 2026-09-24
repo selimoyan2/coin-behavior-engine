@@ -1,0 +1,5 @@
+test,concordance,p_value,status
+Real_Historical_Similarity,0.48,0.05,BASELINE
+Placebo_A_Block_Shuffled_Outcomes,0.4667,0.48,PASSED_NULL
+Placebo_B_Permuted_Analogue_Pool,0.48,0.52,PASSED_NULL
+Placebo_C_Unrelated_6M_Lag_Windows,0.5429,0.51,PASSED_NULL

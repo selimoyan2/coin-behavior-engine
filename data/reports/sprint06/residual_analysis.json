@@ -1,0 +1,8 @@
+{
+  "error_thresh_95": 0.001036651471717558,
+  "event_bars_large_error_rate_pct": 14.423076923076922,
+  "non_event_bars_large_error_rate_pct": 4.962561124694377,
+  "error_odds_ratio": 3.227677297143005,
+  "fisher_p_value": 2.4091693245835814e-13,
+  "residual_event_corr": 0.029039888076528804
+}

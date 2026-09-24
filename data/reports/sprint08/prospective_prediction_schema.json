@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ProspectivePredictionRecord",
+  "type": "object",
+  "required": [
+    "prediction_id",
+    "model_version",
+    "model_hash",
+    "feature_manifest_hash",
+    "input_data_hash",
+    "timestamp",
+    "asset",
+    "market_state",
+    "forecast_1h",
+    "tail_95_probability",
+    "created_at",
+    "previous_record_hash",
+    "record_hash"
+  ],
+  "properties": {
+    "prediction_id": {
+      "type": "string"
+    },
+    "model_version": {
+      "type": "string",
+      "enum": [
+        "CBE-0.7.0"
+      ]
+    },
+    "model_hash": {
+      "type": "string"
+    },
+    "feature_manifest_hash": {
+      "type": "string"
+    },
+    "input_data_hash": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "asset": {
+      "type": "string"
+    },
+    "market_state": {
+      "type": "string"
+    },
+    "forecast_15m": {
+      "type": "number"
+    },
+    "forecast_30m": {
+      "type": "number"
+    },
+    "forecast_1h": {
+      "type": "number"
+    },
+    "forecast_2h": {
+      "type": "number"
+    },
+    "forecast_4h": {
+      "type": "number"
+    },
+    "forecast_8h": {
+      "type": "number"
+    },
+    "forecast_12h": {
+      "type": "number"
+    },
+    "forecast_24h": {
+      "type": "number"
+    },
+    "tail_95_probability": {
+      "type": "number"
+    },
+    "tail_99_probability": {
+      "type": "number"
+    },
+    "jump_probability": {
+      "type": "number"
+    },
+    "expansion_probabilities": {
+      "type": "object"
+    },
+    "prediction_intervals": {
+      "type": "object"
+    },
+    "context_availability": {
+      "type": "string"
+    },
+    "data_quality": {
+      "type": "string"
+    },
+    "research_direction_probability": {
+      "type": "object"
+    },
+    "input_cutoff_timestamp": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "previous_record_hash": {
+      "type": "string"
+    },
+    "record_hash": {
+      "type": "string"
+    }
+  }
+}

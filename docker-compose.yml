@@ -1,0 +1,26 @@
+services:
+  coin-behavior-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: coin-behavior-engine
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      - PORT=8000
+      - HOST=0.0.0.0
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # Persist prospective audit logs and forward-looking predictions across restarts
+      - prospective_data:/app/data/prospective
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  prospective_data:
+    name: cbe_prospective_data

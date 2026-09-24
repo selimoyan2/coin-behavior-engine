@@ -1,0 +1,23 @@
+parameter_name,value,source_file,purpose,category,origin
+primary_timeframe,5m,config/research.yaml,Base candle resolution,DATA_SOURCE,SOURCE_DEFINED
+derived_timeframes,"15m, 1h, 4h, 1d",config/research.yaml,Higher order aggregation,DATA_SOURCE,HUMAN_DEFINED
+window_short,12 bars (1h),config/research.yaml,Intraday fast rolling horizon,STATISTICAL_WINDOW,HUMAN_DEFINED
+window_medium,36 bars (3h),config/research.yaml,Intermediate rolling horizon,STATISTICAL_WINDOW,HUMAN_DEFINED
+window_long,144 bars (12h),config/research.yaml,Multi-hour rolling horizon,STATISTICAL_WINDOW,HUMAN_DEFINED
+window_baseline,288 bars (24h),config/research.yaml,Daily baseline distribution horizon,STATISTICAL_WINDOW,HUMAN_DEFINED
+window_extended,2016 bars (7d),config/research.yaml,Weekly macro rolling horizon,STATISTICAL_WINDOW,HUMAN_DEFINED
+rolling_distribution_window,288 bars (24h),config/research.yaml,Empirical quantile rank window,STATISTICAL_WINDOW,HUMAN_DEFINED
+mad_multiplier,1.4826,config/research.yaml,Normal consistency scale factor for MAD,NUMERICAL_STABILITY,DATA_DERIVED
+weight_return_abnormality,0.35,config/research.yaml,Composite event score weight,EVENT_DISCOVERY,HUMAN_DEFINED
+weight_range_abnormality,0.25,config/research.yaml,Composite event score weight,EVENT_DISCOVERY,HUMAN_DEFINED
+weight_volume_abnormality,0.20,config/research.yaml,Composite event score weight,EVENT_DISCOVERY,HUMAN_DEFINED
+weight_volatility_expansion,0.20,config/research.yaml,Composite event score weight,EVENT_DISCOVERY,HUMAN_DEFINED
+candidate_percentile_threshold,0.95,config/research.yaml,Candidate event score cutoff,EVENT_DISCOVERY,HUMAN_DEFINED
+significant_event_percentile_threshold,0.99,config/research.yaml,Significant event flag threshold,REPORTING,HUMAN_DEFINED
+failed_expansion_max_followthrough_pct,0.003 (0.3%),config/research.yaml,Retrospective outcome classification,OUTCOME_CLASSIFICATION,HUMAN_DEFINED
+volatility_low_percentile,0.30,config/research.yaml,Compression regime cutoff,REGIME_DISCOVERY,HUMAN_DEFINED
+volatility_high_percentile,0.70,config/research.yaml,High volatility regime cutoff,REGIME_DISCOVERY,HUMAN_DEFINED
+trend_slope_thresh,0.00015,src/coin_behavior_engine/regimes/detector.py,Trending vs sideways slope separation,REGIME_DISCOVERY,HUMAN_DEFINED
+min_regime_duration_bars,12,config/research.yaml,Regime duration smoothing parameter,REGIME_DISCOVERY,HUMAN_DEFINED
+linkage_tolerance_minutes,30,config/research.yaml,Multi-timeframe event linkage window,CLUSTERING,HUMAN_DEFINED
+reproducibility_seed,42,config/research.yaml,Deterministic random seed,NUMERICAL_STABILITY,HUMAN_DEFINED

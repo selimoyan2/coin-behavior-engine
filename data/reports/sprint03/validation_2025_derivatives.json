@@ -1,0 +1,13 @@
+{
+  "period": "2025 Out-Of-Sample Validation",
+  "volatility_incremental_r2_4h": 0.0542357941198659,
+  "absolute_move_incremental_r2_4h": 0.014980931569589573,
+  "tail_risk_roc_auc_lift_4h": 0.25892418574833476,
+  "directional_raw_accuracy_4h": 0.517722602739726,
+  "directional_baseline_adjusted_lift_4h": 0.04203767123287672,
+  "scientific_conclusion": {
+    "volatility_information": "STRONG_VERIFIED_INCREMENTAL_EDGE",
+    "tail_risk_information": "VERIFIED_INCREMENTAL_EDGE",
+    "directional_information": "UNVERIFIED_MARGINAL_EDGE_NEAR_ZERO_LIFT"
+  }
+}

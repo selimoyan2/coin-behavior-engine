@@ -1,0 +1,68 @@
+{
+  "audit_name": "RESEARCH_CLAIM_INTEGRITY_AUDIT",
+  "total_claims": 4,
+  "verified_claims": 4,
+  "partially_verified_claims": 0,
+  "failed_claims": 0,
+  "unverified_claims": 0,
+  "pass_rate": 1.0,
+  "claim_integrity_status": "PASSED",
+  "audit_records": [
+    {
+      "claim_id": "CLAIM-S03-001",
+      "status": "VERIFIED",
+      "has_artifact": true,
+      "has_metric_match": true,
+      "has_valid_sample_size": true,
+      "has_valid_partition": true,
+      "has_test_reference": true,
+      "claim_text": "Derivatives features provide statistically significant incremental information for forward 4h realized volatility over spot-only baseline.",
+      "metric_name": "val_2025_delta_r2",
+      "metric_value": 0.0542357941198659,
+      "artifact_path": "data/reports/sprint03/incremental_volatility_information.csv",
+      "test_reference": "tests/test_sprint03_derivatives.py:test_claim_001_volatility_incremental_edge"
+    },
+    {
+      "claim_id": "CLAIM-S03-002",
+      "status": "VERIFIED",
+      "has_artifact": true,
+      "has_metric_match": true,
+      "has_valid_sample_size": true,
+      "has_valid_partition": true,
+      "has_test_reference": true,
+      "claim_text": "Directional edge from derivatives is UNVERIFIED; forward 4h holdout accuracy is 50.7% and 24h holdout lift collapses to -2.0%.",
+      "metric_name": "directional_edge_verified",
+      "metric_value": false,
+      "artifact_path": "data/reports/sprint03/incremental_direction_information.csv",
+      "test_reference": "tests/test_sprint03_derivatives.py:test_claim_002_directional_edge_unverified"
+    },
+    {
+      "claim_id": "CLAIM-S03-003",
+      "status": "VERIFIED",
+      "has_artifact": true,
+      "has_metric_match": true,
+      "has_valid_sample_size": true,
+      "has_valid_partition": true,
+      "has_test_reference": true,
+      "claim_text": "Derivatives features improve tail-risk classification ROC-AUC for extreme forward 4h moves.",
+      "metric_name": "val_2025_roc_auc",
+      "metric_value": 0.7589241857483348,
+      "artifact_path": "data/reports/sprint03/incremental_tail_risk_information.csv",
+      "test_reference": "tests/test_sprint03_derivatives.py:test_claim_003_tail_risk_lift"
+    },
+    {
+      "claim_id": "CLAIM-S03-004",
+      "status": "VERIFIED",
+      "has_artifact": true,
+      "has_metric_match": true,
+      "has_valid_sample_size": true,
+      "has_valid_partition": true,
+      "has_test_reference": true,
+      "claim_text": "September 21 anomaly exhibits clear post-hoc derivatives signatures of basis dislocation and open interest contraction.",
+      "metric_name": "post_hoc_verdict",
+      "metric_value": "VERIFIED_STRUCTURAL_DERIVATIVES_SIGNATURE",
+      "artifact_path": "data/reports/sprint03/september21_derivatives_posthoc.json",
+      "test_reference": "tests/test_sprint03_derivatives.py:test_claim_004_september21_signature"
+    }
+  ]
+}

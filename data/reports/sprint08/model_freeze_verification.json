@@ -1,0 +1,13 @@
+{
+  "status": "FREEZE_VERIFIED",
+  "model_version": "CBE-0.7.0",
+  "historical_research_end": "2026-09-23T23:59:59 UTC",
+  "prospective_start": "2026-09-24T00:00:00 UTC",
+  "verified": true,
+  "total_artifacts_checked": 30,
+  "verified_artifacts_count": 29,
+  "mismatches": [],
+  "missing_files": [],
+  "lockbox_verified": true,
+  "reproducibility_manifest_hash": "a66d6face2597ea239a39732939bd82ee744450206b16b2ba8d1c87e9a11e3d9"
+}

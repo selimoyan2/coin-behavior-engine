@@ -1,0 +1,136 @@
+{
+  "research_period": {
+    "start_utc": "2026-09-01 00:00:00+00:00",
+    "end_utc": "2026-09-23 20:20:00+00:00",
+    "total_candles_5m": 6581
+  },
+  "market_distributions": {
+    "mean_5m_return": 1.1e-05,
+    "std_5m_return": 0.001127,
+    "skewness_5m_return": -0.3369,
+    "kurtosis_5m_return": 21.807,
+    "quantiles_abs_return": {
+      "p50": 0.000499,
+      "p90": 0.001629,
+      "p99": 0.003751,
+      "p99_9": 0.008513
+    }
+  },
+  "regimes_summary": {
+    "total_regime_blocks": 1537,
+    "distribution_by_type": {
+      "HIGH_VOLATILITY": {
+        "count": 189,
+        "total_hours": 111.6,
+        "avg_duration_hours": 0.59
+      },
+      "LOW_VOLATILITY_COMPRESSION": {
+        "count": 457,
+        "total_hours": 119.5,
+        "avg_duration_hours": 0.26
+      },
+      "SIDEWAYS": {
+        "count": 294,
+        "total_hours": 146.7,
+        "avg_duration_hours": 0.5
+      },
+      "TRANSITION": {
+        "count": 434,
+        "total_hours": 66.4,
+        "avg_duration_hours": 0.15
+      },
+      "TRENDING_DOWN": {
+        "count": 82,
+        "total_hours": 49.3,
+        "avg_duration_hours": 0.6
+      },
+      "TRENDING_UP": {
+        "count": 81,
+        "total_hours": 53.7,
+        "avg_duration_hours": 0.66
+      }
+    }
+  },
+  "events_summary": {
+    "total_events_detected_5m": 616,
+    "significant_events_count": 34,
+    "distribution_by_type": {
+      "BREAKDOWN_CANDIDATE": {
+        "count": 14,
+        "avg_score": 0.9809,
+        "max_score": 0.9984
+      },
+      "BREAKOUT_CANDIDATE": {
+        "count": 24,
+        "avg_score": 0.9745,
+        "max_score": 1.0
+      },
+      "COMPRESSION": {
+        "count": 435,
+        "avg_score": 0.1281,
+        "max_score": 0.2488
+      },
+      "DOWNWARD_EXPANSION": {
+        "count": 78,
+        "avg_score": 0.9726,
+        "max_score": 1.0
+      },
+      "UPWARD_EXPANSION": {
+        "count": 64,
+        "avg_score": 0.9758,
+        "max_score": 1.0
+      },
+      "VOLATILITY_EXPANSION": {
+        "count": 1,
+        "avg_score": 1.0,
+        "max_score": 1.0
+      }
+    },
+    "outcomes_classification": {
+      "COMPRESSION_REGIME": 435,
+      "FAILED_EXPANSION": 101,
+      "EVENT_CONTINUATION": 57,
+      "FALSE_BREAKDOWN_CANDIDATE": 11,
+      "FALSE_BREAKOUT_CANDIDATE": 11,
+      "EVENT_OBSERVATION": 1
+    }
+  },
+  "multitimeframe_summary": {
+    "total_global_events": 129,
+    "events_spanning_multiple_tfs": 52
+  },
+  "september_21_audit": {
+    "target_date": "2026-09-21",
+    "evaluation_window_utc": "2026-09-20T00:00:00Z to 2026-09-22T23:59:59Z",
+    "was_detected_independently": true,
+    "detected_events_count_in_window": 44,
+    "total_2026_events_benchmark": 616,
+    "window_statistics": {
+      "max_event_score": 1.0,
+      "max_event_score_percentile_full_year": 100.0,
+      "max_event_score_rank_full_year": 1,
+      "max_single_bar_abs_return_pct": 1.182,
+      "max_single_bar_return_rank_full_year": 3,
+      "max_volume": 1918.3,
+      "regimes_present": [
+        "SIDEWAYS",
+        "TRANSITION",
+        "LOW_VOLATILITY_COMPRESSION",
+        "HIGH_VOLATILITY",
+        "TRENDING_DOWN",
+        "TRENDING_UP"
+      ]
+    },
+    "top_event_details": {
+      "event_id": "5m_576",
+      "datetime_open_utc": "2026-09-21 08:35:00+00:00",
+      "event_type": "UPWARD_EXPANSION",
+      "event_score": 1.0,
+      "rank_among_2026_events": 1,
+      "percentile_among_2026_events": 100.0,
+      "return_pct": 1.182,
+      "regime_during": "TRENDING_UP"
+    },
+    "conclusion": "The September 21 episode was independently detected as an exceptional event (UPWARD_EXPANSION, Score: 1.0), ranking #1 out of 616 detected events in 2026."
+  }
+}

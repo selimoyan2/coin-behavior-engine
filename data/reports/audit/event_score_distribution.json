@@ -1,0 +1,29 @@
+{
+  "total_bars_evaluated": 76565,
+  "min": 0.004687,
+  "max": 1.0,
+  "mean": 0.499798,
+  "median": 0.485417,
+  "std": 0.239761,
+  "quantiles": {
+    "p50": 0.485417,
+    "p75": 0.684722,
+    "p90": 0.843924,
+    "p95": 0.912292,
+    "p97_5": 0.949826,
+    "p99": 0.977083,
+    "p99_5": 0.988399,
+    "p99_9": 0.999306
+  },
+  "saturation_analysis": {
+    "total_bars_with_score_1_0": 62,
+    "pct_of_all_bars_at_1_0": 0.081,
+    "candidate_events_with_score_1_0": 62,
+    "pct_of_candidate_events_at_1_0": 0.9,
+    "causes_of_saturation": [
+      "Empirical percentile ranking assigns exactly 1.0 to the maximum value in the 24h rolling window.",
+      "When return, range, volume, and volatility all hit a 24h rolling high simultaneously, the weighted linear combination equals 1.0.",
+      "No non-linear sigmoid or continuous extreme-value tail transformation is applied above p=0.99, causing ceiling compression."
+    ]
+  }
+}

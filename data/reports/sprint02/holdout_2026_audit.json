@@ -1,0 +1,12 @@
+{
+  "partition_label": "OBSERVED_HOLDOUT_2026",
+  "total_candles_2026": 76565,
+  "total_events_2026": 948,
+  "event_frequency_pct_2026": 1.238,
+  "september_21_audit": {
+    "evaluation_window_utc": "2026-09-20 to 2026-09-22",
+    "detected_event_count": 8,
+    "was_detected_independently": true,
+    "max_event_score_v2_in_window": 0.9999
+  }
+}

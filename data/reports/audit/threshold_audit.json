@@ -1,0 +1,29 @@
+{
+  "audit": "THRESHOLD_AND_OUTCOME_RULES",
+  "significant_event_threshold": {
+    "threshold_value": 0.99,
+    "mathematical_definition": "Empirical percentile rank cutoff of the composite event score: event_score >= 0.99, where event_score = 0.35*rank(return) + 0.25*rank(range) + 0.20*rank(volume) + 0.20*rank(volatility).",
+    "source_location": "config/research.yaml -> events.significant_event_percentile_threshold",
+    "code_usage": "src/coin_behavior_engine/events/detector.py: EventDetector.detect_events()",
+    "nature": "HUMAN_SELECTED_REPORTING_TIER",
+    "affects_event_discovery": false,
+    "affects_reporting_filtering": true,
+    "explanation": "The event engine discovers candidate events when event_score >= candidate_percentile_threshold (0.95) or event_type == 'COMPRESSION'. The 0.99 threshold merely sets the boolean flag 'is_significant'. It filters events in summary reporting and chart overlays, but does not alter underlying anomaly detection."
+  },
+  "follow_through_outcome_rule": {
+    "threshold_percentage": 0.003,
+    "threshold_percentage_formatted": "0.3% (0.003 relative return)",
+    "window_duration_hours": 4,
+    "source_location": "config/research.yaml -> events.failed_expansion_max_followthrough_pct",
+    "code_usage": "src/coin_behavior_engine/events/windows.py: EventWindowExtractor.evaluate_event_outcomes()",
+    "nature": "HUMAN_DEFINED_OUTCOME_THRESHOLD",
+    "is_statistically_derived": false,
+    "human_defined_outcome_threshold": true,
+    "affects_event_discovery": false,
+    "affects_event_score": false,
+    "affects_regime_detection": false,
+    "affects_real_time_signal": false,
+    "affects_retrospective_outcome_label": true,
+    "explanation": "The 0.3% / 4h rule is a human-selected heuristic for labeling retrospective outcomes. If an expansion does not continue by >0.3% over the subsequent 4 hours, it is tagged 'FAILED_EXPANSION' or 'FALSE_BREAKOUT_CANDIDATE'. It operates strictly in POST windows and has ZERO influence on event discovery, features, or regimes."
+  }
+}

@@ -1,0 +1,14 @@
+ticker,fund_name,issuer,launch_date,flow_coverage_start,flow_coverage_end,flow_records_count,price_records_count,coverage_status
+IBIT,iShares Bitcoin Trust ETF,BlackRock,2024-01-11,2024-01-11,2026-09-23,693,677,FULL
+FBTC,Fidelity Wise Origin Bitcoin Fund,Fidelity,2024-01-11,2024-01-11,2026-09-23,693,677,FULL
+GBTC,Grayscale Bitcoin Trust ETF,Grayscale Investments,2024-01-11,2024-01-11,2026-09-23,693,1001,FULL
+ARKB,ARK 21Shares Bitcoin ETF,ARK Invest / 21Shares,2024-01-11,2024-01-11,2026-09-23,693,676,FULL
+BITB,Bitwise Bitcoin ETF,Bitwise,2024-01-11,2024-01-11,2026-09-23,693,676,FULL
+BTCO,Invesco Galaxy Bitcoin ETF,Invesco / Galaxy,2024-01-11,2024-01-11,2026-09-23,693,676,FULL
+EZBC,Franklin Bitcoin ETF,Franklin Templeton,2024-01-11,2024-01-11,2026-09-23,693,676,FULL
+BRRR,CoinShares Valkyrie Bitcoin Fund,CoinShares / Valkyrie,2024-01-11,2024-01-11,2026-09-23,693,676,FULL
+HODL,VanEck Bitcoin Trust,VanEck,2024-01-11,2024-01-11,2026-09-23,693,676,FULL
+BTCW,WisdomTree Bitcoin Fund,WisdomTree,2024-01-11,2024-01-11,2026-09-23,693,676,FULL
+MSBT,Hashdex Bitcoin ETF,Hashdex / Tidal,2024-03-27,2024-01-11,2026-09-23,693,117,FULL
+BTC,Grayscale Bitcoin Mini Trust ETF,Grayscale Investments,2024-07-31,2024-01-11,2026-09-23,693,538,FULL
+BTC=F,CME Bitcoin Continuous Front-Month Futures,Chicago Mercantile Exchange (CME),2017-12-18,N/A,N/A,0,1006,FULL

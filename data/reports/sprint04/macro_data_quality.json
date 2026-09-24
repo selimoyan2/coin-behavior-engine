@@ -1,0 +1,21 @@
+{
+  "audit_name": "MACRO_DATA_QUALITY_AUDIT",
+  "staleness_rules": {
+    "regular_trading_day": "Available at or after 21:00 UTC",
+    "weekend_and_holidays": "Carried forward with is_stale=True, market_open=False",
+    "zero_backfill_enforced": true
+  },
+  "instruments_qualified": [
+    "NASDAQ_COMPOSITE",
+    "SP500_INDEX",
+    "CBOE_VOLATILITY_INDEX",
+    "US_DOLLAR_INDEX",
+    "US_TREASURY_10Y_YIELD",
+    "GOLD_CONTINUOUS_FUTURES",
+    "CRUDE_OIL_WTI_FUTURES"
+  ],
+  "proxy_instruments": [
+    "US_TREASURY_2Y_YIELD"
+  ],
+  "unavailable_instruments": []
+}

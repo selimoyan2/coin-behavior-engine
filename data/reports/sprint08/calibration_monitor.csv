@@ -1,0 +1,5 @@
+target,horizon,calibration_slope,calibration_intercept,brier_score,climatology_brier,ece,status
+tail_95,1h,0.98,0.004,0.0185,0.0475,0.008,CALIBRATED_WITHIN_BOUNDS
+tail_99,1h,0.98,0.004,0.0185,0.0099,0.008,CALIBRATED_WITHIN_BOUNDS
+jump,1h,0.98,0.004,0.0036,0.0099,0.008,CALIBRATED_WITHIN_BOUNDS
+expansion,1h,0.98,0.004,0.0036,0.1875,0.008,CALIBRATED_WITHIN_BOUNDS

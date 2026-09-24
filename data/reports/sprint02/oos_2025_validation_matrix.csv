@@ -1,0 +1,5 @@
+hypothesis,discovery_effect_size,validation_effect_size,validation_pvalue,classification,notes
+H1_Pre_Event_Volatility_Compression,0.3195,0.3764,5.552549758033892e-17,REPLICATE,Compression ratio at T-1h compared to matched control baseline.
+H2_Event_Forward_Dispersion_Expansion,0.4629,0.1712,4.378939560688647e-08,WEAKEN,Cohen's d of 24h forward absolute return between events and non-events.
+H3_Pre_Event_Volume_Accumulation,0.3301,0.6057,5.489416345505614e-38,AMPLIFY,Volume z-score elevation at T-1h relative to matched controls.
+H4_Compression_Episode_Breakout_Frequency,0.6323,0.4726,0.1,DISAPPEAR,Fraction of compression episodes resulting in >2% directional expansion.

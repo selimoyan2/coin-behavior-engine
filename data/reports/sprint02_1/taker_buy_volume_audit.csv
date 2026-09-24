@@ -1,0 +1,4 @@
+partition,n_upward_episodes,n_downward_episodes,mean_taker_drift_upward,mean_taker_drift_downward,drift_difference,t_test_p_value,claim_replicated
+DISCOVERY_2021_2024,1374,1413,4e-05,-0.00083,0.00087,0.7638124382572739,False
+VALIDATION_2025,225,250,-0.0069,0.00132,-0.00821,0.42922343011157943,False
+HOLDOUT_2026,151,209,-0.01271,0.00657,-0.01927,0.1350417745275552,False

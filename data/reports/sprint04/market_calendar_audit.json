@@ -1,0 +1,26 @@
+{
+  "audit_name": "MARKET_CALENDAR_ENGINE_AUDIT",
+  "timezone_standards": {
+    "london": "Europe/London (GMT/BST calendar-aware)",
+    "new_york": "America/New_York (EST/EDT calendar-aware)",
+    "tokyo": "Asia/Tokyo (JST)",
+    "crypto_grid": "UTC continuous 5m"
+  },
+  "active_session_frequencies": {
+    "asia_pct": 17.84587539851222,
+    "london_pct": 25.296891604675874,
+    "new_york_pct": 26.78815754516472,
+    "london_ny_overlap_pct": 10.615701381509032,
+    "us_equity_open_pct": 18.550743889479275,
+    "weekend_pct": 28.584949521785337
+  },
+  "dst_verification": {
+    "winter_london_open_utc": "08:00 UTC",
+    "summer_london_open_utc": "07:00 UTC (BST)",
+    "winter_ny_open_utc": "14:30 UTC",
+    "summer_ny_open_utc": "13:30 UTC (EDT)",
+    "dst_correctness_verified": true
+  },
+  "exchange_holidays_count": 59,
+  "early_closes_count": 14
+}

@@ -1,0 +1,68 @@
+{
+  "audit_name": "RESEARCH_CLAIM_INTEGRITY_AUDIT",
+  "total_claims": 4,
+  "verified_claims": 4,
+  "partially_verified_claims": 0,
+  "failed_claims": 0,
+  "unverified_claims": 0,
+  "pass_rate": 1.0,
+  "claim_integrity_status": "PASSED",
+  "audit_records": [
+    {
+      "claim_id": "CLAIM-S04-001",
+      "status": "VERIFIED",
+      "has_artifact": true,
+      "has_metric_match": true,
+      "has_valid_sample_size": true,
+      "has_valid_partition": true,
+      "has_test_reference": true,
+      "claim_text": "Session and Time-of-Day context provides verified incremental 4h volatility explanatory power over Spot + Derivatives baseline in 2025 Validation.",
+      "metric_name": "delta_r2_val",
+      "metric_value": 0.06967670039447,
+      "artifact_path": "data/reports/sprint04/incremental_session_information.csv",
+      "test_reference": "tests/test_sprint04_session_macro.py::test_claim_001_session_incremental_edge"
+    },
+    {
+      "claim_id": "CLAIM-S04-002",
+      "status": "VERIFIED",
+      "has_artifact": true,
+      "has_metric_match": true,
+      "has_valid_sample_size": true,
+      "has_valid_partition": true,
+      "has_test_reference": true,
+      "claim_text": "Daily macro features added unconditionally to 5m Spot + Derivatives do not improve 4h volatility explanatory power (Validation 2025 delta R2 is negative, macro edge unverified/diluted by market closure staleness).",
+      "metric_name": "delta_r2_val",
+      "metric_value": -0.05710419152344,
+      "artifact_path": "data/reports/sprint04/incremental_macro_information.csv",
+      "test_reference": "tests/test_sprint04_session_macro.py::test_claim_002_macro_incremental_edge"
+    },
+    {
+      "claim_id": "CLAIM-S04-003",
+      "status": "VERIFIED",
+      "has_artifact": true,
+      "has_metric_match": true,
+      "has_valid_sample_size": true,
+      "has_valid_partition": true,
+      "has_test_reference": true,
+      "claim_text": "Directional forecasting edge from session and cross-asset macro features remains UNVERIFIED (Holdout lift over majority baseline is near-zero or statistically insignificant).",
+      "metric_name": "directional_verdict",
+      "metric_value": "UNVERIFIED_OR_NO_EDGE",
+      "artifact_path": "data/reports/sprint04/direction_context_analysis.csv",
+      "test_reference": "tests/test_sprint04_session_macro.py::test_claim_003_directional_edge_unverified"
+    },
+    {
+      "claim_id": "CLAIM-S04-004",
+      "status": "VERIFIED",
+      "has_artifact": true,
+      "has_metric_match": true,
+      "has_valid_sample_size": true,
+      "has_valid_partition": true,
+      "has_test_reference": true,
+      "claim_text": "September 21 anomaly onset exhibited cross-market confluence: London/NY transition overlap with elevated macro volatility and negative equity momentum.",
+      "metric_name": "forensic_verdict",
+      "metric_value": "VERIFIED_POSTHOC_CROSS_MARKET_DISLOCATION: September 21 onset occurred during London-NY transition with elevated VIX and negative equity momentum, compounding acute derivatives crowding flushes.",
+      "artifact_path": "data/reports/sprint04/september21_context_posthoc.json",
+      "test_reference": "tests/test_sprint04_session_macro.py::test_claim_004_september21_macro_session_signature"
+    }
+  ]
+}

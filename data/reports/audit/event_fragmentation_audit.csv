@@ -1,0 +1,5 @@
+separation_window,count,pct_of_events
+<= 5 minutes (adjacent),2641,38.34
+<= 15 minutes,4271,62.0
+<= 30 minutes,5010,72.72
+<= 60 minutes,5451,79.13

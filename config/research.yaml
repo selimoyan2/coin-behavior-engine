@@ -1,0 +1,99 @@
+# Coin Behavior Engine - Sprint 01 Research Configuration
+# All parameters are statistical and methodological definitions, NOT manual trading rules.
+
+asset:
+  symbol: "BTCUSDT"
+  base_asset: "BTC"
+  quote_asset: "USDT"
+  primary_timeframe: "5m"
+  derived_timeframes:
+    - "15m"
+    - "1h"
+    - "4h"
+    - "1d"
+
+time_range:
+  start_utc: "2026-01-01T00:00:00Z"
+  end_utc: null  # null means fetch up to latest available timestamp
+
+data_source:
+  provider: "binance"
+  base_url: "https://api.binance.com"
+  klines_endpoint: "/api/v3/klines"
+  request_limit: 1000
+  rate_limit_pause_sec: 0.1
+  max_retries: 5
+  timeout_sec: 15
+
+paths:
+  raw_dir: "data/raw"
+  normalized_dir: "data/normalized"
+  derived_dir: "data/derived"
+  reports_dir: "data/reports"
+  charts_dir: "data/reports/charts"
+
+validation:
+  max_allowed_consecutive_missing: 12  # 1 hour
+  strict_ohlc_check: true
+  allow_zero_volume: false
+
+features:
+  # Rolling window lengths (expressed in candle counts for the 5m timeframe)
+  # 12 bars = 1h, 36 bars = 3h, 144 bars = 12h, 288 bars = 24h, 2016 bars = 7d
+  windows:
+    short: 12      # 1 hour
+    medium: 36     # 3 hours
+    long: 144      # 12 hours
+    baseline: 288  # 24 hours
+    extended: 2016 # 7 days
+  
+  adaptive_normalization:
+    rolling_distribution_window: 288  # 24h rolling window for empirical rank & robust z-score
+    mad_multiplier: 1.4826            # Scale factor for normal consistency with MAD
+
+events:
+  # Dimension weights for composite event score (must sum to 1.0)
+  weights:
+    return_abnormality: 0.35
+    range_abnormality: 0.25
+    volume_abnormality: 0.20
+    volatility_expansion: 0.20
+  
+  # Adaptive statistical thresholds (percentile rank of composite event score)
+  candidate_percentile_threshold: 0.95
+  significant_event_percentile_threshold: 0.99
+  extreme_event_percentile_threshold: 0.998
+  
+  # False-positive / Non-event post evaluation threshold (relative return follow-through within 4h)
+  failed_expansion_max_followthrough_pct: 0.003  # < 0.3% continuation after extreme score
+
+  # Event pre and post analysis windows
+  windows:
+    pre:
+      - "1h"
+      - "4h"
+      - "12h"
+      - "24h"
+      - "3d"
+      - "7d"
+    post:
+      - "1h"
+      - "4h"
+      - "12h"
+      - "24h"
+      - "3d"
+      - "7d"
+
+regimes:
+  # Unsupervised statistical regime classification thresholds
+  volatility_low_percentile: 0.30
+  volatility_high_percentile: 0.70
+  trend_slope_quantile: 0.65
+  trend_strength_min: 0.50
+  min_regime_duration_bars: 12
+
+multitimeframe:
+  linkage_tolerance_minutes: 30
+
+reproducibility:
+  seed: 42

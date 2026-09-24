@@ -1,0 +1,15 @@
+{
+  "returns_tail_gpd": {
+    "threshold_u": 0.013848074192255064,
+    "zeta_u": 0.05000059445256863,
+    "shape_xi": 0.17772295793661305,
+    "scale_sigma": 0.006459646457480665
+  },
+  "volatility_tail_gpd": {
+    "threshold_u": 0.0037699641502589375,
+    "zeta_u": 0.05000059445256863,
+    "shape_xi": 0.13932306638030573,
+    "scale_sigma": 0.0012215312358370381
+  },
+  "calibration_partition": "DISCOVERY_2021_2024"
+}

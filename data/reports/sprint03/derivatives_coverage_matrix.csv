@@ -1,0 +1,8 @@
+feature_family,2021,2022,2023,2024,2025,2026,quality_status,provenance
+Perpetual_Price_Structure,100%,100%,100%,100%,100%,100%,PASS,Binance_Vision_Monthly_Klines
+Basis_Premium_Structure,100%,100%,100%,100%,100%,100%,PASS,Causal_Synthesis_Spot_Perp
+Funding_Rate_Structure,100%,100%,100%,100%,100%,100%,PASS,Binance_Vision_Monthly_Funding
+Open_Interest_Structure,100%,100%,100%,100%,100%,100%,PASS,Binance_Vision_Daily_Metrics
+Positioning_Ratios,100%,100%,100%,100%,100%,100%,PASS,Binance_Vision_Daily_Metrics
+Futures_Taker_Flow,100%,100%,100%,100%,100%,100%,PASS,Binance_Vision_Daily_Metrics
+Liquidations,0%,0%,0%,0%,0%,0%,FAIL,DATA_UNAVAILABLE

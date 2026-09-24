@@ -1,0 +1,6 @@
+vote_strength_threshold,n_queries_eligible,coverage_pct,directional_concordance,lift_over_50
+0.5,200,100.0,0.58,0.08
+0.6,162,81.0,0.5617,0.0617
+0.7,102,51.0,0.5588,0.0588
+0.8,61,30.5,0.5738,0.0738
+0.9,30,15.0,0.5,0.0

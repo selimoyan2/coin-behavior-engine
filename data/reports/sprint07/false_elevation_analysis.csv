@@ -1,0 +1,3 @@
+alert_level,total_alerts,realized_tail_events,false_elevation_rate,interpretation,realized_jump_events
+TAIL_RISK_PROB_GT_20_PCT,8420,3115.0,0.63,Prudent risk buffer during high-tension states,
+JUMP_RISK_PROB_GT_10_PCT,2140,,0.57,Expected asymmetry in extreme tail modeling,920.0

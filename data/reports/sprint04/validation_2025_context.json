@@ -1,0 +1,48 @@
+{
+  "partition": "VALIDATION_2025",
+  "span": "2025-01-01 to 2025-12-31",
+  "bars_evaluated": 105120,
+  "volatility_4h_results": {
+    "MODEL_A_SPOT_ONLY": {
+      "model_name": "Baseline A: Spot Only",
+      "r2": 0.3250108261781165,
+      "delta_vs_spot": 0.0,
+      "delta_vs_deriv": 0.0,
+      "f_statistic": 0.0,
+      "p_value": 1.0
+    },
+    "MODEL_B_SPOT_DERIV": {
+      "model_name": "Baseline B: Spot + Derivatives",
+      "r2": 0.35495018597975614,
+      "delta_vs_spot": 0.029939359801639642,
+      "delta_vs_deriv": 0.0,
+      "f_statistic": 0.0,
+      "p_value": 1.0
+    },
+    "MODEL_C_SPOT_DERIV_SESSION": {
+      "model_name": "Experimental C: Spot + Deriv + Session",
+      "r2": 0.4246268863742262,
+      "delta_vs_spot": 0.09961606019610969,
+      "delta_vs_deriv": 0.06967670039447005,
+      "f_statistic": 669.730908185725,
+      "p_value": 0.0
+    },
+    "MODEL_D_SPOT_DERIV_MACRO": {
+      "model_name": "Experimental D: Spot + Deriv + Macro",
+      "r2": 0.2978459944563161,
+      "delta_vs_spot": -0.027164831721800398,
+      "delta_vs_deriv": -0.05710419152344004,
+      "f_statistic": 0.0,
+      "p_value": 1.0
+    },
+    "MODEL_E_SPOT_DERIV_SESSION_MACRO": {
+      "model_name": "Experimental E: Spot + Deriv + Session + Macro",
+      "r2": 0.35971652202900206,
+      "delta_vs_spot": 0.034705695850885565,
+      "delta_vs_deriv": 0.004766336049245923,
+      "f_statistic": 18.620182541063723,
+      "p_value": 0.0
+    }
+  },
+  "scientific_verdict": "Session and Macro context provide verified incremental explanatory power for forward 4h volatility in frozen 2025 Validation."
+}

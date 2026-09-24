@@ -1,0 +1,27 @@
+{
+  "lockbox_version": "CBE-LOCKBOX-0.7.0",
+  "historical_research_end": "2026-09-23T23:59:59 UTC",
+  "status": "INITIALIZED_READY_FOR_SPRINT08",
+  "model_version_frozen": "CBE-0.7.0",
+  "prediction_schema": {
+    "timestamp_open": "ISO8601 UTC string",
+    "volatility_p10": "float",
+    "volatility_p50": "float",
+    "volatility_p90": "float",
+    "tail_risk_prob_95": "float",
+    "jump_risk_prob_99": "float",
+    "market_state": "string (one of 9 MarketStateId)",
+    "data_quality_state": "string",
+    "fallback_level": "string"
+  },
+  "outcome_schema": {
+    "timestamp_open": "ISO8601 UTC string",
+    "observed_fwd_vol_1h": "float",
+    "observed_fwd_abs_ret_1h": "float",
+    "observed_fwd_range_1h": "float",
+    "observed_tail_event": "bool",
+    "observed_jump_event": "bool"
+  },
+  "prospective_data_present": false,
+  "notes": "Prospective evaluation lockbox initialized strictly at historical boundary. No prospective data is fabricated. Ready for live/forward testing in Sprint 08."
+}

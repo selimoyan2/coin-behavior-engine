@@ -1,0 +1,13 @@
+{
+  "audit": "REPRODUCIBILITY_HASH",
+  "status": "PASS",
+  "events_hash_1": "dd00e8f3cd4b68de0b68807e85022d90830175107fa9e2b42e8b7dda0308ee13",
+  "events_hash_2": "dd00e8f3cd4b68de0b68807e85022d90830175107fa9e2b42e8b7dda0308ee13",
+  "events_reproducible": true,
+  "regimes_hash_1": "bc57f871d5ebab779ad7fd50ad408a8b98071c65b41d25a619b0c83516dbd3ed",
+  "regimes_hash_2": "bc57f871d5ebab779ad7fd50ad408a8b98071c65b41d25a619b0c83516dbd3ed",
+  "regimes_reproducible": true,
+  "global_clusters_hash_1": "c775c665726f20a5b31a1828e6983ccc807348205c063e627a6e679eda3a4007",
+  "global_clusters_hash_2": "c775c665726f20a5b31a1828e6983ccc807348205c063e627a6e679eda3a4007",
+  "global_clusters_reproducible": true
+}

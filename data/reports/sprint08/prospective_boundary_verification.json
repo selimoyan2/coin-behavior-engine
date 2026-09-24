@@ -1,0 +1,9 @@
+{
+  "historical_research_end": "2026-09-23T23:59:59 UTC",
+  "prospective_start": "2026-09-24T00:00:00 UTC",
+  "boundary_rule": "ALL_OBSERVATIONS_T_GEQ_2026_09_24_00_00_00_BELONG_TO_PROSPECTIVE_UNSEEN",
+  "retroactive_predictions_permitted": false,
+  "prospective_data_leaked_into_training": false,
+  "lockbox_verified": true,
+  "verification_status": "PASSED"
+}

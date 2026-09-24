@@ -1,0 +1,43 @@
+{
+  "checkpoint_version": "CBE-CHECKPOINT-0.8.0",
+  "model_version": "CBE-0.7.0",
+  "historical_research_end": "2026-09-23T23:59:59 UTC",
+  "prospective_start": "2026-09-24T00:00:00 UTC",
+  "sample_maturity_level": "INSUFFICIENT_DATA",
+  "total_prospective_predictions": 0,
+  "total_matured_outcomes": 0,
+  "checkpoints": {
+    "checkpoint_24h": {
+      "status": "PENDING_ELAPSED_TIME",
+      "eligible_observations": 288
+    },
+    "checkpoint_72h": {
+      "status": "PENDING_ELAPSED_TIME",
+      "eligible_observations": 864
+    },
+    "checkpoint_7d": {
+      "status": "PENDING_ELAPSED_TIME",
+      "eligible_observations": 2016
+    },
+    "checkpoint_14d": {
+      "status": "PENDING_ELAPSED_TIME",
+      "eligible_observations": 4032
+    },
+    "checkpoint_30d": {
+      "status": "PENDING_ELAPSED_TIME",
+      "eligible_observations": 8640
+    },
+    "checkpoint_60d": {
+      "status": "PENDING_ELAPSED_TIME",
+      "eligible_observations": 17280
+    },
+    "checkpoint_90d": {
+      "status": "PENDING_ELAPSED_TIME",
+      "eligible_observations": 25920
+    }
+  },
+  "sprint_status": {
+    "SPRINT_08_PHASE_A": "COMPLETE",
+    "SPRINT_08_PHASE_B": "IN_PROGRESS"
+  }
+}

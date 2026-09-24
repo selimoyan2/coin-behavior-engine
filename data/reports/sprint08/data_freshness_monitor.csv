@@ -1,0 +1,6 @@
+stream,p50_latency_ms,max_latency_ms,stale_bars_count,freshness_status
+Spot Price & Volume,120,450,0,EXCELLENT
+Derivatives (OI & Funding),280,850,0,HEALTHY
+ETF Capital Flows,1800,3600,0,GATED_CLOSURES
+Conditioned Macro,450,1200,0,ACTIVE_HOURS_ONLY
+News / Event Feeds,3500,12000,0,DISCRETE_SHOCK_CLOCK

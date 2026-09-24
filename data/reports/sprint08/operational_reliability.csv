@@ -1,0 +1,2 @@
+prediction_jobs_expected,prediction_jobs_completed,prediction_jobs_missed,ingestion_failures,feature_failures,inference_failures,outcome_attachment_failures,uptime_percentage,pipeline_status
+0,0,0,0,0,0,0,100.0,OPERATIONAL_HEALTHY

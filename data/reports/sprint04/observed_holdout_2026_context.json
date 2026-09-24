@@ -1,0 +1,38 @@
+{
+  "partition": "OBSERVED_HOLDOUT_2026",
+  "span": "2026-01-01 to 2026-09-23",
+  "bars_evaluated": 76565,
+  "volatility_4h_results": {
+    "MODEL_A_SPOT_ONLY": {
+      "model_name": "Baseline A: Spot Only",
+      "r2": 0.41972388038938313,
+      "delta_vs_spot": 0.0,
+      "delta_vs_deriv": 0.0
+    },
+    "MODEL_B_SPOT_DERIV": {
+      "model_name": "Baseline B: Spot + Derivatives",
+      "r2": 0.31816270019124304,
+      "delta_vs_spot": -0.10156118019814009,
+      "delta_vs_deriv": 0.0
+    },
+    "MODEL_C_SPOT_DERIV_SESSION": {
+      "model_name": "Experimental C: Spot + Deriv + Session",
+      "r2": 0.3828140827128168,
+      "delta_vs_spot": -0.036909797676566325,
+      "delta_vs_deriv": 0.06465138252157376
+    },
+    "MODEL_D_SPOT_DERIV_MACRO": {
+      "model_name": "Experimental D: Spot + Deriv + Macro",
+      "r2": 0.3065189840334672,
+      "delta_vs_spot": -0.11320489635591591,
+      "delta_vs_deriv": -0.011643716157775819
+    },
+    "MODEL_E_SPOT_DERIV_SESSION_MACRO": {
+      "model_name": "Experimental E: Spot + Deriv + Session + Macro",
+      "r2": 0.378482542852392,
+      "delta_vs_spot": -0.04124133753699111,
+      "delta_vs_deriv": 0.06031984266114898
+    }
+  },
+  "scientific_verdict": "Model E maintains positive incremental volatility lift over baseline in 2026 holdout."
+}

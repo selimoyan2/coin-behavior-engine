@@ -1,0 +1,13 @@
+ticker,fund_name,issuer,launch_date,effective_from,effective_to,is_active,is_legacy_conversion,is_mini_trust,sponsor_fee_bps
+IBIT,iShares Bitcoin Trust ETF,BlackRock,2024-01-11,2024-01-11,CURRENT,True,False,False,25.0
+FBTC,Fidelity Wise Origin Bitcoin Fund,Fidelity,2024-01-11,2024-01-11,CURRENT,True,False,False,25.0
+GBTC,Grayscale Bitcoin Trust ETF,Grayscale Investments,2024-01-11,2024-01-11,CURRENT,True,True,False,150.0
+ARKB,ARK 21Shares Bitcoin ETF,ARK Invest / 21Shares,2024-01-11,2024-01-11,CURRENT,True,False,False,21.0
+BITB,Bitwise Bitcoin ETF,Bitwise,2024-01-11,2024-01-11,CURRENT,True,False,False,20.0
+BTCO,Invesco Galaxy Bitcoin ETF,Invesco / Galaxy,2024-01-11,2024-01-11,CURRENT,True,False,False,25.0
+EZBC,Franklin Bitcoin ETF,Franklin Templeton,2024-01-11,2024-01-11,CURRENT,True,False,False,19.0
+BRRR,CoinShares Valkyrie Bitcoin Fund,CoinShares / Valkyrie,2024-01-11,2024-01-11,CURRENT,True,False,False,25.0
+HODL,VanEck Bitcoin Trust,VanEck,2024-01-11,2024-01-11,CURRENT,True,False,False,20.0
+BTCW,WisdomTree Bitcoin Fund,WisdomTree,2024-01-11,2024-01-11,CURRENT,True,False,False,25.0
+MSBT,Hashdex Bitcoin ETF,Hashdex / Tidal,2024-03-27,2024-03-27,CURRENT,True,False,False,90.0
+BTC,Grayscale Bitcoin Mini Trust ETF,Grayscale Investments,2024-07-31,2024-07-31,CURRENT,True,False,True,15.0

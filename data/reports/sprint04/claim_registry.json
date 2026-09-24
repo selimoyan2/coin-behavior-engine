@@ -1,0 +1,62 @@
+[
+  {
+    "claim_id": "CLAIM-S04-001",
+    "claim_text": "Session and Time-of-Day context provides verified incremental 4h volatility explanatory power over Spot + Derivatives baseline in 2025 Validation.",
+    "metric_name": "delta_r2_val",
+    "metric_value": 0.06967670039447,
+    "sample_size": 105120,
+    "partition": "VALIDATION_2025",
+    "horizon": "4h",
+    "artifact_path": "data/reports/sprint04/incremental_session_information.csv",
+    "artifact_row_or_key": "target=fwd_vol_4h",
+    "generating_module": "coin_behavior_engine.macro.research",
+    "test_reference": "tests/test_sprint04_session_macro.py::test_claim_001_session_incremental_edge",
+    "status": "VERIFIED",
+    "verification_notes": "Model C achieves delta R2 of +0.0697 over Model B with p < 0.001."
+  },
+  {
+    "claim_id": "CLAIM-S04-002",
+    "claim_text": "Daily macro features added unconditionally to 5m Spot + Derivatives do not improve 4h volatility explanatory power (Validation 2025 delta R2 is negative, macro edge unverified/diluted by market closure staleness).",
+    "metric_name": "delta_r2_val",
+    "metric_value": -0.05710419152344,
+    "sample_size": 105120,
+    "partition": "VALIDATION_2025",
+    "horizon": "4h",
+    "artifact_path": "data/reports/sprint04/incremental_macro_information.csv",
+    "artifact_row_or_key": "target=fwd_vol_4h",
+    "generating_module": "coin_behavior_engine.macro.research",
+    "test_reference": "tests/test_sprint04_session_macro.py::test_claim_002_macro_incremental_edge",
+    "status": "VERIFIED",
+    "verification_notes": "Model D achieves delta R2 of -0.0571 over Model B."
+  },
+  {
+    "claim_id": "CLAIM-S04-003",
+    "claim_text": "Directional forecasting edge from session and cross-asset macro features remains UNVERIFIED (Holdout lift over majority baseline is near-zero or statistically insignificant).",
+    "metric_name": "directional_verdict",
+    "metric_value": "UNVERIFIED_OR_NO_EDGE",
+    "sample_size": 76565,
+    "partition": "OBSERVED_HOLDOUT_2026",
+    "horizon": "4h",
+    "artifact_path": "data/reports/sprint04/direction_context_analysis.csv",
+    "artifact_row_or_key": "model_id=MODEL_E_SPOT_DERIV_SESSION_MACRO&horizon=fwd_ret_4h",
+    "generating_module": "coin_behavior_engine.macro.research",
+    "test_reference": "tests/test_sprint04_session_macro.py::test_claim_003_directional_edge_unverified",
+    "status": "VERIFIED",
+    "verification_notes": "Holdout 4h directional accuracy is 50.42% with baseline lift of 0.28%."
+  },
+  {
+    "claim_id": "CLAIM-S04-004",
+    "claim_text": "September 21 anomaly onset exhibited cross-market confluence: London/NY transition overlap with elevated macro volatility and negative equity momentum.",
+    "metric_name": "forensic_verdict",
+    "metric_value": "VERIFIED_POSTHOC_CROSS_MARKET_DISLOCATION: September 21 onset occurred during London-NY transition with elevated VIX and negative equity momentum, compounding acute derivatives crowding flushes.",
+    "sample_size": 1,
+    "partition": "OBSERVED_HOLDOUT_2026",
+    "horizon": "multi_horizon",
+    "artifact_path": "data/reports/sprint04/september21_context_posthoc.json",
+    "artifact_row_or_key": "forensic_verdict",
+    "generating_module": "coin_behavior_engine.macro.research",
+    "test_reference": "tests/test_sprint04_session_macro.py::test_claim_004_september21_macro_session_signature",
+    "status": "VERIFIED",
+    "verification_notes": "Post-hoc verification confirms September 21 coincided with London/NY overlap, elevated VIX and equity risk-off pressure."
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "audit": "AUDIT_05_STRICT_TEMPORAL_CAUSALITY",
+  "TEMPORAL_ANALOGUE_CAUSALITY": "PASS",
+  "total_analogs_audited": 1000,
+  "violations_timestamp_future": 0,
+  "violations_outcome_window_overlap": 0,
+  "buffer_candles_used": 288,
+  "max_forward_horizon_steps": 288,
+  "causality_margin_candles": 0,
+  "conclusion": "With buffer_candles=288 (24h), analogue forward outcome windows (<=24h) never overlap query timestamp T."
+}

@@ -1,0 +1,9 @@
+horizon,target,sample_count,brier_score_model,brier_score_climatology,brier_skill_score,skill_status
+15m,tail_95,0,0.0,0.0,0.0,INSUFFICIENT_DATA
+30m,tail_95,0,0.0,0.0,0.0,INSUFFICIENT_DATA
+1h,tail_95,0,0.0,0.0,0.0,INSUFFICIENT_DATA
+2h,tail_95,0,0.0,0.0,0.0,INSUFFICIENT_DATA
+4h,tail_95,0,0.0,0.0,0.0,INSUFFICIENT_DATA
+8h,tail_95,0,0.0,0.0,0.0,INSUFFICIENT_DATA
+12h,tail_95,0,0.0,0.0,0.0,INSUFFICIENT_DATA
+24h,tail_95,0,0.0,0.0,0.0,INSUFFICIENT_DATA

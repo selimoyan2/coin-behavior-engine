@@ -1,0 +1,36 @@
+{
+  "audit_name": "DERIVATIVES_DATA_QUALITY_AUDIT",
+  "asset": "BTCUSDT",
+  "evaluation_period": "2021-01-01 to 2026-09-21",
+  "qualified_datasets": [
+    "BTCUSDT_PERPETUAL_KLINES",
+    "BTCUSDT_FUNDING_RATE",
+    "BTCUSDT_OPEN_INTEREST",
+    "BTCUSDT_POSITIONING_RATIOS",
+    "BTCUSDT_FUTURES_TAKER_FLOW",
+    "BTCUSDT_BASIS_PREMIUM"
+  ],
+  "partial_coverage_datasets": [],
+  "rejected_or_unavailable_datasets": [
+    {
+      "dataset_name": "BTCUSDT_LIQUIDATION_DATA",
+      "status": "DATA_UNAVAILABLE",
+      "reason": "Official historical archives not provided by Binance Vision without private WebSocket archival. Per Part 12 rules, liquidation features are excluded rather than fabricated."
+    }
+  ],
+  "feature_families_qualified": {
+    "FAMILY_A_PERPETUAL_PRICE": "QUALIFIED (100% coverage 2021-2026)",
+    "FAMILY_B_BASIS_PREMIUM": "QUALIFIED (100% coverage 2021-2026)",
+    "FAMILY_C_FUNDING_RATE": "QUALIFIED (100% coverage 2021-2026, 8h as-of causal join)",
+    "FAMILY_D_OPEN_INTEREST": "QUALIFIED (100% coverage 2021-2026)",
+    "FAMILY_E_POSITIONING": "QUALIFIED (100% coverage 2021-2026)",
+    "FAMILY_F_FUTURES_TAKER_FLOW": "QUALIFIED (100% coverage 2021-2026)",
+    "FAMILY_G_LIQUIDATIONS": "REJECTED (DATA_UNAVAILABLE)",
+    "FAMILY_H_ALL_DERIVATIVES": "QUALIFIED (Families A through F combined)"
+  },
+  "timestamp_audit": {
+    "timezone": "UTC (Strict)",
+    "resolution": "5-minute continuous grid matching spot dataset",
+    "as_of_rule": "Latest available data at or before timestamp T. Zero future information leakage."
+  }
+}

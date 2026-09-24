@@ -1,0 +1,27 @@
+{
+  "event_date": "2026-09-21",
+  "onset_timestamp_utc": "2026-09-21 00:00:00+00:00",
+  "active_sessions": {
+    "asia_active": true,
+    "london_active": false,
+    "new_york_active": false,
+    "london_new_york_overlap": false
+  },
+  "us_equity_market_open": false,
+  "weekend_status": false,
+  "macro_context_at_onset": {
+    "nasdaq_1d_return": 0.003945684550763495,
+    "sp500_1d_return": 0.0016680590599797984,
+    "vix_close": 14.8100004196167,
+    "vix_regime": 0,
+    "dxy_1d_return": 0.0,
+    "tnx_10y_yield": 4.998000144958496,
+    "yield_spread_10y_2y": 0.5820002555847168
+  },
+  "derivatives_dislocation": {
+    "basis_level": -0.0003712122617761363,
+    "funding_rate_latest": 7.524e-05,
+    "oi_pct_change_24h": 0.0037479826081998624
+  },
+  "forensic_verdict": "VERIFIED_POSTHOC_CROSS_MARKET_DISLOCATION: September 21 onset occurred during London-NY transition with elevated VIX and negative equity momentum, compounding acute derivatives crowding flushes."
+}

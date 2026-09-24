@@ -1,0 +1,7 @@
+ablation,horizon,n_samples,concordance,ci_95_lower,ci_95_upper,lift_over_50
+Full_Pattern_Fingerprint,4h,120,0.475,0.3878,0.5637,-0.025
+Ablate_Trajectory,4h,120,0.525,0.4363,0.6122,0.025
+Ablate_Volatility_Ratio,4h,120,0.5,0.4119,0.5881,0.0
+Ablate_Volume_ZScore,4h,120,0.45,0.3639,0.5392,-0.05
+Ablate_Taker_Buy_Ratio,4h,120,0.475,0.3878,0.5637,-0.025
+Ablate_Macro_Regime,4h,120,0.4917,0.4039,0.58,-0.0083

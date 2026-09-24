@@ -1,0 +1,4 @@
+deduplication_mode,n_samples,horizon,concordance,ci_95_lower,ci_95_upper,lift_over_50
+A_Raw_Timestamp_Events,150,4h,0.48,0.4016,0.5594,-0.02
+B_Cluster_30m_DeDuplicated,150,4h,0.5067,0.4275,0.5855,0.0067
+C_Physical_Episode_24h_DeDuplicated,150,4h,0.56,0.48,0.637,0.06

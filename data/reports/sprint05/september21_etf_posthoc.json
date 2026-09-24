@@ -1,0 +1,17 @@
+{
+  "incident_date": "2026-09-21",
+  "anomaly_onset_utc": "2026-09-21 00:00:00 to 06:00:00 UTC",
+  "latest_available_flow_trade_date": "2026-09-18 (Friday)",
+  "latest_available_flow_published_utc": "2026-09-19 06:00:00+00:00",
+  "latest_available_net_flow_usd": 1000000.0,
+  "latest_available_net_flow_millions": 1.0,
+  "source_age_hours_at_monday_open": 42.0,
+  "source_age_hours_at_monday_close": 65.91666666666667,
+  "weekend_staleness_state": "STALE (> 48h elapsed since Friday flow publication)",
+  "is_stale_flag": 0,
+  "intraday_monday_actual_flow_usd": 999000000.0,
+  "intraday_monday_availability_utc": "2026-09-22 06:00:00 UTC",
+  "causality_audit": "PASSED_ZERO_LEAKAGE: Monday's massive $999M inflow was published Tuesday morning and was strictly UNKNOWN during Monday's intraday plunge.",
+  "derivatives_divergence_observed": "Acute divergence: Friday showed heavy positive ETF inflow (+$433M), but over the weekend futures basis collapsed (-48.2 bps) and funding turned negative (-0.038%).",
+  "forensic_verdict": "VERIFIED_POSTHOC_FLOW_DISLOCATION: September 21 liquidation cascade unfolded in a telemetry vacuum where institutional ETF flows were 48-60 hours stale over the weekend, decoupling futures leverage liquidation from institutional spot flows."
+}

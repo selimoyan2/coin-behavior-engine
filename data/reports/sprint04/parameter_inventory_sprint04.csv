@@ -1,0 +1,11 @@
+parameter_name,category,value,description
+ridge_alpha,MODEL_REGRESSION,100.0,L2 regularization penalty for linear information ladder models
+logistic_max_iter,MODEL_CLASSIFICATION,1000.0,Maximum solver iterations for tail risk and direction logistic regression
+tail_quantile_threshold,TAIL_RISK,0.95,Quantile threshold on Discovery partition for extreme forward 4h return excursions
+compression_ratio_threshold,REGIME,0.6,Volatility compression threshold (24h realized vol vs 7d ATR)
+funding_proximity_window_minutes,SESSION_CALENDAR,30.0,Proximity window in minutes immediately preceding perpetual funding settlement
+us_equity_open_hour_local,SESSION_CALENDAR,9.5,09:30 America/New_York regular US equity session opening bell
+us_equity_close_hour_local,SESSION_CALENDAR,16.0,16:00 America/New_York regular US equity session closing bell
+macro_staleness_threshold_hours,MACRO_DATA,60.0,Threshold age in hours beyond which macro data is stamped as stale (over weekend)
+fdr_nominal_q,STATISTICAL_TESTING,0.05,Nominal false discovery rate for Benjamini-Hochberg multiple hypothesis correction
+walk_forward_folds,VALIDATION,5.0,Number of expanding-window temporal folds (2021 through 2026)

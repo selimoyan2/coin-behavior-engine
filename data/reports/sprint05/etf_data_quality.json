@@ -1,0 +1,17 @@
+{
+  "dataset_name": "US_SPOT_BITCOIN_ETF_FLOWS",
+  "source": "Farside Investors / Yahoo Finance / CME",
+  "coverage_start": "2024-01-11",
+  "coverage_end": "2026-09-23",
+  "total_trading_days": 693,
+  "total_net_flow_usd": 57290300000.0,
+  "gbtc_cumulative_net_flow_usd": -27841400000.0,
+  "non_gbtc_cumulative_net_flow_usd": 85131700000.0,
+  "total_etfs_tracked": 12,
+  "prices_records_count": 7742,
+  "cme_records_count": 1006,
+  "missing_flow_values_count": 0,
+  "duplicate_dates_count": 0,
+  "zero_flow_days_count": 16,
+  "audit_verdict": "DATA_INTEGRITY_VERIFIED"
+}

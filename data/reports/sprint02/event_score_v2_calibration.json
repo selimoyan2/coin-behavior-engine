@@ -1,0 +1,11 @@
+{
+  "event_score_v2_threshold_995": 0.9999,
+  "discovery_mean_vector": [
+    0.004172005053689922,
+    0.0017843062278055481,
+    0.007041646990925196,
+    1.3777445209556403
+  ],
+  "saturation_check_discovery_v1_count_equal_1": 439,
+  "saturation_check_discovery_v2_count_equal_1": 0
+}

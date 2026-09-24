@@ -1,0 +1,5 @@
+data_quality_state,frequency_percentage,handling
+DATA_OK,78.4,Full Model U5 execution
+STALE_MACRO,20.8,Routed overlay zeroes stale macro features; Core U2 active
+DEGRADED_STREAM,0.7,Fallback to Core U2 or Spot+Deriv U1
+FALLBACK_TRIGGERED,0.1,Graceful degradation to Spot Only U0

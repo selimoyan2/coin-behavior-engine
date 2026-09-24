@@ -1,0 +1,68 @@
+{
+  "manifest_name": "SESSION_DEFINITION_MANIFEST",
+  "asset": "BTCUSDT",
+  "features": [
+    {
+      "name": "hour_utc",
+      "type": "int",
+      "description": "Hour of day in UTC (0-23)"
+    },
+    {
+      "name": "weekday",
+      "type": "int",
+      "description": "Day of week (0=Mon, 6=Sun)"
+    },
+    {
+      "name": "weekend_flag",
+      "type": "int",
+      "description": "Binary 1 for Saturday and Sunday UTC"
+    },
+    {
+      "name": "session_asia_active",
+      "type": "int",
+      "description": "Binary 1 during Tokyo trading hours (09:00-15:00 JST, weekdays)"
+    },
+    {
+      "name": "session_london_active",
+      "type": "int",
+      "description": "Binary 1 during London trading hours (08:00-16:30 local Europe/London)"
+    },
+    {
+      "name": "session_new_york_active",
+      "type": "int",
+      "description": "Binary 1 during broad NY financial session (08:00-17:00 ET)"
+    },
+    {
+      "name": "us_equity_market_open",
+      "type": "int",
+      "description": "Binary 1 during NYSE/NASDAQ regular trading (09:30-16:00 ET, non-holiday)"
+    },
+    {
+      "name": "london_new_york_overlap",
+      "type": "int",
+      "description": "Binary 1 when London and NY financial sessions coincide"
+    },
+    {
+      "name": "minutes_to_next_funding",
+      "type": "float",
+      "description": "Minutes until next 8h Binance funding settlement"
+    },
+    {
+      "name": "funding_window",
+      "type": "int",
+      "description": "Binary 1 if within 30 minutes of funding settlement"
+    }
+  ],
+  "boundary_windows_investigated": [
+    "T-120m",
+    "T-60m",
+    "T-30m",
+    "T-15m",
+    "T",
+    "T+15m",
+    "T+30m",
+    "T+60m",
+    "T+120m",
+    "T+4h"
+  ]
+}

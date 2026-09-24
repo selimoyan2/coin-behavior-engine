@@ -1,0 +1,14 @@
+parameter_name,parameter_value,justification_and_scope
+spot_grid_bar_size,5 minutes,Fixed canonical bar duration matching Sprint 01-02
+realized_volatility_window,288 bars (24h),Rolling window for annualized standard deviation
+basis_percentile_window,288 bars (24h),Causal rolling window for basis percentile
+funding_percentile_window,8640 bars (30 days),Causal rolling window for funding rate percentile
+open_interest_percentile_window,8640 bars (30 days),Causal rolling window for open interest percentile
+crowding_score_window,8640 bars (30 days),Causal rolling window for global L/S account ratio
+funding_stale_threshold_hours,12.0 hours,Threshold beyond which funding rate is marked stale
+ridge_regularization_alpha,100.0,L2 penalty parameter for linear baseline/derivatives models
+logistic_regression_c,0.01 to 0.1,Inverse regularization strength for direction and tail risk
+fdr_alpha,0.05,False Discovery Rate significance threshold for Benjamini-Hochberg
+discovery_partition,2021-01-01 to 2024-12-31,In-sample training and exploration period
+validation_partition,2025-01-01 to 2025-12-31,Out-of-sample frozen validation period
+holdout_partition,2026-01-01 to 2026-09-23,Final unobserved holdout testing period

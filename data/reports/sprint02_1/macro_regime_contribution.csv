@@ -1,0 +1,5 @@
+configuration,horizon,n_samples,concordance,ci_95_lower,ci_95_upper,lift_over_50
+A_No_Macro_Regime_Filter,4h,150,0.4933,0.4145,0.5725,-0.0067
+B_Exact_Macro_Regime_Match,4h,150,0.5333,0.4537,0.6113,0.0333
+C_Soft_Regime_Penalty_0.5,4h,150,0.48,0.4016,0.5594,-0.02
+D_Pure_Macro_Regime_Prior_No_Similarity,4h,150,0.5733,0.4933,0.6497,0.0733

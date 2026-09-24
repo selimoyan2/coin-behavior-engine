@@ -1,0 +1,121 @@
+{
+  "audit": "AUDIT_02_DIRECTION_DEFINITION",
+  "horizons_evaluated": [
+    "15m",
+    "30m",
+    "1h",
+    "2h",
+    "4h",
+    "8h",
+    "12h",
+    "24h"
+  ],
+  "primary_definition": "UP if forward continuous return > 0, DOWN if forward continuous return < 0",
+  "threshold_used": "0.0 (no arbitrary profitability or 0.3%/4h hurdle)",
+  "summary_table": [
+    {
+      "horizon": "15m",
+      "total_candles": 602240,
+      "valid_samples": 602237,
+      "up_count": 301478,
+      "up_pct": 50.06,
+      "down_count": 300458,
+      "down_pct": 49.89,
+      "zero_count": 301,
+      "zero_pct": 0.05,
+      "definition": "UP = fwd_ret > 0; DOWN = fwd_ret < 0; ZERO = fwd_ret == 0",
+      "handling_of_zeros": "Excluded from binary directional concordance evaluation and counted separately"
+    },
+    {
+      "horizon": "30m",
+      "total_candles": 602240,
+      "valid_samples": 602234,
+      "up_count": 303042,
+      "up_pct": 50.32,
+      "down_count": 299041,
+      "down_pct": 49.655,
+      "zero_count": 151,
+      "zero_pct": 0.025,
+      "definition": "UP = fwd_ret > 0; DOWN = fwd_ret < 0; ZERO = fwd_ret == 0",
+      "handling_of_zeros": "Excluded from binary directional concordance evaluation and counted separately"
+    },
+    {
+      "horizon": "1h",
+      "total_candles": 602240,
+      "valid_samples": 602228,
+      "up_count": 304178,
+      "up_pct": 50.509,
+      "down_count": 297960,
+      "down_pct": 49.476,
+      "zero_count": 90,
+      "zero_pct": 0.015,
+      "definition": "UP = fwd_ret > 0; DOWN = fwd_ret < 0; ZERO = fwd_ret == 0",
+      "handling_of_zeros": "Excluded from binary directional concordance evaluation and counted separately"
+    },
+    {
+      "horizon": "2h",
+      "total_candles": 602240,
+      "valid_samples": 602216,
+      "up_count": 305593,
+      "up_pct": 50.745,
+      "down_count": 296560,
+      "down_pct": 49.245,
+      "zero_count": 63,
+      "zero_pct": 0.01,
+      "definition": "UP = fwd_ret > 0; DOWN = fwd_ret < 0; ZERO = fwd_ret == 0",
+      "handling_of_zeros": "Excluded from binary directional concordance evaluation and counted separately"
+    },
+    {
+      "horizon": "4h",
+      "total_candles": 602240,
+      "valid_samples": 602192,
+      "up_count": 305980,
+      "up_pct": 50.811,
+      "down_count": 296167,
+      "down_pct": 49.181,
+      "zero_count": 45,
+      "zero_pct": 0.007,
+      "definition": "UP = fwd_ret > 0; DOWN = fwd_ret < 0; ZERO = fwd_ret == 0",
+      "handling_of_zeros": "Excluded from binary directional concordance evaluation and counted separately"
+    },
+    {
+      "horizon": "8h",
+      "total_candles": 602240,
+      "valid_samples": 602144,
+      "up_count": 306394,
+      "up_pct": 50.884,
+      "down_count": 295727,
+      "down_pct": 49.112,
+      "zero_count": 23,
+      "zero_pct": 0.004,
+      "definition": "UP = fwd_ret > 0; DOWN = fwd_ret < 0; ZERO = fwd_ret == 0",
+      "handling_of_zeros": "Excluded from binary directional concordance evaluation and counted separately"
+    },
+    {
+      "horizon": "12h",
+      "total_candles": 602240,
+      "valid_samples": 602096,
+      "up_count": 306327,
+      "up_pct": 50.877,
+      "down_count": 295742,
+      "down_pct": 49.119,
+      "zero_count": 27,
+      "zero_pct": 0.004,
+      "definition": "UP = fwd_ret > 0; DOWN = fwd_ret < 0; ZERO = fwd_ret == 0",
+      "handling_of_zeros": "Excluded from binary directional concordance evaluation and counted separately"
+    },
+    {
+      "horizon": "24h",
+      "total_candles": 602240,
+      "valid_samples": 601952,
+      "up_count": 309126,
+      "up_pct": 51.354,
+      "down_count": 292814,
+      "down_pct": 48.644,
+      "zero_count": 12,
+      "zero_pct": 0.002,
+      "definition": "UP = fwd_ret > 0; DOWN = fwd_ret < 0; ZERO = fwd_ret == 0",
+      "handling_of_zeros": "Excluded from binary directional concordance evaluation and counted separately"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "manifest_name": "SPOT_ONLY_BASELINE_FEATURE_MANIFEST",
+  "asset": "BTCUSDT",
+  "description": "Frozen spot-only baseline features established in Sprints 01-02.1 before derivatives introduction.",
+  "features": [
+    {
+      "name": "return_log",
+      "description": "5-minute continuous log return",
+      "source": "spot_klines"
+    },
+    {
+      "name": "volatility_realized_24h",
+      "description": "Rolling 24h realized volatility (288-bar annualized std)",
+      "source": "spot_klines"
+    },
+    {
+      "name": "volatility_compression_ratio",
+      "description": "Ratio of 4h to 24h realized volatility",
+      "source": "features.py"
+    },
+    {
+      "name": "volume_zscore_24h",
+      "description": "Rolling 24h z-score of spot volume",
+      "source": "features.py"
+    },
+    {
+      "name": "volume_buy_ratio",
+      "description": "Taker buy volume / total volume on spot",
+      "source": "features.py"
+    },
+    {
+      "name": "trend_slope_24h",
+      "description": "Normalized linear regression slope over past 24 hours",
+      "source": "features.py"
+    },
+    {
+      "name": "regime",
+      "description": "Layer 1 5-minute micro-regime classification",
+      "source": "regimes.py"
+    },
+    {
+      "name": "macro_regime",
+      "description": "Layer 2 macro-regime state with hysteresis persistence",
+      "source": "macro_regimes.py"
+    },
+    {
+      "name": "macro_regime_duration",
+      "description": "Candles elapsed in current macro-regime",
+      "source": "macro_regimes.py"
+    }
+  ],
+  "baseline_model_class": "Regularized Linear / Logistic & Rolling Momentum Prior",
+  "excluded_features": [
+    "historical_analogue_direction",
+    "nearest_neighbor_vote_strength"
+  ],
+  "exclusion_reason": "Sprint 02.1 audited historical analogue directional concordance as UNVERIFIED (failed replication). Spot baseline uses only verified causal state features."
+}

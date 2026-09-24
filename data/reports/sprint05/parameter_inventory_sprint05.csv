@@ -1,0 +1,14 @@
+parameter_name,value,derivation_method
+etf_first_trade_date,2024-01-11,SEC Approval & Official Exchange Launch
+first_available_at_utc,2024-01-12 06:00:00,Availability Semantics (T+1 06:00 UTC)
+canonical_pub_lag_hours,14.0,16:00 ET Close to 06:00 UTC Next Day
+flow_roll_median_window,20 days,Past Trading Month Rolling Window
+flow_robust_mad_multiplier,1.4826,Standard Normal Consistency Factor
+flow_percentile_window,30 days,Past Trading Period Empirical Quantile
+freshness_fresh_cutoff,<= 24 hours,Intraday Daily Cadence Freshness
+freshness_aging_cutoff,24 to 48 hours,Post-Day Decay Period
+freshness_stale_cutoff,> 48 hours,Weekend Market Closure Period
+flow_expansion_quantile,80th percentile,Discovery Period Frozen Quantile (2024)
+flow_contraction_quantile,20th percentile,Discovery Period Frozen Quantile (2024)
+block_bootstrap_size,288 bars (24h),Diurnal Autocorrelation Block Size
+multiple_testing_fdr_alpha,0.05,Benjamini-Hochberg Standard Criterion

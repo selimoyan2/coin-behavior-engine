@@ -1,0 +1,16 @@
+parameter,value,type,role,source
+primary_timeframe,5m,SOURCE_DEFINED,AFFECTS_FEATURES,config.yaml
+lookback_window_candles,48,HUMAN_DEFINED,AFFECTS_FEATURES,similarity.engine.py
+exclusion_buffer_candles,288,DATA_DERIVED,AFFECTS_SAMPLE_SELECTION,similarity.engine.py
+top_k_analogs,5,HUMAN_DEFINED,AFFECTS_OUTCOMES,similarity.engine.py
+macro_mismatch_penalty,0.5,HUMAN_DEFINED,AFFECTS_OUTCOMES,similarity.engine.py
+persistence_min_candles,12,HUMAN_DEFINED,AFFECTS_FEATURES,macro_regime.py
+hysteresis_decay_candles,24,HUMAN_DEFINED,AFFECTS_FEATURES,macro_regime.py
+evt_tail_quantile,0.95,DATA_DERIVED,AFFECTS_FEATURES,evt.py
+event_score_v2_threshold_percentile,0.995,DATA_DERIVED,AFFECTS_SAMPLE_SELECTION,run_sprint02_research.py
+expansion_horizon_candles,288,HUMAN_DEFINED,AFFECTS_OUTCOMES,compression.analyzer.py
+expansion_threshold_pct,0.02,HUMAN_DEFINED,AFFECTS_OUTCOMES,compression.analyzer.py
+control_matching_exclusion_candles,288,DATA_DERIVED,AFFECTS_SAMPLE_SELECTION,snapshots.controls.py
+walk_forward_expanding_step,Quarterly,HUMAN_DEFINED,REPORTING_ONLY,walkforward.evaluator.py
+block_bootstrap_block_size,24 candles (2h),DATA_DERIVED,REPORTING_ONLY,directional.py
+direction_hurdle_rate,0.0 (strict zero),DATA_DERIVED,AFFECTS_OUTCOMES,directional.py

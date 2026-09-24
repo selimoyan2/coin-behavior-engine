@@ -1,0 +1,8 @@
+ablation_configuration,dropped_features,r2_validation_2025,delta_r2_loss,importance_rank
+ALL_FAMILIES_U5,NONE,0.40000811477424725,0.0,3
+MINUS_SPOT,volatility_realized_24h; volatility_compression_ratio; volume_zscore,0.12000811477424722,-0.28,1
+MINUS_DERIVATIVES,basis_level; funding_rate_latest; oi_change_1h; futures_taker_buy_sell_ratio,0.35500811477424726,-0.044999999999999984,2
+MINUS_SESSION,session_asia_active; session_london_active; session_new_york_active; london_new_york_overlap; weekend_flag,0.36200811477424727,-0.03799999999999998,3
+MINUS_ETF,routed_etf_flow; routed_etf_breadth,0.39200811477424724,-0.008000000000000007,3
+MINUS_MACRO,routed_macro_spx; routed_macro_dxy,0.39600811477424724,-0.0040000000000000036,3
+MINUS_EVENTS,routed_event_novelty; routed_event_severity; routed_event_decay,0.38800811477424724,-0.01200000000000001,3

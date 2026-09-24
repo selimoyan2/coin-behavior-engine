@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ProspectiveOutcomeRecord",
+  "type": "object",
+  "required": [
+    "prediction_id",
+    "horizon",
+    "outcome_available_at",
+    "realized_volatility",
+    "realized_return",
+    "tail_95_occurred",
+    "status",
+    "created_at"
+  ],
+  "properties": {
+    "prediction_id": {
+      "type": "string"
+    },
+    "horizon": {
+      "type": "string",
+      "enum": [
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "4h",
+        "8h",
+        "12h",
+        "24h"
+      ]
+    },
+    "outcome_available_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "realized_return": {
+      "type": "number"
+    },
+    "absolute_return": {
+      "type": "number"
+    },
+    "realized_volatility": {
+      "type": "number"
+    },
+    "realized_range": {
+      "type": "number"
+    },
+    "tail_95_occurred": {
+      "type": "boolean"
+    },
+    "tail_99_occurred": {
+      "type": "boolean"
+    },
+    "jump_occurred": {
+      "type": "boolean"
+    },
+    "expansion_occurred": {
+      "type": "boolean"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "MATURED",
+        "SCORED"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

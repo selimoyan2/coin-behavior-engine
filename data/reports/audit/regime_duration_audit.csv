@@ -1,0 +1,7 @@
+regime_label,episode_count,total_hours,one_candle_episodes,two_candle_episodes,three_candle_episodes,min_duration_hours,p10_hours,p25_hours,median_hours,p75_hours,p90_hours,p95_hours,p99_hours,max_duration_hours
+LOW_VOLATILITY_COMPRESSION,5759,1419.5,2167,1278,743,0.08,0.08,0.08,0.17,0.33,0.5,0.67,1.08,2.25
+TRANSITION,5251,756.2,3191,1160,445,0.08,0.08,0.08,0.08,0.17,0.25,0.33,0.58,0.92
+SIDEWAYS,3149,1522.8,664,410,345,0.08,0.08,0.17,0.33,0.67,1.0,1.33,2.25,4.0
+HIGH_VOLATILITY,1992,1088.0,471,260,198,0.08,0.08,0.17,0.33,0.83,1.17,1.67,2.83,6.0
+TRENDING_DOWN,1215,814.1,382,160,108,0.08,0.08,0.08,0.25,0.83,2.08,2.75,4.319,7.67
+TRENDING_UP,1190,765.5,410,157,92,0.08,0.08,0.08,0.25,0.83,2.0,2.67,3.938,7.33

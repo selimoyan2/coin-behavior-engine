@@ -1,0 +1,9 @@
+model,horizon,n_samples,accuracy,ci_95_lower,ci_95_upper,lift_over_50_50,lift_over_majority
+Historical_Analogue_Top5,4h,200,0.51,0.4412,0.5784,0.01,-0.095
+Baseline_A_Prev_5m_Direction,4h,200,0.51,0.4412,0.5784,0.01,-0.095
+Baseline_B_Prev_30m_Direction,4h,200,0.46,0.3923,0.5292,-0.04,-0.145
+Baseline_C_Prev_1h_Direction,4h,200,0.445,0.3778,0.5143,-0.055,-0.16
+Baseline_D_Prev_4h_Direction,4h,200,0.475,0.4069,0.544,-0.025,-0.13
+Baseline_E_Macro_Regime_Majority,4h,200,0.615,0.546,0.6797,0.115,0.01
+Baseline_F_Trend_Slope_Sign,4h,200,0.485,0.4167,0.5539,-0.015,-0.12
+Baseline_G_Random_Class_Proportional,4h,200,0.45,0.3826,0.5192,-0.05,-0.155

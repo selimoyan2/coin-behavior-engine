@@ -1,0 +1,3 @@
+metric_set,horizon,n_samples,precision,recall,true_count,false_count,balanced_accuracy
+UP_PREDICTION,4h,200,0.5935,0.6033,73,50,0.4852
+DOWN_PREDICTION,4h,200,0.3766,0.3671,29,48,0.4852

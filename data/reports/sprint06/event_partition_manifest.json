@@ -1,0 +1,29 @@
+{
+  "manifest_name": "EVENT_INTELLIGENCE_CHRONOLOGICAL_PARTITIONS",
+  "span": "2021-01-01 to 2026-09-23",
+  "total_span_days": 2092,
+  "partitions": {
+    "early_event_discovery": {
+      "label": "EARLY_EVENT_DISCOVERY_2021_2024",
+      "start": "2021-01-01 00:00:00+00:00",
+      "end": "2024-12-31 23:55:00+00:00",
+      "bars_count": 420555,
+      "purpose": "Event vocabulary learning, TF-IDF vectorizer fitting, and jump/tail quantile freezing"
+    },
+    "later_event_validation": {
+      "label": "LATER_EVENT_VALIDATION_2025",
+      "start": "2025-01-01 00:00:00+00:00",
+      "end": "2025-12-31 23:55:00+00:00",
+      "bars_count": 105120,
+      "purpose": "Out-of-sample hypothesis testing, FDR multiple-testing control, and semantic claim verification"
+    },
+    "observed_holdout_2026": {
+      "label": "OBSERVED_HOLDOUT_2026_EVENT",
+      "start": "2026-01-01 00:00:00+00:00",
+      "end": "2026-09-23 20:20:00+00:00",
+      "bars_count": 76565,
+      "purpose": "Unseen holdout evaluation, non-stationarity audit, and September 21 forensic inspection"
+    }
+  },
+  "anti_leakage_mandate": "TF-IDF vocabularies, IDF weights, and novelty reference distributions must be fitted strictly on Discovery past data only."
+}

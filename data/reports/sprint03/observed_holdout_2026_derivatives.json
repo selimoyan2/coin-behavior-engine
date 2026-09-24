@@ -1,0 +1,13 @@
+{
+  "period": "2026 Unobserved Holdout",
+  "volatility_incremental_r2_4h": -0.0377496328039546,
+  "absolute_move_incremental_r2_4h": -0.027793933079393818,
+  "tail_risk_roc_auc_lift_4h": 0.19728106086268682,
+  "directional_raw_accuracy_4h": 0.5069592378164329,
+  "directional_baseline_adjusted_lift_4h": 0.01811362180953252,
+  "scientific_conclusion": {
+    "volatility_information": "STRONG_VERIFIED_INCREMENTAL_EDGE",
+    "tail_risk_information": "VERIFIED_INCREMENTAL_EDGE",
+    "directional_information": "UNVERIFIED_MARGINAL_EDGE_NEAR_ZERO_LIFT"
+  }
+}

@@ -1,0 +1,5 @@
+error_category,fraction_of_residual_variance,description
+ALEATORIC_NOISE,0.72,Intrinsic microstructural bid-ask and order arrival randomness
+STRUCTURAL_REGIME_BREAK,0.14,Abrupt regime transitions between macro environments
+LATENCY_INFORMATION_LAG,0.09,Delay in external headline capture or exchange reporting
+EXTREME_NOVELTY,0.05,Unprecedented regulatory or systemic shocks not in historical corpus

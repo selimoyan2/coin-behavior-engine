@@ -1,0 +1,3 @@
+subset,sample_size_compressed_val,model_specification,expansion_r2,expansion_spearman
+Volatility Compression Regime,26238,Spot Baseline,0.2733926152350611,0.6454123697537822
+Volatility Compression Regime,26238,Spot + Derivatives,0.35995283147218193,0.6660764971036691

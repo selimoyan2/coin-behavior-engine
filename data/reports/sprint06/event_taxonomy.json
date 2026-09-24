@@ -1,0 +1,457 @@
+{
+  "taxonomy_version": "1.0.0",
+  "taxonomy_name": "COIN_BEHAVIOR_EVENT_TAXONOMY",
+  "total_families": 14,
+  "families": {
+    "MACRO_SCHEDULED": {
+      "name": "Scheduled Macroeconomic Data Releases",
+      "description": "Recurring sovereign economic indicator releases with fixed release calendars.",
+      "subcategories_count": 7,
+      "subcategories": {
+        "CPI": {
+          "code": "CPI",
+          "name": "Consumer Price Index",
+          "description": "US headline and core consumer inflation releases",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 24.0,
+          "typical_impact_horizon": "4h"
+        },
+        "PPI": {
+          "code": "PPI",
+          "name": "Producer Price Index",
+          "description": "US wholesale producer price inflation",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 24.0,
+          "typical_impact_horizon": "2h"
+        },
+        "NFP": {
+          "code": "NFP",
+          "name": "Non-Farm Payrolls",
+          "description": "US monthly employment and unemployment report",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 24.0,
+          "typical_impact_horizon": "4h"
+        },
+        "GDP": {
+          "code": "GDP",
+          "name": "Gross Domestic Product",
+          "description": "US quarterly economic growth estimates",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 24.0,
+          "typical_impact_horizon": "4h"
+        },
+        "PCE": {
+          "code": "PCE",
+          "name": "Personal Consumption Expenditures",
+          "description": "Fed primary inflation gauge",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 24.0,
+          "typical_impact_horizon": "4h"
+        },
+        "RETAIL_SALES": {
+          "code": "RETAIL_SALES",
+          "name": "Retail Sales",
+          "description": "US consumer spending telemetry",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 24.0,
+          "typical_impact_horizon": "2h"
+        },
+        "JOBLESS_CLAIMS": {
+          "code": "JOBLESS_CLAIMS",
+          "name": "Initial Jobless Claims",
+          "description": "Weekly unemployment filings",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 24.0,
+          "typical_impact_horizon": "1h"
+        }
+      }
+    },
+    "MONETARY_POLICY": {
+      "name": "Central Bank & Monetary Policy",
+      "description": "Policy rate decisions, quantitative easing/tightening, and central bank communications.",
+      "subcategories_count": 3,
+      "subcategories": {
+        "FOMC_RATE": {
+          "code": "FOMC_RATE",
+          "name": "FOMC Interest Rate Decision",
+          "description": "Federal Reserve interest rate decisions and dot plot",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 48.0,
+          "typical_impact_horizon": "8h"
+        },
+        "FED_SPEECH": {
+          "code": "FED_SPEECH",
+          "name": "Fed Chair & Governor Speeches",
+          "description": "Official press conferences and keynote addresses",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 12.0,
+          "typical_impact_horizon": "2h"
+        },
+        "ECB_RATE": {
+          "code": "ECB_RATE",
+          "name": "ECB Policy Decision",
+          "description": "European Central Bank rate decisions",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 24.0,
+          "typical_impact_horizon": "2h"
+        }
+      }
+    },
+    "REGULATORY": {
+      "name": "Regulatory Policy & Government Actions",
+      "description": "Statements, guidance, legislation, and general policy frameworks from sovereign bodies.",
+      "subcategories_count": 3,
+      "subcategories": {
+        "SEC_ACTION": {
+          "code": "SEC_ACTION",
+          "name": "SEC Guidance & Rules",
+          "description": "SEC public statements, proposed rules, or broad policy",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "8h"
+        },
+        "CFTC_ACTION": {
+          "code": "CFTC_ACTION",
+          "name": "CFTC Policy & Oversight",
+          "description": "CFTC regulatory notices regarding derivatives and commodities",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "4h"
+        },
+        "GLOBAL_REGULATION": {
+          "code": "GLOBAL_REGULATION",
+          "name": "International Crypto Regulation",
+          "description": "MiCA, FATF guidelines, and sovereign regulatory frameworks",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "12h"
+        }
+      }
+    },
+    "ETF_REGULATORY": {
+      "name": "Exchange-Traded Fund Decisions & Filings",
+      "description": "Regulatory milestones, 19b-4 / S-1 filings, approvals, delays, and rejections.",
+      "subcategories_count": 3,
+      "subcategories": {
+        "APPROVAL": {
+          "code": "APPROVAL",
+          "name": "ETF Official Approval",
+          "description": "SEC approval order granting registration or trading",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "24h"
+        },
+        "DELAY": {
+          "code": "DELAY",
+          "name": "ETF Decision Delay",
+          "description": "SEC formal postponement of ETF evaluation window",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 12.0,
+          "typical_impact_horizon": "4h"
+        },
+        "FILING": {
+          "code": "FILING",
+          "name": "ETF Registration Filing",
+          "description": "Initial Form S-1 or 19b-4 application from sponsor",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "8h"
+        }
+      }
+    },
+    "EXCHANGE_OPERATIONAL": {
+      "name": "Exchange Operational Events",
+      "description": "Technical disruptions, planned upgrades, wallet maintenance, and proof of reserves.",
+      "subcategories_count": 3,
+      "subcategories": {
+        "OUTAGE": {
+          "code": "OUTAGE",
+          "name": "Trading Engine Outage",
+          "description": "Unplanned matching engine halt, order routing failure, or UI downtime",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "4h"
+        },
+        "MAINTENANCE": {
+          "code": "MAINTENANCE",
+          "name": "Scheduled Maintenance",
+          "description": "Announced exchange downtime for engine or database maintenance",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 24.0,
+          "typical_impact_horizon": "2h"
+        },
+        "PROOF_OF_RESERVES": {
+          "code": "PROOF_OF_RESERVES",
+          "name": "Proof of Reserves Publication",
+          "description": "On-chain asset verification disclosures",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "2h"
+        }
+      }
+    },
+    "EXCHANGE_SECURITY": {
+      "name": "Exchange Security & Counterparty Failures",
+      "description": "Direct security breaches, custodial insolvency, and withdrawal suspensions.",
+      "subcategories_count": 3,
+      "subcategories": {
+        "HACK": {
+          "code": "HACK",
+          "name": "Exchange Security Breach",
+          "description": "Unauthorized hot/cold wallet drainage or key compromise",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "24h"
+        },
+        "INSOLVENCY": {
+          "code": "INSOLVENCY",
+          "name": "Exchange Insolvency / Bank Run",
+          "description": "Withdrawal halt, bankruptcy filing, or liquidity crisis",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "48h"
+        },
+        "FRAUD": {
+          "code": "FRAUD",
+          "name": "Executive Fraud Allegations",
+          "description": "Misappropriation of user funds or regulatory freeze orders",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "24h"
+        }
+      }
+    },
+    "PROTOCOL_SECURITY": {
+      "name": "Protocol Security & Consensus Upgrades",
+      "description": "Smart contract exploits, consensus hard forks, network reorganizations, and core updates.",
+      "subcategories_count": 3,
+      "subcategories": {
+        "EXPLOIT": {
+          "code": "EXPLOIT",
+          "name": "DeFi / Bridge / Layer-2 Exploit",
+          "description": "Major smart contract drain or cross-chain bridge compromise",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "12h"
+        },
+        "HARDFORK": {
+          "code": "HARDFORK",
+          "name": "Consensus Hard Fork",
+          "description": "Chain split or non-backwards-compatible protocol upgrade",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 72.0,
+          "typical_impact_horizon": "12h"
+        },
+        "UPGRADE": {
+          "code": "UPGRADE",
+          "name": "Planned Core Upgrade",
+          "description": "Soft fork or planned network upgrade (e.g. Taproot)",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 72.0,
+          "typical_impact_horizon": "8h"
+        }
+      }
+    },
+    "STABLECOIN": {
+      "name": "Stablecoin Stability & Supply Dynamics",
+      "description": "Peg dislocations, reserve audits, minting/burning surges, and issuer regulatory actions.",
+      "subcategories_count": 3,
+      "subcategories": {
+        "DEPEG": {
+          "code": "DEPEG",
+          "name": "Stablecoin Peg Dislocation",
+          "description": "Sustained loss of parity (>1% off $1.00 USD target)",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "24h"
+        },
+        "ISSUANCE": {
+          "code": "ISSUANCE",
+          "name": "Large Supply Minting",
+          "description": "Large scale newly minted stablecoin liquidity (> $500M)",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "4h"
+        },
+        "REDEMPTION": {
+          "code": "REDEMPTION",
+          "name": "Large Supply Burning",
+          "description": "Substantial treasury redemptions / supply contractions",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "4h"
+        }
+      }
+    },
+    "CORPORATE_TREASURY": {
+      "name": "Corporate Balance Sheet & Treasury Holdings",
+      "description": "Public corporation treasury accumulation, debt issuance for Bitcoin purchases, or sales.",
+      "subcategories_count": 3,
+      "subcategories": {
+        "PURCHASE": {
+          "code": "PURCHASE",
+          "name": "Corporate Bitcoin Purchase",
+          "description": "Material corporate treasury addition (e.g. MicroStrategy, Tesla)",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "8h"
+        },
+        "SALE": {
+          "code": "SALE",
+          "name": "Corporate Bitcoin Liquidation",
+          "description": "Treasury disposition or impairment disclosure",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "8h"
+        },
+        "EARNINGS": {
+          "code": "EARNINGS",
+          "name": "Corporate Earnings Report",
+          "description": "Periodic financial reporting detailing crypto holdings",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 24.0,
+          "typical_impact_horizon": "4h"
+        }
+      }
+    },
+    "INSTITUTIONAL": {
+      "name": "Institutional Adoption & Market Infrastructure",
+      "description": "Prime brokerage services, major institutional custodial offerings, and banking partnerships.",
+      "subcategories_count": 3,
+      "subcategories": {
+        "CUSTODY": {
+          "code": "CUSTODY",
+          "name": "Institutional Custody Launch",
+          "description": "Tier-1 bank or custodian offering direct Bitcoin custody",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "12h"
+        },
+        "ADOPTION": {
+          "code": "ADOPTION",
+          "name": "Asset Manager Allocation",
+          "description": "Pensions, endowments, or sovereign wealth fund allocative moves",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "24h"
+        },
+        "PRODUCT_LAUNCH": {
+          "code": "PRODUCT_LAUNCH",
+          "name": "Derivatives / Structured Product",
+          "description": "New futures, options, or regulated ETN listings",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 48.0,
+          "typical_impact_horizon": "8h"
+        }
+      }
+    },
+    "GEOPOLITICAL": {
+      "name": "Geopolitical, Sovereign & Sanctions Events",
+      "description": "Armed conflict outbreaks, international sanctions, sovereign legal tender, or trade policy.",
+      "subcategories_count": 3,
+      "subcategories": {
+        "CONFLICT": {
+          "code": "CONFLICT",
+          "name": "Armed Conflict Outbreak",
+          "description": "Military engagement, airspace closure, or severe geopolitical crisis",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "24h"
+        },
+        "SANCTIONS": {
+          "code": "SANCTIONS",
+          "name": "Financial Sanctions",
+          "description": "OFAC designations or global banking exclusion actions",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "12h"
+        },
+        "ELECTION": {
+          "code": "ELECTION",
+          "name": "Sovereign Election Milestones",
+          "description": "Major head-of-state elections impacting regulatory policy",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 72.0,
+          "typical_impact_horizon": "24h"
+        }
+      }
+    },
+    "LEGAL_ENFORCEMENT": {
+      "name": "Legal Enforcement & Judicial Decisions",
+      "description": "DOJ indictments, court rulings, regulatory litigation, and criminal settlements.",
+      "subcategories_count": 3,
+      "subcategories": {
+        "LAWSUIT": {
+          "code": "LAWSUIT",
+          "name": "Regulatory / Civil Litigation",
+          "description": "Formal complaint filing by SEC, CFTC, or class action",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "12h"
+        },
+        "SETTLEMENT": {
+          "code": "SETTLEMENT",
+          "name": "Legal Settlement / Fine",
+          "description": "Resolved enforcement action with penalty disclosure",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "8h"
+        },
+        "ARREST": {
+          "code": "ARREST",
+          "name": "Executive Indictment / Arrest",
+          "description": "Criminal charges or detention of prominent crypto figures",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "24h"
+        }
+      }
+    },
+    "CRYPTO_MARKET_STRUCTURE": {
+      "name": "Structural Protocol Milestones",
+      "description": "Deterministic programmatic events such as halvings, difficulty adjustments, and expiry dates.",
+      "subcategories_count": 3,
+      "subcategories": {
+        "HALVING": {
+          "code": "HALVING",
+          "name": "Bitcoin Block Subsidy Halving",
+          "description": "Programmatic 50% block reward reduction (every 210,000 blocks)",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 168.0,
+          "typical_impact_horizon": "48h"
+        },
+        "MINING_DIFFICULTY": {
+          "code": "MINING_DIFFICULTY",
+          "name": "Difficulty Adjustment",
+          "description": "Bi-weekly 2016-block difficulty adjustment milestone",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 24.0,
+          "typical_impact_horizon": "4h"
+        },
+        "DERIVATIVES_SETTLEMENT": {
+          "code": "DERIVATIVES_SETTLEMENT",
+          "name": "Quarterly CME / Deribit Expiry",
+          "description": "Major quarterly options and futures contract expiries",
+          "is_scheduled_by_default": true,
+          "typical_lead_hours": 48.0,
+          "typical_impact_horizon": "8h"
+        }
+      }
+    },
+    "OTHER": {
+      "name": "Uncategorized / Miscellaneous Events",
+      "description": "Residual events that do not cleanly map to existing specific taxonomy families.",
+      "subcategories_count": 1,
+      "subcategories": {
+        "UNCATEGORIZED": {
+          "code": "UNCATEGORIZED",
+          "name": "General News Item",
+          "description": "Residual crypto or financial news",
+          "is_scheduled_by_default": false,
+          "typical_lead_hours": 0.0,
+          "typical_impact_horizon": "2h"
+        }
+      }
+    }
+  }
+}

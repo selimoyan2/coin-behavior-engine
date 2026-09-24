@@ -1,0 +1,74 @@
+[
+  {
+    "claim_id": "CLAIM-S06-001",
+    "claim_text": "Unconditional addition of news and event intelligence features across all 5m bars does not improve forward 1h volatility explanatory power over Model C in 2025 Validation (delta R2 is negative due to noise dilution on non-event bars).",
+    "numeric_integrity": "PASSED",
+    "semantic_operator": "NEGATIVE_DELTA",
+    "semantic_integrity": "PASSED",
+    "statistical_support": "PASSED",
+    "oos_support": "PASSED",
+    "coverage_support": "PASSED",
+    "final_status": "VERIFIED",
+    "failure_reason": ""
+  },
+  {
+    "claim_id": "CLAIM-S06-002",
+    "claim_text": "In conditional event studies against matched non-event controls, external event arrivals exhibit a 4h jump risk multiplier exceeding 3.0x over matched non-event baselines.",
+    "numeric_integrity": "PASSED",
+    "semantic_operator": "GREATER_THAN",
+    "semantic_integrity": "PASSED",
+    "statistical_support": "PASSED",
+    "oos_support": "PASSED",
+    "coverage_support": "PASSED",
+    "final_status": "VERIFIED",
+    "failure_reason": ""
+  },
+  {
+    "claim_id": "CLAIM-S06-003",
+    "claim_text": "Event presence, classification, and text semantics FAIL to provide statistically significant out-of-sample directional predictive edge over Model C. Directional accuracy remains near 50%.",
+    "numeric_integrity": "PASSED",
+    "semantic_operator": "FAILS_TO_REPLICATE",
+    "semantic_integrity": "PASSED",
+    "statistical_support": "PASSED",
+    "oos_support": "PASSED",
+    "coverage_support": "PASSED",
+    "final_status": "VERIFIED",
+    "failure_reason": ""
+  },
+  {
+    "claim_id": "CLAIM-S06-004",
+    "claim_text": "Large Model C prediction errors (top 5% residuals) associate with external event arrivals with an odds ratio exceeding 2.0.",
+    "numeric_integrity": "PASSED",
+    "semantic_operator": "GREATER_THAN",
+    "semantic_integrity": "PASSED",
+    "statistical_support": "PASSED",
+    "oos_support": "PASSED",
+    "coverage_support": "PASSED",
+    "final_status": "VERIFIED",
+    "failure_reason": ""
+  },
+  {
+    "claim_id": "CLAIM-S06-005",
+    "claim_text": "In conditional event studies against matched non-event controls, event arrivals drive an immediate post-event (+30m) realized volatility ratio exceeding 1.5x over matched controls.",
+    "numeric_integrity": "PASSED",
+    "semantic_operator": "GREATER_THAN",
+    "semantic_integrity": "PASSED",
+    "statistical_support": "PASSED",
+    "oos_support": "PASSED",
+    "coverage_support": "PASSED",
+    "final_status": "VERIFIED",
+    "failure_reason": ""
+  },
+  {
+    "claim_id": "CLAIM-S06-006",
+    "claim_text": "The incremental predictive value of Model F over Model C is stable and verified whether September 21 is included or excluded.",
+    "numeric_integrity": "PASSED",
+    "semantic_operator": "LESS_THAN",
+    "semantic_integrity": "PASSED",
+    "statistical_support": "PASSED",
+    "oos_support": "PASSED",
+    "coverage_support": "PASSED",
+    "final_status": "VERIFIED",
+    "failure_reason": ""
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "audit": "SEPTEMBER21_INDEPENDENCE",
+  "status": "PASS",
+  "events_match": true,
+  "regimes_match": true,
+  "global_clusters_match": true,
+  "events_count_a": 6890,
+  "events_count_b": 6890,
+  "regimes_count_a": 18556,
+  "regimes_count_b": 18556,
+  "global_clusters_count_a": 1639,
+  "global_clusters_count_b": 1639,
+  "findings": "September 21 module is strictly a post-hoc reader. Excluding or including it causes ZERO mutation in generic event discovery, scores, regimes, or multi-timeframe clusters."
+}

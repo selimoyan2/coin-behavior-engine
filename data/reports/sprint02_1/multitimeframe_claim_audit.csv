@@ -1,0 +1,4 @@
+partition,n_events,n_aligned,continuation_rate_aligned_heuristic_0.3pct,continuation_rate_misaligned_heuristic_0.3pct,continuation_rate_aligned_continuous,continuation_rate_misaligned_continuous,claim_replicated,notes
+DISCOVERY_2021_2024,7136,4174,0.3831,0.3825,0.4614,0.4743,False,Original claim of 42% to 65% relied on 0.3%/4h heuristic. Continuous metric exhibits smaller gap.
+VALIDATION_2025,1280,776,0.3454,0.4048,0.4781,0.5198,False,Original claim of 42% to 65% relied on 0.3%/4h heuristic. Continuous metric exhibits smaller gap.
+HOLDOUT_2026,948,540,0.3056,0.2868,0.4704,0.4926,False,Original claim of 42% to 65% relied on 0.3%/4h heuristic. Continuous metric exhibits smaller gap.

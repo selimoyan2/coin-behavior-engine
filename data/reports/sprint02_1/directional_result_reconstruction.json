@@ -1,0 +1,27 @@
+{
+  "target_claim_concordance": 0.642,
+  "target_claim_text": "When the historical analogs share the same Layer 2 macro-regime, directional concordance reaches 64.2%.",
+  "is_reproduced": false,
+  "reconstruction_status": "RECONSTRUCTION_FAILED",
+  "evidence_classification": "UNVERIFIED",
+  "root_cause_explanation": "In Sprint 02, the similarity engine was only executed on 10 events as a diagnostic smoke test (which yielded 10% concordance overall and 0% on matching macro regimes). The 64.2% figure was an unsubstantiated narrative claim inserted in SPRINT_02_RESEARCH_REPORT.md Line 49 without systematic empirical backing. Rigorous empirical evaluation across a stratified sample of 200 Discovery events reveals actual 24h concordance of 43.5% (all) and 45.1% (regime match), and 4h concordance of 48.0% (all) and 46.2% (regime match). None of the configurations approach 64.2%.",
+  "step7_smoke_test_10_queries": {
+    "sample_size": 10,
+    "concordance_all": 0.1,
+    "concordance_macro_match": 0.0
+  },
+  "systematic_discovery_sample_200_queries": {
+    "sample_size": 200,
+    "horizon_24h_concordance_all": 0.435,
+    "horizon_24h_concordance_macro_match": 0.4508670520231214,
+    "horizon_4h_concordance_all": 0.48,
+    "horizon_4h_concordance_macro_match": 0.4624277456647399
+  },
+  "parameters_audited": {
+    "trajectory_len": 48,
+    "buffer_candles": 288,
+    "top_k": 5,
+    "partitions_involved": "DISCOVERY_2021_2024",
+    "macro_regime_matching_rule": "Exact candidate_macro == query_macro"
+  }
+}

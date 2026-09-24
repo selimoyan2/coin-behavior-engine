@@ -1,0 +1,10 @@
+{
+  "sept21_bars_count": 864,
+  "holdout_r2_with_sept21": 0.4423447016742701,
+  "holdout_r2_without_sept21": 0.4509811648298221,
+  "delta_r2_impact": -0.008636463155551999,
+  "sept21_max_realized_vol_24h": 0.0016018299844426176,
+  "sept21_mean_abs_ret_1h_pct": 0.28434342224115566,
+  "is_independent_and_removable": true,
+  "conclusion": "Model F retains verified incremental volatility edge whether Sept 21 is included or excluded."
+}

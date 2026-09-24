@@ -1,0 +1,33 @@
+{
+  "quality_audit_name": "EVENT_SOURCE_QUALITY_FORENSICS",
+  "accepted_sources_count": 10,
+  "rejected_sources_count": 2,
+  "inclusion_rules": [
+    "TIER 1 (Primary official) preferred unconditionally for scheduled economic data and regulatory filings.",
+    "TIER 2 (High-quality secondary wires) accepted with mandatory 4-timestamp reconciliation.",
+    "TIER 3 (Aggregators) quarantined to latency sensitivity and cascade analyses; never sole source.",
+    "REJECTED sources completely barred from model training and validation sets."
+  ],
+  "sources_by_tier": {
+    "TIER_1_PRIMARY": [
+      "Federal Reserve Board (FOMC Statements & Minutes)",
+      "Bureau of Labor Statistics (BLS Macro Releases)",
+      "Bureau of Economic Analysis (BEA Releases)",
+      "SEC EDGAR & Regulatory Enforcement Releases",
+      "Official Tier-1 Exchange Incident Status Logs"
+    ],
+    "TIER_2_HIGH_QUALITY_SECONDARY": [
+      "Bloomberg News & Terminal Wires",
+      "Reuters Financial Wires",
+      "CoinDesk Institutional Intelligence"
+    ],
+    "TIER_3_AGGREGATOR": [
+      "CryptoPanic News Aggregator",
+      "NewsAPI Syndicate Portal"
+    ],
+    "REJECTED": [
+      "Unverified Social Media / Twitter Rumors",
+      "Telegram Alpha / Leak Channels"
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "claim_id": "CLAIM-S03-001",
+    "claim_text": "Derivatives features provide statistically significant incremental information for forward 4h realized volatility over spot-only baseline.",
+    "metric_name": "val_2025_delta_r2",
+    "metric_value": 0.0542357941198659,
+    "sample_size": 105120,
+    "partition": "VALIDATION_2025",
+    "horizon": "4h",
+    "artifact_path": "data/reports/sprint03/incremental_volatility_information.csv",
+    "artifact_row_or_key": "target_horizon=fwd_vol_4h&model_specification=Baseline + All Derivatives",
+    "generating_module": "src/coin_behavior_engine/derivatives/research.py:analyze_volatility_incremental",
+    "test_reference": "tests/test_sprint03_derivatives.py:test_claim_001_volatility_incremental_edge",
+    "status": "VERIFIED",
+    "verification_notes": ""
+  },
+  {
+    "claim_id": "CLAIM-S03-002",
+    "claim_text": "Directional edge from derivatives is UNVERIFIED; forward 4h holdout accuracy is 50.7% and 24h holdout lift collapses to -2.0%.",
+    "metric_name": "directional_edge_verified",
+    "metric_value": false,
+    "sample_size": 105120,
+    "partition": "VALIDATION_2025",
+    "horizon": "4h",
+    "artifact_path": "data/reports/sprint03/incremental_direction_information.csv",
+    "artifact_row_or_key": "target_horizon=fwd_ret_4h&model_specification=Spot + All Derivatives",
+    "generating_module": "src/coin_behavior_engine/derivatives/research.py:analyze_directional_incremental",
+    "test_reference": "tests/test_sprint03_derivatives.py:test_claim_002_directional_edge_unverified",
+    "status": "VERIFIED",
+    "verification_notes": ""
+  },
+  {
+    "claim_id": "CLAIM-S03-003",
+    "claim_text": "Derivatives features improve tail-risk classification ROC-AUC for extreme forward 4h moves.",
+    "metric_name": "val_2025_roc_auc",
+    "metric_value": 0.7589241857483348,
+    "sample_size": 105120,
+    "partition": "VALIDATION_2025",
+    "horizon": "4h",
+    "artifact_path": "data/reports/sprint03/incremental_tail_risk_information.csv",
+    "artifact_row_or_key": "target_horizon=fwd_abs_ret_4h&model_specification=Spot + All Derivatives",
+    "generating_module": "src/coin_behavior_engine/derivatives/research.py:analyze_tail_risk_incremental",
+    "test_reference": "tests/test_sprint03_derivatives.py:test_claim_003_tail_risk_lift",
+    "status": "VERIFIED",
+    "verification_notes": ""
+  },
+  {
+    "claim_id": "CLAIM-S03-004",
+    "claim_text": "September 21 anomaly exhibits clear post-hoc derivatives signatures of basis dislocation and open interest contraction.",
+    "metric_name": "post_hoc_verdict",
+    "metric_value": "VERIFIED_STRUCTURAL_DERIVATIVES_SIGNATURE",
+    "sample_size": 577,
+    "partition": "OBSERVED_HOLDOUT_2026",
+    "horizon": "multi_scale",
+    "artifact_path": "data/reports/sprint03/september21_derivatives_posthoc.json",
+    "artifact_row_or_key": "post_hoc_verdict",
+    "generating_module": "src/coin_behavior_engine/derivatives/research.py:analyze_september21_derivatives",
+    "test_reference": "tests/test_sprint03_derivatives.py:test_claim_004_september21_signature",
+    "status": "VERIFIED",
+    "verification_notes": ""
+  }
+]

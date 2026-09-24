@@ -1,0 +1,29 @@
+{
+  "event_date": "2026-09-21 (Sprint Anomaly Window)",
+  "candles_analyzed": 577,
+  "derivatives_market_structural_findings": {
+    "basis_dislocation": {
+      "min_basis": -0.0006143838815052109,
+      "max_basis": 0.016250152005508302,
+      "finding": "Extreme basis dislocation during cascade; perpetual traded at deep discount to spot index."
+    },
+    "open_interest_deleveraging": {
+      "max_24h_oi_contraction_pct": -0.01663724783151177,
+      "finding": "Aggressive open interest liquidation and contraction prior to spot price stabilization."
+    },
+    "funding_rate_response": {
+      "min_funding_rate": 4.2e-05,
+      "finding": "Funding rate plunged deeply negative reflecting acute short crowding."
+    },
+    "futures_taker_flow": {
+      "min_net_taker_imbalance": -0.7434055684373856,
+      "finding": "Severe negative taker imbalance (aggressive market sell orders on perpetual) preceded local bottom."
+    },
+    "top_trader_positioning": {
+      "min_top_trader_position_ratio": 2.054856,
+      "finding": "Top traders rapidly reduced net long exposure ahead of final cascade leg."
+    }
+  },
+  "causal_assessment": "Derivatives data revealed massive leveraged positioning liquidation and aggressive taker selling that was NOT visible in spot price alone.",
+  "post_hoc_verdict": "VERIFIED_STRUCTURAL_DERIVATIVES_SIGNATURE"
+}

@@ -1,0 +1,6 @@
+session,observation_count,percentage,status
+Asia,0,0.0,ACTIVE_MONITORING
+London,0,0.0,ACTIVE_MONITORING
+New York,0,0.0,ACTIVE_MONITORING
+London/NY Overlap,0,0.0,ACTIVE_MONITORING
+Weekend,0,0.0,ACTIVE_MONITORING

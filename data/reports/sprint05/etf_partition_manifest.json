@@ -1,0 +1,40 @@
+{
+  "manifest_name": "ETF_CHRONOLOGICAL_PARTITIONS",
+  "pre_etf_era": {
+    "label": "PRE_ETF",
+    "start": "2021-01-01 00:00:00+00:00",
+    "end": "2024-01-12 05:55:00+00:00",
+    "sample_size": 318387,
+    "etf_features_status": "GATED_ZERO_SYNTHETIC"
+  },
+  "etf_active_era": {
+    "label": "ETF_ACTIVE",
+    "start": "2024-01-12 06:00:00+00:00",
+    "end": "2026-09-23 20:20:00+00:00",
+    "total_sample_size": 283853
+  },
+  "partitions": {
+    "early_etf_discovery": {
+      "label": "EARLY_ETF_DISCOVERY_2024",
+      "start": "2024-01-12 06:00:00+00:00",
+      "end": "2024-12-31 23:55:00+00:00",
+      "sample_size": 102168,
+      "purpose": "Feature parameter discovery & quantile freezing"
+    },
+    "later_etf_validation": {
+      "label": "LATER_ETF_VALIDATION_2025",
+      "start": "2025-01-01 00:00:00+00:00",
+      "end": "2025-12-31 23:55:00+00:00",
+      "sample_size": 105120,
+      "purpose": "Frozen out-of-sample hypothesis testing & FDR evaluation"
+    },
+    "observed_holdout_2026": {
+      "label": "OBSERVED_HOLDOUT_2026",
+      "start": "2026-01-01 00:00:00+00:00",
+      "end": "2026-09-23 20:20:00+00:00",
+      "sample_size": 76565,
+      "purpose": "Unseen holdout stability & degradation audit"
+    }
+  },
+  "matched_window_enforcement": "All comparative evaluations between Model A, B, C, D, and E are strictly executed on identical ETF_ACTIVE timestamps."
+}

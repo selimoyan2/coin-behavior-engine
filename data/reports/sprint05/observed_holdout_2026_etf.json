@@ -1,0 +1,42 @@
+[
+  {
+    "target": "fwd_vol_4h",
+    "target_type": "VOLATILITY",
+    "holdout_2026_model_c": 0.35503133734054937,
+    "holdout_2026_model_d": 0.2921519651437048,
+    "holdout_2026_delta": -0.06287937219684459,
+    "holdout_status": "DEGRADED"
+  },
+  {
+    "target": "fwd_abs_ret_4h",
+    "target_type": "ABSOLUTE_MOVE",
+    "holdout_2026_model_c": 0.0751169983203035,
+    "holdout_2026_model_d": -0.015721326650362633,
+    "holdout_2026_delta": -0.09083832497066613,
+    "holdout_status": "DEGRADED"
+  },
+  {
+    "target": "tail_95_fwd_abs_ret_4h",
+    "target_type": "TAIL_RISK",
+    "holdout_2026_model_c": 0.7413381322380557,
+    "holdout_2026_model_d": 0.7198378698433465,
+    "holdout_2026_delta": -0.021500262394709146,
+    "holdout_status": "DEGRADED"
+  },
+  {
+    "target": "tail_99_fwd_abs_ret_4h",
+    "target_type": "TAIL_RISK",
+    "holdout_2026_model_c": 0.5699307784053914,
+    "holdout_2026_model_d": 0.4882246733879161,
+    "holdout_2026_delta": -0.08170610501747533,
+    "holdout_status": "DEGRADED"
+  },
+  {
+    "target": "dir_fwd_ret_4h",
+    "target_type": "DIRECTION",
+    "holdout_2026_model_c": 0.5085144477697766,
+    "holdout_2026_model_d": 0.5096514500045741,
+    "holdout_2026_delta": 0.008272671432492107,
+    "holdout_status": "UNVERIFIED"
+  }
+]

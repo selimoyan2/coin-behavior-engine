@@ -1,0 +1,5 @@
+architecture,description,r2_validation_2025,delta_r2_over_u2,delta_r2_u5_minus_u3,tail_risk_brier_score,status
+U2,Core Baseline (Spot + Derivatives + Session),0.39552380905508533,0.0,0.0,0.018501113940892284,NO_MATERIAL_LIFT
+U3,Naive Concatenation (Unrouted dense features),0.3942061626779939,-0.0013176463770914193,0.0,0.018446946819271493,DEGRADES
+U4,Context-Aware Routed Overlays (Freshness gated),0.3938901881610708,-0.0016336208940145314,0.0,0.018446946819271493,DEGRADES
+U5,Unified Probabilistic Engine (Routed + Interactions + Transitions),0.40000811477424725,0.0044843057191619184,0.005801952096253338,0.018446946819271493,NO_MATERIAL_LIFT
