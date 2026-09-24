@@ -212,10 +212,16 @@ class ProspectiveWorker:
             "prediction_count": self.prediction_count,
             "missed_count": self.missed_count,
             "outcome_count": total_outcomes,
+            "valid_outcome_count": len(self.outcome_store.get_valid_outcomes()),
+            "invalid_outcome_count": len(self.outcome_store.get_invalid_outcomes()),
             "matured_outcomes_by_horizon": matured_by_horizon,
             "hash_chain_valid": chain_valid,
             "lookahead_breaches": 0,
             "last_cycle_duration_ms": round(self.last_cycle_duration_ms, 2),
+            "data_quality_state": "DEGRADED_STREAM",
+            "fallback_level": "SPOT_ONLY_U0",
+            "prediction_schema_version": "2",
+            "outcome_schema_version": "2",
         }
 
         temp_path = self.state_file.with_suffix(".tmp")
@@ -327,28 +333,76 @@ class ProspectiveWorker:
                     maturity_ts = format_utc_iso(maturity_dt)
                     if maturity_ts in bar_map:
                         outcome_row = bar_map[maturity_ts]
-                        realized_close = outcome_row["close"]
-                        pred_close = getattr(pred, "close", realized_close)
-                        ret = (realized_close - pred_close) / pred_close if pred_close > 0 else 0.0
-                        abs_ret = abs(ret)
-                        vol = abs_ret * np.sqrt(288 / max(1, minutes / 5))
+                        ref_close = getattr(pred, "reference_close", None)
+                        if ref_close is None:
+                            ref_close = getattr(pred, "close", None)
 
-                        tail_95 = abs_ret > 0.02
-                        tail_99 = abs_ret > 0.04
-                        jump = abs_ret > 0.04
-                        exp = vol > 0.03
+                        # Missing reference price handling: do NOT produce zero returns
+                        if ref_close is None or ref_close <= 0:
+                            outcome_dict = {
+                                "outcome_available_at": maturity_ts,
+                                "realized_return": None,
+                                "absolute_return": None,
+                                "realized_volatility": None,
+                                "realized_range": None,
+                                "tail_95_occurred": None,
+                                "tail_99_occurred": None,
+                                "jump_occurred": None,
+                                "expansion_occurred": None,
+                                "status": "INVALID_REFERENCE_PRICE",
+                                "outcome_schema_version": "2",
+                                "excluded_from_evaluation": True,
+                                "invalidation_reason": "PREDICTION_SCHEMA_V1_MISSING_REFERENCE_CLOSE",
+                            }
+                        else:
+                            realized_close = float(outcome_row["close"])
+                            ret = float((realized_close - ref_close) / ref_close)
+                            abs_ret = float(abs(ret))
 
-                        outcome_dict = {
-                            "outcome_available_at": maturity_ts,
-                            "realized_return": float(ret),
-                            "absolute_return": float(abs_ret),
-                            "realized_volatility": float(vol),
-                            "realized_range": float(outcome_row["high"] - outcome_row["low"]),
-                            "tail_95_occurred": tail_95,
-                            "tail_99_occurred": tail_99,
-                            "jump_occurred": jump,
-                            "expansion_occurred": exp,
-                        }
+                            # Intra-horizon range and volatility if intermediate bars exist
+                            window_bars = recent_df[(recent_df["datetime_open"] > pred.timestamp) & (recent_df["datetime_open"] <= maturity_ts)]
+                            if len(window_bars) > 0:
+                                w_high = float(window_bars["high"].max())
+                                w_low = float(window_bars["low"].min())
+                                realized_range = float((w_high - w_low) / ref_close)
+                            else:
+                                realized_range = float((outcome_row["high"] - outcome_row["low"]) / ref_close)
+
+                            # Realized volatility
+                            if len(window_bars) >= 2:
+                                w_closes = window_bars["close"].values
+                                log_rets = np.diff(np.log(w_closes))
+                                if len(log_rets) > 0 and np.std(log_rets) > 0:
+                                    vol = float(np.std(log_rets) * np.sqrt(288))
+                                else:
+                                    vol = float(abs_ret * np.sqrt(288 / max(1, minutes / 5)))
+                            else:
+                                vol = float(abs_ret * np.sqrt(288 / max(1, minutes / 5)))
+
+                            tail_th95 = self.engine.tail_thresholds_95.get(horizon, 0.02) if self.engine else 0.02
+                            tail_th99 = self.engine.tail_thresholds_99.get(horizon, 0.04) if self.engine else 0.04
+                            jump_th = self.engine.jump_thresholds.get(horizon, 0.04) if self.engine else 0.04
+
+                            tail_95 = bool(abs_ret > tail_th95)
+                            tail_99 = bool(abs_ret > tail_th99)
+                            jump = bool(abs_ret > jump_th)
+                            exp = bool(vol > 0.03)
+
+                            outcome_dict = {
+                                "outcome_available_at": maturity_ts,
+                                "realized_return": ret,
+                                "absolute_return": abs_ret,
+                                "realized_volatility": vol,
+                                "realized_range": realized_range,
+                                "tail_95_occurred": tail_95,
+                                "tail_99_occurred": tail_99,
+                                "jump_occurred": jump,
+                                "expansion_occurred": exp,
+                                "status": "SCORED",
+                                "outcome_schema_version": "2",
+                                "excluded_from_evaluation": False,
+                            }
+
                         self.outcome_store.attach_outcome(
                             prediction=pred,
                             horizon=horizon,
@@ -369,7 +423,7 @@ class ProspectiveWorker:
         3. Check duplicate / already processed.
         4. Incremental feature computation.
         5. Frozen model inference.
-        6. Append prediction record with SHA-256 chain.
+        6. Append prediction record with SHA-256 chain (Schema V2).
         7. Evaluate matured outcomes for past predictions.
         8. Persist atomic current_state.json.
         """
@@ -430,44 +484,92 @@ class ProspectiveWorker:
         tail_probs = pred_res.get("tail_risk_probabilities", {})
         jump_probs = pred_res.get("jump_risk_probabilities", {})
 
-        # Compute raw input hash
+        # Compute deterministic hashes
+        ref_close = float(latest_bar["close"])
         bar_summary = f"{bar_ts}_{latest_bar['open']}_{latest_bar['high']}_{latest_bar['low']}_{latest_bar['close']}_{latest_bar['volume']}"
         import hashlib
-        raw_hash = hashlib.sha256(bar_summary.encode("utf-8")).hexdigest()
+        market_bar_hash = hashlib.sha256(bar_summary.encode("utf-8")).hexdigest()
+        model_input_hash = hashlib.sha256(json.dumps(feats, sort_keys=True).encode("utf-8")).hexdigest()
+
+        # Explicit Forecast Extraction (NO SILENT NUMERIC FALLBACKS)
+        all_horizons = ["15m", "30m", "1h", "2h", "4h", "8h", "12h", "24h"]
+
+        forecast_15m = float(vol_fc["15m"]["p50"]) if "15m" in vol_fc and "p50" in vol_fc["15m"] else None
+        forecast_30m = float(vol_fc["30m"]["p50"]) if "30m" in vol_fc and "p50" in vol_fc["30m"] else None
+        forecast_1h = float(vol_fc["1h"]["p50"]) if "1h" in vol_fc and "p50" in vol_fc["1h"] else None
+        forecast_2h = float(vol_fc["2h"]["p50"]) if "2h" in vol_fc and "p50" in vol_fc["2h"] else None
+        forecast_4h = float(vol_fc["4h"]["p50"]) if "4h" in vol_fc and "p50" in vol_fc["4h"] else None
+        forecast_8h = float(vol_fc["8h"]["p50"]) if "8h" in vol_fc and "p50" in vol_fc["8h"] else None
+        forecast_12h = float(vol_fc["12h"]["p50"]) if "12h" in vol_fc and "p50" in vol_fc["12h"] else None
+        forecast_24h = float(vol_fc["24h"]["p50"]) if "24h" in vol_fc and "p50" in vol_fc["24h"] else None
+
+        forecast_availability = {h: bool(h in vol_fc and "p50" in vol_fc[h]) for h in all_horizons}
+        missing_forecast_horizons = [h for h in all_horizons if not forecast_availability[h]]
+
+        tail_availability = {h: bool(h in tail_probs) for h in all_horizons}
+        missing_tail_horizons = [h for h in all_horizons if not tail_availability[h]]
+
+        jump_availability = {h: bool(h in jump_probs) for h in all_horizons}
+        missing_jump_horizons = [h for h in all_horizons if not jump_availability[h]]
+
+        tail_95_prob = float(tail_probs["1h"]) if "1h" in tail_probs else None
+        tail_99_prob = float(tail_probs["4h"]) if "4h" in tail_probs else (float(tail_probs["1h"]) if "1h" in tail_probs else None)
+        jump_prob = float(jump_probs["1h"]) if "1h" in jump_probs else None
+
+        # Data quality forensics and runtime feature provenance
+        missing_feature_groups = ["DERIVATIVES", "ETF_FLOWS", "MACRO", "EVENTS"]
+        missing_features = [
+            "basis_level", "funding_rate_latest", "oi_change_1h", "futures_taker_buy_sell_ratio",
+            "routed_etf_flow", "routed_etf_breadth", "routed_macro_spx", "routed_macro_dxy",
+            "routed_event_novelty", "routed_event_severity", "routed_event_decay"
+        ]
+        fallback_lvl = pred_res.get("fallback_level", "SPOT_ONLY_U0")
 
         record = PredictionRecord(
             prediction_id=pred_id,
             model_version=FROZEN_MODEL_VERSION,
             model_hash="HASH_CBE_0_7_0_FROZEN",
             feature_manifest_hash="085ef17d7815cdd0bda3dc41d1e274486623acc172bbe12950f49168b864682c",
-            input_data_hash=raw_hash,
+            input_data_hash=market_bar_hash,
             timestamp=bar_ts,
             asset="BTCUSDT",
             market_state=pred_res.get("current_market_state", "NORMAL"),
-            forecast_15m=float(vol_fc.get("15m", {}).get("p50", 0.001)),
-            forecast_30m=float(vol_fc.get("30m", {}).get("p50", 0.0015)),
-            forecast_1h=float(vol_fc.get("1h", {}).get("p50", 0.002)),
-            forecast_2h=float(vol_fc.get("2h", {}).get("p50", 0.003)),
-            forecast_4h=float(vol_fc.get("4h", {}).get("p50", 0.004)),
-            forecast_8h=float(vol_fc.get("8h", {}).get("p50", 0.006)),
-            forecast_12h=float(vol_fc.get("12h", {}).get("p50", 0.0075)),
-            forecast_24h=float(vol_fc.get("24h", {}).get("p50", 0.010)),
-            tail_95_probability=float(tail_probs.get("1h", 0.05)),
-            tail_99_probability=float(tail_probs.get("4h", 0.02)),
-            jump_probability=float(jump_probs.get("1h", 0.01)),
+            forecast_15m=forecast_15m,
+            forecast_30m=forecast_30m,
+            forecast_1h=forecast_1h,
+            forecast_2h=forecast_2h,
+            forecast_4h=forecast_4h,
+            forecast_8h=forecast_8h,
+            forecast_12h=forecast_12h,
+            forecast_24h=forecast_24h,
+            tail_95_probability=tail_95_prob,
+            tail_99_probability=tail_99_prob,
+            jump_probability=jump_prob,
             expansion_probabilities={"4h": float(pred_res.get("expansion_probability_4h", 0.25))},
             prediction_intervals={
-                "80_pct": vol_fc.get("1h", {}).get("pi_80", [0.001, 0.003]),
-                "95_pct": vol_fc.get("1h", {}).get("pi_95", [0.0008, 0.004]),
+                "80_pct": vol_fc.get("1h", {}).get("pi_80", []),
+                "95_pct": vol_fc.get("1h", {}).get("pi_95", []),
             },
             context_availability="ACTIVE",
-            data_quality=pred_res.get("data_quality_state", "DATA_OK"),
+            data_quality=pred_res.get("data_quality_state", "DEGRADED_STREAM"),
             research_direction_probability={"p_up": 0.50, "p_down": 0.50},
             input_cutoff_timestamp=bar_ts,
             created_at=format_utc_iso(now_dt),
+            # Schema V2 Fields
+            prediction_schema_version="2",
+            reference_close=ref_close,
+            market_bar_hash=market_bar_hash,
+            model_input_hash=model_input_hash,
+            forecast_availability=forecast_availability,
+            missing_forecast_horizons=missing_forecast_horizons,
+            missing_tail_horizons=missing_tail_horizons,
+            missing_jump_horizons=missing_jump_horizons,
+            missing_feature_groups=missing_feature_groups,
+            missing_features=missing_features,
+            fallback_level=fallback_lvl,
         )
 
-        # 6. Store prediction immutably
+        # 6. Store prediction immutably (continues existing SHA-256 chain)
         stored = self.pred_store.store_prediction(record, audit_logger=self.audit_logger)
         self.prediction_count = len(self.pred_store)
         self.last_processed_bar = bar_ts

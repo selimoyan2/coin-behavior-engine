@@ -153,10 +153,16 @@ def get_engine_state() -> Dict[str, Any]:
                     "prediction_count": st.get("prediction_count", 0),
                     "missed_count": st.get("missed_count", 0),
                     "outcome_count": st.get("outcome_count", 0),
+                    "valid_outcome_count": st.get("valid_outcome_count", 0),
+                    "invalid_outcome_count": st.get("invalid_outcome_count", 0),
                     "matured_outcomes_by_horizon": st.get("matured_outcomes_by_horizon", {}),
                     "hash_chain_valid": st.get("hash_chain_valid", True),
                     "lookahead_breaches": st.get("lookahead_breaches", 0),
                     "last_cycle_duration_ms": st.get("last_cycle_duration_ms", 0.0),
+                    "data_quality_state": st.get("data_quality_state", "DEGRADED_STREAM"),
+                    "fallback_level": st.get("fallback_level", "SPOT_ONLY_U0"),
+                    "prediction_schema_version": st.get("prediction_schema_version", "2"),
+                    "outcome_schema_version": st.get("outcome_schema_version", "2"),
                 })
                 state["phases"]["phase_b"]["bars"] = st.get("prediction_count", 0)
                 state["integrity"]["canonical_artifacts_verified"] = state["canonical_artifacts_verified"]
@@ -284,6 +290,15 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
     verified_start = state.get("prospective_verified_runtime_start") or "Bekleniyor (İlk V2 Barı)"
     if verified_start and verified_start != "Bekleniyor (İlk V2 Barı)":
         verified_start = format_utc_to_turkey_display(verified_start)
+
+    # Data Quality & Outcome Provenance UI variables
+    valid_outcomes_count = state.get("valid_outcome_count", 0)
+    invalid_outcomes_count = state.get("invalid_outcome_count", 0)
+    dq_state = state.get("data_quality_state", "DEGRADED_STREAM")
+    dq_display = "TAM (DATA_OK)" if dq_state == "DATA_OK" else "KISITLI (DEGRADED_STREAM)"
+    dq_badge_class = "badge-success" if dq_state == "DATA_OK" else "badge-warn"
+    fallback_lvl = state.get("fallback_level", "SPOT_ONLY_U0")
+    fallback_display = "Spot Only U0" if fallback_lvl == "SPOT_ONLY_U0" else fallback_lvl
 
     audit_badge_text = UI_COPY_TR["header"]["audit_pass"] if freeze_verified else "MODEL BÜTÜNLÜĞÜ DOĞRULANAMADI"
     audit_badge_class = "badge-success" if freeze_verified else "badge-danger"
@@ -545,7 +560,12 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
       <div class="card">
         <h3>Olgunlaşmış Sonuç</h3>
         <div class="value" id="tel-outcome-count">{outcome_count}</div>
-        <div class="subtext">Vadesi dolan ve ölçülen</div>
+        <div class="subtext">Geçerli: <b id="tel-valid-outcomes" style="color: #34d399;">{valid_outcomes_count}</b> | Geçersiz V1: <b id="tel-invalid-outcomes" style="color: #f87171;">{invalid_outcomes_count}</b></div>
+      </div>
+      <div class="card">
+        <h3>Veri Kalitesi & Fallback</h3>
+        <div class="value" style="font-size: 14px;" id="tel-dq-state"><span class="badge {dq_badge_class}">{dq_display}</span></div>
+        <div class="subtext" id="tel-fallback-lvl">Fallback: <b>{fallback_display}</b> | Spot 5m</div>
       </div>
     </div>
 
@@ -682,6 +702,20 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
         const telOutcome = document.getElementById("tel-outcome-count");
         if (telOutcome) telOutcome.innerText = data.outcome_count || 0;
 
+        const telValid = document.getElementById("tel-valid-outcomes");
+        if (telValid) telValid.innerText = data.valid_outcome_count || 0;
+
+        const telInvalid = document.getElementById("tel-invalid-outcomes");
+        if (telInvalid) telInvalid.innerText = data.invalid_outcome_count || 0;
+
+        const telDq = document.getElementById("tel-dq-state");
+        if (telDq) {{
+          const isOk = (data.data_quality_state === "DATA_OK");
+          const cls = isOk ? "badge-success" : "badge-warn";
+          const txt = isOk ? "TAM (DATA_OK)" : "KISITLI (DEGRADED_STREAM)";
+          telDq.innerHTML = '<span class="badge ' + cls + '">' + txt + '</span>';
+        }}
+
       }} catch (err) {{
         console.warn("Status fetch failed:", err);
         const badge = document.getElementById("live-status-badge");
@@ -774,9 +808,13 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
                 "model_version": FROZEN_MODEL_VERSION,
                 "prediction_count": state["prediction_count"],
                 "outcome_count": state["outcome_count"],
+                "valid_outcome_count": state.get("valid_outcome_count", 0),
+                "invalid_outcome_count": state.get("invalid_outcome_count", 0),
                 "missed_count": state["missed_count"],
                 "matured_outcomes_by_horizon": state["matured_outcomes_by_horizon"],
                 "last_cycle_duration_ms": state["last_cycle_duration_ms"],
+                "data_quality_state": state.get("data_quality_state", "DEGRADED_STREAM"),
+                "fallback_level": state.get("fallback_level", "SPOT_ONLY_U0"),
                 "brier_score_target": 0.0475,
                 "horizons_monitored": ["15m", "30m", "1h", "2h", "4h", "8h", "12h", "24h"],
             }

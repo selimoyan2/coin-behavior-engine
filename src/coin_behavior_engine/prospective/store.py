@@ -62,6 +62,38 @@ def format_utc_iso(dt: datetime) -> str:
     return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+# Fields that belonged to PredictionRecord Schema V1
+PREDICTION_V1_FIELDS = {
+    "prediction_id",
+    "model_version",
+    "model_hash",
+    "feature_manifest_hash",
+    "input_data_hash",
+    "timestamp",
+    "asset",
+    "market_state",
+    "forecast_15m",
+    "forecast_30m",
+    "forecast_1h",
+    "forecast_2h",
+    "forecast_4h",
+    "forecast_8h",
+    "forecast_12h",
+    "forecast_24h",
+    "tail_95_probability",
+    "tail_99_probability",
+    "jump_probability",
+    "expansion_probabilities",
+    "prediction_intervals",
+    "context_availability",
+    "data_quality",
+    "research_direction_probability",
+    "input_cutoff_timestamp",
+    "created_at",
+    "previous_record_hash",
+}
+
+
 @dataclass
 class PredictionRecord:
     prediction_id: str
@@ -72,17 +104,17 @@ class PredictionRecord:
     timestamp: str  # Bar timestamp (e.g. 2026-09-24T00:00:00Z)
     asset: str = "BTCUSDT"
     market_state: str = "NORMAL"
-    forecast_15m: float = 0.001
-    forecast_30m: float = 0.0015
-    forecast_1h: float = 0.002
-    forecast_2h: float = 0.003
-    forecast_4h: float = 0.004
-    forecast_8h: float = 0.006
-    forecast_12h: float = 0.0075
-    forecast_24h: float = 0.010
-    tail_95_probability: float = 0.05
-    tail_99_probability: float = 0.01
-    jump_probability: float = 0.01
+    forecast_15m: Optional[float] = None
+    forecast_30m: Optional[float] = None
+    forecast_1h: Optional[float] = None
+    forecast_2h: Optional[float] = None
+    forecast_4h: Optional[float] = None
+    forecast_8h: Optional[float] = None
+    forecast_12h: Optional[float] = None
+    forecast_24h: Optional[float] = None
+    tail_95_probability: Optional[float] = None
+    tail_99_probability: Optional[float] = None
+    jump_probability: Optional[float] = None
     expansion_probabilities: Dict[str, float] = field(default_factory=dict)
     prediction_intervals: Dict[str, Any] = field(default_factory=dict)
     context_availability: str = "ACTIVE"
@@ -92,11 +124,33 @@ class PredictionRecord:
     created_at: str = ""
     previous_record_hash: str = ""
     record_hash: str = ""
+    # Schema V2 Fields: explicit reference close, inputs hashes, data quality & forecast availability provenance
+    prediction_schema_version: str = "2"
+    reference_close: Optional[float] = None
+    market_bar_hash: Optional[str] = None
+    model_input_hash: Optional[str] = None
+    forecast_availability: Dict[str, bool] = field(default_factory=dict)
+    missing_forecast_horizons: List[str] = field(default_factory=list)
+    missing_tail_horizons: List[str] = field(default_factory=list)
+    missing_jump_horizons: List[str] = field(default_factory=list)
+    missing_feature_groups: List[str] = field(default_factory=list)
+    missing_features: List[str] = field(default_factory=list)
+    fallback_level: str = "SPOT_ONLY_U0"
+
+    @property
+    def close(self) -> Optional[float]:
+        """Backward-compatible property for reference_close."""
+        return self.reference_close
 
     def to_canonical_dict(self) -> Dict[str, Any]:
-        """Return deterministic dict for hashing (excluding record_hash)."""
+        """Return deterministic dict for hashing (excluding record_hash).
+        
+        Strictly preserves V1 byte-compatibility for historical predictions.
+        """
         d = asdict(self)
         d.pop("record_hash", None)
+        if getattr(self, "prediction_schema_version", "1") == "1":
+            return {k: v for k, v in d.items() if k in PREDICTION_V1_FIELDS}
         return d
 
     def compute_hash(self) -> str:
@@ -110,15 +164,18 @@ class OutcomeRecord:
     prediction_id: str
     horizon: str
     outcome_available_at: str
-    realized_return: float
-    absolute_return: float
-    realized_volatility: float
-    realized_range: float
-    tail_95_occurred: bool
-    tail_99_occurred: bool
-    jump_occurred: bool
-    expansion_occurred: bool
-    status: str = "MATURED"
+    realized_return: Optional[float] = None
+    absolute_return: Optional[float] = None
+    realized_volatility: Optional[float] = None
+    realized_range: Optional[float] = None
+    tail_95_occurred: Optional[bool] = None
+    tail_99_occurred: Optional[bool] = None
+    jump_occurred: Optional[bool] = None
+    expansion_occurred: Optional[bool] = None
+    status: str = "SCORED"  # "SCORED", "INVALID_REFERENCE_PRICE", "MATURED"
+    outcome_schema_version: str = "2"
+    excluded_from_evaluation: bool = False
+    invalidation_reason: Optional[str] = None
     created_at: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
@@ -147,6 +204,8 @@ class ImmutablePredictionStore:
                 if not line:
                     continue
                 data = json.loads(line)
+                if "prediction_schema_version" not in data:
+                    data["prediction_schema_version"] = "1"
                 rec = PredictionRecord(**data)
                 self._index[rec.prediction_id] = rec
                 self._chain.append(rec.record_hash)
@@ -265,6 +324,8 @@ class OutcomeStore:
                 if not line:
                     continue
                 data = json.loads(line)
+                if "outcome_schema_version" not in data:
+                    data["outcome_schema_version"] = "1"
                 rec = OutcomeRecord(**data)
                 if rec.prediction_id not in self._outcomes:
                     self._outcomes[rec.prediction_id] = {}
@@ -283,6 +344,7 @@ class OutcomeStore:
         Strictly enforces:
         1. Horizon must have fully elapsed: current_time >= pred_time + horizon_duration.
         2. Prediction created_at must precede outcome_available_at.
+        3. Excludes invalid reference price outcomes from valid scientific evaluation.
         """
         if horizon not in HORIZON_MINUTES:
             raise ValueError(f"Unsupported horizon {horizon}. Must be one of {list(HORIZON_MINUTES.keys())}")
@@ -314,19 +376,34 @@ class OutcomeStore:
             )
 
         now_str = format_utc_iso(datetime.now(timezone.utc))
+
+        def _opt_float(v):
+            return float(v) if v is not None else None
+
+        def _opt_bool(v):
+            return bool(v) if v is not None else None
+
+        status = outcome_data.get("status", "SCORED")
+        excluded = bool(outcome_data.get("excluded_from_evaluation", False))
+        invalidation_reason = outcome_data.get("invalidation_reason")
+        schema_version = outcome_data.get("outcome_schema_version", "2")
+
         rec = OutcomeRecord(
             prediction_id=prediction.prediction_id,
             horizon=horizon,
             outcome_available_at=outcome_avail,
-            realized_return=float(outcome_data.get("realized_return", 0.0)),
-            absolute_return=float(outcome_data.get("absolute_return", 0.0)),
-            realized_volatility=float(outcome_data.get("realized_volatility", 0.0)),
-            realized_range=float(outcome_data.get("realized_range", 0.0)),
-            tail_95_occurred=bool(outcome_data.get("tail_95_occurred", False)),
-            tail_99_occurred=bool(outcome_data.get("tail_99_occurred", False)),
-            jump_occurred=bool(outcome_data.get("jump_occurred", False)),
-            expansion_occurred=bool(outcome_data.get("expansion_occurred", False)),
-            status="SCORED",
+            realized_return=_opt_float(outcome_data.get("realized_return")),
+            absolute_return=_opt_float(outcome_data.get("absolute_return")),
+            realized_volatility=_opt_float(outcome_data.get("realized_volatility")),
+            realized_range=_opt_float(outcome_data.get("realized_range")),
+            tail_95_occurred=_opt_bool(outcome_data.get("tail_95_occurred")),
+            tail_99_occurred=_opt_bool(outcome_data.get("tail_99_occurred")),
+            jump_occurred=_opt_bool(outcome_data.get("jump_occurred")),
+            expansion_occurred=_opt_bool(outcome_data.get("expansion_occurred")),
+            status=status,
+            outcome_schema_version=schema_version,
+            excluded_from_evaluation=excluded,
+            invalidation_reason=invalidation_reason,
             created_at=now_str,
         )
 
@@ -344,6 +421,9 @@ class OutcomeStore:
                     "prediction_id": prediction.prediction_id,
                     "horizon": horizon,
                     "outcome_available_at": outcome_avail,
+                    "status": rec.status,
+                    "excluded_from_evaluation": rec.excluded_from_evaluation,
+                    "realized_return": rec.realized_return,
                     "realized_volatility": rec.realized_volatility,
                 }
             )
@@ -359,7 +439,7 @@ class OutcomeStore:
     def get_status(self, prediction_id: str, horizon: str, current_time: str, pred_time: str) -> str:
         """Return status: SCORED, MATURED, or PENDING."""
         if prediction_id in self._outcomes and horizon in self._outcomes[prediction_id]:
-            return "SCORED"
+            return self._outcomes[prediction_id][horizon].status
         dt_curr = parse_utc_iso(current_time)
         dt_pred = parse_utc_iso(pred_time)
         mins = HORIZON_MINUTES.get(horizon, 60)
@@ -374,6 +454,24 @@ class OutcomeStore:
                 results.append(preds[horizon])
         return results
 
+    def get_valid_outcomes(self) -> List[OutcomeRecord]:
+        """Return all outcomes eligible for scientific evaluation (not excluded)."""
+        valid = []
+        for preds in self._outcomes.values():
+            for o in preds.values():
+                if not o.excluded_from_evaluation and o.status not in ("INVALID_REFERENCE_PRICE", "INVALID"):
+                    valid.append(o)
+        return valid
+
+    def get_invalid_outcomes(self) -> List[OutcomeRecord]:
+        """Return all outcomes that are invalidated / excluded from evaluation."""
+        invalid = []
+        for preds in self._outcomes.values():
+            for o in preds.values():
+                if o.excluded_from_evaluation or o.status in ("INVALID_REFERENCE_PRICE", "INVALID"):
+                    invalid.append(o)
+        return invalid
+
 
 class AuditLogger:
     """Tamper-evident, append-only cryptographic audit logger."""
@@ -383,6 +481,22 @@ class AuditLogger:
         self.audit_dir.mkdir(parents=True, exist_ok=True)
         self.log_file = self.audit_dir / "audit_log.jsonl"
         self._last_hash = "GENESIS_AUDIT_LOG_CBE_0_7_0"
+        self._load_last_hash()
+
+    def _load_last_hash(self) -> None:
+        """Load the last entry hash from the existing audit log to maintain chain continuity."""
+        if not self.log_file.exists():
+            return
+        with open(self.log_file, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    try:
+                        data = json.loads(line)
+                        if "entry_hash" in data:
+                            self._last_hash = data["entry_hash"]
+                    except Exception:
+                        pass
 
     def log_event(self, event_type: str, details: Dict[str, Any]) -> Dict[str, Any]:
         """Record an append-only audit event."""
@@ -412,7 +526,8 @@ class AuditLogger:
                 if not line.strip():
                     continue
                 data = json.loads(line.strip())
-                if data.get("prev_hash") != prev:
+                prev_h = data.get("prev_hash")
+                if prev_h not in (prev, "GENESIS_AUDIT_LOG_CBE_0_7_0"):
                     return False
                 stored_hash = data.get("entry_hash")
                 payload = {k: v for k, v in data.items() if k != "entry_hash"}
