@@ -988,6 +988,48 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
 
     let currentAnalyticsPeriod = "all";
 
+    function safeNum(val) {{
+      if (val === null || val === undefined || val === "") return null;
+      const n = Number(val);
+      return isNaN(n) ? null : n;
+    }}
+
+    function safeFixed(val, d = 4, fallback = "\u2014") {{
+      const n = safeNum(val);
+      return n === null ? fallback : n.toFixed(d);
+    }}
+
+    function safePct(val, d = 1, fallback = "\u2014") {{
+      const n = safeNum(val);
+      return n === null ? fallback : (n * 100).toFixed(d) + "%";
+    }}
+
+    function safeSigned(val, d = 4, fallback = "\u2014") {{
+      const n = safeNum(val);
+      if (n === null) return fallback;
+      return (n > 0 ? "+" : "") + n.toFixed(d);
+    }}
+
+    function renderSampleBadge(cls) {{
+      if (!cls) return '<span class="badge badge-warn">YETERSİZ ÖRNEK</span>';
+      if (typeof cls === "string") {{
+        const isGood = (cls === "SUFFICIENT" || cls === "DEVELOPING");
+        const bCls = isGood ? "badge-success" : "badge-warn";
+        const txt = cls === "SUFFICIENT" ? "YETERLİ GÖZLEM" :
+                    cls === "DEVELOPING" ? "GELİŞEN ÖRNEK" :
+                    cls === "EARLY" ? "ERKEN GÖZLEM" : cls;
+        return '<span class="badge ' + bCls + '">' + txt + '</span>';
+      }}
+      const bCls = cls.reliable ? "badge-success" : "badge-warn";
+      return '<span class="badge ' + bCls + '">' + (cls.status || "YETERSİZ ÖRNEK") + '</span>';
+    }}
+
+    function getSampleDesc(cls) {{
+      if (!cls) return "N < 10: İstatistiksel çıkarım için yetersiz";
+      if (typeof cls === "string") return cls;
+      return cls.description || "";
+    }}
+
     function selectPeriod(period) {{
       currentAnalyticsPeriod = period;
       ["all", "30d", "7d", "24h"].forEach(p => {{
@@ -1001,148 +1043,160 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
     }}
 
     async function fetchAnalytics(period) {{
+      // Panel 1: Summary Cards (Failure-isolated)
       try {{
-        // 1. Fetch summary
-        const sumRes = await fetch("/api/analytics/summary?period=" + period);
-        if (sumRes.ok) {{
-          const sumData = await sumRes.json();
-          const v2p = document.getElementById("an-v2-preds");
-          if (v2p) v2p.innerText = sumData.schema_v2_predictions || 0;
-          const v2o = document.getElementById("an-v2-outcomes");
-          if (v2o) v2o.innerText = sumData.valid_evaluation_outcomes || 0;
-          const ssBadge = document.getElementById("an-sample-status");
-          const ssDesc = document.getElementById("an-sample-desc");
-          if (ssBadge && sumData.sample_size_classification) {{
-            const sClass = sumData.sample_size_classification.reliable ? "badge-success" : "badge-warn";
-            ssBadge.innerHTML = '<span class="badge ' + sClass + '">' + sumData.sample_size_classification.status + '</span>';
-            if (ssDesc) ssDesc.innerText = sumData.sample_size_classification.description;
-          }}
-          const mae1h = document.getElementById("an-mae-1h");
-          if (mae1h) {{
-            mae1h.innerText = (sumData.mae_1h !== null && sumData.mae_1h !== undefined) ? sumData.mae_1h.toFixed(4) : "\u2014";
-          }}
-        }}
+        const res = await fetch("/api/analytics/summary?period=" + period);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        const v2p = document.getElementById("an-v2-preds");
+        if (v2p) v2p.innerText = data.schema_v2_predictions !== undefined ? data.schema_v2_predictions : (data.prediction_count || 0);
+        const v2o = document.getElementById("an-v2-outcomes");
+        if (v2o) v2o.innerText = (data.outcomes && data.outcomes.valid !== undefined) ? data.outcomes.valid : (data.valid_evaluation_outcomes || 0);
+        const ssBadge = document.getElementById("an-sample-status");
+        if (ssBadge) ssBadge.innerHTML = renderSampleBadge(data.sample_size_classification);
+        const ssDesc = document.getElementById("an-sample-desc");
+        if (ssDesc) ssDesc.innerText = getSampleDesc(data.sample_size_classification);
+        const mae1h = document.getElementById("an-mae-1h");
+        if (mae1h) mae1h.innerText = safeFixed(data.mae_1h, 5);
+      }} catch (err) {{
+        console.warn("Summary analytics error:", err);
+        const ssBadge = document.getElementById("an-sample-status");
+        if (ssBadge) ssBadge.innerHTML = '<span class="badge badge-warn">Veri yüklenemedi</span>';
+      }}
 
-        // 2. Fetch horizons
-        const horRes = await fetch("/api/analytics/horizons?period=" + period);
-        if (horRes.ok) {{
-          const horData = await horRes.json();
-          const tbody = document.getElementById("an-horizons-tbody");
-          if (tbody && horData.horizons) {{
-            let html = "";
-            horData.horizons.forEach(h => {{
-              const sCls = (h.sample_status && h.sample_status.reliable) ? "badge-success" : "badge-warn";
-              const sTxt = h.sample_status ? h.sample_status.status : "YETERSİZ";
-              const mae = h.mae !== null ? h.mae.toFixed(4) : "\u2014";
-              const rmse = h.rmse !== null ? h.rmse.toFixed(4) : "\u2014";
-              const bias = h.bias !== null ? (h.bias > 0 ? "+" : "") + h.bias.toFixed(4) : "\u2014";
-              const pearson = h.pearson_correlation !== null ? h.pearson_correlation.toFixed(3) : "\u2014";
-              const spearman = h.spearman_correlation !== null ? h.spearman_correlation.toFixed(3) : "\u2014";
-              html += "<tr>" +
-                "<td><strong>" + (h.horizon_label || h.horizon) + " (" + h.horizon + ")</strong></td>" +
-                "<td>" + (h.valid_matured_count !== undefined ? h.valid_matured_count : (h.n_valid || 0)) + "</td>" +
-                '<td><span class="badge ' + sCls + '">' + sTxt + "</span></td>" +
-                "<td>" + mae + "</td>" +
-                "<td>" + rmse + "</td>" +
-                "<td>" + bias + "</td>" +
-                "<td>" + pearson + "</td>" +
-                "<td>" + spearman + "</td>" +
+      // Panel 2: Horizon Performance Table (Failure-isolated)
+      try {{
+        const res = await fetch("/api/analytics/horizons?period=" + period);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        const tbody = document.getElementById("an-horizons-tbody");
+        if (tbody && data.horizons && data.horizons.length > 0) {{
+          let html = "";
+          data.horizons.forEach(h => {{
+            const sBadge = renderSampleBadge(h.sample_status);
+            const nValid = (h.valid_matured_count !== undefined) ? h.valid_matured_count : (h.n_valid || h.sample_size || 0);
+            html += "<tr>" +
+              "<td><strong>" + (h.horizon_label || h.horizon) + " (" + h.horizon + ")</strong></td>" +
+              "<td>" + nValid + "</td>" +
+              "<td>" + sBadge + "</td>" +
+              "<td>" + safeFixed(h.mae, 5) + "</td>" +
+              "<td>" + safeFixed(h.rmse, 5) + "</td>" +
+              "<td>" + safeSigned(h.bias, 5) + "</td>" +
+              "<td>" + safeFixed(h.pearson_correlation, 4) + "</td>" +
+              "<td>" + safeFixed(h.spearman_correlation, 4) + "</td>" +
+              "</tr>";
+          }});
+          tbody.innerHTML = html;
+        }} else if (tbody) {{
+          tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--muted); padding: 16px;">Gözlem verisi bulunamadı</td></tr>';
+        }}
+      }} catch (err) {{
+        console.warn("Horizons analytics error:", err);
+        const tbody = document.getElementById("an-horizons-tbody");
+        if (tbody) tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--red); padding: 16px;">Veri yüklenemedi</td></tr>';
+      }}
+
+      // Panel 3: Probability Calibration & Predictive Intervals (Failure-isolated)
+      try {{
+        const res = await fetch("/api/analytics/calibration?period=" + period);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        const calTbody = document.getElementById("an-calibration-tbody");
+        if (calTbody) {{
+          const bins = (data.expansion_calibration && data.expansion_calibration.bins) ? data.expansion_calibration.bins : [];
+          if (bins.length === 0) {{
+            calTbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--muted); padding: 12px;">Henüz olgunlaşmış 4h sonucu yok (N=0)</td></tr>';
+          }} else {{
+            let bHtml = "";
+            bins.forEach(b => {{
+              bHtml += "<tr>" +
+                "<td>" + (b.bin_index || "") + "</td>" +
+                "<td>" + (b.bin_range || "") + "</td>" +
+                "<td>" + safePct(b.realized_rate, 1) + "</td>" +
+                "<td>" + (b.count || 0) + "</td>" +
+                "<td>" + safeFixed(b.brier_score, 4) + "</td>" +
                 "</tr>";
             }});
-            tbody.innerHTML = html;
-          }}
-        }}
-
-        // 3. Fetch calibration
-        const calRes = await fetch("/api/analytics/calibration?period=" + period);
-        if (calRes.ok) {{
-          const calData = await calRes.json();
-          const calTbody = document.getElementById("an-calibration-tbody");
-          if (calTbody && calData.expansion_calibration && calData.expansion_calibration.bins) {{
-            let bHtml = "";
-            if (calData.expansion_calibration.bins.length === 0) {{
-              bHtml = '<tr><td colspan="5" style="text-align: center; color: var(--muted); padding: 12px;">Henüz olgunlaşmış 4h sonucu yok (N=0)</td></tr>';
-            }} else {{
-              calData.expansion_calibration.bins.forEach(b => {{
-                const obs = b.realized_rate !== null ? (b.realized_rate * 100).toFixed(1) + "%" : "\u2014";
-                const brier = (b.brier_score !== null && b.brier_score !== undefined) ? b.brier_score.toFixed(4) : "\u2014";
-                bHtml += "<tr>" +
-                  "<td>" + (b.bin_index || "") + "</td>" +
-                  "<td>" + (b.bin_range || "") + "</td>" +
-                  "<td>" + obs + "</td>" +
-                  "<td>" + b.count + "</td>" +
-                  "<td>" + brier + "</td>" +
-                  "</tr>";
-              }});
-            }}
             calTbody.innerHTML = bHtml;
           }}
-          if (calData.interval_coverage) {{
-            const c80 = calData.interval_coverage.nominal_80;
-            const c95 = calData.interval_coverage.nominal_95;
-            const el80 = document.getElementById("an-coverage-80");
-            const el80Sub = document.getElementById("an-coverage-80-sub");
-            if (el80 && c80) {{
-              el80.innerText = c80.empirical_coverage !== null ? "%" + (c80.empirical_coverage * 100).toFixed(1) : "\u2014";
-              if (el80Sub && c80.difference !== null) {{
-                el80Sub.innerText = "Hedef: %80.0 | Sapma: " + (c80.difference > 0 ? "+" : "") + (c80.difference * 100).toFixed(1) + "%";
-              }}
-            }}
-            const el95 = document.getElementById("an-coverage-95");
-            const el95Sub = document.getElementById("an-coverage-95-sub");
-            if (el95 && c95) {{
-              el95.innerText = c95.empirical_coverage !== null ? "%" + (c95.empirical_coverage * 100).toFixed(1) : "\u2014";
-              if (el95Sub && c95.difference !== null) {{
-                el95Sub.innerText = "Hedef: %95.0 | Sapma: " + (c95.difference > 0 ? "+" : "") + (c95.difference * 100).toFixed(1) + "%";
-              }}
+        }}
+        if (data.interval_coverage) {{
+          const c80 = data.interval_coverage.nominal_80;
+          const c95 = data.interval_coverage.nominal_95;
+          const el80 = document.getElementById("an-coverage-80");
+          const el80Sub = document.getElementById("an-coverage-80-sub");
+          if (el80 && c80) {{
+            el80.innerText = safePct(c80.empirical_coverage, 1);
+            if (el80Sub) {{
+              const diffStr = safeSigned(c80.difference !== null && c80.difference !== undefined ? c80.difference * 100 : null, 1);
+              el80Sub.innerText = "Hedef: %80.0 | Sapma: " + (diffStr !== "\u2014" ? diffStr + "%" : "\u2014");
             }}
           }}
-        }}
-
-        // 4. Fetch market states
-        const msRes = await fetch("/api/analytics/market-states?period=" + period);
-        if (msRes.ok) {{
-          const msData = await msRes.json();
-          const msTbody = document.getElementById("an-market-states-tbody");
-          if (msTbody && msData.market_states) {{
-            let msHtml = "";
-            msData.market_states.forEach(m => {{
-              const m1h = m.mean_abs_return_1h !== null ? (m.mean_abs_return_1h * 100).toFixed(3) + "%" : "\u2014";
-              const med1h = m.median_abs_return_1h !== null ? (m.median_abs_return_1h * 100).toFixed(3) + "%" : "\u2014";
-              const exp4h = m.expansion_frequency_4h !== null ? (m.expansion_frequency_4h * 100).toFixed(1) + "%" : "\u2014";
-              const sCls = (m.sample_status && m.sample_status.reliable) ? "badge-success" : "badge-warn";
-              const sTxt = m.sample_status ? m.sample_status.status : "YETERSİZ";
-              msHtml += "<tr>" +
-                "<td><strong>" + m.market_state + "</strong></td>" +
-                "<td>" + m.prediction_count + "</td>" +
-                '<td><span class="badge ' + sCls + '">' + sTxt + "</span></td>" +
-                "<td>" + m1h + "</td>" +
-                "<td>" + med1h + "</td>" +
-                "<td>" + exp4h + "</td>" +
-                "</tr>";
-            }});
-            msTbody.innerHTML = msHtml;
-          }}
-        }}
-
-        // 5. Fetch data quality
-        const dqRes = await fetch("/api/analytics/data-quality");
-        if (dqRes.ok) {{
-          const dqData = await dqRes.json();
-          const fList = document.getElementById("an-features-list");
-          if (fList && dqData.feature_groups) {{
-            let fHtml = "";
-            dqData.feature_groups.forEach(fg => {{
-              fHtml += '<div style="display:flex; justify-content:space-between; align-items:center; background: rgba(17,24,39,0.6); border: 1px solid var(--border); border-radius:6px; padding:8px 12px;">' +
-                '<div><span style="font-weight:600; font-size:13px;">' + fg.name_tr + "</span> <code style=\"font-size:11px;\">" + fg.group + "</code></div>" +
-                '<span class="badge ' + fg.badge + '">' + fg.status + "</span>" +
-                "</div>";
-            }});
-            fList.innerHTML = fHtml;
+          const el95 = document.getElementById("an-coverage-95");
+          const el95Sub = document.getElementById("an-coverage-95-sub");
+          if (el95 && c95) {{
+            el95.innerText = safePct(c95.empirical_coverage, 1);
+            if (el95Sub) {{
+              const diffStr = safeSigned(c95.difference !== null && c95.difference !== undefined ? c95.difference * 100 : null, 1);
+              el95Sub.innerText = "Hedef: %95.0 | Sapma: " + (diffStr !== "\u2014" ? diffStr + "%" : "\u2014");
+            }}
           }}
         }}
       }} catch (err) {{
-        console.warn("Analytics fetch error:", err);
+        console.warn("Calibration analytics error:", err);
+        const calTbody = document.getElementById("an-calibration-tbody");
+        if (calTbody) calTbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--red); padding: 12px;">Veri yüklenemedi</td></tr>';
+      }}
+
+      // Panel 4: Market-State Behavior Analysis (Failure-isolated)
+      try {{
+        const res = await fetch("/api/analytics/market-states?period=" + period);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        const msTbody = document.getElementById("an-market-states-tbody");
+        if (msTbody && data.market_states && data.market_states.length > 0) {{
+          let msHtml = "";
+          data.market_states.forEach(m => {{
+            const sBadge = renderSampleBadge(m.sample_status);
+            msHtml += "<tr>" +
+              "<td><strong>" + (m.market_state || "") + "</strong></td>" +
+              "<td>" + (m.prediction_count || 0) + "</td>" +
+              "<td>" + sBadge + "</td>" +
+              "<td>" + safePct(m.mean_abs_return_1h, 3) + "</td>" +
+              "<td>" + safePct(m.median_abs_return_1h, 3) + "</td>" +
+              "<td>" + safePct(m.expansion_frequency_4h, 1) + "</td>" +
+              "</tr>";
+          }});
+          msTbody.innerHTML = msHtml;
+        }} else if (msTbody) {{
+          msTbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--muted); padding: 16px;">Gözlem verisi bulunamadı</td></tr>';
+        }}
+      }} catch (err) {{
+        console.warn("Market states analytics error:", err);
+        const msTbody = document.getElementById("an-market-states-tbody");
+        if (msTbody) msTbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--red); padding: 16px;">Veri yüklenemedi</td></tr>';
+      }}
+
+      // Panel 5: Feature Availability & Runtime Provenance (Failure-isolated)
+      try {{
+        const res = await fetch("/api/analytics/data-quality");
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        const fList = document.getElementById("an-features-list");
+        if (fList && data.feature_groups && data.feature_groups.length > 0) {{
+          let fHtml = "";
+          data.feature_groups.forEach(fg => {{
+            fHtml += '<div style="display:flex; justify-content:space-between; align-items:center; background: rgba(17,24,39,0.6); border: 1px solid var(--border); border-radius:6px; padding:8px 12px;">' +
+              '<div><span style="font-weight:600; font-size:13px;">' + (fg.name_tr || "") + '</span> <code style="font-size:11px;">' + (fg.group || "") + '</code></div>' +
+              '<span class="badge ' + (fg.badge || "badge-warn") + '">' + (fg.status || "") + '</span>' +
+              '</div>';
+          }});
+          fList.innerHTML = fHtml;
+        }}
+      }} catch (err) {{
+        console.warn("Data quality analytics error:", err);
+        const fList = document.getElementById("an-features-list");
+        if (fList) fList.innerHTML = '<div style="color: var(--red); font-size: 12px; padding: 8px;">Veri yüklenemedi</div>';
       }}
     }}
 
@@ -1166,8 +1220,9 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
       }}
     }});
 
-    // Start 60s polling and load initial analytics
+    // Start 60s polling and load initial analytics immediately
     schedulePolling();
+    fetchAndUpdate();
     selectPeriod("all");
   </script>
 </body>

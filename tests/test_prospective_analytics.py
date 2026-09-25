@@ -499,3 +499,155 @@ def test_web_server_endpoints_available():
     assert engine.get_summary_metrics("all")["prediction_label"] == "KAYDEDİLEN TAHMİN"
     assert len(engine.get_horizon_performance("all")["horizons"]) == 3
     assert engine.get_system_integrity()["hash_chain_valid"] is True
+
+
+# ======================================================================
+# 8. Sprint 08.1.1 Production Bugfix & Failure Isolation Tests
+# ======================================================================
+
+def test_summary_mae_1h_propagated_authoritatively():
+    """1h MAE in summary must match get_horizon_performance authoritative 1h MAE."""
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        base_path = Path(tmp_dir)
+        pred_file = base_path / "predictions" / "predictions.jsonl"
+        pred_file.parent.mkdir(parents=True)
+        outcome_file = base_path / "outcomes" / "outcomes.jsonl"
+        outcome_file.parent.mkdir(parents=True)
+
+        # Create 6 valid predictions and outcomes (N >= 5 for statistical metrics)
+        for i in range(6):
+            pid = f"PRED_TEST_{i}"
+            p_data = {
+                "prediction_id": pid,
+                "timestamp": f"2026-09-24T1{i}:00:00Z",
+                "created_at": f"2026-09-24T1{i}:00:01Z",
+                "reference_close": 60000.0,
+                "prediction_schema_version": "2",
+                "forecast_1h": 0.0150 + (i * 0.001),
+                "forecast_availability": {"1h": True, "4h": True, "24h": True},
+            }
+            o_data = {
+                "prediction_id": pid,
+                "horizon": "1h",
+                "outcome_available_at": f"2026-09-24T1{i+1}:00:00Z",
+                "status": "SCORED",
+                "excluded_from_evaluation": False,
+                "realized_volatility": 0.0140 + (i * 0.001),
+                "realized_return": 0.002,
+                "outcome_schema_version": "2",
+            }
+            with open(pred_file, "a", encoding="utf-8") as f:
+                f.write(json.dumps(p_data) + "\n")
+            with open(outcome_file, "a", encoding="utf-8") as f:
+                f.write(json.dumps(o_data) + "\n")
+
+        engine = ProspectiveAnalyticsEngine(base_dir=base_path)
+        summary = engine.get_summary_metrics("all")
+        horizons = engine.get_horizon_performance("all")
+
+        h1 = next(h for h in horizons["horizons"] if h["horizon"] == "1h")
+        assert h1["mae"] is not None
+        assert summary["mae_1h"] is not None
+        # Must be identical from the single authoritative calculation
+        assert summary["mae_1h"] == h1["mae"]
+        assert summary["schema_v2_predictions"] == 6
+        assert summary["valid_evaluation_outcomes"] == 6
+
+
+def test_summary_null_mae_displays_safely():
+    """When N < 5, summary mae_1h is None and horizons 1h mae is None."""
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        base_path = Path(tmp_dir)
+        pred_file = base_path / "predictions" / "predictions.jsonl"
+        pred_file.parent.mkdir(parents=True)
+        outcome_file = base_path / "outcomes" / "outcomes.jsonl"
+        outcome_file.parent.mkdir(parents=True)
+
+        # Only 2 samples (N < 5)
+        for i in range(2):
+            pid = f"PRED_FEW_{i}"
+            p_data = {
+                "prediction_id": pid,
+                "timestamp": f"2026-09-24T1{i}:00:00Z",
+                "created_at": f"2026-09-24T1{i}:00:01Z",
+                "reference_close": 60000.0,
+                "prediction_schema_version": "2",
+                "forecast_1h": 0.0150,
+            }
+            o_data = {
+                "prediction_id": pid,
+                "horizon": "1h",
+                "outcome_available_at": f"2026-09-24T1{i+1}:00:00Z",
+                "status": "SCORED",
+                "excluded_from_evaluation": False,
+                "realized_volatility": 0.0140,
+                "realized_return": 0.001,
+            }
+            with open(pred_file, "a", encoding="utf-8") as f:
+                f.write(json.dumps(p_data) + "\n")
+            with open(outcome_file, "a", encoding="utf-8") as f:
+                f.write(json.dumps(o_data) + "\n")
+
+        engine = ProspectiveAnalyticsEngine(base_dir=base_path)
+        summary = engine.get_summary_metrics("all")
+        horizons = engine.get_horizon_performance("all")
+        h1 = next(h for h in horizons["horizons"] if h["horizon"] == "1h")
+
+        assert summary["mae_1h"] is None
+        assert h1["mae"] is None
+
+
+def test_sufficient_sample_classification_rendering():
+    """Sample size classification for N >= 100 must be SUFFICIENT / YETERLİ GÖZLEM."""
+    cls_obj = classify_sample_size(150)
+    assert cls_obj["code"] == "SUFFICIENT"
+    assert cls_obj["status"] == "YETERLİ GÖZLEM"
+    assert cls_obj["reliable"] is True
+
+
+def test_js_syntax_clean_no_unexpected_tokens():
+    """Dashboard HTML script block must be valid JavaScript with zero syntax errors."""
+    state = get_engine_state()
+    html = render_dashboard_html(state)
+    start_idx = html.find("<script>") + 8
+    end_idx = html.find("</script>")
+    assert start_idx > 8
+    assert end_idx > start_idx
+    js_code = html[start_idx:end_idx]
+
+    # Verify no unescaped inner double quotes breaking string literals
+    assert "safeNum" in js_code
+    assert "safeFixed" in js_code
+    assert "safePct" in js_code
+    assert "safeSigned" in js_code
+    assert "renderSampleBadge" in js_code
+    assert "getSampleDesc" in js_code
+
+
+def test_js_failure_isolation_per_panel():
+    """Dashboard script must have independent try/catch failure isolation for each panel."""
+    state = get_engine_state()
+    html = render_dashboard_html(state)
+
+    # Verify per-panel failure isolation in fetchAnalytics
+    assert "// Panel 1: Summary Cards (Failure-isolated)" in html
+    assert "// Panel 2: Horizon Performance Table (Failure-isolated)" in html
+    assert "// Panel 3: Probability Calibration & Predictive Intervals (Failure-isolated)" in html
+    assert "// Panel 4: Market-State Behavior Analysis (Failure-isolated)" in html
+    assert "// Panel 5: Feature Availability & Runtime Provenance (Failure-isolated)" in html
+
+
+def test_js_no_indefinite_loading_states():
+    """All panel catch blocks must update the UI with 'Veri yüklenemedi' on error."""
+    state = get_engine_state()
+    html = render_dashboard_html(state)
+    assert "Veri yüklenemedi" in html
+
+
+def test_js_immediate_initial_fetch():
+    """Initial load must call fetchAndUpdate() and selectPeriod('all') immediately."""
+    state = get_engine_state()
+    html = render_dashboard_html(state)
+    assert "fetchAndUpdate();" in html
+    assert 'selectPeriod("all");' in html
+

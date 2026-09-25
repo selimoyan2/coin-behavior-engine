@@ -543,20 +543,11 @@ class ProspectiveAnalyticsEngine:
             fallback_counts[fb] += 1
 
         v2_preds = sum(1 for p in preds if str(p.get("prediction_schema_version")) == "2")
-        errors_1h = []
-        for pid, h_map in outcomes_map.items():
-            if "1h" in h_map:
-                o = h_map["1h"]
-                p = pred_dict_by_id.get(pid)
-                if is_valid_evaluation_outcome(o, p):
-                    fc = p.get("forecast_volatility_1h") if p else None
-                    real = o.get("realized_volatility")
-                    if fc is not None and real is not None:
-                        try:
-                            errors_1h.append(abs(float(fc) - float(real)))
-                        except (ValueError, TypeError):
-                            pass
-        mae_1h = (sum(errors_1h) / len(errors_1h)) if errors_1h else None
+        
+        # Single authoritative horizon performance calculation for 1h MAE
+        horizons_data = self.get_horizon_performance(period, data_quality_filter, fallback_filter)
+        h1 = next((h for h in horizons_data.get("horizons", []) if h.get("horizon") == "1h"), None)
+        mae_1h = h1.get("mae") if h1 else None
 
         # Current dominant stream
         dominant_dq = "DEGRADED_STREAM" if "DEGRADED_STREAM" in dq_counts else ("DATA_OK" if "DATA_OK" in dq_counts else "UNKNOWN")
