@@ -156,6 +156,34 @@ UI_COPY_TR: Dict[str, Any] = {
                 "path": "GET /api/metrics",
                 "description": "Model kalibrasyonu, Brier skorları ve tahmin ufku istatistikleri",
             },
+            {
+                "path": "GET /api/analytics/summary",
+                "description": "İleriye dönük özet metrikler ve örneklem güvenilirlik sınıfı (?period=all|24h|7d|30d)",
+            },
+            {
+                "path": "GET /api/analytics/horizons",
+                "description": "Çoklu tahmin vadeleri hata ve korelasyon metrikleri (MAE, RMSE, Pearson)",
+            },
+            {
+                "path": "GET /api/analytics/calibration",
+                "description": "Genişleme olasılığı kalibrasyonu (5-bin) ve tahmin aralığı kapsaması",
+            },
+            {
+                "path": "GET /api/analytics/market-states",
+                "description": "Piyasa durumlarına göre olay sonrası oynaklık ve getiri analizi",
+            },
+            {
+                "path": "GET /api/analytics/data-quality",
+                "description": "Çalışma zamanı özellik katmanları ve eksik veri durum denetimi",
+            },
+            {
+                "path": "GET /api/analytics/integrity",
+                "description": "Kriptografik SHA-256 zinciri ve sistem bütünlüğü denetim sonuçları",
+            },
+            {
+                "path": "GET /api/analytics/timeline",
+                "description": "Tarihsel holdout, freeze ve prospective dönem aşamaları zaman çizelgesi",
+            },
         ],
     },
     "footer": {

@@ -22,7 +22,9 @@ from pathlib import Path
 import sys
 import time
 from typing import Any, Dict, Optional
+from urllib.parse import parse_qs, urlparse
 
+from coin_behavior_engine.prospective.analytics import ProspectiveAnalyticsEngine
 from coin_behavior_engine.prospective.freeze import FROZEN_MODEL_VERSION
 from coin_behavior_engine.prospective.worker import ProspectiveWorker, get_next_5m_target
 from coin_behavior_engine.web.localization import (
@@ -41,6 +43,15 @@ logger = logging.getLogger("cbe_server")
 
 START_TIME = time.time()
 ACTIVE_WORKER: Optional[ProspectiveWorker] = None
+ANALYTICS_ENGINE: Optional[ProspectiveAnalyticsEngine] = None
+
+
+def get_analytics_engine() -> ProspectiveAnalyticsEngine:
+    """Retrieve or initialize singleton ProspectiveAnalyticsEngine."""
+    global ANALYTICS_ENGINE
+    if ANALYTICS_ENGINE is None:
+        ANALYTICS_ENGINE = ProspectiveAnalyticsEngine()
+    return ANALYTICS_ENGINE
 
 
 def format_age_tr(seconds: Optional[float]) -> str:
@@ -473,6 +484,75 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
     .btn-action:hover {{
       background: #374151;
     }}
+    .alert-box {{
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #fde68a;
+      line-height: 1.5;
+    }}
+    .alert-box.info {{
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #bfdbfe;
+    }}
+    .period-tabs {{
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }}
+    .tab-btn {{
+      background: var(--card-bg);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }}
+    .tab-btn:hover {{
+      background: #1f2937;
+      color: #fff;
+    }}
+    .tab-btn.active {{
+      background: #1e3a8a;
+      color: #93c5fd;
+      border-color: #3b82f6;
+    }}
+    .subcard-grid {{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }}
+    .subcard {{
+      background: rgba(17, 24, 39, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }}
+    .subcard h4 {{
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }}
+    .subcard .val {{
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+    }}
+    .subcard .sub {{
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }}
     .footer {{
       margin-top: 40px;
       padding-top: 16px;
@@ -553,9 +633,9 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
         <div class="subtext">Binance Spot kapanış</div>
       </div>
       <div class="card">
-        <h3>Başarılı Tahmin</h3>
+        <h3>Kaydedilen Tahmin</h3>
         <div class="value" id="tel-pred-count">{pred_count}</div>
-        <div class="subtext">İleriye dönük kayıtlı</div>
+        <div class="subtext">İleriye dönük kayıtlı mum</div>
       </div>
       <div class="card">
         <h3>Olgunlaşmış Sonuç</h3>
@@ -566,6 +646,181 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
         <h3>Veri Kalitesi & Fallback</h3>
         <div class="value" style="font-size: 14px;" id="tel-dq-state"><span class="badge {dq_badge_class}">{dq_display}</span></div>
         <div class="subtext" id="tel-fallback-lvl">Fallback: <b>{fallback_display}</b> | Spot 5m</div>
+      </div>
+    </div>
+
+    <!-- SPRINT 08.1: İLERİYE DÖNÜK PERFORMANS VE DENETİM PANELİ -->
+    <div class="section-title" style="justify-content: space-between; flex-wrap: wrap;">
+      <span>İleriye Dönük Performans ve Denetim (Sprint 08.1)</span>
+      <div class="period-tabs">
+        <button class="tab-btn active" id="tab-all" onclick="selectPeriod('all')">TÜM PROSPECTIVE DÖNEM</button>
+        <button class="tab-btn" id="tab-30d" onclick="selectPeriod('30d')">SON 30 GÜN</button>
+        <button class="tab-btn" id="tab-7d" onclick="selectPeriod('7d')">SON 7 GÜN</button>
+        <button class="tab-btn" id="tab-24h" onclick="selectPeriod('24h')">SON 24 SAAT</button>
+      </div>
+    </div>
+
+    <!-- Global Data Quality Warning (Prominent Banner) -->
+    <div class="alert-box">
+      <strong>⚠️ BİLİMSEL BİLGİLENDİRME & KISITLI CANLI VERİ AKIŞI (SPOT ONLY U0):</strong><br>
+      Canlı çalışma ortamında şu anda yalnızca Binance Spot 5m mumları ve seans zaman verileri aktiftir. Türev piyasalar (Fonlama / OI), Spot ETF net sermaye akışları, Makro veriler ve Olay istihbaratı katmanları henüz entegre edilmemiştir. Model <code>SPOT_ONLY_U0</code> koruyucu seviyesinde çalışmaktadır. Bu gözlem dönemi, modelin tüm bilgi katmanlarının birleşik gücünü temsil etmez.
+    </div>
+
+    <!-- Analytics Top Summary Cards -->
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+      <div class="card">
+        <h3>Değerlendirilen Tahmin (V2)</h3>
+        <div class="value" id="an-v2-preds">0</div>
+        <div class="subtext">Geçersiz V1 kayıtları hariç tutulmuştur</div>
+      </div>
+      <div class="card">
+        <h3>Geçerli Olgunlaşmış Sonuç</h3>
+        <div class="value" id="an-v2-outcomes">0</div>
+        <div class="subtext">Açık referans fiyatlı sonuçlar</div>
+      </div>
+      <div class="card">
+        <h3>Örneklem Güvenilirlik Sınıfı</h3>
+        <div class="value" style="font-size: 16px;" id="an-sample-status"><span class="badge badge-warn">YETERSİZ ÖRNEK</span></div>
+        <div class="subtext" id="an-sample-desc">N &lt; 10: İstatistiksel çıkarım için yetersiz</div>
+      </div>
+      <div class="card">
+        <h3>1h Ortalama Mutlak Hata (MAE)</h3>
+        <div class="value" id="an-mae-1h">&mdash;</div>
+        <div class="subtext">Volatilite / getiri mutlak sapması</div>
+      </div>
+    </div>
+
+    <!-- Multi-Horizon Performance Table -->
+    <div class="card" style="margin-bottom: 24px; padding: 0; overflow-x: auto;">
+      <div style="padding: 16px 20px 8px 20px;">
+        <h3 style="font-size: 14px; color: #fff; text-transform: none; letter-spacing: 0;">Çoklu Tahmin Vadeleri Hata ve Korelasyon Metrikleri</h3>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">CBE-0.7.0 mimarisi sadece 1h, 4h ve 24h vadelerinde tahmin üretir. 15m, 30m, 2h, 8h ve 12h vadeleri model tasarımında tanımsızdır (Schema V2'de geçerli null).</p>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>VADE (UFUK)</th>
+            <th>GEÇERLİ ÖRNEKLEM (N)</th>
+            <th>ÖRNEKLEM DURUMU</th>
+            <th>MAE (MUTLAK HATA)</th>
+            <th>RMSE (KARESEL HATA)</th>
+            <th>YÖNSEL SAPMA (BIAS)</th>
+            <th>PEARSON KORELASYONU</th>
+            <th>SPEARMAN RANK KOR.</th>
+          </tr>
+        </thead>
+        <tbody id="an-horizons-tbody">
+          <tr><td colspan="8" style="text-align: center; color: var(--muted); padding: 20px;">Yükleniyor...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Probability Calibration & Predictive Intervals Grid -->
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); margin-bottom: 24px;">
+      <!-- Calibration -->
+      <div class="card">
+        <h3 style="font-size: 14px; color: #fff; text-transform: none; letter-spacing: 0;">Volatilite Genişleme Olasılığı Kalibrasyonu (5-Bin)</h3>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 4px; margin-bottom: 12px;">Model tarafından tahmin edilen genişleme olasılıkları ile gerçekleşme sıklığının güvenilirlik karşılaştırması.</p>
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>BİN</th>
+                <th>TAHMİN OLASILIĞI</th>
+                <th>GÖZLENEN SIKLIK</th>
+                <th>ÖRNEKLEM (N)</th>
+                <th>BRİER SKORU</th>
+              </tr>
+            </thead>
+            <tbody id="an-calibration-tbody">
+              <tr><td colspan="5" style="text-align: center; color: var(--muted);">Yükleniyor...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top: 12px; font-size: 11px; color: #9ca3af; border-top: 1px solid var(--border); padding-top: 8px;">
+          ℹ️ <strong>SABİT FALLBACK UYARISI:</strong> Uç Olay (0.05) ve Ani Hareket (0.01) olasılıkları Discovery aşamasından gelen sabit fallback değerleridir (<strong>MODEL ÇIKTISI DEĞİL</strong>); dinamik kalibrasyona dahil edilmez.
+        </div>
+      </div>
+
+      <!-- Predictive Interval Coverage -->
+      <div class="card">
+        <h3 style="font-size: 14px; color: #fff; text-transform: none; letter-spacing: 0;">Tahmin Aralığı Kapsama Oranı (Predictive Interval Coverage)</h3>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 4px; margin-bottom: 16px;">Gerçekleşen değerlerin modelin nominal güven aralıkları içerisine düşme yüzdesi.</p>
+        
+        <div class="subcard-grid">
+          <div class="subcard">
+            <h4>%80 Nominal Güven Aralığı</h4>
+            <div class="val" id="an-coverage-80">&mdash;</div>
+            <div class="sub" id="an-coverage-80-sub">Hedef: %80.0 | Sapma: &mdash;</div>
+          </div>
+          <div class="subcard">
+            <h4>%95 Nominal Güven Aralığı</h4>
+            <div class="val" id="an-coverage-95">&mdash;</div>
+            <div class="sub" id="an-coverage-95-sub">Hedef: %95.0 | Sapma: &mdash;</div>
+          </div>
+        </div>
+
+        <div class="alert-box info" style="margin-bottom: 0; font-size: 12px;">
+          <strong>Aralık Kapsama Prensibi:</strong> İyi kalibre edilmiş bir modelde, gerçekleşmelerin yaklaşık %80'inin %80'lik bant içine, %95'inin ise %95'lik bant içine düşmesi beklenir. Düşük kapsama aşırı güveni (under-coverage), yüksek kapsama ise aşırı temkinli geniş bantları (over-coverage) işaret eder.
+        </div>
+      </div>
+    </div>
+
+    <!-- Market-State Post-Event Behavior Table -->
+    <div class="card" style="margin-bottom: 24px; padding: 0; overflow-x: auto;">
+      <div style="padding: 16px 20px 8px 20px;">
+        <h3 style="font-size: 14px; color: #fff; text-transform: none; letter-spacing: 0;">Piyasa Durumlarına Göre Olay Sonrası Davranış Analizi</h3>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">Tahmin anındaki rejim sınıflandırmasının (Sıkışma, Sakin, vb.) ardından gözlenen gerçek piyasa hareketleri.</p>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>PİYASA DURUMU</th>
+            <th>TAHMİN SAYISI (N)</th>
+            <th>ÖRNEKLEM GÜVENİ</th>
+            <th>1H ORT. MUTLAK GETİRİ</th>
+            <th>1H MEDYAN MUTLAK GETİRİ</th>
+            <th>4H GENİŞLEME SIKLIĞI</th>
+          </tr>
+        </thead>
+        <tbody id="an-market-states-tbody">
+          <tr><td colspan="6" style="text-align: center; color: var(--muted); padding: 20px;">Yükleniyor...</td></tr>
+        </tbody>
+      </table>
+      <div style="padding: 10px 20px; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); line-height: 1.4;">
+        ℹ️ <strong>BİLİMSEL NOT:</strong> Piyasa durumları yönsel alım/satım sinyali üretmez; yalnızca rejim bazlı oynaklık ve volatilite sıkışma/genişleme dinamiklerini açıklar.
+      </div>
+    </div>
+
+    <!-- Feature Availability Panel & System Integrity Distinction -->
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); margin-bottom: 24px;">
+      <!-- Feature Availability -->
+      <div class="card">
+        <h3 style="font-size: 14px; color: #fff; text-transform: none; letter-spacing: 0;">Çalışma Zamanı Özellik & Veri Katmanları</h3>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 4px; margin-bottom: 12px;">CBE-0.7.0 modelinin canlı tahmin anında erişebildiği ve eksik olan girdi katmanları.</p>
+        <div id="an-features-list" style="display: flex; flex-direction: column; gap: 8px;">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+
+      <!-- System Integrity vs Model Performance Distinction -->
+      <div class="card">
+        <h3 style="font-size: 14px; color: #fff; text-transform: none; letter-spacing: 0;">Sistem Bütünlüğü vs Model Performansı Ayrımı</h3>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 4px; margin-bottom: 12px;">Altyapı güvenliği ile modelin bilimsel başarısı arasındaki kesin metodolojik fark.</p>
+        
+        <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+          <div style="font-weight: 700; color: #6ee7b7; font-size: 12px; margin-bottom: 4px;">&#x2705; ALTYAPI VE KAYIT GÜVENLİĞİ (SİSTEM BÜTÜNLÜĞÜ)</div>
+          <div style="font-size: 12px; color: #d1fae5; line-height: 1.4;">
+            SHA-256 kriptografik hash zinciri kesintisizdir, geleceğe bakış (lookahead) ihlali bulunmamaktadır ve dondurulmuş 29/29 Sprint 07 artefaktı kanonik olarak korunmaktadır. Kayıtlar silinemez veya geriye dönük değiştirilemez.
+          </div>
+        </div>
+
+        <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 8px; padding: 12px;">
+          <div style="font-weight: 700; color: #fca5a5; font-size: 12px; margin-bottom: 4px;">⚠️ MODEL PERFORMANSI AYRI BİR İSTATİSTİKSEL SINAVDIR</div>
+          <div style="font-size: 12px; color: #fee2e2; line-height: 1.4;">
+            Sistemin teknik olarak hatasız çalışması ve kayıtların değiştirilemez olması, modelin piyasada başarılı veya kârlı olduğu anlamına gelmez. Modelin başarısı yalnızca yeterli örneklem (N &ge; 100) toplandıktan sonra kalibrasyon ve hata metrikleriyle değerlendirilebilir.
+          </div>
+        </div>
       </div>
     </div>
 
@@ -716,6 +971,9 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
           telDq.innerHTML = '<span class="badge ' + cls + '">' + txt + '</span>';
         }}
 
+        // Also update analytics panel
+        fetchAnalytics(currentAnalyticsPeriod);
+
       }} catch (err) {{
         console.warn("Status fetch failed:", err);
         const badge = document.getElementById("live-status-badge");
@@ -725,6 +983,166 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
         }}
       }} finally {{
         if (btn) btn.innerText = "\u21bb Şimdi Güncelle";
+      }}
+    }}
+
+    let currentAnalyticsPeriod = "all";
+
+    function selectPeriod(period) {{
+      currentAnalyticsPeriod = period;
+      ["all", "30d", "7d", "24h"].forEach(p => {{
+        const el = document.getElementById("tab-" + p);
+        if (el) {{
+          if (p === period) el.classList.add("active");
+          else el.classList.remove("active");
+        }}
+      }});
+      fetchAnalytics(period);
+    }}
+
+    async function fetchAnalytics(period) {{
+      try {{
+        // 1. Fetch summary
+        const sumRes = await fetch("/api/analytics/summary?period=" + period);
+        if (sumRes.ok) {{
+          const sumData = await sumRes.json();
+          const v2p = document.getElementById("an-v2-preds");
+          if (v2p) v2p.innerText = sumData.schema_v2_predictions || 0;
+          const v2o = document.getElementById("an-v2-outcomes");
+          if (v2o) v2o.innerText = sumData.valid_evaluation_outcomes || 0;
+          const ssBadge = document.getElementById("an-sample-status");
+          const ssDesc = document.getElementById("an-sample-desc");
+          if (ssBadge && sumData.sample_size_classification) {{
+            const sClass = sumData.sample_size_classification.reliable ? "badge-success" : "badge-warn";
+            ssBadge.innerHTML = '<span class="badge ' + sClass + '">' + sumData.sample_size_classification.status + '</span>';
+            if (ssDesc) ssDesc.innerText = sumData.sample_size_classification.description;
+          }}
+          const mae1h = document.getElementById("an-mae-1h");
+          if (mae1h) {{
+            mae1h.innerText = (sumData.mae_1h !== null && sumData.mae_1h !== undefined) ? sumData.mae_1h.toFixed(4) : "\u2014";
+          }}
+        }}
+
+        // 2. Fetch horizons
+        const horRes = await fetch("/api/analytics/horizons?period=" + period);
+        if (horRes.ok) {{
+          const horData = await horRes.json();
+          const tbody = document.getElementById("an-horizons-tbody");
+          if (tbody && horData.horizons) {{
+            let html = "";
+            horData.horizons.forEach(h => {{
+              const sCls = (h.sample_status && h.sample_status.reliable) ? "badge-success" : "badge-warn";
+              const sTxt = h.sample_status ? h.sample_status.status : "YETERSİZ";
+              const mae = h.mae !== null ? h.mae.toFixed(4) : "\u2014";
+              const rmse = h.rmse !== null ? h.rmse.toFixed(4) : "\u2014";
+              const bias = h.bias !== null ? (h.bias > 0 ? "+" : "") + h.bias.toFixed(4) : "\u2014";
+              const pearson = h.pearson_correlation !== null ? h.pearson_correlation.toFixed(3) : "\u2014";
+              const spearman = h.spearman_correlation !== null ? h.spearman_correlation.toFixed(3) : "\u2014";
+              html += "<tr>" +
+                "<td><strong>" + (h.horizon_label || h.horizon) + " (" + h.horizon + ")</strong></td>" +
+                "<td>" + (h.valid_matured_count !== undefined ? h.valid_matured_count : (h.n_valid || 0)) + "</td>" +
+                '<td><span class="badge ' + sCls + '">' + sTxt + "</span></td>" +
+                "<td>" + mae + "</td>" +
+                "<td>" + rmse + "</td>" +
+                "<td>" + bias + "</td>" +
+                "<td>" + pearson + "</td>" +
+                "<td>" + spearman + "</td>" +
+                "</tr>";
+            }});
+            tbody.innerHTML = html;
+          }}
+        }}
+
+        // 3. Fetch calibration
+        const calRes = await fetch("/api/analytics/calibration?period=" + period);
+        if (calRes.ok) {{
+          const calData = await calRes.json();
+          const calTbody = document.getElementById("an-calibration-tbody");
+          if (calTbody && calData.expansion_calibration && calData.expansion_calibration.bins) {{
+            let bHtml = "";
+            if (calData.expansion_calibration.bins.length === 0) {{
+              bHtml = '<tr><td colspan="5" style="text-align: center; color: var(--muted); padding: 12px;">Henüz olgunlaşmış 4h sonucu yok (N=0)</td></tr>';
+            }} else {{
+              calData.expansion_calibration.bins.forEach(b => {{
+                const obs = b.realized_rate !== null ? (b.realized_rate * 100).toFixed(1) + "%" : "\u2014";
+                const brier = (b.brier_score !== null && b.brier_score !== undefined) ? b.brier_score.toFixed(4) : "\u2014";
+                bHtml += "<tr>" +
+                  "<td>" + (b.bin_index || "") + "</td>" +
+                  "<td>" + (b.bin_range || "") + "</td>" +
+                  "<td>" + obs + "</td>" +
+                  "<td>" + b.count + "</td>" +
+                  "<td>" + brier + "</td>" +
+                  "</tr>";
+              }});
+            }}
+            calTbody.innerHTML = bHtml;
+          }}
+          if (calData.interval_coverage) {{
+            const c80 = calData.interval_coverage.nominal_80;
+            const c95 = calData.interval_coverage.nominal_95;
+            const el80 = document.getElementById("an-coverage-80");
+            const el80Sub = document.getElementById("an-coverage-80-sub");
+            if (el80 && c80) {{
+              el80.innerText = c80.empirical_coverage !== null ? "%" + (c80.empirical_coverage * 100).toFixed(1) : "\u2014";
+              if (el80Sub && c80.difference !== null) {{
+                el80Sub.innerText = "Hedef: %80.0 | Sapma: " + (c80.difference > 0 ? "+" : "") + (c80.difference * 100).toFixed(1) + "%";
+              }}
+            }}
+            const el95 = document.getElementById("an-coverage-95");
+            const el95Sub = document.getElementById("an-coverage-95-sub");
+            if (el95 && c95) {{
+              el95.innerText = c95.empirical_coverage !== null ? "%" + (c95.empirical_coverage * 100).toFixed(1) : "\u2014";
+              if (el95Sub && c95.difference !== null) {{
+                el95Sub.innerText = "Hedef: %95.0 | Sapma: " + (c95.difference > 0 ? "+" : "") + (c95.difference * 100).toFixed(1) + "%";
+              }}
+            }}
+          }}
+        }}
+
+        // 4. Fetch market states
+        const msRes = await fetch("/api/analytics/market-states?period=" + period);
+        if (msRes.ok) {{
+          const msData = await msRes.json();
+          const msTbody = document.getElementById("an-market-states-tbody");
+          if (msTbody && msData.market_states) {{
+            let msHtml = "";
+            msData.market_states.forEach(m => {{
+              const m1h = m.mean_abs_return_1h !== null ? (m.mean_abs_return_1h * 100).toFixed(3) + "%" : "\u2014";
+              const med1h = m.median_abs_return_1h !== null ? (m.median_abs_return_1h * 100).toFixed(3) + "%" : "\u2014";
+              const exp4h = m.expansion_frequency_4h !== null ? (m.expansion_frequency_4h * 100).toFixed(1) + "%" : "\u2014";
+              const sCls = (m.sample_status && m.sample_status.reliable) ? "badge-success" : "badge-warn";
+              const sTxt = m.sample_status ? m.sample_status.status : "YETERSİZ";
+              msHtml += "<tr>" +
+                "<td><strong>" + m.market_state + "</strong></td>" +
+                "<td>" + m.prediction_count + "</td>" +
+                '<td><span class="badge ' + sCls + '">' + sTxt + "</span></td>" +
+                "<td>" + m1h + "</td>" +
+                "<td>" + med1h + "</td>" +
+                "<td>" + exp4h + "</td>" +
+                "</tr>";
+            }});
+            msTbody.innerHTML = msHtml;
+          }}
+        }}
+
+        // 5. Fetch data quality
+        const dqRes = await fetch("/api/analytics/data-quality");
+        if (dqRes.ok) {{
+          const dqData = await dqRes.json();
+          const fList = document.getElementById("an-features-list");
+          if (fList && dqData.feature_groups) {{
+            let fHtml = "";
+            dqData.feature_groups.forEach(fg => {{
+              fHtml += '<div style="display:flex; justify-content:space-between; align-items:center; background: rgba(17,24,39,0.6); border: 1px solid var(--border); border-radius:6px; padding:8px 12px;">' +
+                '<div><span style="font-weight:600; font-size:13px;">' + fg.name_tr + "</span> <code style=\"font-size:11px;\">" + fg.group + "</code></div>" +
+                '<span class="badge ' + fg.badge + '">' + fg.status + "</span>" +
+                "</div>";
+            }});
+            fList.innerHTML = fHtml;
+          }}
+        }}
+      }} catch (err) {{
+        console.warn("Analytics fetch error:", err);
       }}
     }}
 
@@ -748,8 +1166,9 @@ def render_dashboard_html(state: Dict[str, Any]) -> str:
       }}
     }});
 
-    // Start 60s polling
+    // Start 60s polling and load initial analytics
     schedulePolling();
+    selectPeriod("all");
   </script>
 </body>
 </html>
@@ -778,7 +1197,14 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
         self.wfile.write(payload)
 
     def do_GET(self) -> None:  # noqa: N802
-        url_path = self.path.split("?")[0]
+        parsed_url = urlparse(self.path)
+        url_path = parsed_url.path
+        query_params = parse_qs(parsed_url.query)
+        period = query_params.get("period", ["all"])[0]
+        if period not in ("24h", "7d", "30d", "all"):
+            period = "all"
+
+        engine = get_analytics_engine()
 
         if url_path in ("/health", "/healthz", "/ping"):
             state = get_engine_state()
@@ -819,6 +1245,27 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
                 "horizons_monitored": ["15m", "30m", "1h", "2h", "4h", "8h", "12h", "24h"],
             }
             self._send_response_json(HTTPStatus.OK, metrics)
+        elif url_path == "/api/analytics/summary":
+            data = engine.get_summary_metrics(period)
+            self._send_response_json(HTTPStatus.OK, data)
+        elif url_path == "/api/analytics/horizons":
+            data = engine.get_horizon_performance(period)
+            self._send_response_json(HTTPStatus.OK, data)
+        elif url_path == "/api/analytics/calibration":
+            data = engine.get_calibration_analysis(period)
+            self._send_response_json(HTTPStatus.OK, data)
+        elif url_path == "/api/analytics/market-states":
+            data = engine.get_market_state_analysis(period)
+            self._send_response_json(HTTPStatus.OK, data)
+        elif url_path == "/api/analytics/data-quality":
+            data = engine.get_feature_availability_panel()
+            self._send_response_json(HTTPStatus.OK, data)
+        elif url_path == "/api/analytics/integrity":
+            data = engine.get_system_integrity()
+            self._send_response_json(HTTPStatus.OK, data)
+        elif url_path == "/api/analytics/timeline":
+            data = engine.get_prospective_timeline()
+            self._send_response_json(HTTPStatus.OK, data)
         elif url_path in ("/", "/dashboard"):
             state = get_engine_state()
             html = render_dashboard_html(state)
@@ -828,7 +1275,19 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
                 HTTPStatus.NOT_FOUND,
                 {
                     "error": "Endpoint not found",
-                    "available": ["/", "/health", "/api/status", "/api/metrics"],
+                    "available": [
+                        "/",
+                        "/health",
+                        "/api/status",
+                        "/api/metrics",
+                        "/api/analytics/summary",
+                        "/api/analytics/horizons",
+                        "/api/analytics/calibration",
+                        "/api/analytics/market-states",
+                        "/api/analytics/data-quality",
+                        "/api/analytics/integrity",
+                        "/api/analytics/timeline",
+                    ],
                 },
             )
 

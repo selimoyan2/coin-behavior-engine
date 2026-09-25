@@ -1,0 +1,15 @@
+{
+  "report_date": "2026-09-24",
+  "model_version": "CBE-0.7.0",
+  "freeze_status": "FREEZE_VERIFIED",
+  "prediction_count": 2,
+  "valid_outcome_count": 0,
+  "invalid_outcome_count": 0,
+  "data_quality_distribution": {
+    "DEGRADED_STREAM": 2
+  },
+  "fallback_distribution": {
+    "SPOT_ONLY_U0": 2
+  },
+  "generated_at": "2026-09-25T21:33:27Z"
+}

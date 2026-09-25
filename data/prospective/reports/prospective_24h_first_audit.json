@@ -1,0 +1,27 @@
+{
+  "report_title": "CBE-0.7.0 \u0130lk 24 Saatlik \u0130leriye D\u00f6n\u00fck Denetim Raporu",
+  "model_version": "CBE-0.7.0",
+  "model_freeze_verification": "V2_CANONICAL (29/29 Kanonik Dosya Do\u011fruland\u0131)",
+  "operational_prospective_window": {
+    "window": "2026-09-24T00:00:00Z - 2026-09-25T00:00:00Z",
+    "description": "24 saatlik operasyonel \u00e7al\u0131\u015fma penceresi (Altyap\u0131, veri ak\u0131\u015f\u0131 ve zincir s\u00fcreklili\u011fi).",
+    "prediction_count": 2,
+    "outcome_count": 0,
+    "data_quality": "DEGRADED_STREAM",
+    "fallback_level": "SPOT_ONLY_U0"
+  },
+  "valid_schema_v2_evaluation_window": {
+    "window": "2026-09-24T18:52:00Z - G\u00dcN\u00dcM\u00dcZ",
+    "description": "A\u00e7\u0131k referans fiyat\u0131 ve do\u011frulanm\u0131\u015f sonu\u00e7 hesaplamas\u0131 i\u00e7eren bilimsel de\u011ferlendirme penceresi.",
+    "v2_prediction_count": 0,
+    "v2_valid_outcome_count": 0,
+    "legacy_v1_excluded": true
+  },
+  "audit_verdict": {
+    "hash_chain_intact": true,
+    "lookahead_breaches": 0,
+    "model_mutations": 0,
+    "scientific_status": "G\u00d6ZLEM_AKT\u0130F_ERKEN_A\u015eAMA"
+  },
+  "generated_at": "2026-09-25T21:34:56Z"
+}
