@@ -34,7 +34,8 @@ services:
       dockerfile: deploy/shadow_v080/Dockerfile.staging
     image: cbe-080-shadow:coolify-live-capture
     container_name: cbe_080_coolify_live_capture
-    restart: "unless-stopped"
+    restart: "no"
+    entrypoint: ["/app/entrypoint_live_capture.sh"]
     read_only: true
     user: "1000:1000"
     pids_limit: 64

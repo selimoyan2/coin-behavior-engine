@@ -6,8 +6,9 @@ Provides:
 - Idempotent duplicate rejection and conflicting payload quarantine.
 - Out-of-order record quarantine.
 - Streaming line-by-line hash chain verification with strictly bounded memory.
-- In-place forensic truncation of trailing EOF corruption without rewriting valid history.
-- Dedicated binary quarantine backup and recovery audit logging.
+- Lightweight, disk-backed SQLite timestamp index (`index_BTCUSDT_5m.sqlite3`) for O(1) duplicate detection without unbounded memory growth.
+- In-place forensic truncation using os.ftruncate() on trailing EOF corruption without rewriting valid history.
+- Fail-closed binary quarantine backup and recovery audit logging before any truncation is committed.
 - Mid-chain corruption fail-closed protection.
 - Read-only filesystem and disk-write failure safety.
 """
@@ -21,6 +22,7 @@ import json
 import logging
 import os
 import shutil
+import sqlite3
 import tempfile
 import time
 from dataclasses import asdict, dataclass
@@ -81,20 +83,102 @@ class RawMarketEvidenceStore:
 
         self.evidence_file = self.raw_market_dir / f"raw_candles_{self.symbol}_{self.interval}.jsonl"
         self.quarantine_file = self.quarantine_dir / f"quarantined_candles_{self.symbol}_{self.interval}.jsonl"
+        self.index_file = self.raw_market_dir / f"index_{self.symbol}_{self.interval}.sqlite3"
 
         self._entry_count: int = 0
         self._recent_candles: collections.deque[ValidatedCandle] = collections.deque(maxlen=MAX_RECENT_CANDLES_CACHE)
         self._recent_candles_by_ts: Dict[int, ValidatedCandle] = {}
-        self._seen_timestamps: Set[int] = set()
         self._latest_open_ts: int = -1
         self._latest_entry_hash: str = GENESIS_PREV_HASH
+        self._index_conn: Optional[sqlite3.Connection] = None
 
         self._ensure_dirs()
+        self._init_disk_index()
         self.verify_and_recover_chain()
 
     def _ensure_dirs(self) -> None:
         self.raw_market_dir.mkdir(parents=True, exist_ok=True)
         self.quarantine_dir.mkdir(parents=True, exist_ok=True)
+
+    def _init_disk_index(self) -> None:
+        """Initialize lightweight disk-backed SQLite timestamp index with bounded cache."""
+        self._index_conn = sqlite3.connect(
+            str(self.index_file),
+            timeout=10.0,
+            check_same_thread=False,
+        )
+        self._index_conn.execute("PRAGMA journal_mode = WAL;")
+        self._index_conn.execute("PRAGMA synchronous = NORMAL;")
+        self._index_conn.execute("PRAGMA cache_size = -512;")  # Cap internal cache to 512 KB
+        self._index_conn.execute("""
+            CREATE TABLE IF NOT EXISTS timestamp_index (
+                timestamp_open INTEGER PRIMARY KEY,
+                byte_offset INTEGER NOT NULL,
+                entry_index INTEGER NOT NULL
+            );
+        """)
+        self._index_conn.execute("""
+            CREATE INDEX IF NOT EXISTS idx_entry_index ON timestamp_index(entry_index);
+        """)
+        self._index_conn.commit()
+
+    def _index_has_timestamp(self, ts_open: int) -> bool:
+        """Check if open timestamp exists in disk index (O(1) B-tree lookup)."""
+        if not self._index_conn:
+            return False
+        cur = self._index_conn.cursor()
+        cur.execute("SELECT 1 FROM timestamp_index WHERE timestamp_open = ? LIMIT 1;", (ts_open,))
+        return cur.fetchone() is not None
+
+    def _index_get_offset(self, ts_open: int) -> Optional[int]:
+        """Lookup byte offset of candle by open timestamp from disk index."""
+        if not self._index_conn:
+            return None
+        cur = self._index_conn.cursor()
+        cur.execute("SELECT byte_offset FROM timestamp_index WHERE timestamp_open = ? LIMIT 1;", (ts_open,))
+        row = cur.fetchone()
+        if row:
+            return row[0]
+        return None
+
+    def _index_record_candle(self, ts_open: int, offset: int, entry_idx: int) -> None:
+        """Record candle timestamp, file offset, and entry index in disk index."""
+        if not self._index_conn:
+            return
+        self._index_conn.execute(
+            "INSERT OR REPLACE INTO timestamp_index (timestamp_open, byte_offset, entry_index) VALUES (?, ?, ?);",
+            (ts_open, offset, entry_idx),
+        )
+        self._index_conn.commit()
+
+    def _index_truncate_to_valid(self, max_entry_index: int) -> None:
+        """Remove truncated entries from disk index."""
+        if not self._index_conn:
+            return
+        self._index_conn.execute(
+            "DELETE FROM timestamp_index WHERE entry_index >= ?;",
+            (max_entry_index,),
+        )
+        self._index_conn.commit()
+
+    def _index_clear(self) -> None:
+        """Clear all entries from disk index."""
+        if not self._index_conn:
+            return
+        self._index_conn.execute("DELETE FROM timestamp_index;")
+        self._index_conn.commit()
+
+    def close(self) -> None:
+        """Close SQLite index connection cleanly."""
+        if self._index_conn:
+            try:
+                self._index_conn.close()
+            except Exception:
+                pass
+            self._index_conn = None
+
+    def __del__(self) -> None:
+        self.close()
 
     def _cache_candle(self, c: ValidatedCandle) -> None:
         """Cache candle in bounded recent cache, evicting oldest from map when deque fills."""
@@ -117,50 +201,52 @@ class RawMarketEvidenceStore:
         return self._latest_open_ts
 
     def get_candle_by_timestamp(self, ts_open: int) -> Optional[ValidatedCandle]:
-        """Lookup candle by timestamp. Uses in-memory cache first, falls back to disk scan if evicted."""
-        if ts_open not in self._seen_timestamps:
-            return None
+        """Lookup candle by timestamp. Uses bounded in-memory cache first, falls back to direct disk seek."""
         cached = self._recent_candles_by_ts.get(ts_open)
         if cached is not None:
             return cached
-        return self._scan_disk_for_timestamp(ts_open)
 
-    def _scan_disk_for_timestamp(self, ts_open: int) -> Optional[ValidatedCandle]:
+        offset = self._index_get_offset(ts_open)
+        if offset is not None:
+            return self._read_candle_at_offset(offset)
+        return None
+
+    def _read_candle_at_offset(self, byte_offset: int) -> Optional[ValidatedCandle]:
+        """Seek directly to byte offset in evidence file and reconstruct ValidatedCandle."""
         if not self.evidence_file.exists():
             return None
-        with open(self.evidence_file, "r", encoding="utf-8") as f:
-            for line in f:
-                line_str = line.strip()
-                if not line_str:
-                    continue
-                try:
-                    data = json.loads(line_str)
-                    c_dict = data["candle"]
-                    if c_dict["timestamp_open"] == ts_open:
-                        return ValidatedCandle(
-                            symbol=c_dict["symbol"],
-                            interval=c_dict["interval"],
-                            market_type=c_dict["market_type"],
-                            timestamp_open=c_dict["timestamp_open"],
-                            timestamp_close=c_dict["timestamp_close"],
-                            datetime_open_utc=c_dict["datetime_open_utc"],
-                            datetime_close_utc=c_dict["datetime_close_utc"],
-                            open=str(c_dict["open"]),
-                            high=str(c_dict["high"]),
-                            low=str(c_dict["low"]),
-                            close=str(c_dict["close"]),
-                            volume=str(c_dict["volume"]),
-                            quote_volume=str(c_dict.get("quote_volume", "0")),
-                            trades_count=int(c_dict.get("trades_count", 0)),
-                            taker_buy_base_volume=str(c_dict.get("taker_buy_base_volume", "0")),
-                            is_closed=c_dict["is_closed"],
-                            provenance=c_dict["provenance"],
-                            receipt_timestamp_utc=c_dict["receipt_timestamp_utc"],
-                            lifecycle_state=CandleLifecycleState.CANDLE_PERSISTED.value,
-                        )
-                except Exception:
-                    continue
-        return None
+        try:
+            with open(self.evidence_file, "r", encoding="utf-8") as f:
+                f.seek(byte_offset)
+                line = f.readline()
+                if not line:
+                    return None
+                data = json.loads(line.strip())
+                c_dict = data["candle"]
+                return ValidatedCandle(
+                    symbol=c_dict["symbol"],
+                    interval=c_dict["interval"],
+                    market_type=c_dict["market_type"],
+                    timestamp_open=c_dict["timestamp_open"],
+                    timestamp_close=c_dict["timestamp_close"],
+                    datetime_open_utc=c_dict["datetime_open_utc"],
+                    datetime_close_utc=c_dict["datetime_close_utc"],
+                    open=str(c_dict["open"]),
+                    high=str(c_dict["high"]),
+                    low=str(c_dict["low"]),
+                    close=str(c_dict["close"]),
+                    volume=str(c_dict["volume"]),
+                    quote_volume=str(c_dict.get("quote_volume", "0")),
+                    trades_count=int(c_dict.get("trades_count", 0)),
+                    taker_buy_base_volume=str(c_dict.get("taker_buy_base_volume", "0")),
+                    is_closed=c_dict["is_closed"],
+                    provenance=c_dict["provenance"],
+                    receipt_timestamp_utc=c_dict["receipt_timestamp_utc"],
+                    lifecycle_state=CandleLifecycleState.CANDLE_PERSISTED.value,
+                )
+        except Exception as exc:
+            logger.warning(f"Failed to read candle at offset {byte_offset}: {exc}")
+            return None
 
     def get_all_candles(self) -> List[ValidatedCandle]:
         """Read and return all validated candles from the evidence store."""
@@ -204,24 +290,27 @@ class RawMarketEvidenceStore:
     def verify_and_recover_chain(self) -> bool:
         """Inspect and verify on-disk hash chain using line-by-line streaming without full-file in-memory loading.
 
-        Recovers trailing partial writes at EOF via in-place forensic truncation without rewriting valid history.
+        Recovers trailing partial writes at EOF via in-place forensic truncation using os.ftruncate()
+        without rewriting valid history.
+        Preserves damaged bytes in quarantine, verifies backup integrity, and fails closed on failure.
+        Synchronizes disk-backed SQLite timestamp index with verified ledger.
         Fails closed on mid-chain corruption.
         """
         self._recent_candles.clear()
         self._recent_candles_by_ts.clear()
-        self._seen_timestamps.clear()
         self._entry_count = 0
         self._latest_open_ts = -1
         self._latest_entry_hash = GENESIS_PREV_HASH
 
         if not self.evidence_file.exists():
+            self._index_clear()
             return True
 
         expected_prev = GENESIS_PREV_HASH
         valid_count = 0
         last_valid_offset = 0
 
-        # Open in r+b mode for reading and in-place truncation
+        # Open in r+b mode for reading, in-place truncation, and synchronization
         with open(self.evidence_file, "r+b") as f:
             while True:
                 line_offset = f.tell()
@@ -230,7 +319,7 @@ class RawMarketEvidenceStore:
                     break
 
                 curr_offset = f.tell()
-                # Check whether another line exists after this one
+                # Check whether another non-empty line exists after this one
                 next_peek = f.readline()
                 is_trailing = (len(next_peek) == 0)
                 f.seek(curr_offset)
@@ -300,8 +389,8 @@ class RawMarketEvidenceStore:
                         lifecycle_state=CandleLifecycleState.CANDLE_PERSISTED.value,
                     )
 
-                    self._seen_timestamps.add(c_obj.timestamp_open)
                     self._cache_candle(c_obj)
+                    self._index_record_candle(c_obj.timestamp_open, line_offset, e_idx)
                     self._latest_open_ts = max(self._latest_open_ts, c_obj.timestamp_open)
                     expected_prev = e_hash
                     valid_count += 1
@@ -311,44 +400,68 @@ class RawMarketEvidenceStore:
                     if is_trailing:
                         logger.warning(
                             f"Trailing corrupt/partial write detected at EOF offset {line_offset} ({e}). "
-                            f"Initiating forensic quarantine backup and in-place truncation."
+                            f"Initiating forensic quarantine backup, audit logging, and in-place ftruncate."
                         )
                         f.seek(line_offset)
                         corrupted_bytes = f.read()
 
-                        # 1. Forensic binary copy in quarantine directory
-                        ts_ms = int(time.time() * 1000)
-                        forensic_file = self.quarantine_dir / f"forensic_trailing_corruption_{ts_ms}.bin"
-                        forensic_file.write_bytes(corrupted_bytes)
+                        if corrupted_bytes:
+                            # 1. Forensic binary copy in quarantine directory
+                            ts_ms = int(time.time() * 1000)
+                            forensic_file = self.quarantine_dir / f"forensic_trailing_corruption_{ts_ms}.bin"
+                            try:
+                                with open(forensic_file, "wb") as bf:
+                                    bf.write(corrupted_bytes)
+                                    bf.flush()
+                                    os.fsync(bf.fileno())
+                            except Exception as exc:
+                                raise EvidencePersistenceError(
+                                    f"FAIL-CLOSED: Failed to write forensic backup to {forensic_file}: {exc}"
+                                ) from exc
 
-                        # 2. Verify backup integrity
-                        b_sha256 = hashlib.sha256(corrupted_bytes).hexdigest()
-                        if not forensic_file.exists() or forensic_file.stat().st_size != len(corrupted_bytes):
-                            raise EvidencePersistenceError("Forensic backup verification failed!")
+                            # 2. Verify backup integrity before modifying ledger
+                            b_sha256 = hashlib.sha256(corrupted_bytes).hexdigest()
+                            if not forensic_file.exists() or forensic_file.stat().st_size != len(corrupted_bytes):
+                                raise EvidencePersistenceError(
+                                    f"FAIL-CLOSED: Forensic backup verification failed! File {forensic_file} size mismatch."
+                                )
+                            backed_bytes = forensic_file.read_bytes()
+                            if hashlib.sha256(backed_bytes).hexdigest() != b_sha256:
+                                raise EvidencePersistenceError(
+                                    f"FAIL-CLOSED: Forensic backup verification failed! Hash mismatch for {forensic_file}."
+                                )
 
-                        # 3. Record recovery audit log entry
-                        audit_file = self.quarantine_dir / "recovery_audit.jsonl"
-                        audit_entry = {
-                            "timestamp_utc": datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                            "action": "TRAILING_CORRUPTION_FORENSIC_TRUNCATE",
-                            "backup_file": str(forensic_file.name),
-                            "backup_sha256": b_sha256,
-                            "truncated_bytes_count": len(corrupted_bytes),
-                            "last_valid_offset": last_valid_offset,
-                            "valid_entries_count": valid_count,
-                            "error": str(e),
-                        }
-                        with open(audit_file, "a", encoding="utf-8") as af:
-                            af.write(json.dumps(audit_entry, sort_keys=True) + "\n")
-                            af.flush()
-                            os.fsync(af.fileno())
+                            # 3. Record recovery audit log entry
+                            audit_file = self.quarantine_dir / "recovery_audit.jsonl"
+                            audit_entry = {
+                                "timestamp_utc": datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                                "action": "TRAILING_CORRUPTION_FORENSIC_TRUNCATE",
+                                "backup_file": str(forensic_file.name),
+                                "backup_sha256": b_sha256,
+                                "truncated_bytes_count": len(corrupted_bytes),
+                                "last_valid_offset": last_valid_offset,
+                                "valid_entries_count": valid_count,
+                                "error": str(e),
+                            }
+                            try:
+                                with open(audit_file, "a", encoding="utf-8") as af:
+                                    af.write(json.dumps(audit_entry, sort_keys=True) + "\n")
+                                    af.flush()
+                                    os.fsync(af.fileno())
+                            except Exception as exc:
+                                raise EvidencePersistenceError(
+                                    f"FAIL-CLOSED: Failed to write recovery audit entry to {audit_file}: {exc}"
+                                ) from exc
 
-                        # 4. In-place truncate without rewriting valid history
+                        # 4. In-place ftruncate without rewriting valid history
                         f.flush()
-                        os.truncate(f.fileno(), last_valid_offset)
+                        os.ftruncate(f.fileno(), last_valid_offset)
                         f.seek(last_valid_offset)
                         f.flush()
                         os.fsync(f.fileno())
+
+                        # 5. Synchronize disk index
+                        self._index_truncate_to_valid(valid_count)
                         break
                     else:
                         if isinstance(e, EvidenceCorruptionError):
@@ -393,8 +506,8 @@ class RawMarketEvidenceStore:
         if candle is None:
             raise ValueError("candle cannot be None")
 
-        # 1. Duplicate & Conflict Check
-        if candle.timestamp_open in self._seen_timestamps:
+        # 1. Duplicate & Conflict Check (checks bounded cache and disk index)
+        if (candle.timestamp_open in self._recent_candles_by_ts) or self._index_has_timestamp(candle.timestamp_open):
             existing = self.get_candle_by_timestamp(candle.timestamp_open)
             if existing is not None:
                 if existing.matches_payload(candle):
@@ -449,6 +562,7 @@ class RawMarketEvidenceStore:
             raise EvidencePersistenceError("Simulated disk-write failure (force_disk_error=True)")
 
         try:
+            line_offset = self.evidence_file.stat().st_size if self.evidence_file.exists() else 0
             with open(self.evidence_file, "a", encoding="utf-8") as f:
                 f.write(entry.to_json() + "\n")
                 f.flush()
@@ -458,10 +572,10 @@ class RawMarketEvidenceStore:
                 raise EvidencePersistenceError(f"Read-only filesystem: cannot persist candle to {self.evidence_file}: {e}")
             raise EvidencePersistenceError(f"Disk persistence failed for {self.evidence_file}: {e}") from e
 
-        # 5. Commit In-Memory State Only After Successful Disk Write
+        # 5. Commit State & Disk Index Only After Successful Disk Write
         candle.lifecycle_state = CandleLifecycleState.CANDLE_PERSISTED.value
         self._entry_count += 1
-        self._seen_timestamps.add(candle.timestamp_open)
+        self._index_record_candle(candle.timestamp_open, line_offset, new_index)
         self._cache_candle(candle)
         self._latest_entry_hash = entry_hash
         self._latest_open_ts = max(self._latest_open_ts, candle.timestamp_open)
