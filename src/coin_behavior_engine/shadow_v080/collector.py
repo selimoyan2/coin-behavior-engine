@@ -168,6 +168,21 @@ class ShadowCollectorV080:
                     CaptureState.CLOCK_UNTRUSTED, f"Clock skew {clock_skew:.1f}ms exceeds budget"
                 )
 
+        # Receipt cannot precede exchange candle close time
+        # (1000 ms allowance for minor floor rounding / network receipt timestamp precision)
+        if candle.timestamp_close > rec_ms + 1000:
+            clock_trusted = False
+            if self.state_machine.current_state in [
+                CaptureState.INITIALIZING,
+                CaptureState.WARMING_UP,
+                CaptureState.FULL_WINDOW_READY,
+                CaptureState.ELIGIBLE,
+            ]:
+                self.state_machine.transition_to(
+                    CaptureState.CLOCK_UNTRUSTED,
+                    f"Premature candle receipt: close {candle.timestamp_close} exceeds receipt {rec_ms}"
+                )
+
         # 3. Add candle to buffer
         ok, msg = self.feature_pipeline.add_candle(candle)
         if not ok:
@@ -210,7 +225,11 @@ class ShadowCollectorV080:
             dual_pred = self.inference_runner.predict(recon.features, origin_utc)
 
             # Store predictions for both branches across all 3 horizons
-            commit_utc = pd.Timestamp.now(tz="UTC").isoformat()
+            commit_utc = (
+                pd.to_datetime(simulated_wall_time_ms, unit="ms", utc=True).isoformat()
+                if simulated_wall_time_ms is not None
+                else pd.Timestamp.now(tz="UTC").isoformat()
+            )
             component_hashes = {
                 "bundle_sha256": "7755ddcb369c29825f9205f09e805b2e518526726b4bd5d948787d24c9419ad0",
                 "thresholds_sha256": "3979ab8e37377f1d5cb2623c63c20081078ae49c5bcbedcbb860affe3dfd95d9",
@@ -228,8 +247,11 @@ class ShadowCollectorV080:
                     mat_dt = pd.Timestamp(origin_utc) + pd.Timedelta(minutes=h_mins)
                     mat_utc = mat_dt.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-                    # Prospective eligibility flag
+                    # Prospective eligibility flag: requires full warmup window (>=288 bars) + eligible state machine
                     is_scored = self.state_machine.is_eligible and quality.eligible_for_prospective_scoring
+                    actual_label = self.record_label if is_scored else (
+                        "WARMUP_REPLAY" if self.record_label == "PROSPECTIVE_SHADOW" else "HISTORICAL_REPLAY"
+                    )
 
                     ev = ShadowPredictionEvent(
                         event_id=f"PRED-{origin_utc[:16]}-{branch_name}-{h}",
@@ -243,6 +265,8 @@ class ShadowCollectorV080:
                         feature_fingerprint=recon.feature_fingerprint,
                         component_hashes=component_hashes,
                         data_quality={
+                            "feature_computable": True,
+                            "prospective_scoring_eligible": is_scored,
                             "eligible_for_prospective_scoring": is_scored,
                             "feature_quality_status": quality.feature_quality_status,
                             "zero_variance_detected": quality.zero_variance_detected,
@@ -253,7 +277,7 @@ class ShadowCollectorV080:
                         interval_80={"lower": fc.lower_80, "upper": fc.upper_80, "width": fc.width_80},
                         interval_95={"lower": fc.lower_95, "upper": fc.upper_95, "width": fc.width_95},
                         market_state=dual_pred.primary_state,
-                        record_label=self.record_label,
+                        record_label=actual_label,
                     )
                     h_rec = self.prediction_store.append_event(ev)
                     emitted_hashes.append(h_rec)

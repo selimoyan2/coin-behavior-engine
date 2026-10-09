@@ -1,0 +1,20 @@
+{
+  "assessment_timestamp_utc": "2026-10-09T17:58:42.454507+00:00",
+  "local_execution_host": {
+    "platform": "win32",
+    "python_version": "3.11.16",
+    "note": "Local development workstation. NOT substituted for remote Linux VPS evidence."
+  },
+  "remote_vps_status": {
+    "vps_capacity": "NOT_VERIFIED",
+    "reason": "Direct remote shell access to shared Coolify VPS not present in current offline execution context.",
+    "operator_action_required": "Execute bundled read-only commands on the VPS host."
+  },
+  "resource_planning_guidelines": {
+    "preferred_collector_rss_target_mb": 250.0,
+    "hard_safety_ceiling_mb": 400.0,
+    "cadence_timeout_ms": 15000,
+    "policy": "Software efficiency preferred over purchasing additional RAM. 250 MB is a planning target, not verified capacity."
+  },
+  "read_only_command_bundle": "read_only_vps_commands.sh"
+}

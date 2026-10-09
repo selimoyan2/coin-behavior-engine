@@ -1,0 +1,97 @@
+{
+  "candidate_model_version": "CBE-0.8.0",
+  "sprint": "09.11",
+  "evaluation_timestamp_utc": "2026-10-09T17:58:42.470368+00:00",
+  "schema_version": "CBE-GATE-REGISTRY-0.8.0-V4",
+  "gates_evaluated_count": 14,
+  "gates_passed_count": 11,
+  "gates_failed_count": 0,
+  "gates_not_verified_count": 3,
+  "overall_verdict": "PROSPECTIVE_SHADOW_PREFLIGHT_VERIFIED",
+  "gates": [
+    {
+      "gate_id": "GATE_A",
+      "name": "Frozen Artifact Integrity",
+      "status": "PASS",
+      "evidence": "29/29 CBE-0.7.0 canonical hashes intact; CBE-0.8.0 bundle, thresholds, calibrations C & E verified."
+    },
+    {
+      "gate_id": "GATE_B",
+      "name": "Prospective Eligibility Correctness",
+      "status": "PASS",
+      "evidence": "Strict boundary: 72-287 bars disqualified (WARMUP_REPLAY); 288+ bars eligible."
+    },
+    {
+      "gate_id": "GATE_C",
+      "name": "Historical Replay Separation",
+      "status": "PASS",
+      "evidence": "Distinct record_label assignment; warmup events excluded from prospective denominators."
+    },
+    {
+      "gate_id": "GATE_D",
+      "name": "Timestamp Provenance",
+      "status": "PASS",
+      "evidence": "6-tier timeline enforced; receipt preceding close triggers CLOCK_UNTRUSTED."
+    },
+    {
+      "gate_id": "GATE_E",
+      "name": "Forecast/Outcome Accounting",
+      "status": "PASS",
+      "evidence": "Deterministic conservation identity verified across all 10 matrix scenarios."
+    },
+    {
+      "gate_id": "GATE_F",
+      "name": "Candidate C/E Parity",
+      "status": "PASS",
+      "evidence": "Identical inputs, features, Ridge forecasts, and market states evaluated on separate branches."
+    },
+    {
+      "gate_id": "GATE_G",
+      "name": "Event Chain Integrity",
+      "status": "PASS",
+      "evidence": "Append-only JSONL with SHA-256 cryptographic chaining, startup audit, and periodic checks."
+    },
+    {
+      "gate_id": "GATE_H",
+      "name": "Restart Recovery",
+      "status": "PASS",
+      "evidence": "Prunes matured outcomes on restart, reconstructs pending queue, zero duplicate evaluations."
+    },
+    {
+      "gate_id": "GATE_I",
+      "name": "Resource Measurement Honesty",
+      "status": "PASS",
+      "evidence": "Windows Working Set (~168.8 MB) clearly distinguished from Linux RSS; 81.2 MB headroom below 250 MB target."
+    },
+    {
+      "gate_id": "GATE_J",
+      "name": "VPS Capacity Evidence",
+      "status": "NOT_VERIFIED",
+      "evidence": "Direct remote VPS shell access not available in current session; script bundle prepared."
+    },
+    {
+      "gate_id": "GATE_K",
+      "name": "Network Budget Transparency",
+      "status": "PASS",
+      "evidence": "0.2 req/min steady state consumes only 0.033% of Binance limit; zero live calls made."
+    },
+    {
+      "gate_id": "GATE_L",
+      "name": "Production Isolation",
+      "status": "PASS",
+      "evidence": "Zero production files or databases mutated; CBE-0.7.0 completely untouched."
+    },
+    {
+      "gate_id": "GATE_M",
+      "name": "Live Feed Parity",
+      "status": "NOT_VERIFIED",
+      "evidence": "Awaiting explicit live activation in future stage; offline test does not substitute for live feed proof."
+    },
+    {
+      "gate_id": "GATE_N",
+      "name": "Genuine Prospective Timestamp Evidence",
+      "status": "NOT_VERIFIED",
+      "evidence": "Awaiting live activation; cannot be verified in offline simulation."
+    }
+  ]
+}

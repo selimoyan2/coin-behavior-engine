@@ -1,0 +1,197 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T17:58:42.436352+00:00",
+  "total_scenarios_evaluated": 10,
+  "all_scenarios_conserved": true,
+  "scenarios": {
+    "case_01_72_bars": {
+      "total_candles": 72,
+      "feature_computable_origins": 1,
+      "prospective_eligible_origins": 0,
+      "replay_only_origins": 1,
+      "predictions_emitted": 6,
+      "predictions_eligible_for_prospective_scoring": 0,
+      "matured_outcomes_by_horizon": {},
+      "pending_outcomes_by_horizon": {
+        "1h": 2,
+        "4h": 2,
+        "24h": 2
+      },
+      "disqualified_outcomes": 0,
+      "accounting_conserved": true
+    },
+    "case_02_287_bars": {
+      "total_candles": 287,
+      "feature_computable_origins": 216,
+      "prospective_eligible_origins": 0,
+      "replay_only_origins": 216,
+      "predictions_emitted": 1296,
+      "predictions_eligible_for_prospective_scoring": 0,
+      "matured_outcomes_by_horizon": {
+        "1h": 408,
+        "4h": 336
+      },
+      "pending_outcomes_by_horizon": {
+        "24h": 432,
+        "4h": 96,
+        "1h": 24
+      },
+      "disqualified_outcomes": 0,
+      "accounting_conserved": true
+    },
+    "case_03_288_bars": {
+      "total_candles": 288,
+      "feature_computable_origins": 217,
+      "prospective_eligible_origins": 1,
+      "replay_only_origins": 216,
+      "predictions_emitted": 1302,
+      "predictions_eligible_for_prospective_scoring": 6,
+      "matured_outcomes_by_horizon": {
+        "1h": 410,
+        "4h": 338
+      },
+      "pending_outcomes_by_horizon": {
+        "24h": 434,
+        "4h": 96,
+        "1h": 24
+      },
+      "disqualified_outcomes": 0,
+      "accounting_conserved": true
+    },
+    "case_04_289_bars": {
+      "total_candles": 289,
+      "feature_computable_origins": 218,
+      "prospective_eligible_origins": 2,
+      "replay_only_origins": 216,
+      "predictions_emitted": 1308,
+      "predictions_eligible_for_prospective_scoring": 12,
+      "matured_outcomes_by_horizon": {
+        "1h": 412,
+        "4h": 340
+      },
+      "pending_outcomes_by_horizon": {
+        "24h": 436,
+        "4h": 96,
+        "1h": 24
+      },
+      "disqualified_outcomes": 0,
+      "accounting_conserved": true
+    },
+    "case_05_350_bars": {
+      "total_candles": 350,
+      "feature_computable_origins": 279,
+      "prospective_eligible_origins": 63,
+      "replay_only_origins": 216,
+      "predictions_emitted": 1674,
+      "predictions_eligible_for_prospective_scoring": 378,
+      "matured_outcomes_by_horizon": {
+        "1h": 534,
+        "4h": 462
+      },
+      "pending_outcomes_by_horizon": {
+        "24h": 558,
+        "4h": 96,
+        "1h": 24
+      },
+      "disqualified_outcomes": 0,
+      "accounting_conserved": true
+    },
+    "case_06_500_bars": {
+      "total_candles": 500,
+      "feature_computable_origins": 429,
+      "prospective_eligible_origins": 213,
+      "replay_only_origins": 216,
+      "predictions_emitted": 2574,
+      "predictions_eligible_for_prospective_scoring": 1278,
+      "matured_outcomes_by_horizon": {
+        "1h": 834,
+        "4h": 762,
+        "24h": 282
+      },
+      "pending_outcomes_by_horizon": {
+        "24h": 576,
+        "4h": 96,
+        "1h": 24
+      },
+      "disqualified_outcomes": 0,
+      "accounting_conserved": true
+    },
+    "case_07_restarted_collector": {
+      "total_candles": 500,
+      "feature_computable_origins": 429,
+      "prospective_eligible_origins": 213,
+      "replay_only_origins": 216,
+      "predictions_emitted": 2574,
+      "predictions_eligible_for_prospective_scoring": 1278,
+      "matured_outcomes_by_horizon": {
+        "1h": 834,
+        "4h": 762,
+        "24h": 282
+      },
+      "pending_outcomes_by_horizon": {
+        "24h": 576,
+        "4h": 96,
+        "1h": 24
+      },
+      "disqualified_outcomes": 0,
+      "accounting_conserved": true
+    },
+    "case_08_source_gap": {
+      "total_candles": 400,
+      "feature_computable_origins": 328,
+      "prospective_eligible_origins": 13,
+      "replay_only_origins": 315,
+      "predictions_emitted": 1968,
+      "predictions_eligible_for_prospective_scoring": 78,
+      "matured_outcomes_by_horizon": {
+        "1h": 632,
+        "4h": 560,
+        "24h": 82
+      },
+      "pending_outcomes_by_horizon": {
+        "24h": 574,
+        "4h": 96,
+        "1h": 24
+      },
+      "disqualified_outcomes": 198,
+      "accounting_conserved": true
+    },
+    "case_09_delayed_candles": {
+      "total_candles": 300,
+      "feature_computable_origins": 229,
+      "prospective_eligible_origins": 13,
+      "replay_only_origins": 216,
+      "predictions_emitted": 1374,
+      "predictions_eligible_for_prospective_scoring": 78,
+      "matured_outcomes_by_horizon": {
+        "1h": 434,
+        "4h": 362
+      },
+      "pending_outcomes_by_horizon": {
+        "24h": 458,
+        "4h": 96,
+        "1h": 24
+      },
+      "disqualified_outcomes": 0,
+      "accounting_conserved": true
+    },
+    "case_10_invalid_timestamps": {
+      "total_candles": 300,
+      "feature_computable_origins": 229,
+      "prospective_eligible_origins": 13,
+      "replay_only_origins": 216,
+      "predictions_emitted": 1374,
+      "predictions_eligible_for_prospective_scoring": 78,
+      "matured_outcomes_by_horizon": {
+        "1h": 434,
+        "4h": 362
+      },
+      "pending_outcomes_by_horizon": {
+        "24h": 458,
+        "4h": 96,
+        "1h": 24
+      },
+      "disqualified_outcomes": 0,
+      "accounting_conserved": true
+    }
+  }
+}

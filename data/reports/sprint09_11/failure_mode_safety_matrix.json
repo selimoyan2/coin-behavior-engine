@@ -1,0 +1,77 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T17:58:42.460438+00:00",
+  "total_failure_modes_defined": 10,
+  "all_modes_fail_closed": true,
+  "modes": [
+    {
+      "mode_id": "FAIL_01_INSUFFICIENT_HISTORY",
+      "condition": "Buffer length < 288 bars",
+      "detection": "FeaturePipeline lookback check",
+      "action": "Label as WARMUP_REPLAY; disqualify from prospective scoring",
+      "production_impact": "ZERO"
+    },
+    {
+      "mode_id": "FAIL_02_SOURCE_GAP",
+      "condition": "Missing candle (step diff > 300s)",
+      "detection": "FeedAdapter continuity validation",
+      "action": "Transition to SOURCE_GAP; flag quality status; pause eligibility",
+      "production_impact": "ZERO"
+    },
+    {
+      "mode_id": "FAIL_03_API_UNAVAILABLE",
+      "condition": "Binance HTTP 5xx or timeout",
+      "detection": "HTTP client retry handler",
+      "action": "Exponential backoff (3 attempts), then PAUSED fail-closed",
+      "production_impact": "ZERO"
+    },
+    {
+      "mode_id": "FAIL_04_RATE_LIMIT",
+      "condition": "Binance HTTP 429 / 418",
+      "detection": "HTTP status inspection",
+      "action": "Immediate backoff for duration specified in Retry-After header",
+      "production_impact": "ZERO"
+    },
+    {
+      "mode_id": "FAIL_05_CLOCK_SKEW",
+      "condition": "Clock skew > 2000 ms or receipt < close",
+      "detection": "Collector timing audit",
+      "action": "Transition to CLOCK_UNTRUSTED; disqualify prospective scoring",
+      "production_impact": "ZERO"
+    },
+    {
+      "mode_id": "FAIL_06_DISK_FULL",
+      "condition": "Available storage < 50 MB",
+      "detection": "HealthMonitor disk check",
+      "action": "Transition to PAUSED; flush logs; emit telemetry alert",
+      "production_impact": "ZERO"
+    },
+    {
+      "mode_id": "FAIL_07_SNAPSHOT_CORRUPTION",
+      "condition": "Invalid JSON or truncated snapshot",
+      "detection": "SnapshotManager validation",
+      "action": "Fallback safely to cold warm-up without crashing",
+      "production_impact": "ZERO"
+    },
+    {
+      "mode_id": "FAIL_08_EVENT_CHAIN_CORRUPTION",
+      "condition": "Modified record or broken SHA-256 hash",
+      "detection": "ImmutablePredictionStore on-boot & 288-cycle audit",
+      "action": "Raise EventTamperError; lock collector in PAUSED fail-closed",
+      "production_impact": "ZERO"
+    },
+    {
+      "mode_id": "FAIL_09_OOM_RISK",
+      "condition": "Process RSS > 250 MB",
+      "detection": "HealthMonitor PSAPI/VmRSS check",
+      "action": "Trigger explicit garbage collection; if > 400 MB, graceful pause",
+      "production_impact": "ZERO"
+    },
+    {
+      "mode_id": "FAIL_10_OUT_OF_ORDER_CANDLE",
+      "condition": "Incoming candle timestamp < previous",
+      "detection": "FeedAdapter monotonic check",
+      "action": "Reject candle with INVALID_CANDLE status",
+      "production_impact": "ZERO"
+    }
+  ]
+}

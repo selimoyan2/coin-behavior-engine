@@ -1,0 +1,86 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T17:57:02.662727+00:00",
+  "minimum_feature_computable_bars": 72,
+  "full_prospective_window_bars": 288,
+  "boundary_matrix": {
+    "72_bars": {
+      "candle_count": 72,
+      "buffer_length": 72,
+      "feature_computable": true,
+      "recon_status": "READY_PARTIAL_WARMUP",
+      "state_machine_state": "WARMING_UP",
+      "prospective_scoring_eligible": false,
+      "total_prediction_events": 6,
+      "eligible_prospective_events": 0,
+      "warmup_replay_events": 6,
+      "boundary_rule": "Eligible iff buffer >= 288 contiguous closed candles with pristine quality",
+      "verdict": "DISQUALIFIED_PARTIAL_WARMUP"
+    },
+    "287_bars": {
+      "candle_count": 287,
+      "buffer_length": 287,
+      "feature_computable": true,
+      "recon_status": "READY_PARTIAL_WARMUP",
+      "state_machine_state": "WARMING_UP",
+      "prospective_scoring_eligible": false,
+      "total_prediction_events": 1296,
+      "eligible_prospective_events": 0,
+      "warmup_replay_events": 1296,
+      "boundary_rule": "Eligible iff buffer >= 288 contiguous closed candles with pristine quality",
+      "verdict": "DISQUALIFIED_PARTIAL_WARMUP"
+    },
+    "288_bars": {
+      "candle_count": 288,
+      "buffer_length": 288,
+      "feature_computable": true,
+      "recon_status": "READY",
+      "state_machine_state": "ELIGIBLE",
+      "prospective_scoring_eligible": true,
+      "total_prediction_events": 1302,
+      "eligible_prospective_events": 6,
+      "warmup_replay_events": 1296,
+      "boundary_rule": "Eligible iff buffer >= 288 contiguous closed candles with pristine quality",
+      "verdict": "PROSPECTIVE_SCORING_ELIGIBLE"
+    },
+    "289_bars": {
+      "candle_count": 289,
+      "buffer_length": 289,
+      "feature_computable": true,
+      "recon_status": "READY",
+      "state_machine_state": "ELIGIBLE",
+      "prospective_scoring_eligible": true,
+      "total_prediction_events": 1308,
+      "eligible_prospective_events": 12,
+      "warmup_replay_events": 1296,
+      "boundary_rule": "Eligible iff buffer >= 288 contiguous closed candles with pristine quality",
+      "verdict": "PROSPECTIVE_SCORING_ELIGIBLE"
+    },
+    "350_bars": {
+      "candle_count": 350,
+      "buffer_length": 350,
+      "feature_computable": true,
+      "recon_status": "READY",
+      "state_machine_state": "ELIGIBLE",
+      "prospective_scoring_eligible": true,
+      "total_prediction_events": 1674,
+      "eligible_prospective_events": 378,
+      "warmup_replay_events": 1296,
+      "boundary_rule": "Eligible iff buffer >= 288 contiguous closed candles with pristine quality",
+      "verdict": "PROSPECTIVE_SCORING_ELIGIBLE"
+    },
+    "500_bars": {
+      "candle_count": 500,
+      "buffer_length": 350,
+      "feature_computable": true,
+      "recon_status": "READY",
+      "state_machine_state": "ELIGIBLE",
+      "prospective_scoring_eligible": true,
+      "total_prediction_events": 2574,
+      "eligible_prospective_events": 1278,
+      "warmup_replay_events": 1296,
+      "boundary_rule": "Eligible iff buffer >= 288 contiguous closed candles with pristine quality",
+      "verdict": "PROSPECTIVE_SCORING_ELIGIBLE"
+    }
+  },
+  "summary": "Bars 72-287 are strictly marked DISQUALIFIED_PARTIAL_WARMUP and labeled WARMUP_REPLAY. Exactly at bar 288, prospective scoring eligibility transitions to True."
+}
