@@ -164,19 +164,44 @@ Execute the following commands on `srv1114257` to confirm the container landed i
    # [DeploySafety] INERT LANDING VERIFICATION SUCCESSFUL (EXIT CODE 0)
    ```
 
-4. **Verify Authoritative Docker Network Isolation:**
+4. **Verify Authoritative Docker Host Isolation & Security Settings:**
    ```bash
+   # Network Isolation: MUST BE 'none'
    docker inspect cbe_080_coolify_inert --format '{{.HostConfig.NetworkMode}}'
-   # MUST RETURN: none
+   
+   # Read-Only Root Filesystem: MUST BE 'true'
+   docker inspect cbe_080_coolify_inert --format '{{.HostConfig.ReadonlyRootfs}}'
+   
+   # Non-Root User Identity: MUST BE '1000:1000'
+   docker inspect cbe_080_coolify_inert --format '{{.Config.User}}'
+   
+   # Volume Mount Configuration: Ensure cbe_080_shadow_data is mounted read-write to /app/data/prospective_shadow
+   docker inspect cbe_080_coolify_inert --format '{{range .Mounts}}{{println .Type .Name .Destination .RW}}{{end}}'
    ```
 
 5. **Verify Persistent Audit Evidence in Volume:**
+   The inert verification creates two audit artifacts in the volume:
+   - `coolify_inert_landing_audit.json`: Atomic latest audit report with cryptographic checksum.
+   - `coolify_inert_landing_history.jsonl`: Append-only, bounded history (max 500 entries) retaining the genesis record and newest runs.
+
    ```bash
-   # Inspect volume content without starting new background processes
+   # Inspect latest audit summary
    docker run --rm -v cbe_080_shadow_data:/data:ro alpine cat /data/audit/coolify_inert_landing_audit.json
+
+   # Inspect audit history entries count
+   docker run --rm -v cbe_080_shadow_data:/data:ro alpine wc -l /data/audit/coolify_inert_landing_history.jsonl
    ```
 
-6. **Verify CBE-0.7.0 Production is 100% Intact:**
+6. **Volume Permission Semantics & Operator Recovery:**
+   - **First-Start Behavior:** Docker initializes an empty named volume with the ownership of the underlying image directory (`/app/data/prospective_shadow`, configured in `Dockerfile.staging` as `cbe:cbe` UID/GID `1000:1000`).
+   - **Existing Volume Safety:** If the volume was previously created or accessed by `root`, it may be owned by `0:0`. If UID 1000 cannot write to it, `deploy_safety.py` detects this fail-closed and aborts with `VOLUME_PERMISSION_DENIED` (exit code 1).
+   - **Operator Recovery Procedure (if volume permission error occurs):**
+     ```bash
+     # Fix ownership to non-root UID:GID 1000:1000
+     docker run --rm -v cbe_080_shadow_data:/data alpine chown -R 1000:1000 /data
+     ```
+
+7. **Verify CBE-0.7.0 Production is 100% Intact:**
    ```bash
    # Check CBE-0.7.0 container status and databases
    docker ps --filter "name=coin-behavior-engine" --format "table {{.Names}}\t{{.Status}}"
