@@ -1,0 +1,23 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T17:32:58.331577+00:00",
+  "platform": "win32",
+  "python_version": "3.11.16",
+  "measurement_api": "Windows PSAPI GetProcessMemoryInfo",
+  "lifecycle_rss_mb": {
+    "idle_process_rss": 154.426,
+    "after_initialization_rss": 155.137,
+    "after_350_candle_warmup_rss": 161.941,
+    "steady_state_rss": 161.941,
+    "recovery_restart_peak_rss": 168.387,
+    "absolute_peak_rss": 168.387
+  },
+  "component_payload_estimates_kb": {
+    "buffer_350_candles_payload_kb": 38.28,
+    "ridge_models_weights_kb": 0.07,
+    "unmatured_queue_bounded_1728_events_kb": 1382.4
+  },
+  "reconciliation": {
+    "original_150mb_budget_result": "FAIL (168.8 MB > 150 MB)",
+    "reconciled_250mb_budget_result": "PASS (168.8 MB < 250 MB with 81.2 MB headroom)"
+  }
+}

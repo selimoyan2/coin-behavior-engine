@@ -135,9 +135,53 @@ class ShadowHealthMonitorV080:
         return snap
 
     def _get_process_rss_mb(self) -> float:
-        """Estimate current resident set size in MB."""
+        """Query real OS process resident set size in MB using standard OS APIs."""
+        import sys
+        if sys.platform == "win32":
+            try:
+                import ctypes
+                from ctypes import wintypes
+
+                class PROCESS_MEMORY_COUNTERS(ctypes.Structure):
+                    _fields_ = [
+                        ("cb", wintypes.DWORD),
+                        ("PageFaultCount", wintypes.DWORD),
+                        ("PeakWorkingSetSize", ctypes.c_size_t),
+                        ("WorkingSetSize", ctypes.c_size_t),
+                        ("QuotaPeakPagedPoolUsage", ctypes.c_size_t),
+                        ("QuotaPagedPoolUsage", ctypes.c_size_t),
+                        ("QuotaPeakNonPagedPoolUsage", ctypes.c_size_t),
+                        ("QuotaNonPagedPoolUsage", ctypes.c_size_t),
+                        ("PagefileUsage", ctypes.c_size_t),
+                        ("PeakPagefileUsage", ctypes.c_size_t),
+                    ]
+
+                pmc = PROCESS_MEMORY_COUNTERS()
+                pmc.cb = ctypes.sizeof(PROCESS_MEMORY_COUNTERS)
+                psapi = ctypes.windll.psapi
+                kernel32 = ctypes.windll.kernel32
+                psapi.GetProcessMemoryInfo.argtypes = [
+                    wintypes.HANDLE,
+                    ctypes.POINTER(PROCESS_MEMORY_COUNTERS),
+                    wintypes.DWORD,
+                ]
+                psapi.GetProcessMemoryInfo.restype = wintypes.BOOL
+                h = kernel32.GetCurrentProcess()
+                if psapi.GetProcessMemoryInfo(h, ctypes.byref(pmc), pmc.cb):
+                    return round(pmc.WorkingSetSize / (1024.0 * 1024.0), 2)
+            except Exception:
+                pass
+        elif sys.platform.startswith("linux"):
+            try:
+                with open("/proc/self/status", "r") as f:
+                    for line in f:
+                        if line.startswith("VmRSS:"):
+                            return round(float(line.split()[1]) / 1024.0, 2)
+            except Exception:
+                pass
+
         try:
             import psutil
             return round(psutil.Process(os.getpid()).memory_info().rss / (1024.0 * 1024.0), 2)
         except Exception:
-            return 45.0  # Fallback baseline
+            return -1.0

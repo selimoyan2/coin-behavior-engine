@@ -31,11 +31,12 @@ class ShadowCollectorConfig:
     min_warmup_bars: int = 72
     full_warmup_bars: int = 288
 
-    # 4. Resource Budgets
+    # 4. Resource Budgets & Audit Policy
     max_rss_mb: float = 150.0
     max_network_requests_per_minute: int = 2
     max_event_log_mb: float = 250.0
     clock_skew_budget_ms: float = 1000.0
+    full_audit_interval_cycles: int = 288  # Periodic full-chain audit once every 24 hours
 
     # 5. Metadata and Experiment Tracking
     experiment_id: str = "EXP-CBE-0.8.0-SHADOW-2026-V1"

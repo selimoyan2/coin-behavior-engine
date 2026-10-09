@@ -1,0 +1,39 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T17:33:09.972826+00:00",
+  "workload_specification": {
+    "candle_count": 350,
+    "warmup_bars": 72,
+    "full_warmup_bars": 288,
+    "candidate_branches": [
+      "candidate_c",
+      "candidate_e"
+    ],
+    "horizons": [
+      "1h",
+      "4h",
+      "24h"
+    ],
+    "events_per_step": 6
+  },
+  "original_unoptimized_benchmark_sprint09_10": {
+    "mean_step_latency_ms": 685.5779,
+    "p95_step_latency_ms": 1571.3103,
+    "max_step_latency_ms": 1818.1596,
+    "full_audit_scope": "Executed every single step (O(N) file read and re-hash)",
+    "gate_k_verdict": "FAIL (Corrected from unjustified Sprint 09.10 PASS)"
+  },
+  "current_optimized_benchmark_sprint09_10_2": {
+    "steady_state_count": 278,
+    "mean_step_latency_ms": 38.2227,
+    "median_step_latency_ms": 36.3514,
+    "p95_step_latency_ms": 60.283,
+    "p99_step_latency_ms": 77.3282,
+    "max_step_latency_ms": 259.5183,
+    "full_history_audit_duration_ms": 308.82,
+    "full_audit_events_verified": 1674,
+    "full_audit_valid": true,
+    "gate_k_verdict": "PASS (Well within 150 ms step budget)"
+  },
+  "speedup_factor_mean": 17.94,
+  "speedup_factor_p95": 26.07
+}

@@ -85,10 +85,21 @@ class ShadowCollectorV080:
         self.total_cycles = 0
 
     def initialize(self) -> bool:
-        """Initialize buffer from local snapshot (Option C) or cold start (Option D)."""
+        """Initialize buffer from local snapshot and audit historical integrity."""
         logger.info("Initializing CBE-0.8.0 Shadow Collector...")
 
-        # 1. Attempt primary strategy: restore local snapshot
+        # 0. Audit historical prediction hash chain before starting
+        audit = self.audit_full_history()
+        if not audit.is_valid:
+            logger.error(f"Startup event chain audit failed: {audit.violations}")
+            self.state_machine.transition_to(CaptureState.PAUSED, f"Startup audit failed: {audit.violations}")
+            return False
+
+        # 1. Synchronize pending outcome queue with existing outcome records
+        if self.outcome_resolver._seen_predictions:
+            self.prediction_store.prune_matured_events(self.outcome_resolver._seen_predictions)
+
+        # 2. Attempt primary strategy: restore local snapshot
         restored, msg = self.feature_pipeline.restore_from_snapshot()
         if restored:
             buf_len = len(self.feature_pipeline.adapter.buffer)
@@ -103,7 +114,7 @@ class ShadowCollectorV080:
             logger.info(f"Snapshot restore successful: {msg}")
             return True
 
-        # 2. Fallback: Cold start in WARMING_UP
+        # 3. Fallback: Cold start in WARMING_UP
         self.state_machine.transition_to(CaptureState.WARMING_UP, "Cold start (no valid snapshot found)")
         logger.info("Starting in cold warm-up mode.")
         return True
@@ -265,6 +276,16 @@ class ShadowCollectorV080:
         # 10. Audit Chain & Record Telemetry
         cycle_ms = (time.perf_counter() - t0) * 1000.0
         hash_chain_valid = self.prediction_store.is_chain_intact
+
+        # Periodic full audit (once every full_audit_interval_cycles, e.g., 288 cycles)
+        if self.total_cycles % self.config.full_audit_interval_cycles == 0:
+            full_audit = self.audit_full_history()
+            if not full_audit.is_valid:
+                hash_chain_valid = False
+                logger.error(f"Periodic full-chain audit failed: {full_audit.violations}")
+                self.state_machine.transition_to(
+                    CaptureState.PAUSED, f"Periodic full audit failed: {full_audit.violations}"
+                )
 
         req_count = getattr(self.source, "request_count", 0)
         telemetry = self.health_monitor.capture_telemetry(

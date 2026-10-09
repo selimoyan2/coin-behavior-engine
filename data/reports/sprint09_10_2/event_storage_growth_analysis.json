@@ -1,0 +1,21 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T17:33:18.850590+00:00",
+  "measured_sizes": {
+    "prediction_event_exact_bytes": 966,
+    "outcome_event_exact_bytes": 520,
+    "daily_prediction_events": 1728,
+    "daily_outcome_events": 1728,
+    "daily_total_log_growth_mb": 2.449
+  },
+  "projections": {
+    "30_days_total_events": 51840,
+    "30_days_storage_mb": 73.47,
+    "90_days_total_events": 155520,
+    "90_days_storage_mb": 220.4
+  },
+  "retention_and_archival_policy": {
+    "immutable_raw_preservation": "Never truncate, delete, or overwrite raw historical records.",
+    "monthly_compression_strategy": "Rotate and gzip completed monthly segments (e.g. shadow_predictions_2026_01.jsonl.gz); reduces 30-day footprint from ~82 MB to ~9.5 MB.",
+    "filesystem_safety_margin_mb": 500.0
+  }
+}

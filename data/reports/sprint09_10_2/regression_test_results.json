@@ -1,0 +1,27 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T17:36:56.542138+00:00",
+  "all_suites_passed": true,
+  "suites_evaluated": {
+    "tests/test_sprint09_10_2_final_gate.py": {
+      "passed": true,
+      "return_code": 0,
+      "stdout_summary": "_no_duplicate_outcomes PASSED [ 50%]\ntests/test_sprint09_10_2_final_gate.py::test_candidate_c_and_e_numerical_parity PASSED [ 62%]\ntests/test_sprint09_10_2_final_gate.py::test_long_duration_bounded_queue_and_memory PASSED [ 75%]\ntests/test_sprint09_10_2_final_gate.py::test_production_freeze_and_isolation PASSED [ 87%]\ntests/test_sprint09_10_2_final_gate.py::test_deliverables_sprint09_10_2_completeness PASSED [100%]\n\n============================= 8 passed in 16.14s ==============================\n"
+    },
+    "tests/test_sprint09_10_shadow_collector.py": {
+      "passed": true,
+      "return_code": 0,
+      "stdout_summary": "nce PASSED [ 50%]\ntests/test_sprint09_10_shadow_collector.py::test_immutable_prediction_store_and_tamper_detection PASSED [ 62%]\ntests/test_sprint09_10_shadow_collector.py::test_forward_outcome_maturity_engine PASSED [ 75%]\ntests/test_sprint09_10_shadow_collector.py::test_atomic_snapshot_and_crash_recovery PASSED [ 87%]\ntests/test_sprint09_10_shadow_collector.py::test_deliverables_and_scientific_gates PASSED [100%]\n\n============================== 8 passed in 2.07s ==============================\n"
+    },
+    "tests/test_sprint09_10_1_audit.py": {
+      "passed": true,
+      "return_code": 0,
+      "stdout_summary": "_sprint09_10_1_audit.py::test_unmatured_events_queue_and_pruning PASSED [ 33%]\ntests/test_sprint09_10_1_audit.py::test_collector_step_latency_within_budget PASSED [ 50%]\ntests/test_sprint09_10_1_audit.py::test_full_chain_audit_on_demand PASSED [ 66%]\ntests/test_sprint09_10_1_audit.py::test_scientific_gate_correction_audit PASSED [ 83%]\ntests/test_sprint09_10_1_audit.py::test_deliverables_sprint09_10_1 PASSED [100%]\n\n============================== 6 passed in 4.03s ==============================\n"
+    },
+    "tests/test_freeze_v2.py": {
+      "passed": true,
+      "return_code": 0,
+      "stdout_summary": "44%]\ntests/test_freeze_v2.py::test_05_change_one_space_or_content_byte_fails PASSED [ 55%]\ntests/test_freeze_v2.py::test_06_change_model_version_fails PASSED       [ 66%]\ntests/test_freeze_v2.py::test_07_change_historical_boundary_fails PASSED [ 77%]\ntests/test_freeze_v2.py::test_08_legacy_manifest_missing_fails PASSED    [ 88%]\ntests/test_freeze_v2.py::test_09_all_29_original_linux_git_artifacts_pass PASSED [100%]\n\n============================== 9 passed in 2.14s ==============================\n"
+    }
+  },
+  "overall_status": "ALL_REGRESSION_TESTS_PASS"
+}

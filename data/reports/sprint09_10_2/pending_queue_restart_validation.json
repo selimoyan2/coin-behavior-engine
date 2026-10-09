@@ -1,0 +1,49 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T17:33:18.849068+00:00",
+  "total_scenarios_tested": 8,
+  "all_scenarios_passed": true,
+  "scenarios": [
+    {
+      "scenario": "Restart before 1h maturity (50 bars)",
+      "status": "PASS",
+      "unmatured_events_recovered": 0
+    },
+    {
+      "scenario": "Restart after 1h maturity with outcome pruning",
+      "status": "PASS",
+      "matured_outcomes_synced": 34,
+      "pending_unmatured_remaining": 140
+    },
+    {
+      "scenario": "Duplicate outcome resolution rejection",
+      "status": "PASS",
+      "duplicate_evaluations_prevented": true
+    },
+    {
+      "scenario": "Tampered prediction log fails closed on startup",
+      "status": "PASS",
+      "fail_closed_verified": true
+    },
+    {
+      "scenario": "Corrupted snapshot fallback to cold start",
+      "status": "PASS",
+      "safe_fallback_verified": true
+    },
+    {
+      "scenario": "Source gap detection in incoming candle feed",
+      "status": "PASS",
+      "gap_detected_verified": true
+    },
+    {
+      "scenario": "Out-of-order candle rejection",
+      "status": "PASS",
+      "out_of_order_rejected": true
+    },
+    {
+      "scenario": "Periodic full-chain audit execution",
+      "status": "PASS",
+      "periodic_audit_verified": true
+    }
+  ],
+  "overall_status": "PENDING_QUEUE_RESTART_RECOVERY_VERIFIED"
+}

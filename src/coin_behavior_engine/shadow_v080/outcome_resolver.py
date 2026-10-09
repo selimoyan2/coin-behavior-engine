@@ -125,6 +125,12 @@ class OutcomeResolverV080:
         now_ms = current_time_ms if current_time_ms is not None else available_candles[-1].timestamp_close
         resolved = []
 
+        # Precompute O(1) index mappings for available candles
+        close_to_idx = {c.datetime_close: i for i, c in enumerate(available_candles)}
+        open_dt_to_idx = {c.datetime_open: i for i, c in enumerate(available_candles)}
+        open_ms_to_idx = {c.timestamp_open: i for i, c in enumerate(available_candles)}
+        earliest_c = available_candles[0] if available_candles else None
+
         with self._lock:
             for pred in pending_events:
                 if pred.record_hash in self._seen_predictions:
@@ -138,19 +144,31 @@ class OutcomeResolverV080:
                 if required_bars is None:
                     continue
 
-                # Collect future contiguous candles: from origin_ms up to required_bars
-                future_candles: List[CandleData] = []
-                has_gap = False
-                prev_open = origin_ms
+                # Locate the starting index of future candles
+                # Case 1: Origin corresponds to candle close time (standard collector flow) -> forward window starts at next candle
+                if pred.forecast_origin_utc in close_to_idx:
+                    start_idx = close_to_idx[pred.forecast_origin_utc] + 1
+                # Case 2: Origin corresponds to candle open time (open-relative test flows)
+                elif pred.forecast_origin_utc in open_dt_to_idx:
+                    start_idx = open_dt_to_idx[pred.forecast_origin_utc]
+                elif origin_ms in open_ms_to_idx:
+                    start_idx = open_ms_to_idx[origin_ms]
+                elif earliest_c is not None:
+                    # If origin candle was pruned, check if origin occurred right before buffer
+                    if abs(earliest_c.timestamp_open - (origin_ms + 1000)) <= 2000 or (
+                        earliest_c.timestamp_open > origin_ms - 2000 and earliest_c.timestamp_open <= origin_ms + 2000
+                    ):
+                        start_idx = 0
+                    else:
+                        start_idx = None
+                else:
+                    start_idx = None
 
-                for step in range(required_bars):
-                    expected_open = prev_open + (CANDLE_INTERVAL_MS if step > 0 else 0)
-                    candle = candle_map.get(expected_open)
-                    if candle is None:
-                        # Forward window incomplete
-                        break
-                    future_candles.append(candle)
-                    prev_open = expected_open
+                if start_idx is None or start_idx >= len(available_candles):
+                    continue
+
+                future_candles = available_candles[start_idx : start_idx + required_bars]
+                has_gap = False
 
                 # Check if forward window is complete
                 if len(future_candles) < required_bars:
