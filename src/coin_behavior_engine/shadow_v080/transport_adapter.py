@@ -255,6 +255,10 @@ class BinanceSpotWebSocketAdapter(BinanceSpotLiveTransportBase):
         max_queue_size: int = 500,
         max_message_bytes: int = 65536,
         socket_timeout_sec: float = 5.0,
+        only_finalized: bool = True,
+        auto_reconnect: bool = True,
+        max_reconnect_backoff_sec: float = 60.0,
+        stale_timeout_sec: float = 900.0,
     ):
         super().__init__(config)
         self.host = host
@@ -263,17 +267,31 @@ class BinanceSpotWebSocketAdapter(BinanceSpotLiveTransportBase):
         self.max_queue_size = max_queue_size
         self.max_message_bytes = max_message_bytes
         self.socket_timeout_sec = socket_timeout_sec
+        self.only_finalized = only_finalized
+        self.auto_reconnect = auto_reconnect
+        self.max_reconnect_backoff_sec = max_reconnect_backoff_sec
+        self.stale_timeout_sec = stale_timeout_sec
 
         self._sock: Optional[ssl.SSLSocket] = None
         self._queue: collections.deque = collections.deque()
         self.total_messages_received = 0
         self.dropped_messages = 0
+        self.intermediate_ticks_suppressed = 0
         self.reconnect_attempts = 0
+        self._next_reconnect_time: float = 0.0
+        self._last_message_time: float = time.time()
         self._last_ping_time: float = 0.0
 
     def connect(self) -> None:
         """Establish TLS connection and complete RFC 6455 WebSocket handshake."""
         self._verify_approval_3_gate()
+        if self._sock:
+            try:
+                self._sock.close()
+            except Exception:
+                pass
+            self._sock = None
+
         try:
             raw_sock = socket.create_connection((self.host, self.port), timeout=self.socket_timeout_sec)
             ctx = ssl.create_default_context()
@@ -281,6 +299,9 @@ class BinanceSpotWebSocketAdapter(BinanceSpotLiveTransportBase):
             self._sock.settimeout(self.socket_timeout_sec)
             self._perform_handshake()
             self._connected = True
+            self.reconnect_attempts = 0
+            self._next_reconnect_time = 0.0
+            self._last_message_time = time.time()
             logger.info(f"WebSocket connected to {self.host}:{self.port}{self.path}")
         except Exception as e:
             self._connected = False
@@ -394,9 +415,70 @@ class BinanceSpotWebSocketAdapter(BinanceSpotLiveTransportBase):
 
         return opcode, payload
 
+    def _handle_connection_loss(self, error: Optional[Exception] = None) -> None:
+        """Safely clean up socket and initiate exponential backoff reconnection if enabled."""
+        if self._sock:
+            try:
+                self._send_frame(0x8, b"")
+            except Exception:
+                pass
+            try:
+                self._sock.close()
+            except Exception:
+                pass
+            self._sock = None
+
+        self._connected = False
+
+        if self.auto_reconnect:
+            self.reconnect_attempts += 1
+            backoff = calculate_backoff(
+                self.reconnect_attempts,
+                base_sec=1.0,
+                max_sec=self.max_reconnect_backoff_sec,
+                jitter=True,
+            )
+            self._next_reconnect_time = time.time() + backoff
+            err_details = f": {error}" if error else ""
+            logger.warning(
+                f"WebSocket connection lost{err_details}. Scheduled reconnect attempt {self.reconnect_attempts} in {backoff:.2f}s."
+            )
+        else:
+            logger.warning("WebSocket connection closed (auto_reconnect disabled).")
+
     def poll_message(self) -> Optional[Any]:
         self._verify_approval_3_gate()
+
+        # If disconnected, handle auto-reconnection
         if not self._connected or not self._sock:
+            if not self.auto_reconnect:
+                return None
+            now = time.time()
+            if now < self._next_reconnect_time:
+                return None
+            try:
+                logger.info(f"Attempting WebSocket reconnect (attempt {self.reconnect_attempts})...")
+                self.connect()
+            except Exception as e:
+                self.reconnect_attempts += 1
+                backoff = calculate_backoff(
+                    self.reconnect_attempts,
+                    base_sec=1.0,
+                    max_sec=self.max_reconnect_backoff_sec,
+                    jitter=True,
+                )
+                self._next_reconnect_time = time.time() + backoff
+                logger.warning(f"WebSocket reconnect attempt failed: {e}. Next attempt in {backoff:.2f}s.")
+                return None
+
+        # Check stale feed
+        now = time.time()
+        if now - self._last_message_time > self.stale_timeout_sec:
+            logger.warning(
+                f"Stale WebSocket feed: no messages for {now - self._last_message_time:.1f}s "
+                f"(timeout: {self.stale_timeout_sec}s). Disconnecting to trigger reconnection."
+            )
+            self._handle_connection_loss(StaleFeedError(f"Stale feed timeout ({self.stale_timeout_sec}s)"))
             return None
 
         if self._queue:
@@ -404,27 +486,44 @@ class BinanceSpotWebSocketAdapter(BinanceSpotLiveTransportBase):
 
         try:
             opcode, payload = self._read_frame()
+            self._last_message_time = time.time()
+
             if opcode == 0x1:  # Text frame
                 msg = json.loads(payload.decode("utf-8"))
+                if self.only_finalized:
+                    # Inspect if kline payload indicates unfinalized intermediate tick
+                    k = msg.get("k", msg) if isinstance(msg, dict) else None
+                    if isinstance(k, dict) and not k.get("x", False):
+                        # Intermediate unfinalized tick - update liveness but do not yield candle
+                        self.intermediate_ticks_suppressed += 1
+                        return None
                 self.total_messages_received += 1
                 return msg
             elif opcode == 0x9:  # Ping frame -> respond with Pong
                 self._send_frame(0xA, payload)
+                logger.debug("Responded to RFC 6455 Ping frame with Pong.")
                 return None
             elif opcode == 0xA:  # Pong frame
+                logger.debug("Received RFC 6455 Pong frame.")
                 return None
             elif opcode == 0x8:  # Close frame
-                self.disconnect()
+                logger.info("Received RFC 6455 Close frame from server.")
+                self._handle_connection_loss()
                 return None
         except socket.timeout:
             return None
+        except (TransportConnectionError, ConnectionResetError, BrokenPipeError, ssl.SSLError, OSError) as e:
+            self._handle_connection_loss(e)
+            return None
         except Exception as e:
-            logger.warning(f"WebSocket read error: {e}")
+            logger.warning(f"Unexpected WebSocket read error: {e}")
+            self._handle_connection_loss(e)
             return None
 
         return None
 
     def disconnect(self) -> None:
+        self.auto_reconnect = False
         if self._sock:
             try:
                 self._send_frame(0x8, b"")
@@ -444,6 +543,9 @@ class BinanceSpotWebSocketAdapter(BinanceSpotLiveTransportBase):
             "queue_depth": len(self._queue),
             "total_received": self.total_messages_received,
             "dropped": self.dropped_messages,
+            "intermediate_ticks_suppressed": self.intermediate_ticks_suppressed,
+            "reconnect_attempts": self.reconnect_attempts,
+            "last_message_time": self._last_message_time,
         }
 
 
@@ -519,6 +621,39 @@ class BinanceSpotRestAdapter(BinanceSpotLiveTransportBase):
         except Exception as e:
             self.failed_requests += 1
             raise TransportConnectionError(f"Failed to fetch klines from {url}: {e}") from e
+
+    def fetch_validated_klines(
+        self,
+        symbol: str = "BTCUSDT",
+        interval: str = "5m",
+        start_time: Optional[int] = None,
+        end_time: Optional[int] = None,
+        limit: int = 500,
+        provenance: Union[str, Any] = "REST_GAP_RECOVERY",
+    ) -> List[Any]:
+        """Fetch klines via REST and return validated candles under explicit provenance."""
+        from coin_behavior_engine.shadow_v080.market_data_contract import (
+            BinanceSpotCandleValidator,
+            MarketType,
+        )
+
+        raw_klines = self.fetch_klines(
+            symbol=symbol,
+            interval=interval,
+            start_time=start_time,
+            end_time=end_time,
+            limit=limit,
+        )
+        validated = []
+        for raw in raw_klines:
+            candle, violations = BinanceSpotCandleValidator.validate_raw(
+                raw_record=raw,
+                provenance=provenance,
+                market_type=MarketType.SPOT,
+            )
+            if candle is not None and not violations:
+                validated.append(candle)
+        return validated
 
     def poll_message(self) -> Optional[Any]:
         self._verify_approval_3_gate()

@@ -259,6 +259,78 @@ class MarketCaptureEngineV080:
 
         return self.process_raw_message(raw_msg, force_disk_error=force_disk_error)
 
+    def recover_gap_via_rest(
+        self,
+        gap_id: str,
+        rest_adapter: Any,
+    ) -> Tuple[bool, str]:
+        """Fetch missing candles for a detected gap using REST adapter with strict REST_GAP_RECOVERY provenance."""
+        import json
+
+        # Find target gap in detector
+        target_gap = None
+        for g in self.gap_detector.gaps:
+            if g.gap_id == gap_id:
+                target_gap = g
+                break
+
+        if target_gap is None:
+            return False, f"Gap ID {gap_id} not found."
+        if target_gap.recovered:
+            return False, f"Gap {gap_id} is already marked as recovered."
+
+        # Fetch missing klines via REST
+        try:
+            raw_klines = rest_adapter.fetch_klines(
+                symbol=self.config.symbol,
+                interval=self.config.interval,
+                start_time=target_gap.missing_start_ts,
+                end_time=target_gap.missing_end_ts + 1,
+                limit=target_gap.missing_bars_count + 5,
+            )
+        except Exception as e:
+            return False, f"Failed to fetch gap klines from REST: {e}"
+
+        # Validate with strict REST_GAP_RECOVERY provenance
+        recovered_candles: List[ValidatedCandle] = []
+        for raw in raw_klines:
+            candle, violations = self.validator.validate_raw(
+                raw_record=raw,
+                provenance=ProvenanceSource.REST_GAP_RECOVERY.value,
+                market_type=MarketType.SPOT,
+            )
+            if violations or candle is None:
+                return False, f"Gap candle failed validation: {'; '.join(violations)}"
+            if candle.timestamp_open in target_gap.missing_timestamps:
+                recovered_candles.append(candle)
+
+        if len(recovered_candles) != target_gap.missing_bars_count:
+            return False, (
+                f"Fetched {len(recovered_candles)} valid gap candles, "
+                f"expected {target_gap.missing_bars_count}"
+            )
+
+        success, msg = self.gap_detector.register_recovered_gap(gap_id, recovered_candles)
+        if success:
+            audit_file = self.evidence_store.quarantine_dir / "gap_recovery_audit.jsonl"
+            audit_entry = {
+                "gap_id": gap_id,
+                "recovered_at_utc": target_gap.recovered_at_utc,
+                "recovery_provenance": target_gap.recovery_provenance,
+                "missing_start_ts": target_gap.missing_start_ts,
+                "missing_end_ts": target_gap.missing_end_ts,
+                "recovered_candles_count": target_gap.recovered_candles_count,
+            }
+            try:
+                with open(audit_file, "a", encoding="utf-8") as af:
+                    af.write(json.dumps(audit_entry, sort_keys=True) + "\n")
+                    af.flush()
+                    os.fsync(af.fileno())
+            except Exception as e:
+                logger.warning(f"Failed to record gap recovery audit: {e}")
+
+        return success, msg
+
     def get_summary_report(self) -> Dict[str, Any]:
         """Return diagnostic metrics and safety status."""
         return {
