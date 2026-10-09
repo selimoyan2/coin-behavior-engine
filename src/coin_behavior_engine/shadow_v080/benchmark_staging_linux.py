@@ -299,18 +299,45 @@ def run_staging_benchmark(
             rst_unmatured = col_restart.prediction_store.get_unmatured_events()
             unmatured_count_matches = (len(orig_unmatured) == len(rst_unmatured))
 
-            state_matches = (col_restart.state_machine.current_state == col.state_machine.current_state)
-            if total_candles_needed >= col.config.full_warmup_bars:
-                state_matches = state_matches and (col_restart.state_machine.current_state in (CaptureState.FULL_WINDOW_READY, CaptureState.ELIGIBLE))
-
-            restart_complete_verified = (
-                rst_ok is True
-                and buf_length_matches
-                and last_candle_matches
-                and chain_tip_matches
-                and unmatured_count_matches
-                and state_matches
+            # State machine state verification
+            # Original active collector executed steps; if total_candles_needed >= full_warmup_bars, it is ELIGIBLE
+            expected_active_state = (
+                CaptureState.ELIGIBLE
+                if total_candles_needed >= col.config.full_warmup_bars
+                else CaptureState.WARMING_UP
             )
+            orig_state = col.state_machine.current_state
+            orig_state_matches = (orig_state == expected_active_state)
+
+            # Restored collector just executed initialize() from snapshot; if restored buffer >= full_warmup_bars,
+            # by prospective design it enters FULL_WINDOW_READY until the first prospective step verifies timing.
+            expected_restored_state = (
+                CaptureState.FULL_WINDOW_READY
+                if expected_buf_len >= col.config.full_warmup_bars
+                else CaptureState.WARMING_UP
+            )
+            rst_state = col_restart.state_machine.current_state
+            rst_state_matches = (rst_state == expected_restored_state)
+
+            state_recovery_verified = (orig_state_matches and rst_state_matches)
+
+            restart_failure_reasons = []
+            if not rst_ok:
+                restart_failure_reasons.append("RESTORE_INIT_FAILED")
+            if not buf_length_matches:
+                restart_failure_reasons.append(f"BUFFER_LENGTH_MISMATCH(expected={expected_buf_len},actual={actual_rst_buf_len})")
+            if not last_candle_matches:
+                restart_failure_reasons.append("LAST_CANDLE_TIMESTAMP_MISMATCH")
+            if not chain_tip_matches:
+                restart_failure_reasons.append("CHAIN_TIP_HASH_MISMATCH")
+            if not unmatured_count_matches:
+                restart_failure_reasons.append(f"UNMATURED_COUNT_MISMATCH(orig={len(orig_unmatured)},restored={len(rst_unmatured)})")
+            if not orig_state_matches:
+                restart_failure_reasons.append(f"ORIGINAL_ACTIVE_STATE_UNEXPECTED(expected={expected_active_state.value},actual={orig_state.value})")
+            if not rst_state_matches:
+                restart_failure_reasons.append(f"RESTORED_STATE_UNEXPECTED(expected={expected_restored_state.value},actual={rst_state.value})")
+
+            restart_complete_verified = (len(restart_failure_reasons) == 0)
 
             # -------------------------------------------------------------
             # STAGE 4: Cryptographic Hash Chain Audit & Empirical Accounting
@@ -486,10 +513,25 @@ def run_staging_benchmark(
                     "restart_success": rst_ok,
                     "restored_buffer_bars": actual_rst_buf_len,
                     "expected_buffer_bars": expected_buf_len,
+                    "buffer_length_matches": buf_length_matches,
+                    "last_candle_orig_utc": last_candle_orig.timestamp_close if last_candle_orig else None,
+                    "last_candle_restored_utc": last_candle_rst.timestamp_close if last_candle_rst else None,
                     "last_candle_matches": last_candle_matches,
+                    "chain_tip_orig_hash": col.prediction_store._latest_hash,
+                    "chain_tip_restored_hash": col_restart.prediction_store._latest_hash,
                     "chain_tip_matches": chain_tip_matches,
+                    "unmatured_count_orig": len(orig_unmatured),
+                    "unmatured_count_restored": len(rst_unmatured),
                     "unmatured_count_matches": unmatured_count_matches,
+                    "original_active_state": orig_state.value,
+                    "expected_active_state": expected_active_state.value,
+                    "original_state_matches": orig_state_matches,
+                    "restored_collector_state": rst_state.value,
+                    "expected_restored_state": expected_restored_state.value,
+                    "restored_state_matches": rst_state_matches,
+                    "state_recovery_verified": state_recovery_verified,
                     "restart_complete_verified": restart_complete_verified,
+                    "restart_failure_reasons": restart_failure_reasons,
                     "hash_chain_valid": audit.is_valid,
                     "total_chain_events_verified": audit.total_events,
                     "violations": audit.violations,
@@ -571,6 +613,8 @@ def run_staging_benchmark(
             logger.info(f"Network Calls Intercepted: {net_tracker.attempts} (Zero Allowed)")
             logger.info(f"Prospective Guard Intact: {prospective_guard_intact} (Live Prospective Events: {total_prospective_scored_count})")
             logger.info(f"Restart Complete State Verified: {restart_complete_verified}")
+            if restart_failure_reasons:
+                logger.error(f"Restart Recovery Failure Reasons: {restart_failure_reasons}")
             logger.info(f"Overall Status: {overall_verdict}")
             if results["benchmark_verdict"]["blocking_failure_reasons"]:
                 logger.error(f"Blocking Failures: {results['benchmark_verdict']['blocking_failure_reasons']}")
@@ -594,12 +638,39 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     out_path = Path(args.output_dir) if args.output_dir else None
-    res = run_staging_benchmark(
-        output_dir=out_path,
-        warmup_bars=args.warmup_bars,
-        steady_state_cycles=args.cycles,
-        rss_budget_mb=args.rss_budget,
-        enforce_latency_gates=args.enforce_latency_gates,
-    )
-    if res["benchmark_verdict"]["status"] != "PASS":
+    try:
+        res = run_staging_benchmark(
+            output_dir=out_path,
+            warmup_bars=args.warmup_bars,
+            steady_state_cycles=args.cycles,
+            rss_budget_mb=args.rss_budget,
+            enforce_latency_gates=args.enforce_latency_gates,
+        )
+        if res.get("benchmark_verdict", {}).get("status") != "PASS":
+            sys.exit(1)
+    except Exception as e:
+        logger.error(f"Benchmark execution terminated with unhandled exception: {e}", exc_info=True)
+        if out_path is not None:
+            err_results = {
+                "benchmark_timestamp_utc": pd.Timestamp.now(tz="UTC").isoformat(),
+                "host_environment": {
+                    "platform": sys.platform,
+                    "os_release": platform.platform(),
+                    "python_version": sys.version.split()[0],
+                    "is_linux": sys.platform.startswith("linux"),
+                },
+                "benchmark_verdict": {
+                    "status": "FAIL",
+                    "linux_rss_verified": False,
+                    "blocking_failure_reasons": [f"UNHANDLED_EXCEPTION: {type(e).__name__}: {str(e)}"],
+                },
+                "error_details": str(e),
+            }
+            try:
+                out_path.mkdir(parents=True, exist_ok=True)
+                out_file = out_path / "staging_linux_benchmark_results.json"
+                with open(out_file, "w", encoding="utf-8") as f:
+                    json.dump(err_results, f, indent=2)
+            except Exception:
+                pass
         sys.exit(1)

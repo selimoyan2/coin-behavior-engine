@@ -264,3 +264,91 @@ def test_09_restart_recovery_failure_produces_fail(monkeypatch):
         assert res["benchmark_verdict"]["status"] == "FAIL"
         assert "RESTART_RECOVERY_FAIL" in res["benchmark_verdict"]["blocking_failure_reasons"]
         assert res["mandatory_gates"]["gate_restart_recovery"]["passed"] is False
+        assert any("BUFFER_LENGTH_MISMATCH" in r for r in res["recovery_and_integrity"]["restart_failure_reasons"])
+
+
+def test_10_reproduce_linux_staging_conditions_850_bars():
+    """Reproduce exact Linux staging benchmark conditions (350 warmup + 500 steady state = 850 total bars).
+
+    Verifies:
+    1. Overall PASS verdict with correct expected state invariant.
+    2. Buffer restored to 350 bars from local snapshot.
+    3. Active collector state is ELIGIBLE; restored collector state is FULL_WINDOW_READY.
+    4. restart_complete_verified is True with restart_failure_reasons == [].
+    5. Exactly 4,674 chain events verified across 779 prediction cycles.
+    6. Exactly 3,378 replay scoring flags denoting technical feature maturity without prospective provenance.
+    7. 0 live prospective scored events and prospective guard intact.
+    """
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        res = run_staging_benchmark(
+            output_dir=Path(tmp_dir),
+            warmup_bars=350,
+            steady_state_cycles=500,
+            rss_budget_mb=300.0,
+        )
+
+        assert res["benchmark_verdict"]["status"] == "PASS"
+        rec = res["recovery_and_integrity"]
+        assert rec["restart_success"] is True
+        assert rec["restored_buffer_bars"] == 350
+        assert rec["expected_buffer_bars"] == 350
+        assert rec["buffer_length_matches"] is True
+        assert rec["last_candle_matches"] is True
+        assert rec["chain_tip_matches"] is True
+        assert rec["unmatured_count_matches"] is True
+        assert rec["original_active_state"] == "ELIGIBLE"
+        assert rec["expected_active_state"] == "ELIGIBLE"
+        assert rec["original_state_matches"] is True
+        assert rec["restored_collector_state"] == "FULL_WINDOW_READY"
+        assert rec["expected_restored_state"] == "FULL_WINDOW_READY"
+        assert rec["restored_state_matches"] is True
+        assert rec["state_recovery_verified"] is True
+        assert rec["restart_complete_verified"] is True
+        assert rec["restart_failure_reasons"] == []
+        assert rec["total_chain_events_verified"] == 4674
+
+        prov = res["safety_and_provenance_evidence"]
+        assert prov["replay_scoring_flags_count"] == 3378
+        assert prov["genuinely_prospective_scored_count"] == 0
+        assert prov["prospective_guard_intact"] is True
+        assert prov["warmup_replay_count"] == 3378
+        assert prov["historical_replay_count"] == 1296
+        assert prov["warmup_replay_count"] + prov["historical_replay_count"] == 4674
+
+        acct = res["accounting_breakdown"]
+        assert acct["accounting_conserved"] is True
+        assert acct["total_predictions_emitted"] == 4674
+
+
+def test_11_restart_recovery_state_mismatch_diagnostics(monkeypatch):
+    """Verify that an unexpected restored collector state is captured in restart_failure_reasons."""
+    from coin_behavior_engine.shadow_v080.collector import CaptureState, ShadowCollectorV080
+
+    orig_init = ShadowCollectorV080.initialize
+    init_call_count = 0
+
+    def mock_init(self):
+        nonlocal init_call_count
+        init_call_count += 1
+        res = orig_init(self)
+        if init_call_count >= 2:
+            # Force restored state machine into an unexpected state (e.g. PAUSED)
+            self.state_machine.transition_to(CaptureState.PAUSED, "Mocked failure state")
+        return res
+
+    monkeypatch.setattr(ShadowCollectorV080, "initialize", mock_init)
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        res = run_staging_benchmark(
+            output_dir=Path(tmp_dir),
+            warmup_bars=20,
+            steady_state_cycles=20,
+            rss_budget_mb=300.0,
+        )
+
+        assert res["benchmark_verdict"]["status"] == "FAIL"
+        assert "RESTART_RECOVERY_FAIL" in res["benchmark_verdict"]["blocking_failure_reasons"]
+        rec = res["recovery_and_integrity"]
+        assert rec["restart_complete_verified"] is False
+        assert any("RESTORED_STATE_UNEXPECTED" in r for r in rec["restart_failure_reasons"])
+
