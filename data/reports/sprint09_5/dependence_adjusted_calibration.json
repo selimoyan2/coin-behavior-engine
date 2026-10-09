@@ -1,0 +1,43 @@
+{
+  "schema_version": "CBE-DEPENDENCE-UNCERTAINTY-0.8.0",
+  "methodology": "Paired Block Bootstrap (L=288 bars) and All-Offset Non-Overlapping Strides",
+  "evaluations": {
+    "1h": {
+      "high_volatility_80_coverage_diff_pct": 34.98,
+      "bootstrap_95_ci_coverage_diff_pct": [
+        32.08,
+        38.1
+      ],
+      "bootstrap_ci_strictly_positive": true,
+      "winkler_80_diff": -0.000848,
+      "bootstrap_95_ci_winkler_diff": [
+        -0.001505,
+        -0.000329
+      ],
+      "winkler_improved_strictly": true,
+      "non_overlapping_offsets_tested": 12,
+      "mean_stride_coverage_improvement_pct": 34.98,
+      "min_stride_coverage_improvement_pct": 33.26,
+      "max_stride_coverage_improvement_pct": 36.1
+    },
+    "4h": {
+      "high_volatility_80_coverage_diff_pct": 38.09,
+      "bootstrap_95_ci_coverage_diff_pct": [
+        31.59,
+        44.57
+      ],
+      "bootstrap_ci_strictly_positive": true,
+      "winkler_80_diff": -0.000802,
+      "bootstrap_95_ci_winkler_diff": [
+        -0.001514,
+        -0.000138
+      ],
+      "winkler_improved_strictly": true,
+      "non_overlapping_offsets_tested": 48,
+      "mean_stride_coverage_improvement_pct": 38.1,
+      "min_stride_coverage_improvement_pct": 33.33,
+      "max_stride_coverage_improvement_pct": 43.52
+    }
+  },
+  "conclusion": "Improvement in high-volatility coverage is statistically significant and survives dependence-aware block bootstrap testing."
+}

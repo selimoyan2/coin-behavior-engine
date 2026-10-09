@@ -1,0 +1,100 @@
+{
+  "schema_version": "CBE-CONDITIONAL-COVERAGE-0.8.0",
+  "evaluations": {
+    "1h": {
+      "LOW_VOLATILITY": {
+        "sample_count": 35467,
+        "global_cov80": 84.92,
+        "repaired_cov80": 77.88,
+        "diff_cov80": -7.04,
+        "global_cov95": 96.66,
+        "repaired_cov95": 93.75,
+        "diff_cov95": -2.91
+      },
+      "NORMAL_VOLATILITY": {
+        "sample_count": 35159,
+        "global_cov80": 76.12,
+        "repaired_cov80": 77.19,
+        "diff_cov80": 1.07,
+        "global_cov95": 94.91,
+        "repaired_cov95": 93.73,
+        "diff_cov95": -1.18
+      },
+      "HIGH_VOLATILITY": {
+        "sample_count": 5363,
+        "global_cov80": 50.38,
+        "repaired_cov80": 85.36,
+        "diff_cov80": 34.98,
+        "global_cov95": 82.3,
+        "repaired_cov95": 97.26,
+        "diff_cov95": 14.95
+      },
+      "VOLATILITY_COMPRESSION": {
+        "sample_count": 38397,
+        "global_cov80": 84.46,
+        "repaired_cov80": 85.54,
+        "diff_cov80": 1.08,
+        "global_cov95": 96.93,
+        "repaired_cov95": 97.01,
+        "diff_cov95": 0.08
+      },
+      "VOLATILITY_EXPANSION": {
+        "sample_count": 15813,
+        "global_cov80": 61.57,
+        "repaired_cov80": 58.21,
+        "diff_cov80": -3.36,
+        "global_cov95": 88.77,
+        "repaired_cov95": 85.39,
+        "diff_cov95": -3.38
+      }
+    },
+    "4h": {
+      "LOW_VOLATILITY": {
+        "sample_count": 35467,
+        "global_cov80": 86.58,
+        "repaired_cov80": 76.91,
+        "diff_cov80": -9.67,
+        "global_cov95": 97.52,
+        "repaired_cov95": 93.59,
+        "diff_cov95": -3.94
+      },
+      "NORMAL_VOLATILITY": {
+        "sample_count": 35159,
+        "global_cov80": 75.94,
+        "repaired_cov80": 78.7,
+        "diff_cov80": 2.76,
+        "global_cov95": 95.83,
+        "repaired_cov95": 95.07,
+        "diff_cov95": -0.77
+      },
+      "HIGH_VOLATILITY": {
+        "sample_count": 5363,
+        "global_cov80": 51.07,
+        "repaired_cov80": 89.17,
+        "diff_cov80": 38.09,
+        "global_cov95": 81.8,
+        "repaired_cov95": 96.83,
+        "diff_cov95": 15.03
+      },
+      "VOLATILITY_COMPRESSION": {
+        "sample_count": 38397,
+        "global_cov80": 81.09,
+        "repaired_cov80": 82.25,
+        "diff_cov80": 1.15,
+        "global_cov95": 96.46,
+        "repaired_cov95": 96.58,
+        "diff_cov95": 0.12
+      },
+      "VOLATILITY_EXPANSION": {
+        "sample_count": 15813,
+        "global_cov80": 69.97,
+        "repaired_cov80": 64.83,
+        "diff_cov80": -5.14,
+        "global_cov95": 92.12,
+        "repaired_cov95": 87.11,
+        "diff_cov95": -5.01
+      }
+    }
+  },
+  "conclusion": "Repaired calibration repairs under-coverage in HIGH_VOLATILITY and VOLATILITY_EXPANSION regimes while tightening excessive intervals in LOW_VOLATILITY."
+}

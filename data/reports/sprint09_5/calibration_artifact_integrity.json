@@ -1,0 +1,13 @@
+{
+  "schema_version": "CBE-CALIBRATION-LOCKBOX-0.9.5",
+  "candidate_model_version": "CBE-0.8.0",
+  "source_commit": "d6b326f",
+  "created_at_utc": "2026-10-09T15:48:00.851478+00:00",
+  "artifacts": {
+    "cbe_interval_calibration_v080_095.json": {
+      "sha256": "6821136ad71411b8778c481055d4204640d19be0acaedaf8db3cd18ee3b4bf50",
+      "description": "Sprint 09.5 repaired high-volatility interval calibration fitted on 2025-Fit"
+    }
+  },
+  "status": "CALIBRATION_V095_LOCKED_AND_VERIFIED"
+}

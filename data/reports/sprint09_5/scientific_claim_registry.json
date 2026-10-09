@@ -1,0 +1,48 @@
+{
+  "schema_version": "CBE-CLAIM-REGISTRY-0.8.0",
+  "candidate_model_version": "CBE-0.8.0",
+  "claims": [
+    {
+      "claim_id": "CLAIM_01",
+      "statement": "Classifier no longer mechanically collapses.",
+      "status": "SUPPORTED",
+      "evidence": "3 distinct states observed across all partitions; max state prevalence < 52% in 2025 and < 47% in 2026; zero bars assigned to DELEVERAGING_STRESS."
+    },
+    {
+      "claim_id": "CLAIM_02",
+      "statement": "Market-state labels have incremental predictive value.",
+      "status": "REFUTED",
+      "evidence": "Out-of-sample evaluation on 2026 Holdout shows incremental R2 is negative (-0.00023) and Delta MAE < 0.00005. Market-states classified as DESCRIPTIVE_ONLY."
+    },
+    {
+      "claim_id": "CLAIM_03",
+      "statement": "Global intervals achieve approximate marginal coverage.",
+      "status": "SUPPORTED_WITH_LIMITATIONS",
+      "evidence": "Marginally across entire dataset, global intervals achieve 78.41% on 80% and 94.84% on 95%. Limitation: severe conditional under-coverage in high-volatility regimes."
+    },
+    {
+      "claim_id": "CLAIM_04",
+      "statement": "High-volatility conditional coverage is reliable.",
+      "status": "REFUTED",
+      "evidence": "Global intervals cover only 50.38% (1h 80%) and 82.30% (1h 95%) during HIGH_VOLATILITY episodes in 2026 Holdout."
+    },
+    {
+      "claim_id": "CLAIM_05",
+      "statement": "State-conditioned calibration improves high-volatility risk estimation.",
+      "status": "SUPPORTED",
+      "evidence": "Internal chronological evaluation within 2025 confirms high-volatility 80% coverage improves from 45.75% to 73.08%, with lower Winkler score and narrower overall mean width."
+    },
+    {
+      "claim_id": "CLAIM_06",
+      "statement": "Improvements survive dependence-aware evaluation.",
+      "status": "SUPPORTED",
+      "evidence": "Paired block bootstrap (block size = 288 bars, 500 iterations) across non-overlapping strides confirms coverage improvement for high volatility is strictly positive with 95% confidence."
+    },
+    {
+      "claim_id": "CLAIM_07",
+      "statement": "Candidate is ready for prospective shadow observation.",
+      "status": "SUPPORTED_WITH_LIMITATIONS",
+      "evidence": "Technical implementation, serialization, and calibration are mathematically valid, but prospective shadow observation must remain strictly offline/passive with deployment prohibited."
+    }
+  ]
+}

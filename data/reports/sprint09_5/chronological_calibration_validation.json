@@ -1,0 +1,19 @@
+{
+  "schema_version": "CBE-CHRONO-VAL-0.8.0",
+  "partitions": {
+    "VAL_FIT_2025": {
+      "start": "2025-01-02 00:00:00+00:00",
+      "end": "2025-08-30 23:55:00+00:00",
+      "sample_count": 69408,
+      "role": "Calibration parameter fitting (Candidates A, B, C, E)"
+    },
+    "VAL_EVAL_2025": {
+      "start": "2025-09-02 00:00:00+00:00",
+      "end": "2025-12-30 23:55:00+00:00",
+      "sample_count": 34560,
+      "role": "Independent out-of-sample chronological candidate comparison and method selection"
+    }
+  },
+  "boundary_embargo_bars": 288,
+  "holdout_leakage_prevented": true
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "CBE-MARKET-STATE-AUDIT-0.8.0",
+  "evaluations": {
+    "1h": {
+      "val_2025_model_a_r2": 0.361676,
+      "val_2025_model_b_r2": 0.366041,
+      "val_2025_delta_r2": 0.004365,
+      "val_2025_delta_mae": 8e-05,
+      "holdout_2026_model_a_r2": 0.398966,
+      "holdout_2026_model_b_r2": 0.398735,
+      "holdout_2026_delta_r2": -0.000231,
+      "holdout_2026_delta_mae": 4.5e-05,
+      "holdout_delta_r2_is_positive": false
+    },
+    "4h": {
+      "val_2025_model_a_r2": 0.317708,
+      "val_2025_model_b_r2": 0.325263,
+      "val_2025_delta_r2": 0.007556,
+      "val_2025_delta_mae": 0.000164,
+      "holdout_2026_model_a_r2": 0.408834,
+      "holdout_2026_model_b_r2": 0.408904,
+      "holdout_2026_delta_r2": 7e-05,
+      "holdout_2026_delta_mae": 0.00011,
+      "holdout_delta_r2_is_positive": true
+    }
+  },
+  "classification_verdict": "DESCRIPTIVE_ONLY",
+  "explanation": "Adding discrete market-state dummies to continuous features yields non-positive incremental R2 out-of-sample on 2026 Holdout (-0.00023). Market-state indicators function effectively as regime tags for conditional risk calibration, but provide NO measurable incremental point forecasting value beyond the underlying continuous features."
+}

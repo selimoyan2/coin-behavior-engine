@@ -19,6 +19,12 @@ from coin_behavior_engine.candidate_v080.calibrator import (
     IntervalCalibrationV080,
     IntervalCalibratorV080,
 )
+from coin_behavior_engine.candidate_v080.calibrator_v095 import (
+    CalibrationV095Error,
+    HorizonCalibrationV095,
+    IntervalCalibrationV095,
+    IntervalCalibratorV095,
+)
 from coin_behavior_engine.candidate_v080.classifier import (
     ClassificationResult,
     ClassifierError,
@@ -35,14 +41,18 @@ from coin_behavior_engine.candidate_v080.replay import (
 __all__ = [
     "BundleIntegrityError",
     "CalibrationError",
+    "CalibrationV095Error",
     "CandidateInferenceEngineV080",
     "CandidateTrainerV080",
     "ClassificationResult",
     "ClassifierError",
     "FeatureValidationError",
     "HorizonCalibrationParameters",
+    "HorizonCalibrationV095",
     "IntervalCalibrationV080",
+    "IntervalCalibrationV095",
     "IntervalCalibratorV080",
+    "IntervalCalibratorV095",
     "MarketStateClassifierV080",
     "ModelBundleV080",
     "RidgeModelParameters",

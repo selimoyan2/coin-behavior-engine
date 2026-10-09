@@ -1,0 +1,208 @@
+{
+  "1h": {
+    "Candidate_A_Global": {
+      "internal_val_2025": {
+        "coverage_80": 80.5,
+        "coverage_95": 95.02,
+        "high_vol_coverage_80": 45.75,
+        "high_vol_coverage_95": 71.51,
+        "mean_width_80": 0.018633,
+        "mean_width_95": 0.03769,
+        "winkler_score_80": 0.037665,
+        "winkler_score_95": 0.070939
+      },
+      "holdout_2026_audit": {
+        "coverage_80": 78.62,
+        "coverage_95": 94.87,
+        "high_vol_coverage_80": 50.64,
+        "high_vol_coverage_95": 82.4,
+        "mean_width_80": 0.018656,
+        "mean_width_95": 0.037737,
+        "winkler_score_80": 0.036145,
+        "winkler_score_95": 0.060203
+      }
+    },
+    "Candidate_B_StateConditioned": {
+      "internal_val_2025": {
+        "coverage_80": 78.89,
+        "coverage_95": 93.68,
+        "high_vol_coverage_80": 73.08,
+        "high_vol_coverage_95": 79.79,
+        "mean_width_80": 0.018313,
+        "mean_width_95": 0.035085,
+        "winkler_score_80": 0.036743,
+        "winkler_score_95": 0.068411
+      },
+      "holdout_2026_audit": {
+        "coverage_80": 77.99,
+        "coverage_95": 93.94,
+        "high_vol_coverage_80": 83.95,
+        "high_vol_coverage_95": 96.49,
+        "mean_width_80": 0.018925,
+        "mean_width_95": 0.036286,
+        "winkler_score_80": 0.035284,
+        "winkler_score_95": 0.05832
+      }
+    },
+    "Candidate_C_VolNormalized": {
+      "internal_val_2025": {
+        "coverage_80": 77.91,
+        "coverage_95": 93.52,
+        "high_vol_coverage_80": 72.95,
+        "high_vol_coverage_95": 85.68,
+        "mean_width_80": 0.019111,
+        "mean_width_95": 0.034751,
+        "winkler_score_80": 0.033265,
+        "winkler_score_95": 0.057334
+      },
+      "holdout_2026_audit": {
+        "coverage_80": 76.35,
+        "coverage_95": 92.94,
+        "high_vol_coverage_80": 80.85,
+        "high_vol_coverage_95": 95.26,
+        "mean_width_80": 0.019108,
+        "mean_width_95": 0.034745,
+        "winkler_score_80": 0.032565,
+        "winkler_score_95": 0.051766
+      }
+    },
+    "Candidate_D_Rolling30d": {
+      "internal_val_2025": {
+        "coverage_80": 78.75,
+        "coverage_95": 94.17,
+        "high_vol_coverage_80": 53.33,
+        "high_vol_coverage_95": 71.67,
+        "mean_width_80": 0.018083,
+        "mean_width_95": 0.03625,
+        "winkler_score_80": 0.037815,
+        "winkler_score_95": 0.070439
+      },
+      "holdout_2026_audit": "COMPUTED_VIA_STRIDE_INSPECTION"
+    },
+    "Candidate_E_ConservativeHybrid": {
+      "internal_val_2025": {
+        "coverage_80": 78.92,
+        "coverage_95": 93.7,
+        "high_vol_coverage_80": 73.9,
+        "high_vol_coverage_95": 80.27,
+        "mean_width_80": 0.018442,
+        "mean_width_95": 0.035417,
+        "winkler_score_80": 0.036823,
+        "winkler_score_95": 0.068629
+      },
+      "holdout_2026_audit": {
+        "coverage_80": 78.09,
+        "coverage_95": 93.99,
+        "high_vol_coverage_80": 85.36,
+        "high_vol_coverage_95": 97.26,
+        "mean_width_80": 0.019142,
+        "mean_width_95": 0.036841,
+        "winkler_score_80": 0.035313,
+        "winkler_score_95": 0.058581
+      }
+    }
+  },
+  "4h": {
+    "Candidate_A_Global": {
+      "internal_val_2025": {
+        "coverage_80": 79.68,
+        "coverage_95": 96.22,
+        "high_vol_coverage_80": 43.84,
+        "high_vol_coverage_95": 68.97,
+        "mean_width_80": 0.018916,
+        "mean_width_95": 0.037979,
+        "winkler_score_80": 0.036267,
+        "winkler_score_95": 0.067438
+      },
+      "holdout_2026_audit": {
+        "coverage_80": 79.15,
+        "coverage_95": 96.11,
+        "high_vol_coverage_80": 51.11,
+        "high_vol_coverage_95": 83.37,
+        "mean_width_80": 0.018922,
+        "mean_width_95": 0.038012,
+        "winkler_score_80": 0.032172,
+        "winkler_score_95": 0.050013
+      }
+    },
+    "Candidate_B_StateConditioned": {
+      "internal_val_2025": {
+        "coverage_80": 77.83,
+        "coverage_95": 93.89,
+        "high_vol_coverage_80": 70.62,
+        "high_vol_coverage_95": 79.11,
+        "mean_width_80": 0.01862,
+        "mean_width_95": 0.034038,
+        "winkler_score_80": 0.03519,
+        "winkler_score_95": 0.064096
+      },
+      "holdout_2026_audit": {
+        "coverage_80": 78.5,
+        "coverage_95": 94.47,
+        "high_vol_coverage_80": 87.67,
+        "high_vol_coverage_95": 96.36,
+        "mean_width_80": 0.01922,
+        "mean_width_95": 0.034809,
+        "winkler_score_80": 0.031266,
+        "winkler_score_95": 0.048328
+      }
+    },
+    "Candidate_C_VolNormalized": {
+      "internal_val_2025": {
+        "coverage_80": 77.86,
+        "coverage_95": 92.45,
+        "high_vol_coverage_80": 71.23,
+        "high_vol_coverage_95": 84.79,
+        "mean_width_80": 0.019145,
+        "mean_width_95": 0.032855,
+        "winkler_score_80": 0.033081,
+        "winkler_score_95": 0.056061
+      },
+      "holdout_2026_audit": {
+        "coverage_80": 77.73,
+        "coverage_95": 93.01,
+        "high_vol_coverage_80": 83.14,
+        "high_vol_coverage_95": 97.15,
+        "mean_width_80": 0.019143,
+        "mean_width_95": 0.032851,
+        "winkler_score_80": 0.029986,
+        "winkler_score_95": 0.044795
+      }
+    },
+    "Candidate_D_Rolling30d": {
+      "internal_val_2025": {
+        "coverage_80": 78.06,
+        "coverage_95": 94.31,
+        "high_vol_coverage_80": 37.93,
+        "high_vol_coverage_95": 68.97,
+        "mean_width_80": 0.018146,
+        "mean_width_95": 0.035359,
+        "winkler_score_80": 0.036246,
+        "winkler_score_95": 0.067069
+      },
+      "holdout_2026_audit": "COMPUTED_VIA_STRIDE_INSPECTION"
+    },
+    "Candidate_E_ConservativeHybrid": {
+      "internal_val_2025": {
+        "coverage_80": 77.84,
+        "coverage_95": 93.91,
+        "high_vol_coverage_80": 71.03,
+        "high_vol_coverage_95": 79.52,
+        "mean_width_80": 0.018754,
+        "mean_width_95": 0.034278,
+        "winkler_score_80": 0.035269,
+        "winkler_score_95": 0.064223
+      },
+      "holdout_2026_audit": {
+        "coverage_80": 78.6,
+        "coverage_95": 94.5,
+        "high_vol_coverage_80": 89.15,
+        "high_vol_coverage_95": 96.83,
+        "mean_width_80": 0.019443,
+        "mean_width_95": 0.03521,
+        "winkler_score_80": 0.031366,
+        "winkler_score_95": 0.048413
+      }
+    }
+  }
+}
