@@ -1,0 +1,65 @@
+{
+  "schema_version": "CBE-MANIFEST-0.8.0",
+  "candidate_version": "CBE-0.8.0",
+  "components": [
+    {
+      "name": "MarketStateClassifierV080",
+      "module": "src/coin_behavior_engine/candidate_v080/classifier.py",
+      "role": "Deterministic market state classification for SPOT_ONLY_U0 tier",
+      "inputs": [
+        "volatility_realized_24h",
+        "volatility_compression_ratio"
+      ],
+      "outputs": [
+        "primary_state",
+        "secondary_flags"
+      ]
+    },
+    {
+      "name": "IntervalCalibratorV080",
+      "module": "src/coin_behavior_engine/candidate_v080/calibrator.py",
+      "role": "Split-conformal empirical residual quantile prediction interval generation",
+      "inputs": [
+        "point_forecast",
+        "horizon",
+        "optional_market_state"
+      ],
+      "outputs": [
+        "lower_80",
+        "upper_80",
+        "lower_95",
+        "upper_95"
+      ]
+    },
+    {
+      "name": "CandidateInferenceEngineV080",
+      "module": "src/coin_behavior_engine/candidate_v080/inference.py",
+      "role": "Dependency-free, pure numerical Ridge inference"
+    },
+    {
+      "name": "ModelBundleV080",
+      "module": "src/coin_behavior_engine/candidate_v080/bundle.py",
+      "role": "Deterministic non-executable JSON model serialization and validation"
+    }
+  ],
+  "model_artifacts": {
+    "cbe_model_bundle_v080.json": {
+      "sha256": "7755ddcb369c29825f9205f09e805b2e518526726b4bd5d948787d24c9419ad0",
+      "description": "Serialized Ridge weights, scaler parameters, and feature manifest"
+    },
+    "cbe_state_thresholds_v080.json": {
+      "sha256": "3979ab8e37377f1d5cb2623c63c20081078ae49c5bcbedcbb860affe3dfd95d9",
+      "description": "Fixed reference distribution quartiles learned on Discovery (< 2025-01-01)"
+    },
+    "cbe_interval_calibration_v080.json": {
+      "sha256": "e615a48996b639fcffec9c47819abfd934e9b8789fca825e8785322b950379a4",
+      "description": "Empirical residual quantile parameters fitted on Validation (2025)"
+    }
+  },
+  "production_isolation": {
+    "cbe_070_unmodified": true,
+    "freeze_status": "V2_CANONICAL (29/29 verified)",
+    "deployment_ready": false,
+    "deployment_prohibited": true
+  }
+}

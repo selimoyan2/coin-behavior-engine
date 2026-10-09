@@ -13,6 +13,18 @@ from coin_behavior_engine.candidate_v080.inference import (
     CandidateInferenceEngineV080,
     FeatureValidationError,
 )
+from coin_behavior_engine.candidate_v080.calibrator import (
+    CalibrationError,
+    HorizonCalibrationParameters,
+    IntervalCalibrationV080,
+    IntervalCalibratorV080,
+)
+from coin_behavior_engine.candidate_v080.classifier import (
+    ClassificationResult,
+    ClassifierError,
+    MarketStateClassifierV080,
+    StateThresholdsV080,
+)
 from coin_behavior_engine.candidate_v080.trainer import (
     CandidateTrainerV080,
 )
@@ -22,11 +34,19 @@ from coin_behavior_engine.candidate_v080.replay import (
 
 __all__ = [
     "BundleIntegrityError",
+    "CalibrationError",
     "CandidateInferenceEngineV080",
     "CandidateTrainerV080",
+    "ClassificationResult",
+    "ClassifierError",
     "FeatureValidationError",
+    "HorizonCalibrationParameters",
+    "IntervalCalibrationV080",
+    "IntervalCalibratorV080",
+    "MarketStateClassifierV080",
     "ModelBundleV080",
     "RidgeModelParameters",
     "ScalerParameters",
     "ShadowReplayEngineV080",
+    "StateThresholdsV080",
 ]

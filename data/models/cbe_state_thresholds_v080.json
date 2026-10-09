@@ -1,0 +1,33 @@
+{
+  "feature_thresholds": {
+    "volatility_compression_ratio": {
+      "compression_cutoff": 0.8,
+      "expansion_cutoff": 1.2,
+      "mean": 0.905617089112933,
+      "p25": 0.5936071064617012,
+      "p50": 0.7975893679508617,
+      "p75": 1.0889604320793058,
+      "std": 0.4717753284222058
+    },
+    "volatility_realized_24h": {
+      "max": 0.015906062193167418,
+      "mean": 0.0017844588501369548,
+      "min": 0.0,
+      "p25": 0.0011398816342129687,
+      "p50": 0.0015463889173781514,
+      "p75": 0.0021177759694746123,
+      "std": 0.0011061525510290982
+    }
+  },
+  "metadata": {
+    "created_at_utc": "2026-10-09T15:39:28.994305+00:00",
+    "dataset_sha256": "78ae578f4f16aeec073c6c6a8cd3b784275e2854146fe2dc7da855f73028d354",
+    "discovery_end": "2024-12-30 23:55:00+00:00",
+    "discovery_start": "2021-01-01 00:00:00+00:00",
+    "tier": "SPOT_ONLY_U0"
+  },
+  "schema_version": "CBE-THRESHOLDS-0.8.0",
+  "source_commit": "81e5033",
+  "training_partition": "DISCOVERY (< 2025-01-01)",
+  "training_sample_count": 420267
+}

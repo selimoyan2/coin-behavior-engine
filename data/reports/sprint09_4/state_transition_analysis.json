@@ -1,0 +1,38 @@
+{
+  "step_size": "1_HOUR (12 bars)",
+  "sample_hourly_steps": 6380,
+  "transition_probability_matrix": {
+    "LOW_VOLATILITY": {
+      "LOW_VOLATILITY": 0.9725,
+      "NORMAL_VOLATILITY": 0.0275,
+      "HIGH_VOLATILITY": 0.0
+    },
+    "NORMAL_VOLATILITY": {
+      "LOW_VOLATILITY": 0.0275,
+      "NORMAL_VOLATILITY": 0.9644,
+      "HIGH_VOLATILITY": 0.0081
+    },
+    "HIGH_VOLATILITY": {
+      "LOW_VOLATILITY": 0.0,
+      "NORMAL_VOLATILITY": 0.0537,
+      "HIGH_VOLATILITY": 0.9463
+    }
+  },
+  "diagonal_persistence_probabilities": {
+    "LOW_VOLATILITY": 0.9725,
+    "NORMAL_VOLATILITY": 0.9644,
+    "HIGH_VOLATILITY": 0.9463
+  },
+  "mean_holding_duration_hours": {
+    "LOW_VOLATILITY": 36.36,
+    "NORMAL_VOLATILITY": 28.09,
+    "HIGH_VOLATILITY": 18.62
+  },
+  "transition_entropies_bits": {
+    "LOW_VOLATILITY": 0.1817,
+    "NORMAL_VOLATILITY": 0.2493,
+    "HIGH_VOLATILITY": 0.3019
+  },
+  "diagonal_dominance_confirmed": true,
+  "minimum_diagonal_probability": 0.9463
+}

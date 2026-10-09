@@ -1,0 +1,93 @@
+{
+  "candidate_model_version": "CBE-0.8.0",
+  "evaluation_timestamp_utc": "2026-10-09T15:39:30.207898+00:00",
+  "gates_evaluated_count": 12,
+  "gates_passed_count": 12,
+  "overall_verdict": "READY_FOR_CANDIDATE_INTEGRATION",
+  "gates": [
+    {
+      "gate_id": "GATE_A_ROOT_CAUSE_REPRODUCTION",
+      "name": "Single-Row Percentile Collapse Reproduction",
+      "description": "Prove mathematically and empirically that np.nanpercentile on 1 row collapses to equality",
+      "status": "PASS",
+      "evidence": "Single row oi_chg (0.0) == oi_drop_p05 (0.0), cond_delev=True"
+    },
+    {
+      "gate_id": "GATE_B_TIER_BOUNDARY_ENFORCEMENT",
+      "name": "Tier Boundary & Missing Derivatives Safety",
+      "description": "Refuse to emit derivatives states in SPOT_ONLY_U0 tier",
+      "status": "PASS",
+      "evidence": "DELEVERAGING_STRESS barred from SPOT_ONLY_U0; 0% observed on Holdout"
+    },
+    {
+      "gate_id": "GATE_C_DISCOVERY_THRESHOLD_TRAINING",
+      "name": "Threshold Partition Isolation",
+      "description": "Learn reference thresholds strictly on Discovery (< 2025-01-01) with zero lookahead",
+      "status": "PASS",
+      "evidence": "P25=0.001140, P75=0.002118 fitted on 420267 Discovery rows"
+    },
+    {
+      "gate_id": "GATE_D_CLASSIFIER_NON_COLLAPSE",
+      "name": "Holdout Classifier Non-Collapse",
+      "description": "Confirm no state > 80% prevalence and at least 3 primary states on Holdout",
+      "status": "PASS",
+      "evidence": "Max prevalence state on Holdout: LOW_VOLATILITY (46.83%), distinct states: 3"
+    },
+    {
+      "gate_id": "GATE_E_STATE_PERSISTENCE",
+      "name": "State Transition Diagonal Dominance",
+      "description": "Empirical 1h transition probabilities exhibit diagonal dominance (> 0.70)",
+      "status": "PASS",
+      "evidence": "Minimum diagonal persistence probability: 0.9463 across hourly steps"
+    },
+    {
+      "gate_id": "GATE_F_INCREMENTAL_INFORMATION",
+      "name": "State Incremental Information",
+      "description": "Discrete state indicators provide statistically significant explanatory power over continuous features",
+      "status": "PASS",
+      "evidence": "1h Holdout F-test p-value=6.1869e-07, delta AIC=-24.6"
+    },
+    {
+      "gate_id": "GATE_G_RESIDUAL_CALIBRATION_VALIDATION",
+      "name": "Residual Calibration Split-Conformal Protocol",
+      "description": "Calibration quantiles fitted strictly on Validation (2025) residuals around frozen Ridge forecasts",
+      "status": "PASS",
+      "evidence": "Validation 1h 80% coverage: 80.0%, 95% coverage: 95.0%"
+    },
+    {
+      "gate_id": "GATE_H_HOLDOUT_COVERAGE_TOLERANCE",
+      "name": "Holdout Out-of-Sample Coverage Tolerance",
+      "description": "Holdout empirical coverage within tolerance: nominal 80% in [72%, 88%], nominal 95% in [90%, 98%]",
+      "status": "PASS",
+      "evidence": "Holdout 1h: 80% -> 78.41%, 95% -> 94.84%; 4h: 80% -> 79.15%, 95% -> 95.63%"
+    },
+    {
+      "gate_id": "GATE_I_INTERVAL_MONOTONICITY",
+      "name": "Interval Ordering and Non-Negativity Invariant",
+      "description": "Guarantee 0 <= L95 <= L80 <= point_forecast <= U80 <= U95 across 100% of observations",
+      "status": "PASS",
+      "evidence": "Strict mathematical invariant holds on 100.0% of Holdout bars"
+    },
+    {
+      "gate_id": "GATE_J_WINKLER_SCORE_SUPERIORITY",
+      "name": "Winkler Score Superiority over Uncalibrated Baseline",
+      "description": "Calibrated intervals achieve lower (better) Winkler score than CBE-0.7.0 uncalibrated intervals",
+      "status": "PASS",
+      "evidence": "1h Winkler ratio (80%): 0.8609 (<1.0), 4h Winkler ratio (80%): 0.9333 (<1.0)"
+    },
+    {
+      "gate_id": "GATE_K_PRODUCTION_FREEZE_PRESERVATION",
+      "name": "CBE-0.7.0 Production Freeze Invariant",
+      "description": "Zero mutations to CBE-0.7.0 production code, artifacts, or live worker",
+      "status": "PASS",
+      "evidence": "29/29 canonical artifacts verified: status=FREEZE_VERIFIED"
+    },
+    {
+      "gate_id": "GATE_L_TEST_SUITE_AND_ISOLATION",
+      "name": "Candidate Component Isolation & Schema Validity",
+      "description": "Components fully isolated in candidate_v080/, deterministic JSON serialization, zero live dependencies",
+      "status": "PASS",
+      "evidence": "Candidate components serialized to JSON with lockbox SHA-256 validation"
+    }
+  ]
+}

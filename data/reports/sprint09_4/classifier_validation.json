@@ -1,0 +1,89 @@
+{
+  "schema_version": "CBE-CLASSIFIER-VAL-0.8.0",
+  "partitions": {
+    "DISCOVERY_2023_2024": {
+      "sample_count": 420555,
+      "primary_state_counts": {
+        "NORMAL_VOLATILITY": 210421,
+        "LOW_VOLATILITY": 105067,
+        "HIGH_VOLATILITY": 105067
+      },
+      "primary_state_percentages": {
+        "NORMAL_VOLATILITY": 50.03,
+        "LOW_VOLATILITY": 24.98,
+        "HIGH_VOLATILITY": 24.98
+      },
+      "secondary_flag_counts": {
+        "VOLATILITY_COMPRESSION": 211451,
+        "VOLATILITY_EXPANSION": 80060
+      },
+      "secondary_flag_percentages": {
+        "VOLATILITY_COMPRESSION": 50.28,
+        "VOLATILITY_EXPANSION": 19.04
+      },
+      "max_prevalence_state": "NORMAL_VOLATILITY",
+      "max_prevalence_pct": 50.03,
+      "distinct_states_observed": 3,
+      "is_non_collapsed": true
+    },
+    "VALIDATION_2025": {
+      "sample_count": 105120,
+      "primary_state_counts": {
+        "LOW_VOLATILITY": 54042,
+        "NORMAL_VOLATILITY": 43060,
+        "HIGH_VOLATILITY": 8018
+      },
+      "primary_state_percentages": {
+        "LOW_VOLATILITY": 51.41,
+        "NORMAL_VOLATILITY": 40.96,
+        "HIGH_VOLATILITY": 7.63
+      },
+      "secondary_flag_counts": {
+        "VOLATILITY_COMPRESSION": 51749,
+        "VOLATILITY_EXPANSION": 21931
+      },
+      "secondary_flag_percentages": {
+        "VOLATILITY_COMPRESSION": 49.23,
+        "VOLATILITY_EXPANSION": 20.86
+      },
+      "max_prevalence_state": "LOW_VOLATILITY",
+      "max_prevalence_pct": 51.41,
+      "distinct_states_observed": 3,
+      "is_non_collapsed": true
+    },
+    "HOLDOUT_2026": {
+      "sample_count": 76565,
+      "primary_state_counts": {
+        "LOW_VOLATILITY": 35859,
+        "NORMAL_VOLATILITY": 35343,
+        "HIGH_VOLATILITY": 5363
+      },
+      "primary_state_percentages": {
+        "LOW_VOLATILITY": 46.83,
+        "NORMAL_VOLATILITY": 46.16,
+        "HIGH_VOLATILITY": 7.0
+      },
+      "secondary_flag_counts": {
+        "VOLATILITY_COMPRESSION": 38737,
+        "VOLATILITY_EXPANSION": 15896
+      },
+      "secondary_flag_percentages": {
+        "VOLATILITY_COMPRESSION": 50.59,
+        "VOLATILITY_EXPANSION": 20.76
+      },
+      "max_prevalence_state": "LOW_VOLATILITY",
+      "max_prevalence_pct": 46.83,
+      "distinct_states_observed": 3,
+      "is_non_collapsed": true
+    }
+  },
+  "cbe_070_vs_cbe_080_comparison": {
+    "cbe_070_holdout_deleveraging_stress_pct": 100.0,
+    "cbe_070_holdout_distinct_states": 1,
+    "cbe_070_verdict": "COLLAPSED_MECHANICAL_LOCK",
+    "cbe_080_holdout_deleveraging_stress_pct": 0.0,
+    "cbe_080_holdout_distinct_states": 3,
+    "cbe_080_verdict": "NON_COLLAPSED_BALANCED_DISTRIBUTION"
+  },
+  "holdout_non_collapse_pass": true
+}

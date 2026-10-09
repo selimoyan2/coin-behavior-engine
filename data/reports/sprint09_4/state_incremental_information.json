@@ -1,0 +1,59 @@
+{
+  "schema_version": "CBE-STATE-INCR-INFO-0.8.0",
+  "methodology": "Nested OLS F-test comparing continuous volatility features vs continuous + dummy states",
+  "evaluations": {
+    "VALIDATION_2025": {
+      "1h": {
+        "r2_continuous_features_only": 0.378736,
+        "r2_with_discrete_market_states": 0.385314,
+        "incremental_r2_lift": 0.006578,
+        "f_statistic": 559.34,
+        "f_test_p_value": 2.345844261402686e-242,
+        "aic_continuous": -933281.6,
+        "aic_with_states": -934390.4,
+        "delta_aic": -1108.8,
+        "delta_bic": -1089.7,
+        "statistically_significant": true
+      },
+      "4h": {
+        "r2_continuous_features_only": 0.346964,
+        "r2_with_discrete_market_states": 0.355632,
+        "incremental_r2_lift": 0.008668,
+        "f_statistic": 703.09,
+        "f_test_p_value": 4.880108191147074e-304,
+        "aic_continuous": -949543.7,
+        "aic_with_states": -950936.6,
+        "delta_aic": -1392.9,
+        "delta_bic": -1373.8,
+        "statistically_significant": true
+      }
+    },
+    "HOLDOUT_2026": {
+      "1h": {
+        "r2_continuous_features_only": 0.422081,
+        "r2_with_discrete_market_states": 0.422298,
+        "incremental_r2_lift": 0.000217,
+        "f_statistic": 14.3,
+        "f_test_p_value": 6.186917307225751e-07,
+        "aic_continuous": -692924.5,
+        "aic_with_states": -692949.1,
+        "delta_aic": -24.6,
+        "delta_bic": -6.1,
+        "statistically_significant": true
+      },
+      "4h": {
+        "r2_continuous_features_only": 0.437716,
+        "r2_with_discrete_market_states": 0.438102,
+        "incremental_r2_lift": 0.000385,
+        "f_statistic": 26.06,
+        "f_test_p_value": 4.873424859961837e-12,
+        "aic_continuous": -713322.2,
+        "aic_with_states": -713370.3,
+        "delta_aic": -48.1,
+        "delta_bic": -29.6,
+        "statistically_significant": true
+      }
+    }
+  },
+  "conclusion": "Discrete market state indicators capture non-linear threshold effects yielding statistically significant incremental explanatory power."
+}

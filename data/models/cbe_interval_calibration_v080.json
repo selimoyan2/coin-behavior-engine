@@ -1,0 +1,119 @@
+{
+  "calibration_method": "EMPIRICAL_RESIDUAL_QUANTILE_SPLIT_CONFORMAL",
+  "calibration_partition": "VALIDATION_2025 (2025-01-01 to 2025-12-31)",
+  "candidate_model_version": "CBE-0.8.0",
+  "horizons": {
+    "1h": {
+      "calibration_mae": 0.006887,
+      "calibration_rmse": 0.011678,
+      "calibration_sample_count": 104544,
+      "global_quantiles": {
+        "q025": -0.017331,
+        "q10": -0.010466,
+        "q90": 0.008375,
+        "q975": 0.022432
+      },
+      "horizon": "1h",
+      "state_conditioned_quantiles": {
+        "HIGH_VOLATILITY": {
+          "q025": -0.041031,
+          "q10": -0.020789,
+          "q90": 0.01897,
+          "q975": 0.048728,
+          "sample_count": 8018
+        },
+        "LOW_VOLATILITY": {
+          "q025": -0.014809,
+          "q10": -0.008663,
+          "q90": 0.006062,
+          "q975": 0.015352,
+          "sample_count": 53677
+        },
+        "NORMAL_VOLATILITY": {
+          "q025": -0.014638,
+          "q10": -0.010291,
+          "q90": 0.010321,
+          "q975": 0.025462,
+          "sample_count": 42849
+        }
+      }
+    },
+    "24h": {
+      "calibration_mae": 0.006894,
+      "calibration_rmse": 0.009783,
+      "calibration_sample_count": 104544,
+      "global_quantiles": {
+        "q025": -0.017006,
+        "q10": -0.011641,
+        "q90": 0.006226,
+        "q975": 0.018027
+      },
+      "horizon": "24h",
+      "state_conditioned_quantiles": {
+        "HIGH_VOLATILITY": {
+          "q025": -0.048547,
+          "q10": -0.021918,
+          "q90": 0.013375,
+          "q975": 0.019293,
+          "sample_count": 8018
+        },
+        "LOW_VOLATILITY": {
+          "q025": -0.01237,
+          "q10": -0.009689,
+          "q90": 0.004809,
+          "q975": 0.012551,
+          "sample_count": 53677
+        },
+        "NORMAL_VOLATILITY": {
+          "q025": -0.016404,
+          "q10": -0.012959,
+          "q90": 0.007177,
+          "q975": 0.022108,
+          "sample_count": 42849
+        }
+      }
+    },
+    "4h": {
+      "calibration_mae": 0.007091,
+      "calibration_rmse": 0.010895,
+      "calibration_sample_count": 104544,
+      "global_quantiles": {
+        "q025": -0.015815,
+        "q10": -0.010295,
+        "q90": 0.008746,
+        "q975": 0.021697
+      },
+      "horizon": "4h",
+      "state_conditioned_quantiles": {
+        "HIGH_VOLATILITY": {
+          "q025": -0.046237,
+          "q10": -0.020798,
+          "q90": 0.018008,
+          "q975": 0.03678,
+          "sample_count": 8018
+        },
+        "LOW_VOLATILITY": {
+          "q025": -0.012077,
+          "q10": -0.008377,
+          "q90": 0.006117,
+          "q975": 0.015942,
+          "sample_count": 53677
+        },
+        "NORMAL_VOLATILITY": {
+          "q025": -0.013978,
+          "q10": -0.010505,
+          "q90": 0.010836,
+          "q975": 0.023674,
+          "sample_count": 42849
+        }
+      }
+    }
+  },
+  "metadata": {
+    "created_at_utc": "2026-10-09T15:39:29.905637+00:00",
+    "validation_sample_count": 104544
+  },
+  "schema_version": "CBE-CALIBRATION-0.8.0",
+  "source_commit": "81e5033",
+  "target_units": "Daily-scaled standard deviation (sigma_5m * sqrt(288))"
+}

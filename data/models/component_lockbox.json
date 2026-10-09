@@ -1,0 +1,21 @@
+{
+  "schema_version": "CBE-COMPONENT-LOCKBOX-0.8.0",
+  "candidate_model_version": "CBE-0.8.0",
+  "source_commit": "81e5033",
+  "created_at_utc": "2026-10-09T15:39:30.206645+00:00",
+  "artifacts": {
+    "cbe_model_bundle_v080.json": {
+      "sha256": "7755ddcb369c29825f9205f09e805b2e518526726b4bd5d948787d24c9419ad0",
+      "description": "Serialized Ridge weights, scaler parameters, and feature manifest"
+    },
+    "cbe_state_thresholds_v080.json": {
+      "sha256": "3979ab8e37377f1d5cb2623c63c20081078ae49c5bcbedcbb860affe3dfd95d9",
+      "description": "Fixed reference distribution quartiles learned on Discovery (< 2025-01-01)"
+    },
+    "cbe_interval_calibration_v080.json": {
+      "sha256": "e615a48996b639fcffec9c47819abfd934e9b8789fca825e8785322b950379a4",
+      "description": "Empirical residual quantile parameters fitted on Validation (2025)"
+    }
+  },
+  "status": "ALL_CANDIDATE_COMPONENTS_LOCKED_AND_VERIFIED"
+}

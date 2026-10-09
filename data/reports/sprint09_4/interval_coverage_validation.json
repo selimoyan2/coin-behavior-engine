@@ -1,0 +1,168 @@
+{
+  "VALIDATION_2025": {
+    "1h": {
+      "sample_count": 104544,
+      "coverage_80_pct": 80.0,
+      "coverage_95_pct": 95.0,
+      "coverage_error_80": 0.0,
+      "coverage_error_95": 0.0,
+      "mean_width_80": 0.018568,
+      "mean_width_95": 0.037643,
+      "monotonicity_verified": true,
+      "state_breakdown": {
+        "LOW_VOLATILITY": {
+          "sample_count": 53677,
+          "coverage_80_pct": 86.74,
+          "coverage_95_pct": 97.3
+        },
+        "NORMAL_VOLATILITY": {
+          "sample_count": 42849,
+          "coverage_80_pct": 78.21,
+          "coverage_95_pct": 95.76
+        },
+        "HIGH_VOLATILITY": {
+          "sample_count": 8018,
+          "coverage_80_pct": 44.44,
+          "coverage_95_pct": 75.51
+        }
+      }
+    },
+    "4h": {
+      "sample_count": 104544,
+      "coverage_80_pct": 80.0,
+      "coverage_95_pct": 95.0,
+      "coverage_error_80": 0.0,
+      "coverage_error_95": 0.0,
+      "mean_width_80": 0.018993,
+      "mean_width_95": 0.036835,
+      "monotonicity_verified": true,
+      "state_breakdown": {
+        "LOW_VOLATILITY": {
+          "sample_count": 53677,
+          "coverage_80_pct": 88.63,
+          "coverage_95_pct": 98.12
+        },
+        "NORMAL_VOLATILITY": {
+          "sample_count": 42849,
+          "coverage_80_pct": 76.81,
+          "coverage_95_pct": 95.51
+        },
+        "HIGH_VOLATILITY": {
+          "sample_count": 8018,
+          "coverage_80_pct": 39.25,
+          "coverage_95_pct": 71.35
+        }
+      }
+    },
+    "24h": {
+      "sample_count": 104544,
+      "coverage_80_pct": 80.0,
+      "coverage_95_pct": 95.0,
+      "coverage_error_80": 0.0,
+      "coverage_error_95": 0.0,
+      "mean_width_80": 0.017866,
+      "mean_width_95": 0.034856,
+      "monotonicity_verified": true,
+      "state_breakdown": {
+        "LOW_VOLATILITY": {
+          "sample_count": 53677,
+          "coverage_80_pct": 88.74,
+          "coverage_95_pct": 98.57
+        },
+        "NORMAL_VOLATILITY": {
+          "sample_count": 42849,
+          "coverage_80_pct": 74.65,
+          "coverage_95_pct": 94.23
+        },
+        "HIGH_VOLATILITY": {
+          "sample_count": 8018,
+          "coverage_80_pct": 50.07,
+          "coverage_95_pct": 75.24
+        }
+      }
+    }
+  },
+  "HOLDOUT_2026": {
+    "1h": {
+      "sample_count": 75989,
+      "coverage_80_pct": 78.41,
+      "coverage_95_pct": 94.84,
+      "coverage_error_80": 1.59,
+      "coverage_error_95": 0.16,
+      "mean_width_80": 0.018542,
+      "mean_width_95": 0.037656,
+      "monotonicity_verified": true,
+      "state_breakdown": {
+        "LOW_VOLATILITY": {
+          "sample_count": 35467,
+          "coverage_80_pct": 84.92,
+          "coverage_95_pct": 96.66
+        },
+        "NORMAL_VOLATILITY": {
+          "sample_count": 35159,
+          "coverage_80_pct": 76.12,
+          "coverage_95_pct": 94.91
+        },
+        "HIGH_VOLATILITY": {
+          "sample_count": 5363,
+          "coverage_80_pct": 50.38,
+          "coverage_95_pct": 82.3
+        }
+      }
+    },
+    "4h": {
+      "sample_count": 75989,
+      "coverage_80_pct": 79.15,
+      "coverage_95_pct": 95.63,
+      "coverage_error_80": 0.85,
+      "coverage_error_95": 0.63,
+      "mean_width_80": 0.018977,
+      "mean_width_95": 0.036803,
+      "monotonicity_verified": true,
+      "state_breakdown": {
+        "LOW_VOLATILITY": {
+          "sample_count": 35467,
+          "coverage_80_pct": 86.58,
+          "coverage_95_pct": 97.52
+        },
+        "NORMAL_VOLATILITY": {
+          "sample_count": 35159,
+          "coverage_80_pct": 75.94,
+          "coverage_95_pct": 95.83
+        },
+        "HIGH_VOLATILITY": {
+          "sample_count": 5363,
+          "coverage_80_pct": 51.07,
+          "coverage_95_pct": 81.8
+        }
+      }
+    },
+    "24h": {
+      "sample_count": 75989,
+      "coverage_80_pct": 82.8,
+      "coverage_95_pct": 97.47,
+      "coverage_error_80": 2.8,
+      "coverage_error_95": 2.47,
+      "mean_width_80": 0.017863,
+      "mean_width_95": 0.03483,
+      "monotonicity_verified": true,
+      "state_breakdown": {
+        "LOW_VOLATILITY": {
+          "sample_count": 35467,
+          "coverage_80_pct": 88.53,
+          "coverage_95_pct": 99.58
+        },
+        "NORMAL_VOLATILITY": {
+          "sample_count": 35159,
+          "coverage_80_pct": 81.54,
+          "coverage_95_pct": 97.25
+        },
+        "HIGH_VOLATILITY": {
+          "sample_count": 5363,
+          "coverage_80_pct": 53.25,
+          "coverage_95_pct": 85.01
+        }
+      }
+    }
+  }
+}

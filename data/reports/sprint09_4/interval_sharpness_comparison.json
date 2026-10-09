@@ -1,0 +1,65 @@
+{
+  "1h": {
+    "calibrated_cbe080": {
+      "coverage_80": 78.41,
+      "coverage_95": 94.84,
+      "mean_width_80": 0.018542,
+      "mean_width_95": 0.037656,
+      "winkler_score_80": 0.036162,
+      "winkler_score_95": 0.060226
+    },
+    "uncalibrated_cbe070": {
+      "coverage_80": 57.35,
+      "coverage_95": 75.98,
+      "mean_width_80": 0.019766,
+      "mean_width_95": 0.027044,
+      "winkler_score_80": 0.042003,
+      "winkler_score_95": 0.073955
+    },
+    "winkler_ratio_80": 0.8609,
+    "winkler_ratio_95": 0.8144,
+    "winkler_score_superior": true
+  },
+  "4h": {
+    "calibrated_cbe080": {
+      "coverage_80": 79.15,
+      "coverage_95": 95.63,
+      "mean_width_80": 0.018977,
+      "mean_width_95": 0.036803,
+      "winkler_score_80": 0.032169,
+      "winkler_score_95": 0.049916
+    },
+    "uncalibrated_cbe070": {
+      "coverage_80": 68.06,
+      "coverage_95": 84.61,
+      "mean_width_80": 0.019766,
+      "mean_width_95": 0.027044,
+      "winkler_score_80": 0.034466,
+      "winkler_score_95": 0.055992
+    },
+    "winkler_ratio_80": 0.9333,
+    "winkler_ratio_95": 0.8915,
+    "winkler_score_superior": true
+  },
+  "24h": {
+    "calibrated_cbe080": {
+      "coverage_80": 82.8,
+      "coverage_95": 97.47,
+      "mean_width_80": 0.017863,
+      "mean_width_95": 0.03483,
+      "winkler_score_80": 0.025735,
+      "winkler_score_95": 0.039833
+    },
+    "uncalibrated_cbe070": {
+      "coverage_80": 75.24,
+      "coverage_95": 85.6,
+      "mean_width_80": 0.019766,
+      "mean_width_95": 0.027044,
+      "winkler_score_80": 0.030289,
+      "winkler_score_95": 0.047468
+    },
+    "winkler_ratio_80": 0.8497,
+    "winkler_ratio_95": 0.8391,
+    "winkler_score_superior": true
+  }
+}

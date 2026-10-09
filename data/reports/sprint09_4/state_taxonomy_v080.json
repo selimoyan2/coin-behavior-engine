@@ -1,0 +1,58 @@
+{
+  "schema_version": "CBE-TAXONOMY-0.8.0",
+  "tier": "SPOT_ONLY_U0",
+  "architecture": "TWO_LAYER_DECOUPLED",
+  "layer_1_primary_state": {
+    "description": "Mutually exclusive volatility level derived from 24h trailing realized volatility vs fixed Discovery quartiles",
+    "values": [
+      {
+        "state": "LOW_VOLATILITY",
+        "definition": "volatility_realized_24h < P25 (0.001140)",
+        "market_interpretation": "Subdued price variation, narrow consolidations, lower risk"
+      },
+      {
+        "state": "NORMAL_VOLATILITY",
+        "definition": "P25 (0.001140) <= volatility_realized_24h <= P75 (0.002118)",
+        "market_interpretation": "Typical baseline crypto market volatility range"
+      },
+      {
+        "state": "HIGH_VOLATILITY",
+        "definition": "volatility_realized_24h > P75 (0.002118)",
+        "market_interpretation": "Elevated dispersion, expanded intraday ranges, heightened tail risk"
+      },
+      {
+        "state": "UNKNOWN_INSUFFICIENT_DATA",
+        "definition": "Missing, non-finite, or corrupted spot input features",
+        "market_interpretation": "Fail-closed fallback state"
+      }
+    ],
+    "invariants": [
+      "Exactly one primary state is assigned to every bar.",
+      "Primary states are fully determined by fixed historical reference thresholds.",
+      "Zero dynamic percentiles evaluated on runtime input rows."
+    ]
+  },
+  "layer_2_secondary_flags": {
+    "description": "Independent structural regime tags describing volatility compression and expansion dynamics",
+    "flags": [
+      {
+        "flag": "VOLATILITY_COMPRESSION",
+        "definition": "volatility_compression_ratio < 0.80",
+        "interpretation": "Short-term volatility is depressed relative to medium-term baseline; coiled spring condition"
+      },
+      {
+        "flag": "VOLATILITY_EXPANSION",
+        "definition": "volatility_compression_ratio >= 1.20",
+        "interpretation": "Short-term volatility is accelerating relative to medium-term baseline; breakout or momentum shock"
+      }
+    ]
+  },
+  "derivatives_tier_barrier": {
+    "forbidden_states_in_u0": [
+      "DELEVERAGING_STRESS",
+      "FUNDING_EXTREME",
+      "BASIS_DISLOCATION"
+    ],
+    "rationale": "Derivatives-based states require verified live Open Interest, Funding Rates, and Basis streams. Under SPOT_ONLY_U0, emitting derivatives states constitutes scientific malpractice."
+  }
+}

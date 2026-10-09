@@ -1,0 +1,47 @@
+{
+  "1h": {
+    "global_intervals": {
+      "coverage_80": 78.41,
+      "coverage_95": 94.84,
+      "mean_width_80": 0.018542,
+      "winkler_80": 0.036162
+    },
+    "state_conditioned_intervals": {
+      "coverage_80": 78.38,
+      "coverage_95": 94.28,
+      "mean_width_80": 0.019075,
+      "winkler_80": 0.035301
+    },
+    "state_conditioned_valid": true
+  },
+  "4h": {
+    "global_intervals": {
+      "coverage_80": 79.15,
+      "coverage_95": 95.63,
+      "mean_width_80": 0.018977,
+      "winkler_80": 0.032169
+    },
+    "state_conditioned_intervals": {
+      "coverage_80": 79.06,
+      "coverage_95": 94.65,
+      "mean_width_80": 0.019358,
+      "winkler_80": 0.03126
+    },
+    "state_conditioned_valid": true
+  },
+  "24h": {
+    "global_intervals": {
+      "coverage_80": 82.8,
+      "coverage_95": 97.47,
+      "mean_width_80": 0.017863,
+      "winkler_80": 0.025735
+    },
+    "state_conditioned_intervals": {
+      "coverage_80": 82.9,
+      "coverage_95": 96.28,
+      "mean_width_80": 0.018574,
+      "winkler_80": 0.025205
+    },
+    "state_conditioned_valid": true
+  }
+}
