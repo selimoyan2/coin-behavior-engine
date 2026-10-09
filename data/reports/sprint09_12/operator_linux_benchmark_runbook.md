@@ -33,7 +33,7 @@ The benchmark executes:
 1. SSH terminal access to `srv1114257`.
 2. Normal user shell (no root or sudo privileges required).
 3. Docker installed on the host (preferred) or Python 3.10+.
-4. Repository cloned at `/opt/coin-behavior-engine` (or operator workspace) with commit `a3c4d98d3e78ab7b2ef0e85ac46c63c345194650`.
+4. Repository cloned at `/opt/coin-behavior-engine` (or operator workspace) with commit `c0605e2b13e23219065c9cc85c990d0614ef0a59`.
 
 ---
 
@@ -56,7 +56,7 @@ cd /opt/coin-behavior-engine
 
 # Verify commit SHA
 git rev-parse HEAD
-# MUST RETURN: a3c4d98d3e78ab7b2ef0e85ac46c63c345194650
+# MUST RETURN: c0605e2b13e23219065c9cc85c990d0614ef0a59
 
 docker build -t cbe-080-staging:local -f deploy/shadow_v080/Dockerfile.staging .
 
@@ -95,7 +95,7 @@ cd /opt/coin-behavior-engine
 
 # 2. Verify clean git state and commit SHA
 git rev-parse HEAD
-# MUST RETURN: a3c4d98d3e78ab7b2ef0e85ac46c63c345194650
+# MUST RETURN: c0605e2b13e23219065c9cc85c990d0614ef0a59
 
 # 3. Create ephemeral virtual environment in /tmp
 python3 -m venv /tmp/cbe_bench_venv
