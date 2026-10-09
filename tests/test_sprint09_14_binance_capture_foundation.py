@@ -240,7 +240,8 @@ def test_06_conflicting_duplicate_quarantine(tmp_path):
 
     # Verify original candle was NOT overwritten
     persisted = store.get_candle_by_timestamp(c1.timestamp_open)
-    assert persisted.close == 65000.0
+    assert persisted.close == "65000.0"
+    assert persisted.close_float == 65000.0
 
     # Verify quarantine file contains record
     q_file = quarantine_dir / "quarantined_candles_BTCUSDT_5m.jsonl"

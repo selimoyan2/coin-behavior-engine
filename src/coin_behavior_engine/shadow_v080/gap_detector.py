@@ -74,30 +74,21 @@ class MarketDataGapDetector:
             return "FULL_WINDOW_READY"
         return f"WARMUP_PARTIAL ({self.contiguous_closed_bars}/{self.full_warmup_bars})"
 
-    def process_next_candle(self, candle: ValidatedCandle) -> Tuple[bool, Optional[GapEvent]]:
-        """Process incoming validated candle and detect any temporal gap.
+    def evaluate_next_candle(self, candle: ValidatedCandle) -> Tuple[bool, Optional[GapEvent]]:
+        """Evaluate incoming candle against current continuity state without mutating state.
 
-        Returns (is_contiguous, gap_event_or_none).
+        Returns (is_contiguous, proposed_gap_event).
         """
         curr_open = candle.timestamp_open
-        self.total_processed_bars += 1
-
         if self.last_candle_open_ts is None:
-            # First candle processed
-            self.last_candle_open_ts = curr_open
-            self.contiguous_closed_bars = 1
             return True, None
 
         expected_open = self.last_candle_open_ts + CANDLE_INTERVAL_MS
 
         if curr_open == expected_open:
-            # Perfectly contiguous
-            self.last_candle_open_ts = curr_open
-            self.contiguous_closed_bars += 1
             return True, None
 
         elif curr_open > expected_open:
-            # Missing interval(s) detected!
             missing_count = (curr_open - expected_open) // CANDLE_INTERVAL_MS
             missing_ts_list = [
                 expected_open + (i * CANDLE_INTERVAL_MS)
@@ -115,23 +106,54 @@ class MarketDataGapDetector:
                 missing_timestamps=missing_ts_list,
                 recovered=False,
             )
-            self.gaps.append(gap)
-            self._missing_ts_set.update(missing_ts_list)
-
-            logger.error(
-                f"SEQUENCE GAP DETECTED: Expected {expected_open}, got {curr_open}. "
-                f"Missing {missing_count} bar(s). Contiguity reset."
-            )
-
-            # Break in contiguity: reset contiguous counter to 1 (current candle)
-            self.contiguous_closed_bars = 1
-            self.last_candle_open_ts = curr_open
             return False, gap
-
         else:
             # curr_open < expected_open: duplicate or out-of-order
-            # Does not advance latest timestamp; handled by caller/store
             return False, None
+
+    def commit_candle(self, candle: ValidatedCandle, is_contiguous: bool, gap_event: Optional[GapEvent]) -> None:
+        """Commit continuity state after successful evidence persistence."""
+        curr_open = candle.timestamp_open
+        self.total_processed_bars += 1
+
+        if self.last_candle_open_ts is None:
+            self.last_candle_open_ts = curr_open
+            self.contiguous_closed_bars = 1
+            return
+
+        expected_open = self.last_candle_open_ts + CANDLE_INTERVAL_MS
+
+        if curr_open == expected_open:
+            self.last_candle_open_ts = curr_open
+            self.contiguous_closed_bars += 1
+            return
+        elif curr_open > expected_open:
+            if gap_event is not None:
+                self.gaps.append(gap_event)
+                self._missing_ts_set.update(gap_event.missing_timestamps)
+                logger.error(
+                    f"SEQUENCE GAP COMMITTED: Expected {expected_open}, got {curr_open}. "
+                    f"Missing {gap_event.missing_bars_count} bar(s). Contiguity reset."
+                )
+            self.contiguous_closed_bars = 1
+            self.last_candle_open_ts = curr_open
+            return
+        else:
+            return
+
+    def process_next_candle(self, candle: ValidatedCandle) -> Tuple[bool, Optional[GapEvent]]:
+        """Process incoming validated candle and detect any temporal gap (atomic evaluate + commit).
+
+        Returns (is_contiguous, gap_event_or_none).
+        """
+        is_contiguous, gap_event = self.evaluate_next_candle(candle)
+        self.commit_candle(candle, is_contiguous, gap_event)
+        return is_contiguous, gap_event
+
+    def reset_contiguity_on_overflow(self) -> None:
+        """Reset contiguous closed bars when queue overflow / message drop occurs."""
+        logger.warning("Contiguity reset due to inbound transport queue overflow / dropped messages.")
+        self.contiguous_closed_bars = 0
 
     def register_recovered_gap(
         self,

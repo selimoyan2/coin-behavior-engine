@@ -97,10 +97,15 @@ The capture foundation is engineered to share VPS resources without starving pro
 - A `GapEvent` is recorded, and the contiguous bar counter is reset to 1.
 - Contiguity invariant: minimum 288 contiguous closed 5m candles without unrecovered gaps is required for `FULL_WINDOW_READY`.
 
-### Crash Recovery
-- On container start/restart, `RawMarketEvidenceStore.verify_and_recover_chain()` reads all entries in `raw_candles_BTCUSDT_5m.jsonl`.
+### Forensic Recovery & In-Place Truncation
+- On container start/restart, `RawMarketEvidenceStore.verify_and_recover_chain()` streams `raw_candles_BTCUSDT_5m.jsonl` line-by-line without loading entire history into memory.
+- Bounded memory footprint: maintains a rolling cache of 1,000 recent candles and an integer timestamp index.
 - Verifies every per-record SHA-256 hash and the unbroken continuity of `prev_hash == previous.entry_hash`.
-- If a sudden host reboot or container kill occurred mid-write, any trailing partial line at EOF is atomically truncated back to the last valid entry.
+- If a sudden host reboot or container kill occurred mid-write at EOF:
+  1. A forensic binary copy of corrupted trailing bytes is preserved in `quarantine/forensic_trailing_corruption_<timestamp>.bin`.
+  2. The backup file is verified for completeness and SHA-256 hash match.
+  3. A recovery audit log is written to `quarantine/recovery_audit.jsonl`.
+  4. The file is truncated in-place using `os.truncate` at the exact valid offset. Preceding valid history is NEVER rewritten or altered.
 - If mid-chain tampering or corruption is detected, the store fails closed with `EvidenceCorruptionError`.
 
 ---
@@ -140,7 +145,9 @@ To confirm that market data collection is currently disabled in the staging envi
 
 ## 7. FUTURE ACTIVATION PROCEDURE (UPON EXPLICIT APPROVAL 3 ONLY)
 
+> [!CAUTION]
 > **DO NOT EXECUTE PRIOR TO FORMAL OPERATOR AUTHORIZATION.**
+> Approval 3 has NOT been authorized. This procedure is documented for future authorized execution only.
 
 When Approval 3 is granted, activation will follow this procedure:
 
@@ -149,15 +156,35 @@ When Approval 3 is granted, activation will follow this procedure:
    - Production CBE-0.7.0 verified healthy with $\ge$ 2.0 GiB available VPS RAM.
    - Host clock synchronized via NTP (drift < 100 ms).
 
-2. **Compose Configuration Update (Staging Compose Only):**
-   - Change `network_mode: "none"` to an egress-restricted network allowing outbound HTTPS/WSS to Binance.
-   - Set `CBE_BINANCE_COLLECTION_ENABLED=true`.
-   - Set `CBE_APPROVAL_3_AUTHORIZED=true`.
-   - Keep `CBE_PROSPECTIVE_OBSERVATION_ENABLED=false` (Approval 4 remains locked).
-   - Keep `CBE_TRADING_DISABLED=true` (Permanently locked).
+2. **Dedicated Live Compose Deployment:**
+   - Use dedicated compose file: `deploy/shadow_v080/docker-compose.coolify-live-capture.yaml`.
+   - Dedicated persistent volume: `cbe_080_live_capture_data` (strictly separated from inert staging `cbe_080_shadow_data` and production data).
+   - Set environment variables:
+     - `CBE_BINANCE_COLLECTION_ENABLED=true`
+     - `CBE_APPROVAL_3_AUTHORIZED=true`
+     - `CBE_PROSPECTIVE_OBSERVATION_ENABLED=false` (Approval 4 remains locked)
+     - `CBE_TRADING_DISABLED=true` (Permanently locked)
 
-3. **Trigger Deployment:**
-   - Execute single-container manual build in Coolify.
+3. **Network Egress Controls (Host-Level Filtering):**
+   To enforce least-privilege outbound networking on the shared host, apply iptables / nftables egress filtering to restrict container traffic strictly to Binance WebSocket (port 9443) and REST (port 443):
+   ```bash
+   # Identify container IP or docker bridge interface
+   CONTAINER_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' cbe_080_coolify_live_capture)
+
+   # Allow DNS resolution (port 53 UDP/TCP)
+   iptables -A DOCKER-USER -s $CONTAINER_IP -p udp --dport 53 -j ACCEPT
+   iptables -A DOCKER-USER -s $CONTAINER_IP -p tcp --dport 53 -j ACCEPT
+
+   # Allow Binance WSS (port 9443) and HTTPS (port 443)
+   iptables -A DOCKER-USER -s $CONTAINER_IP -p tcp --dport 443 -j ACCEPT
+   iptables -A DOCKER-USER -s $CONTAINER_IP -p tcp --dport 9443 -j ACCEPT
+
+   # Drop all other outbound connections from live capture container
+   iptables -A DOCKER-USER -s $CONTAINER_IP -j DROP
+   ```
+
+4. **Trigger Deployment & Monitor:**
+   - Execute deployment in Coolify.
    - Monitor logs: confirm connection, initial 5m candle receipt, and zero trading.
 
 ---
@@ -167,17 +194,18 @@ When Approval 3 is granted, activation will follow this procedure:
 If any feed anomaly, rate limit issue, or resource concern arises:
 
 1. **Immediate Stop in Coolify:**
-   Click **Stop** in the Coolify dashboard for `cbe_080_coolify_inert`.
+   Click **Stop** in the Coolify dashboard for `cbe_080_coolify_live_capture`.
    Alternatively, run on host:
    ```bash
-   docker stop -t 10 cbe_080_coolify_inert
+   docker stop -t 10 cbe_080_coolify_live_capture
    ```
 
 2. **Preserve Immutable Ledger:**
-   The raw market evidence in `cbe_080_shadow_data` is preserved automatically.
+   The raw market evidence in `cbe_080_live_capture_data` is preserved automatically.
 
 3. **Confirm Production Integrity:**
    ```bash
    docker ps --filter "name=coin-behavior-engine" --format "table {{.Names}}\t{{.Status}}"
    ls -la /opt/coin-behavior-engine/data/prospective/
    ```
+

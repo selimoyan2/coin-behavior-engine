@@ -1,0 +1,80 @@
+# ==============================================================================
+# SPRINT 09.14.1 / APPROVAL 3 PREPARATION — ISOLATED LIVE CAPTURE SERVICE TEMPLATE
+# SERVICE: cbe-080-live-capture
+# STATUS: DEDICATED STAGING SERVICE FOR FUTURE LIVE BINANCE SPOT MARKET CAPTURE
+# NOTE: APPROVAL 3 IS PENDING. DEFAULT CONFIGURATION REMAINS STRICTLY FAIL-CLOSED.
+# ==============================================================================
+# MANDATORY SAFETY & RESOURCE INVARIANTS:
+# 1. DEDICATED PERSISTENCE: Mounts dedicated volume 'cbe_080_live_capture_data'.
+#    Zero mounts to 'cbe_080_shadow_data' or CBE-0.7.0 production volumes.
+# 2. READ_ONLY_ROOT: read_only: true (immutable root container filesystem).
+# 3. WRITABLE_PATHS: Strictly limited to /tmp (tmpfs: 64MB, noexec) and live capture volume.
+# 4. MEMORY_CEILING: 300 MB hard limit (enforced via mem_limit & deploy.resources.limits).
+# 5. CPU_QUOTA: 0.25 CPU maximum (throttled CFS quota).
+# 6. PIDS_LIMIT: 64 maximum process threads (prevents thread exhaustion/fork-bombs).
+# 7. LOG_BOUNDS: json-file driver bounded to 10MB x 3 files (max 30MB disk footprint).
+# 8. NO_PUBLIC_PORTS: Zero inbound host ports exposed (ports: []).
+# 9. TRADING_PERMANENTLY_PROHIBITED: CBE_TRADING_DISABLED=true (hard safety interlock).
+# 10. PROSPECTIVE_SCORING_ISOLATED: CBE_PROSPECTIVE_OBSERVATION_ENABLED=false (Approval 4 required).
+# 11. APPROVAL_3_FAIL_CLOSED: CBE_APPROVAL_3_AUTHORIZED=false and CBE_BINANCE_COLLECTION_ENABLED=false
+#     by default until operator explicitly authorizes.
+# 12. NETWORK EGRESS RESTRICTIONS:
+#     Container requires outbound HTTPS/WSS access to Binance endpoints:
+#     - stream.binance.com:9443 (WebSocket)
+#     - api.binance.com:443 (REST)
+#     Host-level iptables / nftables egress rules should be applied to restrict outbound traffic.
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  cbe-080-live-capture:
+    build:
+      context: .
+      dockerfile: deploy/shadow_v080/Dockerfile.staging
+    image: cbe-080-shadow:coolify-live-capture
+    container_name: cbe_080_coolify_live_capture
+    restart: "unless-stopped"
+    read_only: true
+    user: "1000:1000"
+    pids_limit: 64
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=67108864
+    environment:
+      - CBE_ENV=staging_coolify_live_capture
+      - PYTHONUNBUFFERED=1
+      - CBE_SYMBOL=BTCUSDT
+      - CBE_INTERVAL=5m
+      - CBE_RAW_MARKET_DIR=/app/data/live_capture/raw_market
+      - CBE_QUARANTINE_DIR=/app/data/live_capture/quarantine
+      - CBE_SHADOW_DATA_DIR=/app/data/live_capture
+      - CBE_TRADING_DISABLED=true
+      - CBE_PROSPECTIVE_OBSERVATION_ENABLED=false
+      - CBE_APPROVAL_4_AUTHORIZED=false
+      - CBE_APPROVAL_3_AUTHORIZED=false
+      - CBE_BINANCE_COLLECTION_ENABLED=false
+      - CBE_RECORD_LABEL=LIVE_BINANCE_SPOT
+    mem_limit: 300m
+    mem_reservation: 150m
+    memswap_limit: 300m
+    cpus: 0.25
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 300M
+          pids: 64
+        reservations:
+          cpus: '0.05'
+          memory: 150M
+    volumes:
+      - cbe_080_live_capture_data:/app/data/live_capture:rw
+
+volumes:
+  cbe_080_live_capture_data:
+    name: cbe_080_live_capture_data

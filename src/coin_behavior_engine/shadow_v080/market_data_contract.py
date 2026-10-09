@@ -65,7 +65,11 @@ EXPECTED_INTERVAL = "5m"
 
 @dataclass
 class ValidatedCandle:
-    """Immutable, fully validated closed candle data container with cryptographic integrity."""
+    """Immutable, fully validated closed candle data container with cryptographic integrity.
+    
+    Numeric fields preserve exact exchange string representation to prevent IEEE 754 float
+    drift or lossy rounding artifacts.
+    """
     symbol: str
     interval: str
     market_type: str
@@ -73,21 +77,56 @@ class ValidatedCandle:
     timestamp_close: int
     datetime_open_utc: str
     datetime_close_utc: str
-    open: float
-    high: float
-    low: float
-    close: float
-    volume: float
-    quote_volume: float
+    open: str
+    high: str
+    low: str
+    close: str
+    volume: str
+    quote_volume: str
     trades_count: int
-    taker_buy_base_volume: float
+    taker_buy_base_volume: str
     is_closed: bool
     provenance: str
     receipt_timestamp_utc: str
     lifecycle_state: str = CandleLifecycleState.CANDLE_VALIDATED.value
 
+    @property
+    def open_float(self) -> float:
+        return float(self.open)
+
+    @property
+    def high_float(self) -> float:
+        return float(self.high)
+
+    @property
+    def low_float(self) -> float:
+        return float(self.low)
+
+    @property
+    def close_float(self) -> float:
+        return float(self.close)
+
+    @property
+    def volume_float(self) -> float:
+        return float(self.volume)
+
+    def to_float_dict(self) -> Dict[str, Any]:
+        """Convert candle numeric attributes to float for numerical/analytical computations."""
+        d = self.canonical_dict()
+        d["open"] = float(self.open)
+        d["high"] = float(self.high)
+        d["low"] = float(self.low)
+        d["close"] = float(self.close)
+        d["volume"] = float(self.volume)
+        d["quote_volume"] = float(self.quote_volume)
+        d["taker_buy_base_volume"] = float(self.taker_buy_base_volume)
+        return d
+
     def canonical_dict(self) -> Dict[str, Any]:
-        """Produce deterministic dictionary for JSON serialization and cryptographic hashing."""
+        """Produce deterministic dictionary for JSON serialization and cryptographic hashing.
+        
+        Preserves exact Decimal string representations without lossy float conversion.
+        """
         return {
             "datetime_close_utc": self.datetime_close_utc,
             "datetime_open_utc": self.datetime_open_utc,
@@ -95,14 +134,14 @@ class ValidatedCandle:
             "is_closed": self.is_closed,
             "lifecycle_state": self.lifecycle_state,
             "market_type": self.market_type,
-            "open": round(float(self.open), 8),
-            "high": round(float(self.high), 8),
-            "low": round(float(self.low), 8),
-            "close": round(float(self.close), 8),
-            "volume": round(float(self.volume), 8),
-            "quote_volume": round(float(self.quote_volume), 8),
+            "open": str(self.open),
+            "high": str(self.high),
+            "low": str(self.low),
+            "close": str(self.close),
+            "volume": str(self.volume),
+            "quote_volume": str(self.quote_volume),
             "trades_count": int(self.trades_count),
-            "taker_buy_base_volume": round(float(self.taker_buy_base_volume), 8),
+            "taker_buy_base_volume": str(self.taker_buy_base_volume),
             "provenance": self.provenance,
             "receipt_timestamp_utc": self.receipt_timestamp_utc,
             "symbol": self.symbol,
@@ -119,38 +158,39 @@ class ValidatedCandle:
         return hashlib.sha256(self.canonical_json().encode("utf-8")).hexdigest()
 
     def matches_payload(self, other: ValidatedCandle) -> bool:
-        """Check if numeric values and critical attributes match."""
-        return (
-            self.symbol == other.symbol
-            and self.interval == other.interval
-            and self.timestamp_open == other.timestamp_open
-            and self.timestamp_close == other.timestamp_close
-            and math.isclose(self.open, other.open, abs_tol=1e-8)
-            and math.isclose(self.high, other.high, abs_tol=1e-8)
-            and math.isclose(self.low, other.low, abs_tol=1e-8)
-            and math.isclose(self.close, other.close, abs_tol=1e-8)
-            and math.isclose(self.volume, other.volume, abs_tol=1e-8)
-        )
+        """Check if numeric values and critical attributes match exactly using Decimal."""
+        try:
+            return (
+                self.symbol == other.symbol
+                and self.interval == other.interval
+                and self.timestamp_open == other.timestamp_open
+                and self.timestamp_close == other.timestamp_close
+                and decimal.Decimal(str(self.open)) == decimal.Decimal(str(other.open))
+                and decimal.Decimal(str(self.high)) == decimal.Decimal(str(other.high))
+                and decimal.Decimal(str(self.low)) == decimal.Decimal(str(other.low))
+                and decimal.Decimal(str(self.close)) == decimal.Decimal(str(other.close))
+                and decimal.Decimal(str(self.volume)) == decimal.Decimal(str(other.volume))
+            )
+        except (decimal.InvalidOperation, ValueError, TypeError):
+            return False
 
 
 class BinanceSpotCandleValidator:
     """Strict validator for Binance Spot 5-minute closed market candles."""
 
     @staticmethod
-    def _is_valid_decimal(val: Any) -> Tuple[bool, Optional[float]]:
+    def _is_valid_decimal(val: Any) -> Tuple[bool, Optional[str], Optional[decimal.Decimal]]:
         """Validate numeric value using Decimal to prevent silent precision loss or NaN/Inf."""
         if val is None:
-            return False, None
+            return False, None, None
         try:
-            d = decimal.Decimal(str(val))
+            s = str(val).strip()
+            d = decimal.Decimal(s)
             if d.is_nan() or d.is_infinite():
-                return False, None
-            f = float(d)
-            if math.isnan(f) or math.isinf(f):
-                return False, None
-            return True, f
+                return False, None, None
+            return True, s, d
         except (decimal.InvalidOperation, ValueError, TypeError):
-            return False, None
+            return False, None, None
 
     @classmethod
     def validate_raw(
@@ -187,10 +227,14 @@ class BinanceSpotCandleValidator:
         is_closed = False
         t_open = 0
         t_close = 0
-        o, h, l, c, v = 0.0, 0.0, 0.0, 0.0, 0.0
-        quote_vol = 0.0
-        trades_count = 0
-        taker_buy_base = 0.0
+        o_raw: Any = None
+        h_raw: Any = None
+        l_raw: Any = None
+        c_raw: Any = None
+        v_raw: Any = None
+        qv_raw: Any = "0"
+        n_raw: Any = 0
+        V_raw: Any = "0"
 
         if isinstance(raw_record, dict):
             # WebSocket or structured dict
@@ -209,9 +253,9 @@ class BinanceSpotCandleValidator:
             l_raw = k.get("l")
             c_raw = k.get("c")
             v_raw = k.get("v")
-            qv_raw = k.get("q", 0.0)
+            qv_raw = k.get("q", "0")
             n_raw = k.get("n", 0)
-            V_raw = k.get("V", 0.0)
+            V_raw = k.get("V", "0")
 
         elif isinstance(raw_record, (list, tuple)):
             # Binance REST array format:
@@ -227,9 +271,9 @@ class BinanceSpotCandleValidator:
             c_raw = raw_record[4]
             v_raw = raw_record[5]
             t_close_val = raw_record[6]
-            qv_raw = raw_record[7] if len(raw_record) > 7 else 0.0
+            qv_raw = raw_record[7] if len(raw_record) > 7 else "0"
             n_raw = raw_record[8] if len(raw_record) > 8 else 0
-            V_raw = raw_record[9] if len(raw_record) > 9 else 0.0
+            V_raw = raw_record[9] if len(raw_record) > 9 else "0"
 
             # REST klines are historical closed candles if close_time <= now_ms
             # If now_ms is not given, default to system UTC clock
@@ -272,31 +316,32 @@ class BinanceSpotCandleValidator:
                 )
 
         # 6. OHLCV Numeric Validation
-        valid_o, o = cls._is_valid_decimal(o_raw)
-        valid_h, h = cls._is_valid_decimal(h_raw)
-        valid_l, l = cls._is_valid_decimal(l_raw)
-        valid_c, c = cls._is_valid_decimal(c_raw)
-        valid_v, v = cls._is_valid_decimal(v_raw)
-        _, quote_vol = cls._is_valid_decimal(qv_raw)
-        _, taker_buy_base = cls._is_valid_decimal(V_raw)
+        valid_o, s_o, d_o = cls._is_valid_decimal(o_raw)
+        valid_h, s_h, d_h = cls._is_valid_decimal(h_raw)
+        valid_l, s_l, d_l = cls._is_valid_decimal(l_raw)
+        valid_c, s_c, d_c = cls._is_valid_decimal(c_raw)
+        valid_v, s_v, d_v = cls._is_valid_decimal(v_raw)
+        _, s_qv, _ = cls._is_valid_decimal(qv_raw)
+        _, s_tb, _ = cls._is_valid_decimal(V_raw)
         try:
             trades_count = int(n_raw)
         except (ValueError, TypeError):
             trades_count = 0
 
-        if not (valid_o and valid_h and valid_l and valid_c and valid_v):
+        if not (valid_o and valid_h and valid_l and valid_c and valid_v and d_o and d_h and d_l and d_c and d_v):
             violations.append("MALFORMED_OHLCV_NON_NUMERIC: One or more OHLCV fields could not be parsed as valid decimals.")
         else:
-            if o <= 0.0 or h <= 0.0 or l <= 0.0 or c <= 0.0:
-                violations.append(f"NON_POSITIVE_PRICE: Prices must be strictly positive (> 0). Got O={o}, H={h}, L={l}, C={c}")
-            if v < 0.0:
-                violations.append(f"NEGATIVE_VOLUME: Volume cannot be negative. Got V={v}")
-            if h < l:
-                violations.append(f"PRICE_INVARIANT_VIOLATION_HIGH_LOW: High ({h}) cannot be lower than Low ({l}).")
-            if h < o or h < c:
-                violations.append(f"PRICE_INVARIANT_VIOLATION_HIGH_BOUND: High ({h}) must be >= Open ({o}) and Close ({c}).")
-            if l > o or l > c:
-                violations.append(f"PRICE_INVARIANT_VIOLATION_LOW_BOUND: Low ({l}) must be <= Open ({o}) and Close ({c}).")
+            zero = decimal.Decimal("0")
+            if d_o <= zero or d_h <= zero or d_l <= zero or d_c <= zero:
+                violations.append(f"NON_POSITIVE_PRICE: Prices must be strictly positive (> 0). Got O={s_o}, H={s_h}, L={s_l}, C={s_c}")
+            if d_v < zero:
+                violations.append(f"NEGATIVE_VOLUME: Volume cannot be negative. Got V={s_v}")
+            if d_h < d_l:
+                violations.append(f"PRICE_INVARIANT_VIOLATION_HIGH_LOW: High ({s_h}) cannot be lower than Low ({s_l}).")
+            if d_h < d_o or d_h < d_c:
+                violations.append(f"PRICE_INVARIANT_VIOLATION_HIGH_BOUND: High ({s_h}) must be >= Open ({s_o}) and Close ({s_c}).")
+            if d_l > d_o or d_l > d_c:
+                violations.append(f"PRICE_INVARIANT_VIOLATION_LOW_BOUND: Low ({s_l}) must be <= Open ({s_o}) and Close ({s_c}).")
 
         if violations:
             return None, violations
@@ -314,14 +359,14 @@ class BinanceSpotCandleValidator:
             timestamp_close=t_close,
             datetime_open_utc=dt_open_utc,
             datetime_close_utc=dt_close_utc,
-            open=o,
-            high=h,
-            low=l,
-            close=c,
-            volume=v,
-            quote_volume=quote_vol or 0.0,
+            open=s_o,  # type: ignore[arg-type]
+            high=s_h,  # type: ignore[arg-type]
+            low=s_l,  # type: ignore[arg-type]
+            close=s_c,  # type: ignore[arg-type]
+            volume=s_v,  # type: ignore[arg-type]
+            quote_volume=s_qv or "0",
             trades_count=trades_count or 0,
-            taker_buy_base_volume=taker_buy_base or 0.0,
+            taker_buy_base_volume=s_tb or "0",
             is_closed=True,
             provenance=prov_str,
             receipt_timestamp_utc=rec_time,
