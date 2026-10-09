@@ -1,0 +1,73 @@
+# ==============================================================================
+# SPRINT 09.13 / APPROVAL 2 — ISOLATED INERT COOLIFY SERVICE TEMPLATE
+# SERVICE: cbe-080-shadow-collector-inert
+# STATUS: 100% INERT / ZERO BACKGROUND EXECUTION / MANUAL OPERATOR TRIGGER ONLY
+# ==============================================================================
+# MANDATORY SAFETY & RESOURCE INVARIANTS:
+# 1. NETWORK_DISABLED: network_mode: "none" (complete host & external network isolation).
+# 2. READ_ONLY_ROOT: read_only: true (immutable root filesystem).
+# 3. WRITABLE_PATHS: Strictly limited to /tmp (tmpfs: 64MB, noexec) and dedicated shadow volume.
+# 4. MEMORY_CEILING: 300 MB hard limit (enforced via mem_limit & deploy.resources.limits).
+# 5. CPU_QUOTA: 0.25 CPU maximum (throttled CFS quota).
+# 6. PIDS_LIMIT: 64 maximum process threads (prevents thread exhaustion/fork-bombs).
+# 7. LOG_BOUNDS: json-file driver bounded to 10MB x 3 files (max 30MB disk footprint).
+# 8. NO_AUTO_START: restart: "no", profiles: ["manual"], exits with code 0 upon inert audit.
+# 9. TRADING_DISABLED: CBE_TRADING_DISABLED=true (permanent software interlock).
+# 10. NO_BINANCE_API: CBE_BINANCE_COLLECTION_ENABLED=false (prohibited before Approval 3).
+# 11. NO_PROSPECTIVE_SCORING: CBE_PROSPECTIVE_OBSERVATION_ENABLED=false (prohibited before Approval 4).
+# 12. ZERO_PRODUCTION_MUTATION: No mounts to CBE-0.7.0 code, SQLite databases, or worker volumes.
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  cbe-080-shadow-inert:
+    build:
+      context: ../..
+      dockerfile: deploy/shadow_v080/Dockerfile.staging
+    image: cbe-080-shadow:coolify-inert
+    container_name: cbe_080_coolify_inert
+    profiles: ["manual"]
+    restart: "no"
+    network_mode: "none"
+    read_only: true
+    user: "1000:1000"
+    pids_limit: 64
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=67108864
+    environment:
+      - CBE_ENV=staging_coolify_inert
+      - PYTHONUNBUFFERED=1
+      - CBE_RECORD_LABEL=WARMUP_REPLAY
+      - CBE_PROSPECTIVE_OBSERVATION_ENABLED=false
+      - CBE_BINANCE_COLLECTION_ENABLED=false
+      - CBE_ENFORCE_PROSPECTIVE_GUARD=true
+      - CBE_TRADING_DISABLED=true
+      - CBE_MAX_QUEUE_SIZE=1728
+      - CBE_CLOCK_SKEW_BUDGET_MS=2000
+      - CBE_SHADOW_DATA_DIR=/app/data/prospective_shadow
+    mem_limit: 300m
+    mem_reservation: 150m
+    memswap_limit: 300m
+    cpus: 0.25
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 300M
+          pids: 64
+        reservations:
+          cpus: '0.05'
+          memory: 150M
+    volumes:
+      - cbe_080_shadow_data:/app/data/prospective_shadow:rw
+    entrypoint: ["/app/entrypoint_inert.sh"]
+
+volumes:
+  cbe_080_shadow_data:
+    name: cbe_080_shadow_data

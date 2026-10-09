@@ -16,12 +16,14 @@ RUN groupadd -g 1000 cbe && \
 # Install minimal scientific dependencies
 RUN pip install --no-cache-dir joblib scikit-learn pandas numpy
 
-# Copy application source and frozen model components
+# Copy application source, frozen model components, and inert entrypoint
 COPY src/ /app/src/
 COPY data/models/ /app/data/models/
+COPY deploy/shadow_v080/entrypoint_inert.sh /app/entrypoint_inert.sh
 
 # Prepare dedicated data directory with correct ownership
 RUN mkdir -p /app/data/prospective_shadow && \
+    chmod +x /app/entrypoint_inert.sh && \
     chown -R cbe:cbe /app
 
 USER 1000:1000
