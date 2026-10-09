@@ -1,0 +1,28 @@
+{
+  "daily_scaling_factor": 16.97056274847714,
+  "daily_scaling_factor_exact": "sqrt(288) = 16.97056274847714",
+  "scaling_assumptions": "Square-root-of-time scaling from 5m return standard deviation to 1-day scale. NOT an annualization factor.",
+  "horizons": {
+    "1h": {
+      "forward_bars": 12,
+      "raw_target": "fwd_vol_1h",
+      "scaled_target": "fwd_vol_1h_scaled",
+      "target_units": "Daily-scaled standard deviation (sigma_5m * sqrt(288))",
+      "dispersion_formula": "sample standard deviation (ddof=1) of forward 5m log returns"
+    },
+    "4h": {
+      "forward_bars": 48,
+      "raw_target": "fwd_vol_4h",
+      "scaled_target": "fwd_vol_4h_scaled",
+      "target_units": "Daily-scaled standard deviation (sigma_5m * sqrt(288))",
+      "dispersion_formula": "sample standard deviation (ddof=1) of forward 5m log returns"
+    },
+    "24h": {
+      "forward_bars": 288,
+      "raw_target": "fwd_vol_24h",
+      "scaled_target": "fwd_vol_24h_scaled",
+      "target_units": "Daily-scaled standard deviation (sigma_5m * sqrt(288))",
+      "dispersion_formula": "sample standard deviation (ddof=1) of forward 5m log returns"
+    }
+  }
+}

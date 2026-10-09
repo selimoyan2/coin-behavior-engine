@@ -1,0 +1,596 @@
+{
+  "1h": {
+    "horizon": "1h",
+    "stride_bars": 12,
+    "effective_sample_size": 8759,
+    "total_overlapping_observations": 105108,
+    "offsets_evaluated_count": 12,
+    "offsets_where_ridge_beats_persist": 12,
+    "non_overlapping_ridge_mae_mean": 0.006879555584226282,
+    "non_overlapping_ridge_mae_std": 9.678528760511174e-05,
+    "non_overlapping_persist_mae_mean": 0.0070857685043836304,
+    "non_overlapping_pearson_mean": 0.6138348303413695,
+    "block_bootstrap_mae_ci95": [
+      0.006730365941557702,
+      0.007060817102833057
+    ],
+    "detailed_offsets": [
+      {
+        "offset": 0,
+        "n_points": 8759,
+        "ridge_mae": 0.007027870212467784,
+        "persist_mae": 0.007057903114593596,
+        "ridge_pearson": 0.6106203768252669,
+        "persist_pearson": 0.6028588513956097,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 1,
+        "n_points": 8759,
+        "ridge_mae": 0.00700972997589547,
+        "persist_mae": 0.00715621145540345,
+        "ridge_pearson": 0.6028036980840057,
+        "persist_pearson": 0.59547415961575,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 2,
+        "n_points": 8759,
+        "ridge_mae": 0.006928846494180288,
+        "persist_mae": 0.007112822489760342,
+        "ridge_pearson": 0.6201800465271889,
+        "persist_pearson": 0.6061910650384302,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 3,
+        "n_points": 8759,
+        "ridge_mae": 0.006957108977843,
+        "persist_mae": 0.007112162616176369,
+        "ridge_pearson": 0.6208413326061932,
+        "persist_pearson": 0.6350127345678604,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 4,
+        "n_points": 8759,
+        "ridge_mae": 0.006944037616046478,
+        "persist_mae": 0.0071891243650578805,
+        "ridge_pearson": 0.6053505588728366,
+        "persist_pearson": 0.6090664670880944,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 5,
+        "n_points": 8759,
+        "ridge_mae": 0.006874376932707967,
+        "persist_mae": 0.00717995238832735,
+        "ridge_pearson": 0.6067976578698433,
+        "persist_pearson": 0.6080616207249758,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 6,
+        "n_points": 8759,
+        "ridge_mae": 0.006884464976918342,
+        "persist_mae": 0.007056024537702613,
+        "ridge_pearson": 0.6209934345589159,
+        "persist_pearson": 0.6087715344858795,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 7,
+        "n_points": 8759,
+        "ridge_mae": 0.006720209781948167,
+        "persist_mae": 0.006988670948653549,
+        "ridge_pearson": 0.6296289631018516,
+        "persist_pearson": 0.6164202507913997,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 8,
+        "n_points": 8759,
+        "ridge_mae": 0.006712223958672003,
+        "persist_mae": 0.007000148839711555,
+        "ridge_pearson": 0.6158966018949787,
+        "persist_pearson": 0.6069160580850572,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 9,
+        "n_points": 8759,
+        "ridge_mae": 0.00683070366491799,
+        "persist_mae": 0.007041482690735042,
+        "ridge_pearson": 0.6076611175106451,
+        "persist_pearson": 0.5899513987341807,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 10,
+        "n_points": 8759,
+        "ridge_mae": 0.006850098330481686,
+        "persist_mae": 0.007052133325864483,
+        "ridge_pearson": 0.6117051064367063,
+        "persist_pearson": 0.5950190722855927,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 11,
+        "n_points": 8759,
+        "ridge_mae": 0.006814996088636213,
+        "persist_mae": 0.00708258528061732,
+        "ridge_pearson": 0.6135390698080023,
+        "persist_pearson": 0.5911419302711505,
+        "ridge_beats_persist": true
+      }
+    ]
+  },
+  "4h": {
+    "horizon": "4h",
+    "stride_bars": 48,
+    "effective_sample_size": 2189,
+    "total_overlapping_observations": 105072,
+    "offsets_evaluated_count": 24,
+    "offsets_where_ridge_beats_persist": 23,
+    "non_overlapping_ridge_mae_mean": 0.00708984716274456,
+    "non_overlapping_ridge_mae_std": 0.00011405443677875519,
+    "non_overlapping_persist_mae_mean": 0.007303558721011824,
+    "non_overlapping_pearson_mean": 0.5895072301802238,
+    "block_bootstrap_mae_ci95": [
+      0.006781164968684512,
+      0.007354592014153203
+    ],
+    "detailed_offsets": [
+      {
+        "offset": 0,
+        "n_points": 2189,
+        "ridge_mae": 0.007198408013696082,
+        "persist_mae": 0.007451910035342683,
+        "ridge_pearson": 0.5778318681926715,
+        "persist_pearson": 0.5310048462510151,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 2,
+        "n_points": 2189,
+        "ridge_mae": 0.007073078770553061,
+        "persist_mae": 0.00751760725353307,
+        "ridge_pearson": 0.5823499203141351,
+        "persist_pearson": 0.5279729936756133,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 4,
+        "n_points": 2189,
+        "ridge_mae": 0.007079273721846616,
+        "persist_mae": 0.007506328495243684,
+        "ridge_pearson": 0.580030034408964,
+        "persist_pearson": 0.5287193773674149,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 6,
+        "n_points": 2189,
+        "ridge_mae": 0.007119000369583365,
+        "persist_mae": 0.00742638187411332,
+        "ridge_pearson": 0.5790818441464097,
+        "persist_pearson": 0.536228589709091,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 8,
+        "n_points": 2189,
+        "ridge_mae": 0.007049048909276587,
+        "persist_mae": 0.007486991060172939,
+        "ridge_pearson": 0.5767507494132422,
+        "persist_pearson": 0.5298767858988583,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 10,
+        "n_points": 2189,
+        "ridge_mae": 0.007215660925517184,
+        "persist_mae": 0.0075250996036242855,
+        "ridge_pearson": 0.5812402632218292,
+        "persist_pearson": 0.535166028067438,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 12,
+        "n_points": 2189,
+        "ridge_mae": 0.007313842550690458,
+        "persist_mae": 0.00760306118649111,
+        "ridge_pearson": 0.5808516601761955,
+        "persist_pearson": 0.5390219809445372,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 14,
+        "n_points": 2189,
+        "ridge_mae": 0.007270867081566421,
+        "persist_mae": 0.007619669634515863,
+        "ridge_pearson": 0.5983690625281868,
+        "persist_pearson": 0.5491462263743486,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 16,
+        "n_points": 2189,
+        "ridge_mae": 0.0072713333994612475,
+        "persist_mae": 0.007613321534298552,
+        "ridge_pearson": 0.5844439335111524,
+        "persist_pearson": 0.56713325740332,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 18,
+        "n_points": 2189,
+        "ridge_mae": 0.0071401151886404555,
+        "persist_mae": 0.007471204793803816,
+        "ridge_pearson": 0.6051452890671601,
+        "persist_pearson": 0.5711983899553026,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 20,
+        "n_points": 2189,
+        "ridge_mae": 0.007006220600063684,
+        "persist_mae": 0.007371600348539238,
+        "ridge_pearson": 0.5983866802252188,
+        "persist_pearson": 0.5699496678148337,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 22,
+        "n_points": 2189,
+        "ridge_mae": 0.007074744785163065,
+        "persist_mae": 0.007357288935449734,
+        "ridge_pearson": 0.582314536814611,
+        "persist_pearson": 0.5530054728095707,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 24,
+        "n_points": 2189,
+        "ridge_mae": 0.007222887197702938,
+        "persist_mae": 0.0072385208785093955,
+        "ridge_pearson": 0.5870663631402951,
+        "persist_pearson": 0.5552434502247418,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 26,
+        "n_points": 2189,
+        "ridge_mae": 0.007088837738309982,
+        "persist_mae": 0.007180729750413781,
+        "ridge_pearson": 0.5842148272235891,
+        "persist_pearson": 0.5575718102285633,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 28,
+        "n_points": 2189,
+        "ridge_mae": 0.0071067476110691155,
+        "persist_mae": 0.007209946751327898,
+        "ridge_pearson": 0.5812286548167139,
+        "persist_pearson": 0.5524350726253173,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 30,
+        "n_points": 2189,
+        "ridge_mae": 0.0070463227269984005,
+        "persist_mae": 0.00715002533626006,
+        "ridge_pearson": 0.5966258486136934,
+        "persist_pearson": 0.5544949093231577,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 32,
+        "n_points": 2189,
+        "ridge_mae": 0.0068891634365215795,
+        "persist_mae": 0.006992519542111094,
+        "ridge_pearson": 0.6076626192064126,
+        "persist_pearson": 0.5724988738855449,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 34,
+        "n_points": 2189,
+        "ridge_mae": 0.006890416251259527,
+        "persist_mae": 0.006919409548474457,
+        "ridge_pearson": 0.606664732539623,
+        "persist_pearson": 0.579311426422816,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 36,
+        "n_points": 2189,
+        "ridge_mae": 0.006939115808080924,
+        "persist_mae": 0.006903643325153609,
+        "ridge_pearson": 0.6096512373951136,
+        "persist_pearson": 0.5784480544578661,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 38,
+        "n_points": 2189,
+        "ridge_mae": 0.006938701536886322,
+        "persist_mae": 0.0069759828602714005,
+        "ridge_pearson": 0.5996030247990498,
+        "persist_pearson": 0.5688251506989694,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 40,
+        "n_points": 2189,
+        "ridge_mae": 0.006993355757063099,
+        "persist_mae": 0.007051014364931933,
+        "ridge_pearson": 0.5933005208043178,
+        "persist_pearson": 0.5609028513461684,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 42,
+        "n_points": 2189,
+        "ridge_mae": 0.0070657776136231,
+        "persist_mae": 0.007108139973050973,
+        "ridge_pearson": 0.5986502748208086,
+        "persist_pearson": 0.5608949122530061,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 44,
+        "n_points": 2189,
+        "ridge_mae": 0.007098099471337136,
+        "persist_mae": 0.0072545613032156744,
+        "ridge_pearson": 0.5811681243302251,
+        "persist_pearson": 0.5463313719216345,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 46,
+        "n_points": 2189,
+        "ridge_mae": 0.00706531244095909,
+        "persist_mae": 0.0073504509154351935,
+        "ridge_pearson": 0.575541454615752,
+        "persist_pearson": 0.5368961075305686,
+        "ridge_beats_persist": true
+      }
+    ]
+  },
+  "24h": {
+    "horizon": "24h",
+    "stride_bars": 288,
+    "effective_sample_size": 364,
+    "total_overlapping_observations": 104832,
+    "offsets_evaluated_count": 24,
+    "offsets_where_ridge_beats_persist": 15,
+    "non_overlapping_ridge_mae_mean": 0.006919011964220369,
+    "non_overlapping_ridge_mae_std": 0.0006271685736491986,
+    "non_overlapping_persist_mae_mean": 0.006903297200145343,
+    "non_overlapping_pearson_mean": 0.5407219814724368,
+    "block_bootstrap_mae_ci95": [
+      0.006404389321520218,
+      0.007552026231722331
+    ],
+    "detailed_offsets": [
+      {
+        "offset": 0,
+        "n_points": 364,
+        "ridge_mae": 0.0066630805919684075,
+        "persist_mae": 0.007169260048579181,
+        "ridge_pearson": 0.5476708850157032,
+        "persist_pearson": 0.47620620782987194,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 12,
+        "n_points": 364,
+        "ridge_mae": 0.007044043165303266,
+        "persist_mae": 0.007166239047497785,
+        "ridge_pearson": 0.5407810074809326,
+        "persist_pearson": 0.48292868971876746,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 24,
+        "n_points": 364,
+        "ridge_mae": 0.006784546238568225,
+        "persist_mae": 0.0070308417823251555,
+        "ridge_pearson": 0.5606653617095053,
+        "persist_pearson": 0.49937074037022444,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 36,
+        "n_points": 364,
+        "ridge_mae": 0.006625317489380948,
+        "persist_mae": 0.006959700077910577,
+        "ridge_pearson": 0.5520512782385638,
+        "persist_pearson": 0.503378513101109,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 48,
+        "n_points": 364,
+        "ridge_mae": 0.006389223003684415,
+        "persist_mae": 0.006975337932684104,
+        "ridge_pearson": 0.5497321825451869,
+        "persist_pearson": 0.503895509091253,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 60,
+        "n_points": 364,
+        "ridge_mae": 0.006315625153834233,
+        "persist_mae": 0.006936812947477904,
+        "ridge_pearson": 0.5436721091696661,
+        "persist_pearson": 0.5028390799781624,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 72,
+        "n_points": 364,
+        "ridge_mae": 0.00640451398046104,
+        "persist_mae": 0.0069273377941020285,
+        "ridge_pearson": 0.5240742124501695,
+        "persist_pearson": 0.5000328326809618,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 84,
+        "n_points": 364,
+        "ridge_mae": 0.006252319299262603,
+        "persist_mae": 0.006906858100314634,
+        "ridge_pearson": 0.5471744200819048,
+        "persist_pearson": 0.5023904061891591,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 96,
+        "n_points": 364,
+        "ridge_mae": 0.006411433376417645,
+        "persist_mae": 0.0068437654073711975,
+        "ridge_pearson": 0.5508107473167183,
+        "persist_pearson": 0.5066352877327442,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 108,
+        "n_points": 364,
+        "ridge_mae": 0.006575520494046995,
+        "persist_mae": 0.006843257927534098,
+        "ridge_pearson": 0.5278438400477312,
+        "persist_pearson": 0.5032566438565182,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 120,
+        "n_points": 364,
+        "ridge_mae": 0.006295116244469028,
+        "persist_mae": 0.00670527784613593,
+        "ridge_pearson": 0.5628586398261304,
+        "persist_pearson": 0.5098442305062756,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 132,
+        "n_points": 364,
+        "ridge_mae": 0.006168221253794777,
+        "persist_mae": 0.00664649841785301,
+        "ridge_pearson": 0.5534472304399649,
+        "persist_pearson": 0.5116996285954757,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 144,
+        "n_points": 364,
+        "ridge_mae": 0.006210382013230482,
+        "persist_mae": 0.006595202754876594,
+        "ridge_pearson": 0.5500520302228891,
+        "persist_pearson": 0.5141199810272586,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 156,
+        "n_points": 364,
+        "ridge_mae": 0.006569002160476611,
+        "persist_mae": 0.006545620414228156,
+        "ridge_pearson": 0.5453778482210183,
+        "persist_pearson": 0.5165533008570261,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 168,
+        "n_points": 364,
+        "ridge_mae": 0.007903386314527843,
+        "persist_mae": 0.0064842551636876905,
+        "ridge_pearson": 0.5337204840127743,
+        "persist_pearson": 0.5196614028888455,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 180,
+        "n_points": 364,
+        "ridge_mae": 0.008599988886417267,
+        "persist_mae": 0.006669582694850319,
+        "ridge_pearson": 0.5527477157552073,
+        "persist_pearson": 0.5063950779131648,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 192,
+        "n_points": 364,
+        "ridge_mae": 0.007770865485787059,
+        "persist_mae": 0.0066152527869351085,
+        "ridge_pearson": 0.5807424427808582,
+        "persist_pearson": 0.5154180272577737,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 204,
+        "n_points": 364,
+        "ridge_mae": 0.007613754092334599,
+        "persist_mae": 0.006765383585586015,
+        "ridge_pearson": 0.5357280405395501,
+        "persist_pearson": 0.5031656214987277,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 216,
+        "n_points": 364,
+        "ridge_mae": 0.007550754425526809,
+        "persist_mae": 0.007034145643345003,
+        "ridge_pearson": 0.5078284829529205,
+        "persist_pearson": 0.4749447560733894,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 228,
+        "n_points": 364,
+        "ridge_mae": 0.007365701231779537,
+        "persist_mae": 0.007048675587421315,
+        "ridge_pearson": 0.5089960144983665,
+        "persist_pearson": 0.4700277588153525,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 240,
+        "n_points": 364,
+        "ridge_mae": 0.007211731510309523,
+        "persist_mae": 0.007110150546645688,
+        "ridge_pearson": 0.5251974477316319,
+        "persist_pearson": 0.47314366799330276,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 252,
+        "n_points": 364,
+        "ridge_mae": 0.007155975078552397,
+        "persist_mae": 0.0072621768299566975,
+        "ridge_pearson": 0.5281319328920546,
+        "persist_pearson": 0.46787633542681495,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 264,
+        "n_points": 364,
+        "ridge_mae": 0.007359035329873857,
+        "persist_mae": 0.007231795494636016,
+        "ridge_pearson": 0.498934201103169,
+        "persist_pearson": 0.4676058703011142,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 276,
+        "n_points": 364,
+        "ridge_mae": 0.006816750321281301,
+        "persist_mae": 0.007205703971534,
+        "ridge_pearson": 0.5490890003058647,
+        "persist_pearson": 0.4746634977703453,
+        "ridge_beats_persist": true
+      }
+    ]
+  }
+}

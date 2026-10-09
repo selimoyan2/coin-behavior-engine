@@ -1,0 +1,153 @@
+{
+  "bundle_status": "RESEARCH_CANDIDATE_ARTIFACT_VALID",
+  "candidate_model_version": "CBE-0.8.0",
+  "created_at_utc": "2026-10-09T15:13:55.699376+00:00",
+  "dataset_fingerprints": {
+    "features_with_outcomes_5m.parquet": "78ae578f4f16aeec073c6c6a8cd3b784275e2854146fe2dc7da855f73028d354"
+  },
+  "feature_manifest": {
+    "feature_definitions": {
+      "volatility_compression_ratio": {
+        "lookback_bars": 288,
+        "lookback_duration": "24 hours",
+        "missing_policy": "FAIL_CLOSED",
+        "source_column": "volatility_compression_ratio",
+        "timestamp_semantics": "strictly backward-looking [t-287, t]",
+        "units": "dimensionless ratio (short/long realized vol)"
+      },
+      "volatility_realized_24h": {
+        "lookback_bars": 288,
+        "lookback_duration": "24 hours",
+        "missing_policy": "FAIL_CLOSED",
+        "source_column": "volatility_realized_24h",
+        "timestamp_semantics": "strictly backward-looking [t-287, t]",
+        "units": "5-minute return sample standard deviation (unscaled)"
+      },
+      "volume_zscore_24h": {
+        "historical_discrepancy_note": "Parquet column is named volume_zscore_24h; engine.py previously misnamed it volume_zscore.",
+        "lookback_bars": 288,
+        "lookback_duration": "24 hours",
+        "missing_policy": "FAIL_CLOSED",
+        "source_column": "volume_zscore_24h",
+        "timestamp_semantics": "strictly backward-looking [t-287, t]",
+        "units": "standard deviations (z-score)"
+      }
+    },
+    "ordered_features": [
+      "volatility_realized_24h",
+      "volatility_compression_ratio",
+      "volume_zscore_24h"
+    ],
+    "tier": "SPOT_ONLY_U0"
+  },
+  "models": {
+    "1h": {
+      "alpha": 100.0,
+      "coefficients": [
+        0.014439674463136381,
+        0.004558716606375888,
+        0.0031051195768639177
+      ],
+      "horizon": "1h",
+      "intercept": 0.02708645901787214,
+      "training_mae": 0.009478774880003527,
+      "training_r2": 0.4458087834768748,
+      "training_rows": 420543
+    },
+    "24h": {
+      "alpha": 100.0,
+      "coefficients": [
+        0.012650343622764992,
+        0.002183904896363974,
+        0.0005899929116662454
+      ],
+      "horizon": "24h",
+      "intercept": 0.030284824564333415,
+      "training_mae": 0.008264647005294872,
+      "training_r2": 0.4649657527218144,
+      "training_rows": 420267
+    },
+    "4h": {
+      "alpha": 100.0,
+      "coefficients": [
+        0.014188008934928796,
+        0.003303385781924615,
+        0.0018298001709193298
+      ],
+      "horizon": "4h",
+      "intercept": 0.028540593178466744,
+      "training_mae": 0.008943821970351347,
+      "training_r2": 0.4713983085024742,
+      "training_rows": 420507
+    }
+  },
+  "partition_boundaries": {
+    "discovery_end": "2024-12-31T23:55:00Z",
+    "holdout_end": "2026-09-23T20:20:00Z",
+    "holdout_start": "2026-01-01T00:00:00Z",
+    "validation_end": "2025-12-31T23:55:00Z",
+    "validation_start": "2025-01-01T00:00:00Z"
+  },
+  "preprocessing_rules": {
+    "feature_clip_max": 10000.0,
+    "feature_clip_min": -10000.0,
+    "missing_value_policy": "FAIL_CLOSED_NO_FALLBACK",
+    "prediction_floor": 0.0
+  },
+  "runtime_tier": "SPOT_ONLY_U0",
+  "scaler": {
+    "mean_": [
+      0.0017844588501369548,
+      0.905617089112933,
+      0.009034560514674852
+    ],
+    "n_features_in_": 3,
+    "scale_": [
+      0.0011061525510290982,
+      0.4717753284222058,
+      1.0932401527674565
+    ],
+    "var_": [
+      1.2235734661481815e-06,
+      0.22257196050788014,
+      1.1951740316230113
+    ]
+  },
+  "schema_version": "CBE-BUNDLE-0.8.0",
+  "source_commit": "b5ffdfe",
+  "source_sprint": "SPRINT_09.2",
+  "target_manifest": {
+    "daily_scaling_factor": 16.97056274847714,
+    "daily_scaling_factor_exact": "sqrt(288) = 16.97056274847714",
+    "horizons": {
+      "1h": {
+        "dispersion_formula": "sample standard deviation (ddof=1) of forward 5m log returns",
+        "forward_bars": 12,
+        "raw_target": "fwd_vol_1h",
+        "scaled_target": "fwd_vol_1h_scaled",
+        "target_units": "Daily-scaled standard deviation (sigma_5m * sqrt(288))"
+      },
+      "24h": {
+        "dispersion_formula": "sample standard deviation (ddof=1) of forward 5m log returns",
+        "forward_bars": 288,
+        "raw_target": "fwd_vol_24h",
+        "scaled_target": "fwd_vol_24h_scaled",
+        "target_units": "Daily-scaled standard deviation (sigma_5m * sqrt(288))"
+      },
+      "4h": {
+        "dispersion_formula": "sample standard deviation (ddof=1) of forward 5m log returns",
+        "forward_bars": 48,
+        "raw_target": "fwd_vol_4h",
+        "scaled_target": "fwd_vol_4h_scaled",
+        "target_units": "Daily-scaled standard deviation (sigma_5m * sqrt(288))"
+      }
+    },
+    "scaling_assumptions": "Square-root-of-time scaling from 5m return standard deviation to 1-day scale. NOT an annualization factor."
+  },
+  "training_environment": {
+    "numpy_version": "2.4.6",
+    "pandas_version": "3.0.6",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "python_version": "3.11.16"
+  }
+}

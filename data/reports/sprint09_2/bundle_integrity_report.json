@@ -1,0 +1,16 @@
+{
+  "bundle_file": "data\\reports\\sprint09_2\\cbe_model_bundle_v080.json",
+  "bundle_sha256": "906832a96d6012d3889059167f6e74263012564a88cfc8a137417bf533cbcb8d",
+  "lockbox_verified": true,
+  "schema_version": "CBE-BUNDLE-0.8.0",
+  "candidate_model_version": "CBE-0.8.0",
+  "status": "ARTIFACT_VALID",
+  "model_horizons": [
+    "1h",
+    "4h",
+    "24h"
+  ],
+  "feature_count": 3,
+  "scaler_features": 3,
+  "all_floats_finite": true
+}

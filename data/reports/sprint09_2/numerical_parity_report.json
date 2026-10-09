@@ -1,0 +1,133 @@
+{
+  "status": "PASS",
+  "parity_tolerance": 1e-12,
+  "max_discrepancies_by_horizon": {
+    "1h": 0.0,
+    "4h": 0.0,
+    "24h": 0.0
+  },
+  "total_test_samples": 15,
+  "all_tests_passed": true,
+  "tests": [
+    {
+      "horizon": "1h",
+      "sample_name": "typical_market_sample",
+      "bundle_pred": 0.025564891625456176,
+      "sklearn_pred": 0.025564891625456176,
+      "absolute_diff": 0.0,
+      "passes_parity_threshold": true
+    },
+    {
+      "horizon": "1h",
+      "sample_name": "calm_regime_sample",
+      "bundle_pred": 0.007848213710270318,
+      "sklearn_pred": 0.007848213710270318,
+      "absolute_diff": 0.0,
+      "passes_parity_threshold": true
+    },
+    {
+      "horizon": "1h",
+      "sample_name": "high_vol_shock_sample",
+      "bundle_pred": 0.14194659972836143,
+      "sklearn_pred": 0.14194659972836143,
+      "absolute_diff": 0.0,
+      "passes_parity_threshold": true
+    },
+    {
+      "horizon": "1h",
+      "sample_name": "extreme_positive_outlier",
+      "bundle_pred": 0.7386326469804778,
+      "sklearn_pred": 0.7386326469804778,
+      "absolute_diff": 0.0,
+      "passes_parity_threshold": true
+    },
+    {
+      "horizon": "1h",
+      "sample_name": "boundary_minimum_sample",
+      "bundle_pred": 0.0,
+      "sklearn_pred": 0.0,
+      "absolute_diff": 0.0,
+      "passes_parity_threshold": true
+    },
+    {
+      "horizon": "4h",
+      "sample_name": "typical_market_sample",
+      "bundle_pred": 0.02682039182323538,
+      "sklearn_pred": 0.02682039182323538,
+      "absolute_diff": 0.0,
+      "passes_parity_threshold": true
+    },
+    {
+      "horizon": "4h",
+      "sample_name": "calm_regime_sample",
+      "bundle_pred": 0.011749931777258239,
+      "sklearn_pred": 0.011749931777258239,
+      "absolute_diff": 0.0,
+      "passes_parity_threshold": true
+    },
+    {
+      "horizon": "4h",
+      "sample_name": "high_vol_shock_sample",
+      "bundle_pred": 0.13265756370685566,
+      "sklearn_pred": 0.13265756370685566,
+      "absolute_diff": 0.0,
+      "passes_parity_threshold": true
+    },
+    {
+      "horizon": "4h",
+      "sample_name": "extreme_positive_outlier",
+      "bundle_pred": 0.7007347402982653,
+      "sklearn_pred": 0.7007347402982653,
+      "absolute_diff": 0.0,
+      "passes_parity_threshold": true
+    },
+    {
+      "horizon": "4h",
+      "sample_name": "boundary_minimum_sample",
+      "bundle_pred": 0.0,
+      "sklearn_pred": 0.0,
+      "absolute_diff": 0.0,
+      "passes_parity_threshold": true
+    },
+    {
+      "horizon": "24h",
+      "sample_name": "typical_market_sample",
+      "bundle_pred": 0.02860732344173197,
+      "sklearn_pred": 0.02860732344173197,
+      "absolute_diff": 0.0,
+      "passes_parity_threshold": true
+    },
+    {
+      "horizon": "24h",
+      "sample_name": "calm_regime_sample",
+      "bundle_pred": 0.016958989776880443,
+      "sklearn_pred": 0.016958989776880443,
+      "absolute_diff": 0.0,
+      "passes_parity_threshold": true
+    },
+    {
+      "horizon": "24h",
+      "sample_name": "high_vol_shock_sample",
+      "bundle_pred": 0.11642741315355996,
+      "sklearn_pred": 0.11642741315355996,
+      "absolute_diff": 0.0,
+      "passes_parity_threshold": true
+    },
+    {
+      "horizon": "24h",
+      "sample_name": "extreme_positive_outlier",
+      "bundle_pred": 0.608738071164925,
+      "sklearn_pred": 0.608738071164925,
+      "absolute_diff": 0.0,
+      "passes_parity_threshold": true
+    },
+    {
+      "horizon": "24h",
+      "sample_name": "boundary_minimum_sample",
+      "bundle_pred": 0.005667574485493949,
+      "sklearn_pred": 0.005667574485493949,
+      "absolute_diff": 0.0,
+      "passes_parity_threshold": true
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "bundle_filename": "cbe_model_bundle_v080.json",
+  "bundle_sha256": "906832a96d6012d3889059167f6e74263012564a88cfc8a137417bf533cbcb8d",
+  "candidate_version": "CBE-0.8.0",
+  "schema_version": "CBE-BUNDLE-0.8.0",
+  "created_at_utc": "2026-10-09T15:13:55.699376+00:00",
+  "verification_method": "SHA256_CANONICAL_JSON"
+}

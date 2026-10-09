@@ -1,0 +1,35 @@
+{
+  "tier": "SPOT_ONLY_U0",
+  "ordered_features": [
+    "volatility_realized_24h",
+    "volatility_compression_ratio",
+    "volume_zscore_24h"
+  ],
+  "feature_definitions": {
+    "volatility_realized_24h": {
+      "source_column": "volatility_realized_24h",
+      "lookback_bars": 288,
+      "lookback_duration": "24 hours",
+      "units": "5-minute return sample standard deviation (unscaled)",
+      "timestamp_semantics": "strictly backward-looking [t-287, t]",
+      "missing_policy": "FAIL_CLOSED"
+    },
+    "volatility_compression_ratio": {
+      "source_column": "volatility_compression_ratio",
+      "lookback_bars": 288,
+      "lookback_duration": "24 hours",
+      "units": "dimensionless ratio (short/long realized vol)",
+      "timestamp_semantics": "strictly backward-looking [t-287, t]",
+      "missing_policy": "FAIL_CLOSED"
+    },
+    "volume_zscore_24h": {
+      "source_column": "volume_zscore_24h",
+      "lookback_bars": 288,
+      "lookback_duration": "24 hours",
+      "units": "standard deviations (z-score)",
+      "timestamp_semantics": "strictly backward-looking [t-287, t]",
+      "missing_policy": "FAIL_CLOSED",
+      "historical_discrepancy_note": "Parquet column is named volume_zscore_24h; engine.py previously misnamed it volume_zscore."
+    }
+  }
+}

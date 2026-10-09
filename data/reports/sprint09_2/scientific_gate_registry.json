@@ -1,0 +1,79 @@
+{
+  "evaluation_timestamp": "2026-10-09T15:14:06.564310+00:00",
+  "candidate_version": "CBE-0.8.0",
+  "overall_status": "ARTIFACT_VALID_RESEARCH_CANDIDATE",
+  "technical_gates_passed": 7,
+  "scientific_baseline_gates_passed": 2,
+  "gates": [
+    {
+      "gate_id": "GATE_A_FEATURE_PARITY",
+      "name": "Feature Schema Alignment",
+      "status": "PASS",
+      "blocking": true,
+      "evidence": "Reconciled volume_zscore_24h with explicit 3-feature manifest. Input dimensions strictly match 3."
+    },
+    {
+      "gate_id": "GATE_B_TARGET_PARITY",
+      "name": "Target Unit & Horizon Parity",
+      "status": "PASS",
+      "blocking": true,
+      "evidence": "Target explicitly defined as 5m return standard deviation scaled by sqrt(288). Units match prospective evaluation outcomes."
+    },
+    {
+      "gate_id": "GATE_C_CAUSAL_VALIDITY",
+      "name": "Temporal Causality & Boundary Guards",
+      "status": "PASS",
+      "blocking": true,
+      "evidence": "Features strictly backward-looking [t-287, t]. Trailing H boundary bars dropped from training sets to prevent forward window leakage across partitions."
+    },
+    {
+      "gate_id": "GATE_D_SCALER_PARITY",
+      "name": "Scaler Serialized & Isolated",
+      "status": "PASS",
+      "blocking": true,
+      "evidence": "StandardScaler fitted exclusively on Discovery partition (<2025-01-01) and persisted deterministically into bundle."
+    },
+    {
+      "gate_id": "GATE_E_REPRODUCIBLE_TRAINING",
+      "name": "Deterministic Training Provenance",
+      "status": "PASS",
+      "blocking": true,
+      "evidence": "Ridge regression with closed-form analytical solution (alpha=100.0). Dataset SHA-256 and environment recorded."
+    },
+    {
+      "gate_id": "GATE_F_BUNDLE_INTEGRITY",
+      "name": "Immutable Model Bundle Lockbox",
+      "status": "PASS",
+      "blocking": true,
+      "evidence": "Standalone non-executable JSON bundle created and verified against lockbox SHA-256: 906832a96d6012d3..."
+    },
+    {
+      "gate_id": "GATE_G_NUMERICAL_INFERENCE_PARITY",
+      "name": "Bundle Inference vs Sklearn Parity",
+      "status": "PASS",
+      "blocking": true,
+      "evidence": "Max numerical discrepancy across all samples is 0.00e+00 (< 1e-12)."
+    },
+    {
+      "gate_id": "GATE_H_BASELINE_COMPARISON",
+      "name": "Predictive Superiority Over Baselines",
+      "status": "PARTIAL_PASS",
+      "blocking": false,
+      "evidence": "1h: PASS (Lift 2.91% over persistence). 4h: PASS (Lift 3.02% over persistence). 24h: FAIL/MARGINAL (Ridge slightly better on Val, but persistence is stronger on 2026 Holdout: 0.005812 vs 0.006024)."
+    },
+    {
+      "gate_id": "GATE_I_DEPENDENCE_AWARE_VALIDATION",
+      "name": "Non-Overlapping & Bootstrap Validation",
+      "status": "PASS",
+      "blocking": false,
+      "evidence": "1h model beats persistence across 100% of tested non-overlapping starting offsets. Block bootstrap confirms robust CI."
+    },
+    {
+      "gate_id": "GATE_J_PROSPECTIVE_REPLAY",
+      "name": "Offline Prospective Snapshot Replay",
+      "status": "NOT_EVALUABLE",
+      "blocking": false,
+      "evidence": "Live prospective feature snapshot is not available locally in current workspace."
+    }
+  ]
+}
