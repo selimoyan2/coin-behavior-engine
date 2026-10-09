@@ -28,6 +28,20 @@ from coin_behavior_engine.shadow_v080.outcome_resolver import (
     PrematureOutcomeError,
     ShadowOutcomeEvent,
 )
+from coin_behavior_engine.shadow_v080.gap_detector import (
+    FULL_WARMUP_BARS,
+    GapEvent,
+    MarketDataGapDetector,
+)
+from coin_behavior_engine.shadow_v080.market_capture_engine import MarketCaptureEngineV080
+from coin_behavior_engine.shadow_v080.market_data_contract import (
+    BinanceSpotCandleValidator,
+    CandleLifecycleState,
+    MarketType,
+    ProvenanceSource,
+    ValidatedCandle,
+    ValidationStatus,
+)
 from coin_behavior_engine.shadow_v080.prediction_store import (
     DuplicateForecastError,
     EventTamperError,
@@ -35,22 +49,61 @@ from coin_behavior_engine.shadow_v080.prediction_store import (
     SHADOW_GENESIS_HASH,
     ShadowPredictionEvent,
 )
+from coin_behavior_engine.shadow_v080.raw_evidence_store import (
+    ConflictingCandleError,
+    EvidenceCorruptionError,
+    EvidencePersistenceError,
+    MarketEvidenceEntry,
+    RawMarketEvidenceStore,
+)
+from coin_behavior_engine.shadow_v080.transport_adapter import (
+    BaseMarketDataTransport,
+    BinanceSpotRestAdapter,
+    BinanceSpotWebSocketAdapter,
+    MockMarketDataTransport,
+    OversizedMessageError,
+    QueueOverflowError,
+    RateLimitExceededError,
+    StaleFeedError,
+    TransportConnectionError,
+    calculate_backoff,
+)
 
 __all__ = [
     "BaseCandleSource",
+    "BaseMarketDataTransport",
+    "BinanceSpotCandleValidator",
+    "BinanceSpotRestAdapter",
+    "BinanceSpotWebSocketAdapter",
+    "CandleLifecycleState",
     "ChainAuditReport",
+    "ConflictingCandleError",
     "DualBranchInferenceRunnerV080",
     "DualBranchPredictionResult",
     "DuplicateForecastError",
     "EventIntegrityAuditorV080",
     "EventTamperError",
+    "EvidenceCorruptionError",
+    "EvidencePersistenceError",
     "FeaturePipelineV080",
+    "FULL_WARMUP_BARS",
+    "GapEvent",
     "HealthTelemetrySnapshot",
     "ImmutablePredictionStoreV080",
+    "MarketCaptureEngineV080",
+    "MarketDataGapDetector",
+    "MarketEvidenceEntry",
+    "MarketType",
+    "MockMarketDataTransport",
     "OfflineFixtureSource",
     "OutcomeGapError",
     "OutcomeResolverV080",
+    "OversizedMessageError",
     "PrematureOutcomeError",
+    "ProvenanceSource",
+    "QueueOverflowError",
+    "RateLimitExceededError",
+    "RawMarketEvidenceStore",
     "ReadOnlyLiveBinanceSource",
     "SHADOW_GENESIS_HASH",
     "SafetyInterlockError",
@@ -60,4 +113,9 @@ __all__ = [
     "ShadowOutcomeEvent",
     "ShadowPredictionEvent",
     "SourceDataError",
+    "StaleFeedError",
+    "TransportConnectionError",
+    "ValidatedCandle",
+    "ValidationStatus",
+    "calculate_backoff",
 ]

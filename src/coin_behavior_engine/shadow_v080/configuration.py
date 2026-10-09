@@ -19,6 +19,8 @@ class ShadowCollectorConfig:
     # 1. Hard Safety Interlocks (FAIL-SAFE DEFAULTS)
     network_enabled: bool = False
     live_shadow_enabled: bool = False
+    approval_3_authorized: bool = False  # Gate 3: Live Binance collection (Requires explicit approval)
+    approval_4_authorized: bool = False  # Gate 4: Genuine prospective scoring (Requires explicit approval)
     trading_enabled: bool = False  # NEVER True; trading is permanently prohibited
 
     # 2. Market and Instrument Specification
@@ -37,6 +39,9 @@ class ShadowCollectorConfig:
     max_event_log_mb: float = 250.0
     clock_skew_budget_ms: float = 1000.0
     full_audit_interval_cycles: int = 288  # Periodic full-chain audit once every 24 hours
+    max_inbound_queue_size: int = 500
+    stale_feed_timeout_sec: float = 900.0
+    max_ws_message_bytes: int = 65536
 
     # 5. Metadata and Experiment Tracking
     experiment_id: str = "EXP-CBE-0.8.0-SHADOW-2026-V1"
@@ -52,6 +57,8 @@ class ShadowCollectorConfig:
     outcome_dir: Path = field(init=False)
     audit_dir: Path = field(init=False)
     telemetry_dir: Path = field(init=False)
+    raw_market_dir: Path = field(init=False)
+    quarantine_dir: Path = field(init=False)
 
     def __post_init__(self):
         # Strict invariant: trading must NEVER be enabled
@@ -74,6 +81,8 @@ class ShadowCollectorConfig:
         self.outcome_dir = self.shadow_data_dir / "outcomes"
         self.audit_dir = self.shadow_data_dir / "audit"
         self.telemetry_dir = self.shadow_data_dir / "telemetry"
+        self.raw_market_dir = self.shadow_data_dir / "raw_candles"
+        self.quarantine_dir = self.shadow_data_dir / "quarantine"
 
     def ensure_directories(self) -> None:
         """Create isolated shadow data directories."""
@@ -84,6 +93,8 @@ class ShadowCollectorConfig:
             self.outcome_dir,
             self.audit_dir,
             self.telemetry_dir,
+            self.raw_market_dir,
+            self.quarantine_dir,
         ]:
             d.mkdir(parents=True, exist_ok=True)
 
@@ -96,4 +107,6 @@ class ShadowCollectorConfig:
         d["outcome_dir"] = str(self.outcome_dir)
         d["audit_dir"] = str(self.audit_dir)
         d["telemetry_dir"] = str(self.telemetry_dir)
+        d["raw_market_dir"] = str(self.raw_market_dir)
+        d["quarantine_dir"] = str(self.quarantine_dir)
         return d
