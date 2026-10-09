@@ -1,34 +1,47 @@
 # ==============================================================================
-# SPRINT 09.12 — INERT DOCKER COMPOSE CONFIGURATION TEMPLATE
+# SPRINT 09.12 — CORRECTED INERT DOCKER COMPOSE CONFIGURATION TEMPLATE
 # SERVICE: cbe-080-shadow-collector
 # STATUS: INERT BY DEFAULT / NO AUTOMATIC STARTUP / MANUAL OPERATOR APPROVAL ONLY
 # ==============================================================================
-# NOTE: DO NOT deploy or start this service without APPROVAL_1 and APPROVAL_2.
-# This configuration enforces:
-# 1. Zero inbound exposed ports (no public HTTP endpoint).
-# 2. Strict cgroup memory limit: 300MB (protecting host available 3.2GB).
-# 3. CPU quota: 0.25 (25% of one core, leaving ~1.75 cores for host containers).
-# 4. Read-only root filesystem (where feasible) with tmpfs for /tmp.
-# 5. Dedicated persistent named volume for shadow SQLite/JSONL data only.
-# 6. Zero access to CBE-0.7.0 production volumes or databases.
-# 7. Restart policy: no / on-failure:3 (no unconditional always restart).
+# MANDATORY SAFETY CONSTRAINTS:
+# 1. NETWORK_DISABLED: network_mode: none (completely isolated; zero ingress/egress).
+# 2. READ_ONLY_ROOT: read_only: true (root filesystem is strictly immutable).
+# 3. WRITABLE_PATHS: Only /tmp (tmpfs: 64MB, noexec) and dedicated persistent volume.
+# 4. PROSPECTIVE_GUARD: CBE_RECORD_LABEL=WARMUP_REPLAY, CBE_PROSPECTIVE_OBSERVATION_ENABLED=false.
+# 5. NO_AUTO_START: profiles: ["manual"], restart: "no", inert entrypoint by default.
+# 6. RESOURCE_LIMITS: mem_limit: 300m, cpus: 0.25 (both v2 and deploy.resources syntax).
+# 7. TRADING_DISABLED: CBE_TRADING_DISABLED=true (permanent software interlock).
+# 8. ISOLATION: Zero mounts to production code, databases, or worker volumes.
 # ==============================================================================
 
 version: '3.8'
 
 services:
   cbe-080-shadow:
-    image: cbe-080-shadow:dry-run-v1
+    build:
+      context: ../..
+      dockerfile: deploy/shadow_v080/Dockerfile.staging
+    image: cbe-080-shadow:staging-local
     container_name: cbe_080_prospective_shadow
+    profiles: ["manual"]
     restart: "no"
-    read_only: false
+    network_mode: "none"
+    read_only: true
     user: "1000:1000"
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=67108864
     environment:
-      - CBE_ENV=prospective_shadow
+      - CBE_ENV=staging_offline
       - PYTHONUNBUFFERED=1
-      - CBE_RECORD_LABEL=PROSPECTIVE_SHADOW
+      - CBE_RECORD_LABEL=WARMUP_REPLAY
+      - CBE_PROSPECTIVE_OBSERVATION_ENABLED=false
+      - CBE_ENFORCE_PROSPECTIVE_GUARD=true
+      - CBE_TRADING_DISABLED=true
       - CBE_MAX_QUEUE_SIZE=1728
       - CBE_CLOCK_SKEW_BUDGET_MS=2000
+    mem_limit: 300m
+    mem_reservation: 150m
+    cpus: 0.25
     deploy:
       resources:
         limits:
@@ -39,13 +52,19 @@ services:
           memory: 150M
     volumes:
       - cbe_080_shadow_data:/app/data/prospective_shadow:rw
-    networks:
-      - cbe_isolated_egress
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "=================================================================="
+        echo "CBE-0.8.0 SHADOW COLLECTOR: INERT STAGING MODE"
+        echo "Network: DISABLED (network_mode: none)"
+        echo "Root FS: READ-ONLY"
+        echo "Prospective Observation: DISABLED"
+        echo "Trading: DISABLED"
+        echo "To execute offline benchmark, pass benchmark command explicitly."
+        echo "=================================================================="
+        exit 0
 
 volumes:
   cbe_080_shadow_data:
     name: cbe_080_shadow_data
-
-networks:
-  cbe_isolated_egress:
-    driver: bridge

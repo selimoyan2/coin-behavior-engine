@@ -1,0 +1,34 @@
+# ==============================================================================
+# SPRINT 09.12 / APPROVAL 1 — DOCKERFILE FOR OFFLINE LINUX STAGING BENCHMARK
+# ==============================================================================
+# Builds minimal, non-root, self-contained container for offline staging benchmark.
+# No network access required at runtime (offline fixture execution only).
+# ==============================================================================
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Create unprivileged user (1000:1000)
+RUN groupadd -g 1000 cbe && \
+    useradd -u 1000 -g cbe -s /bin/sh -m cbe
+
+# Install minimal scientific dependencies
+RUN pip install --no-cache-dir joblib scikit-learn pandas numpy
+
+# Copy application source and frozen model components
+COPY src/ /app/src/
+COPY data/models/ /app/data/models/
+
+# Prepare dedicated data directory with correct ownership
+RUN mkdir -p /app/data/prospective_shadow && \
+    chown -R cbe:cbe /app
+
+USER 1000:1000
+
+ENV PYTHONPATH=/app/src
+ENV PYTHONUNBUFFERED=1
+ENV CBE_TRADING_DISABLED=true
+ENV CBE_PROSPECTIVE_OBSERVATION_ENABLED=false
+
+CMD ["python3", "-m", "coin_behavior_engine.shadow_v080.benchmark_staging_linux"]
