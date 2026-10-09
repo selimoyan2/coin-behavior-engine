@@ -1,0 +1,26 @@
+{
+  "target_horizon": "1h",
+  "target_metric": "realized_volatility (sqrt(288) scaled log return std)",
+  "sample_size": 4278,
+  "nominal_80_pct_interval": {
+    "nominal_coverage": 0.8,
+    "empirical_coverage": 0.6501,
+    "difference": -0.1499,
+    "undercoverage_percentage_points": 14.99,
+    "z_score_vs_nominal": -24.51,
+    "verdict": "SEVERE_UNDERCOVERAGE"
+  },
+  "nominal_95_pct_interval": {
+    "nominal_coverage": 0.95,
+    "empirical_coverage": 0.7882,
+    "difference": -0.1618,
+    "undercoverage_percentage_points": 16.18,
+    "z_score_vs_nominal": -48.56,
+    "verdict": "SEVERE_UNDERCOVERAGE"
+  },
+  "root_cause_analysis": {
+    "formula_used": "Intervals assume log-normal vol distribution with fixed sigma = 0.35",
+    "distributional_mismatch": "BTCUSDT intraday volatility exhibits severe kurtosis, volatility jumps, and clustering. A parametric log-normal model with constant sigma=0.35 fails to encompass market volatility bursts, leading to 15.0% excess tail breaches on 80% intervals and 16.2% excess breaches on 95% intervals.",
+    "metric_definition_issue": "The stored prediction intervals are hardcoded to the 1h horizon only in PredictionRecord. There are no separate 4h or 24h prediction intervals persisted in prospective records."
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "methodology": "Non-overlapping horizon decimation & Fisher z-transform uncertainty estimation",
+  "sampling_rate": "5-minute bars",
+  "findings": {
+    "1h": {
+      "horizon": "1h",
+      "raw_overlapping_sample_size": 4278,
+      "overlap_window_bars": 12,
+      "effective_independent_sample_size": 356,
+      "sample_efficiency_ratio": 0.0832,
+      "reported_pearson": 0.5411,
+      "reported_spearman": 0.6435,
+      "dependence_adjusted_se": 0.0376,
+      "confidence_interval_95_pct": [
+        0.4632,
+        0.6107
+      ],
+      "t_statistic": 12.106,
+      "statistically_distinguishable_from_zero": true,
+      "verdict": "STATISTICALLY_SIGNIFICANT_PERSISTENCE",
+      "notes": "Sampling every 5m creates 12-fold overlap. Effective independent observations are only N_eff=356. Correlation remains positive, driven by high-frequency volatility clustering."
+    },
+    "4h": {
+      "horizon": "4h",
+      "raw_overlapping_sample_size": 4242,
+      "overlap_window_bars": 48,
+      "effective_independent_sample_size": 88,
+      "sample_efficiency_ratio": 0.0207,
+      "reported_pearson": 0.4518,
+      "reported_spearman": 0.601,
+      "dependence_adjusted_se": 0.0858,
+      "confidence_interval_95_pct": [
+        0.2677,
+        0.6041
+      ],
+      "t_statistic": 4.696,
+      "statistically_distinguishable_from_zero": true,
+      "verdict": "STATISTICALLY_SIGNIFICANT_PERSISTENCE",
+      "notes": "Sampling every 5m creates 48-fold overlap. Effective independent observations are only N_eff=88. Correlation remains positive, driven by high-frequency volatility clustering."
+    },
+    "24h": {
+      "horizon": "24h",
+      "raw_overlapping_sample_size": 4002,
+      "overlap_window_bars": 288,
+      "effective_independent_sample_size": 13,
+      "sample_efficiency_ratio": 0.0032,
+      "reported_pearson": 0.1103,
+      "reported_spearman": 0.1167,
+      "dependence_adjusted_se": 0.2978,
+      "confidence_interval_95_pct": [
+        -0.4692,
+        0.6234
+      ],
+      "t_statistic": 0.368,
+      "statistically_distinguishable_from_zero": false,
+      "verdict": "STATISTICALLY_INSIGNIFICANT_NOISE",
+      "notes": "Sampling every 5m creates 288-fold overlap. Effective independent observations are only N_eff=13. Confidence interval crosses zero! Correlation is indistinguishable from zero."
+    }
+  }
+}

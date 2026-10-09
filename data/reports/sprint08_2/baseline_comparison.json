@@ -1,0 +1,93 @@
+{
+  "analysis_date": "2026-10-09T13:44:24.311020+00:00",
+  "summary": "Because UnifiedMarketStateEngine has an empty vol_models dictionary at runtime, all three horizons (1h, 4h, 24h) fall back to the exact same scalar value: the trailing 12-bar (1h) realized volatility scaled by sqrt(288). Consequently, the model's incremental predictive value over a simple trailing realized volatility persistence baseline is EXACTLY 0.00000 across all horizons. The observed positive correlations at 1h (0.5410) and 4h (0.4519) reflect well-known financial market volatility clustering (autoregression) inherent in BTC price action, NOT proprietary machine learning edge.",
+  "horizons": {
+    "1h": {
+      "horizon": "1h",
+      "sample_size": 4278,
+      "model_performance": {
+        "mae": 0.0056,
+        "rmse": 0.00851,
+        "pearson": 0.5411,
+        "spearman": 0.6435,
+        "bias": 0.00014
+      },
+      "baseline_trailing_realized_vol_persistence": {
+        "name": "Trailing 1-Hour Realized Volatility Persistence (sqrt(288) scaled)",
+        "mae": 0.0056,
+        "rmse": 0.00851,
+        "pearson": 0.5411,
+        "spearman": 0.6435,
+        "mae_difference": 0.0,
+        "incremental_improvement_pct": 0.0,
+        "is_model_identical_to_baseline": true
+      },
+      "baseline_constant_mean": {
+        "name": "Unconditional Realized Volatility Mean",
+        "assumed_mean": 0.01404,
+        "pearson": 0.0,
+        "bias": 0.0
+      },
+      "incremental_scientific_value": "ZERO_OVER_PERSISTENCE (Model is physically identical to trailing 1h realized vol)",
+      "causal_mechanism": "PERSISTENCE_ONLY (Vol clustering, no ML incremental alpha)"
+    },
+    "4h": {
+      "horizon": "4h",
+      "sample_size": 4242,
+      "model_performance": {
+        "mae": 0.00607,
+        "rmse": 0.00886,
+        "pearson": 0.4518,
+        "spearman": 0.601,
+        "bias": -0.00115
+      },
+      "baseline_trailing_realized_vol_persistence": {
+        "name": "Trailing 1-Hour Realized Volatility Persistence (sqrt(288) scaled)",
+        "mae": 0.00607,
+        "rmse": 0.00886,
+        "pearson": 0.4518,
+        "spearman": 0.601,
+        "mae_difference": 0.0,
+        "incremental_improvement_pct": 0.0,
+        "is_model_identical_to_baseline": true
+      },
+      "baseline_constant_mean": {
+        "name": "Unconditional Realized Volatility Mean",
+        "assumed_mean": 0.01533,
+        "pearson": 0.0,
+        "bias": 0.0
+      },
+      "incremental_scientific_value": "ZERO_OVER_PERSISTENCE (Outputs identical 1h trailing vol for 4h horizon)",
+      "causal_mechanism": "PERSISTENCE_DECAY"
+    },
+    "24h": {
+      "horizon": "24h",
+      "sample_size": 4002,
+      "model_performance": {
+        "mae": 0.00813,
+        "rmse": 0.01114,
+        "pearson": 0.1103,
+        "spearman": 0.1167,
+        "bias": -0.00127
+      },
+      "baseline_trailing_realized_vol_persistence": {
+        "name": "Trailing 1-Hour Realized Volatility Persistence (sqrt(288) scaled)",
+        "mae": 0.00813,
+        "rmse": 0.01114,
+        "pearson": 0.1103,
+        "spearman": 0.1167,
+        "mae_difference": 0.0,
+        "incremental_improvement_pct": 0.0,
+        "is_model_identical_to_baseline": true
+      },
+      "baseline_constant_mean": {
+        "name": "Unconditional Realized Volatility Mean",
+        "assumed_mean": 0.01533,
+        "pearson": 0.0,
+        "bias": 0.0
+      },
+      "incremental_scientific_value": "NEGATIVE_TO_ZERO (1h vol persistence breaks down over 24h)",
+      "causal_mechanism": "NO_EDGE (Indistinguishable from zero correlation after overlap adjustment)"
+    }
+  }
+}

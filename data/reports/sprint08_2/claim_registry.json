@@ -1,0 +1,42 @@
+{
+  "audit_date": "2026-10-09T13:44:24.312142+00:00",
+  "model_version": "CBE-0.7.0",
+  "claims": [
+    {
+      "claim_id": "A",
+      "statement": "The 1h model has incremental volatility forecasting value.",
+      "classification": "REFUTED",
+      "rationale": "The runtime engine vol_models dictionary is empty; predict_bar() falls back to trailing 1-hour realized volatility. The model output is mathematically identical to a simple trailing volatility persistence baseline (incremental MAE improvement = 0.0%). The 0.5410 Pearson correlation is purely market autocorrelation, not machine learning model edge."
+    },
+    {
+      "claim_id": "B",
+      "statement": "The 4h model has incremental volatility forecasting value.",
+      "classification": "REFUTED",
+      "rationale": "The 4h forecast is also identical to the trailing 1-hour realized volatility. It exhibits zero incremental value over naive persistence."
+    },
+    {
+      "claim_id": "C",
+      "statement": "The 24h model has incremental volatility forecasting value.",
+      "classification": "REFUTED",
+      "rationale": "The 24h forecast is identical to trailing 1-hour realized volatility. Its correlation (0.1103) is statistically indistinguishable from zero under overlap-adjusted independent testing (N_eff \u2248 14, p=0.70), and in the last 7 days it turned negative (-0.0153)."
+    },
+    {
+      "claim_id": "D",
+      "statement": "The market-state classifier is functioning as designed under SPOT_ONLY_U0.",
+      "classification": "REFUTED",
+      "rationale": "The classifier is deterministically locked to DELEVERAGING_STRESS due to a structural single-row percentile bug in predict_bar() (np.nanpercentile([x], 5) == x, making cond_delev always True) combined with zero-defaulting missing derivatives features under SPOT_ONLY_U0. Alternative states are 100% unreachable."
+    },
+    {
+      "claim_id": "E",
+      "statement": "Prediction intervals are properly calibrated.",
+      "classification": "REFUTED",
+      "rationale": "Nominal 80% interval achieves only 65.01% empirical coverage (14.99% under-coverage). Nominal 95% interval achieves only 78.82% empirical coverage (16.18% under-coverage). The parametric log-normal assumption with fixed sigma=0.35 severely under-estimates crypto volatility tails."
+    },
+    {
+      "claim_id": "F",
+      "statement": "Reported correlations remain meaningful after accounting for overlapping outcomes.",
+      "classification": "SUPPORTED_BUT_LIMITED",
+      "rationale": "For 1h (N_eff \u2248 356) and 4h (N_eff \u2248 88), positive correlations remain statistically significant after overlap decimation, confirming genuine financial volatility clustering. However, for 24h (N_eff \u2248 14), the correlation is NOT statistically meaningful (95% CI spans [-0.45, +0.67]). None of the correlations represent trading alpha."
+    }
+  ]
+}
