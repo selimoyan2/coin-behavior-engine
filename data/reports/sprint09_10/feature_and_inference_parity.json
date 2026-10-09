@@ -1,0 +1,14 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T16:46:55.235856+00:00",
+  "evaluated_forecast_pairs": 687,
+  "max_point_forecast_difference": 0.0,
+  "point_forecast_discrepancies": 0,
+  "market_state_agreement_pct": 100.0,
+  "horizons_evaluated": [
+    "1h",
+    "4h",
+    "24h"
+  ],
+  "target_units": "Daily-scaled standard deviation (sigma_5m * sqrt(288))",
+  "overall_parity_status": "EXACT_DUAL_BRANCH_PARITY_PASS"
+}

@@ -1,0 +1,19 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T16:45:24.726061+00:00",
+  "default_network_enabled": false,
+  "default_live_shadow_enabled": false,
+  "default_trading_enabled": false,
+  "interlock_enforcement_passed": true,
+  "trading_prohibition_passed": true,
+  "network_endpoints_permitted": [
+    "GET https://api.binance.com/api/v3/klines (Public Spot Klines Only)"
+  ],
+  "authenticated_endpoints_prohibited": [
+    "POST /api/v3/order",
+    "DELETE /api/v3/order",
+    "GET /api/v3/account",
+    "POST /fapi/* (Futures)",
+    "Any endpoint requiring API Key or Signature"
+  ],
+  "overall_status": "SAFETY_INTERLOCK_VERIFIED_FAIL_CLOSED"
+}

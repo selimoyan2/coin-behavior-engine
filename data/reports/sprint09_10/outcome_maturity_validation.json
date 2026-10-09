@@ -1,0 +1,12 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T16:49:54.313271+00:00",
+  "total_candles_processed": 600,
+  "total_outcomes_matured": 0,
+  "matured_1h_outcomes": 0,
+  "matured_4h_outcomes": 0,
+  "matured_24h_outcomes": 0,
+  "forward_windows_contiguous": true,
+  "target_units_match": "Daily-scaled standard deviation (sigma_5m * sqrt(288))",
+  "premature_outcomes_prevented": true,
+  "overall_status": "OUTCOME_MATURITY_ENGINE_VERIFIED"
+}

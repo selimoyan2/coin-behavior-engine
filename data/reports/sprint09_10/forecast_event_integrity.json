@@ -1,0 +1,11 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T16:47:26.258814+00:00",
+  "total_events_chained": 1374,
+  "hash_chain_valid": true,
+  "genesis_hash": "GENESIS_CBE_0_8_0_SHADOW_CHAIN_2026",
+  "latest_hash": "cbca22604d1c5bb1db9aead189022eefc37745baf327797697a3399a5b822242",
+  "violations_count": 0,
+  "duplicate_rejection_passed": true,
+  "record_label_verified": "HISTORICAL_REPLAY",
+  "overall_status": "FORECAST_EVENT_INTEGRITY_VERIFIED"
+}

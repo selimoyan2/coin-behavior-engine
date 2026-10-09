@@ -1,0 +1,14 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T16:46:55.241967+00:00",
+  "timestamp_hierarchy": [
+    "T_exchange_close (Causal data boundary)",
+    "T_local_receipt (System socket/HTTP arrival)",
+    "T_durable_commit (Append-only storage fsync)",
+    "T_target_maturity (Future evaluation boundary)"
+  ],
+  "local_monotonic_ns_role": "Process-relative forward sequence guarantee (immune to NTP slews)",
+  "clock_skew_budget_ms": 1000.0,
+  "clock_trust_policy": "Fail-closed: skew > 1,000 ms forces state transition to CLOCK_UNTRUSTED",
+  "rfc3161_auditability": "Optional external timestamp authority mechanism; recommended for milestone commit batches",
+  "overall_status": "TIMING_SAFETY_CONTRACT_VERIFIED"
+}

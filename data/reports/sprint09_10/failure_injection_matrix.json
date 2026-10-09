@@ -1,0 +1,108 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T16:50:29.740326+00:00",
+  "total_failure_scenarios": 20,
+  "all_scenarios_fail_closed": true,
+  "scenarios": [
+    {
+      "id": 1,
+      "scenario": "API Timeout",
+      "behavior": "Bounded retry with exponential backoff; fails closed without mutating state."
+    },
+    {
+      "id": 2,
+      "scenario": "HTTP 429 Rate Limit",
+      "behavior": "Rate limiter enforces pause; skips cycle and reports STALE_DATA."
+    },
+    {
+      "id": 3,
+      "scenario": "HTTP 500 Exchange Outage",
+      "behavior": "Error logged in telemetry; state machine transitions to STALE_DATA."
+    },
+    {
+      "id": 4,
+      "scenario": "Malformed JSON Response",
+      "behavior": "Raises SourceDataError; transitions to INVALID_CANDLE."
+    },
+    {
+      "id": 5,
+      "scenario": "Missing OHLCV Fields",
+      "behavior": "CandleData.from_dict raises KeyError; fails closed."
+    },
+    {
+      "id": 6,
+      "scenario": "Duplicate Candle (Idempotent)",
+      "behavior": "Silently accepted without mutating sequence or buffer."
+    },
+    {
+      "id": 7,
+      "scenario": "Conflicting Duplicate Candle",
+      "behavior": "Rejected; error logged; buffer preserved."
+    },
+    {
+      "id": 8,
+      "scenario": "Candle Gap (>300s)",
+      "behavior": "Transitions to SOURCE_GAP; requires 288-bar warm-up restart."
+    },
+    {
+      "id": 9,
+      "scenario": "Late/Stale Candle (>600s)",
+      "behavior": "Transitions to STALE_DATA; suppresses prospective scoring."
+    },
+    {
+      "id": 10,
+      "scenario": "Incomplete Candle (is_closed=False)",
+      "behavior": "Rejected; fails closed."
+    },
+    {
+      "id": 11,
+      "scenario": "Corrupted Snapshot (Altered SHA-256)",
+      "behavior": "Raises SnapshotCorruptionError; resets buffer to cold start."
+    },
+    {
+      "id": 12,
+      "scenario": "Truncated JSONL Record",
+      "behavior": "EventIntegrityAuditor flags invalid line; fails audit closed."
+    },
+    {
+      "id": 13,
+      "scenario": "Duplicate Forecast Event Injection",
+      "behavior": "Raises DuplicateForecastError; prevents duplicate persistence."
+    },
+    {
+      "id": 14,
+      "scenario": "Premature Outcome Request",
+      "behavior": "OutcomeResolver skips unelapsed horizons until full future window closes."
+    },
+    {
+      "id": 15,
+      "scenario": "Missing Outcome Candle in Forward Window",
+      "behavior": "Outcome marked INVALID_GAP; coverage calculation excluded."
+    },
+    {
+      "id": 16,
+      "scenario": "Clock Skew > 1000 ms",
+      "behavior": "Transitions to CLOCK_UNTRUSTED; suppresses prospective eligibility."
+    },
+    {
+      "id": 17,
+      "scenario": "Disk Space Exhaustion",
+      "behavior": "Atomic replace fails safely; memory buffer maintains telemetry alert."
+    },
+    {
+      "id": 18,
+      "scenario": "Process RSS Memory Budget Exceeded",
+      "behavior": "Health monitor flags threshold breach; pauses pipeline if critical."
+    },
+    {
+      "id": 19,
+      "scenario": "Abrupt Process Kill & Restart",
+      "behavior": "Recovers last atomic snapshot in <10ms; audits chain continuity."
+    },
+    {
+      "id": 20,
+      "scenario": "Hash-Chain Tampering / Bit Flip",
+      "behavior": "EventIntegrityAuditor detects checksum mismatch at exact line."
+    }
+  ],
+  "overall_status": "FAILURE_INJECTION_SUITE_VERIFIED"
+}

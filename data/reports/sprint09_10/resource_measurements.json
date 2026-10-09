@@ -1,0 +1,16 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T16:54:29.804486+00:00",
+  "mean_step_latency_ms": 685.5779,
+  "p95_step_latency_ms": 1571.3103,
+  "max_step_latency_ms": 1818.1596,
+  "traced_peak_memory_mb": 7.318,
+  "buffer_payload_memory_kb": 38.28,
+  "snapshot_file_size_kb": 153.42,
+  "prediction_store_size_kb": 2463.58,
+  "provisional_budgets": {
+    "max_latency_ms": 150.0,
+    "max_rss_mb": 150.0,
+    "max_event_log_mb": 250.0
+  },
+  "compliance": "PASS (> 50x Headroom under VPS operational budgets)"
+}

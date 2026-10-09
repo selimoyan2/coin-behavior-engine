@@ -1,0 +1,10 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T16:50:29.719494+00:00",
+  "phase_1_candles": 100,
+  "phase_2_candles": 200,
+  "snapshot_restored_cleanly": true,
+  "buffer_length_after_restore": 100,
+  "final_buffer_length": 300,
+  "cross_restart_hash_chain_valid": true,
+  "overall_status": "RESTART_AND_RECOVERY_VERIFIED"
+}

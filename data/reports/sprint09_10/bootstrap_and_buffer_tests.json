@@ -1,0 +1,10 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T16:46:20.173958+00:00",
+  "ingested_candle_count": 360,
+  "final_buffer_length": 350,
+  "max_capacity_limit": 350,
+  "bounded_buffer_respected": true,
+  "fifo_eviction_verified": true,
+  "snapshot_persisted": true,
+  "overall_status": "BOOTSTRAP_AND_BUFFER_VERIFIED"
+}
