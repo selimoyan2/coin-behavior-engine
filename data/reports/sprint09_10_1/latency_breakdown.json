@@ -1,0 +1,125 @@
+{
+  "measurement_timestamp_utc": "2026-10-09T17:15:48.943709+00:00",
+  "platform": "win32",
+  "python_version": "3.11.16",
+  "cold_initialization": {
+    "count": 5,
+    "mean_ms": 2.6943,
+    "median_ms": 2.4542,
+    "p95_ms": 3.4098,
+    "p99_ms": 3.5788,
+    "max_ms": 3.621
+  },
+  "warm_initialization": {
+    "count": 5,
+    "mean_ms": 2.7916,
+    "median_ms": 1.1263,
+    "p95_ms": 7.9009,
+    "p99_ms": 9.2476,
+    "max_ms": 9.5843
+  },
+  "components": {
+    "candle_validation": {
+      "count": 50,
+      "mean_ms": 0.0063,
+      "median_ms": 0.0051,
+      "p95_ms": 0.0085,
+      "p99_ms": 0.0322,
+      "max_ms": 0.0378
+    },
+    "buffer_update": {
+      "count": 50,
+      "mean_ms": 0.0038,
+      "median_ms": 0.0035,
+      "p95_ms": 0.0057,
+      "p99_ms": 0.0079,
+      "max_ms": 0.009
+    },
+    "feature_reconstruction": {
+      "count": 50,
+      "mean_ms": 0.3538,
+      "median_ms": 0.2857,
+      "p95_ms": 0.6434,
+      "p99_ms": 1.4669,
+      "max_ms": 1.6753
+    },
+    "ridge_inference_3_horizons": {
+      "count": 50,
+      "mean_ms": 0.034,
+      "median_ms": 0.0314,
+      "p95_ms": 0.0444,
+      "p99_ms": 0.0826,
+      "max_ms": 0.1125
+    },
+    "market_state_classification": {
+      "count": 50,
+      "mean_ms": 0.0082,
+      "median_ms": 0.0079,
+      "p95_ms": 0.0108,
+      "p99_ms": 0.0125,
+      "max_ms": 0.0132
+    },
+    "candidate_c_calibration": {
+      "count": 50,
+      "mean_ms": 0.0201,
+      "median_ms": 0.0192,
+      "p95_ms": 0.0255,
+      "p99_ms": 0.039,
+      "max_ms": 0.0486
+    },
+    "candidate_e_calibration": {
+      "count": 50,
+      "mean_ms": 0.009,
+      "median_ms": 0.0086,
+      "p95_ms": 0.0132,
+      "p99_ms": 0.0154,
+      "max_ms": 0.0154
+    },
+    "forecast_event_persistence_6_events_fsync": {
+      "count": 50,
+      "mean_ms": 5.9125,
+      "median_ms": 5.1783,
+      "p95_ms": 8.7564,
+      "p99_ms": 20.2454,
+      "max_ms": 24.6519
+    },
+    "outcome_maturity_processing": {
+      "count": 50,
+      "mean_ms": 39.8417,
+      "median_ms": 36.919,
+      "p95_ms": 64.9821,
+      "p99_ms": 81.4195,
+      "max_ms": 83.0187
+    },
+    "snapshot_persistence_atomic": {
+      "count": 50,
+      "mean_ms": 11.2361,
+      "median_ms": 9.0143,
+      "p95_ms": 22.644,
+      "p99_ms": 51.6681,
+      "max_ms": 62.2908
+    },
+    "event_chain_full_integrity_audit": {
+      "count": 50,
+      "mean_ms": 106.51,
+      "median_ms": 98.6606,
+      "p95_ms": 170.1827,
+      "p99_ms": 187.9959,
+      "max_ms": 192.3657
+    }
+  },
+  "complete_steady_state_cycle": {
+    "count": 50,
+    "mean_ms": 163.9354,
+    "median_ms": 153.212,
+    "p95_ms": 260.0534,
+    "p99_ms": 307.4617,
+    "max_ms": 317.1812
+  },
+  "discrepancy_explanation": {
+    "root_cause_1": "Repeated full-log deserialization: prediction_store.list_events() scans all historical records from line 1 on every step.",
+    "root_cause_2": "Repeated full-chain audit: audit_prediction_chain scans and re-hashes all historical events from genesis on every step.",
+    "root_cause_3": "tracemalloc overhead: In Sprint 09.10, tracemalloc.start() was running during timing, magnifying Python allocation overhead 5x-10x.",
+    "budget_conflict": "Original gate compared 1818 ms against 300,000 ms (5-min cadence) instead of enforcing the declared 150 ms step budget."
+  }
+}

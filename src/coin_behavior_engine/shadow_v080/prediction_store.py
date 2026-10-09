@@ -77,6 +77,8 @@ class ImmutablePredictionStoreV080:
         self._seen_keys: Set[str] = set()
         self._latest_hash: str = SHADOW_GENESIS_HASH
         self._event_count: int = 0
+        self._is_chain_intact: bool = True
+        self._unmatured_events: List[ShadowPredictionEvent] = []
         self._load_or_verify_chain()
 
     @property
@@ -86,6 +88,10 @@ class ImmutablePredictionStoreV080:
     @property
     def event_count(self) -> int:
         return self._event_count
+
+    @property
+    def is_chain_intact(self) -> bool:
+        return self._is_chain_intact
 
     def _load_or_verify_chain(self) -> None:
         """Read existing JSONL, verify unbroken hash chain, and build dedup index."""
@@ -102,10 +108,12 @@ class ImmutablePredictionStoreV080:
                     data = json.loads(line)
                     ev = ShadowPredictionEvent(**data)
                 except Exception as e:
+                    self._is_chain_intact = False
                     raise EventTamperError(f"Failed to parse event at line {line_no}: {e}") from e
 
                 # Verify chain continuity
                 if ev.previous_event_hash != prev_hash:
+                    self._is_chain_intact = False
                     raise EventTamperError(
                         f"Hash chain broken at line {line_no}: expected prev {prev_hash}, got {ev.previous_event_hash}"
                     )
@@ -113,6 +121,7 @@ class ImmutablePredictionStoreV080:
                 # Verify record hash integrity
                 calc_hash = ev.compute_hash()
                 if ev.record_hash != calc_hash:
+                    self._is_chain_intact = False
                     raise EventTamperError(
                         f"Tampered record at line {line_no}: declared {ev.record_hash}, calculated {calc_hash}"
                     )
@@ -121,6 +130,11 @@ class ImmutablePredictionStoreV080:
                 self._seen_keys.add(key)
                 prev_hash = ev.record_hash
                 self._event_count += 1
+                self._unmatured_events.append(ev)
+
+            # Bounded window: at most the last 288 bars * 6 events = 1728 events can ever be pending
+            if len(self._unmatured_events) > 2000:
+                self._unmatured_events = self._unmatured_events[-2000:]
 
             self._latest_hash = prev_hash
 
@@ -143,10 +157,23 @@ class ImmutablePredictionStoreV080:
             self._seen_keys.add(key)
             self._latest_hash = event.record_hash
             self._event_count += 1
+            self._unmatured_events.append(event)
             return event.record_hash
 
+    def get_unmatured_events(self) -> List[ShadowPredictionEvent]:
+        """Return shallow copy of currently un-matured prediction events."""
+        with self._lock:
+            return list(self._unmatured_events)
+
+    def prune_matured_events(self, matured_hashes: Set[str]) -> None:
+        """Prune resolved events from in-memory pending queue."""
+        if not matured_hashes:
+            return
+        with self._lock:
+            self._unmatured_events = [e for e in self._unmatured_events if e.record_hash not in matured_hashes]
+
     def list_events(self) -> List[ShadowPredictionEvent]:
-        """Read and return all stored prediction events."""
+        """Read and return all stored prediction events from disk (retained for backward compatibility)."""
         if not self.events_file.exists():
             return []
         events = []

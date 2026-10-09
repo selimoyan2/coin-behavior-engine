@@ -108,6 +108,10 @@ class ShadowCollectorV080:
         logger.info("Starting in cold warm-up mode.")
         return True
 
+    def audit_full_history(self):
+        """Run complete bit-for-bit historical hash chain audit from genesis."""
+        return EventIntegrityAuditorV080.audit_prediction_chain(self.prediction_store.events_file)
+
     def step(
         self,
         simulated_receipt_time_ms: Optional[int] = None,
@@ -244,20 +248,23 @@ class ShadowCollectorV080:
                     emitted_hashes.append(h_rec)
 
         # 8. Resolve Matured Outcomes
-        pending = self.prediction_store.list_events()
+        unmatured = self.prediction_store.get_unmatured_events()
         available = self.feature_pipeline.adapter.buffer
         resolved_outcomes = self.outcome_resolver.resolve_matured_predictions(
-            pending_events=pending,
+            pending_events=unmatured,
             available_candles=available,
             current_time_ms=candle.timestamp_close,
         )
+        if resolved_outcomes:
+            matured_hashes = {o.prediction_event_hash for o in resolved_outcomes}
+            self.prediction_store.prune_matured_events(matured_hashes)
 
         # 9. Persist snapshot
         self.feature_pipeline.persist_snapshot()
 
         # 10. Audit Chain & Record Telemetry
         cycle_ms = (time.perf_counter() - t0) * 1000.0
-        audit = EventIntegrityAuditorV080.audit_prediction_chain(self.prediction_store.events_file)
+        hash_chain_valid = self.prediction_store.is_chain_intact
 
         req_count = getattr(self.source, "request_count", 0)
         telemetry = self.health_monitor.capture_telemetry(
@@ -268,10 +275,10 @@ class ShadowCollectorV080:
             warmup_status="FULL_WINDOW" if buf_len >= 288 else "WARMING_UP",
             clock_trusted=clock_trusted,
             total_predictions=self.prediction_store.event_count,
-            pending_outcomes=len(pending) - len(self.outcome_resolver._seen_predictions),
+            pending_outcomes=len(self.prediction_store.get_unmatured_events()),
             matured_outcomes=len(self.outcome_resolver._seen_predictions),
             invalidated_outcomes=0,
-            hash_chain_valid=audit.is_valid,
+            hash_chain_valid=hash_chain_valid,
             cpu_time_ms=cycle_ms,
             network_req_count=req_count,
         )

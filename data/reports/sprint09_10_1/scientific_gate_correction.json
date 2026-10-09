@@ -1,0 +1,98 @@
+{
+  "candidate_model_version": "CBE-0.8.0",
+  "sprint": "09.10.1",
+  "evaluation_timestamp_utc": "2026-10-09T17:16:33.954831+00:00",
+  "schema_version": "CBE-GATE-REGISTRY-0.8.0-CORRECTED",
+  "gates_evaluated_count": 14,
+  "gates_passed_count": 11,
+  "gates_failed_count": 1,
+  "gates_not_verified_count": 2,
+  "original_sprint09_10_verdict": "SHADOW_COLLECTOR_READY_FOR_PRE_ACTIVATION_REVIEW (Claimed 12 PASS / 2 NOT_VERIFIED)",
+  "corrected_verdict": "RESOURCE_GATE_FAIL_RECONCILED (11 PASS / 1 FAIL / 2 NOT_VERIFIED)",
+  "gates": [
+    {
+      "gate_id": "GATE_A_FROZEN_ARTIFACT_INTEGRITY",
+      "name": "Frozen Artifact Integrity Verification",
+      "status": "PASS",
+      "evidence": "29/29 CBE-0.7.0 canonical hashes, CBE-0.8.0 bundle, classifier thresholds, and calibrations C & E verified."
+    },
+    {
+      "gate_id": "GATE_B_SOURCE_NETWORK_SAFETY",
+      "name": "Source Network Safety Interlock",
+      "status": "PASS",
+      "evidence": "Hard safety interlocks default-disabled; zero live requests sent; trading strictly prohibited."
+    },
+    {
+      "gate_id": "GATE_C_CLOSED_CANDLE_CAUSALITY",
+      "name": "Closed-Candle Causality Enforcement",
+      "status": "PASS",
+      "evidence": "Monotonic timestamps, closed-candle checks, and out-of-order rejection verified."
+    },
+    {
+      "gate_id": "GATE_D_FULL_WINDOW_ELIGIBILITY",
+      "name": "Full-Window Eligibility Enforcement",
+      "status": "PASS",
+      "evidence": "Prospective eligibility strictly requires >= 288 contiguous closed bars; sub-288 records disqualified."
+    },
+    {
+      "gate_id": "GATE_E_CANONICAL_FEATURE_PARITY",
+      "name": "Canonical Feature Reconstruction Parity",
+      "status": "PASS",
+      "evidence": "3 canonical features reconstructed with exact mathematical parity against training conventions."
+    },
+    {
+      "gate_id": "GATE_F_DUAL_BRANCH_INFERENCE_PARITY",
+      "name": "Dual-Branch Inference Parity",
+      "status": "PASS",
+      "evidence": "Candidate C and Candidate E share identical inputs, features, Ridge forecasts, and market states."
+    },
+    {
+      "gate_id": "GATE_G_FORECAST_EVENT_IMMUTABILITY",
+      "name": "Forecast Event Store Immutability",
+      "status": "PASS",
+      "evidence": "Append-only JSONL event storage with cryptographic SHA-256 hash chaining and tamper detection verified by executable test."
+    },
+    {
+      "gate_id": "GATE_H_OUTCOME_MATURITY_CORRECTNESS",
+      "name": "Outcome Maturity Correctness",
+      "status": "PASS",
+      "evidence": "1h (12 bars), 4h (48 bars), and 24h (288 bars) evaluated over contiguous future windows; premature evaluation rejected."
+    },
+    {
+      "gate_id": "GATE_I_RESTART_AND_RECOVERY",
+      "name": "Process Restart & Crash Recovery",
+      "status": "PASS",
+      "evidence": "Atomic snapshot restore tested; cross-restart hash chain integrity preserved by executable test."
+    },
+    {
+      "gate_id": "GATE_J_FAILURE_INJECTION",
+      "name": "Failure Injection Robustness",
+      "status": "PASS",
+      "evidence": "20 failure scenarios tested; fail-closed behavior verified across all error conditions."
+    },
+    {
+      "gate_id": "GATE_K_RESOURCE_LIMITS",
+      "name": "Resource Budget Adherence",
+      "status": "FAIL",
+      "evidence": "Original unoptimized step latency reached 1818 ms max and 685 ms mean, failing the provisional 150 ms step budget. While well within 5-minute (300,000 ms) cadence and RSS budget (peak RSS ~22 MB << 150 MB), the original 150 ms latency gate must be honestly marked FAIL until bounded optimizations decouple full-history audits."
+    },
+    {
+      "gate_id": "GATE_L_PRODUCTION_ISOLATION",
+      "name": "Production Model Freeze & Isolation",
+      "status": "PASS",
+      "evidence": "Zero production files or workers mutated. CBE-0.7.0 completely untouched."
+    },
+    {
+      "gate_id": "GATE_M_PROSPECTIVE_TIMESTAMP_EVIDENCE",
+      "name": "Prospective Timestamp Evidence",
+      "status": "NOT_VERIFIED",
+      "evidence": "Offline simulation cannot generate live authenticated network receipt timestamps. Honestly marked NOT_VERIFIED."
+    },
+    {
+      "gate_id": "GATE_N_LIVE_FEED_PARITY",
+      "name": "Live Feed Parity Verification",
+      "status": "NOT_VERIFIED",
+      "evidence": "Awaiting explicit live activation in future sprint. Offline simulation does not substitute for live feed proof."
+    }
+  ]
+}

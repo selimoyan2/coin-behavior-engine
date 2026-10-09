@@ -1,0 +1,11 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T17:16:33.951521+00:00",
+  "network_enabled_default": false,
+  "live_shadow_enabled_default": false,
+  "trading_permanently_prohibited": true,
+  "cli_live_mode_lockout_enforced": false,
+  "production_startup_hook_introduced": false,
+  "background_daemons_active": false,
+  "interlock_status": "LOCKED_FAIL_CLOSED",
+  "readiness_verdict": "VERIFIED_ISOLATED_RESEARCH_ONLY"
+}

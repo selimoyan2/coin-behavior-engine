@@ -1,0 +1,68 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T17:16:33.946713+00:00",
+  "cadence_events_per_day": 1728,
+  "average_event_bytes": 898,
+  "max_event_log_budget_mb": 250.0,
+  "projections": [
+    {
+      "period": "1 Day",
+      "days": 1,
+      "cycles": 288,
+      "total_prediction_events": 1728,
+      "total_matured_outcomes": 0,
+      "prediction_log_size_mb": 1.48,
+      "outcome_log_size_mb": 0.0,
+      "total_storage_mb": 1.48,
+      "pending_outcomes_queue_events": 1728,
+      "unoptimized_full_audit_latency_ms": 33.21,
+      "unoptimized_cadence_exceeded": false,
+      "log_budget_compliance": "PASS"
+    },
+    {
+      "period": "7 Days",
+      "days": 7,
+      "cycles": 2016,
+      "total_prediction_events": 12096,
+      "total_matured_outcomes": 10368,
+      "prediction_log_size_mb": 10.36,
+      "outcome_log_size_mb": 7.91,
+      "total_storage_mb": 18.27,
+      "pending_outcomes_queue_events": 1728,
+      "unoptimized_full_audit_latency_ms": 232.49,
+      "unoptimized_cadence_exceeded": true,
+      "log_budget_compliance": "PASS"
+    },
+    {
+      "period": "30 Days (Full Shadow Experiment)",
+      "days": 30,
+      "cycles": 8640,
+      "total_prediction_events": 51840,
+      "total_matured_outcomes": 50112,
+      "prediction_log_size_mb": 44.4,
+      "outcome_log_size_mb": 38.23,
+      "total_storage_mb": 82.63,
+      "pending_outcomes_queue_events": 1728,
+      "unoptimized_full_audit_latency_ms": 996.4,
+      "unoptimized_cadence_exceeded": true,
+      "log_budget_compliance": "PASS"
+    },
+    {
+      "period": "90 Days (Extended Shadow Run)",
+      "days": 90,
+      "cycles": 25920,
+      "total_prediction_events": 155520,
+      "total_matured_outcomes": 153792,
+      "prediction_log_size_mb": 133.19,
+      "outcome_log_size_mb": 117.33,
+      "total_storage_mb": 250.52,
+      "pending_outcomes_queue_events": 1728,
+      "unoptimized_full_audit_latency_ms": 2989.2,
+      "unoptimized_cadence_exceeded": true,
+      "log_budget_compliance": "EXCEEDS_BUDGET"
+    }
+  ],
+  "architectural_remedy": {
+    "finding": "Without optimization, full-log re-reading and full-chain re-auditing on every step scales O(N) per step (O(N^2) total). By Day 30, a single step audit would take ~1,500 ms.",
+    "remedy": "Decouple step execution from full-history audit. Maintain an in-memory queue of pending events for outcome resolution (bounded at 1,728 events). Verify hash chain incrementally (O(1)) during step(). Run full file audit only on startup and on demand."
+  }
+}

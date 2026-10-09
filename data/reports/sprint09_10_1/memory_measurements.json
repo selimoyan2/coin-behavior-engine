@@ -1,0 +1,23 @@
+{
+  "evaluation_timestamp_utc": "2026-10-09T17:16:33.941895+00:00",
+  "platform": "win32",
+  "measurement_mechanism": "Windows PSAPI GetProcessMemoryInfo (WorkingSetSize)",
+  "memory_phases_mb": {
+    "idle_process_rss": 168.594,
+    "after_loading_models_rss": 168.598,
+    "after_350_candle_warmup_rss": 165.77,
+    "steady_state_inference_rss": 165.77,
+    "peak_observed_rss": 168.84
+  },
+  "tracemalloc_comparison_mb": {
+    "previous_reported_tracemalloc_peak": 7.318,
+    "actual_process_rss_peak": 168.84,
+    "distinction": "tracemalloc measures only Python heap allocations; OS process RSS includes Python interpreter, loaded C extensions, numpy runtime, and shared libraries."
+  },
+  "budget_compliance": {
+    "max_rss_budget_mb": 150.0,
+    "peak_rss_mb": 168.84,
+    "status": "FAIL",
+    "headroom_mb": -18.84
+  }
+}
