@@ -78,6 +78,39 @@ class MarketCaptureEngineV080:
         self.is_degraded = False
         self.is_running = False
 
+        self._reconstruct_state_from_evidence()
+
+    def _reconstruct_state_from_evidence(self) -> None:
+        """Deterministically reconstruct engine state (gap detector, rolling buffer, totals) from verified evidence ledger."""
+        self.rolling_buffer.clear()
+        self.gap_detector = MarketDataGapDetector(full_warmup_bars=self.config.full_warmup_bars)
+
+        if not self.evidence_store.evidence_file.exists() or self.evidence_store.count == 0:
+            return
+
+        reconstructed_count = 0
+        for candle in self.evidence_store.iter_candles():
+            reconstructed_count += 1
+            self.gap_detector.process_next_candle(candle)
+            self.rolling_buffer.append(candle)
+            if self.is_research_eligible:
+                candle.lifecycle_state = CandleLifecycleState.CANDLE_RESEARCH_ELIGIBLE.value
+            else:
+                candle.lifecycle_state = CandleLifecycleState.CANDLE_PERSISTED.value
+
+        self.total_persisted = reconstructed_count
+        self.total_validated = reconstructed_count
+        self.total_received = reconstructed_count
+
+        logger.info(
+            f"Startup reconstruction complete: {reconstructed_count} bars replayed. "
+            f"Contiguous={self.gap_detector.contiguous_closed_bars}, "
+            f"Gaps={len(self.gap_detector.gaps)}, "
+            f"Buffer={len(self.rolling_buffer)}/{self.rolling_buffer.maxlen}, "
+            f"Eligible={self.is_research_eligible}, "
+            f"Warmup={self.warmup_status}"
+        )
+
     def start(self) -> None:
         """Start the capture engine."""
         self.transport.connect()

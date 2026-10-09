@@ -28,7 +28,7 @@ import time
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, Iterator, List, Optional, Set, Tuple
 
 from coin_behavior_engine.shadow_v080.market_data_contract import (
     CandleLifecycleState,
@@ -39,6 +39,7 @@ logger = logging.getLogger("cbe_raw_evidence_store")
 
 GENESIS_PREV_HASH = "0" * 64
 MAX_RECENT_CANDLES_CACHE = 1000
+INDEX_BATCH_SIZE = 5000
 
 
 class EvidencePersistenceError(Exception):
@@ -100,8 +101,15 @@ class RawMarketEvidenceStore:
         self.raw_market_dir.mkdir(parents=True, exist_ok=True)
         self.quarantine_dir.mkdir(parents=True, exist_ok=True)
 
-    def _init_disk_index(self) -> None:
-        """Initialize lightweight disk-backed SQLite timestamp index with bounded cache."""
+    def _connect_disk_index(self) -> None:
+        """Establish or re-establish connection to SQLite disk index with WAL mode and bounded cache."""
+        if self._index_conn:
+            try:
+                self._index_conn.close()
+            except Exception:
+                pass
+            self._index_conn = None
+
         self._index_conn = sqlite3.connect(
             str(self.index_file),
             timeout=10.0,
@@ -121,6 +129,58 @@ class RawMarketEvidenceStore:
             CREATE INDEX IF NOT EXISTS idx_entry_index ON timestamp_index(entry_index);
         """)
         self._index_conn.commit()
+
+    def _init_disk_index(self) -> None:
+        """Initialize lightweight disk-backed SQLite timestamp index with auto-healing WAL recovery."""
+        try:
+            self._connect_disk_index()
+            # Verify database integrity (handles WAL replay or catches corruption)
+            cur = self._index_conn.cursor()
+            cur.execute("PRAGMA quick_check;")
+            res = cur.fetchone()
+            if not res or res[0].lower() != "ok":
+                raise sqlite3.DatabaseError(f"SQLite quick_check failed: {res}")
+        except (sqlite3.DatabaseError, OSError) as exc:
+            logger.warning(
+                f"SQLite index corruption or access failure detected ({exc}). "
+                f"Rebuilding SQLite index from scratch from authoritative evidence ledger."
+            )
+            self._rebuild_disk_index_from_scratch()
+
+    def _rebuild_disk_index_from_scratch(self) -> None:
+        """Safely quarantine any corrupted SQLite files and re-initialize a fresh index."""
+        if self._index_conn:
+            try:
+                self._index_conn.close()
+            except Exception:
+                pass
+            self._index_conn = None
+
+        ts_ms = int(time.time() * 1000)
+        for suffix in ["", "-wal", "-shm"]:
+            f = Path(str(self.index_file) + suffix)
+            if f.exists():
+                try:
+                    q_dest = self.quarantine_dir / f"corrupted_index_{ts_ms}_{f.name}"
+                    shutil.move(str(f), str(q_dest))
+                except Exception as e:
+                    logger.warning(f"Could not quarantine {f}: {e}")
+                    try:
+                        f.unlink(missing_ok=True)
+                    except Exception:
+                        pass
+
+        self._connect_disk_index()
+
+    def _batch_record_index_entries(self, entries: List[Tuple[int, int, int]]) -> None:
+        """Record a batch of entries in a single atomic transaction using prepared statements."""
+        if not self._index_conn or not entries:
+            return
+        with self._index_conn:
+            self._index_conn.executemany(
+                "INSERT OR REPLACE INTO timestamp_index (timestamp_open, byte_offset, entry_index) VALUES (?, ?, ?);",
+                entries,
+            )
 
     def _index_has_timestamp(self, ts_open: int) -> bool:
         """Check if open timestamp exists in disk index (O(1) B-tree lookup)."""
@@ -212,16 +272,19 @@ class RawMarketEvidenceStore:
         return None
 
     def _read_candle_at_offset(self, byte_offset: int) -> Optional[ValidatedCandle]:
-        """Seek directly to byte offset in evidence file and reconstruct ValidatedCandle."""
+        """Seek directly to byte offset in evidence file and reconstruct ValidatedCandle using binary operations."""
         if not self.evidence_file.exists():
             return None
         try:
-            with open(self.evidence_file, "r", encoding="utf-8") as f:
+            with open(self.evidence_file, "rb") as f:
                 f.seek(byte_offset)
-                line = f.readline()
-                if not line:
+                raw_line = f.readline()
+                if not raw_line:
                     return None
-                data = json.loads(line.strip())
+                line_str = raw_line.decode("utf-8", errors="replace").strip()
+                if not line_str:
+                    return None
+                data = json.loads(line_str)
                 c_dict = data["candle"]
                 return ValidatedCandle(
                     symbol=c_dict["symbol"],
@@ -248,20 +311,19 @@ class RawMarketEvidenceStore:
             logger.warning(f"Failed to read candle at offset {byte_offset}: {exc}")
             return None
 
-    def get_all_candles(self) -> List[ValidatedCandle]:
-        """Read and return all validated candles from the evidence store."""
+    def iter_candles(self) -> Iterator[ValidatedCandle]:
+        """Stream validated candles one by one from the canonical evidence ledger using binary file reads."""
         if not self.evidence_file.exists():
-            return []
-        candles: List[ValidatedCandle] = []
-        with open(self.evidence_file, "r", encoding="utf-8") as f:
-            for line in f:
-                line_str = line.strip()
+            return
+        with open(self.evidence_file, "rb") as f:
+            for raw_line in f:
+                line_str = raw_line.decode("utf-8", errors="replace").strip()
                 if not line_str:
                     continue
                 try:
                     data = json.loads(line_str)
                     c_dict = data["candle"]
-                    c_obj = ValidatedCandle(
+                    yield ValidatedCandle(
                         symbol=c_dict["symbol"],
                         interval=c_dict["interval"],
                         market_type=c_dict["market_type"],
@@ -282,10 +344,12 @@ class RawMarketEvidenceStore:
                         receipt_timestamp_utc=c_dict["receipt_timestamp_utc"],
                         lifecycle_state=CandleLifecycleState.CANDLE_PERSISTED.value,
                     )
-                    candles.append(c_obj)
                 except Exception:
                     continue
-        return candles
+
+    def get_all_candles(self) -> List[ValidatedCandle]:
+        """Read and return all validated candles from the evidence store."""
+        return list(self.iter_candles())
 
     def verify_and_recover_chain(self) -> bool:
         """Inspect and verify on-disk hash chain using line-by-line streaming without full-file in-memory loading.
@@ -309,6 +373,7 @@ class RawMarketEvidenceStore:
         expected_prev = GENESIS_PREV_HASH
         valid_count = 0
         last_valid_offset = 0
+        index_batch: List[Tuple[int, int, int]] = []
 
         # Open in r+b mode for reading, in-place truncation, and synchronization
         with open(self.evidence_file, "r+b") as f:
@@ -319,11 +384,6 @@ class RawMarketEvidenceStore:
                     break
 
                 curr_offset = f.tell()
-                # Check whether another non-empty line exists after this one
-                next_peek = f.readline()
-                is_trailing = (len(next_peek) == 0)
-                f.seek(curr_offset)
-
                 line_str = raw_line.decode("utf-8", errors="replace").strip()
                 if not line_str:
                     last_valid_offset = curr_offset
@@ -390,13 +450,23 @@ class RawMarketEvidenceStore:
                     )
 
                     self._cache_candle(c_obj)
-                    self._index_record_candle(c_obj.timestamp_open, line_offset, e_idx)
+                    index_batch.append((c_obj.timestamp_open, line_offset, e_idx))
+                    if len(index_batch) >= INDEX_BATCH_SIZE:
+                        self._batch_record_index_entries(index_batch)
+                        index_batch.clear()
+
                     self._latest_open_ts = max(self._latest_open_ts, c_obj.timestamp_open)
                     expected_prev = e_hash
                     valid_count += 1
                     last_valid_offset = curr_offset
 
                 except (json.JSONDecodeError, KeyError, EvidenceCorruptionError) as e:
+                    # Check whether this error occurred at EOF (trailing) or mid-file
+                    curr_pos = f.tell()
+                    next_peek = f.readline()
+                    is_trailing = (len(next_peek) == 0)
+                    f.seek(curr_pos)
+
                     if is_trailing:
                         logger.warning(
                             f"Trailing corrupt/partial write detected at EOF offset {line_offset} ({e}). "
@@ -460,7 +530,10 @@ class RawMarketEvidenceStore:
                         f.flush()
                         os.fsync(f.fileno())
 
-                        # 5. Synchronize disk index
+                        # 5. Flush in-flight batch and synchronize disk index
+                        if index_batch:
+                            self._batch_record_index_entries(index_batch)
+                            index_batch.clear()
                         self._index_truncate_to_valid(valid_count)
                         break
                     else:
@@ -469,6 +542,14 @@ class RawMarketEvidenceStore:
                         raise EvidenceCorruptionError(
                             f"Mid-file corrupt JSON at offset {line_offset}: {e}"
                         ) from e
+
+        # Commit any remaining batched entries
+        if index_batch:
+            self._batch_record_index_entries(index_batch)
+            index_batch.clear()
+
+        # Synchronize index table to remove any orphaned entries beyond valid_count
+        self._index_truncate_to_valid(valid_count)
 
         self._entry_count = valid_count
         self._latest_entry_hash = expected_prev
@@ -562,9 +643,11 @@ class RawMarketEvidenceStore:
             raise EvidencePersistenceError("Simulated disk-write failure (force_disk_error=True)")
 
         try:
-            line_offset = self.evidence_file.stat().st_size if self.evidence_file.exists() else 0
-            with open(self.evidence_file, "a", encoding="utf-8") as f:
-                f.write(entry.to_json() + "\n")
+            encoded_line = (entry.to_json() + "\n").encode("utf-8")
+            with open(self.evidence_file, "ab") as f:
+                f.seek(0, os.SEEK_END)
+                line_offset = f.tell()
+                f.write(encoded_line)
                 f.flush()
                 os.fsync(f.fileno())
         except OSError as e:
