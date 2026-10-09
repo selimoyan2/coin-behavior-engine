@@ -2,7 +2,7 @@
 
 > [!CAUTION]
 > **PREPARATION & REVIEW ONLY — DO NOT EXECUTE WITHOUT EXPLICIT APPROVAL 2**
-> This runbook is a prospective operational specification. It does NOT authorize deployment.
+> This runbook is an operational specification. It does NOT authorize deployment.
 > No containers, networks, volumes, or services may be created in Coolify until the human operator has reviewed and explicitly approved this procedure.
 
 ---
@@ -28,13 +28,29 @@ This runbook defines the exact, fail-closed procedure for landing an **isolated,
 ```
 
 1. **Inert Landing vs Active Worker:**
-   - **Inert Landing (Approval 2):** Container executes safety contract verification (`deploy_safety.py`), audits zero network / zero prospective / zero trading, and cleanly terminates with `exit 0` (or stays strictly stopped). At rest, it consumes **0 MB RAM and 0% CPU**.
+   - **Inert Landing (Approval 2):** Container executes safety contract verification (`deploy_safety.py`), audits zero network / zero prospective / zero trading, writes persistent audit JSON, and terminates cleanly with `exit 0` (`STOPPED`). At rest, it consumes **0 MB RAM and 0% CPU**.
    - **Continuous Observation Worker:** Polling Binance and generating prospective scores is **STRICTLY PROHIBITED** and blocked by fail-closed software interlocks. (Requires subsequent APPROVAL 3 for Binance feed and APPROVAL 4 for prospective scoring).
-2. **Zero Production Mutation:** The service operates in complete isolation: no shared volumes, no shared databases, no shared network bridge.
+2. **Safe By Default Image:** The image's default `CMD` runs `/app/entrypoint_inert.sh`. Accidental invocation without arguments executes the inert verification and exits 0; it never executes the 850-cycle benchmark or any collector.
+3. **Zero Production Mutation:** The service operates in complete isolation: no shared volumes, no shared databases, no shared network bridge.
 
 ---
 
-## 2. PRE-DEPLOYMENT PREREQUISITE CHECKS
+## 2. COOLIFY COMPATIBILITY BOUNDARIES & UNCERTAINTIES
+
+> [!IMPORTANT]
+> **Verification Separation:**
+> - **Static Validation (CI / Repository):** Compose syntax, YAML schema, resource limits, and environment variable contracts are verified offline in automated tests.
+> - **Local Container Sandbox (Offline):** Image build, read-only root, non-root user, and exit-code behavior are verified in local Docker tests.
+> - **Coolify Operator Verification (Pending Approval 2):** Actual execution within Coolify on `srv1114257` has **NOT** been executed yet and must be verified by the human operator.
+
+### Documented Coolify Uncertainties Requiring Operator Inspection
+1. **Docker Compose Profile Behavior:** In standard Docker Compose, services with `profiles: ["manual"]` are ignored unless `--profile manual` is passed. Because Coolify executes `docker compose up -d` without custom profile flags by default, `profiles: ["manual"]` has been omitted from `docker-compose.coolify-inert.yaml`. Manual deployment control is instead enforced via Coolify's native **`Auto deploy = Manual deployments only`** setting, and background execution is prevented via **`restart: "no"`** and the one-shot inert entrypoint.
+2. **`network_mode: "none"` Support:** Coolify typically attaches containers to an internal bridge network (`coolify`) for reverse-proxy routing. With `network_mode: "none"`, Docker disables all external networking. The operator must verify that Coolify does not reject the compose file or force a secondary network attachment.
+3. **Exited Container Display:** Because the inert container terminates with code 0 after verifying safety, Coolify will display the service as `Exited (0)` or `Stopped`. This is the intended quiescent state.
+
+---
+
+## 3. PRE-DEPLOYMENT PREREQUISITE CHECKS
 
 Before initiating any action in Coolify, the operator must verify:
 
@@ -57,7 +73,7 @@ Before initiating any action in Coolify, the operator must verify:
 
 ---
 
-## 3. REQUIRED COOLIFY SERVICE CONFIGURATION
+## 4. REQUIRED COOLIFY SERVICE CONFIGURATION
 
 When configuring the service in the Coolify UI dashboard:
 
@@ -78,9 +94,9 @@ When configuring the service in the Coolify UI dashboard:
 
 ---
 
-## 4. ENVIRONMENT VARIABLE CONTRACT (FAIL-CLOSED)
+## 5. ENVIRONMENT VARIABLE CONTRACT (FAIL-CLOSED)
 
-The following environment variables are baked into `docker-compose.coolify-inert.yaml` and verified at runtime:
+The following exact values are baked into `docker-compose.coolify-inert.yaml` and strictly enforced by `deploy_safety.py`:
 
 ```dotenv
 CBE_ENV=staging_coolify_inert
@@ -93,14 +109,14 @@ CBE_TRADING_DISABLED=true
 CBE_SHADOW_DATA_DIR=/app/data/prospective_shadow
 ```
 
-> [!IMPORTANT]
-> If any operator or script attempts to set `CBE_BINANCE_COLLECTION_ENABLED=true` without separate **APPROVAL 3**, or `CBE_PROSPECTIVE_OBSERVATION_ENABLED=true` without separate **APPROVAL 4**, the container entrypoint immediately triggers `SAFETY_HALT` and exits with code 1 (`FAILED_SAFE`).
+> [!CAUTION]
+> Every variable is validated using **exact string matching**. If any variable is missing, empty, or set to an unapproved value (e.g. attempting to enable Binance or prospective observation), the container entrypoint immediately halts with code 1 (`FAILED_SAFE`).
 
 ---
 
-## 5. OPERATOR DEPLOYMENT PROCEDURE (UPON EXPLICIT APPROVAL 2 ONLY)
+## 6. OPERATOR DEPLOYMENT PROCEDURE (UPON EXPLICIT APPROVAL 2 ONLY)
 
-> **REMINDER: DO NOT EXECUTE BEFORE OPERATOR SIGNOFF.**
+> **REMINDER: DO NOT EXECUTE BEFORE EXPLICIT OPERATOR APPROVAL.**
 
 ### Step 1: Import Service Definition in Coolify
 1. Navigate to Coolify Dashboard $\to$ **Projects** $\to$ Select Target Environment.
@@ -113,13 +129,13 @@ CBE_SHADOW_DATA_DIR=/app/data/prospective_shadow
    - **Healthcheck:** Disabled.
 
 ### Step 2: Trigger Manual Initial Build & Landing
-1. Click **Deploy** manually.
+1. Click **Deploy** manually in Coolify.
 2. Coolify builds `cbe-080-shadow:coolify-inert` using `deploy/shadow_v080/Dockerfile.staging`.
-3. The container starts, executes `entrypoint_inert.sh`, verifies all safety interlocks, writes audit JSON, and terminates cleanly with exit code 0 (`Exited (0)`).
+3. The container starts, executes `entrypoint_inert.sh`, verifies all safety interlocks, writes audit JSON to `/app/data/prospective_shadow/audit/coolify_inert_landing_audit.json`, and terminates cleanly with exit code 0 (`Exited (0)`).
 
 ---
 
-## 6. POST-DEPLOYMENT INERT STATE VERIFICATION
+## 7. POST-DEPLOYMENT INERT STATE VERIFICATION
 
 Execute the following commands on `srv1114257` to confirm the container landed inert:
 
@@ -148,13 +164,19 @@ Execute the following commands on `srv1114257` to confirm the container landed i
    # [DeploySafety] INERT LANDING VERIFICATION SUCCESSFUL (EXIT CODE 0)
    ```
 
-4. **Verify Network Isolation (Zero Sockets):**
+4. **Verify Authoritative Docker Network Isolation:**
    ```bash
    docker inspect cbe_080_coolify_inert --format '{{.HostConfig.NetworkMode}}'
    # MUST RETURN: none
    ```
 
-5. **Verify CBE-0.7.0 Production is 100% Intact:**
+5. **Verify Persistent Audit Evidence in Volume:**
+   ```bash
+   # Inspect volume content without starting new background processes
+   docker run --rm -v cbe_080_shadow_data:/data:ro alpine cat /data/audit/coolify_inert_landing_audit.json
+   ```
+
+6. **Verify CBE-0.7.0 Production is 100% Intact:**
    ```bash
    # Check CBE-0.7.0 container status and databases
    docker ps --filter "name=coin-behavior-engine" --format "table {{.Names}}\t{{.Status}}"
@@ -164,19 +186,31 @@ Execute the following commands on `srv1114257` to confirm the container landed i
 
 ---
 
-## 7. ROLLBACK & REMOVAL PROCEDURE
+## 8. SAFE ROLLBACK & RESOURCE REMOVAL PROCEDURE
 
-If any discrepancy or unintended behavior is observed:
+If any discrepancy or unintended behavior is observed, use Coolify-managed lifecycle operations first:
 
-1. **Stop & Remove Container Immediately:**
+1. **Step 1: Coolify UI Stop**
+   In the Coolify dashboard, select `cbe-080-shadow-inert` and click **Stop**.
+
+2. **Step 2: Verify Identity Before Any Deletion**
+   Verify the exact container ID and name before executing any operation:
    ```bash
-   docker stop cbe_080_coolify_inert || true
-   docker rm -v cbe_080_coolify_inert || true
+   docker inspect cbe_080_coolify_inert --format 'Name: {{.Name}} | Image: {{.Config.Image}} | State: {{.State.Status}}'
    ```
-2. **Remove Isolated Volume (If Needed):**
-   ```bash
-   docker volume rm cbe_080_shadow_data || true
-   ```
-3. **Delete Coolify Service Resource:**
-   In the Coolify dashboard, select the `cbe-080-shadow-inert` service $\to$ **Settings** $\to$ **Delete Resource**.
-4. Confirm CBE-0.7.0 production operation remains normal.
+
+3. **Step 3: Coolify UI Resource Deletion**
+   In the Coolify dashboard, navigate to **Settings** $\to$ **Delete Resource**. Coolify cleanly deregisters the service and stops the container without risking production containers.
+
+4. **Step 4: Audit Volume Preservation vs Manual Cleanup**
+   - **Recommended:** Retain named volume `cbe_080_shadow_data` to preserve the cryptographic audit trail `coolify_inert_landing_audit.json`.
+   - **Manual Volume Deletion (Only if explicitly required by operator):**
+     Confirm volume identity before deletion:
+     ```bash
+     docker volume inspect cbe_080_shadow_data --format 'Volume Name: {{.Name}} | Driver: {{.Driver}}'
+     # ONLY delete after confirming it is NOT a production volume:
+     docker volume rm cbe_080_shadow_data
+     ```
+
+5. **Step 5: Verify Production Health**
+   Confirm CBE-0.7.0 production containers and SQLite databases continue normal operations.

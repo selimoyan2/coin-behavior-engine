@@ -27,7 +27,8 @@ services:
       dockerfile: deploy/shadow_v080/Dockerfile.staging
     image: cbe-080-shadow:coolify-inert
     container_name: cbe_080_coolify_inert
-    profiles: ["manual"]
+    # NOTE: 'profiles' omitted so operator manual Deploy in Coolify can start the container.
+    # Single-run execution is guaranteed via restart: "no" and one-shot inert entrypoint.
     restart: "no"
     network_mode: "none"
     read_only: true

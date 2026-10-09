@@ -30,7 +30,15 @@ USER 1000:1000
 
 ENV PYTHONPATH=/app/src
 ENV PYTHONUNBUFFERED=1
+ENV CBE_ENV=staging_coolify_inert
 ENV CBE_TRADING_DISABLED=true
 ENV CBE_PROSPECTIVE_OBSERVATION_ENABLED=false
+ENV CBE_BINANCE_COLLECTION_ENABLED=false
+ENV CBE_RECORD_LABEL=WARMUP_REPLAY
+ENV CBE_ENFORCE_PROSPECTIVE_GUARD=true
+ENV CBE_SHADOW_DATA_DIR=/app/data/prospective_shadow
 
-CMD ["python3", "-m", "coin_behavior_engine.shadow_v080.benchmark_staging_linux"]
+# SAFE BY DEFAULT: An accidental invocation without Compose or arguments runs the inert verification and exits 0.
+# The Approval 1 benchmark workflow is preserved by explicitly passing the benchmark command:
+#   python3 -m coin_behavior_engine.shadow_v080.benchmark_staging_linux
+CMD ["/app/entrypoint_inert.sh"]
