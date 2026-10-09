@@ -90,9 +90,177 @@ def test_04_operator_runbook_completeness():
 
     content = runbook_path.read_text(encoding="utf-8")
     assert "PREREQUISITES" in content
-    assert "OPTION A" in content
-    assert "OPTION B" in content
+    assert "OPTION 1" in content
+    assert "OPTION 2" in content
+    assert "--memory=300m" in content
     assert "EXPECTED OUTPUTS" in content
     assert "FAILURE CONDITIONS" in content
     assert "CLEANUP COMMANDS" in content
     assert "CONFIRM PRODUCTION IS COMPLETELY UNAFFECTED" in content
+
+
+def test_05_rss_budget_breach_produces_fail():
+    """Verify that a Linux peak RSS measurement above budget strictly forces verdict to FAIL."""
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        # Set an unrealistically low budget of 5.0 MB so measured RSS (~150MB) exceeds it
+        res = run_staging_benchmark(
+            output_dir=Path(tmp_dir),
+            warmup_bars=20,
+            steady_state_cycles=20,
+            rss_budget_mb=5.0,
+            simulate_linux=True,
+        )
+
+        assert res["benchmark_verdict"]["status"] == "FAIL"
+        assert "RSS_BUDGET_BREACH" in res["benchmark_verdict"]["blocking_failure_reasons"]
+        assert res["mandatory_gates"]["gate_rss_budget"]["passed"] is False
+
+
+def test_06_invalid_hash_chain_produces_fail(monkeypatch):
+    """Verify that a corrupted or tampered cryptographic hash chain forces verdict to FAIL."""
+    from collections import namedtuple
+    from coin_behavior_engine.shadow_v080.collector import ShadowCollectorV080
+
+    AuditResult = namedtuple("AuditResult", ["is_valid", "total_events", "violations"])
+
+    audit_calls = 0
+    orig_audit = ShadowCollectorV080.audit_full_history
+
+    def mock_audit(self):
+        nonlocal audit_calls
+        audit_calls += 1
+        if audit_calls >= 3:
+            return AuditResult(is_valid=False, total_events=10, violations=["Tampered hash at seq=5"])
+        return orig_audit(self)
+
+    monkeypatch.setattr(ShadowCollectorV080, "audit_full_history", mock_audit)
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        res = run_staging_benchmark(
+            output_dir=Path(tmp_dir),
+            warmup_bars=20,
+            steady_state_cycles=20,
+            rss_budget_mb=300.0,
+        )
+
+        assert res["benchmark_verdict"]["status"] == "FAIL"
+        assert "HASH_CHAIN_INTEGRITY_FAIL" in res["benchmark_verdict"]["blocking_failure_reasons"]
+        assert res["mandatory_gates"]["gate_hash_chain"]["passed"] is False
+
+
+def test_07_broken_accounting_identity_produces_fail(monkeypatch):
+    """Verify that broken accounting conservation (preds != matured + disqualified + pending) forces verdict to FAIL."""
+    from coin_behavior_engine.shadow_v080.prediction_store import ImmutablePredictionStoreV080, ShadowPredictionEvent
+
+    phantom_ev = ShadowPredictionEvent(
+        event_id="PHANTOM-PRED",
+        experiment_id="phantom",
+        protocol_version="1.0",
+        candidate_branch="candidate_c",
+        forecast_origin_utc="2026-10-09T00:00:00Z",
+        durable_commit_time_utc="2026-10-09T00:00:00Z",
+        target_horizon="1h",
+        target_maturity_utc="2026-10-09T01:00:00Z",
+        feature_fingerprint="abc",
+        component_hashes={},
+        data_quality={},
+        point_prediction=0.0,
+        interval_80={},
+        interval_95={},
+        market_state="STABLE",
+        record_label="WARMUP_REPLAY",
+    )
+
+    def mock_list(self):
+        evs = self._unmatured_events.copy()
+        evs.append(phantom_ev)
+        return evs
+
+    monkeypatch.setattr(ImmutablePredictionStoreV080, "list_events", mock_list)
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        res = run_staging_benchmark(
+            output_dir=Path(tmp_dir),
+            warmup_bars=20,
+            steady_state_cycles=20,
+            rss_budget_mb=300.0,
+        )
+
+        assert res["benchmark_verdict"]["status"] == "FAIL"
+        assert "ACCOUNTING_CONSERVATION_FAIL" in res["benchmark_verdict"]["blocking_failure_reasons"]
+        assert res["mandatory_gates"]["gate_accounting_conservation"]["passed"] is False
+
+
+def test_08_invalid_prospective_label_or_flag_produces_fail(monkeypatch):
+    """Verify that any prospective label or prospective scoring flag during staging forces verdict to FAIL."""
+    from coin_behavior_engine.shadow_v080.prediction_store import ImmutablePredictionStoreV080, ShadowPredictionEvent
+
+    prospective_ev = ShadowPredictionEvent(
+        event_id="PROSPECTIVE-ILLEGAL-PRED",
+        experiment_id="test",
+        protocol_version="1.0",
+        candidate_branch="candidate_c",
+        forecast_origin_utc="2026-10-09T00:00:00Z",
+        durable_commit_time_utc="2026-10-09T00:00:00Z",
+        target_horizon="1h",
+        target_maturity_utc="2026-10-09T01:00:00Z",
+        feature_fingerprint="abc",
+        component_hashes={},
+        data_quality={"eligible_for_prospective_scoring": True},
+        point_prediction=0.0,
+        interval_80={},
+        interval_95={},
+        market_state="STABLE",
+        record_label="PROSPECTIVE_SHADOW",
+    )
+
+    def mock_list(self):
+        evs = self._unmatured_events.copy()
+        evs.append(prospective_ev)
+        return evs
+
+    monkeypatch.setattr(ImmutablePredictionStoreV080, "list_events", mock_list)
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        res = run_staging_benchmark(
+            output_dir=Path(tmp_dir),
+            warmup_bars=20,
+            steady_state_cycles=20,
+            rss_budget_mb=300.0,
+        )
+
+        assert res["benchmark_verdict"]["status"] == "FAIL"
+        assert "PROSPECTIVE_GUARD_BREACH" in res["benchmark_verdict"]["blocking_failure_reasons"]
+        assert res["mandatory_gates"]["gate_prospective_guard"]["passed"] is False
+        assert res["safety_and_provenance_evidence"]["prospective_guard_intact"] is False
+
+
+def test_09_restart_recovery_failure_produces_fail(monkeypatch):
+    """Verify that a corrupted or incomplete restart state restoration forces verdict to FAIL."""
+    from coin_behavior_engine.shadow_v080.collector import ShadowCollectorV080
+
+    orig_init = ShadowCollectorV080.initialize
+    init_call_count = 0
+
+    def mock_init(self):
+        nonlocal init_call_count
+        init_call_count += 1
+        res = orig_init(self)
+        if init_call_count >= 2:
+            # Simulate corrupted buffer on cold restart
+            self.feature_pipeline.adapter.buffer.clear()
+        return res
+
+    monkeypatch.setattr(ShadowCollectorV080, "initialize", mock_init)
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        res = run_staging_benchmark(
+            output_dir=Path(tmp_dir),
+            warmup_bars=20,
+            steady_state_cycles=20,
+            rss_budget_mb=300.0,
+        )
+
+        assert res["benchmark_verdict"]["status"] == "FAIL"
+        assert "RESTART_RECOVERY_FAIL" in res["benchmark_verdict"]["blocking_failure_reasons"]
+        assert res["mandatory_gates"]["gate_restart_recovery"]["passed"] is False
