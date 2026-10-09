@@ -1,0 +1,83 @@
+{
+  "candidate_model_version": "CBE-0.8.0",
+  "evaluation_timestamp_utc": "2026-10-09T16:14:08.406335+00:00",
+  "gates": [
+    {
+      "evidence": "All model bundles, thresholds, and calibration artifacts match exact immutable hashes.",
+      "gate_id": "GATE_A_FROZEN_ARTIFACT_INTEGRITY",
+      "name": "Frozen Artifact Integrity Verification",
+      "status": "PASS"
+    },
+    {
+      "evidence": "3 canonical spot features fully documented with mathematical definitions and lookbacks.",
+      "gate_id": "GATE_B_CANONICAL_FEATURE_INVENTORY",
+      "name": "Canonical Feature Inventory Specification",
+      "status": "PASS"
+    },
+    {
+      "evidence": "volume_zscore_24h verified: 288-bar rolling window, min_periods=72, BTC base volume, clip [-5, 15].",
+      "gate_id": "GATE_C_VOLUME_FEATURE_DEFINITION",
+      "name": "Volume Feature Training-Time Provenance",
+      "status": "PASS"
+    },
+    {
+      "evidence": "FeedAdapterV080 implemented with strict closed-candle and timestamp causality enforcement.",
+      "gate_id": "GATE_D_CAUSAL_FEATURE_RECONSTRUCTION",
+      "name": "Causal Feature Reconstruction Engine",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Reconstruction achieves max diff 1.08e-18 <= 1e-12.",
+      "gate_id": "GATE_E_HISTORICAL_FEATURE_PARITY",
+      "name": "Historical Feature Numerical Parity",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Continuity checks enforce close_time > open_time and reject out-of-order candles.",
+      "gate_id": "GATE_F_CANDLE_TIMESTAMP_CORRECTNESS",
+      "name": "Candle Timestamp & Interval Continuity",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Cold starts return WARMING_UP; gaps transition to SOURCE_GAP; bad geometry rejected.",
+      "gate_id": "GATE_G_WARM_UP_AND_GAP_SAFETY",
+      "name": "Warm-Up and Gap Safety Handling",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Replayed 929 bars; Branch C and E share identical point forecasts.",
+      "gate_id": "GATE_H_CANDIDATE_C_E_INFERENCE_PARITY",
+      "name": "Dual Candidate C and E Inference Parity",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Binance public /api/v3/klines natively provides required OHLCV base volume without extra endpoints.",
+      "gate_id": "GATE_I_SOURCE_SCHEMA_COMPATIBILITY",
+      "name": "Source Feed Schema Compatibility",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Local live records lack trusted network receipt timestamps. Honestly marked NOT_VERIFIED.",
+      "gate_id": "GATE_J_PROSPECTIVE_TIMESTAMP_EVIDENCE",
+      "name": "Prospective Timestamp Evidence",
+      "status": "NOT_VERIFIED"
+    },
+    {
+      "evidence": "Reconstruction latency 0.077 ms << 150 ms budget.",
+      "gate_id": "GATE_K_RESOURCE_BUDGET",
+      "name": "Computational Resource Budget Adherence",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Sprint 07 freeze 29/29 verified; zero production worker mutations; deployment prohibited.",
+      "gate_id": "GATE_L_PRODUCTION_ISOLATION",
+      "name": "Production Model Freeze & Isolation",
+      "status": "PASS"
+    }
+  ],
+  "gates_evaluated_count": 12,
+  "gates_not_verified_count": 1,
+  "gates_passed_count": 11,
+  "overall_verdict": "PROSPECTIVE_FEED_PARITY_FROZEN_PENDING_LIVE_TAP",
+  "schema_version": "CBE-GATE-REGISTRY-0.8.0"
+}

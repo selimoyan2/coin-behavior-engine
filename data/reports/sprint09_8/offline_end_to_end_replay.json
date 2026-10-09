@@ -1,0 +1,9 @@
+{
+  "branch_isolation_verified": true,
+  "end_to_end_replay_status": "PASS_END_TO_END_INTEGRATION_VERIFIED",
+  "max_point_difference_branch_c_vs_e": 0.0,
+  "monotonicity_violations_count": 0,
+  "record_type_enforced": "HISTORICAL_REPLAY",
+  "replay_sample_count": 929,
+  "state_classification_active": true
+}

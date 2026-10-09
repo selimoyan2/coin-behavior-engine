@@ -1,0 +1,68 @@
+{
+  "candidate_model_version": "CBE-0.8.0",
+  "feature_count": 3,
+  "features": {
+    "volatility_compression_ratio": {
+      "closed_candle_required": true,
+      "consuming_components": [
+        "Ridge Point Forecast (1h, 4h, 24h)",
+        "Market State Classifier (Compression/Expansion secondary flags)"
+      ],
+      "feature_name": "volatility_compression_ratio",
+      "historical_validation_status": "VALIDATED_EXACT_MATCH",
+      "input_columns": [
+        "close"
+      ],
+      "mathematical_definition": "Ratio of 1-hour realized volatility (12 bars, min_periods=3) to 24-hour realized volatility (288 bars, min_periods=72)",
+      "minimum_warmup_bars": 72,
+      "missing_policy": "FAIL_CLOSED",
+      "prospective_source_compatibility": "PASS (Derived directly from 5m close prices)",
+      "rolling_window_bars": 288,
+      "rolling_window_duration": "24 hours",
+      "source_code_location": "src/coin_behavior_engine/features/volatility.py",
+      "units": "Dimensionless ratio"
+    },
+    "volatility_realized_24h": {
+      "closed_candle_required": true,
+      "consuming_components": [
+        "Ridge Point Forecast (1h, 4h, 24h)",
+        "Market State Classifier (Primary state quartiles)",
+        "Persistence Baseline (Baseline 1)"
+      ],
+      "feature_name": "volatility_realized_24h",
+      "historical_validation_status": "VALIDATED_EXACT_MATCH",
+      "input_columns": [
+        "close"
+      ],
+      "mathematical_definition": "Sample standard deviation (ddof=1) of 5-minute log returns over a 288-bar rolling window",
+      "minimum_warmup_bars": 72,
+      "missing_policy": "FAIL_CLOSED",
+      "prospective_source_compatibility": "PASS (Derived directly from 5m close prices)",
+      "rolling_window_bars": 288,
+      "rolling_window_duration": "24 hours",
+      "source_code_location": "src/coin_behavior_engine/features/volatility.py",
+      "units": "5-minute return sample standard deviation (unscaled)"
+    },
+    "volume_zscore_24h": {
+      "closed_candle_required": true,
+      "consuming_components": [
+        "Ridge Point Forecast (1h, 4h, 24h)"
+      ],
+      "feature_name": "volume_zscore_24h",
+      "historical_validation_status": "VALIDATED_EXACT_MATCH",
+      "input_columns": [
+        "volume"
+      ],
+      "mathematical_definition": "Z-score of current bar base asset volume relative to 288-bar rolling mean and sample standard deviation, clipped to [-5.0, 15.0]",
+      "minimum_warmup_bars": 72,
+      "missing_policy": "FAIL_CLOSED",
+      "prospective_source_compatibility": "PASS (Derived from Binance kline field index 5 base asset volume)",
+      "rolling_window_bars": 288,
+      "rolling_window_duration": "24 hours",
+      "source_code_location": "src/coin_behavior_engine/features/volume.py",
+      "units": "Standard deviations (clipped z-score)"
+    }
+  },
+  "schema_version": "CBE-CANONICAL-FEATURE-INVENTORY-0.8.0",
+  "tier": "SPOT_ONLY_U0"
+}

@@ -1,0 +1,8 @@
+{
+  "cold_start_handling": "PASS (Returns FEATURE_UNAVAILABLE)",
+  "duplicate_handling": "PASS (Idempotent duplicates accepted, conflicting duplicates rejected)",
+  "gap_detection_handling": "PASS (Identifies missing bars and transitions to SOURCE_GAP)",
+  "invalid_geometry_rejection": "PASS (Rejects high < low and negative volumes)",
+  "overall_status": "WARMUP_AND_GAP_SAFETY_VERIFIED",
+  "partial_warmup_handling": "PASS (Returns WARMING_UP below 72 bars)"
+}

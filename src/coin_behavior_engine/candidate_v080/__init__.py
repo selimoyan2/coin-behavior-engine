@@ -64,6 +64,12 @@ from coin_behavior_engine.candidate_v080.protocol_simulator import (
     EventChainIntegrityError,
     OfflineProtocolSimulator,
 )
+from coin_behavior_engine.candidate_v080.feed_adapter import (
+    CandleData,
+    FeedAdapterError,
+    FeedAdapterV080,
+    ReconstructedFeatures,
+)
 
 __all__ = [
     "AppendOnlyEvent",
@@ -78,6 +84,7 @@ __all__ = [
     "CandidateInferencePipelineV080",
     "CandidatePredictionResult",
     "CandidateTrainerV080",
+    "CandleData",
     "CanonicalMetricsEngine",
     "ClassificationResult",
     "ClassifierError",
@@ -85,6 +92,9 @@ __all__ = [
     "DuplicateEventError",
     "EventChainIntegrityError",
     "FeatureValidationError",
+    "FeedAdapterError",
+    "FeedAdapterV080",
+
     "HorizonCalibrationParameters",
     "HorizonCalibrationV095",
     "HorizonForecastResult",
@@ -99,6 +109,7 @@ __all__ = [
     "ModelBundleV080",
     "OfflineProtocolSimulator",
     "PointMetrics",
+    "ReconstructedFeatures",
     "RidgeModelParameters",
     "ScalerParameters",
     "ShadowReplayEngineV080",

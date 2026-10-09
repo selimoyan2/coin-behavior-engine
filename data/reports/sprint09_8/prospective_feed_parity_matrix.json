@@ -1,0 +1,13 @@
+{
+  "historical_feature_parity": "PASS",
+  "prospective_feed_parity": "NOT_VERIFIED",
+  "prospective_timestamp_parity": "NOT_VERIFIED",
+  "schema_version": "CBE-FEED-PARITY-MATRIX-0.8.0",
+  "source_schema_compatibility": "PASS",
+  "status_rationale": {
+    "historical_feature_parity": "Reconstructed features achieve exact 1e-15 parity against canonical derived parquet.",
+    "prospective_feed_parity": "Cannot be marked PASS until an isolated live feed tap is deployed and audited in a subsequent prospective sprint.",
+    "prospective_timestamp_parity": "Existing live-era files lack trusted network receipt timestamps.",
+    "source_schema_compatibility": "Binance spot klines provide all required fields (OHLCV) without additional API endpoints."
+  }
+}

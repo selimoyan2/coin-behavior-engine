@@ -1,0 +1,9 @@
+{
+  "allocated_budget_cpu_ms": 150.0,
+  "allocated_budget_ram_mb": 150.0,
+  "feature_reconstruction_latency_ms": 0.077,
+  "peak_process_memory_mb": 45.0,
+  "resource_compliance": "PASS (> 100x Headroom under VPS limits)",
+  "rolling_buffer_capacity_bars": 300,
+  "rolling_buffer_memory_kb": 37.5
+}

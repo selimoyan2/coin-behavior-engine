@@ -1,0 +1,32 @@
+{
+  "audit_timestamp_utc": "2026-10-09T16:14:07.926913+00:00",
+  "base_commit": "052363e84118c3e35e5de37c5de6208eab0f66c1",
+  "candidate_artifacts": {
+    "cbe_interval_calibration_v080_095.json": {
+      "canonical_lf_sha256": "6ef5467c9921ae1349d0fb75783f4110b0c67c557ab515707f65d9aa73c0309c",
+      "raw_sha256": "6821136ad71411b8778c481055d4204640d19be0acaedaf8db3cd18ee3b4bf50"
+    },
+    "cbe_interval_calibration_v080_candidate_c.json": {
+      "canonical_lf_sha256": "c79ea067beba58b21a1407b8650dc32fec26a80d90d8d6f1c031f1d94324e114",
+      "raw_sha256": "d7ce73edf6595c9ef167a8ec69f4e40f102dff2f32d8f265cf3efe4f60ef89ce"
+    },
+    "cbe_model_bundle_v080.json": {
+      "canonical_lf_sha256": "906832a96d6012d3889059167f6e74263012564a88cfc8a137417bf533cbcb8d",
+      "raw_sha256": "7755ddcb369c29825f9205f09e805b2e518526726b4bd5d948787d24c9419ad0"
+    },
+    "cbe_state_thresholds_v080.json": {
+      "canonical_lf_sha256": "e6b690af2b3ba1821e46e262bfdd27e82d651d4f218afb2a13c747022541cf95",
+      "raw_sha256": "3979ab8e37377f1d5cb2623c63c20081078ae49c5bcbedcbb860affe3dfd95d9"
+    },
+    "prospective_experiment_manifest.json": {
+      "canonical_lf_sha256": "fa6c571b07bca76b462879338fae093a4a733af57f0c6dc4c1745865d166202d",
+      "raw_sha256": "a0facb9057343f7b8a888a52d2597aa7fa29944ca9fd31eeceac43f34af4c7fd"
+    }
+  },
+  "freeze_verification": {
+    "canonical_hashes_verified": 29,
+    "status": "FREEZE_VERIFIED",
+    "verified": true
+  },
+  "integrity_verdict": "ALL_FROZEN_ARTIFACTS_MATCH_EXACT_SPECIFICATION"
+}

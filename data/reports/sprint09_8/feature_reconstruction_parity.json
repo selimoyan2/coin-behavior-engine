@@ -1,0 +1,9 @@
+{
+  "max_difference_volatility_compression_ratio": 2.7755575615628914e-15,
+  "max_difference_volatility_realized_24h": 1.0842021724855044e-18,
+  "max_difference_volume_zscore_24h": 3.552713678800501e-15,
+  "parity_status": "PASS_EXACT_NUMERICAL_PARITY",
+  "sample_count": 212,
+  "test_sample_count": 212,
+  "tolerance_limit": 1e-12
+}
