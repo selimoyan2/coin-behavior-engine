@@ -1,0 +1,46 @@
+{
+  "schema_version": "CBE-QUALITY-CONTRACT-0.8.0",
+  "evaluation_timestamp_utc": "2026-10-09T16:23:46.530406+00:00",
+  "zero_value_disambiguation": {
+    "genuine_zero_volume_zscore": {
+      "condition": "Current candle volume equals window mean (abs(v - mean) < 1e-9) and standard deviation > 0.",
+      "fallback_applied": false,
+      "feature_quality_status": "PRISTINE",
+      "eligible_for_prospective_scoring": true
+    },
+    "zero_variance_volume_zscore": {
+      "condition": "All candles in window have identical volume (std == 0.0). Division by zero prevented by fallback.",
+      "fallback_applied": true,
+      "feature_quality_status": "ZERO_VARIANCE_FALLBACK",
+      "eligible_for_prospective_scoring": false
+    },
+    "missing_or_nan_volume_zscore": {
+      "condition": "Volume is NaN, infinite, or missing. Evaluated as fillna(0.0).",
+      "fallback_applied": true,
+      "feature_quality_status": "MISSING_INPUT_FALLBACK",
+      "eligible_for_prospective_scoring": false
+    },
+    "clipped_volume_zscore": {
+      "condition": "Volume z-score exceeds [-5.0, 15.0] bounds and is clipped.",
+      "fallback_applied": false,
+      "feature_quality_status": "PRISTINE",
+      "eligible_for_prospective_scoring": true
+    }
+  },
+  "test_scenarios_evaluated": [
+    "genuine_zero_volume",
+    "constant_volume_zero_variance",
+    "missing_volume_input",
+    "nan_volume_input",
+    "infinite_volume_input",
+    "missing_candle_gap",
+    "partial_warmup_sub_288",
+    "zero_standard_deviation",
+    "legitimate_zero_zscore"
+  ],
+  "fail_closed_rules": [
+    "Whenever fallback_applied == True, eligible_for_prospective_scoring MUST BE False.",
+    "Whenever feature_quality_status != PRISTINE, prediction is tagged EXCLUDED_FROM_EVALUATION.",
+    "Raw feature values are preserved numerically as defined by frozen CBE-0.8.0 bundle."
+  ]
+}

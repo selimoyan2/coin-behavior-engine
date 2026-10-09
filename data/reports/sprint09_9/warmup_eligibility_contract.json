@@ -1,0 +1,36 @@
+{
+  "schema_version": "CBE-WARMUP-CONTRACT-0.8.0",
+  "evaluation_timestamp_utc": "2026-10-09T16:23:46.529876+00:00",
+  "definitions": {
+    "MINIMUM_COMPUTABLE": {
+      "candle_count": 72,
+      "duration_hours": 6.0,
+      "description": "The absolute minimum window required for rolling volume z-score computation (min_periods=72). Realized 24h volatility cannot be computed at this stage and requires reduced-window fallback.",
+      "prospective_eligibility": "INELIGIBLE"
+    },
+    "FULL_WINDOW_READY": {
+      "candle_count": 288,
+      "duration_hours": 24.0,
+      "description": "Complete 24-hour rolling lookback available. All three canonical features (volatility_realized_24h, volatility_compression_ratio, volume_zscore_24h) are computed over genuine 288-bar windows without fallback.",
+      "prospective_eligibility": "CONDITIONALLY_ELIGIBLE"
+    },
+    "PROSPECTIVE_ELIGIBLE": {
+      "candle_count": 288,
+      "duration_hours": 24.0,
+      "prerequisites": [
+        "FULL_WINDOW_READY satisfied (>= 288 contiguous closed candles).",
+        "State machine state == ELIGIBLE.",
+        "No data gaps (> 300,000 ms step).",
+        "Clock skew <= 1000.0 ms against trusted time reference.",
+        "Feature quality status == PRISTINE (no fallback fillna, no missing data).",
+        "Candidate C and Candidate E evaluated under identical origin timestamp."
+      ],
+      "prospective_eligibility": "ELIGIBLE"
+    }
+  },
+  "policy_invariants": [
+    "Partially warmed forecasts (< 288 bars) MUST NOT be scored as prospective predictions.",
+    "Any change to warm-up eligibility rules requires a formal prospective protocol amendment prior to observation.",
+    "Buffer capacity is set to 350 bars to provide a 62-bar (~5.1 hour) safety buffer beyond the 288-bar requirement."
+  ]
+}

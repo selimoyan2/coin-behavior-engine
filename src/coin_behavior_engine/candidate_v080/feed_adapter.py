@@ -105,6 +105,18 @@ class FeedAdapterV080:
         self.candles: List[CandleData] = []
         self.last_status: str = "WARMING_UP"
 
+    @property
+    def buffer(self) -> List[CandleData]:
+        """Alias for self.candles for buffer-style access."""
+        return self.candles
+
+    def ingest_candle(self, candle: CandleData) -> ReconstructedFeatures:
+        """Convenience method: add candle and immediately return reconstructed features."""
+        ok, reason = self.add_candle(candle)
+        if not ok and self.last_status in ["SOURCE_GAP", "INVALID_CANDLE"]:
+            raise FeedAdapterError(reason)
+        return self.reconstruct_features()
+
     def reset(self) -> None:
         """Clear rolling buffer."""
         self.candles.clear()

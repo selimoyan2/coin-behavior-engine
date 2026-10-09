@@ -1,0 +1,10 @@
+{
+  "test_timestamp_utc": "2026-10-09T16:23:46.567236+00:00",
+  "save_duration_ms": 7.669,
+  "load_duration_ms": 8.179,
+  "snapshot_size_bytes": 129123,
+  "clean_save_load_passed": true,
+  "corruption_detection_passed": true,
+  "truncation_detection_passed": true,
+  "all_tests_passed": true
+}

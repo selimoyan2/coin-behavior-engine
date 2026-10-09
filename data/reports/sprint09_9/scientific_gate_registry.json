@@ -1,0 +1,84 @@
+{
+  "candidate_model_version": "CBE-0.8.0",
+  "evaluation_timestamp_utc": "2026-10-09T16:23:52.847286+00:00",
+  "schema_version": "CBE-GATE-REGISTRY-0.8.0",
+  "gates_evaluated_count": 12,
+  "gates_passed_count": 11,
+  "gates_blocked_count": 1,
+  "gates_failed_count": 0,
+  "overall_verdict": "CAPTURE_ENGINEERING_READY_DEPLOYMENT_BLOCKED",
+  "gates": [
+    {
+      "gate_id": "GATE_A_FROZEN_ARTIFACT_INTEGRITY",
+      "name": "Frozen Artifact Integrity Verification",
+      "status": "PASS",
+      "evidence": "All 29 CBE-0.7.0 canonical hashes, CBE-0.8.0 model bundle, classifier thresholds, and calibrations C & E verified bit-for-bit."
+    },
+    {
+      "gate_id": "GATE_B_GIT_HISTORY_CONSISTENCY",
+      "name": "Git History & Ancestry Consistency",
+      "status": "PASS",
+      "evidence": "Linear ancestry verified from 0222677 -> 052363e (09.7) -> f8e14cb (09.8). No rebasing or history rewriting."
+    },
+    {
+      "gate_id": "GATE_C_BOOTSTRAP_FEASIBILITY",
+      "name": "Bootstrap Strategy Feasibility",
+      "status": "PASS",
+      "evidence": "Hybrid Snapshot-first (Option C) + single bootstrap fallback (Option B) designed, audited, and tested."
+    },
+    {
+      "gate_id": "GATE_D_FULL_WINDOW_WARMUP_SAFETY",
+      "name": "Full-Window Warm-Up Safety Contract",
+      "status": "PASS",
+      "evidence": "Strict distinction between MINIMUM_COMPUTABLE (72) and FULL_WINDOW_READY (288). Partial-window scoring strictly prohibited."
+    },
+    {
+      "gate_id": "GATE_E_MISSING_DATA_QUALITY_SAFETY",
+      "name": "Missing-Data & Zero-Value Quality Safety",
+      "status": "PASS",
+      "evidence": "Distinguishes legitimate zero volume z-score from zero-variance and missing-input fallbacks. Fail-closed on all non-pristine inputs."
+    },
+    {
+      "gate_id": "GATE_F_CLOSED_CANDLE_CAUSALITY",
+      "name": "Closed-Candle Causality Enforcement",
+      "status": "PASS",
+      "evidence": "Strict closed-candle validation, timestamp monotonic ordering, and out-of-order rejection verified."
+    },
+    {
+      "gate_id": "GATE_G_TIMESTAMP_TRUST_MODEL",
+      "name": "Timestamp Trust & Clock-Skew Model",
+      "status": "PASS",
+      "evidence": "Three-tier timestamping (exchange close, local receipt, durable commit) with monotonic reference and <= 1,000 ms clock-skew budget."
+    },
+    {
+      "gate_id": "GATE_H_SNAPSHOT_RECOVERY_INTEGRITY",
+      "name": "Snapshot Recovery & Corruption Detection",
+      "status": "PASS",
+      "evidence": "Atomic writes, SHA-256 payload checksums, corruption detection, and truncated-file recovery 100% verified."
+    },
+    {
+      "gate_id": "GATE_I_CANDIDATE_C_E_EXPERIMENT_ISOLATION",
+      "name": "Candidate C & E Research Isolation",
+      "status": "PASS",
+      "evidence": "Dual-branch parity preserved: identical inputs, identical Ridge point forecast, identical market state; separate calibrated intervals."
+    },
+    {
+      "gate_id": "GATE_J_RESOURCE_BUDGET",
+      "name": "Computational Resource Budget Adherence",
+      "status": "PASS",
+      "evidence": "Mean candle ingest latency 0.08 ms << 150 ms; buffer footprint ~38 KB; peak process memory ~45.5 MB << 150 MB."
+    },
+    {
+      "gate_id": "GATE_K_COOLIFY_DEPLOYMENT_SAFETY",
+      "name": "Coolify Deployment Safety Verification",
+      "status": "BLOCKED",
+      "evidence": "Autonomous agent cannot query Coolify API console. Remote push is blocked (PUSH_BLOCKED_AUTO_DEPLOY_UNVERIFIED)."
+    },
+    {
+      "gate_id": "GATE_L_PRODUCTION_ISOLATION",
+      "name": "Production Model Freeze & Isolation",
+      "status": "PASS",
+      "evidence": "Sprint 07 freeze verified (29/29). Zero production files, workers, or live databases mutated. Zero live exchange calls."
+    }
+  ]
+}

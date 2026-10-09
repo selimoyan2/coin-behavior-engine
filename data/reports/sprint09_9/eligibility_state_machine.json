@@ -1,0 +1,84 @@
+{
+  "schema_version": "CBE-STATE-MACHINE-0.8.0",
+  "state_count": 10,
+  "states": {
+    "INITIALIZING": "Process bootstrap; checking snapshot or awaiting initial data.",
+    "WARMING_UP": "Accumulating closed candles; window lookback < 288 bars.",
+    "FULL_WINDOW_READY": "Contiguous window >= 288 bars; pre-flight eligibility checks active.",
+    "STALE_DATA": "Data staleness detected; time since last closed candle exceeds 600s.",
+    "SOURCE_GAP": "Gap detected in sequence (> 300s); continuity broken; buffer purged.",
+    "INVALID_CANDLE": "Candle geometry or negative volume validation failure.",
+    "CLOCK_UNTRUSTED": "Local clock drift against exchange or NTP exceeds 1,000 ms.",
+    "SNAPSHOT_CORRUPT": "Saved snapshot checksum mismatch or JSON syntax corruption.",
+    "PAUSED": "Operator or safety trigger has paused prediction generation.",
+    "ELIGIBLE": "All quality and timing gates passed; eligible for prospective prediction scoring."
+  },
+  "transition_matrix": {
+    "INITIALIZING": [
+      "CLOCK_UNTRUSTED",
+      "WARMING_UP",
+      "FULL_WINDOW_READY",
+      "SOURCE_GAP",
+      "SNAPSHOT_CORRUPT",
+      "INVALID_CANDLE"
+    ],
+    "WARMING_UP": [
+      "CLOCK_UNTRUSTED",
+      "WARMING_UP",
+      "FULL_WINDOW_READY",
+      "SOURCE_GAP",
+      "INVALID_CANDLE",
+      "PAUSED"
+    ],
+    "FULL_WINDOW_READY": [
+      "CLOCK_UNTRUSTED",
+      "SOURCE_GAP",
+      "ELIGIBLE",
+      "STALE_DATA",
+      "INVALID_CANDLE",
+      "PAUSED"
+    ],
+    "STALE_DATA": [
+      "WARMING_UP",
+      "FULL_WINDOW_READY",
+      "SOURCE_GAP",
+      "INVALID_CANDLE",
+      "PAUSED"
+    ],
+    "SOURCE_GAP": [
+      "WARMING_UP",
+      "PAUSED"
+    ],
+    "INVALID_CANDLE": [
+      "WARMING_UP",
+      "PAUSED"
+    ],
+    "CLOCK_UNTRUSTED": [
+      "WARMING_UP",
+      "FULL_WINDOW_READY",
+      "PAUSED"
+    ],
+    "SNAPSHOT_CORRUPT": [
+      "WARMING_UP",
+      "PAUSED"
+    ],
+    "PAUSED": [
+      "WARMING_UP",
+      "FULL_WINDOW_READY",
+      "ELIGIBLE"
+    ],
+    "ELIGIBLE": [
+      "CLOCK_UNTRUSTED",
+      "SOURCE_GAP",
+      "ELIGIBLE",
+      "STALE_DATA",
+      "INVALID_CANDLE",
+      "PAUSED"
+    ]
+  },
+  "fail_closed_rules": [
+    "Predictions generated in any state other than ELIGIBLE are strictly non-prospective.",
+    "SOURCE_GAP and INVALID_CANDLE force a buffer purge and restart in WARMING_UP.",
+    "CLOCK_UNTRUSTED prevents transition to ELIGIBLE until clock skew returns to <= 1000 ms."
+  ]
+}

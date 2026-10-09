@@ -70,6 +70,19 @@ from coin_behavior_engine.candidate_v080.feed_adapter import (
     FeedAdapterV080,
     ReconstructedFeatures,
 )
+from coin_behavior_engine.candidate_v080.capture_manager import (
+    CandidateCaptureEngineV080,
+    CaptureState,
+    EligibilityStateMachineV080,
+    FeatureQualityMetadata,
+    FeatureQualityStatus,
+    SnapshotCorruptionError,
+    SnapshotError,
+    SnapshotHeader,
+    SnapshotManagerV080,
+    SnapshotTruncationError,
+    TimestampAuditRecord,
+)
 
 __all__ = [
     "AppendOnlyEvent",
@@ -80,17 +93,22 @@ __all__ = [
     "CalibrationBranchError",
     "CalibrationError",
     "CalibrationV095Error",
+    "CandidateCaptureEngineV080",
     "CandidateInferenceEngineV080",
     "CandidateInferencePipelineV080",
     "CandidatePredictionResult",
     "CandidateTrainerV080",
     "CandleData",
     "CanonicalMetricsEngine",
+    "CaptureState",
     "ClassificationResult",
     "ClassifierError",
     "DualBranchCalibrationManager",
     "DuplicateEventError",
+    "EligibilityStateMachineV080",
     "EventChainIntegrityError",
+    "FeatureQualityMetadata",
+    "FeatureQualityStatus",
     "FeatureValidationError",
     "FeedAdapterError",
     "FeedAdapterV080",
@@ -113,9 +131,15 @@ __all__ = [
     "RidgeModelParameters",
     "ScalerParameters",
     "ShadowReplayEngineV080",
+    "SnapshotCorruptionError",
+    "SnapshotError",
+    "SnapshotHeader",
+    "SnapshotManagerV080",
+    "SnapshotTruncationError",
     "StateDistributionMetrics",
     "StateThresholdsV080",
     "TARGET_UNITS",
+    "TimestampAuditRecord",
 ]
 
 

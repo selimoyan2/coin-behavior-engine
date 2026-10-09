@@ -1,0 +1,20 @@
+{
+  "sprint": "09.9",
+  "preflight_timestamp_utc": "2026-10-09T16:23:46.528347+00:00",
+  "git_head": "f8e14cb20478af66f37ecde8f12ab40a09c839a3",
+  "git_status_clean": false,
+  "freeze_sprint07": {
+    "status": "FREEZE_VERIFIED",
+    "verified": true,
+    "canonical_artifacts_verified": 29,
+    "canonical_artifacts_total": 29
+  },
+  "candidate_v080_artifacts": {
+    "bundle_sha256": "7755ddcb369c29825f9205f09e805b2e518526726b4bd5d948787d24c9419ad0",
+    "thresholds_sha256": "3979ab8e37377f1d5cb2623c63c20081078ae49c5bcbedcbb860affe3dfd95d9",
+    "calibration_c_sha256": "d7ce73edf6595c9ef167a8ec69f4e40f102dff2f32d8f265cf3efe4f60ef89ce",
+    "calibration_e_sha256": "6821136ad71411b8778c481055d4204640d19be0acaedaf8db3cd18ee3b4bf50",
+    "experiment_manifest_097_sha256": "a0facb9057343f7b8a888a52d2597aa7fa29944ca9fd31eeceac43f34af4c7fd"
+  },
+  "all_preflight_passed": true
+}
