@@ -1,0 +1,335 @@
+{
+  "1h": {
+    "horizon": "1h",
+    "effective_sample_size": 6379,
+    "total_observations": 76553,
+    "mean_paired_mae_difference": 0.0003809891629257001,
+    "paired_bootstrap_ci95": [
+      0.00027819312379179163,
+      0.0004954520077388915
+    ],
+    "statistically_significant_advantage": true,
+    "non_overlapping_offsets_tested_count": 12,
+    "offsets_where_ridge_beats_persist": 12,
+    "offset_evaluations": [
+      {
+        "offset": 0,
+        "n_points": 6380,
+        "ridge_mae": 0.00716809792711595,
+        "persist_mae": 0.00749497762403189,
+        "lift_pct": 4.361316515046469,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 1,
+        "n_points": 6380,
+        "ridge_mae": 0.007035986818021741,
+        "persist_mae": 0.00749443654439109,
+        "lift_pct": 6.117200721546668,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 2,
+        "n_points": 6380,
+        "ridge_mae": 0.007086499776740301,
+        "persist_mae": 0.007445842656540673,
+        "lift_pct": 4.826087474259387,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 3,
+        "n_points": 6380,
+        "ridge_mae": 0.007007095382111437,
+        "persist_mae": 0.007354871924605074,
+        "lift_pct": 4.72851935504385,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 4,
+        "n_points": 6380,
+        "ridge_mae": 0.007082670175107417,
+        "persist_mae": 0.0074352210338445015,
+        "lift_pct": 4.741632523529593,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 5,
+        "n_points": 6379,
+        "ridge_mae": 0.007117430290750592,
+        "persist_mae": 0.007488137073073685,
+        "lift_pct": 4.950587558768168,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 6,
+        "n_points": 6379,
+        "ridge_mae": 0.007097963517334981,
+        "persist_mae": 0.007396548851254074,
+        "lift_pct": 4.036819602272602,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 7,
+        "n_points": 6379,
+        "ridge_mae": 0.007034248329689016,
+        "persist_mae": 0.00742237630825223,
+        "lift_pct": 5.229160614393682,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 8,
+        "n_points": 6379,
+        "ridge_mae": 0.0070595429544495865,
+        "persist_mae": 0.007428386636361473,
+        "lift_pct": 4.965326927201405,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 9,
+        "n_points": 6379,
+        "ridge_mae": 0.007021553389171377,
+        "persist_mae": 0.007468601851877132,
+        "lift_pct": 5.985704842378168,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 10,
+        "n_points": 6379,
+        "ridge_mae": 0.007006893618839974,
+        "persist_mae": 0.007440630640987278,
+        "lift_pct": 5.829304572088698,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 11,
+        "n_points": 6379,
+        "ridge_mae": 0.007103092816484536,
+        "persist_mae": 0.007522923203121209,
+        "lift_pct": 5.580681542282499,
+        "ridge_beats_persist": true
+      }
+    ]
+  },
+  "4h": {
+    "horizon": "4h",
+    "effective_sample_size": 1594,
+    "total_observations": 76517,
+    "mean_paired_mae_difference": 0.000493521318399873,
+    "paired_bootstrap_ci95": [
+      0.0002714945686405298,
+      0.0006984811742055587
+    ],
+    "statistically_significant_advantage": true,
+    "non_overlapping_offsets_tested_count": 12,
+    "offsets_where_ridge_beats_persist": 12,
+    "offset_evaluations": [
+      {
+        "offset": 0,
+        "n_points": 1595,
+        "ridge_mae": 0.007125985801439247,
+        "persist_mae": 0.007529605761022031,
+        "lift_pct": 5.360439475758138,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 4,
+        "n_points": 1595,
+        "ridge_mae": 0.0069207075948330855,
+        "persist_mae": 0.007601708945134223,
+        "lift_pct": 8.958529657163993,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 8,
+        "n_points": 1594,
+        "ridge_mae": 0.0069060390662970305,
+        "persist_mae": 0.007644785376131891,
+        "lift_pct": 9.663401567051594,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 12,
+        "n_points": 1594,
+        "ridge_mae": 0.006982384166779676,
+        "persist_mae": 0.007729863629780786,
+        "lift_pct": 9.670021345800992,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 16,
+        "n_points": 1594,
+        "ridge_mae": 0.00704770250517477,
+        "persist_mae": 0.007746842308087403,
+        "lift_pct": 9.024835863546079,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 20,
+        "n_points": 1594,
+        "ridge_mae": 0.006890043514090847,
+        "persist_mae": 0.007519250487104485,
+        "lift_pct": 8.367948030095922,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 24,
+        "n_points": 1594,
+        "ridge_mae": 0.006909401238527055,
+        "persist_mae": 0.007248679987101294,
+        "lift_pct": 4.680559069761263,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 28,
+        "n_points": 1594,
+        "ridge_mae": 0.006886147403151952,
+        "persist_mae": 0.007181905261405719,
+        "lift_pct": 4.118097461451025,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 32,
+        "n_points": 1594,
+        "ridge_mae": 0.006821642159550943,
+        "persist_mae": 0.007110056413086819,
+        "lift_pct": 4.056427077076616,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 36,
+        "n_points": 1594,
+        "ridge_mae": 0.006898308007045794,
+        "persist_mae": 0.00710245878740231,
+        "lift_pct": 2.874367686844162,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 40,
+        "n_points": 1594,
+        "ridge_mae": 0.006974358538133324,
+        "persist_mae": 0.0072098081766258214,
+        "lift_pct": 3.2656851988909255,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 44,
+        "n_points": 1594,
+        "ridge_mae": 0.007156088801519285,
+        "persist_mae": 0.007490273516818247,
+        "lift_pct": 4.461582271309613,
+        "ridge_beats_persist": true
+      }
+    ]
+  },
+  "24h": {
+    "horizon": "24h",
+    "effective_sample_size": 264,
+    "total_observations": 76277,
+    "mean_paired_mae_difference": -0.00021215708958422777,
+    "paired_bootstrap_ci95": [
+      -0.0005545452476321124,
+      0.00015716489180400098
+    ],
+    "statistically_significant_advantage": false,
+    "non_overlapping_offsets_tested_count": 12,
+    "offsets_where_ridge_beats_persist": 5,
+    "offset_evaluations": [
+      {
+        "offset": 0,
+        "n_points": 265,
+        "ridge_mae": 0.005794272037156222,
+        "persist_mae": 0.005745619936176394,
+        "lift_pct": -0.8467685214174727,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 24,
+        "n_points": 265,
+        "ridge_mae": 0.00577387575488443,
+        "persist_mae": 0.005598045798175155,
+        "lift_pct": -3.140916724307468,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 48,
+        "n_points": 265,
+        "ridge_mae": 0.00533843631937192,
+        "persist_mae": 0.005601363661548842,
+        "lift_pct": 4.6939880726155065,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 72,
+        "n_points": 265,
+        "ridge_mae": 0.005433077488885925,
+        "persist_mae": 0.0057260804554688394,
+        "lift_pct": 5.1169900398984804,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 96,
+        "n_points": 265,
+        "ridge_mae": 0.005676800800892662,
+        "persist_mae": 0.0057321291968764594,
+        "lift_pct": 0.9652328843869523,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 120,
+        "n_points": 265,
+        "ridge_mae": 0.005589775905987265,
+        "persist_mae": 0.005686678526421349,
+        "lift_pct": 1.7040284585080099,
+        "ridge_beats_persist": true
+      },
+      {
+        "offset": 144,
+        "n_points": 265,
+        "ridge_mae": 0.005649660798609379,
+        "persist_mae": 0.00560165569898372,
+        "lift_pct": -0.8569805465617604,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 168,
+        "n_points": 265,
+        "ridge_mae": 0.0073728453897257,
+        "persist_mae": 0.005679212861895357,
+        "lift_pct": -29.821606779238017,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 192,
+        "n_points": 265,
+        "ridge_mae": 0.0075939453222558465,
+        "persist_mae": 0.005967324633161336,
+        "lift_pct": -27.25879333018234,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 216,
+        "n_points": 265,
+        "ridge_mae": 0.0066532320100903845,
+        "persist_mae": 0.005998488163810212,
+        "lift_pct": -10.915147757235594,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 240,
+        "n_points": 265,
+        "ridge_mae": 0.006241009000484256,
+        "persist_mae": 0.006224653428481519,
+        "lift_pct": -0.2627547411378951,
+        "ridge_beats_persist": false
+      },
+      {
+        "offset": 264,
+        "n_points": 264,
+        "ridge_mae": 0.006074082099267682,
+        "persist_mae": 0.006220495018560102,
+        "lift_pct": 2.353718134257272,
+        "ridge_beats_persist": true
+      }
+    ]
+  }
+}

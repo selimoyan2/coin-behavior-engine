@@ -1,0 +1,29 @@
+{
+  "1h": {
+    "horizon": "1h",
+    "n_observations": 76553,
+    "ridge_mae": 0.007068423415782467,
+    "ridge_rmse": 0.01065701050385226,
+    "ridge_r2": 0.399214473476007,
+    "ridge_pearson": 0.6407024242503984,
+    "ridge_spearman": 0.6978987689223118
+  },
+  "4h": {
+    "horizon": "4h",
+    "n_observations": 76517,
+    "ridge_mae": 0.006931364599693768,
+    "ridge_rmse": 0.00936826488731516,
+    "ridge_r2": 0.4096102026232934,
+    "ridge_pearson": 0.656273076018689,
+    "ridge_spearman": 0.6777464189474369
+  },
+  "24h": {
+    "horizon": "24h",
+    "n_observations": 76277,
+    "ridge_mae": 0.0060240394572911304,
+    "ridge_rmse": 0.007763370335676901,
+    "ridge_r2": 0.3734436895438208,
+    "ridge_pearson": 0.6806034437248052,
+    "ridge_spearman": 0.6425143805990564
+  }
+}

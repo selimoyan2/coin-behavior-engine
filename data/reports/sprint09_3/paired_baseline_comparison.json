@@ -1,0 +1,41 @@
+{
+  "1h": {
+    "horizon": "1h",
+    "n_observations": 76553,
+    "ridge_mae": 0.007068423415782467,
+    "persistence_mae": 0.007449412578708166,
+    "rolling_7d_mae": 0.009499350672410633,
+    "expanding_mean_mae": 0.01323789935077439,
+    "paired_mae_diff_persist_minus_ridge": 0.0003809891629257001,
+    "relative_mae_lift_pct": 5.114351754588519,
+    "ridge_beats_persistence": true,
+    "ridge_beats_rolling_7d": true,
+    "ridge_beats_expanding_mean": true
+  },
+  "4h": {
+    "horizon": "4h",
+    "n_observations": 76517,
+    "ridge_mae": 0.006931364599693768,
+    "persistence_mae": 0.00742488591809364,
+    "rolling_7d_mae": 0.008202089366916335,
+    "expanding_mean_mae": 0.012663642143930615,
+    "paired_mae_diff_persist_minus_ridge": 0.000493521318399873,
+    "relative_mae_lift_pct": 6.6468538889899165,
+    "ridge_beats_persistence": true,
+    "ridge_beats_rolling_7d": true,
+    "ridge_beats_expanding_mean": true
+  },
+  "24h": {
+    "horizon": "24h",
+    "n_observations": 76277,
+    "ridge_mae": 0.0060240394572911304,
+    "persistence_mae": 0.005811882367706902,
+    "rolling_7d_mae": 0.005744689717227388,
+    "expanding_mean_mae": 0.011412532732002857,
+    "paired_mae_diff_persist_minus_ridge": -0.00021215708958422777,
+    "relative_mae_lift_pct": -3.6504023337267837,
+    "ridge_beats_persistence": false,
+    "ridge_beats_rolling_7d": false,
+    "ridge_beats_expanding_mean": true
+  }
+}

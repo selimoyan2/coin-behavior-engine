@@ -1,0 +1,29 @@
+{
+  "audit_title": "CBE-0.8.0 Canonical Feature Parity Audit",
+  "evaluated_tier": "SPOT_ONLY_U0",
+  "features": [
+    {
+      "feature_name": "volatility_realized_24h",
+      "canonical_definition": "288-bar backward rolling standard deviation of 5m log returns (ddof=1, unscaled, mean ~0.001626)",
+      "worker_historical_defect": "Computed over 12 bars (1 hour) instead of 288 bars (24 hours), and multiplied by sqrt(288) (mean ~0.0141)",
+      "shadow_replay_implementation": "Validated canonical 288-bar backward window matching CBE-0.8.0 model bundle scaler training.",
+      "status": "RECONCILED_CANONICAL"
+    },
+    {
+      "feature_name": "volatility_compression_ratio",
+      "canonical_definition": "Ratio of short-term to long-term realized volatility",
+      "worker_historical_defect": "vol_realized / (vol_long + 1e-8) using 12-bar and ~50-bar windows",
+      "shadow_replay_implementation": "Validated 4h to 24h realized volatility ratio matching model bundle scaler training.",
+      "status": "RECONCILED_CANONICAL"
+    },
+    {
+      "feature_name": "volume_zscore_24h",
+      "canonical_definition": "288-bar rolling volume z-score: (volume - mean_288(vol)) / std_288(vol)",
+      "worker_historical_defect": "Named volume_zscore and computed over only 24 bars (2 hours) instead of 288 bars (24 hours)",
+      "shadow_replay_implementation": "Validated 288-bar volume standardization matching CBE-0.8.0 model bundle scaler training.",
+      "status": "RECONCILED_CANONICAL"
+    }
+  ],
+  "dimension_match": "3_FEATURES_EXACT",
+  "parity_verdict": "CANONICAL_PARITY_ENFORCED_DEFECTS_AVOIDED"
+}

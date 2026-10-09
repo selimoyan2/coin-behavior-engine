@@ -1,0 +1,34 @@
+{
+  "audit_timestamp": "2026-10-09T15:22:54.968813+00:00",
+  "prospective_predictions_count": 2,
+  "prospective_predictions_timestamps": [
+    "2026-09-24T13:10:00Z",
+    "2026-09-24T13:15:00Z"
+  ],
+  "prospective_audit_entries_count": 85,
+  "prospective_outcome_files_count": 0,
+  "live_era_evaluable": false,
+  "live_era_ineligibility_reason": "Live prospective records lack volume_zscore_24h feature values and local matured outcomes.",
+  "feature_recoverability_classification": {
+    "volatility_realized_24h": {
+      "prospective_status": "EXACT_RECORDED (Implicitly recorded as forecast_1h in live persistence fallback)",
+      "reconstructable": true,
+      "notes": "Worker computed 12-bar volatility scaled by sqrt(288) and logged as persistence forecast."
+    },
+    "volatility_compression_ratio": {
+      "prospective_status": "EXACT_RECORDED (Derivable from expansion_probabilities['4h'])",
+      "reconstructable": true,
+      "notes": "expansion_probabilities['4h'] = 1.0 - ratio / 2.0, allowing exact algebraic recovery."
+    },
+    "volume_zscore_24h": {
+      "prospective_status": "MISSING (Only input_data_hash recorded)",
+      "reconstructable": false,
+      "notes": "Live worker computed 24-bar volume zscore, but did not serialize the numeric value into predictions.jsonl."
+    },
+    "forward_realized_outcomes": {
+      "prospective_status": "MISSING_LOCAL_WORKSPACE",
+      "reconstructable": false,
+      "notes": "No matured outcome records exist locally in data/prospective/outcomes/."
+    }
+  }
+}

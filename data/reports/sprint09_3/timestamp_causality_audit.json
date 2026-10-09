@@ -1,0 +1,18 @@
+{
+  "audit_title": "CBE-0.8.0 Timestamp Causality Audit",
+  "forecast_cutoff_rule": "feature_available_at <= prediction_cutoff",
+  "outcome_window_rule": "outcome_start_time > prediction_cutoff",
+  "lookback_windows": {
+    "volatility_realized_24h": "[t - 287 bars, t] (Strictly backward-looking, length = 288 bars)",
+    "volatility_compression_ratio": "[t - 287 bars, t] (Strictly backward-looking, length = 288 bars)",
+    "volume_zscore_24h": "[t - 287 bars, t] (Strictly backward-looking, length = 288 bars)"
+  },
+  "forward_outcome_windows": {
+    "1h": "[t + 1 bar, t + 12 bars] (Strictly forward-looking, length = 12 bars)",
+    "4h": "[t + 1 bar, t + 48 bars] (Strictly forward-looking, length = 48 bars)",
+    "24h": "[t + 1 bar, t + 288 bars] (Strictly forward-looking, length = 288 bars)"
+  },
+  "boundary_isolation_verified": true,
+  "lookahead_detected": false,
+  "causality_verdict": "STRICTLY_CAUSAL"
+}

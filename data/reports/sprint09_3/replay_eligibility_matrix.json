@@ -1,0 +1,29 @@
+{
+  "total_holdout_timestamps": 76565,
+  "window_start": "2026-01-01T00:00:00+00:00",
+  "window_end": "2026-09-23T20:20:00+00:00",
+  "warmup_excluded_bars": 288,
+  "horizons": {
+    "1h": {
+      "eligible_timestamps": 76265,
+      "unmatured_outcome_bars": 12,
+      "reconstructed_replay_count": 76265,
+      "approximate_count": 0,
+      "not_evaluable_count": 300
+    },
+    "4h": {
+      "eligible_timestamps": 76229,
+      "unmatured_outcome_bars": 48,
+      "reconstructed_replay_count": 76229,
+      "approximate_count": 0,
+      "not_evaluable_count": 336
+    },
+    "24h": {
+      "eligible_timestamps": 75989,
+      "unmatured_outcome_bars": 288,
+      "reconstructed_replay_count": 75989,
+      "approximate_count": 0,
+      "not_evaluable_count": 576
+    }
+  }
+}

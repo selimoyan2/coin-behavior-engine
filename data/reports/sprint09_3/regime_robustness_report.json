@@ -1,0 +1,155 @@
+{
+  "1h": {
+    "horizon": "1h",
+    "regime_thresholds": {
+      "volatility_p25": 0.0011398816342129687,
+      "volatility_p75": 0.0021177759694746123,
+      "compression_cutoff": 0.8,
+      "expansion_cutoff": 1.2
+    },
+    "regimes": {
+      "LOW_VOLATILITY": {
+        "sample_count": 35859,
+        "fraction_of_total": 0.4684,
+        "ridge_mae": 0.005651745665418206,
+        "persistence_mae": 0.005398628452169498,
+        "ridge_lift_pct": -4.688546646454072,
+        "ridge_beats_persist": false
+      },
+      "NORMAL_VOLATILITY": {
+        "sample_count": 35331,
+        "fraction_of_total": 0.4615,
+        "ridge_mae": 0.007671363333372311,
+        "persistence_mae": 0.00847992973206623,
+        "ridge_lift_pct": 9.535060127165725,
+        "ridge_beats_persist": true
+      },
+      "HIGH_VOLATILITY": {
+        "sample_count": 5363,
+        "fraction_of_total": 0.0701,
+        "ridge_mae": 0.012568736155283724,
+        "persistence_mae": 0.014372751465200131,
+        "ridge_lift_pct": 12.551635045553805,
+        "ridge_beats_persist": true
+      },
+      "VOLATILITY_COMPRESSION": {
+        "sample_count": 38728,
+        "fraction_of_total": 0.5059,
+        "ridge_mae": 0.005886475507238472,
+        "persistence_mae": 0.0056177434693323045,
+        "ridge_lift_pct": -4.783629572500001,
+        "ridge_beats_persist": false
+      },
+      "VOLATILITY_EXPANSION": {
+        "sample_count": 15896,
+        "fraction_of_total": 0.2076,
+        "ridge_mae": 0.009988442344587648,
+        "persistence_mae": 0.012433660035876879,
+        "ridge_lift_pct": 19.66611347128394,
+        "ridge_beats_persist": true
+      }
+    }
+  },
+  "4h": {
+    "horizon": "4h",
+    "regime_thresholds": {
+      "volatility_p25": 0.0011398816342129687,
+      "volatility_p75": 0.0021177759694746123,
+      "compression_cutoff": 0.8,
+      "expansion_cutoff": 1.2
+    },
+    "regimes": {
+      "LOW_VOLATILITY": {
+        "sample_count": 35859,
+        "fraction_of_total": 0.4686,
+        "ridge_mae": 0.005663953182120073,
+        "persistence_mae": 0.00538751807116595,
+        "ridge_lift_pct": -5.131028932108948,
+        "ridge_beats_persist": false
+      },
+      "NORMAL_VOLATILITY": {
+        "sample_count": 35295,
+        "fraction_of_total": 0.4613,
+        "ridge_mae": 0.00752741063179369,
+        "persistence_mae": 0.008590736546906378,
+        "ridge_lift_pct": 12.377587291925547,
+        "ridge_beats_persist": true
+      },
+      "HIGH_VOLATILITY": {
+        "sample_count": 5363,
+        "fraction_of_total": 0.0701,
+        "ridge_mae": 0.01148304487562298,
+        "persistence_mae": 0.013374778828597939,
+        "ridge_lift_pct": 14.144039144259008,
+        "ridge_beats_persist": true
+      },
+      "VOLATILITY_COMPRESSION": {
+        "sample_count": 38719,
+        "fraction_of_total": 0.506,
+        "ridge_mae": 0.006493374878527489,
+        "persistence_mae": 0.0065561091378987515,
+        "ridge_lift_pct": 0.9568824748297104,
+        "ridge_beats_persist": true
+      },
+      "VOLATILITY_EXPANSION": {
+        "sample_count": 15884,
+        "fraction_of_total": 0.2076,
+        "ridge_mae": 0.008346072748405604,
+        "persistence_mae": 0.008820089819265095,
+        "ridge_lift_pct": 5.374288477472515,
+        "ridge_beats_persist": true
+      }
+    }
+  },
+  "24h": {
+    "horizon": "24h",
+    "regime_thresholds": {
+      "volatility_p25": 0.0011398816342129687,
+      "volatility_p75": 0.0021177759694746123,
+      "compression_cutoff": 0.8,
+      "expansion_cutoff": 1.2
+    },
+    "regimes": {
+      "LOW_VOLATILITY": {
+        "sample_count": 35755,
+        "fraction_of_total": 0.4688,
+        "ridge_mae": 0.005287303286269496,
+        "persistence_mae": 0.005053720375015011,
+        "ridge_lift_pct": -4.621999119881889,
+        "ridge_beats_persist": false
+      },
+      "NORMAL_VOLATILITY": {
+        "sample_count": 35159,
+        "fraction_of_total": 0.4609,
+        "ridge_mae": 0.006118229229846361,
+        "persistence_mae": 0.0055198773593029505,
+        "ridge_lift_pct": -10.839948636448876,
+        "ridge_beats_persist": false
+      },
+      "HIGH_VOLATILITY": {
+        "sample_count": 5363,
+        "fraction_of_total": 0.0703,
+        "ridge_mae": 0.010318349280451519,
+        "persistence_mae": 0.012780871019426671,
+        "ridge_lift_pct": 19.26724505107804,
+        "ridge_beats_persist": true
+      },
+      "VOLATILITY_COMPRESSION": {
+        "sample_count": 38591,
+        "fraction_of_total": 0.5059,
+        "ridge_mae": 0.005823737009398513,
+        "persistence_mae": 0.005975041661328568,
+        "ridge_lift_pct": 2.532277773213245,
+        "ridge_beats_persist": true
+      },
+      "VOLATILITY_EXPANSION": {
+        "sample_count": 15836,
+        "fraction_of_total": 0.2076,
+        "ridge_mae": 0.007144186090675619,
+        "persistence_mae": 0.005835528081934271,
+        "ridge_lift_pct": -22.425699788725442,
+        "ridge_beats_persist": false
+      }
+    }
+  }
+}

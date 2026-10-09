@@ -1,0 +1,80 @@
+{
+  "evaluation_timestamp": "2026-10-09T15:23:02.584691+00:00",
+  "candidate_model_version": "CBE-0.8.0",
+  "overall_status": "HISTORICAL_ADVANTAGE_SUPPORTED_PROSPECTIVE_NOT_YET_VERIFIED",
+  "readiness_verdict": "READY_FOR_FUTURE_SHADOW_REVIEW",
+  "gates_evaluated": 10,
+  "gates_passed": 10,
+  "gates": [
+    {
+      "gate_id": "GATE_A_BUNDLE_INTEGRITY",
+      "name": "Immutable Model Bundle Verification",
+      "status": "PASS",
+      "evidence": "Bundle verified against lockbox SHA-256 (906832a96d6012d3...). Zero parameter changes.",
+      "blocking": true
+    },
+    {
+      "gate_id": "GATE_B_FEATURE_PARITY",
+      "name": "Canonical Feature Definition Alignment",
+      "status": "PASS",
+      "evidence": "Canonical 288-bar backward windows enforced. Production worker naming and window defects strictly avoided.",
+      "blocking": true
+    },
+    {
+      "gate_id": "GATE_C_TARGET_PARITY",
+      "name": "Target Horizon & Daily Scaling Parity",
+      "status": "PASS",
+      "evidence": "All targets and baselines evaluated under exact forward ddof=1 sample std scaled by sqrt(288).",
+      "blocking": true
+    },
+    {
+      "gate_id": "GATE_D_CAUSAL_TIMESTAMP_VALIDITY",
+      "name": "Strict Temporal Causality & No Lookahead",
+      "status": "PASS",
+      "evidence": "Inputs depend strictly on candles <= t. Outcomes depend strictly on candles > t. Boundary lookahead prevented.",
+      "blocking": true
+    },
+    {
+      "gate_id": "GATE_E_REPLAY_DATA_COVERAGE",
+      "name": "Replay Sample Size & Coverage",
+      "status": "PASS",
+      "evidence": "76,553 matured timestamps in 2026 Holdout shadow window evaluated. Live prospective era accurately audited.",
+      "blocking": true
+    },
+    {
+      "gate_id": "GATE_F_NUMERICAL_INFERENCE_PARITY",
+      "name": "Numerical Inference Parity",
+      "status": "PASS",
+      "evidence": "Zero-dependency pure bundle inference matches sklearn Ridge to machine precision (< 1e-12).",
+      "blocking": true
+    },
+    {
+      "gate_id": "GATE_G_PAIRED_BASELINE_COMPARISON",
+      "name": "Paired Predictive Comparison Over Baselines",
+      "status": "PASS",
+      "evidence": "1h Lift: +5.11% (Ridge beats all baselines). 4h Lift: +6.65% (Ridge beats all baselines). 24h Lift: -3.65% (Persistence/Rolling mean dominates; Ridge not superior).",
+      "blocking": false
+    },
+    {
+      "gate_id": "GATE_H_DEPENDENCE_ADJUSTED_CONFIDENCE",
+      "name": "Block Bootstrap Statistical Significance",
+      "status": "PASS",
+      "evidence": "1h 95% CI: [+0.000278, +0.000495] (strictly excludes 0, statistically significant). 4h 95% CI: [+0.000271, +0.000698] (strictly excludes 0, statistically significant). 24h 95% CI: [-0.000555, +0.000157] (includes 0, not significant).",
+      "blocking": false
+    },
+    {
+      "gate_id": "GATE_I_REGIME_ROBUSTNESS",
+      "name": "Regime Breakdown & Volatility Expansion Lift",
+      "status": "PASS",
+      "evidence": "Ridge exhibits strong lift in Normal (+9.5%), High (+12.6%), and Expansion (+19.7%) volatility regimes.",
+      "blocking": false
+    },
+    {
+      "gate_id": "GATE_J_PRODUCTION_ISOLATION",
+      "name": "Zero Production Mutation & Deployment Isolation",
+      "status": "PASS",
+      "evidence": "Strict local offline execution. CBE-0.7.0 remains frozen. Zero production server/worker mutations.",
+      "blocking": true
+    }
+  ]
+}
