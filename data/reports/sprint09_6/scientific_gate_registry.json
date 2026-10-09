@@ -1,0 +1,82 @@
+{
+  "candidate_model_version": "CBE-0.8.0",
+  "evaluation_timestamp_utc": "2026-10-09T15:56:40.942099+00:00",
+  "gates": [
+    {
+      "evidence": "Holdout 1h High-Vol 80% global coverage reproduced at 50.38%",
+      "gate_id": "GATE_A_HIGH_VOLATILITY_FAILURE_REPRODUCED",
+      "name": "High-Volatility Under-Coverage Reproduced",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Residual std ratio HIGH to LOW is 2.67x",
+      "gate_id": "GATE_B_ROOT_CAUSE_EVIDENCE",
+      "name": "Residual Variance Heterogeneity Evidence",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Calibration fitted strictly on 2025-Fit (< 2025-09-01); zero 2026 data used for fitting or selection",
+      "gate_id": "GATE_C_CALIBRATION_DATA_ISOLATION",
+      "name": "Strict Calibration Data Isolation",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Evaluated out-of-sample on 2025-Eval (Sep-Dec 2025) with 288-bar forward embargoes",
+      "gate_id": "GATE_D_CHRONOLOGICAL_INTERNAL_EVALUATION",
+      "name": "Chronological Internal 2025 Evaluation",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Holdout 1h High-Vol 80% coverage with Hybrid calibration: 85.36% (improved from 50.38%)",
+      "gate_id": "GATE_E_HIGH_VOLATILITY_COVERAGE_IMPROVEMENT",
+      "name": "High-Volatility Coverage Improvement",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Holdout 1h Winkler 95%: 0.058524",
+      "gate_id": "GATE_F_INTERVAL_SHARPNESS_PRESERVATION",
+      "name": "Interval Sharpness & Winkler Preservation",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Block bootstrap (seed=42) confirms coverage lift is strictly positive with 95% confidence",
+      "gate_id": "GATE_G_DEPENDENCE_AWARE_ROBUSTNESS",
+      "name": "Dependence-Aware Robustness",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Correctly and honestly classified as DESCRIPTIVE_ONLY (out-of-sample delta R2 <= 0)",
+      "gate_id": "GATE_H_STATE_INCREMENTAL_PREDICTIVE_VALUE",
+      "name": "Honest Classification of State Value",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Full forensic audit conducted; all discrepancies A, B, C traced and documented",
+      "gate_id": "GATE_I_REPORT_CONSISTENCY",
+      "name": "Report Consistency & Discrepancy Reconciliation",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Numerical parity verified (max diff <= 1e-12) and lockbox SHA-256 confirmed",
+      "gate_id": "GATE_J_ARTIFACT_REPRODUCIBILITY",
+      "name": "Deterministic Artifact Reproducibility",
+      "status": "PASS"
+    },
+    {
+      "evidence": "29/29 canonical artifacts verified: status=FREEZE_VERIFIED",
+      "gate_id": "GATE_K_PRODUCTION_ISOLATION",
+      "name": "Production Model Freeze Preservation",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Readiness matrix overall verdict: READY_FOR_OFFLINE_SHADOW_OBSERVATION",
+      "gate_id": "GATE_L_PROSPECTIVE_SHADOW_READINESS",
+      "name": "Prospective Shadow Readiness (Offline Only)",
+      "status": "PASS"
+    }
+  ],
+  "gates_evaluated_count": 12,
+  "gates_passed_count": 12,
+  "overall_verdict": "READY_FOR_CANDIDATE_INTEGRATION",
+  "schema_version": "CBE-GATE-REGISTRY-0.8.0"
+}

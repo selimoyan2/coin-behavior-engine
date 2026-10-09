@@ -1,0 +1,231 @@
+{
+  "candidates_evaluated": {
+    "CANDIDATE_A_GLOBAL": {
+      "high_vol_cov_80": 45.75342465753425,
+      "high_vol_cov_95": 71.5068493150685,
+      "rank": 4,
+      "recommendation": "REJECT (Severe conditional under-coverage)",
+      "winkler_95": 0.07041615107440198
+    },
+    "CANDIDATE_B_STATE_CONDITIONED": {
+      "high_vol_cov_80": 73.08219178082192,
+      "high_vol_cov_95": 79.7945205479452,
+      "rank": 3,
+      "recommendation": "VIABLE (Sub-optimal tail safety vs Hybrid)",
+      "winkler_95": 0.06782164808233652
+    },
+    "CANDIDATE_C_VOLATILITY_NORMALIZED": {
+      "high_vol_cov_80": 72.94520547945206,
+      "high_vol_cov_95": 85.68493150684931,
+      "rank": 2,
+      "recommendation": "VIABLE_STRONG (Superior continuous Winkler sharpness, continuous volatility scaling)",
+      "winkler_95": 0.05692146601980305
+    },
+    "CANDIDATE_E_CONSERVATIVE_HYBRID": {
+      "high_vol_cov_80": 73.9041095890411,
+      "high_vol_cov_95": 80.27397260273973,
+      "rank": 1,
+      "recommendation": "SELECTED_DEFAULT (State-conditioned regime alignment with sample size fallbacks and tail safety factor 1.15x)",
+      "winkler_95": 0.0680355489569036
+    }
+  },
+  "evaluation_partition": "2025_EVAL (Sep-Dec 2025)",
+  "metrics_summary_2025_eval": {
+    "CANDIDATE_A_GLOBAL": {
+      "by_state": {
+        "HIGH_VOLATILITY": {
+          "coverage_80": 45.75342465753425,
+          "coverage_95": 71.5068493150685,
+          "mean_width_80": 0.018964,
+          "mean_width_95": 0.039860999999999994,
+          "relative_width_80": 0.4337971070078011,
+          "relative_width_95": 0.9118111412380276,
+          "sample_count": 1460,
+          "winkler_80": 0.11891036028290183,
+          "winkler_95": 0.31336790413577514
+        },
+        "LOW_VOLATILITY": {
+          "coverage_80": 86.7070730846181,
+          "coverage_95": 96.8165234788749,
+          "mean_width_80": 0.01828905999445169,
+          "mean_width_95": 0.035774188567181106,
+          "relative_width_80": 1.2115353732521064,
+          "relative_width_95": 2.3698153383322853,
+          "sample_count": 16994,
+          "winkler_80": 0.028090748389984658,
+          "winkler_95": 0.04771446518152178
+        },
+        "NORMAL_VOLATILITY": {
+          "coverage_80": 77.52068097350437,
+          "coverage_95": 95.38424649322623,
+          "mean_width_80": 0.018963868651534373,
+          "mean_width_95": 0.039443938142739374,
+          "relative_width_80": 0.8095989476508241,
+          "relative_width_95": 1.6839270192362477,
+          "sample_count": 16682,
+          "winkler_80": 0.03979494492105507,
+          "winkler_95": 0.07227941031154389
+        }
+      },
+      "marginal": {
+        "coverage_80": 80.64378415300546,
+        "coverage_95": 95.08481329690346,
+        "mean_width_80": 0.018637493806654384,
+        "mean_width_95": 0.03768634439343846,
+        "relative_width_80": 0.9208685779832569,
+        "relative_width_95": 1.8620620739566436,
+        "sample_count": 35136,
+        "winkler_80": 0.03742152138335259,
+        "winkler_95": 0.07041615107440198
+      }
+    },
+    "CANDIDATE_B_STATE_CONDITIONED": {
+      "by_state": {
+        "HIGH_VOLATILITY": {
+          "coverage_80": 73.08219178082192,
+          "coverage_95": 79.7945205479452,
+          "mean_width_80": 0.039775000000000005,
+          "mean_width_95": 0.07758341122052412,
+          "relative_width_80": 0.9098439111598444,
+          "relative_width_95": 1.7747025595475603,
+          "sample_count": 1460,
+          "winkler_80": 0.10428103708544711,
+          "winkler_95": 0.2607484648241245
+        },
+        "LOW_VOLATILITY": {
+          "coverage_80": 80.05178298222903,
+          "coverage_95": 94.44509826997763,
+          "mean_width_80": 0.01446383337119078,
+          "mean_width_95": 0.027323812371432842,
+          "relative_width_80": 0.9581381310651254,
+          "relative_width_95": 1.8100309819168958,
+          "sample_count": 16994,
+          "winkler_80": 0.027696972828593503,
+          "winkler_95": 0.04790486519784212
+        },
+        "NORMAL_VOLATILITY": {
+          "coverage_80": 78.25800263757343,
+          "coverage_95": 94.25728329936459,
+          "mean_width_80": 0.020232982232990308,
+          "mean_width_95": 0.039048207638609,
+          "relative_width_80": 0.8637795074762561,
+          "relative_width_95": 1.6670326288782256,
+          "sample_count": 16682,
+          "winkler_80": 0.03953686468980376,
+          "winkler_95": 0.07122607536300354
+        }
+      },
+      "marginal": {
+        "coverage_80": 78.91051912568307,
+        "coverage_95": 93.74715391621129,
+        "mean_width_80": 0.018254681634812173,
+        "mean_width_95": 0.03497879233974756,
+        "relative_width_80": 0.9019540337867001,
+        "relative_width_95": 1.7282833784215297,
+        "sample_count": 35136,
+        "winkler_80": 0.03650064455684134,
+        "winkler_95": 0.06782164808233652
+      }
+    },
+    "CANDIDATE_C_VOLATILITY_NORMALIZED": {
+      "by_state": {
+        "HIGH_VOLATILITY": {
+          "coverage_80": 72.94520547945206,
+          "coverage_95": 85.68493150684931,
+          "mean_width_80": 0.0411713021767082,
+          "mean_width_95": 0.07486405867482186,
+          "relative_width_80": 0.941784,
+          "relative_width_95": 1.7124979999999999,
+          "sample_count": 1460,
+          "winkler_80": 0.07694764514859152,
+          "winkler_95": 0.13168939593146506
+        },
+        "LOW_VOLATILITY": {
+          "coverage_80": 75.50311874779334,
+          "coverage_95": 92.51500529598682,
+          "mean_width_80": 0.014216955161267508,
+          "mean_width_95": 0.025851476856434474,
+          "relative_width_80": 0.941784,
+          "relative_width_95": 1.7124979999999999,
+          "sample_count": 16994,
+          "winkler_80": 0.02465738813946277,
+          "winkler_95": 0.04109469994576173
+        },
+        "NORMAL_VOLATILITY": {
+          "coverage_80": 80.97949886104784,
+          "coverage_95": 95.33029612756265,
+          "mean_width_80": 0.02206014240253128,
+          "mean_width_95": 0.04011317854630151,
+          "relative_width_80": 0.941784,
+          "relative_width_95": 1.7124980000000003,
+          "sample_count": 16682,
+          "winkler_80": 0.03778973518116882,
+          "winkler_95": 0.06650058632859286
+        }
+      },
+      "marginal": {
+        "coverage_80": 77.9969262295082,
+        "coverage_95": 93.56785063752277,
+        "mean_width_80": 0.019060801820002297,
+        "mean_width_95": 0.03465931147179215,
+        "relative_width_80": 0.941784,
+        "relative_width_95": 1.7124980000000003,
+        "sample_count": 35136,
+        "winkler_80": 0.03306522023711385,
+        "winkler_95": 0.05692146601980305
+      }
+    },
+    "CANDIDATE_E_CONSERVATIVE_HYBRID": {
+      "by_state": {
+        "HIGH_VOLATILITY": {
+          "coverage_80": 73.9041095890411,
+          "coverage_95": 80.27397260273973,
+          "mean_width_80": 0.042843,
+          "mean_width_95": 0.0854364112205241,
+          "relative_width_80": 0.9800237004606213,
+          "relative_width_95": 1.95433811540773,
+          "sample_count": 1460,
+          "winkler_80": 0.10616177334011802,
+          "winkler_95": 0.26589615052877447
+        },
+        "LOW_VOLATILITY": {
+          "coverage_80": 80.05178298222903,
+          "coverage_95": 94.44509826997763,
+          "mean_width_80": 0.01446383337119078,
+          "mean_width_95": 0.027323812371432842,
+          "relative_width_80": 0.9581381310651254,
+          "relative_width_95": 1.8100309819168958,
+          "sample_count": 16994,
+          "winkler_80": 0.027696972828593503,
+          "winkler_95": 0.04790486519784212
+        },
+        "NORMAL_VOLATILITY": {
+          "coverage_80": 78.25800263757343,
+          "coverage_95": 94.25728329936459,
+          "mean_width_80": 0.020232982232990308,
+          "mean_width_95": 0.039048207638609,
+          "relative_width_80": 0.8637795074762561,
+          "relative_width_95": 1.6670326288782256,
+          "sample_count": 16682,
+          "winkler_80": 0.03953686468980376,
+          "winkler_95": 0.07122607536300354
+        }
+      },
+      "marginal": {
+        "coverage_80": 78.94467213114754,
+        "coverage_95": 93.76707650273224,
+        "mean_width_80": 0.01838216569674295,
+        "mean_width_95": 0.03530510666124119,
+        "relative_width_80": 0.9082529529463035,
+        "relative_width_95": 1.7444063941191725,
+        "sample_count": 35136,
+        "winkler_80": 0.036578794458134015,
+        "winkler_95": 0.0680355489569036
+      }
+    }
+  },
+  "runtime_method_flag": "HYBRID",
+  "sample_count": 35136,
+  "selected_candidate": "CANDIDATE_E_CONSERVATIVE_HYBRID",
+  "selection_rationale": "Candidate E is selected as the default operational calibration layer because it explicitly conditions on discrete market regimes with safety-backed tail expansion (1.15x) and minimum sample fallback guarantees. Candidate C is retained as a fully supported alternative method demonstrating outstanding continuous sharpness and higher 95% coverage."
+}

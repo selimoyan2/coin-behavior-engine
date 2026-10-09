@@ -1,0 +1,54 @@
+{
+  "calibration_layer": {
+    "default_method": "HYBRID",
+    "supported_methods": [
+      "HYBRID",
+      "VOL_NORMALIZED",
+      "STATE_CONDITIONED",
+      "GLOBAL"
+    ],
+    "training_partition": "2025_FIT (Jan-Aug 2025)"
+  },
+  "candidate_model_version": "CBE-0.8.0",
+  "component_lockbox_hashes": {
+    "cbe_interval_calibration_v080_095.json": "6821136ad71411b8778c481055d4204640d19be0acaedaf8db3cd18ee3b4bf50",
+    "cbe_model_bundle_v080.json": "7755ddcb369c29825f9205f09e805b2e518526726b4bd5d948787d24c9419ad0",
+    "cbe_state_thresholds_v080.json": "3979ab8e37377f1d5cb2623c63c20081078ae49c5bcbedcbb860affe3dfd95d9"
+  },
+  "deployment_authorization": "PROHIBITED_LOCAL_OFFLINE_SHADOW_ONLY",
+  "execution_tier": "SPOT_ONLY_U0",
+  "feature_validation_policy": "FAIL_CLOSED_ON_MISSING_OR_NON_FINITE",
+  "horizons": [
+    "1h",
+    "4h",
+    "24h"
+  ],
+  "interval_monotonicity_invariant": "0.0 <= lower95 <= lower80 <= point_forecast <= upper80 <= upper95",
+  "market_state_point_forecast_role": "DESCRIPTIVE_ONLY",
+  "market_state_taxonomy": {
+    "primary_states": [
+      "LOW_VOLATILITY",
+      "NORMAL_VOLATILITY",
+      "HIGH_VOLATILITY",
+      "UNKNOWN_INSUFFICIENT_DATA"
+    ],
+    "secondary_flags": [
+      "VOLATILITY_COMPRESSION",
+      "VOLATILITY_EXPANSION"
+    ],
+    "single_row_percentile_computation": "PROHIBITED"
+  },
+  "ordered_features": [
+    "volatility_realized_24h",
+    "volatility_compression_ratio",
+    "volume_zscore_24h"
+  ],
+  "pipeline_id": "CBE-0.8.0-SPOT_ONLY_U0-SHADOW-CANDIDATE",
+  "prediction_interval_nominal_coverages": [
+    0.8,
+    0.95
+  ],
+  "target_scaling_formula": "sigma_5m * sqrt(288)",
+  "target_units": "Daily-scaled standard deviation (sigma_5m * sqrt(288))",
+  "target_variable": "Forward realized volatility of 5m log returns"
+}

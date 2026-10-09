@@ -1,0 +1,12 @@
+{
+  "max_absolute_difference": 0.0,
+  "mean_absolute_difference": 0.0,
+  "status": "PASS_NUMERICAL_PARITY_VERIFIED",
+  "test_sample_count": 100,
+  "tested_horizons": [
+    "1h",
+    "4h",
+    "24h"
+  ],
+  "tolerance": 1e-12
+}

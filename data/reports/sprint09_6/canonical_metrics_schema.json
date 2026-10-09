@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "candidate_model_version": {
+      "const": "CBE-0.8.0",
+      "type": "string"
+    },
+    "horizons": {
+      "additionalProperties": {
+        "properties": {
+          "horizon": {
+            "type": "string"
+          },
+          "intervals_by_state": {
+            "type": "object"
+          },
+          "marginal_intervals": {
+            "required": [
+              "coverage_80",
+              "coverage_95",
+              "winkler_80",
+              "winkler_95",
+              "mean_width_80",
+              "mean_width_95"
+            ],
+            "type": "object"
+          },
+          "non_overlapping": {
+            "type": "object"
+          },
+          "paired_block_bootstrap": {
+            "type": "object"
+          },
+          "point_metrics": {
+            "required": [
+              "mae",
+              "rmse",
+              "pearson_r",
+              "spearman_rho",
+              "mae_se",
+              "rmse_se"
+            ],
+            "type": "object"
+          },
+          "sample_count": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "horizon",
+          "sample_count",
+          "point_metrics",
+          "marginal_intervals",
+          "intervals_by_state"
+        ],
+        "type": "object"
+      },
+      "type": "object"
+    },
+    "market_state_distribution": {
+      "properties": {
+        "counts": {
+          "type": "object"
+        },
+        "percentages": {
+          "type": "object"
+        },
+        "total_samples": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "counts",
+        "percentages",
+        "total_samples"
+      ],
+      "type": "object"
+    },
+    "sample_accounting": {
+      "properties": {
+        "eligible_samples": {
+          "type": "integer"
+        },
+        "excluded_reasons": {
+          "type": "object"
+        },
+        "excluded_samples": {
+          "type": "integer"
+        },
+        "total_rows": {
+          "type": "integer"
+        },
+        "valid_features": {
+          "type": "integer"
+        },
+        "valid_targets": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "total_rows",
+        "eligible_samples",
+        "excluded_samples"
+      ],
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "CBE-METRICS-SCHEMA-0.8.0",
+      "type": "string"
+    },
+    "target_units": {
+      "const": "Daily-scaled standard deviation (sigma_5m * sqrt(288))",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "candidate_model_version",
+    "target_units",
+    "sample_accounting",
+    "market_state_distribution",
+    "horizons"
+  ],
+  "title": "CBE-0.8.0 Canonical Scientific Metrics Schema",
+  "type": "object"
+}

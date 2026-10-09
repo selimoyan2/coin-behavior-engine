@@ -1,0 +1,262 @@
+{
+  "dataset_rows": 76565,
+  "execution_duration_seconds": 19.91,
+  "horizons": {
+    "1h": {
+      "intervals_by_state": {
+        "HIGH_VOLATILITY": {
+          "coverage_80": 85.36267014730561,
+          "coverage_95": 97.25899683013239,
+          "mean_width_80": 0.042843000000000006,
+          "mean_width_95": 0.08543760568130775,
+          "relative_width_80": 1.120189271014621,
+          "relative_width_95": 2.233883930289166,
+          "sample_count": 5363,
+          "winkler_80": 0.061407430728329285,
+          "winkler_95": 0.09917172489146515
+        },
+        "LOW_VOLATILITY": {
+          "coverage_80": 77.91070582001728,
+          "coverage_95": 93.76167768203241,
+          "mean_width_80": 0.014472864033295898,
+          "mean_width_95": 0.027282905185650796,
+          "relative_width_80": 0.9626517982817885,
+          "relative_width_95": 1.8147021680640496,
+          "sample_count": 35859,
+          "winkler_80": 0.028603148428532364,
+          "winkler_95": 0.047404557609554
+        },
+        "NORMAL_VOLATILITY": {
+          "coverage_80": 77.23811949845745,
+          "coverage_95": 93.74203956865075,
+          "mean_width_80": 0.02023258662068702,
+          "mean_width_95": 0.03904665065859159,
+          "relative_width_80": 0.8873949433062694,
+          "relative_width_95": 1.712573928241708,
+          "sample_count": 35331,
+          "winkler_80": 0.038032116039707846,
+          "winkler_95": 0.06363934613630921
+        }
+      },
+      "marginal_intervals": {
+        "coverage_80": 78.12234660953848,
+        "coverage_95": 93.99762256214649,
+        "mean_width_80": 0.01911861009059672,
+        "mean_width_95": 0.03678623686517583,
+        "relative_width_80": 0.9443848907347108,
+        "relative_width_95": 1.8170968557775513,
+        "sample_count": 76553,
+        "winkler_80": 0.035252975615504153,
+        "winkler_95": 0.058523894951940034
+      },
+      "non_overlapping": {
+        "intervals": {
+          "coverage_80": 77.5705329153605,
+          "coverage_95": 93.76175548589342,
+          "mean_width_80": 0.01912848063317077,
+          "mean_width_95": 0.036858088631377704,
+          "relative_width_80": 0.9298939673734051,
+          "relative_width_95": 1.7917844560951457,
+          "sample_count": 6380,
+          "winkler_80": 0.035457639743641134,
+          "winkler_95": 0.05895800501456242
+        },
+        "point": {
+          "mae": 0.00716809792711595,
+          "mae_se": 0.0001003365417336191,
+          "pearson_r": 0.6376313681809338,
+          "rmse": 0.010751823581336067,
+          "rmse_se": 0.0003485039019703857,
+          "sample_count": 6380,
+          "spearman_rho": 0.6959938283247706
+        },
+        "sample_count": 6381,
+        "step": 12
+      },
+      "point_metrics": {
+        "mae": 0.007068423415782467,
+        "mae_se": 2.8825836041164378e-05,
+        "pearson_r": 0.6407024242503992,
+        "rmse": 0.01065701050385226,
+        "rmse_se": 9.585877762473056e-05,
+        "sample_count": 76553,
+        "spearman_rho": 0.6978987689223117
+      }
+    },
+    "24h": {
+      "intervals_by_state": {
+        "HIGH_VOLATILITY": {
+          "coverage_80": 88.58847659891852,
+          "coverage_95": 94.40611597986202,
+          "mean_width_80": 0.036173000000000004,
+          "mean_width_95": 0.04878700000000002,
+          "relative_width_80": 0.8989174699515339,
+          "relative_width_95": 1.2123817932304617,
+          "sample_count": 5363,
+          "winkler_80": 0.04848103230210711,
+          "winkler_95": 0.07743178570353816
+        },
+        "LOW_VOLATILITY": {
+          "coverage_80": 79.31198433785485,
+          "coverage_95": 95.35729268633759,
+          "mean_width_80": 0.014412919739245779,
+          "mean_width_95": 0.025176820200343772,
+          "relative_width_80": 0.7404204907821177,
+          "relative_width_95": 1.293383568792923,
+          "sample_count": 35755,
+          "winkler_80": 0.020277586371953576,
+          "winkler_95": 0.028841471655508953
+        },
+        "NORMAL_VOLATILITY": {
+          "coverage_80": 86.40177479450496,
+          "coverage_95": 97.70755709775591,
+          "mean_width_80": 0.020755999999999997,
+          "mean_width_95": 0.04088599999999999,
+          "relative_width_80": 0.777443475484487,
+          "relative_width_95": 1.5314392917064334,
+          "sample_count": 35159,
+          "winkler_80": 0.02646874636979049,
+          "winkler_95": 0.04274706969582554
+        }
+      },
+      "marginal_intervals": {
+        "coverage_80": 83.23216697038426,
+        "coverage_95": 96.37374306802838,
+        "mean_width_80": 0.018866630154263184,
+        "mean_width_95": 0.034077805383841676,
+        "relative_width_80": 0.7776851955957754,
+        "relative_width_95": 1.404692015941131,
+        "sample_count": 76277,
+        "winkler_80": 0.025114300910901905,
+        "winkler_95": 0.03866745820111341
+      },
+      "non_overlapping": {
+        "intervals": {
+          "coverage_80": 84.52830188679246,
+          "coverage_95": 97.35849056603773,
+          "mean_width_80": 0.019057550943396225,
+          "mean_width_95": 0.03427581693395613,
+          "relative_width_80": 0.7895930360470675,
+          "relative_width_95": 1.4201167000030528,
+          "sample_count": 265,
+          "winkler_80": 0.02495046855609233,
+          "winkler_95": 0.03848194658573186
+        },
+        "point": {
+          "mae": 0.005794272037156222,
+          "mae_se": 0.0002863044001402216,
+          "pearson_r": 0.7166454690737405,
+          "rmse": 0.007430593768941932,
+          "rmse_se": 0.00041853994336146284,
+          "sample_count": 265,
+          "spearman_rho": 0.6672680844478264
+        },
+        "sample_count": 266,
+        "step": 288
+      },
+      "point_metrics": {
+        "mae": 0.0060240394572911304,
+        "mae_se": 1.7731214780146342e-05,
+        "pearson_r": 0.6806034437248061,
+        "rmse": 0.007763370335676901,
+        "rmse_se": 2.7625423408047525e-05,
+        "sample_count": 76277,
+        "spearman_rho": 0.6425143805990563
+      }
+    },
+    "4h": {
+      "intervals_by_state": {
+        "HIGH_VOLATILITY": {
+          "coverage_80": 89.16651128099944,
+          "coverage_95": 96.83013238858848,
+          "mean_width_80": 0.04342499999999999,
+          "mean_width_95": 0.06772299999999999,
+          "relative_width_80": 1.0961253337900714,
+          "relative_width_95": 1.7094506846347728,
+          "sample_count": 5363,
+          "winkler_80": 0.054053480426876375,
+          "winkler_95": 0.08139969358022016
+        },
+        "LOW_VOLATILITY": {
+          "coverage_80": 76.94860425555649,
+          "coverage_95": 93.61387657212973,
+          "mean_width_80": 0.014301396799781253,
+          "mean_width_95": 0.02647869719431575,
+          "relative_width_80": 0.8645746245803816,
+          "relative_width_95": 1.6007394247325057,
+          "sample_count": 35859,
+          "winkler_80": 0.02578427392172963,
+          "winkler_95": 0.0403999572107707
+        },
+        "NORMAL_VOLATILITY": {
+          "coverage_80": 78.74769797421732,
+          "coverage_95": 95.07862303442414,
+          "mean_width_80": 0.020971,
+          "mean_width_95": 0.039054937700356236,
+          "relative_width_80": 0.8585161125108974,
+          "relative_width_95": 1.5988409369541332,
+          "sample_count": 35295,
+          "winkler_80": 0.03349088970687985,
+          "winkler_95": 0.051309989396277775
+        }
+      },
+      "marginal_intervals": {
+        "coverage_80": 78.63481317877074,
+        "coverage_95": 94.51494439144243,
+        "mean_width_80": 0.01941912918493088,
+        "mean_width_95": 0.03517051214534079,
+        "relative_width_80": 0.8909408470891185,
+        "relative_width_95": 1.6136071594623147,
+        "sample_count": 76517,
+        "winkler_80": 0.03132046533832958,
+        "winkler_95": 0.04830605875862059
+      },
+      "non_overlapping": {
+        "intervals": {
+          "coverage_80": 77.4921630094044,
+          "coverage_95": 94.1692789968652,
+          "mean_width_80": 0.019432461054655046,
+          "mean_width_95": 0.03520143659613963,
+          "relative_width_80": 0.8891976932492901,
+          "relative_width_95": 1.6107602702669688,
+          "sample_count": 1595,
+          "winkler_80": 0.03204623627986971,
+          "winkler_95": 0.04963029209817077
+        },
+        "point": {
+          "mae": 0.007125985801439247,
+          "mae_se": 0.00015960517908630574,
+          "pearson_r": 0.6419397492269256,
+          "rmse": 0.009559546635120385,
+          "rmse_se": 0.0003358645445349493,
+          "sample_count": 1595,
+          "spearman_rho": 0.6619555431531832
+        },
+        "sample_count": 1596,
+        "step": 48
+      },
+      "point_metrics": {
+        "mae": 0.006931364599693768,
+        "mae_se": 2.2784086279743113e-05,
+        "pearson_r": 0.6562730760186887,
+        "rmse": 0.00936826488731516,
+        "rmse_se": 4.971110327824349e-05,
+        "sample_count": 76517,
+        "spearman_rho": 0.677746418947437
+      }
+    }
+  },
+  "state_distribution": {
+    "counts": {
+      "HIGH_VOLATILITY": 5363,
+      "LOW_VOLATILITY": 35859,
+      "NORMAL_VOLATILITY": 35343
+    },
+    "percentages": {
+      "HIGH_VOLATILITY": 7.0045,
+      "LOW_VOLATILITY": 46.8347,
+      "NORMAL_VOLATILITY": 46.1608
+    },
+    "total_samples": 76565
+  }
+}

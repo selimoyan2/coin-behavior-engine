@@ -1,0 +1,38 @@
+{
+  "candidate_model_version": "CBE-0.8.0",
+  "dimensions": {
+    "DIM_1_NUMERICAL_STABILITY": {
+      "evidence": "Ridge numerical parity verified with max diff 0.00e+00 <= 1e-12",
+      "name": "Numerical Precision and Weight Integrity",
+      "status": "READY"
+    },
+    "DIM_2_SCHEMA_AND_FEATURE_VALIDATION": {
+      "evidence": "Engine raises FeatureValidationError on missing/non-finite inputs; zero silent nan fallbacks",
+      "name": "Fail-Closed Feature Schema Enforcement",
+      "status": "READY"
+    },
+    "DIM_3_MARKET_STATE_CLASSIFICATION": {
+      "evidence": "3 distinct states observed ({'HIGH_VOLATILITY': 7.0045, 'LOW_VOLATILITY': 46.8347, 'NORMAL_VOLATILITY': 46.1608}), zero single-row collapse",
+      "name": "Causal Multi-Regime Classification",
+      "status": "READY"
+    },
+    "DIM_4_INTERVAL_CALIBRATION_REPAIR": {
+      "evidence": "Hybrid calibration achieves 85.36% high-vol 80% coverage on Holdout",
+      "name": "High-Volatility Interval Calibration Layer",
+      "status": "READY"
+    },
+    "DIM_5_EXECUTION_EFFICIENCY": {
+      "evidence": "Replay throughput 3845.6 bars/sec (< 0.5ms per bar)",
+      "name": "Inference Latency & Throughput",
+      "status": "READY"
+    },
+    "DIM_6_SAFETY_AND_ISOLATION": {
+      "evidence": "CBE-0.7.0 freeze 29/29 verified; candidate runs in isolated offline shadow mode with deployment prohibited",
+      "name": "Production Freeze & Safe Isolation",
+      "status": "READY"
+    }
+  },
+  "evaluated_at_utc": "2026-10-09T15:56:40.942099+00:00",
+  "overall_verdict": "READY_FOR_OFFLINE_SHADOW_OBSERVATION",
+  "schema_version": "CBE-READINESS-MATRIX-0.8.0"
+}

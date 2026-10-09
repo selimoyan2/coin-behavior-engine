@@ -1,0 +1,65 @@
+{
+  "candidate_model_version": "CBE-0.8.0",
+  "claims": [
+    {
+      "claim_id": "CLAIM_01",
+      "evidence": "3 distinct states observed across all partitions; max state prevalence < 52% in 2025 and < 47% in 2026; zero bars assigned to DELEVERAGING_STRESS.",
+      "statement": "Classifier no longer mechanically collapses.",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim_id": "CLAIM_02",
+      "evidence": "Out-of-sample evaluation on 2026 Holdout shows incremental R2 is negative (-0.00023) and Delta MAE < 0.00005. Market-states classified as DESCRIPTIVE_ONLY.",
+      "statement": "Market-state labels have incremental predictive value.",
+      "status": "REFUTED"
+    },
+    {
+      "claim_id": "CLAIM_03",
+      "evidence": "Marginally across entire dataset, global intervals achieve 78.41% on 80% and 94.84% on 95%. Limitation: severe conditional under-coverage in high-volatility regimes.",
+      "statement": "Global intervals achieve approximate marginal coverage.",
+      "status": "SUPPORTED_WITH_LIMITATIONS"
+    },
+    {
+      "claim_id": "CLAIM_04",
+      "evidence": "Global intervals cover only 50.38% (1h 80%) and 82.30% (1h 95%) during HIGH_VOLATILITY episodes in 2026 Holdout.",
+      "statement": "High-volatility conditional coverage is reliable under global intervals.",
+      "status": "REFUTED"
+    },
+    {
+      "claim_id": "CLAIM_05",
+      "evidence": "Internal chronological evaluation within 2025 confirms high-volatility 80% coverage improves from 45.75% to 73.08%, with lower Winkler score and narrower overall mean width.",
+      "statement": "State-conditioned calibration improves high-volatility risk estimation.",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim_id": "CLAIM_06",
+      "evidence": "Paired block bootstrap (block size = 288 bars, 500 iterations, seed=42) across non-overlapping strides confirms coverage improvement for high volatility is strictly positive with 95% confidence.",
+      "statement": "Improvements survive dependence-aware evaluation.",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim_id": "CLAIM_07",
+      "evidence": "Technical implementation, serialization, and calibration are mathematically valid, but prospective shadow observation must remain strictly offline/passive with deployment prohibited.",
+      "statement": "Candidate is ready for prospective shadow observation.",
+      "status": "SUPPORTED_WITH_LIMITATIONS"
+    },
+    {
+      "claim_id": "CLAIM_08",
+      "evidence": "Max absolute difference between CandidateInferencePipelineV080 and CandidateInferenceEngineV080 is 0.00e+00 <= 1e-12 across test rows.",
+      "statement": "Candidate inference pipeline achieves bit-for-bit numerical parity with standalone Ridge.",
+      "status": "SUPPORTED"
+    }
+  ],
+  "schema_version": "CBE-CLAIM-REGISTRY-0.8.0",
+  "summary": {
+    "integrity_verified": true,
+    "status_counts": {
+      "NOT_EVALUABLE": 0,
+      "NOT_VERIFIED": 0,
+      "REFUTED": 2,
+      "SUPPORTED": 4,
+      "SUPPORTED_WITH_LIMITATIONS": 2
+    },
+    "total_claims": 8
+  }
+}

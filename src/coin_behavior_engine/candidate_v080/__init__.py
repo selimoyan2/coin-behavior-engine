@@ -37,26 +37,51 @@ from coin_behavior_engine.candidate_v080.trainer import (
 from coin_behavior_engine.candidate_v080.replay import (
     ShadowReplayEngineV080,
 )
+from coin_behavior_engine.candidate_v080.metrics import (
+    CanonicalMetricsEngine,
+    PointMetrics,
+    IntervalMetrics,
+    StateDistributionMetrics,
+    HorizonMetrics,
+)
+from coin_behavior_engine.candidate_v080.inference_pipeline import (
+    CandidateInferencePipelineV080,
+    CandidatePredictionResult,
+    HorizonForecastResult,
+    TARGET_UNITS,
+    MARKET_STATE_POINT_FORECAST_ROLE,
+)
 
 __all__ = [
     "BundleIntegrityError",
     "CalibrationError",
     "CalibrationV095Error",
     "CandidateInferenceEngineV080",
+    "CandidateInferencePipelineV080",
+    "CandidatePredictionResult",
     "CandidateTrainerV080",
+    "CanonicalMetricsEngine",
     "ClassificationResult",
     "ClassifierError",
     "FeatureValidationError",
     "HorizonCalibrationParameters",
     "HorizonCalibrationV095",
+    "HorizonForecastResult",
+    "HorizonMetrics",
     "IntervalCalibrationV080",
     "IntervalCalibrationV095",
     "IntervalCalibratorV080",
     "IntervalCalibratorV095",
+    "IntervalMetrics",
+    "MARKET_STATE_POINT_FORECAST_ROLE",
     "MarketStateClassifierV080",
     "ModelBundleV080",
+    "PointMetrics",
     "RidgeModelParameters",
     "ScalerParameters",
     "ShadowReplayEngineV080",
+    "StateDistributionMetrics",
     "StateThresholdsV080",
+    "TARGET_UNITS",
 ]
+

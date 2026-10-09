@@ -1,0 +1,41 @@
+{
+  "audit_verdict": "UNITS_CONSISTENT_ACROSS_ALL_COMPONENTS",
+  "features_audited": {
+    "volatility_compression_ratio": {
+      "runtime_scaling": "Dimensionless ratio",
+      "source_units": "Dimensionless ratio (realized vol 24h / realized vol 168h)",
+      "status": "VALID"
+    },
+    "volatility_realized_24h": {
+      "runtime_scaling": "Unscaled raw feature input into trained Ridge standardizer",
+      "source_units": "5-minute return sample standard deviation (unscaled)",
+      "status": "VALID"
+    },
+    "volume_zscore_24h": {
+      "runtime_scaling": "Z-score dimensionless",
+      "source_units": "Standard deviations relative to 30-day mean/std",
+      "status": "VALID"
+    }
+  },
+  "intervals": {
+    "bounds_units": "Daily-scaled standard deviation (sigma_5m * sqrt(288))",
+    "status": "VALID",
+    "width_units": "Daily-scaled standard deviation (sigma_5m * sqrt(288))"
+  },
+  "point_forecasts": {
+    "1h": {
+      "status": "VALID",
+      "units": "Daily-scaled standard deviation (sigma_5m * sqrt(288))"
+    },
+    "24h": {
+      "status": "VALID",
+      "units": "Daily-scaled standard deviation (sigma_5m * sqrt(288))"
+    },
+    "4h": {
+      "status": "VALID",
+      "units": "Daily-scaled standard deviation (sigma_5m * sqrt(288))"
+    }
+  },
+  "scaling_multiplier": 16.97056274847714,
+  "target_unit": "Daily-scaled standard deviation (sigma_5m * sqrt(288))"
+}
