@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "forecast_horizon": {
+      "enum": [
+        "1h",
+        "4h",
+        "24h"
+      ],
+      "type": "string"
+    },
+    "maturity_timestamp_utc": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "observation_timestamp_utc": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "outcome_computation_timestamp_utc": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "outcome_id": {
+      "type": "string"
+    },
+    "prediction_record_hash": {
+      "type": "string"
+    },
+    "realized_volatility": {
+      "minimum": 0.0,
+      "type": "number"
+    },
+    "source_bar_count": {
+      "enum": [
+        12,
+        48,
+        288
+      ],
+      "type": "integer"
+    },
+    "status": {
+      "enum": [
+        "PENDING",
+        "MATURED",
+        "SOURCE_INCOMPLETE",
+        "INVALIDATED"
+      ],
+      "type": "string"
+    },
+    "target_units": {
+      "const": "Daily-scaled standard deviation (sigma_5m * sqrt(288))",
+      "type": "string"
+    }
+  },
+  "required": [
+    "outcome_id",
+    "prediction_record_hash",
+    "observation_timestamp_utc",
+    "maturity_timestamp_utc",
+    "outcome_computation_timestamp_utc",
+    "forecast_horizon",
+    "target_units",
+    "realized_volatility",
+    "source_bar_count",
+    "status"
+  ],
+  "title": "CBE-0.8.0 Prospective Outcome Record Schema",
+  "type": "object"
+}

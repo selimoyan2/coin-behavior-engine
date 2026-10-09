@@ -1,0 +1,19 @@
+{
+  "audit_timestamp_utc": "2026-10-09T16:04:39.929553+00:00",
+  "feed_parity_status": "NOT_VERIFIED",
+  "live_feed_findings": [
+    "Only 2 live-era prediction records exist locally (Sprint 08 prospective test)",
+    "Existing live records do not contain volume_zscore_24h required by CBE-0.8.0 SPOT_ONLY_U0 tier",
+    "Live feed ingestion worker has not been modified to compute or log 3-feature candidate schema",
+    "Outcome logging worker for 1h/4h/24h daily-scaled targets is not currently active locally"
+  ],
+  "local_prospective_records_found": 2,
+  "production_impact_warning": "Do NOT attempt live shadow execution until a dedicated, isolated data feed supplying volume_zscore_24h without impacting production server latency is verified.",
+  "prospective_predictions_file": "data\\prospective\\predictions\\predictions.jsonl",
+  "required_features_for_cbe_080": [
+    "volatility_realized_24h",
+    "volatility_compression_ratio",
+    "volume_zscore_24h"
+  ],
+  "volume_feature_available_in_live_records": false
+}

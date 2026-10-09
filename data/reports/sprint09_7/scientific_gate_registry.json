@@ -1,0 +1,83 @@
+{
+  "candidate_model_version": "CBE-0.8.0",
+  "evaluation_timestamp_utc": "2026-10-09T16:04:39.930127+00:00",
+  "gates": [
+    {
+      "evidence": "Ridge bundle, classifier thresholds, and dual calibration artifacts verified with exact SHA-256 hashes.",
+      "gate_id": "GATE_A_COMPONENT_INTEGRITY",
+      "name": "Component Integrity Verification",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Branch C (vol-normalized) and Branch E (conservative hybrid) frozen; Winner marked UNDETERMINED.",
+      "gate_id": "GATE_B_TWO_BRANCH_CALIBRATION_FREEZE",
+      "name": "Parallel Dual-Branch Calibration Freeze",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Immutable manifest generated with non-circular artifact hashes and full statistical parameters.",
+      "gate_id": "GATE_C_EXPERIMENT_MANIFEST_INTEGRITY",
+      "name": "Prospective Experiment Manifest Integrity",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Creation <= maturity and cutoff <= origin invariants enforced in forecast schema.",
+      "gate_id": "GATE_D_PROSPECTIVE_RECORD_CONTRACT",
+      "name": "Prospective Record Schema Contract",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Outcome schema strictly references prediction_record_hash; overwrites prohibited.",
+      "gate_id": "GATE_E_OUTCOME_MATURITY_CORRECTNESS",
+      "name": "Outcome Maturity & Immutability Contract",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Cryptographic chaining verified across 12000 simulated events.",
+      "gate_id": "GATE_F_APPEND_ONLY_INTEGRITY",
+      "name": "Tamper-Evident Event Log Hash Chaining",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Tamper detection verified and duplicate event injection successfully blocked.",
+      "gate_id": "GATE_G_RESTART_AND_RECOVERY_SAFETY",
+      "name": "Restart Continuity & Crash Recovery Safety",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Strict 5-dimensional pairing criteria established (same symbol, origin, horizon, units, outcome).",
+      "gate_id": "GATE_H_BASELINE_PAIRING_VALIDITY",
+      "name": "Baseline Pairing Policy Validity",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Horizon strides (12, 48, 288) and circular block bootstrap (seed 42, block 288) predeclared.",
+      "gate_id": "GATE_I_DEPENDENCE_AWARE_ANALYSIS_PLAN",
+      "name": "Dependence-Aware Statistical Analysis Plan",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Processed 1000 historical bars strictly as HISTORICAL_REPLAY.",
+      "gate_id": "GATE_J_OFFLINE_SIMULATION_VALIDITY",
+      "name": "Offline Protocol Simulation Validity",
+      "status": "PASS"
+    },
+    {
+      "evidence": "Local live-era records (2) lack volume features. Honestly marked NOT_VERIFIED.",
+      "gate_id": "GATE_K_PROSPECTIVE_FEED_PARITY",
+      "name": "Prospective Feed Data Parity",
+      "status": "NOT_VERIFIED"
+    },
+    {
+      "evidence": "Sprint 07 freeze 29/29 verified; zero production worker modifications; deployment prohibited.",
+      "gate_id": "GATE_L_PRODUCTION_ISOLATION",
+      "name": "Production Model Freeze & Workload Isolation",
+      "status": "PASS"
+    }
+  ],
+  "gates_evaluated_count": 12,
+  "gates_not_verified_count": 1,
+  "gates_passed_count": 11,
+  "overall_verdict": "PROSPECTIVE_PROTOCOL_FROZEN_PENDING_FEED_PARITY",
+  "schema_version": "CBE-GATE-REGISTRY-0.8.0"
+}

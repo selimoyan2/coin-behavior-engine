@@ -1,0 +1,92 @@
+{
+  "comparison_baselines": [
+    "BASELINE_1_PERSISTENCE",
+    "BASELINE_2_ROLLING_HISTORICAL",
+    "BASELINE_3_CBE_0_7_0_PROSPECTIVE"
+  ],
+  "evaluation_metrics": {
+    "interval_metrics": [
+      "Coverage_80",
+      "Coverage_95",
+      "Conditional_Coverage",
+      "Mean_Width",
+      "Winkler_Score"
+    ],
+    "operational_metrics": [
+      "Feature_Rejection_Rate",
+      "Missing_Data_Rate",
+      "Fallback_Frequency",
+      "Inference_Latency"
+    ],
+    "point_metrics": [
+      "MAE",
+      "RMSE",
+      "Bias",
+      "Pearson_r",
+      "Spearman_rho"
+    ]
+  },
+  "experiment_id": "EXP-CBE-0.8.0-SHADOW-2026",
+  "feature_schema": {
+    "missing_policy": "FAIL_CLOSED",
+    "ordered_features": [
+      "volatility_realized_24h",
+      "volatility_compression_ratio",
+      "volume_zscore_24h"
+    ],
+    "tier": "SPOT_ONLY_U0"
+  },
+  "forecast_horizons": {
+    "1h": {
+      "lookahead_minutes": 60,
+      "source_bars": 12
+    },
+    "24h": {
+      "lookahead_minutes": 1440,
+      "source_bars": 288
+    },
+    "4h": {
+      "lookahead_minutes": 240,
+      "source_bars": 48
+    }
+  },
+  "freeze_timestamp_utc": "2026-10-09T16:04:39.474621+00:00",
+  "frozen_artifacts": {
+    "calibration_branch_c": {
+      "filename": "cbe_interval_calibration_v080_candidate_c.json",
+      "sha256": "d7ce73edf6595c9ef167a8ec69f4e40f102dff2f32d8f265cf3efe4f60ef89ce"
+    },
+    "calibration_branch_e": {
+      "filename": "cbe_interval_calibration_v080_095.json",
+      "sha256": "6821136ad71411b8778c481055d4204640d19be0acaedaf8db3cd18ee3b4bf50"
+    },
+    "ridge_bundle": {
+      "filename": "cbe_model_bundle_v080.json",
+      "sha256": "7755ddcb369c29825f9205f09e805b2e518526726b4bd5d948787d24c9419ad0"
+    },
+    "state_thresholds": {
+      "filename": "cbe_state_thresholds_v080.json",
+      "sha256": "3979ab8e37377f1d5cb2623c63c20081078ae49c5bcbedcbb860affe3dfd95d9"
+    }
+  },
+  "git_commit_reference": "0222677c51298db9e4fb6ac0fdd7157f790f92c7",
+  "prediction_cadence": "Every 5 minutes on closed bars",
+  "protocol_version": "1.0.0",
+  "schema_version": "CBE-PROSPECTIVE-MANIFEST-0.8.0",
+  "status": "PROSPECTIVE_EXPERIMENT_MANIFEST_FROZEN",
+  "stopping_rules": {
+    "initial_observation_window_days": 30,
+    "maximum_observation_window_days": 90,
+    "safety_stops": [
+      "INTEGRITY_BREACH",
+      "DATA_LEAKAGE_DETECTED",
+      "TARGET_UNIT_DISCREPANCY",
+      "RESOURCE_EXHAUSTION"
+    ]
+  },
+  "target_definition": {
+    "formula": "std(r_5m) * sqrt(288)",
+    "units": "Daily-scaled standard deviation (sigma_5m * sqrt(288))",
+    "variable": "Forward realized volatility of 5m log returns"
+  }
+}

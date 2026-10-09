@@ -1,0 +1,12 @@
+{
+  "chain_verification_status": "CHAIN_INTEGRITY_VERIFIED",
+  "chain_verified": true,
+  "duplicate_rejection_verified": true,
+  "forecast_events_count": 6000,
+  "outcome_events_count": 6000,
+  "record_type_enforced": "HISTORICAL_REPLAY",
+  "simulation_bars_processed": 1000,
+  "tamper_detection_verified": true,
+  "target_units_enforced": "Daily-scaled standard deviation (sigma_5m * sqrt(288))",
+  "total_events_emitted": 12000
+}

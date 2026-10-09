@@ -1,0 +1,30 @@
+{
+  "calibration_branches": {
+    "BRANCH_C": {
+      "artifact_filename": "cbe_interval_calibration_v080_candidate_c.json",
+      "branch_id": "BRANCH_C_VOLATILITY_NORMALIZED",
+      "fitting_partition": "VALIDATION_2025_FIT (2025-01-01 to 2025-08-31)",
+      "historical_evaluation_limitations": "Does not explicitly condition on discrete categorical market-state labels",
+      "historical_evaluation_strengths": "Superior 95% Winkler score (0.033265) and 85.68% high-vol 95% coverage on 2025-Eval",
+      "methodology": "Volatility-normalized relative residual quantiles: [p * (1 + q10), p * (1 + q90)]",
+      "sha256": "d7ce73edf6595c9ef167a8ec69f4e40f102dff2f32d8f265cf3efe4f60ef89ce",
+      "status": "FROZEN_RESEARCH_BRANCH"
+    },
+    "BRANCH_E": {
+      "artifact_filename": "cbe_interval_calibration_v080_095.json",
+      "branch_id": "BRANCH_E_CONSERVATIVE_HYBRID",
+      "fitting_partition": "VALIDATION_2025_FIT (2025-01-01 to 2025-08-31)",
+      "historical_evaluation_limitations": "Lower 95% high-vol coverage (80.27%) and higher Winkler penalty than Candidate C",
+      "historical_evaluation_strengths": "Regime-aligned discrete state intervals; high-vol 80% coverage 73.90% on 2025-Eval",
+      "methodology": "State-conditioned empirical quantiles with 1.15x tail protection factor and sample fallbacks",
+      "sha256": "6821136ad71411b8778c481055d4204640d19be0acaedaf8db3cd18ee3b4bf50",
+      "status": "FROZEN_RESEARCH_BRANCH"
+    }
+  },
+  "calibration_winner": "UNDETERMINED",
+  "candidate_model_version": "CBE-0.8.0",
+  "decision_freeze_policy": "Neither Branch C nor Branch E is designated as universally superior. Both branches are frozen as parallel prospective candidates. Prospective scoring will evaluate both under strictly identical forecast origins, Ridge point forecasts, feature inputs, and target outcomes. Selection of a final production calibration layer will be governed by prospective out-of-sample evidence.",
+  "frozen_at_utc": "2026-10-09T16:04:39.474621+00:00",
+  "schema_version": "CBE-CALIBRATION-FREEZE-0.8.0",
+  "source_commit": "0222677"
+}

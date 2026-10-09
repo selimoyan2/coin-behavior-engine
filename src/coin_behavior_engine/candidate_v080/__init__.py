@@ -51,9 +51,27 @@ from coin_behavior_engine.candidate_v080.inference_pipeline import (
     TARGET_UNITS,
     MARKET_STATE_POINT_FORECAST_ROLE,
 )
+from coin_behavior_engine.candidate_v080.calibration_branches import (
+    BranchIntervals,
+    CalibrationBranchC,
+    CalibrationBranchE,
+    CalibrationBranchError,
+    DualBranchCalibrationManager,
+)
+from coin_behavior_engine.candidate_v080.protocol_simulator import (
+    AppendOnlyEvent,
+    DuplicateEventError,
+    EventChainIntegrityError,
+    OfflineProtocolSimulator,
+)
 
 __all__ = [
+    "AppendOnlyEvent",
+    "BranchIntervals",
     "BundleIntegrityError",
+    "CalibrationBranchC",
+    "CalibrationBranchE",
+    "CalibrationBranchError",
     "CalibrationError",
     "CalibrationV095Error",
     "CandidateInferenceEngineV080",
@@ -63,6 +81,9 @@ __all__ = [
     "CanonicalMetricsEngine",
     "ClassificationResult",
     "ClassifierError",
+    "DualBranchCalibrationManager",
+    "DuplicateEventError",
+    "EventChainIntegrityError",
     "FeatureValidationError",
     "HorizonCalibrationParameters",
     "HorizonCalibrationV095",
@@ -76,6 +97,7 @@ __all__ = [
     "MARKET_STATE_POINT_FORECAST_ROLE",
     "MarketStateClassifierV080",
     "ModelBundleV080",
+    "OfflineProtocolSimulator",
     "PointMetrics",
     "RidgeModelParameters",
     "ScalerParameters",
@@ -84,4 +106,5 @@ __all__ = [
     "StateThresholdsV080",
     "TARGET_UNITS",
 ]
+
 

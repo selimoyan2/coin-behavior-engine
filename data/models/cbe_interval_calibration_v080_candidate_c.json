@@ -1,0 +1,49 @@
+{
+  "calibration_branch": "BRANCH_C_VOLATILITY_NORMALIZED",
+  "calibration_partition": "VALIDATION_2025_FIT (2025-01-01 to 2025-08-31)",
+  "candidate_model_version": "CBE-0.8.0",
+  "evaluation_partition": "VALIDATION_2025_EVAL (2025-09-01 to 2025-12-31)",
+  "fitting_method": "Relative residual quantiles (e = (y - p)/p) fitted strictly on 2025-FIT",
+  "horizons": {
+    "1h": {
+      "calibration_mae": 0.006815,
+      "calibration_rmse": 0.01079,
+      "calibration_sample_count": 69408,
+      "horizon": "1h",
+      "relative_quantiles": {
+        "q025": -0.606761,
+        "q10": -0.475589,
+        "q90": 0.466195,
+        "q975": 1.105737
+      }
+    },
+    "24h": {
+      "calibration_mae": 0.006869,
+      "calibration_rmse": 0.00894,
+      "calibration_sample_count": 69408,
+      "horizon": "24h",
+      "relative_quantiles": {
+        "q025": -0.607034,
+        "q10": -0.481893,
+        "q90": 0.288254,
+        "q975": 0.74787
+      }
+    },
+    "4h": {
+      "calibration_mae": 0.007006,
+      "calibration_rmse": 0.009956,
+      "calibration_sample_count": 69408,
+      "horizon": "4h",
+      "relative_quantiles": {
+        "q025": -0.56377,
+        "q10": -0.460338,
+        "q90": 0.416277,
+        "q975": 0.940586
+      }
+    }
+  },
+  "schema_version": "CBE-CALIBRATION-C-0.8.0",
+  "source_commit": "0222677",
+  "status": "FROZEN_RESEARCH_BRANCH",
+  "target_units": "Daily-scaled standard deviation (sigma_5m * sqrt(288))"
+}

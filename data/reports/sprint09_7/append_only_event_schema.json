@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "event_timestamp_utc": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "event_type": {
+      "enum": [
+        "FORECAST_EMITTED",
+        "OUTCOME_MATURED",
+        "CHECKPOINT_CREATED",
+        "ANOMALY_RECORDED"
+      ],
+      "type": "string"
+    },
+    "experiment_id": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "payload_hash": {
+      "type": "string"
+    },
+    "previous_record_hash": {
+      "type": "string"
+    },
+    "record_hash": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "CBE-EVENT-0.8.0",
+      "type": "string"
+    },
+    "sequence_number": {
+      "minimum": 1,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "sequence_number",
+    "previous_record_hash",
+    "record_hash",
+    "schema_version",
+    "experiment_id",
+    "event_timestamp_utc",
+    "event_type",
+    "payload_hash",
+    "payload"
+  ],
+  "title": "CBE-0.8.0 Tamper-Evident Append-Only Event Schema",
+  "type": "object"
+}

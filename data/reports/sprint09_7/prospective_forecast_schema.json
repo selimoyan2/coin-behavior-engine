@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "availability_tier": {
+      "const": "SPOT_ONLY_U0",
+      "type": "string"
+    },
+    "calibration_method": {
+      "enum": [
+        "VOL_NORMALIZED",
+        "HYBRID"
+      ],
+      "type": "string"
+    },
+    "candidate_branch_id": {
+      "enum": [
+        "BRANCH_C_VOLATILITY_NORMALIZED",
+        "BRANCH_E_CONSERVATIVE_HYBRID"
+      ],
+      "type": "string"
+    },
+    "data_quality_status": {
+      "type": "string"
+    },
+    "experiment_id": {
+      "type": "string"
+    },
+    "fallback_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "forecast_horizon": {
+      "enum": [
+        "1h",
+        "4h",
+        "24h"
+      ],
+      "type": "string"
+    },
+    "forecast_origin_timestamp_utc": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "forecast_target_maturity_timestamp_utc": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "intervals_80": {
+      "properties": {
+        "lower": {
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "upper": {
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "width": {
+          "minimum": 0.0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "lower",
+        "upper",
+        "width"
+      ],
+      "type": "object"
+    },
+    "intervals_95": {
+      "properties": {
+        "lower": {
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "upper": {
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "width": {
+          "minimum": 0.0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "lower",
+        "upper",
+        "width"
+      ],
+      "type": "object"
+    },
+    "market_state_label": {
+      "enum": [
+        "LOW_VOLATILITY",
+        "NORMAL_VOLATILITY",
+        "HIGH_VOLATILITY",
+        "UNKNOWN_INSUFFICIENT_DATA"
+      ],
+      "type": "string"
+    },
+    "market_state_point_forecast_role": {
+      "const": "DESCRIPTIVE_ONLY",
+      "type": "string"
+    },
+    "market_symbol": {
+      "const": "BTCUSDT",
+      "type": "string"
+    },
+    "point_prediction": {
+      "minimum": 0.0,
+      "type": "number"
+    },
+    "protocol_version": {
+      "type": "string"
+    },
+    "record_creation_timestamp_utc": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "record_type": {
+      "enum": [
+        "HISTORICAL_REPLAY",
+        "PROSPECTIVE_SHADOW"
+      ],
+      "type": "string"
+    },
+    "source_data_cutoff_timestamp_utc": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "target_units": {
+      "const": "Daily-scaled standard deviation (sigma_5m * sqrt(288))",
+      "type": "string"
+    }
+  },
+  "required": [
+    "record_type",
+    "experiment_id",
+    "protocol_version",
+    "candidate_branch_id",
+    "market_symbol",
+    "forecast_origin_timestamp_utc",
+    "record_creation_timestamp_utc",
+    "forecast_horizon",
+    "forecast_target_maturity_timestamp_utc",
+    "source_data_cutoff_timestamp_utc",
+    "availability_tier",
+    "data_quality_status",
+    "market_state_label",
+    "market_state_point_forecast_role",
+    "point_prediction",
+    "intervals_80",
+    "intervals_95",
+    "calibration_method",
+    "target_units"
+  ],
+  "title": "CBE-0.8.0 Prospective Forecast Record Schema",
+  "type": "object"
+}
