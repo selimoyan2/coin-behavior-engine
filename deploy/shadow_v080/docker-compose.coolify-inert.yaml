@@ -23,7 +23,7 @@ version: '3.8'
 services:
   cbe-080-shadow-inert:
     build:
-      context: ../..
+      context: .
       dockerfile: deploy/shadow_v080/Dockerfile.staging
     image: cbe-080-shadow:coolify-inert
     container_name: cbe_080_coolify_inert

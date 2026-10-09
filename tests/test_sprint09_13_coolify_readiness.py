@@ -80,6 +80,10 @@ def test_02_coolify_compose_security_and_resource_constraints():
 
     svc = spec["services"]["cbe-080-shadow-inert"]
 
+    build_cfg = svc.get("build", {})
+    assert build_cfg.get("context") == ".", "build context must be '.' for Coolify --project-directory resolution"
+    assert build_cfg.get("dockerfile") == "deploy/shadow_v080/Dockerfile.staging", "dockerfile must point to deploy/shadow_v080/Dockerfile.staging"
+
     assert svc["network_mode"] == "none", "network_mode must be 'none'"
     assert svc["read_only"] is True, "read_only must be true"
     assert svc["restart"] == "no", "restart must be 'no'"
@@ -543,3 +547,26 @@ def test_27_repeated_audit_without_evidence_corruption_and_bounded_retention(tmp
     assert len(pruned_lines) <= MAX_AUDIT_HISTORY_ENTRIES + 1
     # Verify genesis entry (line 0) was preserved
     assert "GENESIS-0" in pruned_lines[0]
+
+
+def test_28_coolify_build_context_and_dockerfile_resolution():
+    """Verify that build context and Dockerfile resolve correctly under Coolify project-directory semantics."""
+    compose_path = Path("deploy/shadow_v080/docker-compose.coolify-inert.yaml")
+    with open(compose_path, "r", encoding="utf-8") as f:
+        spec = yaml.safe_load(f)
+
+    svc = spec["services"]["cbe-080-shadow-inert"]
+    build_cfg = svc["build"]
+    context_str = build_cfg["context"]
+    dockerfile_str = build_cfg["dockerfile"]
+
+    # In Coolify, project-directory is the repository root checkout
+    repo_root = Path(__file__).resolve().parents[1]
+    resolved_context = (repo_root / context_str).resolve()
+    resolved_dockerfile = (resolved_context / dockerfile_str).resolve()
+
+    assert resolved_dockerfile.exists(), f"Dockerfile does not exist at {resolved_dockerfile}"
+    assert (resolved_context / "src").exists(), f"src/ missing from resolved context {resolved_context}"
+    assert (resolved_context / "data" / "models").exists(), f"data/models/ missing from resolved context {resolved_context}"
+    assert (resolved_context / "deploy" / "shadow_v080" / "entrypoint_inert.sh").exists(), f"entrypoint missing from {resolved_context}"
+
