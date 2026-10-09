@@ -1,0 +1,51 @@
+{
+  "approval_policy": "STRICT_SEPARATION_OF_POWERS_NO_BUNDLING",
+  "gates": [
+    {
+      "approval_id": "APPROVAL_1",
+      "name": "Linux Runtime Staging Benchmark",
+      "purpose": "Verify on Linux VPS that actual RSS <= 250MB and startup time <= 10s",
+      "prerequisites": [
+        "Clean git tree",
+        "Preflight verified",
+        "Failure injection passed"
+      ],
+      "status": "PENDING_OPERATOR_APPROVAL",
+      "authorizes_live_traffic": false,
+      "authorizes_deployment": false
+    },
+    {
+      "approval_id": "APPROVAL_2",
+      "name": "Dedicated Isolated Service Deployment",
+      "purpose": "Deploy container in inert/stopped state with 300MB cgroup limit",
+      "prerequisites": [
+        "APPROVAL_1 passed with measured RSS <= 250MB"
+      ],
+      "status": "PENDING_OPERATOR_APPROVAL",
+      "authorizes_live_traffic": false,
+      "authorizes_deployment": true
+    },
+    {
+      "approval_id": "APPROVAL_3",
+      "name": "Live Market-Data Capture Activation",
+      "purpose": "Start closed 5m candle ingestion from Binance spot public API",
+      "prerequisites": [
+        "APPROVAL_2 verified with correct cgroup limits"
+      ],
+      "status": "PENDING_OPERATOR_APPROVAL",
+      "authorizes_live_traffic": true,
+      "authorizes_deployment": false
+    },
+    {
+      "approval_id": "APPROVAL_4",
+      "name": "Start of Prospective Scientific Observation",
+      "purpose": "Authorize 4-week prospective scoring experiment once 288 bars are buffered",
+      "prerequisites": [
+        "APPROVAL_3 completed 288 contiguous bars without gaps or errors"
+      ],
+      "status": "PENDING_OPERATOR_APPROVAL",
+      "authorizes_live_traffic": false,
+      "authorizes_deployment": false
+    }
+  ]
+}

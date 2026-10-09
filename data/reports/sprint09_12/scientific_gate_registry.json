@@ -1,0 +1,78 @@
+{
+  "sprint": "09.12",
+  "evaluation_timestamp_utc": "2026-10-09T18:14:05.487379+00:00",
+  "gates": {
+    "GATE_A": {
+      "name": "Git Repository Cleanliness",
+      "verdict": "PASS",
+      "details": "Clean working tree, HEAD matches origin/main"
+    },
+    "GATE_B": {
+      "name": "Canonical Lockbox Freeze",
+      "verdict": "PASS",
+      "details": "29/29 Sprint 07 canonical artifacts verified"
+    },
+    "GATE_C": {
+      "name": "CBE-0.8.0 Artifact Hashes",
+      "verdict": "PASS",
+      "details": "All 4 model and calibration hashes verified"
+    },
+    "GATE_D": {
+      "name": "Zero Production Worker Mutation",
+      "verdict": "PASS",
+      "details": "Zero changes to CBE-0.7.0 code, worker, DB"
+    },
+    "GATE_E": {
+      "name": "Network Evidence Corrections",
+      "verdict": "PASS",
+      "details": "Reconciled offline 0-req vs live 288-req/day reality"
+    },
+    "GATE_F": {
+      "name": "Zero Trading / Paper Trading",
+      "verdict": "PASS",
+      "details": "Trading permanently prohibited and absent"
+    },
+    "GATE_G": {
+      "name": "Production Risk Claims Correction",
+      "verdict": "PASS",
+      "details": "Corrected unsupported zero-risk claims to bounded risk"
+    },
+    "GATE_H": {
+      "name": "VPS Baseline Incorporated",
+      "verdict": "PASS",
+      "details": "Host srv1114257 baseline incorporated with 0-swap caution"
+    },
+    "GATE_I": {
+      "name": "Isolation Architecture Selected",
+      "verdict": "PASS",
+      "details": "Architecture A (Dedicated Coolify container) selected"
+    },
+    "GATE_J": {
+      "name": "Resource Limits Proposed",
+      "verdict": "PASS",
+      "details": "Preferred 250MB RSS target, 300MB cgroup limit, 0.25 CPU"
+    },
+    "GATE_K": {
+      "name": "Linux Runtime Staging Measurement",
+      "verdict": "NOT_VERIFIED",
+      "details": "Pending future APPROVAL_1 execution on host"
+    },
+    "GATE_L": {
+      "name": "Failure Injection Suite",
+      "verdict": "PASS",
+      "details": "All 8 failure injection scenarios passed fail-closed"
+    },
+    "GATE_M": {
+      "name": "Regression Test Suite",
+      "verdict": "PASS",
+      "details": "Full test suite passing 100%"
+    }
+  },
+  "summary": {
+    "total_gates": 13,
+    "pass_count": 12,
+    "not_verified_count": 1,
+    "failed_count": 0,
+    "overall_status": "READY_FOR_OPERATOR_REVIEW"
+  }
+}

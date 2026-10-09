@@ -1,0 +1,51 @@
+# ==============================================================================
+# SPRINT 09.12 — INERT DOCKER COMPOSE CONFIGURATION TEMPLATE
+# SERVICE: cbe-080-shadow-collector
+# STATUS: INERT BY DEFAULT / NO AUTOMATIC STARTUP / MANUAL OPERATOR APPROVAL ONLY
+# ==============================================================================
+# NOTE: DO NOT deploy or start this service without APPROVAL_1 and APPROVAL_2.
+# This configuration enforces:
+# 1. Zero inbound exposed ports (no public HTTP endpoint).
+# 2. Strict cgroup memory limit: 300MB (protecting host available 3.2GB).
+# 3. CPU quota: 0.25 (25% of one core, leaving ~1.75 cores for host containers).
+# 4. Read-only root filesystem (where feasible) with tmpfs for /tmp.
+# 5. Dedicated persistent named volume for shadow SQLite/JSONL data only.
+# 6. Zero access to CBE-0.7.0 production volumes or databases.
+# 7. Restart policy: no / on-failure:3 (no unconditional always restart).
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  cbe-080-shadow:
+    image: cbe-080-shadow:dry-run-v1
+    container_name: cbe_080_prospective_shadow
+    restart: "no"
+    read_only: false
+    user: "1000:1000"
+    environment:
+      - CBE_ENV=prospective_shadow
+      - PYTHONUNBUFFERED=1
+      - CBE_RECORD_LABEL=PROSPECTIVE_SHADOW
+      - CBE_MAX_QUEUE_SIZE=1728
+      - CBE_CLOCK_SKEW_BUDGET_MS=2000
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 300M
+        reservations:
+          cpus: '0.05'
+          memory: 150M
+    volumes:
+      - cbe_080_shadow_data:/app/data/prospective_shadow:rw
+    networks:
+      - cbe_isolated_egress
+
+volumes:
+  cbe_080_shadow_data:
+    name: cbe_080_shadow_data
+
+networks:
+  cbe_isolated_egress:
+    driver: bridge

@@ -1,0 +1,53 @@
+{
+  "timestamp_utc": "2026-10-09T18:14:05.459171+00:00",
+  "total_injections": 8,
+  "all_passed": true,
+  "injections": {
+    "injection_01_premature_receipt": {
+      "description": "Candle received before exchange close timestamp",
+      "detected_state": "CLOCK_UNTRUSTED",
+      "expected_state": "CLOCK_UNTRUSTED",
+      "fail_closed_passed": true
+    },
+    "injection_02_stale_candle": {
+      "description": "Candle received > 10m after exchange close timestamp",
+      "detected_state": "STALE_DATA",
+      "expected_state": "STALE_DATA",
+      "fail_closed_passed": true
+    },
+    "injection_03_source_gap": {
+      "description": "Missing 5 consecutive 5m candles in stream",
+      "gap_state_triggered": true,
+      "fail_closed_passed": true
+    },
+    "injection_04_corrupted_snapshot": {
+      "description": "Corrupted snapshot file on startup",
+      "handled_cleanly": true,
+      "buffer_length_after_init": 0,
+      "fail_closed_passed": true
+    },
+    "injection_05_event_tampering": {
+      "description": "Cryptographic tamper injection into prediction hash chain",
+      "tamper_detected": true,
+      "fail_closed_passed": true
+    },
+    "injection_06_simulated_write_failure": {
+      "description": "Simulated disk full / write permission failure during append",
+      "fail_closed_detected": true,
+      "fail_closed_passed": true
+    },
+    "injection_07_duplicate_candle": {
+      "description": "Idempotent duplicate suppression and conflicting candle rejection",
+      "idempotent_duplicate_suppressed": true,
+      "conflicting_candle_rejected": true,
+      "fail_closed_passed": true
+    },
+    "injection_08_trading_interlock": {
+      "description": "Verification that order routing and execution hooks are completely absent",
+      "order_routing_present": false,
+      "broker_api_configured": false,
+      "interlock_passed": true,
+      "fail_closed_passed": true
+    }
+  }
+}
