@@ -277,6 +277,7 @@ class ProspectiveScoringWorkerV080:
             max_buffer_candles=config.max_buffer_bars,
             full_warmup_bars=config.min_warmup_bars,
             models_dir=config.models_dir,
+            shadow_data_dir=self.prospective_dir,
             experiment_id=config.experiment_id,
             protocol_version=config.protocol_version,
         )

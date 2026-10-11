@@ -21,10 +21,11 @@ COPY src/ /app/src/
 COPY data/models/ /app/data/models/
 COPY deploy/shadow_v080/entrypoint_inert.sh /app/entrypoint_inert.sh
 COPY deploy/shadow_v080/entrypoint_live_capture.sh /app/entrypoint_live_capture.sh
+COPY deploy/shadow_v080/entrypoint_scoring_worker.sh /app/entrypoint_scoring_worker.sh
 
 # Prepare dedicated data directory with correct ownership
-RUN mkdir -p /app/data/prospective_shadow /app/data/live_capture && \
-    chmod +x /app/entrypoint_inert.sh /app/entrypoint_live_capture.sh && \
+RUN mkdir -p /app/data/prospective_shadow /app/data/live_capture /app/data/prospective && \
+    chmod +x /app/entrypoint_inert.sh /app/entrypoint_live_capture.sh /app/entrypoint_scoring_worker.sh && \
     chown -R cbe:cbe /app
 
 USER 1000:1000
