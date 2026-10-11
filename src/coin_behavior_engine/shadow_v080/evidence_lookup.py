@@ -86,10 +86,14 @@ class PersistentEvidenceLookupV080:
         symbol: str = "BTCUSDT",
         interval: str = "5m",
         evidence_store: Optional[RawMarketEvidenceStore] = None,
+        evidence_dir: Optional[Union[str, Path]] = None,
     ):
         self.symbol = symbol
         self.interval = interval
         self.evidence_store = evidence_store
+
+        if raw_market_dir is None and evidence_dir is not None:
+            raw_market_dir = evidence_dir
 
         if evidence_store is not None:
             self.raw_market_dir = evidence_store.raw_market_dir
@@ -153,6 +157,10 @@ class PersistentEvidenceLookupV080:
         if offset is not None:
             return self._read_candle_at_offset(offset)
         return None
+
+    def get_candle_by_timestamp(self, ts_open: int) -> Optional[ValidatedCandle]:
+        """Fetch ValidatedCandle by exact open timestamp (alias for get_candle)."""
+        return self.get_candle(ts_open)
 
     def get_entry(self, ts_open: int) -> Optional[MarketEvidenceEntry]:
         """Fetch raw MarketEvidenceEntry with hash chain metadata by open timestamp."""
@@ -253,6 +261,26 @@ class PersistentEvidenceLookupV080:
                 candles.append(c)
         return candles
 
+    def get_backward_window(self, origin_ts: int, num_bars: int = 288) -> List[ValidatedCandle]:
+        """Fetch up to num_bars contiguous candles ending at or immediately before origin_ts in ascending order."""
+        conn = self._get_conn()
+        if not conn:
+            return []
+        with self._lock:
+            cur = conn.cursor()
+            cur.execute(
+                "SELECT byte_offset FROM timestamp_index WHERE timestamp_open <= ? ORDER BY timestamp_open DESC LIMIT ?;",
+                (origin_ts, num_bars),
+            )
+            rows = cur.fetchall()
+
+        candles: List[ValidatedCandle] = []
+        for (offset,) in reversed(rows):
+            c = self._read_candle_at_offset(offset)
+            if c is not None:
+                candles.append(c)
+        return candles
+
     def get_latest_open_timestamp(self) -> Optional[int]:
         """Fetch greatest timestamp_open currently indexed."""
         conn = self._get_conn()
@@ -265,6 +293,51 @@ class PersistentEvidenceLookupV080:
             if row and row[0] is not None:
                 return int(row[0])
         return None
+
+    def get_latest_candle(self) -> Optional[ValidatedCandle]:
+        """Fetch the latest committed candle in the evidence ledger."""
+        latest_ts = self.get_latest_open_timestamp()
+        if latest_ts is not None:
+            return self.get_candle(latest_ts)
+        return None
+
+    def get_max_entry_index(self) -> int:
+        """Fetch maximum entry_index currently committed to index."""
+        conn = self._get_conn()
+        if not conn:
+            return 0
+        with self._lock:
+            cur = conn.cursor()
+            cur.execute("SELECT MAX(entry_index) FROM timestamp_index;")
+            row = cur.fetchone()
+            if row and row[0] is not None:
+                return int(row[0])
+        return 0
+
+    def get_entries_after_index(
+        self,
+        last_entry_index: int,
+        limit: int = 50,
+    ) -> List[Tuple[MarketEvidenceEntry, ValidatedCandle]]:
+        """Fetch batch of evidence entries and candles with entry_index > last_entry_index in sequential order."""
+        conn = self._get_conn()
+        if not conn:
+            return []
+        with self._lock:
+            cur = conn.cursor()
+            cur.execute(
+                "SELECT byte_offset FROM timestamp_index WHERE entry_index > ? ORDER BY entry_index ASC LIMIT ?;",
+                (last_entry_index, limit),
+            )
+            rows = cur.fetchall()
+
+        results: List[Tuple[MarketEvidenceEntry, ValidatedCandle]] = []
+        for (offset,) in rows:
+            entry = self._read_entry_at_offset(offset)
+            candle = self._read_candle_at_offset(offset)
+            if entry is not None and candle is not None:
+                results.append((entry, candle))
+        return results
 
     def get_forward_window(
         self,

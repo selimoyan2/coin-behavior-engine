@@ -454,6 +454,58 @@ class DurablePredictionIndexV080(IPendingPredictionIndex):
             logger.warning(f"Failed to batch read pending predictions: {exc}")
         return events
 
+    def get_pending_count(self) -> int:
+        """Return total count of pending predictions."""
+        with self._lock:
+            with self._get_connection() as conn:
+                cur = conn.cursor()
+                cur.execute("SELECT COUNT(*) FROM predictions_index WHERE status = 'PENDING';")
+                row = cur.fetchone()
+                return int(row[0]) if row else 0
+
+    def get_pending_predictions_paged(
+        self,
+        page_size: int = 500,
+    ) -> Iterator[List[ShadowPredictionEvent]]:
+        """Yield pages of pending prediction events to guarantee bounded memory consumption."""
+        offset = 0
+        while True:
+            with self._lock:
+                with self._get_connection() as conn:
+                    cur = conn.cursor()
+                    cur.execute(
+                        "SELECT journal_byte_offset FROM predictions_index WHERE status = 'PENDING' ORDER BY origin_timestamp_ms ASC LIMIT ? OFFSET ?;",
+                        (page_size, offset),
+                    )
+                    rows = cur.fetchall()
+
+            if not rows or not self.events_file.exists():
+                break
+
+            events: List[ShadowPredictionEvent] = []
+            try:
+                with open(self.events_file, "rb") as f:
+                    for (byte_off,) in rows:
+                        f.seek(byte_off)
+                        raw_line = f.readline()
+                        if raw_line:
+                            try:
+                                data = json.loads(raw_line.decode("utf-8", errors="replace").strip())
+                                events.append(ShadowPredictionEvent(**data))
+                            except Exception:
+                                pass
+            except Exception as exc:
+                logger.warning(f"Error reading paged pending predictions: {exc}")
+                break
+
+            if not events:
+                break
+
+            yield events
+            offset += len(rows)
+            if len(rows) < page_size:
+                break
+
     def get_prediction_by_hash(self, record_hash: str) -> Optional[ShadowPredictionEvent]:
         """Fetch prediction event by record hash in O(1) time."""
         with self._lock:

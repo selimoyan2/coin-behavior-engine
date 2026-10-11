@@ -72,6 +72,7 @@ from coin_behavior_engine.shadow_v080.prospective_guard import (
     CausalDataEligibilityGuard,
     DiscontinuousCandlesError,
     DuplicateTimestampError,
+    ExecutionBoundary,
     IncompleteCandleError,
     InsufficientWarmupBarsError,
     InvalidMarketIdentityError,
@@ -83,6 +84,12 @@ from coin_behavior_engine.shadow_v080.prospective_guard import (
     SyntheticProvenanceError,
     TemporalAlignmentError,
     UnverifiedEvidenceError,
+)
+from coin_behavior_engine.shadow_v080.scoring_worker import (
+    ProspectiveScoringWorkerV080,
+    WorkerCheckpoint,
+    WorkerConfigV080,
+    WorkerStartBoundaryRecord,
 )
 from coin_behavior_engine.shadow_v080.transport_adapter import (
     BaseMarketDataTransport,
@@ -118,6 +125,7 @@ __all__ = [
     "EventTamperError",
     "EvidenceCorruptionError",
     "EvidencePersistenceError",
+    "ExecutionBoundary",
     "FeaturePipelineV080",
     "FULL_WARMUP_BARS",
     "ForwardWindowResult",
@@ -146,6 +154,7 @@ __all__ = [
     "ProspectiveAuthorizationError",
     "ProspectiveAuthorizationGuard",
     "ProspectiveSafetyError",
+    "ProspectiveScoringWorkerV080",
     "ProvenanceSource",
     "QueueOverflowError",
     "RateLimitExceededError",
@@ -166,6 +175,9 @@ __all__ = [
     "UnverifiedEvidenceError",
     "ValidatedCandle",
     "ValidationStatus",
+    "WorkerCheckpoint",
+    "WorkerConfigV080",
+    "WorkerStartBoundaryRecord",
     "calculate_backoff",
     "verify_prospective_execution_boundary",
 ]

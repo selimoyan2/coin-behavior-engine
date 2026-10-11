@@ -1,0 +1,84 @@
+# ==============================================================================
+# SPRINT 09.18 — ISOLATED PROSPECTIVE SCORING WORKER SERVICE TEMPLATE
+# SERVICE: cbe-080-scoring-worker
+# STATUS: DEDICATED STAGING SERVICE FOR ISOLATED PROSPECTIVE INFERENCE & RESOLUTION
+# NOTE: APPROVAL 4 REMAINS NOT AUTHORIZED. DEFAULT CONFIGURATION IS STRICTLY FAIL-CLOSED.
+# ==============================================================================
+# MANDATORY SAFETY & RESOURCE INVARIANTS:
+# 1. READ-ONLY EVIDENCE ACCESS: Mounts 'cbe_080_live_capture_data' in strict read-only mode (:ro).
+#    Zero write permissions or modification ability to raw market capture evidence.
+# 2. ISOLATED PERSISTENCE: Mounts separate writable volume 'cbe_080_prospective_data'.
+#    Zero mounts to CBE-0.7.0 production volumes or live capture directories.
+# 3. ZERO NETWORK ACCESS: network_mode: "none" (strictly isolated offline execution).
+# 4. READ_ONLY_ROOT: read_only: true (immutable root container filesystem).
+# 5. WRITABLE_PATHS: Strictly limited to /tmp (tmpfs: 64MB, noexec) and prospective data volume.
+# 6. MEMORY_CEILING: 300 MB hard limit (enforced via mem_limit & deploy.resources.limits).
+# 7. CPU_QUOTA: 0.25 CPU maximum (throttled CFS quota).
+# 8. PIDS_LIMIT: 64 maximum process threads (prevents thread exhaustion/fork-bombs).
+# 9. LOG_BOUNDS: json-file driver bounded to 10MB x 3 files (max 30MB disk footprint).
+# 10. NO_PUBLIC_PORTS: Zero inbound host ports exposed (ports: []).
+# 11. TRADING_PERMANENTLY_PROHIBITED: CBE_TRADING_DISABLED=true (hard safety interlock).
+# 12. APPROVAL_4_FAIL_CLOSED: CBE_APPROVAL_4_AUTHORIZED=false and
+#     CBE_PROSPECTIVE_OBSERVATION_ENABLED=false by default.
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  cbe-080-scoring-worker:
+    build:
+      context: .
+      dockerfile: deploy/shadow_v080/Dockerfile.staging
+    image: cbe-080-shadow:coolify-scoring-worker
+    container_name: cbe_080_coolify_scoring_worker
+    restart: "no"
+    network_mode: "none"
+    entrypoint: ["/app/entrypoint_scoring_worker.sh"]
+    read_only: true
+    user: "1000:1000"
+    pids_limit: 64
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=67108864
+    environment:
+      - CBE_ENV=staging_coolify_scoring_worker
+      - PYTHONUNBUFFERED=1
+      - CBE_SYMBOL=BTCUSDT
+      - CBE_INTERVAL=5m
+      - CBE_RAW_MARKET_DIR=/app/data/live_capture/raw_market
+      - CBE_PROSPECTIVE_DIR=/app/data/prospective
+      - CBE_TRADING_DISABLED=true
+      - CBE_PROSPECTIVE_OBSERVATION_ENABLED=false
+      - CBE_APPROVAL_4_AUTHORIZED=false
+      - CBE_RECORD_LABEL=HISTORICAL_WARMUP
+      - CBE_CONTAINER_ROLE=prospective_scoring_worker
+    mem_limit: 300m
+    mem_reservation: 150m
+    memswap_limit: 300m
+    cpus: 0.25
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 300M
+          pids: 64
+        reservations:
+          cpus: '0.05'
+          memory: 150M
+    volumes:
+      - cbe_080_live_capture_data:/app/data/live_capture/raw_market:ro
+      - cbe_080_prospective_data:/app/data/prospective:rw
+
+volumes:
+  cbe_080_live_capture_data:
+    external: true
+  cbe_080_prospective_data:
+    name: cbe_080_prospective_data

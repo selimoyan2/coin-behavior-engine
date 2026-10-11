@@ -41,8 +41,18 @@ MIN_PROSPECTIVE_WARMUP_BARS = 288  # 24 hours of 5-minute bars
 CLOCK_SKEW_BUDGET_MS = 1000
 MAX_STALENESS_MS = 900_000  # 15 minutes (3 intervals)
 
+from enum import Enum
+
 PROSPECTIVE_RECORD_LABELS = frozenset({"PROSPECTIVE_LIVE", "PROSPECTIVE_SHADOW"})
 OFFLINE_RECORD_LABELS = frozenset({"HISTORICAL_REPLAY", "WARMUP_REPLAY", "OFFLINE_FIXTURE"})
+
+
+class ExecutionBoundary(str, Enum):
+    DIRECT_CALL = "DIRECT_CALL"
+    PIPELINE_RUNNER = "PIPELINE_RUNNER"
+    CLI = "CLI"
+    BACKGROUND_WORKER = "BACKGROUND_WORKER"
+    SCHEDULED_JOB = "SCHEDULED_JOB"
 
 
 # ==============================================================================
@@ -141,20 +151,58 @@ class ProspectiveAuthorizationGuard:
 
     @staticmethod
     def check_authorization(
-        record_label: str = "HISTORICAL_REPLAY",
-        is_prospective: bool = False,
+        boundary_or_record_label: Union[ExecutionBoundary, str] = "HISTORICAL_REPLAY",
+        run_mode_or_is_prospective: Union[str, bool] = False,
         env: Optional[Dict[str, str]] = None,
+        record_label: Optional[str] = None,
+        is_prospective: Optional[bool] = None,
+        boundary: Optional[Union[ExecutionBoundary, str]] = None,
+        run_mode: Optional[str] = None,
     ) -> Tuple[bool, List[str]]:
         """Verify environment variables and runtime flags for prospective scoring.
 
         Fails closed on any non-strict value.
         Evaluated dynamically immediately before inference execution.
+        Supports both (record_label, is_prospective) and (boundary, run_mode) calling patterns.
         """
         env_map = env if env is not None else os.environ
         violations: List[str] = []
 
-        # 2. Check if prospective live execution is requested
-        prospective_requested = is_prospective or (record_label == "PROSPECTIVE_LIVE")
+        # Determine effective boundary
+        if boundary is not None:
+            effective_boundary = boundary
+        elif isinstance(boundary_or_record_label, ExecutionBoundary) or (
+            isinstance(boundary_or_record_label, str)
+            and boundary_or_record_label in {e.value for e in ExecutionBoundary}
+        ):
+            effective_boundary = boundary_or_record_label
+        else:
+            effective_boundary = None
+
+        # Determine effective record_label
+        if record_label is not None:
+            effective_record_label = record_label
+        elif run_mode is not None:
+            effective_record_label = run_mode
+        elif effective_boundary is not None and boundary_or_record_label == effective_boundary:
+            if isinstance(run_mode_or_is_prospective, str):
+                effective_record_label = run_mode_or_is_prospective
+            elif isinstance(run_mode_or_is_prospective, bool):
+                effective_record_label = "PROSPECTIVE_LIVE" if run_mode_or_is_prospective else "HISTORICAL_REPLAY"
+            else:
+                effective_record_label = "HISTORICAL_REPLAY"
+        else:
+            effective_record_label = str(boundary_or_record_label)
+
+        # Determine effective is_prospective
+        if is_prospective is not None:
+            effective_is_prosp = is_prospective
+        elif isinstance(run_mode_or_is_prospective, bool) and effective_boundary is None:
+            effective_is_prosp = run_mode_or_is_prospective
+        else:
+            effective_is_prosp = (effective_record_label == "PROSPECTIVE_LIVE")
+
+        prospective_requested = effective_is_prosp or (effective_record_label == "PROSPECTIVE_LIVE")
 
         # 1. Trading must ALWAYS be strictly disabled
         trading_val = env_map.get("CBE_TRADING_DISABLED")
@@ -196,7 +244,7 @@ class ProspectiveAuthorizationGuard:
         else:
             # Offline research / replay execution path
             # Must NOT produce PROSPECTIVE_LIVE records
-            if record_label == "PROSPECTIVE_LIVE":
+            if effective_record_label == "PROSPECTIVE_LIVE":
                 violations.append(
                     "Offline research cannot emit prospective record label 'PROSPECTIVE_LIVE'."
                 )
@@ -206,15 +254,23 @@ class ProspectiveAuthorizationGuard:
     @classmethod
     def verify_authorization(
         cls,
-        record_label: str = "HISTORICAL_REPLAY",
-        is_prospective: bool = False,
+        boundary_or_record_label: Union[ExecutionBoundary, str] = "HISTORICAL_REPLAY",
+        run_mode_or_is_prospective: Union[str, bool] = False,
         env: Optional[Dict[str, str]] = None,
+        record_label: Optional[str] = None,
+        is_prospective: Optional[bool] = None,
+        boundary: Optional[Union[ExecutionBoundary, str]] = None,
+        run_mode: Optional[str] = None,
     ) -> None:
         """Enforce prospective authorization, raising ProspectiveAuthorizationError on failure."""
         is_valid, violations = cls.check_authorization(
+            boundary_or_record_label=boundary_or_record_label,
+            run_mode_or_is_prospective=run_mode_or_is_prospective,
+            env=env,
             record_label=record_label,
             is_prospective=is_prospective,
-            env=env,
+            boundary=boundary,
+            run_mode=run_mode,
         )
         if not is_valid:
             msg = "; ".join(violations)

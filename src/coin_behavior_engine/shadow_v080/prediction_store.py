@@ -81,7 +81,7 @@ class ImmutablePredictionStoreV080:
         self.quarantine_dir = Path(quarantine_dir) if quarantine_dir else (self.store_dir / "quarantine")
         self.quarantine_dir.mkdir(parents=True, exist_ok=True)
         self.index_file = self.store_dir / "index_predictions.sqlite3"
-        self._lock = threading.Lock()
+        self._lock = threading.RLock()
         self._seen_keys: Set[str] = set()
         self._latest_hash: str = SHADOW_GENESIS_HASH
         self._event_count: int = 0
@@ -217,10 +217,31 @@ class ImmutablePredictionStoreV080:
         """Append a validated forecast event to the hash chain and update durable index."""
         return self.append_events_batch([event])[0]
 
-    def get_unmatured_events(self) -> List[ShadowPredictionEvent]:
-        """Return shallow copy of currently un-matured prediction events."""
+    def get_pending_count(self) -> int:
+        """Return total count of pending predictions."""
         with self._lock:
+            if self.durable_index:
+                return self.durable_index.get_pending_count()
+            return len(self._unmatured_events)
+
+    def get_unmatured_events(self) -> List[ShadowPredictionEvent]:
+        """Return all currently un-matured prediction events without silent eviction."""
+        with self._lock:
+            if self.durable_index:
+                pending_count = self.durable_index.get_pending_count()
+                if pending_count > len(self._unmatured_events):
+                    return self.durable_index.get_pending_predictions()
             return list(self._unmatured_events)
+
+    def get_unmatured_events_paged(self, page_size: int = 500) -> Iterator[List[ShadowPredictionEvent]]:
+        """Yield pages of un-matured prediction events."""
+        if self.durable_index:
+            yield from self.durable_index.get_pending_predictions_paged(page_size=page_size)
+            return
+        with self._lock:
+            events_copy = list(self._unmatured_events)
+        for i in range(0, len(events_copy), page_size):
+            yield list(events_copy[i : i + page_size])
 
     def prune_matured_events(self, matured_hashes: Set[str]) -> None:
         """Prune resolved events from in-memory pending queue and update SQLite index."""
