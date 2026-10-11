@@ -189,6 +189,8 @@ class WorkerCheckpoint:
 # Worker Configuration
 # ==============================================================================
 
+VALID_RUN_MODES = frozenset({"PASSIVE_OBSERVATION", "OFFLINE_WARMUP", "PROSPECTIVE_LIVE"})
+
 @dataclass
 class WorkerConfigV080:
     evidence_dir: Path
@@ -201,12 +203,16 @@ class WorkerConfigV080:
     poll_interval_s: float = 1.0
     min_warmup_bars: int = 288
     max_buffer_bars: int = 350
-    run_mode: str = "OFFLINE_WARMUP"  # "OFFLINE_WARMUP" or "PROSPECTIVE_LIVE"
+    run_mode: str = "PASSIVE_OBSERVATION"  # "PASSIVE_OBSERVATION", "OFFLINE_WARMUP", or "PROSPECTIVE_LIVE"
     models_dir: Optional[Path] = None
     quarantine_dir: Optional[Path] = None
     env: Optional[Dict[str, str]] = None
     experiment_id: str = "EXP-CBE-0.8.0-SHADOW-2026-V1"
     protocol_version: str = "CBE-PROTOCOL-0.8.0-V1"
+
+    def __post_init__(self) -> None:
+        if self.run_mode not in VALID_RUN_MODES:
+            raise ValueError(f"Invalid run_mode '{self.run_mode}'. Must be one of {sorted(VALID_RUN_MODES)}")
 
 
 # ==============================================================================
@@ -225,6 +231,14 @@ class ProspectiveScoringWorkerV080:
         self.boundary_file = self.prospective_dir / "authorized_start_boundary.json"
         self.quarantine_dir = Path(config.quarantine_dir) if config.quarantine_dir else (self.prospective_dir / "quarantine")
         self.quarantine_dir.mkdir(parents=True, exist_ok=True)
+
+        # Fail-closed startup configuration checks
+        env_map = self.config.env if self.config.env is not None else os.environ
+        trading_val = env_map.get("CBE_TRADING_DISABLED", "true")
+        if trading_val != "true":
+            raise ProspectiveAuthorizationError(
+                f"CBE_TRADING_DISABLED must be strictly 'true' (got '{trading_val}'). Trading is prohibited."
+            )
 
         # 1. Read-Only Evidence Lookup (Zero ability to modify capture ledger)
         self.evidence_lookup = PersistentEvidenceLookupV080(
@@ -632,6 +646,30 @@ class ProspectiveScoringWorkerV080:
         """Signal worker to stop gracefully."""
         self._stop_requested = True
 
+    def get_evidence_health_report(self) -> Dict[str, Any]:
+        """Perform read-only inspection of evidence health, warmup continuity, and worker stats."""
+        with self._lock:
+            warmup_ready, count, msg = self.check_warmup_status()
+            latest = self.evidence_lookup.get_latest_candle()
+            return {
+                "run_mode": self.config.run_mode,
+                "warmup_ready": warmup_ready,
+                "buffered_bars": count,
+                "min_warmup_bars": self.config.min_warmup_bars,
+                "status_message": msg,
+                "last_processed_entry_index": self.checkpoint.last_processed_entry_index,
+                "last_processed_candle_timestamp_ms": self.checkpoint.last_processed_candle_timestamp_ms,
+                "latest_evidence_candle_timestamp_ms": latest.timestamp_open if latest else None,
+                "start_boundary_established": self.start_boundary is not None,
+                "authorized_start_boundary_ts_ms": (
+                    self.start_boundary.authorized_start_boundary_ts_ms if self.start_boundary else None
+                ),
+                "total_entries_read": self.checkpoint.total_entries_read,
+                "total_predictions_emitted": self.checkpoint.total_predictions_emitted,
+                "total_outcomes_resolved": self.checkpoint.total_outcomes_resolved,
+                "pending_predictions_count": self.checkpoint.pending_predictions_count,
+            }
+
     def close(self) -> None:
         """Cleanly close underlying stores and connections."""
         if hasattr(self, "evidence_lookup") and self.evidence_lookup:
@@ -671,7 +709,10 @@ def main() -> None:
     prospective_dir = Path(os.getenv("CBE_PROSPECTIVE_DIR", "/app/data/prospective"))
     symbol = os.getenv("CBE_SYMBOL", "BTCUSDT")
     interval = os.getenv("CBE_INTERVAL", "5m")
-    run_mode = os.getenv("CBE_RUN_MODE", "OFFLINE_WARMUP")
+    run_mode = os.getenv("CBE_RUN_MODE", "PASSIVE_OBSERVATION")
+    app4_auth = os.getenv("CBE_APPROVAL_4_AUTHORIZED", "false")
+    prosp_enabled = os.getenv("CBE_PROSPECTIVE_OBSERVATION_ENABLED", "false")
+    trading_disabled = os.getenv("CBE_TRADING_DISABLED", "true")
 
     logger.info("==================================================================")
     logger.info("CBE-0.8.0 PROSPECTIVE SCORING WORKER: STARTUP")
@@ -679,17 +720,27 @@ def main() -> None:
     logger.info(f"Evidence Dir (RO): {evidence_dir}")
     logger.info(f"Prospective Dir (RW): {prospective_dir}")
     logger.info(f"Run Mode: {run_mode}")
-    logger.info("Trading: PERMANENTLY DISABLED")
+    logger.info(f"CBE_APPROVAL_4_AUTHORIZED: {app4_auth}")
+    logger.info(f"CBE_PROSPECTIVE_OBSERVATION_ENABLED: {prosp_enabled}")
+    logger.info(f"CBE_TRADING_DISABLED: {trading_disabled}")
     logger.info("==================================================================")
 
-    # Preflight authorization check
-    app4_auth = os.getenv("CBE_APPROVAL_4_AUTHORIZED", "false")
-    if app4_auth != "true":
-        logger.warning(
-            "APPROVAL 4 IS NOT AUTHORIZED (CBE_APPROVAL_4_AUTHORIZED != 'true'). "
-            "Worker running in inert OFFLINE_WARMUP mode only. Zero prospective scores will be emitted."
-        )
-        run_mode = "OFFLINE_WARMUP"
+    # Fail-closed checks on startup
+    if trading_disabled != "true":
+        logger.error(f"FATAL: CBE_TRADING_DISABLED is '{trading_disabled}'. Trading is prohibited.")
+        sys.exit(1)
+
+    if run_mode == "PROSPECTIVE_LIVE" or prosp_enabled == "true":
+        if app4_auth != "true":
+            logger.error(
+                "FATAL: Prospective live mode requested but APPROVAL 4 IS NOT AUTHORIZED "
+                f"(CBE_APPROVAL_4_AUTHORIZED='{app4_auth}'). Refusing startup."
+            )
+            sys.exit(1)
+
+    if run_mode not in VALID_RUN_MODES:
+        logger.error(f"FATAL: Invalid run_mode '{run_mode}'. Must be one of {sorted(VALID_RUN_MODES)}")
+        sys.exit(1)
 
     config = WorkerConfigV080(
         evidence_dir=evidence_dir,
@@ -705,7 +756,10 @@ def main() -> None:
     except KeyboardInterrupt:
         logger.info("Shutdown requested via KeyboardInterrupt.")
         worker.stop()
+    finally:
+        worker.close()
 
 
 if __name__ == "__main__":
     main()
+
