@@ -29,6 +29,8 @@ from coin_behavior_engine.shadow_v080.inference_runner import (
     verify_prospective_execution_boundary,
 )
 from coin_behavior_engine.shadow_v080.prediction_indexing import (
+    DurableOutcomeIndexV080,
+    DurablePredictionIndexV080,
     IPendingPredictionIndex,
     JournalPendingPredictionIndexV080,
 )
@@ -110,6 +112,8 @@ __all__ = [
     "DualBranchPredictionResult",
     "DuplicateForecastError",
     "DuplicateTimestampError",
+    "DurableOutcomeIndexV080",
+    "DurablePredictionIndexV080",
     "EventIntegrityAuditorV080",
     "EventTamperError",
     "EvidenceCorruptionError",

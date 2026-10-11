@@ -69,16 +69,35 @@ class ShadowPredictionEvent:
 class ImmutablePredictionStoreV080:
     """Thread-safe append-only prediction store with cryptographic hash chaining."""
 
-    def __init__(self, store_dir: Path):
+    def __init__(
+        self,
+        store_dir: Path,
+        quarantine_dir: Optional[Path] = None,
+        enable_sqlite_index: bool = True,
+    ):
         self.store_dir = Path(store_dir)
         self.store_dir.mkdir(parents=True, exist_ok=True)
         self.events_file = self.store_dir / "shadow_predictions.jsonl"
+        self.quarantine_dir = Path(quarantine_dir) if quarantine_dir else (self.store_dir / "quarantine")
+        self.quarantine_dir.mkdir(parents=True, exist_ok=True)
+        self.index_file = self.store_dir / "index_predictions.sqlite3"
         self._lock = threading.Lock()
         self._seen_keys: Set[str] = set()
         self._latest_hash: str = SHADOW_GENESIS_HASH
         self._event_count: int = 0
         self._is_chain_intact: bool = True
         self._unmatured_events: List[ShadowPredictionEvent] = []
+
+        self.enable_sqlite_index = enable_sqlite_index
+        self.durable_index: Optional[Any] = None
+        if self.enable_sqlite_index:
+            from coin_behavior_engine.shadow_v080.prediction_indexing import DurablePredictionIndexV080
+            self.durable_index = DurablePredictionIndexV080(
+                store_dir=self.store_dir,
+                events_file=self.events_file,
+                quarantine_dir=self.quarantine_dir,
+            )
+
         self._load_or_verify_chain()
 
     @property
@@ -96,6 +115,16 @@ class ImmutablePredictionStoreV080:
     def _load_or_verify_chain(self) -> None:
         """Read existing JSONL, verify unbroken hash chain, and build dedup index."""
         if not self.events_file.exists():
+            return
+
+        if self.durable_index:
+            valid_count, latest_h = self.durable_index.rebuild_or_sync_from_journal(self.events_file)
+            self._event_count = valid_count
+            self._latest_hash = latest_h
+            self._is_chain_intact = True
+            self._unmatured_events = self.durable_index.get_pending_predictions()[-2000:]
+            self._seen_keys.update(self.durable_index.get_all_keys())
+            self._file_offset = self.events_file.stat().st_size if self.events_file.exists() else 0
             return
 
         with open(self.events_file, "r", encoding="utf-8") as f:
@@ -138,27 +167,55 @@ class ImmutablePredictionStoreV080:
 
             self._latest_hash = prev_hash
 
-    def append_event(self, event: ShadowPredictionEvent) -> str:
-        """Append a validated forecast event to the hash chain."""
-        key = f"{event.forecast_origin_utc}_{event.candidate_branch}_{event.target_horizon}"
+    def append_events_batch(self, events: List[ShadowPredictionEvent]) -> List[str]:
+        """Append a batch of validated forecast events with single disk flush and batch SQLite index."""
+        if not events:
+            return []
         with self._lock:
-            if key in self._seen_keys:
-                raise DuplicateForecastError(f"Forecast key '{key}' already exists in store.")
+            for event in events:
+                key = f"{event.forecast_origin_utc}_{event.candidate_branch}_{event.target_horizon}"
+                if key in self._seen_keys:
+                    raise DuplicateForecastError(f"Forecast key '{key}' already exists in store.")
 
-            event.previous_event_hash = self._latest_hash
-            event.record_hash = event.compute_hash()
+            hashes = []
+            events_with_meta = []
+            combined_bytes = bytearray()
+            current_offset = getattr(self, "_file_offset", 0)
 
-            line = json.dumps(event.to_dict(), sort_keys=True) + "\n"
-            with open(self.events_file, "a", encoding="utf-8") as f:
-                f.write(line)
+            for event in events:
+                key = f"{event.forecast_origin_utc}_{event.candidate_branch}_{event.target_horizon}"
+                event.previous_event_hash = self._latest_hash
+                event.record_hash = event.compute_hash()
+
+                line_str = json.dumps(event.to_dict(), sort_keys=True) + "\n"
+                line_bytes = line_str.encode("utf-8")
+                event_offset = current_offset + len(combined_bytes)
+                combined_bytes.extend(line_bytes)
+
+                self._seen_keys.add(key)
+                self._latest_hash = event.record_hash
+                self._event_count += 1
+                self._unmatured_events.append(event)
+                events_with_meta.append((event, event_offset, self._event_count, "PENDING"))
+                hashes.append(event.record_hash)
+
+            with open(self.events_file, "ab") as f:
+                f.write(combined_bytes)
                 f.flush()
                 os.fsync(f.fileno())
+            self._file_offset = current_offset + len(combined_bytes)
 
-            self._seen_keys.add(key)
-            self._latest_hash = event.record_hash
-            self._event_count += 1
-            self._unmatured_events.append(event)
-            return event.record_hash
+            if len(self._unmatured_events) > 2000:
+                self._unmatured_events = self._unmatured_events[-2000:]
+
+            if self.durable_index:
+                self.durable_index.index_events_batch(events_with_meta)
+
+            return hashes
+
+    def append_event(self, event: ShadowPredictionEvent) -> str:
+        """Append a validated forecast event to the hash chain and update durable index."""
+        return self.append_events_batch([event])[0]
 
     def get_unmatured_events(self) -> List[ShadowPredictionEvent]:
         """Return shallow copy of currently un-matured prediction events."""
@@ -166,11 +223,13 @@ class ImmutablePredictionStoreV080:
             return list(self._unmatured_events)
 
     def prune_matured_events(self, matured_hashes: Set[str]) -> None:
-        """Prune resolved events from in-memory pending queue."""
+        """Prune resolved events from in-memory pending queue and update SQLite index."""
         if not matured_hashes:
             return
         with self._lock:
             self._unmatured_events = [e for e in self._unmatured_events if e.record_hash not in matured_hashes]
+            if self.durable_index:
+                self.durable_index.mark_matured_batch(matured_hashes, status="MATURED")
 
     def list_events(self) -> List[ShadowPredictionEvent]:
         """Read and return all stored prediction events from disk (retained for backward compatibility)."""

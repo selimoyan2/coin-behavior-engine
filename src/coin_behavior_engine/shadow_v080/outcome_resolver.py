@@ -101,27 +101,56 @@ class OutcomeResolverV080:
         self,
         store_dir: Path,
         evidence_lookup: Optional[PersistentEvidenceLookupV080] = None,
+        outcome_index: Optional[Any] = None,
+        prediction_index: Optional[Any] = None,
+        quarantine_dir: Optional[Path] = None,
+        enable_sqlite_index: bool = True,
     ):
         self.store_dir = Path(store_dir)
         self.store_dir.mkdir(parents=True, exist_ok=True)
         self.outcomes_file = self.store_dir / "shadow_outcomes.jsonl"
+        self.quarantine_dir = Path(quarantine_dir) if quarantine_dir else (self.store_dir / "quarantine")
+        self.quarantine_dir.mkdir(parents=True, exist_ok=True)
+        self.index_file = self.store_dir / "index_outcomes.sqlite3"
         self._lock = threading.Lock()
         self._seen_predictions: Set[str] = set()
         self.evidence_lookup = evidence_lookup
+        self.prediction_index = prediction_index
+
+        self.enable_sqlite_index = enable_sqlite_index
+        self.outcome_index = outcome_index
+        if self.outcome_index is None and self.enable_sqlite_index:
+            from coin_behavior_engine.shadow_v080.prediction_indexing import DurableOutcomeIndexV080
+            self.outcome_index = DurableOutcomeIndexV080(
+                store_dir=self.store_dir,
+                outcomes_file=self.outcomes_file,
+                quarantine_dir=self.quarantine_dir,
+            )
+
         self._load_existing_outcomes()
 
     def _load_existing_outcomes(self) -> None:
+        if self.outcome_index:
+            self.outcome_index.rebuild_or_sync_from_journal(self.outcomes_file)
+        self._file_offset = self.outcomes_file.stat().st_size if self.outcomes_file.exists() else 0
         if not self.outcomes_file.exists():
             return
         with open(self.outcomes_file, "r", encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
                 if line:
-                    data = json.loads(line)
-                    self._seen_predictions.add(data.get("prediction_event_hash", ""))
+                    try:
+                        data = json.loads(line)
+                        self._seen_predictions.add(data.get("prediction_event_hash", ""))
+                    except Exception:
+                        pass
 
     def has_outcome(self, prediction_hash: str) -> bool:
-        return prediction_hash in self._seen_predictions
+        if prediction_hash in self._seen_predictions:
+            return True
+        if self.outcome_index:
+            return self.outcome_index.has_outcome(prediction_hash)
+        return False
 
     def resolve_matured_predictions(
         self,
@@ -129,6 +158,7 @@ class OutcomeResolverV080:
         available_candles: Optional[List[CandleData]] = None,
         current_time_ms: Optional[int] = None,
         evidence_lookup: Optional[PersistentEvidenceLookupV080] = None,
+        prediction_index: Optional[Any] = None,
     ) -> List[ShadowOutcomeEvent]:
         """Inspect pending prediction events and resolve matured outcomes against persistent evidence or available candles."""
         if not pending_events:
@@ -143,6 +173,7 @@ class OutcomeResolverV080:
         with self._lock:
             # 1. Primary path: Persistent Evidence Lookup
             if active_lookup is not None:
+                resolved_pairs = []
                 for pred in pending_events:
                     if pred.record_hash in self._seen_predictions:
                         continue
@@ -216,14 +247,43 @@ class OutcomeResolverV080:
                         record_label=getattr(pred, "record_label", "HISTORICAL_REPLAY"),
                     )
                     outcome.outcome_hash = outcome.compute_hash()
+                    resolved_pairs.append((pred, outcome, status))
 
-                    with open(self.outcomes_file, "a", encoding="utf-8") as f:
-                        f.write(json.dumps(outcome.to_dict(), sort_keys=True) + "\n")
-                        f.flush()
-                        os.fsync(f.fileno())
+                if not resolved_pairs:
+                    return []
+
+                combined_bytes = bytearray()
+                current_offset = getattr(self, "_file_offset", 0)
+                outcomes_with_meta = []
+                resolved = []
+
+                for pred, outcome, status in resolved_pairs:
+                    line_str = json.dumps(outcome.to_dict(), sort_keys=True) + "\n"
+                    line_bytes = line_str.encode("utf-8")
+                    outcome_offset = current_offset + len(combined_bytes)
+                    combined_bytes.extend(line_bytes)
 
                     self._seen_predictions.add(pred.record_hash)
+                    outcomes_with_meta.append((outcome.to_dict(), outcome_offset, len(self._seen_predictions)))
                     resolved.append(outcome)
+
+                with open(self.outcomes_file, "ab") as f:
+                    f.write(combined_bytes)
+                    f.flush()
+                    os.fsync(f.fileno())
+                self._file_offset = current_offset + len(combined_bytes)
+
+                if self.outcome_index:
+                    self.outcome_index.record_outcomes_batch(outcomes_with_meta)
+
+                active_pred_index = prediction_index or self.prediction_index
+                if active_pred_index:
+                    for pred, outcome, status in resolved_pairs:
+                        active_pred_index.mark_matured(
+                            record_hash=pred.record_hash,
+                            outcome_id=outcome.outcome_id,
+                            status=status,
+                        )
 
                 return resolved
 
@@ -243,6 +303,7 @@ class OutcomeResolverV080:
         earliest_c = available_candles[0] if available_candles else None
 
         with self._lock:
+            resolved_pairs = []
             for pred in pending_events:
                 if pred.record_hash in self._seen_predictions:
                     continue
@@ -342,13 +403,42 @@ class OutcomeResolverV080:
                 )
                 outcome.outcome_hash = outcome.compute_hash()
 
-                # Append to outcomes JSONL
-                with open(self.outcomes_file, "a", encoding="utf-8") as f:
-                    f.write(json.dumps(outcome.to_dict(), sort_keys=True) + "\n")
-                    f.flush()
-                    os.fsync(f.fileno())
+                resolved_pairs.append((pred, outcome, status))
+
+            if not resolved_pairs:
+                return []
+
+            combined_bytes = bytearray()
+            current_offset = getattr(self, "_file_offset", 0)
+            outcomes_with_meta = []
+            resolved = []
+
+            for pred, outcome, status in resolved_pairs:
+                line_str = json.dumps(outcome.to_dict(), sort_keys=True) + "\n"
+                line_bytes = line_str.encode("utf-8")
+                outcome_offset = current_offset + len(combined_bytes)
+                combined_bytes.extend(line_bytes)
 
                 self._seen_predictions.add(pred.record_hash)
+                outcomes_with_meta.append((outcome.to_dict(), outcome_offset, len(self._seen_predictions)))
                 resolved.append(outcome)
 
-        return resolved
+            with open(self.outcomes_file, "ab") as f:
+                f.write(combined_bytes)
+                f.flush()
+                os.fsync(f.fileno())
+            self._file_offset = current_offset + len(combined_bytes)
+
+            if self.outcome_index:
+                self.outcome_index.record_outcomes_batch(outcomes_with_meta)
+
+            active_pred_index = prediction_index or self.prediction_index
+            if active_pred_index:
+                for pred, outcome, status in resolved_pairs:
+                    active_pred_index.mark_matured(
+                        record_hash=pred.record_hash,
+                        outcome_id=outcome.outcome_id,
+                        status=status,
+                    )
+
+            return resolved

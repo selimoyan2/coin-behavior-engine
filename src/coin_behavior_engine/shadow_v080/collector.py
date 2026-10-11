@@ -272,6 +272,7 @@ class ShadowCollectorV080:
                 "cal_e_sha256": "6821136ad71411b8778c481055d4204640d19be0acaedaf8db3cd18ee3b4bf50",
             }
 
+            cycle_events = []
             for branch_name, intervals_dict in [
                 ("candidate_c", dual_pred.candidate_c_intervals),
                 ("candidate_e", dual_pred.candidate_e_intervals),
@@ -308,8 +309,10 @@ class ShadowCollectorV080:
                         market_state=dual_pred.primary_state,
                         record_label=actual_label,
                     )
-                    h_rec = self.prediction_store.append_event(ev)
-                    emitted_hashes.append(h_rec)
+                    cycle_events.append(ev)
+
+            if cycle_events:
+                emitted_hashes = self.prediction_store.append_events_batch(cycle_events)
 
         # 8. Resolve Matured Outcomes
         unmatured = self.prediction_store.get_unmatured_events()
