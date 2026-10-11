@@ -637,7 +637,8 @@ def test_13_coolify_compose_and_entrypoint_invariants():
     assert "mem_limit: 300m" in compose_text
     assert "cpus: 0.25" in compose_text
     assert "pids_limit: 64" in compose_text
-    assert "cbe_080_live_capture_data:/app/data/live_capture/raw_market:ro" in compose_text
+    assert "cbe_080_live_capture_data:/app/data/live_capture:ro" in compose_text
+    assert "cbe_080_live_capture_data:/app/data/live_capture/raw_market:ro" not in compose_text
     assert "cbe_080_prospective_data:/app/data/prospective:rw" in compose_text
     assert "CBE_APPROVAL_4_AUTHORIZED=false" in compose_text
     assert "CBE_TRADING_DISABLED=true" in compose_text

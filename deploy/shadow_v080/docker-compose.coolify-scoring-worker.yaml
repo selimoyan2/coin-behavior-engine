@@ -75,7 +75,7 @@ services:
           cpus: '0.05'
           memory: 150M
     volumes:
-      - cbe_080_live_capture_data:/app/data/live_capture/raw_market:ro
+      - cbe_080_live_capture_data:/app/data/live_capture:ro
       - cbe_080_prospective_data:/app/data/prospective:rw
 
 volumes:

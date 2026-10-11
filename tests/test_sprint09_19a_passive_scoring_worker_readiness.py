@@ -130,10 +130,11 @@ def test_01_compose_volume_identity_and_path_mapping():
     svc = compose_cfg["services"]["cbe-080-scoring-worker"]
     svc_volumes = svc.get("volumes", [])
     
-    # Must mount live capture volume read-only at /app/data/live_capture/raw_market
+    # Must mount live capture volume read-only at /app/data/live_capture (NOT /raw_market)
     live_mount = [v for v in svc_volumes if "cbe_080_live_capture_data" in v]
     assert len(live_mount) == 1
-    assert live_mount[0] == "cbe_080_live_capture_data:/app/data/live_capture/raw_market:ro"
+    assert live_mount[0] == "cbe_080_live_capture_data:/app/data/live_capture:ro"
+    assert "cbe_080_live_capture_data:/app/data/live_capture/raw_market:ro" not in svc_volumes
 
     # Must mount scoring volume read-write at /app/data/prospective
     scoring_mount = [v for v in svc_volumes if "cbe_080_prospective_data" in v]
@@ -428,3 +429,78 @@ def test_07_compose_resource_limits_and_security_profile():
     assert log_cfg.get("driver") == "json-file"
     assert log_cfg.get("options", {}).get("max-size") == "10m"
     assert int(log_cfg.get("options", {}).get("max-file")) <= 3
+
+
+# ==============================================================================
+# 7. Regression Prevention: Nested raw_market/raw_market Mount
+# ==============================================================================
+
+def test_08_evidence_volume_mount_path_resolution_and_no_nested_raw_market():
+    """Verify that live capture volume layout (volume_root/raw_market) matches compose mount path.
+
+    Prevents the bug where mounting to /app/data/live_capture/raw_market:ro caused
+    the files to be buried under /app/data/live_capture/raw_market/raw_market/.
+    """
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        tmp_path = Path(tmp_dir)
+        
+        # 1. Simulate the live capture volume filesystem layout
+        capture_volume_root = tmp_path / "live_capture_volume"
+        raw_market_dir = capture_volume_root / "raw_market"
+        quarantine_dir = capture_volume_root / "quarantine"
+        raw_market_dir.mkdir(parents=True)
+        quarantine_dir.mkdir(parents=True)
+
+        candles = populate_raw_evidence(raw_market_dir, num_candles=300)
+
+        # Confirm evidence files are directly in capture_volume_root/raw_market
+        assert (raw_market_dir / "raw_candles_BTCUSDT_5m.jsonl").exists()
+        assert (raw_market_dir / "index_BTCUSDT_5m.sqlite3").exists()
+
+        # 2. Simulate container mount /app/data/live_capture:ro -> capture_volume_root
+        container_live_capture_mount = capture_volume_root
+        container_raw_market_dir = container_live_capture_mount / "raw_market"
+        prosp_dir = tmp_path / "prospective"
+
+        # Verify no double nesting exists
+        assert not (container_raw_market_dir / "raw_market").exists()
+
+        # 3. Initialize worker in PASSIVE_OBSERVATION mode pointing to container_raw_market_dir
+        config = WorkerConfigV080(
+            evidence_dir=container_raw_market_dir,
+            prospective_dir=prosp_dir,
+            run_mode="PASSIVE_OBSERVATION",
+            batch_size=350,
+            env={
+                "CBE_TRADING_DISABLED": "true",
+                "CBE_APPROVAL_4_AUTHORIZED": "false",
+                "CBE_PROSPECTIVE_OBSERVATION_ENABLED": "false",
+            },
+        )
+        worker = ProspectiveScoringWorkerV080(config)
+
+        try:
+            # Process batch
+            entries_processed = worker.process_next_batch()
+
+            # Must read all 300 genuine evidence candles
+            assert entries_processed == 300
+            assert worker.checkpoint.total_entries_read == 300
+            assert worker.checkpoint.last_processed_entry_index == 299
+            assert worker.checkpoint.total_warmup_bars_buffered >= 288
+
+            # Invariants: Zero live predictions emitted, zero outcomes resolved
+            assert worker.checkpoint.total_predictions_emitted == 0
+            assert worker.checkpoint.total_outcomes_resolved == 0
+            assert worker.checkpoint.pending_predictions_count == 0
+
+            # Health report confirms evidence discovery
+            rep = worker.get_evidence_health_report()
+            assert rep["warmup_ready"] is True
+            assert rep["buffered_bars"] == 300
+            assert rep["total_entries_read"] == 300
+            assert rep["total_predictions_emitted"] == 0
+
+        finally:
+            worker.close()
+
