@@ -56,6 +56,10 @@ from coin_behavior_engine.shadow_v080.prediction_store import (
     ImmutablePredictionStoreV080,
     ShadowPredictionEvent,
 )
+from coin_behavior_engine.shadow_v080.prospective_guard import (
+    PROSPECTIVE_RECORD_LABELS,
+    ProspectiveAuthorizationGuard,
+)
 
 logger = logging.getLogger("cbe_shadow_collector")
 
@@ -83,6 +87,13 @@ class ShadowCollectorV080:
 
         self.last_candle_close_utc = ""
         self.total_cycles = 0
+
+        # Early fail-closed validation for prospective live initialization
+        if self.record_label == "PROSPECTIVE_LIVE":
+            ProspectiveAuthorizationGuard.verify_authorization(
+                record_label=self.record_label,
+                is_prospective=True,
+            )
 
     def initialize(self) -> bool:
         """Initialize buffer from local snapshot and audit historical integrity."""
@@ -222,7 +233,23 @@ class ShadowCollectorV080:
         emitted_hashes = []
         if recon.status in ("READY", "READY_PARTIAL_WARMUP"):
             origin_utc = recon.forecast_origin_utc
-            dual_pred = self.inference_runner.predict(recon.features, origin_utc)
+
+            # Prospective eligibility flag: requires full warmup window (>=288 bars) + eligible state machine
+            is_scored = self.state_machine.is_eligible and quality.eligible_for_prospective_scoring
+            actual_label = self.record_label if is_scored else (
+                "WARMUP_REPLAY" if self.record_label == "PROSPECTIVE_SHADOW" else "HISTORICAL_REPLAY"
+            )
+            is_prospective = is_scored and (actual_label == "PROSPECTIVE_LIVE")
+
+            dual_pred = self.inference_runner.predict(
+                features=recon.features,
+                forecast_origin_utc=origin_utc,
+                record_label=actual_label,
+                is_prospective=is_prospective,
+                context_candles=self.feature_pipeline.adapter.buffer if is_prospective else None,
+                current_candle=candle if is_prospective else None,
+                current_time_ms=rec_ms,
+            )
 
             # Store predictions for both branches across all 3 horizons
             commit_utc = (
@@ -246,12 +273,6 @@ class ShadowCollectorV080:
                     h_mins = 60 if h == "1h" else (240 if h == "4h" else 1440)
                     mat_dt = pd.Timestamp(origin_utc) + pd.Timedelta(minutes=h_mins)
                     mat_utc = mat_dt.strftime("%Y-%m-%dT%H:%M:%SZ")
-
-                    # Prospective eligibility flag: requires full warmup window (>=288 bars) + eligible state machine
-                    is_scored = self.state_machine.is_eligible and quality.eligible_for_prospective_scoring
-                    actual_label = self.record_label if is_scored else (
-                        "WARMUP_REPLAY" if self.record_label == "PROSPECTIVE_SHADOW" else "HISTORICAL_REPLAY"
-                    )
 
                     ev = ShadowPredictionEvent(
                         event_id=f"PRED-{origin_utc[:16]}-{branch_name}-{h}",

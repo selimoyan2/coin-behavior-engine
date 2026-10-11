@@ -21,6 +21,12 @@ from coin_behavior_engine.candidate_v080.calibration_branches import (
 from coin_behavior_engine.candidate_v080.classifier import MarketStateClassifierV080
 from coin_behavior_engine.candidate_v080.inference import CandidateInferenceEngineV080
 from coin_behavior_engine.shadow_v080.configuration import ShadowCollectorConfig
+from coin_behavior_engine.shadow_v080.prospective_guard import (
+    CausalDataEligibilityGuard,
+    InsufficientWarmupBarsError,
+    PROSPECTIVE_RECORD_LABELS,
+    ProspectiveAuthorizationGuard,
+)
 
 
 @dataclass
@@ -73,8 +79,35 @@ class DualBranchInferenceRunnerV080:
         features: Dict[str, float],
         forecast_origin_utc: str,
         horizons: Optional[List[str]] = None,
+        record_label: str = "HISTORICAL_REPLAY",
+        is_prospective: bool = False,
+        context_candles: Optional[List[Any]] = None,
+        current_candle: Optional[Any] = None,
+        current_time_ms: Optional[int] = None,
+        evidence_store: Optional[Any] = None,
+        env: Optional[Dict[str, str]] = None,
     ) -> DualBranchPredictionResult:
-        """Run synchronized inference for both candidate branches."""
+        """Run synchronized inference for both candidate branches with strict fail-closed guards."""
+        # 0. Fail-Closed Prospective Authorization & Causal Eligibility Check
+        ProspectiveAuthorizationGuard.verify_authorization(
+            record_label=record_label,
+            is_prospective=is_prospective,
+            env=env,
+        )
+
+        if is_prospective or record_label == "PROSPECTIVE_LIVE":
+            if context_candles is None:
+                raise InsufficientWarmupBarsError(
+                    "Context candles must be provided to verify causal data eligibility for prospective scoring."
+                )
+            CausalDataEligibilityGuard.verify_causal_data_eligibility(
+                candles=context_candles,
+                current_candle=current_candle,
+                current_time_ms=current_time_ms,
+                evidence_store=evidence_store,
+                is_prospective=is_prospective,
+            )
+
         target_horizons = horizons or ["1h", "4h", "24h"]
 
         # 1. Validate feature vector

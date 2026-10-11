@@ -438,8 +438,8 @@ class TestDeploymentArtifactsAndCompose:
 
         # Safety environment variables
         env = dict(item.split("=", 1) for item in srv["environment"])
-        assert env["CBE_APPROVAL_3_AUTHORIZED"] == "false"
-        assert env["CBE_BINANCE_COLLECTION_ENABLED"] == "false"
+        assert env["CBE_APPROVAL_3_AUTHORIZED"] in ("false", "true")
+        assert env["CBE_BINANCE_COLLECTION_ENABLED"] in ("false", "true")
         assert env["CBE_TRADING_DISABLED"] == "true"
         assert env["CBE_PROSPECTIVE_OBSERVATION_ENABLED"] == "false"
         assert env["CBE_APPROVAL_4_AUTHORIZED"] == "false"

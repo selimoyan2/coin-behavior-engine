@@ -32,6 +32,12 @@ def main():
     config = ShadowCollectorConfig()
 
     if args.mode == "live":
+        from coin_behavior_engine.shadow_v080.prospective_guard import ProspectiveAuthorizationGuard
+        try:
+            ProspectiveAuthorizationGuard.verify_authorization(record_label="PROSPECTIVE_LIVE", is_prospective=True)
+        except Exception as e:
+            logger.error(f"HARD SAFETY INTERLOCK: {e}")
+            sys.exit(1)
         logger.error(
             "HARD SAFETY INTERLOCK: Live shadow observation is strictly disabled by default. "
             "Activation requires explicit pre-activation audit and authorization."

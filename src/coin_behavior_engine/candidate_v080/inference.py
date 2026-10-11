@@ -78,10 +78,25 @@ class CandidateInferenceEngineV080:
 
         return np.array(values, dtype=np.float64)
 
-    def predict(self, features: Dict[str, Any], horizon: str) -> float:
+    def predict(
+        self,
+        features: Dict[str, Any],
+        horizon: str,
+        record_label: str = "HISTORICAL_REPLAY",
+        is_prospective: bool = False,
+        env: Optional[Dict[str, str]] = None,
+    ) -> float:
         """Compute forecast for horizon (1h, 4h, 24h).
         Returns daily-scaled forward realized volatility (sigma_5m * sqrt(288)).
         """
+        # Defense-in-depth authorization check at direct inference engine boundary
+        from coin_behavior_engine.shadow_v080.prospective_guard import ProspectiveAuthorizationGuard
+        ProspectiveAuthorizationGuard.verify_authorization(
+            record_label=record_label,
+            is_prospective=is_prospective,
+            env=env,
+        )
+
         if horizon not in self._weights:
             raise ValueError(f"Unknown horizon '{horizon}'. Available: {list(self._weights.keys())}")
 
@@ -99,9 +114,22 @@ class CandidateInferenceEngineV080:
         # Floor at 0.0 (volatility cannot be negative)
         return max(0.0, pred)
 
-    def predict_unscaled_5m(self, features: Dict[str, Any], horizon: str) -> float:
+    def predict_unscaled_5m(
+        self,
+        features: Dict[str, Any],
+        horizon: str,
+        record_label: str = "HISTORICAL_REPLAY",
+        is_prospective: bool = False,
+        env: Optional[Dict[str, str]] = None,
+    ) -> float:
         """Compute forecast in raw 5-minute standard deviation units (sigma_5m)."""
-        daily_vol = self.predict(features, horizon)
+        daily_vol = self.predict(
+            features,
+            horizon,
+            record_label=record_label,
+            is_prospective=is_prospective,
+            env=env,
+        )
         return daily_vol / self.sqrt_288
 
     def predict_batch(self, df: pd.DataFrame, horizon: str) -> np.ndarray:
