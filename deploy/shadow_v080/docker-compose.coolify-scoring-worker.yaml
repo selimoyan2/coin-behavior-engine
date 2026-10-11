@@ -83,5 +83,6 @@ volumes:
     external: true
     name: ${CBE_LIVE_CAPTURE_VOLUME_NAME:-zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data}
   cbe_080_prospective_data:
-    name: cbe_080_prospective_data
+    name: ${CBE_PROSPECTIVE_VOLUME_NAME:-cbe_080_scoring_worker_staging_data}
+
 
