@@ -18,9 +18,19 @@ from coin_behavior_engine.shadow_v080.health_monitor import (
     HealthTelemetrySnapshot,
     ShadowHealthMonitorV080,
 )
+from coin_behavior_engine.shadow_v080.evidence_lookup import (
+    ForwardWindowResult,
+    ForwardWindowStatus,
+    PersistentEvidenceLookupV080,
+)
 from coin_behavior_engine.shadow_v080.inference_runner import (
     DualBranchInferenceRunnerV080,
     DualBranchPredictionResult,
+    verify_prospective_execution_boundary,
+)
+from coin_behavior_engine.shadow_v080.prediction_indexing import (
+    IPendingPredictionIndex,
+    JournalPendingPredictionIndexV080,
 )
 from coin_behavior_engine.shadow_v080.outcome_resolver import (
     OutcomeGapError,
@@ -106,12 +116,16 @@ __all__ = [
     "EvidencePersistenceError",
     "FeaturePipelineV080",
     "FULL_WARMUP_BARS",
+    "ForwardWindowResult",
+    "ForwardWindowStatus",
     "GapEvent",
     "HealthTelemetrySnapshot",
+    "IPendingPredictionIndex",
     "ImmutablePredictionStoreV080",
     "IncompleteCandleError",
     "InsufficientWarmupBarsError",
     "InvalidMarketIdentityError",
+    "JournalPendingPredictionIndexV080",
     "MarketCaptureEngineV080",
     "MarketDataGapDetector",
     "MarketEvidenceEntry",
@@ -122,6 +136,7 @@ __all__ = [
     "OutcomeGapError",
     "OutcomeResolverV080",
     "OversizedMessageError",
+    "PersistentEvidenceLookupV080",
     "PrematureOutcomeError",
     "PROSPECTIVE_RECORD_LABELS",
     "ProspectiveAuthorizationError",
@@ -148,4 +163,5 @@ __all__ = [
     "ValidatedCandle",
     "ValidationStatus",
     "calculate_backoff",
+    "verify_prospective_execution_boundary",
 ]

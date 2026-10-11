@@ -31,6 +31,11 @@ from coin_behavior_engine.candidate_v080.feed_adapter import (
     CandleData,
 )
 from coin_behavior_engine.candidate_v080.inference_pipeline import TARGET_UNITS
+from coin_behavior_engine.shadow_v080.evidence_lookup import (
+    ForwardWindowResult,
+    ForwardWindowStatus,
+    PersistentEvidenceLookupV080,
+)
 from coin_behavior_engine.shadow_v080.prediction_store import (
     ShadowPredictionEvent,
 )
@@ -75,6 +80,9 @@ class ShadowOutcomeEvent:
     status: str  # "MATURED_VALID" or "INVALID_GAP"
     evaluated_at_utc: str
     outcome_hash: str = ""
+    maturity_candle_hash: str = ""
+    maturity_entry_hash: str = ""
+    record_label: str = "HISTORICAL_REPLAY"
 
     def compute_hash(self) -> str:
         d = asdict(self)
@@ -89,12 +97,17 @@ class ShadowOutcomeEvent:
 class OutcomeResolverV080:
     """Manages forward outcome evaluation and immutable outcome event storage."""
 
-    def __init__(self, store_dir: Path):
+    def __init__(
+        self,
+        store_dir: Path,
+        evidence_lookup: Optional[PersistentEvidenceLookupV080] = None,
+    ):
         self.store_dir = Path(store_dir)
         self.store_dir.mkdir(parents=True, exist_ok=True)
         self.outcomes_file = self.store_dir / "shadow_outcomes.jsonl"
         self._lock = threading.Lock()
         self._seen_predictions: Set[str] = set()
+        self.evidence_lookup = evidence_lookup
         self._load_existing_outcomes()
 
     def _load_existing_outcomes(self) -> None:
@@ -113,15 +126,113 @@ class OutcomeResolverV080:
     def resolve_matured_predictions(
         self,
         pending_events: List[ShadowPredictionEvent],
-        available_candles: List[CandleData],
+        available_candles: Optional[List[CandleData]] = None,
         current_time_ms: Optional[int] = None,
+        evidence_lookup: Optional[PersistentEvidenceLookupV080] = None,
     ) -> List[ShadowOutcomeEvent]:
-        """Inspect pending prediction events and resolve matured outcomes against available candles."""
-        if not pending_events or not available_candles:
+        """Inspect pending prediction events and resolve matured outcomes against persistent evidence or available candles."""
+        if not pending_events:
             return []
 
-        # Map candles by open timestamp
-        candle_map = {c.timestamp_open: c for c in available_candles}
+        active_lookup = evidence_lookup or self.evidence_lookup
+        now_ms = current_time_ms if current_time_ms is not None else (
+            available_candles[-1].timestamp_close if available_candles else None
+        )
+        resolved = []
+
+        with self._lock:
+            # 1. Primary path: Persistent Evidence Lookup
+            if active_lookup is not None:
+                for pred in pending_events:
+                    if pred.record_hash in self._seen_predictions:
+                        continue
+
+                    required_bars = HORIZON_BARS.get(pred.target_horizon)
+                    if required_bars is None:
+                        continue
+
+                    origin_dt = pd.Timestamp(pred.forecast_origin_utc)
+                    origin_ms = int(origin_dt.timestamp() * 1000)
+
+                    window_res = active_lookup.get_forward_window(
+                        origin_ts=origin_ms,
+                        required_bars=required_bars,
+                        current_time_ms=now_ms,
+                        origin_is_close_time=True,
+                    )
+
+                    if window_res.status == ForwardWindowStatus.INCOMPLETE_PENDING:
+                        continue
+
+                    if window_res.status == ForwardWindowStatus.COMPLETE:
+                        closes = [float(c.close) for c in window_res.candles]
+                        if len(closes) > 1:
+                            log_rets = np.diff(np.log(closes))
+                            sigma_5m = float(np.std(log_rets, ddof=1)) if len(log_rets) > 1 else 0.0
+                            realized_vol = float(sigma_5m * np.sqrt(288.0))
+                            status = "MATURED_VALID"
+                        else:
+                            realized_vol = 0.0
+                            status = "MATURED_VALID"
+                    elif window_res.status == ForwardWindowStatus.INVALID_GAP:
+                        realized_vol = float("nan")
+                        status = "INVALID_GAP"
+                    else:
+                        continue
+
+                    in_80 = (
+                        not math.isnan(realized_vol)
+                        and pred.interval_80["lower"] <= realized_vol <= pred.interval_80["upper"]
+                    )
+                    in_95 = (
+                        not math.isnan(realized_vol)
+                        and pred.interval_95["lower"] <= realized_vol <= pred.interval_95["upper"]
+                    )
+
+                    eval_utc = pd.Timestamp.now(tz="UTC").isoformat()
+                    outcome = ShadowOutcomeEvent(
+                        outcome_id=f"OUT-{pred.record_hash[:16]}-{pred.target_horizon}",
+                        prediction_event_hash=pred.record_hash,
+                        forecast_origin_utc=pred.forecast_origin_utc,
+                        target_maturity_utc=pred.target_maturity_utc,
+                        target_horizon=pred.target_horizon,
+                        candidate_branch=pred.candidate_branch,
+                        point_forecast=pred.point_prediction,
+                        realized_volatility=realized_vol,
+                        target_units=TARGET_UNITS,
+                        actual_bars_evaluated=window_res.actual_bars,
+                        interval_80_lower=pred.interval_80["lower"],
+                        interval_80_upper=pred.interval_80["upper"],
+                        interval_95_lower=pred.interval_95["lower"],
+                        interval_95_upper=pred.interval_95["upper"],
+                        in_interval_80=in_80,
+                        in_interval_95=in_95,
+                        status=status,
+                        evaluated_at_utc=eval_utc,
+                        maturity_candle_hash=window_res.maturity_entry.candle_hash if window_res.maturity_entry else (
+                            window_res.maturity_candle.canonical_dict().get("close") if window_res.maturity_candle else ""
+                        ),
+                        maturity_entry_hash=window_res.maturity_entry.entry_hash if window_res.maturity_entry else "",
+                        record_label=getattr(pred, "record_label", "HISTORICAL_REPLAY"),
+                    )
+                    outcome.outcome_hash = outcome.compute_hash()
+
+                    with open(self.outcomes_file, "a", encoding="utf-8") as f:
+                        f.write(json.dumps(outcome.to_dict(), sort_keys=True) + "\n")
+                        f.flush()
+                        os.fsync(f.fileno())
+
+                    self._seen_predictions.add(pred.record_hash)
+                    resolved.append(outcome)
+
+                return resolved
+
+            # 2. Fallback path: In-Memory Candle Buffer
+            if not available_candles:
+                return []
+
+            # Map candles by open timestamp
+            candle_map = {c.timestamp_open: c for c in available_candles}
         now_ms = current_time_ms if current_time_ms is not None else available_candles[-1].timestamp_close
         resolved = []
 

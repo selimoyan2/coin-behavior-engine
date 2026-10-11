@@ -59,6 +59,7 @@ from coin_behavior_engine.shadow_v080.prediction_store import (
 from coin_behavior_engine.shadow_v080.prospective_guard import (
     PROSPECTIVE_RECORD_LABELS,
     ProspectiveAuthorizationGuard,
+    UnverifiedEvidenceError,
 )
 
 logger = logging.getLogger("cbe_shadow_collector")
@@ -240,6 +241,11 @@ class ShadowCollectorV080:
                 "WARMUP_REPLAY" if self.record_label == "PROSPECTIVE_SHADOW" else "HISTORICAL_REPLAY"
             )
             is_prospective = is_scored and (actual_label == "PROSPECTIVE_LIVE")
+            evidence_store = getattr(self.source, "evidence_store", None)
+            if is_prospective and evidence_store is None:
+                raise UnverifiedEvidenceError(
+                    "Prospective inference requires a non-null, verified evidence store at execution boundary."
+                )
 
             dual_pred = self.inference_runner.predict(
                 features=recon.features,
@@ -249,6 +255,8 @@ class ShadowCollectorV080:
                 context_candles=self.feature_pipeline.adapter.buffer if is_prospective else None,
                 current_candle=candle if is_prospective else None,
                 current_time_ms=rec_ms,
+                evidence_store=evidence_store,
+                require_evidence_store=is_prospective,
             )
 
             # Store predictions for both branches across all 3 horizons

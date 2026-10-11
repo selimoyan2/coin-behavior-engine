@@ -26,6 +26,7 @@ from coin_behavior_engine.shadow_v080.prospective_guard import (
     InsufficientWarmupBarsError,
     PROSPECTIVE_RECORD_LABELS,
     ProspectiveAuthorizationGuard,
+    UnverifiedEvidenceError,
 )
 
 
@@ -49,6 +50,25 @@ class DualBranchPredictionResult:
             "candidate_c_intervals": {h: b.to_dict() for h, b in self.candidate_c_intervals.items()},
             "candidate_e_intervals": {h: b.to_dict() for h, b in self.candidate_e_intervals.items()},
         }
+
+
+def verify_prospective_execution_boundary(
+    evidence_store: Optional[Any],
+    record_label: str = "HISTORICAL_REPLAY",
+    is_prospective: bool = False,
+    env: Optional[Dict[str, str]] = None,
+) -> None:
+    """Verify that prospective scoring requires a non-null, verified evidence store at the execution boundary."""
+    ProspectiveAuthorizationGuard.verify_authorization(
+        record_label=record_label,
+        is_prospective=is_prospective,
+        env=env,
+    )
+    if is_prospective or record_label == "PROSPECTIVE_LIVE":
+        if evidence_store is None:
+            raise UnverifiedEvidenceError(
+                "Prospective inference requires a non-null, verified evidence store at execution boundary."
+            )
 
 
 class DualBranchInferenceRunnerV080:
@@ -85,6 +105,7 @@ class DualBranchInferenceRunnerV080:
         current_candle: Optional[Any] = None,
         current_time_ms: Optional[int] = None,
         evidence_store: Optional[Any] = None,
+        require_evidence_store: bool = False,
         env: Optional[Dict[str, str]] = None,
     ) -> DualBranchPredictionResult:
         """Run synchronized inference for both candidate branches with strict fail-closed guards."""
@@ -96,6 +117,10 @@ class DualBranchInferenceRunnerV080:
         )
 
         if is_prospective or record_label == "PROSPECTIVE_LIVE":
+            if require_evidence_store and evidence_store is None:
+                raise UnverifiedEvidenceError(
+                    "Prospective inference requires a non-null, verified evidence store at execution boundary."
+                )
             if context_candles is None:
                 raise InsufficientWarmupBarsError(
                     "Context candles must be provided to verify causal data eligibility for prospective scoring."
