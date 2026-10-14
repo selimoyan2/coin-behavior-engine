@@ -1,0 +1,414 @@
+{
+  "sprint": "09.21",
+  "title": "Historical Data Acquisition & First Scientific Market Behavior Experiments",
+  "dataset": {
+    "symbol": "BTCUSDT",
+    "timeframe": "5m",
+    "exchange": "BINANCE",
+    "start_utc": "2024-01-01T00:00:00Z",
+    "end_utc": "2024-01-31T23:55:00Z",
+    "total_bars": 8928,
+    "source": "data.binance.vision",
+    "archive_sha256": "a375f811f672ad70de97af533f6e70181647a9e978838b451ac17d5c17313ad8"
+  },
+  "transaction_costs_assumed": {
+    "taker_fee_bps": 5.0,
+    "half_spread_bps": 1.0,
+    "slippage_bps": 2.0,
+    "roundtrip_total_bps": 16.0
+  },
+  "experiments": {
+    "H1_NEW_YORK_15m": {
+      "hypothesis_id": "H1_NEW_YORK_15m",
+      "description": "Opening Range Breakout (NEW_YORK 15m)",
+      "total_eligible_signals": 136,
+      "executed_trades": 136,
+      "independent_trades": 99,
+      "win_rate": 0.3456,
+      "profit_factor": 1.28,
+      "gross_return_pct": 0.0668,
+      "net_return_pct": -0.1508,
+      "net_expectancy_bps": -11.09,
+      "max_drawdown_pct": 0.1685,
+      "sharpe_ratio": -2.36,
+      "sortino_ratio": -2.5,
+      "train_net_return_pct": -0.0987,
+      "val_net_return_pct": -0.0299,
+      "test_net_return_pct": -0.0222,
+      "buy_and_hold_return_pct": 0.0043,
+      "cost_sensitivity": {
+        "0_bps (Zero Cost)": 6.681,
+        "8_bps (Maker/VIP)": -1.479,
+        "16_bps (Realistic)": -15.079,
+        "24_bps (Stress)": -25.959
+      },
+      "regime_breakdown": {
+        "TRENDING": {
+          "trades": 5,
+          "win_rate": 0.4,
+          "total_net_return_pct": -2.279
+        },
+        "RANGING": {
+          "trades": 131,
+          "win_rate": 0.344,
+          "total_net_return_pct": -12.8
+        },
+        "HIGH_VOLATILITY": {
+          "trades": 71,
+          "win_rate": 0.394,
+          "total_net_return_pct": -7.556
+        },
+        "NORMAL_VOLATILITY": {
+          "trades": 65,
+          "win_rate": 0.292,
+          "total_net_return_pct": -7.523
+        }
+      },
+      "is_statistically_significant": false,
+      "scientific_conclusion": "UNFAVORABLE / UNPROVEN: Net return after costs is negative or fails to beat trading friction. Expectancy: -11.1 bps, Held-out Test: -2.22%."
+    },
+    "H1_NEW_YORK_30m": {
+      "hypothesis_id": "H1_NEW_YORK_30m",
+      "description": "Opening Range Breakout (NEW_YORK 30m)",
+      "total_eligible_signals": 106,
+      "executed_trades": 106,
+      "independent_trades": 73,
+      "win_rate": 0.3585,
+      "profit_factor": 1.89,
+      "gross_return_pct": 0.138,
+      "net_return_pct": -0.0316,
+      "net_expectancy_bps": -2.98,
+      "max_drawdown_pct": 0.0819,
+      "sharpe_ratio": -0.53,
+      "sortino_ratio": -0.7,
+      "train_net_return_pct": 0.0091,
+      "val_net_return_pct": -0.0098,
+      "test_net_return_pct": -0.0309,
+      "buy_and_hold_return_pct": 0.0043,
+      "cost_sensitivity": {
+        "0_bps (Zero Cost)": 13.798,
+        "8_bps (Maker/VIP)": 7.438,
+        "16_bps (Realistic)": -3.162,
+        "24_bps (Stress)": -11.642
+      },
+      "regime_breakdown": {
+        "TRENDING": {
+          "trades": 4,
+          "win_rate": 0.75,
+          "total_net_return_pct": 0.962
+        },
+        "RANGING": {
+          "trades": 102,
+          "win_rate": 0.343,
+          "total_net_return_pct": -4.124
+        },
+        "HIGH_VOLATILITY": {
+          "trades": 61,
+          "win_rate": 0.443,
+          "total_net_return_pct": 3.372
+        },
+        "NORMAL_VOLATILITY": {
+          "trades": 45,
+          "win_rate": 0.244,
+          "total_net_return_pct": -6.534
+        }
+      },
+      "is_statistically_significant": false,
+      "scientific_conclusion": "UNFAVORABLE / UNPROVEN: Net return after costs is negative or fails to beat trading friction. Expectancy: -3.0 bps, Held-out Test: -3.09%."
+    },
+    "H1_LONDON_15m": {
+      "hypothesis_id": "H1_LONDON_15m",
+      "description": "Opening Range Breakout (LONDON 15m)",
+      "total_eligible_signals": 202,
+      "executed_trades": 202,
+      "independent_trades": 139,
+      "win_rate": 0.2723,
+      "profit_factor": 0.79,
+      "gross_return_pct": -0.0683,
+      "net_return_pct": -0.3915,
+      "net_expectancy_bps": -19.38,
+      "max_drawdown_pct": 0.3332,
+      "sharpe_ratio": -8.28,
+      "sortino_ratio": -6.7,
+      "train_net_return_pct": -0.2466,
+      "val_net_return_pct": -0.0845,
+      "test_net_return_pct": -0.0604,
+      "buy_and_hold_return_pct": 0.0043,
+      "cost_sensitivity": {
+        "0_bps (Zero Cost)": -6.834,
+        "8_bps (Maker/VIP)": -18.954,
+        "16_bps (Realistic)": -39.154,
+        "24_bps (Stress)": -55.314
+      },
+      "regime_breakdown": {
+        "TRENDING": {
+          "trades": 16,
+          "win_rate": 0.188,
+          "total_net_return_pct": -3.118
+        },
+        "RANGING": {
+          "trades": 186,
+          "win_rate": 0.28,
+          "total_net_return_pct": -36.036
+        },
+        "HIGH_VOLATILITY": {
+          "trades": 79,
+          "win_rate": 0.291,
+          "total_net_return_pct": -17.523
+        },
+        "NORMAL_VOLATILITY": {
+          "trades": 123,
+          "win_rate": 0.26,
+          "total_net_return_pct": -21.631
+        }
+      },
+      "is_statistically_significant": false,
+      "scientific_conclusion": "UNFAVORABLE / UNPROVEN: Net return after costs is negative or fails to beat trading friction. Expectancy: -19.4 bps, Held-out Test: -6.04%."
+    },
+    "H1_LONDON_30m": {
+      "hypothesis_id": "H1_LONDON_30m",
+      "description": "Opening Range Breakout (LONDON 30m)",
+      "total_eligible_signals": 168,
+      "executed_trades": 168,
+      "independent_trades": 115,
+      "win_rate": 0.2738,
+      "profit_factor": 0.89,
+      "gross_return_pct": -0.0326,
+      "net_return_pct": -0.3014,
+      "net_expectancy_bps": -17.94,
+      "max_drawdown_pct": 0.268,
+      "sharpe_ratio": -5.57,
+      "sortino_ratio": -5.1,
+      "train_net_return_pct": -0.1858,
+      "val_net_return_pct": -0.0567,
+      "test_net_return_pct": -0.0589,
+      "buy_and_hold_return_pct": 0.0043,
+      "cost_sensitivity": {
+        "0_bps (Zero Cost)": -3.26,
+        "8_bps (Maker/VIP)": -13.34,
+        "16_bps (Realistic)": -30.14,
+        "24_bps (Stress)": -43.58
+      },
+      "regime_breakdown": {
+        "TRENDING": {
+          "trades": 13,
+          "win_rate": 0.308,
+          "total_net_return_pct": -1.774
+        },
+        "RANGING": {
+          "trades": 155,
+          "win_rate": 0.271,
+          "total_net_return_pct": -28.366
+        },
+        "HIGH_VOLATILITY": {
+          "trades": 70,
+          "win_rate": 0.257,
+          "total_net_return_pct": -16.645
+        },
+        "NORMAL_VOLATILITY": {
+          "trades": 98,
+          "win_rate": 0.286,
+          "total_net_return_pct": -13.495
+        }
+      },
+      "is_statistically_significant": false,
+      "scientific_conclusion": "UNFAVORABLE / UNPROVEN: Net return after costs is negative or fails to beat trading friction. Expectancy: -17.9 bps, Held-out Test: -5.89%."
+    },
+    "H1_ASIAN_15m": {
+      "hypothesis_id": "H1_ASIAN_15m",
+      "description": "Opening Range Breakout (ASIAN 15m)",
+      "total_eligible_signals": 162,
+      "executed_trades": 162,
+      "independent_trades": 108,
+      "win_rate": 0.3395,
+      "profit_factor": 1.27,
+      "gross_return_pct": 0.0443,
+      "net_return_pct": -0.2149,
+      "net_expectancy_bps": -13.27,
+      "max_drawdown_pct": 0.1941,
+      "sharpe_ratio": -5.86,
+      "sortino_ratio": -5.0,
+      "train_net_return_pct": -0.1016,
+      "val_net_return_pct": -0.0718,
+      "test_net_return_pct": -0.0415,
+      "buy_and_hold_return_pct": 0.0043,
+      "cost_sensitivity": {
+        "0_bps (Zero Cost)": 4.427,
+        "8_bps (Maker/VIP)": -5.293,
+        "16_bps (Realistic)": -21.493,
+        "24_bps (Stress)": -34.453
+      },
+      "regime_breakdown": {
+        "TRENDING": {
+          "trades": 22,
+          "win_rate": 0.318,
+          "total_net_return_pct": -3.142
+        },
+        "RANGING": {
+          "trades": 140,
+          "win_rate": 0.343,
+          "total_net_return_pct": -18.351
+        },
+        "HIGH_VOLATILITY": {
+          "trades": 45,
+          "win_rate": 0.333,
+          "total_net_return_pct": -7.075
+        },
+        "NORMAL_VOLATILITY": {
+          "trades": 117,
+          "win_rate": 0.342,
+          "total_net_return_pct": -14.419
+        }
+      },
+      "is_statistically_significant": false,
+      "scientific_conclusion": "UNFAVORABLE / UNPROVEN: Net return after costs is negative or fails to beat trading friction. Expectancy: -13.3 bps, Held-out Test: -4.15%."
+    },
+    "H1_ASIAN_30m": {
+      "hypothesis_id": "H1_ASIAN_30m",
+      "description": "Opening Range Breakout (ASIAN 30m)",
+      "total_eligible_signals": 163,
+      "executed_trades": 163,
+      "independent_trades": 99,
+      "win_rate": 0.2822,
+      "profit_factor": 1.03,
+      "gross_return_pct": 0.0058,
+      "net_return_pct": -0.255,
+      "net_expectancy_bps": -15.65,
+      "max_drawdown_pct": 0.2347,
+      "sharpe_ratio": -5.73,
+      "sortino_ratio": -5.26,
+      "train_net_return_pct": -0.1372,
+      "val_net_return_pct": -0.0891,
+      "test_net_return_pct": -0.0287,
+      "buy_and_hold_return_pct": 0.0043,
+      "cost_sensitivity": {
+        "0_bps (Zero Cost)": 0.577,
+        "8_bps (Maker/VIP)": -9.203,
+        "16_bps (Realistic)": -25.503,
+        "24_bps (Stress)": -38.543
+      },
+      "regime_breakdown": {
+        "TRENDING": {
+          "trades": 22,
+          "win_rate": 0.136,
+          "total_net_return_pct": -6.563
+        },
+        "RANGING": {
+          "trades": 141,
+          "win_rate": 0.305,
+          "total_net_return_pct": -18.94
+        },
+        "HIGH_VOLATILITY": {
+          "trades": 43,
+          "win_rate": 0.256,
+          "total_net_return_pct": -8.261
+        },
+        "NORMAL_VOLATILITY": {
+          "trades": 120,
+          "win_rate": 0.292,
+          "total_net_return_pct": -17.242
+        }
+      },
+      "is_statistically_significant": false,
+      "scientific_conclusion": "UNFAVORABLE / UNPROVEN: Net return after costs is negative or fails to beat trading friction. Expectancy: -15.6 bps, Held-out Test: -2.87%."
+    },
+    "H2_FAILED_BREAKOUT": {
+      "hypothesis_id": "H2_FAILED_BREAKOUT",
+      "description": "Failed Breakout / Sweep Proxy",
+      "total_eligible_signals": 5835,
+      "executed_trades": 5835,
+      "independent_trades": 2311,
+      "win_rate": 0.2835,
+      "profit_factor": 0.93,
+      "gross_return_pct": -0.4667,
+      "net_return_pct": -9.8027,
+      "net_expectancy_bps": -16.8,
+      "max_drawdown_pct": 0.9999,
+      "sharpe_ratio": -42.63,
+      "sortino_ratio": -35.55,
+      "train_net_return_pct": -6.0193,
+      "val_net_return_pct": -1.5312,
+      "test_net_return_pct": -2.2521,
+      "buy_and_hold_return_pct": 0.0043,
+      "cost_sensitivity": {
+        "0_bps (Zero Cost)": -46.67,
+        "8_bps (Maker/VIP)": -396.77,
+        "16_bps (Realistic)": -980.27,
+        "24_bps (Stress)": -1447.07
+      },
+      "regime_breakdown": {
+        "TRENDING": {
+          "trades": 615,
+          "win_rate": 0.325,
+          "total_net_return_pct": -105.839
+        },
+        "RANGING": {
+          "trades": 5220,
+          "win_rate": 0.279,
+          "total_net_return_pct": -874.431
+        },
+        "HIGH_VOLATILITY": {
+          "trades": 1714,
+          "win_rate": 0.345,
+          "total_net_return_pct": -302.227
+        },
+        "NORMAL_VOLATILITY": {
+          "trades": 4121,
+          "win_rate": 0.258,
+          "total_net_return_pct": -678.043
+        }
+      },
+      "is_statistically_significant": false,
+      "scientific_conclusion": "UNFAVORABLE / UNPROVEN: Net return after costs is negative or fails to beat trading friction. Expectancy: -16.8 bps, Held-out Test: -225.21%."
+    },
+    "H3_TREND_PULLBACK": {
+      "hypothesis_id": "H3_TREND_PULLBACK",
+      "description": "Pullback after Trend Impulse",
+      "total_eligible_signals": 572,
+      "executed_trades": 572,
+      "independent_trades": 485,
+      "win_rate": 0.2605,
+      "profit_factor": 0.95,
+      "gross_return_pct": -0.0323,
+      "net_return_pct": -0.9475,
+      "net_expectancy_bps": -16.56,
+      "max_drawdown_pct": 0.6229,
+      "sharpe_ratio": -13.85,
+      "sortino_ratio": -11.85,
+      "train_net_return_pct": -0.6944,
+      "val_net_return_pct": -0.1374,
+      "test_net_return_pct": -0.1157,
+      "buy_and_hold_return_pct": 0.0043,
+      "cost_sensitivity": {
+        "0_bps (Zero Cost)": -3.232,
+        "8_bps (Maker/VIP)": -37.552,
+        "16_bps (Realistic)": -94.752,
+        "24_bps (Stress)": -140.512
+      },
+      "regime_breakdown": {
+        "TRENDING": {
+          "trades": 50,
+          "win_rate": 0.38,
+          "total_net_return_pct": -7.006
+        },
+        "RANGING": {
+          "trades": 522,
+          "win_rate": 0.249,
+          "total_net_return_pct": -87.746
+        },
+        "HIGH_VOLATILITY": {
+          "trades": 166,
+          "win_rate": 0.307,
+          "total_net_return_pct": -28.259
+        },
+        "NORMAL_VOLATILITY": {
+          "trades": 406,
+          "win_rate": 0.241,
+          "total_net_return_pct": -66.493
+        }
+      },
+      "is_statistically_significant": false,
+      "scientific_conclusion": "UNFAVORABLE / UNPROVEN: Net return after costs is negative or fails to beat trading friction. Expectancy: -16.6 bps, Held-out Test: -11.57%."
+    }
+  }
+}

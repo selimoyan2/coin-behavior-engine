@@ -63,6 +63,15 @@ from coin_behavior_engine.research.historical.investment_evaluator import (
     TradeCostModel,
     TradeDirection,
 )
+from coin_behavior_engine.research.historical.binance_archival_ingestion import (
+    BinanceArchivalDownloader,
+    IngestionResult,
+)
+from coin_behavior_engine.research.historical.experiments import (
+    HypothesisEvaluationResult,
+    HypothesisExperimentConfig,
+    ScientificExperimentRunner,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -95,4 +104,9 @@ __all__ = [
     "SimulatedTradeResult",
     "PortfolioEvaluationReport",
     "InvestmentEvaluator",
+    "BinanceArchivalDownloader",
+    "IngestionResult",
+    "ScientificExperimentRunner",
+    "HypothesisEvaluationResult",
+    "HypothesisExperimentConfig",
 ]
