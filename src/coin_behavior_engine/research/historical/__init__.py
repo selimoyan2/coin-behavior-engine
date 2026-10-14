@@ -76,6 +76,18 @@ from coin_behavior_engine.research.historical.timeframe_aggregator import (
     AggregationReport,
     HistoricalTimeframeAggregator,
 )
+from coin_behavior_engine.research.historical.execution_model import (
+    ExecutionMode,
+    ExecutionParameters,
+    ExecutionResult,
+    OrderFillStatus,
+    RealisticExecutionSimulator,
+)
+from coin_behavior_engine.research.historical.regime_filters import (
+    FilterEvaluationReport,
+    RegimeFilterBank,
+    RegimeFilterType,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -115,4 +127,12 @@ __all__ = [
     "HypothesisExperimentConfig",
     "HistoricalTimeframeAggregator",
     "AggregationReport",
+    "ExecutionMode",
+    "ExecutionParameters",
+    "ExecutionResult",
+    "OrderFillStatus",
+    "RealisticExecutionSimulator",
+    "FilterEvaluationReport",
+    "RegimeFilterBank",
+    "RegimeFilterType",
 ]
