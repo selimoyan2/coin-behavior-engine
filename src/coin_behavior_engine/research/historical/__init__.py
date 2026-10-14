@@ -72,6 +72,10 @@ from coin_behavior_engine.research.historical.experiments import (
     HypothesisExperimentConfig,
     ScientificExperimentRunner,
 )
+from coin_behavior_engine.research.historical.timeframe_aggregator import (
+    AggregationReport,
+    HistoricalTimeframeAggregator,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -109,4 +113,6 @@ __all__ = [
     "ScientificExperimentRunner",
     "HypothesisEvaluationResult",
     "HypothesisExperimentConfig",
+    "HistoricalTimeframeAggregator",
+    "AggregationReport",
 ]

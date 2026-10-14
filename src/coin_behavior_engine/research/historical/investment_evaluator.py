@@ -48,6 +48,12 @@ class TradeCostModel:
     def total_roundtrip_cost_pct(self) -> float:
         return self.entry_cost_pct + self.exit_cost_pct
 
+    @classmethod
+    def from_roundtrip_bps(cls, total_bps: float) -> TradeCostModel:
+        """Create a simplified cost model with exactly total_bps roundtrip cost."""
+        half = total_bps / 2.0
+        return cls(taker_fee_bps=half, maker_fee_bps=half, half_spread_bps=0.0, slippage_bps=0.0)
+
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
@@ -93,6 +99,7 @@ class SimulatedTradeResult:
     mfe_pct: float  # Max favorable excursion
     mae_pct: float  # Max adverse excursion
     is_win: bool
+    same_candle_collision: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         d = asdict(self)
@@ -102,7 +109,7 @@ class SimulatedTradeResult:
 
 @dataclass(frozen=True)
 class PortfolioEvaluationReport:
-    """Comprehensive performance and risk report."""
+    """Comprehensive performance and risk report with explicit accounting metrics."""
 
     total_opportunities: int
     executed_trades: int
@@ -114,7 +121,12 @@ class PortfolioEvaluationReport:
     gross_loss_pct: float
     profit_factor: float
     net_expectancy_pct: float
-    total_net_return_pct: float
+    total_net_return_pct: float  # Unweighted arithmetic sum across all trades (legacy audit metric)
+    unallocated_cumulative_return_pct: float  # Explicit unweighted arithmetic sum
+    independent_cumulative_return_pct: float  # Arithmetic sum of only non-overlapping independent trades
+    compounded_independent_equity_pct: float  # Sequential compounded portfolio return on independent trades
+    capital_allocated_portfolio_return_pct: float  # Portfolio return with fixed 10% capital allocation
+    independent_net_expectancy_bps: float  # Net return per independent trade in basis points
     max_drawdown_pct: float
     sharpe_ratio: float
     sortino_ratio: float
@@ -122,6 +134,7 @@ class PortfolioEvaluationReport:
     avg_holding_bars: float
     exposure_pct: float
     total_costs_paid_pct: float
+    same_candle_collision_count: int = 0
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -160,6 +173,8 @@ class InvestmentEvaluator:
         mfe = 0.0
         mae = 0.0
 
+        same_candle_collision = False
+
         for b_idx in range(entry_idx + 1, max_bar + 1):
             bar = candles[b_idx]
             b_hi = float(bar["high"])
@@ -174,16 +189,21 @@ class InvestmentEvaluator:
                 mfe = max(mfe, favorable)
                 mae = max(mae, adverse)
 
-                # Check SL hit
-                if b_lo <= opp.stop_loss_price:
+                # Check intra-candle collision first (conservative worst-case assumption: SL hit first)
+                if b_lo <= opp.stop_loss_price and b_hi >= opp.take_profit_price:
+                    exit_bar = b_idx
+                    exit_px = opp.stop_loss_price
+                    exit_reason = "STOP_LOSS"
+                    exit_ts = b_ts
+                    same_candle_collision = True
+                    break
+                elif b_lo <= opp.stop_loss_price:
                     exit_bar = b_idx
                     exit_px = opp.stop_loss_price
                     exit_reason = "STOP_LOSS"
                     exit_ts = b_ts
                     break
-
-                # Check TP hit
-                if b_hi >= opp.take_profit_price:
+                elif b_hi >= opp.take_profit_price:
                     exit_bar = b_idx
                     exit_px = opp.take_profit_price
                     exit_reason = "TAKE_PROFIT"
@@ -196,16 +216,21 @@ class InvestmentEvaluator:
                 mfe = max(mfe, favorable)
                 mae = max(mae, adverse)
 
-                # Check SL hit
-                if b_hi >= opp.stop_loss_price:
+                # Check intra-candle collision first (conservative worst-case assumption: SL hit first)
+                if b_hi >= opp.stop_loss_price and b_lo <= opp.take_profit_price:
+                    exit_bar = b_idx
+                    exit_px = opp.stop_loss_price
+                    exit_reason = "STOP_LOSS"
+                    exit_ts = b_ts
+                    same_candle_collision = True
+                    break
+                elif b_hi >= opp.stop_loss_price:
                     exit_bar = b_idx
                     exit_px = opp.stop_loss_price
                     exit_reason = "STOP_LOSS"
                     exit_ts = b_ts
                     break
-
-                # Check TP hit
-                if b_lo <= opp.take_profit_price:
+                elif b_lo <= opp.take_profit_price:
                     exit_bar = b_idx
                     exit_px = opp.take_profit_price
                     exit_reason = "TAKE_PROFIT"
@@ -239,6 +264,7 @@ class InvestmentEvaluator:
             mfe_pct=mfe,
             mae_pct=mae,
             is_win=net_ret > 0.0,
+            same_candle_collision=same_candle_collision,
         )
 
     def evaluate_opportunities(
@@ -269,6 +295,11 @@ class InvestmentEvaluator:
                 profit_factor=0.0,
                 net_expectancy_pct=0.0,
                 total_net_return_pct=0.0,
+                unallocated_cumulative_return_pct=0.0,
+                independent_cumulative_return_pct=0.0,
+                compounded_independent_equity_pct=0.0,
+                capital_allocated_portfolio_return_pct=0.0,
+                independent_net_expectancy_bps=0.0,
                 max_drawdown_pct=0.0,
                 sharpe_ratio=0.0,
                 sortino_ratio=0.0,
@@ -276,17 +307,19 @@ class InvestmentEvaluator:
                 avg_holding_bars=0.0,
                 exposure_pct=0.0,
                 total_costs_paid_pct=0.0,
+                same_candle_collision_count=0,
             )
             return results, empty_report
 
         # 1. Independent non-overlapping opportunities count (Greedy interval scheduling)
         sorted_by_exit = sorted(results, key=lambda r: r.exit_bar_index)
-        independent_count = 0
+        independent_trades: list[SimulatedTradeResult] = []
         last_exit_bar = -1
         for r in sorted_by_exit:
             if r.entry_bar_index >= last_exit_bar:
-                independent_count += 1
+                independent_trades.append(r)
                 last_exit_bar = r.exit_bar_index
+        independent_count = len(independent_trades)
 
         # 2. Win / Loss stats
         wins = [r for r in results if r.is_win]
@@ -301,8 +334,25 @@ class InvestmentEvaluator:
 
         net_returns = [r.net_return_pct for r in results]
         total_net_ret = sum(net_returns)
-        net_expectancy = sum(net_returns) / len(net_returns)
+        net_expectancy = sum(net_returns) / len(net_returns) if net_returns else 0.0
         total_costs_paid = sum(r.total_cost_pct for r in results)
+
+        # Explicit independent metrics
+        indep_net_returns = [r.net_return_pct for r in independent_trades]
+        indep_cum_ret = sum(indep_net_returns) if indep_net_returns else 0.0
+        indep_exp_bps = (sum(indep_net_returns) / len(indep_net_returns) * 10_000.0) if indep_net_returns else 0.0
+
+        # Compounded equity for independent trades
+        cum_indep_eq = 1.0
+        for ret in indep_net_returns:
+            cum_indep_eq *= (1.0 + ret)
+        compounded_indep_eq = cum_indep_eq - 1.0
+
+        # Fixed 10% capital allocation per trade
+        alloc_eq = 1.0
+        for ret in indep_net_returns:
+            alloc_eq *= (1.0 + 0.10 * ret)
+        capital_alloc_return = alloc_eq - 1.0
 
         # 3. Drawdown calculation (cumulative equity curve)
         cum_equity = 1.0
@@ -321,7 +371,6 @@ class InvestmentEvaluator:
             mean_ret = sum(net_returns) / len(net_returns)
             variance = sum((x - mean_ret) ** 2 for x in net_returns) / (len(net_returns) - 1)
             std_dev = math.sqrt(variance) if variance > 0 else 1e-9
-            # Annualized factor assuming ~1000 trades/year or standard sqrt(N)
             annual_factor = math.sqrt(len(net_returns))
             sharpe = (mean_ret / std_dev) * annual_factor if std_dev > 1e-9 else 0.0
 
@@ -343,6 +392,7 @@ class InvestmentEvaluator:
         total_bars_span = len(candles)
         total_held_bars = sum(r.holding_bars for r in results)
         exposure = min(1.0, total_held_bars / total_bars_span) if total_bars_span > 0 else 0.0
+        same_candle_collisions = sum(1 for r in results if r.same_candle_collision)
 
         report = PortfolioEvaluationReport(
             total_opportunities=len(opportunities),
@@ -356,6 +406,11 @@ class InvestmentEvaluator:
             profit_factor=profit_factor,
             net_expectancy_pct=net_expectancy,
             total_net_return_pct=total_net_ret,
+            unallocated_cumulative_return_pct=total_net_ret,
+            independent_cumulative_return_pct=indep_cum_ret,
+            compounded_independent_equity_pct=compounded_indep_eq,
+            capital_allocated_portfolio_return_pct=capital_alloc_return,
+            independent_net_expectancy_bps=indep_exp_bps,
             max_drawdown_pct=max_dd,
             sharpe_ratio=sharpe,
             sortino_ratio=sortino,
@@ -363,6 +418,7 @@ class InvestmentEvaluator:
             avg_holding_bars=avg_holding,
             exposure_pct=exposure,
             total_costs_paid_pct=total_costs_paid,
+            same_candle_collision_count=same_candle_collisions,
         )
 
         return results, report

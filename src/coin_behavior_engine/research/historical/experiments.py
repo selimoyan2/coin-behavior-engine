@@ -99,6 +99,12 @@ class HypothesisEvaluationResult:
     regime_breakdown: dict[str, dict[str, Any]]
     is_statistically_significant: bool
     scientific_conclusion: str
+    unallocated_cumulative_return_pct: float = 0.0
+    independent_cumulative_return_pct: float = 0.0
+    compounded_independent_equity_pct: float = 0.0
+    capital_allocated_portfolio_return_pct: float = 0.0
+    independent_net_expectancy_bps: float = 0.0
+    break_even_cost_bps: float = 0.0
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -368,10 +374,12 @@ class ScientificExperimentRunner:
 
         # Cost sensitivity analysis
         cost_models = {
-            "0_bps (Zero Cost)": TradeCostModel(taker_fee_bps=0, half_spread_bps=0, slippage_bps=0),
-            "8_bps (Maker/VIP)": TradeCostModel(taker_fee_bps=2.0, maker_fee_bps=1.0, half_spread_bps=0.5, slippage_bps=0.5),
+            "0_bps (Zero Cost)": TradeCostModel.from_roundtrip_bps(0.0),
+            "5_bps (Low Friction)": TradeCostModel.from_roundtrip_bps(5.0),
+            "8_bps (Maker/VIP)": TradeCostModel.from_roundtrip_bps(8.0),
+            "10_bps (Standard Maker)": TradeCostModel.from_roundtrip_bps(10.0),
             "16_bps (Realistic)": TradeCostModel(taker_fee_bps=5.0, maker_fee_bps=2.0, half_spread_bps=1.0, slippage_bps=2.0),
-            "24_bps (Stress)": TradeCostModel(taker_fee_bps=8.0, maker_fee_bps=4.0, half_spread_bps=2.0, slippage_bps=2.0),
+            "25_bps (Stress/Adverse)": TradeCostModel.from_roundtrip_bps(25.0),
         }
         cost_sensitivity: dict[str, float] = {}
         for c_label, cm in cost_models.items():
@@ -408,6 +416,8 @@ class ScientificExperimentRunner:
             }
 
         net_exp_bps = (report.net_expectancy_pct * 10_000.0) if report.executed_trades > 0 else 0.0
+        gross_exp_bps = (sum(t.gross_return_pct for t in trades) / len(trades) * 10_000.0) if trades else 0.0
+        break_even_bps = max(0.0, round(gross_exp_bps, 2))
         stat_sig = (report.independent_opportunities_count >= 30) and (report.profit_factor > 1.25) and (test_net > 0)
 
         # Conclusion text
@@ -438,6 +448,12 @@ class ScientificExperimentRunner:
             gross_return_pct=round(report.gross_profit_pct - report.gross_loss_pct, 4),
             net_return_pct=round(report.total_net_return_pct, 4),
             net_expectancy_bps=round(net_exp_bps, 2),
+            unallocated_cumulative_return_pct=round(report.unallocated_cumulative_return_pct, 4),
+            independent_cumulative_return_pct=round(report.independent_cumulative_return_pct, 4),
+            compounded_independent_equity_pct=round(report.compounded_independent_equity_pct, 4),
+            capital_allocated_portfolio_return_pct=round(report.capital_allocated_portfolio_return_pct, 4),
+            independent_net_expectancy_bps=round(report.independent_net_expectancy_bps, 2),
+            break_even_cost_bps=break_even_bps,
             max_drawdown_pct=round(report.max_drawdown_pct, 4),
             sharpe_ratio=round(report.sharpe_ratio, 2),
             sortino_ratio=round(report.sortino_ratio, 2),

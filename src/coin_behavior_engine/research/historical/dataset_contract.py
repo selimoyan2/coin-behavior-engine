@@ -60,6 +60,7 @@ class HistoricalMarketSpec:
     start_timestamp_ms: Optional[int] = None
     end_timestamp_ms: Optional[int] = None
     timeframe: Optional[str] = None
+    dataset_tag: Optional[str] = None
 
     def __post_init__(self) -> None:
         if self.timeframe is not None:
@@ -232,12 +233,14 @@ class HistoricalDatasetStore:
 
     def get_dataset_filepath(self, spec: HistoricalMarketSpec, ext: str = "parquet") -> Path:
         """Return standardized path for dataset."""
-        fname = f"historical_{spec.exchange.lower()}_{spec.symbol.lower()}_{spec.interval}.{ext}"
+        tag_str = f"_{spec.dataset_tag}" if spec.dataset_tag else ""
+        fname = f"historical_{spec.exchange.lower()}_{spec.symbol.lower()}_{spec.interval}{tag_str}.{ext}"
         return self.base_dir / fname
 
     def get_provenance_filepath(self, spec: HistoricalMarketSpec) -> Path:
         """Return path for dataset provenance metadata JSON."""
-        fname = f"historical_{spec.exchange.lower()}_{spec.symbol.lower()}_{spec.interval}_provenance.json"
+        tag_str = f"_{spec.dataset_tag}" if spec.dataset_tag else ""
+        fname = f"historical_{spec.exchange.lower()}_{spec.symbol.lower()}_{spec.interval}{tag_str}_provenance.json"
         return self.base_dir / fname
 
     def save_dataset_atomic(

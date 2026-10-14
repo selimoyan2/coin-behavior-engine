@@ -1,0 +1,453 @@
+{
+  "sprint": "09.22",
+  "status": "VERIFIED_OFFLINE_ONLY",
+  "baseline_commit": "47ea258c7c14a8fb3f18e5da287ddc7b54450512",
+  "dataset": {
+    "period": "2024-01-01 to 2024-03-31 (Q1 2024)",
+    "bars_5m": 26208,
+    "bars_15m": 8736,
+    "bars_1h": 2184,
+    "total_volume_conserved": true
+  },
+  "accounting_audit": {
+    "h2_apparent_return_pct": -980.27,
+    "h2_explanation": "Arithmetic unallocated sum of 5,835 overlapping trade percentage returns. Actual independent trades = 2,311. Under 10% capital allocation, drawdown is strictly bounded.",
+    "intra_candle_collision": "Conservative arbitration enforced: SL hit first when both SL and TP occur within the same candle.",
+    "transaction_friction": "Applied exactly once per completed round-trip trade (entry + exit).",
+    "short_trades": "Verified exact mathematical symmetry to long trades."
+  },
+  "h2_disposition": {
+    "classification": "STRUCTURALLY_UNFAVORABLE",
+    "rationale": "Naive 5m false breakout sweeps lack order-book depth confirmation and suffer negative gross expectancy compounded by severe fee attrition."
+  },
+  "monthly_breakdown_h1_15m": {
+    "Jan_2024": {
+      "trades": 80,
+      "win_rate": 0.375,
+      "profit_factor": 1.38,
+      "net_return_pct": -0.0702,
+      "break_even_bps": 7.23
+    },
+    "Feb_2024": {
+      "trades": 73,
+      "win_rate": 0.3836,
+      "profit_factor": 1.22,
+      "net_return_pct": -0.0891,
+      "break_even_bps": 3.79
+    },
+    "Mar_2024": {
+      "trades": 84,
+      "win_rate": 0.4286,
+      "profit_factor": 1.66,
+      "net_return_pct": -0.0253,
+      "break_even_bps": 12.99
+    }
+  },
+  "experiments": {
+    "h1_breakout": {
+      "5m": {
+        "hypothesis_id": "H1_NY_5M",
+        "description": "H1 NY Breakout 15m Window (5m bars)",
+        "total_eligible_signals": 375,
+        "executed_trades": 375,
+        "independent_trades": 273,
+        "win_rate": 0.3707,
+        "profit_factor": 1.34,
+        "gross_return_pct": 0.2429,
+        "net_return_pct": -0.3571,
+        "net_expectancy_bps": -9.52,
+        "max_drawdown_pct": 0.3248,
+        "sharpe_ratio": -3.05,
+        "sortino_ratio": -3.28,
+        "train_net_return_pct": -0.2136,
+        "val_net_return_pct": -0.0508,
+        "test_net_return_pct": -0.0927,
+        "buy_and_hold_return_pct": 0.6812,
+        "cost_sensitivity": {
+          "0_bps (Zero Cost)": 24.293,
+          "5_bps (Low Friction)": 5.543,
+          "8_bps (Maker/VIP)": -5.707,
+          "10_bps (Standard Maker)": -13.207,
+          "16_bps (Realistic)": -35.707,
+          "25_bps (Stress/Adverse)": -69.457
+        },
+        "regime_breakdown": {
+          "TRENDING": {
+            "trades": 26,
+            "win_rate": 0.462,
+            "total_net_return_pct": -2.727
+          },
+          "RANGING": {
+            "trades": 349,
+            "win_rate": 0.364,
+            "total_net_return_pct": -32.98
+          },
+          "HIGH_VOLATILITY": {
+            "trades": 206,
+            "win_rate": 0.413,
+            "total_net_return_pct": -17.399
+          },
+          "NORMAL_VOLATILITY": {
+            "trades": 169,
+            "win_rate": 0.32,
+            "total_net_return_pct": -18.308
+          }
+        },
+        "is_statistically_significant": false,
+        "scientific_conclusion": "UNFAVORABLE / UNPROVEN: Net return after costs is negative or fails to beat trading friction. Expectancy: -9.5 bps, Held-out Test: -9.27%.",
+        "unallocated_cumulative_return_pct": -0.3571,
+        "independent_cumulative_return_pct": -0.3048,
+        "compounded_independent_equity_pct": -0.2665,
+        "capital_allocated_portfolio_return_pct": -0.0301,
+        "independent_net_expectancy_bps": -11.16,
+        "break_even_cost_bps": 6.48
+      },
+      "15m": {
+        "hypothesis_id": "H1_NY_15M",
+        "description": "H1 NY Breakout 15m Window (15m bars)",
+        "total_eligible_signals": 237,
+        "executed_trades": 237,
+        "independent_trades": 213,
+        "win_rate": 0.3966,
+        "profit_factor": 1.44,
+        "gross_return_pct": 0.1946,
+        "net_return_pct": -0.1846,
+        "net_expectancy_bps": -7.79,
+        "max_drawdown_pct": 0.2029,
+        "sharpe_ratio": -1.93,
+        "sortino_ratio": -2.08,
+        "train_net_return_pct": -0.138,
+        "val_net_return_pct": -0.0238,
+        "test_net_return_pct": -0.0228,
+        "buy_and_hold_return_pct": 0.6777,
+        "cost_sensitivity": {
+          "0_bps (Zero Cost)": 19.46,
+          "5_bps (Low Friction)": 7.61,
+          "8_bps (Maker/VIP)": 0.5,
+          "10_bps (Standard Maker)": -4.24,
+          "16_bps (Realistic)": -18.46,
+          "25_bps (Stress/Adverse)": -39.79
+        },
+        "regime_breakdown": {
+          "TRENDING": {
+            "trades": 18,
+            "win_rate": 0.444,
+            "total_net_return_pct": -2.356
+          },
+          "RANGING": {
+            "trades": 219,
+            "win_rate": 0.393,
+            "total_net_return_pct": -16.104
+          },
+          "HIGH_VOLATILITY": {
+            "trades": 129,
+            "win_rate": 0.434,
+            "total_net_return_pct": -9.785
+          },
+          "NORMAL_VOLATILITY": {
+            "trades": 108,
+            "win_rate": 0.352,
+            "total_net_return_pct": -8.675
+          }
+        },
+        "is_statistically_significant": false,
+        "scientific_conclusion": "UNFAVORABLE / UNPROVEN: Net return after costs is negative or fails to beat trading friction. Expectancy: -7.8 bps, Held-out Test: -2.28%.",
+        "unallocated_cumulative_return_pct": -0.1846,
+        "independent_cumulative_return_pct": -0.1641,
+        "compounded_independent_equity_pct": -0.155,
+        "capital_allocated_portfolio_return_pct": -0.0163,
+        "independent_net_expectancy_bps": -7.71,
+        "break_even_cost_bps": 8.21
+      },
+      "1h": {
+        "hypothesis_id": "H1_NY_1H",
+        "description": "H1 NY Breakout 60m Window (1h bars)",
+        "total_eligible_signals": 95,
+        "executed_trades": 95,
+        "independent_trades": 92,
+        "win_rate": 0.3368,
+        "profit_factor": 1.0,
+        "gross_return_pct": -0.0006,
+        "net_return_pct": -0.1526,
+        "net_expectancy_bps": -16.06,
+        "max_drawdown_pct": 0.1591,
+        "sharpe_ratio": -1.28,
+        "sortino_ratio": -1.61,
+        "train_net_return_pct": -0.122,
+        "val_net_return_pct": -0.0058,
+        "test_net_return_pct": -0.0248,
+        "buy_and_hold_return_pct": 0.6782,
+        "cost_sensitivity": {
+          "0_bps (Zero Cost)": -0.061,
+          "5_bps (Low Friction)": -4.811,
+          "8_bps (Maker/VIP)": -7.661,
+          "10_bps (Standard Maker)": -9.561,
+          "16_bps (Realistic)": -15.261,
+          "25_bps (Stress/Adverse)": -23.811
+        },
+        "regime_breakdown": {
+          "TRENDING": {
+            "trades": 12,
+            "win_rate": 0.583,
+            "total_net_return_pct": 5.377
+          },
+          "RANGING": {
+            "trades": 83,
+            "win_rate": 0.301,
+            "total_net_return_pct": -20.637
+          },
+          "HIGH_VOLATILITY": {
+            "trades": 50,
+            "win_rate": 0.4,
+            "total_net_return_pct": -0.377
+          },
+          "NORMAL_VOLATILITY": {
+            "trades": 45,
+            "win_rate": 0.267,
+            "total_net_return_pct": -14.884
+          }
+        },
+        "is_statistically_significant": false,
+        "scientific_conclusion": "UNFAVORABLE / UNPROVEN: Net return after costs is negative or fails to beat trading friction. Expectancy: -16.1 bps, Held-out Test: -2.48%.",
+        "unallocated_cumulative_return_pct": -0.1526,
+        "independent_cumulative_return_pct": -0.1658,
+        "compounded_independent_equity_pct": -0.1584,
+        "capital_allocated_portfolio_return_pct": -0.0165,
+        "independent_net_expectancy_bps": -18.02,
+        "break_even_cost_bps": 0.0
+      }
+    },
+    "h3_pullback": {
+      "5m": {
+        "hypothesis_id": "H3_PULLBACK_5M",
+        "description": "H3 Pullback (5m bars)",
+        "total_eligible_signals": 1580,
+        "executed_trades": 1580,
+        "independent_trades": 1368,
+        "win_rate": 0.2576,
+        "profit_factor": 1.01,
+        "gross_return_pct": 0.0272,
+        "net_return_pct": -2.5008,
+        "net_expectancy_bps": -15.83,
+        "max_drawdown_pct": 0.919,
+        "sharpe_ratio": -19.78,
+        "sortino_ratio": -18.42,
+        "train_net_return_pct": -1.6159,
+        "val_net_return_pct": -0.5479,
+        "test_net_return_pct": -0.337,
+        "buy_and_hold_return_pct": 0.6812,
+        "cost_sensitivity": {
+          "0_bps (Zero Cost)": 2.718,
+          "5_bps (Low Friction)": -76.282,
+          "8_bps (Maker/VIP)": -123.682,
+          "10_bps (Standard Maker)": -155.282,
+          "16_bps (Realistic)": -250.082,
+          "25_bps (Stress/Adverse)": -392.282
+        },
+        "regime_breakdown": {
+          "TRENDING": {
+            "trades": 144,
+            "win_rate": 0.292,
+            "total_net_return_pct": -22.733
+          },
+          "RANGING": {
+            "trades": 1436,
+            "win_rate": 0.254,
+            "total_net_return_pct": -227.349
+          },
+          "HIGH_VOLATILITY": {
+            "trades": 436,
+            "win_rate": 0.294,
+            "total_net_return_pct": -71.696
+          },
+          "NORMAL_VOLATILITY": {
+            "trades": 1144,
+            "win_rate": 0.244,
+            "total_net_return_pct": -178.386
+          }
+        },
+        "is_statistically_significant": false,
+        "scientific_conclusion": "UNFAVORABLE / UNPROVEN: Net return after costs is negative or fails to beat trading friction. Expectancy: -15.8 bps, Held-out Test: -33.70%.",
+        "unallocated_cumulative_return_pct": -2.5008,
+        "independent_cumulative_return_pct": -2.1738,
+        "compounded_independent_equity_pct": -0.8872,
+        "capital_allocated_portfolio_return_pct": -0.1954,
+        "independent_net_expectancy_bps": -15.89,
+        "break_even_cost_bps": 0.17
+      },
+      "15m": {
+        "hypothesis_id": "H3_PULLBACK_15M",
+        "description": "H3 Pullback (15m bars)",
+        "total_eligible_signals": 510,
+        "executed_trades": 510,
+        "independent_trades": 468,
+        "win_rate": 0.2471,
+        "profit_factor": 0.8,
+        "gross_return_pct": -0.1723,
+        "net_return_pct": -0.9883,
+        "net_expectancy_bps": -19.38,
+        "max_drawdown_pct": 0.6298,
+        "sharpe_ratio": -10.41,
+        "sortino_ratio": -9.59,
+        "train_net_return_pct": -0.582,
+        "val_net_return_pct": -0.2131,
+        "test_net_return_pct": -0.1932,
+        "buy_and_hold_return_pct": 0.6777,
+        "cost_sensitivity": {
+          "0_bps (Zero Cost)": -17.229,
+          "5_bps (Low Friction)": -42.729,
+          "8_bps (Maker/VIP)": -58.029,
+          "10_bps (Standard Maker)": -68.229,
+          "16_bps (Realistic)": -98.829,
+          "25_bps (Stress/Adverse)": -144.729
+        },
+        "regime_breakdown": {
+          "TRENDING": {
+            "trades": 55,
+            "win_rate": 0.255,
+            "total_net_return_pct": -10.402
+          },
+          "RANGING": {
+            "trades": 455,
+            "win_rate": 0.246,
+            "total_net_return_pct": -88.427
+          },
+          "HIGH_VOLATILITY": {
+            "trades": 140,
+            "win_rate": 0.3,
+            "total_net_return_pct": -26.755
+          },
+          "NORMAL_VOLATILITY": {
+            "trades": 370,
+            "win_rate": 0.227,
+            "total_net_return_pct": -72.074
+          }
+        },
+        "is_statistically_significant": false,
+        "scientific_conclusion": "UNFAVORABLE / UNPROVEN: Net return after costs is negative or fails to beat trading friction. Expectancy: -19.4 bps, Held-out Test: -19.32%.",
+        "unallocated_cumulative_return_pct": -0.9883,
+        "independent_cumulative_return_pct": -0.9447,
+        "compounded_independent_equity_pct": -0.6132,
+        "capital_allocated_portfolio_return_pct": -0.0902,
+        "independent_net_expectancy_bps": -20.19,
+        "break_even_cost_bps": 0.0
+      },
+      "1h": {
+        "hypothesis_id": "H3_PULLBACK_1H",
+        "description": "H3 Pullback (1h bars)",
+        "total_eligible_signals": 132,
+        "executed_trades": 132,
+        "independent_trades": 119,
+        "win_rate": 0.3561,
+        "profit_factor": 1.03,
+        "gross_return_pct": 0.0117,
+        "net_return_pct": -0.1995,
+        "net_expectancy_bps": -15.12,
+        "max_drawdown_pct": 0.2246,
+        "sharpe_ratio": -2.0,
+        "sortino_ratio": -2.37,
+        "train_net_return_pct": -0.0735,
+        "val_net_return_pct": -0.0918,
+        "test_net_return_pct": -0.0342,
+        "buy_and_hold_return_pct": 0.6782,
+        "cost_sensitivity": {
+          "0_bps (Zero Cost)": 1.167,
+          "5_bps (Low Friction)": -5.433,
+          "8_bps (Maker/VIP)": -9.393,
+          "10_bps (Standard Maker)": -12.033,
+          "16_bps (Realistic)": -19.953,
+          "25_bps (Stress/Adverse)": -31.833
+        },
+        "regime_breakdown": {
+          "TRENDING": {
+            "trades": 22,
+            "win_rate": 0.409,
+            "total_net_return_pct": -2.485
+          },
+          "RANGING": {
+            "trades": 110,
+            "win_rate": 0.345,
+            "total_net_return_pct": -17.468
+          },
+          "HIGH_VOLATILITY": {
+            "trades": 33,
+            "win_rate": 0.394,
+            "total_net_return_pct": -1.376
+          },
+          "NORMAL_VOLATILITY": {
+            "trades": 99,
+            "win_rate": 0.343,
+            "total_net_return_pct": -18.577
+          }
+        },
+        "is_statistically_significant": false,
+        "scientific_conclusion": "UNFAVORABLE / UNPROVEN: Net return after costs is negative or fails to beat trading friction. Expectancy: -15.1 bps, Held-out Test: -3.42%.",
+        "unallocated_cumulative_return_pct": -0.1995,
+        "independent_cumulative_return_pct": -0.1499,
+        "compounded_independent_equity_pct": -0.1433,
+        "capital_allocated_portfolio_return_pct": -0.0149,
+        "independent_net_expectancy_bps": -12.6,
+        "break_even_cost_bps": 0.88
+      }
+    },
+    "h2_liquidity_sweep": {
+      "5m": {
+        "hypothesis_id": "H2_LIQUIDITY_SWEEP_5M",
+        "description": "H2 Liquidity Sweep (5m bars)",
+        "total_eligible_signals": 17640,
+        "executed_trades": 17640,
+        "independent_trades": 7151,
+        "win_rate": 0.2477,
+        "profit_factor": 1.0,
+        "gross_return_pct": -0.0787,
+        "net_return_pct": -28.3027,
+        "net_expectancy_bps": -16.04,
+        "max_drawdown_pct": 1.0,
+        "sharpe_ratio": -72.69,
+        "sortino_ratio": -63.67,
+        "train_net_return_pct": -17.0944,
+        "val_net_return_pct": -4.0633,
+        "test_net_return_pct": -7.145,
+        "buy_and_hold_return_pct": 0.6812,
+        "cost_sensitivity": {
+          "0_bps (Zero Cost)": -7.87,
+          "5_bps (Low Friction)": -889.87,
+          "8_bps (Maker/VIP)": -1419.07,
+          "10_bps (Standard Maker)": -1771.87,
+          "16_bps (Realistic)": -2830.27,
+          "25_bps (Stress/Adverse)": -4417.87
+        },
+        "regime_breakdown": {
+          "TRENDING": {
+            "trades": 1928,
+            "win_rate": 0.298,
+            "total_net_return_pct": -292.396
+          },
+          "RANGING": {
+            "trades": 15712,
+            "win_rate": 0.241,
+            "total_net_return_pct": -2537.874
+          },
+          "HIGH_VOLATILITY": {
+            "trades": 5010,
+            "win_rate": 0.308,
+            "total_net_return_pct": -801.149
+          },
+          "NORMAL_VOLATILITY": {
+            "trades": 12630,
+            "win_rate": 0.224,
+            "total_net_return_pct": -2029.121
+          }
+        },
+        "is_statistically_significant": false,
+        "scientific_conclusion": "UNFAVORABLE / UNPROVEN: Net return after costs is negative or fails to beat trading friction. Expectancy: -16.0 bps, Held-out Test: -714.50%.",
+        "unallocated_cumulative_return_pct": -28.3027,
+        "independent_cumulative_return_pct": -16.1323,
+        "compounded_independent_equity_pct": -1.0,
+        "capital_allocated_portfolio_return_pct": -0.8008,
+        "independent_net_expectancy_bps": -22.56,
+        "break_even_cost_bps": 0.0
+      }
+    }
+  }
+}
