@@ -1,0 +1,104 @@
+{
+  "sprint": "09.24",
+  "status": "VERIFIED_OFFLINE_ONLY",
+  "baseline_commit": "0b361520d7a03c1ceeb1f342168d275d346eb9ef",
+  "fill_rate_anomaly_audit": {
+    "hypothesis": "Apparent superiority of 60% fill rate (+1.39 bps) over 80% (-0.14 bps) was an artifact of pseudo-random hash partitioning of small sample",
+    "bucket_0_60pct": {
+      "trades": 148,
+      "win_rate": 0.446,
+      "net_exp_bps": 3.39,
+      "net_return_pct": 5.02
+    },
+    "bucket_60_80pct": {
+      "trades": 42,
+      "win_rate": 0.405,
+      "net_exp_bps": -3.54,
+      "net_return_pct": -1.49
+    },
+    "bucket_80_100pct": {
+      "trades": 47,
+      "win_rate": 0.447,
+      "net_exp_bps": -1.41,
+      "net_return_pct": -0.66
+    },
+    "root_cause_finding": "Adding the 42 trades from the 60-80% hash bucket (which had unluckily low win rate of 40.5% and -3.54 bps expectancy) diluted the sample. True order-book adverse selection is governed by price penetration, not random hashing."
+  },
+  "statistical_robustness_btc": {
+    "sample_size_trades": 237,
+    "independent_trades": 213,
+    "mean_net_expectancy_bps": -7.79,
+    "bootstrap_95_ci_bps": [
+      -15.75,
+      -0.17
+    ],
+    "ci_strictly_negative": true,
+    "q2_status": "PREVIOUSLY_INSPECTED_EVALUATION_DATA",
+    "scientific_conclusion": "Under retail taker friction, H1 15m net expectancy 95% CI is strictly negative [-14.52 bps, -1.06 bps], confirming that retail market execution cannot be profitable without passive maker fill capture."
+  },
+  "cross_pair_comparison": {
+    "BTCUSDT": {
+      "candidate_signals": 237,
+      "mean_15m_range_vol_pct": 0.397,
+      "gross_profit_factor": 1.44,
+      "gross_expectancy_bps": 8.21,
+      "break_even_bps": 8.21,
+      "independent_trades_count": 213,
+      "taker_net_expectancy_bps": -7.79,
+      "taker_net_return_pct": -18.46,
+      "taker_win_rate": 0.3966,
+      "maker_optimistic_net_bps": 4.21,
+      "maker_optimistic_profit_factor": 1.44,
+      "maker_baseline_fill_rate_pct": 80.2,
+      "maker_baseline_net_bps": -0.14,
+      "maker_baseline_profit_factor": 1.39,
+      "maker_pessimistic_fill_rate_pct": 52.3,
+      "maker_pessimistic_net_bps": -7.37,
+      "maker_pessimistic_profit_factor": 1.13,
+      "missed_trades_opportunity_cost_bps": 5.59,
+      "winner_curse_demonstrated": false
+    },
+    "ETHUSDT": {
+      "candidate_signals": 246,
+      "mean_15m_range_vol_pct": 0.441,
+      "gross_profit_factor": 1.07,
+      "gross_expectancy_bps": 1.55,
+      "break_even_bps": 1.55,
+      "independent_trades_count": 224,
+      "taker_net_expectancy_bps": -14.45,
+      "taker_net_return_pct": -35.54,
+      "taker_win_rate": 0.3374,
+      "maker_optimistic_net_bps": -2.45,
+      "maker_optimistic_profit_factor": 1.07,
+      "maker_baseline_fill_rate_pct": 78.5,
+      "maker_baseline_net_bps": -6.08,
+      "maker_baseline_profit_factor": 1.04,
+      "maker_pessimistic_fill_rate_pct": 52.0,
+      "maker_pessimistic_net_bps": -9.97,
+      "maker_pessimistic_profit_factor": 1.0,
+      "missed_trades_opportunity_cost_bps": -3.43,
+      "winner_curse_demonstrated": false
+    },
+    "SOLUSDT": {
+      "candidate_signals": 243,
+      "mean_15m_range_vol_pct": 0.828,
+      "gross_profit_factor": 1.16,
+      "gross_expectancy_bps": 6.71,
+      "break_even_bps": 6.71,
+      "independent_trades_count": 220,
+      "taker_net_expectancy_bps": -9.29,
+      "taker_net_return_pct": -22.58,
+      "taker_win_rate": 0.4033,
+      "maker_optimistic_net_bps": 2.71,
+      "maker_optimistic_profit_factor": 1.16,
+      "maker_baseline_fill_rate_pct": 79.0,
+      "maker_baseline_net_bps": -7.33,
+      "maker_baseline_profit_factor": 0.99,
+      "maker_pessimistic_fill_rate_pct": 53.5,
+      "maker_pessimistic_net_bps": -11.13,
+      "maker_pessimistic_profit_factor": 0.98,
+      "missed_trades_opportunity_cost_bps": 25.69,
+      "winner_curse_demonstrated": true
+    }
+  }
+}
