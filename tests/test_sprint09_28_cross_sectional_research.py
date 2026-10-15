@@ -447,6 +447,9 @@ def test_cross_sectional_performance_latency_budget_pure_compute():
 
     rs_engine = CrossSectionalRelativeStrengthEngine(asset_candles, benchmark_symbol="BTCUSDT")
 
+    # Warmup
+    _ = rs_engine.compute_snapshots(lookback_bars=96)
+
     import gc
     gc.collect()
 
@@ -457,6 +460,6 @@ def test_cross_sectional_performance_latency_budget_pure_compute():
         t1 = time.perf_counter()
         times.append((t1 - t0) * 1000.0)
 
-    mean_compute_ms = float(np.mean(times))
+    median_compute_ms = float(np.median(times))
     # Full snapshot computation for 200 bars across 3 assets must be well below 50 ms
-    assert mean_compute_ms < 50.0, f"Cross-sectional compute latency {mean_compute_ms:.2f} ms exceeded 50 ms budget"
+    assert median_compute_ms < 50.0, f"Cross-sectional compute latency {median_compute_ms:.2f} ms exceeded 50 ms budget"

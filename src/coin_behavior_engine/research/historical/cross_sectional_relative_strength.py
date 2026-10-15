@@ -123,6 +123,18 @@ class CrossSectionalRelativeStrengthEngine:
             ret[1:] = (cl[1:] - cl[:-1]) / cl[:-1]
             returns_1bar[sym] = ret
 
+        # Precompute cumulative sums for O(1) rolling variance, mean volume, and correlation
+        cum_ret = {sym: np.pad(np.cumsum(returns_1bar[sym]), (1, 0)) for sym in self.symbols}
+        cum_ret2 = {sym: np.pad(np.cumsum(returns_1bar[sym] ** 2), (1, 0)) for sym in self.symbols}
+        cum_vol = {sym: np.pad(np.cumsum(self._aligned_volumes[sym]), (1, 0)) for sym in self.symbols}
+        cum_pairs: dict[str, np.ndarray] = {}
+        for i in range(len(self.symbols)):
+            for j in range(i + 1, len(self.symbols)):
+                s1, s2 = self.symbols[i], self.symbols[j]
+                cum_pairs[f"{s1}_{s2}"] = np.pad(np.cumsum(returns_1bar[s1] * returns_1bar[s2]), (1, 0))
+
+        L = lookback_bars
+
         for t in range(lookback_bars, n):
             ts_ms = self.timestamps[t]
             ts_utc = datetime.datetime.fromtimestamp(ts_ms / 1000.0, tz=datetime.timezone.utc).isoformat()
@@ -141,11 +153,15 @@ class CrossSectionalRelativeStrengthEngine:
             btc_ret = trailing_ret_bps[self.benchmark_symbol]
             btc_rel_bps = {sym: float(round(trailing_ret_bps[sym] - btc_ret, 2)) for sym in self.symbols}
 
-            # 3. Rolling Volatility over lookback_bars
+            # 3. Rolling Volatility over lookback_bars (O(1))
             rolling_vol_bps = {}
+            t_start = t - lookback_bars + 1
+            t_end = t + 1
             for sym in self.symbols:
-                w_ret = returns_1bar[sym][t - lookback_bars + 1 : t + 1]
-                vol_bps = float(np.std(w_ret, ddof=1) * 10000.0) if len(w_ret) > 1 else 1.0
+                s1 = cum_ret[sym][t_end] - cum_ret[sym][t_start]
+                s2 = cum_ret2[sym][t_end] - cum_ret2[sym][t_start]
+                var = max(0.0, (s2 - (s1 * s1) / L) / (L - 1)) if L > 1 else 0.0
+                vol_bps = math.sqrt(var) * 10000.0
                 rolling_vol_bps[sym] = max(1.0, float(round(vol_bps, 2)))
 
             # 4. Risk-Adjusted Momentum (Trailing return / rolling volatility)
@@ -155,11 +171,12 @@ class CrossSectionalRelativeStrengthEngine:
                 score = (trailing_ret_bps[sym] / vol) if vol > 1e-9 else 0.0
                 risk_adj_mom[sym] = float(round(score, 3))
 
-            # 5. Relative Volume (Current volume vs mean volume over lookback)
+            # 5. Relative Volume (O(1))
             rel_vols = {}
             for sym in self.symbols:
                 v_curr = self._aligned_volumes[sym][t]
-                v_mean = float(np.mean(self._aligned_volumes[sym][t - lookback_bars + 1 : t + 1]))
+                v_sum = cum_vol[sym][t_end] - cum_vol[sym][t_start]
+                v_mean = v_sum / L if L > 0 else 1.0
                 r_v = (v_curr / v_mean) if v_mean > 1e-9 else 1.0
                 rel_vols[sym] = float(round(r_v, 2))
 
@@ -170,30 +187,32 @@ class CrossSectionalRelativeStrengthEngine:
             bottom_asset = sorted_by_mom[-1]
 
             # 7. Leadership Concentration (HHI of positive return shares)
-            pos_rets = np.array([max(0.0, trailing_ret_bps[s]) for s in self.symbols])
-            sum_pos = float(np.sum(pos_rets))
+            pos_rets = [max(0.0, trailing_ret_bps[s]) for s in self.symbols]
+            sum_pos = sum(pos_rets)
             if sum_pos > 1e-9:
-                weights = pos_rets / sum_pos
-                hhi = float(round(float(np.sum(weights ** 2)), 3))
+                hhi = float(round(sum((x / sum_pos) ** 2 for x in pos_rets), 3))
             else:
                 hhi = float(round(1.0 / len(self.symbols), 3))
 
-            # 8. Pairwise Correlations over lookback
+            # 8. Pairwise Correlations over lookback (O(1))
             corrs = {}
             for i in range(len(self.symbols)):
                 for j in range(i + 1, len(self.symbols)):
                     s1 = self.symbols[i]
                     s2 = self.symbols[j]
-                    r1 = returns_1bar[s1][t - lookback_bars + 1 : t + 1]
-                    r2 = returns_1bar[s2][t - lookback_bars + 1 : t + 1]
-                    if len(r1) > 2:
-                        da = r1 - np.mean(r1)
-                        db = r2 - np.mean(r2)
-                        denom = math.sqrt(float(np.sum(da * da) * np.sum(db * db)))
-                        c_val = float(np.sum(da * db) / denom) if denom > 1e-12 else 0.0
-                    else:
-                        c_val = 0.0
-                    corrs[f"{s1}_{s2}"] = float(round(c_val, 3))
+                    pair_key = f"{s1}_{s2}"
+                    sx = cum_ret[s1][t_end] - cum_ret[s1][t_start]
+                    sy = cum_ret[s2][t_end] - cum_ret[s2][t_start]
+                    sx2 = cum_ret2[s1][t_end] - cum_ret2[s1][t_start]
+                    sy2 = cum_ret2[s2][t_end] - cum_ret2[s2][t_start]
+                    sxy = cum_pairs[pair_key][t_end] - cum_pairs[pair_key][t_start]
+
+                    denom_x = max(0.0, sx2 - (sx * sx) / L)
+                    denom_y = max(0.0, sy2 - (sy * sy) / L)
+                    denom = math.sqrt(denom_x * denom_y)
+                    num = sxy - (sx * sy) / L
+                    c_val = num / denom if denom > 1e-12 else 0.0
+                    corrs[pair_key] = float(round(c_val, 3))
 
             snapshots.append(
                 CrossSectionalFeatureSnapshot(

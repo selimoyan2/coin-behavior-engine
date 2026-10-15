@@ -229,6 +229,20 @@ from coin_behavior_engine.research.historical.execution_realism_model import (
     ExecutionRealismForensicsReport,
     ExecutionTierResult,
 )
+from coin_behavior_engine.research.historical.forensic_closure_sprint31 import (
+    ForensicClosureAuditor,
+    ForensicClosureReport,
+    HistoricalGrossReconciliation,
+    MakerFillParadoxAnalysis,
+    TradedNotionalReconciliationRecord,
+)
+from coin_behavior_engine.research.historical.capital_preservation_research import (
+    BootstrapConfidenceRecord,
+    CapitalPreservationEngine,
+    CapitalPreservationPerformanceRecord,
+    CapitalPreservationResearchReport,
+    CostSensitivityRecord,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -369,4 +383,14 @@ __all__ = [
     "ExecutionTierResult",
     "ExecutionRealismForensicsReport",
     "ExecutionRealismAuditor",
+    "TradedNotionalReconciliationRecord",
+    "MakerFillParadoxAnalysis",
+    "HistoricalGrossReconciliation",
+    "ForensicClosureReport",
+    "ForensicClosureAuditor",
+    "CapitalPreservationPerformanceRecord",
+    "CostSensitivityRecord",
+    "BootstrapConfidenceRecord",
+    "CapitalPreservationResearchReport",
+    "CapitalPreservationEngine",
 ]
