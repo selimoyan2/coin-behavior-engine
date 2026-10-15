@@ -88,6 +88,14 @@ from coin_behavior_engine.research.historical.regime_filters import (
     RegimeFilterBank,
     RegimeFilterType,
 )
+from coin_behavior_engine.research.historical.provenance import (
+    AuditableTradeLedger,
+    AuditableTradeRecord,
+    ExperimentProvenanceRecord,
+)
+from coin_behavior_engine.research.historical.new_hypotheses import (
+    NewHypothesesGenerator,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -135,4 +143,8 @@ __all__ = [
     "FilterEvaluationReport",
     "RegimeFilterBank",
     "RegimeFilterType",
+    "AuditableTradeLedger",
+    "AuditableTradeRecord",
+    "ExperimentProvenanceRecord",
+    "NewHypothesesGenerator",
 ]
