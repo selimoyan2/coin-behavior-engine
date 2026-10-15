@@ -310,6 +310,19 @@ from coin_behavior_engine.research.historical.delta_neutral_forensics_sprint36 i
     SpotCandleOHLC,
     Sprint36ForensicValidator,
 )
+from coin_behavior_engine.research.historical.carry_accounting_closure_sprint37 import (
+    CanonicalCarryScenarioResult,
+    CanonicalDecimalCarryVerifier,
+    CanonicalMaintenanceMarginRegistry,
+    CollateralTransferEvent,
+    LiquidationEventForensicClosure,
+    MarkPriceIntegrityReport,
+    PerpetualMarkPriceCandleRecord,
+    Sprint36RowForensicAudit,
+    Sprint37CarryClosureAuditor,
+    VersionedMaintenanceMarginContract,
+    VersionedMarginBracket,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -505,4 +518,15 @@ __all__ = [
     "IndependentDecimalReferenceResult",
     "IndependentDecimalReferenceAccountant",
     "Sprint36ForensicValidator",
+    "PerpetualMarkPriceCandleRecord",
+    "MarkPriceIntegrityReport",
+    "VersionedMarginBracket",
+    "VersionedMaintenanceMarginContract",
+    "CollateralTransferEvent",
+    "LiquidationEventForensicClosure",
+    "Sprint36RowForensicAudit",
+    "CanonicalCarryScenarioResult",
+    "CanonicalMaintenanceMarginRegistry",
+    "CanonicalDecimalCarryVerifier",
+    "Sprint37CarryClosureAuditor",
 ]
