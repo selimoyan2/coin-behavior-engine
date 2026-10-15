@@ -252,6 +252,22 @@ from coin_behavior_engine.research.historical.passive_allocation_engine import (
     RobustnessSensitivityRecord,
     Sprint0932ResearchReport,
 )
+from coin_behavior_engine.research.historical.accounting_standard import (
+    AccountingConceptDefinition,
+    CanonicalAccountingStandard,
+)
+from coin_behavior_engine.research.historical.evidence_registry import (
+    CanonicalEvidenceRegistry,
+    DatasetExposureRecord,
+    InfrastructureAuditReport,
+    ResearchHypothesisRecord,
+    StatisticalPolicyRule,
+)
+from coin_behavior_engine.research.historical.research_roadmap import (
+    ResearchDomainFeasibilityAssessment,
+    ResearchRoadmapEvaluator,
+    ResearchRoadmapReport,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -409,4 +425,14 @@ __all__ = [
     "BootstrapValidationRecord",
     "Sprint0932ResearchReport",
     "PassiveAllocationEngine",
+    "AccountingConceptDefinition",
+    "CanonicalAccountingStandard",
+    "ResearchHypothesisRecord",
+    "DatasetExposureRecord",
+    "StatisticalPolicyRule",
+    "InfrastructureAuditReport",
+    "CanonicalEvidenceRegistry",
+    "ResearchDomainFeasibilityAssessment",
+    "ResearchRoadmapReport",
+    "ResearchRoadmapEvaluator",
 ]
