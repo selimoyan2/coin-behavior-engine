@@ -243,6 +243,15 @@ from coin_behavior_engine.research.historical.capital_preservation_research impo
     CapitalPreservationResearchReport,
     CostSensitivityRecord,
 )
+from coin_behavior_engine.research.historical.passive_allocation_engine import (
+    BootstrapValidationRecord,
+    HistoricalAccountingParityRecord,
+    PassiveAllocationEngine,
+    PortfolioPerformanceRecord,
+    RegimeIncrementalValueRecord,
+    RobustnessSensitivityRecord,
+    Sprint0932ResearchReport,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -393,4 +402,11 @@ __all__ = [
     "BootstrapConfidenceRecord",
     "CapitalPreservationResearchReport",
     "CapitalPreservationEngine",
+    "HistoricalAccountingParityRecord",
+    "PortfolioPerformanceRecord",
+    "RegimeIncrementalValueRecord",
+    "RobustnessSensitivityRecord",
+    "BootstrapValidationRecord",
+    "Sprint0932ResearchReport",
+    "PassiveAllocationEngine",
 ]
