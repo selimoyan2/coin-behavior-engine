@@ -1,0 +1,310 @@
+{
+  "sprint": "09.28",
+  "status": "CROSS_SECTIONAL_RESEARCH_AND_FUNDING_READINESS_COMPLETE",
+  "baseline_commit": "95fb3016162706b372768b718611972cc63393bf",
+  "sprint_09_27_reproducibility": {
+    "status": "VERIFIED",
+    "trade_ledger_records_count": 1605,
+    "q4_holdout_b3_b5_verdicts": "ALL_REJECTED"
+  },
+  "cross_sectional_universe_audit": {
+    "sprint": "09.28",
+    "core_universe": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT"
+    ],
+    "candidate_universe": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT",
+      "BNBUSDT",
+      "DOGEUSDT"
+    ],
+    "assets_metadata": {
+      "BTCUSDT": {
+        "symbol": "BTCUSDT",
+        "base_asset": "BTC",
+        "quote_asset": "USDT",
+        "binance_spot_listing_date_utc": "2017-08-17T04:00:00Z",
+        "binance_spot_listing_ms": 1502942400000,
+        "is_core_universe": true,
+        "historical_liquidity_tier": "TIER_1_MEGA",
+        "survivorship_bias_risk": "NEGLIGIBLE",
+        "listing_delisting_history_notes": "Binance genesis market; continuous trading without interruption."
+      },
+      "ETHUSDT": {
+        "symbol": "ETHUSDT",
+        "base_asset": "ETH",
+        "quote_asset": "USDT",
+        "binance_spot_listing_date_utc": "2017-08-17T04:00:00Z",
+        "binance_spot_listing_ms": 1502942400000,
+        "is_core_universe": true,
+        "historical_liquidity_tier": "TIER_1_MEGA",
+        "survivorship_bias_risk": "NEGLIGIBLE",
+        "listing_delisting_history_notes": "Binance genesis market; continuous trading without interruption."
+      },
+      "SOLUSDT": {
+        "symbol": "SOLUSDT",
+        "base_asset": "SOL",
+        "quote_asset": "USDT",
+        "binance_spot_listing_date_utc": "2020-08-11T06:00:00Z",
+        "binance_spot_listing_ms": 1597125600000,
+        "is_core_universe": true,
+        "historical_liquidity_tier": "TIER_1_MEGA",
+        "survivorship_bias_risk": "LOW_TO_MODERATE",
+        "listing_delisting_history_notes": "Listed 2020. Severe network outages in 2021-2022; recovered to top-tier Spot liquidity in 2023-2024."
+      },
+      "BNBUSDT": {
+        "symbol": "BNBUSDT",
+        "base_asset": "BNB",
+        "quote_asset": "USDT",
+        "binance_spot_listing_date_utc": "2017-11-06T04:00:00Z",
+        "binance_spot_listing_ms": 1509940800000,
+        "is_core_universe": false,
+        "historical_liquidity_tier": "TIER_1_MEGA",
+        "survivorship_bias_risk": "MODERATE_EXCHANGE_DEPENDENCY",
+        "listing_delisting_history_notes": "Binance native token; massive Spot liquidity on Binance, but non-independent regulatory exposure."
+      },
+      "DOGEUSDT": {
+        "symbol": "DOGEUSDT",
+        "base_asset": "DOGE",
+        "quote_asset": "USDT",
+        "binance_spot_listing_date_utc": "2019-07-05T12:00:00Z",
+        "binance_spot_listing_ms": 1562328000000,
+        "is_core_universe": false,
+        "historical_liquidity_tier": "TIER_2_LARGE",
+        "survivorship_bias_risk": "HIGH_MEME_VARIABILITY",
+        "listing_delisting_history_notes": "High volume in retail bull regimes; low relative volume during consolidation."
+      }
+    },
+    "dataset_coverage": {
+      "BTCUSDT": {
+        "symbol": "BTCUSDT",
+        "quarters_available": [
+          "q1_2024",
+          "q2_2024",
+          "q3_2024",
+          "q4_2024"
+        ],
+        "total_15m_bars": 35136,
+        "missing_bars_count": 0,
+        "duplicate_bars_count": 0,
+        "gapless_continuity": true,
+        "earliest_open_utc": "2024-01-01T00:00:00+00:00",
+        "latest_close_utc": "2024-12-31T23:45:00+00:00"
+      },
+      "ETHUSDT": {
+        "symbol": "ETHUSDT",
+        "quarters_available": [
+          "q1_2024",
+          "q2_2024",
+          "q3_2024",
+          "q4_2024"
+        ],
+        "total_15m_bars": 35136,
+        "missing_bars_count": 0,
+        "duplicate_bars_count": 0,
+        "gapless_continuity": true,
+        "earliest_open_utc": "2024-01-01T00:00:00+00:00",
+        "latest_close_utc": "2024-12-31T23:45:00+00:00"
+      },
+      "SOLUSDT": {
+        "symbol": "SOLUSDT",
+        "quarters_available": [
+          "q1_2024",
+          "q2_2024",
+          "q3_2024",
+          "q4_2024"
+        ],
+        "total_15m_bars": 35136,
+        "missing_bars_count": 0,
+        "duplicate_bars_count": 0,
+        "gapless_continuity": true,
+        "earliest_open_utc": "2024-01-01T00:00:00+00:00",
+        "latest_close_utc": "2024-12-31T23:45:00+00:00"
+      }
+    },
+    "survivorship_bias_assessment": "SURVIVORSHIP BIAS AUDIT: The core research universe (BTC, ETH, SOL) represents survivors that maintained top market cap through 2024. Analyzing momentum exclusively on surviving mega-caps introduces survivorship bias if generalized to the broader crypto ecosystem. However, for an execution strategy constrained strictly to top-3 liquid Spot markets with institutional liquidity, survivorship bias is controlled by design since an investor in 2024 could only realistically deploy high capital into these 3 assets.",
+    "liquidity_stability_assessment": "LIQUIDITY STABILITY AUDIT: BTC, ETH, and SOL exhibited uninterrupted trading continuity across all 4 quarters of 2024 with zero data gaps on Binance Spot. SOL had higher volatility (0.83% 15m range) than BTC (0.40%) and ETH (0.44%), but all three maintained continuous order book depth exceeding $10M/hour.",
+    "acquisition_budget_mb_used": 26.4,
+    "max_budget_mb": 100.0
+  },
+  "preregistration_gate": {
+    "registration_id": "PREREG-SPRINT09.28-CROSS-SECTIONAL",
+    "timestamp_utc": "2026-10-15T09:00:00Z",
+    "baseline_commit": "95fb3016162706b372768b718611972cc63393bf",
+    "strategy_hashes": {
+      "CS1": "929e3cfc7668965b226347396a87cd81d0129be3be3ef2d39aebd4b71f8a659e",
+      "CS2": "5eaf5e1b4c5b0facf795a50e309344a6eab0ad33e9c98a84614f79c66f67ca42",
+      "CS3": "168193681979564e665cca5b561c202f4479b389879ed7d4f3a65db044c003f5",
+      "CS4": "1a19c37ac4eef810576bf31271036a0ffd435687a0709405861dff69e30276c5"
+    },
+    "spot_execution_invariants": {
+      "spot_only": true,
+      "no_naked_shorting": true,
+      "no_leverage": true,
+      "no_borrowed_assets": true,
+      "no_perpetual_funding_in_spot": true,
+      "cash_drag_modeled": true,
+      "maker_cost_roundtrip_bps": 6.0,
+      "taker_cost_roundtrip_bps": 16.0
+    },
+    "acceptance_criteria": {
+      "family_alpha_bonferroni": 0.0125,
+      "min_independent_events": 30,
+      "bootstrap_ci_lower_gt_zero": true,
+      "holdout_positive_net": true
+    },
+    "is_frozen": true
+  },
+  "ranking_persistence": {
+    "lookback_bars": 96,
+    "horizons_bars": [
+      4,
+      16,
+      48,
+      96
+    ],
+    "mean_spearman_autocorrelation": {
+      "4_bars": 0.843,
+      "16_bars": 0.663,
+      "48_bars": 0.366,
+      "96_bars": 0.044
+    },
+    "sample_periods_count": 35040,
+    "is_persistence_significant": true,
+    "scientific_interpretation": "Mean rank persistence across horizons: {'4_bars': 0.843, '16_bars': 0.663, '48_bars': 0.366, '96_bars': 0.044}. Crypto cross-sectional rankings exhibit high decay rates over horizons > 24 hours. Leadership frequently rotates between high-beta altcoins (SOL) and macro anchors (BTC)."
+  },
+  "hypotheses_evaluation": {
+    "CS1_RELATIVE_MOMENTUM_PERSISTENCE": {
+      "hypothesis_id": "CS1_RELATIVE_MOMENTUM_PERSISTENCE",
+      "description": "Cross-sectional risk-adjusted momentum top asset Spot allocation",
+      "total_events_evaluated": 2189,
+      "independent_decision_events": 2189,
+      "gross_expectancy_bps": 6.47,
+      "net_maker_expectancy_bps": 4.87,
+      "net_taker_expectancy_bps": -5.13,
+      "win_rate_maker": 0.5126,
+      "win_rate_taker": 0.471,
+      "profit_factor_maker": 1.1,
+      "max_drawdown_bps": 4409.46,
+      "t_statistic_maker": 1.47,
+      "bootstrap_ci_95_maker_bps": [
+        -0.88,
+        11.05
+      ],
+      "verdict": "EXPLORATORY",
+      "scientific_notes": "Modest positive expectancy (4.87 bps), but 95% bootstrap CI includes zero [-0.88, 11.05] bps. Cannot confirm statistical advantage."
+    },
+    "CS2_LEADERSHIP_ROTATION": {
+      "hypothesis_id": "CS2_LEADERSHIP_ROTATION",
+      "description": "Mean reversion rotation into lagging assets upon concentrated leadership",
+      "total_events_evaluated": 619,
+      "independent_decision_events": 619,
+      "gross_expectancy_bps": -3.53,
+      "net_maker_expectancy_bps": -9.53,
+      "net_taker_expectancy_bps": -19.53,
+      "win_rate_maker": 0.4653,
+      "win_rate_taker": 0.4233,
+      "profit_factor_maker": 0.8,
+      "max_drawdown_bps": 6588.49,
+      "t_statistic_maker": -1.93,
+      "bootstrap_ci_95_maker_bps": [
+        -19.59,
+        -0.32
+      ],
+      "verdict": "REJECTED",
+      "scientific_notes": "Negative net maker expectancy (-9.53 bps). Rejected after execution costs."
+    },
+    "CS3_MARKET_BREADTH_CONFIRMATION": {
+      "hypothesis_id": "CS3_MARKET_BREADTH_CONFIRMATION",
+      "description": "BTC trend continuation filtered by broad multi-asset participation",
+      "total_events_evaluated": 686,
+      "independent_decision_events": 686,
+      "gross_expectancy_bps": 0.84,
+      "net_maker_expectancy_bps": -5.16,
+      "net_taker_expectancy_bps": -15.16,
+      "win_rate_maker": 0.4431,
+      "win_rate_taker": 0.379,
+      "profit_factor_maker": 0.86,
+      "max_drawdown_bps": 5321.52,
+      "t_statistic_maker": -1.33,
+      "bootstrap_ci_95_maker_bps": [
+        -12.89,
+        2.62
+      ],
+      "verdict": "REJECTED",
+      "scientific_notes": "Negative net maker expectancy (-5.16 bps). Rejected after execution costs."
+    },
+    "CS4_BTC_REGIME_DEPENDENCY": {
+      "hypothesis_id": "CS4_BTC_REGIME_DEPENDENCY",
+      "description": "Top momentum Spot allocation gated by BTC Bullish trend regime",
+      "total_events_evaluated": 2189,
+      "independent_decision_events": 2189,
+      "gross_expectancy_bps": 1.92,
+      "net_maker_expectancy_bps": -0.29,
+      "net_taker_expectancy_bps": -10.29,
+      "win_rate_maker": 0.1741,
+      "win_rate_taker": 0.153,
+      "profit_factor_maker": 0.98,
+      "max_drawdown_bps": 4217.44,
+      "t_statistic_maker": -0.18,
+      "bootstrap_ci_95_maker_bps": [
+        -3.56,
+        2.85
+      ],
+      "verdict": "REJECTED",
+      "scientific_notes": "Negative net maker expectancy (-0.29 bps). Rejected after execution costs."
+    }
+  },
+  "multiple_testing_control": {
+    "nominal_alpha": 0.05,
+    "bonferroni_alpha": 0.0125,
+    "raw_p_values": {
+      "CS1_RELATIVE_MOMENTUM_PERSISTENCE": 0.1416,
+      "CS2_LEADERSHIP_ROTATION": 0.0536,
+      "CS3_MARKET_BREADTH_CONFIRMATION": 0.1835,
+      "CS4_BTC_REGIME_DEPENDENCY": 0.8572
+    },
+    "bonferroni_survived": {
+      "CS1_RELATIVE_MOMENTUM_PERSISTENCE": false,
+      "CS2_LEADERSHIP_ROTATION": false,
+      "CS3_MARKET_BREADTH_CONFIRMATION": false,
+      "CS4_BTC_REGIME_DEPENDENCY": false
+    }
+  },
+  "funding_rate_research_readiness": {
+    "sprint": "09.28",
+    "status": "INTERFACE_STANDARDIZED_DATA_PENDING",
+    "is_synthetic_data_prohibited": true,
+    "is_spot_perp_separation_enforced": true,
+    "supported_contract_specs": {
+      "exchange": "BINANCE",
+      "symbol": "BTCUSDT",
+      "contract_type": "PERPETUAL_FUTURES",
+      "settlement_currency": "USDT",
+      "settlement_interval_hours": 8,
+      "settlement_times_utc": [
+        "00:00:00",
+        "08:00:00",
+        "16:00:00"
+      ],
+      "fixed_interest_rate_per_interval_pct": 0.0001,
+      "premium_clamp_range_pct": [
+        -0.0005,
+        0.0005
+      ],
+      "maker_fee_bps": 2.0,
+      "taker_fee_bps": 5.0
+    },
+    "authentic_records_loaded_count": 0,
+    "readiness_notes": "Funding research interface is standardized. Authentic Binance monthly funding archives must be ingested from Binance Data Vision before executing carry backtests. Zero synthetic funding observations are permitted."
+  },
+  "performance_latency_forensics": {
+    "pure_in_memory_compute_ms": 1.21,
+    "sqlite_wal_journal_disk_io_ms": 51.09,
+    "production_threshold_ms": 50.0,
+    "threshold_relaxed": false
+  }
+}

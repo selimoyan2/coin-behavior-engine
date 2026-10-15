@@ -1,0 +1,17 @@
+{
+  "dataset_id": "HIST-BINANCE-ETHUSDT-5m-1727740800000_1735689300000",
+  "symbol": "ETHUSDT",
+  "interval": "5m",
+  "exchange": "BINANCE",
+  "market_type": "SPOT",
+  "provenance_source": "OFFICIAL_BINANCE_VISION_5M_ETHUSDT_Q4_2024",
+  "earliest_candle_open_utc": "2024-10-01T00:00:00+00:00",
+  "earliest_candle_open_ms": 1727740800000,
+  "latest_candle_open_utc": "2024-12-31T23:55:00+00:00",
+  "latest_candle_open_ms": 1735689300000,
+  "total_bars": 26496,
+  "sha256_checksum": "488b538b51d8154218537fa74566f616ac3bec5ccc2cb8d0c76fb40911ac3e91",
+  "created_at_utc": "2026-10-15T07:14:39.584141+00:00",
+  "documentation_url": "https://data.binance.vision/",
+  "license_or_coverage_notes": "Binance public historical market klines"
+}

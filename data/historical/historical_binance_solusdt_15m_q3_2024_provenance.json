@@ -1,0 +1,17 @@
+{
+  "dataset_id": "HIST-BINANCE-SOLUSDT-15m-1719792000000_1727739900000",
+  "symbol": "SOLUSDT",
+  "interval": "15m",
+  "exchange": "BINANCE",
+  "market_type": "SPOT",
+  "provenance_source": "DETERMINISTIC_AGGREGATION_5M_SOLUSDT_Q3_2024",
+  "earliest_candle_open_utc": "2024-07-01T00:00:00+00:00",
+  "earliest_candle_open_ms": 1719792000000,
+  "latest_candle_open_utc": "2024-09-30T23:45:00+00:00",
+  "latest_candle_open_ms": 1727739900000,
+  "total_bars": 8832,
+  "sha256_checksum": "655f684a1f30e157f9a07be193dc7c4f52575873235bb29dcf1c6df9d23f6802",
+  "created_at_utc": "2026-10-15T07:14:50.914821+00:00",
+  "documentation_url": "https://data.binance.vision/",
+  "license_or_coverage_notes": "Binance public historical market klines"
+}

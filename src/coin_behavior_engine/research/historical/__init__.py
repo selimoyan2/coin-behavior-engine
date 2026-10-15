@@ -140,6 +140,41 @@ from coin_behavior_engine.research.historical.behavioral_validation import (
     PreRegistrationGate,
     WalkForwardFoldResult,
 )
+from coin_behavior_engine.research.historical.cross_sectional_universe import (
+    AssetMetadata,
+    CrossSectionalUniverseAuditReport,
+    CrossSectionalUniverseAuditor,
+    UniverseDatasetCoverage,
+)
+from coin_behavior_engine.research.historical.cross_sectional_relative_strength import (
+    CrossSectionalFeatureSnapshot,
+    CrossSectionalRelativeStrengthEngine,
+    RankingPersistenceReport,
+)
+from coin_behavior_engine.research.historical.market_breadth import (
+    MarketBreadthEngine,
+    MarketBreadthSnapshot,
+)
+from coin_behavior_engine.research.historical.funding_research_contract import (
+    FundingContractSpec,
+    FundingPaymentConvention,
+    FundingRateRecord,
+    FundingRateResearchValidator,
+    FundingReadinessReport,
+    FundingReadinessStatus,
+    SpotPerpetualAccountingContaminationError,
+    SyntheticFundingProhibitionError,
+)
+from coin_behavior_engine.research.historical.cross_sectional_hypotheses import (
+    CS1Config,
+    CS2Config,
+    CS3Config,
+    CS4Config,
+    CrossSectionalDecisionVerdict,
+    CrossSectionalHypothesisResult,
+    CrossSectionalPreRegistrationGate,
+    CrossSectionalResearchRunner,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -221,4 +256,29 @@ __all__ = [
     "WalkForwardFoldResult",
     "ConfirmatoryHoldoutResult",
     "BehavioralValidationOrchestrator",
+    "AssetMetadata",
+    "UniverseDatasetCoverage",
+    "CrossSectionalUniverseAuditReport",
+    "CrossSectionalUniverseAuditor",
+    "CrossSectionalFeatureSnapshot",
+    "CrossSectionalRelativeStrengthEngine",
+    "RankingPersistenceReport",
+    "MarketBreadthSnapshot",
+    "MarketBreadthEngine",
+    "FundingPaymentConvention",
+    "FundingReadinessStatus",
+    "SyntheticFundingProhibitionError",
+    "SpotPerpetualAccountingContaminationError",
+    "FundingContractSpec",
+    "FundingRateRecord",
+    "FundingReadinessReport",
+    "FundingRateResearchValidator",
+    "CS1Config",
+    "CS2Config",
+    "CS3Config",
+    "CS4Config",
+    "CrossSectionalDecisionVerdict",
+    "CrossSectionalPreRegistrationGate",
+    "CrossSectionalHypothesisResult",
+    "CrossSectionalResearchRunner",
 ]
