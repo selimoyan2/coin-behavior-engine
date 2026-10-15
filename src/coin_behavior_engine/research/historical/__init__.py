@@ -301,6 +301,15 @@ from coin_behavior_engine.research.historical.delta_neutral_ledger_verifier impo
     LedgerAuditReport,
     PrimitiveLedgerEvent,
 )
+from coin_behavior_engine.research.historical.delta_neutral_forensics_sprint36 import (
+    ExchangeMarginMechanicRule,
+    IndependentDecimalReferenceAccountant,
+    IndependentDecimalReferenceResult,
+    S6LiquidationForensicReport,
+    ScenarioPnLForensicReconciliation,
+    SpotCandleOHLC,
+    Sprint36ForensicValidator,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -489,4 +498,11 @@ __all__ = [
     "PrimitiveLedgerEvent",
     "LedgerAuditReport",
     "DeltaNeutralLedgerVerifier",
+    "SpotCandleOHLC",
+    "ScenarioPnLForensicReconciliation",
+    "S6LiquidationForensicReport",
+    "ExchangeMarginMechanicRule",
+    "IndependentDecimalReferenceResult",
+    "IndependentDecimalReferenceAccountant",
+    "Sprint36ForensicValidator",
 ]

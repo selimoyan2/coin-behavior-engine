@@ -343,6 +343,7 @@ class DeltaNeutralCarrySimulator:
                     perp_account_equity -= penalty
 
             # Check uncertain liquidation condition (buffer < 1% of notional)
+            is_uncertain_liquidation = False
             if not is_liquidated and liq_buffer_usdt < (abs(perp_btc_qty) * perp_p * 0.01):
                 is_uncertain_liquidation = True
                 uncertain_outcomes += 1
