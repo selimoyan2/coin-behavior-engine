@@ -204,6 +204,31 @@ from coin_behavior_engine.research.historical.chronological_forward_validation i
     ConfirmatoryForwardValidationReport,
     PreRegistrationGateSprint29,
 )
+from coin_behavior_engine.research.historical.forensic_accounting_auditor import (
+    ForensicLegAudit,
+    ForensicLedgerReconciliationReport,
+    ForensicReconciliationError,
+    ForensicTransitionAudit,
+    IndependentForensicPortfolioAuditor,
+)
+from coin_behavior_engine.research.historical.forward_validation_forensics import (
+    BootstrapSensitivitySweep,
+    ForwardValidationForensicAuditor,
+    January2025ForensicReport,
+    SampleConfigurationComparison,
+)
+from coin_behavior_engine.research.historical.benchmark_forensics import (
+    BenchmarkForensicAuditor,
+    BenchmarkForensicsReport,
+    BenchmarkParityAuditRecord,
+    EquityBridgeComponent,
+    GrossToNetEquityBridge,
+)
+from coin_behavior_engine.research.historical.execution_realism_model import (
+    ExecutionRealismAuditor,
+    ExecutionRealismForensicsReport,
+    ExecutionTierResult,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -327,4 +352,21 @@ __all__ = [
     "PreRegistrationGateSprint29",
     "ConfirmatoryForwardValidationReport",
     "ChronologicalForwardValidator",
+    "ForensicReconciliationError",
+    "ForensicLegAudit",
+    "ForensicTransitionAudit",
+    "ForensicLedgerReconciliationReport",
+    "IndependentForensicPortfolioAuditor",
+    "BootstrapSensitivitySweep",
+    "SampleConfigurationComparison",
+    "January2025ForensicReport",
+    "ForwardValidationForensicAuditor",
+    "EquityBridgeComponent",
+    "GrossToNetEquityBridge",
+    "BenchmarkParityAuditRecord",
+    "BenchmarkForensicsReport",
+    "BenchmarkForensicAuditor",
+    "ExecutionTierResult",
+    "ExecutionRealismForensicsReport",
+    "ExecutionRealismAuditor",
 ]

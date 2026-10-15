@@ -447,6 +447,9 @@ def test_cross_sectional_performance_latency_budget_pure_compute():
 
     rs_engine = CrossSectionalRelativeStrengthEngine(asset_candles, benchmark_symbol="BTCUSDT")
 
+    import gc
+    gc.collect()
+
     times = []
     for _ in range(50):
         t0 = time.perf_counter()

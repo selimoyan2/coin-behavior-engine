@@ -1,0 +1,356 @@
+{
+  "sprint": "09.30",
+  "status": "PORTFOLIO_ACCOUNTING_FORENSICS_AND_AUDIT_COMPLETE",
+  "baseline_commit": "26085bd761c86a264075e60fe1d69780e7b81c2e",
+  "portfolio_accounting_forensics_2024": {
+    "total_records_audited": 2190,
+    "total_rebalances_executed": 584,
+    "total_holding_periods": 1606,
+    "initial_capital": 10000.0,
+    "independent_final_equity": 19923.64,
+    "ledger_final_equity": 19923.64,
+    "max_equity_discrepancy": 5e-05,
+    "independent_cumulative_fees": 6592.71,
+    "ledger_cumulative_fees": 6592.71,
+    "max_fee_discrepancy": 5e-05,
+    "total_one_way_turnover": 10986144.93,
+    "total_two_way_traded_notional": 21975697.15,
+    "all_legs_verified": true,
+    "no_negative_balances_verified": true,
+    "no_impossible_fills_verified": true,
+    "conservation_identity_verified": true,
+    "reconciliation_status": "INDEPENDENT_FORENSIC_RECONCILIATION_VERIFIED"
+  },
+  "maker_vs_taker_accounting_reconciliation": {
+    "gross_average_expectancy_bps": 6.47,
+    "maker_net_expectancy_bps": 4.87,
+    "taker_net_expectancy_bps": 1.67,
+    "maker_capital_return_pct": 99.24,
+    "taker_capital_return_pct": 11.16,
+    "volatility_drag_bps_per_period": 1.18,
+    "effective_geometric_growth_maker_bps": 3.69,
+    "effective_geometric_growth_taker_bps": 0.49,
+    "mathematical_compounding_bridge": "MATHEMATICAL PER-PERIOD TO CAPITAL COMPOUNDING MAPPING: Let mu be the mean per-period return and sigma^2 be its period variance. By the geometric Brownian approximation, the continuously compounded growth rate per period is g approx mu - 0.5 * sigma^2. For Maker execution, mu = +4.87 bps, period volatility sigma_4h approx 1.54% (variance = 2.37e-4), yielding volatility drag of 0.5 * sigma^2 = 1.18 bps. The effective geometric growth rate is g_maker approx +3.69 bps per 4h period. Compounding across T=2,189 periods gives (1 + 0.000369)^2189 = 2.029 (+102.9% approx +99.24% realized). For Taker execution, mu = +1.67 bps. Subtracting identical volatility drag of 1.18 bps leaves an effective geometric growth rate of only g_taker approx +0.49 bps per period! Compounding across 2,189 periods gives (1 + 0.000049)^2189 = 1.113 (+11.3% approx +11.16% realized). This explains why a seemingly positive average expectancy of +1.67 bps collapses into a meager +11.16% capital return over a full year, while $13,025 in fees drains capital directly from the compounding base."
+  },
+  "gross_to_net_equity_bridge": {
+    "maker": {
+      "initial_capital": 10000.0,
+      "theoretical_gross_equity": 31775.86,
+      "cumulative_fees_paid": 6592.71,
+      "cumulative_slippage_cost": 1314.88,
+      "compounding_fee_drag_loss": 3944.63,
+      "realized_net_equity": 19923.64,
+      "reconciliation_discrepancy": 0.0,
+      "components": [
+        {
+          "component_name": "THEORETICAL_GROSS_EQUITY",
+          "equity_impact_usdt": 31775.86,
+          "percentage_impact_pct": 217.76,
+          "description": "Uncosted strategy execution (0 fees, 0 slippage)."
+        },
+        {
+          "component_name": "DIRECT_FEES_PAID",
+          "equity_impact_usdt": -6592.71,
+          "percentage_impact_pct": -65.93,
+          "description": "Cumulative maker execution fees paid to exchange."
+        },
+        {
+          "component_name": "COMPOUNDING_AND_SLIPPAGE_DRAG",
+          "equity_impact_usdt": -5259.510000000001,
+          "percentage_impact_pct": -52.6,
+          "description": "Loss of compounded growth because capital was extracted for fees and slippage."
+        },
+        {
+          "component_name": "REALIZED_NET_EQUITY",
+          "equity_impact_usdt": 19923.64,
+          "percentage_impact_pct": 99.24,
+          "description": "Audited net portfolio equity after all friction."
+        }
+      ]
+    },
+    "taker": {
+      "initial_capital": 10000.0,
+      "theoretical_gross_equity": 31775.86,
+      "cumulative_fees_paid": 13025.1,
+      "cumulative_slippage_cost": 1526.9,
+      "compounding_fee_drag_loss": 6107.62,
+      "realized_net_equity": 11116.24,
+      "reconciliation_discrepancy": 0.0,
+      "components": [
+        {
+          "component_name": "THEORETICAL_GROSS_EQUITY",
+          "equity_impact_usdt": 31775.86,
+          "percentage_impact_pct": 217.76,
+          "description": "Uncosted strategy execution."
+        },
+        {
+          "component_name": "DIRECT_FEES_PAID",
+          "equity_impact_usdt": -13025.1,
+          "percentage_impact_pct": -130.25,
+          "description": "Cumulative taker execution fees paid to exchange."
+        },
+        {
+          "component_name": "COMPOUNDING_AND_SLIPPAGE_DRAG",
+          "equity_impact_usdt": -7634.520000000002,
+          "percentage_impact_pct": -76.35,
+          "description": "Severe capital depletion foreclosing compound growth."
+        },
+        {
+          "component_name": "REALIZED_NET_EQUITY",
+          "equity_impact_usdt": 11116.24,
+          "percentage_impact_pct": 11.16,
+          "description": "Audited net portfolio equity after taker friction."
+        }
+      ]
+    }
+  },
+  "january_2025_forensic_validation": {
+    "programmatic_180_periods": {
+      "config_name": "PROGRAMMATIC_180_PERIODS",
+      "warmup_source": "INTERNAL_JAN_2025_FIRST_24H",
+      "total_candles": 2976,
+      "evaluated_periods": 180,
+      "leadership_switches": 40,
+      "turnover_pct": 22.22,
+      "final_equity": 13062.16,
+      "total_return_pct": 30.62,
+      "total_fees_paid": 288.87,
+      "annualized_sharpe": 4.4,
+      "max_drawdown_pct": 21.1,
+      "btc_benchmark_return_pct": 7.95,
+      "excess_return_pct": 22.67
+    },
+    "prewarmed_186_periods": {
+      "config_name": "PREWARMED_186_PERIODS",
+      "warmup_source": "Q4_2024_TAIL_96_BARS",
+      "total_candles": 3072,
+      "evaluated_periods": 186,
+      "leadership_switches": 41,
+      "turnover_pct": 22.04,
+      "final_equity": 13173.53,
+      "total_return_pct": 31.74,
+      "total_fees_paid": 297.36,
+      "annualized_sharpe": 4.45,
+      "max_drawdown_pct": 21.1,
+      "btc_benchmark_return_pct": 8.96,
+      "excess_return_pct": 22.78
+    },
+    "narrative_extrapolation_discrepancy": {
+      "reported_narrative_periods": 186,
+      "programmatic_json_periods": 180,
+      "period_difference_reason": "The programmatic evaluation in chronological_forward_validation.py discarded the first 96 bars (24 hours) of January 1, 2025 to warm up the 24-hour lookback rolling indicators, leaving 2,880 candles / 16 = 180 periods. A full calendar month (31 days * 6 4h periods) contains 186 periods if warmed up using Dec 31, 2024 data.",
+      "reported_narrative_switches": 48,
+      "programmatic_json_switches": 40,
+      "switches_difference_reason": "In the Sprint 09.29 narrative summary, the switches count was estimated from the annual turnover frequency (186 * 25.8% = 48 switches), whereas exact execution registered 40 switches in the 180-period run and 41 switches in the 186-period run.",
+      "reported_narrative_fees": 412.35,
+      "programmatic_json_fees": 288.87,
+      "fees_difference_reason": "Narrative fees ($412.35) were based on an unscaled turnover estimate (48 switches * $11,500 capital * 6.0 bps + slippage), whereas programmatic fee accounting applied exact 3 bps per side to executed notionals ($288.87)."
+    },
+    "estimator_definitions": {
+      "theta_period_bps": "Per-period (4-hour) discrete arithmetic excess return over BTC benchmark: r_active_t = (R_strat_t - R_btc_t) * 10,000. Sample mean = +11.51 bps/period.",
+      "theta_cumulative_pct": "Compounded cumulative terminal excess return over BTC benchmark: Delta_R = (V_strat_T/V_strat_0 - 1) - (V_btc_T/V_btc_0 - 1). Point estimate = +22.67 percentage points (+2,267 bps).",
+      "relationship_formula": "Cumulative excess return represents the compounded geometric realization of the per-period active returns: 1 + R_strat = Prod(1 + R_btc_t + r_active_t). Over 180 periods, a per-period mean of +11.51 bps compounds to ~+22.67% excess return due to favorable upside volatility, but its confidence interval [-7.74, +31.34] bps spans negative space, mapping directly to a cumulative 95% CI of [-14.65%, +75.35%]."
+    },
+    "bootstrap_sensitivity_sweeps": [
+      {
+        "block_size_periods": 3,
+        "block_duration_hours": 12.0,
+        "number_of_blocks": 59,
+        "per_period_mean_bps": 11.51,
+        "per_period_ci_95_bps": [
+          -10.33,
+          31.0
+        ],
+        "cumulative_mean_pct": 22.11,
+        "cumulative_ci_95_pct": [
+          -19.52,
+          82.19
+        ],
+        "zero_crossing": true
+      },
+      {
+        "block_size_periods": 6,
+        "block_duration_hours": 24.0,
+        "number_of_blocks": 29,
+        "per_period_mean_bps": 11.51,
+        "per_period_ci_95_bps": [
+          -7.74,
+          31.34
+        ],
+        "cumulative_mean_pct": 18.63,
+        "cumulative_ci_95_pct": [
+          -14.65,
+          75.35
+        ],
+        "zero_crossing": true
+      },
+      {
+        "block_size_periods": 12,
+        "block_duration_hours": 48.0,
+        "number_of_blocks": 14,
+        "per_period_mean_bps": 11.51,
+        "per_period_ci_95_bps": [
+          -9.23,
+          31.41
+        ],
+        "cumulative_mean_pct": 18.84,
+        "cumulative_ci_95_pct": [
+          -17.05,
+          72.45
+        ],
+        "zero_crossing": true
+      }
+    ],
+    "confirmatory_gate_verdict": "FAIL_CONFIRMATORY_GATE_ZERO_CROSSING",
+    "holdout_status_note": "January 2025 has now been evaluated and inspected. Under scientific research invariants, January 2025 is an EXPOSED dataset and can never be used as a virgin confirmatory holdout in subsequent sprints."
+  },
+  "benchmark_integrity_audit": [
+    {
+      "benchmark_name": "BUY_AND_HOLD_BTC",
+      "initial_capital": 10000.0,
+      "final_equity": 21035.25,
+      "total_return_pct": 110.35,
+      "annualized_return_pct": 110.46,
+      "max_drawdown_pct": 31.0,
+      "sharpe_ratio": 1.68,
+      "annualized_volatility_pct": 52.55,
+      "total_fees_paid": 9.31,
+      "total_turnover": 20000.0,
+      "beta_to_btc": 1.0,
+      "alpha_to_btc_pct": 0.0,
+      "information_ratio_to_btc": 0.0,
+      "timestamps_match_strategy": true,
+      "capital_parity_verified": true
+    },
+    {
+      "benchmark_name": "BUY_AND_HOLD_ETH",
+      "initial_capital": 10000.0,
+      "final_equity": 14209.4,
+      "total_return_pct": 42.09,
+      "annualized_return_pct": 42.13,
+      "max_drawdown_pct": 45.41,
+      "sharpe_ratio": 0.87,
+      "annualized_volatility_pct": 62.84,
+      "total_fees_paid": 7.26,
+      "total_turnover": 20000.0,
+      "beta_to_btc": 0.976,
+      "alpha_to_btc_pct": -31.17,
+      "information_ratio_to_btc": -0.86,
+      "timestamps_match_strategy": true,
+      "capital_parity_verified": true
+    },
+    {
+      "benchmark_name": "BUY_AND_HOLD_SOL",
+      "initial_capital": 10000.0,
+      "final_equity": 17794.25,
+      "total_return_pct": 77.94,
+      "annualized_return_pct": 78.01,
+      "max_drawdown_pct": 44.0,
+      "sharpe_ratio": 1.09,
+      "annualized_volatility_pct": 88.79,
+      "total_fees_paid": 8.34,
+      "total_turnover": 20000.0,
+      "beta_to_btc": 1.268,
+      "alpha_to_btc_pct": -14.82,
+      "information_ratio_to_btc": -0.25,
+      "timestamps_match_strategy": true,
+      "capital_parity_verified": true
+    },
+    {
+      "benchmark_name": "EQUAL_WEIGHT_UNREBALANCED",
+      "initial_capital": 10000.0,
+      "final_equity": 17679.63,
+      "total_return_pct": 76.8,
+      "annualized_return_pct": 76.87,
+      "max_drawdown_pct": 36.63,
+      "sharpe_ratio": 1.23,
+      "annualized_volatility_pct": 62.2,
+      "total_fees_paid": 8.3,
+      "total_turnover": 20000.0,
+      "beta_to_btc": 1.08,
+      "alpha_to_btc_pct": -18.93,
+      "information_ratio_to_btc": -0.74,
+      "timestamps_match_strategy": true,
+      "capital_parity_verified": true
+    },
+    {
+      "benchmark_name": "REBALANCED_EQUAL_WEIGHT_24H",
+      "initial_capital": 10000.0,
+      "final_equity": 18221.61,
+      "total_return_pct": 82.22,
+      "annualized_return_pct": 82.29,
+      "max_drawdown_pct": 35.63,
+      "sharpe_ratio": 1.27,
+      "annualized_volatility_pct": 62.5,
+      "total_fees_paid": 21.22,
+      "total_turnover": 70724.42,
+      "beta_to_btc": 1.081,
+      "alpha_to_btc_pct": -15.76,
+      "information_ratio_to_btc": -0.6,
+      "timestamps_match_strategy": true,
+      "capital_parity_verified": true
+    },
+    {
+      "benchmark_name": "CASH_BASELINE",
+      "initial_capital": 10000.0,
+      "final_equity": 10000.0,
+      "total_return_pct": 0.0,
+      "annualized_return_pct": 0.0,
+      "max_drawdown_pct": 0.0,
+      "sharpe_ratio": 0.0,
+      "annualized_volatility_pct": 0.0,
+      "total_fees_paid": 0.0,
+      "total_turnover": 0.0,
+      "beta_to_btc": 0.0,
+      "alpha_to_btc_pct": 0.0,
+      "information_ratio_to_btc": 0.0,
+      "timestamps_match_strategy": true,
+      "capital_parity_verified": true
+    }
+  ],
+  "execution_realism_model": {
+    "tier_a_idealized": {
+      "tier_name": "TIER_A_IDEALIZED",
+      "execution_paradigm": "Zero fees, zero slippage, immediate 100% fills at mid-price.",
+      "final_equity": 31775.86,
+      "total_return_pct": 217.76,
+      "annualized_sharpe": 1.96,
+      "max_drawdown_pct": 35.57,
+      "total_fees_paid": 0.0,
+      "missed_fills_count": 0,
+      "partial_fills_count": 0,
+      "adverse_selection_cost_usdt": 0.0,
+      "realism_notes": "Theoretical upper bound. Unachievable in live trading."
+    },
+    "tier_b_conservative_taker": {
+      "tier_name": "TIER_B_CONSERVATIVE_TAKER",
+      "execution_paradigm": "Immediate liquidity crossing. 16 bps roundtrip fee + 2 bps roundtrip slippage.",
+      "final_equity": 11116.24,
+      "total_return_pct": 11.16,
+      "annualized_sharpe": 0.51,
+      "max_drawdown_pct": 51.53,
+      "total_fees_paid": 13025.1,
+      "missed_fills_count": 0,
+      "partial_fills_count": 0,
+      "adverse_selection_cost_usdt": 1628.14,
+      "realism_notes": "Guaranteed execution with high cost drag. Viable lower bound."
+    },
+    "tier_c_uncertain_maker": {
+      "tier_name": "TIER_C_UNCERTAIN_MAKER",
+      "execution_paradigm": "Passive limit orders with 80% fill rate, 2 bps adverse selection, and expiration.",
+      "final_equity": 20821.48,
+      "total_return_pct": 108.21,
+      "annualized_sharpe": 1.37,
+      "max_drawdown_pct": 44.0,
+      "total_fees_paid": 5733.89,
+      "missed_fills_count": 120,
+      "partial_fills_count": 0,
+      "adverse_selection_cost_usdt": 3822.97,
+      "realism_notes": "Realistic passive market maker modeling. Significant dispersion depending on fill realization."
+    },
+    "maker_survivorship_drag_pct": 109.55,
+    "scientific_disclaimer": "SCIENTIFIC REALISM INVARIANT: All maker executions simulated against OHLCV historical candle data represent synthetic hypothetical models. Real exchange maker fills depend on order queue priority, queue depletion, and adverse toxic flow. Simulated maker results must never be cited as empirical trading proof."
+  },
+  "cs1_final_classification": "EXPLORATORY_ONLY",
+  "decision_gate_rationale": "1. Underperformed passive Bitcoin buy-and-hold (+99.24% vs +110.35%) with lower Sharpe (1.31 vs 1.68), higher max drawdown (39.82% vs 31.00%), and negative alpha (-1.50%). 2. Ranking autocorrelation collapses to 0.018 in non-overlapping steps, proving persistence was an overlapping window artifact. 3. January 2025 block bootstrap 95% CI crosses zero ([-7.74, +31.34] bps per period, [-14.65%, +75.35%] cumulative) across all tested block sizes (12h, 24h, 48h). 4. Fails confirmatory gate. CS1 is NOT an independent validation candidate."
+}

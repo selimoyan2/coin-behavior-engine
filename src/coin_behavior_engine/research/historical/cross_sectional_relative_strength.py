@@ -14,6 +14,7 @@ Strictly zero-lookahead: all metrics at timestamp t use only closed candles up t
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
+import datetime
 import math
 from typing import Any, Mapping, Optional, Sequence
 
@@ -124,7 +125,7 @@ class CrossSectionalRelativeStrengthEngine:
 
         for t in range(lookback_bars, n):
             ts_ms = self.timestamps[t]
-            ts_utc = pd.Timestamp(ts_ms, unit="ms", tz="UTC").isoformat()
+            ts_utc = datetime.datetime.fromtimestamp(ts_ms / 1000.0, tz=datetime.timezone.utc).isoformat()
 
             prices = {sym: float(self._aligned_prices[sym][t]) for sym in self.symbols}
 
@@ -185,7 +186,13 @@ class CrossSectionalRelativeStrengthEngine:
                     s2 = self.symbols[j]
                     r1 = returns_1bar[s1][t - lookback_bars + 1 : t + 1]
                     r2 = returns_1bar[s2][t - lookback_bars + 1 : t + 1]
-                    c_val = float(np.corrcoef(r1, r2)[0, 1]) if len(r1) > 2 else 0.0
+                    if len(r1) > 2:
+                        da = r1 - np.mean(r1)
+                        db = r2 - np.mean(r2)
+                        denom = math.sqrt(float(np.sum(da * da) * np.sum(db * db)))
+                        c_val = float(np.sum(da * db) / denom) if denom > 1e-12 else 0.0
+                    else:
+                        c_val = 0.0
                     corrs[f"{s1}_{s2}"] = float(round(c_val, 3))
 
             snapshots.append(
