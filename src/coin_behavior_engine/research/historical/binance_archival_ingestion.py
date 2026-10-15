@@ -192,12 +192,22 @@ class BinanceArchivalDownloader:
 
             try:
                 open_ts = int(parts[0])
+                if open_ts > 10**14:  # microsecond timestamp (Binance 2025 format)
+                    open_ts = open_ts // 1000
+                elif open_ts < 10**11:  # seconds timestamp
+                    open_ts = open_ts * 1000
+
                 op = float(parts[1])
                 hi = float(parts[2])
                 lo = float(parts[3])
                 cl = float(parts[4])
                 vol = float(parts[5])
+
                 close_ts = int(parts[6]) if len(parts) > 6 else open_ts + 299_999
+                if close_ts > 10**14:
+                    close_ts = close_ts // 1000
+                elif close_ts < 10**11:
+                    close_ts = close_ts * 1000
                 quote_vol = float(parts[7]) if len(parts) > 7 else 0.0
                 trades_count = int(parts[8]) if len(parts) > 8 else 0
                 taker_buy_vol = float(parts[9]) if len(parts) > 9 else 0.0

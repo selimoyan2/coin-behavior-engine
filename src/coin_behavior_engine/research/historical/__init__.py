@@ -175,6 +175,35 @@ from coin_behavior_engine.research.historical.cross_sectional_hypotheses import 
     CrossSectionalPreRegistrationGate,
     CrossSectionalResearchRunner,
 )
+from coin_behavior_engine.research.historical.portfolio_accounting import (
+    PortfolioAccountingReconciliationError,
+    PortfolioAccountingSimulator,
+    PortfolioAccountingVerifier,
+    PortfolioLedgerEntry,
+    PortfolioPerformanceSummary,
+)
+from coin_behavior_engine.research.historical.benchmark_comparison import (
+    BenchmarkComparisonEngine,
+    BenchmarkComparisonResult,
+)
+from coin_behavior_engine.research.historical.execution_sensitivity import (
+    ExecutionScenarioResult,
+    ExecutionSensitivityAuditor,
+)
+from coin_behavior_engine.research.historical.ranking_persistence_audit import (
+    RankingPersistenceAuditReport,
+    RankingPersistenceAuditor,
+)
+from coin_behavior_engine.research.historical.universe_quality_audit import (
+    UniverseQualityAuditReport,
+    UniverseQualityAuditor,
+)
+from coin_behavior_engine.research.historical.chronological_forward_validation import (
+    CS1DecisionVerdict,
+    ChronologicalForwardValidator,
+    ConfirmatoryForwardValidationReport,
+    PreRegistrationGateSprint29,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -281,4 +310,21 @@ __all__ = [
     "CrossSectionalPreRegistrationGate",
     "CrossSectionalHypothesisResult",
     "CrossSectionalResearchRunner",
+    "PortfolioAccountingReconciliationError",
+    "PortfolioLedgerEntry",
+    "PortfolioPerformanceSummary",
+    "PortfolioAccountingVerifier",
+    "PortfolioAccountingSimulator",
+    "BenchmarkComparisonResult",
+    "BenchmarkComparisonEngine",
+    "ExecutionScenarioResult",
+    "ExecutionSensitivityAuditor",
+    "RankingPersistenceAuditReport",
+    "RankingPersistenceAuditor",
+    "UniverseQualityAuditReport",
+    "UniverseQualityAuditor",
+    "CS1DecisionVerdict",
+    "PreRegistrationGateSprint29",
+    "ConfirmatoryForwardValidationReport",
+    "ChronologicalForwardValidator",
 ]
