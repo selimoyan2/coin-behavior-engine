@@ -96,6 +96,29 @@ from coin_behavior_engine.research.historical.provenance import (
 from coin_behavior_engine.research.historical.new_hypotheses import (
     NewHypothesesGenerator,
 )
+from coin_behavior_engine.research.historical.market_regime_intelligence import (
+    ConditionalReturnDistribution,
+    MarketRegimeEngine,
+    MarketRegimeState,
+    MomentumRegime,
+    RegimeTransitionReport,
+    TrendRegime,
+    VolatilityRegime,
+    VolumeRegime,
+)
+from coin_behavior_engine.research.historical.h4_conditional_research import (
+    H4ConditionalExperimentRunner,
+    H4ConditionalVariantResult,
+)
+from coin_behavior_engine.research.historical.behavioral_discovery import (
+    BehavioralDiscoveryAnalyzer,
+    BehavioralDiscoveryFinding,
+    BehavioralEvidenceStatus,
+)
+from coin_behavior_engine.research.historical.extensibility_interfaces import (
+    ExternalDataReadinessValidator,
+    TimestampedSignalEnvelope,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -147,4 +170,19 @@ __all__ = [
     "AuditableTradeRecord",
     "ExperimentProvenanceRecord",
     "NewHypothesesGenerator",
+    "TrendRegime",
+    "VolatilityRegime",
+    "VolumeRegime",
+    "MomentumRegime",
+    "MarketRegimeState",
+    "RegimeTransitionReport",
+    "ConditionalReturnDistribution",
+    "MarketRegimeEngine",
+    "H4ConditionalVariantResult",
+    "H4ConditionalExperimentRunner",
+    "BehavioralEvidenceStatus",
+    "BehavioralDiscoveryFinding",
+    "BehavioralDiscoveryAnalyzer",
+    "TimestampedSignalEnvelope",
+    "ExternalDataReadinessValidator",
 ]

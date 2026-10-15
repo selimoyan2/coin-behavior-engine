@@ -1,0 +1,17 @@
+{
+  "dataset_id": "HIST-BINANCE-BTCUSDT-5m-1727740800000_1735689300000",
+  "symbol": "BTCUSDT",
+  "interval": "5m",
+  "exchange": "BINANCE",
+  "market_type": "SPOT",
+  "provenance_source": "HISTORICAL_BINANCE_ARCHIVE_Q4_2024",
+  "earliest_candle_open_utc": "2024-10-01T00:00:00+00:00",
+  "earliest_candle_open_ms": 1727740800000,
+  "latest_candle_open_utc": "2024-12-31T23:55:00+00:00",
+  "latest_candle_open_ms": 1735689300000,
+  "total_bars": 26496,
+  "sha256_checksum": "2a726b84feffa053797a7e9ee1a878726ffde4fd5e9fbbb0aa8d79e2e7a51078",
+  "created_at_utc": "2026-10-15T06:27:44.292968+00:00",
+  "documentation_url": "https://data.binance.vision/",
+  "license_or_coverage_notes": "Binance public historical market klines"
+}

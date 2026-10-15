@@ -1,0 +1,830 @@
+{
+  "sprint": "09.26",
+  "status": "RESEARCH_REGIME_INTELLIGENCE_VERIFIED_OFFLINE",
+  "baseline_commit": "944350a58e46920d6caa82501d6c77bfe8e6ed3e",
+  "research_integrity_gate": {
+    "status": "PASS",
+    "total_records": 237,
+    "filled_trades": 190,
+    "unfilled_orders": 47,
+    "total_net_return_pct": -0.2687,
+    "mean_net_expectancy_bps": -0.14,
+    "discrepancy": 0.0,
+    "verified_consistent": true
+  },
+  "historical_coverage": {
+    "inspected_discovery": "Q1 2024 (Jan 1 to Mar 31, 2024) [BTC, ETH, SOL]",
+    "inspected_retest": "Q2 2024 (Apr 1 to Jun 30, 2024) [BTC]",
+    "inspected_old_holdout": "Q3 2024 (Jul 1 to Sep 30, 2024) [BTC]",
+    "virgin_untouched_holdout": "Q4 2024 (Oct 1 to Dec 31, 2024) [BTC]",
+    "q4_dataset_provenance": {
+      "symbol": "BTCUSDT",
+      "exchange": "BINANCE",
+      "market_type": "SPOT",
+      "start_utc": "2024-10-01T00:00:00+00:00",
+      "end_utc": "2024-12-31T23:55:00+00:00",
+      "total_5m_bars": 26496,
+      "total_15m_bars": 8832,
+      "total_1h_bars": 2208,
+      "sha256_5m": "2a726b84feffa053797a7e9ee1a878726ffde4fd5e9fbbb0aa8d79e2e7a51078",
+      "sha256_15m": "540c5a51a0fcd0c343e1de32fb1f833fa9bef9a30b43828b6ab0eb63f8550224",
+      "sha256_1h": "27f7e7ebc3bdc15b10b8992bceb2aa73152f527ec1b15522db1c10592099c67e",
+      "status": "VIRGIN_UNTOUCHED_HOLDOUT_RESERVED_FOR_FUTURE_CONFIRMATORY_TESTING"
+    }
+  },
+  "market_regime_intelligence": {
+    "dimensions": [
+      "trend",
+      "volatility",
+      "volume",
+      "momentum",
+      "session"
+    ],
+    "total_bars_classified": 8686,
+    "volatility_transitions": {
+      "frequencies": {
+        "COMPRESSION_SQUEEZE": 0.276,
+        "EXPANSION_NORMAL": 0.7152,
+        "VOLATILITY_SHOCK": 0.0089
+      },
+      "mean_durations_bars": {
+        "COMPRESSION_SQUEEZE": 8.78,
+        "EXPANSION_NORMAL": 19.11,
+        "VOLATILITY_SHOCK": 1.12
+      },
+      "transition_matrix": {
+        "COMPRESSION_SQUEEZE": {
+          "COMPRESSION_SQUEEZE": 0.8861,
+          "EXPANSION_NORMAL": 0.1093,
+          "VOLATILITY_SHOCK": 0.0046
+        },
+        "EXPANSION_NORMAL": {
+          "COMPRESSION_SQUEEZE": 0.0428,
+          "EXPANSION_NORMAL": 0.9478,
+          "VOLATILITY_SHOCK": 0.0093
+        },
+        "VOLATILITY_SHOCK": {
+          "COMPRESSION_SQUEEZE": 0.0909,
+          "EXPANSION_NORMAL": 0.8052,
+          "VOLATILITY_SHOCK": 0.1039
+        }
+      }
+    },
+    "trend_transitions": {
+      "frequencies": {
+        "BEARISH_TREND": 0.2057,
+        "BULLISH_TREND": 0.4299,
+        "SIDEWAYS_RANGE": 0.3644
+      },
+      "mean_durations_bars": {
+        "BEARISH_TREND": 11.6,
+        "BULLISH_TREND": 14.53,
+        "SIDEWAYS_RANGE": 7.81
+      },
+      "transition_matrix": {
+        "BEARISH_TREND": {
+          "BEARISH_TREND": 0.9138,
+          "BULLISH_TREND": 0.0011,
+          "SIDEWAYS_RANGE": 0.0851
+        },
+        "BULLISH_TREND": {
+          "BEARISH_TREND": 0.0008,
+          "BULLISH_TREND": 0.9314,
+          "SIDEWAYS_RANGE": 0.0678
+        },
+        "SIDEWAYS_RANGE": {
+          "BEARISH_TREND": 0.0477,
+          "BULLISH_TREND": 0.0803,
+          "SIDEWAYS_RANGE": 0.872
+        }
+      }
+    },
+    "conditional_forward_distributions": {
+      "compression_squeeze": {
+        "regime_condition": "VOLATILITY_COMPRESSION_SQUEEZE",
+        "sample_count": 2394,
+        "horizons_bars": [
+          1,
+          4,
+          12
+        ],
+        "mean_return_bps": {
+          "1_bars": 1.16,
+          "4_bars": 4.95,
+          "12_bars": 14.07
+        },
+        "std_return_bps": {
+          "1_bars": 26.44,
+          "4_bars": 56.56,
+          "12_bars": 96.37
+        },
+        "skewness": {
+          "1_bars": 0.44,
+          "4_bars": 0.75,
+          "12_bars": 1.0
+        },
+        "win_rate_positive": {
+          "1_bars": 0.5213,
+          "4_bars": 0.523,
+          "12_bars": 0.5547
+        },
+        "unconditional_baseline_mean_bps": {
+          "1_bars": 0.63,
+          "4_bars": 2.52,
+          "12_bars": 7.57
+        },
+        "excess_return_bps": {
+          "1_bars": 0.53,
+          "4_bars": 2.43,
+          "12_bars": 6.51
+        }
+      },
+      "bullish_trend": {
+        "regime_condition": "BULLISH_TREND_ALIGNMENT",
+        "sample_count": 3722,
+        "horizons_bars": [
+          1,
+          4,
+          12
+        ],
+        "mean_return_bps": {
+          "1_bars": 0.62,
+          "4_bars": 2.09,
+          "12_bars": 6.19
+        },
+        "std_return_bps": {
+          "1_bars": 29.31,
+          "4_bars": 58.43,
+          "12_bars": 99.44
+        },
+        "skewness": {
+          "1_bars": -0.86,
+          "4_bars": -0.07,
+          "12_bars": -0.07
+        },
+        "win_rate_positive": {
+          "1_bars": 0.4855,
+          "4_bars": 0.4782,
+          "12_bars": 0.4938
+        },
+        "unconditional_baseline_mean_bps": {
+          "1_bars": 0.63,
+          "4_bars": 2.52,
+          "12_bars": 7.57
+        },
+        "excess_return_bps": {
+          "1_bars": -0.01,
+          "4_bars": -0.43,
+          "12_bars": -1.38
+        }
+      },
+      "high_volume": {
+        "regime_condition": "HIGH_RELATIVE_VOLUME",
+        "sample_count": 1414,
+        "horizons_bars": [
+          1,
+          4,
+          12
+        ],
+        "mean_return_bps": {
+          "1_bars": 1.68,
+          "4_bars": 4.98,
+          "12_bars": 13.36
+        },
+        "std_return_bps": {
+          "1_bars": 48.07,
+          "4_bars": 87.93,
+          "12_bars": 128.08
+        },
+        "skewness": {
+          "1_bars": -1.16,
+          "4_bars": -0.9,
+          "12_bars": -0.23
+        },
+        "win_rate_positive": {
+          "1_bars": 0.5269,
+          "4_bars": 0.5297,
+          "12_bars": 0.5467
+        },
+        "unconditional_baseline_mean_bps": {
+          "1_bars": 0.63,
+          "4_bars": 2.52,
+          "12_bars": 7.57
+        },
+        "excess_return_bps": {
+          "1_bars": 1.05,
+          "4_bars": 2.46,
+          "12_bars": 5.79
+        }
+      }
+    }
+  },
+  "h4_conditional_research": {
+    "H4_BASE": {
+      "discovery_q1_2024": {
+        "variant_name": "H4_BASE",
+        "partition": "DISCOVERY_Q1_2024",
+        "horizon_bars": 8,
+        "cost_model_bps": 7.0,
+        "total_candidates": 346,
+        "executed_trades": 346,
+        "independent_trades": 216,
+        "win_rate": 0.4191,
+        "gross_profit_factor": 1.25,
+        "gross_expectancy_bps": 5.93,
+        "net_expectancy_bps": -1.07,
+        "net_profit_factor": 1.25,
+        "total_net_return_pct": -3.7,
+        "max_drawdown_pct": 13.52
+      },
+      "retest_q2_2024": {
+        "variant_name": "H4_BASE",
+        "partition": "RETEST_Q2_2024",
+        "horizon_bars": 8,
+        "cost_model_bps": 7.0,
+        "total_candidates": 361,
+        "executed_trades": 361,
+        "independent_trades": 237,
+        "win_rate": 0.3601,
+        "gross_profit_factor": 0.89,
+        "gross_expectancy_bps": -2.51,
+        "net_expectancy_bps": -9.51,
+        "net_profit_factor": 0.89,
+        "total_net_return_pct": -34.32,
+        "max_drawdown_pct": 32.4
+      },
+      "old_holdout_q3_2024": {
+        "variant_name": "H4_BASE",
+        "partition": "OLD_HOLDOUT_Q3_2024",
+        "horizon_bars": 8,
+        "cost_model_bps": 7.0,
+        "total_candidates": 363,
+        "executed_trades": 363,
+        "independent_trades": 233,
+        "win_rate": 0.4298,
+        "gross_profit_factor": 1.25,
+        "gross_expectancy_bps": 5.79,
+        "net_expectancy_bps": -1.21,
+        "net_profit_factor": 1.25,
+        "total_net_return_pct": -4.38,
+        "max_drawdown_pct": 15.19
+      },
+      "cost_sensitivity_q1": {
+        "gross_0bps_expectancy": 5.93,
+        "maker_7bps_expectancy": -1.07,
+        "taker_16bps_expectancy": -10.07
+      },
+      "holdout_retention": true
+    },
+    "H4_TREND_ALIGNED": {
+      "discovery_q1_2024": {
+        "variant_name": "H4_TREND_ALIGNED",
+        "partition": "DISCOVERY_Q1_2024",
+        "horizon_bars": 8,
+        "cost_model_bps": 7.0,
+        "total_candidates": 184,
+        "executed_trades": 184,
+        "independent_trades": 115,
+        "win_rate": 0.3913,
+        "gross_profit_factor": 1.05,
+        "gross_expectancy_bps": 1.18,
+        "net_expectancy_bps": -5.82,
+        "net_profit_factor": 1.05,
+        "total_net_return_pct": -10.71,
+        "max_drawdown_pct": 13.07
+      },
+      "retest_q2_2024": {
+        "variant_name": "H4_TREND_ALIGNED",
+        "partition": "RETEST_Q2_2024",
+        "horizon_bars": 8,
+        "cost_model_bps": 7.0,
+        "total_candidates": 196,
+        "executed_trades": 196,
+        "independent_trades": 123,
+        "win_rate": 0.3214,
+        "gross_profit_factor": 0.71,
+        "gross_expectancy_bps": -7.67,
+        "net_expectancy_bps": -14.67,
+        "net_profit_factor": 0.71,
+        "total_net_return_pct": -28.75,
+        "max_drawdown_pct": 29.08
+      },
+      "old_holdout_q3_2024": {
+        "variant_name": "H4_TREND_ALIGNED",
+        "partition": "OLD_HOLDOUT_Q3_2024",
+        "horizon_bars": 8,
+        "cost_model_bps": 7.0,
+        "total_candidates": 189,
+        "executed_trades": 189,
+        "independent_trades": 116,
+        "win_rate": 0.4603,
+        "gross_profit_factor": 1.54,
+        "gross_expectancy_bps": 11.93,
+        "net_expectancy_bps": 4.93,
+        "net_profit_factor": 1.54,
+        "total_net_return_pct": 9.32,
+        "max_drawdown_pct": 7.73
+      },
+      "cost_sensitivity_q1": {
+        "gross_0bps_expectancy": 1.18,
+        "maker_7bps_expectancy": -5.82,
+        "taker_16bps_expectancy": -14.82
+      },
+      "holdout_retention": true
+    },
+    "H4_EXTENDED_SQUEEZE": {
+      "discovery_q1_2024": {
+        "variant_name": "H4_EXTENDED_SQUEEZE",
+        "partition": "DISCOVERY_Q1_2024",
+        "horizon_bars": 8,
+        "cost_model_bps": 7.0,
+        "total_candidates": 265,
+        "executed_trades": 265,
+        "independent_trades": 164,
+        "win_rate": 0.4264,
+        "gross_profit_factor": 1.26,
+        "gross_expectancy_bps": 6.23,
+        "net_expectancy_bps": -0.77,
+        "net_profit_factor": 1.26,
+        "total_net_return_pct": -2.04,
+        "max_drawdown_pct": 13.6
+      },
+      "retest_q2_2024": {
+        "variant_name": "H4_EXTENDED_SQUEEZE",
+        "partition": "RETEST_Q2_2024",
+        "horizon_bars": 8,
+        "cost_model_bps": 7.0,
+        "total_candidates": 269,
+        "executed_trades": 269,
+        "independent_trades": 174,
+        "win_rate": 0.342,
+        "gross_profit_factor": 0.76,
+        "gross_expectancy_bps": -5.72,
+        "net_expectancy_bps": -12.72,
+        "net_profit_factor": 0.76,
+        "total_net_return_pct": -34.23,
+        "max_drawdown_pct": 29.96
+      },
+      "old_holdout_q3_2024": {
+        "variant_name": "H4_EXTENDED_SQUEEZE",
+        "partition": "OLD_HOLDOUT_Q3_2024",
+        "horizon_bars": 8,
+        "cost_model_bps": 7.0,
+        "total_candidates": 266,
+        "executed_trades": 266,
+        "independent_trades": 163,
+        "win_rate": 0.4549,
+        "gross_profit_factor": 1.32,
+        "gross_expectancy_bps": 6.95,
+        "net_expectancy_bps": -0.05,
+        "net_profit_factor": 1.32,
+        "total_net_return_pct": -0.12,
+        "max_drawdown_pct": 11.4
+      },
+      "cost_sensitivity_q1": {
+        "gross_0bps_expectancy": 6.23,
+        "maker_7bps_expectancy": -0.77,
+        "taker_16bps_expectancy": -9.77
+      },
+      "holdout_retention": true
+    },
+    "H4_HIGH_VOLUME": {
+      "discovery_q1_2024": {
+        "variant_name": "H4_HIGH_VOLUME",
+        "partition": "DISCOVERY_Q1_2024",
+        "horizon_bars": 8,
+        "cost_model_bps": 7.0,
+        "total_candidates": 185,
+        "executed_trades": 185,
+        "independent_trades": 130,
+        "win_rate": 0.3676,
+        "gross_profit_factor": 1.13,
+        "gross_expectancy_bps": 3.6,
+        "net_expectancy_bps": -3.4,
+        "net_profit_factor": 1.13,
+        "total_net_return_pct": -6.29,
+        "max_drawdown_pct": 12.6
+      },
+      "retest_q2_2024": {
+        "variant_name": "H4_HIGH_VOLUME",
+        "partition": "RETEST_Q2_2024",
+        "horizon_bars": 8,
+        "cost_model_bps": 7.0,
+        "total_candidates": 198,
+        "executed_trades": 198,
+        "independent_trades": 148,
+        "win_rate": 0.399,
+        "gross_profit_factor": 0.95,
+        "gross_expectancy_bps": -1.36,
+        "net_expectancy_bps": -8.36,
+        "net_profit_factor": 0.95,
+        "total_net_return_pct": -16.55,
+        "max_drawdown_pct": 20.76
+      },
+      "old_holdout_q3_2024": {
+        "variant_name": "H4_HIGH_VOLUME",
+        "partition": "OLD_HOLDOUT_Q3_2024",
+        "horizon_bars": 8,
+        "cost_model_bps": 7.0,
+        "total_candidates": 203,
+        "executed_trades": 203,
+        "independent_trades": 151,
+        "win_rate": 0.4631,
+        "gross_profit_factor": 1.47,
+        "gross_expectancy_bps": 11.42,
+        "net_expectancy_bps": 4.42,
+        "net_profit_factor": 1.47,
+        "total_net_return_pct": 8.96,
+        "max_drawdown_pct": 13.33
+      },
+      "cost_sensitivity_q1": {
+        "gross_0bps_expectancy": 3.6,
+        "maker_7bps_expectancy": -3.4,
+        "taker_16bps_expectancy": -12.4
+      },
+      "holdout_retention": true
+    },
+    "H4_SESSION_PEAK": {
+      "discovery_q1_2024": {
+        "variant_name": "H4_SESSION_PEAK",
+        "partition": "DISCOVERY_Q1_2024",
+        "horizon_bars": 8,
+        "cost_model_bps": 7.0,
+        "total_candidates": 187,
+        "executed_trades": 187,
+        "independent_trades": 119,
+        "win_rate": 0.3904,
+        "gross_profit_factor": 1.1,
+        "gross_expectancy_bps": 2.56,
+        "net_expectancy_bps": -4.44,
+        "net_profit_factor": 1.1,
+        "total_net_return_pct": -8.31,
+        "max_drawdown_pct": 12.88
+      },
+      "retest_q2_2024": {
+        "variant_name": "H4_SESSION_PEAK",
+        "partition": "RETEST_Q2_2024",
+        "horizon_bars": 8,
+        "cost_model_bps": 7.0,
+        "total_candidates": 206,
+        "executed_trades": 206,
+        "independent_trades": 135,
+        "win_rate": 0.3495,
+        "gross_profit_factor": 0.91,
+        "gross_expectancy_bps": -2.12,
+        "net_expectancy_bps": -9.12,
+        "net_profit_factor": 0.91,
+        "total_net_return_pct": -18.78,
+        "max_drawdown_pct": 19.99
+      },
+      "old_holdout_q3_2024": {
+        "variant_name": "H4_SESSION_PEAK",
+        "partition": "OLD_HOLDOUT_Q3_2024",
+        "horizon_bars": 8,
+        "cost_model_bps": 7.0,
+        "total_candidates": 211,
+        "executed_trades": 211,
+        "independent_trades": 136,
+        "win_rate": 0.4265,
+        "gross_profit_factor": 1.19,
+        "gross_expectancy_bps": 4.53,
+        "net_expectancy_bps": -2.47,
+        "net_profit_factor": 1.19,
+        "total_net_return_pct": -5.21,
+        "max_drawdown_pct": 14.92
+      },
+      "cost_sensitivity_q1": {
+        "gross_0bps_expectancy": 2.56,
+        "maker_7bps_expectancy": -4.44,
+        "taker_16bps_expectancy": -13.44
+      },
+      "holdout_retention": true
+    }
+  },
+  "behavioral_discovery": {
+    "B1_TREND_EXHAUSTION": {
+      "behavior_id": "B1_TREND_EXHAUSTION",
+      "name": "Trend Exhaustion at Extreme",
+      "description": "Exhaustion candle (body ratio < 0.35 with RSI > 70 or < 30)",
+      "sample_size": 242,
+      "horizons_bars": [
+        1,
+        4,
+        12
+      ],
+      "conditional_mean_bps": {
+        "1_bars": 5.29,
+        "4_bars": 7.96,
+        "12_bars": 10.98
+      },
+      "conditional_std_bps": {
+        "1_bars": 46.4,
+        "4_bars": 81.7,
+        "12_bars": 116.24
+      },
+      "win_rate_positive": {
+        "1_bars": 0.5372,
+        "4_bars": 0.5413,
+        "12_bars": 0.5207
+      },
+      "unconditional_baseline_bps": {
+        "1_bars": 0.63,
+        "4_bars": 2.52,
+        "12_bars": 7.57
+      },
+      "excess_return_bps": {
+        "1_bars": 4.66,
+        "4_bars": 5.44,
+        "12_bars": 3.42
+      },
+      "standard_error_bps": {
+        "1_bars": 2.98,
+        "4_bars": 5.25,
+        "12_bars": 7.47
+      },
+      "t_statistic": {
+        "1_bars": 1.56,
+        "4_bars": 1.04,
+        "12_bars": 0.46
+      },
+      "is_statistically_distinguishable": false,
+      "status": "OBSERVATIONAL_ONLY",
+      "scientific_notes": "Observed association not statistically distinguishable from random drift (N=242, |t| < 2.0)."
+    },
+    "B2_VOLATILITY_SHOCK_RECOVERY": {
+      "behavior_id": "B2_VOLATILITY_SHOCK_RECOVERY",
+      "name": "Volatility Shock Recovery",
+      "description": "Price drift 1, 4, 12 bars after an extreme candle range (> 3.0x ATR)",
+      "sample_size": 77,
+      "horizons_bars": [
+        1,
+        4,
+        12
+      ],
+      "conditional_mean_bps": {
+        "1_bars": -3.25,
+        "4_bars": -7.64,
+        "12_bars": -4.87
+      },
+      "conditional_std_bps": {
+        "1_bars": 97.47,
+        "4_bars": 142.83,
+        "12_bars": 187.67
+      },
+      "win_rate_positive": {
+        "1_bars": 0.5584,
+        "4_bars": 0.5455,
+        "12_bars": 0.5714
+      },
+      "unconditional_baseline_bps": {
+        "1_bars": 0.63,
+        "4_bars": 2.52,
+        "12_bars": 7.57
+      },
+      "excess_return_bps": {
+        "1_bars": -3.89,
+        "4_bars": -10.16,
+        "12_bars": -12.44
+      },
+      "standard_error_bps": {
+        "1_bars": 11.11,
+        "4_bars": 16.28,
+        "12_bars": 21.39
+      },
+      "t_statistic": {
+        "1_bars": -0.35,
+        "4_bars": -0.62,
+        "12_bars": -0.58
+      },
+      "is_statistically_distinguishable": false,
+      "status": "OBSERVATIONAL_ONLY",
+      "scientific_notes": "Observed association not statistically distinguishable from random drift (N=77, |t| < 2.0)."
+    },
+    "B3_RANGE_EXPANSION_MEAN_REVERSION": {
+      "behavior_id": "B3_RANGE_EXPANSION_MEAN_REVERSION",
+      "name": "Extended Deviation from Mean",
+      "description": "Price stretched > 2.5x ATR from rolling 50-EMA",
+      "sample_size": 1771,
+      "horizons_bars": [
+        1,
+        4,
+        12
+      ],
+      "conditional_mean_bps": {
+        "1_bars": 1.51,
+        "4_bars": 4.6,
+        "12_bars": 16.15
+      },
+      "conditional_std_bps": {
+        "1_bars": 43.18,
+        "4_bars": 80.71,
+        "12_bars": 116.08
+      },
+      "win_rate_positive": {
+        "1_bars": 0.5048,
+        "4_bars": 0.5116,
+        "12_bars": 0.559
+      },
+      "unconditional_baseline_bps": {
+        "1_bars": 0.63,
+        "4_bars": 2.52,
+        "12_bars": 7.57
+      },
+      "excess_return_bps": {
+        "1_bars": 0.87,
+        "4_bars": 2.08,
+        "12_bars": 8.59
+      },
+      "standard_error_bps": {
+        "1_bars": 1.03,
+        "4_bars": 1.92,
+        "12_bars": 2.76
+      },
+      "t_statistic": {
+        "1_bars": 0.85,
+        "4_bars": 1.08,
+        "12_bars": 3.11
+      },
+      "is_statistically_distinguishable": true,
+      "status": "EXPLORATORY_HYPOTHESIS",
+      "scientific_notes": "Statistically distinguishable from baseline (|t| >= 2.0, N=1771). Requires out-of-sample holdout validation."
+    },
+    "B4_MOMENTUM_PERSISTENCE": {
+      "behavior_id": "B4_MOMENTUM_PERSISTENCE",
+      "name": "Momentum Acceleration Persistence",
+      "description": "3 consecutive expanding candles in trend direction",
+      "sample_size": 1000,
+      "horizons_bars": [
+        1,
+        4,
+        12
+      ],
+      "conditional_mean_bps": {
+        "1_bars": 0.79,
+        "4_bars": 3.83,
+        "12_bars": 6.47
+      },
+      "conditional_std_bps": {
+        "1_bars": 35.23,
+        "4_bars": 67.11,
+        "12_bars": 105.96
+      },
+      "win_rate_positive": {
+        "1_bars": 0.508,
+        "4_bars": 0.533,
+        "12_bars": 0.552
+      },
+      "unconditional_baseline_bps": {
+        "1_bars": 0.63,
+        "4_bars": 2.52,
+        "12_bars": 7.57
+      },
+      "excess_return_bps": {
+        "1_bars": 0.15,
+        "4_bars": 1.31,
+        "12_bars": -1.09
+      },
+      "standard_error_bps": {
+        "1_bars": 1.11,
+        "4_bars": 2.12,
+        "12_bars": 3.35
+      },
+      "t_statistic": {
+        "1_bars": 0.13,
+        "4_bars": 0.62,
+        "12_bars": -0.33
+      },
+      "is_statistically_distinguishable": false,
+      "status": "OBSERVATIONAL_ONLY",
+      "scientific_notes": "Observed association not statistically distinguishable from random drift (N=1000, |t| < 2.0)."
+    },
+    "B5_FAILED_CONTINUATION": {
+      "behavior_id": "B5_FAILED_CONTINUATION",
+      "name": "Failed Trend Continuation",
+      "description": "Breakout attempt in trend immediately closed against trend direction",
+      "sample_size": 250,
+      "horizons_bars": [
+        1,
+        4,
+        12
+      ],
+      "conditional_mean_bps": {
+        "1_bars": 2.18,
+        "4_bars": 9.1,
+        "12_bars": 24.08
+      },
+      "conditional_std_bps": {
+        "1_bars": 38.06,
+        "4_bars": 78.18,
+        "12_bars": 112.88
+      },
+      "win_rate_positive": {
+        "1_bars": 0.576,
+        "4_bars": 0.576,
+        "12_bars": 0.544
+      },
+      "unconditional_baseline_bps": {
+        "1_bars": 0.63,
+        "4_bars": 2.52,
+        "12_bars": 7.57
+      },
+      "excess_return_bps": {
+        "1_bars": 1.54,
+        "4_bars": 6.58,
+        "12_bars": 16.52
+      },
+      "standard_error_bps": {
+        "1_bars": 2.41,
+        "4_bars": 4.94,
+        "12_bars": 7.14
+      },
+      "t_statistic": {
+        "1_bars": 0.64,
+        "4_bars": 1.33,
+        "12_bars": 2.31
+      },
+      "is_statistically_distinguishable": true,
+      "status": "EXPLORATORY_HYPOTHESIS",
+      "scientific_notes": "Statistically distinguishable from baseline (|t| >= 2.0, N=250). Requires out-of-sample holdout validation."
+    },
+    "B6_LARGE_CANDLE_REACTION": {
+      "behavior_id": "B6_LARGE_CANDLE_REACTION",
+      "name": "Post 95th-Percentile Candle Reaction",
+      "description": "Forward return distribution following a candle whose range exceeds the 95th percentile",
+      "sample_size": 437,
+      "horizons_bars": [
+        1,
+        4,
+        12
+      ],
+      "conditional_mean_bps": {
+        "1_bars": -0.1,
+        "4_bars": -2.44,
+        "12_bars": 13.87
+      },
+      "conditional_std_bps": {
+        "1_bars": 71.01,
+        "4_bars": 118.95,
+        "12_bars": 182.94
+      },
+      "win_rate_positive": {
+        "1_bars": 0.5286,
+        "4_bars": 0.5309,
+        "12_bars": 0.5469
+      },
+      "unconditional_baseline_bps": {
+        "1_bars": 0.63,
+        "4_bars": 2.52,
+        "12_bars": 7.57
+      },
+      "excess_return_bps": {
+        "1_bars": -0.73,
+        "4_bars": -4.96,
+        "12_bars": 6.3
+      },
+      "standard_error_bps": {
+        "1_bars": 3.4,
+        "4_bars": 5.69,
+        "12_bars": 8.75
+      },
+      "t_statistic": {
+        "1_bars": -0.21,
+        "4_bars": -0.87,
+        "12_bars": 0.72
+      },
+      "is_statistically_distinguishable": false,
+      "status": "OBSERVATIONAL_ONLY",
+      "scientific_notes": "Observed association not statistically distinguishable from random drift (N=437, |t| < 2.0)."
+    }
+  },
+  "external_data_readiness": {
+    "schema": "4_TIMESTAMP_POINT_IN_TIME_CONTRACT",
+    "hierarchy": "event_timestamp_ms <= publication_timestamp_ms <= ingestion_timestamp_ms <= decision_available_timestamp_ms",
+    "supported_signal_types": [
+      "CRYPTO_FINANCIAL_NEWS",
+      "MACROECONOMIC_ANNOUNCEMENTS",
+      "FUNDING_RATES",
+      "OPEN_INTEREST",
+      "LIQUIDATION_EVENTS",
+      "ETF_FLOWS"
+    ],
+    "contract_validation_test": {
+      "total_signals_audited": 3,
+      "violations_count": 0,
+      "is_valid": true,
+      "violations": [],
+      "authenticity_status": "CONTRACT_VERIFIED_WITHOUT_LOOKAHEAD"
+    },
+    "readiness_verdict": "READY_FOR_AUTHENTIC_HISTORICAL_INGESTION_NO_SYNTHETIC_DATA_ALLOWED"
+  },
+  "performance_latency_forensics": {
+    "pure_in_memory_compute_ms": 1.21,
+    "sqlite_wal_journal_disk_io_ms": 52.95,
+    "test_sprint09_10_2_step_latency_mean_ms": 54.16,
+    "production_threshold_ms": 50.0,
+    "threshold_relaxed": false,
+    "unresolved_test": "tests/test_sprint09_10_2_final_gate.py::test_steady_state_step_latency_performance",
+    "failure_reason": "Steady-state shadow collector step latency mean is 54.16 ms (exceeds 50.0 ms) due to Windows filesystem synchronous WAL disk flush, not algorithmic regression.",
+    "scientific_integrity_declaration": "Complete regression suite is NOT reported as PASS while test_steady_state_step_latency_performance fails."
+  }
+}
