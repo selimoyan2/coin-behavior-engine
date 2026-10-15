@@ -128,7 +128,9 @@ def test_canonical_accounting_standard_and_compounding_bridge():
     assert "WARMUP_TIMELINE_PARITY" in def_map
 
     # Test numerical compounding bridge: mu = 6.47 bps, var ~ 2.36e-4
-    returns = np.random.normal(loc=0.000647, scale=0.015, size=2189)
+    rng = np.random.default_rng(42)
+    returns = rng.normal(loc=0.000647, scale=0.015, size=2189)
+    returns = returns - np.mean(returns) + 0.000647
     mean_bps, vol_drag_bps, geom_bps, comp_pct, naive_pct = CanonicalAccountingStandard.verify_compounding_bridge(returns)
 
     assert abs(mean_bps - 6.47) < 2.0

@@ -289,6 +289,18 @@ from coin_behavior_engine.research.historical.funding_integrity_verifier import 
 from coin_behavior_engine.research.historical.funding_diagnostics import (
     FundingDiagnosticsEngine,
 )
+from coin_behavior_engine.research.historical.delta_neutral_carry_simulator import (
+    AccountingIdentityReconciliation,
+    DeltaNeutralCarrySimulator,
+    DeltaNeutralExecutionParams,
+    DeltaNeutralScenarioResult,
+    PortfolioSnapshot,
+)
+from coin_behavior_engine.research.historical.delta_neutral_ledger_verifier import (
+    DeltaNeutralLedgerVerifier,
+    LedgerAuditReport,
+    PrimitiveLedgerEvent,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -469,4 +481,12 @@ __all__ = [
     "FundingIntegrityVerificationReport",
     "PerpetualFundingIntegrityVerifier",
     "FundingDiagnosticsEngine",
+    "DeltaNeutralExecutionParams",
+    "PortfolioSnapshot",
+    "AccountingIdentityReconciliation",
+    "DeltaNeutralScenarioResult",
+    "DeltaNeutralCarrySimulator",
+    "PrimitiveLedgerEvent",
+    "LedgerAuditReport",
+    "DeltaNeutralLedgerVerifier",
 ]

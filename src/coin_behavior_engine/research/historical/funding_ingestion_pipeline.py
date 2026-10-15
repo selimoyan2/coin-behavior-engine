@@ -87,6 +87,12 @@ class BinancePerpetualFundingIngestionPipeline:
                 f"Checksum mismatch for {archive_url}: expected {expected_hash}, computed {computed_hash}"
             )
 
+        raw_dir = self.storage_dir / "raw"
+        raw_dir.mkdir(parents=True, exist_ok=True)
+        filename = archive_url.split("/")[-1]
+        (raw_dir / filename).write_bytes(zip_bytes)
+        (raw_dir / f"{filename}.CHECKSUM").write_text(f"{computed_hash}  {filename}\n", encoding="utf-8")
+
         return zip_bytes, computed_hash, True
 
     def parse_funding_rate_csv(
