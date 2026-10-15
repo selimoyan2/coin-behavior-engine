@@ -323,6 +323,17 @@ from coin_behavior_engine.research.historical.carry_accounting_closure_sprint37 
     VersionedMaintenanceMarginContract,
     VersionedMarginBracket,
 )
+from coin_behavior_engine.research.historical.funding_predictability_sprint38 import (
+    DynamicCarryPolicyResult,
+    EconomicBreakEvenResult,
+    FundingTimestampForensicRecord,
+    ModelForecastMetrics,
+    PointInTimeFeatureRecord,
+    Sprint38FundingAuditor,
+    Sprint38MasterReport,
+    compute_diebold_mariano,
+    holm_bonferroni_correction,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -529,4 +540,13 @@ __all__ = [
     "CanonicalMaintenanceMarginRegistry",
     "CanonicalDecimalCarryVerifier",
     "Sprint37CarryClosureAuditor",
+    "FundingTimestampForensicRecord",
+    "PointInTimeFeatureRecord",
+    "ModelForecastMetrics",
+    "EconomicBreakEvenResult",
+    "DynamicCarryPolicyResult",
+    "Sprint38MasterReport",
+    "Sprint38FundingAuditor",
+    "compute_diebold_mariano",
+    "holm_bonferroni_correction",
 ]
