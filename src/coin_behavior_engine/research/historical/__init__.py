@@ -119,6 +119,27 @@ from coin_behavior_engine.research.historical.extensibility_interfaces import (
     ExternalDataReadinessValidator,
     TimestampedSignalEnvelope,
 )
+from coin_behavior_engine.research.historical.regime_audit import (
+    CausalityAttribution,
+    NullModelTransitionStats,
+    RegimeCausalityAuditReport,
+    RegimeClassificationAuditor,
+    SensitivityVariationResult,
+)
+from coin_behavior_engine.research.historical.executable_behaviors import (
+    B3StrategyConfig,
+    B5StrategyConfig,
+    ExecutableBehaviorSimulator,
+    ExecutableStrategyMetrics,
+)
+from coin_behavior_engine.research.historical.behavioral_validation import (
+    BehavioralDecisionVerdict,
+    BehavioralValidationOrchestrator,
+    ConfirmatoryHoldoutResult,
+    MultipleTestingCorrectionReport,
+    PreRegistrationGate,
+    WalkForwardFoldResult,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -185,4 +206,19 @@ __all__ = [
     "BehavioralDiscoveryAnalyzer",
     "TimestampedSignalEnvelope",
     "ExternalDataReadinessValidator",
+    "CausalityAttribution",
+    "NullModelTransitionStats",
+    "SensitivityVariationResult",
+    "RegimeCausalityAuditReport",
+    "RegimeClassificationAuditor",
+    "B3StrategyConfig",
+    "B5StrategyConfig",
+    "ExecutableBehaviorSimulator",
+    "ExecutableStrategyMetrics",
+    "BehavioralDecisionVerdict",
+    "PreRegistrationGate",
+    "MultipleTestingCorrectionReport",
+    "WalkForwardFoldResult",
+    "ConfirmatoryHoldoutResult",
+    "BehavioralValidationOrchestrator",
 ]

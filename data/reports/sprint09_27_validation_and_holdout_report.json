@@ -1,0 +1,514 @@
+{
+  "sprint": "09.27",
+  "status": "BEHAVIORAL_VALIDATION_AND_HOLDOUT_EVALUATION_COMPLETE",
+  "baseline_commit": "bc3d62717d85779cdf6e47307e1645285c3a20fa",
+  "research_integrity_gate": {
+    "sprint_09_25_reproduction": {
+      "status": "VERIFIED",
+      "filled_trades": 190,
+      "unfilled_orders": 47,
+      "total_net_return_pct": -0.2687
+    }
+  },
+  "regime_classification_audit": {
+    "sprint": "09.27",
+    "attribution": "COMBINED_EFFECT_PREDOMINANTLY_ARTIFACT",
+    "direct_transitions_observed_count": 5,
+    "direct_transitions_total_evaluated": 822,
+    "direct_transition_rate_pct": 0.61,
+    "null_model_single_ema": {
+      "model_name": "SINGLE_EMA50_NULL_MODEL",
+      "description": "Trend is BULLISH if close > EMA50 else BEARISH (zero sideways buffer)",
+      "total_bars": 8736,
+      "bullish_bars": 5087,
+      "bearish_bars": 3649,
+      "sideways_bars": 0,
+      "direct_bull_to_bear": 376,
+      "direct_bear_to_bull": 377,
+      "direct_transition_rate_pct": 100.0
+    },
+    "null_model_dual_ema_crossover": {
+      "model_name": "DUAL_EMA_CROSSOVER_NULL_MODEL",
+      "description": "Trend is BULLISH if EMA50 > EMA200 else BEARISH (pure macro crossover)",
+      "total_bars": 8736,
+      "bullish_bars": 5594,
+      "bearish_bars": 3142,
+      "sideways_bars": 0,
+      "direct_bull_to_bear": 36,
+      "direct_bear_to_bull": 37,
+      "direct_transition_rate_pct": 100.0
+    },
+    "sensitivity_variations": [
+      {
+        "fast_ema": 20,
+        "slow_ema": 100,
+        "sideways_frequency": 0.3694,
+        "bullish_frequency": 0.4024,
+        "bearish_frequency": 0.2283,
+        "direct_flips": 7,
+        "direct_flip_rate_pct": 0.49
+      },
+      {
+        "fast_ema": 50,
+        "slow_ema": 200,
+        "sideways_frequency": 0.3642,
+        "bullish_frequency": 0.4293,
+        "bearish_frequency": 0.2065,
+        "direct_flips": 5,
+        "direct_flip_rate_pct": 0.61
+      },
+      {
+        "fast_ema": 100,
+        "slow_ema": 300,
+        "sideways_frequency": 0.3274,
+        "bullish_frequency": 0.4766,
+        "bearish_frequency": 0.196,
+        "direct_flips": 0,
+        "direct_flip_rate_pct": 0.0
+      }
+    ],
+    "mathematical_proof": "MATHEMATICAL PROOF OF CLASSIFICATION HYSTERESIS:\nLet C_t be close price, E_50(t) be EMA50, and E_200(t) be EMA200 at bar t.\nDefinition of states:\n  S_t = BULLISH   iff (C_t > E_50(t)) AND (E_50(t) > E_200(t))\n  S_t = BEARISH   iff (C_t < E_50(t)) AND (E_50(t) < E_200(t))\n  S_t = SIDEWAYS  otherwise.\n\nConsider a bar t where S_t = BULLISH. Hence E_50(t) - E_200(t) > 0 and C_t > E_50(t).\nFor a direct transition S_{t+1} = BEARISH in a single 15m bar, we require:\n  1. C_{t+1} < E_50(t+1)\n  2. E_50(t+1) < E_200(t+1)\n\nBecause E_50 and E_200 are updated via exponential smoothing:\n  E_50(t+1) - E_200(t+1) = (E_50(t) - E_200(t)) + (alpha_50 - alpha_200)*C_{t+1} - alpha_50*E_50(t) + alpha_200*E_200(t).\nWith alpha_50 = 2/51 ~ 0.0392 and alpha_200 = 2/201 ~ 0.00995, alpha_50 - alpha_200 ~ 0.0293.\nIn an established trend, E_50(t) exceeds E_200(t) by delta >> 0 (typically 1-5% of price, or $500-$3,000 on BTC).\nEven during an extreme 15m flash crash where C_{t+1} falls far below E_50(t+1), the single-bar adjustment to E_50 - E_200\nis bounded by ~0.0293 * (C_{t+1} - E_50(t)), which cannot bridge delta in a single bar.\nTherefore, on the breakdown bar t+1, condition (1) C_{t+1} < E_50(t+1) holds, but condition (2) FAILS (E_50(t+1) > E_200(t+1) persists).\nBy definition, this intermediate topological region maps strictly to SIDEWAYS_RANGE.\nDirect transitions are mathematically impossible except in the singular boundary case where |E_50(t) - E_200(t)| < epsilon\n(within $1-3) at the precise moment price crosses both EMAs.",
+    "auditor_conclusion": "AUDIT VERDICT: The reported near-zero direct transition rate (0.08% BULL->BEAR, 0.11% BEAR->BULL) is primarily Category C (Combined Effect, predominantly an algorithmic classification artifact). The dual-indicator classification creates a topological hysteresis manifold in feature space that forces price through the complement region (SIDEWAYS_RANGE). Single-indicator null models demonstrate hundreds of direct flips (753 transitions). This property is an algorithmic guarantee of the classifier geometry, NOT a discovery of market dynamics."
+  },
+  "pre_registration_gate": {
+    "registration_id": "PREREG-SPRINT09.27-B3-B5",
+    "timestamp_utc": "2026-10-15T06:00:00Z",
+    "code_commit_baseline": "bc3d62717d85779cdf6e47307e1645285c3a20fa",
+    "frozen_strategy_hashes": {
+      "B3_CONTINUATION": "3d3ef7d55bb0fb19f1e4409c9845d8b455eb5ba134f93afac1618ac9ce4a3b49",
+      "B3_REVERSION": "221a0d5852f6011fdbfc5489924e79c09204cf1000da9cb2df45b984e1644db9",
+      "B5_REBOUND_BULLISH": "b9bcded2f9b4c22a7e9ec4045155b04703e41dc75e6a6958eee306837b6f582c",
+      "B5_REBOUND_SYMMETRIC": "5e60a1186a717c8b2a1fbd0530e892b9ab2682421d68c74a3e31dea4928e3057"
+    },
+    "frozen_risk_rules": {
+      "entry_timing": "NEXT_BAR_OPEN",
+      "stop_loss_atr_multiple": 1.5,
+      "take_profit_atr_multiple": 2.25,
+      "max_holding_bars": 12,
+      "independent_clustering": "NON_OVERLAPPING_EPISODES"
+    },
+    "frozen_cost_scenarios_bps": {
+      "maker_baseline_roundtrip_bps": 6.0,
+      "taker_baseline_roundtrip_bps": 16.0,
+      "adverse_selection_bps": 2.0
+    },
+    "frozen_acceptance_criteria": {
+      "min_independent_trades": 30,
+      "net_maker_expectancy_gt_zero": true,
+      "bootstrap_ci_95_lower_gt_zero": true,
+      "p_value_threshold_bonferroni": 0.0125,
+      "holdout_net_positive": true
+    },
+    "multiple_testing_method": "BONFERRONI_AND_BENJAMINI_HOCHBERG",
+    "is_frozen": true
+  },
+  "walk_forward_development": {
+    "B3_CONTINUATION": [
+      {
+        "strategy_id": "B3_RANGE_EXPANSION",
+        "direction_mode": "CONTINUATION",
+        "dataset_tag": "q2_2024",
+        "total_signals_detected": 362,
+        "independent_trades": 263,
+        "gross_expectancy_bps": 0.7,
+        "net_maker_expectancy_bps": -5.3,
+        "net_taker_expectancy_bps": -15.3,
+        "win_rate_gross": 0.4106,
+        "win_rate_maker": 0.3916,
+        "win_rate_taker": 0.3574,
+        "profit_factor_maker": 0.82,
+        "profit_factor_taker": 0.57,
+        "max_drawdown_bps": 1586.71,
+        "t_statistic_maker": -1.42,
+        "t_statistic_taker": -4.1,
+        "bootstrap_ci_95_maker_bps": [
+          -12.85,
+          1.87
+        ],
+        "long_trades_count": 135,
+        "long_net_maker_bps": -5.69,
+        "short_trades_count": 128,
+        "short_net_maker_bps": -4.88,
+        "asymmetry_notes": "Long: 135 trades, mean -5.69 bps; Short: 128 trades, mean -4.88 bps. Asymmetry delta: -0.81 bps."
+      },
+      {
+        "strategy_id": "B3_RANGE_EXPANSION",
+        "direction_mode": "CONTINUATION",
+        "dataset_tag": "q3_2024",
+        "total_signals_detected": 424,
+        "independent_trades": 288,
+        "gross_expectancy_bps": 2.1,
+        "net_maker_expectancy_bps": -3.9,
+        "net_taker_expectancy_bps": -13.9,
+        "win_rate_gross": 0.3993,
+        "win_rate_maker": 0.3854,
+        "win_rate_taker": 0.3681,
+        "profit_factor_maker": 0.88,
+        "profit_factor_taker": 0.63,
+        "max_drawdown_bps": 1541.75,
+        "t_statistic_maker": -0.98,
+        "t_statistic_taker": -3.49,
+        "bootstrap_ci_95_maker_bps": [
+          -11.36,
+          3.56
+        ],
+        "long_trades_count": 150,
+        "long_net_maker_bps": -7.43,
+        "short_trades_count": 138,
+        "short_net_maker_bps": -0.05,
+        "asymmetry_notes": "Long: 150 trades, mean -7.43 bps; Short: 138 trades, mean -0.05 bps. Asymmetry delta: -7.38 bps."
+      }
+    ],
+    "B3_REVERSION": [
+      {
+        "strategy_id": "B3_RANGE_EXPANSION",
+        "direction_mode": "REVERSION",
+        "dataset_tag": "q2_2024",
+        "total_signals_detected": 362,
+        "independent_trades": 257,
+        "gross_expectancy_bps": 1.75,
+        "net_maker_expectancy_bps": -4.25,
+        "net_taker_expectancy_bps": -14.25,
+        "win_rate_gross": 0.4591,
+        "win_rate_maker": 0.4553,
+        "win_rate_taker": 0.4163,
+        "profit_factor_maker": 0.85,
+        "profit_factor_taker": 0.58,
+        "max_drawdown_bps": 1726.96,
+        "t_statistic_maker": -1.12,
+        "t_statistic_taker": -3.75,
+        "bootstrap_ci_95_maker_bps": [
+          -11.47,
+          3.42
+        ],
+        "long_trades_count": 127,
+        "long_net_maker_bps": -4.38,
+        "short_trades_count": 130,
+        "short_net_maker_bps": -4.13,
+        "asymmetry_notes": "Long: 127 trades, mean -4.38 bps; Short: 130 trades, mean -4.13 bps. Asymmetry delta: -0.25 bps."
+      },
+      {
+        "strategy_id": "B3_RANGE_EXPANSION",
+        "direction_mode": "REVERSION",
+        "dataset_tag": "q3_2024",
+        "total_signals_detected": 424,
+        "independent_trades": 290,
+        "gross_expectancy_bps": 0.9,
+        "net_maker_expectancy_bps": -5.1,
+        "net_taker_expectancy_bps": -15.1,
+        "win_rate_gross": 0.4828,
+        "win_rate_maker": 0.4655,
+        "win_rate_taker": 0.4207,
+        "profit_factor_maker": 0.83,
+        "profit_factor_taker": 0.59,
+        "max_drawdown_bps": 1801.75,
+        "t_statistic_maker": -1.36,
+        "t_statistic_taker": -4.02,
+        "bootstrap_ci_95_maker_bps": [
+          -12.13,
+          2.08
+        ],
+        "long_trades_count": 146,
+        "long_net_maker_bps": -11.83,
+        "short_trades_count": 144,
+        "short_net_maker_bps": 1.73,
+        "asymmetry_notes": "Long: 146 trades, mean -11.83 bps; Short: 144 trades, mean 1.73 bps. Asymmetry delta: -13.56 bps."
+      }
+    ],
+    "B5_REBOUND_BULLISH": [
+      {
+        "strategy_id": "B5_FAILED_CONTINUATION",
+        "direction_mode": "REBOUND_BULLISH",
+        "dataset_tag": "q2_2024",
+        "total_signals_detected": 179,
+        "independent_trades": 98,
+        "gross_expectancy_bps": -1.7,
+        "net_maker_expectancy_bps": -7.7,
+        "net_taker_expectancy_bps": -17.7,
+        "win_rate_gross": 0.3878,
+        "win_rate_maker": 0.3673,
+        "win_rate_taker": 0.3163,
+        "profit_factor_maker": 0.75,
+        "profit_factor_taker": 0.53,
+        "max_drawdown_bps": 1112.43,
+        "t_statistic_maker": -1.24,
+        "t_statistic_taker": -2.85,
+        "bootstrap_ci_95_maker_bps": [
+          -20.11,
+          4.69
+        ],
+        "long_trades_count": 98,
+        "long_net_maker_bps": -7.7,
+        "short_trades_count": 0,
+        "short_net_maker_bps": 0.0,
+        "asymmetry_notes": "Long: 98 trades, mean -7.70 bps; Short: 0 trades, mean 0.00 bps. Asymmetry delta: -7.70 bps."
+      },
+      {
+        "strategy_id": "B5_FAILED_CONTINUATION",
+        "direction_mode": "REBOUND_BULLISH",
+        "dataset_tag": "q3_2024",
+        "total_signals_detected": 197,
+        "independent_trades": 128,
+        "gross_expectancy_bps": 1.12,
+        "net_maker_expectancy_bps": -4.88,
+        "net_taker_expectancy_bps": -14.88,
+        "win_rate_gross": 0.4062,
+        "win_rate_maker": 0.3906,
+        "win_rate_taker": 0.3594,
+        "profit_factor_maker": 0.84,
+        "profit_factor_taker": 0.61,
+        "max_drawdown_bps": 703.71,
+        "t_statistic_maker": -0.82,
+        "t_statistic_taker": -2.51,
+        "bootstrap_ci_95_maker_bps": [
+          -16.23,
+          6.73
+        ],
+        "long_trades_count": 128,
+        "long_net_maker_bps": -4.88,
+        "short_trades_count": 0,
+        "short_net_maker_bps": 0.0,
+        "asymmetry_notes": "Long: 128 trades, mean -4.88 bps; Short: 0 trades, mean 0.00 bps. Asymmetry delta: -4.88 bps."
+      }
+    ],
+    "B5_REBOUND_SYMMETRIC": [
+      {
+        "strategy_id": "B5_FAILED_CONTINUATION",
+        "direction_mode": "REBOUND_SYMMETRIC",
+        "dataset_tag": "q2_2024",
+        "total_signals_detected": 405,
+        "independent_trades": 225,
+        "gross_expectancy_bps": 2.74,
+        "net_maker_expectancy_bps": -3.26,
+        "net_taker_expectancy_bps": -13.26,
+        "win_rate_gross": 0.44,
+        "win_rate_maker": 0.4311,
+        "win_rate_taker": 0.3911,
+        "profit_factor_maker": 0.9,
+        "profit_factor_taker": 0.66,
+        "max_drawdown_bps": 1631.27,
+        "t_statistic_maker": -0.66,
+        "t_statistic_taker": -2.7,
+        "bootstrap_ci_95_maker_bps": [
+          -13.25,
+          6.11
+        ],
+        "long_trades_count": 98,
+        "long_net_maker_bps": -7.7,
+        "short_trades_count": 127,
+        "short_net_maker_bps": 0.17,
+        "asymmetry_notes": "Long: 98 trades, mean -7.70 bps; Short: 127 trades, mean 0.17 bps. Asymmetry delta: -7.87 bps."
+      },
+      {
+        "strategy_id": "B5_FAILED_CONTINUATION",
+        "direction_mode": "REBOUND_SYMMETRIC",
+        "dataset_tag": "q3_2024",
+        "total_signals_detected": 392,
+        "independent_trades": 239,
+        "gross_expectancy_bps": 1.24,
+        "net_maker_expectancy_bps": -4.76,
+        "net_taker_expectancy_bps": -14.76,
+        "win_rate_gross": 0.4142,
+        "win_rate_maker": 0.4017,
+        "win_rate_taker": 0.3766,
+        "profit_factor_maker": 0.87,
+        "profit_factor_taker": 0.65,
+        "max_drawdown_bps": 1533.64,
+        "t_statistic_maker": -0.88,
+        "t_statistic_taker": -2.74,
+        "bootstrap_ci_95_maker_bps": [
+          -15.08,
+          6.03
+        ],
+        "long_trades_count": 128,
+        "long_net_maker_bps": -4.88,
+        "short_trades_count": 111,
+        "short_net_maker_bps": -4.62,
+        "asymmetry_notes": "Long: 128 trades, mean -4.88 bps; Short: 111 trades, mean -4.62 bps. Asymmetry delta: -0.26 bps."
+      }
+    ]
+  },
+  "multiple_testing_control": {
+    "hypothesis_family": [
+      "B3_CONTINUATION",
+      "B3_REVERSION",
+      "B5_REBOUND_BULLISH",
+      "B5_REBOUND_SYMMETRIC"
+    ],
+    "family_size": 4,
+    "nominal_alpha": 0.05,
+    "bonferroni_alpha": 0.0125,
+    "benjamini_hochberg_fdr": 0.05,
+    "raw_p_values": {
+      "B3_CONTINUATION": 0.3271,
+      "B3_REVERSION": 0.1738,
+      "B5_REBOUND_BULLISH": 0.4122,
+      "B5_REBOUND_SYMMETRIC": 0.3789
+    },
+    "bonferroni_survived": {
+      "B3_CONTINUATION": false,
+      "B3_REVERSION": false,
+      "B5_REBOUND_BULLISH": false,
+      "B5_REBOUND_SYMMETRIC": false
+    },
+    "benjamini_hochberg_survived": {
+      "B3_CONTINUATION": false,
+      "B3_REVERSION": false,
+      "B5_REBOUND_BULLISH": false,
+      "B5_REBOUND_SYMMETRIC": false
+    }
+  },
+  "q4_confirmatory_holdout": {
+    "B3_CONTINUATION": {
+      "strategy_id": "B3_RANGE_EXPANSION",
+      "direction_mode": "CONTINUATION",
+      "pre_registration_hash": "3d3ef7d55bb0fb19f1e4409c9845d8b455eb5ba134f93afac1618ac9ce4a3b49",
+      "holdout_dataset": "historical_binance_btcusdt_15m_q4_2024.parquet",
+      "metrics": {
+        "strategy_id": "B3_RANGE_EXPANSION",
+        "direction_mode": "CONTINUATION",
+        "dataset_tag": "q4_2024",
+        "total_signals_detected": 408,
+        "independent_trades": 282,
+        "gross_expectancy_bps": 4.7,
+        "net_maker_expectancy_bps": -1.3,
+        "net_taker_expectancy_bps": -11.3,
+        "win_rate_gross": 0.4787,
+        "win_rate_maker": 0.4645,
+        "win_rate_taker": 0.4362,
+        "profit_factor_maker": 0.96,
+        "profit_factor_taker": 0.68,
+        "max_drawdown_bps": 1353.24,
+        "t_statistic_maker": -0.33,
+        "t_statistic_taker": -2.89,
+        "bootstrap_ci_95_maker_bps": [
+          -8.63,
+          6.61
+        ],
+        "long_trades_count": 156,
+        "long_net_maker_bps": 0.94,
+        "short_trades_count": 126,
+        "short_net_maker_bps": -4.06,
+        "asymmetry_notes": "Long: 156 trades, mean 0.94 bps; Short: 126 trades, mean -4.06 bps. Asymmetry delta: 5.00 bps."
+      },
+      "passed_confirmatory_gate": false,
+      "rejection_reason": "Negative net maker expectancy: -1.3 bps <= 0.0; 95% bootstrap CI lower bound <= 0: -8.63 bps",
+      "verdict": "REJECTED"
+    },
+    "B3_REVERSION": {
+      "strategy_id": "B3_RANGE_EXPANSION",
+      "direction_mode": "REVERSION",
+      "pre_registration_hash": "221a0d5852f6011fdbfc5489924e79c09204cf1000da9cb2df45b984e1644db9",
+      "holdout_dataset": "historical_binance_btcusdt_15m_q4_2024.parquet",
+      "metrics": {
+        "strategy_id": "B3_RANGE_EXPANSION",
+        "direction_mode": "REVERSION",
+        "dataset_tag": "q4_2024",
+        "total_signals_detected": 408,
+        "independent_trades": 279,
+        "gross_expectancy_bps": -1.34,
+        "net_maker_expectancy_bps": -7.34,
+        "net_taker_expectancy_bps": -17.34,
+        "win_rate_gross": 0.3978,
+        "win_rate_maker": 0.3907,
+        "win_rate_taker": 0.3799,
+        "profit_factor_maker": 0.77,
+        "profit_factor_taker": 0.55,
+        "max_drawdown_bps": 2611.61,
+        "t_statistic_maker": -1.93,
+        "t_statistic_taker": -4.55,
+        "bootstrap_ci_95_maker_bps": [
+          -14.88,
+          0.02
+        ],
+        "long_trades_count": 122,
+        "long_net_maker_bps": -6.53,
+        "short_trades_count": 157,
+        "short_net_maker_bps": -7.96,
+        "asymmetry_notes": "Long: 122 trades, mean -6.53 bps; Short: 157 trades, mean -7.96 bps. Asymmetry delta: 1.44 bps."
+      },
+      "passed_confirmatory_gate": false,
+      "rejection_reason": "Negative net maker expectancy: -7.34 bps <= 0.0; 95% bootstrap CI lower bound <= 0: -14.88 bps",
+      "verdict": "REJECTED"
+    },
+    "B5_REBOUND_BULLISH": {
+      "strategy_id": "B5_FAILED_CONTINUATION",
+      "direction_mode": "REBOUND_BULLISH",
+      "pre_registration_hash": "b9bcded2f9b4c22a7e9ec4045155b04703e41dc75e6a6958eee306837b6f582c",
+      "holdout_dataset": "historical_binance_btcusdt_15m_q4_2024.parquet",
+      "metrics": {
+        "strategy_id": "B5_FAILED_CONTINUATION",
+        "direction_mode": "REBOUND_BULLISH",
+        "dataset_tag": "q4_2024",
+        "total_signals_detected": 285,
+        "independent_trades": 145,
+        "gross_expectancy_bps": 0.49,
+        "net_maker_expectancy_bps": -5.51,
+        "net_taker_expectancy_bps": -15.51,
+        "win_rate_gross": 0.4483,
+        "win_rate_maker": 0.4276,
+        "win_rate_taker": 0.4069,
+        "profit_factor_maker": 0.84,
+        "profit_factor_taker": 0.62,
+        "max_drawdown_bps": 1459.5,
+        "t_statistic_maker": -0.88,
+        "t_statistic_taker": -2.48,
+        "bootstrap_ci_95_maker_bps": [
+          -16.62,
+          5.79
+        ],
+        "long_trades_count": 145,
+        "long_net_maker_bps": -5.51,
+        "short_trades_count": 0,
+        "short_net_maker_bps": 0.0,
+        "asymmetry_notes": "Long: 145 trades, mean -5.51 bps; Short: 0 trades, mean 0.00 bps. Asymmetry delta: -5.51 bps."
+      },
+      "passed_confirmatory_gate": false,
+      "rejection_reason": "Negative net maker expectancy: -5.51 bps <= 0.0; 95% bootstrap CI lower bound <= 0: -16.62 bps",
+      "verdict": "REJECTED"
+    },
+    "B5_REBOUND_SYMMETRIC": {
+      "strategy_id": "B5_FAILED_CONTINUATION",
+      "direction_mode": "REBOUND_SYMMETRIC",
+      "pre_registration_hash": "5e60a1186a717c8b2a1fbd0530e892b9ab2682421d68c74a3e31dea4928e3057",
+      "holdout_dataset": "historical_binance_btcusdt_15m_q4_2024.parquet",
+      "metrics": {
+        "strategy_id": "B5_FAILED_CONTINUATION",
+        "direction_mode": "REBOUND_SYMMETRIC",
+        "dataset_tag": "q4_2024",
+        "total_signals_detected": 458,
+        "independent_trades": 254,
+        "gross_expectancy_bps": 3.33,
+        "net_maker_expectancy_bps": -2.67,
+        "net_taker_expectancy_bps": -12.67,
+        "win_rate_gross": 0.4724,
+        "win_rate_maker": 0.4449,
+        "win_rate_taker": 0.4252,
+        "profit_factor_maker": 0.92,
+        "profit_factor_taker": 0.68,
+        "max_drawdown_bps": 1351.8,
+        "t_statistic_maker": -0.56,
+        "t_statistic_taker": -2.67,
+        "bootstrap_ci_95_maker_bps": [
+          -12.22,
+          6.76
+        ],
+        "long_trades_count": 145,
+        "long_net_maker_bps": -5.51,
+        "short_trades_count": 109,
+        "short_net_maker_bps": 1.1,
+        "asymmetry_notes": "Long: 145 trades, mean -5.51 bps; Short: 109 trades, mean 1.10 bps. Asymmetry delta: -6.62 bps."
+      },
+      "passed_confirmatory_gate": false,
+      "rejection_reason": "Negative net maker expectancy: -2.67 bps <= 0.0; 95% bootstrap CI lower bound <= 0: -12.22 bps",
+      "verdict": "REJECTED"
+    }
+  },
+  "performance_latency_forensics": {
+    "pure_in_memory_compute_ms": 1.21,
+    "sqlite_wal_journal_disk_io_ms": 54.16,
+    "production_threshold_ms": 50.0,
+    "status": "DISK_IO_OVER_THRESHOLD_COMPUTE_PASSES",
+    "threshold_relaxed": false
+  }
+}
