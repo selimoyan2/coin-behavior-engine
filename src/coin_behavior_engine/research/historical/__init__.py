@@ -268,6 +268,27 @@ from coin_behavior_engine.research.historical.research_roadmap import (
     ResearchRoadmapEvaluator,
     ResearchRoadmapReport,
 )
+from coin_behavior_engine.research.historical.funding_data_contract import (
+    DatasetReadinessClassification,
+    DeltaNeutralAccountingSpec,
+    FundingDescriptiveStatistics,
+    FundingSettlementRecord,
+    InstrumentType,
+    PerpetualCandleRecord,
+    PerpetualFundingMasterReport,
+    SpotPerpAlignedBasisRecord,
+)
+from coin_behavior_engine.research.historical.funding_ingestion_pipeline import (
+    BinancePerpetualFundingIngestionPipeline,
+)
+from coin_behavior_engine.research.historical.funding_integrity_verifier import (
+    FundingIntegrityError,
+    FundingIntegrityVerificationReport,
+    PerpetualFundingIntegrityVerifier,
+)
+from coin_behavior_engine.research.historical.funding_diagnostics import (
+    FundingDiagnosticsEngine,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -435,4 +456,17 @@ __all__ = [
     "ResearchDomainFeasibilityAssessment",
     "ResearchRoadmapReport",
     "ResearchRoadmapEvaluator",
+    "InstrumentType",
+    "DatasetReadinessClassification",
+    "FundingSettlementRecord",
+    "PerpetualCandleRecord",
+    "SpotPerpAlignedBasisRecord",
+    "FundingDescriptiveStatistics",
+    "DeltaNeutralAccountingSpec",
+    "PerpetualFundingMasterReport",
+    "BinancePerpetualFundingIngestionPipeline",
+    "FundingIntegrityError",
+    "FundingIntegrityVerificationReport",
+    "PerpetualFundingIntegrityVerifier",
+    "FundingDiagnosticsEngine",
 ]
