@@ -1,0 +1,15 @@
+{
+  "correction_id": "CORRECTION-S40-001",
+  "target_sprint": "CBE-09.40",
+  "s40_eth_sol_claim_status_prior": "FUNDING_ONLY_APPROXIMATION (Missing 15m perp klines)",
+  "s40_eth_sol_claim_status_corrected": "AUTHENTIC_EXECUTABLE_RESULT (All 40,800 bars verified)",
+  "s40_unsupported_liquidation_pnl_claim": "-5,000.00 USDT (Equating perp wipeout with total loss)",
+  "s40_liquidation_pnl_corrected_explanation": "LIQUIDATION ACCOUNTING CORRECTION: In Sprint 09.40, unsupported isolated margin liquidation scenarios reported a terminal net P&L of exactly -5,000 USDT. This was an erroneous simplification that equated perpetual margin wipeout with total portfolio loss. In reality, the Spot BTC position ($0.11825 BTC) remained open in the segregated Spot wallet. When the perpetual short was liquidated at BTC = 88,378 USDT, the Spot inventory was worth 10,450.63 USDT. Total portfolio equity at breach was +10,450.63 USDT. Post-liquidation, the portfolio held an unhedged +100% directional Spot position. Evaluated at horizon close (BTC = 84,349.94 USDT), total realizable equity was 9,968.33 USDT (Net P&L: -31.67 USDT, or -0.32% on 10k capital), or +444.36 USDT (+4.44%) if closed immediately at breach. The claim of a -5,000 USDT loss is officially retracted.",
+  "liquidation_btc_spot_inventory_value_at_breach_usdt": 10450.63,
+  "liquidation_btc_perp_equity_at_breach_usdt": 0.0,
+  "liquidation_btc_portfolio_equity_at_breach_usdt": 10450.63,
+  "liquidation_btc_portfolio_equity_at_horizon_close_usdt": 9968.33,
+  "actual_terminal_net_pnl_if_spot_held_unhedged_usdt": -31.67,
+  "actual_terminal_net_pnl_if_spot_closed_at_breach_usdt": 444.36,
+  "audit_verdict": "VERSIONED_CORRECTION_ISSUED_ORIGINAL_ARTIFACT_PRESERVED"
+}

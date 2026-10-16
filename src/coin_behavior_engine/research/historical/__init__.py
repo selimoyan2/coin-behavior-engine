@@ -358,6 +358,16 @@ from coin_behavior_engine.research.historical.multi_asset_carry_sprint40 import 
     SwitchingCostHurdleAudit,
     ZeroLiquidationRiskCorrectionAudit,
 )
+from coin_behavior_engine.research.historical.multi_asset_carry_sprint41 import (
+    CarryBenchmarkStructureResult,
+    DecimalBalanceSheetReconciliation,
+    InstrumentAuthenticDatasetRecord,
+    PortfolioMarginFeasibilityReport,
+    RiskFreeBenchmarkComparisonReport,
+    Sprint40ClaimsCorrectionAudit,
+    Sprint41MasterReport,
+    Sprint41MultiAssetAuditor,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -593,4 +603,12 @@ __all__ = [
     "StressScenarioResult",
     "Sprint40MasterReport",
     "Sprint40MultiAssetCarryAuditor",
+    "Sprint40ClaimsCorrectionAudit",
+    "InstrumentAuthenticDatasetRecord",
+    "DecimalBalanceSheetReconciliation",
+    "CarryBenchmarkStructureResult",
+    "PortfolioMarginFeasibilityReport",
+    "RiskFreeBenchmarkComparisonReport",
+    "Sprint41MasterReport",
+    "Sprint41MultiAssetAuditor",
 ]
