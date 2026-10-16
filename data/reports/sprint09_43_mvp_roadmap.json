@@ -1,0 +1,135 @@
+{
+  "sprint_id": "CBE-09.43",
+  "roadmap_title": "CBE Market Intelligence MVP Development Roadmap (Phase 10)",
+  "sprints": [
+    {
+      "sprint_id": "SPRINT_10.01",
+      "sprint_title": "Conformal Prediction & Interval Calibration",
+      "objective": "Eliminate the 15% prediction interval undercoverage using split conformal prediction.",
+      "deliverables": [
+        "Split conformal prediction engine for 80% and 95% quantiles.",
+        "Empirical non-conformity score calibration over rolling 2,000 bars.",
+        "Reliability diagram generator with Brier score tracking."
+      ],
+      "dependencies": [
+        "src/coin_behavior_engine/prospective/analytics.py"
+      ],
+      "acceptance_tests": [
+        "Observed empirical coverage >= 80% and >= 95% on out-of-fold calibration test set."
+      ],
+      "risk_level": "MEDIUM",
+      "estimated_effort_days": 4,
+      "completion_criteria": "Undercoverage gap reduced to < 2.0% without expanding interval width by > 25%."
+    },
+    {
+      "sprint_id": "SPRINT_10.02",
+      "sprint_title": "Market Intelligence REST & WebSocket API",
+      "objective": "Expose clean, versioned JSON API endpoints for external consumers and UI clients.",
+      "deliverables": [
+        "FastAPI / OpenAPI specification for /api/v1/intelligence.",
+        "Real-time regime, volatility, and basis telemetry payloads.",
+        "Rate-limiting and read-only token authentication middleware."
+      ],
+      "dependencies": [
+        "SPRINT_10.01"
+      ],
+      "acceptance_tests": [
+        "API response latency < 20 ms under 100 concurrent requests; 100% schema validation."
+      ],
+      "risk_level": "LOW",
+      "estimated_effort_days": 3,
+      "completion_criteria": "OpenAPI 3.0 compliant docs generated with zero trading endpoints."
+    },
+    {
+      "sprint_id": "SPRINT_10.03",
+      "sprint_title": "Dashboard UX Polish & Transparent Limitations Banner",
+      "objective": "Upgrade the web dashboard with responsive multi-asset navigation and prominent limitations notices.",
+      "deliverables": [
+        "Prominent 'Known Model Limitations' top banner.",
+        "Clean dark-mode telemetry tiles for Regime, Volatility, and Basis.",
+        "Interactive historical Brier score accuracy trend chart."
+      ],
+      "dependencies": [
+        "SPRINT_10.02"
+      ],
+      "acceptance_tests": [
+        "Lighthouse performance score >= 95; zero layout shift; mobile responsive."
+      ],
+      "risk_level": "LOW",
+      "estimated_effort_days": 3,
+      "completion_criteria": "All displayed indicators have click-to-explain tooltips and mathematical definitions."
+    },
+    {
+      "sprint_id": "SPRINT_10.04",
+      "sprint_title": "Multi-Asset Telemetry Expansion (BTC, ETH, SOL)",
+      "objective": "Unify BTCUSDT, ETHUSDT, and SOLUSDT into a single synchronized market intelligence view.",
+      "deliverables": [
+        "Multi-symbol background market capture pipelines.",
+        "Cross-instrument basis and dispersion monitor.",
+        "Unified multi-asset dashboard selector."
+      ],
+      "dependencies": [
+        "SPRINT_10.03"
+      ],
+      "acceptance_tests": [
+        "Memory usage remains < 250 MB RAM with 3 active instruments running concurrently."
+      ],
+      "risk_level": "MEDIUM",
+      "estimated_effort_days": 4,
+      "completion_criteria": "Synchronized 15m bar ingestion across all 3 symbols with zero timeline misalignment."
+    },
+    {
+      "sprint_id": "SPRINT_10.05",
+      "sprint_title": "Automated Data Quality & Pipeline Health Telemetry",
+      "objective": "Implement autonomous monitoring for stream degradation, stale bars, and exchange disconnects.",
+      "deliverables": [
+        "Continuous stream health evaluator (DEGRADED_STREAM detector).",
+        "Stale candle watchdog with automated alerting.",
+        "Public uptime and data quality badge on UI."
+      ],
+      "dependencies": [
+        "SPRINT_10.04"
+      ],
+      "acceptance_tests": [
+        "Simulated websocket disconnect triggers 'DEGRADED' badge within 10 seconds."
+      ],
+      "risk_level": "LOW",
+      "estimated_effort_days": 3,
+      "completion_criteria": "Zero silent failures; all data anomalies visibly flagged to user."
+    },
+    {
+      "sprint_id": "SPRINT_10.06",
+      "sprint_title": "Controlled MVP Release & Acceptance Verification Gate",
+      "objective": "Execute end-to-end security audit, load testing, and formal MVP sign-off.",
+      "deliverables": [
+        "Comprehensive MVP verification test suite.",
+        "Security penetration test report (confirming zero trading leakage).",
+        "Production release candidate packaging (Docker image)."
+      ],
+      "dependencies": [
+        "SPRINT_10.01",
+        "SPRINT_10.02",
+        "SPRINT_10.03",
+        "SPRINT_10.04",
+        "SPRINT_10.05"
+      ],
+      "acceptance_tests": [
+        "Passes all 9 MVP Release Acceptance Gates with 100% compliance."
+      ],
+      "risk_level": "LOW",
+      "estimated_effort_days": 3,
+      "completion_criteria": "Formal sign-off for public read-only deployment."
+    }
+  ],
+  "acceptance_gates": {
+    "GATE_01_DOCUMENTED_DEFINITIONS": "100% of visible indicators have published mathematical definitions and interpretation guidelines.",
+    "GATE_02_CALIBRATED_INTERVALS": "Observed empirical coverage for conformal intervals is within +/- 2.5% of nominal confidence (>= 77.5% for 80%, >= 92.5% for 95%).",
+    "GATE_03_TRANSPARENT_LIMITATIONS": "Model limitations banner is permanently visible on UI, explicitly disclosing non-financial-advice status and model freeze provenance.",
+    "GATE_04_DATA_FRESHNESS": "End-to-end pipeline latency from bar close to dashboard update is strictly < 30 seconds under normal operation.",
+    "GATE_05_NO_LOOKAHEAD": "Zero lookahead leakage; all prospective signals generated strictly at bar close without forward timestamp access.",
+    "GATE_06_TRADING_DISABLED": "Zero order execution or exchange API key capabilities; APPROVAL4 remains strictly FALSE.",
+    "GATE_07_PERFORMANCE": "Dashboard initial cold load time < 1.0 second; API response latency < 50 ms under 100 concurrent requests.",
+    "GATE_08_REPRODUCIBILITY": "100% of reported historical validation metrics can be independently reproduced from committed repository artifacts.",
+    "GATE_09_EXPERIMENTAL_SEPARATION": "All fallback or uncalibrated indicators are prominently badged as 'Deneysel / Fallback' with zero ambiguity."
+  }
+}
