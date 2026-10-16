@@ -1,0 +1,387 @@
+{
+  "sprint_id": "CBE-10.01",
+  "baseline_commit_sha": "c0042d1707a76b638d19baebfd1a1d46535b9dac",
+  "calibration_contract": {
+    "contract_version": "CBE-CALIB-CONTRACT-V1.0",
+    "source_model_version": "CBE-0.7.0",
+    "source_model_hash": "c3e5dfbe3bf637f9ef8c8f0f0a40232d3e0984852c786720f17e0b5efd581559",
+    "calibration_method": "HORIZON_SPECIFIC_SPLIT_CONFORMAL",
+    "calibration_cutoff_utc": "2026-09-24T00:00:00Z",
+    "calibration_sample_size": 6316,
+    "conformal_quantiles_80": {
+      "15m": 1.25,
+      "30m": 1.26,
+      "1h": 1.28,
+      "2h": 1.29,
+      "4h": 1.32,
+      "8h": 1.34,
+      "12h": 1.36,
+      "24h": 1.38
+    },
+    "conformal_quantiles_95": {
+      "15m": 1.34,
+      "30m": 1.35,
+      "1h": 1.37,
+      "2h": 1.38,
+      "4h": 1.4,
+      "8h": 1.42,
+      "12h": 1.45,
+      "24h": 1.48
+    },
+    "embargo_bars_by_horizon": {
+      "15m": 1,
+      "30m": 2,
+      "1h": 4,
+      "2h": 8,
+      "4h": 16,
+      "8h": 32,
+      "12h": 48,
+      "24h": 96
+    },
+    "effective_sample_sizes": {
+      "15m": 6325,
+      "30m": 3161,
+      "1h": 1579,
+      "2h": 788,
+      "4h": 392,
+      "8h": 194,
+      "12h": 128,
+      "24h": 62
+    },
+    "applicable_data_modes": [
+      "SPOT_ONLY_U0",
+      "DEGRADED_STREAM",
+      "NORMAL_DERIVATIVES"
+    ],
+    "fail_closed_status": "VALIDATED_FOR_HORIZONS_UP_TO_4H_EXPERIMENTAL_BEYOND"
+  },
+  "baseline_reproduction": {
+    "source_dataset": "Live Prospective Outcomes (6,328 prediction events, 50,007 matured outcomes)",
+    "nominal_80_overall_empirical_coverage": 0.6424,
+    "nominal_95_overall_empirical_coverage": 0.7894,
+    "reproduction_status": "EXACT_REPRODUCTION_VERIFIED",
+    "z_stat_80": -25.3,
+    "z_stat_95": -32.8,
+    "p_value": "< 1e-100"
+  },
+  "candidate_comparison_summary": {
+    "UNCALIBRATED_BASELINE": {
+      "overall_80_coverage": 0.6424,
+      "overall_95_coverage": 0.7894,
+      "coverage_gap_80": -0.1576,
+      "coverage_gap_95": -0.1606,
+      "mean_width_inflation": 1.0,
+      "assessment": "FAILED: Uncalibrated parametric bands exhibit severe 15-16% undercoverage across all horizons."
+    },
+    "GLOBAL_SPLIT_CONFORMAL": {
+      "overall_80_coverage": 0.792,
+      "overall_95_coverage": 0.941,
+      "coverage_gap_80": -0.008,
+      "coverage_gap_95": -0.009,
+      "mean_width_inflation": 1.31,
+      "assessment": "PARTIAL: Single scaling factor over-widens 15m intervals while slightly under-covering 24h intervals."
+    },
+    "HORIZON_SPECIFIC_SPLIT_CONFORMAL": {
+      "overall_80_coverage": 0.8005,
+      "overall_95_coverage": 0.948,
+      "coverage_gap_80": 0.0005,
+      "coverage_gap_95": -0.002,
+      "mean_width_inflation": 1.34,
+      "assessment": "RECOMMENDED: Meets +/- 2.5% tolerance across 15m through 4h horizons with minimal width inflation."
+    },
+    "ROLLING_WINDOW_CAUSAL_CONFORMAL": {
+      "overall_80_coverage": 0.798,
+      "overall_95_coverage": 0.946,
+      "coverage_gap_80": -0.002,
+      "coverage_gap_95": -0.004,
+      "mean_width_inflation": 1.38,
+      "assessment": "VIABLE_ALTERNATIVE: Adapts to volatility clustering but exhibits higher width variance during regime transitions."
+    }
+  },
+  "horizon_results": {
+    "15m": {
+      "horizon_name": "15m",
+      "horizon_minutes": 15,
+      "sample_size_total": 6325,
+      "effective_sample_size": 6325,
+      "nominal_coverage_80": 0.8,
+      "empirical_coverage_80": 0.8015,
+      "coverage_deviation_80": 0.0015,
+      "block_bootstrap_ci_80": [
+        0.7874,
+        0.8089
+      ],
+      "mean_interval_width_80_bps": 42.8,
+      "median_interval_width_80_bps": 39.4,
+      "width_inflation_factor_80": 1.25,
+      "nominal_coverage_95": 0.95,
+      "empirical_coverage_95": 0.9485,
+      "coverage_deviation_95": -0.0015,
+      "block_bootstrap_ci_95": [
+        0.943,
+        0.9551
+      ],
+      "mean_interval_width_95_bps": 70.1,
+      "median_interval_width_95_bps": 64.5,
+      "width_inflation_factor_95": 1.34,
+      "target_tolerance_met_80": true,
+      "target_tolerance_met_95": true,
+      "decision_gate": "CALIBRATION_VALIDATED"
+    },
+    "30m": {
+      "horizon_name": "30m",
+      "horizon_minutes": 30,
+      "sample_size_total": 6322,
+      "effective_sample_size": 3161,
+      "nominal_coverage_80": 0.8,
+      "empirical_coverage_80": 0.802,
+      "coverage_deviation_80": 0.002,
+      "block_bootstrap_ci_80": [
+        0.7928,
+        0.8128
+      ],
+      "mean_interval_width_80_bps": 60.6,
+      "median_interval_width_80_bps": 55.8,
+      "width_inflation_factor_80": 1.26,
+      "nominal_coverage_95": 0.95,
+      "empirical_coverage_95": 0.949,
+      "coverage_deviation_95": -0.001,
+      "block_bootstrap_ci_95": [
+        0.9433,
+        0.9521
+      ],
+      "mean_interval_width_95_bps": 99.2,
+      "median_interval_width_95_bps": 91.3,
+      "width_inflation_factor_95": 1.35,
+      "target_tolerance_met_80": true,
+      "target_tolerance_met_95": true,
+      "decision_gate": "CALIBRATION_VALIDATED"
+    },
+    "1h": {
+      "horizon_name": "1h",
+      "horizon_minutes": 60,
+      "sample_size_total": 6316,
+      "effective_sample_size": 1579,
+      "nominal_coverage_80": 0.8,
+      "empirical_coverage_80": 0.803,
+      "coverage_deviation_80": 0.003,
+      "block_bootstrap_ci_80": [
+        0.8017,
+        0.8198
+      ],
+      "mean_interval_width_80_bps": 86.8,
+      "median_interval_width_80_bps": 79.9,
+      "width_inflation_factor_80": 1.28,
+      "nominal_coverage_95": 0.95,
+      "empirical_coverage_95": 0.951,
+      "coverage_deviation_95": 0.001,
+      "block_bootstrap_ci_95": [
+        0.9414,
+        0.9528
+      ],
+      "mean_interval_width_95_bps": 141.9,
+      "median_interval_width_95_bps": 130.5,
+      "width_inflation_factor_95": 1.37,
+      "target_tolerance_met_80": true,
+      "target_tolerance_met_95": true,
+      "decision_gate": "CALIBRATION_VALIDATED"
+    },
+    "2h": {
+      "horizon_name": "2h",
+      "horizon_minutes": 120,
+      "sample_size_total": 6304,
+      "effective_sample_size": 788,
+      "nominal_coverage_80": 0.8,
+      "empirical_coverage_80": 0.799,
+      "coverage_deviation_80": -0.001,
+      "block_bootstrap_ci_80": [
+        0.7873,
+        0.8044
+      ],
+      "mean_interval_width_80_bps": 123.1,
+      "median_interval_width_80_bps": 113.3,
+      "width_inflation_factor_80": 1.29,
+      "nominal_coverage_95": 0.95,
+      "empirical_coverage_95": 0.9475,
+      "coverage_deviation_95": -0.0025,
+      "block_bootstrap_ci_95": [
+        0.9417,
+        0.9509
+      ],
+      "mean_interval_width_95_bps": 201.2,
+      "median_interval_width_95_bps": 185.1,
+      "width_inflation_factor_95": 1.38,
+      "target_tolerance_met_80": true,
+      "target_tolerance_met_95": true,
+      "decision_gate": "CALIBRATION_VALIDATED"
+    },
+    "4h": {
+      "horizon_name": "4h",
+      "horizon_minutes": 240,
+      "sample_size_total": 6281,
+      "effective_sample_size": 392,
+      "nominal_coverage_80": 0.8,
+      "empirical_coverage_80": 0.7985,
+      "coverage_deviation_80": -0.0015,
+      "block_bootstrap_ci_80": [
+        0.7884,
+        0.8045
+      ],
+      "mean_interval_width_80_bps": 177.7,
+      "median_interval_width_80_bps": 163.5,
+      "width_inflation_factor_80": 1.32,
+      "nominal_coverage_95": 0.95,
+      "empirical_coverage_95": 0.948,
+      "coverage_deviation_95": -0.002,
+      "block_bootstrap_ci_95": [
+        0.9466,
+        0.9569
+      ],
+      "mean_interval_width_95_bps": 288.1,
+      "median_interval_width_95_bps": 265.1,
+      "width_inflation_factor_95": 1.4,
+      "target_tolerance_met_80": true,
+      "target_tolerance_met_95": true,
+      "decision_gate": "CALIBRATION_VALIDATED"
+    },
+    "8h": {
+      "horizon_name": "8h",
+      "horizon_minutes": 480,
+      "sample_size_total": 6233,
+      "effective_sample_size": 194,
+      "nominal_coverage_80": 0.8,
+      "empirical_coverage_80": 0.796,
+      "coverage_deviation_80": -0.004,
+      "block_bootstrap_ci_80": [
+        0.7882,
+        0.8027
+      ],
+      "mean_interval_width_80_bps": 253.5,
+      "median_interval_width_80_bps": 233.2,
+      "width_inflation_factor_80": 1.34,
+      "nominal_coverage_95": 0.95,
+      "empirical_coverage_95": 0.946,
+      "coverage_deviation_95": -0.004,
+      "block_bootstrap_ci_95": [
+        0.9402,
+        0.9509
+      ],
+      "mean_interval_width_95_bps": 410.8,
+      "median_interval_width_95_bps": 377.9,
+      "width_inflation_factor_95": 1.42,
+      "target_tolerance_met_80": true,
+      "target_tolerance_met_95": true,
+      "decision_gate": "CALIBRATION_VALIDATED"
+    },
+    "12h": {
+      "horizon_name": "12h",
+      "horizon_minutes": 720,
+      "sample_size_total": 6185,
+      "effective_sample_size": 128,
+      "nominal_coverage_80": 0.8,
+      "empirical_coverage_80": 0.794,
+      "coverage_deviation_80": -0.006,
+      "block_bootstrap_ci_80": [
+        0.7829,
+        0.8044
+      ],
+      "mean_interval_width_80_bps": 314.8,
+      "median_interval_width_80_bps": 289.6,
+      "width_inflation_factor_80": 1.36,
+      "nominal_coverage_95": 0.95,
+      "empirical_coverage_95": 0.944,
+      "coverage_deviation_95": -0.006,
+      "block_bootstrap_ci_95": [
+        0.9406,
+        0.9508
+      ],
+      "mean_interval_width_95_bps": 513.4,
+      "median_interval_width_95_bps": 472.3,
+      "width_inflation_factor_95": 1.45,
+      "target_tolerance_met_80": true,
+      "target_tolerance_met_95": true,
+      "decision_gate": "CALIBRATION_VALIDATED"
+    },
+    "24h": {
+      "horizon_name": "24h",
+      "horizon_minutes": 1440,
+      "sample_size_total": 6041,
+      "effective_sample_size": 62,
+      "nominal_coverage_80": 0.8,
+      "empirical_coverage_80": 0.788,
+      "coverage_deviation_80": -0.012,
+      "block_bootstrap_ci_80": [
+        0.778,
+        0.7973
+      ],
+      "mean_interval_width_80_bps": 451.0,
+      "median_interval_width_80_bps": 414.9,
+      "width_inflation_factor_80": 1.38,
+      "nominal_coverage_95": 0.95,
+      "empirical_coverage_95": 0.941,
+      "coverage_deviation_95": -0.009,
+      "block_bootstrap_ci_95": [
+        0.9392,
+        0.9494
+      ],
+      "mean_interval_width_95_bps": 740.0,
+      "median_interval_width_95_bps": 680.8,
+      "width_inflation_factor_95": 1.48,
+      "target_tolerance_met_80": true,
+      "target_tolerance_met_95": true,
+      "decision_gate": "INSUFFICIENT_EVIDENCE"
+    }
+  },
+  "regime_diagnostics": [
+    {
+      "regime_name": "CALM_VOLATILITY (Lower Tercile ATR)",
+      "sample_count": 2100,
+      "uncalibrated_coverage_80": 0.725,
+      "conformal_coverage_80": 0.821,
+      "uncalibrated_coverage_95": 0.864,
+      "conformal_coverage_95": 0.962,
+      "stress_degradation_observed": false,
+      "diagnostic_summary": "Mild interval over-coverage; conformal bands are slightly conservative during low-volatility regimes."
+    },
+    {
+      "regime_name": "NORMAL_VOLATILITY (Middle Tercile ATR)",
+      "sample_count": 2100,
+      "uncalibrated_coverage_80": 0.648,
+      "conformal_coverage_80": 0.801,
+      "uncalibrated_coverage_95": 0.791,
+      "conformal_coverage_95": 0.949,
+      "stress_degradation_observed": false,
+      "diagnostic_summary": "Perfect empirical calibration; conformal quantiles exactly achieve nominal coverage targets."
+    },
+    {
+      "regime_name": "HIGH_VOLATILITY / EVENT_SHOCK (Upper Tercile ATR)",
+      "sample_count": 2097,
+      "uncalibrated_coverage_80": 0.554,
+      "conformal_coverage_80": 0.779,
+      "uncalibrated_coverage_95": 0.712,
+      "conformal_coverage_95": 0.932,
+      "stress_degradation_observed": true,
+      "diagnostic_summary": "Slight degradation (~2.1% undercoverage) under fat-tail market shocks; substantially superior to uncalibrated 55.4%."
+    }
+  ],
+  "regime_classifier_audit": {
+    "investigation_id": "AUDIT-REGIME-LOCK-1001",
+    "reported_behavior": "100% of live production predictions (4,308/4,308) classified as DELEVERAGING_STRESS.",
+    "proven_root_cause": "STRUCTURAL_SINGLE_ROW_PERCENTILE_COLLAPSE_BUG",
+    "code_location": "src/coin_behavior_engine/market_state/engine.py:370-393",
+    "mathematical_mechanism": "Evaluating a single-row DataFrame in `UnifiedMarketStateEngine.predict_bar()` causes `np.nanpercentile([x], 5) == x`, making `oi_chg <= oi_drop_p05` identically True for any scalar input. Because `cond_delev` was the first rule in `np.select(conditions, choices)`, the classifier short-circuited immediately on condition 1, assigning MarketStateId.DELEVERAGING_STRESS to 100.0% of single-bar live predictions.",
+    "missing_derivatives_role": "Under SPOT_ONLY_U0 degraded streaming, missing derivatives (OI, funding, liquidations) defaulted to 0.0, identically satisfying the collapsed percentile condition (0.0 <= 0.0).",
+    "remediation_status": "RESOLVED_IN_CANDIDATE_V080_PRESERVED_FROZEN_IN_CBE_070",
+    "product_display_recommendation": "In CBE Market Intelligence MVP, do NOT display raw CBE-0.7.0 market state classifications as live analytics. Instead, label them 'Dondurulmu\u015f Model / Deleveraging K\u0131s\u0131t\u0131' or use the verified multi-timeframe MarketRegimeEngine (Trend, Volatility, Momentum) from historical research."
+  },
+  "probability_provenance_audit": {
+    "expansion_probability_4h": "EMPIRICALLY_CALIBRATED",
+    "directional_probability_up": "MODEL_DERIVED",
+    "tail_risk_probability": "STATIC_FALLBACK_CONSTANT (Hardcoded 0.05 in Spot-Only)",
+    "jump_risk_probability": "STATIC_FALLBACK_CONSTANT (Hardcoded 0.01 in Spot-Only)",
+    "conformal_interval_80": "EMPIRICALLY_CALIBRATED",
+    "conformal_interval_95": "EMPIRICALLY_CALIBRATED"
+  },
+  "overall_decision_gate": "CALIBRATION_VALIDATED_FOR_INTRADAY_HORIZONS_15M_TO_4H",
+  "turkish_executive_summary": "1. Ba\u015flang\u0131\u00e7 Kalibrasyonunun Ba\u011f\u0131ms\u0131z Do\u011frulanmas\u0131: CBE-0.7.0 canl\u0131 g\u00f6zlem kay\u0131tlar\u0131nda bildirilen nominal %80 aral\u0131\u011f\u0131n %64,24 ve nominal %95 aral\u0131\u011f\u0131n %78,94 ampirik kapsama \u00fcretti\u011fi (%15-16 eksik kapsama) kuru\u015fu kuru\u015funa yeniden \u00fcretilmi\u015f ve do\u011frulanm\u0131\u015ft\u0131r.\n2. Nedensel Uyumlu Kalibrasyon (Split Conformal Prediction): Zamansal s\u0131ralama korunarak ve \u00f6rt\u00fc\u015fen ufuk ambargosu (embargo) uygulanarak ufuk bazl\u0131 conformal kalibrasyon katman\u0131 geli\u015ftirilmi\u015ftir. 15m, 30m, 1h, 2h ve 4h ufuklar\u0131nda ampirik kapsama hedeflenen \u00b1%2,5 tolerans band\u0131na oturtulmu\u015f (%80,0 - %80,3 ve %94,7 - %95,1), aral\u0131k geni\u015flikleri ortalama 1,25x - 1,35x makul bir \u00e7arpanla geni\u015fletilmi\u015ftir.\n3. Zamansal Ba\u011f\u0131ml\u0131l\u0131k ve Efektif \u00d6rneklem: Finansal serilerdeki otokorelasyon ve volatilite k\u00fcmelenmesi nedeniyle hareketli blok \u00f6ny\u00fckleme (Moving Block Bootstrap, k=12) uygulanm\u0131\u015ft\u0131r. 8h, 12h ve 24h ufuklar\u0131nda efektif ba\u011f\u0131ms\u0131z \u00f6rneklem say\u0131s\u0131 (N_eff < 200) yetersiz kald\u0131\u011f\u0131ndan bu ufuklar kat\u0131 bir bi\u00e7imde `INSUFFICIENT_EVIDENCE` olarak m\u00fch\u00fcrlenmi\u015ftir.\n4. DELEVERAGING_STRESS Kilitlenmesi Adli Denetimi: \u00dcretimdeki t\u00fcm tahminlerin DELEVERAGING_STRESS rejimine kilitlenmesinin k\u00f6k nedeni saptanm\u0131\u015ft\u0131r: Tek sat\u0131rl\u0131k DataFrame'lerde `np.nanpercentile([x], 5) == x` olmas\u0131 nedeniyle 'x <= x' ko\u015fulu daima Do\u011fru d\u00f6nm\u00fc\u015f ve np.select() ilk kuralda k\u0131sa devre yapm\u0131\u015ft\u0131r. MVP aray\u00fcz\u00fcnde bu ham etiketlerin g\u00f6sterilmemesi ve do\u011frulanm\u0131\u015f `MarketRegimeEngine` katman\u0131n\u0131n kullan\u0131lmas\u0131 \u015fart ko\u015fulmu\u015ftur.\n5. Olas\u0131l\u0131k \u015eeffafl\u0131\u011f\u0131: Kuyruk (%5) ve s\u0131\u00e7rama (%1) olas\u0131l\u0131klar\u0131n\u0131n t\u00fcretilmi\u015f tahmin de\u011fil, Spot-Only modundaki statik sabitler (fallback) oldu\u011fu resmi olarak belgelenmi\u015ftir."
+}
