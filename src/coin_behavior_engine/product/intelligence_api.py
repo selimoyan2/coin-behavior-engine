@@ -210,16 +210,26 @@ class MarketIntelligenceApiService:
     @classmethod
     def get_market_overview(cls) -> Tuple[int, Dict[str, Any]]:
         """Endpoint 1: Market overview and high-level bar metrics."""
+        from coin_behavior_engine.product.market_data_adapter import FactualMarketDataAdapter
+
         contracts = cls._get_contracts()
         mo = contracts["market_overview"]
 
+        adapter = FactualMarketDataAdapter()
+        record = adapter.get_btcusdt_factual_record()
+
+        spot_price = record.spot_price_usdt if record.spot_price_usdt is not None else mo["spot_price_usdt"]["value"]
+        bar_ts = record.timestamp_close_utc or mo["bar_timestamp_utc"]["value"]
+        price_change = record.price_change_24h_pct if record.price_change_24h_pct is not None else mo["price_change_24h_pct"]["value"]
+        vol_usdt = record.volume_usdt if record.volume_usdt is not None else mo["volume_24h_usdt"]["value"]
+
         meta = ApiResponseMetadata(
             model_version=cls.MODEL_VERSION,
-            source_timestamp=mo["bar_timestamp_utc"]["value"],
+            source_timestamp=bar_ts,
             data_cutoff_timestamp="2026-09-23T20:25:00Z",
-            data_source="BINANCE_SPOT",
+            data_source=record.exchange_source,
             data_availability_mode=cls.DEFAULT_DATA_MODE,
-            evidence_classification=ApiEvidenceClassification.FACTUAL_MARKET_DATA.value,
+            evidence_classification=record.classification.value if record.classification.value in [e.value for e in ApiEvidenceClassification] else ApiEvidenceClassification.FACTUAL_MARKET_DATA.value,
             is_experimental=False,
             calibration_status="NOT_APPLICABLE",
             relevant_limitations=["Spot-Only degraded streaming mode active; derivatives indicators unavailable."],
@@ -230,12 +240,18 @@ class MarketIntelligenceApiService:
             {
                 "metadata": meta.to_dict(),
                 "data": {
-                    "symbol": mo["symbol"]["value"],
-                    "spot_price_usdt": mo["spot_price_usdt"]["value"],
-                    "price_change_24h_pct": mo["price_change_24h_pct"]["value"],
-                    "volume_24h_usdt": mo["volume_24h_usdt"]["value"],
+                    "symbol": record.symbol,
+                    "spot_price_usdt": spot_price,
+                    "price_change_24h_pct": price_change,
+                    "volume_24h_usdt": vol_usdt,
                     "data_mode": mo["data_mode"]["value"],
-                    "bar_timestamp_utc": mo["bar_timestamp_utc"]["value"],
+                    "bar_timestamp_utc": bar_ts,
+                    "exchange_source": record.exchange_source,
+                    "candle_interval": record.candle_interval,
+                    "freshness_status": record.freshness_status.value,
+                    "source_health": record.source_health.value,
+                    "classification": record.classification.value,
+                    "is_live": record.is_live,
                 },
             },
         )

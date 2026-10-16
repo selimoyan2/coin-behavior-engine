@@ -1,4 +1,3 @@
-// CBE Market Intelligence MVP — Client Adapter & UI Renderer
 "use strict";
 
 const UI_STRINGS_TR = {
@@ -13,8 +12,7 @@ const UI_STRINGS_TR = {
   notAvailable: "Mevcut Değil",
   suppressed: "Bastırıldı (Yetersiz Kanıt)",
   offlineResearchOnly: "Bu teşhisler dondurulmuş geçmiş izler üzerinde yürütülen çevrimdışı araştırma verileridir; canlı üretime dağıtılmamıştır.",
-  tradingDisabledNotice: "Sistem salt-okunur piyasa istihbarat modundadır. APPROVAL4=FALSE; alım-satım ve canlı skorlama devre dışıdır.",
-  regimeBugNotice: "Dondurulmuş modelin persentil algoritmasındaki tek satırlı çökme hatası (x <= x) nedeniyle ham rejim çıktısı UNKNOWN durumuna çekilmiştir.",
+  regimeBugNotice: "Dondurulmuş modelin persentil algoritmasındaki hata (x <= x) nedeniyle ham rejim çıktısı UNKNOWN durumuna çekilmiştir.",
   evidenceLabels: {
     FACTUAL_MARKET_DATA: "Olgusal Piyasa Verisi",
     CHRONOLOGICALLY_VERIFIED_EXPLORATORY: "Kronolojik Doğrulanmış (Keşifsel)",
@@ -26,8 +24,6 @@ const UI_STRINGS_TR = {
     STALE_DATA: "Bayat Veri"
   }
 };
-
-// Market Intelligence API Client
 class MarketIntelligenceClient {
   constructor(apiBaseUrl = "/api/v1/intelligence") {
     this.baseUrl = apiBaseUrl;
@@ -60,12 +56,10 @@ class MarketIntelligenceClient {
       throw new Error(`Geçersiz yanıt gövdesi (${endpoint}): Yanıt bir JSON nesnesi olmalıdır.`);
     }
 
-    // Endpoints returning raw specs or index directory
     if (endpoint === "/openapi.json" || endpoint === "") {
       return data;
     }
 
-    // Verify metadata presence for all standard endpoints (supports metadata or _metadata)
     const meta = data.metadata || data._metadata;
     if (!meta) {
       throw new Error(`Şema Doğrulama Hatası (${endpoint}): metadata zarfı eksik.`);
@@ -104,7 +98,6 @@ class MarketIntelligenceClient {
     const targetTime = dt.getTime();
     const diffSeconds = (nowTime - targetTime) / 1000;
 
-    // Check future timestamp (clock skew > 60 seconds)
     if (diffSeconds < -60) {
       return {
         status: "FUTURE",
@@ -193,7 +186,6 @@ class MarketIntelligenceClient {
   }
 }
 
-// UI Renderer
 class MarketIntelligenceUi {
   constructor(client) {
     this.client = client;
@@ -270,7 +262,6 @@ class MarketIntelligenceUi {
       const dt = new Date(isoStr);
       if (isNaN(dt.getTime())) return `<span>${isoStr}</span>`;
 
-      // Turkish local time (TSİ / Europe/Istanbul)
       const trStr = dt.toLocaleString("tr-TR", {
         timeZone: "Europe/Istanbul",
         year: "numeric",
@@ -282,7 +273,6 @@ class MarketIntelligenceUi {
         hour12: false
       });
 
-      // Raw UTC reference
       const utcStr = dt.toISOString().replace(".000Z", "Z");
 
       return `
@@ -322,7 +312,6 @@ class MarketIntelligenceUi {
 
     const { overview, freshness, modelInfo, predictions, volatility, regime, provenance, features, limitations } = data;
 
-    // Unpack data contracts
     const mo = overview.data || overview;
     const moMeta = overview.metadata || overview._metadata || {};
 
@@ -341,7 +330,6 @@ class MarketIntelligenceUi {
     const prov = provenance.probabilities || provenance.probability_provenance || {};
     const provMeta = provenance.metadata || provenance._metadata || {};
 
-    // Staleness Banner
     const isStale = fresh.is_stale;
     const bannerHtml = isStale ? `
       <div class="system-banner" role="alert" aria-live="polite">
@@ -356,7 +344,13 @@ class MarketIntelligenceUi {
       </div>
     ` : "";
 
-    // Module A: Market Overview
+    const priceDisplay = (mo.spot_price_usdt !== null && mo.spot_price_usdt !== undefined)
+      ? `$${this.formatNumber(mo.spot_price_usdt, 2)}`
+      : `${UI_STRINGS_TR.notAvailable} (VERİ YOK)`;
+    const classTag = mo.is_live
+      ? `<span class="classification-tag tag-live">CANLI İZLEME</span>`
+      : `<span class="classification-tag tag-historical">TARİHSEL SNAPSHOT</span>`;
+
     const moduleAHtml = `
       <section class="card col-4" role="region" aria-labelledby="title-module-a" tabindex="0">
         <div class="card-header">
@@ -373,19 +367,19 @@ class MarketIntelligenceUi {
         <div class="metric-row">
           <span class="metric-label">Son Kapanış Fiyatı</span>
           <span class="metric-value highlight">
-            $${this.formatNumber(mo.spot_price_usdt, 2)}
-            <span class="classification-tag tag-historical">TARİHSEL SNAPSHOT</span>
+            ${priceDisplay}
+            ${classTag}
           </span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Veri Kaynağı</span>
+          <span class="metric-value">${mo.exchange_source || "Binance Spot"} (${mo.candle_interval || "5m"})</span>
         </div>
         <div class="metric-row">
           <span class="metric-label">24s Göreceli Değişim</span>
           <span class="metric-value ${(mo.price_change_24h_pct || 0) >= 0 ? "success" : "danger"}">
-            ${(mo.price_change_24h_pct || 0) >= 0 ? "+" : ""}${this.formatNumber(mo.price_change_24h_pct, 2)}%
+            ${mo.price_change_24h_pct !== null && mo.price_change_24h_pct !== undefined ? ((mo.price_change_24h_pct >= 0 ? "+" : "") + this.formatNumber(mo.price_change_24h_pct, 2) + "%") : UI_STRINGS_TR.notAvailable}
           </span>
-        </div>
-        <div class="metric-row">
-          <span class="metric-label">Veri Akış Modu</span>
-          <span class="metric-value">${mo.data_mode || "SPOT_ONLY_U0"}</span>
         </div>
         <div class="metric-row">
           <span class="metric-label">Fiyat Gözlem Zamanı</span>
@@ -397,7 +391,6 @@ class MarketIntelligenceUi {
       </section>
     `;
 
-    // Module B: Volatility and Risk
     const volMap = vol.realized_volatility || {};
     const volRows = Object.entries(volMap).map(([w, v]) => `
       <div class="metric-row">
@@ -443,7 +436,6 @@ class MarketIntelligenceUi {
       </section>
     `;
 
-    // Module D: Market Regime
     const isRegimeValid = reg.consumer_state !== "UNKNOWN";
     const regimeStateDisplay = isRegimeValid ? reg.consumer_state : "BİLİNMİYOR (UNKNOWN)";
     const moduleDHtml = `
@@ -483,7 +475,6 @@ class MarketIntelligenceUi {
       </section>
     `;
 
-    // Module C: Prediction Diagnostics
     const horizonRows = (predictions.diagnostics || []).map(h => {
       const is24h = h.horizon === "24h";
       const width80 = is24h ? `<span style="color: var(--danger)">${UI_STRINGS_TR.suppressed}</span>` : `${this.formatNumber(h.offline_calibrated_width_80_bps, 1)} bps`;
@@ -539,7 +530,6 @@ class MarketIntelligenceUi {
       </section>
     `;
 
-    // Module E: Data Health
     const moduleEHtml = `
       <section class="card col-6" role="region" aria-labelledby="title-module-e" tabindex="0">
         <div class="card-header">
@@ -578,7 +568,6 @@ class MarketIntelligenceUi {
       </section>
     `;
 
-    // Module F: Model Transparency & Provenance
     const tailObj = prov.tail_risk_probability || prov.tail_risk || {};
     const jumpObj = prov.jump_risk_probability || prov.jump_risk || {};
     const moduleFHtml = `
@@ -622,7 +611,6 @@ class MarketIntelligenceUi {
       </section>
     `;
 
-    // Put all together into grid
     this.container.innerHTML = `
       ${bannerHtml}
       <div class="dashboard-grid">
@@ -637,7 +625,6 @@ class MarketIntelligenceUi {
   }
 }
 
-// Global initialization hook
 document.addEventListener("DOMContentLoaded", () => {
   const client = new MarketIntelligenceClient();
   const ui = new MarketIntelligenceUi(client);

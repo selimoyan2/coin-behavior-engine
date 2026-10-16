@@ -1,0 +1,127 @@
+{
+  "sprint_id": "CBE-11.01",
+  "sprint_name": "Passive Market Data Integration — Offline Implementation & Activation Gate",
+  "baseline_commit": "d22e63e98283e0253d23f383e4aa022885ae2839",
+  "timestamp_utc": "2026-10-16T19:36:00Z",
+  "safety_invariants": {
+    "cbe_070_canonical_freeze": "29/29 PRESERVED",
+    "cbe_080_isolation": "PRESERVED",
+    "approval4_status": "FALSE",
+    "prospective_model_inference": "DISABLED",
+    "trading_and_order_execution": "DISABLED",
+    "exchange_credentials_present": "NONE",
+    "production_mutations": "NONE",
+    "vps_coolify_operations": "NONE",
+    "live_worker_activation": "NONE",
+    "external_network_connections": "NONE (STRICTLY OFFLINE)"
+  },
+  "existing_passive_capture_audit": {
+    "infrastructure_inspected": [
+      "src/coin_behavior_engine/shadow_v080/live_capture_service.py",
+      "src/coin_behavior_engine/shadow_v080/market_capture_engine.py",
+      "src/coin_behavior_engine/shadow_v080/market_data_contract.py",
+      "src/coin_behavior_engine/shadow_v080/transport_adapter.py",
+      "data/normalized/btcusdt_5m.parquet",
+      "data/prospective/current_state.json"
+    ],
+    "reuse_feasibility": "FEASIBLE_AND_RECOMMENDED",
+    "duplicate_ingestion_risk": "MITIGATED (Single passive capture pipeline reused rather than parallel duplicate connections)",
+    "scoring_isolation": "PROVEN (Capture architecture has zero dependency on model scoring or order routing)"
+  },
+  "factual_market_data_contract": {
+    "symbol": "BTCUSDT",
+    "market": "Binance Spot",
+    "candle_interval": "5m",
+    "fields_supported": [
+      "spot_price_usdt",
+      "open_price_usdt",
+      "high_price_usdt",
+      "low_price_usdt",
+      "close_price_usdt",
+      "volume_base",
+      "volume_usdt",
+      "price_change_24h_pct",
+      "timestamp_open_utc",
+      "timestamp_close_utc",
+      "freshness_status",
+      "source_availability",
+      "source_health",
+      "classification",
+      "is_live"
+    ],
+    "classification_enforcement": "NEVER_LABEL_LIVE_UNLESS_AUTHORIZED_AND_VERIFIED",
+    "multi_asset_policy": {
+      "BTCUSDT": "SUPPORTED_VIA_SNAPSHOT",
+      "ETHUSDT": "UNAVAILABLE (Future extension, fail-closed)",
+      "SOLUSDT": "UNAVAILABLE (Future extension, fail-closed)"
+    }
+  },
+  "offline_snapshot_adapter": {
+    "module_path": "src/coin_behavior_engine/product/market_data_adapter.py",
+    "atomic_io": "AtomicSnapshotIO (Adjacent temp file write with os.replace)",
+    "resilience_features": [
+      "Atomic replacement",
+      "Partially written file rejection",
+      "Corrupt snapshot detection",
+      "Missing file graceful fallback",
+      "Monotonic timestamp enforcement",
+      "Gap detection (>300s)",
+      "Clock skew detection (>60s future)",
+      "Thread-safe in-memory TTL caching (1s)"
+    ],
+    "memory_overhead_mb": "< 1.0 MB",
+    "cpu_overhead_percent": "< 0.5%"
+  },
+  "api_and_frontend_integration": {
+    "api_endpoint": "/api/v1/intelligence/market-overview",
+    "frontend_module": "Module A (Piyasa Genel Bakışı)",
+    "displayed_fields": [
+      "Varlık Sembolü (BTCUSDT)",
+      "Son Kapanış Fiyatı ($63,842.15)",
+      "Veri Kaynağı (Binance Spot 5m)",
+      "24s Göreceli Değişim",
+      "Fiyat Gözlem Zamanı (TSİ ve UTC)",
+      "Sınıflandırma Rozeti (TARİHSEL SNAPSHOT / CANLI İZLEME)"
+    ],
+    "unavailable_handling": "Displays 'Mevcut Değil (VERİ YOK)' cleanly when price is null"
+  },
+  "http_acceptance_performance": {
+    "total_benchmark_requests": 591,
+    "warm_p50_latency_ms": 1.98,
+    "warm_p95_latency_ms": 4.15,
+    "warm_p99_latency_ms": 6.21,
+    "ttfb_p50_ms": 1.81,
+    "transferred_bundle_bytes": 38359,
+    "concurrency_errors": 0,
+    "concurrency_threads": 50
+  },
+  "security_and_authorization_audit": {
+    "independent_authorization_levels": {
+      "A_connect_existing_snapshot": "Read-only offline permission (Pre-authorized).",
+      "B_start_new_public_binance_stream": "Requires explicit user authorization (CBE_APPROVAL_3_AUTHORIZED=true).",
+      "C_modify_production_worker": "Requires explicit deployment authorization.",
+      "D_deploy_market_intelligence": "Requires production release approval.",
+      "E_activate_prospective_scoring": "Requires formal model unfreeze and Approval 4.",
+      "F_enable_trading": "STRICTLY PROHIBITED (APPROVAL4 = FALSE)."
+    },
+    "current_sprint_authorization_status": "NONE_AUTHORIZED (Strictly offline implementation)"
+  },
+  "live_activation_runbook": {
+    "service_to_reuse": "LiveCaptureService (src/coin_behavior_engine/shadow_v080/live_capture_service.py)",
+    "target_stream": "wss://stream.binance.com:9443/ws/btcusdt@kline_5m (Public WebSocket)",
+    "rest_fallback": "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=5m&limit=10",
+    "expected_resource_footprint": "RAM < 25 MB, CPU < 5%",
+    "rate_limits": "1 WSS connection (0 cost); REST weight 2 per 5-min bar (<0.2% of 1200 weight/min limit)",
+    "evidence_gate_before_healthy": "Minimum 3 contiguous verified closed 5m candles persisted with valid SHA-256 hash",
+    "rollback_procedure": "Terminate socket process, set snapshot status to OFFLINE_SNAPSHOT, display staleness banner"
+  },
+  "final_acceptance_status": "EXISTING_CAPTURE_REUSE_READY_AWAITING_AUTHORIZATION",
+  "blockers": [
+    "Kullanıcı tarafından canlı pasif veri alım yetkisi (CBE_APPROVAL_3_AUTHORIZED=true) henüz verilmemiştir.",
+    "Canlı WebSocket/REST bağlantısı çevrimdışı güvenlik sınırları gereğince başlatılmamıştır."
+  ],
+  "required_user_authorizations": [
+    "Public Passive Binance Spot Market Data Ingestion Authorization (Yalnızca kamuya açık Binance Spot 5m mumlarını dinlemek üzere salt-okunur alım izni)."
+  ],
+  "next_recommended_sprint": "CBE — SPRINT 11.02: Controlled Live Data Activation & Real-Time Observation Gate"
+}

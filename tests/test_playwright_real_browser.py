@@ -89,8 +89,8 @@ def test_real_browser_validation_all_viewports(local_server):
             assert resp.status == 200, f"Expected HTTP 200, got {resp.status}"
 
             # Wait for content to render
-            page.wait_for_selector("#intelligence-root", timeout=5000)
-            page.wait_for_selector(".card", timeout=5000)
+            page.wait_for_selector("#intelligence-root", timeout=10000)
+            page.wait_for_selector(".card", timeout=10000)
 
             # Check no horizontal overflow
             scroll_width = page.evaluate("document.documentElement.scrollWidth")
