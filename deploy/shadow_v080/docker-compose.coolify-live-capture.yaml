@@ -25,8 +25,6 @@
 #     Host-level iptables / nftables egress rules should be applied to restrict outbound traffic.
 # ==============================================================================
 
-version: '3.8'
-
 services:
   cbe-080-live-capture:
     build:
@@ -78,4 +76,4 @@ services:
 
 volumes:
   cbe_080_live_capture_data:
-    name: cbe_080_live_capture_data
+    name: ${CBE_CAPTURE_VOLUME_NAME:-zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data}

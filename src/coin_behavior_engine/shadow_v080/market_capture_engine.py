@@ -163,12 +163,40 @@ class MarketCaptureEngineV080:
 
     def publish_factual_snapshot(self, candle: ValidatedCandle) -> Optional[Path]:
         """Atomically publish the latest closed candle factual snapshot for downstream consumers."""
+        if not candle.is_closed:
+            logger.warning(f"Refusing to publish snapshot for unclosed candle: {candle.timestamp_open}")
+            return None
+
         try:
             from datetime import datetime, timezone
             from coin_behavior_engine.product.market_data_adapter import AtomicSnapshotIO
 
-            now_iso = datetime.now(timezone.utc).isoformat()
+            now_dt = datetime.now(timezone.utc)
+            now_iso = now_dt.isoformat()
             is_live_source = (candle.provenance == ProvenanceSource.LIVE_BINANCE_SPOT.value)
+
+            # Age verification: candles older than 30 minutes cannot be marked as live
+            close_dt = None
+            try:
+                close_dt = datetime.fromisoformat(candle.datetime_close_utc.replace("Z", "+00:00"))
+                age_sec = (now_dt - close_dt).total_seconds()
+            except Exception:
+                age_sec = 999999.0
+
+            is_fresh = (0 <= age_sec <= 1800.0)
+            is_live = (is_live_source and is_fresh and candle.is_closed)
+            classification = "LIVE_OBSERVED" if is_live else "HISTORICAL_SNAPSHOT"
+
+            # Compute 24h price change percentage if sufficient rolling buffer history exists (288 bars = 24h)
+            price_change_24h_pct = None
+            if len(self.rolling_buffer) >= 288:
+                old_candle = self.rolling_buffer[-288]
+                if old_candle.close_float > 0:
+                    price_change_24h_pct = round(
+                        ((candle.close_float - old_candle.close_float) / old_candle.close_float) * 100.0,
+                        4,
+                    )
+
             payload = {
                 "schema_version": "1.0.0",
                 "symbol": candle.symbol,
@@ -183,10 +211,10 @@ class MarketCaptureEngineV080:
                 "close_price_usdt": candle.close_float,
                 "volume_base": candle.volume_float,
                 "volume_usdt": float(candle.quote_volume),
-                "price_change_24h_pct": None,
+                "price_change_24h_pct": price_change_24h_pct,
                 "is_closed": candle.is_closed,
-                "is_live": is_live_source,
-                "classification": "LIVE_OBSERVED" if is_live_source else "HISTORICAL_SNAPSHOT",
+                "is_live": is_live,
+                "classification": classification,
                 "snapshot_generation_timestamp_utc": now_iso,
                 "writer_heartbeat_utc": now_iso,
                 "provenance_source": candle.provenance,
@@ -200,10 +228,24 @@ class MarketCaptureEngineV080:
 
             alt_state_file = self.config.shadow_data_dir / "live_market_state.json"
             AtomicSnapshotIO.atomic_write(alt_state_file, payload)
-            return snapshot_file
+            logger.info(
+                f"Published factual snapshot: close={candle.close_float}, "
+                f"time={candle.datetime_close_utc}, is_live={is_live}, class={classification}"
+            )
+            return alt_state_file
         except Exception as e:
             logger.warning(f"Could not publish factual snapshot: {e}")
             return None
+
+    def update_writer_heartbeat(self) -> bool:
+        """Periodically update writer heartbeat in snapshot without altering candle data.
+        
+        Ensures downstream consumers see fresh writer liveness (<120s) during the 5-minute
+        interval between candle closures, while preserving immutable closed candle attributes.
+        """
+        if not self.rolling_buffer:
+            return False
+        return self.publish_factual_snapshot(self.rolling_buffer[-1]) is not None
 
     def process_raw_message(
         self,

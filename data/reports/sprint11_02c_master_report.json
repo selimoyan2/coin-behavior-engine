@@ -1,0 +1,70 @@
+{
+  "sprint": "11.02C",
+  "title": "Live Capture Snapshot Integration & Safe Activation Readiness",
+  "timestamp_utc": "2026-10-17T01:38:00Z",
+  "repository": "selimoyan2/coin-behavior-engine",
+  "authorization_status": {
+    "DEPLOYMENT_AUTHORIZED": "NO",
+    "LIVE_CAPTURE_START_AUTHORIZED": "NO"
+  },
+  "root_cause_analysis": {
+    "issue": "Market Intelligence staging UI falls back to canonical frozen baseline instead of real live BTCUSDT spot prices.",
+    "root_cause_1": "Server Live Capture container image (cbe-080-shadow:coolify-live-capture) was built in Sprint 09.14 (commit 78096f6, Oct 10), predating the factual snapshot publishing architecture.",
+    "root_cause_2": "Live Capture container was Exited (0) due to restart: 'no' policy, leaving 1875 historical raw candles without live_market_state.json.",
+    "root_cause_3": "FactualMarketDataAdapter requires writer_heartbeat_utc <= 120s; without periodic heartbeat refresh between 5m candle closures, snapshots would enter boundary staleness."
+  },
+  "modifications": [
+    {
+      "file": "src/coin_behavior_engine/shadow_v080/market_capture_engine.py",
+      "changes": [
+        "Enhanced publish_factual_snapshot() to strictly require is_closed=True, validate candle age (<= 1800s for LIVE_OBSERVED), compute 24h price change percentage from rolling buffer (>= 288 bars), and write atomically to both snapshot_dir/btcusdt_factual_latest.json and shadow_data_dir/live_market_state.json.",
+        "Added update_writer_heartbeat() to periodically refresh writer heartbeat timestamp without mutating immutable candle data."
+      ]
+    },
+    {
+      "file": "src/coin_behavior_engine/shadow_v080/live_capture_service.py",
+      "changes": [
+        "Added 30-second periodic heartbeat loop in LiveCaptureService.run(), ensuring writer_heartbeat_utc remains fresh (< 120s) between 5-minute candle completions."
+      ]
+    },
+    {
+      "file": "deploy/shadow_v080/docker-compose.coolify-live-capture.yaml",
+      "changes": [
+        "Removed obsolete compose 'version: 3.8' header.",
+        "Aligned named volume to ${CBE_CAPTURE_VOLUME_NAME:-zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data} matching staging compose."
+      ]
+    },
+    {
+      "file": "tests/test_sprint11_02c_live_capture_snapshot.py",
+      "changes": [
+        "20 comprehensive automated tests covering snapshot generation, closed-candle gate, malformed payload rejection, atomic writes, age demotion, heartbeat demotion, periodic heartbeats, missing fallback, schema validation, 24h price calculation, startup replay, ledger immutability, volume parity, freeze 29/29, APPROVAL4=False, trading=False, prospective scoring=False, service preflight, and HTTP routing."
+      ]
+    }
+  ],
+  "runtime_integration_points": {
+    "closed_candle_event": "MarketCaptureEngineV080.process_raw_message() persists to raw JSONL and SQLite index, verifies candle.is_closed is True, then executes publish_factual_snapshot().",
+    "startup_replay": "MarketCaptureEngineV080.__init__() reconstructs rolling buffer from existing raw candles and immediately publishes factual snapshot, ensuring immediate availability on restart.",
+    "periodic_heartbeat": "LiveCaptureService.run() calls engine.update_writer_heartbeat() every 30 seconds during idle waiting periods."
+  },
+  "volume_topology": {
+    "volume_name": "zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data",
+    "live_capture_container": "cbe-080-live-capture (writable mount /app/data/live_capture)",
+    "staging_web_container": "cbe-staging-market-intelligence (read-only mount /app/data/live_capture:ro)",
+    "ledger_protection": "Staging web service has strictly read-only access; raw evidence SQLite and JSONL files cannot be written or modified by reader."
+  },
+  "safety_invariants_verification": {
+    "cbe_070_freeze_hash_intact": true,
+    "cbe_070_files_verified": "29/29",
+    "approval4_status": "STRICTLY_FALSE",
+    "trading_status": "PERMANENTLY_DISABLED",
+    "prospective_scoring": "DISABLED",
+    "network_calls_during_offline_tests": 0
+  },
+  "test_execution_summary": {
+    "sprint11_02c_tests_passed": 20,
+    "sprint11_02c_tests_failed": 0,
+    "full_regression_tests_passed": 182,
+    "full_regression_tests_failed": 0,
+    "pass_rate_percent": 100.0
+  }
+}

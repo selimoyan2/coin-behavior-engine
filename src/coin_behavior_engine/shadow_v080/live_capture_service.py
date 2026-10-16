@@ -176,6 +176,7 @@ class LiveCaptureService:
 
         ticks_processed = 0
         last_log_time = time.time()
+        last_heartbeat_time = time.time()
 
         try:
             while not self._stop_requested:
@@ -203,6 +204,11 @@ class LiveCaptureService:
                                 logger.warning(f"REST gap recovery failed for {gap_id}: {msg}")
 
                 now = time.time()
+                # Periodically refresh writer heartbeat (every 30s) while service is alive
+                if now - last_heartbeat_time >= 30.0:
+                    last_heartbeat_time = now
+                    self.engine.update_writer_heartbeat()
+
                 if now - last_log_time >= 60.0:
                     last_log_time = now
                     report = self.engine.get_summary_report()
