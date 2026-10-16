@@ -1,0 +1,131 @@
+{
+  "sprint_id": "CBE-10.05",
+  "sprint_name": "Real Browser Validation, Data Freshness Integrity & MVP Product Quality",
+  "baseline_commit": "b849fc9fd5e10a411794f632cbb3f64a5706d972",
+  "timestamp_utc": "2026-10-16T19:18:00Z",
+  "canonical_freeze_verified": true,
+  "canonical_artifacts_count": "29/29",
+  "approval4_status": "FALSE",
+  "prospective_scoring_enabled": false,
+  "trading_enabled": false,
+  "real_browser_validation_status": "CHROMIUM_AND_FIREFOX_PASS",
+  "browser_test_summary": {
+    "engine_chromium": "PASS",
+    "engine_firefox": "PASS",
+    "total_viewports_tested": 6,
+    "viewports": [
+      {
+        "browser": "chromium",
+        "name": "Desktop",
+        "resolution": "1440x900",
+        "status": "PASS",
+        "horizontal_overflow": false,
+        "screenshot": "data/reports/screenshots/screenshot_chromium_desktop_1440.png"
+      },
+      {
+        "browser": "chromium",
+        "name": "Laptop",
+        "resolution": "1280x800",
+        "status": "PASS",
+        "horizontal_overflow": false,
+        "screenshot": "data/reports/screenshots/screenshot_chromium_laptop_1280.png"
+      },
+      {
+        "browser": "chromium",
+        "name": "Tablet",
+        "resolution": "768x1024",
+        "status": "PASS",
+        "horizontal_overflow": false,
+        "screenshot": "data/reports/screenshots/screenshot_chromium_tablet_768.png"
+      },
+      {
+        "browser": "chromium",
+        "name": "Mobile",
+        "resolution": "390x844",
+        "status": "PASS",
+        "horizontal_overflow": false,
+        "screenshot": "data/reports/screenshots/screenshot_chromium_mobile_390.png"
+      },
+      {
+        "browser": "chromium",
+        "name": "Narrow Mobile",
+        "resolution": "320x568",
+        "status": "PASS",
+        "horizontal_overflow": false,
+        "screenshot": "data/reports/screenshots/screenshot_chromium_narrow_320.png"
+      },
+      {
+        "browser": "firefox",
+        "name": "Desktop",
+        "resolution": "1440x900",
+        "status": "PASS",
+        "horizontal_overflow": false,
+        "screenshot": "data/reports/screenshots/screenshot_firefox_desktop_1440.png"
+      }
+    ]
+  },
+  "data_freshness_audit": {
+    "timezone_local": "Europe/Istanbul (TSİ, UTC+3)",
+    "provenance_utc": "ISO 8601 (ending in Z)",
+    "staleness_threshold_seconds": 1800,
+    "evaluated_timestamps": {
+      "latest_observed_market_candle_utc": "2026-09-23T20:20:00Z",
+      "latest_stored_prediction_utc": "2026-09-24T00:00:00Z",
+      "latest_matured_outcome_utc": "2026-09-24T00:00:00Z",
+      "last_successful_data_ingestion_utc": "2026-09-24T00:05:00Z",
+      "latest_source_validation_utc": "2026-09-24T00:10:00Z"
+    },
+    "staleness_status": "STALE",
+    "boundary_matrix": {
+      "under_30m": "FRESH",
+      "exact_30m": "BOUNDARY_TRIGGERED_STALE",
+      "over_30m": "STALE",
+      "missing_or_null": "MISSING_FAIL_CLOSED",
+      "future_clock_skew_gt_60s": "FUTURE_ANOMALY"
+    }
+  },
+  "data_provenance_and_counts": {
+    "canonical_prediction_count": 6328,
+    "canonical_matured_outcome_count": 50007,
+    "canonical_forecast_targets": 50624,
+    "canonical_pending_unmatured_count": 617,
+    "count_discrepancy_final_status": "ROOT_CAUSE_NOT_PROVEN_CANONICAL_COUNTS_PRESERVED"
+  },
+  "field_classification_breakdown": {
+    "LIVE_OBSERVED": 0,
+    "HISTORICAL_SNAPSHOT": 2,
+    "OFFLINE_RESEARCH": 6,
+    "STATIC_FALLBACK": 1,
+    "EXPERIMENTAL": 1,
+    "UNAVAILABLE": 1
+  },
+  "accessibility_audit": {
+    "wcag_level": "WCAG 2.1 AA",
+    "skip_to_content": "PRESENT",
+    "landmarks": ["banner", "main", "contentinfo"],
+    "focus_visible_styling": "PRESENT",
+    "touch_target_min_size": "44px",
+    "table_header_scope": "col",
+    "aria_live_regions": "polite",
+    "reduced_motion_media_query": "PRESENT"
+  },
+  "security_audit": {
+    "x_content_type_options": "nosniff",
+    "x_frame_options": "DENY",
+    "referrer_policy": "strict-origin-when-cross-origin",
+    "read_only_strictly_enforced": true,
+    "write_methods_implemented": 0
+  },
+  "performance_benchmarks": {
+    "p50_latency_ms": 1.12,
+    "p95_latency_ms": 3.33,
+    "p99_latency_ms": 4.18,
+    "total_benchmark_requests": 700,
+    "asset_sizes_bytes": {
+      "html": 1785,
+      "style_css": 7254,
+      "client_js": 26213
+    }
+  },
+  "production_dashboard_isolation": "100% UNTOUCHED"
+}

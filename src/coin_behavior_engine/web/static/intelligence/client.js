@@ -1,14 +1,4 @@
-/**
- * CBE Market Intelligence MVP — Runtime-Validated Client Adapter & UI Renderer
- * 
- * Features:
- * - Strict schema validation and safe parsing (no invented fallbacks).
- * - Exact binding to Sprint 10.03 API response contracts (metadata + data envelope).
- * - Explicit UI lifecycle states: LOADING, LOADED, EMPTY, ERROR, STALE.
- * - Evidence-aware labeling with fail-closed scientific integrity safeguards.
- * - Turkish-first localization with high-contrast accessible rendering.
- */
-
+// CBE Market Intelligence MVP — Client Adapter & UI Renderer
 "use strict";
 
 const UI_STRINGS_TR = {
@@ -37,9 +27,7 @@ const UI_STRINGS_TR = {
   }
 };
 
-/**
- * Validates and safely parses Market Intelligence API responses.
- */
+// Market Intelligence API Client
 class MarketIntelligenceClient {
   constructor(apiBaseUrl = "/api/v1/intelligence") {
     this.baseUrl = apiBaseUrl;
@@ -88,6 +76,72 @@ class MarketIntelligenceClient {
     }
 
     return data;
+  }
+
+  evaluateFreshness(isoStr, referenceNow = new Date(), thresholdSeconds = 1800) {
+    if (!isoStr || typeof isoStr !== "string" || isoStr.trim() === "" || isoStr === "None") {
+      return {
+        status: "MISSING",
+        latencySeconds: null,
+        isStale: true,
+        label: "Zaman Damgası Eksik",
+        warning: "HATA: Veri akışında geçerli bir zaman damgası bulunmamaktadır."
+      };
+    }
+
+    const dt = new Date(isoStr);
+    if (isNaN(dt.getTime())) {
+      return {
+        status: "INVALID",
+        latencySeconds: null,
+        isStale: true,
+        label: "Geçersiz Zaman Formatı",
+        warning: "HATA: Zaman damgası geçerli bir ISO-8601 formatında değildir."
+      };
+    }
+
+    const nowTime = referenceNow.getTime();
+    const targetTime = dt.getTime();
+    const diffSeconds = (nowTime - targetTime) / 1000;
+
+    // Check future timestamp (clock skew > 60 seconds)
+    if (diffSeconds < -60) {
+      return {
+        status: "FUTURE",
+        latencySeconds: diffSeconds,
+        isStale: false,
+        label: "Gelecek Zamanlı Veri (Saat Senkronizasyon Hatası)",
+        warning: `DİKKAT: Veri zamanı sistem saatinden ${Math.round(Math.abs(diffSeconds))} saniye ileridedir.`
+      };
+    }
+
+    if (diffSeconds > thresholdSeconds) {
+      return {
+        status: "STALE",
+        latencySeconds: diffSeconds,
+        isStale: true,
+        label: `Bayat Veri (${Math.round(diffSeconds / 60)} dk gecikme)`,
+        warning: `DİKKAT: Veri akışı son ${Math.round(diffSeconds / 60)} dakikadır güncellenmemiştir (Eşik: 30 dk).`
+      };
+    }
+
+    if (Math.abs(diffSeconds - thresholdSeconds) <= 1) {
+      return {
+        status: "BOUNDARY",
+        latencySeconds: diffSeconds,
+        isStale: true,
+        label: "Eşik Sınırı (Tam 30 Dakika)",
+        warning: "DİKKAT: Veri akışı tam 30 dakikalık bayatlık eşiği sınırındadır."
+      };
+    }
+
+    return {
+      status: "FRESH",
+      latencySeconds: Math.max(0, diffSeconds),
+      isStale: false,
+      label: "Güncel",
+      warning: "Veri akışı aktiftir."
+    };
   }
 
   async loadAllIntelligenceData() {
@@ -139,9 +193,7 @@ class MarketIntelligenceClient {
   }
 }
 
-/**
- * UI Renderer for the Market Intelligence Dashboard.
- */
+// UI Renderer
 class MarketIntelligenceUi {
   constructor(client) {
     this.client = client;
@@ -160,6 +212,7 @@ class MarketIntelligenceUi {
     if (this.refreshBtn) {
       this.refreshBtn.disabled = true;
       this.refreshBtn.textContent = UI_STRINGS_TR.refreshing;
+      this.refreshBtn.setAttribute("aria-busy", "true");
     }
 
     this.renderLoading();
@@ -173,6 +226,7 @@ class MarketIntelligenceUi {
       if (this.refreshBtn) {
         this.refreshBtn.disabled = false;
         this.refreshBtn.textContent = UI_STRINGS_TR.refresh;
+        this.refreshBtn.removeAttribute("aria-busy");
       }
     }
   }
@@ -195,7 +249,7 @@ class MarketIntelligenceUi {
       badgeClass = "stale";
     }
 
-    return `<span class="evidence-badge ${badgeClass}" title="${evidenceCode}">${label}</span>`;
+    return `<span class="evidence-badge badge ${badgeClass}" title="${evidenceCode}" role="status">${label}</span>`;
   }
 
   formatNumber(val, decimals = 2) {
@@ -208,21 +262,43 @@ class MarketIntelligenceUi {
     });
   }
 
-  formatTimestamp(isoStr) {
-    if (!isoStr || isoStr === "None") return UI_STRINGS_TR.notAvailable;
+  formatTimestampWithProvenance(isoStr) {
+    if (!isoStr || isoStr === "None") {
+      return `<span>${UI_STRINGS_TR.notAvailable}</span>`;
+    }
     try {
       const dt = new Date(isoStr);
-      return dt.toLocaleString("tr-TR", { timeZone: "UTC" }) + " UTC";
+      if (isNaN(dt.getTime())) return `<span>${isoStr}</span>`;
+
+      // Turkish local time (TSİ / Europe/Istanbul)
+      const trStr = dt.toLocaleString("tr-TR", {
+        timeZone: "Europe/Istanbul",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      });
+
+      // Raw UTC reference
+      const utcStr = dt.toISOString().replace(".000Z", "Z");
+
+      return `
+        <span>${trStr} TSİ</span>
+        <span class="timestamp-provenance">[UTC: ${utcStr}]</span>
+      `;
     } catch {
-      return isoStr;
+      return `<span>${isoStr}</span>`;
     }
   }
 
   renderLoading() {
     if (!this.container) return;
     this.container.innerHTML = `
-      <div class="state-container">
-        <div class="spinner"></div>
+      <div class="state-container" role="status" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
         <div class="state-title">${UI_STRINGS_TR.loading}</div>
         <div class="state-desc">Piyasa verileri, rejim durumları ve kalibrasyon teşhisleri alınıyor...</div>
       </div>
@@ -232,8 +308,8 @@ class MarketIntelligenceUi {
   renderError(err) {
     if (!this.container) return;
     this.container.innerHTML = `
-      <div class="state-container">
-        <div class="state-icon" style="color: var(--danger)">⚠️</div>
+      <div class="state-container" role="alert" aria-live="assertive">
+        <div class="state-icon" style="color: var(--danger)" aria-hidden="true">⚠️</div>
         <div class="state-title">${UI_STRINGS_TR.errorTitle}</div>
         <div class="state-desc">${err.message || UI_STRINGS_TR.errorDesc}</div>
         <button class="btn-refresh" onclick="window.appUi.refreshData()">${UI_STRINGS_TR.refresh}</button>
@@ -268,12 +344,12 @@ class MarketIntelligenceUi {
     // Staleness Banner
     const isStale = fresh.is_stale;
     const bannerHtml = isStale ? `
-      <div class="system-banner">
+      <div class="system-banner" role="alert" aria-live="polite">
         <div class="banner-content">
-          <div class="banner-icon">⚠️</div>
+          <div class="banner-icon" aria-hidden="true">⚠️</div>
           <div class="banner-text">
             <strong>${UI_STRINGS_TR.staleWarning}</strong>
-            <div>Son Veri Akışı: ${this.formatTimestamp(fresh.latest_observed_market_candle_utc)} | Gecikme: ${Math.round((fresh.ingestion_latency_seconds || 0) / 60)} dakika (Eşik: 30 dk).</div>
+            <div>Son Veri Akışı: ${fresh.latest_observed_market_candle_utc} | Gecikme: ${Math.round((fresh.ingestion_latency_seconds || 0) / 60)} dakika (Eşik: 30 dk).</div>
           </div>
         </div>
         ${this.renderBadge("STALE_DATA")}
@@ -282,10 +358,10 @@ class MarketIntelligenceUi {
 
     // Module A: Market Overview
     const moduleAHtml = `
-      <div class="card col-4">
+      <section class="card col-4" role="region" aria-labelledby="title-module-a" tabindex="0">
         <div class="card-header">
           <div>
-            <div class="card-title">Piyasa Genel Bakışı</div>
+            <h2 id="title-module-a" class="card-title">Piyasa Genel Bakışı</h2>
             <div class="card-subtitle">Spot Fiyat ve Factual Göstergeler</div>
           </div>
           ${this.renderBadge(moMeta.evidence_classification)}
@@ -296,7 +372,10 @@ class MarketIntelligenceUi {
         </div>
         <div class="metric-row">
           <span class="metric-label">Son Kapanış Fiyatı</span>
-          <span class="metric-value highlight">$${this.formatNumber(mo.spot_price_usdt, 2)}</span>
+          <span class="metric-value highlight">
+            $${this.formatNumber(mo.spot_price_usdt, 2)}
+            <span class="classification-tag tag-historical">TARİHSEL SNAPSHOT</span>
+          </span>
         </div>
         <div class="metric-row">
           <span class="metric-label">24s Göreceli Değişim</span>
@@ -305,33 +384,36 @@ class MarketIntelligenceUi {
           </span>
         </div>
         <div class="metric-row">
-          <span class="metric-label">Veri Modu</span>
+          <span class="metric-label">Veri Akış Modu</span>
           <span class="metric-value">${mo.data_mode || "SPOT_ONLY_U0"}</span>
         </div>
         <div class="metric-row">
-          <span class="metric-label">Son Mum Zamanı</span>
-          <span class="metric-value">${this.formatTimestamp(mo.bar_timestamp_utc)}</span>
+          <span class="metric-label">Fiyat Gözlem Zamanı</span>
+          <span class="metric-value">${this.formatTimestampWithProvenance(mo.bar_timestamp_utc)}</span>
         </div>
         <div class="alert-box">
-          <strong>Not:</strong> Yalnızca spot fiyat ve hacim verileri desteklenmektedir. Türev fonlama oranları kapalıdır.
+          <strong>Fiyat Uyarısı:</strong> Görüntülenen fiyat canlı tick fiyatı değildir; veri kesim anındaki tarihsel kapanış değeridir. Türev göstergeler kapalıdır.
         </div>
-      </div>
+      </section>
     `;
 
     // Module B: Volatility and Risk
     const volMap = vol.realized_volatility || {};
     const volRows = Object.entries(volMap).map(([w, v]) => `
       <div class="metric-row">
-        <span class="metric-label">${w} Gerçekleşen Volatilite (Parkinson)</span>
-        <span class="metric-value highlight">${this.formatNumber(v, 2)}%</span>
+        <span class="metric-label">${w} Gerçekleşen Oynaklık (Parkinson)</span>
+        <span class="metric-value highlight">
+          ${this.formatNumber(v, 2)}%
+          <span class="classification-tag tag-historical">HISTORICAL</span>
+        </span>
       </div>
     `).join("");
 
     const moduleBHtml = `
-      <div class="card col-4">
+      <section class="card col-4" role="region" aria-labelledby="title-module-b" tabindex="0">
         <div class="card-header">
           <div>
-            <div class="card-title">Volatilite ve Risk</div>
+            <h2 id="title-module-b" class="card-title">Volatilite ve Risk</h2>
             <div class="card-subtitle">Gerçekleşen Oynaklık Göstergeleri</div>
           </div>
           ${this.renderBadge(volMeta.evidence_classification)}
@@ -343,33 +425,42 @@ class MarketIntelligenceUi {
         </div>
         <div class="metric-row">
           <span class="metric-label">Opsiyon Zımni Oynaklık (IV)</span>
-          <span class="metric-value danger">${UI_STRINGS_TR.notAvailable} (Türev Yok)</span>
+          <span class="metric-value danger">
+            ${UI_STRINGS_TR.notAvailable}
+            <span class="classification-tag tag-unavailable">UNAVAILABLE</span>
+          </span>
         </div>
         <div class="metric-row">
           <span class="metric-label">Tasfiye Riski Göstergeleri</span>
-          <span class="metric-value danger">${UI_STRINGS_TR.notAvailable} (Türev Yok)</span>
+          <span class="metric-value danger">
+            ${UI_STRINGS_TR.notAvailable}
+            <span class="classification-tag tag-unavailable">UNAVAILABLE</span>
+          </span>
         </div>
         <div class="alert-box">
-          <strong>Risk Sınırlaması:</strong> Mevcut olmayan türev verileri ölçülmüş risk olarak sunulmaz; açıkça devre dışıdır.
+          <strong>Risk Sınırlaması:</strong> Mevcut olmayan türev ve opsiyon verileri ölçülmüş risk olarak sunulmaz; açıkça devre dışıdır.
         </div>
-      </div>
+      </section>
     `;
 
     // Module D: Market Regime
     const isRegimeValid = reg.consumer_state !== "UNKNOWN";
     const regimeStateDisplay = isRegimeValid ? reg.consumer_state : "BİLİNMİYOR (UNKNOWN)";
     const moduleDHtml = `
-      <div class="card col-4">
+      <section class="card col-4" role="region" aria-labelledby="title-module-d" tabindex="0">
         <div class="card-header">
           <div>
-            <div class="card-title">Piyasa Rejimi</div>
+            <h2 id="title-module-d" class="card-title">Piyasa Rejimi</h2>
             <div class="card-subtitle">Fail-Closed Güvenlik Mandalı</div>
           </div>
           ${this.renderBadge(regMeta.evidence_classification)}
         </div>
         <div class="metric-row">
           <span class="metric-label">Tüketici Rejim Durumu</span>
-          <span class="metric-value highlight ${isRegimeValid ? "success" : "danger"}">${regimeStateDisplay}</span>
+          <span class="metric-value highlight ${isRegimeValid ? "success" : "danger"}">
+            ${regimeStateDisplay}
+            <span class="classification-tag tag-unavailable">FAIL-CLOSED</span>
+          </span>
         </div>
         <div class="metric-row">
           <span class="metric-label">Ham Model Çıktısı</span>
@@ -381,12 +472,15 @@ class MarketIntelligenceUi {
         </div>
         <div class="metric-row">
           <span class="metric-label">Deneysel Aday Rejim</span>
-          <span class="metric-value" style="color: #c084fc">${reg.candidate_corrected_state || "SIDEWAYS_EQUILIBRIUM"}</span>
+          <span class="metric-value" style="color: #c084fc">
+            ${reg.candidate_corrected_state || "SIDEWAYS_EQUILIBRIUM"}
+            <span class="classification-tag tag-experimental">EXPERIMENTAL</span>
+          </span>
         </div>
         <div class="alert-box warning">
           <strong>Hata İzolasyonu:</strong> ${UI_STRINGS_TR.regimeBugNotice}
         </div>
-      </div>
+      </section>
     `;
 
     // Module C: Prediction Diagnostics
@@ -411,26 +505,27 @@ class MarketIntelligenceUi {
     }).join("");
 
     const moduleCHtml = `
-      <div class="card col-12">
+      <section class="card col-12" role="region" aria-labelledby="title-module-c" tabindex="0">
         <div class="card-header">
           <div>
-            <div class="card-title">Tahmin Teşhisleri ve Çevrimdışı Kalibrasyon</div>
+            <h2 id="title-module-c" class="card-title">Tahmin Teşhisleri ve Çevrimdışı Kalibrasyon</h2>
             <div class="card-subtitle">8 Çoklu-Vade Tahmin Ufku ve Konformal Aralık Analizi</div>
           </div>
           ${this.renderBadge(predictions.metadata?.evidence_classification || predictions._metadata?.evidence_classification)}
         </div>
-        <div class="table-responsive">
+        <div class="table-responsive" tabindex="0" role="region" aria-label="Tahmin teşhisleri tablosu">
           <table class="analytics-table">
+            <caption class="sr-only" style="display:none;">8 Farklı Tahmin Ufku İçin Kalibrasyon Genişlikleri ve Tarihsel Kapsama Oranları</caption>
             <thead>
               <tr>
-                <th>Vade (Ufuk)</th>
-                <th>Ham Model Genişliği</th>
-                <th>Kalibre Genişlik (%80)</th>
-                <th>Kalibre Genişlik (%95)</th>
-                <th>Gözlenen Kapsama (%80)</th>
-                <th>Gözlenen Kapsama (%95)</th>
-                <th>Olgunlaşmış Örnek</th>
-                <th>Kanıt Sınıflandırması</th>
+                <th scope="col">Vade (Ufuk)</th>
+                <th scope="col">Ham Model Genişliği</th>
+                <th scope="col">Kalibre Genişlik (%80)</th>
+                <th scope="col">Kalibre Genişlik (%95)</th>
+                <th scope="col">Gözlenen Kapsama (%80)</th>
+                <th scope="col">Gözlenen Kapsama (%95)</th>
+                <th scope="col">Olgunlaşmış Örnek</th>
+                <th scope="col">Kanıt Sınıflandırması</th>
               </tr>
             </thead>
             <tbody>
@@ -441,38 +536,38 @@ class MarketIntelligenceUi {
         <div class="alert-box">
           <strong>Bilimsel Dürüstlük Kuralı:</strong> ${UI_STRINGS_TR.offlineResearchOnly} 24 saatlik vade için N_eff=62 (&lt; 100) olduğundan güven iddiaları kesin olarak bastırılmıştır.
         </div>
-      </div>
+      </section>
     `;
 
     // Module E: Data Health
     const moduleEHtml = `
-      <div class="card col-6">
+      <section class="card col-6" role="region" aria-labelledby="title-module-e" tabindex="0">
         <div class="card-header">
           <div>
-            <div class="card-title">Veri Sağlığı ve 5-Noktalı Zaman Damgası</div>
+            <h2 id="title-module-e" class="card-title">Veri Sağlığı ve 5-Noktalı Zaman Damgası</h2>
             <div class="card-subtitle">Akış Boru Hattı Bağımsız Tazelik Takibi</div>
           </div>
           ${this.renderBadge(freshMeta.evidence_classification)}
         </div>
         <div class="metric-row">
           <span class="metric-label">1. Son Mum Kapanış Zamanı</span>
-          <span class="metric-value highlight">${this.formatTimestamp(fresh.latest_observed_market_candle_utc)}</span>
+          <span class="metric-value highlight">${this.formatTimestampWithProvenance(fresh.latest_observed_market_candle_utc)}</span>
         </div>
         <div class="metric-row">
           <span class="metric-label">2. Son Tahmin Üretim Zamanı</span>
-          <span class="metric-value">${this.formatTimestamp(fresh.latest_stored_prediction_utc)}</span>
+          <span class="metric-value">${this.formatTimestampWithProvenance(fresh.latest_stored_prediction_utc)}</span>
         </div>
         <div class="metric-row">
           <span class="metric-label">3. Son Olgunlaşmış Sonuç Zamanı</span>
-          <span class="metric-value">${this.formatTimestamp(fresh.latest_matured_outcome_utc)}</span>
+          <span class="metric-value">${this.formatTimestampWithProvenance(fresh.latest_matured_outcome_utc)}</span>
         </div>
         <div class="metric-row">
           <span class="metric-label">4. Son Veri Alım (Ingestion) Zamanı</span>
-          <span class="metric-value">${this.formatTimestamp(fresh.last_successful_data_ingestion_utc)}</span>
+          <span class="metric-value">${this.formatTimestampWithProvenance(fresh.last_successful_data_ingestion_utc)}</span>
         </div>
         <div class="metric-row">
           <span class="metric-label">5. Sistem Doğrulama Zamanı</span>
-          <span class="metric-value">${this.formatTimestamp(fresh.latest_source_validation_utc)}</span>
+          <span class="metric-value">${this.formatTimestampWithProvenance(fresh.latest_source_validation_utc)}</span>
         </div>
         <div class="metric-row">
           <span class="metric-label">Bayatlık Durumu</span>
@@ -480,24 +575,24 @@ class MarketIntelligenceUi {
             ${fresh.is_stale ? "BAYAT (30 dk eşiği aşıldı)" : "GÜNCEL"}
           </span>
         </div>
-      </div>
+      </section>
     `;
 
     // Module F: Model Transparency & Provenance
-    const tailObj = prov.tail_risk || {};
-    const jumpObj = prov.jump_risk || {};
+    const tailObj = prov.tail_risk_probability || prov.tail_risk || {};
+    const jumpObj = prov.jump_risk_probability || prov.jump_risk || {};
     const moduleFHtml = `
-      <div class="card col-6">
+      <section class="card col-6" role="region" aria-labelledby="title-module-f" tabindex="0">
         <div class="card-header">
           <div>
-            <div class="card-title">Model Şeffaflığı ve Olasılık Soykütüğü</div>
+            <h2 id="title-module-f" class="card-title">Model Şeffaflığı ve Olasılık Soykütüğü</h2>
             <div class="card-subtitle">CBE-0.7.0 Dondurulmuş Model ve Güvenlik Sınırları</div>
           </div>
           ${this.renderBadge(provMeta.evidence_classification)}
         </div>
         <div class="metric-row">
           <span class="metric-label">Model Sürümü & Durumu</span>
-          <span class="metric-value highlight">${mi.model_version} (${mi.model_status || "FROZEN"})</span>
+          <span class="metric-value highlight">${mi.model_version} (${mi.model_status || mi.safety_state || "FROZEN"})</span>
         </div>
         <div class="metric-row">
           <span class="metric-label">Kanonik Bütünlük Kilidi</span>
@@ -505,11 +600,17 @@ class MarketIntelligenceUi {
         </div>
         <div class="metric-row">
           <span class="metric-label">Kuyruk Riski (Tail Risk)</span>
-          <span class="metric-value">${tailObj.probability || "0.05"} (${this.renderBadge(tailObj.provenance)})</span>
+          <span class="metric-value">
+            ${tailObj.value || tailObj.probability || "0.05"}
+            <span class="classification-tag tag-static">STATIC FALLBACK</span>
+          </span>
         </div>
         <div class="metric-row">
           <span class="metric-label">Sıçrama Riski (Jump Risk)</span>
-          <span class="metric-value">${jumpObj.probability || "0.01"} (${this.renderBadge(jumpObj.provenance)})</span>
+          <span class="metric-value">
+            ${jumpObj.value || jumpObj.probability || "0.01"}
+            <span class="classification-tag tag-static">STATIC FALLBACK</span>
+          </span>
         </div>
         <div class="metric-row">
           <span class="metric-label">APPROVAL4 İzin Durumu</span>
@@ -518,7 +619,7 @@ class MarketIntelligenceUi {
         <div class="alert-box danger">
           <strong>Önemli Uyarı:</strong> Kuyruk ve sıçrama riskleri statik yedek sabitlerdir; canlı model tahmini olarak pazarlanamaz.
         </div>
-      </div>
+      </section>
     `;
 
     // Put all together into grid

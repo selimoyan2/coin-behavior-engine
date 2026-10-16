@@ -56,10 +56,12 @@ def render_intelligence_ui_html(inline_assets: bool = False) -> str:
   {style_tag}
 </head>
 <body>
-  <header class="app-header">
+  <a href="#intelligence-root" class="skip-to-content">İçeriğe Atla</a>
+
+  <header role="banner" class="app-header">
     <div class="brand-section">
       <div class="brand-title">
-        <span>⚡</span> Coin Behavior Engine
+        <span aria-hidden="true">⚡</span> Coin Behavior Engine
       </div>
       <span class="brand-badge">Market Intelligence MVP</span>
     </div>
@@ -67,23 +69,23 @@ def render_intelligence_ui_html(inline_assets: bool = False) -> str:
       <div style="font-size: 12px; color: var(--text-muted); font-family: var(--font-mono);">
         API: /api/v1/intelligence/
       </div>
-      <button id="btn-refresh" class="btn-refresh" type="button" aria-label="Verileri Yenile">
-        <span>🔄</span> Yenile
+      <button id="btn-refresh" class="btn-refresh" type="button" aria-label="Piyasa İstihbarat Verilerini Yenile">
+        <span aria-hidden="true">🔄</span> Yenile
       </button>
     </div>
   </header>
 
-  <main class="container">
-    <div id="intelligence-root">
-      <div class="state-container">
-        <div class="spinner"></div>
+  <main role="main" class="container">
+    <div id="intelligence-root" aria-live="polite">
+      <div class="state-container" role="status">
+        <div class="spinner" aria-hidden="true"></div>
         <div class="state-title">Piyasa İstihbarat Paneli Yükleniyor...</div>
         <div class="state-desc">Bağlantı kuruluyor: /api/v1/intelligence/</div>
       </div>
     </div>
   </main>
 
-  <footer class="app-footer">
+  <footer role="contentinfo" class="app-footer">
     <div>
       <strong>CBE-0.7.0 Dondurulmuş Model</strong> | APPROVAL4 = FALSE | Alım-satım ve canlı skorlama devre dışıdır.
     </div>
