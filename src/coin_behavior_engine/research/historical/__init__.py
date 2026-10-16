@@ -334,6 +334,17 @@ from coin_behavior_engine.research.historical.funding_predictability_sprint38 im
     compute_diebold_mariano,
     holm_bonferroni_correction,
 )
+from coin_behavior_engine.research.historical.cross_instrument_funding_sprint39 import (
+    CrossInstrumentDispersionReport,
+    InstrumentFundingStats,
+    LiveCalibrationAuditRecord,
+    LiveDashboardProvenanceAuditRecord,
+    PassiveCarryCapitalAccountingAudit,
+    PredictiveStrategyLedgerAuditRecord,
+    SampleDenominatorAuditRecord,
+    Sprint39CrossInstrumentAuditor,
+    Sprint39MasterReport,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -549,4 +560,13 @@ __all__ = [
     "Sprint38FundingAuditor",
     "compute_diebold_mariano",
     "holm_bonferroni_correction",
+    "LiveDashboardProvenanceAuditRecord",
+    "LiveCalibrationAuditRecord",
+    "SampleDenominatorAuditRecord",
+    "PassiveCarryCapitalAccountingAudit",
+    "PredictiveStrategyLedgerAuditRecord",
+    "InstrumentFundingStats",
+    "CrossInstrumentDispersionReport",
+    "Sprint39MasterReport",
+    "Sprint39CrossInstrumentAuditor",
 ]
