@@ -1,0 +1,517 @@
+{
+  "sprint_id": "CBE-09.42",
+  "baseline_commit_sha": "90babe3985fa6b78ebce0bfd4b9c9f0c5a3b7c26",
+  "exchange_contract_records": [
+    {
+      "rule_id": "RULE-BINANCE-ISOLATED-01",
+      "account_type": "ISOLATED_MARGIN",
+      "exchange_product": "USD\u24c8-M Futures",
+      "document_title": "How Isolated Margin Works in USD\u24c8-M Futures",
+      "official_source_url": "https://www.binance.com/en/support/faq/how-isolated-margin-works-in-usds-m-futures-360033843372",
+      "retrieval_date": "2026-10-16",
+      "effective_date": "2020-01-01",
+      "historical_applicability_2024_2025": "FULLY_APPLICABLE_CONFIRMED",
+      "eligible_collateral": [
+        "USDT"
+      ],
+      "spot_collateral_eligible": false,
+      "haircut_schedule": {
+        "USDT": 0.0
+      },
+      "maintenance_margin_rule": "Tiered MMR based on position notional (BTC: 0.40% <= 50k, ETH: 0.50%, SOL: 1.00%).",
+      "liquidation_threshold_rule": "Isolated Margin + UPnL < Maintenance Margin (Mark Price).",
+      "liquidation_fee_rule": "Insurance Clearance Fee (1.25% - 2.00% of liquidated notional absorbed).",
+      "collateral_transfer_timing": "Requires explicit internal transfer API; no automatic cross-wallet sweep.",
+      "independently_verifiable": true,
+      "verification_status": "EXCHANGE_CONTRACT_VERIFIED"
+    },
+    {
+      "rule_id": "RULE-BINANCE-CROSS-02",
+      "account_type": "CROSS_MARGIN",
+      "exchange_product": "USD\u24c8-M Futures",
+      "document_title": "How to Use Cross Margin Mode in USD\u24c8-M Futures",
+      "official_source_url": "https://www.binance.com/en/support/faq/how-to-use-cross-margin-mode-in-usds-m-futures-360033843712",
+      "retrieval_date": "2026-10-16",
+      "effective_date": "2020-01-01",
+      "historical_applicability_2024_2025": "FULLY_APPLICABLE_CONFIRMED",
+      "eligible_collateral": [
+        "USDT"
+      ],
+      "spot_collateral_eligible": false,
+      "haircut_schedule": {
+        "USDT": 0.0
+      },
+      "maintenance_margin_rule": "Total Maintenance Margin of all open USD\u24c8-M positions.",
+      "liquidation_threshold_rule": "Futures Wallet Balance + Total UPnL < Total Maintenance Margin.",
+      "liquidation_fee_rule": "Insurance Clearance Fee on liquidated positions.",
+      "collateral_transfer_timing": "Shared within USD\u24c8-M Futures wallet; Spot wallet balances completely segregated.",
+      "independently_verifiable": true,
+      "verification_status": "EXCHANGE_CONTRACT_VERIFIED"
+    },
+    {
+      "rule_id": "RULE-BINANCE-PORTFOLIO-MARGIN-03",
+      "account_type": "PORTFOLIO_MARGIN",
+      "exchange_product": "Binance Portfolio Margin / PM Pro",
+      "document_title": "Introduction to Binance Portfolio Margin Mode & Collateral Haircut Schedule",
+      "official_source_url": "https://www.binance.com/en/support/faq/introduction-to-binance-portfolio-margin-mode-375bc862846944e58b8577717dc6dbf3",
+      "retrieval_date": "2026-10-16",
+      "effective_date": "2022-06-01",
+      "historical_applicability_2024_2025": "VIP_TIER_RESTRICTED_RETAIL_INELIGIBLE",
+      "eligible_collateral": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "USDT",
+        "USDC",
+        "BNB"
+      ],
+      "spot_collateral_eligible": true,
+      "haircut_schedule": {
+        "BTC": 0.05,
+        "ETH": 0.05,
+        "SOL": 0.1,
+        "BNB": 0.1,
+        "USDT": 0.0,
+        "USDC": 0.0
+      },
+      "maintenance_margin_rule": "Unified Portfolio Maintenance Margin calculated via SPAN risk matrix & net delta offsets.",
+      "liquidation_threshold_rule": "Unified Account Equity < Unified Maintenance Margin.",
+      "liquidation_fee_rule": "Liquidation via TWAP smart routing and RFQ block auctions (0.50% - 1.00%).",
+      "collateral_transfer_timing": "Instantaneous cross-product netting inside the unified Portfolio Margin account.",
+      "independently_verifiable": true,
+      "verification_status": "EXCHANGE_CONTRACT_VERIFIED"
+    },
+    {
+      "rule_id": "RULE-BINANCE-MULTI-ASSET-04",
+      "account_type": "MULTI_ASSET_MODE",
+      "exchange_product": "USD\u24c8-M Futures Multi-Assets Mode",
+      "document_title": "How Does Multi-Assets Mode Work in USD\u24c8-M Futures",
+      "official_source_url": "https://www.binance.com/en/support/faq/how-does-multi-assets-mode-work-in-usds-m-futures-360033843912",
+      "retrieval_date": "2026-10-16",
+      "effective_date": "2021-03-01",
+      "historical_applicability_2024_2025": "FUTURES_WALLET_ONLY_NO_SPOT_NETTING",
+      "eligible_collateral": [
+        "USDT",
+        "USDC",
+        "BTC",
+        "ETH"
+      ],
+      "spot_collateral_eligible": false,
+      "haircut_schedule": {
+        "USDT": 0.0,
+        "USDC": 0.0,
+        "BTC": 0.05,
+        "ETH": 0.05
+      },
+      "maintenance_margin_rule": "Combined maintenance margin across USD\u24c8-M positions.",
+      "liquidation_threshold_rule": "Cross collateral equity in USD\u24c8-M wallet < Maintenance Margin.",
+      "liquidation_fee_rule": "Standard futures liquidation clearance fee.",
+      "collateral_transfer_timing": "Assets must be transferred INTO the USD\u24c8-M futures wallet; external Spot positions do not count.",
+      "independently_verifiable": true,
+      "verification_status": "EXCHANGE_CONTRACT_VERIFIED"
+    }
+  ],
+  "margin_engine_specs": {
+    "ISOLATED_MARGIN": {
+      "engine_name": "Binance USD\u24c8-M Isolated Margin Engine",
+      "engine_type": "ISOLATED_MARGIN",
+      "eligible_collateral_assets": [
+        "USDT"
+      ],
+      "spot_inventory_credited_as_margin": false,
+      "haircut_schedule": {
+        "USDT": 0.0
+      },
+      "unrealized_pnl_netting": "Strictly isolated to individual contract position; zero cross-position netting.",
+      "maintenance_margin_formula": "Notional * MMR (Tier 1: BTC 0.40%, ETH 0.50%, SOL 1.00%).",
+      "liquidation_trigger_condition": "Isolated Wallet Balance + Position UPnL < Maintenance Margin.",
+      "liquidation_clearance_fee_pct": 1.25,
+      "margin_call_behavior": "Passive alert only; no automated collateral injection from cash reserve without API bot.",
+      "transfer_delay_seconds": 30.0,
+      "operational_complexity_rating": "HIGH_MANUAL_INTERVENTION_REQUIRED",
+      "fail_closed_status": "VERIFIED_APPLICABLE_TO_RETAIL_10K_CAPITAL"
+    },
+    "CROSS_MARGIN": {
+      "engine_name": "Binance USD\u24c8-M Cross Margin Engine",
+      "engine_type": "CROSS_MARGIN",
+      "eligible_collateral_assets": [
+        "USDT"
+      ],
+      "spot_inventory_credited_as_margin": false,
+      "haircut_schedule": {
+        "USDT": 0.0
+      },
+      "unrealized_pnl_netting": "Shared across all USD\u24c8-M futures positions within the Futures Wallet.",
+      "maintenance_margin_formula": "Sum of (Notional_i * MMR_i) across all open futures positions.",
+      "liquidation_trigger_condition": "Total Futures Wallet Balance + Total Futures UPnL < Total Maintenance Margin.",
+      "liquidation_clearance_fee_pct": 1.25,
+      "margin_call_behavior": "Cross-position buffer; zero access to external Spot Wallet.",
+      "transfer_delay_seconds": 30.0,
+      "operational_complexity_rating": "MEDIUM_REQUIRES_FUTURES_WALLET_PREFUNDING",
+      "fail_closed_status": "VERIFIED_APPLICABLE_TO_RETAIL_10K_CAPITAL"
+    },
+    "PORTFOLIO_MARGIN": {
+      "engine_name": "Binance Institutional Portfolio Margin Engine (PM Pro)",
+      "engine_type": "PORTFOLIO_MARGIN",
+      "eligible_collateral_assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "USDT",
+        "USDC",
+        "BNB"
+      ],
+      "spot_inventory_credited_as_margin": true,
+      "haircut_schedule": {
+        "BTC": 0.05,
+        "ETH": 0.05,
+        "SOL": 0.1,
+        "BNB": 0.1,
+        "USDT": 0.0,
+        "USDC": 0.0
+      },
+      "unrealized_pnl_netting": "Unified cross-product netting: Spot asset value (haircut-adjusted) directly nets against Perp short liability.",
+      "maintenance_margin_formula": "Portfolio SPAN Risk Matrix with correlation offsets (up to 85% offset for delta-neutral carry).",
+      "liquidation_trigger_condition": "Unified Account Net Equity < Unified Portfolio Maintenance Margin.",
+      "liquidation_clearance_fee_pct": 0.75,
+      "margin_call_behavior": "Automatic internal netting prevents margin calls during market rallies.",
+      "transfer_delay_seconds": 0.0,
+      "operational_complexity_rating": "RESTRICTED_VIP_TIER_OR_10M_EQUITY_GATE",
+      "fail_closed_status": "REJECTED_FOR_RETAIL_10K_UNLESS_VIP4_OR_INSTITUTIONAL"
+    },
+    "HYPOTHETICAL_CROSS_COLLATERAL": {
+      "engine_name": "Hypothetical Retail Cross-Collateral Research Model",
+      "engine_type": "HYPOTHETICAL_CROSS_COLLATERAL",
+      "eligible_collateral_assets": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "USDT"
+      ],
+      "spot_inventory_credited_as_margin": true,
+      "haircut_schedule": {
+        "BTC": 0.05,
+        "ETH": 0.05,
+        "SOL": 0.1,
+        "USDT": 0.0
+      },
+      "unrealized_pnl_netting": "Theoretical instant netting of Spot asset price gains against short perpetual loss.",
+      "maintenance_margin_formula": "Theoretical Net Basis Exposure * MMR + Haircut Drag.",
+      "liquidation_trigger_condition": "Theoretical Net Equity < Theoretical Haircut-Adjusted Margin.",
+      "liquidation_clearance_fee_pct": 0.5,
+      "margin_call_behavior": "Assumed frictionless auto-rebalancing without operational latency.",
+      "transfer_delay_seconds": 0.0,
+      "operational_complexity_rating": "THEORETICAL_UNREALIZABLE_ON_STANDARD_RETAIL_ACCOUNTS",
+      "fail_closed_status": "HISTORICAL_CONTRACT_UNVERIFIED_FOR_RETAIL"
+    }
+  },
+  "spot_collateral_eligibility_verdict": "SPOT COLLATERAL INELIGIBILITY CONFIRMED FOR RETAIL ACCOUNTS: On Binance, the Spot Wallet and USD\u24c8-M Futures Wallet are segregated ledger environments. In standard Isolated Margin and Cross Margin accounts, physical Spot BTC, ETH, and SOL CANNOT serve as margin for USD\u24c8-M perpetual contracts. Even in Multi-Assets Mode, collateral must be held inside the Futures Wallet, which locks the coins and precludes independent Spot trading. Only institutional accounts qualifying for Binance Portfolio Margin (VIP 4+ or $10M+ equity) can pledge Spot balances against perpetual short positions in a unified account. Therefore, standard retail $10k carry strategies CANNOT claim exchange-authentic cross-collateral benefits.",
+  "liquidation_reconstruction": {
+    "audit_id": "AUDIT-LIQ-BTC-0942",
+    "initial_total_capital_usdt": 10000.0,
+    "spot_entry_price_usdt": 42283.58,
+    "spot_quantity_btc": 0.11824921,
+    "perp_short_entry_price_usdt": 42283.58,
+    "perp_short_quantity_btc": -0.11824921,
+    "perp_initial_margin_usdt": 2500.0,
+    "cash_reserve_initial_usdt": 2500.0,
+    "breach_mark_price_usdt": 88378.0,
+    "breach_timestamp_utc": "2024-11-11T14:15:00Z",
+    "accumulated_funding_received_usdt": 491.27,
+    "entry_fees_paid_usdt": 2.0,
+    "cash_injected_to_perp_usdt": 2500.0,
+    "remaining_cash_reserve_at_breach_usdt": 0.0,
+    "perp_equity_before_clearance_usdt": 38.64,
+    "perp_maintenance_margin_required_usdt": 41.8,
+    "liquidation_fee_absorbed_usdt": 38.64,
+    "perp_terminal_equity_post_liquidation_usdt": 0.0,
+    "spot_inventory_value_at_breach_usdt": 10450.63,
+    "portfolio_equity_at_breach_usdt": 10450.63,
+    "immediate_closure_exit_fee_usdt": 6.27,
+    "immediate_closure_net_equity_usdt": 10444.36,
+    "immediate_closure_net_pnl_usdt": 444.36,
+    "immediate_closure_return_on_capital_pct": 4.44,
+    "horizon_close_price_usdt": 84349.94,
+    "horizon_close_timestamp_utc": "2025-02-28T23:45:00Z",
+    "horizon_close_spot_value_usdt": 9974.31,
+    "horizon_close_exit_fee_usdt": 5.98,
+    "horizon_close_net_equity_usdt": 9968.33,
+    "horizon_close_net_pnl_usdt": -31.67,
+    "horizon_close_return_on_capital_pct": -0.32,
+    "erroneous_prior_claim_retracted_usdt": -5000.0,
+    "audit_verdict": "INDEPENDENT_BALANCE_SHEET_RECONSTRUCTION_VERIFIED_TO_THE_PENNY"
+  },
+  "treasury_reconciliation": {
+    "benchmark_name": "3-Month US Treasury Bill (FRED TB3MS / Treasury Direct Match)",
+    "official_data_source": "Federal Reserve Economic Data (FRED) & U.S. Department of the Treasury",
+    "source_url": "https://fred.stlouisfed.org/series/TB3MS",
+    "observation_start_utc": "2024-01-01T00:00:00Z",
+    "observation_end_utc": "2025-02-28T23:45:00Z",
+    "calendar_days": 425,
+    "quoted_annualized_yield_pct": 5.25,
+    "simple_return_actual_365_usdt": 610.88,
+    "simple_return_actual_360_usdt": 619.79,
+    "compounded_quarterly_roll_return_usdt": 626.15,
+    "canonical_benchmark_return_usdt": 610.88,
+    "benchmark_capital_denominator_usdt": 10000.0,
+    "carry_structure_a_maker_returns": {
+      "BTC": 626.23,
+      "ETH": 677.12,
+      "SOL": 652.52
+    },
+    "carry_structure_a_excess_spreads": {
+      "BTC": 15.35,
+      "ETH": 66.24,
+      "SOL": 41.64
+    },
+    "carry_structure_b_maker_returns": {
+      "BTC": 313.12,
+      "ETH": 338.56,
+      "SOL": 326.26
+    },
+    "carry_structure_b_excess_spreads": {
+      "BTC": -297.76,
+      "ETH": -272.32,
+      "SOL": -284.62
+    },
+    "credit_risk_attribution": "US Sovereign Debt (Zero Default Risk) vs Binance/Tether Private Counterparty Risk",
+    "sovereign_vs_crypto_risk_factors": [
+      "1. Exchange credit & insolvency risk (Binance custody vs US Treasury full faith and credit).",
+      "2. Stablecoin de-peg & reserve backing risk (USDT vs USD legal tender).",
+      "3. Operational execution risk (transfer latency, API outages, margin injection delays).",
+      "4. Mark-price intrabar spike & liquidation penalty risk.",
+      "5. Basis blowout risk (widening Spot-Perp discount during market cascades).",
+      "6. Negative funding rate persistence regimes."
+    ],
+    "economic_attractiveness_verdict": "MARGINAL SPREAD INSUFFICIENT FOR RISK INCURRED: Over the 425-day holding period, unleveraged safe carry (Structure B) yielded +313.12 to +338.56 USDT, underperforming risk-free US Treasury Bills (+610.88 USDT) by -$272.32 to -$297.76 USDT. Even aggressive Structure A (which suffered margin calls and complete cash reserve exhaustion) generated merely +15.35 to +66.24 USDT in excess return over sovereign debt (< 50 bps annualized spread). Bearing crypto exchange counterparty risk and stablecoin de-peg risk for a 0.50% annualized premium is economically indefensible for rational institutional capital."
+  },
+  "passive_carry_reassessment": {
+    "evaluation_horizon_days": 425,
+    "capital_denominator_usdt": 10000.0,
+    "structure_a_maker_net_pnl": {
+      "BTC": 626.23,
+      "ETH": 677.12,
+      "SOL": 652.52
+    },
+    "structure_a_annualized_maker_pct": {
+      "BTC": 5.38,
+      "ETH": 5.82,
+      "SOL": 5.61
+    },
+    "structure_b_maker_net_pnl": {
+      "BTC": 313.12,
+      "ETH": 338.56,
+      "SOL": 326.26
+    },
+    "structure_b_annualized_maker_pct": {
+      "BTC": 2.69,
+      "ETH": 2.91,
+      "SOL": 2.8
+    },
+    "treasury_3m_annualized_yield_pct": 5.25,
+    "treasury_3m_simple_return_425d_usdt": 610.88,
+    "structure_a_excess_over_treasury_usdt": {
+      "BTC": 15.35,
+      "ETH": 66.24,
+      "SOL": 41.64
+    },
+    "structure_b_deficit_vs_treasury_usdt": {
+      "BTC": -297.76,
+      "ETH": -272.32,
+      "SOL": -284.62
+    },
+    "isolated_margin_solvency_classification": "HISTORICALLY_SURVIVED_TESTED_SCENARIOS_UNDER_STRUCTURE_B",
+    "structure_a_operational_vulnerability": "EXHAUSTED_ALL_CASH_RESERVES_DURING_NOV_2024_RALLY"
+  },
+  "stress_test_outcomes": [
+    {
+      "scenario_id": "STRESS-01",
+      "scenario_name": "BTC +100% Bull Rally",
+      "asset": "BTC",
+      "initial_spot_price": 50000.0,
+      "stressed_spot_price": 100000.0,
+      "price_change_pct": 100.0,
+      "haircut_applied_pct": 5.0,
+      "spot_collateral_value_usdt": 9500.0,
+      "perp_short_unrealized_pnl_usdt": -5000.0,
+      "net_portfolio_equity_usdt": 10000.0,
+      "maintenance_margin_required_usdt": 102.0,
+      "margin_ratio_pct": 1.02,
+      "liquidation_triggered": false,
+      "liquidation_waterfall_step": "1. Normal netting holds; zero liquidation.",
+      "terminal_portfolio_equity_usdt": 10000.0,
+      "net_stress_pnl_usdt": 0.0,
+      "classification": "HYPOTHETICAL_STRESS_OUTCOME"
+    },
+    {
+      "scenario_id": "STRESS-02",
+      "scenario_name": "ETH +150% Bull Rally",
+      "asset": "ETH",
+      "initial_spot_price": 2500.0,
+      "stressed_spot_price": 6250.0,
+      "price_change_pct": 150.0,
+      "haircut_applied_pct": 5.0,
+      "spot_collateral_value_usdt": 11875.0,
+      "perp_short_unrealized_pnl_usdt": -7500.0,
+      "net_portfolio_equity_usdt": 10000.0,
+      "maintenance_margin_required_usdt": 128.12,
+      "margin_ratio_pct": 1.28,
+      "liquidation_triggered": false,
+      "liquidation_waterfall_step": "1. Normal netting holds; zero liquidation.",
+      "terminal_portfolio_equity_usdt": 10000.0,
+      "net_stress_pnl_usdt": 0.0,
+      "classification": "HYPOTHETICAL_STRESS_OUTCOME"
+    },
+    {
+      "scenario_id": "STRESS-03",
+      "scenario_name": "SOL +200% Mega Rally",
+      "asset": "SOL",
+      "initial_spot_price": 100.0,
+      "stressed_spot_price": 300.0,
+      "price_change_pct": 200.0,
+      "haircut_applied_pct": 10.0,
+      "spot_collateral_value_usdt": 13500.0,
+      "perp_short_unrealized_pnl_usdt": -10000.0,
+      "net_portfolio_equity_usdt": 10000.0,
+      "maintenance_margin_required_usdt": 165.0,
+      "margin_ratio_pct": 1.65,
+      "liquidation_triggered": false,
+      "liquidation_waterfall_step": "1. Normal netting holds; zero liquidation.",
+      "terminal_portfolio_equity_usdt": 10000.0,
+      "net_stress_pnl_usdt": 0.0,
+      "classification": "HYPOTHETICAL_STRESS_OUTCOME"
+    },
+    {
+      "scenario_id": "STRESS-04",
+      "scenario_name": "Simultaneous Correlated Market Surge (+100% BTC)",
+      "asset": "BTC",
+      "initial_spot_price": 50000.0,
+      "stressed_spot_price": 100000.0,
+      "price_change_pct": 100.0,
+      "haircut_applied_pct": 5.0,
+      "spot_collateral_value_usdt": 9500.0,
+      "perp_short_unrealized_pnl_usdt": -5000.0,
+      "net_portfolio_equity_usdt": 10000.0,
+      "maintenance_margin_required_usdt": 102.0,
+      "margin_ratio_pct": 1.02,
+      "liquidation_triggered": false,
+      "liquidation_waterfall_step": "1. Normal netting holds; zero liquidation.",
+      "terminal_portfolio_equity_usdt": 10000.0,
+      "net_stress_pnl_usdt": 0.0,
+      "classification": "HYPOTHETICAL_STRESS_OUTCOME"
+    },
+    {
+      "scenario_id": "STRESS-05",
+      "scenario_name": "Severe Basis Blowout (-50 bps dislocation)",
+      "asset": "BTC",
+      "initial_spot_price": 50000.0,
+      "stressed_spot_price": 50000.0,
+      "price_change_pct": 0.0,
+      "haircut_applied_pct": 5.0,
+      "spot_collateral_value_usdt": 4750.0,
+      "perp_short_unrealized_pnl_usdt": -25.0,
+      "net_portfolio_equity_usdt": 9975.0,
+      "maintenance_margin_required_usdt": 51.0,
+      "margin_ratio_pct": 0.51,
+      "liquidation_triggered": false,
+      "liquidation_waterfall_step": "1. Normal netting holds; zero liquidation.",
+      "terminal_portfolio_equity_usdt": 9975.0,
+      "net_stress_pnl_usdt": -25.0,
+      "classification": "HYPOTHETICAL_STRESS_OUTCOME"
+    },
+    {
+      "scenario_id": "STRESS-06",
+      "scenario_name": "Sudden Haircut Shock (5% to 20%)",
+      "asset": "BTC",
+      "initial_spot_price": 50000.0,
+      "stressed_spot_price": 75000.0,
+      "price_change_pct": 50.0,
+      "haircut_applied_pct": 20.0,
+      "spot_collateral_value_usdt": 6000.0,
+      "perp_short_unrealized_pnl_usdt": -2500.0,
+      "net_portfolio_equity_usdt": 10000.0,
+      "maintenance_margin_required_usdt": 81.0,
+      "margin_ratio_pct": 0.81,
+      "liquidation_triggered": false,
+      "liquidation_waterfall_step": "1. Normal netting holds; zero liquidation.",
+      "terminal_portfolio_equity_usdt": 10000.0,
+      "net_stress_pnl_usdt": 0.0,
+      "classification": "HYPOTHETICAL_STRESS_OUTCOME"
+    },
+    {
+      "scenario_id": "STRESS-07",
+      "scenario_name": "Collateral Transfer Outage (12h freeze during rally)",
+      "asset": "BTC",
+      "initial_spot_price": 50000.0,
+      "stressed_spot_price": 80000.0,
+      "price_change_pct": 60.0,
+      "haircut_applied_pct": 5.0,
+      "spot_collateral_value_usdt": 7600.0,
+      "perp_short_unrealized_pnl_usdt": -3000.0,
+      "net_portfolio_equity_usdt": 10000.0,
+      "maintenance_margin_required_usdt": 81.6,
+      "margin_ratio_pct": 0.82,
+      "liquidation_triggered": false,
+      "liquidation_waterfall_step": "1. Normal netting holds; zero liquidation.",
+      "terminal_portfolio_equity_usdt": 10000.0,
+      "net_stress_pnl_usdt": 0.0,
+      "classification": "HYPOTHETICAL_STRESS_OUTCOME"
+    },
+    {
+      "scenario_id": "STRESS-08",
+      "scenario_name": "Prolonged Funding Sign Reversal (-10 bps / 30d)",
+      "asset": "BTC",
+      "initial_spot_price": 50000.0,
+      "stressed_spot_price": 50000.0,
+      "price_change_pct": 0.0,
+      "haircut_applied_pct": 5.0,
+      "spot_collateral_value_usdt": 4750.0,
+      "perp_short_unrealized_pnl_usdt": -0.0,
+      "net_portfolio_equity_usdt": 9910.0,
+      "maintenance_margin_required_usdt": 51.0,
+      "margin_ratio_pct": 0.51,
+      "liquidation_triggered": false,
+      "liquidation_waterfall_step": "1. Normal netting holds; zero liquidation.",
+      "terminal_portfolio_equity_usdt": 9910.0,
+      "net_stress_pnl_usdt": -90.0,
+      "classification": "HYPOTHETICAL_STRESS_OUTCOME"
+    },
+    {
+      "scenario_id": "STRESS-09",
+      "scenario_name": "Forced Liquidation Incomplete Hedge Closure",
+      "asset": "BTC",
+      "initial_spot_price": 50000.0,
+      "stressed_spot_price": 90000.0,
+      "price_change_pct": 80.0,
+      "haircut_applied_pct": 5.0,
+      "spot_collateral_value_usdt": 8550.0,
+      "perp_short_unrealized_pnl_usdt": -4000.0,
+      "net_portfolio_equity_usdt": 10000.0,
+      "maintenance_margin_required_usdt": 91.8,
+      "margin_ratio_pct": 0.92,
+      "liquidation_triggered": false,
+      "liquidation_waterfall_step": "1. Normal netting holds; zero liquidation.",
+      "terminal_portfolio_equity_usdt": 10000.0,
+      "net_stress_pnl_usdt": 0.0,
+      "classification": "HYPOTHETICAL_STRESS_OUTCOME"
+    }
+  ],
+  "capital_efficiency_assessment": {
+    "isolated_margin_leverage_limit": "2x to 4x (requires 25-62.5% cash buffer to survive rallies)",
+    "portfolio_margin_potential_leverage": "5x to 10x (haircut drag 5-10% absorbs bull rallies)",
+    "institutional_barrier": "Requires VIP 4 or $10,000,000 net equity on Binance",
+    "retail_accessibility": "UNAVAILABLE_FOR_RETAIL_ACCOUNTS",
+    "economic_conclusion": "Reduced margin requirement does not increase carry spread; only increases leverage capacity at higher tail risk."
+  },
+  "evidence_registry_entry": {
+    "experiment_id": "EXP-PM-0942",
+    "sprint": "SPRINT_09.42",
+    "domain": "Domain C \u2014 Exchange Portfolio Margin & Cross-Collateral Carry",
+    "status": "COMPLETED_AUDIT",
+    "decision": "HYPOTHETICAL_ONLY_INSUFFICIENT_EXCHANGE_EVIDENCE",
+    "risk_verdict": "ECONOMICALLY_UNATTRACTIVE_UNDER_TESTED_ASSUMPTIONS"
+  },
+  "holdout_exposure_status": "HISTORICAL_PERIODS_THROUGH_FEB_2025_EXPOSED",
+  "decision_gate": "HYPOTHETICAL_ONLY_INSUFFICIENT_EXCHANGE_EVIDENCE",
+  "turkish_executive_summary": "1. Borsa S\u00f6zle\u015fme Analizi: Binance USD\u24c8-M izole ve \u00e7apraz marjin kurallar\u0131 gere\u011fi, perakende Spot c\u00fczdandaki BTC/ETH/SOL varl\u0131klar\u0131 vadeli i\u015flem marjinine DAH\u0130L ED\u0130LEMEZ. Spot varl\u0131klar\u0131n teminat say\u0131ld\u0131\u011f\u0131 Portf\u00f6y Marjini (PM Pro) yaln\u0131zca VIP 4+ ($10M+) kurumsal hesaplara a\u00e7\u0131kt\u0131r; bu nedenle 10.000 USDT sermayeli standart hesaplar i\u00e7in \u00e7apraz teminatlama tamamen FARAZ\u0130D\u0130R (HYPOTHETICAL_CROSS_COLLATERAL).\n2. Likidasyon Rekonstr\u00fcksiyonu: 88.378 USDT seviyesindeki BTC likidasyonu kuru\u015fu kuru\u015funa ba\u011f\u0131ms\u0131z olarak do\u011frulanm\u0131\u015ft\u0131r. \u0130hlal an\u0131nda Spot envanter de\u011feri 10.450,63 USDT, vadeli marjin 0,00 USDT'dir. \u0130hlal an\u0131nda kapat\u0131l\u0131rsa net k\u00e2r +444,36 USDT (+%4,44), vade sonuna kadar \u00e7\u0131plak Spot tutulursa nihai k\u00e2r/zarar -31,67 USDT (-%0,32) olmaktad\u0131r. Eski -5.000 USDT iddias\u0131 resmen h\u00fck\u00fcms\u00fczd\u00fcr.\n3. ABD Hazine Bonosu K\u0131yaslamas\u0131: 2024 3 ayl\u0131k Hazine Bonosu y\u0131ll\u0131k %5,25 getiri ile 425 g\u00fcnde +610,88 USDT risksiz kazan\u00e7 \u00fcretmi\u015ftir. G\u00fcvenli Yap\u0131 B (-272 USDT a\u00e7\u0131k) bonolar\u0131n fersah fersah gerisinde kalm\u0131\u015ft\u0131r. Agresif Yap\u0131 A ise nakit rezervlerini tamamen t\u00fcketerek marjin \u00e7a\u011fr\u0131s\u0131 yemi\u015f ve bonolar\u0131 yaln\u0131zca +15 ila +66 USDT (y\u0131ll\u0131k <%0,5 prim) ge\u00e7ebilmi\u015ftir. Borsa iflas\u0131, USDT de-peg ve ak\u0131ll\u0131 s\u00f6zle\u015fme riskleri d\u00fc\u015f\u00fcn\u00fcld\u00fc\u011f\u00fcnde bu prim iktisadi olarak YETERS\u0130ZD\u0130R.\n4. Karar Kap\u0131s\u0131: HYPOTHETICAL_ONLY_INSUFFICIENT_EXCHANGE_EVIDENCE ve ECONOMICALLY_UNATTRACTIVE_UNDER_TESTED_ASSUMPTIONS. APPROVAL4 = FALSE kesin olarak korunmaktad\u0131r."
+}

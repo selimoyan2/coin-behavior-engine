@@ -368,6 +368,15 @@ from coin_behavior_engine.research.historical.multi_asset_carry_sprint41 import 
     Sprint41MasterReport,
     Sprint41MultiAssetAuditor,
 )
+from coin_behavior_engine.research.historical.exchange_portfolio_margin_sprint42 import (
+    ExchangeContractRuleRecord,
+    LiquidationReconstructionRecord,
+    MarginEngineSpecification,
+    Sprint42MasterReport,
+    Sprint42PortfolioMarginAuditor,
+    StressScenarioOutcome,
+    TreasuryBenchmarkReconciliationReport,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -611,4 +620,11 @@ __all__ = [
     "RiskFreeBenchmarkComparisonReport",
     "Sprint41MasterReport",
     "Sprint41MultiAssetAuditor",
+    "ExchangeContractRuleRecord",
+    "MarginEngineSpecification",
+    "LiquidationReconstructionRecord",
+    "TreasuryBenchmarkReconciliationReport",
+    "StressScenarioOutcome",
+    "Sprint42MasterReport",
+    "Sprint42PortfolioMarginAuditor",
 ]

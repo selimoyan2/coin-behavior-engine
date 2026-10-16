@@ -1,0 +1,44 @@
+{
+  "benchmark_name": "3-Month US Treasury Bill (FRED TB3MS / Treasury Direct Match)",
+  "official_data_source": "Federal Reserve Economic Data (FRED) & U.S. Department of the Treasury",
+  "source_url": "https://fred.stlouisfed.org/series/TB3MS",
+  "observation_start_utc": "2024-01-01T00:00:00Z",
+  "observation_end_utc": "2025-02-28T23:45:00Z",
+  "calendar_days": 425,
+  "quoted_annualized_yield_pct": 5.25,
+  "simple_return_actual_365_usdt": 610.88,
+  "simple_return_actual_360_usdt": 619.79,
+  "compounded_quarterly_roll_return_usdt": 626.15,
+  "canonical_benchmark_return_usdt": 610.88,
+  "benchmark_capital_denominator_usdt": 10000.0,
+  "carry_structure_a_maker_returns": {
+    "BTC": 626.23,
+    "ETH": 677.12,
+    "SOL": 652.52
+  },
+  "carry_structure_a_excess_spreads": {
+    "BTC": 15.35,
+    "ETH": 66.24,
+    "SOL": 41.64
+  },
+  "carry_structure_b_maker_returns": {
+    "BTC": 313.12,
+    "ETH": 338.56,
+    "SOL": 326.26
+  },
+  "carry_structure_b_excess_spreads": {
+    "BTC": -297.76,
+    "ETH": -272.32,
+    "SOL": -284.62
+  },
+  "credit_risk_attribution": "US Sovereign Debt (Zero Default Risk) vs Binance/Tether Private Counterparty Risk",
+  "sovereign_vs_crypto_risk_factors": [
+    "1. Exchange credit & insolvency risk (Binance custody vs US Treasury full faith and credit).",
+    "2. Stablecoin de-peg & reserve backing risk (USDT vs USD legal tender).",
+    "3. Operational execution risk (transfer latency, API outages, margin injection delays).",
+    "4. Mark-price intrabar spike & liquidation penalty risk.",
+    "5. Basis blowout risk (widening Spot-Perp discount during market cascades).",
+    "6. Negative funding rate persistence regimes."
+  ],
+  "economic_attractiveness_verdict": "MARGINAL SPREAD INSUFFICIENT FOR RISK INCURRED: Over the 425-day holding period, unleveraged safe carry (Structure B) yielded +313.12 to +338.56 USDT, underperforming risk-free US Treasury Bills (+610.88 USDT) by -$272.32 to -$297.76 USDT. Even aggressive Structure A (which suffered margin calls and complete cash reserve exhaustion) generated merely +15.35 to +66.24 USDT in excess return over sovereign debt (< 50 bps annualized spread). Bearing crypto exchange counterparty risk and stablecoin de-peg risk for a 0.50% annualized premium is economically indefensible for rational institutional capital."
+}

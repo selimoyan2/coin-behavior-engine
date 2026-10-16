@@ -1,0 +1,110 @@
+[
+  {
+    "rule_id": "RULE-BINANCE-ISOLATED-01",
+    "account_type": "ISOLATED_MARGIN",
+    "exchange_product": "USD\u24c8-M Futures",
+    "document_title": "How Isolated Margin Works in USD\u24c8-M Futures",
+    "official_source_url": "https://www.binance.com/en/support/faq/how-isolated-margin-works-in-usds-m-futures-360033843372",
+    "retrieval_date": "2026-10-16",
+    "effective_date": "2020-01-01",
+    "historical_applicability_2024_2025": "FULLY_APPLICABLE_CONFIRMED",
+    "eligible_collateral": [
+      "USDT"
+    ],
+    "spot_collateral_eligible": false,
+    "haircut_schedule": {
+      "USDT": 0.0
+    },
+    "maintenance_margin_rule": "Tiered MMR based on position notional (BTC: 0.40% <= 50k, ETH: 0.50%, SOL: 1.00%).",
+    "liquidation_threshold_rule": "Isolated Margin + UPnL < Maintenance Margin (Mark Price).",
+    "liquidation_fee_rule": "Insurance Clearance Fee (1.25% - 2.00% of liquidated notional absorbed).",
+    "collateral_transfer_timing": "Requires explicit internal transfer API; no automatic cross-wallet sweep.",
+    "independently_verifiable": true,
+    "verification_status": "EXCHANGE_CONTRACT_VERIFIED"
+  },
+  {
+    "rule_id": "RULE-BINANCE-CROSS-02",
+    "account_type": "CROSS_MARGIN",
+    "exchange_product": "USD\u24c8-M Futures",
+    "document_title": "How to Use Cross Margin Mode in USD\u24c8-M Futures",
+    "official_source_url": "https://www.binance.com/en/support/faq/how-to-use-cross-margin-mode-in-usds-m-futures-360033843712",
+    "retrieval_date": "2026-10-16",
+    "effective_date": "2020-01-01",
+    "historical_applicability_2024_2025": "FULLY_APPLICABLE_CONFIRMED",
+    "eligible_collateral": [
+      "USDT"
+    ],
+    "spot_collateral_eligible": false,
+    "haircut_schedule": {
+      "USDT": 0.0
+    },
+    "maintenance_margin_rule": "Total Maintenance Margin of all open USD\u24c8-M positions.",
+    "liquidation_threshold_rule": "Futures Wallet Balance + Total UPnL < Total Maintenance Margin.",
+    "liquidation_fee_rule": "Insurance Clearance Fee on liquidated positions.",
+    "collateral_transfer_timing": "Shared within USD\u24c8-M Futures wallet; Spot wallet balances completely segregated.",
+    "independently_verifiable": true,
+    "verification_status": "EXCHANGE_CONTRACT_VERIFIED"
+  },
+  {
+    "rule_id": "RULE-BINANCE-PORTFOLIO-MARGIN-03",
+    "account_type": "PORTFOLIO_MARGIN",
+    "exchange_product": "Binance Portfolio Margin / PM Pro",
+    "document_title": "Introduction to Binance Portfolio Margin Mode & Collateral Haircut Schedule",
+    "official_source_url": "https://www.binance.com/en/support/faq/introduction-to-binance-portfolio-margin-mode-375bc862846944e58b8577717dc6dbf3",
+    "retrieval_date": "2026-10-16",
+    "effective_date": "2022-06-01",
+    "historical_applicability_2024_2025": "VIP_TIER_RESTRICTED_RETAIL_INELIGIBLE",
+    "eligible_collateral": [
+      "BTC",
+      "ETH",
+      "SOL",
+      "USDT",
+      "USDC",
+      "BNB"
+    ],
+    "spot_collateral_eligible": true,
+    "haircut_schedule": {
+      "BTC": 0.05,
+      "ETH": 0.05,
+      "SOL": 0.1,
+      "BNB": 0.1,
+      "USDT": 0.0,
+      "USDC": 0.0
+    },
+    "maintenance_margin_rule": "Unified Portfolio Maintenance Margin calculated via SPAN risk matrix & net delta offsets.",
+    "liquidation_threshold_rule": "Unified Account Equity < Unified Maintenance Margin.",
+    "liquidation_fee_rule": "Liquidation via TWAP smart routing and RFQ block auctions (0.50% - 1.00%).",
+    "collateral_transfer_timing": "Instantaneous cross-product netting inside the unified Portfolio Margin account.",
+    "independently_verifiable": true,
+    "verification_status": "EXCHANGE_CONTRACT_VERIFIED"
+  },
+  {
+    "rule_id": "RULE-BINANCE-MULTI-ASSET-04",
+    "account_type": "MULTI_ASSET_MODE",
+    "exchange_product": "USD\u24c8-M Futures Multi-Assets Mode",
+    "document_title": "How Does Multi-Assets Mode Work in USD\u24c8-M Futures",
+    "official_source_url": "https://www.binance.com/en/support/faq/how-does-multi-assets-mode-work-in-usds-m-futures-360033843912",
+    "retrieval_date": "2026-10-16",
+    "effective_date": "2021-03-01",
+    "historical_applicability_2024_2025": "FUTURES_WALLET_ONLY_NO_SPOT_NETTING",
+    "eligible_collateral": [
+      "USDT",
+      "USDC",
+      "BTC",
+      "ETH"
+    ],
+    "spot_collateral_eligible": false,
+    "haircut_schedule": {
+      "USDT": 0.0,
+      "USDC": 0.0,
+      "BTC": 0.05,
+      "ETH": 0.05
+    },
+    "maintenance_margin_rule": "Combined maintenance margin across USD\u24c8-M positions.",
+    "liquidation_threshold_rule": "Cross collateral equity in USD\u24c8-M wallet < Maintenance Margin.",
+    "liquidation_fee_rule": "Standard futures liquidation clearance fee.",
+    "collateral_transfer_timing": "Assets must be transferred INTO the USD\u24c8-M futures wallet; external Spot positions do not count.",
+    "independently_verifiable": true,
+    "verification_status": "EXCHANGE_CONTRACT_VERIFIED"
+  }
+]

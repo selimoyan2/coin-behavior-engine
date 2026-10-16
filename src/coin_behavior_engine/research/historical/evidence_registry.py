@@ -744,6 +744,38 @@ class CanonicalEvidenceRegistry:
             ],
         )
 
+    @staticmethod
+    def get_sprint_42_evidence_record() -> Dict[str, Any]:
+        """Return the canonical evidence registry record for Sprint 09.42."""
+        return {
+            "experiment_id": "EXP_PM_0942_PORTFOLIO_MARGIN",
+            "sprint_origin": "SPRINT_09.42",
+            "category": "EXCHANGE_MARGIN_AND_CARRY",
+            "hypothesis_name": "Exchange-Authentic Portfolio Margin vs Isolated Carry",
+            "economic_rationale": "Investigate whether authentic exchange portfolio margin contracts eliminate liquidation risk without requiring unhedged cash reserves.",
+            "dataset_period": "2024-01-01 to 2025-02-28 (14 months, 40,800 bars)",
+            "parameters": {
+                "instruments": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+                "haircuts": {"BTC": 0.05, "ETH": 0.05, "SOL": 0.10},
+                "structures": ["STRUCTURE_A", "STRUCTURE_B"],
+            },
+            "execution_assumptions": "Binance USDⓈ-M Isolated vs Binance Portfolio Margin Pro (VIP 4+)",
+            "gross_performance_summary": "+5.38% to +5.82% annualized gross carry yield under Structure A.",
+            "net_performance_summary": "+15.35 to +66.24 USDT excess over 2024 3M Treasury Bills under Structure A; -272.32 to -297.76 USDT under Structure B.",
+            "benchmark_comparison": "Underperforms risk-free US Treasury Bills on an unleveraged basis; marginal 15-66 bps excess fails to compensate for crypto platform and stablecoin risk.",
+            "statistical_confidence": "Deterministic historical accounting across 40,800 bars.",
+            "holdout_status": "All data through Feb 2025 permanently exposed.",
+            "final_verdict": "HYPOTHETICAL_ONLY_INSUFFICIENT_EXCHANGE_EVIDENCE",
+            "known_defects_and_corrections": "Retail accounts cannot cross-margin Spot and USDⓈ-M without VIP 4+ ($10M+) enrollment.",
+            "artifact_references": [
+                "data/reports/sprint09_42_exchange_margin_contracts.json",
+                "data/reports/sprint09_42_liquidation_forensic_reconciliation.json",
+                "data/reports/sprint09_42_treasury_benchmark_reconciliation.json",
+                "data/reports/sprint09_42_master_report.json",
+            ],
+            "commit_provenance": "90babe3985fa6b78ebce0bfd4b9c9f0c5a3b7c26",
+        }
+
     def generate_canonical_registry_json(self, output_path: Path) -> Path:
         """Export the full canonical research evidence registry to a machine-readable JSON file."""
         inventory = [h.to_dict() for h in self.get_all_hypotheses_inventory()]
