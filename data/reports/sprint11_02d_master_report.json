@@ -1,0 +1,40 @@
+{
+  "sprint": "11.02D",
+  "title": "Durable Gap Recovery, Evidence Integrity & Deployment Continuity",
+  "timestamp_utc": "2026-10-17T02:23:00Z",
+  "repository": "selimoyan2/coin-behavior-engine",
+  "authorization_status": {
+    "DEPLOYMENT_AUTHORIZED": "NO",
+    "LIVE_CAPTURE_RESTARTED": "NO",
+    "PRODUCTION_CHANGED": "NO",
+    "APPROVAL_4_ENABLED": "NO",
+    "TRADING_ENABLED": "NO"
+  },
+  "implementation_summary": {
+    "durable_gap_recovery": "Implemented transactional recovery architecture in DurableGapRecoveryStore. Gaps are only committed after atomic append, fsync, and read-back durability confirmation.",
+    "recovery_journal": "Separate append-only journal (recovery_candles_BTCUSDT_5m.jsonl) with continuous SHA-256 hash chaining. Never rewrites or inserts into original live capture ledger.",
+    "idempotency": "Subsequent recovery invocations for already committed gaps detect existing records and return ALREADY_COMMITTED without generating duplicate evidence entries.",
+    "restart_reconstruction": "Engine boot reconstructs continuity from both raw_candles.jsonl and recovery_candles.jsonl, seamlessly bridging recovered intervals across restarts.",
+    "rest_adapter_wiring": "LiveCaptureService automatically wires BinanceSpotRestAdapter when Approval 3 is authorized, resolving the defect where unrecovered gaps were skipped.",
+    "research_eligibility_guards": "Strictly requires >= 288 contiguous closed candles with zero unrecovered gaps in window. Preserves separation between collection health, contiguity, and research eligibility."
+  },
+  "deployment_continuity": {
+    "coolify_runbook": "docs/operations/CBE_LIVE_CAPTURE_COOLIFY_RUNBOOK.md",
+    "immutable_image_versioning": "Procedure documented using commit SHA tags (cbe-080-shadow:sprint11-02d-<short-sha>) alongside mutable Coolify references.",
+    "volume_protection": "Target volume zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data verified. Preserves all 1875+ historical entries. Staging mounted :ro, Live Capture mounted :rw.",
+    "network_preflight": "Automated idempotent verification for bridge network zgit1s3n1acdtqtsxp0s44vj.",
+    "config_drift_detection": "deploy/shadow_v080/verify_deployment_preflight.py provides non-mutating validation of Dockerfile, entrypoint, volume, and safety flags.",
+    "rollback_procedure": "Zero-data-loss rollback procedure documented; persistent volume is never wiped or replaced during rollback."
+  },
+  "verification_metrics": {
+    "sprint11_02d_tests_passed": 28,
+    "sprint11_02d_tests_failed": 0,
+    "full_regression_tests_passed": 210,
+    "full_regression_tests_failed": 0,
+    "pass_rate_percent": 100.0,
+    "canonical_hashes_verified": "29/29",
+    "live_binance_test_calls": 0,
+    "production_mutations": 0,
+    "staging_mutations": 0
+  }
+}

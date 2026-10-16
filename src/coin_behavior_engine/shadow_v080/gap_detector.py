@@ -155,12 +155,46 @@ class MarketDataGapDetector:
         logger.warning("Contiguity reset due to inbound transport queue overflow / dropped messages.")
         self.contiguous_closed_bars = 0
 
+    def recompute_contiguity_from_sequence(self, candles: List[ValidatedCandle]) -> int:
+        """Recompute contiguous closed bars streak across a sequence of candles in chronological order.
+
+        Takes into account any recovered gaps: if consecutive bars have a gap, but that gap is marked
+        as recovered, continuity is maintained across the recovered region.
+        """
+        if not candles:
+            self.contiguous_closed_bars = 0
+            return 0
+
+        streak = 1
+        for i in range(1, len(candles)):
+            prev_ts = candles[i - 1].timestamp_open
+            curr_ts = candles[i].timestamp_open
+            expected_ts = prev_ts + CANDLE_INTERVAL_MS
+
+            if curr_ts == expected_ts:
+                streak += 1
+            elif curr_ts > expected_ts:
+                # Check if any unrecovered gap overlaps this range
+                has_unrec = any(
+                    (not g.recovered) and (g.missing_start_ts <= curr_ts and g.missing_end_ts >= expected_ts)
+                    for g in self.gaps
+                )
+                if has_unrec:
+                    streak = 1
+                else:
+                    bars_jump = (curr_ts - prev_ts) // CANDLE_INTERVAL_MS
+                    streak += bars_jump
+
+        self.contiguous_closed_bars = streak
+        return self.contiguous_closed_bars
+
     def register_recovered_gap(
         self,
         gap_id: str,
         recovered_candles: List[ValidatedCandle],
+        candles_sequence: Optional[List[ValidatedCandle]] = None,
     ) -> Tuple[bool, str]:
-        """Apply gap recovery candles, enforcing strict REST_GAP_RECOVERY provenance."""
+        """Apply gap recovery candles, enforcing strict REST_GAP_RECOVERY provenance and updating contiguity."""
         target_gap = None
         for g in self.gaps:
             if g.gap_id == gap_id:
@@ -196,6 +230,11 @@ class MarketDataGapDetector:
 
         for ts in target_gap.missing_timestamps:
             self._missing_ts_set.discard(ts)
+
+        if candles_sequence:
+            self.recompute_contiguity_from_sequence(candles_sequence)
+        elif not self.has_unrecovered_gaps:
+            self.contiguous_closed_bars += len(recovered_candles)
 
         logger.info(f"Gap {gap_id} successfully marked as recovered via {target_gap.recovery_provenance}.")
         return True, "GAP_RECOVERED_SUCCESSFULLY"

@@ -128,7 +128,7 @@ class LiveCaptureService:
             self.config = config
 
         self.transport = transport or BinanceSpotWebSocketAdapter(self.config)
-        self.rest_adapter = rest_adapter
+        self.rest_adapter = rest_adapter if rest_adapter is not None else BinanceSpotRestAdapter(self.config)
         self.engine = MarketCaptureEngineV080(
             config=self.config,
             transport=self.transport,
@@ -191,17 +191,17 @@ class LiveCaptureService:
                     time.sleep(0.1)
                 else:
                     ticks_processed += 1
-                    # Handle automatic gap recovery if REST adapter is attached
-                    if tick_result.get("gap_detected") and self.rest_adapter is not None:
-                        gap_event = tick_result.get("gap_event")
-                        if gap_event:
-                            gap_id = gap_event["gap_id"]
-                            logger.info(f"Sequence gap detected ({gap_id}). Triggering REST recovery...")
-                            ok, msg = self.engine.recover_gap_via_rest(gap_id, self.rest_adapter)
+
+                # Handle automatic gap recovery if REST adapter is attached and unrecovered gaps exist
+                if self.rest_adapter is not None and self.engine.gap_detector.has_unrecovered_gaps:
+                    for g in list(self.engine.gap_detector.gaps):
+                        if not g.recovered:
+                            logger.info(f"Unrecovered sequence gap detected ({g.gap_id}). Triggering REST recovery...")
+                            ok, msg = self.engine.recover_gap_via_rest(g.gap_id, self.rest_adapter)
                             if ok:
-                                logger.info(f"Gap {gap_id} successfully recovered via REST.")
+                                logger.info(f"Gap {g.gap_id} successfully recovered via REST.")
                             else:
-                                logger.warning(f"REST gap recovery failed for {gap_id}: {msg}")
+                                logger.warning(f"REST gap recovery failed for {g.gap_id}: {msg}")
 
                 now = time.time()
                 # Periodically refresh writer heartbeat (every 30s) while service is alive

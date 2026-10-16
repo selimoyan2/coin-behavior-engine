@@ -13,6 +13,7 @@ Coordinates:
 from __future__ import annotations
 
 import collections
+from datetime import datetime, timezone
 import logging
 import os
 import sys
@@ -27,6 +28,11 @@ from coin_behavior_engine.shadow_v080.market_data_contract import (
     MarketType,
     ProvenanceSource,
     ValidatedCandle,
+)
+from coin_behavior_engine.shadow_v080.gap_recovery_store import (
+    ConflictingRecoveryCandleError,
+    DurableGapRecoveryStore,
+    RecoveryStorePersistenceError,
 )
 from coin_behavior_engine.shadow_v080.raw_evidence_store import (
     ConflictingCandleError,
@@ -69,6 +75,12 @@ class MarketCaptureEngineV080:
             symbol=config.symbol,
             interval=config.interval,
         )
+        self.recovery_store = DurableGapRecoveryStore(
+            raw_market_dir=config.raw_market_dir,
+            quarantine_dir=config.quarantine_dir,
+            symbol=config.symbol,
+            interval=config.interval,
+        )
 
         self.total_received = 0
         self.total_validated = 0
@@ -81,7 +93,7 @@ class MarketCaptureEngineV080:
         self._reconstruct_state_from_evidence()
 
     def _reconstruct_state_from_evidence(self) -> None:
-        """Deterministically reconstruct engine state (gap detector, rolling buffer, totals) from verified evidence ledger."""
+        """Deterministically reconstruct engine state (gap detector, rolling buffer, totals) from verified evidence ledger and durable recovery store."""
         self.rolling_buffer.clear()
         self.gap_detector = MarketDataGapDetector(full_warmup_bars=self.config.full_warmup_bars)
 
@@ -91,8 +103,31 @@ class MarketCaptureEngineV080:
         reconstructed_count = 0
         for candle in self.evidence_store.iter_candles():
             reconstructed_count += 1
-            self.gap_detector.process_next_candle(candle)
-            self.rolling_buffer.append(candle)
+            is_contig, gap_event = self.gap_detector.evaluate_next_candle(candle)
+            if not is_contig and gap_event is not None:
+                # Check if this gap was durably committed in recovery store
+                committed_meta = self.recovery_store.get_committed_gap(gap_event.gap_id)
+                if committed_meta is not None:
+                    rec_candles = self.recovery_store.get_recovered_candles_for_gap(gap_event.gap_id)
+                    # Replay recovered candles into rolling buffer and contiguity tracker
+                    for rc in rec_candles:
+                        self.gap_detector.commit_candle(rc, is_contiguous=True, gap_event=None)
+                        self.rolling_buffer.append(rc)
+                    gap_event.recovered = True
+                    gap_event.recovered_at_utc = committed_meta.recovered_at_utc
+                    gap_event.recovery_provenance = ProvenanceSource.REST_GAP_RECOVERY.value
+                    gap_event.recovered_candles_count = len(rec_candles)
+                    self.gap_detector.gaps.append(gap_event)
+                    # Commit current candle as contiguous following the recovered bridge
+                    self.gap_detector.commit_candle(candle, is_contiguous=True, gap_event=None)
+                    self.rolling_buffer.append(candle)
+                else:
+                    self.gap_detector.commit_candle(candle, is_contiguous=False, gap_event=gap_event)
+                    self.rolling_buffer.append(candle)
+            else:
+                self.gap_detector.commit_candle(candle, is_contiguous=is_contig, gap_event=gap_event)
+                self.rolling_buffer.append(candle)
+
             if self.is_research_eligible:
                 candle.lifecycle_state = CandleLifecycleState.CANDLE_RESEARCH_ELIGIBLE.value
             else:
@@ -355,9 +390,23 @@ class MarketCaptureEngineV080:
         self,
         gap_id: str,
         rest_adapter: Any,
+        force_disk_error: bool = False,
     ) -> Tuple[bool, str]:
-        """Fetch missing candles for a detected gap using REST adapter with strict REST_GAP_RECOVERY provenance."""
+        """Fetch missing candles for a detected gap using REST adapter with strict REST_GAP_RECOVERY provenance.
+
+        Enforces transactional recovery semantics:
+        1. Gap verification and unrecovered status check.
+        2. Bounded REST fetch (<=500 bars).
+        3. Strict candle validation and closed flag check.
+        4. Exact timestamp match against missing timestamps.
+        5. Durable append to recovery journal + fsync.
+        6. Durability read-back confirmation.
+        7. Commit recovery metadata + fsync.
+        8. Splicing into rolling buffer.
+        9. Commit to gap detector and recompute contiguity.
+        """
         import json
+        import time
 
         # Find target gap in detector
         target_gap = None
@@ -370,6 +419,10 @@ class MarketCaptureEngineV080:
             return False, f"Gap ID {gap_id} not found."
         if target_gap.recovered:
             return False, f"Gap {gap_id} is already marked as recovered."
+
+        # Bounded request check
+        if target_gap.missing_bars_count > 500:
+            return False, f"Gap size {target_gap.missing_bars_count} exceeds maximum bounded limit of 500 bars."
 
         # Fetch missing klines via REST
         try:
@@ -393,33 +446,68 @@ class MarketCaptureEngineV080:
             )
             if violations or candle is None:
                 return False, f"Gap candle failed validation: {'; '.join(violations)}"
+            if not candle.is_closed:
+                return False, "UNCLOSED_CANDLE_IN_RECOVERY: Recovered candles must be closed."
             if candle.timestamp_open in target_gap.missing_timestamps:
                 recovered_candles.append(candle)
 
-        if len(recovered_candles) != target_gap.missing_bars_count:
+        # Sort candidate recovered candles chronologically
+        recovered_candles.sort(key=lambda c: c.timestamp_open)
+
+        # Exact timestamp verification
+        cand_ts = [c.timestamp_open for c in recovered_candles]
+        if cand_ts != target_gap.missing_timestamps:
             return False, (
-                f"Fetched {len(recovered_candles)} valid gap candles, "
-                f"expected {target_gap.missing_bars_count}"
+                f"RECOVERY_MISMATCH: Fetched {len(recovered_candles)} valid candles ({cand_ts}), "
+                f"expected {target_gap.missing_bars_count} ({target_gap.missing_timestamps})"
             )
 
-        success, msg = self.gap_detector.register_recovered_gap(gap_id, recovered_candles)
-        if success:
-            audit_file = self.evidence_store.quarantine_dir / "gap_recovery_audit.jsonl"
-            audit_entry = {
-                "gap_id": gap_id,
-                "recovered_at_utc": target_gap.recovered_at_utc,
-                "recovery_provenance": target_gap.recovery_provenance,
-                "missing_start_ts": target_gap.missing_start_ts,
-                "missing_end_ts": target_gap.missing_end_ts,
-                "recovered_candles_count": target_gap.recovered_candles_count,
-            }
-            try:
-                with open(audit_file, "a", encoding="utf-8") as af:
-                    af.write(json.dumps(audit_entry, sort_keys=True) + "\n")
-                    af.flush()
-                    os.fsync(af.fileno())
-            except Exception as e:
-                logger.warning(f"Failed to record gap recovery audit: {e}")
+        # Durably persist via recovery store with fsync
+        recovery_batch_id = f"REC-{gap_id}-{int(time.time() * 1000)}"
+        source_meta = {
+            "symbol": self.config.symbol,
+            "interval": self.config.interval,
+            "rest_url": getattr(rest_adapter, "base_url", "https://api.binance.com/api/v3/klines"),
+            "recovered_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        }
+
+        try:
+            ok, msg = self.recovery_store.persist_recovery_batch(
+                gap_id=gap_id,
+                recovery_batch_id=recovery_batch_id,
+                missing_start_ts=target_gap.missing_start_ts,
+                missing_end_ts=target_gap.missing_end_ts,
+                missing_timestamps=target_gap.missing_timestamps,
+                recovered_candles=recovered_candles,
+                source_metadata=source_meta,
+                force_disk_error=force_disk_error,
+            )
+            if not ok:
+                return False, f"PERSISTENCE_FAILED: {msg}"
+        except Exception as e:
+            logger.critical(f"FATAL: Durable gap recovery persistence failed: {e}")
+            return False, f"PERSISTENCE_EXCEPTION: {e}"
+
+        # Splice into rolling buffer chronologically
+        buffer_list = list(self.rolling_buffer)
+        all_candles = buffer_list + recovered_candles
+        seen_ts = set()
+        deduped = []
+        for c in sorted(all_candles, key=lambda x: x.timestamp_open):
+            if c.timestamp_open not in seen_ts:
+                seen_ts.add(c.timestamp_open)
+                deduped.append(c)
+
+        self.rolling_buffer.clear()
+        for c in deduped[-self.rolling_buffer.maxlen:]:
+            self.rolling_buffer.append(c)
+
+        # Commit to gap detector and recompute contiguity
+        success, msg = self.gap_detector.register_recovered_gap(
+            gap_id=gap_id,
+            recovered_candles=recovered_candles,
+            candles_sequence=list(self.rolling_buffer),
+        )
 
         return success, msg
 
@@ -443,4 +531,6 @@ class MarketCaptureEngineV080:
             "approval_4_isolated": self.verify_approval_4_isolation(),
             "latest_entry_hash": self.evidence_store.latest_entry_hash,
             "evidence_entries_count": self.evidence_store.count,
+            "recovery_journal_entries": self.recovery_store.entry_count,
+            "committed_gaps_count": self.recovery_store.committed_gaps_count,
         }
