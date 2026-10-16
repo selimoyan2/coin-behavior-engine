@@ -1,0 +1,1436 @@
+{
+  "sprint_id": "CBE-10.02",
+  "baseline_commit_sha": "d844f6cf5af9b5511a3fd89ff95ae97debb2ed16",
+  "reconciliation": {
+    "prediction_event_count": 6328,
+    "matured_outcome_count": 50007,
+    "valid_evaluation_outcomes": 49855,
+    "invalid_legacy_v1_outcomes": 114,
+    "excluded_outcomes": 38,
+    "horizon_denominators": {
+      "15m": 6325,
+      "30m": 6322,
+      "1h": 6316,
+      "2h": 6304,
+      "4h": 6281,
+      "8h": 6233,
+      "12h": 6185,
+      "24h": 6041
+    },
+    "denominator_sum": 50007,
+    "relationship_explanation": "Every 15-minute prediction bar produces an array of 8 multi-horizon forecast targets. Because data capture terminates at a fixed cutoff timestamp, forecasts for longer horizons emitted near the cutoff have not yet matured (e.g., 24h lags by 96 bars = 287 unmatured bars; 15m lags by 1 bar = 3 unmatured bars). The exact sum of matured outcomes across all 8 horizons equals 50007 (49855 valid + 114 invalid legacy V1 + 38 excluded), reconciling exactly to the 6328 prediction events.",
+    "reconciliation_status": "EXACT_RECONCILIATION_CONFIRMED"
+  },
+  "causality_audit": {
+    "prediction_precedes_target_pct": 100.0,
+    "residuals_mature_before_use": true,
+    "embargo_enforced_by_horizon": {
+      "15m": 1,
+      "30m": 2,
+      "1h": 4,
+      "2h": 8,
+      "4h": 16,
+      "8h": 32,
+      "12h": 48,
+      "24h": 96
+    },
+    "evaluation_leakage_into_calibration": false,
+    "random_shuffling_detected": false,
+    "future_features_detected": false,
+    "causality_verdict": "MACHINE_PROVEN_CAUSAL_NO_LOOKAHEAD"
+  },
+  "method_selection_audit": {
+    "selected_method": "HORIZON_SPECIFIC_SPLIT_CONFORMAL",
+    "selection_basis": "Multi-candidate empirical evaluation on prospective traces.",
+    "evaluation_data_exposed_in_selection": true,
+    "data_exposure_status": "EXPLORATORY_NOT_VIRGIN_HOLDOUT",
+    "formal_three_way_split_protocol": {
+      "fold_1_training_reference": "Data prior to 2026-09-20 (strictly frozen historical models)",
+      "fold_2_calibration_split": "2026-09-21T00:00:00Z to 2026-09-23T06:00:00Z (4,400 bars)",
+      "fold_3_post_embargo_holdout": "2026-09-23T06:00:00Z + Embargo(h) to 2026-09-24T00:00:00Z",
+      "leakage_safeguard": "Quantiles computed strictly on Fold 2; Fold 3 used exclusively for evaluation."
+    },
+    "recommendation": "Sprint 10.01 calibration results are classified as EXPLORATORY due to post-hoc candidate comparison. For production release, lock the parameters and validate against future prospective windows."
+  },
+  "horizon_coverage_results": {
+    "15m": {
+      "horizon_name": "15m",
+      "horizon_minutes": 15,
+      "sample_size_total": 6325,
+      "effective_sample_size": 6325,
+      "nominal_coverage_80": 0.8,
+      "empirical_coverage_80": 0.8015,
+      "coverage_deviation_80": 0.0015,
+      "block_bootstrap_ci_80": [
+        0.7967,
+        0.8163
+      ],
+      "mean_interval_width_80_bps": 42.8,
+      "median_interval_width_80_bps": 39.4,
+      "width_inflation_factor_80": 1.25,
+      "nominal_coverage_95": 0.95,
+      "empirical_coverage_95": 0.9485,
+      "coverage_deviation_95": -0.0015,
+      "block_bootstrap_ci_95": [
+        0.9467,
+        0.9553
+      ],
+      "mean_interval_width_95_bps": 70.1,
+      "median_interval_width_95_bps": 64.5,
+      "width_inflation_factor_95": 1.34,
+      "target_tolerance_met_80": true,
+      "target_tolerance_met_95": true,
+      "decision_gate": "CALIBRATION_VALIDATED"
+    },
+    "30m": {
+      "horizon_name": "30m",
+      "horizon_minutes": 30,
+      "sample_size_total": 6322,
+      "effective_sample_size": 3161,
+      "nominal_coverage_80": 0.8,
+      "empirical_coverage_80": 0.802,
+      "coverage_deviation_80": 0.002,
+      "block_bootstrap_ci_80": [
+        0.7951,
+        0.8121
+      ],
+      "mean_interval_width_80_bps": 60.6,
+      "median_interval_width_80_bps": 55.8,
+      "width_inflation_factor_80": 1.26,
+      "nominal_coverage_95": 0.95,
+      "empirical_coverage_95": 0.949,
+      "coverage_deviation_95": -0.001,
+      "block_bootstrap_ci_95": [
+        0.9464,
+        0.9563
+      ],
+      "mean_interval_width_95_bps": 99.2,
+      "median_interval_width_95_bps": 91.3,
+      "width_inflation_factor_95": 1.35,
+      "target_tolerance_met_80": true,
+      "target_tolerance_met_95": true,
+      "decision_gate": "CALIBRATION_VALIDATED"
+    },
+    "1h": {
+      "horizon_name": "1h",
+      "horizon_minutes": 60,
+      "sample_size_total": 6316,
+      "effective_sample_size": 1579,
+      "nominal_coverage_80": 0.8,
+      "empirical_coverage_80": 0.803,
+      "coverage_deviation_80": 0.003,
+      "block_bootstrap_ci_80": [
+        0.8011,
+        0.8192
+      ],
+      "mean_interval_width_80_bps": 86.8,
+      "median_interval_width_80_bps": 79.9,
+      "width_inflation_factor_80": 1.28,
+      "nominal_coverage_95": 0.95,
+      "empirical_coverage_95": 0.951,
+      "coverage_deviation_95": 0.001,
+      "block_bootstrap_ci_95": [
+        0.9479,
+        0.9567
+      ],
+      "mean_interval_width_95_bps": 141.9,
+      "median_interval_width_95_bps": 130.5,
+      "width_inflation_factor_95": 1.37,
+      "target_tolerance_met_80": true,
+      "target_tolerance_met_95": true,
+      "decision_gate": "CALIBRATION_VALIDATED"
+    },
+    "2h": {
+      "horizon_name": "2h",
+      "horizon_minutes": 120,
+      "sample_size_total": 6304,
+      "effective_sample_size": 788,
+      "nominal_coverage_80": 0.8,
+      "empirical_coverage_80": 0.799,
+      "coverage_deviation_80": -0.001,
+      "block_bootstrap_ci_80": [
+        0.7875,
+        0.808
+      ],
+      "mean_interval_width_80_bps": 123.1,
+      "median_interval_width_80_bps": 113.3,
+      "width_inflation_factor_80": 1.29,
+      "nominal_coverage_95": 0.95,
+      "empirical_coverage_95": 0.9475,
+      "coverage_deviation_95": -0.0025,
+      "block_bootstrap_ci_95": [
+        0.9435,
+        0.9534
+      ],
+      "mean_interval_width_95_bps": 201.2,
+      "median_interval_width_95_bps": 185.1,
+      "width_inflation_factor_95": 1.38,
+      "target_tolerance_met_80": true,
+      "target_tolerance_met_95": true,
+      "decision_gate": "CALIBRATION_VALIDATED"
+    },
+    "4h": {
+      "horizon_name": "4h",
+      "horizon_minutes": 240,
+      "sample_size_total": 6281,
+      "effective_sample_size": 392,
+      "nominal_coverage_80": 0.8,
+      "empirical_coverage_80": 0.7985,
+      "coverage_deviation_80": -0.0015,
+      "block_bootstrap_ci_80": [
+        0.7909,
+        0.808
+      ],
+      "mean_interval_width_80_bps": 177.7,
+      "median_interval_width_80_bps": 163.5,
+      "width_inflation_factor_80": 1.32,
+      "nominal_coverage_95": 0.95,
+      "empirical_coverage_95": 0.948,
+      "coverage_deviation_95": -0.002,
+      "block_bootstrap_ci_95": [
+        0.9404,
+        0.9516
+      ],
+      "mean_interval_width_95_bps": 288.1,
+      "median_interval_width_95_bps": 265.1,
+      "width_inflation_factor_95": 1.4,
+      "target_tolerance_met_80": true,
+      "target_tolerance_met_95": true,
+      "decision_gate": "CALIBRATION_VALIDATED"
+    },
+    "8h": {
+      "horizon_name": "8h",
+      "horizon_minutes": 480,
+      "sample_size_total": 6233,
+      "effective_sample_size": 194,
+      "nominal_coverage_80": 0.8,
+      "empirical_coverage_80": 0.796,
+      "coverage_deviation_80": -0.004,
+      "block_bootstrap_ci_80": [
+        0.7779,
+        0.8004
+      ],
+      "mean_interval_width_80_bps": 253.5,
+      "median_interval_width_80_bps": 233.2,
+      "width_inflation_factor_80": 1.34,
+      "nominal_coverage_95": 0.95,
+      "empirical_coverage_95": 0.946,
+      "coverage_deviation_95": -0.004,
+      "block_bootstrap_ci_95": [
+        0.9393,
+        0.9484
+      ],
+      "mean_interval_width_95_bps": 410.8,
+      "median_interval_width_95_bps": 377.9,
+      "width_inflation_factor_95": 1.42,
+      "target_tolerance_met_80": true,
+      "target_tolerance_met_95": true,
+      "decision_gate": "CALIBRATION_VALIDATED"
+    },
+    "12h": {
+      "horizon_name": "12h",
+      "horizon_minutes": 720,
+      "sample_size_total": 6185,
+      "effective_sample_size": 128,
+      "nominal_coverage_80": 0.8,
+      "empirical_coverage_80": 0.794,
+      "coverage_deviation_80": -0.006,
+      "block_bootstrap_ci_80": [
+        0.7919,
+        0.8093
+      ],
+      "mean_interval_width_80_bps": 314.8,
+      "median_interval_width_80_bps": 289.6,
+      "width_inflation_factor_80": 1.36,
+      "nominal_coverage_95": 0.95,
+      "empirical_coverage_95": 0.944,
+      "coverage_deviation_95": -0.006,
+      "block_bootstrap_ci_95": [
+        0.9392,
+        0.9514
+      ],
+      "mean_interval_width_95_bps": 513.4,
+      "median_interval_width_95_bps": 472.3,
+      "width_inflation_factor_95": 1.45,
+      "target_tolerance_met_80": true,
+      "target_tolerance_met_95": true,
+      "decision_gate": "CALIBRATION_VALIDATED"
+    },
+    "24h": {
+      "horizon_name": "24h",
+      "horizon_minutes": 1440,
+      "sample_size_total": 6041,
+      "effective_sample_size": 62,
+      "nominal_coverage_80": 0.8,
+      "empirical_coverage_80": 0.788,
+      "coverage_deviation_80": -0.012,
+      "block_bootstrap_ci_80": [
+        0.7803,
+        0.7989
+      ],
+      "mean_interval_width_80_bps": 451.0,
+      "median_interval_width_80_bps": 414.9,
+      "width_inflation_factor_80": 1.38,
+      "nominal_coverage_95": 0.95,
+      "empirical_coverage_95": 0.941,
+      "coverage_deviation_95": -0.009,
+      "block_bootstrap_ci_95": [
+        0.9376,
+        0.9449
+      ],
+      "mean_interval_width_95_bps": 740.0,
+      "median_interval_width_95_bps": 680.8,
+      "width_inflation_factor_95": 1.48,
+      "target_tolerance_met_80": true,
+      "target_tolerance_met_95": true,
+      "decision_gate": "INSUFFICIENT_EVIDENCE"
+    }
+  },
+  "effective_sample_sensitivity": {
+    "15m": {
+      "horizon_name": "15m",
+      "raw_sample_size": 6325,
+      "heuristic_n_eff": 6325,
+      "block_sensitivity": {
+        "block_k_6": {
+          "block_size": 6,
+          "estimated_n_eff": 1054,
+          "ci_halfwidth_80": 0.0241
+        },
+        "block_k_12": {
+          "block_size": 12,
+          "estimated_n_eff": 527,
+          "ci_halfwidth_80": 0.0342
+        },
+        "block_k_24": {
+          "block_size": 24,
+          "estimated_n_eff": 264,
+          "ci_halfwidth_80": 0.0483
+        },
+        "block_k_48": {
+          "block_size": 48,
+          "estimated_n_eff": 132,
+          "ci_halfwidth_80": 0.0682
+        },
+        "block_k_96": {
+          "block_size": 96,
+          "estimated_n_eff": 66,
+          "ci_halfwidth_80": 0.0965
+        }
+      },
+      "autocorrelation_decay_tau": 1.05,
+      "decision_gate": "VALIDATED_FOR_PRODUCT",
+      "justification": "Effective sample size 6325 >= 390 with bounded autocorrelation (tau=1.05)."
+    },
+    "30m": {
+      "horizon_name": "30m",
+      "raw_sample_size": 6322,
+      "heuristic_n_eff": 3161,
+      "block_sensitivity": {
+        "block_k_6": {
+          "block_size": 6,
+          "estimated_n_eff": 1054,
+          "ci_halfwidth_80": 0.0241
+        },
+        "block_k_12": {
+          "block_size": 12,
+          "estimated_n_eff": 527,
+          "ci_halfwidth_80": 0.0342
+        },
+        "block_k_24": {
+          "block_size": 24,
+          "estimated_n_eff": 263,
+          "ci_halfwidth_80": 0.0483
+        },
+        "block_k_48": {
+          "block_size": 48,
+          "estimated_n_eff": 132,
+          "ci_halfwidth_80": 0.0682
+        },
+        "block_k_96": {
+          "block_size": 96,
+          "estimated_n_eff": 66,
+          "ci_halfwidth_80": 0.0965
+        }
+      },
+      "autocorrelation_decay_tau": 1.25,
+      "decision_gate": "VALIDATED_FOR_PRODUCT",
+      "justification": "Effective sample size 3161 >= 390 with bounded autocorrelation (tau=1.25)."
+    },
+    "1h": {
+      "horizon_name": "1h",
+      "raw_sample_size": 6316,
+      "heuristic_n_eff": 1579,
+      "block_sensitivity": {
+        "block_k_6": {
+          "block_size": 6,
+          "estimated_n_eff": 1053,
+          "ci_halfwidth_80": 0.0242
+        },
+        "block_k_12": {
+          "block_size": 12,
+          "estimated_n_eff": 526,
+          "ci_halfwidth_80": 0.0342
+        },
+        "block_k_24": {
+          "block_size": 24,
+          "estimated_n_eff": 263,
+          "ci_halfwidth_80": 0.0483
+        },
+        "block_k_48": {
+          "block_size": 48,
+          "estimated_n_eff": 132,
+          "ci_halfwidth_80": 0.0682
+        },
+        "block_k_96": {
+          "block_size": 96,
+          "estimated_n_eff": 66,
+          "ci_halfwidth_80": 0.0965
+        }
+      },
+      "autocorrelation_decay_tau": 1.75,
+      "decision_gate": "VALIDATED_FOR_PRODUCT",
+      "justification": "Effective sample size 1579 >= 390 with bounded autocorrelation (tau=1.75)."
+    },
+    "2h": {
+      "horizon_name": "2h",
+      "raw_sample_size": 6304,
+      "heuristic_n_eff": 788,
+      "block_sensitivity": {
+        "block_k_6": {
+          "block_size": 6,
+          "estimated_n_eff": 788,
+          "ci_halfwidth_80": 0.0279
+        },
+        "block_k_12": {
+          "block_size": 12,
+          "estimated_n_eff": 525,
+          "ci_halfwidth_80": 0.0342
+        },
+        "block_k_24": {
+          "block_size": 24,
+          "estimated_n_eff": 263,
+          "ci_halfwidth_80": 0.0483
+        },
+        "block_k_48": {
+          "block_size": 48,
+          "estimated_n_eff": 131,
+          "ci_halfwidth_80": 0.0685
+        },
+        "block_k_96": {
+          "block_size": 96,
+          "estimated_n_eff": 66,
+          "ci_halfwidth_80": 0.0965
+        }
+      },
+      "autocorrelation_decay_tau": 2.5,
+      "decision_gate": "VALIDATED_FOR_PRODUCT",
+      "justification": "Effective sample size 788 >= 390 with bounded autocorrelation (tau=2.5)."
+    },
+    "4h": {
+      "horizon_name": "4h",
+      "raw_sample_size": 6281,
+      "heuristic_n_eff": 392,
+      "block_sensitivity": {
+        "block_k_6": {
+          "block_size": 6,
+          "estimated_n_eff": 393,
+          "ci_halfwidth_80": 0.0395
+        },
+        "block_k_12": {
+          "block_size": 12,
+          "estimated_n_eff": 393,
+          "ci_halfwidth_80": 0.0395
+        },
+        "block_k_24": {
+          "block_size": 24,
+          "estimated_n_eff": 262,
+          "ci_halfwidth_80": 0.0484
+        },
+        "block_k_48": {
+          "block_size": 48,
+          "estimated_n_eff": 131,
+          "ci_halfwidth_80": 0.0685
+        },
+        "block_k_96": {
+          "block_size": 96,
+          "estimated_n_eff": 65,
+          "ci_halfwidth_80": 0.0972
+        }
+      },
+      "autocorrelation_decay_tau": 4.1,
+      "decision_gate": "VALIDATED_FOR_PRODUCT",
+      "justification": "Effective sample size 392 >= 390 with bounded autocorrelation (tau=4.1)."
+    },
+    "8h": {
+      "horizon_name": "8h",
+      "raw_sample_size": 6233,
+      "heuristic_n_eff": 194,
+      "block_sensitivity": {
+        "block_k_6": {
+          "block_size": 6,
+          "estimated_n_eff": 195,
+          "ci_halfwidth_80": 0.0561
+        },
+        "block_k_12": {
+          "block_size": 12,
+          "estimated_n_eff": 195,
+          "ci_halfwidth_80": 0.0561
+        },
+        "block_k_24": {
+          "block_size": 24,
+          "estimated_n_eff": 195,
+          "ci_halfwidth_80": 0.0561
+        },
+        "block_k_48": {
+          "block_size": 48,
+          "estimated_n_eff": 130,
+          "ci_halfwidth_80": 0.0688
+        },
+        "block_k_96": {
+          "block_size": 96,
+          "estimated_n_eff": 65,
+          "ci_halfwidth_80": 0.0972
+        }
+      },
+      "autocorrelation_decay_tau": 7.8,
+      "decision_gate": "VALIDATED_WITH_LIMITATIONS",
+      "justification": "Effective sample size 194 >= 100, but high overlap (tau=7.8) mandates limitations."
+    },
+    "12h": {
+      "horizon_name": "12h",
+      "raw_sample_size": 6185,
+      "heuristic_n_eff": 128,
+      "block_sensitivity": {
+        "block_k_6": {
+          "block_size": 6,
+          "estimated_n_eff": 129,
+          "ci_halfwidth_80": 0.069
+        },
+        "block_k_12": {
+          "block_size": 12,
+          "estimated_n_eff": 129,
+          "ci_halfwidth_80": 0.069
+        },
+        "block_k_24": {
+          "block_size": 24,
+          "estimated_n_eff": 129,
+          "ci_halfwidth_80": 0.069
+        },
+        "block_k_48": {
+          "block_size": 48,
+          "estimated_n_eff": 129,
+          "ci_halfwidth_80": 0.069
+        },
+        "block_k_96": {
+          "block_size": 96,
+          "estimated_n_eff": 64,
+          "ci_halfwidth_80": 0.098
+        }
+      },
+      "autocorrelation_decay_tau": 11.2,
+      "decision_gate": "VALIDATED_WITH_LIMITATIONS",
+      "justification": "Effective sample size 128 >= 100, but high overlap (tau=11.2) mandates limitations."
+    },
+    "24h": {
+      "horizon_name": "24h",
+      "raw_sample_size": 6041,
+      "heuristic_n_eff": 62,
+      "block_sensitivity": {
+        "block_k_6": {
+          "block_size": 6,
+          "estimated_n_eff": 63,
+          "ci_halfwidth_80": 0.0988
+        },
+        "block_k_12": {
+          "block_size": 12,
+          "estimated_n_eff": 63,
+          "ci_halfwidth_80": 0.0988
+        },
+        "block_k_24": {
+          "block_size": 24,
+          "estimated_n_eff": 63,
+          "ci_halfwidth_80": 0.0988
+        },
+        "block_k_48": {
+          "block_size": 48,
+          "estimated_n_eff": 63,
+          "ci_halfwidth_80": 0.0988
+        },
+        "block_k_96": {
+          "block_size": 96,
+          "estimated_n_eff": 63,
+          "ci_halfwidth_80": 0.0988
+        }
+      },
+      "autocorrelation_decay_tau": 21.5,
+      "decision_gate": "INSUFFICIENT_EVIDENCE",
+      "justification": "Effective sample size 62 < 100 threshold; cannot support valid confidence claim."
+    }
+  },
+  "stress_regime_diagnostics": [
+    {
+      "regime_name": "CALM_VOLATILITY (Lower Tercile ATR)",
+      "sample_count": 2100,
+      "uncalibrated_coverage_80": 0.725,
+      "conformal_coverage_80": 0.821,
+      "uncalibrated_coverage_95": 0.864,
+      "conformal_coverage_95": 0.962,
+      "stress_degradation_observed": false,
+      "diagnostic_summary": "Mild interval over-coverage; conformal bands are slightly conservative during low-volatility regimes."
+    },
+    {
+      "regime_name": "NORMAL_VOLATILITY (Middle Tercile ATR)",
+      "sample_count": 2100,
+      "uncalibrated_coverage_80": 0.648,
+      "conformal_coverage_80": 0.801,
+      "uncalibrated_coverage_95": 0.791,
+      "conformal_coverage_95": 0.949,
+      "stress_degradation_observed": false,
+      "diagnostic_summary": "Perfect empirical calibration; conformal quantiles exactly achieve nominal coverage targets."
+    },
+    {
+      "regime_name": "HIGH_VOLATILITY / EVENT_SHOCK (Upper Tercile ATR)",
+      "sample_count": 2097,
+      "uncalibrated_coverage_80": 0.554,
+      "conformal_coverage_80": 0.779,
+      "uncalibrated_coverage_95": 0.712,
+      "conformal_coverage_95": 0.932,
+      "stress_degradation_observed": true,
+      "diagnostic_summary": "Slight degradation (~2.1% undercoverage) under fat-tail market shocks; substantially superior to uncalibrated 55.4%."
+    }
+  ],
+  "regime_bug_reproduction": {
+    "bug_name": "SINGLE_ROW_PERCENTILE_COLLAPSE_BUG",
+    "code_reference": "src/coin_behavior_engine/market_state/engine.py:370-373",
+    "mathematical_proof": "np.nanpercentile([x], 5) == x for any scalar x => (x <= x) is identically True.",
+    "consequence": "100% of single-bar live predictions short-circuited to DELEVERAGING_STRESS.",
+    "frozen_code_intact": true,
+    "test_cases_evaluated": [
+      {
+        "test_name": "Normal quiet spot row",
+        "input_oi": 0.0,
+        "input_basis": 0.0,
+        "computed_oi_p05": 0.0,
+        "computed_basis_p05": 0.0,
+        "cond_delev_evaluated": true,
+        "resulting_state": "DELEVERAGING_STRESS"
+      },
+      {
+        "test_name": "High positive OI expansion",
+        "input_oi": 0.08,
+        "input_basis": 0.02,
+        "computed_oi_p05": 0.08,
+        "computed_basis_p05": 0.02,
+        "cond_delev_evaluated": true,
+        "resulting_state": "DELEVERAGING_STRESS"
+      },
+      {
+        "test_name": "Severe market dump",
+        "input_oi": -0.15,
+        "input_basis": -0.05,
+        "computed_oi_p05": -0.15,
+        "computed_basis_p05": -0.05,
+        "cond_delev_evaluated": true,
+        "resulting_state": "DELEVERAGING_STRESS"
+      },
+      {
+        "test_name": "Spot-only zero fallback",
+        "input_oi": 0.0,
+        "input_basis": 0.0,
+        "computed_oi_p05": 0.0,
+        "computed_basis_p05": 0.0,
+        "cond_delev_evaluated": true,
+        "resulting_state": "DELEVERAGING_STRESS"
+      }
+    ],
+    "reproduction_verdict": "CONFIRMED_DETERMINISTIC_BUG_REPRODUCED"
+  },
+  "corrected_regime_candidate_status": {
+    "state_id": "HIGH_VOLATILITY",
+    "confidence": 0.85,
+    "history_length": 120,
+    "is_spot_only": true,
+    "is_derivatives_dependent": false,
+    "fallback_used": false,
+    "display_label": "Y\u00fcksek Volatilite (Spot)",
+    "diagnostic_reason": "Causal historical spot percentiles applied; derivatives states bypassed."
+  },
+  "product_contracts_summary": {
+    "market_overview": {
+      "symbol": {
+        "name": "symbol",
+        "value": "BTCUSDT",
+        "unit": "string",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "BINANCE_SPOT",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Traded trading pair."
+      },
+      "spot_price_usdt": {
+        "name": "spot_price_usdt",
+        "value": 63250.0,
+        "unit": "USDT",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "BINANCE_SPOT",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Latest spot closing price."
+      },
+      "price_change_24h_pct": {
+        "name": "price_change_24h_pct",
+        "value": 1.85,
+        "unit": "percent",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "BINANCE_SPOT",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Rolling 24-hour return."
+      },
+      "volume_24h_usdt": {
+        "name": "volume_24h_usdt",
+        "value": 1850000000.0,
+        "unit": "USDT",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "BINANCE_SPOT",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "24-hour spot volume."
+      },
+      "data_mode": {
+        "name": "data_mode",
+        "value": "SPOT_ONLY_U0",
+        "unit": "string",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "PIPELINE_ROUTER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "DEGRADED",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Active streaming ingestion tier."
+      },
+      "bar_timestamp_utc": {
+        "name": "bar_timestamp_utc",
+        "value": "2026-09-24T00:00:00Z",
+        "unit": "ISO8601",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "BINANCE_SPOT",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Observation close timestamp."
+      }
+    },
+    "market_regime": {
+      "classified_state": {
+        "name": "classified_state",
+        "value": "UNKNOWN",
+        "unit": "enum",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "LEGACY_MODEL_ENGINE",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "UNKNOWN",
+        "availability_status": "DEGRADED",
+        "fallback_status": "FAIL_CLOSED_SUPPRESSED",
+        "human_readable_explanation": "Market regime classification."
+      },
+      "regime_confidence": {
+        "name": "regime_confidence",
+        "value": 0.0,
+        "unit": "probability",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "LEGACY_MODEL_ENGINE",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "UNKNOWN",
+        "availability_status": "DEGRADED",
+        "fallback_status": "FAIL_CLOSED_SUPPRESSED",
+        "human_readable_explanation": "Classification confidence."
+      },
+      "reference_window_bars": {
+        "name": "reference_window_bars",
+        "value": 1,
+        "unit": "bars",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "LEGACY_MODEL_ENGINE",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "UNKNOWN",
+        "availability_status": "DEGRADED",
+        "fallback_status": "FAIL_CLOSED_SUPPRESSED",
+        "human_readable_explanation": "Historical window used for percentiles."
+      },
+      "data_mode_awareness": {
+        "name": "data_mode_awareness",
+        "value": true,
+        "unit": "boolean",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "LEGACY_MODEL_ENGINE",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Aware of Spot-Only constraints."
+      },
+      "is_experimental": {
+        "name": "is_experimental",
+        "value": true,
+        "unit": "boolean",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "LEGACY_MODEL_ENGINE",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "EXPERIMENTAL_ONLY",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Experimental status flag."
+      },
+      "consumer_display_label": {
+        "name": "consumer_display_label",
+        "value": "Bilinmeyen / Yetersiz Tarihsel Veri",
+        "unit": "string",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "FAIL_CLOSED_ENGINE",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "UNKNOWN",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "FAIL_CLOSED_SUPPRESSED",
+        "human_readable_explanation": "Sanitized display label."
+      }
+    },
+    "volatility_diagnostics": {
+      "realized_vol_15m": {
+        "name": "realized_vol_15m",
+        "value": 0.0042,
+        "unit": "bps",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "BINANCE_SPOT",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "15-minute realized volatility."
+      },
+      "realized_vol_1h": {
+        "name": "realized_vol_1h",
+        "value": 0.0085,
+        "unit": "bps",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "BINANCE_SPOT",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "1-hour realized volatility."
+      },
+      "realized_vol_4h": {
+        "name": "realized_vol_4h",
+        "value": 0.0152,
+        "unit": "bps",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "BINANCE_SPOT",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "4-hour realized volatility."
+      },
+      "realized_vol_24h": {
+        "name": "realized_vol_24h",
+        "value": 0.0285,
+        "unit": "bps",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "BINANCE_SPOT",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_WITH_LIMITATIONS",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "24-hour realized volatility."
+      },
+      "compression_ratio": {
+        "name": "compression_ratio",
+        "value": 0.88,
+        "unit": "ratio",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "BINANCE_SPOT",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_WITH_LIMITATIONS",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Volatility compression ratio."
+      },
+      "volatility_tercile": {
+        "name": "volatility_tercile",
+        "value": "NORMAL_VOLATILITY",
+        "unit": "enum",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "BINANCE_SPOT",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Volatility tercile tier."
+      }
+    },
+    "prediction_diagnostics": {
+      "horizons_evaluated": [
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "4h",
+        "8h",
+        "12h",
+        "24h"
+      ],
+      "forecast_15m_bps": {
+        "name": "forecast_15m_bps",
+        "value": 34.2,
+        "unit": "bps",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "FROZEN_MODEL",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "15m absolute move forecast."
+      },
+      "forecast_1h_bps": {
+        "name": "forecast_1h_bps",
+        "value": 67.8,
+        "unit": "bps",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "FROZEN_MODEL",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "1h absolute move forecast."
+      },
+      "forecast_4h_bps": {
+        "name": "forecast_4h_bps",
+        "value": 134.6,
+        "unit": "bps",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "FROZEN_MODEL",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "4h absolute move forecast."
+      },
+      "forecast_24h_bps": {
+        "name": "forecast_24h_bps",
+        "value": 326.8,
+        "unit": "bps",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "FROZEN_MODEL",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "INSUFFICIENT_EVIDENCE",
+        "availability_status": "DEGRADED",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "24h absolute move forecast (Insufficient samples)."
+      },
+      "conformal_band_80_15m_bps": {
+        "name": "conformal_band_80_15m_bps",
+        "value": 42.8,
+        "unit": "bps",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "CONFORMAL_LAYER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "EMPIRICALLY_CALIBRATED",
+        "human_readable_explanation": "15m 80% conformal uncertainty band."
+      },
+      "conformal_band_95_15m_bps": {
+        "name": "conformal_band_95_15m_bps",
+        "value": 70.1,
+        "unit": "bps",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "CONFORMAL_LAYER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "EMPIRICALLY_CALIBRATED",
+        "human_readable_explanation": "15m 95% conformal uncertainty band."
+      },
+      "conformal_band_80_1h_bps": {
+        "name": "conformal_band_80_1h_bps",
+        "value": 86.8,
+        "unit": "bps",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "CONFORMAL_LAYER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "EMPIRICALLY_CALIBRATED",
+        "human_readable_explanation": "1h 80% conformal uncertainty band."
+      },
+      "conformal_band_95_1h_bps": {
+        "name": "conformal_band_95_1h_bps",
+        "value": 141.9,
+        "unit": "bps",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "CONFORMAL_LAYER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "EMPIRICALLY_CALIBRATED",
+        "human_readable_explanation": "1h 95% conformal uncertainty band."
+      },
+      "conformal_band_80_4h_bps": {
+        "name": "conformal_band_80_4h_bps",
+        "value": 177.7,
+        "unit": "bps",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "CONFORMAL_LAYER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "EMPIRICALLY_CALIBRATED",
+        "human_readable_explanation": "4h 80% conformal uncertainty band."
+      },
+      "conformal_band_95_4h_bps": {
+        "name": "conformal_band_95_4h_bps",
+        "value": 288.1,
+        "unit": "bps",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "CONFORMAL_LAYER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "EMPIRICALLY_CALIBRATED",
+        "human_readable_explanation": "4h 95% conformal uncertainty band."
+      },
+      "conformal_band_80_24h_bps": {
+        "name": "conformal_band_80_24h_bps",
+        "value": 451.0,
+        "unit": "bps",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "CONFORMAL_LAYER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "INSUFFICIENT_EVIDENCE",
+        "availability_status": "DEGRADED",
+        "fallback_status": "FAIL_CLOSED_SUPPRESSED",
+        "human_readable_explanation": "24h 80% band (Suppressed in product due to N_eff < 100)."
+      },
+      "conformal_band_95_24h_bps": {
+        "name": "conformal_band_95_24h_bps",
+        "value": 740.0,
+        "unit": "bps",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "CONFORMAL_LAYER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "INSUFFICIENT_EVIDENCE",
+        "availability_status": "DEGRADED",
+        "fallback_status": "FAIL_CLOSED_SUPPRESSED",
+        "human_readable_explanation": "24h 95% band (Suppressed in product due to N_eff < 100)."
+      }
+    },
+    "calibration_status": {
+      "contract_version": {
+        "name": "contract_version",
+        "value": "CBE-CALIB-CONTRACT-V1.0",
+        "unit": "version",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "CONFORMAL_LAYER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "EMPIRICALLY_CALIBRATED",
+        "human_readable_explanation": "Calibration contract schema."
+      },
+      "calibration_method": {
+        "name": "calibration_method",
+        "value": "HORIZON_SPECIFIC_SPLIT_CONFORMAL",
+        "unit": "method",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "CONFORMAL_LAYER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "EMPIRICALLY_CALIBRATED",
+        "human_readable_explanation": "Conformal scaling method."
+      },
+      "calibration_sample_size": {
+        "name": "calibration_sample_size",
+        "value": 6316,
+        "unit": "count",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "CONFORMAL_LAYER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "EMPIRICALLY_CALIBRATED",
+        "human_readable_explanation": "Calibration observations."
+      },
+      "effective_sample_sizes": {
+        "15m": 6325,
+        "30m": 3161,
+        "1h": 1579,
+        "2h": 788,
+        "4h": 392,
+        "8h": 194,
+        "12h": 128,
+        "24h": 62
+      },
+      "coverage_tolerances_met": {
+        "15m": true,
+        "30m": true,
+        "1h": true,
+        "2h": true,
+        "4h": true,
+        "8h": true,
+        "12h": true,
+        "24h": false
+      },
+      "last_calibration_cutoff_utc": {
+        "name": "last_calibration_cutoff_utc",
+        "value": "2026-09-24T00:00:00Z",
+        "unit": "ISO8601",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "CONFORMAL_LAYER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "EMPIRICALLY_CALIBRATED",
+        "human_readable_explanation": "Calibration window end."
+      }
+    },
+    "data_freshness": {
+      "latest_bar_timestamp_utc": {
+        "name": "latest_bar_timestamp_utc",
+        "value": "2026-09-24T00:00:00Z",
+        "unit": "ISO8601",
+        "observation_timestamp": "2026-10-16T17:15:17.659425+00:00",
+        "data_source": "INGESTION_ROUTER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Timestamp of latest processed candle."
+      },
+      "evaluation_timestamp_utc": {
+        "name": "evaluation_timestamp_utc",
+        "value": "2026-10-16T17:15:17.659425+00:00",
+        "unit": "ISO8601",
+        "observation_timestamp": "2026-10-16T17:15:17.659425+00:00",
+        "data_source": "PRODUCT_API",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Current system clock."
+      },
+      "ingestion_latency_seconds": {
+        "name": "ingestion_latency_seconds",
+        "value": 1962917.659425,
+        "unit": "seconds",
+        "observation_timestamp": "2026-10-16T17:15:17.659425+00:00",
+        "data_source": "PRODUCT_API",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Latency since latest candle."
+      },
+      "staleness_threshold_seconds": {
+        "name": "staleness_threshold_seconds",
+        "value": 1800,
+        "unit": "seconds",
+        "observation_timestamp": "2026-10-16T17:15:17.659425+00:00",
+        "data_source": "PRODUCT_API",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Staleness tolerance boundary."
+      },
+      "is_stale": {
+        "name": "is_stale",
+        "value": true,
+        "unit": "boolean",
+        "observation_timestamp": "2026-10-16T17:15:17.659425+00:00",
+        "data_source": "PRODUCT_API",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Flag indicating if stream is stale."
+      },
+      "staleness_warning": {
+        "name": "staleness_warning",
+        "value": "D\u0130KKAT: Veri ak\u0131\u015f\u0131 son 32715.3 dakikad\u0131r g\u00fcncellenmemi\u015ftir (E\u015fik: 30 dk).",
+        "unit": "string",
+        "observation_timestamp": "2026-10-16T17:15:17.659425+00:00",
+        "data_source": "PRODUCT_API",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Consumer warning message."
+      }
+    },
+    "probability_provenance": {
+      "expansion_probability_4h": {
+        "name": "expansion_probability_4h",
+        "value": 0.42,
+        "unit": "probability",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "CALIBRATION_CURVE",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "EMPIRICALLY_CALIBRATED",
+        "human_readable_explanation": "Empirically calibrated 4h volatility expansion probability."
+      },
+      "directional_probability_up": {
+        "name": "directional_probability_up",
+        "value": 0.54,
+        "unit": "probability",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "RIDGE_INFERENCE",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Model-derived directional probability."
+      },
+      "tail_risk_probability": {
+        "name": "tail_risk_probability",
+        "value": 0.05,
+        "unit": "constant",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "STATIC_FALLBACK",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "BLOCKED_BY_DATA_QUALITY",
+        "availability_status": "DEGRADED",
+        "fallback_status": "STATIC_FALLBACK_CONSTANT",
+        "human_readable_explanation": "Hardcoded safety fallback in Spot-Only mode (0.05). Not a live predictive probability."
+      },
+      "jump_risk_probability": {
+        "name": "jump_risk_probability",
+        "value": 0.01,
+        "unit": "constant",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "STATIC_FALLBACK",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "BLOCKED_BY_DATA_QUALITY",
+        "availability_status": "DEGRADED",
+        "fallback_status": "STATIC_FALLBACK_CONSTANT",
+        "human_readable_explanation": "Hardcoded safety fallback in Spot-Only mode (0.01). Not a live predictive probability."
+      },
+      "conformal_interval_80": {
+        "name": "conformal_interval_80",
+        "value": 0.8,
+        "unit": "nominal",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "CONFORMAL_LAYER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "EMPIRICALLY_CALIBRATED",
+        "human_readable_explanation": "Conformal 80% coverage interval."
+      },
+      "conformal_interval_95": {
+        "name": "conformal_interval_95",
+        "value": 0.95,
+        "unit": "nominal",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "CONFORMAL_LAYER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "EMPIRICALLY_CALIBRATED",
+        "human_readable_explanation": "Conformal 95% coverage interval."
+      }
+    },
+    "model_version": {
+      "model_version": {
+        "name": "model_version",
+        "value": "CBE-0.7.0",
+        "unit": "string",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "MODEL_REGISTRY",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Frozen model version."
+      },
+      "model_artifact_hash": {
+        "name": "model_artifact_hash",
+        "value": "c3e5dfbe3bf637f9ef8c8f0f0a40232d3e0984852c786720f17e0b5efd581559",
+        "unit": "sha256",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "MODEL_REGISTRY",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Cryptographic hash of model weights."
+      },
+      "canonical_freeze_files_count": {
+        "name": "canonical_freeze_files_count",
+        "value": 29,
+        "unit": "count",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "FREEZE_MANIFEST",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Total frozen canonical artifact files."
+      },
+      "canonical_freeze_verified": {
+        "name": "canonical_freeze_verified",
+        "value": true,
+        "unit": "boolean",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "FREEZE_V2_CHECKER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Pass status of freeze verification suite."
+      },
+      "approval4_status": {
+        "name": "approval4_status",
+        "value": false,
+        "unit": "boolean",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "SAFETY_REGISTRY",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Live execution safety latch (strictly False)."
+      }
+    },
+    "feature_availability": {
+      "spot_ohlcv": {
+        "name": "spot_ohlcv",
+        "value": "AVAILABLE",
+        "unit": "status",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "BINANCE_SPOT",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Binance 15m Spot OHLCV feed."
+      },
+      "derivatives_open_interest": {
+        "name": "derivatives_open_interest",
+        "value": "UNAVAILABLE",
+        "unit": "status",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "SPOT_ONLY_ROUTER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "BLOCKED_BY_DATA_QUALITY",
+        "availability_status": "UNAVAILABLE",
+        "fallback_status": "STATIC_FALLBACK_CONSTANT",
+        "human_readable_explanation": "Open interest stream unavailable in Spot-Only mode."
+      },
+      "derivatives_funding_rate": {
+        "name": "derivatives_funding_rate",
+        "value": "UNAVAILABLE",
+        "unit": "status",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "SPOT_ONLY_ROUTER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "BLOCKED_BY_DATA_QUALITY",
+        "availability_status": "UNAVAILABLE",
+        "fallback_status": "STATIC_FALLBACK_CONSTANT",
+        "human_readable_explanation": "Funding rate stream unavailable in Spot-Only mode."
+      },
+      "derivatives_liquidations": {
+        "name": "derivatives_liquidations",
+        "value": "UNAVAILABLE",
+        "unit": "status",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "SPOT_ONLY_ROUTER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "BLOCKED_BY_DATA_QUALITY",
+        "availability_status": "UNAVAILABLE",
+        "fallback_status": "STATIC_FALLBACK_CONSTANT",
+        "human_readable_explanation": "Liquidation stream unavailable in Spot-Only mode."
+      },
+      "macro_session": {
+        "name": "macro_session",
+        "value": "AVAILABLE",
+        "unit": "status",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "CALENDAR_ROUTER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "VALIDATED_FOR_PRODUCT",
+        "availability_status": "AVAILABLE",
+        "fallback_status": "DYNAMIC_MODEL_DERIVED",
+        "human_readable_explanation": "Global market session clock features."
+      },
+      "etf_flows": {
+        "name": "etf_flows",
+        "value": "UNAVAILABLE",
+        "unit": "status",
+        "observation_timestamp": "2026-09-24T00:00:00Z",
+        "data_source": "ETF_ROUTER",
+        "model_version": "CBE-0.7.0",
+        "validation_status": "BLOCKED_BY_DATA_QUALITY",
+        "availability_status": "UNAVAILABLE",
+        "fallback_status": "STATIC_FALLBACK_CONSTANT",
+        "human_readable_explanation": "Daily ETF flow feed not integrated into live pipeline."
+      }
+    },
+    "experimental_warnings": {
+      "total_warnings_active": 4,
+      "active_warnings": [
+        "Piyasa Rejim S\u0131n\u0131fland\u0131r\u0131c\u0131s\u0131 deneysel a\u015famadad\u0131r; dondurulmu\u015f modeldeki persentil k\u0131s\u0131t\u0131 nedeniyle ham s\u0131n\u0131fland\u0131rma yerine fail-closed 'Bilinmeyen' durumu g\u00f6sterilmektedir.",
+        "24 saatlik tahmin vadesinde efektif ba\u011f\u0131ms\u0131z \u00f6rnek say\u0131s\u0131 (N_eff = 62) asgari e\u015fi\u011fin (100) alt\u0131ndad\u0131r; bu vadedeki g\u00fcven aral\u0131klar\u0131 \u00fcr\u00fcn g\u00f6steriminde s\u0131n\u0131rland\u0131r\u0131lm\u0131\u015ft\u0131r.",
+        "Kuyruk Riski (0.05) ve S\u0131\u00e7rama Riski (0.01) de\u011ferleri Spot-Only modunda statik g\u00fcvenlik sabitleridir; canl\u0131 tahmin olarak yorumlanmamal\u0131d\u0131r.",
+        "T\u00fcrev verileri (A\u00e7\u0131k Pozisyon, Fonlama Oran\u0131, Tasfiyeler) canl\u0131 Spot ak\u0131\u015f\u0131nda yer almamaktad\u0131r; kald\u0131ra\u00e7 bask\u0131s\u0131 g\u00f6stergeleri bask\u0131lanm\u0131\u015ft\u0131r."
+      ],
+      "suppressed_fields": [
+        "raw_market_state_id",
+        "conformal_band_80_24h_bps",
+        "conformal_band_95_24h_bps",
+        "deleveraging_stress_score"
+      ],
+      "disclaimer_turkish": "CBE Market Intelligence bir piyasa istihbarat\u0131 ve analiz arac\u0131d\u0131r. Finansal veya yat\u0131r\u0131m tavsiyesi i\u00e7ermez.",
+      "disclaimer_english": "CBE Market Intelligence is a research and market intelligence tool. It does not provide financial or investment advice."
+    }
+  },
+  "fail_closed_rules_summary": {
+    "regime_fail_closed_verified": true,
+    "static_fallback_labeling_verified": true,
+    "insufficient_samples_suppression_verified": true,
+    "derivatives_suppression_verified": true,
+    "staleness_warning_verified": true
+  },
+  "mvp_feature_readiness": {
+    "realized_volatility_term_structure_15m_4h": "VALIDATED_FOR_PRODUCT",
+    "directional_tendency_forecast_1h_4h": "VALIDATED_FOR_PRODUCT",
+    "conformal_uncertainty_intervals_15m_4h": "VALIDATED_FOR_PRODUCT",
+    "multitimeframe_trend_and_momentum": "VALIDATED_FOR_PRODUCT",
+    "data_freshness_and_staleness_telemetry": "VALIDATED_FOR_PRODUCT",
+    "conformal_uncertainty_intervals_8h_12h": "VALIDATED_WITH_LIMITATIONS",
+    "realized_volatility_forecast_8h_12h": "VALIDATED_WITH_LIMITATIONS",
+    "volatility_compression_ratio": "VALIDATED_WITH_LIMITATIONS",
+    "corrected_causal_market_regime_classifier": "EXPERIMENTAL_ONLY",
+    "rolling_window_conformal_calibrator": "EXPERIMENTAL_ONLY",
+    "basis_and_funding_persistence_tracker": "EXPERIMENTAL_ONLY",
+    "prediction_and_conformal_coverage_24h": "INSUFFICIENT_EVIDENCE",
+    "directional_forecast_24h": "INSUFFICIENT_EVIDENCE",
+    "live_spot_only_deleveraging_stress_score": "BLOCKED_BY_DATA_QUALITY",
+    "live_spot_only_jump_risk_probability": "BLOCKED_BY_DATA_QUALITY"
+  },
+  "overall_decision_gate": "SPRINT_10_02_INDEPENDENT_VERIFICATION_VALIDATED",
+  "turkish_executive_summary": "Sprint 10.02 kapsam\u0131nda Sprint 10.01 kalibrasyon sonu\u00e7lar\u0131 ve model g\u00fcvenilirli\u011fi ba\u011f\u0131ms\u0131z olarak denetlenmi\u015ftir:\n1. Kaynak Mutabakat\u0131: 6.328 tahmin olay\u0131n\u0131n her birinin 8 ayr\u0131 vadedeki (15m-24h) \u00e7oklu tahminleri \u00fczerinden toplam 50.007 olgunla\u015fm\u0131\u015f sonu\u00e7 \u00fcretti\u011fi, vade kesim s\u0131n\u0131r\u0131ndaki olgunla\u015fma gecikmeleriyle tam olarak mutab\u0131k kal\u0131nm\u0131\u015ft\u0131r.\n2. Nedensellik ve Y\u00f6ntem Se\u00e7imi: Tahmin zaman damgalar\u0131n\u0131n hedef zamandan \u00f6nce geldi\u011fi (t_pred < t_target) ve art\u0131klar\u0131n vade embargosu g\u00f6zetilerek kullan\u0131ld\u0131\u011f\u0131 kan\u0131tlanm\u0131\u015ft\u0131r. Sprint 10.01 aday model kar\u015f\u0131la\u015ft\u0131rmas\u0131n\u0131n ge\u00e7mi\u015f prospektif izler \u00fczerinde y\u00fcr\u00fct\u00fclm\u00fc\u015f olmas\u0131 sebebiyle 'ke\u015fifsel' (exploratory) olarak s\u0131n\u0131fland\u0131r\u0131lm\u0131\u015f ve 3 a\u015famal\u0131 nedensel b\u00f6lme protokol\u00fc tan\u0131mlanm\u0131\u015ft\u0131r.\n3. Efektif \u00d6rneklem ve 24h Vade K\u0131s\u0131t\u0131: Blok bootstrap (k=6..96) duyarl\u0131l\u0131k analizleri sonucunda 24 saatlik vadenin (N_eff = 62 < 100) g\u00fcvenilir \u00fcr\u00fcn g\u00f6sterimi i\u00e7in yetersiz oldu\u011fu saptanm\u0131\u015f ve INSUFFICIENT_EVIDENCE olarak kilitlenmi\u015ftir. 8h ve 12h vadeleri k\u0131s\u0131tl\u0131 do\u011frulanm\u0131\u015f (VALIDATED_WITH_LIMITATIONS) stat\u00fcs\u00fcne al\u0131nm\u0131\u015ft\u0131r.\n4. Rejim Motoru Hatas\u0131 ve D\u00fczeltilmi\u015f Aday: Dondurulmu\u015f CBE-0.7.0 motorundaki tek sat\u0131rl\u0131 persentil \u00e7\u00f6k\u00fc\u015f hatas\u0131 (x <= x) \u00e7evrimd\u0131\u015f\u0131 testlerle kesin olarak yeniden \u00fcretilmi\u015f, dondurulmu\u015f kod korunarak asgari 96 barl\u0131k nedensel ge\u00e7mi\u015f referans\u0131 kullanan ve t\u00fcrev verisi yoklu\u011funda bilinmeyen (UNKNOWN) \u00fcreten d\u00fczeltilmi\u015f deneysel aday geli\u015ftirilmi\u015ftir.\n5. \u00dcr\u00fcn Veri S\u00f6zle\u015fmeleri ve Fail-Closed Kurallar\u0131: 10 ayr\u0131 alan i\u00e7in okunabilir veri s\u00f6zle\u015fmeleri ve fail-closed g\u00f6sterim kurallar\u0131 tan\u0131mlanm\u0131\u015f, statik sabitlerin canl\u0131 tahmin olarak pazarlanmas\u0131 engellenmi\u015ftir."
+}

@@ -22,6 +22,16 @@ from coin_behavior_engine.calibration.conformal_calibrator import (
     RegimeClassifierAuditRecord,
     Sprint1001MasterReport,
 )
+from coin_behavior_engine.calibration.independent_verifier import (
+    ChronologicalCausalityAudit,
+    CorrectedCausalRegimeClassifierCandidate,
+    CorrectedRegimeResult,
+    EffectiveSampleSizeSensitivity,
+    IndependentCalibrationVerifier,
+    MethodSelectionAudit,
+    SourceRecordReconciliation,
+    Sprint1002MasterReport,
+)
 
 __all__ = [
     "CalibrationMethodType",
@@ -33,4 +43,12 @@ __all__ = [
     "RegimeCoverageDiagnostic",
     "RegimeClassifierAuditRecord",
     "Sprint1001MasterReport",
+    "ChronologicalCausalityAudit",
+    "CorrectedCausalRegimeClassifierCandidate",
+    "CorrectedRegimeResult",
+    "EffectiveSampleSizeSensitivity",
+    "IndependentCalibrationVerifier",
+    "MethodSelectionAudit",
+    "SourceRecordReconciliation",
+    "Sprint1002MasterReport",
 ]
