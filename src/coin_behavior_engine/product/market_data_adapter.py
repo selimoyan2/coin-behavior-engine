@@ -179,15 +179,16 @@ class FactualMarketDataAdapter:
             if env_path:
                 self.snapshot_path = Path(env_path)
             else:
-                live_capture_state = self.data_root / "live_capture" / "live_market_state.json"
-                shadow_live_state = self.data_root / "shadow_v080" / "live_market_state.json"
-                shadow_snap_path = self.data_root / "shadow_v080" / "snapshots" / "btcusdt_factual_latest.json"
-                if live_capture_state.exists():
-                    self.snapshot_path = live_capture_state
-                elif shadow_live_state.exists():
-                    self.snapshot_path = shadow_live_state
-                else:
-                    self.snapshot_path = shadow_snap_path
+                candidates = [
+                    self.data_root / "live_capture" / "live_market_state.json",
+                    self.data_root / "live_capture" / "snapshots" / "btcusdt_factual_latest.json",
+                    Path("/app/data/live_capture/live_market_state.json"),
+                    Path("/app/data/live_capture/snapshots/btcusdt_factual_latest.json"),
+                    self.data_root / "shadow_v080" / "live_market_state.json",
+                    self.data_root / "shadow_v080" / "snapshots" / "btcusdt_factual_latest.json",
+                ]
+                found = next((p for p in candidates if p.exists()), None)
+                self.snapshot_path = found if found is not None else (self.data_root / "shadow_v080" / "snapshots" / "btcusdt_factual_latest.json")
 
         self._lock = threading.Lock()
         self._last_read_timestamp: float = 0.0
@@ -386,12 +387,31 @@ class FactualMarketDataAdapter:
                     freshness = self.evaluate_freshness(close_utc, reference_time=reference_time)
                     spot_price = float(data.get("spot_price_usdt", data.get("close_price_usdt", 0.0)))
                     
-                    # Classification rule: Never claim LIVE_OBSERVED unless pipeline is an authorized live feed
-                    is_live = bool(data.get("is_live", False))
-                    raw_class = data.get("classification", DataClassification.HISTORICAL_SNAPSHOT.value)
-                    classification = DataClassification(raw_class) if raw_class in DataClassification.__members__ else DataClassification.HISTORICAL_SNAPSHOT
-                    if is_live and classification != DataClassification.LIVE_OBSERVED:
+                    # Strict validation for LIVE_OBSERVED:
+                    raw_is_live = bool(data.get("is_live", False))
+                    hb_str = data.get("writer_heartbeat_utc")
+                    hb_fresh = self.evaluate_heartbeat_freshness(hb_str, reference_time=reference_time)
+                    candle_is_closed = bool(data.get("is_closed", True))
+                    source_ok = (data.get("exchange_source") == self.EXPECTED_SOURCE)
+                    symbol_ok = (data.get("symbol") == self.EXPECTED_SYMBOL)
+
+                    # Only qualify as LIVE_OBSERVED if ALL prerequisites are validated:
+                    # Binance Spot source, BTCUSDT symbol, closed 5m candle, fresh candle (<30m), fresh heartbeat (<=120s)
+                    if (
+                        raw_is_live
+                        and freshness == MarketDataFreshnessStatus.FRESH
+                        and hb_fresh
+                        and candle_is_closed
+                        and source_ok
+                        and symbol_ok
+                    ):
                         classification = DataClassification.LIVE_OBSERVED
+                        is_live = True
+                        source_health = MarketDataSourceHealth.HEALTHY
+                    else:
+                        classification = DataClassification.HISTORICAL_SNAPSHOT
+                        is_live = False
+                        source_health = MarketDataSourceHealth.HEALTHY if freshness == MarketDataFreshnessStatus.FRESH else MarketDataSourceHealth.OFFLINE_SNAPSHOT
 
                     record = FactualMarketDataRecord(
                         symbol="BTCUSDT",
@@ -409,9 +429,9 @@ class FactualMarketDataAdapter:
                         price_change_24h_pct=data.get("price_change_24h_pct"),
                         freshness_status=freshness,
                         snapshot_generation_timestamp_utc=data.get("snapshot_generation_timestamp_utc"),
-                        writer_heartbeat_utc=data.get("writer_heartbeat_utc"),
+                        writer_heartbeat_utc=hb_str,
                         source_availability="AVAILABLE",
-                        source_health=MarketDataSourceHealth.HEALTHY if freshness == MarketDataFreshnessStatus.FRESH else MarketDataSourceHealth.OFFLINE_SNAPSHOT,
+                        source_health=source_health,
                         classification=classification,
                         is_live=is_live,
                         provenance_details={

@@ -109,14 +109,17 @@ def test_01_snapshot_ownership_and_single_writer():
         snap_file = tmp_path / "live_market_state.json"
 
         # Capture writer payload
-        now_iso = datetime.now(timezone.utc).isoformat()
+        now_dt = datetime.now(timezone.utc)
+        now_iso = now_dt.isoformat()
+        close_iso = (now_dt - timedelta(minutes=2)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        open_iso = (now_dt - timedelta(minutes=7)).strftime("%Y-%m-%dT%H:%M:%SZ")
         writer_payload = {
             "schema_version": "1.0.0",
             "symbol": "BTCUSDT",
             "exchange_source": "BINANCE_SPOT",
             "candle_interval": "5m",
-            "timestamp_open_utc": "2026-10-16T19:00:00Z",
-            "timestamp_close_utc": "2026-10-16T19:05:00Z",
+            "timestamp_open_utc": open_iso,
+            "timestamp_close_utc": close_iso,
             "spot_price_usdt": 64120.50,
             "open_price_usdt": 64050.00,
             "high_price_usdt": 64200.00,
@@ -138,7 +141,7 @@ def test_01_snapshot_ownership_and_single_writer():
 
         # Reader accesses via FactualMarketDataAdapter
         adapter = FactualMarketDataAdapter(data_root=tmp_path, snapshot_path=snap_file)
-        record = adapter.get_btcusdt_factual_record(force_fresh_read=True)
+        record = adapter.get_btcusdt_factual_record(reference_time=now_dt, force_fresh_read=True)
 
         assert record.symbol == "BTCUSDT"
         assert record.spot_price_usdt == 64120.50
@@ -147,7 +150,7 @@ def test_01_snapshot_ownership_and_single_writer():
 
         # Verify reader NEVER mutates file
         mtime_before = snap_file.stat().st_mtime
-        _ = adapter.get_btcusdt_factual_record(force_fresh_read=True)
+        _ = adapter.get_btcusdt_factual_record(reference_time=now_dt, force_fresh_read=True)
         mtime_after = snap_file.stat().st_mtime
         assert mtime_before == mtime_after
 
@@ -163,13 +166,15 @@ def test_02_atomic_writer_reader_compatibility():
         snap_file = tmp_path / "btcusdt_factual_latest.json"
 
         now_dt = datetime.now(timezone.utc)
+        close_iso = (now_dt - timedelta(minutes=2)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        open_iso = (now_dt - timedelta(minutes=7)).strftime("%Y-%m-%dT%H:%M:%SZ")
         payload = FactualMarketDataAdapter.create_snapshot_payload(
             candle_data={
                 "symbol": "BTCUSDT",
                 "exchange_source": "BINANCE_SPOT",
                 "interval": "5m",
-                "datetime_open_utc": "2026-10-16T19:20:00Z",
-                "datetime_close_utc": "2026-10-16T19:25:00Z",
+                "datetime_open_utc": open_iso,
+                "datetime_close_utc": close_iso,
                 "open": 64200.0,
                 "high": 64300.0,
                 "low": 64150.0,
@@ -251,10 +256,13 @@ def test_04_simulation_healthy_closed_candle():
             default_provenance=ProvenanceSource.LIVE_BINANCE_SPOT.value,
         )
 
-        # Incoming healthy closed candle
+        # Incoming healthy closed candle aligned to 5m
+        now_ms = int(time.time() * 1000)
+        open_ts = (now_ms // 300_000) * 300_000 - 300_000
+        close_ts = open_ts + 299_999
         raw_msg = _make_sample_candle_dict(
-            open_ts=1727122500000,
-            close_ts=1727122799999,
+            open_ts=open_ts,
+            close_ts=close_ts,
             close_price="64500.00",
             is_closed=True,
         )

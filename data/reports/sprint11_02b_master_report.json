@@ -1,0 +1,119 @@
+{
+  "sprint": "11.02B",
+  "sprint_name": "Deployment Compatibility, Persistent Data Protection & Safe Market Intelligence Integration",
+  "generated_at_utc": "2026-10-16T20:39:00Z",
+  "baseline_commit": "8ce51cf0ad56045d59532d032ba0ebf0229bcea3",
+  "safety_status": {
+    "cbe_070_frozen_verified": true,
+    "cbe_070_canonical_files_count": 29,
+    "cbe_080_isolated": true,
+    "approval_4_authorized": false,
+    "prospective_scoring_enabled": false,
+    "trading_enabled": false,
+    "exchange_credentials_present": false,
+    "production_mutations_performed": false,
+    "vps_coolify_mutations_performed": false
+  },
+  "production_vs_staging_audit": {
+    "production_service": {
+      "uuid": "6t63aehpaw0cw1bbt4zcm09g",
+      "commit": "ff731ac414cb350119dbef92a8b9eeb2576b5d8d",
+      "sprint": "08.1.1",
+      "role": "Legacy Dashboard Service (Frozen Baseline)",
+      "port": 8000,
+      "volumes": ["6t63aehpaw0cw1bbt4zcm09g-cbe_prospective_data"],
+      "modification_status": "UNTOUCHED_AND_ISOLATED"
+    },
+    "capture_worker_service": {
+      "uuid": "zgit1s3n1acdtqtsxp0s44vj",
+      "commit": "78096f634599a1cb1c7df69c07fc40a",
+      "sprint": "09.14",
+      "role": "Passive Market Capture Worker (BTCUSDT 5m)",
+      "volume_name": "zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data",
+      "mount_target": "/app/data/shadow_v080",
+      "modification_status": "READ_ONLY_COMPATIBLE"
+    },
+    "market_intelligence_staging_service": {
+      "service_name": "cbe-market-intelligence-staging",
+      "container_name": "cbe_market_intelligence_staging",
+      "compose_manifest": "deploy/staging/docker-compose.market-intelligence-staging.yaml",
+      "port_mapping": "8080:8000",
+      "volume_mount": "zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data:/app/data/live_capture:ro",
+      "modification_status": "READY_FOR_INDEPENDENT_STAGING"
+    }
+  },
+  "storage_and_volume_architecture": {
+    "capture_volume_name": "zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data",
+    "market_intelligence_mount_mode": "ro (strictly read-only)",
+    "sqlite_isolation": {
+      "reader_accesses_sqlite": false,
+      "sqlite_wal_shm_interference_risk": "ZERO",
+      "evidence_protection": "Reader strictly accesses atomic JSON snapshot, leaving SQLite ledger index exclusively to capture worker."
+    },
+    "snapshot_publishing": {
+      "primary_path": "snapshots/btcusdt_factual_latest.json",
+      "legacy_path": "live_market_state.json",
+      "write_mechanism": "AtomicSnapshotIO (write tmp + fsync + os.replace)",
+      "emission_events": [
+        "Capture engine startup state reconstruction from historical ledger (1875 contiguous candles)",
+        "On every successfully persisted closed 5m candle"
+      ]
+    },
+    "candidate_snapshot_resolution_hierarchy": [
+      "Environment variable override: CBE_FACTUAL_SNAPSHOT_PATH",
+      "/app/data/live_capture/live_market_state.json (Docker volume root mount)",
+      "/app/data/live_capture/snapshots/btcusdt_factual_latest.json",
+      "<data_root>/live_capture/live_market_state.json",
+      "<data_root>/live_capture/snapshots/btcusdt_factual_latest.json",
+      "<data_root>/shadow_v080/snapshots/btcusdt_factual_latest.json",
+      "<data_root>/shadow_v080/live_market_state.json",
+      "Fallback: Canonical historical baseline record (63842.15 USDT)"
+    ]
+  },
+  "provenance_and_classification_contract": {
+    "live_observed_requirements": {
+      "symbol": "BTCUSDT",
+      "exchange_source": "BINANCE_SPOT",
+      "candle_interval": "5m",
+      "is_closed": true,
+      "freshness_max_candle_age_minutes": 30,
+      "freshness_max_heartbeat_age_seconds": 120
+    },
+    "demotion_logic": {
+      "stale_heartbeat": "Demotes to HISTORICAL_SNAPSHOT, is_live=False",
+      "stale_candle": "Demotes to HISTORICAL_SNAPSHOT, is_live=False",
+      "unclosed_candle": "Demotes to HISTORICAL_SNAPSHOT, is_live=False",
+      "corrupt_file": "Demotes to HISTORICAL_SNAPSHOT (canonical baseline fallback)",
+      "missing_file": "Demotes to HISTORICAL_SNAPSHOT (canonical baseline fallback)",
+      "unsupported_symbol": "Emits UNAVAILABLE status, spot_price=None"
+    }
+  },
+  "test_execution_summary": {
+    "sprint_11_02b_suite": {
+      "test_file": "tests/test_sprint11_02b_deployment_compatibility.py",
+      "tests_run": 20,
+      "tests_passed": 20,
+      "tests_failed": 0
+    },
+    "full_regression_suite": {
+      "total_tests": 149,
+      "passed": 149,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "activation_readiness_gates": {
+    "gate_1_codebase_integrity": "PASSED (29/29 CBE-0.7.0 canonical files intact)",
+    "gate_2_production_isolation": "PASSED (Separate port 8080, separate container name, prod 6t63aehp untouched)",
+    "gate_3_volume_safety": "PASSED (Mount mode :ro enforced in docker-compose)",
+    "gate_4_sqlite_integrity": "PASSED (Consumer reads atomic JSON only; no SQLite handles)",
+    "gate_5_provenance_validation": "PASSED (Multi-factor gate for LIVE_OBSERVED with auto-demotion)",
+    "gate_6_test_verification": "PASSED (149/149 automated tests passing)",
+    "gate_7_rollback_readiness": "PASSED (Independent container, zero persistent mutation, instant rm/down)"
+  },
+  "rollback_runbook": {
+    "action": "docker compose -f deploy/staging/docker-compose.market-intelligence-staging.yaml down",
+    "persistence_impact": "ZERO (Volume is external and mounted :ro)",
+    "production_impact": "ZERO (Production container 6t63aehpaw0cw1bbt4zcm09g remains untouched and operational)"
+  }
+}

@@ -1,0 +1,58 @@
+# ==============================================================================
+# SPRINT 11.02B — INDEPENDENT MARKET INTELLIGENCE STAGING SERVICE TEMPLATE
+# SERVICE: cbe-market-intelligence-staging
+# PURPOSE: Isolated, read-only Market Intelligence UI & API service for Coolify
+# SAFETY: Strictly isolated from running production container (UUID: 6t63aehpaw0cw1bbt4zcm09g)
+# CAPTURE DATA: Read-only mount (:ro) of existing capture volume (UUID: zgit1s3n1acdtqtsxp0s44vj)
+# TRADING: PERMANENTLY DISABLED (CBE_TRADING_DISABLED=true, APPROVAL4=FALSE)
+# MODEL SCORING: PERMANENTLY DISABLED (CBE_PROSPECTIVE_OBSERVATION_ENABLED=false)
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  cbe-market-intelligence-staging:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    image: cbe-market-intelligence:staging
+    container_name: cbe_market_intelligence_staging
+    restart: unless-stopped
+    ports:
+      - "${STAGING_PORT:-8080}:8000"
+    environment:
+      - PORT=8000
+      - HOST=0.0.0.0
+      - PYTHONUNBUFFERED=1
+      - CBE_ENV=staging
+      - CBE_TRADING_DISABLED=true
+      - CBE_PROSPECTIVE_OBSERVATION_ENABLED=false
+      - CBE_APPROVAL_4_AUTHORIZED=false
+      - CBE_FACTUAL_SNAPSHOT_PATH=/app/data/live_capture/live_market_state.json
+      - CBE_SYMBOL=BTCUSDT
+      - CBE_INTERVAL=5m
+    volumes:
+      - cbe_live_capture_data:/app/data/live_capture:ro
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=67108864
+    read_only: false
+    mem_limit: 300m
+    mem_reservation: 150m
+    cpus: 0.50
+    pids_limit: 64
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  cbe_live_capture_data:
+    external: true
+    name: ${CBE_CAPTURE_VOLUME_NAME:-zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data}

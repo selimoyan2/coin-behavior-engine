@@ -111,6 +111,10 @@ class MarketCaptureEngineV080:
             f"Warmup={self.warmup_status}"
         )
 
+        # Immediately publish initial factual snapshot from latest reconstructed closed candle
+        if self.rolling_buffer:
+            self.publish_factual_snapshot(self.rolling_buffer[-1])
+
     def start(self) -> None:
         """Start the capture engine."""
         self.transport.connect()
