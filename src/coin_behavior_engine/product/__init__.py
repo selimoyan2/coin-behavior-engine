@@ -32,6 +32,11 @@ from coin_behavior_engine.product.data_contracts import (
     ProductValidationStatus,
     VolatilityDiagnosticsContract,
 )
+from coin_behavior_engine.product.intelligence_api import (
+    ApiEvidenceClassification,
+    ApiResponseMetadata,
+    MarketIntelligenceApiService,
+)
 
 __all__ = [
     "CapabilityInventoryRecord",
@@ -57,4 +62,7 @@ __all__ = [
     "ProbabilityProvenanceContract",
     "ProductValidationStatus",
     "VolatilityDiagnosticsContract",
+    "ApiEvidenceClassification",
+    "ApiResponseMetadata",
+    "MarketIntelligenceApiService",
 ]

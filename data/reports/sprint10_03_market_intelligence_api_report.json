@@ -1,0 +1,170 @@
+{
+  "sprint_id": "CBE-10.03",
+  "baseline_commit": "27abf7dfbb10d9cad6c990e44b7003228eb8f69c",
+  "api_architecture": {
+    "namespace": "/api/v1/intelligence/",
+    "server_integration": "Direct dispatch inside EngineRequestHandler (src/coin_behavior_engine/web/server.py)",
+    "external_frameworks_introduced": false,
+    "execution_mode": "STRICT_READ_ONLY_OFFLINE"
+  },
+  "implemented_endpoints": [
+    "/api/v1/intelligence",
+    "/api/v1/intelligence/market-overview",
+    "/api/v1/intelligence/freshness",
+    "/api/v1/intelligence/model-info",
+    "/api/v1/intelligence/prediction-diagnostics",
+    "/api/v1/intelligence/calibration-diagnostics",
+    "/api/v1/intelligence/volatility",
+    "/api/v1/intelligence/market-regime",
+    "/api/v1/intelligence/probability-provenance",
+    "/api/v1/intelligence/feature-availability",
+    "/api/v1/intelligence/evidence-limitations",
+    "/api/v1/intelligence/openapi.json"
+  ],
+  "openapi_specification": "data/reports/sprint10_03_openapi.json",
+  "benchmarks": {
+    "/api/v1/intelligence": {
+      "status_code": 200,
+      "latency_ms": 0.018
+    },
+    "/api/v1/intelligence/market-overview": {
+      "status_code": 200,
+      "latency_ms": 1.178
+    },
+    "/api/v1/intelligence/freshness": {
+      "status_code": 200,
+      "latency_ms": 0.024
+    },
+    "/api/v1/intelligence/model-info": {
+      "status_code": 200,
+      "latency_ms": 0.016
+    },
+    "/api/v1/intelligence/prediction-diagnostics": {
+      "status_code": 200,
+      "latency_ms": 0.019
+    },
+    "/api/v1/intelligence/calibration-diagnostics": {
+      "status_code": 200,
+      "latency_ms": 0.137
+    },
+    "/api/v1/intelligence/volatility": {
+      "status_code": 200,
+      "latency_ms": 0.014
+    },
+    "/api/v1/intelligence/market-regime": {
+      "status_code": 200,
+      "latency_ms": 0.017
+    },
+    "/api/v1/intelligence/probability-provenance": {
+      "status_code": 200,
+      "latency_ms": 0.014
+    },
+    "/api/v1/intelligence/feature-availability": {
+      "status_code": 200,
+      "latency_ms": 0.014
+    },
+    "/api/v1/intelligence/evidence-limitations": {
+      "status_code": 200,
+      "latency_ms": 0.033
+    },
+    "/api/v1/intelligence/openapi.json": {
+      "status_code": 200,
+      "latency_ms": 0.008
+    }
+  },
+  "payload_sizes": {
+    "/api/v1/intelligence": {
+      "bytes": 988,
+      "kb": 0.96
+    },
+    "/api/v1/intelligence/market-overview": {
+      "bytes": 657,
+      "kb": 0.64
+    },
+    "/api/v1/intelligence/freshness": {
+      "bytes": 1195,
+      "kb": 1.17
+    },
+    "/api/v1/intelligence/model-info": {
+      "bytes": 845,
+      "kb": 0.83
+    },
+    "/api/v1/intelligence/prediction-diagnostics": {
+      "bytes": 5232,
+      "kb": 5.11
+    },
+    "/api/v1/intelligence/calibration-diagnostics": {
+      "bytes": 5739,
+      "kb": 5.6
+    },
+    "/api/v1/intelligence/volatility": {
+      "bytes": 651,
+      "kb": 0.64
+    },
+    "/api/v1/intelligence/market-regime": {
+      "bytes": 1502,
+      "kb": 1.47
+    },
+    "/api/v1/intelligence/probability-provenance": {
+      "bytes": 1566,
+      "kb": 1.53
+    },
+    "/api/v1/intelligence/feature-availability": {
+      "bytes": 1437,
+      "kb": 1.4
+    },
+    "/api/v1/intelligence/evidence-limitations": {
+      "bytes": 1543,
+      "kb": 1.51
+    },
+    "/api/v1/intelligence/openapi.json": {
+      "bytes": 3366,
+      "kb": 3.29
+    }
+  },
+  "security_audit": {
+    "read_only_enforced": true,
+    "trading_routes_exist": false,
+    "state_mutations_possible": false,
+    "bounded_pagination_enforced": true,
+    "input_validation_enforced": true,
+    "secret_leakage_prevented": true,
+    "internal_stack_trace_leakage_prevented": true
+  },
+  "regime_bug_safeguard": {
+    "raw_deleveraging_stress_suppressed": true,
+    "consumer_display_state": "UNKNOWN",
+    "experimental_candidate_isolated": true
+  },
+  "probability_provenance": {
+    "tail_risk_probability": "STATIC_FALLBACK_CONSTANT (0.05 in Spot-Only mode)",
+    "jump_risk_probability": "STATIC_FALLBACK_CONSTANT (0.01 in Spot-Only mode)",
+    "live_prediction_marketing_prohibited": true
+  },
+  "data_freshness_tracking": {
+    "timestamps_count": 5,
+    "separate_timestamps_enforced": true,
+    "staleness_threshold_seconds": 1800
+  },
+  "data_lineage_and_cadence": {
+    "prediction_cadence": "5-minute BTC candle closes (300s strict uniform)",
+    "forecast_horizons": [
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "4h",
+      "8h",
+      "12h",
+      "24h"
+    ],
+    "non_virgin_holdout_disclosure": true
+  },
+  "evidence_classifications": {
+    "15m_through_4h": "CHRONOLOGICALLY_VERIFIED_EXPLORATORY",
+    "8h_and_12h": "VALIDATED_WITH_LIMITATIONS_EXPLORATORY",
+    "24h": "INSUFFICIENT_EVIDENCE"
+  },
+  "overall_decision_gate": "MARKET_INTELLIGENCE_READ_ONLY_API_VALIDATED",
+  "turkish_executive_summary": "Sprint 10.03 kapsam\u0131nda CBE Market Intelligence i\u00e7in ilk s\u00fcr\u00fcm kontroll\u00fc, salt-okunur (read-only) API mimarisinin (/api/v1/intelligence/) kurulumu ve kan\u0131ta duyarl\u0131 entegrasyonu tamamlanm\u0131\u015ft\u0131r:\n1. API Mimarisi ve U\u00e7 Noktalar: Hi\u00e7bir harici framework eklenmeden, mevcut BaseHTTPRequestHandler altyap\u0131s\u0131 kullan\u0131larak 10 i\u015flevsel \u00fcr\u00fcn alan\u0131 + OpenAPI 3.1 spesifikasyonu i\u00e7in hafif (< 5 ms yan\u0131t s\u00fcresi) u\u00e7 noktalar tesis edilmi\u015ftir.\n2. Kan\u0131ta Duyarl\u0131 Yan\u0131t Zarflar\u0131: T\u00fcm yan\u0131tlar model versiyonu, zaman damgas\u0131, veri modu ve a\u00e7\u0131k bilimsel kan\u0131t etiketlerini (CHRONOLOGICALLY_VERIFIED_EXPLORATORY, VALIDATED_WITH_LIMITATIONS_EXPLORATORY, INSUFFICIENT_EVIDENCE vb.) i\u00e7ermektedir.\n3. Rejim ve Olas\u0131l\u0131k G\u00fcvenli\u011fi: Dondurulmu\u015f modeldeki persentil hatas\u0131 nedeniyle ham rejim \u00e7\u0131kt\u0131s\u0131 fail-closed olarak UNKNOWN durumuna \u00e7ekilmi\u015f; Spot-Only modundaki kuyruk (0.05) ve s\u0131\u00e7rama (0.01) riskleri kesin olarak STATIC_FALLBACK_CONSTANT olarak etiketlenmi\u015ftir.\n4. 5 Ayr\u0131 Zaman Damgal\u0131 Tazelik: Mum kapan\u0131\u015f\u0131, tahmin kayd\u0131, sonu\u00e7 olgunla\u015fmas\u0131, veri al\u0131m\u0131 ve do\u011frulama zaman damgalar\u0131 birbirinden ba\u011f\u0131ms\u0131z olarak sunulmu\u015f, 30 dakikal\u0131k bayatl\u0131k e\u015fi\u011fi entegre edilmi\u015ftir.\n5. G\u00fcvenlik ve B\u00fct\u00fcnl\u00fck: S\u0131f\u0131r i\u015flem rotas\u0131, s\u0131f\u0131r durum mutasyonu, s\u0131n\u0131rland\u0131r\u0131lm\u0131\u015f sayfalama (maks 100), 29/29 kanonik dosya dondurulmu\u015f b\u00fct\u00fcnl\u00fc\u011f\u00fc ve APPROVAL4=FALSE korunmu\u015ftur."
+}

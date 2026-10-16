@@ -24,6 +24,7 @@ import time
 from typing import Any, Dict, Optional
 from urllib.parse import parse_qs, urlparse
 
+from coin_behavior_engine.product.intelligence_api import MarketIntelligenceApiService
 from coin_behavior_engine.prospective.analytics import ProspectiveAnalyticsEngine
 from coin_behavior_engine.prospective.freeze import FROZEN_MODEL_VERSION
 from coin_behavior_engine.prospective.worker import ProspectiveWorker, get_next_5m_target
@@ -1261,6 +1262,11 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
 
         engine = get_analytics_engine()
 
+        if url_path.startswith("/api/v1/intelligence"):
+            status_code, response_data = MarketIntelligenceApiService.handle_request(url_path, query_params)
+            self._send_response_json(status_code, response_data)
+            return
+
         if url_path in ("/health", "/healthz", "/ping"):
             state = get_engine_state()
             self._send_response_json(
@@ -1342,6 +1348,7 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
                         "/api/analytics/data-quality",
                         "/api/analytics/integrity",
                         "/api/analytics/timeline",
+                        "/api/v1/intelligence",
                     ],
                 },
             )

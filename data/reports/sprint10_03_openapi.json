@@ -1,0 +1,170 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CBE Market Intelligence Read-Only API",
+    "version": "1.0.0",
+    "description": "Production-oriented, read-only API providing evidence-aware market intelligence, conformal uncertainty diagnostics, and data lineage from the Coin Behavior Engine.",
+    "contact": {
+      "name": "CBE MVP Team",
+      "url": "https://coin.ozelweb.com.tr"
+    }
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Local / Container Server"
+    }
+  ],
+  "paths": {
+    "/api/v1/intelligence": {
+      "get": {
+        "summary": "API Index",
+        "description": "Lists all available endpoints and system status.",
+        "responses": {
+          "200": {
+            "description": "API Index."
+          }
+        }
+      }
+    },
+    "/api/v1/intelligence/market-overview": {
+      "get": {
+        "summary": "Market Overview",
+        "description": "Returns spot price, 24h volume, 24h change, and bar timestamps.",
+        "responses": {
+          "200": {
+            "description": "Market Overview."
+          }
+        }
+      }
+    },
+    "/api/v1/intelligence/freshness": {
+      "get": {
+        "summary": "Data Freshness",
+        "description": "Explicit separate timestamps across 5 pipelines with staleness checks.",
+        "responses": {
+          "200": {
+            "description": "Data Freshness."
+          }
+        }
+      }
+    },
+    "/api/v1/intelligence/model-info": {
+      "get": {
+        "summary": "Model Information",
+        "description": "Frozen model CBE-0.7.0 hash, canonical freeze files, and safety status.",
+        "responses": {
+          "200": {
+            "description": "Model Information."
+          }
+        }
+      }
+    },
+    "/api/v1/intelligence/prediction-diagnostics": {
+      "get": {
+        "summary": "Prediction Diagnostics",
+        "description": "Multi-horizon point forecasts with raw vs calibrated uncertainty intervals.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "horizon",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Prediction Diagnostics."
+          },
+          "400": {
+            "description": "Invalid query parameters."
+          }
+        }
+      }
+    },
+    "/api/v1/intelligence/calibration-diagnostics": {
+      "get": {
+        "summary": "Calibration Diagnostics",
+        "description": "Horizon-level empirical coverage, block bootstrap CIs, and inflation factors.",
+        "responses": {
+          "200": {
+            "description": "Calibration Diagnostics."
+          }
+        }
+      }
+    },
+    "/api/v1/intelligence/volatility": {
+      "get": {
+        "summary": "Volatility Analysis",
+        "description": "Realized volatility term structure (15m..24h) and compression ratio.",
+        "responses": {
+          "200": {
+            "description": "Volatility Analysis."
+          }
+        }
+      }
+    },
+    "/api/v1/intelligence/market-regime": {
+      "get": {
+        "summary": "Market Regime Status",
+        "description": "Market regime classification with fail-closed safeguards suppressing bugged legacy states.",
+        "responses": {
+          "200": {
+            "description": "Market Regime Status."
+          }
+        }
+      }
+    },
+    "/api/v1/intelligence/probability-provenance": {
+      "get": {
+        "summary": "Probability Provenance",
+        "description": "Explicit provenance distinguishing model probabilities from static safety constants.",
+        "responses": {
+          "200": {
+            "description": "Probability Provenance."
+          }
+        }
+      }
+    },
+    "/api/v1/intelligence/feature-availability": {
+      "get": {
+        "summary": "Feature Availability",
+        "description": "Availability status of Spot, Derivatives, Macro, and ETF feature groups.",
+        "responses": {
+          "200": {
+            "description": "Feature Availability."
+          }
+        }
+      }
+    },
+    "/api/v1/intelligence/evidence-limitations": {
+      "get": {
+        "summary": "Evidence Limitations",
+        "description": "Comprehensive disclosure of empirical limitations, data lineage, and 5m cadence.",
+        "responses": {
+          "200": {
+            "description": "Evidence Limitations."
+          }
+        }
+      }
+    }
+  }
+}
