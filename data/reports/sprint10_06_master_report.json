@@ -1,0 +1,214 @@
+{
+  "sprint_id": "CBE-10.06",
+  "sprint_name": "MVP Release Readiness, Live Data Architecture & Final Acceptance Gates",
+  "baseline_commit": "3a0cbdab6b3e82071ae0bd9d0479261088e242f5",
+  "timestamp_utc": "2026-10-16T19:25:00Z",
+  "safety_invariants": {
+    "cbe_070_frozen_integrity": "29/29 VERIFIED",
+    "cbe_080_isolation": "PRESERVED",
+    "approval4_status": "FALSE",
+    "prospective_scoring_status": "DISABLED",
+    "trading_status": "DISABLED",
+    "production_dashboard_isolation": "100% UNTOUCHED (/dashboard)"
+  },
+  "sprint_10_05_evidence_reconciliation": {
+    "viewports_evaluated_count": 5,
+    "viewports_list": ["1440x900", "1280x800", "768x1024", "390x844", "320x568"],
+    "screenshots_count": 6,
+    "screenshot_artifacts": [
+      {
+        "filename": "screenshot_chromium_desktop_1440.png",
+        "browser": "Chromium 1248",
+        "viewport": "1440x900",
+        "status": "PASS",
+        "size_bytes": 231983
+      },
+      {
+        "filename": "screenshot_chromium_laptop_1280.png",
+        "browser": "Chromium 1248",
+        "viewport": "1280x800",
+        "status": "PASS",
+        "size_bytes": 231711
+      },
+      {
+        "filename": "screenshot_chromium_tablet_768.png",
+        "browser": "Chromium 1248",
+        "viewport": "768x1024",
+        "status": "PASS",
+        "size_bytes": 226370
+      },
+      {
+        "filename": "screenshot_chromium_mobile_390.png",
+        "browser": "Chromium 1248",
+        "viewport": "390x844",
+        "status": "PASS",
+        "size_bytes": 208940
+      },
+      {
+        "filename": "screenshot_chromium_narrow_320.png",
+        "browser": "Chromium 1248",
+        "viewport": "320x568",
+        "status": "PASS",
+        "size_bytes": 204389
+      },
+      {
+        "filename": "screenshot_firefox_desktop_1440.png",
+        "browser": "Firefox 1555",
+        "viewport": "1440x900",
+        "status": "PASS",
+        "size_bytes": 209723
+      }
+    ],
+    "horizontal_overflow_px": 0,
+    "accessibility_test_coverage": "PASS_TECHNICAL_PREREQUISITES",
+    "accessibility_audit_caveat": "Automated tests confirm technical WCAG AA compliance (landmarks, skip link, 44px touch targets, focus-visible, scope='col', reduced-motion). This does NOT equate to full certified human manual WCAG AA audit."
+  },
+  "http_performance_results": {
+    "total_benchmark_requests": 591,
+    "warm_latency_ms": {
+      "p50": 1.98,
+      "p95": 4.15,
+      "p99": 6.21,
+      "min": 0.82,
+      "max": 15.42
+    },
+    "ttfb_ms": {
+      "p50": 1.81,
+      "p95": 3.94,
+      "p99": 5.90
+    },
+    "cold_latencies_ms": {
+      "initial_page": 2.10,
+      "css": 1.63,
+      "js": 1.48,
+      "api_market_overview": 16.38,
+      "api_freshness": 1.17,
+      "api_model_info": 1.05
+    },
+    "transferred_bytes_total": 2442528,
+    "initial_page_load_bundle_bytes": 38359,
+    "concurrency_performance": {
+      "threads_count": 50,
+      "total_duration_ms": 615.19,
+      "errors_count": 0,
+      "mean_latency_ms": 75.02
+    },
+    "error_and_timeout_behavior": {
+      "nonexistent_route_status": 404,
+      "read_only_strictly_enforced": true
+    },
+    "resource_consumption": {
+      "server_memory_mb": 159.56,
+      "memory_growth_during_benchmarks_mb": 2.62,
+      "cpu_utilization": "< 5%"
+    }
+  },
+  "live_data_architecture_audit": {
+    "separation_of_concerns": {
+      "A_passive_public_observation": "Independent public WebSocket/REST candle capture (No scoring, no trading).",
+      "B_factual_market_presentation": "Display of real spot price, observation timestamp, and verified 24h change.",
+      "C_historical_frozen_model_diagnostics": "CBE-0.7.0 locked evaluation on historical traces (Cutoff: 2026-09-23).",
+      "D_new_prospective_model_inference": "PROHIBITED without formal APPROVAL3/4 unfreeze.",
+      "E_trading_and_order_execution": "STRICTLY PROHIBITED under all circumstances (APPROVAL4 = FALSE)."
+    },
+    "passive_capture_reuse_feasibility": "FEASIBLE for reading existing local snapshots; live streaming blocked pending explicit user authorization.",
+    "factual_market_data_adapter": {
+      "implementation_path": "src/coin_behavior_engine/product/market_data_adapter.py",
+      "operational_mode": "READ_ONLY_OFFLINE_SNAPSHOT",
+      "credentials_required": "NONE",
+      "trading_capability": "NONE",
+      "model_inference": "NONE",
+      "price_fabrication": "PROHIBITED (Explicitly None when unverified)"
+    }
+  },
+  "asset_data_source_status": {
+    "BTCUSDT": "HISTORICAL_SNAPSHOT_AUDITED (Live stream blocked pending authorization)",
+    "ETHUSDT": "UNAVAILABLE (Future extension, no live ingestion pipeline authorized)",
+    "SOLUSDT": "UNAVAILABLE (Future extension, no live ingestion pipeline authorized)"
+  },
+  "frontend_feature_acceptance_matrix": [
+    {
+      "module": "Module A — Market Overview",
+      "status": "RELEASE_READY_HISTORICAL_WITH_DISCLOSURE",
+      "release_conditions": [
+        "Disclose historical snapshot nature.",
+        "Suppress 24h change unless backed by unbroken 24h lookback.",
+        "Derivatives context marked offline."
+      ]
+    },
+    {
+      "module": "Module B — Volatility & Risk",
+      "status": "RELEASE_READY_HISTORICAL_WITH_DISCLOSURE",
+      "release_conditions": [
+        "Disclose historical sample window.",
+        "Tail/jump risk labeled as STATIC_FALLBACK constants.",
+        "Zero fabricated derivatives metrics."
+      ]
+    },
+    {
+      "module": "Module C — Prediction Diagnostics",
+      "status": "RELEASE_READY_HISTORICAL_WITH_DISCLOSURE",
+      "release_conditions": [
+        "Label conformal calibration as exploratory research.",
+        "Disclose 8h/12h serial dependence limitations.",
+        "Suppress 24h prediction interval confidence."
+      ]
+    },
+    {
+      "module": "Module D — Market Regime Safeguard",
+      "status": "EXPERIMENTAL_RESEARCH_ONLY",
+      "release_conditions": [
+        "Isolate completely from decision-making.",
+        "Enforce fail-closed default (UNKNOWN / BİLİNMİYOR).",
+        "Disclose frozen model percentile comparison bug."
+      ]
+    },
+    {
+      "module": "Module E — Data Health & Staleness",
+      "status": "RELEASE_READY_HISTORICAL_WITH_DISCLOSURE",
+      "release_conditions": [
+        "Present 5 distinct timestamps in TSİ and UTC.",
+        "Enforce 30m staleness boundary.",
+        "Display prominent warning banner on staleness."
+      ]
+    },
+    {
+      "module": "Module F — Model Transparency",
+      "status": "RELEASE_READY_FACTUAL",
+      "release_conditions": [
+        "Display CBE-0.7.0 frozen status and 29/29 canonical integrity.",
+        "Display APPROVAL4 = FALSE status.",
+        "Disclose trading and scoring disabled."
+      ]
+    }
+  ],
+  "scientific_evidence_integrity": {
+    "conformal_calibration": "EXPLORATORY_RESEARCH",
+    "virgin_holdout": "NONE_EXISTS_FOR_INSPECTED_RECORDS",
+    "serial_dependence_horizons": "8H_AND_12H_LIMITED",
+    "interval_suppression_horizon": "24H_CONFIDENCE_SUPPRESSED",
+    "legacy_deleveraging_stress": "INVALID_DEPRECATED",
+    "corrected_regime_candidate": "EXPERIMENTAL_ONLY",
+    "tail_and_jump_metrics": "STATIC_FALLBACK_CONSTANTS_NOT_LIVE_PROBABILITIES",
+    "derivatives_data_policy": "NO_FABRICATION_STRICT_UNAVAILABLE"
+  },
+  "security_and_release_architecture": {
+    "api_exposure": "Public read-only endpoints on /intelligence and /api/v1/intelligence/*",
+    "authentication": "Public read-only (No auth needed for public market intelligence)",
+    "rate_limiting": "60 req/min per IP at reverse proxy",
+    "security_headers": "nosniff, DENY, strict-origin-when-cross-origin, CSP configured",
+    "secrets_isolation": "Zero credentials loaded or accessible in web process",
+    "rollback_plan": "Instant image tag rollback to 3a0cbdab6b3e82071ae0bd9d0479261088e242f5; 0 db rollback required (stateless)",
+    "deployment_plan": "Ready for containerization behind reverse proxy (Coolify / Nginx) upon authorization"
+  },
+  "release_decision": "BLOCKED_PENDING_LIVE_DATA_INTEGRATION",
+  "dual_scope_note": "READY_FOR_HISTORICAL_RESEARCH_PREVIEW_ONLY for internal/research review; BLOCKED_PENDING_LIVE_DATA_INTEGRATION for public live Market Intelligence release.",
+  "release_blockers": [
+    "Pasif Binance Spot veri akışı (WebSocket/REST) canlı üretim ortamına henüz bağlanmamıştır.",
+    "Arayüz şu anda 2026-09-23 tarihli dondurulmuş geçmiş snapshot verilerini sunmaktadır."
+  ],
+  "required_user_authorizations": [
+    "Salt-okunur, genel piyasa verisi alım izni (Public Passive Market Data Ingestion Authorization) — Yalnızca Binance Spot mumlarını almak üzere."
+  ],
+  "next_recommended_sprint": "CBE — SPRINT 11.01: Passive Live Ingestion Service & Real-Time Intelligence Streaming"
+}

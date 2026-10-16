@@ -1,0 +1,108 @@
+{
+  "total_requests": 591,
+  "warm_latency_ms": {
+    "p50": 1.978,
+    "p95": 4.15,
+    "p99": 6.212,
+    "min": 0.819,
+    "max": 15.422
+  },
+  "ttfb_ms": {
+    "p50": 1.813,
+    "p95": 3.941,
+    "p99": 5.901
+  },
+  "cold_response_samples": {
+    "/intelligence": {
+      "status": 200,
+      "cold_latency_ms": 2.097,
+      "bytes": 1916
+    },
+    "/intelligence/style.css": {
+      "status": 200,
+      "cold_latency_ms": 1.629,
+      "bytes": 10851
+    },
+    "/intelligence/client.js": {
+      "status": 200,
+      "cold_latency_ms": 1.477,
+      "bytes": 25592
+    },
+    "/api/v1/intelligence": {
+      "status": 200,
+      "cold_latency_ms": 1.554,
+      "bytes": 1054
+    },
+    "/api/v1/intelligence/market-overview": {
+      "status": 200,
+      "cold_latency_ms": 16.383,
+      "bytes": 747
+    },
+    "/api/v1/intelligence/freshness": {
+      "status": 200,
+      "cold_latency_ms": 1.166,
+      "bytes": 1311
+    },
+    "/api/v1/intelligence/model-info": {
+      "status": 200,
+      "cold_latency_ms": 1.053,
+      "bytes": 943
+    },
+    "/api/v1/intelligence/prediction-diagnostics": {
+      "status": 200,
+      "cold_latency_ms": 1.157,
+      "bytes": 6036
+    },
+    "/api/v1/intelligence/calibration-diagnostics": {
+      "status": 200,
+      "cold_latency_ms": 1.711,
+      "bytes": 7053
+    },
+    "/api/v1/intelligence/volatility": {
+      "status": 200,
+      "cold_latency_ms": 1.064,
+      "bytes": 763
+    },
+    "/api/v1/intelligence/market-regime": {
+      "status": 200,
+      "cold_latency_ms": 1.098,
+      "bytes": 1632
+    },
+    "/api/v1/intelligence/probability-provenance": {
+      "status": 200,
+      "cold_latency_ms": 1.171,
+      "bytes": 1786
+    },
+    "/api/v1/intelligence/feature-availability": {
+      "status": 200,
+      "cold_latency_ms": 1.17,
+      "bytes": 1671
+    },
+    "/api/v1/intelligence/evidence-limitations": {
+      "status": 200,
+      "cold_latency_ms": 2.476,
+      "bytes": 1685
+    },
+    "/api/v1/intelligence/openapi.json": {
+      "status": 200,
+      "cold_latency_ms": 1.738,
+      "bytes": 4808
+    }
+  },
+  "total_transferred_bytes": 2442528,
+  "initial_page_load_bundle_bytes": 38359,
+  "concurrent_test": {
+    "threads_count": 50,
+    "total_duration_ms": 615.19,
+    "errors_count": 0,
+    "mean_latency_ms": 75.024
+  },
+  "error_handling": {
+    "nonexistent_route_status": 404
+  },
+  "resource_utilization": {
+    "memory_start_mb": 156.93,
+    "memory_end_mb": 159.56,
+    "memory_growth_mb": 2.62
+  }
+}
