@@ -1,14 +1,27 @@
 # ==============================================================================
-# SPRINT 11.02B — INDEPENDENT MARKET INTELLIGENCE STAGING SERVICE TEMPLATE
+# SPRINT 11.02B.1 — HARDENED MARKET INTELLIGENCE STAGING SERVICE TEMPLATE
 # SERVICE: cbe-market-intelligence-staging
 # PURPOSE: Isolated, read-only Market Intelligence UI & API service for Coolify
-# SAFETY: Strictly isolated from running production container (UUID: 6t63aehpaw0cw1bbt4zcm09g)
-# CAPTURE DATA: Read-only mount (:ro) of existing capture volume (UUID: zgit1s3n1acdtqtsxp0s44vj)
-# TRADING: PERMANENTLY DISABLED (CBE_TRADING_DISABLED=true, APPROVAL4=FALSE)
-# MODEL SCORING: PERMANENTLY DISABLED (CBE_PROSPECTIVE_OBSERVATION_ENABLED=false)
+#
+# OPERATIONAL PREFLIGHT & HARDENING:
+# 1. NETWORK EXPOSURE: Host binding is restricted to loopback (127.0.0.1:8080).
+#    Public external interfaces cannot access port 8080 directly.
+#    Host Port Conflict Preflight (must be verified clear before launch):
+#      - Linux / VPS:  ss -tulpn | grep 8080  OR  lsof -i :8080
+#      - Windows:      netstat -ano | findstr 8080
+# 2. READ-ONLY ROOT FS: Container root filesystem is mounted strictly read-only (read_only: true).
+#    Writable tmpfs is narrowly granted to /tmp (64MB) and /run (16MB).
+# 3. RESTART POLICY: Set to "no" for supervised activation and controlled validation.
+# 4. CAPTURE DATA: Mounts existing capture volume (zgit1s3n1acdtqtsxp0s44vj) strictly read-only (:ro).
+#    No write or mutate permissions are granted. SQLite files are never opened.
+# 5. FEATURE ISOLATION:
+#    - CBE_APPROVAL_4_AUTHORIZED=false
+#    - CBE_PROSPECTIVE_OBSERVATION_ENABLED=false
+#    - CBE_TRADING_DISABLED=true
+#    - START_WORKER=false and --no-worker CLI flag
+# 6. ROLLBACK RUNBOOK:
+#    docker compose -f deploy/staging/docker-compose.market-intelligence-staging.yaml down
 # ==============================================================================
-
-version: '3.8'
 
 services:
   cbe-market-intelligence-staging:
@@ -17,17 +30,20 @@ services:
       dockerfile: Dockerfile
     image: cbe-market-intelligence:staging
     container_name: cbe_market_intelligence_staging
-    restart: unless-stopped
+    restart: "no"
+    command: ["python", "-m", "coin_behavior_engine.web.server", "--host", "0.0.0.0", "--port", "8000", "--no-worker"]
     ports:
-      - "${STAGING_PORT:-8080}:8000"
+      - "127.0.0.1:${STAGING_PORT:-8080}:8000"
     environment:
       - PORT=8000
       - HOST=0.0.0.0
       - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
       - CBE_ENV=staging
       - CBE_TRADING_DISABLED=true
       - CBE_PROSPECTIVE_OBSERVATION_ENABLED=false
       - CBE_APPROVAL_4_AUTHORIZED=false
+      - START_WORKER=false
       - CBE_FACTUAL_SNAPSHOT_PATH=/app/data/live_capture/live_market_state.json
       - CBE_SYMBOL=BTCUSDT
       - CBE_INTERVAL=5m
@@ -35,7 +51,8 @@ services:
       - cbe_live_capture_data:/app/data/live_capture:ro
     tmpfs:
       - /tmp:rw,noexec,nosuid,size=67108864
-    read_only: false
+      - /run:rw,noexec,nosuid,size=16777216
+    read_only: true
     mem_limit: 300m
     mem_reservation: 150m
     cpus: 0.50
@@ -46,11 +63,20 @@ services:
         max-size: "10m"
         max-file: "3"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8000/health"]
       interval: 30s
       timeout: 5s
       retries: 3
       start_period: 10s
+    labels:
+      org.opencontainers.image.title: "cbe-market-intelligence-staging"
+      org.opencontainers.image.description: "CBE Market Intelligence Read-Only Staging Service"
+      org.opencontainers.image.version: "sprint-11.02b.1"
+      org.opencontainers.image.revision: "${GIT_COMMIT_SHA:-d74bb560a4286bc515cb7fdda4c0809d6e3aa61a}"
+      cbe.stage: "staging"
+      cbe.service.role: "market-intelligence-ui"
+      cbe.trading: "disabled"
+      cbe.scoring: "disabled"
 
 volumes:
   cbe_live_capture_data:

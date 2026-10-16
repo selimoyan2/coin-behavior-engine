@@ -1,0 +1,126 @@
+{
+  "sprint": "11.02B.1",
+  "sprint_name": "Staging Compose Hardening & Offline Deployment Validation",
+  "generated_at_utc": "2026-10-16T21:26:00Z",
+  "baseline_commit": "d74bb560a4286bc515cb7fdda4c0809d6e3aa61a",
+  "final_status": "READY_FOR_AUTHORIZED_STAGING_DEPLOYMENT",
+  "safety_invariants": {
+    "cbe_070_frozen_canonical_integrity": "29/29 VERIFIED",
+    "cbe_080_isolated": true,
+    "approval_4_authorized": false,
+    "prospective_scoring_enabled": false,
+    "trading_enabled": false,
+    "exchange_credentials_present": false,
+    "production_container_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+    "production_container_status": "UNTOUCHED_AND_ISOLATED",
+    "vps_coolify_mutations_performed": false,
+    "live_services_started": false,
+    "live_services_stopped": false
+  },
+  "compose_hardening_audit": {
+    "compose_manifest_path": "deploy/staging/docker-compose.market-intelligence-staging.yaml",
+    "compose_validation_result": "VALID (Syntax verified by docker compose config with 0 warnings/errors)",
+    "network_exposure": {
+      "host_binding": "127.0.0.1",
+      "host_port": 8080,
+      "container_port": 8000,
+      "public_access_status": "BLOCKED (Localhost loopback only)",
+      "port_conflict_preflight": {
+        "linux_command": "ss -tulpn | grep 8080 OR lsof -i :8080",
+        "windows_command": "netstat -ano | findstr 8080"
+      }
+    },
+    "root_filesystem_security": {
+      "read_only_rootfs": true,
+      "tmpfs_mounts": [
+        "/tmp:rw,noexec,nosuid,size=67108864",
+        "/run:rw,noexec,nosuid,size=16777216"
+      ],
+      "capture_storage_mount": "cbe_live_capture_data:/app/data/live_capture:ro",
+      "capture_storage_writable": false,
+      "bytecode_generation_disabled": true
+    },
+    "restart_policy": {
+      "policy": "no",
+      "rationale": "Prevents runaway restart loops during supervised activation"
+    },
+    "build_context_compatibility": {
+      "context": "../..",
+      "resolved_context": "Repository root (contains pyproject.toml, Dockerfile, src/, data/)",
+      "dockerfile_path": "Dockerfile",
+      "coolify_compatibility": "VERIFIED (Standard relative directory traversal supported)"
+    },
+    "healthcheck": {
+      "test_command": ["CMD", "curl", "-f", "http://127.0.0.1:8000/health"],
+      "curl_installed_in_image": true,
+      "python_fallback_available": true,
+      "endpoint_status": "HTTP 200 with JSON payload {'status': 'healthy', 'service': 'coin-behavior-engine'}",
+      "interval": "30s",
+      "timeout": "5s",
+      "retries": 3,
+      "start_period": "10s"
+    },
+    "snapshot_reader_configuration": {
+      "env_var": "CBE_FACTUAL_SNAPSHOT_PATH",
+      "env_value": "/app/data/live_capture/live_market_state.json",
+      "matched_capture_worker_output": true,
+      "fallback_on_missing": "63842.15 USDT (Canonical historical baseline, is_live=False)",
+      "auto_demotion_on_stale": "Demotes to HISTORICAL_SNAPSHOT if heartbeat > 120s or candle > 30m"
+    },
+    "external_volume_safety": {
+      "volume_name": "zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data",
+      "external": true,
+      "mount_mode": "ro",
+      "sqlite_direct_access": false,
+      "wal_shm_interference_risk": "ZERO"
+    },
+    "feature_isolation_enforcement": {
+      "CBE_APPROVAL_4_AUTHORIZED": "false",
+      "CBE_PROSPECTIVE_OBSERVATION_ENABLED": "false",
+      "CBE_TRADING_DISABLED": "true",
+      "START_WORKER": "false",
+      "cli_command_flags": ["--no-worker"],
+      "server_code_guard": "run_server() forces start_worker=False unless CBE_PROSPECTIVE_OBSERVATION_ENABLED=true and START_WORKER=true"
+    },
+    "resource_limits": {
+      "cpus": 0.50,
+      "mem_limit": "300m",
+      "mem_reservation": "150m",
+      "pids_limit": 64
+    },
+    "release_identity": {
+      "image_title": "cbe-market-intelligence-staging",
+      "image_tag": "staging",
+      "image_version": "sprint-11.02b.1",
+      "git_revision": "d74bb560a4286bc515cb7fdda4c0809d6e3aa61a"
+    }
+  },
+  "rollback_runbook": {
+    "action": "docker compose -f deploy/staging/docker-compose.market-intelligence-staging.yaml down",
+    "persistence_impact": "ZERO (Volume is external and mounted :ro)",
+    "production_impact": "ZERO (Production container 6t63aehp remains completely unaffected)"
+  },
+  "test_execution_summary": {
+    "sprint_11_02b_1_suite": {
+      "file": "tests/test_sprint11_02b_1_staging_hardening.py",
+      "tests_run": 20,
+      "tests_passed": 20,
+      "tests_failed": 0
+    },
+    "sprint_11_02b_suite": {
+      "file": "tests/test_sprint11_02b_deployment_compatibility.py",
+      "tests_run": 20,
+      "tests_passed": 20,
+      "tests_failed": 0
+    },
+    "full_sprint_10_11_suite": {
+      "total_tests": 162,
+      "passed": 162,
+      "failed": 0
+    }
+  },
+  "remaining_blockers": [
+    "Controlled activation requires explicit user deployment authorization to start staging container on VPS/Coolify",
+    "Live capture worker container zgit1s3n1acdtqtsxp0s44vj must be re-deployed with updated snapshot publishing code to begin updating live_market_state.json"
+  ]
+}

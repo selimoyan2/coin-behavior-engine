@@ -1396,9 +1396,16 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
         logger.info("%s - - [%s] %s" % (self.client_address[0], self.log_date_time_string(), format % args))
 
 
-def run_server(host: str = "0.0.0.0", port: int = 8000, start_worker: bool = True) -> None:
+def run_server(host: str = "0.0.0.0", port: int = 8000, start_worker: bool = False) -> None:
     """Run HTTP monitoring server with optional background prospective worker."""
     global ACTIVE_WORKER
+
+    # Feature isolation: ensure prospective/scoring worker is permanently disabled if not explicitly enabled
+    prospective_enabled = os.getenv("CBE_PROSPECTIVE_OBSERVATION_ENABLED", "false").lower() in ("true", "1", "yes")
+    start_worker_env = os.getenv("START_WORKER", "false").lower() in ("true", "1", "yes")
+
+    if not prospective_enabled or not start_worker_env:
+        start_worker = False
 
     if start_worker:
         logger.info("Starting background ProspectiveWorker thread...")
@@ -1407,6 +1414,8 @@ def run_server(host: str = "0.0.0.0", port: int = 8000, start_worker: bool = Tru
             ACTIVE_WORKER.start_background()
         else:
             logger.error("Failed to initialize background worker: freeze verification error.")
+    else:
+        logger.info("Background ProspectiveWorker disabled (Read-only / Staging mode).")
 
     server_address = (host, port)
     httpd = ThreadingHTTPServer(server_address, EngineRequestHandler)
@@ -1441,5 +1450,7 @@ if __name__ == "__main__":
         help="Disable background prospective worker",
     )
     args = parser.parse_args()
-    start_w = not args.no_worker and os.getenv("START_WORKER", "true").lower() in ("true", "1", "yes")
+    prospective_enabled = os.getenv("CBE_PROSPECTIVE_OBSERVATION_ENABLED", "false").lower() in ("true", "1", "yes")
+    start_w_env = os.getenv("START_WORKER", "false" if not prospective_enabled else "true").lower() in ("true", "1", "yes")
+    start_w = (not args.no_worker) and prospective_enabled and start_w_env
     run_server(host=args.host, port=args.port, start_worker=start_w)
