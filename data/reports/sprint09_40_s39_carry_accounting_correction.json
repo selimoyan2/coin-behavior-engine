@@ -1,0 +1,17 @@
+{
+  "original_s39_claim": "ZERO_RISK (1.0x effective isolated leverage never approaches breach)",
+  "forensic_audit_finding": "ZERO_RISK INVALIDATION: In an isolated margin account, Spot BTC capital gains are held in the Spot wallet and DO NOT automatically credit the isolated perpetual margin balance. During the 2024 bull market, BTC rallied +159% (from 42,283 to 109,588 USDT). An isolated short position of 5,000 USDT notional with 5,000 USDT initial margin suffered over 7,900 USDT in unrealized losses. Even after crediting accumulated funding (+491.27 USDT), isolated margin equity fell below Maintenance Margin Requirement (MMR = 0.40%) on 2024-11-11 at 21:15 UTC (Price: 88,378 USDT), triggering INTRABAR FORCED LIQUIDATION. Similarly, SOL carry suffered forced liquidation on 2024-03-18 at 09:45 UTC (Price: 208.0 USDT). Spot gains ensure portfolio-level solvency, but isolated margin accounts liquidate unless collateral is actively injected.",
+  "initial_spot_capital_usdt": 5000.0,
+  "initial_perp_collateral_usdt": 5000.0,
+  "initial_perp_notional_usdt": 5000.0,
+  "isolated_margin_liquidation_price_btc": 88378.0,
+  "historical_ath_price_btc": 109588.0,
+  "btc_liquidation_breach_timestamp_utc": "2024-11-11T21:15:00Z",
+  "btc_liquidation_breach_price_usdt": 88378.0,
+  "sol_liquidation_breach_timestamp_utc": "2024-03-18T09:45:00Z",
+  "sol_liquidation_breach_price_usdt": 208.0,
+  "eth_peak_margin_utilization_pct": 76.02,
+  "spot_perpetual_wallet_segregation_principle": "Spot assets and isolated perpetual margin are completely segregated on crypto exchanges. Net portfolio delta neutrality does NOT prevent isolated margin liquidation.",
+  "corrected_risk_classification": "ISOLATED_MARGIN_VULNERABLE_TO_RALLIES_WITHOUT_COLLATERAL_INJECTION",
+  "prerequisite_for_solvency": "AUTOMATED_COLLATERAL_INJECTIONS_OR_CROSS_MARGIN_MANDATORY"
+}

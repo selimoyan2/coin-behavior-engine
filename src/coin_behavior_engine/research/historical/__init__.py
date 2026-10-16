@@ -345,6 +345,19 @@ from coin_behavior_engine.research.historical.cross_instrument_funding_sprint39 
     Sprint39CrossInstrumentAuditor,
     Sprint39MasterReport,
 )
+from coin_behavior_engine.research.historical.multi_asset_carry_sprint40 import (
+    AssetDatasetCompletenessRecord,
+    CapitalAllocationContract,
+    FundingSpreadPersistenceReport,
+    LiveOutcomeForensicClosure,
+    PassiveCarryBenchmarkResult,
+    Sprint40MasterReport,
+    Sprint40MultiAssetCarryAuditor,
+    StaticPortfolioAllocationResult,
+    StressScenarioResult,
+    SwitchingCostHurdleAudit,
+    ZeroLiquidationRiskCorrectionAudit,
+)
 
 __all__ = [
     "BINANCE_SPOT_BTCUSDT_GENESIS_MS",
@@ -569,4 +582,15 @@ __all__ = [
     "CrossInstrumentDispersionReport",
     "Sprint39MasterReport",
     "Sprint39CrossInstrumentAuditor",
+    "ZeroLiquidationRiskCorrectionAudit",
+    "CapitalAllocationContract",
+    "LiveOutcomeForensicClosure",
+    "AssetDatasetCompletenessRecord",
+    "PassiveCarryBenchmarkResult",
+    "FundingSpreadPersistenceReport",
+    "SwitchingCostHurdleAudit",
+    "StaticPortfolioAllocationResult",
+    "StressScenarioResult",
+    "Sprint40MasterReport",
+    "Sprint40MultiAssetCarryAuditor",
 ]
