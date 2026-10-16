@@ -26,7 +26,7 @@
 services:
   cbe-market-intelligence-staging:
     build:
-      context: ../..
+      context: .
       dockerfile: Dockerfile
     image: cbe-market-intelligence:staging
     container_name: cbe_market_intelligence_staging

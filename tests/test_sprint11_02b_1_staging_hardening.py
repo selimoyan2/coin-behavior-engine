@@ -120,7 +120,7 @@ def test_03_supervised_activation_restart_policy_no():
 # ==============================================================================
 
 def test_04_compose_build_context_and_dockerfile_resolution():
-    """Verify that build.context: ../.. and dockerfile: Dockerfile resolve to existing root files."""
+    """Verify that build.context: . and dockerfile: Dockerfile resolve to existing root files under Coolify's project root."""
     compose = _load_compose_yaml()
     service = compose["services"]["cbe-market-intelligence-staging"]
     build = service.get("build", {})
@@ -128,8 +128,11 @@ def test_04_compose_build_context_and_dockerfile_resolution():
     context_rel = build.get("context")
     dockerfile_rel = build.get("dockerfile")
 
-    compose_dir = STAGING_COMPOSE_PATH.parent
-    resolved_context = (compose_dir / context_rel).resolve()
+    assert context_rel == ".", f"Coolify execution convention requires build.context to be '.', got: {context_rel}"
+    assert dockerfile_rel == "Dockerfile", f"Expected dockerfile to be 'Dockerfile', got: {dockerfile_rel}"
+
+    # Coolify executes from the repository root (REPO_ROOT) as project directory
+    resolved_context = (REPO_ROOT / context_rel).resolve()
     resolved_dockerfile = (resolved_context / dockerfile_rel).resolve()
 
     assert resolved_context == REPO_ROOT, f"Resolved context {resolved_context} does not match {REPO_ROOT}"

@@ -45,10 +45,11 @@
       "rationale": "Prevents runaway restart loops during supervised activation"
     },
     "build_context_compatibility": {
-      "context": "../..",
+      "context": ".",
       "resolved_context": "Repository root (contains pyproject.toml, Dockerfile, src/, data/)",
       "dockerfile_path": "Dockerfile",
-      "coolify_compatibility": "VERIFIED (Standard relative directory traversal supported)"
+      "coolify_compatibility": "VERIFIED (Coolify passes --project-directory . evaluating build context directly at repository root, successfully reading Dockerfile)",
+      "coolify_build_fix_applied": true
     },
     "healthcheck": {
       "test_command": ["CMD", "curl", "-f", "http://127.0.0.1:8000/health"],
