@@ -25,6 +25,11 @@ from typing import Any, Dict, Optional
 from urllib.parse import parse_qs, urlparse
 
 from coin_behavior_engine.product.intelligence_api import MarketIntelligenceApiService
+from coin_behavior_engine.product.ui import (
+    get_intelligence_css,
+    get_intelligence_js,
+    render_intelligence_ui_html,
+)
 from coin_behavior_engine.prospective.analytics import ProspectiveAnalyticsEngine
 from coin_behavior_engine.prospective.freeze import FROZEN_MODEL_VERSION
 from coin_behavior_engine.prospective.worker import ProspectiveWorker, get_next_5m_target
@@ -1252,6 +1257,15 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(payload)
 
+    def _send_response_text(self, status: int, text: str, content_type: str = "text/plain; charset=utf-8") -> None:
+        payload = text.encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(payload)))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(payload)
+
     def do_GET(self) -> None:  # noqa: N802
         parsed_url = urlparse(self.path)
         url_path = parsed_url.path
@@ -1265,6 +1279,21 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
         if url_path.startswith("/api/v1/intelligence"):
             status_code, response_data = MarketIntelligenceApiService.handle_request(url_path, query_params)
             self._send_response_json(status_code, response_data)
+            return
+
+        if url_path in ("/intelligence", "/market-intelligence", "/intelligence/index.html"):
+            html = render_intelligence_ui_html()
+            self._send_response_html(HTTPStatus.OK, html)
+            return
+
+        if url_path == "/intelligence/style.css":
+            css = get_intelligence_css()
+            self._send_response_text(HTTPStatus.OK, css, content_type="text/css; charset=utf-8")
+            return
+
+        if url_path == "/intelligence/client.js":
+            js = get_intelligence_js()
+            self._send_response_text(HTTPStatus.OK, js, content_type="application/javascript; charset=utf-8")
             return
 
         if url_path in ("/health", "/healthz", "/ping"):
@@ -1349,6 +1378,7 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
                         "/api/analytics/integrity",
                         "/api/analytics/timeline",
                         "/api/v1/intelligence",
+                        "/intelligence",
                     ],
                 },
             )

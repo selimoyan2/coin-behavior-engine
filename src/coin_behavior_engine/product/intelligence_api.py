@@ -33,14 +33,6 @@ import time
 from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.parse import parse_qs, urlparse
 
-from coin_behavior_engine.calibration.chronological_provenance_repair import (
-    CalibrationEvidenceStatus,
-    ChronologicalProvenanceRepairEngine,
-)
-from coin_behavior_engine.calibration.independent_verifier import (
-    CorrectedCausalRegimeClassifierCandidate,
-    IndependentCalibrationVerifier,
-)
 from coin_behavior_engine.product.data_contracts import (
     ContractField,
     FailClosedDisplayRuleEngine,
@@ -115,6 +107,8 @@ class MarketIntelligenceApiService:
         with cls._cache_lock:
             now = time.time()
             if cls._cached_contracts is None or (now - cls._cache_timestamp) > 60.0:
+                from coin_behavior_engine.calibration.independent_verifier import IndependentCalibrationVerifier
+
                 verifier = IndependentCalibrationVerifier()
                 cls._cached_contracts = verifier.build_product_data_contracts()
                 cls._cache_timestamp = now
@@ -541,6 +535,10 @@ class MarketIntelligenceApiService:
         query_params: Dict[str, List[str]],
     ) -> Tuple[int, Dict[str, Any]]:
         """Endpoint 5: Historical calibration diagnostics and block bootstrap intervals."""
+        from coin_behavior_engine.calibration.chronological_provenance_repair import (
+            ChronologicalProvenanceRepairEngine,
+        )
+
         repair = ChronologicalProvenanceRepairEngine()
         evidence_dict = repair.assess_horizon_evidence()
 
@@ -772,6 +770,10 @@ class MarketIntelligenceApiService:
     @classmethod
     def get_evidence_limitations(cls) -> Tuple[int, Dict[str, Any]]:
         """Endpoint 10: Research evidence, data lineage, and product limitations disclosure."""
+        from coin_behavior_engine.calibration.chronological_provenance_repair import (
+            ChronologicalProvenanceRepairEngine,
+        )
+
         repair = ChronologicalProvenanceRepairEngine()
         timeline = repair.reconstruct_timeline()
         manifest = repair.build_split_manifest()

@@ -37,6 +37,16 @@ from coin_behavior_engine.product.intelligence_api import (
     ApiResponseMetadata,
     MarketIntelligenceApiService,
 )
+from coin_behavior_engine.product.provenance import (
+    ApiProvenanceAuditor,
+    EndpointProvenanceRecord,
+    RecordCountReconciliation,
+)
+from coin_behavior_engine.product.ui import (
+    get_intelligence_css,
+    get_intelligence_js,
+    render_intelligence_ui_html,
+)
 
 __all__ = [
     "CapabilityInventoryRecord",
@@ -65,4 +75,10 @@ __all__ = [
     "ApiEvidenceClassification",
     "ApiResponseMetadata",
     "MarketIntelligenceApiService",
+    "ApiProvenanceAuditor",
+    "EndpointProvenanceRecord",
+    "RecordCountReconciliation",
+    "render_intelligence_ui_html",
+    "get_intelligence_css",
+    "get_intelligence_js",
 ]

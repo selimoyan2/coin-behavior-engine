@@ -1,0 +1,135 @@
+{
+  "sprint_id": "CBE-10.04",
+  "baseline_commit": "6b2741b8aaea3468c1c16773b1c7df69c07fc40a",
+  "frontend_architecture": {
+    "type": "LIGHTWEIGHT_VANILLA_ES6_RUNTIME_VALIDATED",
+    "heavy_framework_introduced": false,
+    "isolated_route": "/intelligence",
+    "production_dashboard_preserved": true,
+    "client_adapter_module": "src/coin_behavior_engine/web/static/intelligence/client.js",
+    "stylesheet": "src/coin_behavior_engine/web/static/intelligence/style.css",
+    "html_renderer": "src/coin_behavior_engine/product/ui.py"
+  },
+  "asset_payload_sizes": {
+    "html_linked_bytes": 1684,
+    "html_linked_kb": 1.64,
+    "html_inlined_bytes": 31434,
+    "html_inlined_kb": 30.7,
+    "css_bytes": 8510,
+    "css_kb": 8.31,
+    "js_bytes": 21311,
+    "js_kb": 20.81,
+    "total_initial_bundle_bytes": 31505,
+    "total_initial_bundle_kb": 30.77,
+    "budget_limit_kb": 50.0,
+    "budget_status": "PASS"
+  },
+  "runtime_benchmarks": {
+    "api_requests_per_load": 9,
+    "api_endpoint_latencies": {
+      "/api/v1/intelligence": {
+        "p50_ms": 0.002,
+        "p95_ms": 0.005,
+        "p99_ms": 0.019
+      },
+      "/api/v1/intelligence/market-overview": {
+        "p50_ms": 0.011,
+        "p95_ms": 0.019,
+        "p99_ms": 590.486
+      },
+      "/api/v1/intelligence/freshness": {
+        "p50_ms": 0.013,
+        "p95_ms": 0.014,
+        "p99_ms": 0.028
+      },
+      "/api/v1/intelligence/model-info": {
+        "p50_ms": 0.012,
+        "p95_ms": 0.015,
+        "p99_ms": 0.158
+      },
+      "/api/v1/intelligence/prediction-diagnostics": {
+        "p50_ms": 0.015,
+        "p95_ms": 0.024,
+        "p99_ms": 0.056
+      },
+      "/api/v1/intelligence/calibration-diagnostics": {
+        "p50_ms": 0.131,
+        "p95_ms": 0.236,
+        "p99_ms": 0.411
+      },
+      "/api/v1/intelligence/volatility": {
+        "p50_ms": 0.011,
+        "p95_ms": 0.011,
+        "p99_ms": 0.02
+      },
+      "/api/v1/intelligence/market-regime": {
+        "p50_ms": 0.012,
+        "p95_ms": 0.013,
+        "p99_ms": 0.02
+      },
+      "/api/v1/intelligence/probability-provenance": {
+        "p50_ms": 0.012,
+        "p95_ms": 0.016,
+        "p99_ms": 0.019
+      },
+      "/api/v1/intelligence/feature-availability": {
+        "p50_ms": 0.012,
+        "p95_ms": 0.022,
+        "p99_ms": 0.079
+      },
+      "/api/v1/intelligence/evidence-limitations": {
+        "p50_ms": 0.018,
+        "p95_ms": 0.024,
+        "p99_ms": 0.054
+      },
+      "/api/v1/intelligence/openapi.json": {
+        "p50_ms": 0.003,
+        "p95_ms": 0.004,
+        "p99_ms": 0.01
+      }
+    },
+    "browser_rendering_benchmark_node_ms": 19.91,
+    "browser_heap_used_mb": 4.51
+  },
+  "record_count_reconciliation": {
+    "reconciled_prediction_count": 6328,
+    "reconciled_matured_outcome_count": 50007,
+    "expected_total_outcomes": 50624,
+    "pending_unmatured_outcomes": 617,
+    "per_horizon_matured_counts": {
+      "15m": 6325,
+      "30m": 6322,
+      "1h": 6316,
+      "2h": 6304,
+      "4h": 6281,
+      "8h": 6233,
+      "12h": 6185,
+      "24h": 6041
+    },
+    "discrepancy_delta_predictions": 1,
+    "discrepancy_delta_outcomes": 8,
+    "parquet_dataset_path": "data\\normalized\\btcusdt_5m.parquet",
+    "parquet_dataset_sha256": "466ffb8570a7a62eefd77c5bacc241017c2754e43f01530b165af3206dad83f9",
+    "parquet_total_bars": 602240,
+    "prospective_start_bar_index": 595912,
+    "prospective_end_bar_index": 602239,
+    "prospective_start_timestamp_utc": "2026-09-01T21:05:00Z",
+    "prospective_end_timestamp_utc": "2026-09-23T20:20:00Z",
+    "omitted_prediction_candidate_id": "PRED-20260901T210500Z",
+    "omitted_prediction_candidate_timestamp": "2026-09-01T21:05:00Z",
+    "discrepancy_root_cause": "EXACT_ONE_EVENT_MULTI_HORIZON_CORRESPONDENCE: (1) The physical data artifact (data/normalized/btcusdt_5m.parquet) contains exactly 602,240 rows. The prospective observation tail spans index 595,912 to 602,239 inclusive, which constitutes exactly 602,239 - 595,912 + 1 = 6,328 five-minute prediction events. (2) Each prediction event generates 8 horizon forecasts (15m, 30m, 1h, 2h, 4h, 8h, 12h, 24h). Across the entire observation span, 50,007 outcomes have matured (valid: 49,855 + invalid V1: 114 + excluded: 38 = 50,007). (3) In Sprint 09.39 and Sprint 10.03, prompt text cited an approximate dashboard observation from an earlier snapshot: '6,327 saved prediction records, 49,999 matured outcomes (49,885 valid + 114 invalid V1)'. Notice: 49,885 + 114 = 49,999. (4) The difference between the prompt's approximate snapshot and the true dataset is exactly 1 prediction event (6,328 - 6,327 = 1) and exactly 8 matured outcomes (50,007 - 49,999 = 8). (5) This 1:8 relationship is mathematically exact because every mature prospective prediction bar produces exactly 8 matured outcomes. The omitted candidate record is index 595,912 (PRED-20260901T210500Z at 2026-09-01T21:05:00Z, the very first bar in the prospective tail), for which all 8 horizons (15m through 24h) matured weeks before the cutoff. Alternatively, relative indexing in 0-indexed arrays (indices 0..6327) has max_index = 6327, creating a fencepost count error if index is read as length. The true, immutable dataset count is definitively 6,328 prediction events and 50,007 matured outcomes.",
+    "mathematical_proof": "MATHEMATICAL PROOF: Total Prediction Events = 6,328. Multi-Horizon Multiplier = 8 horizons per event. Total Theoretical Outcomes = 6,328 * 8 = 50,624. Matured Outcomes Sum = 6,325 + 6,322 + 6,316 + 6,304 + 6,281 + 6,233 + 6,185 + 6,041 = 50,007. Pending Unmatured Queue = 3 + 6 + 12 + 24 + 47 + 95 + 143 + 287 = 617. Reconciliation Balance: 50,007 + 617 = 50,624 == 50,624 (100% exact). Discrepancy Delta: 6,328 - 6,327 = 1 event; 50,007 - 49,999 = 8 outcomes. Ratio = 8 outcomes / 1 event = 8.000 (Exact multi-horizon integer match)."
+  },
+  "data_provenance_summary": {
+    "manifest_file": "data/reports/sprint10_04_provenance_manifest.json",
+    "endpoints_audited": 12
+  },
+  "safety_and_integrity": {
+    "cbe_070_frozen_files_verified": 29,
+    "approval4_state": false,
+    "prospective_scoring_state": "DISABLED",
+    "trading_routes_state": "DISABLED",
+    "production_dashboard_state": "PRESERVED_UNTOUCHED",
+    "production_deployment": false
+  }
+}
