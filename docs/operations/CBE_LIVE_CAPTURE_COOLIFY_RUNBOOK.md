@@ -1,7 +1,7 @@
 # Coin Behavior Engine (CBE) — Live Capture & Staging Operational Runbook
 ## Deployment Continuity, Resource Boundaries, Evidence Protection & Recovery
 
-**Document Version:** 1.0.0 (Sprint 11.02D Baseline)  
+**Document Version:** 1.1.0 (Sprint 11.02D.1 Hardening Baseline)  
 **Host Environment:** `srv1114257` (`168.231.125.238`)  
 **Orchestration Engine:** Coolify v4.4.6 + Docker Compose  
 **Security Gating:** APPROVAL_3 = LIVE_CAPTURE_ONLY | APPROVAL_4 = FALSE | TRADING = DISABLED
@@ -91,6 +91,46 @@ Host directory:
 
 ---
 
+## 2.1 Sprint 11.02D.1 Recovery Transaction Architecture & Durability
+
+Sprint 11.02D.1 implements a deterministic, crash-safe recovery transaction state machine and cross-layer verification:
+
+```mermaid
+stateDiagram-v2
+    [*] --> NEW: Gap Detected (GAP-ID)
+    NEW --> VALIDATED: Validate Timestamps & Check Idempotency
+    VALIDATED --> JOURNAL_DURABLE: Append to Journal + fsync()
+    JOURNAL_DURABLE --> JOURNAL_VERIFIED: Read-back Verify All Appended Records
+    JOURNAL_VERIFIED --> METADATA_COMMITTED: Append to Metadata + fsync()
+    METADATA_COMMITTED --> COMMIT_VERIFIED: Read-back Verify Committed Metadata
+    COMMIT_VERIFIED --> RECOVERY_APPLIED: Splice into Buffer & Update Contiguity
+    RECOVERY_APPLIED --> [*]
+
+    state "Crash Safety Interlocks" as Interlocks {
+        JOURNAL_DURABLE --> UNCOMMITTED_DURABLE: Crash Before Metadata Commit
+        UNCOMMITTED_DURABLE --> SAFE_RECONCILE: Reconcile on Next Recovery Attempt
+        SAFE_RECONCILE --> METADATA_COMMITTED
+    }
+```
+
+### Core Durability Guarantees:
+1. **Full Read-Back Verification (Defect B):**
+   - After writing to `recovery_candles_BTCUSDT_5m.jsonl` and calling `fsync()`, the store reopens the journal from disk, seeks to the exact batch range, and verifies byte-for-byte and field-for-field: entry index, `gap_id`, `recovery_batch_id`, previous recovery hash, candle SHA-256 hash, entry integrity hash, and full OHLCV payload.
+   - Metadata is NEVER appended if read-back verification fails.
+2. **Fail-Closed Metadata Loading (Defect C):**
+   - Any corruption, malformed JSON, duplicate gap ID, or missing required fields in `recovery_metadata_BTCUSDT_5m.jsonl` raises `RecoveryMetadataCorruptionError` immediately. Silent fallback or empty-index initialization is strictly prohibited.
+3. **Journal & Metadata Cross-Validation (Defect D):**
+   - On startup, every committed metadata record is cross-validated against the verified journal records: `first_entry_index`, `last_entry_index`, `recovered_candles_count`, `missing_timestamps`, `start_integrity_hash`, `end_integrity_hash`, `gap_id`, and `recovery_batch_id`. Any discrepancy fails closed immediately.
+4. **Uncommitted Batch Safe Reconciliation (Defect A):**
+   - If a crash occurs after journal `fsync()` but before metadata commit, the journal records remain safely on disk. On restart, the store identifies these entries as uncommitted.
+   - When a recovery request for the same gap arrives, the candidate candles are compared with the uncommitted journal entries. If matching, the transaction reconciles safely and commits metadata without appending duplicate journal records.
+5. **Strict Canonical Payload Idempotency (Defect E):**
+   - Duplicate recovery requests are validated using `matches_payload()` and Decimal string representations of open, high, low, close, and volume. If identical, returns `(True, "ALREADY_COMMITTED")`. If any value conflicts, the record is quarantined to `recovery_quarantine_BTCUSDT_5m.jsonl` and `ConflictingRecoveryCandleError` is raised.
+6. **Metadata Rollback on Write/Fsync Failure:**
+   - If metadata write or `fsync()` encounters a disk failure, the metadata file is immediately truncated back to its pre-write byte position (`meta_pos`), preventing half-written or un-synced commit records on disk.
+
+---
+
 ## 3. Dedicated Build & Image Versioning
 
 ### 3.1 Why the Root Dockerfile Must NOT Be Used for Live Capture
@@ -107,12 +147,12 @@ COMMIT_SHA=$(git rev-parse --short HEAD)
 
 # 2. Build immutable release image
 docker build \
-  -t cbe-080-shadow:sprint11-02d-${COMMIT_SHA} \
+  -t cbe-080-shadow:sprint11-02d1-${COMMIT_SHA} \
   -f deploy/shadow_v080/Dockerfile.staging .
 
 # 3. Tag with Coolify image reference
 docker tag \
-  cbe-080-shadow:sprint11-02d-${COMMIT_SHA} \
+  cbe-080-shadow:sprint11-02d1-${COMMIT_SHA} \
   cbe-080-shadow:coolify-live-capture
 ```
 
@@ -143,10 +183,20 @@ docker network create --driver bridge zgit1s3n1acdtqtsxp0s44vj
 
 ## 5. Preflight Verification (Read-Only)
 
-Before any deployment, execute the read-only preflight tool:
+Before any deployment, execute the hardened read-only preflight tool. It supports `--help` and `--compose-path` to audit either the repository template or the actual Coolify-generated compose file on the server:
+
 ```bash
+# Inspect repository template (default):
 python3 deploy/shadow_v080/verify_deployment_preflight.py
+
+# Inspect actual Coolify server compose file:
+python3 deploy/shadow_v080/verify_deployment_preflight.py \
+  --compose-path /data/coolify/applications/zgit1s3n1acdtqtsxp0s44vj/docker-compose.yaml
+
+# Display CLI help and invariants:
+python3 deploy/shadow_v080/verify_deployment_preflight.py --help
 ```
+
 Expected output:
 ```text
 ==================================================================
@@ -154,7 +204,7 @@ CBE-0.8.0 LIVE CAPTURE: READ-ONLY DEPLOYMENT PREFLIGHT AUDIT
 ==================================================================
 [PREFLIGHT PASSED] All Dockerfile, volume, entrypoint, and safety interlocks verified.
 ```
-If ANY mismatch occurs, execution aborts with exit code 1.
+If ANY mismatch occurs, execution aborts with exit code 1. Secrets (tokens, keys, passwords) are automatically redacted in diagnostics.
 
 ---
 
