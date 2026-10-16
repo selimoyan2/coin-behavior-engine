@@ -1,0 +1,41 @@
+[
+  {
+    "correction_id": "CORR-10021-01",
+    "target_sprint": "Sprint 10.01 & 10.02",
+    "affected_artifact": "sprint10_01_conformal_calibration_report.json / sprint10_02_independent_verification_report.json",
+    "original_erroneous_statement": "Prediction events described as '15-minute bars' (e.g., 'Every 15-minute prediction bar produces an array of 8 multi-horizon forecast targets').",
+    "forensically_proven_fact": "Prediction events are strictly generated on 5-minute candle closes (cadence = 300.0s). 6,328 bars span 22 days from 2026-09-01T21:05:00Z to 2026-09-23T20:20:00Z.",
+    "root_cause_explanation": "Engineers conflated the primary 15m feature timeframe with the worker's 5m execution cycle.",
+    "affected_conclusions": [
+      "Cadence is 5 minutes, not 15 minutes.",
+      "Horizon bar counts are 3, 6, 12, 24, 48, 96, 144, 288 (not 1, 2, 4, 8, 16, 32, 48, 96)."
+    ],
+    "product_readiness_impact": "No algorithmic failure; data contracts and cadence telemetry updated to 5m."
+  },
+  {
+    "correction_id": "CORR-10021-02",
+    "target_sprint": "Sprint 10.02",
+    "affected_artifact": "sprint10_02_independent_verification_report.json (method_selection_audit.formal_three_way_split_protocol)",
+    "original_erroneous_statement": "Calibration split described as '2026-09-21T00:00:00Z to 2026-09-23T06:00:00Z (4,400 bars)'.",
+    "forensically_proven_fact": "A 54-hour window contains only 648 5m bars. Bar #4,400 actually occurred on 2026-09-17 at 03:45:00 UTC (PRED-20260917T034500Z).",
+    "root_cause_explanation": "Conflation of the 3-day prospective observation window with the 4,400-bar index of the full 22-day prospective capture.",
+    "affected_conclusions": [
+      "Calibration window spans 2026-09-01T21:05:00Z to 2026-09-17T03:40:00Z.",
+      "Evaluation window spans 2026-09-18T03:45:00Z to 2026-09-23T20:20:00Z."
+    ],
+    "product_readiness_impact": "Corrected in versioned Split Manifest V1.0."
+  },
+  {
+    "correction_id": "CORR-10021-03",
+    "target_sprint": "Sprint 10.02",
+    "affected_artifact": "sprint10_02_independent_verification_report.json (overall_decision_gate)",
+    "original_erroneous_statement": "Overall decision gate labeled 'SPRINT_10_02_INDEPENDENT_VERIFICATION_VALIDATED'.",
+    "forensically_proven_fact": "Because the prospective evaluation data was previously inspected during Sprint 10.01 candidate selection, it cannot be called independently validated.",
+    "root_cause_explanation": "Premature use of 'VALIDATED' label before executing on an untouched prospective holdout.",
+    "affected_conclusions": [
+      "Results are reclassified as CHRONOLOGICALLY_VERIFIED_EXPLORATORY.",
+      "INDEPENDENTLY_VALIDATED status withheld until future prospective capture."
+    ],
+    "product_readiness_impact": "Enforces honest uncertainty labeling in product data contracts."
+  }
+]

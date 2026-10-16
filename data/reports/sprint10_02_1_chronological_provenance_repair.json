@@ -1,0 +1,337 @@
+{
+  "sprint_id": "CBE-10.02.1",
+  "baseline_commit": "edbe054158e976629a6ee1c0d1a8d3f3cad24f20",
+  "timeline": {
+    "earliest_prediction_timestamp": "2026-09-01T21:05:00Z",
+    "latest_prediction_timestamp": "2026-09-23T20:20:00Z",
+    "actual_prediction_cadence_seconds": 300,
+    "actual_prediction_cadence_minutes": 5,
+    "cadence_strictly_uniform": true,
+    "total_prediction_events": 6328,
+    "total_matured_outcomes": 50007,
+    "valid_outcomes": 49855,
+    "invalid_outcomes": 114,
+    "excluded_outcomes": 38,
+    "pending_unmatured_outcomes": 617,
+    "prediction_4400_index": 4400,
+    "prediction_4400_timestamp": "2026-09-17T03:45:00Z",
+    "prediction_4400_id": "PRED-20260917T034500Z",
+    "chronology_discrepancy_root_cause": "COMPOUND_CADENCE_AND_DATE_CONFLATION: (1) Cadence Error: Sprint 10.01 & 10.02 text described prediction events as '15-minute bars', whereas ProspectiveWorker operates on strict 5-minute candle closes (cadence = 300s). (2) Date Boundary Conflation: Sprint 10.02 described the calibration split as '2026-09-21 to 2026-09-23 (4,400 bars)'. A 54-hour window contains only 648 five-minute bars (or 216 fifteen-minute bars), making 4,400 bars mathematically impossible. In reality, the 6,328 five-minute bars span 22 days from 2026-09-01T21:05:00Z to 2026-09-23T20:20:00Z. Prediction #4,400 actually occurred on 2026-09-17 at 03:45:00 UTC.",
+    "chronology_correction": "The prospective observation sequence is definitively established as 6,328 five-minute bars (cadence = 300s) spanning 2026-09-01T21:05:00Z to 2026-09-23T20:20:00Z. Bar #4,400 is PRED-20260917T034500Z. The 8 forecast horizons (15m..24h) correspond to 3, 6, 12, 24, 48, 96, 144, and 288 five-minute bars."
+  },
+  "split_manifest": {
+    "manifest_version": "CBE-SPLIT-MANIFEST-V1.0",
+    "dataset_identity": "data\\normalized\\btcusdt_5m.parquet",
+    "dataset_sha256": "466ffb8570a7a62eefd77c5bacc241017c2754e43f01530b165af3206dad83f9",
+    "source_model_version": "CBE-0.7.0",
+    "source_model_hash": "c3e5dfbe3bf637f9ef8c8f0f0a40232d3e0984852c786720f17e0b5efd581559",
+    "reference_segment": {
+      "segment_name": "REFERENCE_DEVELOPMENT_SEGMENT",
+      "start_bar_index": 0,
+      "end_bar_index": 595911,
+      "bar_count": 595912,
+      "start_timestamp_utc": "2021-01-01T00:00:00Z",
+      "end_timestamp_utc": "2026-09-01T21:00:00Z",
+      "purpose": "Historical model training, feature discovery, and canonical CBE-0.7.0 freeze."
+    },
+    "calibration_segment": {
+      "segment_name": "CALIBRATION_SPLIT_SEGMENT",
+      "start_bar_index": 595912,
+      "end_bar_index": 600311,
+      "bar_count": 4400,
+      "start_timestamp_utc": "2026-09-01T21:05:00Z",
+      "end_timestamp_utc": "2026-09-17T03:40:00Z",
+      "purpose": "Causal estimation of conformal quantiles q_80 and q_95."
+    },
+    "embargo_segment": {
+      "segment_name": "HORIZON_EMBARGO_SEGMENT",
+      "start_bar_index": 600312,
+      "end_bar_index": 600599,
+      "bar_count": 288,
+      "start_timestamp_utc": "2026-09-17T03:45:00Z",
+      "end_timestamp_utc": "2026-09-18T03:40:00Z",
+      "purpose": "Full 24h temporal embargo preventing outcome leakage from calibration into evaluation."
+    },
+    "evaluation_segment": {
+      "segment_name": "EVALUATION_SPLIT_SEGMENT",
+      "start_bar_index": 600600,
+      "end_bar_index": 602239,
+      "bar_count": 1640,
+      "start_timestamp_utc": "2026-09-18T03:45:00Z",
+      "end_timestamp_utc": "2026-09-23T20:20:00Z",
+      "purpose": "Chronologically separated evaluation of calibrated prediction intervals."
+    },
+    "embargo_bars_by_horizon_5m": {
+      "15m": 3,
+      "30m": 6,
+      "1h": 12,
+      "2h": 24,
+      "4h": 48,
+      "8h": 96,
+      "12h": 144,
+      "24h": 288
+    },
+    "matured_outcome_cutoff": "2026-09-23T20:24:59.999Z",
+    "exclusion_criteria": [
+      "Legacy Schema V1 records missing reference close (114 records).",
+      "Excluded zero-return edge records (38 records).",
+      "Unmatured outcomes beyond cutoff 2026-09-23T20:25:00Z (617 records)."
+    ],
+    "calibration_evaluation_overlap": false,
+    "protocol_executability_status": "NOT_YET_EXECUTABLE_AS_INDEPENDENT_HOLDOUT"
+  },
+  "evidence_assessments": {
+    "15m": {
+      "horizon_name": "15m",
+      "horizon_minutes": 15,
+      "horizon_bars_5m": 3,
+      "raw_sample_size": 6325,
+      "effective_sample_size": 6325,
+      "calibration_sample_size": 4400,
+      "evaluation_sample_size": 1637,
+      "observed_coverage_80": 0.8015,
+      "observed_coverage_95": 0.9485,
+      "block_bootstrap_ci_80": [
+        0.7874,
+        0.8089
+      ],
+      "block_bootstrap_ci_95": [
+        0.943,
+        0.9551
+      ],
+      "mean_interval_width_bps": 42.8,
+      "stress_period_coverage_80": 0.779,
+      "evaluation_data_influenced_selection": true,
+      "evidence_status": "CHRONOLOGICALLY_VERIFIED_EXPLORATORY",
+      "justification": "Evaluated on previously inspected prospective traces; cannot claim independent holdout."
+    },
+    "30m": {
+      "horizon_name": "30m",
+      "horizon_minutes": 30,
+      "horizon_bars_5m": 6,
+      "raw_sample_size": 6322,
+      "effective_sample_size": 3161,
+      "calibration_sample_size": 4400,
+      "evaluation_sample_size": 1634,
+      "observed_coverage_80": 0.802,
+      "observed_coverage_95": 0.949,
+      "block_bootstrap_ci_80": [
+        0.7928,
+        0.8128
+      ],
+      "block_bootstrap_ci_95": [
+        0.9433,
+        0.9521
+      ],
+      "mean_interval_width_bps": 60.6,
+      "stress_period_coverage_80": 0.775,
+      "evaluation_data_influenced_selection": true,
+      "evidence_status": "CHRONOLOGICALLY_VERIFIED_EXPLORATORY",
+      "justification": "Evaluated on previously inspected prospective traces; cannot claim independent holdout."
+    },
+    "1h": {
+      "horizon_name": "1h",
+      "horizon_minutes": 60,
+      "horizon_bars_5m": 12,
+      "raw_sample_size": 6316,
+      "effective_sample_size": 1579,
+      "calibration_sample_size": 4400,
+      "evaluation_sample_size": 1628,
+      "observed_coverage_80": 0.803,
+      "observed_coverage_95": 0.951,
+      "block_bootstrap_ci_80": [
+        0.8017,
+        0.8198
+      ],
+      "block_bootstrap_ci_95": [
+        0.9414,
+        0.9528
+      ],
+      "mean_interval_width_bps": 86.8,
+      "stress_period_coverage_80": 0.771,
+      "evaluation_data_influenced_selection": true,
+      "evidence_status": "CHRONOLOGICALLY_VERIFIED_EXPLORATORY",
+      "justification": "Evaluated on previously inspected prospective traces; cannot claim independent holdout."
+    },
+    "2h": {
+      "horizon_name": "2h",
+      "horizon_minutes": 120,
+      "horizon_bars_5m": 24,
+      "raw_sample_size": 6304,
+      "effective_sample_size": 788,
+      "calibration_sample_size": 4400,
+      "evaluation_sample_size": 1616,
+      "observed_coverage_80": 0.799,
+      "observed_coverage_95": 0.9475,
+      "block_bootstrap_ci_80": [
+        0.7873,
+        0.8044
+      ],
+      "block_bootstrap_ci_95": [
+        0.9417,
+        0.9509
+      ],
+      "mean_interval_width_bps": 123.1,
+      "stress_period_coverage_80": 0.768,
+      "evaluation_data_influenced_selection": true,
+      "evidence_status": "CHRONOLOGICALLY_VERIFIED_EXPLORATORY",
+      "justification": "Evaluated on previously inspected prospective traces; cannot claim independent holdout."
+    },
+    "4h": {
+      "horizon_name": "4h",
+      "horizon_minutes": 240,
+      "horizon_bars_5m": 48,
+      "raw_sample_size": 6281,
+      "effective_sample_size": 392,
+      "calibration_sample_size": 4400,
+      "evaluation_sample_size": 1593,
+      "observed_coverage_80": 0.7985,
+      "observed_coverage_95": 0.948,
+      "block_bootstrap_ci_80": [
+        0.7884,
+        0.8045
+      ],
+      "block_bootstrap_ci_95": [
+        0.9466,
+        0.9569
+      ],
+      "mean_interval_width_bps": 177.7,
+      "stress_period_coverage_80": 0.762,
+      "evaluation_data_influenced_selection": true,
+      "evidence_status": "CHRONOLOGICALLY_VERIFIED_EXPLORATORY",
+      "justification": "Evaluated on previously inspected prospective traces; cannot claim independent holdout."
+    },
+    "8h": {
+      "horizon_name": "8h",
+      "horizon_minutes": 480,
+      "horizon_bars_5m": 96,
+      "raw_sample_size": 6233,
+      "effective_sample_size": 194,
+      "calibration_sample_size": 4400,
+      "evaluation_sample_size": 1545,
+      "observed_coverage_80": 0.796,
+      "observed_coverage_95": 0.946,
+      "block_bootstrap_ci_80": [
+        0.7882,
+        0.8027
+      ],
+      "block_bootstrap_ci_95": [
+        0.9402,
+        0.9509
+      ],
+      "mean_interval_width_bps": 253.5,
+      "stress_period_coverage_80": 0.755,
+      "evaluation_data_influenced_selection": true,
+      "evidence_status": "VALIDATED_WITH_LIMITATIONS",
+      "justification": "Effective sample size N_eff=194 is sufficient, but 96-bar overlap imposes limitation."
+    },
+    "12h": {
+      "horizon_name": "12h",
+      "horizon_minutes": 720,
+      "horizon_bars_5m": 144,
+      "raw_sample_size": 6185,
+      "effective_sample_size": 128,
+      "calibration_sample_size": 4400,
+      "evaluation_sample_size": 1497,
+      "observed_coverage_80": 0.794,
+      "observed_coverage_95": 0.944,
+      "block_bootstrap_ci_80": [
+        0.7829,
+        0.8044
+      ],
+      "block_bootstrap_ci_95": [
+        0.9406,
+        0.9508
+      ],
+      "mean_interval_width_bps": 314.8,
+      "stress_period_coverage_80": 0.748,
+      "evaluation_data_influenced_selection": true,
+      "evidence_status": "VALIDATED_WITH_LIMITATIONS",
+      "justification": "Effective sample size N_eff=128 is borderline; 144-bar overlap imposes limitation."
+    },
+    "24h": {
+      "horizon_name": "24h",
+      "horizon_minutes": 1440,
+      "horizon_bars_5m": 288,
+      "raw_sample_size": 6041,
+      "effective_sample_size": 62,
+      "calibration_sample_size": 4400,
+      "evaluation_sample_size": 1353,
+      "observed_coverage_80": 0.788,
+      "observed_coverage_95": 0.941,
+      "block_bootstrap_ci_80": [
+        0.778,
+        0.7973
+      ],
+      "block_bootstrap_ci_95": [
+        0.9392,
+        0.9494
+      ],
+      "mean_interval_width_bps": 451.0,
+      "stress_period_coverage_80": 0.735,
+      "evaluation_data_influenced_selection": true,
+      "evidence_status": "INSUFFICIENT_EVIDENCE",
+      "justification": "Effective sample size N_eff=62 < 100 threshold; strictly insufficient independent events."
+    }
+  },
+  "prior_report_corrections": [
+    {
+      "correction_id": "CORR-10021-01",
+      "target_sprint": "Sprint 10.01 & 10.02",
+      "affected_artifact": "sprint10_01_conformal_calibration_report.json / sprint10_02_independent_verification_report.json",
+      "original_erroneous_statement": "Prediction events described as '15-minute bars' (e.g., 'Every 15-minute prediction bar produces an array of 8 multi-horizon forecast targets').",
+      "forensically_proven_fact": "Prediction events are strictly generated on 5-minute candle closes (cadence = 300.0s). 6,328 bars span 22 days from 2026-09-01T21:05:00Z to 2026-09-23T20:20:00Z.",
+      "root_cause_explanation": "Engineers conflated the primary 15m feature timeframe with the worker's 5m execution cycle.",
+      "affected_conclusions": [
+        "Cadence is 5 minutes, not 15 minutes.",
+        "Horizon bar counts are 3, 6, 12, 24, 48, 96, 144, 288 (not 1, 2, 4, 8, 16, 32, 48, 96)."
+      ],
+      "product_readiness_impact": "No algorithmic failure; data contracts and cadence telemetry updated to 5m."
+    },
+    {
+      "correction_id": "CORR-10021-02",
+      "target_sprint": "Sprint 10.02",
+      "affected_artifact": "sprint10_02_independent_verification_report.json (method_selection_audit.formal_three_way_split_protocol)",
+      "original_erroneous_statement": "Calibration split described as '2026-09-21T00:00:00Z to 2026-09-23T06:00:00Z (4,400 bars)'.",
+      "forensically_proven_fact": "A 54-hour window contains only 648 5m bars. Bar #4,400 actually occurred on 2026-09-17 at 03:45:00 UTC (PRED-20260917T034500Z).",
+      "root_cause_explanation": "Conflation of the 3-day prospective observation window with the 4,400-bar index of the full 22-day prospective capture.",
+      "affected_conclusions": [
+        "Calibration window spans 2026-09-01T21:05:00Z to 2026-09-17T03:40:00Z.",
+        "Evaluation window spans 2026-09-18T03:45:00Z to 2026-09-23T20:20:00Z."
+      ],
+      "product_readiness_impact": "Corrected in versioned Split Manifest V1.0."
+    },
+    {
+      "correction_id": "CORR-10021-03",
+      "target_sprint": "Sprint 10.02",
+      "affected_artifact": "sprint10_02_independent_verification_report.json (overall_decision_gate)",
+      "original_erroneous_statement": "Overall decision gate labeled 'SPRINT_10_02_INDEPENDENT_VERIFICATION_VALIDATED'.",
+      "forensically_proven_fact": "Because the prospective evaluation data was previously inspected during Sprint 10.01 candidate selection, it cannot be called independently validated.",
+      "root_cause_explanation": "Premature use of 'VALIDATED' label before executing on an untouched prospective holdout.",
+      "affected_conclusions": [
+        "Results are reclassified as CHRONOLOGICALLY_VERIFIED_EXPLORATORY.",
+        "INDEPENDENTLY_VALIDATED status withheld until future prospective capture."
+      ],
+      "product_readiness_impact": "Enforces honest uncertainty labeling in product data contracts."
+    }
+  ],
+  "selection_bias_audit": {
+    "evaluation_data_previously_inspected": true,
+    "evaluation_data_used_in_method_selection": true,
+    "genuinely_untouched_future_evaluation_exists": false,
+    "virgin_holdout_claim": "REJECTED_AS_UNFOUNDED",
+    "current_evidence_classification": "CHRONOLOGICALLY_VERIFIED_EXPLORATORY"
+  },
+  "future_validation_protocol": {
+    "protocol_name": "PROSPECTIVE_INDEPENDENT_CALIBRATION_PROTOCOL_V1",
+    "status": "NOT_YET_EXECUTABLE_DORMANT",
+    "activation_requirements": [
+      "Capture at least 1,500 fresh, uninspected 5-minute bars in live stream.",
+      "Lock conformal quantiles q_80 and q_95 before ingesting the evaluation bars.",
+      "Enforce strict 24h (288 bars) temporal embargo between calibration cutoff and evaluation window.",
+      "Compute empirical coverage strictly once without post-hoc tuning."
+    ]
+  },
+  "overall_decision_gate": "CHRONOLOGICAL_PROVENANCE_REPAIRED_EXPLORATORY_EVIDENCE_LOCKED",
+  "turkish_executive_summary": "Sprint 10.02.1 Kapsam\u0131nda Yap\u0131lan Adli T\u0131p ve Kronolojik D\u00fczeltmeler:\n1. Ger\u00e7ek Tahmin Zaman \u00c7izelgesi ve Kadans:\n   - \u00d6nceki raporlarda sehven '15 dakikal\u0131k bar' olarak ifade edilen tahminlerin, ProspectiveWorker'\u0131n      5 dakikal\u0131k BTC mum kapan\u0131\u015flar\u0131nda (300 saniyelik kesin ve d\u00fczenli kadans) \u00e7al\u0131\u015ft\u0131\u011f\u0131 kan\u0131tlanm\u0131\u015ft\u0131r.\n   - 6.328 tahmin olay\u0131, 2026-09-01T21:05:00Z ile 2026-09-23T20:20:00Z aras\u0131ndaki 22 g\u00fcnl\u00fck d\u00f6nemi kapsamaktad\u0131r.\n   - 4.400 numaral\u0131 tahmin, 2026-09-17T03:45:00Z zaman damgal\u0131 PRED-20260917T034500Z olay\u0131d\u0131r.\n   - '20\u201323 Eyl\u00fcl aras\u0131nda 4.400 bar' \u00e7eli\u015fkisinin k\u00f6k nedeni: 3 g\u00fcnl\u00fck canl\u0131 g\u00f6zlem penceresi ile 22 g\u00fcnl\u00fck      prospektif yakalama dizisinin 4.400 bar indeksinin metin d\u00fczeyinde birbiriyle kar\u0131\u015ft\u0131r\u0131lmas\u0131d\u0131r.\n2. 3 A\u015famal\u0131 Kronolojik B\u00f6lme Manifestosu (CBE-SPLIT-MANIFEST-V1.0):\n   - Referans B\u00f6l\u00fcm\u00fc: 2021-01-01'den 2026-09-01T21:00:00Z'ye kadar (595.912 bar).\n   - Kalibrasyon B\u00f6l\u00fcm\u00fc: 2026-09-01T21:05:00Z'den 2026-09-17T03:40:00Z'ye kadar (4.400 bar).\n   - 24 Saatlik Embargo B\u00f6l\u00fcm\u00fc: 2026-09-17T03:45:00Z'den 2026-09-18T03:40:00Z'ye kadar (288 bar).\n   - De\u011ferlendirme B\u00f6l\u00fcm\u00fc: 2026-09-18T03:45:00Z'den 2026-09-23T20:20:00Z'ye kadar (1.640 bar).\n3. Se\u00e7im Yanl\u0131l\u0131\u011f\u0131 ve Kan\u0131t D\u00fczeyi:\n   - Mevcut veriler Sprint 10.01'de aday modelleri kar\u015f\u0131la\u015ft\u0131rmak i\u00e7in kullan\u0131ld\u0131\u011f\u0131ndan 'el de\u011fmemi\u015f veri' (virgin holdout)      iddias\u0131 reddedilmi\u015ftir. Sonu\u00e7lar d\u00fcr\u00fcst\u00e7e 'CHRONOLOGICALLY_VERIFIED_EXPLORATORY' olarak etiketlenmi\u015ftir.\n   - 24 saatlik vade (N_eff = 62 < 100) kesin olarak 'INSUFFICIENT_EVIDENCE' stat\u00fcs\u00fcndedir.\n   - Gelecekteki ba\u011f\u0131ms\u0131z do\u011frulama protokol\u00fc 'NOT_YET_EXECUTABLE' olarak kay\u0131t alt\u0131na al\u0131nm\u0131\u015ft\u0131r.\n4. G\u00fcvenlik ve B\u00fct\u00fcnl\u00fck: 29/29 kanonik dosya dondurulmu\u015f halde korunmu\u015f, APPROVAL4=FALSE teyit edilmi\u015ftir."
+}

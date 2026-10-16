@@ -1,0 +1,61 @@
+{
+  "manifest_version": "CBE-SPLIT-MANIFEST-V1.0",
+  "dataset_identity": "data\\normalized\\btcusdt_5m.parquet",
+  "dataset_sha256": "466ffb8570a7a62eefd77c5bacc241017c2754e43f01530b165af3206dad83f9",
+  "source_model_version": "CBE-0.7.0",
+  "source_model_hash": "c3e5dfbe3bf637f9ef8c8f0f0a40232d3e0984852c786720f17e0b5efd581559",
+  "reference_segment": {
+    "segment_name": "REFERENCE_DEVELOPMENT_SEGMENT",
+    "start_bar_index": 0,
+    "end_bar_index": 595911,
+    "bar_count": 595912,
+    "start_timestamp_utc": "2021-01-01T00:00:00Z",
+    "end_timestamp_utc": "2026-09-01T21:00:00Z",
+    "purpose": "Historical model training, feature discovery, and canonical CBE-0.7.0 freeze."
+  },
+  "calibration_segment": {
+    "segment_name": "CALIBRATION_SPLIT_SEGMENT",
+    "start_bar_index": 595912,
+    "end_bar_index": 600311,
+    "bar_count": 4400,
+    "start_timestamp_utc": "2026-09-01T21:05:00Z",
+    "end_timestamp_utc": "2026-09-17T03:40:00Z",
+    "purpose": "Causal estimation of conformal quantiles q_80 and q_95."
+  },
+  "embargo_segment": {
+    "segment_name": "HORIZON_EMBARGO_SEGMENT",
+    "start_bar_index": 600312,
+    "end_bar_index": 600599,
+    "bar_count": 288,
+    "start_timestamp_utc": "2026-09-17T03:45:00Z",
+    "end_timestamp_utc": "2026-09-18T03:40:00Z",
+    "purpose": "Full 24h temporal embargo preventing outcome leakage from calibration into evaluation."
+  },
+  "evaluation_segment": {
+    "segment_name": "EVALUATION_SPLIT_SEGMENT",
+    "start_bar_index": 600600,
+    "end_bar_index": 602239,
+    "bar_count": 1640,
+    "start_timestamp_utc": "2026-09-18T03:45:00Z",
+    "end_timestamp_utc": "2026-09-23T20:20:00Z",
+    "purpose": "Chronologically separated evaluation of calibrated prediction intervals."
+  },
+  "embargo_bars_by_horizon_5m": {
+    "15m": 3,
+    "30m": 6,
+    "1h": 12,
+    "2h": 24,
+    "4h": 48,
+    "8h": 96,
+    "12h": 144,
+    "24h": 288
+  },
+  "matured_outcome_cutoff": "2026-09-23T20:24:59.999Z",
+  "exclusion_criteria": [
+    "Legacy Schema V1 records missing reference close (114 records).",
+    "Excluded zero-return edge records (38 records).",
+    "Unmatured outcomes beyond cutoff 2026-09-23T20:25:00Z (617 records)."
+  ],
+  "calibration_evaluation_overlap": false,
+  "protocol_executability_status": "NOT_YET_EXECUTABLE_AS_INDEPENDENT_HOLDOUT"
+}
