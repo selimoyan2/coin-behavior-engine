@@ -75,6 +75,7 @@ class FactualMarketDataRecord:
     price_change_24h_pct: Optional[float] = None
     freshness_status: MarketDataFreshnessStatus = MarketDataFreshnessStatus.MISSING
     snapshot_generation_timestamp_utc: Optional[str] = None
+    writer_heartbeat_utc: Optional[str] = None
     source_availability: str = "AVAILABLE"
     source_health: MarketDataSourceHealth = MarketDataSourceHealth.OFFLINE_SNAPSHOT
     classification: DataClassification = DataClassification.HISTORICAL_SNAPSHOT
@@ -107,6 +108,7 @@ class FactualMarketDataRecord:
             "price_change_24h_pct": self.price_change_24h_pct,
             "freshness_status": self.freshness_status.value,
             "snapshot_generation_timestamp_utc": self.snapshot_generation_timestamp_utc,
+            "writer_heartbeat_utc": self.writer_heartbeat_utc,
             "source_availability": self.source_availability,
             "source_health": self.source_health.value,
             "classification": self.classification.value,
@@ -170,10 +172,22 @@ class FactualMarketDataAdapter:
         else:
             self.data_root = Path(data_root)
 
-        if snapshot_path is None:
-            self.snapshot_path = self.data_root / "shadow_v080" / "snapshots" / "btcusdt_factual_latest.json"
-        else:
+        if snapshot_path is not None:
             self.snapshot_path = Path(snapshot_path)
+        else:
+            env_path = os.environ.get("CBE_FACTUAL_SNAPSHOT_PATH") or os.environ.get("CBE_LIVE_MARKET_STATE_PATH")
+            if env_path:
+                self.snapshot_path = Path(env_path)
+            else:
+                live_capture_state = self.data_root / "live_capture" / "live_market_state.json"
+                shadow_live_state = self.data_root / "shadow_v080" / "live_market_state.json"
+                shadow_snap_path = self.data_root / "shadow_v080" / "snapshots" / "btcusdt_factual_latest.json"
+                if live_capture_state.exists():
+                    self.snapshot_path = live_capture_state
+                elif shadow_live_state.exists():
+                    self.snapshot_path = shadow_live_state
+                else:
+                    self.snapshot_path = shadow_snap_path
 
         self._lock = threading.Lock()
         self._last_read_timestamp: float = 0.0
@@ -206,9 +220,26 @@ class FactualMarketDataAdapter:
             return MarketDataFreshnessStatus.STALE
         return MarketDataFreshnessStatus.FRESH
 
+    @staticmethod
+    def evaluate_heartbeat_freshness(
+        heartbeat_iso: Optional[str],
+        reference_time: Optional[datetime] = None,
+        timeout_seconds: int = 120,
+    ) -> bool:
+        """Check if writer heartbeat is fresh (within timeout_seconds, default 120s / 2m)."""
+        if not heartbeat_iso or str(heartbeat_iso).strip() in ("", "None", "null"):
+            return False
+        try:
+            dt = datetime.fromisoformat(str(heartbeat_iso).replace("Z", "+00:00"))
+            ref = reference_time or datetime.now(timezone.utc)
+            diff_sec = (ref - dt).total_seconds()
+            return 0 <= diff_sec <= timeout_seconds
+        except Exception:
+            return False
+
     @classmethod
     def validate_snapshot_schema(cls, data: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
-        """Validate factual snapshot schema, types, symbol, source, and interval."""
+        """Validate factual snapshot schema, types, symbol, source, closed-state, and interval."""
         if not isinstance(data, dict):
             return False, "Payload must be a dictionary"
 
@@ -224,6 +255,11 @@ class FactualMarketDataAdapter:
         if interval != cls.EXPECTED_INTERVAL:
             return False, f"Interval mismatch: '{interval}' (expected '{cls.EXPECTED_INTERVAL}')"
 
+        # Explicit closed-candle gate
+        is_closed_val = data.get("is_closed")
+        if is_closed_val is not None and not bool(is_closed_val):
+            return False, "OPEN_CANDLE_REJECTED: Candle closure flag is False; unclosed candles strictly prohibited"
+
         close_time = data.get("timestamp_close_utc")
         if not close_time or not isinstance(close_time, str):
             return False, "Missing or invalid timestamp_close_utc"
@@ -233,6 +269,51 @@ class FactualMarketDataAdapter:
             return False, f"Invalid spot price: {spot_price} (must be positive float)"
 
         return True, None
+
+    @classmethod
+    def publish_atomic_snapshot(cls, target_path: Path, payload: Dict[str, Any]) -> None:
+        """Helper to atomically write a validated snapshot dictionary to disk."""
+        AtomicSnapshotIO.atomic_write(target_path, payload)
+
+    @classmethod
+    def create_snapshot_payload(
+        cls,
+        candle_data: Dict[str, Any],
+        is_live: bool = False,
+        provenance: str = "BINANCE_SPOT",
+        writer_heartbeat_utc: Optional[str] = None,
+        schema_version: str = "1.0.0",
+    ) -> Dict[str, Any]:
+        """Create a standardized factual snapshot payload."""
+        now_iso = datetime.now(timezone.utc).isoformat()
+        close_p = float(candle_data.get("close", candle_data.get("close_price_usdt", candle_data.get("spot_price_usdt", 0.0))))
+        open_p = float(candle_data.get("open", candle_data.get("open_price_usdt", close_p)))
+        high_p = float(candle_data.get("high", candle_data.get("high_price_usdt", max(open_p, close_p))))
+        low_p = float(candle_data.get("low", candle_data.get("low_price_usdt", min(open_p, close_p))))
+        vol_b = float(candle_data.get("volume", candle_data.get("volume_base", 0.0)))
+        vol_q = float(candle_data.get("quote_volume", candle_data.get("volume_usdt", 0.0)))
+        return {
+            "schema_version": schema_version,
+            "symbol": candle_data.get("symbol", cls.EXPECTED_SYMBOL),
+            "exchange_source": candle_data.get("exchange_source", cls.EXPECTED_SOURCE),
+            "candle_interval": candle_data.get("candle_interval", candle_data.get("interval", cls.EXPECTED_INTERVAL)),
+            "timestamp_open_utc": candle_data.get("datetime_open_utc", candle_data.get("timestamp_open_utc")),
+            "timestamp_close_utc": candle_data.get("datetime_close_utc", candle_data.get("timestamp_close_utc")),
+            "spot_price_usdt": close_p,
+            "open_price_usdt": open_p,
+            "high_price_usdt": high_p,
+            "low_price_usdt": low_p,
+            "close_price_usdt": close_p,
+            "volume_base": vol_b,
+            "volume_usdt": vol_q,
+            "price_change_24h_pct": candle_data.get("price_change_24h_pct"),
+            "is_closed": bool(candle_data.get("is_closed", True)),
+            "is_live": is_live,
+            "classification": DataClassification.LIVE_OBSERVED.value if is_live else DataClassification.HISTORICAL_SNAPSHOT.value,
+            "snapshot_generation_timestamp_utc": now_iso,
+            "writer_heartbeat_utc": writer_heartbeat_utc or now_iso,
+            "provenance_source": provenance,
+        }
 
     @classmethod
     def check_monotonicity(
@@ -328,6 +409,7 @@ class FactualMarketDataAdapter:
                         price_change_24h_pct=data.get("price_change_24h_pct"),
                         freshness_status=freshness,
                         snapshot_generation_timestamp_utc=data.get("snapshot_generation_timestamp_utc"),
+                        writer_heartbeat_utc=data.get("writer_heartbeat_utc"),
                         source_availability="AVAILABLE",
                         source_health=MarketDataSourceHealth.HEALTHY if freshness == MarketDataFreshnessStatus.FRESH else MarketDataSourceHealth.OFFLINE_SNAPSHOT,
                         classification=classification,
@@ -363,6 +445,7 @@ class FactualMarketDataAdapter:
                 price_change_24h_pct=None,
                 freshness_status=freshness,
                 snapshot_generation_timestamp_utc=canonical_close,
+                writer_heartbeat_utc=canonical_close,
                 source_availability="AVAILABLE",
                 source_health=MarketDataSourceHealth.OFFLINE_SNAPSHOT,
                 classification=DataClassification.HISTORICAL_SNAPSHOT,

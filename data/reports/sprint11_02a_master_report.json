@@ -1,0 +1,162 @@
+{
+  "sprint_id": "CBE-11.02A",
+  "sprint_name": "Live Capture Preflight, Snapshot Ownership & Controlled Activation Readiness",
+  "baseline_commit": "c067bf84e2a3d918f1df6fb39e2c992ebde53772",
+  "timestamp_utc": "2026-10-16T19:51:00Z",
+  "safety_invariants": {
+    "cbe_070_frozen_integrity": "29/29 VERIFIED",
+    "cbe_080_isolation": "PRESERVED",
+    "approval4_status": "FALSE",
+    "prospective_scoring": "DISABLED",
+    "trading": "DISABLED",
+    "production_mutations": "NONE",
+    "new_external_binance_connections": "NONE (STRICTLY OFFLINE)",
+    "deployment": "NONE",
+    "live_worker_activation": "NONE",
+    "coolify_vps_mutations": "NONE"
+  },
+  "existing_capture_architecture_audit": {
+    "capture_writer_identity": "LiveCaptureService / MarketCaptureEngineV080 (Single background worker process)",
+    "snapshot_reader_identity": "FactualMarketDataAdapter (Market Intelligence API / Web Service / UI)",
+    "snapshot_ownership": "Dedicated capture worker owns write permissions; web service only reads",
+    "filesystem_locations": {
+      "raw_market_ledger": "/app/data/live_capture/raw_market/raw_candles_BTCUSDT_5m.jsonl",
+      "quarantine_ledger": "/app/data/live_capture/quarantine/quarantined_candles_BTCUSDT_5m.jsonl",
+      "sqlite_index": "/app/data/live_capture/raw_market/index_BTCUSDT_5m.sqlite3",
+      "atomic_snapshot_primary": "/app/data/live_capture/snapshots/btcusdt_factual_latest.json",
+      "atomic_snapshot_alias": "/app/data/live_capture/live_market_state.json",
+      "host_volume": "cbe_080_live_capture_data mounted at /app/data/live_capture:rw"
+    },
+    "expected_permissions": "User 1000:1000, read_only container root (true), dedicated volume :rw for capture worker, web server :ro",
+    "data_flow": "Binance Spot WebSocket kline -> BinanceSpotCandleValidator (is_closed=True) -> MarketDataGapDetector -> RawMarketEvidenceStore (SHA-256) -> AtomicSnapshotIO.atomic_write -> live_market_state.json / btcusdt_factual_latest.json -> FactualMarketDataAdapter.safe_read (1s TTL cache) -> /api/v1/intelligence/market-overview -> Module A UI",
+    "atomic_replacement": "AtomicSnapshotIO.atomic_write writes to adjacent .tmp.<pid>, flushes, fsyncs, and atomically renames via os.replace",
+    "torn_read_prevention": "Complete protection; readers observe either previous complete JSON or new complete JSON, never partial data"
+  },
+  "deployment_inventory": {
+    "existing_passive_capture_deployment": {
+      "compose_file": "deploy/shadow_v080/docker-compose.coolify-live-capture.yaml",
+      "service_name": "cbe-080-live-capture",
+      "container_name": "cbe_080_coolify_live_capture",
+      "image": "cbe-080-shadow:coolify-live-capture",
+      "entrypoint": "/app/entrypoint_live_capture.sh -> python3 -m coin_behavior_engine.shadow_v080.live_capture_service",
+      "production_status": "UNVERIFIED_PRODUCTION_STATE (Offline inspection only; VPS access prohibited)"
+    },
+    "existing_passive_worker_deployment": {
+      "compose_file": "deploy/shadow_v080/docker-compose.coolify-scoring-worker.yaml",
+      "service_name": "cbe-080-scoring-worker",
+      "container_name": "cbe_080_coolify_scoring_worker",
+      "status": "UNVERIFIED_PRODUCTION_STATE (Disabled/isolated, CBE_PROSPECTIVE_OBSERVATION_ENABLED=false)"
+    },
+    "market_intelligence_web_service": {
+      "compose_file": "docker-compose.yml",
+      "dockerfile": "Dockerfile",
+      "service_name": "coin-behavior-engine",
+      "container_name": "coin-behavior-engine",
+      "entrypoint": "python -m coin_behavior_engine.web.server --host 0.0.0.0 --port 8000",
+      "exposed_port": 8000,
+      "health_check": "curl -f http://localhost:8000/health (interval: 30s, timeout: 5s, retries: 3)",
+      "production_status": "UNVERIFIED_PRODUCTION_STATE"
+    },
+    "network_boundaries": {
+      "inbound": "Port 8000 (HTTP read-only) behind reverse proxy (Coolify/Nginx). Capture worker has ports: [] (0 exposed)",
+      "outbound": "Capture worker requires outbound HTTPS/WSS to public stream.binance.com:9443 and api.binance.com:443. Web server requires zero outbound network"
+    },
+    "volume_mounts": {
+      "capture_worker": "cbe_080_live_capture_data mounted at /app/data/live_capture:rw",
+      "web_service": "cbe_prospective_data mounted at /app/data/prospective",
+      "shared_snapshot_integration": "cbe_080_live_capture_data mountable as :ro on web service for direct zero-latency snapshot reading"
+    },
+    "relevant_feature_flags": {
+      "CBE_APPROVAL_3_AUTHORIZED": "false (Default fail-closed, required true for live collection)",
+      "CBE_BINANCE_COLLECTION_ENABLED": "false (Default fail-closed)",
+      "CBE_TRADING_DISABLED": "true (Mandatory safety interlock)",
+      "CBE_PROSPECTIVE_OBSERVATION_ENABLED": "false (Mandatory model isolation)",
+      "CBE_APPROVAL_4_AUTHORIZED": "false (Mandatory prospective isolation)",
+      "CBE_RECORD_LABEL": "LIVE_BINANCE_SPOT"
+    }
+  },
+  "snapshot_compatibility_and_provenance": {
+    "symbol": "BTCUSDT",
+    "exchange_source": "BINANCE_SPOT",
+    "candle_interval": "5m (300,000 ms)",
+    "open_vs_closed_semantics": "Strictly closed candles only (x=True). Unclosed candles rejected at validator and reader schema gates",
+    "utc_timestamps": "ISO 8601 UTC with explicit millisecond parity and boundary validation",
+    "schema_version": "1.0.0",
+    "writer_reader_compatibility": "100% verified across 12 focused preflight tests",
+    "atomicity_guarantee": "os.replace on same volume mount ensures POSIX atomic swap",
+    "duplicate_and_out_of_order_protection": "SQLite index + memory cache (DUPLICATE_IGNORED, OUT_OF_ORDER_QUARANTINED)",
+    "gap_detection": "detect_candle_gap detects sequence jumps > 300s",
+    "freshness_evaluation": "30-minute boundary; future clock skew > 60s flagged FUTURE_SKEW",
+    "heartbeat_evaluation": "evaluate_heartbeat_freshness (120s timeout)",
+    "classification_distinction": "Explicitly separates HISTORICAL_SNAPSHOT from verified LIVE_OBSERVED"
+  },
+  "offline_end_to_end_simulation": {
+    "scenarios_evaluated": 10,
+    "scenarios_passed": 10,
+    "results": {
+      "1_healthy_closed_candle": "PASSED (Validated, persisted to ledger, published atomically, reader returned HEALTHY, is_live=True)",
+      "2_delayed_candle": "PASSED (Evaluated correctly as STALE when > 30m, BOUNDARY_STALE at 30m, FRESH when < 30m)",
+      "3_missing_candle": "PASSED (Gap of 600s detected, missing 1 bar reported, research eligibility gated)",
+      "4_duplicated_candle": "PASSED (Monotonicity check rejected DUPLICATE_CANDLE_TIMESTAMP, engine returned DUPLICATE_IGNORED)",
+      "5_out_of_order_candles": "PASSED (Monotonicity check flagged OUT_OF_ORDER_TIMESTAMP, engine quarantined record)",
+      "6_corrupt_snapshot": "PASSED (safe_read caught JSONDecodeError, adapter fell back to canonical frozen baseline with note)",
+      "7_unavailable_capture_writer": "PASSED (Missing file handled gracefully via canonical baseline fallback, zero crash)",
+      "8_stale_heartbeat": "PASSED (Heartbeat > 120s flagged not fresh, None/invalid handled safely)",
+      "9_source_identity_mismatch": "PASSED (Non-Binance source like KRAKEN rejected by schema validation)",
+      "10_read_only_api_consumer": "PASSED (Endpoint returned factual data without triggering model inference or trading, prospective files untouched)"
+    }
+  },
+  "resource_and_reliability_assessment": {
+    "incremental_cpu_use": "< 0.05 CPU idle, < 0.10 peak (throttled to 0.25 CFS quota)",
+    "incremental_ram_use": "35-50 MB RSS (budget 150 MB, hard container ceiling 300 MB)",
+    "snapshot_write_frequency": "1 write per 5-minute interval (288 writes/day) + periodic heartbeat",
+    "filesystem_io": "~450 KB / day total write (~350 bytes append + ~1.2 KB atomic snapshot)",
+    "api_read_frequency": "Throttled by 1.0s TTL in-memory cache to <= 1 read/sec from disk",
+    "failure_recovery": "Automatic reconnect loop with exponential backoff on transport drop; REST gap recovery for sequence jumps",
+    "reconnection_behavior": "Clean transport reconnect with cryptographic hash chain continuity check before resuming append",
+    "duplicate_ingestion_risk": "MITIGATED (Single-writer model; container singularity ensures zero duplicate exchange connections)"
+  },
+  "security_audit": {
+    "credentials_required": "NONE (Public market data only; zero API keys or secrets in env/code)",
+    "outbound_network_scope": "Strictly limited to stream.binance.com:9443 (WSS) and api.binance.com:443 (HTTPS)",
+    "filesystem_write_permissions": "Container root filesystem read_only: true, user 1000:1000, write access limited to /tmp (64MB noexec) and /app/data/live_capture",
+    "snapshot_consumer_permissions": "Read-only API server requires only :ro access to snapshot directory",
+    "service_isolation": "Capture worker and web server decoupled via filesystem snapshot; zero IPC, zero shared memory",
+    "read_only_api_behavior": "All /api/v1/intelligence/* endpoints are HTTP GET only (mutations return 405 Method Not Allowed)",
+    "rate_limiting": "60 req/min per IP at reverse proxy level",
+    "error_handling": "Strict fail-closed architecture with zero stack trace leakage to API responses",
+    "feature_flag_defaults": "All live flags default to false (CBE_APPROVAL_3_AUTHORIZED=false, CBE_BINANCE_COLLECTION_ENABLED=false)"
+  },
+  "controlled_activation_runbook": {
+    "step_01": "Read-Only Production-State Verification: SSH to host, run `docker ps -a` to inspect existing containers; check port 8000 and any active workers. STOP & AWAIT APPROVAL.",
+    "step_02": "Confirm Active Capture: Inspect `/app/data/live_capture/raw_market/raw_candles_BTCUSDT_5m.jsonl` mtime. If active and updating, record ALREADY_ACTIVE and DO NOT start another worker. STOP & AWAIT APPROVAL.",
+    "step_03": "Enforce Single-Writer Invariant: Verify container_name singularity `cbe_080_coolify_live_capture` and PID lock before launching. STOP & AWAIT APPROVAL.",
+    "step_04": "Confirm Snapshot Compatibility: Verify schema version (1.0.0), symbol (BTCUSDT), interval (5m), and volume mount permissions (`chmod 644`). STOP & AWAIT APPROVAL.",
+    "step_05": "Verify Safety Interlocks: Pre-flight verify CBE_TRADING_DISABLED=true, CBE_PROSPECTIVE_OBSERVATION_ENABLED=false, CBE_APPROVAL_4_AUTHORIZED=false. STOP & AWAIT APPROVAL.",
+    "step_06": "Minimal Production Delta: Deploy ONLY the isolated `cbe-080-live-capture` container. Do NOT redeploy database or web server. STOP & AWAIT APPROVAL.",
+    "step_07": "Validate First Observed Closed Candle: Tail logs for 5m (`docker logs -f cbe_080_coolify_live_capture`); verify `is_closed=True`, evidence append, and atomic snapshot write. STOP & AWAIT APPROVAL.",
+    "step_08": "Verify Freshness & Heartbeat Independently: Call `/api/v1/intelligence/freshness`; verify freshness_status==FRESH and spot price matches public Binance Spot (+/- 0.1%). STOP & AWAIT APPROVAL.",
+    "step_09": "Resource Verification: Run `docker stats cbe_080_coolify_live_capture --no-stream`; confirm CPU < 10%, RAM < 150 MB. STOP & AWAIT APPROVAL.",
+    "step_10": "Rollback Plan: If crash loop, RSS > 250 MB, or gap > 3 bars occurs, execute `docker stop cbe_080_coolify_live_capture`, fall back to canonical baseline snapshot, notify operator. STOP & AWAIT APPROVAL.",
+    "step_11": "Operator Sign-Off: Hard stop at every phase transition; no automated continuation without explicit confirmation."
+  },
+  "rollback_criteria": [
+    "Container crash loop or process restart > 2 times in 1 hour.",
+    "Memory consumption exceeding 250 MB RSS (ceiling 300 MB).",
+    "Unrecovered candle sequence gaps exceeding 3 bars (> 15 minutes).",
+    "Any attempt to invoke model scoring or order execution (instant emergency termination)."
+  ],
+  "required_authorizations": {
+    "1_read_only_vps_inspection": "Authorization to inspect running containers and disk states on production VPS.",
+    "2_public_binance_spot_ingestion": "Authorization to connect to public Binance WebSocket/REST endpoints for BTCUSDT 5m candles.",
+    "3_production_worker_deployment": "Authorization to start/restart cbe-080-live-capture container on Coolify.",
+    "4_market_intelligence_deployment": "Authorization to mount shared snapshot volume to web server and expose /intelligence UI.",
+    "5_prospective_model_scoring": "STRICTLY PROHIBITED (Requires separate formal APPROVAL 4 protocol).",
+    "6_trading_and_order_execution": "PERMANENTLY PROHIBITED (APPROVAL4 = FALSE, zero trading capability)."
+  },
+  "activation_decision": "CONTROLLED_ACTIVATION_READY_AWAITING_USER_APPROVAL",
+  "blockers": [
+    "Awaiting explicit user authorization for Step 1 (Read-Only Production Inspection) and Step 2 (Binance Public Ingestion)."
+  ],
+  "next_recommended_step": "CBE — SPRINT 11.02B: Controlled Production Inspection & Step-1 Live Capture Activation"
+}

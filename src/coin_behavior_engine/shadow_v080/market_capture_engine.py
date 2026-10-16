@@ -157,6 +157,50 @@ class MarketCaptureEngineV080:
             return False
         return True
 
+    def publish_factual_snapshot(self, candle: ValidatedCandle) -> Optional[Path]:
+        """Atomically publish the latest closed candle factual snapshot for downstream consumers."""
+        try:
+            from datetime import datetime, timezone
+            from coin_behavior_engine.product.market_data_adapter import AtomicSnapshotIO
+
+            now_iso = datetime.now(timezone.utc).isoformat()
+            is_live_source = (candle.provenance == ProvenanceSource.LIVE_BINANCE_SPOT.value)
+            payload = {
+                "schema_version": "1.0.0",
+                "symbol": candle.symbol,
+                "exchange_source": "BINANCE_SPOT",
+                "candle_interval": candle.interval,
+                "timestamp_open_utc": candle.datetime_open_utc,
+                "timestamp_close_utc": candle.datetime_close_utc,
+                "spot_price_usdt": candle.close_float,
+                "open_price_usdt": candle.open_float,
+                "high_price_usdt": candle.high_float,
+                "low_price_usdt": candle.low_float,
+                "close_price_usdt": candle.close_float,
+                "volume_base": candle.volume_float,
+                "volume_usdt": float(candle.quote_volume),
+                "price_change_24h_pct": None,
+                "is_closed": candle.is_closed,
+                "is_live": is_live_source,
+                "classification": "LIVE_OBSERVED" if is_live_source else "HISTORICAL_SNAPSHOT",
+                "snapshot_generation_timestamp_utc": now_iso,
+                "writer_heartbeat_utc": now_iso,
+                "provenance_source": candle.provenance,
+                "warmup_status": self.warmup_status,
+                "contiguous_bars_count": self.gap_detector.contiguous_closed_bars,
+                "is_research_eligible": self.is_research_eligible,
+            }
+
+            snapshot_file = self.config.snapshot_dir / "btcusdt_factual_latest.json"
+            AtomicSnapshotIO.atomic_write(snapshot_file, payload)
+
+            alt_state_file = self.config.shadow_data_dir / "live_market_state.json"
+            AtomicSnapshotIO.atomic_write(alt_state_file, payload)
+            return snapshot_file
+        except Exception as e:
+            logger.warning(f"Could not publish factual snapshot: {e}")
+            return None
+
     def process_raw_message(
         self,
         raw_message: Any,
@@ -208,6 +252,8 @@ class MarketCaptureEngineV080:
             self.rolling_buffer.append(candle)
             if self.is_research_eligible:
                 candle.lifecycle_state = CandleLifecycleState.CANDLE_RESEARCH_ELIGIBLE.value
+
+            self.publish_factual_snapshot(candle)
 
             return {
                 "status": "PERSISTED",
