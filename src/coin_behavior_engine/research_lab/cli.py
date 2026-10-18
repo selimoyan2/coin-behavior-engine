@@ -618,9 +618,28 @@ def run_sprint11_13_pipeline(output_dir: Path = Path("research_outputs")) -> Dic
     }
 
 
+def run_sprint11_14_pipeline(output_dir: Path = Path("research_outputs")) -> Dict[str, Any]:
+    """Execute end-to-end Sprint 11.14 Market Regime Intelligence & Selective Entry pipeline."""
+    from coin_behavior_engine.research_lab.selective_entry_engine import SelectiveEntryEngine
+
+    git_commit = get_current_git_commit()
+    logger.info(f"=== CBE Research Lab Sprint 11.14 Pipeline (Commit: {git_commit[:8]}) ===")
+
+    engine = SelectiveEntryEngine(output_dir=output_dir)
+    results = engine.run_full_pipeline()
+
+    logger.info("=== CBE Research Lab Sprint 11.14 Complete ===")
+    return {
+        "status": "COMPLETE",
+        "output_dir": str(output_dir),
+        "results": results,
+        "git_commit": git_commit,
+    }
+
+
 def main():
-    parser = argparse.ArgumentParser(description="CBE Research Lab Runner — Sprint 11.05 to 11.13")
-    parser.add_argument("--sprint", default="11.13", choices=["11.05", "11.06", "11.07", "11.08", "11.09", "11.10", "11.11", "11.12", "11.13"], help="Sprint pipeline to execute (default: 11.13)")
+    parser = argparse.ArgumentParser(description="CBE Research Lab Runner — Sprint 11.05 to 11.14")
+    parser.add_argument("--sprint", default="11.14", choices=["11.05", "11.06", "11.07", "11.08", "11.09", "11.10", "11.11", "11.12", "11.13", "11.14"], help="Sprint pipeline to execute (default: 11.14)")
     parser.add_argument("--symbol", default="BTCUSDT", help="Trading pair symbol (default: BTCUSDT)")
     parser.add_argument("--days", type=int, default=25, help="Number of days to acquire and analyze (default: 25)")
     parser.add_argument("--output-dir", default="research_outputs", help="Output directory for research artifacts")
@@ -630,7 +649,9 @@ def main():
     out_p = Path(args.output_dir)
     off_p = Path(args.offline_parquet) if args.offline_parquet else None
 
-    if args.sprint == "11.13":
+    if args.sprint == "11.14":
+        run_sprint11_14_pipeline(output_dir=out_p)
+    elif args.sprint == "11.13":
         run_sprint11_13_pipeline(output_dir=out_p)
     elif args.sprint == "11.12":
         run_sprint11_12_pipeline(output_dir=out_p)

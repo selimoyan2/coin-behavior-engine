@@ -1,0 +1,10 @@
+strategy_id,strategy_name,trades_count,win_rate_pct,starting_equity_usd,gross_pnl_usd,total_fees_usd,total_slippage_usd,total_friction_usd,net_pnl_usd,ending_equity_usd,accounting_conservation_verified,return_pct,annualized_return_pct,max_drawdown_pct,sharpe_ratio,profit_factor,time_in_usdt_pct,turnover_ratio,friction_drag_pct,excess_return_vs_bnh_pct,excess_return_vs_cash_pct,outperformed_buy_and_hold
+STRAT_A_CASH,Strategy A: USDT Cash Baseline,0,0.0,10000.0,0.0,0.0,0.0,0.0,0.0,10000.0,True,0.0,0.0,0.0,0.0,0.0,100.0,0.0,0.0,-29.26,0.0,False
+STRAT_B_BNH,Strategy B: Buy-and-Hold BTC,1,100.0,10000.0,2953.86,22.54,4.89,27.43,2926.43,12926.43,True,29.26,167.22,8.42,4.18,999.0,0.01,0.98,0.93,0.0,29.26,False
+STRAT_C_TREND48_SIMPLE,Strategy C: Simple 48h Trend Following,334,3.59,10000.0,-84.62,4318.78,2156.74,6475.52,-6560.14,3439.86,True,-65.6,-374.86,70.69,-17.31,0.32,47.45,215.94,0.0,-94.86,-65.6,False
+STRAT_D_VOL_FILTERED_TREND,Strategy D: Simple Volatility-Filtered Trend,295,5.76,10000.0,-133.21,4045.08,2021.59,6066.67,-6199.88,3800.12,True,-62.0,-354.28,67.48,-16.93,0.33,59.18,202.26,0.0,-91.26,-62.0,False
+STRAT_E_ANALOGUE24,Strategy E: Existing Historical Analogue Strategy,49,44.9,10000.0,2122.53,1039.59,519.56,1559.15,563.38,10563.38,True,5.63,32.19,13.26,1.17,1.16,23.29,51.88,73.46,-23.63,5.63,False
+STRAT_F_ANALOGUE_ASSISTED_SEL,Strategy F: Analogue-Assisted Selective Entry,14,28.57,10000.0,110.81,264.31,127.46,391.77,-280.96,9719.04,True,-2.81,-16.06,4.28,-1.68,0.69,94.84,13.21,353.55,-32.07,-2.81,False
+STRAT_G_REGIME_SELECTIVE_POLICY,Strategy G: Regime-Aware Selective Spot Policy,14,28.57,10000.0,110.81,264.31,127.46,391.77,-280.96,9719.04,True,-2.81,-16.06,4.28,-1.68,0.69,94.84,13.21,353.55,-32.07,-2.81,False
+STRAT_H_REGIME_NO_ANALOGUES,Strategy H: Regime-Aware Policy without Analogues,28,32.14,10000.0,522.84,531.69,261.08,792.77,-269.93,9730.07,True,-2.7,-15.42,6.06,-1.08,0.82,89.65,26.56,151.63,-31.96,-2.7,False
+STRAT_I_PATIENT_DYNAMIC_11_13,Strategy I: Patient Dynamic Policy (Sprint 11.13),56,44.64,10000.0,1079.03,1103.63,547.08,1650.71,-571.68,9428.32,True,-5.72,-32.67,14.5,-1.55,0.82,78.86,55.13,152.98,-34.98,-5.72,False

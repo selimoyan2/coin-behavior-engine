@@ -1,0 +1,46 @@
+{
+  "evaluation_timestamp_utc": "2026-10-18T17:51:16.803114+00:00",
+  "dataset_sha256": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487",
+  "policy_version": "2.0.0-sprint11.13",
+  "holdout_boundaries": {
+    "start_bar": 86724,
+    "end_bar": 105120,
+    "total_candles": 18396,
+    "start_datetime_utc": "2026-08-15T14:30:00Z",
+    "end_datetime_utc": "2026-10-18T11:25:00Z"
+  },
+  "research_contamination_audit": {
+    "is_holdout_pristine": false,
+    "exposure_history": [
+      {
+        "sprint": "11.10",
+        "scope": "Dynamic spot engine design and holdout return reporting"
+      },
+      {
+        "sprint": "11.11",
+        "scope": "Decision failure forensics and patient engine tuning"
+      },
+      {
+        "sprint": "11.12",
+        "scope": "Financial truth audit and discrepancy reconciliation"
+      },
+      {
+        "sprint": "11.13",
+        "scope": "Canonical reproduction gate and reporting repair"
+      }
+    ],
+    "contamination_warning": "The holdout partition (bars 86,724 to 105,120) has been iteratively inspected across four consecutive sprints. Any subsequent strategy tuned or evaluated on this partition carries post-hoc selection and research contamination risk. There is no pristine unseen evaluation partition available within this 365-day dataset."
+  },
+  "scientific_verdicts": {
+    "holdout_independence_verdict": "FAIL",
+    "holdout_independence_rationale": "Partition has been inspected repeatedly; strictly research-contaminated.",
+    "predictive_edge_verdict": "INCONCLUSIVE",
+    "predictive_edge_rationale": "Historical analogues show conditional skew in training, but fail to deliver edge on holdout.",
+    "economic_edge_verdict": "FAIL",
+    "economic_edge_rationale": "All active dynamic spot strategies generate negative net returns after 30 bps friction.",
+    "regime_robustness_verdict": "FAIL",
+    "regime_robustness_rationale": "Walk-forward validation fails across all 3 regime folds (bear, consolidation, bull).",
+    "generalization_verdict": "INCONCLUSIVE",
+    "generalization_rationale": "In the absence of a pristine, uninspected out-of-sample period, generalization cannot be claimed."
+  }
+}
