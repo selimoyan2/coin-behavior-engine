@@ -69,6 +69,7 @@ def _make_candle_dict(
     price: float = 65000.0,
     provenance: str = ProvenanceSource.LIVE_BINANCE_SPOT.value,
     is_closed: bool = True,
+    lifecycle_state: str = CandleLifecycleState.CANDLE_PERSISTED.value,
 ) -> Dict[str, Any]:
     close_ts = open_ts + CANDLE_INTERVAL_MS - 1
     dt_open = datetime.fromtimestamp(open_ts / 1000, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -92,7 +93,7 @@ def _make_candle_dict(
         "is_closed": is_closed,
         "provenance": provenance,
         "receipt_timestamp_utc": dt_close,
-        "lifecycle_state": CandleLifecycleState.CANDLE_PERSISTED.value,
+        "lifecycle_state": lifecycle_state,
     }
 
 
@@ -896,4 +897,232 @@ def test_absence_of_engine_behavior_changes():
             assert (cfg.raw_market_dir / "recovery_metadata_BTCUSDT_5m.jsonl").exists()
         finally:
             engine.evidence_store.close()
+
+
+def test_recovery_candle_confirmed_closed_hash_reconstruction(env_safety):
+    """Sprint 11.02E.2: Verify that recovery candles with CANDLE_CONFIRMED_CLOSED (produced by REST validator) are correctly reconstructed and hashed."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        raw_dir = Path(tmpdir)
+        start_ts = (1700000000000 // CANDLE_INTERVAL_MS) * CANDLE_INTERVAL_MS
+
+        raw_candles = []
+        missing_candles = []
+        for i in range(300):
+            ts = start_ts + (i * CANDLE_INTERVAL_MS)
+            if 50 <= i <= 52:
+                missing_candles.append(
+                    _make_candle_dict(
+                        ts,
+                        provenance=ProvenanceSource.REST_GAP_RECOVERY.value,
+                        lifecycle_state=CandleLifecycleState.CANDLE_CONFIRMED_CLOSED.value,
+                    )
+                )
+            else:
+                raw_candles.append(_make_candle_dict(ts))
+
+        raw_file = raw_dir / "raw_candles_BTCUSDT_5m.jsonl"
+        _write_raw_ledger(raw_file, raw_candles)
+
+        journal_file = raw_dir / "recovery_candles_BTCUSDT_5m.jsonl"
+        meta_file = raw_dir / "recovery_metadata_BTCUSDT_5m.jsonl"
+        gap_id = f"GAP-{missing_candles[0]['timestamp_open']}-{missing_candles[-1]['timestamp_open']}"
+        _write_recovery_batch(
+            journal_file, meta_file, gap_id, "BATCH-CONFIRMED-CLOSED", missing_candles, write_metadata=True
+        )
+
+        auditor = ResearchReadinessAuditor(evidence_dir=raw_dir, environment_override=env_safety)
+        report = auditor.run_full_audit(compare_with_engine=False)
+
+        assert report.verdict == AuditVerdict.READY_FOR_OFFLINE_RESEARCH
+        assert report.gates["EVIDENCE_INTEGRITY"].status == GateStatus.PASS
+        assert report.gates["RECOVERY_CORRECTNESS"].status == GateStatus.PASS
+        assert report.gates["RESEARCH_WINDOW_READINESS"].status == GateStatus.PASS
+        assert report.recovery_candle_count == 3
+        assert report.committed_recovery_count == 3
+
+
+def test_recovery_candle_persisted_hash_reconstruction(env_safety):
+    """Sprint 11.02E.2: Verify that recovery candles with CANDLE_PERSISTED are also correctly reconstructed and hashed."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        raw_dir = Path(tmpdir)
+        start_ts = (1700000000000 // CANDLE_INTERVAL_MS) * CANDLE_INTERVAL_MS
+
+        raw_candles = []
+        missing_candles = []
+        for i in range(300):
+            ts = start_ts + (i * CANDLE_INTERVAL_MS)
+            if 50 <= i <= 52:
+                missing_candles.append(
+                    _make_candle_dict(
+                        ts,
+                        provenance=ProvenanceSource.REST_GAP_RECOVERY.value,
+                        lifecycle_state=CandleLifecycleState.CANDLE_PERSISTED.value,
+                    )
+                )
+            else:
+                raw_candles.append(_make_candle_dict(ts))
+
+        raw_file = raw_dir / "raw_candles_BTCUSDT_5m.jsonl"
+        _write_raw_ledger(raw_file, raw_candles)
+
+        journal_file = raw_dir / "recovery_candles_BTCUSDT_5m.jsonl"
+        meta_file = raw_dir / "recovery_metadata_BTCUSDT_5m.jsonl"
+        gap_id = f"GAP-{missing_candles[0]['timestamp_open']}-{missing_candles[-1]['timestamp_open']}"
+        _write_recovery_batch(
+            journal_file, meta_file, gap_id, "BATCH-PERSISTED", missing_candles, write_metadata=True
+        )
+
+        auditor = ResearchReadinessAuditor(evidence_dir=raw_dir, environment_override=env_safety)
+        report = auditor.run_full_audit(compare_with_engine=False)
+
+        assert report.verdict == AuditVerdict.READY_FOR_OFFLINE_RESEARCH
+        assert report.gates["EVIDENCE_INTEGRITY"].status == GateStatus.PASS
+        assert report.gates["RECOVERY_CORRECTNESS"].status == GateStatus.PASS
+        assert report.recovery_candle_count == 3
+
+
+def test_recovery_candle_invalid_tampered_lifecycle_state(env_safety):
+    """Sprint 11.02E.2: Verify that recovery candles with an invalid/tampered lifecycle_state fail the audit."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        raw_dir = Path(tmpdir)
+        start_ts = (1700000000000 // CANDLE_INTERVAL_MS) * CANDLE_INTERVAL_MS
+
+        raw_candles = [_make_candle_dict(start_ts + (i * CANDLE_INTERVAL_MS)) for i in range(300)]
+        raw_file = raw_dir / "raw_candles_BTCUSDT_5m.jsonl"
+        _write_raw_ledger(raw_file, raw_candles)
+
+        # Create recovered candle with tampered lifecycle state
+        bad_candle = _make_candle_dict(
+            start_ts + 1000,
+            provenance=ProvenanceSource.REST_GAP_RECOVERY.value,
+            lifecycle_state="TAMPERED_STATE",
+        )
+        journal_file = raw_dir / "recovery_candles_BTCUSDT_5m.jsonl"
+        meta_file = raw_dir / "recovery_metadata_BTCUSDT_5m.jsonl"
+
+        # Construct journal entry manually with matching entry hash so failure is specifically from invalid lifecycle_state
+        canonical_json = json.dumps(bad_candle, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        c_hash = hashlib.sha256(canonical_json).hexdigest()
+        prev_h = RECOVERY_GENESIS_PREV_HASH
+        integ_h = hashlib.sha256(f"BATCH-BAD:GAP-BAD:0:{prev_h}:{c_hash}".encode("utf-8")).hexdigest()
+
+        journal_entry = {
+            "recovery_batch_id": "BATCH-BAD",
+            "gap_id": "GAP-BAD",
+            "entry_index": 0,
+            "prev_recovery_hash": prev_h,
+            "candle_hash": c_hash,
+            "integrity_hash": integ_h,
+            "persisted_at_utc": bad_candle["receipt_timestamp_utc"],
+            "source_metadata": {},
+            "candle": bad_candle,
+        }
+        with open(journal_file, "w", encoding="utf-8") as f:
+            f.write(json.dumps(journal_entry) + "\n")
+
+        auditor = ResearchReadinessAuditor(evidence_dir=raw_dir, environment_override=env_safety)
+        report = auditor.run_full_audit(compare_with_engine=False)
+
+        assert report.verdict == AuditVerdict.NOT_READY
+        assert report.gates["EVIDENCE_INTEGRITY"].status == GateStatus.FAIL
+        assert any("invalid or missing lifecycle_state" in v for v in report.gates["EVIDENCE_INTEGRITY"].violations)
+
+
+def test_recovery_candle_hash_mismatch_fails_closed(env_safety):
+    """Sprint 11.02E.2: Verify that recovery candle payload hash mismatch fails closed."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        raw_dir = Path(tmpdir)
+        start_ts = (1700000000000 // CANDLE_INTERVAL_MS) * CANDLE_INTERVAL_MS
+
+        raw_candles = [_make_candle_dict(start_ts + (i * CANDLE_INTERVAL_MS)) for i in range(300)]
+        raw_file = raw_dir / "raw_candles_BTCUSDT_5m.jsonl"
+        _write_raw_ledger(raw_file, raw_candles)
+
+        recovered_candle = _make_candle_dict(
+            start_ts + 1000,
+            provenance=ProvenanceSource.REST_GAP_RECOVERY.value,
+            lifecycle_state=CandleLifecycleState.CANDLE_CONFIRMED_CLOSED.value,
+        )
+        journal_file = raw_dir / "recovery_candles_BTCUSDT_5m.jsonl"
+        meta_file = raw_dir / "recovery_metadata_BTCUSDT_5m.jsonl"
+
+        # Compute valid entry hashes first
+        vcandle = ValidatedCandle(**recovered_candle)
+        c_hash = vcandle.compute_sha256()
+        prev_h = RECOVERY_GENESIS_PREV_HASH
+        integ_h = hashlib.sha256(f"BATCH-1:GAP-1:0:{prev_h}:{c_hash}".encode("utf-8")).hexdigest()
+
+        # Tamper payload AFTER hash calculation (e.g. modify close price)
+        tampered_candle = dict(recovered_candle)
+        tampered_candle["close"] = "99999.00"
+
+        journal_entry = {
+            "recovery_batch_id": "BATCH-1",
+            "gap_id": "GAP-1",
+            "entry_index": 0,
+            "prev_recovery_hash": prev_h,
+            "candle_hash": c_hash,
+            "integrity_hash": integ_h,
+            "persisted_at_utc": tampered_candle["receipt_timestamp_utc"],
+            "source_metadata": {},
+            "candle": tampered_candle,
+        }
+        with open(journal_file, "w", encoding="utf-8") as f:
+            f.write(json.dumps(journal_entry) + "\n")
+
+        auditor = ResearchReadinessAuditor(evidence_dir=raw_dir, environment_override=env_safety)
+        report = auditor.run_full_audit(compare_with_engine=False)
+
+        assert report.verdict == AuditVerdict.NOT_READY
+        assert report.gates["EVIDENCE_INTEGRITY"].status == GateStatus.FAIL
+        assert any("Recovery journal candle hash mismatch" in v for v in report.gates["EVIDENCE_INTEGRITY"].violations)
+
+
+def test_recovery_candle_lifecycle_tamper_fails_closed(env_safety):
+    """Sprint 11.02E.2: Verify that changing lifecycle_state in payload without updating candle_hash fails closed."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        raw_dir = Path(tmpdir)
+        start_ts = (1700000000000 // CANDLE_INTERVAL_MS) * CANDLE_INTERVAL_MS
+
+        raw_candles = [_make_candle_dict(start_ts + (i * CANDLE_INTERVAL_MS)) for i in range(300)]
+        raw_file = raw_dir / "raw_candles_BTCUSDT_5m.jsonl"
+        _write_raw_ledger(raw_file, raw_candles)
+
+        # Original candle hashed as CANDLE_CONFIRMED_CLOSED
+        recovered_candle = _make_candle_dict(
+            start_ts + 1000,
+            provenance=ProvenanceSource.REST_GAP_RECOVERY.value,
+            lifecycle_state=CandleLifecycleState.CANDLE_CONFIRMED_CLOSED.value,
+        )
+        vcandle = ValidatedCandle(**recovered_candle)
+        c_hash = vcandle.compute_sha256()
+        prev_h = RECOVERY_GENESIS_PREV_HASH
+        integ_h = hashlib.sha256(f"BATCH-2:GAP-2:0:{prev_h}:{c_hash}".encode("utf-8")).hexdigest()
+
+        # Attacker alters lifecycle_state to CANDLE_PERSISTED in payload
+        tampered_candle = dict(recovered_candle)
+        tampered_candle["lifecycle_state"] = CandleLifecycleState.CANDLE_PERSISTED.value
+
+        journal_entry = {
+            "recovery_batch_id": "BATCH-2",
+            "gap_id": "GAP-2",
+            "entry_index": 0,
+            "prev_recovery_hash": prev_h,
+            "candle_hash": c_hash,
+            "integrity_hash": integ_h,
+            "persisted_at_utc": tampered_candle["receipt_timestamp_utc"],
+            "source_metadata": {},
+            "candle": tampered_candle,
+        }
+        journal_file = raw_dir / "recovery_candles_BTCUSDT_5m.jsonl"
+        with open(journal_file, "w", encoding="utf-8") as f:
+            f.write(json.dumps(journal_entry) + "\n")
+
+        auditor = ResearchReadinessAuditor(evidence_dir=raw_dir, environment_override=env_safety)
+        report = auditor.run_full_audit(compare_with_engine=False)
+
+        assert report.verdict == AuditVerdict.NOT_READY
+        assert report.gates["EVIDENCE_INTEGRITY"].status == GateStatus.FAIL
+        assert any("Recovery journal candle hash mismatch" in v for v in report.gates["EVIDENCE_INTEGRITY"].violations)
+
 

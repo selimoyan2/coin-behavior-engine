@@ -52,7 +52,7 @@ from coin_behavior_engine.shadow_v080.market_data_contract import (
 
 logger = logging.getLogger("cbe_research_readiness_auditor")
 
-AUDITOR_VERSION = "1.0.0-sprint11.02e"
+AUDITOR_VERSION = "1.0.2-sprint11.02e.2"
 RAW_GENESIS_PREV_HASH = "0" * 64
 RECOVERY_GENESIS_PREV_HASH = "0" * 64
 EXPECTED_INTERVAL_MS = 300_000  # 5 minutes in milliseconds
@@ -787,28 +787,24 @@ class ResearchReadinessAuditor:
                 break
 
             # 3. Candle validation & SHA-256
-            try:
-                vcandle = ValidatedCandle(
-                    symbol=c_dict["symbol"],
-                    interval=c_dict["interval"],
-                    market_type=c_dict.get("market_type", MarketType.SPOT.value),
-                    timestamp_open=c_dict["timestamp_open"],
-                    timestamp_close=c_dict["timestamp_close"],
-                    datetime_open_utc=c_dict["datetime_open_utc"],
-                    datetime_close_utc=c_dict["datetime_close_utc"],
-                    open=str(c_dict["open"]),
-                    high=str(c_dict["high"]),
-                    low=str(c_dict["low"]),
-                    close=str(c_dict["close"]),
-                    volume=str(c_dict["volume"]),
-                    quote_volume=str(c_dict.get("quote_volume", "0")),
-                    trades_count=int(c_dict.get("trades_count", 0)),
-                    taker_buy_base_volume=str(c_dict.get("taker_buy_base_volume", "0")),
-                    is_closed=bool(c_dict["is_closed"]),
-                    provenance=c_dict["provenance"],
-                    receipt_timestamp_utc=c_dict["receipt_timestamp_utc"],
-                    lifecycle_state=CandleLifecycleState.CANDLE_PERSISTED.value,
+            if not isinstance(c_dict, dict):
+                gate_integrity.status = GateStatus.FAIL
+                gate_integrity.violations.append(
+                    f"Recovery journal candle at line {line_no} is not a valid dictionary"
                 )
+                break
+
+            valid_lifecycle_states = {s.value for s in CandleLifecycleState}
+            lifecycle_val = c_dict.get("lifecycle_state")
+            if lifecycle_val not in valid_lifecycle_states:
+                gate_integrity.status = GateStatus.FAIL
+                gate_integrity.violations.append(
+                    f"Recovery journal candle at line {line_no} has invalid or missing lifecycle_state: '{lifecycle_val}'"
+                )
+                break
+
+            try:
+                vcandle = ValidatedCandle(**c_dict)
             except Exception as e:
                 gate_integrity.status = GateStatus.FAIL
                 gate_integrity.violations.append(
