@@ -80,6 +80,42 @@ class ProbabilityEngine:
             downside_risk_pct *= 1.8
             explanations.append("Severe liquidation cascade in progress; high downside tail risk")
 
+        # HTF 1h & 4h Regime Alignment
+        if features.htf_1h_regime == MarketRegimeType.TRENDING_BEAR:
+            p_down += 0.08
+            p_up -= 0.06
+            exp_return_pct -= 0.25
+            explanations.append("1h higher-timeframe bear trend dampens upside")
+        elif features.htf_1h_regime == MarketRegimeType.TRENDING_BULL:
+            p_up += 0.08
+            p_down -= 0.06
+            exp_return_pct += 0.25
+            explanations.append("1h higher-timeframe bull trend reinforces upside")
+
+        # Volatility compression
+        if features.volatility_compression_ratio < 0.70:
+            p_neutral += 0.15
+            p_up -= 0.08
+            p_down -= 0.07
+            explanations.append("Volatility compression indicates range-bound chop")
+
+        # Price-Volume Divergence
+        if features.price_volume_divergence == "BULLISH_DIV":
+            p_up += 0.10
+            p_down -= 0.07
+            exp_return_pct += 0.35
+            explanations.append("Bullish price-volume divergence indicates fading sell pressure")
+        elif features.price_volume_divergence == "BEARISH_DIV":
+            p_down += 0.10
+            p_up -= 0.07
+            exp_return_pct -= 0.35
+            explanations.append("Bearish price-volume divergence indicates fading buy momentum")
+
+        # Scale expected return and downside risk according to prediction horizon
+        horizon_scale = {"15m": 0.5, "1h": 1.0, "4h": 2.0}.get(prediction_horizon, 1.0)
+        exp_return_pct *= horizon_scale
+        downside_risk_pct *= math.sqrt(horizon_scale)
+
         # 3. Behavioral Pattern Adjustments
         if "SHARP_DECLINE_VOLUME_EXHAUSTION" in active_patterns:
             p_up += 0.16
@@ -171,6 +207,73 @@ class ProbabilityEngine:
             missing_context=[] if observable_events is not None else ["EVENT_CONTEXT_PENDING"],
             explanation="; ".join(explanations) if explanations else "Standard technical baseline",
         )
+
+    @classmethod
+    def evaluate_predictions(
+        cls,
+        predictions: List[ProbabilisticPrediction],
+        candles: List[CandleData],
+        horizon_bars: int = 12,
+    ) -> List[Dict[str, Any]]:
+        """Evaluate forward accuracy, calibration, and Brier score against realized price action."""
+        evaluation_rows: List[Dict[str, Any]] = []
+        n = min(len(predictions), len(candles))
+
+        for i in range(n):
+            pred = predictions[i]
+            if pred.confidence_status == "NO_PREDICTION" or (i + horizon_bars) >= len(candles):
+                continue
+
+            entry_p = candles[i].close
+            future_p = candles[i + horizon_bars].close
+            realized_ret_pct = ((future_p - entry_p) / entry_p) * 100.0 if entry_p > 0 else 0.0
+
+            # Realized direction
+            realized_dir = "UP" if realized_ret_pct > 0.1 else ("DOWN" if realized_ret_pct < -0.1 else "NEUTRAL")
+            predicted_dir = "UP" if pred.probability_up > pred.probability_down and pred.probability_up > pred.probability_neutral else (
+                "DOWN" if pred.probability_down > pred.probability_up and pred.probability_down > pred.probability_neutral else "NEUTRAL"
+            )
+
+            is_correct = (predicted_dir == realized_dir)
+            
+            # Binary Brier Score for UP outcome
+            actual_up_binary = 1.0 if realized_ret_pct > 0 else 0.0
+            brier_score_up = round((pred.probability_up - actual_up_binary) ** 2, 4)
+
+            # Max Adverse Excursion during horizon
+            future_low = min(candles[k].low for k in range(i + 1, i + horizon_bars + 1))
+            mae_pct = round(((future_low - entry_p) / entry_p) * 100.0, 3)
+
+            evaluation_rows.append({
+                "datetime_utc": pred.datetime_utc,
+                "horizon": pred.prediction_horizon,
+                "regime": pred.market_regime.value if hasattr(pred.market_regime, "value") else str(pred.market_regime),
+                "prob_up": pred.probability_up,
+                "prob_down": pred.probability_down,
+                "prob_neutral": pred.probability_neutral,
+                "predicted_direction": predicted_dir,
+                "expected_return_pct": pred.expected_return_pct,
+                "realized_return_pct": round(realized_ret_pct, 3),
+                "realized_direction": realized_dir,
+                "directional_correct": is_correct,
+                "brier_score_up": brier_score_up,
+                "predicted_downside_risk_pct": pred.downside_risk_pct,
+                "realized_mae_pct": mae_pct,
+                "confidence_status": pred.confidence_status,
+            })
+
+        return evaluation_rows
+
+    @classmethod
+    def export_prediction_evaluation_csv(
+        cls,
+        evaluation_rows: List[Dict[str, Any]],
+        output_csv: Path,
+    ) -> None:
+        """Export prediction evaluation metrics to CSV."""
+        output_csv.parent.mkdir(parents=True, exist_ok=True)
+        df = pd.DataFrame(evaluation_rows)
+        df.to_csv(output_csv, index=False)
 
     @classmethod
     def export_predictions_csv(

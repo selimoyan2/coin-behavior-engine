@@ -53,10 +53,42 @@ class HistoricalPaperSimulator:
             i: dec for i, dec in enumerate(decisions)
         }
 
-        # Track benchmarks
-        buy_and_hold_start_price = candles[0].close if candles else 1.0
-        buy_and_hold_end_price = candles[-1].close if candles else 1.0
-        bnh_return_pct = round(((buy_and_hold_end_price - buy_and_hold_start_price) / buy_and_hold_start_price) * 100.0, 3)
+        # Track benchmarks (Exact mark-to-market Buy & Hold with fees and slippage)
+        bnh_initial = initial_capital
+        bnh_entry_price = candles[0].open * (1.0 + self.config.slippage_pct) if candles else 1.0
+        bnh_entry_fee = bnh_initial * self.config.taker_fee_pct
+        bnh_qty = (bnh_initial - bnh_entry_fee) / bnh_entry_price if bnh_entry_price > 0 else 0.0
+        
+        bnh_peak_equity = bnh_initial
+        bnh_max_dd_pct = 0.0
+        bnh_equity_curve = []
+        for c_bar in candles:
+            eq_val = bnh_qty * c_bar.close
+            bnh_equity_curve.append(eq_val)
+            if eq_val > bnh_peak_equity:
+                bnh_peak_equity = eq_val
+            dd = ((bnh_peak_equity - eq_val) / bnh_peak_equity) * 100.0 if bnh_peak_equity > 0 else 0.0
+            if dd > bnh_max_dd_pct:
+                bnh_max_dd_pct = dd
+
+        bnh_exit_price = candles[-1].close * (1.0 - self.config.slippage_pct) if candles else 1.0
+        bnh_exit_gross = bnh_qty * bnh_exit_price
+        bnh_exit_fee = bnh_exit_gross * self.config.taker_fee_pct
+        bnh_final_val = bnh_exit_gross - bnh_exit_fee
+        bnh_total_fees = round(bnh_entry_fee + bnh_exit_fee, 2)
+        bnh_return_pct = round(((bnh_final_val - bnh_initial) / bnh_initial) * 100.0, 3)
+
+        # B&H Sharpe
+        bnh_period_rets = []
+        for j in range(1, len(bnh_equity_curve)):
+            if bnh_equity_curve[j - 1] > 0:
+                bnh_period_rets.append((bnh_equity_curve[j] - bnh_equity_curve[j - 1]) / bnh_equity_curve[j - 1])
+        if len(bnh_period_rets) > 1:
+            m_bnh = sum(bnh_period_rets) / len(bnh_period_rets)
+            s_bnh = math.sqrt(sum((r - m_bnh) ** 2 for r in bnh_period_rets) / (len(bnh_period_rets) - 1))
+            bnh_sharpe = round((m_bnh / s_bnh) * math.sqrt(105120), 2) if s_bnh > 0 else 0.0
+        else:
+            bnh_sharpe = 0.0
 
         for i, c in enumerate(candles):
             curr_price = c.close
@@ -298,7 +330,12 @@ class HistoricalPaperSimulator:
             sharpe_ratio=sharpe,
             sortino_ratio=sortino,
             baseline_buy_and_hold_return_pct=bnh_return_pct,
+            baseline_buy_and_hold_drawdown_pct=round(bnh_max_dd_pct, 2),
+            baseline_buy_and_hold_fees=bnh_total_fees,
+            baseline_buy_and_hold_sharpe=bnh_sharpe,
             baseline_cash_return_pct=0.0,
+            abstention_count=sum(1 for d in decisions if d.action in (DecisionAction.NO_TRADE, DecisionAction.HOLD) and d.position_size_pct == 0.0),
+            fee_drag_pct=round((total_fees / initial_capital) * 100.0, 2),
             trades=trades,
             equity_series=equity_series,
         )

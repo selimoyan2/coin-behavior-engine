@@ -1,8 +1,8 @@
 """Command-line interface and reproducible runner for CBE Research Lab.
 
-Sprint 11.03: Market Behavior Research Lab, Event Intelligence & Historical Simulation.
-Provides autonomous, reproducible execution of data acquisition, quality audit,
-pattern discovery, strategy evaluation, crash case study, and reporting.
+Sprint 11.04: Research Integrity, Verified Market Context & First Reliable Strategy Benchmark.
+Provides autonomous, reproducible execution of data acquisition, boundary reconciliation,
+quality audit, HTF pattern discovery, strategy evaluation, counterfactual analysis, and reporting.
 """
 
 from __future__ import annotations
@@ -31,6 +31,7 @@ from coin_behavior_engine.research_lab.contracts import (
     ResearchDecision,
     SimulationRunResult,
 )
+from coin_behavior_engine.research_lab.counterfactuals import CounterfactualAnalyzer
 from coin_behavior_engine.research_lab.data_quality import DataQualityValidator
 from coin_behavior_engine.research_lab.evaluation import StrategyEvaluator
 from coin_behavior_engine.research_lab.event_alignment import EventMarketAligner
@@ -68,7 +69,7 @@ def run_research_pipeline(
     offline_parquet_path: Optional[Path] = None,
     evidence_dir: Optional[Path] = None,
 ) -> Dict[str, Any]:
-    """Execute complete end-to-end research lab workflow."""
+    """Execute complete end-to-end research lab workflow for Sprint 11.04."""
     config = ResearchLabConfig()
     if output_dir:
         config.output_dir = output_dir
@@ -78,7 +79,7 @@ def run_research_pipeline(
     logger.info(f"=== CBE Research Lab Pipeline (Commit: {git_commit[:8]}) ===")
 
     # ---------------------------------------------------------
-    # Gate B: Historical Market Data Acquisition
+    # Gate B: Historical Market Data Acquisition & Boundary Reconciliation
     # ---------------------------------------------------------
     adapter = BinanceHistoricalAdapter(config)
     cache_file = config.data_dir / f"binance_{symbol}_1m_recent.parquet"
@@ -110,47 +111,17 @@ def run_research_pipeline(
         except Exception as e:
             logger.warning(f"Live network acquisition failed: {e}.")
 
-    # Priority 3: Fallback to local 5m parquet file if available
-    candles_5m: List[CandleData] = []
     if not candles_1m:
-        fallback_path = offline_parquet_path or Path("data/raw/btcusdt_5m_raw.parquet")
-        if fallback_path.is_file():
-            logger.info(f"Loading fallback historical data from {fallback_path}...")
-            df = pd.read_parquet(fallback_path)
-            # Take latest N days of available data
-            bars_count = min(len(df), days * 288)
-            df_slice = df.iloc[-bars_count:]
-            for _, r in df_slice.iterrows():
-                dt_open = datetime.fromtimestamp(int(r["timestamp_open"]) / 1000.0, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-                dt_close = datetime.fromtimestamp(int(r["timestamp_close"]) / 1000.0, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-                c = CandleData(
-                    timestamp_open=int(r["timestamp_open"]),
-                    timestamp_close=int(r["timestamp_close"]),
-                    datetime_open_utc=dt_open,
-                    datetime_close_utc=dt_close,
-                    open=float(r["open"]),
-                    high=float(r["high"]),
-                    low=float(r["low"]),
-                    close=float(r["close"]),
-                    volume=float(r["base_volume"] if "base_volume" in r else r.get("volume", 0.0)),
-                    quote_volume=float(r.get("quote_volume", 0.0)),
-                    trades_count=int(r.get("trade_count", r.get("trades_count", 0))),
-                    taker_buy_base_volume=float(r.get("taker_buy_base_volume", 0.0)),
-                    is_closed=True,
-                    symbol=symbol,
-                    interval="5m",
-                    provenance="LOCAL_PARQUET_FALLBACK",
-                )
-                candles_5m.append(c)
-        else:
-            raise RuntimeError(f"No market data available: network failed and {fallback_path} not found.")
+        raise RuntimeError("No market data available: cache file not found and network download failed.")
 
-    # Timeframe Aggregation: If 1m candles present, aggregate to 5m without leakage
-    if candles_1m:
-        logger.info(f"Aggregating {len(candles_1m):,} 1m candles to 5m resolution with strict anti-leakage...")
-        candles_5m = TimeframeAggregator.aggregate(candles_1m, target_interval="5m", symbol=symbol)
+    # Timeframe Aggregation: Enforce strict boundary completeness (no partial boundary buckets)
+    logger.info(f"Reconciling {len(candles_1m):,} 1m candles into strictly closed 5m, 1h, and 4h series...")
+    candles_5m = TimeframeAggregator.aggregate(candles_1m, target_interval="5m", symbol=symbol, allow_partial_boundaries=False)
+    candles_1h = TimeframeAggregator.aggregate(candles_5m, target_interval="1h", symbol=symbol, allow_partial_boundaries=False)
+    candles_4h = TimeframeAggregator.aggregate(candles_5m, target_interval="4h", symbol=symbol, allow_partial_boundaries=False)
 
-    logger.info(f"Market dataset ready: {len(candles_5m):,} 5m closed candles ({candles_5m[0].datetime_open_utc} -> {candles_5m[-1].datetime_close_utc}).")
+    logger.info(f"Dataset reconciled: {len(candles_5m):,} complete 5m candles ({candles_5m[0].datetime_open_utc} -> {candles_5m[-1].datetime_close_utc}).")
+    logger.info(f"Higher timeframes: {len(candles_1h):,} 1h candles, {len(candles_4h):,} 4h candles.")
 
     # ---------------------------------------------------------
     # Gate B.1: Data Quality Audit
@@ -162,20 +133,30 @@ def run_research_pipeline(
     logger.info(f"Data quality audit completed: passed={quality_report.passed}, gaps={quality_report.gaps_count}, inversions={quality_report.ohlcv_inversions_count}")
 
     # ---------------------------------------------------------
-    # Gate C: Feature Extraction
+    # Gate C: Feature Extraction with HTF Alignment & Divergences
     # ---------------------------------------------------------
-    logger.info("Computing timestamp-safe market behavior features...")
-    features = MarketBehaviorFeatureEngine.compute_all(candles_5m, lookback_bars=24)
+    logger.info("Computing causal features with 1h/4h alignment and price-volume divergence...")
+    features = MarketBehaviorFeatureEngine.compute_all(
+        candles_5m,
+        lookback_bars=24,
+        candles_1h=candles_1h,
+        candles_4h=candles_4h,
+    )
 
     # ---------------------------------------------------------
-    # Gate D: Event Intelligence & Alignment
+    # Gate D: Event Intelligence, Audit Verification & Export
     # ---------------------------------------------------------
-    logger.info("Loading curated event intelligence catalog...")
+    logger.info("Loading and auditing historical event intelligence catalog...")
     event_store = EventIntelligenceStore.load_curated_october_2026_events()
-    events = event_store.all_events()
+    all_events = event_store.all_events()
 
-    logger.info("Aligning market events with candle timeline...")
-    alignments = EventMarketAligner.align_events(events, candles_5m)
+    # Export event_source_verification.csv
+    event_verify_csv = config.output_dir / "event_source_verification.csv"
+    EventIntelligenceStore.export_event_source_verification_csv(all_events, event_verify_csv)
+    logger.info(f"Exported event source verification matrix to {event_verify_csv}")
+
+    # Align events with timeline
+    alignments = EventMarketAligner.align_events(all_events, candles_5m)
     timeline_csv = config.output_dir / "event_timeline.csv"
     EventMarketAligner.export_event_timeline_csv(alignments, timeline_csv)
 
@@ -206,133 +187,99 @@ def run_research_pipeline(
         )
         if pat_obj:
             discovered_patterns.append(pat_obj)
-            logger.info(f"  Pattern {pat_name}: samples={pat_obj.historical_sample_count}, win_rate={pat_obj.probability_positive_outcome * 100:.1f}%, exp_ret={pat_obj.expected_return_pct:+.2f}%")
 
     pattern_csv = config.output_dir / "pattern_summary.csv"
     BehavioralPatternEngine.export_pattern_summary_csv(discovered_patterns, pattern_csv)
 
     # ---------------------------------------------------------
-    # Gate F: Probabilistic Prediction Log
+    # Gate F: Multi-Horizon Probabilistic Predictions & Evaluation
     # ---------------------------------------------------------
-    logger.info("Generating chronological probabilistic scenarios...")
+    logger.info("Generating multi-horizon probabilistic predictions (15m, 1h, 4h)...")
     predictions = []
     for idx in range(len(candles_5m)):
         c_utc = candles_5m[idx].datetime_open_utc
         obs = event_store.events_observable_at(c_utc, lookback_hours=12.0)
         active_pats = [p for p, idxs in pattern_matches.items() if idx in idxs]
         pred = ProbabilityEngine.generate_prediction(
-            features[idx], active_pats, observable_events=obs if obs else None
+            features[idx], active_pats, observable_events=obs if obs else None, prediction_horizon="1h"
         )
         predictions.append(pred)
 
     pred_csv = config.output_dir / "predictions.csv"
     ProbabilityEngine.export_predictions_csv(predictions, pred_csv)
 
+    # Evaluate predictions against forward outcomes
+    logger.info("Evaluating forward prediction accuracy and calibration...")
+    pred_eval_rows = ProbabilityEngine.evaluate_predictions(predictions, candles_5m, horizon_bars=12)
+    pred_eval_csv = config.output_dir / "prediction_evaluation.csv"
+    ProbabilityEngine.export_prediction_evaluation_csv(pred_eval_rows, pred_eval_csv)
+    logger.info(f"Exported prediction evaluation to {pred_eval_csv}")
+
     # ---------------------------------------------------------
-    # Gate G & H: Multi-Strategy Historical Simulation & Comparison
+    # Gate G & H: Multi-Strategy Historical Simulation & Benchmarking
     # ---------------------------------------------------------
-    logger.info("Executing deterministic historical paper trading simulations (Strategies A, B, C)...")
+    logger.info("Executing reconciled historical paper trading simulations (Strategies A, B, C)...")
     evaluator = StrategyEvaluator(config)
-    sim_results = evaluator.run_strategy_comparison(candles_5m, features, events=events)
+    sim_results = evaluator.run_strategy_comparison(candles_5m, features, events=all_events)
 
     comparison_df = evaluator.generate_comparison_table(sim_results)
-    comparison_csv = config.output_dir / "strategy_comparison.csv"
+    comparison_csv = config.output_dir / "corrected_strategy_comparison.csv"
     evaluator.export_comparison_csv(comparison_df, comparison_csv)
+    logger.info(f"Exported corrected strategy comparison table to {comparison_csv}")
 
-    # Export trades and equity series for Strategy B (Context Aware) and Strategy A
-    strat_b = sim_results["Strategy_B_Context_Aware"]
+    # Also keep strategy_comparison.csv updated for compatibility
+    evaluator.export_comparison_csv(comparison_df, config.output_dir / "strategy_comparison.csv")
+
+    # Run Chronological Split Evaluations (Train 50%, Val 25%, Test 25%)
+    logger.info("Running chronological out-of-sample split evaluations...")
+    split_results = evaluator.run_split_evaluation(candles_5m, features, events=all_events)
+
+    # Run Parameter Sensitivity Tests
+    logger.info("Running fee and slippage sensitivity tests...")
+    sensitivity_df = evaluator.run_sensitivity_tests(candles_5m, features)
+
+    # ---------------------------------------------------------
+    # Gate I: Retrospective Counterfactual Analysis
+    # ---------------------------------------------------------
+    logger.info("Conducting retrospective counterfactual trade analysis...")
     strat_a = sim_results["Strategy_A_Technical_Only"]
-    strat_c = sim_results["Strategy_C_Risk_Controlled"]
-    trades_csv = config.output_dir / "hypothetical_trades.csv"
-    HistoricalPaperSimulator.export_trades_csv(strat_b.trades if strat_b.trades else strat_a.trades, trades_csv)
-
-    equity_csv = config.output_dir / "equity_curve.csv"
-    HistoricalPaperSimulator.export_equity_series_csv(strat_b.equity_series if strat_b.equity_series else strat_a.equity_series, equity_csv)
-
-    # ---------------------------------------------------------
-    # Case Study #001: October 2026 Decline Analysis
-    # ---------------------------------------------------------
-    logger.info("Constructing Market Crash Case Study #001 (October 2026 BTCUSDT decline)...")
-    
-    # Locate actual decline in dataset: Search peak around Oct 4-6 and trough around Oct 8-15
-    peak_price = 0.0
-    peak_idx = 0
-    trough_price = float("inf")
-    trough_idx = 0
-
-    for i, c in enumerate(candles_5m):
-        if c.high > peak_price:
-            peak_price = c.high
-            peak_idx = i
-
-    for i in range(peak_idx, len(candles_5m)):
-        if candles_5m[i].low < trough_price:
-            trough_price = candles_5m[i].low
-            trough_idx = i
-
-    max_dd_pct = round(((trough_price - peak_price) / peak_price) * 100.0, 2) if peak_price > 0 else 0.0
-    recov_price = candles_5m[-1].close
-
-    # Identify earliest risk signal (e.g. regime turn to TRENDING_BEAR or first drop > 1%)
-    earliest_risk_time = None
-    detection_delay = 0
-    for i in range(peak_idx, trough_idx + 1):
-        if features[i].regime in (MarketRegimeType.TRENDING_BEAR, MarketRegimeType.CASCADE_LIQUIDATION) or features[i].return_3 < -0.015:
-            earliest_risk_time = candles_5m[i].datetime_open_utc
-            detection_delay = int((candles_5m[i].timestamp_open - candles_5m[peak_idx].timestamp_open) / 60_000)
-            break
-
-    case_study = CaseStudyResult(
-        study_id="CASE-STUDY-001-OCT2026",
-        title="BTCUSDT October 2026 Multi-Day Liquidation & Regulatory Retracement",
-        event_start_utc=candles_5m[peak_idx].datetime_open_utc,
-        event_end_utc=candles_5m[trough_idx].datetime_close_utc,
-        pre_event_price=round(peak_price, 2),
-        trough_price=round(trough_price, 2),
-        max_drawdown_pct=max_dd_pct,
-        recovery_price=round(recov_price, 2),
-        volume_behavior="Heavy volume expansion during October 6-8 breakdown, followed by volume exhaustion at the $80,393 support sweep.",
-        volatility_behavior="Realized 24-bar volatility spiked from 0.45% to 1.85% as ATR expanded past $850 per 5m bar.",
-        visible_support_resistance="Major historical support zone at $82,500 failed; intermediate support at $80,300 held with bear trap liquidity sweep.",
-        earliest_risk_signal_time=earliest_risk_time,
-        detection_delay_minutes=detection_delay,
-        subsequent_price_behavior="Consolidation between $80,800 and $83,200 with institutional absorption signals.",
-        associated_events=[
-            "2026-10-06 14:30 UTC: SEC formal warning on offshore leverage venues and staking products.",
-            "2026-10-07 08:15 UTC: $450M long liquidation cascade triggered stop-loss cascade.",
-            "2026-10-08 16:00 UTC: Large spot block bids absorbed sell pressure at $80.3k low.",
-            "2026-10-14 12:30 UTC: US CPI print (+3.4% YoY) triggered second re-test of $80k round level.",
-        ],
-        technical_vs_context_comparison="Strategy A attempted to buy early support at $82.5k and was stopped out for a small loss. Strategy B incorporated the SEC regulatory shock context, filtered out premature buy candidates, and preserved cash until the volume exhaustion signal at $80.3k.",
-        hypothetical_strategy_performance={
-            "strat_a_pnl": strat_a.total_net_pnl,
-            "strat_a_dd": strat_a.max_drawdown_pct,
-            "strat_b_pnl": strat_b.total_net_pnl,
-            "strat_b_dd": strat_b.max_drawdown_pct,
-            "strat_c_pnl": strat_c.total_net_pnl,
-            "strat_c_dd": strat_c.max_drawdown_pct,
-        },
-        lessons_learned=[
-            "Never attempt falling-knife dip buys when regime is CASCADE_LIQUIDATION without volume exhaustion confirmation.",
-            "Macro/regulatory event shocks take 24-48 hours to fully price in; pre-emptive buying results in stop-outs.",
-            "Liquidity sweeps below key psychological round numbers ($80,000) that close back above provide the highest asymmetry recovery entries.",
-            "Real fees (0.10%) and slippage (0.05%) make scalping in chop unviable; holding period should target 1-4 hours.",
-        ],
+    trades_for_cf = strat_a.trades if strat_a.trades else []
+    cf_records = CounterfactualAnalyzer.analyze_significant_trades(
+        trades=trades_for_cf,
+        candles=candles_5m,
+        features=features,
+        top_n=10,
     )
+    cf_csv = config.output_dir / "trade_counterfactuals.csv"
+    CounterfactualAnalyzer.export_counterfactuals_csv(cf_records, cf_csv)
+    logger.info(f"Exported counterfactual trade analysis to {cf_csv}")
 
-    case_study_md = config.output_dir / "crash_case_study.md"
-    ResearchLabReporter.generate_crash_case_study_markdown(case_study, case_study_md)
+    # Export execution trades and equity curves
+    trades_csv = config.output_dir / "hypothetical_trades.csv"
+    HistoricalPaperSimulator.export_trades_csv(strat_a.trades, trades_csv)
+    equity_csv = config.output_dir / "equity_curve.csv"
+    HistoricalPaperSimulator.export_equity_series_csv(strat_a.equity_series, equity_csv)
 
     # ---------------------------------------------------------
-    # Visualization & Final Reports
+    # Gate J: Visualizations & Comprehensive Markdown Deliverables
     # ---------------------------------------------------------
-    logger.info("Generating equity and drawdown comparison charts...")
-    chart_png = config.output_dir / "equity_curves.png"
-    ResearchLabReporter.plot_equity_and_drawdown(sim_results, chart_png)
+    logger.info("Rendering strategy equity curves comparison chart...")
+    chart_png = config.output_dir / "strategy_equity_curves.png"
+    ResearchLabReporter.plot_equity_and_drawdown(sim_results, candles_5m, chart_png)
+    # Also update equity_curves.png for compatibility
+    ResearchLabReporter.plot_equity_and_drawdown(sim_results, candles_5m, config.output_dir / "equity_curves.png")
 
-    logger.info("Writing comprehensive research report and run manifest...")
-    report_md = config.output_dir / "research_report.md"
-    ResearchLabReporter.generate_research_report_markdown(
+    logger.info("Generating research integrity audit report...")
+    audit_md = config.output_dir / "research_integrity_audit.md"
+    ResearchLabReporter.generate_integrity_audit_markdown(audit_md)
+
+    logger.info("Generating empirical market behavior findings report...")
+    findings_md = config.output_dir / "market_behavior_findings.md"
+    ResearchLabReporter.generate_market_behavior_findings_markdown(findings_md)
+
+    logger.info("Generating Sprint 11.04 master research report...")
+    report_md = config.output_dir / "research_report_11_04.md"
+    ResearchLabReporter.generate_research_report_11_04_markdown(
         symbol=symbol,
         interval="5m",
         start_utc=candles_5m[0].datetime_open_utc,
@@ -340,11 +287,13 @@ def run_research_pipeline(
         total_candles=len(candles_5m),
         results=sim_results,
         comparison_df=comparison_df,
-        events=events,
+        split_results=split_results,
+        sensitivity_df=sensitivity_df,
         output_file=report_md,
     )
 
-    manifest_json = config.output_dir / "run_manifest.json"
+    # Generate run manifest
+    manifest_json = config.output_dir / "run_manifest_11_04.json"
     ResearchLabReporter.generate_run_manifest(
         symbol=symbol,
         interval="5m",
@@ -362,12 +311,12 @@ def run_research_pipeline(
         "output_dir": str(config.output_dir),
         "total_candles": len(candles_5m),
         "results": sim_results,
-        "case_study": case_study,
+        "split_results": split_results,
     }
 
 
 def main():
-    parser = argparse.ArgumentParser(description="CBE Research Lab Runner — Sprint 11.03")
+    parser = argparse.ArgumentParser(description="CBE Research Lab Runner — Sprint 11.04")
     parser.add_argument("--symbol", default="BTCUSDT", help="Trading pair symbol (default: BTCUSDT)")
     parser.add_argument("--days", type=int, default=25, help="Number of days to acquire and analyze (default: 25)")
     parser.add_argument("--output-dir", default="research_outputs", help="Output directory for research artifacts")

@@ -106,9 +106,12 @@ class StrategyEvaluator:
         cls,
         results: Dict[str, SimulationRunResult],
     ) -> pd.DataFrame:
-        """Create structured comparison DataFrame including benchmarks."""
+        """Create structured comparison DataFrame including reconciled benchmarks and abstention metrics."""
         rows = []
         bnh_ret = 0.0
+        first_res = next(iter(results.values()))
+        init_cap = first_res.initial_capital
+
         for name, res in results.items():
             bnh_ret = res.baseline_buy_and_hold_return_pct
             rows.append({
@@ -121,27 +124,30 @@ class StrategyEvaluator:
                 "Expectancy ($)": res.expectancy,
                 "Trades": res.total_trades,
                 "Total Fees ($)": res.total_fees,
+                "Fee Drag (%)": res.fee_drag_pct,
+                "Abstention Bars": res.abstention_count,
                 "Sharpe": res.sharpe_ratio,
             })
 
-        # Add Buy & Hold baseline
-        first_res = next(iter(results.values()))
-        init_cap = first_res.initial_capital
-        bnh_pnl = round(init_cap * (bnh_ret / 100.0), 2)
+        # Add Reconciled Buy & Hold baseline with true mark-to-market drawdown, fees, and Sharpe
+        bnh_pnl = round(init_cap * (first_res.baseline_buy_and_hold_return_pct / 100.0), 2)
         rows.append({
             "Strategy": "Benchmark_Buy_and_Hold",
-            "Return (%)": bnh_ret,
+            "Return (%)": first_res.baseline_buy_and_hold_return_pct,
             "Net PnL ($)": bnh_pnl,
-            "Max Drawdown (%)": 0.0,  # Computed from price path if needed
+            "Max Drawdown (%)": first_res.baseline_buy_and_hold_drawdown_pct,
             "Win Rate (%)": 0.0,
             "Profit Factor": 0.0,
             "Expectancy ($)": 0.0,
             "Trades": 1,
-            "Total Fees ($)": round(init_cap * 0.001, 2),
-            "Sharpe": 0.0,
+            "Total Fees ($)": first_res.baseline_buy_and_hold_fees,
+            "Fee Drag (%)": round((first_res.baseline_buy_and_hold_fees / init_cap) * 100.0, 2),
+            "Abstention Bars": 0,
+            "Sharpe": first_res.baseline_buy_and_hold_sharpe,
         })
 
         # Add Cash baseline
+        total_bars = len(first_res.equity_series)
         rows.append({
             "Strategy": "Benchmark_Cash",
             "Return (%)": 0.0,
@@ -152,11 +158,81 @@ class StrategyEvaluator:
             "Expectancy ($)": 0.0,
             "Trades": 0,
             "Total Fees ($)": 0.0,
+            "Fee Drag (%)": 0.0,
+            "Abstention Bars": total_bars,
             "Sharpe": 0.0,
         })
 
         df = pd.DataFrame(rows)
         return df
+
+    def run_split_evaluation(
+        self,
+        candles: List[CandleData],
+        features: List[MarketBehaviorFeatures],
+        events: Optional[List[EventIntelligenceRecord]] = None,
+    ) -> Dict[str, Dict[str, SimulationRunResult]]:
+        """Run strategy evaluation across Train (50%), Validation (25%), and Untouched Test (25%) splits."""
+        n = len(candles)
+        n_train = int(n * 0.50)
+        n_val = int(n * 0.25)
+        
+        splits = {
+            "TRAIN_50": (0, n_train),
+            "VAL_25": (n_train, n_train + n_val),
+            "TEST_25": (n_train + n_val, n),
+        }
+
+        split_results: Dict[str, Dict[str, SimulationRunResult]] = {}
+        for split_name, (start_i, end_i) in splits.items():
+            sub_c = candles[start_i:end_i]
+            sub_f = features[start_i:end_i]
+            res = self.run_strategy_comparison(sub_c, sub_f, events=events)
+            for k in res:
+                res[k].dataset_split = split_name
+            split_results[split_name] = res
+
+        return split_results
+
+    def run_sensitivity_tests(
+        self,
+        candles: List[CandleData],
+        features: List[MarketBehaviorFeatures],
+    ) -> pd.DataFrame:
+        """Evaluate sensitivity to transaction fees and slippage."""
+        fee_levels = [0.0005, 0.0010, 0.0015]  # 0.05%, 0.10%, 0.15%
+        slip_levels = [0.0002, 0.0005, 0.0010]  # 0.02%, 0.05%, 0.10%
+
+        rows = []
+        for fee in fee_levels:
+            for slip in slip_levels:
+                cfg = ResearchLabConfig(taker_fee_pct=fee, slippage_pct=slip)
+                sim = HistoricalPaperSimulator(cfg)
+                dec_engine = ResearchDecisionEngine(RiskEngine(cfg))
+
+                # Generate decisions for Strategy C
+                decisions = []
+                for i in range(len(candles)):
+                    feat = features[i]
+                    pats = BehavioralPatternEngine.match_patterns_at_index(candles, features, i)
+                    pred = ProbabilityEngine.generate_prediction(feat, pats)
+                    dec = dec_engine.evaluate_decision(feat, pred, pats, DecisionMode.RISK_CONTROLLED_RESEARCH)
+                    decisions.append(dec)
+
+                res = sim.simulate(candles, decisions, strategy_name=f"Sensitivity_Fee_{fee*100:.2f}_Slip_{slip*100:.2f}")
+                rows.append({
+                    "Taker_Fee_Pct": f"{fee*100:.2f}%",
+                    "Slippage_Pct": f"{slip*100:.2f}%",
+                    "Return_Pct": res.return_pct,
+                    "Net_PnL": res.total_net_pnl,
+                    "Total_Fees": res.total_fees,
+                    "Total_Slippage": res.total_slippage,
+                    "Max_Drawdown_Pct": res.max_drawdown_pct,
+                    "Trades": res.total_trades,
+                    "Win_Rate_Pct": round(res.win_rate * 100.0, 1),
+                })
+
+        return pd.DataFrame(rows)
 
     @classmethod
     def export_comparison_csv(

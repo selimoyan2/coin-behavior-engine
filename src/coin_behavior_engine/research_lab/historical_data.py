@@ -44,28 +44,38 @@ class TimeframeAggregator:
     @classmethod
     def aggregate(
         cls,
-        candles_1m: List[CandleData],
+        candles: List[CandleData],
         target_interval: str = "5m",
         symbol: str = "BTCUSDT",
+        allow_partial_boundaries: bool = False,
     ) -> List[CandleData]:
-        """Aggregate 1m candles into target_interval bars deterministically."""
+        """Aggregate lower timeframe candles into target_interval bars deterministically.
+        
+        Strictly requires all constituent bars to be present and complete unless
+        allow_partial_boundaries is explicitly set to True.
+        """
         target_ms = cls.TIMEFRAME_MS.get(target_interval)
         if not target_ms:
             raise ValueError(f"Unsupported target interval: {target_interval}")
-        if target_interval == "1m":
-            return list(candles_1m)
-
-        if not candles_1m:
+        if not candles:
             return []
 
-        expected_bars_per_bucket = target_ms // 60_000
+        source_interval = candles[0].interval
+        if source_interval == target_interval:
+            return list(candles)
+
+        source_ms = cls.TIMEFRAME_MS.get(source_interval, 60_000)
+        if target_ms % source_ms != 0:
+            raise ValueError(f"Target interval {target_interval} ({target_ms}ms) is not an integer multiple of source {source_interval} ({source_ms}ms)")
+
+        expected_bars_per_bucket = target_ms // source_ms
         aggregated: List[CandleData] = []
         
         # Group candles by bucket
         current_bucket_open_ts: Optional[int] = None
         current_bucket_candles: List[CandleData] = []
 
-        for c in candles_1m:
+        for c in candles:
             bucket_ts = (c.timestamp_open // target_ms) * target_ms
             
             if current_bucket_open_ts is None:
@@ -74,8 +84,9 @@ class TimeframeAggregator:
             elif bucket_ts == current_bucket_open_ts:
                 current_bucket_candles.append(c)
             else:
-                # Previous bucket finished. Only emit if it contains valid bars
-                if current_bucket_candles:
+                # Previous bucket finished. Only emit if it contains expected bars or partials allowed
+                is_complete = len(current_bucket_candles) == expected_bars_per_bucket
+                if is_complete or allow_partial_boundaries:
                     agg_bar = cls._build_bar(
                         current_bucket_candles,
                         current_bucket_open_ts,
@@ -87,16 +98,18 @@ class TimeframeAggregator:
                 current_bucket_open_ts = bucket_ts
                 current_bucket_candles = [c]
 
-        # Final bucket: emit if non-empty and the last bar reaches the bucket close
+        # Final bucket
         if current_bucket_candles:
-            agg_bar = cls._build_bar(
-                current_bucket_candles,
-                current_bucket_open_ts,
-                target_ms,
-                target_interval,
-                symbol,
-            )
-            aggregated.append(agg_bar)
+            is_complete = len(current_bucket_candles) == expected_bars_per_bucket
+            if is_complete or allow_partial_boundaries:
+                agg_bar = cls._build_bar(
+                    current_bucket_candles,
+                    current_bucket_open_ts,
+                    target_ms,
+                    target_interval,
+                    symbol,
+                )
+                aggregated.append(agg_bar)
 
         return aggregated
 

@@ -118,10 +118,31 @@ class ResearchDecisionEngine:
                 reason="Cascade liquidation in progress without volume exhaustion or failed breakdown confirmation",
             )
 
-        # Filter 3: Context-Aware filter for Strategy B
-        if strategy_mode == DecisionMode.CONTEXT_AWARE_RESEARCH and observable_events:
+        # Filter 3: Context-Aware filter for Strategy B (Verified Events Only)
+        if strategy_mode == DecisionMode.CONTEXT_AWARE_RESEARCH:
+            def is_verified(e):
+                status = getattr(e, "verification_status", None)
+                val = status.value if hasattr(status, "value") else str(status)
+                return val == "VERIFIED_EVENT"
+
+            verified_obs = [
+                e for e in (observable_events or [])
+                if is_verified(e) and not getattr(e, "is_pre_dataset_window", False)
+            ]
+            if not verified_obs:
+                # Mandatory Sprint 11.04 Gate: Block news-aware trading claims when verified coverage is insufficient
+                return ResearchDecision(
+                    decision_id=dec_id,
+                    symbol="BTCUSDT",
+                    timestamp_open=features.timestamp_open,
+                    datetime_utc=features.datetime_utc,
+                    action=DecisionAction.NO_TRADE,
+                    decision_mode=strategy_mode,
+                    reason="Verified news coverage insufficient; abstaining to preserve capital and research integrity",
+                )
+            
             unabsorbed_severe_neg = [
-                e for e in observable_events
+                e for e in verified_obs
                 if e.event_severity >= 0.75
                 and e.event_direction_hypothesis == "BEARISH"
                 and "NEGATIVE_EVENT_ABSORPTION" not in active_patterns
@@ -134,12 +155,43 @@ class ResearchDecisionEngine:
                     datetime_utc=features.datetime_utc,
                     action=DecisionAction.NO_TRADE,
                     decision_mode=strategy_mode,
-                    reason=f"Context filter: Unabsorbed high-severity event active: '{unabsorbed_severe_neg[0].headline[:40]}...'",
+                    reason=f"Verified context filter: Unabsorbed high-severity event active: '{unabsorbed_severe_neg[0].headline[:40]}...'",
                 )
 
-        # Filter 4: Minimum probability and expected return threshold
-        min_p_up = 0.44 if strategy_mode != DecisionMode.RISK_CONTROLLED_RESEARCH else 0.48
-        min_exp_ret = 0.30 if strategy_mode != DecisionMode.RISK_CONTROLLED_RESEARCH else 0.45
+        # Filter 4: Higher-Timeframe (1h/4h) Trend Alignment
+        # Avoid counter-trend dip-buying when higher timeframes are in strong bear trend
+        if not features.is_htf_trend_aligned and not (
+            "SUPPORT_BREAKDOWN_FAILED_CONTINUATION" in active_patterns
+            and features.price_volume_divergence == "BULLISH_DIV"
+        ):
+            return ResearchDecision(
+                decision_id=dec_id,
+                symbol="BTCUSDT",
+                timestamp_open=features.timestamp_open,
+                datetime_utc=features.datetime_utc,
+                action=DecisionAction.NO_TRADE,
+                decision_mode=strategy_mode,
+                reason="Higher-timeframe (1h/4h) trend alignment not confirmed; avoiding counter-trend knife catch",
+            )
+
+        # Filter 5: Volatility Compression Chop Filter
+        # Breakouts in low-volatility compression regimes suffer from false whip-saws
+        if features.volatility_compression_ratio < 0.75 and "BREAKOUT_WITH_VOLUME_CONFIRMATION" not in active_patterns:
+            return ResearchDecision(
+                decision_id=dec_id,
+                symbol="BTCUSDT",
+                timestamp_open=features.timestamp_open,
+                datetime_utc=features.datetime_utc,
+                action=DecisionAction.NO_TRADE,
+                decision_mode=strategy_mode,
+                reason="Low volatility compression chop detected; breakout risk of failure elevated",
+            )
+
+        # Filter 6: Transaction-Cost-Aware Thresholds
+        # Total round-trip friction = 0.20% fees + 0.10% slippage = 0.30%
+        # Minimum expected edge must exceed at least 2.3x transaction friction
+        min_p_up = 0.46 if strategy_mode != DecisionMode.RISK_CONTROLLED_RESEARCH else 0.50
+        min_exp_ret = 0.70 if strategy_mode != DecisionMode.RISK_CONTROLLED_RESEARCH else 0.85
 
         if prediction.probability_up < min_p_up:
             return ResearchDecision(
@@ -160,7 +212,7 @@ class ResearchDecisionEngine:
                 datetime_utc=features.datetime_utc,
                 action=DecisionAction.NO_TRADE,
                 decision_mode=strategy_mode,
-                reason=f"Expected return insufficient: {prediction.expected_return_pct:.2f}% < threshold {min_exp_ret:.2f}%",
+                reason=f"Expected return insufficient for friction hurdle: {prediction.expected_return_pct:.2f}% < hurdle {min_exp_ret:.2f}%",
             )
 
         # Entry criteria met! Compute position sizing & stops
@@ -171,6 +223,9 @@ class ResearchDecisionEngine:
 
         pos_pct = round((pos_usd / current_capital) * 100.0, 2) if current_capital > 0 else 0.0
 
+        # Holding horizon: Target 1-4 hour swing to amortize execution friction
+        holding_bars = 48 if strategy_mode == DecisionMode.RISK_CONTROLLED_RESEARCH else 24
+
         return ResearchDecision(
             decision_id=dec_id,
             symbol="BTCUSDT",
@@ -178,10 +233,10 @@ class ResearchDecisionEngine:
             datetime_utc=features.datetime_utc,
             action=DecisionAction.BUY_CANDIDATE,
             decision_mode=strategy_mode,
-            reason=f"Favorable scenario: P(up)={prediction.probability_up:.2f}, exp_ret={prediction.expected_return_pct:+.2f}%, patterns={active_patterns}",
+            reason=f"High-quality setup: P(up)={prediction.probability_up:.2f}, exp_ret={prediction.expected_return_pct:+.2f}%, HTF_aligned={features.is_htf_trend_aligned}, patterns={active_patterns}",
             target_price=tp_price,
             stop_loss_price=sl_price,
-            max_holding_bars=24,
+            max_holding_bars=holding_bars,
             position_size_pct=pos_pct,
             risk_score=round(prediction.downside_risk_pct, 2),
         )

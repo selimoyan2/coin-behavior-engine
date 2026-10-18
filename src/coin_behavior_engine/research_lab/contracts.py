@@ -71,6 +71,15 @@ class EventCategory(str, enum.Enum):
     UNCLASSIFIED = "UNCLASSIFIED"
 
 
+class EventVerificationStatus(str, enum.Enum):
+    VERIFIED_EVENT = "VERIFIED_EVENT"
+    REPORTED_UNCONFIRMED = "REPORTED_UNCONFIRMED"
+    RUMOR = "RUMOR"
+    DISPUTED = "DISPUTED"
+    RETROSPECTIVE_INTERPRETATION = "RETROSPECTIVE_INTERPRETATION"
+    UNSUPPORTED = "UNSUPPORTED"
+
+
 @dataclass(frozen=True)
 class CandleData:
     """Immutable single candlestick representation."""
@@ -123,16 +132,26 @@ class MarketBehaviorFeatures:
     drawdown_from_peak_pct: float = 0.0
     runup_from_trough_pct: float = 0.0
     regime: MarketRegimeType = MarketRegimeType.UNCERTAIN
+    # Sprint 11.04 Multi-Timeframe and Regime Alignment
+    htf_1h_regime: MarketRegimeType = MarketRegimeType.UNCERTAIN
+    htf_4h_regime: MarketRegimeType = MarketRegimeType.UNCERTAIN
+    htf_1h_trend_pct: float = 0.0
+    htf_4h_trend_pct: float = 0.0
+    volatility_compression_ratio: float = 1.0  # ATR14 / ATR100
+    price_volume_divergence: str = "NONE"  # "BULLISH_DIV", "BEARISH_DIV", "NONE"
+    is_htf_trend_aligned: bool = False
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
         d["regime"] = self.regime.value
+        d["htf_1h_regime"] = self.htf_1h_regime.value
+        d["htf_4h_regime"] = self.htf_4h_regime.value
         return d
 
 
 @dataclass
 class EventIntelligenceRecord:
-    """Normalized, source-agnostic market event intelligence record."""
+    """Normalized, source-agnostic market event intelligence record with audit verification."""
     event_id: str
     event_type: str
     category: EventCategory
@@ -145,10 +164,15 @@ class EventIntelligenceRecord:
     published_at_utc: str
     first_observed_at_utc: str
     ingested_at_utc: str
-    verification_status: str  # "VERIFIED", "RUMOR", "OFFICIAL_CORRECTION", "UNVERIFIED"
-    source_credibility: float  # 0.0 to 1.0
-    event_direction_hypothesis: str  # "BULLISH", "BEARISH", "VOLATILE", "NEUTRAL"
-    event_severity: float  # 0.0 (minor) to 1.0 (catastrophic)
+    verification_status: EventVerificationStatus = EventVerificationStatus.UNSUPPORTED
+    source_credibility: float = 0.5  # 0.0 to 1.0
+    source_reliability_class: str = "TIER_3_UNVERIFIED"
+    exact_factual_claim: str = ""
+    independent_corroboration: Optional[str] = None
+    relationship_to_price_movement: str = "UNCORRELATED"
+    is_pre_dataset_window: bool = False
+    event_direction_hypothesis: str = "NEUTRAL"  # "BULLISH", "BEARISH", "VOLATILE", "NEUTRAL"
+    event_severity: float = 0.5  # 0.0 (minor) to 1.0 (catastrophic)
     event_novelty: float = 1.0  # 0.0 (expected) to 1.0 (black swan)
     related_event_ids: List[str] = field(default_factory=list)
     correction_of_event_id: Optional[str] = None
@@ -160,6 +184,7 @@ class EventIntelligenceRecord:
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
         d["category"] = self.category.value
+        d["verification_status"] = self.verification_status.value if isinstance(self.verification_status, EventVerificationStatus) else str(self.verification_status)
         return d
 
 
@@ -290,7 +315,13 @@ class SimulationRunResult:
     sharpe_ratio: float
     sortino_ratio: float
     baseline_buy_and_hold_return_pct: float
+    baseline_buy_and_hold_drawdown_pct: float = 0.0
+    baseline_buy_and_hold_fees: float = 0.0
+    baseline_buy_and_hold_sharpe: float = 0.0
     baseline_cash_return_pct: float = 0.0
+    abstention_count: int = 0
+    fee_drag_pct: float = 0.0
+    dataset_split: str = "FULL"
     trades: List[PaperTrade] = field(default_factory=list)
     equity_series: List[Dict[str, Any]] = field(default_factory=list)
 

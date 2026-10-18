@@ -153,6 +153,37 @@ class MarketBehaviorFeatureEngine:
         # 5. Market regime classification
         features.regime = MarketRegimeDetector.detect_regime(candles, idx, lookback_bars=lookback_bars)
 
+        # 6. Volatility compression / expansion ratio (ATR14 vs ATR100)
+        long_window = min(idx, 100)
+        if long_window >= 14:
+            long_trs = []
+            for k in range(idx - long_window + 1, idx + 1):
+                tr = max(
+                    candles[k].high - candles[k].low,
+                    abs(candles[k].high - candles[k - 1].close),
+                    abs(candles[k].low - candles[k - 1].close),
+                )
+                long_trs.append(tr)
+            long_atr = sum(long_trs) / len(long_trs) if long_trs else 1.0
+            features.volatility_compression_ratio = round(features.atr_14 / long_atr, 3) if long_atr > 0 else 1.0
+
+        # 7. Price-Volume Divergence detection (12-bar window)
+        if idx >= 12:
+            recent_low = min(c.low for c in candles[idx - 6 : idx + 1])
+            prior_low = min(c.low for c in candles[idx - 12 : idx - 6])
+            recent_high = max(c.high for c in candles[idx - 6 : idx + 1])
+            prior_high = max(c.high for c in candles[idx - 12 : idx - 6])
+
+            recent_vol = sum(c.volume for c in candles[idx - 6 : idx + 1]) / 6.0
+            prior_vol = sum(c.volume for c in candles[idx - 12 : idx - 6]) / 6.0
+
+            if recent_low < prior_low and recent_vol < prior_vol * 0.8:
+                features.price_volume_divergence = "BULLISH_DIV"  # Price lower low with fading selling volume
+            elif recent_high > prior_high and recent_vol < prior_vol * 0.8:
+                features.price_volume_divergence = "BEARISH_DIV"  # Price higher high with fading buying volume
+            else:
+                features.price_volume_divergence = "NONE"
+
         return features
 
     @classmethod
@@ -160,9 +191,57 @@ class MarketBehaviorFeatureEngine:
         cls,
         candles: List[CandleData],
         lookback_bars: int = 24,
+        candles_1h: Optional[List[CandleData]] = None,
+        candles_4h: Optional[List[CandleData]] = None,
     ) -> List[MarketBehaviorFeatures]:
-        """Compute features for all candles chronologically."""
-        return [
+        """Compute features for all candles chronologically with optional HTF alignment."""
+        features_list = [
             cls.compute_features_at_index(candles, i, lookback_bars=lookback_bars)
             for i in range(len(candles))
         ]
+
+        # Multi-timeframe mapping with strict anti-leakage
+        # For each 5m candle, map only the latest 1h and 4h candles that CLOSED BEFORE the 5m candle opened
+        if candles_1h:
+            h1_ts = [c.timestamp_close for c in candles_1h]
+            h1_regimes = [MarketRegimeDetector.detect_regime(candles_1h, k, lookback_bars=12) for k in range(len(candles_1h))]
+            h1_trends = []
+            for k in range(len(candles_1h)):
+                look = min(k, 12)
+                t_ret = (candles_1h[k].close - candles_1h[k - look].close) / candles_1h[k - look].close if look > 0 and candles_1h[k - look].close > 0 else 0.0
+                h1_trends.append(t_ret)
+
+            for i, c in enumerate(candles):
+                # Search for latest 1h candle with timestamp_close <= c.timestamp_open
+                eligible_idx = [k for k, close_ts in enumerate(h1_ts) if close_ts <= c.timestamp_open]
+                if eligible_idx:
+                    latest_k = eligible_idx[-1]
+                    features_list[i].htf_1h_regime = h1_regimes[latest_k]
+                    features_list[i].htf_1h_trend_pct = round(h1_trends[latest_k] * 100.0, 3)
+
+        if candles_4h:
+            h4_ts = [c.timestamp_close for c in candles_4h]
+            h4_regimes = [MarketRegimeDetector.detect_regime(candles_4h, k, lookback_bars=6) for k in range(len(candles_4h))]
+            h4_trends = []
+            for k in range(len(candles_4h)):
+                look = min(k, 6)
+                t_ret = (candles_4h[k].close - candles_4h[k - look].close) / candles_4h[k - look].close if look > 0 and candles_4h[k - look].close > 0 else 0.0
+                h4_trends.append(t_ret)
+
+            for i, c in enumerate(candles):
+                eligible_idx = [k for k, close_ts in enumerate(h4_ts) if close_ts <= c.timestamp_open]
+                if eligible_idx:
+                    latest_k = eligible_idx[-1]
+                    features_list[i].htf_4h_regime = h4_regimes[latest_k]
+                    features_list[i].htf_4h_trend_pct = round(h4_trends[latest_k] * 100.0, 3)
+
+        # Compute HTF alignment
+        for feat in features_list:
+            feat.is_htf_trend_aligned = bool(
+                feat.htf_1h_trend_pct > 0.1
+                and feat.htf_4h_trend_pct > -0.2
+                and feat.htf_1h_regime != MarketRegimeType.TRENDING_BEAR
+                and feat.htf_4h_regime != MarketRegimeType.CASCADE_LIQUIDATION
+            )
+
+        return features_list
