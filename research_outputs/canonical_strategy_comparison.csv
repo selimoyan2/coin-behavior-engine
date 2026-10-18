@@ -1,0 +1,10 @@
+strategy_id,strategy_name,trades_count,win_rate_pct,starting_equity_usd,gross_pnl_usd,total_fees_usd,total_slippage_usd,total_friction_usd,net_pnl_usd,ending_equity_usd,accounting_conservation_verified,return_pct,annualized_return_pct,max_drawdown_pct,sharpe_ratio,sortino_ratio,profit_factor,time_in_usdt_pct,turnover_ratio,friction_drag_pct,outperformed_buy_and_hold,excess_return_vs_bnh_pct
+STRAT_A_CASH,Strategy A: USDT Cash Baseline,0,0.0,10000.0,0.0,0.0,0.0,0.0,0.0,10000.0,True,0.0,0.0,0.0,0.0,0.0,0.0,100.0,0.0,0.0,False,-29.26
+STRAT_B_BNH,Strategy B: Buy-and-Hold BTC,1,100.0,10000.0,2953.86,22.54,4.89,27.43,2926.43,12926.43,True,29.26,167.22,8.42,4.18,4.21,999.0,0.01,0.98,0.93,False,0.0
+STRAT_C_SWITCH,Strategy C: Simple Trend/Cash Switching,63,17.46,10000.0,1146.5,1289.88,640.24,1930.12,-783.62,9216.38,True,-7.84,-44.78,23.42,-1.52,-0.97,0.83,59.52,64.44,168.35,False,-37.1
+STRAT_D_TREND48,Strategy D: Patient 48h Trend Model,42,38.1,10000.0,2153.86,901.4,445.38,1346.78,807.08,10807.08,True,8.07,46.12,11.54,1.99,1.17,1.28,68.78,44.96,62.53,False,-21.19
+STRAT_E_ANALOGUE24,Strategy E: 24h Analogue Strategy,49,44.9,10000.0,2122.53,1039.59,519.56,1559.15,563.38,10563.38,True,5.63,32.19,13.26,1.17,1.03,1.16,23.29,51.88,73.46,False,-23.63
+STRAT_F_EXISTING_DYN,Strategy F: Existing Dynamic Engine (Sprint 11.10),98,37.76,10000.0,2611.79,1952.0,970.87,2922.87,-311.08,9688.92,True,-3.11,-17.78,15.23,-0.57,-0.42,0.93,47.52,97.47,111.91,False,-32.38
+STRAT_G_PATIENT_DYN,Strategy G: Patient Dynamic Spot Engine (Sprint 11.11),56,44.64,10000.0,1079.03,1103.63,547.08,1650.71,-571.68,9428.32,True,-5.72,-32.67,14.5,-1.55,-0.8,0.82,78.86,55.13,152.98,False,-34.98
+STRAT_H_NO_ANALOGUES,Strategy H: Patient Dynamic without Analogues,38,44.74,10000.0,768.63,737.25,368.43,1105.68,-337.05,9662.95,True,-3.37,-19.26,9.82,-1.17,-0.5,0.84,87.43,36.82,143.85,False,-32.63
+STRAT_I_WITH_EVENTS,Strategy I: Patient Dynamic with Verified Context,56,44.64,10000.0,1079.03,1103.63,547.08,1650.71,-571.68,9428.32,True,-5.72,-32.67,14.5,-1.55,-0.8,0.82,78.86,55.13,152.98,False,-34.98

@@ -1,0 +1,50 @@
+{
+  "canonical_benchmark_version": "1.0.0-sprint11.12",
+  "dataset_file": "market_state_dataset.parquet",
+  "dataset_sha256": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487",
+  "symbol": "BTCUSDT",
+  "interval": "5m",
+  "total_candles": 105120,
+  "continuity_verified": true,
+  "unverified_gaps": 0,
+  "full_period": {
+    "start_timestamp_ms": 1760787000000,
+    "end_timestamp_ms": 1792322700000,
+    "start_datetime_utc": "2025-10-18T11:30:00Z",
+    "end_datetime_utc": "2026-10-18T11:25:00Z",
+    "start_open_price": 106891.72,
+    "end_close_price": 82104.03,
+    "min_price": 57800.19,
+    "max_price": 116400.0
+  },
+  "holdout_test_partition": {
+    "start_index": 86724,
+    "end_index": 105119,
+    "candles_count": 18396,
+    "duration_days": 63.88,
+    "start_timestamp_ms": 1786804200000,
+    "end_timestamp_ms": 1792322700000,
+    "start_datetime_utc": "2026-08-15T14:30:00Z",
+    "end_datetime_utc": "2026-10-18T11:25:00Z",
+    "starting_btc_price_open": 63040.01,
+    "ending_btc_price_close": 82104.03,
+    "holdout_price_change_pct": 30.241
+  },
+  "canonical_accounting_rules": {
+    "initial_capital_usdt": 10000.0,
+    "execution_timing": "NEXT_BAR_OPEN",
+    "taker_fee_pct": 0.001,
+    "slippage_pct": 0.0005,
+    "roundtrip_friction_pct": 0.0025,
+    "position_allocation_cap_pct": 98.0,
+    "terminal_liquidation_rule": "MANDATORY_CLOSE_AT_FINAL_BAR",
+    "conservation_invariant": "STARTING_EQUITY + NET_PNL == ENDING_EQUITY"
+  },
+  "provenance": {
+    "binance_spot_archive": "data/raw/btcusdt_5m_raw.parquet",
+    "binance_resampled_recent": "data/research_lab/binance_BTCUSDT_1m_recent.parquet",
+    "normalization_protocol": "STRICT_UTC_NO_LOOKAHEAD_RESAMPLING"
+  },
+  "audit_verdict": "VERIFIED",
+  "locked_at_utc": "2026-10-18T16:36:40.929693+00:00"
+}

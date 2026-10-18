@@ -1,0 +1,4 @@
+fold_id,regime_description,test_start_bar,test_end_bar,test_start_utc,test_end_utc,test_candles,embargo_hours,embargo_bars,zero_overlap_verified,strategy_trades,strategy_win_rate_pct,strategy_net_pnl_usd,strategy_return_pct,strategy_max_dd_pct,strategy_profit_factor,bnh_return_pct,bnh_max_dd_pct,outperformed_buy_and_hold,excess_return_vs_bnh_pct
+FOLD_1_BEAR_EXPANSION,Post-peak distribution & bear trend cascade,30000,48000,2026-01-30T15:30:00Z,2026-04-03T03:25:00Z,18000,72.0,864,True,33,45.45,-579.78,-5.8,10.29,0.67,-19.44,28.34,True,13.64
+FOLD_2_CONSOLIDATION_BASE,Accumulation & structural bottom formation,48864,66864,2026-04-06T03:30:00Z,2026-06-07T15:25:00Z,18000,72.0,864,True,44,25.0,-2154.14,-21.54,21.75,0.28,-10.51,27.98,False,-11.03
+FOLD_3_BULL_BREAKOUT,Confirmed bull expansion & multi-week breakout,86724,105120,2026-08-15T14:30:00Z,2026-10-18T11:25:00Z,18396,72.0,864,True,56,44.64,-571.68,-5.72,14.5,0.82,29.26,8.42,False,-34.98
