@@ -1,0 +1,42 @@
+{
+  "policy_version": "2.0.0-sprint11.13",
+  "effective_date_utc": "2026-10-18T20:00:00Z",
+  "benchmark_dataset": {
+    "file": "market_state_dataset.parquet",
+    "sha256_fingerprint": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487",
+    "total_candles": 105120,
+    "interval": "5m",
+    "symbol": "BTCUSDT",
+    "holdout_start_bar": 86724,
+    "holdout_end_bar": 105120,
+    "holdout_candles": 18396,
+    "holdout_dates": "2026-08-15 14:30:00 UTC to 2026-10-18 11:25:00 UTC"
+  },
+  "friction_specification": {
+    "maker_fee_bps": 0.0,
+    "taker_entry_fee_bps": 10.0,
+    "taker_exit_fee_bps": 10.0,
+    "entry_slippage_bps": 5.0,
+    "exit_slippage_bps": 5.0,
+    "nominal_roundtrip_total_bps": 30.0,
+    "roundtrip_pct": 0.003,
+    "reconciliation_note": "In Sprint 11.12 benchmark manifest, roundtrip_friction_pct was documented as 0.0025 (25 bps) due to a typo omitting exit slippage. The underlying simulator executed 10 bps entry fee + 10 bps exit fee + 5 bps entry slippage + 5 bps exit slippage = 30 bps (0.0030). Policy V2 officially corrects the documented benchmark specification to match true execution."
+  },
+  "portfolio_accounting_rules": {
+    "initial_capital_usdt": 10000.0,
+    "allocation_cap_pct": 98.0,
+    "min_order_usd": 50.0,
+    "execution_timing": "NEXT_BAR_OPEN",
+    "order_fill_price": "open * (1.0 + slippage_pct) for BUY, close * (1.0 - slippage_pct) for SELL",
+    "intrabar_priority": "Pessimistic: STOP_LOSS evaluated before TAKE_PROFIT if both touched",
+    "terminal_liquidation": "MANDATORY_CLOSE_AT_FINAL_BAR (bar index 105,119 close)",
+    "cash_floor": 0.0,
+    "inventory_floor": 0.0,
+    "conservation_invariant": "starting_equity + net_pnl == ending_equity (strictly to 0.01 USD)"
+  },
+  "walk_forward_rules": {
+    "embargo_hours": 72.0,
+    "embargo_bars": 864,
+    "partition_overlap_allowed": false
+  }
+}

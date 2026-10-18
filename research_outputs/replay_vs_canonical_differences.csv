@@ -1,0 +1,10 @@
+strategy_id,strategy_name,replay_trades,canonical_trades,trades_diff,replay_net_pnl_usd,canonical_net_pnl_usd,net_pnl_diff_usd,replay_ending_equity_usd,canonical_ending_equity_usd,ending_equity_diff_usd,replay_return_pct,canonical_return_pct,return_diff_pct,conservation_verified,discrepancy_reconciled
+STRAT_A_CASH,Strategy A: USDT Cash Baseline,0,0,0,0.0,0.0,0.0,10000.0,10000.0,0.0,0.0,0.0,0.0,True,True
+STRAT_B_BNH,Strategy B: Buy-and-Hold BTC,1,1,0,2926.43,2926.43,0.0,12926.43,12926.43,0.0,29.26,29.26,0.0,True,True
+STRAT_C_SWITCH,Strategy C: Simple Trend/Cash Switching,63,63,0,-783.62,-783.62,0.0,9216.38,9216.38,0.0,-7.84,-7.84,0.0,True,True
+STRAT_D_TREND48,Strategy D: Patient 48h Trend Model,42,42,0,807.08,807.08,0.0,10807.08,10807.08,0.0,8.07,8.07,0.0,True,True
+STRAT_E_ANALOGUE24,Strategy E: 24h Analogue Strategy,49,49,0,563.38,563.38,0.0,10563.38,10563.38,0.0,5.63,5.63,0.0,True,True
+STRAT_F_EXISTING_DYN,Strategy F: Existing Dynamic Engine (Sprint 11.10),98,98,0,-311.08,-311.08,0.0,9688.92,9688.92,0.0,-3.11,-3.11,0.0,True,True
+STRAT_G_PATIENT_DYN,Strategy G: Patient Dynamic Spot Engine (Sprint 11.11),56,56,0,-571.68,-571.68,0.0,9428.32,9428.32,0.0,-5.72,-5.72,0.0,True,True
+STRAT_H_NO_ANALOGUES,Strategy H: Patient Dynamic without Analogues,38,38,0,-337.05,-337.05,0.0,9662.95,9662.95,0.0,-3.37,-3.37,0.0,True,True
+STRAT_I_WITH_EVENTS,Strategy I: Patient Dynamic with Verified Context,56,56,0,-571.68,-571.68,0.0,9428.32,9428.32,0.0,-5.72,-5.72,0.0,True,True

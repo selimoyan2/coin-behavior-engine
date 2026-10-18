@@ -408,34 +408,12 @@ All strategy evaluations in Sprint 11.10, 11.11, and 11.12 are evaluated on the 
     # PHASE 3: CANONICAL SHARED PORTFOLIO ACCOUNTING & BENCHMARK STRATEGIES
     # =========================================================================
 
-    def run_canonical_portfolio_accounting(self) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-        """Phase 3: Unified accounting engine enforcing exact capital conservation and benchmarks."""
-        if self.df is None:
-            self.load_data()
-        assert self.df is not None
-
-        # Extract holdout partition: 18,396 bars
-        holdout_start = 86724
-        holdout_df = self.df.iloc[holdout_start:].reset_index(drop=True).copy()
-
-        # Classify market regimes using Sprint 11.10 methodology
-        dyn_eng = DynamicSpotEngine(dataset_path=self.dataset_path, output_dir=self.output_dir)
-        dyn_eng.load_data()
-        dyn_eng.classify_market_regimes()
-        assert dyn_eng.regimes_df is not None
-
-        reg_slice = dyn_eng.regimes_df.iloc[holdout_start:].reset_index(drop=True)
-        holdout_df["regime"] = reg_slice["regime"]
-        holdout_df["reversal_probability"] = reg_slice["reversal_probability"]
-        holdout_df["bull_confidence"] = reg_slice["bull_confidence"]
-        holdout_df["bear_confidence"] = reg_slice["bear_confidence"]
-
-        candles = dyn_eng._build_candles_slice(holdout_df)
+    def _build_all_strategy_decisions(
+        self, holdout_df: pd.DataFrame, candles: List[CandleData]
+    ) -> Dict[str, Tuple[str, List[ResearchDecision]]]:
+        """Construct deterministic ResearchDecision sequences for all 9 strategies."""
         n_bars = len(candles)
-        test_days = n_bars * 5 / 1440.0
-        ann_factor = 365.0 / test_days if test_days > 0 else 1.0
 
-        # Load multi-horizon 24h predictions map
         p24_map: Dict[int, Any] = {}
         preds_p = Path("research_outputs/multi_horizon_predictions.csv")
         if preds_p.is_file():
@@ -446,15 +424,8 @@ All strategy evaluations in Sprint 11.10, 11.11, and 11.12 are evaluated on the 
 
         sma_24h = pd.Series(holdout_df["close"].values).rolling(window=288, min_periods=48).mean().values
 
-        # -------------------------------------------------------------
-        # Decision Sets for All 9 Strategies
-        # -------------------------------------------------------------
         strategy_decisions: Dict[str, Tuple[str, List[ResearchDecision]]] = {}
-
-        # Strategy A: USDT Cash
         strategy_decisions["STRAT_A_CASH"] = ("Strategy A: USDT Cash Baseline", [])
-
-        # Strategy B: Buy & Hold BTC (Full Horizon)
         strategy_decisions["STRAT_B_BNH"] = (
             "Strategy B: Buy-and-Hold BTC",
             [
@@ -760,6 +731,36 @@ All strategy evaluations in Sprint 11.10, 11.11, and 11.12 are evaluated on the 
                 )
             )
         strategy_decisions["STRAT_I_WITH_EVENTS"] = ("Strategy I: Patient Dynamic with Verified Context", decs_i)
+        return strategy_decisions
+
+    def run_canonical_portfolio_accounting(self) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+        """Phase 3: Unified accounting engine enforcing exact capital conservation and benchmarks."""
+        if self.df is None:
+            self.load_data()
+        assert self.df is not None
+
+        # Extract holdout partition: 18,396 bars
+        holdout_start = 86724
+        holdout_df = self.df.iloc[holdout_start:].reset_index(drop=True).copy()
+
+        # Classify market regimes using Sprint 11.10 methodology
+        dyn_eng = DynamicSpotEngine(dataset_path=self.dataset_path, output_dir=self.output_dir)
+        dyn_eng.load_data()
+        dyn_eng.classify_market_regimes()
+        assert dyn_eng.regimes_df is not None
+
+        reg_slice = dyn_eng.regimes_df.iloc[holdout_start:].reset_index(drop=True)
+        holdout_df["regime"] = reg_slice["regime"]
+        holdout_df["reversal_probability"] = reg_slice["reversal_probability"]
+        holdout_df["bull_confidence"] = reg_slice["bull_confidence"]
+        holdout_df["bear_confidence"] = reg_slice["bear_confidence"]
+
+        candles = dyn_eng._build_candles_slice(holdout_df)
+        n_bars = len(candles)
+        test_days = n_bars * 5 / 1440.0
+        ann_factor = 365.0 / test_days if test_days > 0 else 1.0
+
+        strategy_decisions = self._build_all_strategy_decisions(holdout_df, candles)
 
         # -------------------------------------------------------------
         # Execute Simulations with Shared Single Accounting Engine

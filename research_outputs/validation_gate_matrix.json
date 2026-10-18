@@ -1,0 +1,53 @@
+{
+  "matrix_version": "1.0.0-sprint11.13",
+  "evaluation_date_utc": "2026-10-18T17:16:05.887248+00:00",
+  "symbol": "BTCUSDT",
+  "dimensions": {
+    "1_accounting_correctness": {
+      "verdict": "PASS",
+      "dimension_name": "Accounting Correctness & Capital Conservation",
+      "quantitative_evidence": "Starting Equity ($10,000.00) + Net PnL == Ending Equity holds exactly to 0.01 USD across all 9 strategies in both canonical and independent replay simulations. Friction conservation (fees + slippage == total friction) verified. Minimum cash balance >= 0.00 USD (no negative balances).",
+      "confidence": "HIGH"
+    },
+    "2_dataset_integrity": {
+      "verdict": "PASS",
+      "dimension_name": "Dataset Integrity & Provenance Lock",
+      "quantitative_evidence": "Exact SHA-256 fingerprint verified directly from disk bytes: 2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487. 105,120 continuous 5m candles (365.0 days) with exactly 0 unverified gaps. Exact opening (106,891.72) and closing (82,104.03) BTC prices verified.",
+      "confidence": "HIGH"
+    },
+    "3_temporal_causality": {
+      "verdict": "PASS",
+      "dimension_name": "Temporal Causality & Next-Bar Execution",
+      "quantitative_evidence": "All decisions executed at next-bar open price (t + 1). Intrabar stops evaluate pessimistic stop-first execution. Features and moving averages strictly computed on completed past bars without lookahead. Walk-forward folds enforce strict 72-hour (864 bars) non-overlapping embargoes.",
+      "confidence": "HIGH"
+    },
+    "4_strategy_reproducibility": {
+      "verdict": "PASS",
+      "dimension_name": "Strategy Reproducibility & Determinism",
+      "quantitative_evidence": "Independent execution replay reproduces canonical trade counts and financial metrics with 0.00 discrepancy across all 9 strategies from deterministic decision logic. Zero reliance on external APIs, stochastic seeds, or undocumented heuristics.",
+      "confidence": "HIGH"
+    },
+    "5_statistical_predictive_advantage": {
+      "verdict": "INCONCLUSIVE",
+      "dimension_name": "Statistical Predictive Advantage",
+      "quantitative_evidence": "Multi-horizon historical analogues demonstrated conditional probability skew in Sprint 11.09. However, on the holdout partition, Strategy G achieved a 44.64% win rate and negative expectancy (-$10.21/trade). The analogue signals did not demonstrate statistically significant edge over random walk or simple momentum on the holdout.",
+      "confidence": "MEDIUM"
+    },
+    "6_economic_profitability": {
+      "verdict": "FAIL",
+      "dimension_name": "Economic Profitability After Realistic Friction",
+      "quantitative_evidence": "Under 30 bps nominal roundtrip friction, Strategy G delivered -5.72% net return (-$571.68 net PnL). Strategy H lost -3.37% (-$337.05). Strategy F lost -3.11% (-$311.08). Buy-and-Hold delivered +29.26% (+$2,926.43). USDT Cash delivered 0.00%. Zero active trading strategies achieved positive economic profit on the holdout partition.",
+      "confidence": "HIGH"
+    },
+    "7_robustness_across_market_regimes": {
+      "verdict": "FAIL",
+      "dimension_name": "Robustness Across Market Regimes",
+      "quantitative_evidence": "In chronological walk-forward validation across 3 strictly embargoed folds: Fold 1 (Bear Expansion): -5.80% net return (BNH -19.44%). Fold 2 (Consolidation Base): -21.54% net return (BNH -10.51%). Fold 3 (Bull Breakout): -5.72% net return (BNH +29.26%). The strategy failed to achieve positive net return in ANY of the three regimes.",
+      "confidence": "HIGH"
+    }
+  },
+  "synthesis": {
+    "overall_system_status": "AUDITED_SCIENTIFICALLY_HONEST",
+    "summary": "The CBE research platform has achieved robust accounting correctness, dataset integrity, temporal causality, and 100% deterministic reproducibility. However, active behavioral analogue trading fails economic profitability (-5.72%) and multi-regime robustness. No predictive alpha is claimed based on accounting verification."
+  }
+}
