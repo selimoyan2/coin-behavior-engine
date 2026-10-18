@@ -1,0 +1,170 @@
+{
+  "checklist_schema_version": "2.0.0-dynamic",
+  "sprint": "11.16B.1",
+  "title": "Dynamic Prospective Shadow Activation Checklist v2",
+  "generated_at_utc": "2026-10-18T20:40:02Z",
+  "base_code_commit": "d7f397e163539121a97d9c02ff4e3bfb6b47c0b8",
+  "summary_statistics": {
+    "total_mandatory_conditions": 16,
+    "verified_count": 11,
+    "blocked_count": 3,
+    "not_yet_tested_count": 2,
+    "verified_percentage": 68.8,
+    "blocked_percentage": 18.8,
+    "not_yet_tested_percentage": 12.5
+  },
+  "formal_declarations": {
+    "RESOURCE_CAPACITY": "VERIFIED",
+    "MARKET_DATA_ACCESS": "NOT_AUTHORIZED",
+    "FREEZE_CHRONOLOGY": "UNVERIFIED",
+    "PROSPECTIVE_OBSERVATION": "NOT_STARTED",
+    "PROTECTED_SERVICES_MUTATED": "NO",
+    "LIVE_TRADING": "PROHIBITED"
+  },
+  "conditions": [
+    {
+      "id": "COND_01_BASE_CODE_COMMIT",
+      "name": "Base Code Commit & Working Tree Cleanliness",
+      "category": "CODE_INTEGRITY",
+      "status": "VERIFIED",
+      "evidence": "Git HEAD confirmed at d7f397e163539121a97d9c02ff4e3bfb6b47c0b8 with clean working tree.",
+      "blocker": null,
+      "remediation": null
+    },
+    {
+      "id": "COND_02_PROD_CONTAINER_ISOLATION",
+      "name": "Production Container Isolation",
+      "category": "ENVIRONMENT_ISOLATION",
+      "status": "VERIFIED",
+      "evidence": "Container 6t63aehpaw0cw1bbt4zcm09g operates on isolated network 'coolify' with independent volume.",
+      "blocker": null,
+      "remediation": null
+    },
+    {
+      "id": "COND_03_LIVE_CAPTURE_EXCLUSIVITY",
+      "name": "Live Capture Integrity & Exclusive Writer Mode",
+      "category": "ENVIRONMENT_ISOLATION",
+      "status": "VERIFIED",
+      "evidence": "Container zgit1s3n1acdtqtsxp0s44vj operates as exclusive writer to zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data.",
+      "blocker": null,
+      "remediation": null
+    },
+    {
+      "id": "COND_04_STAGING_MOUNT_SAFETY",
+      "name": "Staging Environment Mount Safety",
+      "category": "STORAGE_SAFETY",
+      "status": "VERIFIED",
+      "evidence": "Staging container dzzfws54by1whlbq6fk4ywut mounts capture volume strictly :ro (RW: False) and binds to 127.0.0.1:18080.",
+      "blocker": null,
+      "remediation": null
+    },
+    {
+      "id": "COND_05_STOPPED_SCORING_WORKER",
+      "name": "Stopped Scoring Worker Inactivity",
+      "category": "ENVIRONMENT_ISOLATION",
+      "status": "VERIFIED",
+      "evidence": "Container 3v3dey5y1ybg6zqkv0wmuxtd is Exited (status 137) with network: none and zero CPU/RAM utilization.",
+      "blocker": null,
+      "remediation": null
+    },
+    {
+      "id": "COND_06_HOST_RESOURCE_CAPACITY",
+      "name": "Host Resource Availability & Production CPU Safety",
+      "category": "RESOURCE_SAFETY",
+      "status": "VERIFIED",
+      "evidence": "Host has 2 vCPUs, 2,985 MB available RAM, 44 GB disk. Production container CPU load is 0.02% steady-state (81% was transient burst). Zero kernel OOM events.",
+      "blocker": null,
+      "remediation": null
+    },
+    {
+      "id": "COND_07_FROZEN_POLICY_PARAMETER_HASHES",
+      "name": "Five Frozen Policy Parameter Hashes",
+      "category": "POLICY_INTEGRITY",
+      "status": "VERIFIED",
+      "evidence": "Deterministic SHA-256 parameter digests verified in policy_freeze_manifest.json for Policies A through E.",
+      "blocker": null,
+      "remediation": null
+    },
+    {
+      "id": "COND_08_FREEZE_CHRONOLOGY_ANCHOR",
+      "name": "Freeze Chronology External Anchor",
+      "category": "POLICY_INTEGRITY",
+      "status": "BLOCKED",
+      "evidence": "Manifest declared 2026-10-18T21:00:00Z vs Git commit 2026-10-18T18:31:03Z (+2.5h offset). Zero RFC-3161 timestamps or GPG-signed git tags exist.",
+      "blocker": "FREEZE_CHRONOLOGY_UNVERIFIED",
+      "remediation": "Operator must generate a signed Git tag or RFC-3161 timestamp anchoring the policy freeze commit before prospective observation."
+    },
+    {
+      "id": "COND_09_MARKET_DATA_ACCESS_GRANT",
+      "name": "Market Data Read-Only Access Grant",
+      "category": "OPERATOR_AUTHORIZATION",
+      "status": "BLOCKED",
+      "evidence": "Mounting protected live capture volume requires explicit operator authorization signature.",
+      "blocker": "OPERATOR_AUTHORIZATION_REQUIRED",
+      "remediation": "Operator must execute prospective observation activation directive granting read-only access to zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data:ro."
+    },
+    {
+      "id": "COND_10_NO_ORDER_AIR_GAP",
+      "name": "No-Order Air-Gap Verification",
+      "category": "SECURITY_AIRGAP",
+      "status": "VERIFIED",
+      "evidence": "Shadow container enforces network_mode: 'none' (zero outbound sockets), CBE_TRADING_DISABLED=true, and zero exchange API credentials.",
+      "blocker": null,
+      "remediation": null
+    },
+    {
+      "id": "COND_11_DEDICATED_STORAGE_SEPARATION",
+      "name": "Dedicated Storage Volume Separation",
+      "category": "STORAGE_SAFETY",
+      "status": "VERIFIED",
+      "evidence": "Dedicated named volume cbe_prospective_shadow_data_v1 specified with zero cross-mounts to production.",
+      "blocker": null,
+      "remediation": null
+    },
+    {
+      "id": "COND_12_PROSPECTIVE_DAEMON_EXECUTION",
+      "name": "Prospective Scoring Daemon Standby Status",
+      "category": "EXECUTION_MODE",
+      "status": "BLOCKED",
+      "evidence": "Prospective scoring daemon is in STANDBY mode. Creation of persistent active containers is forbidden during Sprint 11.16B.1.",
+      "blocker": "PROSPECTIVE_OBSERVATION_NOT_STARTED",
+      "remediation": "Awaiting explicit operator authorization to instantiate container."
+    },
+    {
+      "id": "COND_13_RUNTIME_CFS_QUOTA_ENFORCEMENT",
+      "name": "Runtime CFS Quota Enforcement Under Load",
+      "category": "RESOURCE_SAFETY",
+      "status": "NOT_YET_TESTED",
+      "evidence": "Actual Linux CFS scheduler CPU throttling under live market burst cannot be tested until container runs.",
+      "blocker": "CONTAINER_NOT_INSTANTIATED",
+      "remediation": "Will be tested upon container instantiation."
+    },
+    {
+      "id": "COND_14_DAILY_ANCHOR_HARVESTER",
+      "name": "Daily Anchor Harvesting Pipeline",
+      "category": "OPERATIONAL_OBSERVABILITY",
+      "status": "NOT_YET_TESTED",
+      "evidence": "Automated harvesting of daily checkpoint hashes to external Git tags requires live operational daemon.",
+      "blocker": "CONTAINER_NOT_INSTANTIATED",
+      "remediation": "Will be verified on first daily cycle of prospective observation."
+    },
+    {
+      "id": "COND_15_OFFLINE_RESOURCE_BENCHMARK",
+      "name": "Offline Five-Policy Engine Resource Benchmark",
+      "category": "RESOURCE_SAFETY",
+      "status": "VERIFIED",
+      "evidence": "Synthetic 1,000-candle benchmark verified: 5.2 MB peak RAM (48x headroom), 6.37 ms average latency (0.0021% duty cycle), 65 MB/30d storage growth, 237 ms crash recovery.",
+      "blocker": null,
+      "remediation": null
+    },
+    {
+      "id": "COND_16_LIVE_CAPTURE_DECOUPLED_READ",
+      "name": "Live Capture Decoupled Atomic Read Contract",
+      "category": "STORAGE_SAFETY",
+      "status": "VERIFIED",
+      "evidence": "Downstream ingestion reads live_market_state.json via AtomicSnapshotIO.safe_read() with os.fsync/os.replace atomicity; zero access to index_BTCUSDT_5m.sqlite3 or WAL files.",
+      "blocker": null,
+      "remediation": null
+    }
+  ]
+}
