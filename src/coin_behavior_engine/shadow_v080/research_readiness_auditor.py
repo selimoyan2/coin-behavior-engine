@@ -425,12 +425,15 @@ class ResearchReadinessAuditor:
         symbol: str = "BTCUSDT",
         interval: str = "5m",
         environment_override: Optional[Dict[str, str]] = None,
+        offline_authorization_context: Optional[Dict[str, Any]] = None,
     ):
         self.evidence_dir = Path(evidence_dir)
         self.symbol = symbol
         self.interval = interval
         self.reader = ReadOnlyEvidenceReader(self.evidence_dir, symbol=symbol, interval=interval)
         self.environment = dict(os.environ) if environment_override is None else dict(environment_override)
+        self.environment_was_overridden = environment_override is not None
+        self.offline_authorization_context = offline_authorization_context
 
     def run_full_audit(self, compare_with_engine: bool = False) -> ResearchAuditReport:
         """Execute complete offline research readiness and evidence integrity audit."""
@@ -449,7 +452,7 @@ class ResearchReadinessAuditor:
 
         unresolved_findings: List[str] = []
 
-        # Audit 1: Check Authorization Safety Interlocks
+        # Audit 1: Check Authorization Safety Interlocks (FAIL-CLOSED)
         self._audit_authorization_safety(gate_safety)
 
         # Audit 2: Check Evidence Files Existence
@@ -572,30 +575,79 @@ class ResearchReadinessAuditor:
         return "UNKNOWN_COMMIT"
 
     def _audit_authorization_safety(self, gate: AuditGateResult) -> None:
-        """Verify strict authorization safety interlocks in environment."""
-        trading_disabled = self.environment.get("CBE_TRADING_DISABLED", "true").lower()
-        prospective_observation = self.environment.get("CBE_PROSPECTIVE_OBSERVATION_ENABLED", "false").lower()
-        approval_4 = self.environment.get("CBE_APPROVAL_4_AUTHORIZED", "false").lower()
-
+        """Verify strict authorization safety interlocks without assuming safe defaults for missing variables."""
         gate.details = {
-            "CBE_TRADING_DISABLED": trading_disabled,
-            "CBE_PROSPECTIVE_OBSERVATION_ENABLED": prospective_observation,
-            "CBE_APPROVAL_4_AUTHORIZED": approval_4,
+            "source": (
+                "EXPLICIT_OFFLINE_CONTEXT"
+                if (self.offline_authorization_context or self.environment_was_overridden)
+                else "PROCESS_ENVIRONMENT"
+            ),
+            "production_container_verified": False,
+            "disclaimer": (
+                "Authorization safety verified for offline audit only; "
+                "does NOT prove runtime configuration of running production container."
+            ),
         }
 
-        if trading_disabled != "true":
-            gate.status = GateStatus.FAIL
-            gate.violations.append(f"Safety violation: CBE_TRADING_DISABLED is '{trading_disabled}', expected 'true'")
+        # Resolve raw values from explicit offline context or environment
+        val_trading: Optional[str] = None
+        val_scoring: Optional[str] = None
+        val_app4: Optional[str] = None
 
-        if prospective_observation != "false":
+        if self.offline_authorization_context:
+            if "trading_disabled" in self.offline_authorization_context:
+                val_trading = str(self.offline_authorization_context["trading_disabled"]).strip().lower()
+            if "prospective_observation_enabled" in self.offline_authorization_context:
+                val_scoring = str(self.offline_authorization_context["prospective_observation_enabled"]).strip().lower()
+            if "approval_4_authorized" in self.offline_authorization_context:
+                val_app4 = str(self.offline_authorization_context["approval_4_authorized"]).strip().lower()
+
+        # Fallback to environment dictionary
+        if val_trading is None and "CBE_TRADING_DISABLED" in self.environment:
+            val_trading = str(self.environment["CBE_TRADING_DISABLED"]).strip().lower()
+        if val_scoring is None and "CBE_PROSPECTIVE_OBSERVATION_ENABLED" in self.environment:
+            val_scoring = str(self.environment["CBE_PROSPECTIVE_OBSERVATION_ENABLED"]).strip().lower()
+        if val_app4 is None and "CBE_APPROVAL_4_AUTHORIZED" in self.environment:
+            val_app4 = str(self.environment["CBE_APPROVAL_4_AUTHORIZED"]).strip().lower()
+
+        gate.details["CBE_TRADING_DISABLED"] = val_trading if val_trading is not None else "UNSET"
+        gate.details["CBE_PROSPECTIVE_OBSERVATION_ENABLED"] = val_scoring if val_scoring is not None else "UNSET"
+        gate.details["CBE_APPROVAL_4_AUTHORIZED"] = val_app4 if val_app4 is not None else "UNSET"
+
+        # Check for missing variables (FAIL-CLOSED: INDETERMINATE)
+        missing_vars = []
+        if val_trading is None or val_trading == "":
+            missing_vars.append("CBE_TRADING_DISABLED")
+        if val_scoring is None or val_scoring == "":
+            missing_vars.append("CBE_PROSPECTIVE_OBSERVATION_ENABLED")
+        if val_app4 is None or val_app4 == "":
+            missing_vars.append("CBE_APPROVAL_4_AUTHORIZED")
+
+        if missing_vars:
+            gate.status = GateStatus.INDETERMINATE
+            gate.violations.append(
+                f"Missing required authorization safety evidence: {', '.join(missing_vars)} not set. "
+                f"Cannot assume safe defaults without explicit authorization evidence."
+            )
+            return
+
+        # Check explicit unsafe values (FAIL-CLOSED: FAIL)
+        if val_trading != "true":
+            gate.status = GateStatus.FAIL
+            gate.violations.append(f"Safety violation: CBE_TRADING_DISABLED is '{val_trading}', expected 'true'")
+
+        if val_scoring != "false":
             gate.status = GateStatus.FAIL
             gate.violations.append(
-                f"Safety violation: CBE_PROSPECTIVE_OBSERVATION_ENABLED is '{prospective_observation}', expected 'false'"
+                f"Safety violation: CBE_PROSPECTIVE_OBSERVATION_ENABLED is '{val_scoring}', expected 'false'"
             )
 
-        if approval_4 != "false":
+        if val_app4 != "false":
             gate.status = GateStatus.FAIL
-            gate.violations.append(f"Safety violation: CBE_APPROVAL_4_AUTHORIZED is '{approval_4}', expected 'false'")
+            gate.violations.append(f"Safety violation: CBE_APPROVAL_4_AUTHORIZED is '{val_app4}', expected 'false'")
+
+        if not gate.violations:
+            gate.status = GateStatus.PASS
 
     def _check_file_modifications_during_audit(
         self,
@@ -1372,6 +1424,12 @@ def main() -> int:
         help="File path to save Markdown audit report",
     )
     parser.add_argument(
+        "--offline-auth",
+        action="store_true",
+        help="Supply explicit offline authorization context (trading disabled, scoring disabled, Approval 4 false). "
+             "Note: Valid for offline research audit only; does not attest to live production container configuration.",
+    )
+    parser.add_argument(
         "--compare-engine",
         action="store_true",
         help="Run isolated parity comparison against MarketCaptureEngine._reconstruct_state_from_evidence()",
@@ -1384,10 +1442,36 @@ def main() -> int:
 
     args = parser.parse_args()
 
+    # Validate that reports are written outside the evidence directory
+    ev_dir_resolved = args.evidence_dir.resolve()
+    for label, out_p in [("--output-json", args.output_json), ("--output-md", args.output_md)]:
+        if out_p:
+            out_resolved = out_p.resolve()
+            is_inside = False
+            try:
+                is_inside = out_resolved.is_relative_to(ev_dir_resolved)
+            except AttributeError:
+                is_inside = str(out_resolved).startswith(str(ev_dir_resolved))
+            if is_inside:
+                parser.error(
+                    f"Security error: {label} path '{out_p}' cannot be inside evidence directory '{args.evidence_dir}'. "
+                    f"Reports must be stored separately from evidence sources."
+                )
+
+    offline_ctx = None
+    if args.offline_auth:
+        offline_ctx = {
+            "trading_disabled": True,
+            "prospective_observation_enabled": False,
+            "approval_4_authorized": False,
+            "source": "--offline-auth CLI flag",
+        }
+
     auditor = ResearchReadinessAuditor(
         evidence_dir=args.evidence_dir,
         symbol=args.symbol,
         interval=args.interval,
+        offline_authorization_context=offline_ctx,
     )
     report = auditor.run_full_audit(compare_with_engine=args.compare_engine)
 

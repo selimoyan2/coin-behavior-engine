@@ -753,3 +753,147 @@ def test_markdown_and_json_report_generation(env_safety):
         assert "## 2. Evidence Files & Cryptographic Fingerprints" in md_str
         assert "## 4. Latest Complete 288-Bar Research Window" in md_str
         assert "Zero unresolved findings" in md_str
+
+
+def test_missing_authorization_variables_fail_closed():
+    """Test 26: Missing authorization environment variables must NOT assume safe defaults; return INDETERMINATE."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        raw_dir = Path(tmpdir)
+        start_ts = (1700000000000 // CANDLE_INTERVAL_MS) * CANDLE_INTERVAL_MS
+        candles = [_make_candle_dict(start_ts + (i * CANDLE_INTERVAL_MS)) for i in range(300)]
+        raw_file = raw_dir / "raw_candles_BTCUSDT_5m.jsonl"
+        _write_raw_ledger(raw_file, candles)
+
+        # Empty environment: no CBE_* variables set
+        auditor = ResearchReadinessAuditor(evidence_dir=raw_dir, environment_override={})
+        report = auditor.run_full_audit()
+
+        assert report.verdict == AuditVerdict.INDETERMINATE
+        assert report.gates["AUTHORIZATION_SAFETY"].status == GateStatus.INDETERMINATE
+        assert report.gates["AUTHORIZATION_SAFETY"].details["CBE_TRADING_DISABLED"] == "UNSET"
+        assert report.gates["AUTHORIZATION_SAFETY"].details["CBE_PROSPECTIVE_OBSERVATION_ENABLED"] == "UNSET"
+        assert report.gates["AUTHORIZATION_SAFETY"].details["CBE_APPROVAL_4_AUTHORIZED"] == "UNSET"
+        assert any("missing required authorization safety evidence" in v.lower() for v in report.gates["AUTHORIZATION_SAFETY"].violations)
+
+
+def test_partial_missing_authorization_variables():
+    """Test 27: Partially set authorization environment variables still return INDETERMINATE."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        raw_dir = Path(tmpdir)
+        start_ts = (1700000000000 // CANDLE_INTERVAL_MS) * CANDLE_INTERVAL_MS
+        candles = [_make_candle_dict(start_ts + (i * CANDLE_INTERVAL_MS)) for i in range(300)]
+        raw_file = raw_dir / "raw_candles_BTCUSDT_5m.jsonl"
+        _write_raw_ledger(raw_file, candles)
+
+        # Only trading_disabled is provided; scoring and approval_4 are missing
+        partial_env = {"CBE_TRADING_DISABLED": "true"}
+        auditor = ResearchReadinessAuditor(evidence_dir=raw_dir, environment_override=partial_env)
+        report = auditor.run_full_audit()
+
+        assert report.verdict == AuditVerdict.INDETERMINATE
+        assert report.gates["AUTHORIZATION_SAFETY"].status == GateStatus.INDETERMINATE
+        assert report.gates["AUTHORIZATION_SAFETY"].details["CBE_TRADING_DISABLED"] == "true"
+        assert report.gates["AUTHORIZATION_SAFETY"].details["CBE_PROSPECTIVE_OBSERVATION_ENABLED"] == "UNSET"
+        assert report.gates["AUTHORIZATION_SAFETY"].details["CBE_APPROVAL_4_AUTHORIZED"] == "UNSET"
+
+
+def test_safe_offline_authorization_context():
+    """Test 28: Explicit offline authorization context passes safety gate without claiming production provenance."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        raw_dir = Path(tmpdir)
+        start_ts = (1700000000000 // CANDLE_INTERVAL_MS) * CANDLE_INTERVAL_MS
+        candles = [_make_candle_dict(start_ts + (i * CANDLE_INTERVAL_MS)) for i in range(300)]
+        raw_file = raw_dir / "raw_candles_BTCUSDT_5m.jsonl"
+        _write_raw_ledger(raw_file, candles)
+
+        offline_ctx = {
+            "trading_disabled": True,
+            "prospective_observation_enabled": False,
+            "approval_4_authorized": False,
+            "documentation": "Explicit offline testing context for Sprint 11.02E.1",
+        }
+        auditor = ResearchReadinessAuditor(
+            evidence_dir=raw_dir,
+            environment_override={},
+            offline_authorization_context=offline_ctx,
+        )
+        report = auditor.run_full_audit()
+
+        assert report.verdict == AuditVerdict.READY_FOR_OFFLINE_RESEARCH
+        assert report.gates["AUTHORIZATION_SAFETY"].status == GateStatus.PASS
+        assert report.gates["AUTHORIZATION_SAFETY"].details["source"] == "EXPLICIT_OFFLINE_CONTEXT"
+        assert report.gates["AUTHORIZATION_SAFETY"].details["production_container_verified"] is False
+        assert "does NOT prove runtime configuration of running production container" in report.gates["AUTHORIZATION_SAFETY"].details["disclaimer"]
+
+
+def test_absence_of_engine_behavior_changes():
+    """Test 29: Verify MarketCaptureEngineV080 does NOT write gap_recovery_audit.jsonl, preserving 11.02D.1 baseline."""
+    from unittest import mock
+    from coin_behavior_engine.shadow_v080.configuration import ShadowCollectorConfig
+    from coin_behavior_engine.shadow_v080.market_capture_engine import MarketCaptureEngineV080
+    from coin_behavior_engine.shadow_v080.transport_adapter import BinanceSpotRestAdapter
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        cfg = ShadowCollectorConfig(
+            approval_3_authorized=True,
+            shadow_data_dir=Path(tmpdir) / "live_capture",
+            full_warmup_bars=10,
+        )
+        engine = MarketCaptureEngineV080(cfg)
+        try:
+            t0 = 1700000100000
+            t1 = t0 + 300000
+            t2 = t1 + 300000  # Missing bar
+            t3 = t2 + 300000
+
+            def make_raw(ts_open):
+                return {
+                    "e": "kline",
+                    "s": "BTCUSDT",
+                    "k": {
+                        "t": ts_open,
+                        "T": ts_open + 299999,
+                        "s": "BTCUSDT",
+                        "i": "5m",
+                        "o": "35000.0",
+                        "c": "35050.0",
+                        "h": "35100.0",
+                        "l": "34950.0",
+                        "v": "10.0",
+                        "x": True,
+                        "q": "350500.0",
+                        "n": 50,
+                        "V": "5.0",
+                    },
+                }
+
+            engine.process_raw_message(make_raw(t0))
+            engine.process_raw_message(make_raw(t1))
+            engine.process_raw_message(make_raw(t3))  # triggers gap at t2
+
+            gap_event = engine.gap_detector.gaps[0]
+            gap_id = gap_event.gap_id
+
+            mock_rest = mock.MagicMock(spec=BinanceSpotRestAdapter)
+            mock_rest.fetch_klines.return_value = [
+                [
+                    t2, "35050.0", "35150.0", "35000.0", "35100.0", "12.0",
+                    t2 + 299999, "421200.0", 60, "6.0", "210600.0", "0"
+                ]
+            ]
+
+            ok, msg = engine.recover_gap_via_rest(gap_id, mock_rest)
+            assert ok, f"Recovery failed: {msg}"
+
+            # CRITICAL INVARIANT: gap_recovery_audit.jsonl must NOT be created!
+            legacy_audit_file = cfg.quarantine_dir / "gap_recovery_audit.jsonl"
+            assert not legacy_audit_file.exists(), (
+                "Unrelated modification detected: gap_recovery_audit.jsonl must not be written by engine"
+            )
+
+            # Invariant: durable recovery journal and metadata ARE created in raw_market_dir
+            assert (cfg.raw_market_dir / "recovery_candles_BTCUSDT_5m.jsonl").exists()
+            assert (cfg.raw_market_dir / "recovery_metadata_BTCUSDT_5m.jsonl").exists()
+        finally:
+            engine.evidence_store.close()
+
