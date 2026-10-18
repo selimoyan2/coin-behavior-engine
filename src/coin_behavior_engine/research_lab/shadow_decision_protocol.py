@@ -815,10 +815,10 @@ class ProspectiveIntegrityEngine:
             atr_pct = features.get("atr_pct", 0.02)
             analogue_prob = features.get("analogue_prob", None)
 
-            trend_aligned = (close_p > sma_24h) and (close_p > sma_72h)
-            anti_chase_ok = close_p <= (sma_24h * 1.0225)
-            vol_ok = 0.015 <= atr_pct <= 0.065
-            analogue_ok = (analogue_prob is not None and analogue_prob >= 0.60) if self.policy_id == "POLICY_E_SELECTIVE_ANALOGUE_ASSISTED" else True
+            trend_aligned = bool((close_p > sma_24h) and (close_p > sma_72h))
+            anti_chase_ok = bool(close_p <= (sma_24h * 1.0225))
+            vol_ok = bool(0.015 <= atr_pct <= 0.065)
+            analogue_ok = bool((analogue_prob is not None and analogue_prob >= 0.60) if self.policy_id == "POLICY_E_SELECTIVE_ANALOGUE_ASSISTED" else True)
 
             if self.simulator.position_active:
                 if close_p < sma_24h * 0.99:

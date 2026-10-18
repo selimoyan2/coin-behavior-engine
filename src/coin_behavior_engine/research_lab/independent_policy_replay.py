@@ -269,12 +269,30 @@ class IndependentPolicyReplayHarness:
                 )
 
                 # 3. Independent Decision Determination
-                indep_action, indep_rationale = self._determine_independent_action(
-                    policy_id=policy_id,
-                    features=features,
-                    close_p=close_p,
-                    position_active=journal.position_active,
+                fill_occurred = False
+                fill_px = None
+
+                # Check intrabar exit first if position active
+                intrabar_fill = journal.check_intrabar_exit(
+                    high_p=live_candle.high_p,
+                    low_p=live_candle.low_p,
+                    open_p=live_candle.open_p,
+                    fill_timestamp_utc=ts_open,
                 )
+
+                if intrabar_fill is not None:
+                    indep_action = ShadowDecisionAction.EXIT_TO_USDT.value
+                    indep_rationale = {"intrabar_trigger": intrabar_fill.to_dict()}
+                    fill_occurred = True
+                    fill_px = intrabar_fill.fill_price
+                else:
+                    indep_action, indep_rationale = self._determine_independent_action(
+                        policy_id=policy_id,
+                        features=features,
+                        close_p=close_p,
+                        position_active=journal.position_active,
+                    )
+
                 indep_dec_id = f"DEC-INDEP-{policy_id}-{eval_idx:05d}"
                 journal.commit_decision(
                     decision_id=indep_dec_id,
@@ -283,11 +301,10 @@ class IndependentPolicyReplayHarness:
                     candle_open_utc=ts_open,
                     candle_close_utc=ts_close,
                     close_p=close_p,
+                    eligible_open_utc=next_ts_open or ts_close,
                 )
 
                 # 4. Synchronized Execution Fills at Next Open
-                fill_occurred = False
-                fill_px = None
                 if next_open is not None:
                     # Execute ref
                     if ref_dec.decision in (ShadowDecisionAction.BUY_CANDIDATE.value,) and not ref_engine.simulator.position_active:
@@ -363,6 +380,16 @@ class IndependentPolicyReplayHarness:
 
             # Summarize policy replay
             mismatches = [r for r in policy_records if not (r.action_match and r.btc_balance_match and r.usdt_balance_match)]
+            fills = journal.executed_fills_history
+            buy_fills = [f for f in fills if f.action == "BUY"]
+            exit_fills = [f for f in fills if f.action == "EXIT"]
+            stop_fills = [f for f in fills if getattr(f, "reason", "") in ("STOP_LOSS", "STOP_LOSS_GAP_DOWN")]
+            tp_fills = [f for f in fills if getattr(f, "reason", "") == "TAKE_PROFIT"]
+            total_fee = sum(f.fee_usdt for f in fills)
+            total_slip = sum(f.slippage_usdt for f in fills)
+            total_fric = sum(f.total_friction_usdt for f in fills)
+            unresolved = 1 if journal.pending_order is not None else 0
+
             policy_summaries[policy_id] = {
                 "total_evaluated_bars": len(policy_records),
                 "action_matches": sum(1 for r in policy_records if r.action_match),
@@ -371,7 +398,17 @@ class IndependentPolicyReplayHarness:
                 "ending_ref_equity": policy_records[-1].ref_total_equity,
                 "ending_indep_equity": policy_records[-1].indep_total_equity,
                 "ending_ref_trades": policy_records[-1].ref_trade_count,
-                "ending_indep_trades": policy_records[-1].indep_trade_count,
+                "ending_indep_trades": len(exit_fills),
+                "entries_count": len(buy_fills),
+                "exits_count": len(exit_fills),
+                "stops_count": len(stop_fills),
+                "take_profits_count": len(tp_fills),
+                "virtual_fills_count": len(fills),
+                "unresolved_orders_count": unresolved,
+                "total_taker_fee_usdt": round(total_fee, 4),
+                "total_slippage_usdt": round(total_slip, 4),
+                "total_friction_usdt": round(total_fric, 4),
+                "nominal_friction_rate_bps": 30.0,
                 "parity_verdict": "PERFECT_PARITY" if len(mismatches) == 0 else f"DISCREPANCY_DETECTED_{len(mismatches)}",
             }
 
@@ -398,15 +435,99 @@ class IndependentPolicyReplayHarness:
             "total_records": len(all_comparison_records),
         }
 
+    def run_multi_window_replay(
+        self,
+        dataset_path: Optional[Path] = None,
+        warmup_bars: int = 864,
+        eval_bars: int = 1000,
+    ) -> Dict[str, Any]:
+        """Run synchronized replay across 4 market regimes (Bull, Bear, Sideways, High Volatility)."""
+        path = Path(dataset_path) if dataset_path else (self.output_dir / "market_state_dataset.parquet")
+        candles_df = pd.read_parquet(path)
+
+        windows = {
+            "BULL": (87000, 87864, 88864),
+            "BEAR": (64500, 65364, 66364),
+            "SIDEWAYS": (25000, 25864, 26864),
+            "HIGH_VOLATILITY": (30500, 31364, 32364),
+        }
+
+        all_window_results = {}
+        parity_rows = []
+
+        for reg_name, (w_start, eval_start, eval_end) in windows.items():
+            window_df = candles_df.iloc[w_start:eval_end].copy().reset_index(drop=True)
+            res = self.run_replay(window_df, warmup_bars=warmup_bars, eval_bars=eval_bars)
+            all_window_results[reg_name] = res
+
+            for pol_id, summ in res["summaries"].items():
+                disc = summ["total_discrepancies"]
+                entries = summ["entries_count"]
+
+                if pol_id == "POLICY_A_USDT_CASH":
+                    status = "PASS_PERMANENT_CASH_INTENDED" if disc == 0 else "FAIL_DISCREPANCY"
+                elif pol_id == "POLICY_B_BTC_BUY_AND_HOLD":
+                    status = "EXECUTION_PARITY_PASS" if disc == 0 and entries > 0 else "BLOCKED_ZERO_TRADES"
+                elif pol_id == "POLICY_C_TREND48_FOLLOWING":
+                    status = "EXECUTION_PARITY_PASS" if disc == 0 and entries > 0 else ("BLOCKED_ZERO_TRADES" if entries == 0 else "FAIL_DISCREPANCY")
+                elif pol_id in ("POLICY_D_SELECTIVE_TREND_ONLY", "POLICY_E_SELECTIVE_ANALOGUE_ASSISTED"):
+                    if entries == 0:
+                        status = "BLOCKED_ZERO_TRADES_EXECUTED"
+                    elif disc == 0:
+                        status = "EXECUTION_PARITY_PASS"
+                    else:
+                        status = "FAIL_DISCREPANCY"
+
+                parity_rows.append({
+                    "regime": reg_name,
+                    "policy_id": pol_id,
+                    "bars_evaluated": summ["total_evaluated_bars"],
+                    "entries_count": summ["entries_count"],
+                    "exits_count": summ["exits_count"],
+                    "stops_count": summ["stops_count"],
+                    "take_profits_count": summ["take_profits_count"],
+                    "virtual_fills_count": summ["virtual_fills_count"],
+                    "unresolved_orders_count": summ["unresolved_orders_count"],
+                    "total_taker_fee_usdt": summ["total_taker_fee_usdt"],
+                    "total_slippage_usdt": summ["total_slippage_usdt"],
+                    "total_friction_usdt": summ["total_friction_usdt"],
+                    "nominal_friction_rate_bps": summ["nominal_friction_rate_bps"],
+                    "ending_ref_equity": summ["ending_ref_equity"],
+                    "ending_indep_equity": summ["ending_indep_equity"],
+                    "equity_discrepancy_usdt": round(abs(summ["ending_ref_equity"] - summ["ending_indep_equity"]), 4),
+                    "execution_parity_status": status,
+                })
+
+        parity_df = pd.DataFrame(parity_rows)
+        out_csv = self.output_dir / "trade_active_policy_parity.csv"
+        parity_df.to_csv(out_csv, index=False)
+        root_csv = Path("trade_active_policy_parity.csv")
+        parity_df.to_csv(root_csv, index=False)
+
+        manifest_path = self.output_dir / "multi_window_replay_summary.json"
+        with open(manifest_path, "w", encoding="utf-8") as f:
+            json.dump({
+                "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+                "windows": list(windows.keys()),
+                "total_rows": len(parity_rows),
+                "summary": parity_rows,
+            }, f, indent=2)
+
+        return {
+            "csv_path": str(out_csv),
+            "root_csv_path": str(root_csv),
+            "manifest_path": str(manifest_path),
+            "rows": parity_rows,
+            "window_results": all_window_results,
+        }
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
-    print("Running Independent Policy Replay Harness (CBE Sprint 11.16B.5)...")
+    print("Running Independent Policy Replay Multi-Window Audit (CBE Sprint 11.16B.6)...")
     harness = IndependentPolicyReplayHarness()
-    results = harness.run_replay_audit(warmup_bars=864, eval_bars=288)
-    print("\n--- REPLAY AUDIT COMPLETED ---")
-    print(f"Total comparison records: {results['total_records']}")
-    print("Policy Summaries:")
-    for pol, summ in results["summaries"].items():
-        print(f"  {pol}: verdict={summ['parity_verdict']}, actions={summ['action_matches']}/{summ['total_evaluated_bars']}, balances={summ['balance_matches']}/{summ['total_evaluated_bars']}, discrepancies={summ['total_discrepancies']}")
-        print(f"    Ref ending equity: {summ['ending_ref_equity']:.4f} USDT, Indep ending equity: {summ['ending_indep_equity']:.4f} USDT")
+    results = harness.run_multi_window_replay(warmup_bars=864, eval_bars=1000)
+    print("\n--- MULTI-WINDOW REPLAY AUDIT COMPLETED ---")
+    print(f"Results saved to {results['csv_path']}")
+    for r in results["rows"]:
+        print(f"  [{r['regime']}] {r['policy_id']}: status={r['execution_parity_status']}, entries={r['entries_count']}, exits={r['exits_count']}, eq_diff={r['equity_discrepancy_usdt']:.4f}")

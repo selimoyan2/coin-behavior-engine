@@ -72,6 +72,7 @@ class VirtualFill:
     realized_gross_pnl_usdt: float
     realized_net_pnl_usdt: float
     fill_timestamp_utc: str
+    reason: str = "SIGNAL"
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -96,6 +97,8 @@ class JournalStateSnapshot:
     executed_fill_ids: List[str]
     executed_decision_ids: List[str]
     checkpoint_timestamp_utc: str
+    stop_loss_price: float = 0.0
+    take_profit_price: float = 0.0
     state_sha256: str = ""
 
     def compute_sha256(self) -> str:
@@ -141,6 +144,8 @@ class CrashConsistentJournal:
         self.usdt_balance = initial_capital_usdt
         self.position_active = False
         self.entry_price = 0.0
+        self.stop_loss_price = 0.0
+        self.take_profit_price = 0.0
         self.pending_order: Optional[VirtualOrder] = None
         self.executed_fill_ids: Set[str] = set()
         self.executed_decision_ids: Set[str] = set()
@@ -244,6 +249,21 @@ class CrashConsistentJournal:
             logger.warning(f"Order {order.order_id} already filled. Rejecting duplicate.")
             return None
 
+        # Expired order protection: refuse retroactive fill if observer was offline beyond candle window
+        if order.eligible_open_utc and fill_timestamp_utc:
+            try:
+                t_elig = datetime.fromisoformat(order.eligible_open_utc.replace("Z", "+00:00"))
+                t_fill = datetime.fromisoformat(fill_timestamp_utc.replace("Z", "+00:00"))
+                if (t_fill - t_elig).total_seconds() > 300.0:
+                    logger.warning(
+                        f"Order {order.order_id} expired offline: eligible at {order.eligible_open_utc}, "
+                        f"fill attempted at {fill_timestamp_utc}. Refusing retroactive fill."
+                    )
+                    self.pending_order = None
+                    return None
+            except Exception as e:
+                logger.warning(f"Error parsing order expiration timestamps: {e}")
+
         if order.action == "BUY":
             if self.position_active or self.usdt_balance < 50.0:
                 return None
@@ -278,6 +298,14 @@ class CrashConsistentJournal:
             self.btc_balance += fill.btc_amount
             self.position_active = True
             self.entry_price = next_open_price
+
+            # Configure stop loss and take profit
+            if self.policy_id == "POLICY_B_BTC_BUY_AND_HOLD":
+                self.stop_loss_price = -1.0
+                self.take_profit_price = 1e12
+            else:
+                self.stop_loss_price = order.stop_price if order.stop_price is not None else next_open_price * 0.975
+                self.take_profit_price = order.target_price if order.target_price is not None else next_open_price * 1.05
 
         elif order.action == "EXIT":
             if not self.position_active or self.btc_balance <= 0:
@@ -315,14 +343,111 @@ class CrashConsistentJournal:
             self.btc_balance = 0.0
             self.position_active = False
             self.entry_price = 0.0
+            self.stop_loss_price = 0.0
+            self.take_profit_price = 0.0
         else:
             return None
 
         # Write fill to WAL
-        self._append_wal_entry(JournalEntryType.FILL_COMMITTED, fill.to_dict())
+        payload = {
+            "fill": fill.to_dict(),
+            "usdt_balance": round(self.usdt_balance, 4),
+            "btc_balance": round(self.btc_balance, 8),
+            "stop_loss_price": round(self.stop_loss_price, 4),
+            "take_profit_price": round(self.take_profit_price, 4),
+        }
+        self._append_wal_entry(JournalEntryType.FILL_COMMITTED, payload)
         self.executed_fill_ids.add(fill.fill_id)
         self.executed_fills_history.append(fill)
         self.pending_order = None
+        return fill
+
+    def check_intrabar_exit(
+        self,
+        high_p: float,
+        low_p: float,
+        open_p: float,
+        fill_timestamp_utc: str,
+        taker_fee_rate: float = 0.0010,
+        slippage_rate: float = 0.0005,
+    ) -> Optional[VirtualFill]:
+        """Check and execute intrabar stop loss or take profit with pessimistic priority."""
+        if not self.position_active or self.btc_balance <= 0 or self.stop_loss_price <= 0:
+            return None
+
+        # Check gap down
+        if open_p <= self.stop_loss_price:
+            return self._execute_intrabar_exit(open_p, "STOP_LOSS_GAP_DOWN", fill_timestamp_utc, taker_fee_rate, slippage_rate)
+
+        stop_hit = low_p <= self.stop_loss_price
+        target_hit = high_p >= self.take_profit_price
+
+        # Pessimistic: Stop loss executed first if both touched
+        if stop_hit:
+            return self._execute_intrabar_exit(self.stop_loss_price, "STOP_LOSS", fill_timestamp_utc, taker_fee_rate, slippage_rate)
+        elif target_hit:
+            return self._execute_intrabar_exit(self.take_profit_price, "TAKE_PROFIT", fill_timestamp_utc, taker_fee_rate, slippage_rate)
+
+        return None
+
+    def _execute_intrabar_exit(
+        self,
+        raw_price: float,
+        reason: str,
+        fill_timestamp_utc: str,
+        taker_fee_rate: float = 0.0010,
+        slippage_rate: float = 0.0005,
+    ) -> VirtualFill:
+        """Execute intrabar stop-loss or take-profit fill with 15 bps exit friction."""
+        effective_fill_price = raw_price * (1.0 - slippage_rate)
+        gross_proceeds = self.btc_balance * effective_fill_price
+        fee_usdt = gross_proceeds * taker_fee_rate
+        slippage_usdt = (raw_price - effective_fill_price) * self.btc_balance
+        total_friction = fee_usdt + slippage_usdt
+        net_proceeds = gross_proceeds - fee_usdt
+
+        gross_pnl = (raw_price - self.entry_price) * self.btc_balance
+        net_pnl = gross_pnl - total_friction
+
+        fill_id = f"FILL-INTRABAR-{self.policy_id}-{self.sequence_number:05d}"
+        fill = VirtualFill(
+            fill_id=fill_id,
+            order_id=f"ORD-INTRABAR-{self.sequence_number:05d}",
+            decision_id=self.last_decision_id or f"DEC-INTRABAR-{self.sequence_number:05d}",
+            policy_id=self.policy_id,
+            action="EXIT",
+            fill_price=round(effective_fill_price, 4),
+            btc_amount=round(self.btc_balance, 8),
+            gross_proceeds_usdt=round(gross_proceeds, 4),
+            fee_usdt=round(fee_usdt, 4),
+            slippage_usdt=round(slippage_usdt, 4),
+            total_friction_usdt=round(total_friction, 4),
+            net_proceeds_usdt=round(net_proceeds, 4),
+            realized_gross_pnl_usdt=round(gross_pnl, 4),
+            realized_net_pnl_usdt=round(net_pnl, 4),
+            fill_timestamp_utc=fill_timestamp_utc,
+            reason=reason,
+        )
+
+        self.usdt_balance += net_proceeds
+        self.btc_balance = 0.0
+        self.position_active = False
+        self.entry_price = 0.0
+        self.stop_loss_price = 0.0
+        self.take_profit_price = 0.0
+        self.executed_fill_ids.add(fill.fill_id)
+        self.executed_fills_history.append(fill)
+
+        payload = {
+            "fill": fill.to_dict(),
+            "trigger_reason": reason,
+            "raw_price": raw_price,
+            "usdt_balance": round(self.usdt_balance, 4),
+            "btc_balance": round(self.btc_balance, 8),
+            "stop_loss_price": 0.0,
+            "take_profit_price": 0.0,
+        }
+        self._append_wal_entry(JournalEntryType.FILL_COMMITTED, payload)
         return fill
 
     def create_checkpoint(self) -> JournalStateSnapshot:
@@ -340,6 +465,8 @@ class CrashConsistentJournal:
             total_equity_usdt=self.get_total_equity(),
             position_active=self.position_active,
             entry_price=round(self.entry_price, 4),
+            stop_loss_price=round(self.stop_loss_price, 4),
+            take_profit_price=round(self.take_profit_price, 4),
             pending_order=self.pending_order,
             executed_fill_ids=sorted(list(self.executed_fill_ids)),
             executed_decision_ids=sorted(list(self.executed_decision_ids)),
@@ -409,6 +536,8 @@ class CrashConsistentJournal:
                     executed_fill_ids=raw_chk.get("executed_fill_ids", []),
                     executed_decision_ids=raw_chk.get("executed_decision_ids", []),
                     checkpoint_timestamp_utc=raw_chk["checkpoint_timestamp_utc"],
+                    stop_loss_price=float(raw_chk.get("stop_loss_price", 0.0)),
+                    take_profit_price=float(raw_chk.get("take_profit_price", 0.0)),
                 )
                 computed_sha = test_snap.compute_sha256()
                 if declared_sha != computed_sha:
@@ -426,6 +555,8 @@ class CrashConsistentJournal:
                 self.usdt_balance = test_snap.usdt_balance
                 self.position_active = test_snap.position_active
                 self.entry_price = test_snap.entry_price
+                self.stop_loss_price = test_snap.stop_loss_price
+                self.take_profit_price = test_snap.take_profit_price
                 self.pending_order = test_snap.pending_order
                 self.executed_fill_ids = set(test_snap.executed_fill_ids)
                 self.executed_decision_ids = set(test_snap.executed_decision_ids)
@@ -466,20 +597,30 @@ class CrashConsistentJournal:
                         if payload.get("pending_order"):
                             self.pending_order = VirtualOrder(**payload["pending_order"])
                     elif rec_type == JournalEntryType.FILL_COMMITTED.value:
-                        fill = VirtualFill(**payload)
+                        fill_dict = payload.get("fill", payload)
+                        fill = VirtualFill(**fill_dict)
                         if fill.fill_id not in self.executed_fill_ids:
                             self.executed_fill_ids.add(fill.fill_id)
                             self.executed_fills_history.append(fill)
-                            if fill.action == "BUY":
-                                self.btc_balance = fill.btc_amount
-                                self.usdt_balance = 0.0
-                                self.position_active = True
-                                self.entry_price = fill.fill_price
-                            elif fill.action == "EXIT":
-                                self.usdt_balance = fill.net_proceeds_usdt
-                                self.btc_balance = 0.0
-                                self.position_active = False
-                                self.entry_price = 0.0
+                            if "usdt_balance" in payload and "btc_balance" in payload:
+                                self.usdt_balance = float(payload["usdt_balance"])
+                                self.btc_balance = float(payload["btc_balance"])
+                                self.stop_loss_price = float(payload.get("stop_loss_price", 0.0))
+                                self.take_profit_price = float(payload.get("take_profit_price", 0.0))
+                                self.position_active = (self.btc_balance > 0)
+                                self.entry_price = fill.fill_price if self.position_active else 0.0
+                            else:
+                                if fill.action == "BUY":
+                                    self.btc_balance = fill.btc_amount
+                                    self.position_active = True
+                                    self.entry_price = fill.fill_price
+                                elif fill.action == "EXIT":
+                                    self.usdt_balance = fill.net_proceeds_usdt
+                                    self.btc_balance = 0.0
+                                    self.position_active = False
+                                    self.entry_price = 0.0
+                                    self.stop_loss_price = 0.0
+                                    self.take_profit_price = 0.0
                             self.pending_order = None
 
             except Exception as e:

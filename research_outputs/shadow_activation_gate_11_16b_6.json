@@ -1,0 +1,108 @@
+{
+  "gate_version": "11.16B.6",
+  "audit_name": "Trade-Active Parity & Final Scientific Integrity Gate",
+  "timestamp_utc": "2026-10-18T22:55:00+00:00",
+  "base_commit": "dbc825315e58c0b71263a3f5bb9b2d383d4d46ea",
+  "dataset_provenance": {
+    "canonical_dataset_name": "binance_spot_btcusdt_5m_canonical",
+    "canonical_dataset_sha256": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487",
+    "total_bars": 105120,
+    "compact_analogue_candidates_sha256": "058fbbfb88307db3d937ce82d4948e5a6ef6786da367503fa6ef31da8180f9bb",
+    "compact_analogue_candidates_count": 67752
+  },
+  "mandatory_declarations": {
+    "PROSPECTIVE_OBSERVATION": "NOT_STARTED",
+    "LIVE_TRADING": "PROHIBITED",
+    "PROTECTED_SERVICES_MUTATED": "NO",
+    "OPERATOR_AUTHORIZATION": "NOT_GRANTED",
+    "NEXT_STEP": "OPERATOR_REVIEW"
+  },
+  "policy_readiness_matrix": {
+    "POLICY_A_USDT_CASH": {
+      "feature_parity": "PASS",
+      "decision_parity": "PASS",
+      "trade_active_parity": "PASS_PERMANENT_CASH_INTENDED",
+      "portfolio_accounting": "PASS",
+      "recovery_safety": "PASS",
+      "frozen_identity": "PASS",
+      "data_readiness": "PASS",
+      "linux_runtime": "PASS",
+      "overall_status": "READY_FOR_AUTHORIZATION",
+      "active_trades_evaluated": 0,
+      "discrepancies": 0
+    },
+    "POLICY_B_BTC_BUY_AND_HOLD": {
+      "feature_parity": "PASS",
+      "decision_parity": "PASS",
+      "trade_active_parity": "PASS",
+      "portfolio_accounting": "PASS",
+      "recovery_safety": "PASS",
+      "frozen_identity": "PASS",
+      "data_readiness": "PASS",
+      "linux_runtime": "PASS",
+      "overall_status": "READY_FOR_AUTHORIZATION",
+      "active_trades_evaluated": 4,
+      "discrepancies": 0
+    },
+    "POLICY_C_TREND48_FOLLOWING": {
+      "feature_parity": "PASS",
+      "decision_parity": "PASS",
+      "trade_active_parity": "PASS",
+      "portfolio_accounting": "PASS",
+      "recovery_safety": "PASS",
+      "frozen_identity": "PASS",
+      "data_readiness": "PASS",
+      "linux_runtime": "PASS",
+      "overall_status": "READY_FOR_AUTHORIZATION",
+      "active_trades_evaluated": 50,
+      "discrepancies": 0
+    },
+    "POLICY_D_SELECTIVE_TREND_ONLY": {
+      "feature_parity": "PASS",
+      "decision_parity": "PASS",
+      "trade_active_parity": "BLOCKED_ZERO_HISTORICAL_TRADES",
+      "portfolio_accounting": "PASS",
+      "recovery_safety": "PASS",
+      "frozen_identity": "PASS",
+      "data_readiness": "PASS",
+      "linux_runtime": "PASS",
+      "overall_status": "BLOCKED_ZERO_TRADES_EXECUTED",
+      "active_trades_evaluated": 0,
+      "discrepancies": 0,
+      "blocking_root_cause": "Frozen gate 0.015 <= atr_pct <= 0.065 was defined with 150-650 bps 5m ATR, whereas real 5m BTC median ATR is 13.4 bps. Zero entries triggered historically."
+    },
+    "POLICY_E_SELECTIVE_ANALOGUE_ASSISTED": {
+      "feature_parity": "PASS",
+      "decision_parity": "PASS",
+      "trade_active_parity": "BLOCKED_ZERO_HISTORICAL_TRADES",
+      "portfolio_accounting": "PASS",
+      "recovery_safety": "PASS",
+      "frozen_identity": "PROPOSED_CORRECTED_POLICY_REQUIRING_PROSPECTIVE_FREEZE",
+      "data_readiness": "PASS",
+      "linux_runtime": "PASS",
+      "overall_status": "BLOCKED_PENDING_OPERATOR_FREEZE",
+      "active_trades_evaluated": 0,
+      "discrepancies": 0,
+      "blocking_root_cause": "Inherits Policy D zero-trade volatility gate. Additionally, compact candidate matrix caps candidates to training partition (t <= 68040), correcting legacy dynamic expansion into holdout. Requires operator freeze."
+    }
+  },
+  "runtime_resource_verification": {
+    "memory_ceiling_mb": 250.0,
+    "empirical_peak_heap_mb": 90.6,
+    "memory_headroom_mb": 159.4,
+    "memory_pass": true,
+    "cpu_quota_limit": 0.20,
+    "empirical_cycle_latency_ms": 3.86,
+    "effective_cpu_utilization_pct": 0.00129,
+    "cpu_pass": true
+  },
+  "execution_policy_verification": {
+    "policy_version": "Canonical Execution Policy V2",
+    "nominal_taker_fee_entry_bps": 10.0,
+    "nominal_slippage_entry_bps": 5.0,
+    "nominal_taker_fee_exit_bps": 10.0,
+    "nominal_slippage_exit_bps": 5.0,
+    "nominal_roundtrip_friction_bps": 30.0,
+    "conservation_invariant_verified": true
+  }
+}

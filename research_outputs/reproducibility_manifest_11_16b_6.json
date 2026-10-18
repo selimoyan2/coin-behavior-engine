@@ -1,0 +1,78 @@
+{
+  "timestamp_utc": "2026-10-18T22:58:00+00:00",
+  "sprint": "11.16B.6",
+  "files": {
+    "src/coin_behavior_engine/research_lab/shadow_decision_protocol.py": {
+      "sha256": "ed091f4988090284f05fb10cbabbe7bd460d0a59cbcddeb261405c04e0d87d79",
+      "bytes": 94027
+    },
+    "src/coin_behavior_engine/research_lab/shadow_market_data_bridge.py": {
+      "sha256": "57e0974758c0da49942ba5b90374cd199bda4f4b6435e6765cb6c82866dc3723",
+      "bytes": 37385
+    },
+    "src/coin_behavior_engine/research_lab/crash_consistent_journal.py": {
+      "sha256": "fea5eff91d2f906e1e5c8b83eaf67fc6d6d79dca40a631d2a2a948f5bd0c9e14",
+      "bytes": 27238
+    },
+    "src/coin_behavior_engine/research_lab/compact_analogue_runtime.py": {
+      "sha256": "1829c3beadc803c49a70b7fa76e5d57d36d5f53bff6d314274368202d1564a72",
+      "bytes": 13154
+    },
+    "src/coin_behavior_engine/research_lab/independent_policy_replay.py": {
+      "sha256": "2ab2912154fa4bef918d5ee28578db8f17b685b51afed51a9b7c76187cf673ab",
+      "bytes": 25335
+    },
+    "tests/test_sprint11_16b_6_trade_active_parity.py": {
+      "sha256": "f77a7c5dff58797d96c66114488043f0fe8c660b81b3108ae3adcacf68813a3c",
+      "bytes": 21515
+    },
+    "research_outputs/trade_active_policy_parity.csv": {
+      "sha256": "a7b2a09842150100cd403448e2c8d2f301e677bd751a5ee7aeb6684448e89a52",
+      "bytes": 2783
+    },
+    "research_outputs/analogue_freeze_identity_audit.md": {
+      "sha256": "64a2046cc6e6c68f6dd96b26639e3993ec40b2319575bdee2df5a0337de073bf",
+      "bytes": 7531
+    },
+    "research_outputs/canonical_cost_reconciliation.md": {
+      "sha256": "4abf8d9d77a10f8e771be6e49e2fcf915ea628dc18a6cbc7cd3f6e8718c3bc86",
+      "bytes": 6212
+    },
+    "research_outputs/linux_runtime_resource_audit.md": {
+      "sha256": "ac9d3c8d3fbfa8f1d961f664b32e3c3ea8677498a8fc0e35b0707a5cf1248f94",
+      "bytes": 5213
+    },
+    "research_outputs/shadow_activation_gate_11_16b_6.json": {
+      "sha256": "05936eb362a318cb008255b084bcb8b2c73e213435d023195dac91fd786433d4",
+      "bytes": 4210
+    },
+    "research_outputs/research_report_11_16b_6.md": {
+      "sha256": "c9389630a40a40ce268fb2ca915d12ab196a4a2f95472e0a6b7cda1fd5eeb468",
+      "bytes": 12132
+    },
+    "trade_active_policy_parity.csv": {
+      "sha256": "a7b2a09842150100cd403448e2c8d2f301e677bd751a5ee7aeb6684448e89a52",
+      "bytes": 2783
+    },
+    "analogue_freeze_identity_audit.md": {
+      "sha256": "64a2046cc6e6c68f6dd96b26639e3993ec40b2319575bdee2df5a0337de073bf",
+      "bytes": 7531
+    },
+    "canonical_cost_reconciliation.md": {
+      "sha256": "4abf8d9d77a10f8e771be6e49e2fcf915ea628dc18a6cbc7cd3f6e8718c3bc86",
+      "bytes": 6212
+    },
+    "linux_runtime_resource_audit.md": {
+      "sha256": "ac9d3c8d3fbfa8f1d961f664b32e3c3ea8677498a8fc0e35b0707a5cf1248f94",
+      "bytes": 5213
+    },
+    "shadow_activation_gate_11_16b_6.json": {
+      "sha256": "05936eb362a318cb008255b084bcb8b2c73e213435d023195dac91fd786433d4",
+      "bytes": 4210
+    },
+    "research_report_11_16b_6.md": {
+      "sha256": "c9389630a40a40ce268fb2ca915d12ab196a4a2f95472e0a6b7cda1fd5eeb468",
+      "bytes": 12132
+    }
+  }
+}
