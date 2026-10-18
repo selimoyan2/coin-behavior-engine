@@ -426,8 +426,56 @@ def run_research_pipeline(
     }
 
 
+def run_sprint11_07_pipeline(output_dir: Path = Path("research_outputs")) -> Dict[str, Any]:
+    """Execute end-to-end Sprint 11.07 Behavioral Learning & Backtesting pipeline."""
+    from coin_behavior_engine.research_lab.methodology_auditor import MethodologyAuditor
+    from coin_behavior_engine.research_lab.market_state_builder import MarketStateBuilder
+    from coin_behavior_engine.research_lab.analogue_engine import HistoricalAnalogueEngine
+    from coin_behavior_engine.research_lab.walk_forward_engine import WalkForwardEngine
+    from coin_behavior_engine.research_lab.behavior_case_studies import BehaviorCaseStudiesGenerator
+
+    git_commit = get_current_git_commit()
+    logger.info(f"=== CBE Research Lab Sprint 11.07 Pipeline (Commit: {git_commit[:8]}) ===")
+
+    # Phase 1: Methodology Audit
+    logger.info("Executing Phase 1: Methodology Audit...")
+    med_auditor = MethodologyAuditor(output_dir=output_dir)
+    audit_report = med_auditor.run_audit()
+
+    # Phase 2 & 3: Historical Dataset Assembly & Market State Builder
+    logger.info("Executing Phase 2 & 3: Historical Dataset Assembly & State Features...")
+    state_builder = MarketStateBuilder(output_dir=output_dir)
+    df_state, manifest = state_builder.run_pipeline()
+
+    # Phase 4 & 5: Empirical Historical Analogue Search Engine & Probabilistic Predictions
+    logger.info("Executing Phase 4 & 5: Historical Analogue Engine & Brier Calibration...")
+    analogue_engine = HistoricalAnalogueEngine(output_dir=output_dir)
+    analogue_results = analogue_engine.run_full_pipeline()
+
+    # Phase 6, 7 & 8: Walk-Forward Backtesting & Strategy Benchmark Suite
+    logger.info("Executing Phase 6, 7 & 8: Walk-Forward Folds & Paper Simulation Suite...")
+    wf_engine = WalkForwardEngine(output_dir=output_dir)
+    wf_results = wf_engine.run_full_pipeline()
+
+    # Phase 9 & 10: Market Behavior Case Studies & Master Research Report
+    logger.info("Executing Phase 9 & 10: Case Studies & Master Research Report...")
+    case_gen = BehaviorCaseStudiesGenerator(output_dir=output_dir)
+    case_gen.run_all()
+
+    logger.info("=== CBE Research Lab Sprint 11.07 Complete ===")
+    return {
+        "status": "COMPLETE",
+        "output_dir": str(output_dir),
+        "total_candles": len(df_state),
+        "analogue_results": analogue_results,
+        "walk_forward_results": wf_results,
+        "git_commit": git_commit,
+    }
+
+
 def main():
-    parser = argparse.ArgumentParser(description="CBE Research Lab Runner — Sprint 11.05 & 11.06")
+    parser = argparse.ArgumentParser(description="CBE Research Lab Runner — Sprint 11.05, 11.06 & 11.07")
+    parser.add_argument("--sprint", default="11.07", choices=["11.05", "11.06", "11.07"], help="Sprint pipeline to execute (default: 11.07)")
     parser.add_argument("--symbol", default="BTCUSDT", help="Trading pair symbol (default: BTCUSDT)")
     parser.add_argument("--days", type=int, default=25, help="Number of days to acquire and analyze (default: 25)")
     parser.add_argument("--output-dir", default="research_outputs", help="Output directory for research artifacts")
@@ -437,12 +485,15 @@ def main():
     out_p = Path(args.output_dir)
     off_p = Path(args.offline_parquet) if args.offline_parquet else None
 
-    run_research_pipeline(
-        symbol=args.symbol,
-        days=args.days,
-        output_dir=out_p,
-        offline_parquet=off_p,
-    )
+    if args.sprint == "11.07":
+        run_sprint11_07_pipeline(output_dir=out_p)
+    else:
+        run_research_pipeline(
+            symbol=args.symbol,
+            days=args.days,
+            output_dir=out_p,
+            offline_parquet=off_p,
+        )
 
 
 if __name__ == "__main__":

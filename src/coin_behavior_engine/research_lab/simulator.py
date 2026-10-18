@@ -124,11 +124,13 @@ class HistoricalPaperSimulator:
                     exit_reason = TradeExitReason.TAKE_PROFIT
                 elif active_trade["bars_held"] >= active_trade["max_holding_bars"]:
                     exit_triggered = True
-                    exit_price = c.close * (1.0 - self.config.slippage_pct)
+                    raw_exit = c.close
+                    exit_price = raw_exit * (1.0 - self.config.slippage_pct)
                     exit_reason = TradeExitReason.TIME_EXPIRY
                 elif i in dec_by_idx and dec_by_idx[i].action == DecisionAction.SELL_CANDIDATE:
                     exit_triggered = True
-                    exit_price = c.close * (1.0 - self.config.slippage_pct)
+                    raw_exit = c.close
+                    exit_price = raw_exit * (1.0 - self.config.slippage_pct)
                     exit_reason = TradeExitReason.SIGNAL_REVERSAL
 
                 if exit_triggered:

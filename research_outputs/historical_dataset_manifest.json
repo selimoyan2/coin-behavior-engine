@@ -1,0 +1,52 @@
+{
+  "dataset_name": "BTCUSDT_5M_365D_CONTINUOUS",
+  "symbol": "BTCUSDT",
+  "interval": "5m",
+  "total_candles": 105120,
+  "span_days": 365,
+  "start_timestamp_ms": 1760787000000,
+  "end_timestamp_ms": 1792322700000,
+  "start_datetime_utc": "2025-10-18T11:30:00+00:00",
+  "end_datetime_utc": "2026-10-18T11:25:00+00:00",
+  "min_price": 57800.19,
+  "max_price": 116400.0,
+  "mean_price": 78296.16495195965,
+  "mean_volume": 64.62457635683029,
+  "total_volume": 6793335.46663,
+  "gap_count_gt_300s": 0,
+  "max_gap_seconds": 300,
+  "ohlcv_invariants_verified": true,
+  "splits": {
+    "training": {
+      "candles": 68328,
+      "pct": 65.0,
+      "start_utc": "2025-10-18T11:30:00+00:00",
+      "end_utc": "2026-06-12T17:25:00+00:00"
+    },
+    "validation": {
+      "candles": 18396,
+      "pct": 17.5,
+      "start_utc": "2026-06-12T17:30:00+00:00",
+      "end_utc": "2026-08-15T14:25:00+00:00"
+    },
+    "holdout_test": {
+      "candles": 18396,
+      "pct": 17.5,
+      "start_utc": "2026-08-15T14:30:00+00:00",
+      "end_utc": "2026-10-18T11:25:00+00:00"
+    }
+  },
+  "data_sources": [
+    {
+      "source": "btcusdt_5m_raw.parquet",
+      "path": "data\\raw\\btcusdt_5m_raw.parquet",
+      "description": "Historical 5m klines from Binance Spot archive"
+    },
+    {
+      "source": "binance_BTCUSDT_1m_recent.parquet",
+      "path": "data\\research_lab\\binance_BTCUSDT_1m_recent.parquet",
+      "description": "Granular 1m klines resampled strictly into 5m closed intervals"
+    }
+  ],
+  "generated_at_utc": "2026-10-18T12:51:22.545843+00:00"
+}

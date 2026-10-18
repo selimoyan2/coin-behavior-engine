@@ -1,0 +1,5 @@
+fold_id,train_start_utc,train_end_utc,test_start_utc,test_end_utc,train_candles,test_candles,directional_accuracy_pct,brier_score,strategy_trades,strategy_win_rate_pct,strategy_net_pnl_usd,strategy_return_pct,strategy_max_dd_pct,strategy_profit_factor,strategy_fees_usd,bnh_return_pct,outperformed_buy_and_hold
+FOLD_1,2025-10-18T11:30:00Z,2026-03-23T17:25:00Z,2026-03-23T17:30:00Z,2026-05-14T19:25:00Z,45000,15000,66.88,0.1718,23,26.09,-834.77,-8.35,9.34,0.24,412.39,14.99,False
+FOLD_2,2025-10-18T11:30:00Z,2026-05-14T19:25:00Z,2026-05-14T19:30:00Z,2026-07-05T21:25:00Z,60000,15000,64.79,0.1736,41,34.15,-1072.82,-10.73,11.36,0.51,739.17,-22.88,True
+FOLD_3,2025-10-18T11:30:00Z,2026-07-05T21:25:00Z,2026-07-05T21:30:00Z,2026-08-26T23:25:00Z,75000,15000,73.24,0.141,18,44.44,17.79,0.18,2.99,1.04,339.36,24.96,False
+FOLD_4_HOLDOUT,2025-10-18T11:30:00Z,2026-08-15T14:25:00Z,2026-08-15T14:30:00Z,2026-10-18T11:25:00Z,86724,18396,69.65,0.1542,30,43.33,-127.08,-1.27,4.65,0.85,570.76,29.85,False

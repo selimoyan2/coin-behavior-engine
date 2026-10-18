@@ -551,3 +551,118 @@ class MarketRegimeComparisonRecord:
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
 
+
+# ---------------------------------------------------------------------------
+# Sprint 11.07 Contracts: Behavioral State, Analogues & Walk-Forward
+# ---------------------------------------------------------------------------
+
+@dataclass
+class MarketStateVector:
+    """Causal, multi-timeframe market state representation."""
+    timestamp_open: int
+    datetime_utc: str
+    close_price: float
+    # Price Structure & Trends
+    trend_5m_pct: float
+    trend_15m_pct: float
+    trend_1h_pct: float
+    trend_4h_pct: float
+    price_acceleration: float
+    # Volatility & Liquidity
+    realized_vol_24: float
+    realized_vol_72: float
+    volatility_compression_ratio: float  # ATR14 / ATR100
+    relative_volume_20: float
+    # Location within Range
+    distance_to_support_pct: float
+    distance_to_resistance_pct: float
+    drawdown_from_peak_pct: float
+    runup_from_trough_pct: float
+    breakout_state: str  # "NONE", "BULLISH_BREAKOUT", "BEARISH_BREAKDOWN", "FAILED_BREAKOUT"
+    regime: MarketRegimeType
+    # News Context
+    event_context_status: str  # "VERIFIED_RELEVANT", "NO_MATERIAL_EVENT", "FEED_UNAVAILABLE", "UNVERIFIED_RUMOR"
+    event_sentiment_score: float = 0.0
+
+    def to_dict(self) -> Dict[str, Any]:
+        d = asdict(self)
+        d["regime"] = self.regime.value
+        return d
+
+
+@dataclass
+class HistoricalAnalogueRecord:
+    """Historical analogue match and subsequent observed forward outcomes."""
+    decision_timestamp: int
+    decision_datetime_utc: str
+    analogue_timestamp: int
+    analogue_datetime_utc: str
+    similarity_distance: float
+    analogue_regime: str
+    # Forward Outcomes
+    fwd_ret_15m: float
+    fwd_ret_1h: float
+    fwd_ret_4h: float
+    fwd_ret_24h: float
+    max_favorable_excursion_pct: float
+    max_adverse_excursion_pct: float
+    hit_resistance_first: bool
+    hit_support_first: bool
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class ConditionalPredictionRecord:
+    """Probabilistic prediction derived from historical analogues."""
+    decision_timestamp: int
+    datetime_utc: str
+    horizon: str  # "15m", "1h", "4h", "24h"
+    current_price: float
+    analogue_count: int
+    mean_similarity_distance: float
+    prob_up: float
+    prob_down: float
+    prob_neutral: float
+    expected_return_pct: float
+    downside_risk_pct: float
+    conf_interval_low_pct: float
+    conf_interval_high_pct: float
+    predicted_regime: str
+    confidence_status: str  # "CALIBRATED", "UNCALIBRATED", "NO_PREDICTION"
+    actual_return_pct: Optional[float] = None
+    actual_direction: Optional[str] = None  # "UP", "DOWN", "NEUTRAL"
+    brier_score: Optional[float] = None
+    is_direction_correct: Optional[bool] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class WalkForwardFoldResult:
+    """Performance metrics for an individual walk-forward validation fold."""
+    fold_id: str
+    train_start_utc: str
+    train_end_utc: str
+    test_start_utc: str
+    test_end_utc: str
+    train_candles: int
+    test_candles: int
+    directional_accuracy_pct: float
+    brier_score: float
+    strategy_trades: int
+    strategy_win_rate_pct: float
+    strategy_net_pnl_usd: float
+    strategy_return_pct: float
+    strategy_max_dd_pct: float
+    strategy_profit_factor: float
+    strategy_fees_usd: float
+    bnh_return_pct: float
+    outperformed_buy_and_hold: bool
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
