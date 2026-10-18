@@ -1,0 +1,119 @@
+{
+  "manifest_id": "PFM-SPRINT-11-15-CANONICAL",
+  "manifest_version": "1.0.0-sprint11.15",
+  "effective_date_utc": "2026-10-18T21:00:00Z",
+  "code_base_commit": "7ee1104564cfe2283d234284e220d0ef06f40963",
+  "freeze_status": "FROZEN_BEFORE_UNSEEN_EVALUATION",
+  "winner_selection_status": "FORBIDDEN_NO_WINNER_SELECTED",
+  "winner_selection_rationale": "The holdout partition (bars 86,724 to 105,120) has been repeatedly inspected across Sprints 11.10, 11.11, 11.12, 11.13, and 11.14. Under strict scientific methodology, selecting a winner using research-contaminated historical partitions constitutes survivorship/selection bias. True prospective evaluation requires freezing candidate policies prior to observing unseen market data.",
+  "canonical_benchmark_dataset": {
+    "file": "market_state_dataset.parquet",
+    "sha256_fingerprint": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487",
+    "symbol": "BTCUSDT",
+    "interval": "5m",
+    "total_candles": 105120,
+    "historical_holdout_start_bar": 86724,
+    "historical_holdout_end_bar": 105120
+  },
+  "execution_policy_standard": {
+    "policy_version": "2.0.0-sprint11.13",
+    "nominal_roundtrip_friction_bps": 30.0,
+    "taker_entry_fee_bps": 10.0,
+    "taker_exit_fee_bps": 10.0,
+    "entry_slippage_bps": 5.0,
+    "exit_slippage_bps": 5.0,
+    "initial_capital_usdt": 10000.0,
+    "allocation_cap_pct": 98.0,
+    "execution_timing": "NEXT_BAR_OPEN",
+    "intrabar_priority": "Pessimistic: STOP_LOSS evaluated before TAKE_PROFIT if both touched",
+    "cash_floor_usdt": 0.0,
+    "inventory_floor_btc": 0.0
+  },
+  "candidate_policies": {
+    "POLICY_A_USDT_CASH": {
+      "policy_id": "POLICY_A_USDT_CASH",
+      "policy_name": "USDT Cash Capital Preservation",
+      "role": "Passive risk-free benchmark",
+      "description": "Maintains 100% USDT cash balance at all times. Emits WAIT_USDT on every observation cycle. Provides true opportunity cost reference.",
+      "active_trading": false,
+      "frozen_parameters": {
+        "allocation_pct": 0.0,
+        "rebalance_frequency": "NONE"
+      }
+    },
+    "POLICY_B_BTC_BUY_AND_HOLD": {
+      "policy_id": "POLICY_B_BTC_BUY_AND_HOLD",
+      "policy_name": "BTC Spot Buy-and-Hold Benchmark",
+      "role": "Beta market benchmark",
+      "description": "Allocates 98% of capital to BTC spot at first observable price and holds through the evaluation horizon.",
+      "active_trading": false,
+      "frozen_parameters": {
+        "initial_allocation_cap_pct": 98.0,
+        "rebalance_frequency": "NONE"
+      }
+    },
+    "POLICY_C_TREND48_FOLLOWING": {
+      "policy_id": "POLICY_C_TREND48_FOLLOWING",
+      "policy_name": "Classic 48-Hour Trend Following Model",
+      "role": "Unfiltered momentum baseline",
+      "description": "Enters spot long when BTC close > 48h Simple Moving Average; exits when BTC close < 48h Simple Moving Average.",
+      "active_trading": true,
+      "frozen_parameters": {
+        "trend_window_hours": 48,
+        "trend_window_bars": 576,
+        "entry_threshold_pct": 0.0,
+        "allocation_cap_pct": 98.0
+      }
+    },
+    "POLICY_D_SELECTIVE_TREND_ONLY": {
+      "policy_id": "POLICY_D_SELECTIVE_TREND_ONLY",
+      "policy_name": "Selective Regime-Aware Trend Policy (No Analogues)",
+      "role": "Multi-timeframe structural candidate",
+      "description": "Requires multi-timeframe trend alignment (24h and 72h SMA), anti-chase extension cap, and volatility boundary gating. Does not consult historical analogues.",
+      "active_trading": true,
+      "frozen_parameters": {
+        "fast_sma_hours": 24,
+        "fast_sma_bars": 288,
+        "slow_sma_hours": 72,
+        "slow_sma_bars": 864,
+        "anti_chase_max_extension_pct": 2.25,
+        "min_volatility_atr_pct": 0.015,
+        "max_volatility_atr_pct": 0.065,
+        "fixed_stop_loss_pct": 2.50,
+        "fixed_take_profit_pct": 5.00,
+        "post_exit_cooldown_bars": 72,
+        "allocation_cap_pct": 98.0
+      }
+    },
+    "POLICY_E_SELECTIVE_ANALOGUE_ASSISTED": {
+      "policy_id": "POLICY_E_SELECTIVE_ANALOGUE_ASSISTED",
+      "policy_name": "Selective Analogue-Assisted Spot Policy",
+      "role": "Hybrid structural + behavioral candidate",
+      "description": "Enforces Policy D multi-timeframe structural gating and additionally requires positive directional skew confirmation from top historical analogues.",
+      "active_trading": true,
+      "frozen_parameters": {
+        "fast_sma_hours": 24,
+        "fast_sma_bars": 288,
+        "slow_sma_hours": 72,
+        "slow_sma_bars": 864,
+        "anti_chase_max_extension_pct": 2.25,
+        "min_volatility_atr_pct": 0.015,
+        "max_volatility_atr_pct": 0.065,
+        "analogue_min_similarity": 0.75,
+        "analogue_min_positive_prob": 0.60,
+        "fixed_stop_loss_pct": 2.50,
+        "fixed_take_profit_pct": 5.00,
+        "post_exit_cooldown_bars": 72,
+        "allocation_cap_pct": 98.0
+      }
+    }
+  },
+  "prospective_evaluation_gates": {
+    "minimum_observation_duration_calendar_days": 30,
+    "minimum_observation_bars": 8640,
+    "minimum_trade_cycles": 20,
+    "max_drawdown_stop_condition_pct": 15.0,
+    "consecutive_loss_stop_condition_count": 5,
+    "data_feed_latency_stop_condition_minutes": 60.0
+  }
+}

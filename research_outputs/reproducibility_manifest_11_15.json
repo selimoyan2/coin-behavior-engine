@@ -1,0 +1,44 @@
+{
+  "sprint": "11.15",
+  "title": "Prospective Research Readiness & Shadow Decision Protocol",
+  "generation_timestamp_utc": "2026-10-18T18:19:11.483733+00:00",
+  "code_base_commit": "7ee1104564cfe2283d234284e220d0ef06f40963",
+  "dataset_sha256": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487",
+  "execution_policy": {
+    "standard": "Canonical Execution Policy V2",
+    "version": "2.0.0-sprint11.13",
+    "nominal_roundtrip_friction_bps": 30.0
+  },
+  "status_declarations": {
+    "historical_accounting_status": "VERIFIED_CANONICAL_POLICY_V2",
+    "policy_freeze_status": "FROZEN_BEFORE_UNSEEN_EVALUATION",
+    "prospective_readiness_status": "READY_FOR_OPERATOR_AUTHORIZATION",
+    "actual_prospective_observation_status": "NOT_STARTED",
+    "live_trading_authorization_status": "UNAUTHORIZED_PROHIBITED"
+  },
+  "candidate_policies_frozen": [
+    "POLICY_A_USDT_CASH",
+    "POLICY_B_BTC_BUY_AND_HOLD",
+    "POLICY_C_TREND48_FOLLOWING",
+    "POLICY_D_SELECTIVE_TREND_ONLY",
+    "POLICY_E_SELECTIVE_ANALOGUE_ASSISTED"
+  ],
+  "winner_selection_status": "FORBIDDEN_NO_WINNER_SELECTED",
+  "demonstration_replay": {
+    "total_decisions_issued": 500,
+    "chain_integrity_verified": true,
+    "chain_head_hash": "58db65be86a165b325fa1ede773c12655b5261ca011f0085c255350b4f9e09ef",
+    "action_counts": {
+      "WAIT_USDT": 314,
+      "BUY_CANDIDATE": 186
+    },
+    "outcomes_recorded": 476,
+    "ending_equity_usdt": 10000.0
+  },
+  "audit_info": {
+    "dataset_file": "market_state_dataset.parquet",
+    "sha256_fingerprint": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487",
+    "total_candles": 105120,
+    "fingerprint_verified": true
+  }
+}

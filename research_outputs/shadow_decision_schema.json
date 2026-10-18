@@ -1,0 +1,168 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CBE Shadow Decision Record Schema",
+  "description": "Formal JSON schema defining the machine-readable, immutable shadow decision record under CBE Sprint 11.15 Shadow Decision Protocol.",
+  "type": "object",
+  "required": [
+    "decision_id",
+    "sequence_number",
+    "observation_timestamp_utc",
+    "data_availability_timestamp_utc",
+    "source_identifier",
+    "btc_spot_reference_price",
+    "hypothetical_usdt_balance",
+    "hypothetical_btc_balance",
+    "hypothetical_total_equity_usdt",
+    "market_regime",
+    "forecast_probabilities",
+    "uncertainty_score",
+    "decision",
+    "policy_id",
+    "policy_version",
+    "code_commit_hash",
+    "parent_decision_hash",
+    "decision_hash"
+  ],
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "pattern": "^DEC-[0-9]{12}-[0-9]{5}$",
+      "description": "Unique deterministic decision identifier."
+    },
+    "sequence_number": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Monotonically increasing 0-indexed sequence position in the append-only hash chain."
+    },
+    "observation_timestamp_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp of the 5-minute bar close being evaluated."
+    },
+    "data_availability_timestamp_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Point-in-time timestamp when market features became available. Must be >= observation_timestamp_utc."
+    },
+    "source_identifier": {
+      "type": "string",
+      "description": "Provenance identifier of the underlying market feed (e.g. binance_spot_btcusdt_5m_canonical)."
+    },
+    "btc_spot_reference_price": {
+      "type": "number",
+      "exclusiveMinimum": 0.0,
+      "description": "Last observable BTC/USDT spot reference price (USD per BTC)."
+    },
+    "hypothetical_usdt_balance": {
+      "type": "number",
+      "minimum": 0.0,
+      "description": "Hypothetical cash balance in USDT (non-negative, strictly enforced cash floor)."
+    },
+    "hypothetical_btc_balance": {
+      "type": "number",
+      "minimum": 0.0,
+      "description": "Hypothetical spot inventory in BTC (non-negative, long-only)."
+    },
+    "hypothetical_total_equity_usdt": {
+      "type": "number",
+      "minimum": 0.0,
+      "description": "Mark-to-market hypothetical portfolio equity (USDT + BTC * ReferencePrice)."
+    },
+    "market_regime": {
+      "type": "string",
+      "enum": [
+        "TRENDING_BULL",
+        "TRENDING_BEAR",
+        "SIDEWAYS",
+        "HIGH_VOLATILITY",
+        "UNCERTAIN"
+      ],
+      "description": "Classified macro/micro market regime at decision time."
+    },
+    "forecast_probabilities": {
+      "type": "object",
+      "required": ["p_up", "p_down", "p_flat"],
+      "properties": {
+        "p_up": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "p_down": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "p_flat": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        }
+      },
+      "description": "Directional return forecast probabilities."
+    },
+    "uncertainty_score": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Epistemic and aleatoric predictive uncertainty score."
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "WAIT_USDT",
+        "BUY_CANDIDATE",
+        "HOLD_BTC",
+        "REDUCE_BTC",
+        "EXIT_TO_USDT",
+        "NO_DECISION_DATA"
+      ],
+      "description": "Discrete actionable shadow trading decision."
+    },
+    "hypothetical_target_price": {
+      "type": ["number", "null"],
+      "minimum": 0.0,
+      "description": "Hypothetical take-profit price target."
+    },
+    "hypothetical_stop_price": {
+      "type": ["number", "null"],
+      "minimum": 0.0,
+      "description": "Hypothetical stop-loss price floor."
+    },
+    "evidence_rationale": {
+      "type": "object",
+      "description": "Machine-readable dictionary documenting evaluated features, active filters, and gate outcomes."
+    },
+    "policy_id": {
+      "type": "string",
+      "enum": [
+        "POLICY_A_USDT_CASH",
+        "POLICY_B_BTC_BUY_AND_HOLD",
+        "POLICY_C_TREND48_FOLLOWING",
+        "POLICY_D_SELECTIVE_TREND_ONLY",
+        "POLICY_E_SELECTIVE_ANALOGUE_ASSISTED"
+      ],
+      "description": "Identifier of the frozen research policy generating the decision."
+    },
+    "policy_version": {
+      "type": "string",
+      "description": "Frozen version tag of the policy specification."
+    },
+    "code_commit_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$",
+      "description": "Full 40-character git commit SHA corresponding to the engine executing this policy."
+    },
+    "parent_decision_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 cryptographic hash of the immediate predecessor decision record, forming an unbroken hash chain. Genesis is 64 zeros."
+    },
+    "decision_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Deterministic SHA-256 hash computed over the canonical, alphabetically sorted JSON serialization of all payload fields."
+    }
+  },
+  "additionalProperties": false
+}
