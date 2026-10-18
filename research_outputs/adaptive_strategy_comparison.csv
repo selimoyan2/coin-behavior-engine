@@ -1,0 +1,9 @@
+strategy_id,strategy_name,trades_count,win_rate_pct,gross_pnl_usd,total_fees_usd,total_slippage_usd,total_friction_usd,net_pnl_usd,return_pct,annualized_return_pct,max_drawdown_pct,sharpe_ratio,sortino_ratio,profit_factor,time_in_usdt_pct,time_in_btc_pct,avoided_drawdown_pct,outperformed_buy_and_hold,excess_return_vs_bnh_pct
+STRAT_A_CASH,Strategy A: USDT Cash,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,100.0,0.0,8.55,False,-29.85
+STRAT_B_BNH,Strategy B: Buy-and-Hold BTC,1,100.0,3018.1,23.0,10.0,33.0,2985.1,29.85,170.58,8.55,4.21,5.26,99.0,0.0,100.0,0.0,False,0.0
+STRAT_C_SWITCH,Strategy C: Simple Trend/Cash Switching,65,20.0,1498.88,1316.09,653.19,1969.28,-470.4,-4.7,-26.86,21.65,-0.7,-0.48,0.89,47.83,52.17,0.0,False,-34.55
+STRAT_D_TREND48,Strategy D: 48h Trend Following,19,47.37,1512.38,388.05,193.95,582.0,930.38,9.3,53.14,15.88,2.04,1.36,1.51,57.36,42.64,0.0,False,-20.55
+STRAT_E_ANALOGUE24,Strategy E: 24h Analogue Strategy,49,44.9,2122.53,1039.59,519.56,1559.15,563.38,5.63,32.17,13.26,1.17,1.03,1.16,23.29,76.71,0.0,False,-24.22
+STRAT_F_REGIME_GATED,Strategy F: Regime-Gated Analogue,65,30.77,1840.14,1328.77,664.04,1992.81,-152.67,-1.53,-8.74,17.52,-0.21,-0.16,0.96,45.63,54.37,0.0,False,-31.38
+STRAT_G_DYNAMIC_ADAPTIVE,Strategy G: Dynamic Adaptive Position Engine,98,37.76,2611.79,1952.0,970.87,2922.87,-311.08,-3.11,-17.77,15.23,-0.57,-0.42,0.93,47.52,52.48,0.0,False,-32.96
+STRAT_H_REVERSAL_CONFIRM,Strategy H: Conservative Reversal Confirmation,116,6.9,76.25,1862.56,930.8,2793.36,-2717.11,-27.17,-155.26,28.8,-12.06,-4.41,0.19,84.38,15.62,0.0,False,-57.02

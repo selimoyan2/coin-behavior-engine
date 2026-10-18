@@ -45,3 +45,5 @@ htmlcov/
 data/raw/
 data/derived/
 data/reports/test_*/
+data/shadow_v080/
+

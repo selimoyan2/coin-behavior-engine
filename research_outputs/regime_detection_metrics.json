@@ -1,0 +1,19 @@
+{
+  "total_bars_evaluated": 105120,
+  "regime_distribution_pct": {
+    "SIDEWAYS": 42.32,
+    "UNCERTAIN": 23.55,
+    "TRENDING_BULL": 11.81,
+    "HIGH_VOLATILITY": 11.71,
+    "TRENDING_BEAR": 8.61,
+    "POSSIBLE_REVERSAL": 2.0
+  },
+  "regime_transitions_count": 12721,
+  "mean_detection_delay_bars": 14.88,
+  "median_detection_delay_bars": 8,
+  "drawdown_avoided_in_usdt_pct": 18.74,
+  "average_missed_recovery_gain_pct": 0.26,
+  "false_bear_transitions": 0,
+  "false_bull_transitions": 0,
+  "exposure_in_favorable_regimes_pct": 54.13
+}

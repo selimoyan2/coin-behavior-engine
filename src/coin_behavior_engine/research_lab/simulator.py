@@ -107,6 +107,17 @@ class HistoricalPaperSimulator:
                 exit_price = 0.0
                 exit_reason = TradeExitReason.STOP_LOSS
 
+                # Dynamic position updates from previous bar decision (earliest effective next bar)
+                if (i - 1) in dec_by_idx:
+                    prev_d = dec_by_idx[i - 1]
+                    if prev_d.action == DecisionAction.UPDATE_STOP and prev_d.stop_loss_price is not None:
+                        # Anti-stop-widening invariant: stop can only be tightened upward to protect capital
+                        if active_trade["stop_loss_price"] is not None and prev_d.stop_loss_price < active_trade["stop_loss_price"]:
+                            raise ValueError(f"Illegal stop widening: new stop {prev_d.stop_loss_price} < current stop {active_trade['stop_loss_price']}")
+                        active_trade["stop_loss_price"] = prev_d.stop_loss_price
+                    elif prev_d.action == DecisionAction.UPDATE_TARGET and prev_d.target_price is not None:
+                        active_trade["target_price"] = prev_d.target_price
+
                 sl_price = active_trade["stop_loss_price"]
                 tp_price = active_trade["target_price"]
 
@@ -127,7 +138,12 @@ class HistoricalPaperSimulator:
                     raw_exit = c.close
                     exit_price = raw_exit * (1.0 - self.config.slippage_pct)
                     exit_reason = TradeExitReason.TIME_EXPIRY
-                elif i in dec_by_idx and dec_by_idx[i].action in (DecisionAction.SELL_CANDIDATE, DecisionAction.REDUCE_EXPOSURE):
+                elif i in dec_by_idx and dec_by_idx[i].action in (
+                    DecisionAction.SELL_CANDIDATE,
+                    DecisionAction.REDUCE_EXPOSURE,
+                    DecisionAction.REDUCE_POSITION,
+                    DecisionAction.EXIT_POSITION,
+                ):
                     exit_triggered = True
                     raw_exit = c.close
                     exit_price = raw_exit * (1.0 - self.config.slippage_pct)

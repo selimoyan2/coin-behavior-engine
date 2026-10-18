@@ -24,15 +24,28 @@ class Resolution(str, enum.Enum):
 class MarketRegimeType(str, enum.Enum):
     TRENDING_BULL = "TRENDING_BULL"
     TRENDING_BEAR = "TRENDING_BEAR"
+    SIDEWAYS = "SIDEWAYS"
+    HIGH_VOLATILITY = "HIGH_VOLATILITY"
+    POSSIBLE_REVERSAL = "POSSIBLE_REVERSAL"
+    UNCERTAIN = "UNCERTAIN"
+    # Legacy aliases for backward compatibility
     HIGH_VOLATILITY_EXPANSION = "HIGH_VOLATILITY_EXPANSION"
     LOW_VOLATILITY_COMPRESSION = "LOW_VOLATILITY_COMPRESSION"
     MEAN_REVERTING = "MEAN_REVERTING"
     CASCADE_LIQUIDATION = "CASCADE_LIQUIDATION"
-    UNCERTAIN = "UNCERTAIN"
 
 
 class DecisionAction(str, enum.Enum):
+    # Sprint 11.10 Stateful Spot Actions
+    WAIT_USDT = "WAIT_USDT"
     BUY_CANDIDATE = "BUY_CANDIDATE"
+    HOLD_BTC = "HOLD_BTC"
+    REDUCE_POSITION = "REDUCE_POSITION"
+    EXIT_POSITION = "EXIT_POSITION"
+    UPDATE_TARGET = "UPDATE_TARGET"
+    UPDATE_STOP = "UPDATE_STOP"
+    NO_DECISION_DATA = "NO_DECISION_DATA"
+    # Legacy aliases for backward compatibility
     SELL_CANDIDATE = "SELL_CANDIDATE"
     HOLD = "HOLD"
     REDUCE_EXPOSURE = "REDUCE_EXPOSURE"
@@ -796,6 +809,149 @@ class CostSensitivityRecord:
     net_return_pct: float
     profit_factor: float
     is_net_profitable: bool
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class MarketRegimeRecord:
+    """Point-in-time classification of market condition without future leakage."""
+    timestamp_open: int
+    datetime_utc: str
+    close_price: float
+    regime: str  # TRENDING_BULL, TRENDING_BEAR, SIDEWAYS, HIGH_VOLATILITY, POSSIBLE_REVERSAL, UNCERTAIN
+    detection_delay_bars: int
+    bull_confidence: float
+    bear_confidence: float
+    volatility_score: float
+    reversal_probability: float
+    trend_4h_pct: float
+    realized_vol_24: float
+    is_transition_point: bool
+    transition_from: Optional[str] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class StatefulPortfolioRecord:
+    """Explicit point-in-time tracking of portfolio balance, BTC inventory, and thesis state."""
+    timestamp_open: int
+    datetime_utc: str
+    close_price: float
+    available_usdt: float
+    btc_quantity: float
+    portfolio_equity_usd: float
+    cost_basis_usd: float
+    unrealized_pnl_usd: float
+    unrealized_pnl_pct: float
+    realized_pnl_usd: float
+    position_age_bars: int
+    current_risk_limit_pct: float
+    current_target_price: Optional[float]
+    current_stop_price: Optional[float]
+    decision_action: str  # WAIT_USDT, BUY_CANDIDATE, HOLD_BTC, REDUCE_POSITION, EXIT_POSITION, UPDATE_TARGET, UPDATE_STOP, NO_DECISION_DATA
+    market_regime: str
+    investment_thesis: str
+    invalidation_condition: str
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class DynamicPositionUpdateRecord:
+    """Audit log of dynamic updates made to an active spot BTC position."""
+    update_id: str
+    timestamp_open: int
+    datetime_utc: str
+    trade_id: str
+    update_type: str  # UPDATE_STOP, UPDATE_TARGET, REDUCE_EXPOSURE, TRAILING_STOP_ADVANCE
+    previous_value: float
+    new_value: float
+    change_pct: float
+    justification_reason: str
+    earliest_effective_bar_idx: int
+    market_regime: str
+    current_price: float
+    was_stop_widened: bool  # Strictly False: stop widening to delay loss is strictly prohibited
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class NoTradeOpportunityRecord:
+    """Quantitative measurement of abstention quality (waiting in USDT)."""
+    period_id: str
+    start_timestamp: int
+    start_datetime_utc: str
+    end_timestamp: int
+    end_datetime_utc: str
+    duration_bars: int
+    duration_hours: float
+    abstention_reason: str
+    btc_start_price: float
+    btc_end_price: float
+    btc_min_price: float
+    btc_max_price: float
+    avoided_btc_drawdown_pct: float
+    missed_btc_appreciation_pct: float
+    net_abstention_benefit_pct: float
+    re_entry_delay_bars: int
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class ReversalEvaluationRecord:
+    """Evaluation of reversal pattern detection vs confirmation delay."""
+    event_id: str
+    trough_timestamp: int
+    trough_datetime_utc: str
+    trough_price: float
+    reversal_type: str  # CAPITULATION_ABSORPTION, FAILED_BREAKDOWN, BULL_EXHAUSTION, SUSTAINED_RECOVERY
+    early_signal_timestamp: int
+    early_signal_price: float
+    confirmation_timestamp: int
+    confirmation_price: float
+    detection_delay_bars: int
+    confirmation_lag_bars: int
+    missed_upside_pct: float
+    avoided_false_reversal_drawdown_pct: float
+    is_sustained_reversal: bool
+    is_false_alarm: bool
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class AdaptiveStrategyComparisonRecord:
+    """Comprehensive benchmark across all 8 adaptive strategies (A through H)."""
+    strategy_id: str
+    strategy_name: str
+    trades_count: int
+    win_rate_pct: float
+    gross_pnl_usd: float
+    total_fees_usd: float
+    total_slippage_usd: float
+    total_friction_usd: float
+    net_pnl_usd: float
+    return_pct: float
+    annualized_return_pct: float
+    max_drawdown_pct: float
+    sharpe_ratio: float
+    sortino_ratio: float
+    profit_factor: float
+    time_in_usdt_pct: float
+    time_in_btc_pct: float
+    avoided_drawdown_pct: float
+    outperformed_buy_and_hold: bool
+    excess_return_vs_bnh_pct: float
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
