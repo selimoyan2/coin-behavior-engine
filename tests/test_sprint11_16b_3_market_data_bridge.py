@@ -97,10 +97,11 @@ def test_01_valid_864_candle_warmup():
     bridge = ShadowMarketDataBridge(min_warmup_bars=864)
     base_t = datetime(2026, 1, 1, 0, 0, tzinfo=timezone.utc)
     seed = [_generate_synthetic_candle(i, base_t) for i in range(864)]
+    digest = HistoricalSeedProvenance.compute_canonical_digest(seed)
     prov = HistoricalSeedProvenance(
         seed_id="SEED-001",
         dataset_name="canonical_test_seed",
-        dataset_sha256="dummy",
+        dataset_sha256=digest,
         start_timestamp_utc=seed[0].timestamp_open_utc,
         end_timestamp_utc=seed[-1].timestamp_open_utc,
         candle_count=864,
@@ -142,7 +143,8 @@ def test_03_historical_seed_overlapping_first_live_candle():
     bridge = ShadowMarketDataBridge(min_warmup_bars=864)
     base_t = datetime(2026, 1, 1, 0, 0, tzinfo=timezone.utc)
     seed = [_generate_synthetic_candle(i, base_t) for i in range(864)]
-    prov = HistoricalSeedProvenance("SEED-003", "canonical", "dummy", seed[0].timestamp_open_utc, seed[-1].timestamp_open_utc, 864, True)
+    digest = HistoricalSeedProvenance.compute_canonical_digest(seed)
+    prov = HistoricalSeedProvenance("SEED-003", "canonical", digest, seed[0].timestamp_open_utc, seed[-1].timestamp_open_utc, 864, True)
     bridge.buffer.ingest_seed_candles(seed, prov)
 
     # Ingest live candle overlapping bar 863 (last seed candle)
@@ -161,7 +163,8 @@ def test_04_historical_to_live_discontinuity():
     bridge = ShadowMarketDataBridge(min_warmup_bars=864)
     base_t = datetime(2026, 1, 1, 0, 0, tzinfo=timezone.utc)
     seed = [_generate_synthetic_candle(i, base_t) for i in range(864)]
-    prov = HistoricalSeedProvenance("SEED-004", "canonical", "dummy", seed[0].timestamp_open_utc, seed[-1].timestamp_open_utc, 864, True)
+    digest = HistoricalSeedProvenance.compute_canonical_digest(seed)
+    prov = HistoricalSeedProvenance("SEED-004", "canonical", digest, seed[0].timestamp_open_utc, seed[-1].timestamp_open_utc, 864, True)
     bridge.buffer.ingest_seed_candles(seed, prov)
 
     # First live candle skips bar 864 and arrives at bar 865 (10-minute gap)
@@ -289,7 +292,8 @@ def test_12_feature_parity_with_frozen_reference_policy():
 
     # Linearly increasing prices: 80000 + i
     seed = [_generate_synthetic_candle(i, base_t, price=80000.0 + i) for i in range(864)]
-    prov = HistoricalSeedProvenance("SEED-012", "canonical", "dummy", seed[0].timestamp_open_utc, seed[-1].timestamp_open_utc, 864, True)
+    digest = HistoricalSeedProvenance.compute_canonical_digest(seed)
+    prov = HistoricalSeedProvenance("SEED-012", "canonical", digest, seed[0].timestamp_open_utc, seed[-1].timestamp_open_utc, 864, True)
     bridge.buffer.ingest_seed_candles(seed, prov)
 
     ok, feat, err = bridge.feature_adapter.extract_features()
@@ -437,7 +441,8 @@ def test_18_separation_of_historical_seed_and_prospective_outcomes():
     bridge = ShadowMarketDataBridge(min_warmup_bars=864)
     base_t = datetime(2026, 1, 1, 0, 0, tzinfo=timezone.utc)
     seed = [_generate_synthetic_candle(i, base_t) for i in range(864)]
-    prov = HistoricalSeedProvenance("SEED-018", "canonical", "dummy", seed[0].timestamp_open_utc, seed[-1].timestamp_open_utc, 864, True)
+    digest = HistoricalSeedProvenance.compute_canonical_digest(seed)
+    prov = HistoricalSeedProvenance("SEED-018", "canonical", digest, seed[0].timestamp_open_utc, seed[-1].timestamp_open_utc, 864, True)
     bridge.buffer.ingest_seed_candles(seed, prov)
 
     for c in bridge.buffer.candles:

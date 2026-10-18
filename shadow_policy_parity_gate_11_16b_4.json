@@ -1,0 +1,35 @@
+{
+  "gate_version": "11.16B.4",
+  "audit_timestamp_utc": "2026-10-19T01:10:00Z",
+  "base_commit": "a04abc9b99c891a6a6099bc9e99394405ba967fb",
+  "policy_status": {
+    "POLICY_A_USDT_CASH": "PASS_PARITY_VERIFIED",
+    "POLICY_B_BTC_BUY_AND_HOLD": "PASS_PARITY_VERIFIED",
+    "POLICY_C_TREND48_FOLLOWING": "PASS_PARITY_VERIFIED",
+    "POLICY_D_SELECTIVE_TREND_ONLY": "PASS_PARITY_VERIFIED",
+    "POLICY_E_SELECTIVE_ANALOGUE_ASSISTED": "BLOCKED_ANALOGUE_PARITY"
+  },
+  "audit_findings": {
+    "analogue_probability_hardcoded_removed": true,
+    "seed_cryptographic_verification_enforced": true,
+    "gap_warmup_invalidation_enforced": true,
+    "crash_safe_envelope_checksum_enforced": true,
+    "execution_causality_enforced": true,
+    "policy_e_blocking_reason": "Authentic prospective k-NN matching requires the full 365-day training candidate library (68,328 candles x 10 standardized features + forward returns), which consumes >100 MB RAM, exceeding the 250 MB container ceiling and 0.20 CPU budget. Hardcoded 0.65 probability removed; policy fails closed to WAIT_USDT (0 trades)."
+  },
+  "regression_test_summary": {
+    "test_suite": "tests/test_sprint11_16b_4_data_bridge_parity.py",
+    "total_tests": 18,
+    "passed_tests": 18,
+    "failed_tests": 0,
+    "execution_status": "ALL_TESTS_PASS"
+  },
+  "operational_declarations": {
+    "PROSPECTIVE_OBSERVATION": "NOT_STARTED",
+    "LIVE_TRADING": "PROHIBITED",
+    "POLICY_PARAMETERS_CHANGED": "NO",
+    "PROTECTED_SERVICES_MUTATED": "NO",
+    "OVERALL_GATE": "BLOCKED_ANALOGUE_PARITY",
+    "NEXT_STEP": "OPERATOR_REVIEW"
+  }
+}

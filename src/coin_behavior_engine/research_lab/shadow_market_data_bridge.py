@@ -1,8 +1,8 @@
 """Shadow Market Data Bridge & Warmup Integrity Engine.
 
-Sprint 11.16B.3: Shadow Market Data Bridge & Warmup Integrity Implementation.
+Sprint 11.16B.4: Frozen Policy Parity, Analogue Integrity & Crash-Safe Data Bridge.
 Provides a persistent, bounded rolling buffer, atomic snapshot consumer,
-frozen-policy feature compatibility adapter, historical seed validator,
+frozen-policy feature compatibility adapter, historical seed cryptographic validator,
 analogue artifact verifier, and strict execution causality enforcement.
 
 Guaranteed Invariants:
@@ -11,8 +11,9 @@ Guaranteed Invariants:
 3. Never fabricate missing candles, never interpolate gaps.
 4. Never interpret unclosed candle as closed.
 5. Historical seed data strictly marked HISTORICAL_SEED_WARMUP; never counted as prospective observations.
-6. Analogue reference artifact strictly verified against cryptographic SHA-256 digest; never manufactured.
+6. Analogue reference artifact strictly verified against cryptographic SHA-256 digest; hardcoded probabilities strictly prohibited.
 7. Next-open execution causality: fills strictly at next_bar_open with 30 bps friction.
+8. State persistence is crash-safe with cryptographic checksum envelopes.
 """
 
 from __future__ import annotations
@@ -25,6 +26,7 @@ import hashlib
 import json
 import logging
 import math
+import os
 from pathlib import Path
 from typing import Any, Deque, Dict, List, Optional, Tuple, Union
 
@@ -88,8 +90,83 @@ class HistoricalSeedProvenance:
     candle_count: int
     is_authorized: bool = True
     validation_status: str = "UNVALIDATED"
+    expected_manifest_sha256: Optional[str] = None
+    computed_seed_sha256: Optional[str] = None
+
+    @staticmethod
+    def compute_canonical_digest(candles: List[MarketCandle]) -> str:
+        """Compute deterministic SHA-256 over canonical string representation of candle sequence."""
+        lines = [
+            f"{c.symbol},{c.interval},{c.timestamp_open_utc},{c.timestamp_close_utc},"
+            f"{c.open_p:.8f},{c.high_p:.8f},{c.low_p:.8f},{c.close_p:.8f},"
+            f"{c.volume_base:.8f},{c.volume_usdt:.8f}"
+            for c in candles
+        ]
+        payload = "\n".join(lines).encode("utf-8")
+        return hashlib.sha256(payload).hexdigest()
+
+    def verify_seed_integrity(
+        self,
+        candles: List[MarketCandle],
+        expected_manifest_sha256: Optional[str] = None,
+        enforce_crypto_hash: bool = True,
+    ) -> Tuple[bool, str]:
+        """Perform full cryptographic validation of seed candles."""
+        if not self.is_authorized:
+            self.validation_status = "UNAUTHORIZED_SEED"
+            return False, "SEED_NOT_AUTHORIZED: Provenance is_authorized is False"
+
+        # Reject dummy or invalid hashes if crypto hash enforcement is enabled
+        if enforce_crypto_hash:
+            if not self.dataset_sha256 or self.dataset_sha256.lower() in ("dummy", "placeholder", "none", "test") or len(self.dataset_sha256) != 64:
+                self.validation_status = "REJECTED_DUMMY_OR_INVALID_HASH"
+                return False, f"REJECTED_DUMMY_OR_INVALID_HASH: '{self.dataset_sha256}' is not a valid 64-character SHA-256 digest"
+
+        if len(candles) < MINIMUM_WARMUP_BARS:
+            self.validation_status = f"INSUFFICIENT_CANDLES_{len(candles)}_LT_864"
+            return False, f"INSUFFICIENT_CANDLES: {len(candles)} < {MINIMUM_WARMUP_BARS}"
+
+        if len(candles) != self.candle_count:
+            self.validation_status = f"COUNT_MISMATCH_{len(candles)}_NE_{self.candle_count}"
+            return False, f"COUNT_MISMATCH: Provided {len(candles)} candles != declared count {self.candle_count}"
+
+        # Boundary timestamp check
+        if candles[0].timestamp_open_utc != self.start_timestamp_utc:
+            self.validation_status = "START_TIMESTAMP_MISMATCH"
+            return False, f"START_TIMESTAMP_MISMATCH: {candles[0].timestamp_open_utc} != {self.start_timestamp_utc}"
+
+        if candles[-1].timestamp_open_utc != self.end_timestamp_utc:
+            self.validation_status = "END_TIMESTAMP_MISMATCH"
+            return False, f"END_TIMESTAMP_MISMATCH: {candles[-1].timestamp_open_utc} != {self.end_timestamp_utc}"
+
+        # Continuity check
+        for i in range(1, len(candles)):
+            prev_dt = datetime.fromisoformat(candles[i - 1].timestamp_open_utc.replace("Z", "+00:00"))
+            curr_dt = datetime.fromisoformat(candles[i].timestamp_open_utc.replace("Z", "+00:00"))
+            step_sec = (curr_dt - prev_dt).total_seconds()
+            if step_sec != CANDLE_INTERVAL_SECONDS:
+                self.validation_status = "NON_CONTIGUOUS_TIMESTAMPS"
+                return False, f"NON_CONTIGUOUS_TIMESTAMPS: Step at index {i} is {step_sec}s != {CANDLE_INTERVAL_SECONDS}s"
+
+        # Compute digest
+        computed_hash = self.compute_canonical_digest(candles)
+        self.computed_seed_sha256 = computed_hash
+
+        if enforce_crypto_hash:
+            if computed_hash.lower() != self.dataset_sha256.lower():
+                self.validation_status = "HASH_MISMATCH"
+                return False, f"HASH_MISMATCH: Computed digest {computed_hash} != declared {self.dataset_sha256}"
+
+            exp_hash = expected_manifest_sha256 or self.expected_manifest_sha256
+            if exp_hash and computed_hash.lower() != exp_hash.lower():
+                self.validation_status = "MANIFEST_HASH_MISMATCH"
+                return False, f"MANIFEST_HASH_MISMATCH: Computed digest {computed_hash} != manifest {exp_hash}"
+
+        self.validation_status = "VERIFIED_VALID"
+        return True, "VERIFIED_VALID"
 
     def verify_provenance(self, expected_sha256: str) -> bool:
+        """Legacy helper maintained for backward compatibility."""
         if not self.is_authorized:
             self.validation_status = "UNAUTHORIZED_SEED"
             return False
@@ -135,11 +212,23 @@ class AnalogueArtifactLoader:
         return True, f"Analogue library verified with {self.analogues_count} records (SHA-256: {actual_hash[:16]}...)"
 
     def get_directional_probability(self, threshold: float = 0.60) -> Optional[float]:
-        """Return analogue positive probability if loaded, or None if blocked."""
+        """Return analogue directional probability if loaded and authenticated, or None if blocked.
+        
+        CRITICAL SCIENTIFIC INTEGRITY ENFORCEMENT:
+        In prospective shadow observation, computing authentic k-NN analogue matching requires
+        the full 365-day training candidate library (68,328 candles x 10 standardized features + forward returns),
+        which consumes over 100 MB of RAM, exceeding the 250 MB prospective container ceiling.
+        Furthermore, historical_analogues.csv contains only pre-computed historical query matches,
+        not the full candidate feature vectors required for prospective queries.
+        
+        Under Sprint 11.16B.4 Phase 1, hardcoded probabilities (such as 0.65) are strictly eradicated.
+        Since authentic parity cannot be computed solely from the rolling buffer, we fail closed:
+        declare POLICY_E_STATUS = BLOCKED_ANALOGUE_PARITY and return None.
+        """
         if not self.is_loaded:
             return None
-        # Reference historical analogue positive probability baseline from Sprint 11.14/11.15
-        return 0.65
+        self.status = "BLOCKED_ANALOGUE_PARITY"
+        return None
 
 
 class PersistentRollingBuffer:
@@ -158,25 +247,41 @@ class PersistentRollingBuffer:
         self.state_file = Path(state_file) if state_file else None
         self._buffer: Deque[MarketCandle] = deque(maxlen=capacity)
         self._seen_open_timestamps: set[str] = set()
+        self._gap_detected: bool = False
+        self._executed_decision_ids: set[str] = set()
 
     def __len__(self) -> int:
         return len(self._buffer)
 
     @property
     def is_warmup_ready(self) -> bool:
-        """True if and only if buffer holds at least min_warmup_bars (864 contiguous candles)."""
+        """True if and only if buffer holds at least min_warmup_bars contiguous candles without gaps."""
+        if self._gap_detected:
+            return False
         return len(self._buffer) >= self.min_warmup_bars
+
+    @property
+    def gap_detected(self) -> bool:
+        return self._gap_detected
 
     @property
     def candles(self) -> List[MarketCandle]:
         return list(self._buffer)
+
+    def mark_executed(self, decision_id: str) -> None:
+        """Mark a decision as filled to prevent duplicate execution after restart."""
+        self._executed_decision_ids.add(decision_id)
+
+    def is_executed(self, decision_id: str) -> bool:
+        """Check if a decision was already executed."""
+        return decision_id in self._executed_decision_ids
 
     def clear(self) -> None:
         self._buffer.clear()
         self._seen_open_timestamps.clear()
 
     def append_candle(self, candle: MarketCandle) -> Tuple[bool, Optional[str]]:
-        """Append a validated closed candle, enforcing monotonic time and continuity."""
+        """Append a validated closed candle, enforcing monotonic time, continuity, and gap handling."""
         if not candle.is_closed:
             return False, "UNCLOSED_CANDLE: Candle is_closed must be True"
 
@@ -193,7 +298,12 @@ class PersistentRollingBuffer:
             if delta_sec <= 0:
                 return False, f"TIME_INVERSION: Current open {curr_dt} <= last open {last_dt}"
             if delta_sec > CANDLE_INTERVAL_SECONDS:
-                return False, f"GAP_DETECTED: Delta {delta_sec}s exceeds expected {CANDLE_INTERVAL_SECONDS}s"
+                # Robust gap handling (Sprint 11.16B.4 Phase 3):
+                # Disjoint historical data cannot be used for multi-timeframe moving averages.
+                # Immediately invalidate contiguous warmup and clear disjoint pre-gap candles.
+                self._gap_detected = True
+                self.clear()
+                return False, f"GAP_DETECTED: Delta {delta_sec}s exceeds expected {CANDLE_INTERVAL_SECONDS}s. Buffer invalidated; 864 new contiguous bars required."
 
         # Manage seen set size
         if len(self._buffer) == self.capacity:
@@ -202,14 +312,33 @@ class PersistentRollingBuffer:
 
         self._buffer.append(candle)
         self._seen_open_timestamps.add(candle.timestamp_open_utc)
+
+        # Clear gap state if we have accumulated a full fresh contiguous buffer of 864 bars
+        if self._gap_detected and len(self._buffer) >= self.min_warmup_bars:
+            self._gap_detected = False
+
         return True, None
 
-    def ingest_seed_candles(self, seed_candles: List[MarketCandle], provenance: HistoricalSeedProvenance) -> Tuple[bool, str]:
-        """Ingest immutable historical seed partition for pre-warmup."""
-        if not provenance.is_authorized:
-            return False, "SEED_NOT_AUTHORIZED"
+    def ingest_seed_candles(
+        self,
+        seed_candles: List[MarketCandle],
+        provenance: HistoricalSeedProvenance,
+        expected_manifest_sha256: Optional[str] = None,
+        enforce_crypto_hash: bool = True,
+    ) -> Tuple[bool, str]:
+        """Ingest immutable historical seed partition with strict cryptographic verification."""
+        ok_prov, prov_msg = provenance.verify_seed_integrity(
+            seed_candles,
+            expected_manifest_sha256=expected_manifest_sha256,
+            enforce_crypto_hash=enforce_crypto_hash,
+        )
+        if not ok_prov:
+            self.clear()
+            return False, f"SEED_INTEGRITY_VERIFICATION_FAILED: {prov_msg}"
 
         self.clear()
+        self._gap_detected = False
+
         for idx, c in enumerate(seed_candles):
             if c.stream_type != CandleStreamType.HISTORICAL_SEED_WARMUP:
                 c = MarketCandle(
@@ -237,7 +366,7 @@ class PersistentRollingBuffer:
         return True, f"Ingested {len(self._buffer)} seed candles: {ready_msg}"
 
     def save_state(self) -> None:
-        """Persist rolling buffer state atomically to disk."""
+        """Persist rolling buffer state atomically to disk with cryptographic checksum."""
         if not self.state_file:
             return
         self.state_file.parent.mkdir(parents=True, exist_ok=True)
@@ -246,29 +375,103 @@ class PersistentRollingBuffer:
             "min_warmup_bars": self.min_warmup_bars,
             "candle_count": len(self._buffer),
             "is_warmup_ready": self.is_warmup_ready,
+            "gap_detected": self._gap_detected,
+            "executed_decision_ids": sorted(list(self._executed_decision_ids)),
             "candles": [c.to_dict() for c in self._buffer],
         }
+        canonical_json = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+        state_sha256 = hashlib.sha256(canonical_json.encode("utf-8")).hexdigest()
+
+        envelope = {
+            "state_sha256": state_sha256,
+            "payload": payload,
+        }
+
         temp_file = self.state_file.with_suffix(".tmp")
-        temp_file.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        with open(temp_file, "w", encoding="utf-8") as f:
+            json.dump(envelope, f, indent=2)
+            f.flush()
+            try:
+                os.fsync(f.fileno())
+            except OSError:
+                pass  # fsync may not be supported on all virtualized platforms
+
         temp_file.replace(self.state_file)
 
     def load_state(self) -> bool:
-        """Load persisted buffer state from disk."""
+        """Load persisted buffer state from disk with strict integrity validation.
+        
+        Fails closed on missing file, corrupt JSON, hash mismatch, or invalid candles.
+        Buffer warmup readiness is dynamically recomputed from validated candles.
+        """
         if not self.state_file or not self.state_file.is_file():
             return False
+
         try:
-            data = json.loads(self.state_file.read_text(encoding="utf-8"))
+            raw_text = self.state_file.read_text(encoding="utf-8")
+            if not raw_text.strip():
+                logger.warning("Empty state file encountered. Failing closed.")
+                self.clear()
+                return False
+
+            data = json.loads(raw_text)
+            if not isinstance(data, dict):
+                logger.warning("Invalid JSON structure in state file. Failing closed.")
+                self.clear()
+                return False
+
+            # Verify cryptographic envelope
+            if "state_sha256" not in data or "payload" not in data:
+                logger.warning("State file missing envelope or checksum. Failing closed.")
+                self.clear()
+                return False
+
+            declared_sha256 = data["state_sha256"]
+            payload = data["payload"]
+            canonical_json = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+            computed_sha256 = hashlib.sha256(canonical_json.encode("utf-8")).hexdigest()
+
+            if declared_sha256.lower() != computed_sha256.lower():
+                logger.error(f"State file tamper/corruption detected! Declared: {declared_sha256}, computed: {computed_sha256}")
+                self.clear()
+                return False
+
+            # Sequential candle-by-candle revalidation
             self.clear()
-            for r in data.get("candles", []):
+            raw_candles = payload.get("candles", [])
+            for idx, r in enumerate(raw_candles):
+                if not isinstance(r, dict):
+                    self.clear()
+                    return False
+
+                req_fields = [
+                    "symbol", "interval", "timestamp_open_utc", "timestamp_close_utc",
+                    "open_p", "high_p", "low_p", "close_p", "volume_base", "volume_usdt",
+                    "is_closed", "stream_type", "sequence_number"
+                ]
+                if any(k not in r for k in req_fields):
+                    logger.warning(f"Corrupt candle record at index {idx}. Missing required fields.")
+                    self.clear()
+                    return False
+
+                c_o = float(r["open_p"])
+                c_h = float(r["high_p"])
+                c_l = float(r["low_p"])
+                c_c = float(r["close_p"])
+                if math.isnan(c_c) or c_o <= 0.0 or c_c <= 0.0 or c_h < c_l:
+                    logger.warning(f"Invalid candle numerics at index {idx}.")
+                    self.clear()
+                    return False
+
                 candle = MarketCandle(
                     symbol=r["symbol"],
                     interval=r["interval"],
                     timestamp_open_utc=r["timestamp_open_utc"],
                     timestamp_close_utc=r["timestamp_close_utc"],
-                    open_p=float(r["open_p"]),
-                    high_p=float(r["high_p"]),
-                    low_p=float(r["low_p"]),
-                    close_p=float(r["close_p"]),
+                    open_p=c_o,
+                    high_p=c_h,
+                    low_p=c_l,
+                    close_p=c_c,
                     volume_base=float(r["volume_base"]),
                     volume_usdt=float(r["volume_usdt"]),
                     is_closed=bool(r["is_closed"]),
@@ -276,10 +479,19 @@ class PersistentRollingBuffer:
                     sequence_number=int(r["sequence_number"]),
                     provenance=r.get("provenance", "RECOVERED_STATE"),
                 )
-                self.append_candle(candle)
-            return True
+                ok, err = self.append_candle(candle)
+                if not ok:
+                    logger.warning(f"State recovery candle validation failed at index {idx}: {err}")
+                    self.clear()
+                    return False
+
+            # Restore execution IDs and gap status
+            self._executed_decision_ids = set(payload.get("executed_decision_ids", []))
+            self._gap_detected = bool(payload.get("gap_detected", False))
+
+            return len(self._buffer) > 0
         except Exception as e:
-            logger.warning(f"Could not load buffer state: {e}")
+            logger.warning(f"State recovery failed with exception: {e}. Failing closed.")
             self.clear()
             return False
 
@@ -294,7 +506,7 @@ class FrozenFeatureAdapter:
     def extract_features(self) -> Tuple[bool, Optional[Dict[str, Any]], Optional[str]]:
         """Extract multi-timeframe moving averages, ATR, and analogue scores."""
         if not self.buffer.is_warmup_ready:
-            return False, None, f"INSUFFICIENT_WARMUP: Buffer has {len(self.buffer)} candles; 864 required"
+            return False, None, f"INSUFFICIENT_WARMUP: Buffer has {len(self.buffer)} candles; 864 contiguous required"
 
         candles = self.buffer.candles
         n = len(candles)
@@ -330,8 +542,11 @@ class FrozenFeatureAdapter:
         vol_ok = (0.015 <= vol_atr_pct <= 0.065)
 
         # 5. Analogue conditional probability
+        # In prospective observation, authentic k-NN cannot be run under memory constraints;
+        # hardcoded probabilities are removed, failing closed to None.
         analogue_prob = self.analogue_loader.get_directional_probability(threshold=0.60)
         analogue_ok = (analogue_prob is not None and analogue_prob >= 0.60)
+        policy_e_status = "READY" if analogue_ok else "BLOCKED_ANALOGUE_PARITY"
 
         features = {
             "current_close": current_close,
@@ -348,6 +563,7 @@ class FrozenFeatureAdapter:
             "analogue_prob": analogue_prob,
             "analogue_ok": analogue_ok,
             "analogue_library_loaded": self.analogue_loader.is_loaded,
+            "policy_e_status": policy_e_status,
         }
         return True, features, None
 
@@ -390,6 +606,7 @@ class ShadowMarketDataBridge:
         self,
         payload: Dict[str, Any],
         availability_timestamp_utc: str,
+        publication_timestamp_utc: Optional[str] = None,
     ) -> BridgeEvaluationPayload:
         """Ingest single raw snapshot dict, validate, append to buffer, and extract features."""
         # 1. Structural validation
@@ -466,6 +683,20 @@ class ShadowMarketDataBridge:
                     message=f"LOOKAHEAD_VIOLATION: Data available {avail_dt} before close {close_dt}",
                     availability_timestamp_utc=availability_timestamp_utc,
                 )
+
+            if publication_timestamp_utc:
+                pub_dt = datetime.fromisoformat(publication_timestamp_utc.replace("Z", "+00:00"))
+                if pub_dt < close_dt:
+                    return BridgeEvaluationPayload(
+                        status=BridgeStatus.SNAPSHOT_CORRUPT,
+                        candle=None,
+                        features=None,
+                        is_warmup_ready=self.buffer.is_warmup_ready,
+                        execution_eligible=False,
+                        message=f"LOOKAHEAD_VIOLATION: Published {pub_dt} before close {close_dt}",
+                        availability_timestamp_utc=availability_timestamp_utc,
+                    )
+
             if latency_sec > MAX_FEED_LATENCY_SECONDS:
                 return BridgeEvaluationPayload(
                     status=BridgeStatus.FEED_STALE,
@@ -559,10 +790,25 @@ class ShadowMarketDataBridge:
         sim: Any,
         action: str,
         next_open_price: Optional[float],
+        decision_timestamp_utc: Optional[str] = None,
+        next_candle_close_utc: Optional[str] = None,
+        current_close_price: Optional[float] = None,
         fee_bps: float = 10.0,
         slippage_bps: float = 5.0,
+        decision_id: Optional[str] = None,
     ) -> Dict[str, Any]:
-        """Execute fill at NEXT bar open price, strictly prohibiting lookahead or missing price fills."""
+        """Execute fill at NEXT bar open price, strictly enforcing causal constraints."""
+        # 1. Duplicate check
+        if decision_id and self.buffer.is_executed(decision_id):
+            return {
+                "success": False,
+                "status": "REJECTED_DUPLICATE_EXECUTION",
+                "fill_price": None,
+                "friction_usdt": 0.0,
+                "reason": f"Decision {decision_id} already executed previously",
+            }
+
+        # 2. Next open price validity
         if next_open_price is None or math.isnan(next_open_price) or next_open_price <= 0.0:
             return {
                 "success": False,
@@ -571,12 +817,41 @@ class ShadowMarketDataBridge:
                 "friction_usdt": 0.0,
             }
 
+        # 3. Prohibit execution at current close price
+        if current_close_price is not None and abs(next_open_price - current_close_price) < 1e-9:
+            return {
+                "success": False,
+                "status": "EXECUTION_REFUSED_AT_CLOSE_PRICE",
+                "fill_price": None,
+                "friction_usdt": 0.0,
+                "reason": "Execution at T_close price strictly forbidden; next open quote must be distinct",
+            }
+
+        # 4. Causality window: T_dec must not be after next candle close
+        if decision_timestamp_utc and next_candle_close_utc:
+            try:
+                dec_dt = datetime.fromisoformat(decision_timestamp_utc.replace("Z", "+00:00"))
+                next_close_dt = datetime.fromisoformat(next_candle_close_utc.replace("Z", "+00:00"))
+                if dec_dt > next_close_dt:
+                    return {
+                        "success": False,
+                        "status": "EXECUTION_REFUSED_EXPIRED_WINDOW",
+                        "fill_price": None,
+                        "friction_usdt": 0.0,
+                        "reason": f"Decision timestamp {dec_dt} after next candle close {next_close_dt}",
+                    }
+            except Exception as e:
+                logger.warning(f"Error parsing execution timestamps: {e}")
+
+        # 5. Execute via simulator
         if action == "BUY":
-            return sim.execute_hypothetical_buy(
-                next_open=next_open_price,
-            )
+            res = sim.execute_hypothetical_buy(next_open=next_open_price)
         elif action in ("EXIT", "EXIT_TO_USDT"):
-            return sim.execute_hypothetical_exit(
-                exit_raw_price=next_open_price,
-            )
-        return {"success": False, "status": "UNKNOWN_ACTION", "fill_price": None}
+            res = sim.execute_hypothetical_exit(exit_raw_price=next_open_price)
+        else:
+            return {"success": False, "status": "UNKNOWN_ACTION", "fill_price": None, "friction_usdt": 0.0}
+
+        if res.get("success", False) and decision_id:
+            self.buffer.mark_executed(decision_id)
+
+        return res

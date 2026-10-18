@@ -1,0 +1,64 @@
+{
+  "manifest_version": "11.16B.4",
+  "generated_at_utc": "2026-10-19T01:12:00Z",
+  "sprint": "CBE — SPRINT 11.16B.4",
+  "base_commit": "a04abc9b99c891a6a6099bc9e99394405ba967fb",
+  "target_host": "srv1114257",
+  "protected_services_status": {
+    "production_cbe": "UNTOUCHED_ISOLATED",
+    "staging_market_intelligence": "UNTOUCHED_ISOLATED",
+    "live_capture": "UNTOUCHED_READ_ONLY",
+    "scoring_worker": "STOPPED_UNTOUCHED"
+  },
+  "canonical_artifacts": {
+    "historical_dataset_manifest_sha256": "367ff9b03cb85eb93054593fc2fa3f2c5f118fa30c90c74f51e069151dc3d63b",
+    "canonical_dataset_sha256": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487",
+    "canonical_analogue_library_sha256": "c6ed5912524e176bde0e941a0d69fe8f0c4f121759036ef2caa7219c06526ff1"
+  },
+  "sprint_deliverables": {
+    "src/coin_behavior_engine/research_lab/shadow_market_data_bridge.py": {
+      "sha256": "6dd4bbbe86266540454fb462e719de3ccb858fc53b5d05be235b6e4dc73c9386",
+      "description": "Upgraded shadow market data bridge with authentic seed validation, gap invalidation, crash-safe state envelopes, and strict causality checks"
+    },
+    "tests/test_sprint11_16b_4_data_bridge_parity.py": {
+      "sha256": "7e7f46aa5163ab52dfb6f2fa80045bd1891a6e3beb4c10136205cf7251d29bb5",
+      "description": "Comprehensive 18-scenario negative regression and policy parity test suite"
+    },
+    "research_outputs/frozen_policy_parity_audit.md": {
+      "sha256": "399ee529c5254186522e6ce53d54e0fa50feb73df734ab77e7b9ac57b3f65a4f",
+      "description": "Frozen policy parity audit and discrepancy analysis"
+    },
+    "research_outputs/historical_seed_provenance_audit.md": {
+      "sha256": "d6b4eccd5bfdff3b42e065bd4bb2711faa288e6d56954c23c332bb7b96cb8fdb",
+      "description": "Historical seed cryptographic validation and continuity audit"
+    },
+    "research_outputs/shadow_policy_parity_gate_11_16b_4.json": {
+      "sha256": "01ba3a550200e6551ee6c5b7753c19740f8af5319857fe76ab8af53c353d534e",
+      "description": "Machine-readable parity and readiness gate"
+    },
+    "research_outputs/research_report_11_16b_4.md": {
+      "sha256": "49dcb1956152ee4c45e9292b4e088cff31f5672c3df7156f80c6a8997eeda399",
+      "description": "Master research and verification report for Sprint 11.16B.4"
+    }
+  },
+  "test_execution_results": {
+    "tests/test_sprint11_16b_3_market_data_bridge.py": {
+      "total": 18,
+      "passed": 18,
+      "failed": 0
+    },
+    "tests/test_sprint11_16b_4_data_bridge_parity.py": {
+      "total": 18,
+      "passed": 18,
+      "failed": 0
+    }
+  },
+  "declarations": {
+    "PROSPECTIVE_OBSERVATION": "NOT_STARTED",
+    "LIVE_TRADING": "PROHIBITED",
+    "POLICY_PARAMETERS_CHANGED": "NO",
+    "PROTECTED_SERVICES_MUTATED": "NO",
+    "OVERALL_GATE": "BLOCKED_ANALOGUE_PARITY",
+    "NEXT_STEP": "OPERATOR_REVIEW"
+  }
+}
