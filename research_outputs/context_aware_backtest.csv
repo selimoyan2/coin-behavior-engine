@@ -1,0 +1,6 @@
+Strategy,Return (%),Net PnL ($),Max Drawdown (%),Win Rate (%),Profit Factor,Expectancy ($),Trades,Total Fees ($),Fee Drag (%),Abstention Bars,Sharpe
+Strategy_A_Technical_Only,-9.815,-981.48,9.78,19.7,0.109,-7.16,137,652.56,6.53,6794,-33.59
+Strategy_B_Context_Aware,-7.666,-766.61,7.67,8.8,0.038,-8.42,91,438.28,4.38,7027,-33.67
+Strategy_C_Risk_Controlled,-3.057,-305.66,3.07,10.2,0.061,-6.24,49,180.81,1.81,7139,-21.55
+Benchmark_Buy_and_Hold,-4.273,-427.3,8.27,0.0,0.0,0.0,1,19.58,0.2,0,-1.59
+Benchmark_Cash,0.0,0.0,0.0,0.0,0.0,0.0,0,0.0,0.0,7199,0.0

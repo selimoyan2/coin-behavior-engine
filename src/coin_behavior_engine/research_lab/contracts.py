@@ -80,6 +80,16 @@ class EventVerificationStatus(str, enum.Enum):
     UNSUPPORTED = "UNSUPPORTED"
 
 
+class MarketContextImpact(str, enum.Enum):
+    POSITIVE = "POSITIVE"
+    NEGATIVE = "NEGATIVE"
+    AMBIGUOUS = "AMBIGUOUS"
+    UNCERTAIN = "UNCERTAIN"
+    POTENTIALLY_PRICED_IN = "POTENTIALLY_PRICED_IN"
+    CONTRADICTED_BY_PRICE_ACTION = "CONTRADICTED_BY_PRICE_ACTION"
+    SUPERSEDED_BY_LATER_EVENT = "SUPERSEDED_BY_LATER_EVENT"
+
+
 @dataclass(frozen=True)
 class CandleData:
     """Immutable single candlestick representation."""
@@ -177,15 +187,86 @@ class EventIntelligenceRecord:
     related_event_ids: List[str] = field(default_factory=list)
     correction_of_event_id: Optional[str] = None
     provenance: str = "HISTORICAL_EVENT_ARCHIVE"
-    abnormal_return_5m_post: Optional[float] = None
-    abnormal_return_60m_post: Optional[float] = None
-    observed_market_impact: Optional[str] = None
+    # Sprint 11.05 Market Context Engine Fields
+    context_impact: MarketContextImpact = MarketContextImpact.UNCERTAIN
+    freshness_half_life_hours: float = 12.0
+    surprise_factor: Optional[float] = None
+    relevance_score: float = 1.0  # 0.0 to 1.0
+    retraction_history: Optional[str] = None
+    first_observed_uncertainty_seconds: float = 0.0
+    is_excluded_from_strict_prediction: bool = False
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
         d["category"] = self.category.value
         d["verification_status"] = self.verification_status.value if isinstance(self.verification_status, EventVerificationStatus) else str(self.verification_status)
+        d["context_impact"] = self.context_impact.value if isinstance(self.context_impact, MarketContextImpact) else str(self.context_impact)
         return d
+
+
+@dataclass
+class MarketContextTimelineRecord:
+    """State of market context at a specific closed candlestick."""
+    timestamp_open: int
+    datetime_utc: str
+    active_events_count: int
+    net_sentiment_score: float  # -1.0 to +1.0
+    dominant_impact: MarketContextImpact
+    has_unabsorbed_negative_shock: bool
+    has_positive_catalyst: bool
+    contradiction_detected: bool
+    priced_in_detected: bool
+    primary_event_id: Optional[str] = None
+    primary_headline: str = "NO_ACTIVE_EVENT"
+
+    def to_dict(self) -> Dict[str, Any]:
+        d = asdict(self)
+        d["dominant_impact"] = self.dominant_impact.value if isinstance(self.dominant_impact, MarketContextImpact) else str(self.dominant_impact)
+        return d
+
+
+@dataclass
+class BehavioralPatternEvaluationRecord:
+    """Empirical verification record for an event-conditioned market pattern."""
+    pattern_id: str
+    pattern_name: str
+    sample_count: int
+    sufficient_evidence: bool
+    win_rate_15m: float
+    expected_return_15m: float
+    win_rate_1h: float
+    expected_return_1h: float
+    win_rate_4h: float
+    expected_return_4h: float
+    failure_rate: float
+    risk_assessment: str
+    empirical_status: str  # "VALIDATED", "INSUFFICIENT_SAMPLES", "FALSIFIED"
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class BaselineComparisonRecord:
+    """Evaluation comparing predictive model against statistical baselines."""
+    horizon: str
+    model_name: str
+    accuracy_3class: float
+    accuracy_binary: float
+    balanced_accuracy: float
+    brier_score: float
+    majority_class_baseline_accuracy: float
+    persistence_baseline_accuracy: float
+    random_walk_baseline_accuracy: float
+    momentum_baseline_accuracy: float
+    edge_over_majority: float
+    edge_over_random: float
+    sample_count_overlapping: int
+    sample_count_independent: int
+    statistical_verdict: str  # "ADVANTAGE_PROVEN", "NO_EDGE", "INCONCLUSIVE"
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
 
 
 @dataclass

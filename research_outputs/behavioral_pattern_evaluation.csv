@@ -1,0 +1,7 @@
+pattern_id,pattern_name,sample_count,sufficient_evidence,win_rate_15m,expected_return_15m,win_rate_1h,expected_return_1h,win_rate_4h,expected_return_4h,failure_rate,risk_assessment,empirical_status
+PAT-PANI,PANIC_SELL_CASCADE,0,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,No empirical samples detected in observation period.,INSUFFICIENT_SAMPLES
+PAT-NEGATI,NEGATIVE_NEWS_ABSORPTION,140,True,50.7,-0.005,50.7,-0.063,52.9,-0.057,4.3,Empirical win rate (50.7%) and negative expectancy (-0.063%) fail to validate profitable edge.,FALSIFIED
+PAT-BULL,BULL_TRAP_WEAK_DEMAND,0,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,No empirical samples detected in observation period.,INSUFFICIENT_SAMPLES
+PAT-BEAR_T,BEAR_TRAP_LIQUIDITY_SWEEP,603,True,48.9,-0.004,45.8,-0.035,49.9,-0.022,3.3,Empirical win rate (45.8%) and negative expectancy (-0.035%) fail to validate profitable edge.,FALSIFIED
+PAT-V_SH,V_SHAPED_REBOUND,0,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,No empirical samples detected in observation period.,INSUFFICIENT_SAMPLES
+PAT-VOLATI,VOLATILITY_EXPANSION_CONTINUATION,297,True,43.4,-0.009,47.8,0.005,38.7,-0.075,3.0,Moderate win rate (47.8%) does not overcome execution frictions (0.70% round-trip hurdle).,INCONCLUSIVE

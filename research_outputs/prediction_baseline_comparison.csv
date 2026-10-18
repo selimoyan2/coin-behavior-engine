@@ -1,0 +1,10 @@
+horizon,model_name,accuracy_3class,accuracy_binary,balanced_accuracy,brier_score,majority_class_baseline_accuracy,persistence_baseline_accuracy,random_walk_baseline_accuracy,momentum_baseline_accuracy,edge_over_majority,edge_over_random,sample_count_overlapping,sample_count_independent,statistical_verdict
+15m,Model_A_Technical_Only,38.3,47.75,34.87,0.2938,60.48,50.42,33.33,39.12,-22.18,4.97,7196,2398,NO_EDGE
+15m,Model_B_Context_Aware,37.15,48.38,35.78,0.3034,60.48,50.42,33.33,39.12,-23.33,3.82,7196,2398,NO_EDGE
+15m,Model_C_Risk_Filtered,51.46,45.81,32.71,0.3276,60.48,50.42,33.33,39.12,-9.02,18.13,7196,2398,NO_EDGE
+1h,Model_A_Technical_Only,35.62,48.48,35.08,0.2959,36.65,36.15,33.33,36.15,-1.03,2.29,7187,598,NO_EDGE
+1h,Model_B_Context_Aware,35.87,49.72,35.69,0.303,36.65,36.15,33.33,36.15,-0.78,2.54,7187,598,NO_EDGE
+1h,Model_C_Risk_Filtered,34.98,45.29,32.57,0.3314,36.65,36.15,33.33,36.15,-1.67,1.65,7187,598,NO_EDGE
+4h,Model_A_Technical_Only,31.1,45.34,33.53,0.2979,40.3,33.11,33.33,34.54,-9.2,-2.23,7151,148,NO_EDGE
+4h,Model_B_Context_Aware,33.45,48.92,34.68,0.3013,40.3,33.11,33.33,34.54,-6.85,0.12,7151,148,NO_EDGE
+4h,Model_C_Risk_Filtered,22.65,44.15,30.99,0.3328,40.3,33.11,33.33,34.54,-17.65,-10.68,7151,148,NO_EDGE

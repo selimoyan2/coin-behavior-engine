@@ -1,0 +1,64 @@
+{
+  "run_timestamp_utc": "2026-10-18T12:11:37.951607+00:00",
+  "research_tool_version": "1.2.0-sprint11.05",
+  "git_commit": "2137bb0b09e9b2efce5f84a4d822716eb1c8d84c",
+  "dataset_info": {
+    "symbol": "BTCUSDT",
+    "interval": "5m",
+    "candle_count": 7199,
+    "start_utc": "2026-09-23T11:35:00Z",
+    "end_utc": "2026-10-18T11:29:59Z",
+    "provenance": "BINANCE_SPOT_HISTORICAL"
+  },
+  "market_intelligence": {
+    "total_verified_events": 122,
+    "providers": [
+      "Federal Reserve Official Press RSS",
+      "SEC Enforcement Press RSS",
+      "Binance Official CMS Public API",
+      "BLS Official Economic Calendar",
+      "Binance Derivatives Liquidation Telemetry"
+    ]
+  },
+  "strategies_evaluated": [
+    "Strategy_A_Technical_Only",
+    "Strategy_B_Context_Aware",
+    "Strategy_C_Risk_Controlled"
+  ],
+  "safety_interlocks": {
+    "trading_enabled": false,
+    "approval_4_authorized": false,
+    "prospective_scoring_enabled": false,
+    "real_order_execution_endpoint": null,
+    "status": "RESEARCH_ONLY_SIMULATION"
+  },
+  "performance_summary": {
+    "Strategy_A_Technical_Only": {
+      "return_pct": -9.815,
+      "net_pnl": -981.48,
+      "win_rate": 0.1971,
+      "profit_factor": 0.109,
+      "max_drawdown_pct": 9.78,
+      "total_trades": 137,
+      "total_fees": 652.56
+    },
+    "Strategy_B_Context_Aware": {
+      "return_pct": -7.666,
+      "net_pnl": -766.61,
+      "win_rate": 0.0879,
+      "profit_factor": 0.038,
+      "max_drawdown_pct": 7.67,
+      "total_trades": 91,
+      "total_fees": 438.28
+    },
+    "Strategy_C_Risk_Controlled": {
+      "return_pct": -3.057,
+      "net_pnl": -305.66,
+      "win_rate": 0.102,
+      "profit_factor": 0.061,
+      "max_drawdown_pct": 3.07,
+      "total_trades": 49,
+      "total_fees": 180.81
+    }
+  }
+}
