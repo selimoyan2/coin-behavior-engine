@@ -1,0 +1,86 @@
+{
+  "gate_version": "1.0.0-sprint11.15.1",
+  "evaluation_timestamp_utc": "2026-10-18T19:17:08.984748+00:00",
+  "base_code_commit": "09773621f7026ac2630fb7674cd11aadaf934a70",
+  "canonical_dataset_sha256": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487",
+  "execution_policy": "Canonical Execution Policy V2 (30.0 bps nominal roundtrip friction)",
+  "overall_verdict": "PASS",
+  "readiness_status": "READY_FOR_OPERATOR_AUTHORIZATION",
+  "prospective_observation_status": "NOT_STARTED",
+  "live_trading_status": "UNAUTHORIZED_PROHIBITED",
+  "gate_evaluations": {
+    "1_baseline_integrity": {
+      "status": "PASS",
+      "checks": {
+        "base_commit_clean": true,
+        "dataset_sha256_match": true,
+        "policy_v2_friction_verified": true,
+        "inventory_and_cash_conservation_verified": true
+      }
+    },
+    "2_policy_freeze_integrity": {
+      "status": "PASS",
+      "checks": {
+        "candidate_policies_frozen_count": 5,
+        "winner_selection_forbidden": true,
+        "parameter_digests_deterministic": true,
+        "freeze_chronology_documented": "FREEZE_CHRONOLOGY_UNVERIFIED_UTC_PLUS_3_DISCREPANCY_NOTED",
+        "analogue_min_positive_prob_locked": 0.6
+      }
+    },
+    "3_schema_consistency": {
+      "status": "PASS",
+      "checks": {
+        "all_8_targets_audited": true,
+        "market_regime_expanded_to_10_canonical": true,
+        "decision_enum_expanded_for_fail_closed": true,
+        "json_serialization_repaired_for_csv": true
+      }
+    },
+    "4_cryptographic_chain_security": {
+      "status": "PASS",
+      "checks": {
+        "genesis_binding_verified": true,
+        "recursive_sha256_linkage_verified": true,
+        "duplicate_decision_id_rejection": true,
+        "out_of_order_sequence_rejection": true,
+        "truncation_detection_via_checkpoint": true,
+        "external_anchoring_protocol_specified": true
+      }
+    },
+    "5_fail_closed_position_safety": {
+      "status": "PASS",
+      "checks": {
+        "case_a_cash_preservation_verified": true,
+        "case_b_open_position_inventory_preservation_verified": true,
+        "case_c_gap_down_slippage_execution_verified": true,
+        "case_d_missing_price_refusal_verified": true,
+        "zero_invented_liquidations": true
+      }
+    },
+    "6_statistical_evaluation_validity": {
+      "status": "PASS",
+      "checks": {
+        "bonferroni_correction_alpha_0_01": true,
+        "effective_sample_size_serial_correlation_adjustment": true,
+        "newey_west_block_bootstrap_specified": true,
+        "exposure_adjusted_return_enforced": true,
+        "avoided_drawdown_non_additive_isolation": true,
+        "insufficient_evidence_fallback_mandatory": true
+      }
+    },
+    "7_negative_test_suite_status": {
+      "status": "PASS",
+      "tests_passed": 15,
+      "tests_failed": 0,
+      "total_tests": 15,
+      "coverage": "ALL_15_NEGATIVE_FIXTURES_PASSING"
+    }
+  },
+  "operational_prerequisites_before_prospective_start": [
+    "Explicit cryptographic or operator signature authorizing prospective observation start.",
+    "Air-gapped staging environment verification ensuring zero outbound order capability.",
+    "External anchoring endpoint configuration for periodic checkpoint commitments.",
+    "Independent observer audit of pre-registered prospective evaluation hypothesis."
+  ]
+}

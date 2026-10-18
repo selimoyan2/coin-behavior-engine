@@ -1,0 +1,101 @@
+{
+  "sprint": "11.15.1",
+  "title": "Prospective Protocol Hardening & Independent Readiness Audit",
+  "generation_timestamp_utc": "2026-10-18T19:17:08.985887+00:00",
+  "code_base_commit": "09773621f7026ac2630fb7674cd11aadaf934a70",
+  "canonical_dataset_sha256": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487",
+  "execution_policy": {
+    "standard": "Canonical Execution Policy V2",
+    "version": "2.0.0-sprint11.13",
+    "nominal_roundtrip_friction_bps": 30.0
+  },
+  "status_declarations": {
+    "historical_accounting_status": "VERIFIED_CANONICAL_POLICY_V2",
+    "policy_freeze_status": "FROZEN_BEFORE_UNSEEN_EVALUATION",
+    "prospective_readiness_status": "READY_FOR_OPERATOR_AUTHORIZATION",
+    "actual_prospective_observation_status": "NOT_STARTED",
+    "live_trading_authorization_status": "UNAUTHORIZED_PROHIBITED"
+  },
+  "repaired_protocol_defects": [
+    "Base code commit updated to Sprint 11.15 base 09773621f7026ac2630fb7674cd11aadaf934a70",
+    "Fixed missing math import and cumulative_friction_usdt buy accumulation",
+    "Expanded market_regime to 10 canonical regimes and decision to include fail-closed states",
+    "Implemented truncation detection via ChainCheckpoint in DecisionHashChain",
+    "Implemented duplicate decision ID detection in DecisionHashChain",
+    "Implemented probability normalization verification in compute_hash()",
+    "Implemented ShadowDecisionRecord.to_csv_dict() for clean nested JSON strings in CSVs",
+    "Implemented EXECUTION_REJECTED_MISSING_PRICE for NaN/missing/negative prices",
+    "Implemented POSITION_OPEN_DATA_STALE preserving BTC inventory and freezing valuation",
+    "Reconciled >52% narrative directional skew with frozen analogue_min_positive_prob = 0.60",
+    "Documented freeze chronology timezone discrepancy (FREEZE_CHRONOLOGY_UNVERIFIED)",
+    "Implemented Bonferroni correction (alpha = 0.010), N_eff adjustment, and avoided drawdown isolation"
+  ],
+  "five_policy_dry_run_summary": {
+    "POLICY_A_USDT_CASH": {
+      "policy_id": "POLICY_A_USDT_CASH",
+      "trade_count": 0,
+      "final_usdt": 10000.0,
+      "final_btc": 0.0,
+      "final_equity_usdt": 10000.0,
+      "return_on_capital_pct": 0.0,
+      "max_drawdown_pct": 0.0,
+      "total_friction_usdt": 0.0,
+      "decisions_issued": 500,
+      "chain_head_hash": "dcb4b4054f1cde5a107a78e148f95cf2fa139263461c9f316467143b40b10447",
+      "chain_status": "INTACT_AND_VERIFIED"
+    },
+    "POLICY_B_BTC_BUY_AND_HOLD": {
+      "policy_id": "POLICY_B_BTC_BUY_AND_HOLD",
+      "trade_count": 0,
+      "final_usdt": 190.2,
+      "final_btc": 0.155392,
+      "final_equity_usdt": 10051.07,
+      "return_on_capital_pct": 0.51,
+      "max_drawdown_pct": -0.96,
+      "total_friction_usdt": 14.7,
+      "decisions_issued": 500,
+      "chain_head_hash": "7a78c01488a1f155199da4955f59b5ed24d0dcba39b298662cf0a6d9b2900db3",
+      "chain_status": "INTACT_AND_VERIFIED"
+    },
+    "POLICY_C_TREND48_FOLLOWING": {
+      "policy_id": "POLICY_C_TREND48_FOLLOWING",
+      "trade_count": 6,
+      "final_usdt": 186.04,
+      "final_btc": 0.151878,
+      "final_equity_usdt": 9823.92,
+      "return_on_capital_pct": -1.76,
+      "max_drawdown_pct": -2.33,
+      "total_friction_usdt": 189.06,
+      "decisions_issued": 500,
+      "chain_head_hash": "945ac52329da6ba3e79c0a5b16ccfb7f7bd6d32225fc9d1160c238e92a1954e3",
+      "chain_status": "INTACT_AND_VERIFIED"
+    },
+    "POLICY_D_SELECTIVE_TREND_ONLY": {
+      "policy_id": "POLICY_D_SELECTIVE_TREND_ONLY",
+      "trade_count": 0,
+      "final_usdt": 190.2,
+      "final_btc": 0.155195,
+      "final_equity_usdt": 10038.55,
+      "return_on_capital_pct": 0.39,
+      "max_drawdown_pct": -0.96,
+      "total_friction_usdt": 14.7,
+      "decisions_issued": 500,
+      "chain_head_hash": "bb9340c5a243a0188ec7915d1594f967876edaa0665505e8dea293a8ccdfcd1c",
+      "chain_status": "INTACT_AND_VERIFIED"
+    },
+    "POLICY_E_SELECTIVE_ANALOGUE_ASSISTED": {
+      "policy_id": "POLICY_E_SELECTIVE_ANALOGUE_ASSISTED",
+      "trade_count": 0,
+      "final_usdt": 190.2,
+      "final_btc": 0.155195,
+      "final_equity_usdt": 10038.55,
+      "return_on_capital_pct": 0.39,
+      "max_drawdown_pct": -0.96,
+      "total_friction_usdt": 14.7,
+      "decisions_issued": 500,
+      "chain_head_hash": "8e23a99342d5ab7a9233e95958e39b18602d49fe0a26dd30021bf1cb2dcfde46",
+      "chain_status": "INTACT_AND_VERIFIED"
+    }
+  },
+  "readiness_gate_verdict": "PASS"
+}

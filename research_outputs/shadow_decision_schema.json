@@ -75,7 +75,12 @@
         "TRENDING_BEAR",
         "SIDEWAYS",
         "HIGH_VOLATILITY",
-        "UNCERTAIN"
+        "POSSIBLE_REVERSAL",
+        "UNCERTAIN",
+        "MEAN_REVERTING",
+        "LOW_VOLATILITY_COMPRESSION",
+        "HIGH_VOLATILITY_EXPANSION",
+        "CASCADE_LIQUIDATION"
       ],
       "description": "Classified macro/micro market regime at decision time."
     },
@@ -115,7 +120,10 @@
         "HOLD_BTC",
         "REDUCE_BTC",
         "EXIT_TO_USDT",
-        "NO_DECISION_DATA"
+        "NO_DECISION_DATA",
+        "POSITION_OPEN_DATA_STALE",
+        "EXECUTION_PENDING_DATA",
+        "VALUATION_UNAVAILABLE"
       ],
       "description": "Discrete actionable shadow trading decision."
     },
