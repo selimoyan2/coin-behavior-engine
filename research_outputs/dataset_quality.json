@@ -1,0 +1,19 @@
+{
+  "symbol": "BTCUSDT",
+  "interval": "5m",
+  "total_candles": 7201,
+  "start_timestamp": 1790163000000,
+  "end_timestamp": 1792323000000,
+  "start_datetime_utc": "2026-09-23T11:30:00Z",
+  "end_datetime_utc": "2026-10-18T11:34:59Z",
+  "expected_interval_ms": 300000,
+  "ohlcv_inversions_count": 0,
+  "negative_volume_count": 0,
+  "non_monotonic_timestamps_count": 0,
+  "duplicate_timestamps_count": 0,
+  "gaps_count": 0,
+  "missing_candles_count": 0,
+  "gap_intervals": [],
+  "passed": true,
+  "violations": []
+}
