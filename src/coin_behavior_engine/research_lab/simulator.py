@@ -127,7 +127,7 @@ class HistoricalPaperSimulator:
                     raw_exit = c.close
                     exit_price = raw_exit * (1.0 - self.config.slippage_pct)
                     exit_reason = TradeExitReason.TIME_EXPIRY
-                elif i in dec_by_idx and dec_by_idx[i].action == DecisionAction.SELL_CANDIDATE:
+                elif i in dec_by_idx and dec_by_idx[i].action in (DecisionAction.SELL_CANDIDATE, DecisionAction.REDUCE_EXPOSURE):
                     exit_triggered = True
                     raw_exit = c.close
                     exit_price = raw_exit * (1.0 - self.config.slippage_pct)

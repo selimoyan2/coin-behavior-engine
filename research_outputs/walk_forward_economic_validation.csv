@@ -1,0 +1,4 @@
+fold_id,regime_description,train_start_utc,train_end_utc,embargo_hours,test_start_utc,test_end_utc,test_candles,strategy_trades,strategy_win_rate_pct,strategy_net_pnl_usd,strategy_return_pct,strategy_max_dd_pct,strategy_profit_factor,bnh_return_pct,outperformed_buy_and_hold
+FOLD_1_RECOVERY,Post-dip recovery regime,2025-10-18T11:30:00Z,2026-04-10T02:10:00Z,72.0,2026-04-13T02:10:00Z,2026-06-11T14:10:00Z,17136,40,32.5,-1533.84,-15.34,20.75,0.52,-11.4,False
+FOLD_2_CONSOLIDATION,High-volatility consolidation regime,2025-12-26T22:10:00Z,2026-06-18T12:50:00Z,72.0,2026-06-21T12:50:00Z,2026-08-20T00:50:00Z,17136,29,37.93,-632.63,-6.33,10.5,0.67,8.6,False
+FOLD_3_EXPANSION_HOLDOUT,Late-cycle expansion & holdout regime,2026-02-17T00:10:00Z,2026-08-09T14:50:00Z,72.0,2026-08-12T14:50:00Z,2026-10-14T14:10:00Z,18136,35,48.57,331.85,3.32,8.42,1.16,29.6,False

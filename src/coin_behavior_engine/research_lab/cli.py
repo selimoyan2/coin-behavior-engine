@@ -508,9 +508,43 @@ def run_sprint11_08_pipeline(output_dir: Path = Path("research_outputs")) -> Dic
     }
 
 
+def run_sprint11_09_pipeline(output_dir: Path = Path("research_outputs")) -> Dict[str, Any]:
+    """Execute end-to-end Sprint 11.09 Multi-Day Behavioral Learning & Economic Decision Validation pipeline."""
+    from coin_behavior_engine.research_lab.multi_horizon_engine import MultiHorizonEngine
+    from coin_behavior_engine.research_lab.economic_decision_engine import EconomicDecisionEngine
+
+    git_commit = get_current_git_commit()
+    logger.info(f"=== CBE Research Lab Sprint 11.09 Pipeline (Commit: {git_commit[:8]}) ===")
+
+    # Phase 2: Multi-Horizon Behavioral Learning & Empirical Calibration
+    logger.info("Executing Phase 2: Multi-Horizon Behavioral Learning Engine...")
+    multi_engine = MultiHorizonEngine(output_dir=output_dir)
+    df_preds, df_dist = multi_engine.run_multi_horizon_evaluation()
+
+    # Phase 3-6: Economic Decision Engine, Benchmarks, Cost Sensitivity & Walk-Forward Validation
+    logger.info("Executing Phase 3-6: Economic Decision Engine, Strategy Benchmarks & Walk-Forward Validation...")
+    eco_engine = EconomicDecisionEngine(output_dir=output_dir)
+    df_dec = eco_engine.generate_economic_decisions(target_horizon="24h")
+    df_strat, df_cost = eco_engine.run_strategy_benchmarks()
+    df_wf = eco_engine.run_walk_forward_validation()
+    eco_engine.generate_decision_explanations()
+
+    logger.info("=== CBE Research Lab Sprint 11.09 Complete ===")
+    return {
+        "status": "COMPLETE",
+        "output_dir": str(output_dir),
+        "total_predictions": len(df_preds),
+        "total_distributions": len(df_dist),
+        "total_decisions": len(df_dec),
+        "total_benchmarks": len(df_strat),
+        "total_walk_forward_folds": len(df_wf),
+        "git_commit": git_commit,
+    }
+
+
 def main():
-    parser = argparse.ArgumentParser(description="CBE Research Lab Runner — Sprint 11.05, 11.06, 11.07 & 11.08")
-    parser.add_argument("--sprint", default="11.08", choices=["11.05", "11.06", "11.07", "11.08"], help="Sprint pipeline to execute (default: 11.08)")
+    parser = argparse.ArgumentParser(description="CBE Research Lab Runner — Sprint 11.05, 11.06, 11.07, 11.08 & 11.09")
+    parser.add_argument("--sprint", default="11.09", choices=["11.05", "11.06", "11.07", "11.08", "11.09"], help="Sprint pipeline to execute (default: 11.09)")
     parser.add_argument("--symbol", default="BTCUSDT", help="Trading pair symbol (default: BTCUSDT)")
     parser.add_argument("--days", type=int, default=25, help="Number of days to acquire and analyze (default: 25)")
     parser.add_argument("--output-dir", default="research_outputs", help="Output directory for research artifacts")
@@ -520,7 +554,9 @@ def main():
     out_p = Path(args.output_dir)
     off_p = Path(args.offline_parquet) if args.offline_parquet else None
 
-    if args.sprint == "11.08":
+    if args.sprint == "11.09":
+        run_sprint11_09_pipeline(output_dir=out_p)
+    elif args.sprint == "11.08":
         run_sprint11_08_pipeline(output_dir=out_p)
     elif args.sprint == "11.07":
         run_sprint11_07_pipeline(output_dir=out_p)

@@ -35,6 +35,7 @@ class DecisionAction(str, enum.Enum):
     BUY_CANDIDATE = "BUY_CANDIDATE"
     SELL_CANDIDATE = "SELL_CANDIDATE"
     HOLD = "HOLD"
+    REDUCE_EXPOSURE = "REDUCE_EXPOSURE"
     NO_TRADE = "NO_TRADE"
 
 
@@ -661,6 +662,140 @@ class WalkForwardFoldResult:
     strategy_fees_usd: float
     bnh_return_pct: float
     outperformed_buy_and_hold: bool
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class MultiHorizonPredictionRecord:
+    """Probabilistic prediction for a specific multi-day holding horizon."""
+    decision_timestamp: int
+    datetime_utc: str
+    horizon: str  # "4h", "8h", "12h", "24h", "48h", "72h"
+    holding_bars: int
+    current_price: float
+    current_regime: str
+    analogue_count: int
+    mean_similarity_distance: float
+    prob_up: float
+    prob_down: float
+    prob_neutral: float
+    expected_return_pct: float
+    downside_risk_p05_pct: float
+    mean_mfe_pct: float
+    mean_mae_pct: float
+    hurdle_rate_pct: float
+    friction_drag_ratio: float
+    confidence_status: str
+    actual_return_pct: Optional[float] = None
+    actual_direction: Optional[str] = None
+    brier_score: Optional[float] = None
+    is_direction_correct: Optional[bool] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class ConditionalDistributionRecord:
+    """Conditional forward return distribution summary for a horizon and regime."""
+    horizon: str
+    holding_bars: int
+    holding_hours: float
+    market_regime: str
+    sample_count: int
+    effective_n: float
+    mean_fwd_ret_pct: float
+    median_fwd_ret_pct: float
+    std_fwd_ret_pct: float
+    p05_downside_var_pct: float
+    p95_upside_pct: float
+    mean_mfe_pct: float
+    mean_mae_pct: float
+    roundtrip_friction_bps: float
+    friction_drag_pct: float
+    brier_score: float
+    unconditional_brier_score: float
+    calibration_skill_score: float
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class EconomicDecisionRecord:
+    """Economic decision generated after friction hurdles, risk/reward, and context checks."""
+    decision_id: str
+    decision_timestamp: int
+    datetime_utc: str
+    symbol: str
+    current_price: float
+    market_regime: str
+    horizon: str
+    holding_bars: int
+    action: str  # BUY_CANDIDATE, HOLD, REDUCE_EXPOSURE, NO_TRADE
+    confidence_status: str
+    prob_up: float
+    prob_down: float
+    expected_gross_return_pct: float
+    roundtrip_friction_pct: float
+    expected_net_return_pct: float
+    downside_risk_p05_pct: float
+    expected_mfe_pct: float
+    expected_mae_pct: float
+    risk_reward_ratio: float
+    hurdle_rate_pct: float
+    target_price: Optional[float] = None
+    stop_loss_price: Optional[float] = None
+    rejection_reason: Optional[str] = None
+    narrative_explanation: str = ""
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class MultiHorizonStrategyComparisonRecord:
+    """Comprehensive strategy comparison across multi-day benchmarks."""
+    strategy_id: str
+    strategy_name: str
+    horizon: str
+    holding_hours: float
+    trades_count: int
+    win_rate_pct: float
+    gross_pnl_usd: float
+    total_fees_usd: float
+    total_slippage_usd: float
+    total_friction_usd: float
+    net_pnl_usd: float
+    return_pct: float
+    annualized_return_pct: float
+    max_drawdown_pct: float
+    sharpe_ratio: float
+    sortino_ratio: float
+    profit_factor: float
+    turnover_ratio: float
+    friction_drag_pct: float
+    outperformed_buy_and_hold: bool
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class CostSensitivityRecord:
+    """Sensitivity analysis across varying transaction fee and slippage regimes."""
+    fee_scenario: str
+    roundtrip_friction_bps: float
+    strategy_name: str
+    trades_count: int
+    gross_pnl_usd: float
+    total_friction_usd: float
+    net_pnl_usd: float
+    net_return_pct: float
+    profit_factor: float
+    is_net_profitable: bool
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
