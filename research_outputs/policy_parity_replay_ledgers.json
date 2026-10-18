@@ -1,0 +1,64 @@
+{
+  "audit_timestamp_utc": "2026-10-18T22:30:50.522340+00:00",
+  "initial_capital_usdt": 10000.0,
+  "warmup_bars": 864,
+  "eval_bars": 288,
+  "policy_summaries": {
+    "POLICY_A_USDT_CASH": {
+      "total_evaluated_bars": 288,
+      "action_matches": 288,
+      "balance_matches": 288,
+      "total_discrepancies": 0,
+      "ending_ref_equity": 10000.0,
+      "ending_indep_equity": 10000.0,
+      "ending_ref_trades": 0,
+      "ending_indep_trades": 0,
+      "parity_verdict": "PERFECT_PARITY"
+    },
+    "POLICY_B_BTC_BUY_AND_HOLD": {
+      "total_evaluated_bars": 288,
+      "action_matches": 288,
+      "balance_matches": 288,
+      "total_discrepancies": 0,
+      "ending_ref_equity": 9929.4125,
+      "ending_indep_equity": 9929.4127,
+      "ending_ref_trades": 0,
+      "ending_indep_trades": 1,
+      "parity_verdict": "PERFECT_PARITY"
+    },
+    "POLICY_C_TREND48_FOLLOWING": {
+      "total_evaluated_bars": 288,
+      "action_matches": 288,
+      "balance_matches": 288,
+      "total_discrepancies": 0,
+      "ending_ref_equity": 10000.0,
+      "ending_indep_equity": 10000.0,
+      "ending_ref_trades": 0,
+      "ending_indep_trades": 0,
+      "parity_verdict": "PERFECT_PARITY"
+    },
+    "POLICY_D_SELECTIVE_TREND_ONLY": {
+      "total_evaluated_bars": 288,
+      "action_matches": 288,
+      "balance_matches": 288,
+      "total_discrepancies": 0,
+      "ending_ref_equity": 10000.0,
+      "ending_indep_equity": 10000.0,
+      "ending_ref_trades": 0,
+      "ending_indep_trades": 0,
+      "parity_verdict": "PERFECT_PARITY"
+    },
+    "POLICY_E_SELECTIVE_ANALOGUE_ASSISTED": {
+      "total_evaluated_bars": 288,
+      "action_matches": 288,
+      "balance_matches": 288,
+      "total_discrepancies": 0,
+      "ending_ref_equity": 10000.0,
+      "ending_indep_equity": 10000.0,
+      "ending_ref_trades": 0,
+      "ending_indep_trades": 0,
+      "parity_verdict": "PERFECT_PARITY"
+    }
+  },
+  "total_records_audited": 1440
+}

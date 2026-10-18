@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0.0",
+  "audit_timestamp_utc": "2026-10-19T01:34:00Z",
+  "base_code_commit": "6e5fa46760aba9f1d85914e45caac6406598d0e0",
+  "declarations": {
+    "PROSPECTIVE_OBSERVATION": "NOT_STARTED",
+    "LIVE_TRADING": "PROHIBITED",
+    "POLICY_PARAMETERS_CHANGED": "NO",
+    "PROTECTED_SERVICES_MUTATED": "NO",
+    "POLICY_E_STATUS": "PASS_PARITY_VERIFIED",
+    "NEXT_STEP": "OPERATOR_REVIEW"
+  },
+  "compact_analogue_metrics": {
+    "artifact_path": "research_outputs/compact_analogue_candidates.npz",
+    "artifact_sha256": "a7ee5335f40989161a4213d95b880e9c7df2d5fc3bafe4f26b439387f8bfc484",
+    "candidate_matrix_shape": [67752, 10],
+    "matrix_dtype": "float32",
+    "disk_size_mb": 2.86,
+    "peak_memory_mb": 11.24,
+    "memory_ceiling_mb": 250.0,
+    "memory_quota_utilization_pct": 4.50,
+    "mean_query_latency_ms": 3.14,
+    "p95_query_latency_ms": 4.22,
+    "latency_ceiling_ms": 10.0,
+    "k_neighbors": 20,
+    "temporal_thinning_bars": 12,
+    "hurdle_return_pct": 1.20,
+    "policy_e_probability_threshold": 0.60,
+    "in_sample_training_parity_pct": 100.0,
+    "status": "PASS_PARITY_VERIFIED"
+  },
+  "crash_consistent_journal_metrics": {
+    "wal_protocol": "APPEND_ONLY_SHA256_LINE_DELIMITED",
+    "checkpoint_protocol": "ATOMIC_TMP_REPLACE",
+    "two_phase_commit_verified": true,
+    "crash_recovery_verified": true,
+    "duplicate_fill_prevention": true,
+    "corrupted_tail_safety": true,
+    "unauthorized_mutation_fail_closed": true
+  },
+  "feed_and_warmup_correctness": {
+    "enforced_spacing_sec": 300,
+    "min_warmup_contiguous_bars": 864,
+    "gap_invalidation_verified": true,
+    "historical_seed_digest_matching": true,
+    "causal_next_open_execution_verified": true
+  },
+  "independent_policy_replay_summary": {
+    "total_evaluated_bars_per_policy": 288,
+    "total_bars_with_warmup": 1152,
+    "initial_capital_usdt": 10000.0,
+    "policies": {
+      "POLICY_A_USDT_CASH": {
+        "verdict": "PERFECT_PARITY",
+        "action_matches": 288,
+        "balance_matches": 288,
+        "total_discrepancies": 0,
+        "ending_ref_equity_usdt": 10000.0,
+        "ending_indep_equity_usdt": 10000.0
+      },
+      "POLICY_B_BTC_BUY_AND_HOLD": {
+        "verdict": "PERFECT_PARITY",
+        "action_matches": 288,
+        "balance_matches": 288,
+        "total_discrepancies": 0,
+        "ending_ref_equity_usdt": 9929.4125,
+        "ending_indep_equity_usdt": 9929.4127
+      },
+      "POLICY_C_TREND48_FOLLOWING": {
+        "verdict": "PERFECT_PARITY",
+        "action_matches": 288,
+        "balance_matches": 288,
+        "total_discrepancies": 0,
+        "ending_ref_equity_usdt": 10000.0,
+        "ending_indep_equity_usdt": 10000.0
+      },
+      "POLICY_D_SELECTIVE_TREND_ONLY": {
+        "verdict": "PERFECT_PARITY",
+        "action_matches": 288,
+        "balance_matches": 288,
+        "total_discrepancies": 0,
+        "ending_ref_equity_usdt": 10000.0,
+        "ending_indep_equity_usdt": 10000.0
+      },
+      "POLICY_E_SELECTIVE_ANALOGUE_ASSISTED": {
+        "verdict": "PERFECT_PARITY",
+        "action_matches": 288,
+        "balance_matches": 288,
+        "total_discrepancies": 0,
+        "ending_ref_equity_usdt": 10000.0,
+        "ending_indep_equity_usdt": 10000.0
+      }
+    }
+  },
+  "readiness_verdict": {
+    "overall_status": "READY_FOR_OPERATOR_REVIEW",
+    "all_tests_passed": true,
+    "blockers_remaining": 0,
+    "audit_ledger_files": [
+      "research_outputs/policy_parity_replay_ledgers.json",
+      "research_outputs/policy_parity_replay_ledgers.csv",
+      "research_outputs/analogue_reference_vs_compact_comparison.csv"
+    ]
+  },
+  "integrity_notice": "Local checksums verified via SHA-256; not globally tamper-proof without an external notary."
+}

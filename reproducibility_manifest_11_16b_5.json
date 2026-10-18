@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "sprint": "11.16B.5",
+  "timestamp_utc": "2026-10-18T22:34:46.268841+00:00",
+  "base_code_commit": "6e5fa46760aba9f1d85914e45caac6406598d0e0",
+  "canonical_dataset_sha256": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487",
+  "declarations": {
+    "PROSPECTIVE_OBSERVATION": "NOT_STARTED",
+    "LIVE_TRADING": "PROHIBITED",
+    "POLICY_PARAMETERS_CHANGED": "NO",
+    "PROTECTED_SERVICES_MUTATED": "NO",
+    "POLICY_E_STATUS": "PASS_PARITY_VERIFIED",
+    "NEXT_STEP": "OPERATOR_REVIEW"
+  },
+  "compact_analogue_metrics": {
+    "matrix_shape": [
+      67752,
+      10
+    ],
+    "matrix_dtype": "float32",
+    "disk_size_mb": 2.86,
+    "peak_memory_mb": 11.24,
+    "mean_latency_ms": 3.14,
+    "in_sample_parity_pct": 100.0,
+    "status": "PASS_PARITY_VERIFIED"
+  },
+  "independent_replay_summary": {
+    "total_evaluated_bars_per_policy": 288,
+    "total_audited_records": 1440,
+    "discrepancies": 0,
+    "verdict": "PERFECT_PARITY_ALL_POLICIES"
+  },
+  "file_hashes_sha256": {
+    "research_outputs/compact_analogue_candidates.npz": "a7ee5335f40989161a4213d95b880e9c7df2d5fc3bafe4f26b439387f8bfc484",
+    "research_outputs/analogue_reference_vs_compact_comparison.csv": "f118911e820f2a599e17423715e525bf60fe1d868eba53987ea344f7717776bb",
+    "research_outputs/policy_parity_replay_ledgers.json": "2ddc37b91d2d24b77fae7c9bbcfe2070b9c5a4c0a065e787a5d36a905716e265",
+    "research_outputs/policy_parity_replay_ledgers.csv": "086ffa6ff1a911c597bae762d44cc23defb844ecdd59a7fe8ed08148dbb8ef5e",
+    "research_outputs/compact_analogue_feasibility_report.md": "3e397ae3b76185486ccb7fa5ec673ea93984dfc157615f2141c964c15998366c",
+    "research_outputs/shadow_policy_readiness_gate_11_16b_5.json": "bd30771bd0b16bcb1fb83910debab8257bc2e2a6f3dbae19743906a54d40f1ab",
+    "research_outputs/research_report_11_16b_5.md": "17b635fa9d9545a1faa1d0abc23b4d50a066306b8ce28772f9b20666bbc09f39",
+    "src/coin_behavior_engine/research_lab/compact_analogue_runtime.py": "1829c3beadc803c49a70b7fa76e5d57d36d5f53bff6d314274368202d1564a72",
+    "src/coin_behavior_engine/research_lab/crash_consistent_journal.py": "8d0e4e2df7111b0bdc8038c010b1f9f986c6e0da78574e1867dce67cd71d9d31",
+    "src/coin_behavior_engine/research_lab/independent_policy_replay.py": "cbe3800351cba06782ddc9aa6aefa6e69f8f743a7798407d32718592f5ae5dff",
+    "tests/test_sprint11_16b_5_replay_and_journal.py": "1d06e3b2e35682ac5edc4c5fb8273c6555a94da6d5e81dc786e993f19e40c3d3"
+  },
+  "notary_notice": "Local checksums verified via SHA-256; not globally tamper-proof without an external notary."
+}
