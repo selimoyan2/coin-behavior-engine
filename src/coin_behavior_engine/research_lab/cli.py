@@ -473,9 +473,44 @@ def run_sprint11_07_pipeline(output_dir: Path = Path("research_outputs")) -> Dic
     }
 
 
+def run_sprint11_08_pipeline(output_dir: Path = Path("research_outputs")) -> Dict[str, Any]:
+    """Execute end-to-end Sprint 11.08 Predictive Integrity & Decision Quality pipeline."""
+    from coin_behavior_engine.research_lab.accounting_auditor import AccountingAuditor
+    from coin_behavior_engine.research_lab.predictive_auditor import PredictiveAuditor
+    from coin_behavior_engine.research_lab.decision_quality_auditor import DecisionQualityAuditor
+
+    git_commit = get_current_git_commit()
+    logger.info(f"=== CBE Research Lab Sprint 11.08 Pipeline (Commit: {git_commit[:8]}) ===")
+
+    # Phase 1: Financial Accounting Forensics & Reconciliation
+    logger.info("Executing Phase 1: Accounting Forensics & Ledger Reconciliation...")
+    acct_auditor = AccountingAuditor(output_dir=output_dir)
+    acct_summaries = acct_auditor.run_reconciliation()
+
+    # Phase 2: Prediction Metric Validation
+    logger.info("Executing Phase 2: Prediction Metric Validation & Baseline Auditing...")
+    pred_auditor = PredictiveAuditor(output_dir=output_dir)
+    pred_metrics = pred_auditor.run_prediction_audit()
+
+    # Phase 3-7: Analogue Safety, Failure Attribution, Horizon Research, Controlled Experiments & Dashboard Snapshot
+    logger.info("Executing Phase 3-7: Analogue Safety, Failure Attribution & Controlled Experiments...")
+    dq_auditor = DecisionQualityAuditor(output_dir=output_dir)
+    dq_results = dq_auditor.run_full_pipeline()
+
+    logger.info("=== CBE Research Lab Sprint 11.08 Complete ===")
+    return {
+        "status": "COMPLETE",
+        "output_dir": str(output_dir),
+        "accounting_summaries": acct_summaries,
+        "prediction_metrics": pred_metrics,
+        "decision_quality_results": dq_results,
+        "git_commit": git_commit,
+    }
+
+
 def main():
-    parser = argparse.ArgumentParser(description="CBE Research Lab Runner — Sprint 11.05, 11.06 & 11.07")
-    parser.add_argument("--sprint", default="11.07", choices=["11.05", "11.06", "11.07"], help="Sprint pipeline to execute (default: 11.07)")
+    parser = argparse.ArgumentParser(description="CBE Research Lab Runner — Sprint 11.05, 11.06, 11.07 & 11.08")
+    parser.add_argument("--sprint", default="11.08", choices=["11.05", "11.06", "11.07", "11.08"], help="Sprint pipeline to execute (default: 11.08)")
     parser.add_argument("--symbol", default="BTCUSDT", help="Trading pair symbol (default: BTCUSDT)")
     parser.add_argument("--days", type=int, default=25, help="Number of days to acquire and analyze (default: 25)")
     parser.add_argument("--output-dir", default="research_outputs", help="Output directory for research artifacts")
@@ -485,7 +520,9 @@ def main():
     out_p = Path(args.output_dir)
     off_p = Path(args.offline_parquet) if args.offline_parquet else None
 
-    if args.sprint == "11.07":
+    if args.sprint == "11.08":
+        run_sprint11_08_pipeline(output_dir=out_p)
+    elif args.sprint == "11.07":
         run_sprint11_07_pipeline(output_dir=out_p)
     else:
         run_research_pipeline(

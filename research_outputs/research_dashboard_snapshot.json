@@ -1,0 +1,132 @@
+{
+  "snapshot_metadata": {
+    "generated_at_utc": "2026-10-18T13:09:10.487381+00:00",
+    "system": "Coin Behavior Engine Research Lab",
+    "sprint": "11.08",
+    "validation_status": "OFFLINE_RESEARCH_VERIFIED_FAIL_CLOSED",
+    "trading_enabled": false,
+    "approval_4_authorized": false
+  },
+  "latest_market_state": {
+    "timestamp_open": 1792322700000,
+    "datetime_utc": "2026-10-18T11:25:00Z",
+    "close_price": 82104.03,
+    "trend_5m_pct": 0.0025334355639561323,
+    "trend_1h_pct": -0.1777138535833278,
+    "trend_4h_pct": 0.47029045991473506,
+    "realized_vol_24": 0.05427112251199189,
+    "volatility_compression_ratio": 0.8325438573068982,
+    "relative_volume_20": 0.3824200019923757,
+    "distance_to_support_pct": 0.5822247702092076,
+    "distance_to_resistance_pct": 0.23316760456216623,
+    "market_regime": "MEAN_REVERTING",
+    "event_context_status": "NO_MATERIAL_EVENT"
+  },
+  "prediction_probabilities": {
+    "horizon": "4h",
+    "prob_up": 0.1,
+    "prob_down": 0.0,
+    "prob_neutral": 0.9,
+    "expected_return_pct": 0.0776,
+    "downside_risk_pct": -0.5378,
+    "confidence_status": "CALIBRATED",
+    "brier_skill_vs_random_walk": 31.25
+  },
+  "similar_historical_examples": [
+    {
+      "decision_timestamp": 1786804200000,
+      "decision_datetime_utc": "2026-08-15T14:30:00Z",
+      "analogue_timestamp": 1768095300000,
+      "analogue_datetime_utc": "2026-01-11T01:35:00Z",
+      "similarity_distance": 0.1653,
+      "analogue_regime": "MEAN_REVERTING",
+      "fwd_ret_15m": 0.041158483234817,
+      "fwd_ret_1h": 0.1047951509830708,
+      "fwd_ret_4h": 0.2565560175457798,
+      "fwd_ret_24h": 0.7591797052465246,
+      "max_favorable_excursion_pct": 1.3494528560377097,
+      "max_adverse_excursion_pct": -0.3761562988984766,
+      "hit_resistance_first": true,
+      "hit_support_first": false
+    },
+    {
+      "decision_timestamp": 1786804200000,
+      "decision_datetime_utc": "2026-08-15T14:30:00Z",
+      "analogue_timestamp": 1766853000000,
+      "analogue_datetime_utc": "2025-12-27T16:30:00Z",
+      "similarity_distance": 0.2107,
+      "analogue_regime": "MEAN_REVERTING",
+      "fwd_ret_15m": -0.0075412187592058,
+      "fwd_ret_1h": -0.0074155317798849,
+      "fwd_ret_4h": 0.0422651033187021,
+      "fwd_ret_24h": 0.344679401652285,
+      "max_favorable_excursion_pct": 0.6509899963448001,
+      "max_adverse_excursion_pct": -0.06312914188586,
+      "hit_resistance_first": true,
+      "hit_support_first": false
+    },
+    {
+      "decision_timestamp": 1786804200000,
+      "decision_datetime_utc": "2026-08-15T14:30:00Z",
+      "analogue_timestamp": 1768653300000,
+      "analogue_datetime_utc": "2026-01-17T12:35:00Z",
+      "similarity_distance": 0.254,
+      "analogue_regime": "MEAN_REVERTING",
+      "fwd_ret_15m": -0.035327307609948,
+      "fwd_ret_1h": 0.0712738401602045,
+      "fwd_ret_4h": 0.0671386769996779,
+      "fwd_ret_24h": -0.122575052161823,
+      "max_favorable_excursion_pct": 0.3768351098442102,
+      "max_adverse_excursion_pct": -0.424085121389071,
+      "hit_resistance_first": true,
+      "hit_support_first": false
+    },
+    {
+      "decision_timestamp": 1786804200000,
+      "decision_datetime_utc": "2026-08-15T14:30:00Z",
+      "analogue_timestamp": 1778334600000,
+      "analogue_datetime_utc": "2026-05-09T13:50:00Z",
+      "similarity_distance": 0.2567,
+      "analogue_regime": "MEAN_REVERTING",
+      "fwd_ret_15m": -0.0060226841161866,
+      "fwd_ret_1h": -0.0844793439355794,
+      "fwd_ret_4h": 0.521360370041689,
+      "fwd_ret_24h": 0.7505583426369679,
+      "max_favorable_excursion_pct": 0.8924025084230517,
+      "max_adverse_excursion_pct": -0.1603228556880226,
+      "hit_resistance_first": true,
+      "hit_support_first": false
+    },
+    {
+      "decision_timestamp": 1786804200000,
+      "decision_datetime_utc": "2026-08-15T14:30:00Z",
+      "analogue_timestamp": 1767286500000,
+      "analogue_datetime_utc": "2026-01-01T16:55:00Z",
+      "similarity_distance": 0.2656,
+      "analogue_regime": "MEAN_REVERTING",
+      "fwd_ret_15m": 0.0739526275856222,
+      "fwd_ret_1h": 0.372331647815017,
+      "fwd_ret_4h": 0.306130010242218,
+      "fwd_ret_24h": 2.7131760920372194,
+      "max_favorable_excursion_pct": 3.194998997599245,
+      "max_adverse_excursion_pct": -0.0145018522820355,
+      "hit_resistance_first": true,
+      "hit_support_first": false
+    }
+  ],
+  "recommended_research_decision": {
+    "action": "NO_TRADE",
+    "decision_mode": "CONTEXT_AWARE_RESEARCH",
+    "reason": "TAKER_FRICTION_HURDLE_UNMET",
+    "explanation": "Expected 4-hour forward drift (+0.15% to +0.30%) is smaller than roundtrip exchange friction hurdle rate (0.28% taker fee + slippage). In accordance with Sprint 11.08 decision quality gating, the engine recommends explicit abstention.",
+    "target_price": null,
+    "stop_loss_price": null,
+    "position_size_pct": 0.0
+  },
+  "data_completeness": {
+    "total_candles": 105120,
+    "span_days": 365,
+    "gap_count": 0,
+    "ohlcv_invariants_verified": true
+  }
+}

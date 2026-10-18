@@ -1,0 +1,8 @@
+model_id,model_name,trades_count,win_rate_pct,gross_pnl_usd,total_fees_usd,total_slippage_usd,net_pnl_usd,return_pct,max_drawdown_pct,profit_factor,description,decision_rule
+MODEL_A,Model A: Cash Baseline,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,Risk-free cash baseline preserving 100% principal.,No trading.
+MODEL_B,Model B: Buy & Hold,1,100.0,3012.1,23.0,4.0,2985.1,29.851,8.55,99.0,Full market beta exposure across entire test duration.,"Buy at start, hold to end."
+MODEL_C,Model C: Original Analogue Strategy,55,43.64,837.41,1025.11,512.3,-700.0,-7.0,9.52,0.65,"Sprint 11.07 baseline analogue model (odds >= 0.70, exp_ret >= 0.25%).","Odds >= 0.70, ExpRet >= 0.25%, TP +2.0%, SL -1.5%."
+MODEL_D,Model D: Calibrated Probability Thresholds,20,45.0,503.68,379.0,189.42,-64.74,-0.65,4.65,0.91,Tighter probability thresholding to reduce low-conviction churn.,"Odds >= 0.75, ProbUp >= 0.25, ExpRet >= 0.30%."
+MODEL_E,Model E: Expected Return vs Cost Gating,18,44.44,361.78,343.71,171.74,-153.67,-1.54,4.12,0.7,Requires expected return to exceed at least 2x roundtrip friction (> 0.40%).,"Odds >= 0.70, ExpRet >= 0.40%, DownsideRisk >= -1.5%, TP +2.5%."
+MODEL_F,Model F: Regime-Aware Position Sizing,12,25.0,98.02,156.53,78.25,-136.76,-1.37,4.17,0.3,"Scales position size based on regime: 95% in bull, 45% in compression, 0% in mean-reversion.","Regime scaling (Bull 95%, Compression 45%, Chop 0%)."
+MODEL_G,Model G: Explicit Abstention,2,0.0,26.52,37.99,18.98,-30.45,-0.3,1.12,0.0,"Ultra-conservative: requires odds >= 0.80, exp_ret >= 0.40%, and TRENDING_BULL regime.","Odds >= 0.80, ExpRet >= 0.40%, Bull Regime only."
