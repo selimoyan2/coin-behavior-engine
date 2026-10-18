@@ -1,0 +1,60 @@
+{
+  "gate_schema_version": "2.0.0-bridge",
+  "sprint": "11.16B.3",
+  "title": "Shadow Market Data Bridge & Warmup Integrity Gate",
+  "evaluated_at_utc": "2026-10-19T01:00:00Z",
+  "base_code_commit": "9b8ed816aa67e338a1019bc7e42de66b5f33d7bb",
+  "overall_activation_verdict": "BLOCKED",
+  "activation_verdict_rationale": "Data bridge, rolling buffer, and frozen feature adapters are fully implemented and verified. However, overall activation remains BLOCKED because live host contiguity is 810 bars (< 864 required), Linux cgroup runtime behavior has not been tested in live container, and operator authorization is NOT_GRANTED.",
+  "mandatory_evaluation_dimensions": {
+    "MARKET_DATA_BRIDGE_IMPLEMENTED": {
+      "verdict": "PASS",
+      "detail": "ShadowMarketDataBridge implemented with atomic validation, monotonic continuity, gap detection, and bounded memory buffer."
+    },
+    "HISTORICAL_SEED_PROVENANCE": {
+      "verdict": "PASS",
+      "detail": "HistoricalSeedProvenance utility enforces strict cryptographic hashing, start/end boundaries, and explicit stream separation (HISTORICAL_SEED_WARMUP)."
+    },
+    "CONTIGUOUS_WARMUP_READY": {
+      "verdict": "BLOCKED",
+      "detail": "Host live capture reports contiguous_bars_count=810, which is below the 864 contiguous 5m bars required for 72h SMA. System remains in WARMUP_BUFFERING until 864 bars are accumulated or authorized seed is loaded."
+    },
+    "FROZEN_FEATURE_PARITY": {
+      "verdict": "PASS",
+      "detail": "FrozenFeatureAdapter achieves exact mathematical parity for SMA 288, SMA 576, SMA 864, ATR 14, anti-chase extension (<= 2.25%), and volatility band [0.015, 0.065]."
+    },
+    "ANALOGUE_LIBRARY_INTEGRITY": {
+      "verdict": "PASS",
+      "detail": "AnalogueArtifactLoader cryptographically verifies historical_analogues.csv (SHA-256 c6ed5912524e176bde0e941a0d69fe8f0c4f121759036ef2caa7219c06526ff1); refuses default fallback if missing or tampered."
+    },
+    "EXECUTION_CAUSALITY": {
+      "verdict": "PASS",
+      "detail": "Fills execute strictly at next_bar_open with 30 bps roundtrip friction. Missing next-open price refuses fill; zero same-candle execution."
+    },
+    "BOUNDED_MEMORY": {
+      "verdict": "PASS",
+      "detail": "PersistentRollingBuffer enforces 1,000-candle capacity ceiling with oldest-candle eviction and atomic state persistence."
+    },
+    "CHECKPOINT_RECOVERY": {
+      "verdict": "PASS",
+      "detail": "State persistence and restart recovery verified; reload from disk restores buffer and re-verifies full hash-chain lineage."
+    },
+    "LINUX_RUNTIME_VALIDATION": {
+      "verdict": "NOT_TESTED",
+      "detail": "Process RSS verified on Windows host (115.8 MB); Linux cgroup memory/CFS enforcement was not tested in a live container to preserve read-only host invariants."
+    },
+    "OPERATOR_AUTHORIZATION": {
+      "verdict": "NOT_GRANTED",
+      "detail": "Formal operator authorization signature has not yet been executed."
+    }
+  },
+  "final_status_declarations": {
+    "SPRINT_11_16B_3": "BLOCKED",
+    "PROSPECTIVE_OBSERVATION": "NOT_STARTED",
+    "LIVE_TRADING": "PROHIBITED",
+    "PROTECTED_SERVICES_MUTATED": "NO",
+    "POLICY_PARAMETERS_CHANGED": "NO",
+    "WINNER_SELECTED": "NO",
+    "NEXT_STEP": "OPERATOR_REVIEW"
+  }
+}

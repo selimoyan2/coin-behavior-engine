@@ -1,0 +1,32 @@
+{
+  "manifest_id": "REPRO-SPRINT-11-16B3-FINAL",
+  "sprint": "11.16B.3",
+  "mission": "Shadow Market Data Bridge & Warmup Integrity Implementation",
+  "generated_at_utc": "2026-10-19T01:00:00Z",
+  "base_code_commit": "9b8ed816aa67e338a1019bc7e42de66b5f33d7bb",
+  "implementation_files": [
+    "src/coin_behavior_engine/research_lab/shadow_market_data_bridge.py"
+  ],
+  "deliverables": [
+    "src/coin_behavior_engine/research_lab/shadow_market_data_bridge.py",
+    "tests/test_sprint11_16b_3_market_data_bridge.py",
+    "research_outputs/shadow_market_data_bridge_report_11_16b_3.md",
+    "research_outputs/shadow_data_contract_gate_11_16b_3.json",
+    "research_outputs/reproducibility_manifest_11_16b_3.json"
+  ],
+  "verification_tests": {
+    "test_file": "tests/test_sprint11_16b_3_market_data_bridge.py",
+    "tests_total": 18,
+    "tests_passed": 18,
+    "tests_failed": 0
+  },
+  "status_declarations": {
+    "SPRINT_11_16B_3": "BLOCKED",
+    "PROSPECTIVE_OBSERVATION": "NOT_STARTED",
+    "LIVE_TRADING": "PROHIBITED",
+    "PROTECTED_SERVICES_MUTATED": "NO",
+    "POLICY_PARAMETERS_CHANGED": "NO",
+    "WINNER_SELECTED": "NO",
+    "NEXT_STEP": "OPERATOR_REVIEW"
+  }
+}
