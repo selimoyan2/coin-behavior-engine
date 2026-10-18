@@ -1,0 +1,144 @@
+{
+  "manifest_id": "PFM-SPRINT-11-16B2-PROSPECTIVE-V2",
+  "manifest_version": "2.0.0-prospective",
+  "registration_type": "PROSPECTIVE_OBSERVATION_FREEZE_BASELINE",
+  "generated_at_utc": "2026-10-19T00:50:00Z",
+  "base_code_commit": "b5bc3f69c2027fc23984eb5d661400437cdd9f97",
+  "historical_baseline_origin": {
+    "manifest_id": "PFM-SPRINT-11-15-CANONICAL",
+    "historical_claim_date_utc": "2026-10-18T21:00:00Z",
+    "git_commit_hash": "09773621f7026ac2630fb7674cd11aadaf934a70",
+    "git_commit_date_utc": "2026-10-18T18:31:03Z",
+    "local_timezone_offset": "+0300 (Turkey Time / TRT)",
+    "historical_freeze_chronology_status": "FREEZE_CHRONOLOGY_UNVERIFIED",
+    "retrospective_certification_permitted": false,
+    "audit_note": "Local wall-clock time was conflated with UTC in the Sprint 11.15 manifest string. Lacking external RFC-3161 or signed git tag proof, the historical freeze chronology remains strictly UNVERIFIED."
+  },
+  "prospective_freeze_registration": {
+    "prospective_registration_timestamp_utc": "2026-10-19T00:50:00Z",
+    "prospective_registration_status": "FROZEN_BEFORE_UNSEEN_EVALUATION",
+    "external_anchor_mechanism": "OPERATOR_SIGNED_GIT_TAG_OR_RFC3161_REQUIRED",
+    "external_anchor_status": "PENDING_OPERATOR_SIGNATURE"
+  },
+  "winner_selection_status": "FORBIDDEN_NO_WINNER_SELECTED",
+  "winner_selection_rationale": "Historical partition (bars 86,724 to 105,120) has been iteratively inspected across Sprints 11.10 through 11.14 and is scientifically research-contaminated. Prospective evaluation must observe all 5 candidate policies concurrently without selecting a winner in advance.",
+  "canonical_benchmark_dataset": {
+    "file": "market_state_dataset.parquet",
+    "sha256_fingerprint": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487",
+    "symbol": "BTCUSDT",
+    "interval": "5m",
+    "total_candles": 105120
+  },
+  "execution_policy_standard": {
+    "policy_version": "2.0.0-sprint11.13",
+    "nominal_roundtrip_friction_bps": 30.0,
+    "taker_entry_fee_bps": 10.0,
+    "taker_exit_fee_bps": 10.0,
+    "entry_slippage_bps": 5.0,
+    "exit_slippage_bps": 5.0,
+    "initial_capital_usdt": 10000.0,
+    "allocation_cap_pct": 98.0,
+    "execution_timing": "NEXT_BAR_OPEN",
+    "intrabar_priority": "Pessimistic: STOP_LOSS evaluated before TAKE_PROFIT if both touched",
+    "cash_floor_usdt": 0.0,
+    "inventory_floor_btc": 0.0
+  },
+  "candidate_policies": {
+    "POLICY_A_USDT_CASH": {
+      "policy_id": "POLICY_A_USDT_CASH",
+      "policy_name": "USDT Cash Capital Preservation",
+      "role": "Passive risk-free benchmark",
+      "description": "Maintains 100% USDT cash balance at all times. Emits WAIT_USDT on every observation cycle. Provides true opportunity cost reference.",
+      "active_trading": false,
+      "parameter_digest_sha256": "08f5376a30e5fa54902b13df8d012f218d8e8279986dceec4368b362e4ad0fed",
+      "frozen_parameters": {
+        "allocation_pct": 0.0,
+        "rebalance_frequency": "NONE"
+      },
+      "required_historical_bars": 0
+    },
+    "POLICY_B_BTC_BUY_AND_HOLD": {
+      "policy_id": "POLICY_B_BTC_BUY_AND_HOLD",
+      "policy_name": "BTC Spot Buy-and-Hold Benchmark",
+      "role": "Beta market benchmark",
+      "description": "Allocates 98% of capital to BTC spot at first observable price and holds through the evaluation horizon.",
+      "active_trading": false,
+      "parameter_digest_sha256": "40a72dedfd4daf722ab8f49dab9f1741827530d51c88ff8f8b2e9df1e47bc461",
+      "frozen_parameters": {
+        "initial_allocation_cap_pct": 98.0,
+        "rebalance_frequency": "NONE"
+      },
+      "required_historical_bars": 1
+    },
+    "POLICY_C_TREND48_FOLLOWING": {
+      "policy_id": "POLICY_C_TREND48_FOLLOWING",
+      "policy_name": "Classic 48-Hour Trend Following Model",
+      "role": "Unfiltered momentum baseline",
+      "description": "Enters spot long when BTC close > 48h Simple Moving Average; exits when BTC close < 48h Simple Moving Average.",
+      "active_trading": true,
+      "parameter_digest_sha256": "0bd242a12943b9e58f6cf0047c2def95fbd74334eeb74a91bda4ccf4f5aa37e7",
+      "frozen_parameters": {
+        "trend_window_hours": 48,
+        "trend_window_bars": 576,
+        "entry_threshold_pct": 0.0,
+        "allocation_cap_pct": 98.0
+      },
+      "required_historical_bars": 576
+    },
+    "POLICY_D_SELECTIVE_TREND_ONLY": {
+      "policy_id": "POLICY_D_SELECTIVE_TREND_ONLY",
+      "policy_name": "Selective Regime-Aware Trend Policy (No Analogues)",
+      "role": "Multi-timeframe structural candidate",
+      "description": "Requires multi-timeframe trend alignment (24h and 72h SMA), anti-chase extension cap, and volatility boundary gating. Does not consult historical analogues.",
+      "active_trading": true,
+      "parameter_digest_sha256": "ef5e193beebcade0eef74b3804c72f1bd6212d2a73d9520284c830d28f9e1065",
+      "frozen_parameters": {
+        "fast_sma_hours": 24,
+        "fast_sma_bars": 288,
+        "slow_sma_hours": 72,
+        "slow_sma_bars": 864,
+        "anti_chase_max_extension_pct": 2.25,
+        "min_volatility_atr_pct": 0.015,
+        "max_volatility_atr_pct": 0.065,
+        "fixed_stop_loss_pct": 2.50,
+        "fixed_take_profit_pct": 5.00,
+        "post_exit_cooldown_bars": 72,
+        "allocation_cap_pct": 98.0
+      },
+      "required_historical_bars": 864
+    },
+    "POLICY_E_SELECTIVE_ANALOGUE_ASSISTED": {
+      "policy_id": "POLICY_E_SELECTIVE_ANALOGUE_ASSISTED",
+      "policy_name": "Selective Analogue-Assisted Spot Policy",
+      "role": "Hybrid structural + behavioral candidate",
+      "description": "Enforces Policy D multi-timeframe structural gating and additionally requires positive directional skew confirmation from top historical analogues.",
+      "active_trading": true,
+      "parameter_digest_sha256": "f64eab504192d969af4ac2aaeb6d875f33ccc5dffae5582a16ff120c2128d994",
+      "frozen_parameters": {
+        "fast_sma_hours": 24,
+        "fast_sma_bars": 288,
+        "slow_sma_hours": 72,
+        "slow_sma_bars": 864,
+        "anti_chase_max_extension_pct": 2.25,
+        "min_volatility_atr_pct": 0.015,
+        "max_volatility_atr_pct": 0.065,
+        "analogue_min_similarity": 0.75,
+        "analogue_min_positive_prob": 0.60,
+        "fixed_stop_loss_pct": 2.50,
+        "fixed_take_profit_pct": 5.00,
+        "post_exit_cooldown_bars": 72,
+        "allocation_cap_pct": 98.0
+      },
+      "required_historical_bars": 864,
+      "requires_analogue_library": true
+    }
+  },
+  "prospective_evaluation_gates": {
+    "minimum_observation_duration_calendar_days": 30,
+    "minimum_observation_bars": 8640,
+    "minimum_trade_cycles": 20,
+    "max_drawdown_stop_condition_pct": 15.0,
+    "consecutive_loss_stop_condition_count": 5,
+    "data_feed_latency_stop_condition_minutes": 60.0
+  }
+}

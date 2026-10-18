@@ -1,0 +1,75 @@
+# CBE Prospective Shadow Observer — Proposed Production Deployment Specification
+# SPRINT: 11.16B.2 (INERT ARTIFACT — DO NOT EXECUTE DIRECTLY)
+# MISSION: Isolated Prospective Shadow Observation across 5 Candidate Research Policies
+#
+# HARDENING INVARIANTS:
+# 1. Complete Air-Gap: network_mode is set to "none". Outbound sockets are physically impossible.
+# 2. Complete Read-Only Ingestion: Live Capture data volume mounted strictly with :ro.
+# 3. Complete Storage Isolation: Dedicated volume cbe_prospective_shadow_data_v1 with zero production cross-mounts.
+# 4. Strict Resource Capping: cpus: '0.20', memory: 250M, pids: 32 to eliminate contention.
+
+version: '3.8'
+
+services:
+  cbe-prospective-shadow-observer:
+    image: cbe-prospective-shadow:1.0.0-sprint11.16b
+    container_name: cbe-prospective-shadow-observer-v1
+    restart: unless-stopped
+    network_mode: "none"
+    user: "1000:1000"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+
+    environment:
+      - CBE_ENVIRONMENT=PROSPECTIVE_SHADOW
+      - CBE_TRADING_DISABLED=true
+      - CBE_BASE_CODE_COMMIT=b5bc3f69c2027fc23984eb5d661400437cdd9f97
+      - CBE_POLICY_FREEZE_MANIFEST=/app/config/prospective_freeze_manifest_v2.json
+      - CBE_FACTUAL_SNAPSHOT_PATH=/app/data/live_capture/live_market_state.json
+      - CBE_SHADOW_DATA_DIR=/app/data/shadow
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+
+    volumes:
+      # Read-only ingestion of live capture factual snapshot
+      - type: volume
+        source: zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data
+        target: /app/data/live_capture
+        read_only: true
+      # Isolated writable volume for append-only decision ledgers and checkpoints
+      - type: volume
+        source: cbe_prospective_shadow_data_v1
+        target: /app/data/shadow
+        read_only: false
+
+    deploy:
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 250M
+          pids: 32
+        reservations:
+          cpus: '0.05'
+          memory: 150M
+
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys, json, time, pathlib; p = pathlib.Path('/app/data/shadow/ledgers/shadow_observer_heartbeat.json'); sys.exit(0 if p.is_file() and (time.time() - p.stat().st_mtime < 600) else 1)"]
+      interval: 300s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+    command: >
+      python -m coin_behavior_engine.research_lab.prospective_shadow_daemon
+      --manifest /app/config/prospective_freeze_manifest_v2.json
+      --snapshot /app/data/live_capture/live_market_state.json
+      --data-dir /app/data/shadow
+
+volumes:
+  # Existing live capture volume (strictly read-only)
+  zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data:
+    external: true
+  # Dedicated prospective shadow evaluation volume
+  cbe_prospective_shadow_data_v1:
+    driver: local
