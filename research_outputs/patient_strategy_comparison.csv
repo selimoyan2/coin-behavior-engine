@@ -1,0 +1,10 @@
+strategy_id,strategy_name,trades_count,win_rate_pct,gross_pnl_usd,total_fees_usd,total_slippage_usd,total_friction_usd,net_pnl_usd,return_pct,annualized_return_pct,max_drawdown_pct,sharpe_ratio,sortino_ratio,profit_factor,time_in_usdt_pct,turnover_ratio,friction_drag_pct,outperformed_buy_and_hold,excess_return_vs_bnh_pct
+STRAT_A_CASH,Strategy A: USDT Cash,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,100.0,0.0,0.0,True,0.16
+STRAT_B_BNH,Strategy B: Buy-and-Hold BTC,1,0.0,13.01,19.59,9.79,29.38,-16.37,-0.16,-0.94,0.16,-1.88,-0.03,0.0,99.93,0.98,225.83,False,0.0
+STRAT_C_SWITCH,Strategy C: Simple Trend/Cash Switching,1129,13.11,987.65,7084.58,3540.39,10624.97,-9637.32,-96.37,-550.7,96.37,-44.51,-27.21,0.21,46.02,354.18,1075.78,False,-96.21
+STRAT_D_TREND48,Strategy D: Patient 48h Trend Model,25,48.0,2414.57,542.1,270.91,813.01,1601.56,16.02,91.52,8.65,3.78,1.97,2.17,75.8,26.98,33.67,True,16.18
+STRAT_E_ANALOGUE24,Strategy E: 24h Analogue Strategy,48,50.0,2237.81,1020.42,509.97,1530.39,707.42,7.07,40.42,14.04,1.43,1.25,1.19,24.85,50.91,68.39,True,7.24
+STRAT_F_EXISTING_DYN,Strategy F: Existing Dynamic Engine (Sprint 11.10),25,64.0,3169.18,561.0,280.38,841.38,2327.8,23.28,133.02,4.82,4.94,2.82,3.26,71.82,27.89,26.55,True,23.44
+STRAT_G_PATIENT_DYN,Strategy G: Patient Dynamic Spot Engine (Sprint 11.11),18,55.56,2593.28,402.65,201.25,603.9,1989.38,19.89,113.68,6.71,4.35,2.26,2.13,77.84,20.0,23.29,True,20.06
+STRAT_H_NO_ANALOGUES,Strategy H: Patient Dynamic without Analogues,19,47.37,2276.53,418.17,209.0,627.17,1649.36,16.49,94.25,6.71,3.82,1.87,1.82,79.31,20.79,27.55,True,16.66
+STRAT_I_WITH_EVENTS,Strategy I: Patient Dynamic with Verified Context,18,55.56,2593.28,402.65,201.25,603.9,1989.38,19.89,113.68,6.71,4.35,2.26,2.13,77.84,20.0,23.29,True,20.06

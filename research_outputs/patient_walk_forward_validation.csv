@@ -1,0 +1,4 @@
+fold_id,regime_description,test_start_utc,test_end_utc,test_candles,embargo_hours,strategy_trades,strategy_win_rate_pct,strategy_net_pnl_usd,strategy_return_pct,strategy_max_dd_pct,strategy_profit_factor,bnh_return_pct,outperformed_buy_and_hold,excess_return_vs_bnh_pct
+FOLD_1_BEAR_DIP,Bearish dip & liquidation regime,2026-04-13T13:30:00Z,2026-06-12T01:25:00Z,17136,72.0,17,47.06,-866.66,-8.67,13.38,0.4,0.67,False,-9.33
+FOLD_2_CONSOLIDATION,Choppy consolidation regime,2026-06-22T00:10:00Z,2026-08-20T12:05:00Z,17136,72.0,16,43.75,145.35,1.45,10.8,1.1,0.57,True,0.88
+FOLD_3_BULL_EXPANSION,Bull expansion & breakout regime,2026-08-16T13:30:00Z,2026-10-18T11:25:00Z,18120,72.0,18,55.56,1989.38,19.89,6.71,2.13,-0.25,True,20.14

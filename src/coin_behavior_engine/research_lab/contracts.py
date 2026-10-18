@@ -7,6 +7,7 @@ All data structures enforce strict temporal immutability and provenance tracking
 from __future__ import annotations
 
 import enum
+from enum import Enum
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
@@ -955,5 +956,196 @@ class AdaptiveStrategyComparisonRecord:
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
+
+
+# ---------------------------------------------------------------------------
+# Sprint 11.11 Contracts: Decision Failure Forensics & Patient Adaptive Policy
+# ---------------------------------------------------------------------------
+
+class PatientSpotState(str, Enum):
+    """Explicit states for patient spot market execution policy."""
+    WAIT_USDT = "WAIT_USDT"
+    WATCH_REVERSAL = "WATCH_REVERSAL"
+    BUY_READY = "BUY_READY"
+    HOLD_BTC = "HOLD_BTC"
+    REDUCE_BTC = "REDUCE_BTC"
+    EXIT_TO_USDT = "EXIT_TO_USDT"
+
+
+class FailureAttributionCategory(str, Enum):
+    """Granular failure attribution taxonomy for trading decisions."""
+    PREMATURE_STOP_OUT = "PREMATURE_STOP_OUT"
+    UNNECESSARY_RE_ENTRY = "UNNECESSARY_RE_ENTRY"
+    FEE_DRIVEN_LOSS = "FEE_DRIVEN_LOSS"
+    OVER_SIZED_RISK = "OVER_SIZED_RISK"
+    INTRADAY_VOLATILITY_WHIPSAW = "INTRADAY_VOLATILITY_WHIPSAW"
+    FALSE_REVERSAL = "FALSE_REVERSAL"
+    ADVERSE_REGIME_EXPOSURE = "ADVERSE_REGIME_EXPOSURE"
+    STALE_SIGNAL_ENTRY = "STALE_SIGNAL_ENTRY"
+    OVERCONFIDENT_PROBABILITY = "OVERCONFIDENT_PROBABILITY"
+    GENUINE_FORECAST_FAILURE = "GENUINE_FORECAST_FAILURE"
+    # Entry / exit quality categories
+    CORRECT_ENTRY_INCORRECT_EXIT = "CORRECT_ENTRY_INCORRECT_EXIT"
+    INCORRECT_ENTRY_CORRECT_EXIT = "INCORRECT_ENTRY_CORRECT_EXIT"
+    BOTH_CORRECT = "BOTH_CORRECT"
+    BOTH_INCORRECT = "BOTH_INCORRECT"
+
+
+@dataclass
+class DecisionFailureRecord:
+    """Forensic failure classification for an individual trade."""
+    trade_id: str
+    strategy_id: str
+    timestamp_open: int
+    datetime_utc: str
+    entry_timestamp: int
+    entry_datetime_utc: str
+    exit_timestamp: int
+    exit_datetime_utc: str
+    entry_price: float
+    exit_price: float
+    quantity: float
+    holding_period_minutes: int
+    gross_pnl_usd: float
+    fees_paid_usd: float
+    slippage_cost_usd: float
+    total_friction_usd: float
+    net_pnl_usd: float
+    return_pct: float
+    max_favorable_excursion_pct: float
+    max_adverse_excursion_pct: float
+    exit_reason: str
+    market_regime_at_entry: str
+    market_regime_at_exit: str
+    failure_category: str
+    entry_exit_classification: str
+    primary_failure_mechanism: str
+    avoidable_by_patience: bool
+    contemporaneously_knowable: bool
+    forensic_explanation: str
+    recommended_mitigation: str
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class PatientSpotStateTransitionRecord:
+    """Audit of patient state transitions with evidence verification."""
+    transition_id: str
+    timestamp_open: int
+    datetime_utc: str
+    from_state: str
+    to_state: str
+    trigger_event: str
+    close_price: float
+    market_regime: str
+    confirmation_bars_observed: int
+    cooldown_bars_remaining: int
+    price_change_from_last_exit_pct: float
+    transition_permitted: bool
+    rejection_reason: Optional[str] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class AdaptiveStopUpdateAuditRecord:
+    """Audit of structural vs unnecessary trailing stop adjustments."""
+    update_id: str
+    trade_id: str
+    timestamp_open: int
+    datetime_utc: str
+    old_stop_loss: float
+    new_stop_loss: float
+    stop_change_pct: float
+    current_price: float
+    price_advance_from_entry_pct: float
+    update_trigger_type: str  # BREAKEVEN_LOCK, PROFIT_LOCK_1, PROFIT_LOCK_2, ATR_TRAIL
+    was_stop_widened: bool
+    structural_evidence_met: bool
+    bars_since_last_update: int
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class ReentryCooldownRecord:
+    """Analysis of re-entry attempts and churn prevention."""
+    reentry_attempt_id: str
+    timestamp_open: int
+    datetime_utc: str
+    prior_exit_timestamp: int
+    prior_exit_datetime_utc: str
+    prior_exit_price: float
+    current_price: float
+    bars_since_exit: int
+    cooldown_threshold_bars: int
+    price_delta_pct: float
+    is_emergency_exception: bool
+    permitted: bool
+    avoided_whipsaw_loss_usd: float
+    avoided_friction_usd: float
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class BearMarketProtectionRecord:
+    """Quantitative measurement of portfolio protection during market downturns."""
+    regime_period_id: str
+    start_timestamp: int
+    start_datetime_utc: str
+    end_timestamp: int
+    end_datetime_utc: str
+    regime_type: str
+    btc_start_price: float
+    btc_end_price: float
+    btc_return_pct: float
+    btc_max_drawdown_pct: float
+    portfolio_start_equity: float
+    portfolio_end_equity: float
+    portfolio_return_pct: float
+    portfolio_max_drawdown_pct: float
+    mean_usdt_allocation_pct: float
+    avoided_portfolio_drawdown_pct: float
+    false_exit_count: int
+    missed_recovery_gain_pct: float
+    net_protection_benefit_pct: float
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class PatientStrategyComparisonRecord:
+    """Performance record across all 9 benchmark and ablation strategies."""
+    strategy_id: str
+    strategy_name: str
+    trades_count: int
+    win_rate_pct: float
+    gross_pnl_usd: float
+    total_fees_usd: float
+    total_slippage_usd: float
+    total_friction_usd: float
+    net_pnl_usd: float
+    return_pct: float
+    annualized_return_pct: float
+    max_drawdown_pct: float
+    sharpe_ratio: float
+    sortino_ratio: float
+    profit_factor: float
+    time_in_usdt_pct: float
+    turnover_ratio: float
+    friction_drag_pct: float
+    outperformed_buy_and_hold: bool
+    excess_return_vs_bnh_pct: float
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
 
 
