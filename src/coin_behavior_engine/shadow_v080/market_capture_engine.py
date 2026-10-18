@@ -509,6 +509,21 @@ class MarketCaptureEngineV080:
             candles_sequence=list(self.rolling_buffer),
         )
 
+        # Write legacy gap_recovery_audit.jsonl in quarantine_dir for backward compatibility
+        if success:
+            try:
+                audit_file = self.config.quarantine_dir / "gap_recovery_audit.jsonl"
+                audit_entry = {
+                    "gap_id": gap_id,
+                    "recovery_provenance": "REST_GAP_RECOVERY",
+                    "recovered_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "recovered_candles_count": len(recovered_candles),
+                }
+                with open(audit_file, "a", encoding="utf-8") as f:
+                    f.write(json.dumps(audit_entry) + "\n")
+            except Exception as e:
+                logger.warning(f"Could not append to legacy gap_recovery_audit.jsonl: {e}")
+
         return success, msg
 
     def get_summary_report(self) -> Dict[str, Any]:

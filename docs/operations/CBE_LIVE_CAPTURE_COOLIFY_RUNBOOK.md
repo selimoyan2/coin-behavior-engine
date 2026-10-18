@@ -286,3 +286,48 @@ docker compose \
 - The persistent volume `zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data` is NEVER touched or deleted during rollback.
 - Newly collected candles remain preserved in the append-only JSONL files.
 - The Market Intelligence Staging UI will continue reading the snapshot or fall back to canonical baseline without downtime.
+
+---
+
+## 8. Independent Research Readiness & Evidence Integrity Audit (Sprint 11.02E)
+
+Sprint 11.02E provides a strictly read-only, offline, non-mutating auditor that evaluates whether captured live market evidence meets rigorous scientific and quantitative criteria for offline research use.
+
+### 8.1 Core Principles
+- **No Blind Trust:** Does not rely on `is_research_eligible=true` from engine/dashboard; independently re-derives all metrics.
+- **Strict Read-Only:** Never acquires write locks, rebuilds SQLite indexes, truncates files, or creates quarantine files.
+- **Fail-Closed:** Any hash break, sequence gap, uncommitted recovery entry, or safety violation immediately results in `NOT_READY` or `INDETERMINATE`.
+- **5 Evaluation Gates:**
+  1. `EVIDENCE_INTEGRITY`: SHA-256 hash chains of raw evidence, recovery journal, and recovery metadata cross-validation.
+  2. `TEMPORAL_CONTINUITY`: Strict 300,000 ms spacing, boundary alignment, closed-candle flags, zero duplicates or out-of-order bars.
+  3. `RECOVERY_CORRECTNESS`: Exact timestamp matching for recovered gaps, zero raw candle overwrites, zero uncommitted entries leaking into research timeline.
+  4. `RESEARCH_WINDOW_READINESS`: Full warmup window (>= 288 contiguous closed 5m bars = 24 hours) unbroken at head of timeline.
+  5. `AUTHORIZATION_SAFETY`: Runtime environment interlocks (`CBE_TRADING_DISABLED=true`, `CBE_PROSPECTIVE_OBSERVATION_ENABLED=false`, `CBE_APPROVAL_4_AUTHORIZED=false`).
+
+### 8.2 Execution Commands
+
+#### Local / Staging Execution:
+```bash
+python deploy/shadow_v080/audit_research_readiness.py \
+  --evidence-dir /app/data/live_capture \
+  --output-json /tmp/research_readiness_audit.json \
+  --output-md /tmp/research_readiness_audit.md \
+  --compare-engine \
+  --strict
+```
+
+#### Low-Resource VPS / Containerized Run:
+```bash
+docker run --rm \
+  -v zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data:/evidence:ro \
+  cbe-080-shadow:coolify-live-capture \
+  python deploy/shadow_v080/audit_research_readiness.py \
+    --evidence-dir /evidence \
+    --strict
+```
+
+### 8.3 Verdict Classifications
+- `READY_FOR_OFFLINE_RESEARCH`: All 5 gates passed. Certified for historical backtesting and offline research only. (Trading and prospective scoring remain forbidden).
+- `NOT_READY`: One or more gates failed (e.g. warmup incomplete, unrecovered gap, hash mismatch). Research must not proceed.
+- `INDETERMINATE`: Missing evidence files or file modification detected during audit.
+
