@@ -58,6 +58,8 @@ from coin_behavior_engine.research_lab.probability_engine import ProbabilityEngi
 from coin_behavior_engine.research_lab.reporting import ResearchLabReporter
 from coin_behavior_engine.research_lab.risk_engine import RiskEngine
 from coin_behavior_engine.research_lab.simulator import HistoricalPaperSimulator
+from coin_behavior_engine.research_lab.provenance_auditor import HistoricalNewsProvenanceAuditor
+from coin_behavior_engine.research_lab.ablation_engine import ControlledAblationEngine
 
 logging.basicConfig(
     level=logging.INFO,
@@ -351,18 +353,81 @@ def run_research_pipeline(
     )
     logger.info(f"Exported run manifest to {manifest_json}")
 
-    logger.info("=== CBE Research Lab Sprint 11.05 Pipeline Completed Successfully ===")
+    # ---------------------------------------------------------
+    # Gate L: Sprint 11.06 Phase A Historical News Provenance Audit
+    # ---------------------------------------------------------
+    logger.info("Executing Sprint 11.06 Phase A Historical News Provenance Audit...")
+    prov_auditor = HistoricalNewsProvenanceAuditor()
+    prov_records = prov_auditor.audit_all_events()
+    prov_csv = config.output_dir / "historical_news_provenance_audit.csv"
+    HistoricalNewsProvenanceAuditor.export_audit_csv(prov_records, prov_csv)
+    logger.info(f"Exported historical news provenance audit to {prov_csv}")
+
+    cov_report_md = config.output_dir / "verified_event_coverage_report.md"
+    HistoricalNewsProvenanceAuditor.generate_coverage_report_markdown(prov_records, cov_report_md)
+    logger.info(f"Exported verified event coverage report to {cov_report_md}")
+
+    # ---------------------------------------------------------
+    # Gate M: Sprint 11.06 Phases B-G Controlled Ablation Experiments
+    # ---------------------------------------------------------
+    logger.info("Executing Sprint 11.06 Controlled Ablation Experiments & Regime Validation...")
+    ablation_engine = ControlledAblationEngine(config)
+
+    # Phase B: Independent Reproduction
+    repro_json = config.output_dir / "reproduced_sprint11_05_results.json"
+    ablation_engine.reproduce_sprint11_05_results(candles_5m, features, verified_events, repro_json)
+
+    # Phase C: Controlled Ablation Experiments (100 Seeds)
+    ablation_csv = config.output_dir / "context_ablation_experiments.csv"
+    ablation_records = ablation_engine.run_ablation_experiments(candles_5m, features, verified_events, ablation_csv, num_seeds=100)
+
+    # Phase D: Rejected Trade Attribution
+    rejection_csv = config.output_dir / "rejected_trade_attribution.csv"
+    rejection_records = ablation_engine.run_rejected_trade_attribution(candles_5m, features, verified_events, rejection_csv)
+
+    # Phase E: Market Regime Comparison
+    regime_csv = config.output_dir / "market_regime_comparison.csv"
+    ablation_engine.run_market_regime_comparison(candles_5m, features, verified_events, regime_csv)
+
+    # Phase F & G: Statistical Report, Master Report & Manifest
+    stat_report_md = config.output_dir / "context_edge_statistical_report.md"
+    ControlledAblationEngine.generate_statistical_report_markdown(ablation_records, stat_report_md)
+
+    master_report_md = config.output_dir / "research_report_11_06.md"
+    ControlledAblationEngine.generate_master_report_markdown(
+        symbol=symbol,
+        interval="5m",
+        total_candles=len(candles_5m),
+        ablation_records=ablation_records,
+        provenance_records_count=len(prov_records),
+        rejection_records_count=len(rejection_records),
+        output_file=master_report_md,
+    )
+
+    manifest_11_06_json = config.output_dir / "run_manifest_11_06.json"
+    ControlledAblationEngine.generate_run_manifest_11_06(
+        symbol=symbol,
+        interval="5m",
+        candle_count=len(candles_5m),
+        git_commit=git_commit,
+        ablation_records=ablation_records,
+        output_file=manifest_11_06_json,
+    )
+
+    logger.info("=== CBE Research Lab Sprint 11.05 & 11.06 Pipelines Completed Successfully ===")
     return {
         "status": "COMPLETE",
         "output_dir": str(config.output_dir),
         "total_candles": len(candles_5m),
         "total_verified_events": len(verified_events),
         "results": sim_results,
+        "ablation_records": ablation_records,
+        "git_commit": git_commit,
     }
 
 
 def main():
-    parser = argparse.ArgumentParser(description="CBE Research Lab Runner — Sprint 11.05")
+    parser = argparse.ArgumentParser(description="CBE Research Lab Runner — Sprint 11.05 & 11.06")
     parser.add_argument("--symbol", default="BTCUSDT", help="Trading pair symbol (default: BTCUSDT)")
     parser.add_argument("--days", type=int, default=25, help="Number of days to acquire and analyze (default: 25)")
     parser.add_argument("--output-dir", default="research_outputs", help="Output directory for research artifacts")

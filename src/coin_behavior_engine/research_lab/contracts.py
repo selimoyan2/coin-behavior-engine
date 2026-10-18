@@ -436,3 +436,118 @@ class CaseStudyResult:
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
+
+
+# ---------------------------------------------------------------------------
+# Sprint 11.06 Contracts: Provenance, Ablation, Rejection Attribution & Regimes
+# ---------------------------------------------------------------------------
+
+@dataclass
+class ProvenanceAuditRecord:
+    """Detailed audit record for historical news and market events."""
+    event_id: str
+    headline: str
+    source_name: str
+    source_url: str
+    source_tier: str
+    published_at_utc: str
+    first_observed_at_utc: str
+    earliest_defensible_decision_time_utc: str
+    observation_latency_seconds: float
+    page_type: str  # STATIC_ARTICLE, DYNAMIC_FEED, PUBLIC_CMS_API, PRICE_VOLUME_PROXY
+    dynamic_update_limitations: str
+    factual_claim_supported: str  # VERIFIED_ACCURATE, UNSUPPORTED_PROXY, IRRELEVANT_CLAIM
+    relevance_classification: str  # DIRECT_BTC_MACRO, EXCHANGE_DIRECT_BTC, ALTCOIN_IRRELEVANT, EQUITY_NON_CRYPTO, DERIVATIVES_PRICE_PROXY
+    is_genuine_external_news: bool
+    strict_provenance_verdict: str  # PASS_STRICT_PROVENANCE, REJECT_ALTCOIN_NOISE, REJECT_NON_CRYPTO_EQUITY, REJECT_DERIVATIVES_PROXY
+    rejection_reason: str
+    trading_decision_impact: str  # FILTERED_TRADE, INERT_NOISE, BLOCKED_ENTRY
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class ContextAblationExperimentRecord:
+    """Results from controlled ablation experiments across models A through G."""
+    model_id: str
+    description: str
+    trade_count: int
+    trade_count_mean: float
+    trade_count_std: float
+    net_pnl_usd: float
+    net_pnl_mean: float
+    net_pnl_std: float
+    net_pnl_min: float
+    net_pnl_max: float
+    net_pnl_p5: float
+    net_pnl_p95: float
+    return_pct: float
+    return_pct_mean: float
+    return_pct_std: float
+    win_rate_pct: float
+    win_rate_mean: float
+    win_rate_std: float
+    max_drawdown_pct: float
+    max_drawdown_mean: float
+    max_drawdown_std: float
+    profit_factor: float
+    sharpe_ratio: float
+    total_fees_usd: float
+    seeds_evaluated: int
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class RejectedTradeAttributionRecord:
+    """Trade-by-trade attribution for signals filtered out by context or risk rules."""
+    rejection_id: str
+    trade_id_strat_a: str
+    signal_datetime_utc: str
+    signal_price: float
+    signal_reason: str
+    rejecting_event_id: Optional[str]
+    rejecting_event_headline: Optional[str]
+    event_published_at_utc: Optional[str]
+    event_source: Optional[str]
+    was_event_genuinely_available: bool
+    hypothetical_exit_datetime_utc: str
+    hypothetical_exit_price: float
+    hypothetical_exit_reason: str
+    hypothetical_net_pnl_usd: float
+    hypothetical_return_pct: float
+    hypothetical_outcome: str  # WIN, LOSS
+    pnl_avoided_usd: float
+    matched_non_event_pnl_usd: float
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class MarketRegimeComparisonRecord:
+    """Comparative performance breakdown across market regimes."""
+    regime_id: str
+    regime_name: str
+    start_datetime_utc: str
+    end_datetime_utc: str
+    candle_count: int
+    btc_price_change_pct: float
+    strat_a_trades: int
+    strat_a_net_pnl: float
+    strat_a_win_rate: float
+    strat_b_trades: int
+    strat_b_net_pnl: float
+    strat_b_win_rate: float
+    random_c_net_pnl_mean: float
+    model_e_vol_trades: int
+    model_e_vol_net_pnl: float
+    strat_c_trades: int
+    strat_c_net_pnl: float
+    context_advantage_over_random: float
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+

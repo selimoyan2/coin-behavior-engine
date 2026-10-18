@@ -1,0 +1,6 @@
+regime_id,regime_name,start_datetime_utc,end_datetime_utc,candle_count,btc_price_change_pct,strat_a_trades,strat_a_net_pnl,strat_a_win_rate,strat_b_trades,strat_b_net_pnl,strat_b_win_rate,random_c_net_pnl_mean,model_e_vol_trades,model_e_vol_net_pnl,strat_c_trades,strat_c_net_pnl,context_advantage_over_random
+REG_BULL,Bull Trend ($84.0k -> $87.2k),2026-09-24T00:00:00Z,2026-10-02T12:34:59Z,2455,2.88,61,-364.49,27.9,0,0.0,0.0,-242.11,37,-225.74,22,-140.27,242.11
+REG_BEAR,Bear Trend / Selloff ($87.2k -> $80.4k),2026-10-02T12:30:00Z,2026-10-07T12:04:59Z,1435,-3.43,37,-298.04,13.5,0,0.0,0.0,-197.97,15,-131.39,13,-81.7,197.97
+REG_SIDEWAYS,Sideways Consolidation ($81.5k - $83.5k),2026-10-07T12:00:00Z,2026-10-13T18:04:59Z,1801,-0.73,28,-207.01,14.3,68,-527.46,8.8,-137.5,15,-134.54,9,-44.25,-389.96
+REG_HIGH_VOL,High Volatility Shock Window (Liquidation Cascade),2026-10-07T00:00:00Z,2026-10-08T12:04:59Z,433,-3.75,0,0.0,0.0,0,0.0,0.0,0.0,0,0.0,0,0.0,0.0
+REG_LOW_VOL,Low Volatility Chop Consolidation,2026-10-03T00:00:00Z,2026-10-06T00:04:59Z,865,1.52,27,-157.78,18.5,0,0.0,0.0,-104.8,11,-77.86,7,-33.89,104.8

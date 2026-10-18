@@ -1,0 +1,33 @@
+{
+  "sprint": "11.06",
+  "title": "Historical News Provenance, Context Causality & Controlled Trading Experiments",
+  "generated_at_utc": "2026-10-18T12:30:41.656412+00:00",
+  "git_commit": "68df238e74a6a42e4aae431bdf427759638b2020",
+  "dataset": {
+    "symbol": "BTCUSDT",
+    "interval": "5m",
+    "total_candles": 7199
+  },
+  "findings_summary": {
+    "verdict": "NO_VERIFIED_CONTEXT_EDGE",
+    "events_audited": 122,
+    "genuine_macro_events": 4,
+    "random_trade_matching_seeds": 100,
+    "model_a_pnl_usd": -981.48,
+    "model_b_pnl_usd": -766.61,
+    "model_c_random_mean_pnl_usd": -651.22,
+    "model_e_volatility_pnl_usd": -554.9,
+    "conclusion": "Context filtering reduction in loss was entirely an artifact of trade count reduction and fee avoidance; Model B underperformed random trade pruning by $115.39."
+  },
+  "deliverables": [
+    "research_outputs/historical_news_provenance_audit.csv",
+    "research_outputs/verified_event_coverage_report.md",
+    "research_outputs/reproduced_sprint11_05_results.json",
+    "research_outputs/context_ablation_experiments.csv",
+    "research_outputs/rejected_trade_attribution.csv",
+    "research_outputs/market_regime_comparison.csv",
+    "research_outputs/context_edge_statistical_report.md",
+    "research_outputs/research_report_11_06.md",
+    "research_outputs/run_manifest_11_06.json"
+  ]
+}
