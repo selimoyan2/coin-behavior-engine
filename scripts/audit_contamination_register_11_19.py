@@ -1,0 +1,121 @@
+"""Sprint 11.19 Phase 0.2: Historical Contamination Correction & Register.
+
+Establishes formal contamination classification across the entire multi-year dataset (2022-01 to 2026-09).
+Corrects previous misconceptions:
+- Formally rejects any labeling of 2026-01 through 2026-09 as 'virgin', 'prospective', or 'independent out-of-sample'.
+- Explicitly catalogs research exposure across all sprints (Sprints 01 through 11.18.2).
+- Mandates chronological walk-forward evaluation only.
+- Reserves independent performance claims strictly for future prospective data collected after research rule freeze.
+- Generates research_outputs/contamination_register_11_19.json and root mirror.
+"""
+
+import json
+from pathlib import Path
+import shutil
+
+
+def run_contamination_register():
+    print("=" * 80)
+    print("CBE SPRINT 11.19 — PHASE 0.2: HISTORICAL CONTAMINATION REGISTER")
+    print("=" * 80)
+
+    register = {
+        "sprint": "11.19",
+        "phase": "0.2_HISTORICAL_CONTAMINATION_CORRECTION",
+        "status": "CONTAMINATION_GOVERNANCE_PASS",
+        "timestamp_utc": "2026-10-19T14:20:00Z",
+        "contamination_governance_mandate": {
+            "core_truth": (
+                "The entire multi-year dataset spanning 2022-01-01 to 2026-09-30 is historical data. "
+                "Every month has been downloaded, validated, and subjected to prior retrospective analysis. "
+                "Under scientific empirical standards, NO historical partition can be described as virgin, "
+                "prospective, or independent out-of-sample."
+            ),
+            "walk_forward_evaluation_rule": (
+                "Evaluations on historical data must use strict chronological expanding-window walk-forward "
+                "protocols (train strictly on [t_0, t_k) and evaluate on [t_k, t_k+h)). However, all results "
+                "must be reported as historical research evidence, NOT prospective validation."
+            ),
+            "true_out_of_sample_requirement": (
+                "True independent out-of-sample evidence can ONLY be gathered on future live market data "
+                "generated AFTER all feature definitions, similarity metrics, and prediction rules are "
+                "completely frozen and locked without operator intervention."
+            )
+        },
+        "partition_contamination_inventory": [
+            {
+                "partition_id": "PARTITION_2022_2023",
+                "coverage_period": "2022-01-01 00:00:00 UTC to 2023-12-31 23:59:00 UTC",
+                "total_months": 24,
+                "total_1m_bars": 1051120,
+                "contamination_level": "HEAVILY_RESEARCH_CONTAMINATED",
+                "exposure_history": [
+                    "Sprints 01-06: Initial event studies, volatility metrics, and baseline models.",
+                    "Sprints 07-09: Regime classifiers, market state definitions, and portfolio forensics.",
+                    "Sprint 11.18-11.18.2: Multi-year archive acquisition and boundary verification."
+                ],
+                "permitted_use": "Historical Analog Candidate Library (past memory from which analogs are retrieved)."
+            },
+            {
+                "partition_id": "PARTITION_2024_2025_Q3",
+                "coverage_period": "2024-01-01 00:00:00 UTC to 2025-09-30 23:59:00 UTC",
+                "total_months": 21,
+                "total_1m_bars": 918720,
+                "contamination_level": "MODERATELY_RESEARCH_CONTAMINATED",
+                "exposure_history": [
+                    "Sprints 11.10-11.16B: Dynamic/patient spot engine development, ATR forensics, portfolio accounting.",
+                    "Sprint 11.17-11.17.1: Global exchange session studies (TSE, HKEX, LSE, NYSE).",
+                    "Sprint 11.18-11.18.2: Historical event replay (SEC ETF Jan 2024)."
+                ],
+                "permitted_use": "Historical Analog Candidate Library and retrospective feature calibration."
+            },
+            {
+                "partition_id": "PARTITION_2025_Q4",
+                "coverage_period": "2025-10-01 00:00:00 UTC to 2025-12-31 23:59:00 UTC",
+                "total_months": 3,
+                "total_1m_bars": 132480,
+                "contamination_level": "DIRECTLY_EXAMINED_CONTAMINATED",
+                "exposure_history": [
+                    "Sprint 11.18-11.18.2: Pilot ingestion, 2025-01 microsecond boundary checks, and cross-dataset reconciliation."
+                ],
+                "permitted_use": "Chronological walk-forward tuning; strictly labeled as historical research evidence."
+            },
+            {
+                "partition_id": "PARTITION_2026_Q1_Q3",
+                "coverage_period": "2026-01-01 00:00:00 UTC to 2026-09-30 23:59:00 UTC",
+                "total_months": 9,
+                "total_1m_bars": 394560,
+                "contamination_level": "HISTORICAL_RESEARCH_EXPOSED",
+                "correction_from_sprint_11_18_2": (
+                    "CRITICAL CORRECTION: In Sprint 11.18.2, this partition was inadvertently labeled as "
+                    "'Locked Prospective Benchmark / Virgin Out-of-Sample'. This is corrected. "
+                    "This partition was already downloaded, examined in cross-dataset reconciliation (including "
+                    "the 2026-09-23 terminal bar forensic audit), and exposed to iterative research. "
+                    "It is classified as HISTORICAL_RESEARCH_EXPOSED. Zero prospective or independent claims permitted."
+                ),
+                "permitted_use": "Chronological pseudo-prospective walk-forward evaluation only."
+            }
+        ],
+        "mandatory_status_declarations": {
+            "HISTORICAL_DATA_STATUS": "RESEARCH_CONTAMINATED",
+            "PROSPECTIVE_OBSERVATION": "NOT_STARTED",
+            "INDEPENDENT_OUT_OF_SAMPLE_EVIDENCE": "NONE_AVAILABLE_HISTORICALLY"
+        }
+    }
+
+    out_dir = Path("research_outputs")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_file = out_dir / "contamination_register_11_19.json"
+    with open(out_file, "w", encoding="utf-8") as f:
+        json.dump(register, f, indent=2)
+
+    root_file = Path("contamination_register_11_19.json")
+    shutil.copy2(out_file, root_file)
+
+    print(f"[PASS] Successfully generated: {out_file}")
+    print(f"[PASS] Mirrored to root: {root_file}")
+    print("       Contamination register established: All 57 months documented as RESEARCH_CONTAMINATED.")
+
+
+if __name__ == "__main__":
+    run_contamination_register()

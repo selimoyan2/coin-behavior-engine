@@ -1,0 +1,99 @@
+{
+  "sprint": "11.19",
+  "phase": "1_CAUSAL_MARKET_MEMORY",
+  "status": "ANALOG_FEATURE_MANIFEST_READY",
+  "timestamp_utc": "2026-10-19T14:30:00Z",
+  "total_candles": 499376,
+  "total_features": 14,
+  "feature_definitions": [
+    {
+      "name": "ret_1h",
+      "type": "float64",
+      "description": "Causal indicator: ret_1h",
+      "availability": "t <= T_0"
+    },
+    {
+      "name": "ret_4h",
+      "type": "float64",
+      "description": "Causal indicator: ret_4h",
+      "availability": "t <= T_0"
+    },
+    {
+      "name": "ret_24h",
+      "type": "float64",
+      "description": "Causal indicator: ret_24h",
+      "availability": "t <= T_0"
+    },
+    {
+      "name": "ret_72h",
+      "type": "float64",
+      "description": "Causal indicator: ret_72h",
+      "availability": "t <= T_0"
+    },
+    {
+      "name": "atr_5m_pct",
+      "type": "float64",
+      "description": "Causal indicator: atr_5m_pct",
+      "availability": "t <= T_0"
+    },
+    {
+      "name": "realized_vol_24h",
+      "type": "float64",
+      "description": "Causal indicator: realized_vol_24h",
+      "availability": "t <= T_0"
+    },
+    {
+      "name": "volume_zscore_24h",
+      "type": "float64",
+      "description": "Causal indicator: volume_zscore_24h",
+      "availability": "t <= T_0"
+    },
+    {
+      "name": "trend_strength",
+      "type": "float64",
+      "description": "Causal indicator: trend_strength",
+      "availability": "t <= T_0"
+    },
+    {
+      "name": "trend_persistence_4h",
+      "type": "float64",
+      "description": "Causal indicator: trend_persistence_4h",
+      "availability": "t <= T_0"
+    },
+    {
+      "name": "drawdown_high_24h",
+      "type": "float64",
+      "description": "Causal indicator: drawdown_high_24h",
+      "availability": "t <= T_0"
+    },
+    {
+      "name": "recovery_low_24h",
+      "type": "float64",
+      "description": "Causal indicator: recovery_low_24h",
+      "availability": "t <= T_0"
+    },
+    {
+      "name": "dist_support_24h",
+      "type": "float64",
+      "description": "Causal indicator: dist_support_24h",
+      "availability": "t <= T_0"
+    },
+    {
+      "name": "dist_resistance_24h",
+      "type": "float64",
+      "description": "Causal indicator: dist_resistance_24h",
+      "availability": "t <= T_0"
+    },
+    {
+      "name": "range_width_pct_24h",
+      "type": "float64",
+      "description": "Causal indicator: range_width_pct_24h",
+      "availability": "t <= T_0"
+    }
+  ],
+  "outage_quarantine": {
+    "outage_window": "2023-03-24 12:39:00 UTC to 2023-03-24 14:00:00 UTC",
+    "missing_bars_1m": 80,
+    "policy": "Windows crossing outage window are flagged as is_valid_window=False and rejected from analog matching."
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "sprint": "11.19",
+  "phase": "3_HISTORICAL_ANALOG_RETRIEVAL",
+  "status": "CAUSAL_ANALOG_RETRIEVAL_PASS",
+  "timestamp_utc": "2026-10-19T14:35:00Z",
+  "causal_guarantees": {
+    "forward_outcome_quarantine_bars": 2016,
+    "forward_outcome_quarantine_days": 7.0,
+    "temporal_clustering_separation_bars": 288,
+    "future_leakage_detected": false
+  },
+  "sample_evaluations_count": 50,
+  "sample_evaluations": [
+    {
+      "query_timestamp_utc": "2026-04-10 09:15:00+00:00",
+      "query_regime": "UNCERTAIN",
+      "analogs_found": 15,
+      "effective_sample_size": 14.99,
+      "mean_similarity": 0.6917,
+      "analog_regimes": {
+        "TREND_DOWN": 14,
+        "RANGE": 1
+      },
+      "is_abstained": false,
+      "abstention_reason": null,
+      "top_analog_timestamp": "2025-04-13 06:45:00+00:00",
+      "top_analog_similarity": 0.7224
+    },
+    {
+      "query_timestamp_utc": "2026-04-13 18:50:00+00:00",
+      "query_regime": "TREND_UP",
+      "analogs_found": 15,
+      "effective_sample_size": 14.98,
+      "mean_similarity": 0.7448,
+      "analog_regimes": {
+        "TREND_UP": 15
+      },
+      "is_abstained": false,
+      "abstention_reason": null,
+      "top_analog_timestamp": "2024-05-09 20:40:00+00:00",
+      "top_analog_similarity": 0.8117
+    },
+    {
+      "query_timestamp_utc": "2026-04-17 04:25:00+00:00",
+      "query_regime": "UNCERTAIN",
+      "analogs_found": 15,
+      "effective_sample_size": 14.99,
+      "mean_similarity": 0.721,
+      "analog_regimes": {
+        "RANGE": 7,
+        "UNCERTAIN": 3,
+        "TREND_DOWN": 5
+      },
+      "is_abstained": false,
+      "abstention_reason": null,
+      "top_analog_timestamp": "2025-10-15 06:00:00+00:00",
+      "top_analog_similarity": 0.7525
+    },
+    {
+      "query_timestamp_utc": "2026-04-20 14:00:00+00:00",
+      "query_regime": "RANGE",
+      "analogs_found": 15,
+      "effective_sample_size": 14.96,
+      "mean_similarity": 0.6694,
+      "analog_regimes": {
+        "RANGE": 11,
+        "UNCERTAIN": 4
+      },
+      "is_abstained": false,
+      "abstention_reason": null,
+      "top_analog_timestamp": "2024-11-04 00:00:00+00:00",
+      "top_analog_similarity": 0.7704
+    },
+    {
+      "query_timestamp_utc": "2026-04-23 23:35:00+00:00",
+      "query_regime": "UNCERTAIN",
+      "analogs_found": 15,
+      "effective_sample_size": 14.99,
+      "mean_similarity": 0.7353,
+      "analog_regimes": {
+        "TREND_UP": 15
+      },
+      "is_abstained": false,
+      "abstention_reason": null,
+      "top_analog_timestamp": "2025-05-07 23:45:00+00:00",
+      "top_analog_similarity": 0.7813
+    },
+    {
+      "query_timestamp_utc": "2026-04-27 09:15:00+00:00",
+      "query_regime": "UNCERTAIN",
+      "analogs_found": 15,
+      "effective_sample_size": 14.98,
+      "mean_similarity": 0.7372,
+      "analog_regimes": {
+        "TREND_DOWN": 15
+      },
+      "is_abstained": false,
+      "abstention_reason": null,
+      "top_analog_timestamp": "2023-07-12 21:00:00+00:00",
+      "top_analog_similarity": 0.8024
+    },
+    {
+      "query_timestamp_utc": "2026-04-30 18:50:00+00:00",
+      "query_regime": "UNCERTAIN",
+      "analogs_found": 15,
+      "effective_sample_size": 14.99,
+      "mean_similarity": 0.7787,
+      "analog_regimes": {
+        "RANGE": 12,
+        "UNCERTAIN": 1,
+        "TREND_UP": 2
+      },
+      "is_abstained": false,
+      "abstention_reason": null,
+      "top_analog_timestamp": "2024-02-19 12:15:00+00:00",
+      "top_analog_similarity": 0.8345
+    },
+    {
+      "query_timestamp_utc": "2026-05-04 04:25:00+00:00",
+      "query_regime": "TREND_UP",
+      "analogs_found": 15,
+      "effective_sample_size": 14.92,
+      "mean_similarity": 0.6359,
+      "analog_regimes": {
+        "TREND_UP": 15
+      },
+      "is_abstained": false,
+      "abstention_reason": null,
+      "top_analog_timestamp": "2024-10-07 01:55:00+00:00",
+      "top_analog_similarity": 0.7962
+    },
+    {
+      "query_timestamp_utc": "2026-05-07 14:00:00+00:00",
+      "query_regime": "TREND_DOWN",
+      "analogs_found": 15,
+      "effective_sample_size": 14.99,
+      "mean_similarity": 0.6906,
+      "analog_regimes": {
+        "TREND_DOWN": 15
+      },
+      "is_abstained": false,
+      "abstention_reason": null,
+      "top_analog_timestamp": "2024-11-17 01:50:00+00:00",
+      "top_analog_similarity": 0.7387
+    },
+    {
+      "query_timestamp_utc": "2026-05-10 23:40:00+00:00",
+      "query_regime": "UNCERTAIN",
+      "analogs_found": 15,
+      "effective_sample_size": 14.98,
+      "mean_similarity": 0.6212,
+      "analog_regimes": {
+        "TREND_UP": 15
+      },
+      "is_abstained": false,
+      "abstention_reason": null,
+      "top_analog_timestamp": "2025-10-08 17:55:00+00:00",
+      "top_analog_similarity": 0.682
+    }
+  ],
+  "aggregate_diagnostics": {
+    "mean_effective_sample_size": 14.97,
+    "mean_similarity": 0.7143,
+    "abstention_rate_pct": 0.0
+  }
+}

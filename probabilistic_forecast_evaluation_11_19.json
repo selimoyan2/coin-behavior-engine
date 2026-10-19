@@ -1,0 +1,138 @@
+{
+  "sprint": "11.19",
+  "phase": "4_PROBABILISTIC_FORECASTING",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T14:40:00Z",
+  "probabilistic_forecast_skill": "NOT_SUPPORTED",
+  "horizons_evaluated": [
+    "1h",
+    "3h",
+    "6h",
+    "12h",
+    "24h",
+    "48h",
+    "72h",
+    "7d"
+  ],
+  "round_trip_friction_pct": 0.3,
+  "intrabar_ordering_convention": "CONSERVATIVE_STOP_FIRST",
+  "comparative_brier_scores_24h": {
+    "analog_engine": 0.3199,
+    "unconditional_base_rate": 0.2472,
+    "regime_conditioned_base_rate": 0.246,
+    "recent_volatility_random_walk": 0.25,
+    "momentum_persistence": 0.38
+  },
+  "sample_forecast_evaluations": [
+    {
+      "query_time_utc": "2026-04-10 09:15:00+00:00",
+      "regime": "UNCERTAIN",
+      "predicted_prob_up_24h": 0.3318,
+      "expected_return_24h": 0.001082,
+      "actual_return_24h": 0.015177,
+      "actual_direction": "UP",
+      "prob_hit_target_first": 0.3333,
+      "brier_score_analog": 0.4465,
+      "brier_score_unconditional": 0.2352
+    },
+    {
+      "query_time_utc": "2026-04-13 18:50:00+00:00",
+      "regime": "TREND_UP",
+      "predicted_prob_up_24h": 0.4591,
+      "expected_return_24h": -0.002841,
+      "actual_return_24h": 0.023035,
+      "actual_direction": "UP",
+      "prob_hit_target_first": 0.3333,
+      "brier_score_analog": 0.2926,
+      "brier_score_unconditional": 0.2352
+    },
+    {
+      "query_time_utc": "2026-04-17 04:25:00+00:00",
+      "regime": "UNCERTAIN",
+      "predicted_prob_up_24h": 0.536,
+      "expected_return_24h": 0.000235,
+      "actual_return_24h": 0.028327,
+      "actual_direction": "UP",
+      "prob_hit_target_first": 0.3333,
+      "brier_score_analog": 0.2153,
+      "brier_score_unconditional": 0.2352
+    },
+    {
+      "query_time_utc": "2026-04-20 14:00:00+00:00",
+      "regime": "RANGE",
+      "predicted_prob_up_24h": 0.3882,
+      "expected_return_24h": -0.000328,
+      "actual_return_24h": 0.009001,
+      "actual_direction": "UP",
+      "prob_hit_target_first": 0.3636,
+      "brier_score_analog": 0.3743,
+      "brier_score_unconditional": 0.2352
+    },
+    {
+      "query_time_utc": "2026-04-23 23:35:00+00:00",
+      "regime": "UNCERTAIN",
+      "predicted_prob_up_24h": 0.3368,
+      "expected_return_24h": -0.00211,
+      "actual_return_24h": -0.010405,
+      "actual_direction": "DOWN",
+      "prob_hit_target_first": 0.4444,
+      "brier_score_analog": 0.1134,
+      "brier_score_unconditional": 0.2652
+    },
+    {
+      "query_time_utc": "2026-04-27 09:15:00+00:00",
+      "regime": "UNCERTAIN",
+      "predicted_prob_up_24h": 0.8047,
+      "expected_return_24h": 0.007862,
+      "actual_return_24h": -0.01205,
+      "actual_direction": "DOWN",
+      "prob_hit_target_first": 0.375,
+      "brier_score_analog": 0.6475,
+      "brier_score_unconditional": 0.2652
+    },
+    {
+      "query_time_utc": "2026-04-30 18:50:00+00:00",
+      "regime": "UNCERTAIN",
+      "predicted_prob_up_24h": 0.3937,
+      "expected_return_24h": -0.004493,
+      "actual_return_24h": 0.027163,
+      "actual_direction": "UP",
+      "prob_hit_target_first": 0.1818,
+      "brier_score_analog": 0.3676,
+      "brier_score_unconditional": 0.2352
+    },
+    {
+      "query_time_utc": "2026-05-04 04:25:00+00:00",
+      "regime": "TREND_UP",
+      "predicted_prob_up_24h": 0.525,
+      "expected_return_24h": 0.002391,
+      "actual_return_24h": 0.004537,
+      "actual_direction": "UP",
+      "prob_hit_target_first": 0.4167,
+      "brier_score_analog": 0.2256,
+      "brier_score_unconditional": 0.2352
+    },
+    {
+      "query_time_utc": "2026-05-07 14:00:00+00:00",
+      "regime": "TREND_DOWN",
+      "predicted_prob_up_24h": 0.6614,
+      "expected_return_24h": 0.005282,
+      "actual_return_24h": -0.008079,
+      "actual_direction": "DOWN",
+      "prob_hit_target_first": 0.4,
+      "brier_score_analog": 0.4374,
+      "brier_score_unconditional": 0.2652
+    },
+    {
+      "query_time_utc": "2026-05-10 23:40:00+00:00",
+      "regime": "UNCERTAIN",
+      "predicted_prob_up_24h": 0.3386,
+      "expected_return_24h": 0.000205,
+      "actual_return_24h": -0.006794,
+      "actual_direction": "DOWN",
+      "prob_hit_target_first": 0.25,
+      "brier_score_analog": 0.1146,
+      "brier_score_unconditional": 0.2652
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "sprint": "11.19",
+  "phase": "REPRODUCIBILITY_MANIFEST",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T14:50:00Z",
+  "base_commit": "bad8e7f27fa9a993b3b060402d54ef1cfab74a19",
+  "python_version": "3.11.16",
+  "platform": "Windows-10-10.0.26100-SP0",
+  "mandatory_status": {
+    "SPRINT_11_19_STATUS": "PASS",
+    "CROSS_DATASET_CLOSURE": "PASS",
+    "CONTAMINATION_GOVERNANCE": "PASS",
+    "EVENT_PROVENANCE": "ASSUMED",
+    "CAUSAL_ANALOG_RETRIEVAL": "PASS",
+    "PROBABILISTIC_FORECAST_SKILL": "NOT_SUPPORTED",
+    "NEWS_CONDITIONED_EDGE": "INSUFFICIENT_DATA",
+    "RANGE_INTELLIGENCE": "PASS",
+    "MODEL_TRAINING": "OFFLINE_RESEARCH_ONLY",
+    "HISTORICAL_DATA_STATUS": "RESEARCH_CONTAMINATED",
+    "PROSPECTIVE_OBSERVATION": "NOT_STARTED",
+    "LIVE_TRADING": "PROHIBITED",
+    "OPERATOR_AUTHORIZATION": "NOT_GRANTED"
+  },
+  "file_manifest": {
+    "src/coin_behavior_engine/analogs/feature_store.py": {
+      "size_bytes": 14462,
+      "sha256": "621631c619dea4bba2f7c62bf9b8d3c90602efddd4886354308edb510bfaa301"
+    },
+    "src/coin_behavior_engine/analogs/regime_classifier.py": {
+      "size_bytes": 9449,
+      "sha256": "b68adaf909b3ff616964cde145d1b375cdae771af3cf7025ffa18f8b3778dbb8"
+    },
+    "src/coin_behavior_engine/analogs/similarity_engine.py": {
+      "size_bytes": 11931,
+      "sha256": "5a6a2a626f502dc1cd147e2ff897bf7d94f3027f3b065dcd8b53c82598854caa"
+    },
+    "src/coin_behavior_engine/analogs/probabilistic_forecaster.py": {
+      "size_bytes": 9208,
+      "sha256": "7b4427a414ae3ef465db9c9668fcefd0e2fba4f6a7a432de19b4b9f49d8f6ebd"
+    },
+    "src/coin_behavior_engine/analogs/range_intelligence.py": {
+      "size_bytes": 9381,
+      "sha256": "f6e5127e60e2b55a43cbfe31e19891f68b451c23879f4c8ce04551ec15a7afe3"
+    },
+    "scripts/reconcile_cross_dataset_closure_11_19.py": {
+      "size_bytes": 8938,
+      "sha256": "ba98ef80a7936d45b153144519c3e6fce4e78393dd92bb882387603b0a7876ef"
+    },
+    "scripts/audit_contamination_register_11_19.py": {
+      "size_bytes": 6514,
+      "sha256": "c283f74e2b848664265cdb967131b4de334bacb014d85af2afc48ee347f7935d"
+    },
+    "scripts/audit_event_provenance_corrections_11_19.py": {
+      "size_bytes": 6676,
+      "sha256": "efa095361660ccdfd5077bd122376fe8528ebc98786ca6109e2f02aa11960b27"
+    },
+    "scripts/run_analog_learning_audit_11_19.py": {
+      "size_bytes": 19274,
+      "sha256": "407f068197b5188da77a2b14fd0257e5c2ab4bbd944c6f62a3d6b2604039e4a3"
+    },
+    "research_outputs/cross_dataset_closure_11_19.json": {
+      "size_bytes": 10869,
+      "sha256": "6c93173940e5f804f080355226d60aa9296284494546cbd1dad442bf8e7de3e4"
+    },
+    "research_outputs/contamination_register_11_19.json": {
+      "size_bytes": 4125,
+      "sha256": "eceea75db9c75d601a17af660041db43ef5a485e10dc2424a2ff09cdbeffe866"
+    },
+    "research_outputs/event_provenance_corrections_11_19.json": {
+      "size_bytes": 4055,
+      "sha256": "3374f9cdbc6d58883870a7a4bdf69ff77609432b2f43a5d030c55ea1b54de5c1"
+    },
+    "research_outputs/analog_feature_manifest_11_19.json": {
+      "size_bytes": 2807,
+      "sha256": "a9f68358ffcc4236c4d41970b21a7d1eb6d4b4d1f821dd5e5a3e036108e501f5"
+    },
+    "research_outputs/analog_retrieval_audit_11_19.json": {
+      "size_bytes": 5063,
+      "sha256": "895ccb4d77f8fa0d2320b6ca3aba3e5d0cc0f94f53568b00296a08bd9037e34d"
+    },
+    "research_outputs/probabilistic_forecast_evaluation_11_19.json": {
+      "size_bytes": 4383,
+      "sha256": "119f0bca7f8d54d84e61f9e3e5f5a99601abd57ae82666da8fd5a06f71c126fa"
+    },
+    "research_outputs/range_intelligence_audit_11_19.json": {
+      "size_bytes": 1099,
+      "sha256": "b92a8413e39740e7c512995d3ea1b85008965366432083e77ebb1ae1a2cf7d4c"
+    },
+    "research_outputs/news_coverage_gap_11_19.md": {
+      "size_bytes": 3750,
+      "sha256": "266550bdd1af10f8ff51755e79a8d315a2b88a91a6c50823047d0699982e6d74"
+    },
+    "tests/test_sprint11_19_analog_engine.py": {
+      "size_bytes": 7982,
+      "sha256": "6c5a1e3e94b8908b8284fa213a5cfae23b30bfbfdade39c55e8b5d0a4777f695"
+    }
+  },
+  "test_execution_summary": {
+    "sprint_11_19_tests_executed": 9,
+    "sprint_11_19_tests_passed": 9,
+    "cumulative_tests_executed": 37,
+    "cumulative_tests_passed": 37,
+    "duration_seconds": 1.52
+  }
+}

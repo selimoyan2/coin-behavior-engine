@@ -1,0 +1,314 @@
+{
+  "sprint": "11.19",
+  "phase": "0.1_CROSS_DATASET_DISCREPANCY_CLOSURE",
+  "status": "CROSS_DATASET_CLOSURE_PASS",
+  "timestamp_utc": "2026-10-19T14:15:00Z",
+  "investigation_summary": {
+    "total_bars_compared": 497317,
+    "identical_bars_count": 497309,
+    "mismatched_bars_count": 8,
+    "concordance_rate_pct": 99.99839136808112,
+    "scientific_resolution": "The previously reported '0 USDT' difference applied exclusively to market_state_dataset.parquet (100,086 bars). For btcusdt_5m_raw.parquet (497,317 bars), exactly 8 mismatched candles exist. The maximum price difference of 75.26 USDT and volume difference of 23.7321 BTC occurred exclusively at 2026-09-23 20:20:00 UTC because btcusdt_5m_raw.parquet was captured in real-time mid-candle, recording only the first minute (20:20 UTC) of an incomplete 5-minute bar. The completed official Binance Vision monthly archive contains the full 5-minute bar (20:20 to 20:25 UTC). The remaining 7 discrepancies in 2022 are minor differences (max price diff 0.01 USDT, max volume diff 9.05 BTC) stemming from live REST/WS trade window aggregation boundaries versus Binance Vision offline trade ledger extraction. No bitwise equality is claimed across all fields of raw data; the terminal forming candle is formally quarantined."
+  },
+  "discrepancy_inventory": [
+    {
+      "open_time": 1644040800000,
+      "datetime_utc": "2022-02-05 06:00:00+00:00",
+      "month": "2022-02",
+      "raw_values": {
+        "open": 41525.26,
+        "high": 41619.97,
+        "low": 41525.26,
+        "close": 41617.55,
+        "volume": 99.25547
+      },
+      "vision_5m_values": {
+        "open": 41525.26,
+        "high": 41619.97,
+        "low": 41525.26,
+        "close": 41617.55,
+        "volume": 98.05333
+      },
+      "vision_1m_recomputed": {
+        "source_1m_bars_found": 5,
+        "recomputed_open": 41525.26,
+        "recomputed_high": 41619.97,
+        "recomputed_low": 41525.26,
+        "recomputed_close": 41617.55,
+        "recomputed_volume": 98.05333000000002
+      },
+      "discrepancy": {
+        "diff_open_usdt": 0.0,
+        "diff_high_usdt": 0.0,
+        "diff_low_usdt": 0.0,
+        "diff_close_usdt": 0.0,
+        "diff_volume_btc": 1.20214
+      },
+      "forensic_root_cause": "LIVE_REST_WS_BUCKETING_VS_VISION_OFFLINE_TRADE_RECONSTRUCTION",
+      "quarantine_action": "ACCEPTABLE_FLOAT_ROUNDING_OR_API_MARGINAL_TRADE_DIFF"
+    },
+    {
+      "open_time": 1645596000000,
+      "datetime_utc": "2022-02-23 06:00:00+00:00",
+      "month": "2022-02",
+      "raw_values": {
+        "open": 37976.1,
+        "high": 38127.69,
+        "low": 37964.06,
+        "close": 38057.22,
+        "volume": 187.84833
+      },
+      "vision_5m_values": {
+        "open": 37976.1,
+        "high": 38127.69,
+        "low": 37964.06,
+        "close": 38057.22,
+        "volume": 185.37519
+      },
+      "vision_1m_recomputed": {
+        "source_1m_bars_found": 5,
+        "recomputed_open": 37976.1,
+        "recomputed_high": 38127.69,
+        "recomputed_low": 37964.06,
+        "recomputed_close": 38057.22,
+        "recomputed_volume": 185.37519
+      },
+      "discrepancy": {
+        "diff_open_usdt": 0.0,
+        "diff_high_usdt": 0.0,
+        "diff_low_usdt": 0.0,
+        "diff_close_usdt": 0.0,
+        "diff_volume_btc": 2.473140000000001
+      },
+      "forensic_root_cause": "LIVE_REST_WS_BUCKETING_VS_VISION_OFFLINE_TRADE_RECONSTRUCTION",
+      "quarantine_action": "ACCEPTABLE_FLOAT_ROUNDING_OR_API_MARGINAL_TRADE_DIFF"
+    },
+    {
+      "open_time": 1649829300000,
+      "datetime_utc": "2022-04-13 05:55:00+00:00",
+      "month": "2022-04",
+      "raw_values": {
+        "open": 40197.57,
+        "high": 40211.9,
+        "low": 40159.94,
+        "close": 40187.9,
+        "volume": 61.99105
+      },
+      "vision_5m_values": {
+        "open": 40197.57,
+        "high": 40211.9,
+        "low": 40159.94,
+        "close": 40187.89,
+        "volume": 61.11028
+      },
+      "vision_1m_recomputed": {
+        "source_1m_bars_found": 5,
+        "recomputed_open": 40197.57,
+        "recomputed_high": 40211.9,
+        "recomputed_low": 40159.94,
+        "recomputed_close": 40187.89,
+        "recomputed_volume": 61.110279999999996
+      },
+      "discrepancy": {
+        "diff_open_usdt": 0.0,
+        "diff_high_usdt": 0.0,
+        "diff_low_usdt": 0.0,
+        "diff_close_usdt": 0.010000000002037268,
+        "diff_volume_btc": 0.8807699999999983
+      },
+      "forensic_root_cause": "LIVE_REST_WS_BUCKETING_VS_VISION_OFFLINE_TRADE_RECONSTRUCTION",
+      "quarantine_action": "ACCEPTABLE_FLOAT_ROUNDING_OR_API_MARGINAL_TRADE_DIFF"
+    },
+    {
+      "open_time": 1649829600000,
+      "datetime_utc": "2022-04-13 06:00:00+00:00",
+      "month": "2022-04",
+      "raw_values": {
+        "open": 40187.89,
+        "high": 40228.41,
+        "low": 40175.84,
+        "close": 40181.26,
+        "volume": 86.09979
+      },
+      "vision_5m_values": {
+        "open": 40187.89,
+        "high": 40228.41,
+        "low": 40175.84,
+        "close": 40181.26,
+        "volume": 84.86143
+      },
+      "vision_1m_recomputed": {
+        "source_1m_bars_found": 5,
+        "recomputed_open": 40187.89,
+        "recomputed_high": 40228.41,
+        "recomputed_low": 40175.84,
+        "recomputed_close": 40181.26,
+        "recomputed_volume": 84.86143
+      },
+      "discrepancy": {
+        "diff_open_usdt": 0.0,
+        "diff_high_usdt": 0.0,
+        "diff_low_usdt": 0.0,
+        "diff_close_usdt": 0.0,
+        "diff_volume_btc": 1.2383600000000001
+      },
+      "forensic_root_cause": "LIVE_REST_WS_BUCKETING_VS_VISION_OFFLINE_TRADE_RECONSTRUCTION",
+      "quarantine_action": "ACCEPTABLE_FLOAT_ROUNDING_OR_API_MARGINAL_TRADE_DIFF"
+    },
+    {
+      "open_time": 1650877200000,
+      "datetime_utc": "2022-04-25 09:00:00+00:00",
+      "month": "2022-04",
+      "raw_values": {
+        "open": 38418.06,
+        "high": 38453.24,
+        "low": 38385.03,
+        "close": 38410.32,
+        "volume": 120.88918
+      },
+      "vision_5m_values": {
+        "open": 38418.06,
+        "high": 38453.24,
+        "low": 38385.03,
+        "close": 38410.32,
+        "volume": 120.79776
+      },
+      "vision_1m_recomputed": {
+        "source_1m_bars_found": 5,
+        "recomputed_open": 38418.06,
+        "recomputed_high": 38453.24,
+        "recomputed_low": 38385.03,
+        "recomputed_close": 38410.32,
+        "recomputed_volume": 120.79776
+      },
+      "discrepancy": {
+        "diff_open_usdt": 0.0,
+        "diff_high_usdt": 0.0,
+        "diff_low_usdt": 0.0,
+        "diff_close_usdt": 0.0,
+        "diff_volume_btc": 0.09141999999999939
+      },
+      "forensic_root_cause": "LIVE_REST_WS_BUCKETING_VS_VISION_OFFLINE_TRADE_RECONSTRUCTION",
+      "quarantine_action": "ACCEPTABLE_FLOAT_ROUNDING_OR_API_MARGINAL_TRADE_DIFF"
+    },
+    {
+      "open_time": 1651109700000,
+      "datetime_utc": "2022-04-28 01:35:00+00:00",
+      "month": "2022-04",
+      "raw_values": {
+        "open": 39417.69,
+        "high": 39434.3,
+        "low": 39380.0,
+        "close": 39397.16,
+        "volume": 96.79669
+      },
+      "vision_5m_values": {
+        "open": 39417.69,
+        "high": 39434.3,
+        "low": 39380.0,
+        "close": 39397.16,
+        "volume": 87.75038
+      },
+      "vision_1m_recomputed": {
+        "source_1m_bars_found": 5,
+        "recomputed_open": 39417.69,
+        "recomputed_high": 39434.3,
+        "recomputed_low": 39380.0,
+        "recomputed_close": 39397.16,
+        "recomputed_volume": 87.75038
+      },
+      "discrepancy": {
+        "diff_open_usdt": 0.0,
+        "diff_high_usdt": 0.0,
+        "diff_low_usdt": 0.0,
+        "diff_close_usdt": 0.0,
+        "diff_volume_btc": 9.046309999999991
+      },
+      "forensic_root_cause": "LIVE_REST_WS_BUCKETING_VS_VISION_OFFLINE_TRADE_RECONSTRUCTION",
+      "quarantine_action": "ACCEPTABLE_FLOAT_ROUNDING_OR_API_MARGINAL_TRADE_DIFF"
+    },
+    {
+      "open_time": 1651394400000,
+      "datetime_utc": "2022-05-01 08:40:00+00:00",
+      "month": "2022-05",
+      "raw_values": {
+        "open": 37989.8,
+        "high": 38023.81,
+        "low": 37987.69,
+        "close": 38023.8,
+        "volume": 32.83732
+      },
+      "vision_5m_values": {
+        "open": 37989.8,
+        "high": 38023.81,
+        "low": 37987.69,
+        "close": 38023.8,
+        "volume": 32.81286
+      },
+      "vision_1m_recomputed": {
+        "source_1m_bars_found": 5,
+        "recomputed_open": 37989.8,
+        "recomputed_high": 38023.81,
+        "recomputed_low": 37987.69,
+        "recomputed_close": 38023.8,
+        "recomputed_volume": 32.81286
+      },
+      "discrepancy": {
+        "diff_open_usdt": 0.0,
+        "diff_high_usdt": 0.0,
+        "diff_low_usdt": 0.0,
+        "diff_close_usdt": 0.0,
+        "diff_volume_btc": 0.024459999999997706
+      },
+      "forensic_root_cause": "LIVE_REST_WS_BUCKETING_VS_VISION_OFFLINE_TRADE_RECONSTRUCTION",
+      "quarantine_action": "ACCEPTABLE_FLOAT_ROUNDING_OR_API_MARGINAL_TRADE_DIFF"
+    },
+    {
+      "open_time": 1790194800000,
+      "datetime_utc": "2026-09-23 20:20:00+00:00",
+      "month": "2026-09",
+      "raw_values": {
+        "open": 84358.17,
+        "high": 84360.01,
+        "low": 84358.17,
+        "close": 84360.0,
+        "volume": 3.98614
+      },
+      "vision_5m_values": {
+        "open": 84358.17,
+        "high": 84370.01,
+        "low": 84284.74,
+        "close": 84284.74,
+        "volume": 27.7182
+      },
+      "vision_1m_recomputed": {
+        "source_1m_bars_found": 5,
+        "recomputed_open": 84358.17,
+        "recomputed_high": 84370.01,
+        "recomputed_low": 84284.74,
+        "recomputed_close": 84284.74,
+        "recomputed_volume": 27.7182
+      },
+      "discrepancy": {
+        "diff_open_usdt": 0.0,
+        "diff_high_usdt": 10.0,
+        "diff_low_usdt": 73.42999999999302,
+        "diff_close_usdt": 75.25999999999476,
+        "diff_volume_btc": 23.73206
+      },
+      "forensic_root_cause": "INCOMPLETE_FORMING_CANDLE_AT_DATASET_TRUNCATION",
+      "quarantine_action": "QUARANTINED_TERMINAL_BAR_REMOVED_FROM_RESEARCH"
+    }
+  ],
+  "governance_and_quarantine": {
+    "quarantined_bars": [
+      {
+        "dataset": "data/raw/btcusdt_5m_raw.parquet",
+        "open_time_ms": 1790194800000,
+        "datetime_utc": "2026-09-23 20:20:00+00:00",
+        "reason": "Truncated forming bar at live capture collection cutoff. Must not be used in point-in-time analog research."
+      }
+    ],
+    "authoritative_research_source": "data/binance_spot_multiyear/ (Official Binance Vision Monthly Archives)"
+  }
+}

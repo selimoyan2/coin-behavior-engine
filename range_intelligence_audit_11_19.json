@@ -1,0 +1,33 @@
+{
+  "sprint": "11.19",
+  "phase": "6_RANGE_INTELLIGENCE_PROTOTYPE",
+  "status": "RANGE_INTELLIGENCE_PASS",
+  "timestamp_utc": "2026-10-19T14:45:00Z",
+  "target_scenario": {
+    "channel_support": 65000.0,
+    "channel_resistance": 65700.0,
+    "current_price": 65100.0,
+    "gross_width_pct": 1.077,
+    "round_trip_friction_pct": 0.3,
+    "net_tradable_room_pct": 0.777,
+    "prob_mean_reversion": 0.363,
+    "prob_breakdown": 0.5798,
+    "prob_continuation": 0.0571,
+    "false_breakout_count": 730,
+    "expected_holding_duration_bars": 59.8,
+    "expected_holding_hours": 5.0,
+    "expected_mae_pct": -0.426,
+    "risk_reward_ratio": 1.82,
+    "verdict": "NO_EDGE",
+    "verdict_rationale": "Breakdown risk (58.0%) exceeds or equals mean-reversion probability (36.3%)"
+  },
+  "range_resolution_population_statistics": {
+    "total_ranges_evaluated": 45,
+    "breakout_up_count": 16,
+    "breakdown_down_count": 18,
+    "remained_intact_count": 11,
+    "breakout_up_rate_pct": 35.56,
+    "breakdown_down_rate_pct": 40.0,
+    "remained_intact_rate_pct": 24.44
+  }
+}
