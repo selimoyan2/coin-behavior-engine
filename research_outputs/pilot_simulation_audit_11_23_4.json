@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-19T14:40:29.754208+00:00",
+  "audit_name": "Controlled Prospective Pilot Simulation Audit",
+  "simulation_suite_status": "PASS",
+  "total_scenarios_tested": 15,
+  "total_passed": 15,
+  "baseline_lifecycle_13_steps": "VERIFIED_PASS",
+  "failure_modes_tested_count": 14,
+  "scenarios": {
+    "baseline_lifecycle": {
+      "scenario": "normal_13_step_lifecycle",
+      "status": "PASS",
+      "terminal_state": "RESEARCH_ELIGIBILITY_REVIEW",
+      "checkpoints_count": 13
+    },
+    "fail_01_http_403": {
+      "scenario": "failure_01_http_403",
+      "status": "PASS"
+    },
+    "fail_02_http_429": {
+      "scenario": "failure_02_http_429",
+      "status": "PASS"
+    },
+    "fail_03_http_500": {
+      "scenario": "failure_03_http_500",
+      "status": "PASS"
+    },
+    "fail_04_dns_failure": {
+      "scenario": "failure_04_dns_failure",
+      "status": "PASS"
+    },
+    "fail_05_timeout": {
+      "scenario": "failure_05_timeout",
+      "status": "PASS"
+    },
+    "fail_06_content_type_mismatch": {
+      "scenario": "failure_06_content_type_mismatch",
+      "status": "PASS"
+    },
+    "fail_07_checksum_mismatch": {
+      "scenario": "failure_07_checksum_mismatch",
+      "status": "PASS"
+    },
+    "fail_08_payload_too_large": {
+      "scenario": "failure_08_payload_too_large",
+      "status": "PASS"
+    },
+    "fail_09_insecure_scheme": {
+      "scenario": "failure_09_insecure_scheme",
+      "status": "PASS"
+    },
+    "fail_10_disallowed_domain": {
+      "scenario": "failure_10_disallowed_domain",
+      "status": "PASS"
+    },
+    "fail_11_ssrf": {
+      "scenario": "failure_11_ssrf",
+      "status": "PASS"
+    },
+    "fail_12_trading_endpoint": {
+      "scenario": "failure_12_trading_endpoint",
+      "status": "PASS"
+    },
+    "fail_13_crash_recovery": {
+      "scenario": "failure_13_crash_recovery",
+      "status": "PASS"
+    },
+    "fail_14_vintage_violation": {
+      "scenario": "failure_14_vintage_violation",
+      "status": "PASS"
+    }
+  },
+  "telemetry_summary": {
+    "uptime_seconds": 0.09,
+    "total_requests": 2,
+    "total_retries": 0,
+    "total_failures": 1,
+    "total_events_processed": 1,
+    "total_vault_writes": 3,
+    "current_queue_depth": 0,
+    "latency_min_s": 0.0,
+    "latency_mean_s": 0.000503,
+    "latency_p95_s": 0.001007,
+    "latency_max_s": 0.001007,
+    "failures_by_reason": {
+      "HTTP_403": 1
+    },
+    "process_rss_mb": 0.0,
+    "memory_delta_mb": 0.0,
+    "bounded_buffer_capacity": 5000,
+    "memory_safety_status": "PASS"
+  },
+  "directional_trading_signals_generated": 0,
+  "capital_allocated_usd": 0.0
+}

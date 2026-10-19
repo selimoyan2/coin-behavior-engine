@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-19T14:40:29.609765+00:00",
+  "audit_name": "Security Hardening & Trading Isolation Audit",
+  "overall_status": "PASS",
+  "fail_closed_mode": "ACTIVE",
+  "live_trading_prohibited": true,
+  "static_ast_audit": {
+    "status": "PASS",
+    "files_scanned": 22,
+    "prohibited_imports_detected": 0,
+    "ast_isolation_verified": true
+  },
+  "environment_variables_audit": {
+    "trading_isolation_status": "PASS",
+    "live_credentials_detected": false,
+    "live_order_execution_available": false,
+    "directional_trading_authorization": "STRICTLY_PROHIBITED"
+  },
+  "loaded_modules_audit": {
+    "status": "PASS",
+    "forbidden_modules_loaded": [],
+    "isolation_verified": true
+  },
+  "capability_audit": {
+    "capability_status": "PASS",
+    "active_capability": "READ_ONLY_OBSERVATION",
+    "live_order_execution_authorized": false
+  },
+  "denylisted_endpoint_patterns_count": 7,
+  "directional_trading_authorization": "STRICTLY_PROHIBITED"
+}

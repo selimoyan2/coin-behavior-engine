@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-19T14:40:29.661220+00:00",
+  "audit_name": "Point-in-Time Timestamp Provenance Audit",
+  "status": "PASS",
+  "provenance_classifications": [
+    "VERIFIED_PUBLICATION_TIME",
+    "OBSERVED_RETRIEVAL_TIME",
+    "SCHEDULE_ONLY",
+    "TIMESTAMP_UNCERTAIN"
+  ],
+  "release_document_timing_fields": [
+    "scheduled_publication_at_utc",
+    "actual_official_publication_at_utc",
+    "retrieval_start_at_utc",
+    "retrieval_complete_at_utc",
+    "first_observed_at_utc",
+    "http_date_header_utc",
+    "http_last_modified_utc",
+    "timestamp_uncertainty_seconds",
+    "estimated_clock_skew_seconds",
+    "provenance_classification"
+  ],
+  "maximum_uncertainty_threshold_seconds": 300.0,
+  "clock_skew_tracking_enabled": true
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-19T14:40:29.903030+00:00",
+  "sprint": "11.23.4",
+  "sprint_title": "Controlled Prospective Observation Pilot \u2014 Security Hardening, Read-Only Transport & Dry-Run Validation",
+  "base_commit": "785ed58e5a8e1304dab7da2fd0c5ef4d45409e96",
+  "python_version": "3.11.16",
+  "platform": "win32",
+  "execution_mode": "STRICTLY_OFFLINE_SIMULATION",
+  "total_deliverables": 9,
+  "artifacts": {
+    "sprint11_23_3_source_freeze_11_23_4.json": {
+      "sha256": "ad3707f3290a6b5088e662abedd0e6f442b6eaab4ac5dddf16751192471a582d",
+      "byte_size": 3821,
+      "mirrored_to_root": true
+    },
+    "security_hardening_audit_11_23_4.json": {
+      "sha256": "4c104925027207582f375af4181cc3745b46d802a11c7e5db96a828742efd8e0",
+      "byte_size": 1009,
+      "mirrored_to_root": true
+    },
+    "read_only_transport_audit_11_23_4.json": {
+      "sha256": "3d0c9066019caf0c6fbd4b7f121e74f467bc2c1b1cd72cc367b2afa5d53f1f0a",
+      "byte_size": 1478,
+      "mirrored_to_root": true
+    },
+    "evidence_vault_durability_audit_11_23_4.json": {
+      "sha256": "e16dbf7b104b122bdefa83d75bb838738e7046816ae9340b42b7fb85bd470b37",
+      "byte_size": 732,
+      "mirrored_to_root": true
+    },
+    "timestamp_provenance_audit_11_23_4.json": {
+      "sha256": "00dd2640ebba47ec6c2a6ca7b14182563b8e9a5eb2c94eb5fa55bdeb4938d648",
+      "byte_size": 784,
+      "mirrored_to_root": true
+    },
+    "consensus_vintage_audit_11_23_4.json": {
+      "sha256": "ef34c1da1e569d67df9a4c82277d867828010df16c674df3c81029a08936fa4e",
+      "byte_size": 642,
+      "mirrored_to_root": true
+    },
+    "pilot_simulation_audit_11_23_4.json": {
+      "sha256": "ff0d7343b0aa3fa0e5ac576fe8a6a804c337a1dfcc9639f7c2a59559d88c5f2d",
+      "byte_size": 2640,
+      "mirrored_to_root": true
+    },
+    "performance_safety_audit_11_23_4.json": {
+      "sha256": "a1a44ce8716b5f637eec50ca96400d98ec1c3d440893070863f1e417e15f9e7e",
+      "byte_size": 537,
+      "mirrored_to_root": true
+    },
+    "research_report_11_23_4.md": {
+      "sha256": "ea4d728be9625d46eeeb9366beac6e20a503bec7eb0417a19eb5682cc66d0461",
+      "byte_size": 8499,
+      "mirrored_to_root": true
+    }
+  },
+  "governance_status": {
+    "real_network_collection": "DISABLED",
+    "prospective_observation": "NOT_STARTED",
+    "unattended_collection": "DISABLED",
+    "directional_trading_eligibility": "ZERO",
+    "live_trading": "PROHIBITED",
+    "operator_authorization": "NOT_GRANTED"
+  }
+}

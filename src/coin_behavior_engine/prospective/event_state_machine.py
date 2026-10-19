@@ -70,6 +70,20 @@ class EventStateMachine:
         return target_status in allowed
 
     @classmethod
+    def transition(
+        cls,
+        event: ProspectiveEventRecord,
+        target_status: ProspectiveEventStatus,
+        reason: str = "",
+    ) -> ProspectiveEventRecord:
+        if not cls.can_transition(event.event_status, target_status):
+            raise EventLifecycleTransitionError(
+                f"Cannot transition from {event.event_status} to {target_status}: {reason}"
+            )
+        event.event_status = target_status
+        return event
+
+    @classmethod
     def transition_to_schedule_verified(
         cls,
         event: ProspectiveEventRecord,

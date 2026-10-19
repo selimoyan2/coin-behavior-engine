@@ -87,7 +87,8 @@ class ConsensusEvidenceRegistry:
             original_document_ref=original_document_ref,
             raw_document_sha256=raw_document_sha256,
             verification_status=status,
-            rejection_reason=rejection_reason
+            rejection_reason=rejection_reason,
+            is_retrospective_match=is_retrospective_calendar_match
         )
 
         if event_id not in self._records:

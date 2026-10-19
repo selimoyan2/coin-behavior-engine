@@ -1,4 +1,4 @@
-"""Prospective evaluation, immutable forecast logging, and model monitoring package (Sprint 08 & Sprint 11.23.3)."""
+"""Prospective evaluation, immutable forecast logging, and model monitoring package (Sprint 08, Sprint 11.23.3 & Sprint 11.23.4)."""
 
 from .freeze import verify_sprint07_freeze, ModelFreezeViolation
 from .store import (
@@ -23,6 +23,7 @@ from .event_models import (
     ReleaseDocument,
     AdapterFailureReason,
     EventRevisionRecord,
+    TimestampProvenanceClassification,
 )
 from .prospective_event_registry import ProspectiveEventRegistry
 from .source_adapters import (
@@ -34,12 +35,46 @@ from .source_adapters import (
     ConsensusProviderAdapter,
 )
 from .consensus_registry import ConsensusEvidenceRegistry
-from .evidence_vault import ImmutableEvidenceVault
+from .evidence_vault import (
+    ImmutableEvidenceVault,
+    VaultCorruptionError,
+    VaultSecurityError,
+)
 from .market_observer import ProspectiveMarketObserver, MarketCandle, EventObservationReport
 from .event_state_machine import EventStateMachine, EventLifecycleTransitionError
 from .simulation_scenarios import ProspectiveSimulationRunner
 from .performance_guard import BoundedEventQueue, RateLimiter, CheckpointManager
-from .governance import ProspectiveGovernanceGuard, TradingIsolationViolation
+from .governance import (
+    ProspectiveGovernanceGuard,
+    TradingIsolationViolation,
+    CapabilityType,
+    ProspectiveCapabilityToken,
+)
+
+# Sprint 11.23.4: Controlled Prospective Observation Pilot Hardening
+from .research_transport import (
+    ReadOnlyResearchTransport,
+    TransportResponse,
+    TransportSecurityError,
+    NetworkAccessProhibitedError,
+    InsecureSchemeError,
+    DomainNotAllowedError,
+    SSRFProtectionError,
+    MethodNotAllowedError,
+    SensitiveHeaderError,
+    TradingEndpointAccessError,
+    ResponseSizeExceededError,
+    TransportTimeoutError,
+    RateLimitExceededError,
+)
+from .observability import ProspectiveObservability
+from .pilot_runner import (
+    ProspectivePilotRunner,
+    PilotConfig,
+    PilotAuthorizationToken,
+    PilotExecutionError,
+)
+from .end_to_end_pilot_sim import EndToEndPilotSimulationSuite
 
 __all__ = [
     "verify_sprint07_freeze",
@@ -83,4 +118,29 @@ __all__ = [
     "CheckpointManager",
     "ProspectiveGovernanceGuard",
     "TradingIsolationViolation",
+    # Sprint 11.23.4 additions
+    "TimestampProvenanceClassification",
+    "VaultCorruptionError",
+    "VaultSecurityError",
+    "CapabilityType",
+    "ProspectiveCapabilityToken",
+    "ReadOnlyResearchTransport",
+    "TransportResponse",
+    "TransportSecurityError",
+    "NetworkAccessProhibitedError",
+    "InsecureSchemeError",
+    "DomainNotAllowedError",
+    "SSRFProtectionError",
+    "MethodNotAllowedError",
+    "SensitiveHeaderError",
+    "TradingEndpointAccessError",
+    "ResponseSizeExceededError",
+    "TransportTimeoutError",
+    "RateLimitExceededError",
+    "ProspectiveObservability",
+    "ProspectivePilotRunner",
+    "PilotConfig",
+    "PilotAuthorizationToken",
+    "PilotExecutionError",
+    "EndToEndPilotSimulationSuite",
 ]

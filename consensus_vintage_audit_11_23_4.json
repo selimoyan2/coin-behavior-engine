@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-19T14:40:29.661220+00:00",
+  "audit_name": "Consensus Vintage Evidence Registry Audit",
+  "status": "PASS",
+  "vintage_rule": "t_survey_published < t_release AND t_first_observed < t_release",
+  "anti_retrospective_rule": "Retrospective calendar numbers without contemporaneous document bytes remain CONSENSUS_UNVERIFIED",
+  "registry_summary": {
+    "total_events_with_consensus": 3,
+    "total_consensus_records": 3,
+    "verified_contemporaneous_count": 1,
+    "unverified_count": 1,
+    "vintage_violation_rejected_count": 1,
+    "anti_retrospective_rule_enforced": true
+  }
+}

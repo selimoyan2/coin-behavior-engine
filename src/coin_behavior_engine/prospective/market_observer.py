@@ -237,3 +237,21 @@ class ProspectiveMarketObserver:
             directional_trading_signal="NONE_PROHIBITED",
             portfolio_allocation_authorized=False
         )
+
+    def evaluate_observation_window(self, candles_df: pd.DataFrame) -> Dict[str, Any]:
+        """Evaluates a raw window of candles, returning clean data metrics and continuity status."""
+        clean_df, meta = self.clean_and_validate_candles(candles_df)
+        if clean_df.empty:
+            return {"status": "EMPTY", "rows": 0}
+        open_p = float(clean_df["open"].iloc[0])
+        close_p = float(clean_df["close"].iloc[-1])
+        ret_pct = float((close_p - open_p) / open_p * 100.0)
+        return {
+            "status": meta["status"],
+            "rows": len(clean_df),
+            "open_price": round(open_p, 2),
+            "close_price": round(close_p, 2),
+            "return_pct": round(ret_pct, 4),
+            "missing_count": meta["missing_count"],
+            "duplicates_rejected": meta["duplicates_rejected"]
+        }

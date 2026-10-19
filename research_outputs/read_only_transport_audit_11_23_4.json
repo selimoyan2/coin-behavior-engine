@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-19T14:40:29.610287+00:00",
+  "audit_name": "Read-Only Research Transport Audit",
+  "status": "PASS",
+  "network_enabled_by_default": false,
+  "allowed_http_methods": [
+    "GET",
+    "HEAD"
+  ],
+  "prohibited_methods_rejected": [
+    "POST",
+    "PUT",
+    "DELETE",
+    "PATCH",
+    "CONNECT",
+    "OPTIONS"
+  ],
+  "required_scheme": "HTTPS",
+  "insecure_schemes_rejected": [
+    "http",
+    "ftp",
+    "file",
+    "gopher"
+  ],
+  "approved_domains_count": 9,
+  "approved_domains": [
+    "api.binance.com",
+    "bea.gov",
+    "bls.gov",
+    "data-api.binance.vision",
+    "federalreserve.gov",
+    "mempool.space",
+    "www.bea.gov",
+    "www.bls.gov",
+    "www.federalreserve.gov"
+  ],
+  "subdomain_hijack_protection": "STRICT_SUFFIX_HIJACK_PREVENTION_ACTIVE",
+  "anti_ssrf_protection": {
+    "status": "ACTIVE",
+    "blocked_ip_ranges": [
+      "127.0.0.0/8",
+      "10.0.0.0/8",
+      "172.16.0.0/12",
+      "192.168.0.0/16",
+      "169.254.0.0/16",
+      "100.64.0.0/10",
+      "::1",
+      "fc00::/7",
+      "fe80::/10"
+    ],
+    "dns_pinning_verified": true
+  },
+  "max_response_size_limit_bytes": 10485760,
+  "connect_timeout_seconds": 5.0,
+  "read_timeout_seconds": 10.0,
+  "prohibited_request_headers": [
+    "authorization",
+    "proxy-authorization",
+    "cookie",
+    "set-cookie",
+    "x-mbx-apikey",
+    "api-key",
+    "apikey",
+    "secret-key"
+  ],
+  "rate_limiting_and_retry_after_support": true
+}

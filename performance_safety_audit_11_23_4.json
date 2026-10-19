@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-19T14:40:29.754741+00:00",
+  "audit_name": "Performance Safety & Memory Bounding Audit",
+  "status": "PASS",
+  "bounded_queue_limit": 50,
+  "max_events_in_flight": 1,
+  "memory_safety_status": "PASS",
+  "process_rss_mb": 0.0,
+  "memory_delta_mb": 0.0,
+  "latency_statistics_seconds": {
+    "min": 0.0,
+    "mean": 0.000503,
+    "p95": 0.001007,
+    "max": 0.001007
+  },
+  "total_requests_recorded": 2,
+  "total_failures_handled": 1,
+  "bounded_metric_buffer_capacity": 5000
+}

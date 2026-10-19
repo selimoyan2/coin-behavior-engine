@@ -1,0 +1,93 @@
+{
+  "sprint": "11.23.4",
+  "phase": "0_BASELINE_VERIFICATION_AND_FREEZE",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T23:59:00Z",
+  "base_commit": "785ed58e5a8e1304dab7da2fd0c5ef4d45409e96",
+  "clean_working_tree_at_start": false,
+  "environment": {
+    "python_version": "3.11.16 (main, Aug 25 2026, 13:59:19) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "processor": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "packages": {
+      "pandas": "3.0.6",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "pytest": "9.1.1"
+    }
+  },
+  "mismatches": [],
+  "frozen_artifacts_count": 10,
+  "frozen_artifacts": {
+    "sprint11_23_2_source_freeze_11_23_3.json": {
+      "path": "research_outputs/sprint11_23_2_source_freeze_11_23_3.json",
+      "sha256": "44bcfbdbba3b27e1b3421f1cccce801f447fc75fa26fa5cfcb1775e69dcf7d63",
+      "size_bytes": 7513,
+      "mirror_identical": true,
+      "matches_11_23_3_manifest": true
+    },
+    "prospective_event_registry_11_23_3.json": {
+      "path": "research_outputs/prospective_event_registry_11_23_3.json",
+      "sha256": "2088016e7edab2ffe0b36004b0d6ec3499e7a608efde4192800c2b8cd542fe78",
+      "size_bytes": 6244,
+      "mirror_identical": true,
+      "matches_11_23_3_manifest": true
+    },
+    "source_adapter_audit_11_23_3.json": {
+      "path": "research_outputs/source_adapter_audit_11_23_3.json",
+      "sha256": "45c8fea757d7e57e04da88986089515c17e752fcb6700a44eb34ff551140e010",
+      "size_bytes": 2532,
+      "mirror_identical": true,
+      "matches_11_23_3_manifest": true
+    },
+    "consensus_vintage_readiness_11_23_3.json": {
+      "path": "research_outputs/consensus_vintage_readiness_11_23_3.json",
+      "sha256": "87214cb5d4de4fee2f4d59bc0a0a248c3bb1163ea07e874b1d95252e2212ee7f",
+      "size_bytes": 709,
+      "mirror_identical": true,
+      "matches_11_23_3_manifest": true
+    },
+    "evidence_vault_integrity_11_23_3.json": {
+      "path": "research_outputs/evidence_vault_integrity_11_23_3.json",
+      "sha256": "b7c3d41b8b27dc7c3b38cd634a68a074186b6f175d8ef0f73f351417c9806940",
+      "size_bytes": 867,
+      "mirror_identical": true,
+      "matches_11_23_3_manifest": true
+    },
+    "market_observation_readiness_11_23_3.json": {
+      "path": "research_outputs/market_observation_readiness_11_23_3.json",
+      "sha256": "87ab011da32037794348474442ca9d3a3c4dc7f96d44dbae44aba2db79c56075",
+      "size_bytes": 885,
+      "mirror_identical": true,
+      "matches_11_23_3_manifest": true
+    },
+    "simulation_test_report_11_23_3.json": {
+      "path": "research_outputs/simulation_test_report_11_23_3.json",
+      "sha256": "b89b1d5501a821656de48ea04f94736eca2e055053d03553ae0c54cb53a57d7c",
+      "size_bytes": 2012,
+      "mirror_identical": true,
+      "matches_11_23_3_manifest": true
+    },
+    "performance_safety_audit_11_23_3.json": {
+      "path": "research_outputs/performance_safety_audit_11_23_3.json",
+      "sha256": "4f0ef60408f3b094c6deea646ced8706d7b1c3ee16c4b6348644e8a1bf4c1024",
+      "size_bytes": 580,
+      "mirror_identical": true,
+      "matches_11_23_3_manifest": true
+    },
+    "research_report_11_23_3.md": {
+      "path": "research_outputs/research_report_11_23_3.md",
+      "sha256": "350d39dd7a5746003a8de51d66cd6eee967354ce5efda2ddc0d23b7485cb6390",
+      "size_bytes": 12880,
+      "mirror_identical": true,
+      "matches_11_23_3_manifest": true
+    },
+    "reproducibility_manifest_11_23_3.json": {
+      "path": "research_outputs/reproducibility_manifest_11_23_3.json",
+      "sha256": "25872ef49d44284fcdbe85ee02ca195e12c517f8bc12d3aaebb34d201f2f7017",
+      "size_bytes": 2468,
+      "mirror_identical": true,
+      "matches_11_23_3_manifest": true
+    }
+  }
+}
