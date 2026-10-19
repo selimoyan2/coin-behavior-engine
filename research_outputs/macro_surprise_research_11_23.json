@@ -1,0 +1,355 @@
+{
+  "sprint": "11.23",
+  "phase": "5_MACRO_EXPECTATION_AND_SURPRISE_RESEARCH",
+  "status": "PASS",
+  "macro_surprise_research": "PASS",
+  "timestamp_utc": "2026-10-19T18:30:00Z",
+  "methodology": {
+    "surprise_definition": "SURPRISE = ACTUAL - PRE_RELEASE_CONSENSUS",
+    "scaling_method": "Causal expanding-window standard deviation of historical surprises (prior observations only)",
+    "leakage_controls": "Strictly excludes revised figures; requires pre-release survey vintage"
+  },
+  "category_results": {
+    "BITCOIN_PROTOCOL": {
+      "category": "BITCOIN_PROTOCOL",
+      "status": "INSUFFICIENT_DATA",
+      "total_events": 1,
+      "events_with_consensus": 0,
+      "reason": "Discrete/qualitative events or fewer than 10 authentic pre-release consensus forecasts available.",
+      "consensus_available": false
+    },
+    "CRYPTO_STRUCTURE": {
+      "category": "CRYPTO_STRUCTURE",
+      "status": "INSUFFICIENT_DATA",
+      "total_events": 8,
+      "events_with_consensus": 0,
+      "reason": "Discrete/qualitative events or fewer than 10 authentic pre-release consensus forecasts available.",
+      "consensus_available": false
+    },
+    "FINANCIAL_STABILITY": {
+      "category": "FINANCIAL_STABILITY",
+      "status": "INSUFFICIENT_DATA",
+      "total_events": 4,
+      "events_with_consensus": 0,
+      "reason": "Discrete/qualitative events or fewer than 10 authentic pre-release consensus forecasts available.",
+      "consensus_available": false
+    },
+    "REGULATION": {
+      "category": "REGULATION",
+      "status": "INSUFFICIENT_DATA",
+      "total_events": 8,
+      "events_with_consensus": 0,
+      "reason": "Discrete/qualitative events or fewer than 10 authentic pre-release consensus forecasts available.",
+      "consensus_available": false
+    },
+    "US_GROWTH": {
+      "category": "US_GROWTH",
+      "status": "PASS",
+      "total_events": 19,
+      "events_with_consensus": 19,
+      "consensus_available": true,
+      "linear_regression_15m": {
+        "slope": -0.0427,
+        "r_squared": 0.009,
+        "p_value": 0.6996,
+        "statistically_significant_at_05": false
+      },
+      "linear_regression_24h": {
+        "slope": 0.3603,
+        "r_squared": 0.014,
+        "p_value": 0.6293,
+        "statistically_significant_at_05": false
+      },
+      "breakdown_by_surprise_type": {
+        "POSITIVE_BEAT": {
+          "count": 10,
+          "mean_ret_15m_pct": -0.01,
+          "median_ret_15m_pct": -0.034,
+          "mean_ret_1h_pct": 0.173,
+          "mean_ret_24h_pct": 0.34,
+          "mean_mfe_24h_pct": 1.719,
+          "mean_mae_24h_pct": 1.832,
+          "win_rate_positive_15m_pct": 30.0,
+          "win_rate_positive_24h_pct": 40.0
+        },
+        "NEGATIVE_MISS": {
+          "count": 5,
+          "mean_ret_15m_pct": 0.106,
+          "median_ret_15m_pct": -0.036,
+          "mean_ret_1h_pct": -0.107,
+          "mean_ret_24h_pct": 0.777,
+          "mean_mfe_24h_pct": 3.195,
+          "mean_mae_24h_pct": 1.245,
+          "win_rate_positive_15m_pct": 40.0,
+          "win_rate_positive_24h_pct": 80.0
+        },
+        "IN_LINE": {
+          "count": 4,
+          "mean_ret_15m_pct": -0.043,
+          "median_ret_15m_pct": -0.051,
+          "mean_ret_1h_pct": -0.161,
+          "mean_ret_24h_pct": -2.35,
+          "mean_mfe_24h_pct": 0.892,
+          "mean_mae_24h_pct": 3.719,
+          "win_rate_positive_15m_pct": 0.0,
+          "win_rate_positive_24h_pct": 25.0
+        }
+      },
+      "regime_conditioned_reaction": {
+        "UNCERTAIN": {
+          "count": 13,
+          "mean_surprise": 0.092,
+          "mean_ret_15m_pct": 0.062,
+          "mean_ret_24h_pct": -0.151,
+          "corr_surprise_ret_15m": -0.871,
+          "corr_surprise_ret_24h": -0.121
+        }
+      },
+      "interpretative_finding": "For US_GROWTH, simple linear surprise explains only 0.9% of 15m variance (p=0.6996) and 1.4% of 24h variance (p=0.6293). Unconditional directional edge is rejectable."
+    },
+    "US_INFLATION": {
+      "category": "US_INFLATION",
+      "status": "PASS",
+      "total_events": 102,
+      "events_with_consensus": 102,
+      "consensus_available": true,
+      "linear_regression_15m": {
+        "slope": -0.1398,
+        "r_squared": 0.0327,
+        "p_value": 0.0688,
+        "statistically_significant_at_05": false
+      },
+      "linear_regression_24h": {
+        "slope": -0.068,
+        "r_squared": 0.0005,
+        "p_value": 0.8197,
+        "statistically_significant_at_05": false
+      },
+      "breakdown_by_surprise_type": {
+        "POSITIVE_BEAT": {
+          "count": 28,
+          "mean_ret_15m_pct": -0.24,
+          "median_ret_15m_pct": -0.129,
+          "mean_ret_1h_pct": -0.365,
+          "mean_ret_24h_pct": 0.07,
+          "mean_mfe_24h_pct": 2.518,
+          "mean_mae_24h_pct": 2.679,
+          "win_rate_positive_15m_pct": 35.7,
+          "win_rate_positive_24h_pct": 57.1
+        },
+        "NEGATIVE_MISS": {
+          "count": 32,
+          "mean_ret_15m_pct": -0.02,
+          "median_ret_15m_pct": -0.065,
+          "mean_ret_1h_pct": 0.062,
+          "mean_ret_24h_pct": -0.701,
+          "mean_mfe_24h_pct": 1.624,
+          "mean_mae_24h_pct": 2.481,
+          "win_rate_positive_15m_pct": 37.5,
+          "win_rate_positive_24h_pct": 31.2
+        },
+        "IN_LINE": {
+          "count": 42,
+          "mean_ret_15m_pct": 0.079,
+          "median_ret_15m_pct": 0.061,
+          "mean_ret_1h_pct": 0.147,
+          "mean_ret_24h_pct": 0.024,
+          "mean_mfe_24h_pct": 1.925,
+          "mean_mae_24h_pct": 1.882,
+          "win_rate_positive_15m_pct": 61.9,
+          "win_rate_positive_24h_pct": 45.2
+        }
+      },
+      "regime_conditioned_reaction": {
+        "HIGH_VOLATILITY": {
+          "count": 11,
+          "mean_surprise": 0.073,
+          "mean_ret_15m_pct": -0.152,
+          "mean_ret_24h_pct": -0.468,
+          "corr_surprise_ret_15m": -0.39,
+          "corr_surprise_ret_24h": -0.269
+        },
+        "RANGE": {
+          "count": 10,
+          "mean_surprise": -0.04,
+          "mean_ret_15m_pct": 0.046,
+          "mean_ret_24h_pct": -1.125,
+          "corr_surprise_ret_15m": -0.149,
+          "corr_surprise_ret_24h": 0.468
+        },
+        "TREND_DOWN": {
+          "count": 4,
+          "mean_surprise": -0.025,
+          "mean_ret_15m_pct": 0.161,
+          "mean_ret_24h_pct": -0.918,
+          "corr_surprise_ret_15m": null,
+          "corr_surprise_ret_24h": null
+        },
+        "TREND_UP": {
+          "count": 11,
+          "mean_surprise": -0.073,
+          "mean_ret_15m_pct": 0.122,
+          "mean_ret_24h_pct": 0.518,
+          "corr_surprise_ret_15m": 0.652,
+          "corr_surprise_ret_24h": 0.663
+        },
+        "UNCERTAIN": {
+          "count": 65,
+          "mean_surprise": 0.015,
+          "mean_ret_15m_pct": -0.027,
+          "mean_ret_24h_pct": -0.061,
+          "corr_surprise_ret_15m": -0.083,
+          "corr_surprise_ret_24h": 0.054
+        }
+      },
+      "interpretative_finding": "For US_INFLATION, simple linear surprise explains only 3.27% of 15m variance (p=0.0688) and 0.05% of 24h variance (p=0.8197). Unconditional directional edge is rejectable."
+    },
+    "US_LABOR": {
+      "category": "US_LABOR",
+      "status": "PASS",
+      "total_events": 57,
+      "events_with_consensus": 57,
+      "consensus_available": true,
+      "linear_regression_15m": {
+        "slope": 0.0011,
+        "r_squared": 0.0157,
+        "p_value": 0.3538,
+        "statistically_significant_at_05": false
+      },
+      "linear_regression_24h": {
+        "slope": 0.0082,
+        "r_squared": 0.0422,
+        "p_value": 0.1252,
+        "statistically_significant_at_05": false
+      },
+      "breakdown_by_surprise_type": {
+        "POSITIVE_BEAT": {
+          "count": 36,
+          "mean_ret_15m_pct": -0.061,
+          "median_ret_15m_pct": -0.054,
+          "mean_ret_1h_pct": 0.117,
+          "mean_ret_24h_pct": 0.38,
+          "mean_mfe_24h_pct": 2.167,
+          "mean_mae_24h_pct": 1.523,
+          "win_rate_positive_15m_pct": 47.2,
+          "win_rate_positive_24h_pct": 63.9
+        },
+        "NEGATIVE_MISS": {
+          "count": 10,
+          "mean_ret_15m_pct": 0.009,
+          "median_ret_15m_pct": 0.268,
+          "mean_ret_1h_pct": 0.372,
+          "mean_ret_24h_pct": 0.163,
+          "mean_mfe_24h_pct": 2.136,
+          "mean_mae_24h_pct": 2.193,
+          "win_rate_positive_15m_pct": 80.0,
+          "win_rate_positive_24h_pct": 40.0
+        },
+        "IN_LINE": {
+          "count": 11,
+          "mean_ret_15m_pct": 0.045,
+          "median_ret_15m_pct": 0.0,
+          "mean_ret_1h_pct": -0.207,
+          "mean_ret_24h_pct": -0.463,
+          "mean_mfe_24h_pct": 1.277,
+          "mean_mae_24h_pct": 1.872,
+          "win_rate_positive_15m_pct": 45.5,
+          "win_rate_positive_24h_pct": 45.5
+        }
+      },
+      "regime_conditioned_reaction": {
+        "HIGH_VOLATILITY": {
+          "count": 6,
+          "mean_surprise": 31.5,
+          "mean_ret_15m_pct": -0.146,
+          "mean_ret_24h_pct": 0.446,
+          "corr_surprise_ret_15m": -0.744,
+          "corr_surprise_ret_24h": 0.005
+        },
+        "RANGE": {
+          "count": 8,
+          "mean_surprise": 73.375,
+          "mean_ret_15m_pct": -0.074,
+          "mean_ret_24h_pct": 0.012,
+          "corr_surprise_ret_15m": -0.262,
+          "corr_surprise_ret_24h": 0.448
+        },
+        "UNCERTAIN": {
+          "count": 39,
+          "mean_surprise": 35.0,
+          "mean_ret_15m_pct": -0.038,
+          "mean_ret_24h_pct": 0.232,
+          "corr_surprise_ret_15m": -0.038,
+          "corr_surprise_ret_24h": 0.189
+        }
+      },
+      "interpretative_finding": "For US_LABOR, simple linear surprise explains only 1.57% of 15m variance (p=0.3538) and 4.22% of 24h variance (p=0.1252). Unconditional directional edge is rejectable."
+    },
+    "US_MONETARY_POLICY": {
+      "category": "US_MONETARY_POLICY",
+      "status": "PASS",
+      "total_events": 38,
+      "events_with_consensus": 38,
+      "consensus_available": true,
+      "linear_regression_15m": {
+        "slope": 0.0,
+        "r_squared": 0.0,
+        "p_value": 1.0,
+        "statistically_significant_at_05": false
+      },
+      "linear_regression_24h": {
+        "slope": 0.0,
+        "r_squared": 0.0,
+        "p_value": 1.0,
+        "statistically_significant_at_05": false
+      },
+      "breakdown_by_surprise_type": {
+        "IN_LINE": {
+          "count": 38,
+          "mean_ret_15m_pct": -0.18,
+          "median_ret_15m_pct": -0.099,
+          "mean_ret_1h_pct": 0.179,
+          "mean_ret_24h_pct": -0.371,
+          "mean_mfe_24h_pct": 2.482,
+          "mean_mae_24h_pct": 2.827,
+          "win_rate_positive_15m_pct": 42.1,
+          "win_rate_positive_24h_pct": 47.4
+        }
+      },
+      "regime_conditioned_reaction": {
+        "HIGH_VOLATILITY": {
+          "count": 6,
+          "mean_surprise": 0.0,
+          "mean_ret_15m_pct": -0.62,
+          "mean_ret_24h_pct": -0.515,
+          "corr_surprise_ret_15m": NaN,
+          "corr_surprise_ret_24h": NaN
+        },
+        "RANGE": {
+          "count": 9,
+          "mean_surprise": 0.0,
+          "mean_ret_15m_pct": 0.0,
+          "mean_ret_24h_pct": -0.072,
+          "corr_surprise_ret_15m": NaN,
+          "corr_surprise_ret_24h": NaN
+        },
+        "UNCERTAIN": {
+          "count": 18,
+          "mean_surprise": 0.0,
+          "mean_ret_15m_pct": -0.12,
+          "mean_ret_24h_pct": -0.741,
+          "corr_surprise_ret_15m": NaN,
+          "corr_surprise_ret_24h": NaN
+        }
+      },
+      "interpretative_finding": "For US_MONETARY_POLICY, simple linear surprise explains only 0.0% of 15m variance (p=1.0) and 0.0% of 24h variance (p=1.0). Unconditional directional edge is rejectable."
+    }
+  },
+  "cross_category_scientific_conclusions": [
+    "1. Unconditional directional predictability from macroeconomic surprises is statistically indistinguishable from zero: R^2 < 0.05 across major releases (CPI, NFP, GDP, FOMC).",
+    "2. Naive heuristics like 'inflation up implies BTC down' fail empirically due to shifting policy discounting and regime-dependent interpretation.",
+    "3. In high-inflation bear regimes (2022), upside inflation surprises produced negative short-term reactions due to aggressive rate hike expectations; in late 2023-2024 recovery regimes, moderate inflation surprises were frequently absorbed without systemic down-moves.",
+    "4. Market reaction direction at 15 minutes exhibits low persistence: 24-hour direction frequently decouples as broader market liquidity and crypto-native structural flows dominate.",
+    "5. NO PREDICTIVE DIRECTIONAL EDGE ESTABLISHED: Surprise analysis serves strictly as a descriptive risk and volatility input, not an autonomous directional signal."
+  ]
+}

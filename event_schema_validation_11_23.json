@@ -1,0 +1,28 @@
+{
+  "total_events": 237,
+  "unique_events": 237,
+  "duplicate_count": 0,
+  "duplicates": [],
+  "tier_distribution": {
+    "TIER_1_OFFICIAL": 237
+  },
+  "category_distribution": {
+    "US_INFLATION": 102,
+    "US_LABOR": 57,
+    "US_MONETARY_POLICY": 38,
+    "US_GROWTH": 19,
+    "CRYPTO_STRUCTURE": 8,
+    "FINANCIAL_STABILITY": 4,
+    "REGULATION": 8,
+    "BITCOIN_PROTOCOL": 1
+  },
+  "verification_status_distribution": {
+    "VERIFIED_EVENT_UNCERTAIN_LATENCY": 198,
+    "VERIFIED_POINT_IN_TIME": 39
+  },
+  "records_with_consensus": 216,
+  "records_with_actual": 237,
+  "records_with_previous": 95,
+  "valid_timestamp_hierarchy_count": 237,
+  "all_timestamps_strictly_ordered": true
+}

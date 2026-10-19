@@ -1,0 +1,98 @@
+{
+  "sprint": "11.23",
+  "name": "Macroeconomic Events, News Provenance & Market Reaction Intelligence",
+  "base_commit": "0a229db7880f047adbaed2bf44b8dd19c42276cb",
+  "timestamp_utc": "2026-10-19T19:30:00Z",
+  "status_summary": {
+    "SPRINT_11_23_STATUS": "PASS",
+    "ACCOUNTING_CLOSURE_GATE": "PASS",
+    "VERIFIED_HISTORICAL_EVENTS": 237,
+    "EVENTS_WITH_VERIFIED_PUBLICATION_TIME": 237,
+    "EVENTS_WITH_VERIFIED_PUBLIC_AVAILABILITY": 237,
+    "EVENTS_WITH_VALID_PRE_RELEASE_CONSENSUS": 216,
+    "EVENT_EVIDENCE_INTEGRITY": "PASS",
+    "BTC_EVENT_STUDY": "PASS",
+    "MACRO_SURPRISE_RESEARCH": "PASS",
+    "SESSION_INTERACTION_RESEARCH": "PASS",
+    "NEWS_CONDITIONED_EDGE": "NOT_ESTABLISHED",
+    "HISTORICAL_DATA_STATUS": "RESEARCH_CONTAMINATED",
+    "PROSPECTIVE_OBSERVATION": "NOT_STARTED",
+    "LIVE_TRADING": "PROHIBITED",
+    "OPERATOR_AUTHORIZATION": "NOT_GRANTED"
+  },
+  "deliverables_manifest": {
+    "accounting_closure_gate_11_23.json": {
+      "sha256": "e6b6a8181aa45c77622ec82dcb864d5a54e15078d981af2f9c1914a3cd46a604",
+      "size_bytes": 2625,
+      "description": "Resolution of gross PnL rounding discrepancy and zero-friction counterfactual decomposition"
+    },
+    "macro_source_inventory_11_23.json": {
+      "sha256": "aec154218194fc8eb6ceda26be954e044f43ab09071095f3cded94c9269d3983",
+      "size_bytes": 4426,
+      "description": "Inventory of official primary and survey sources with embargo and latency protocols"
+    },
+    "event_schema_validation_11_23.json": {
+      "sha256": "87e4e2c1770a3fc2ffe07f56a3a60f7069ce3163e239427b469192d5b590bbf9",
+      "size_bytes": 713,
+      "description": "Point-in-time schema validation audit across verified historical events"
+    },
+    "historical_macro_events_11_23.parquet": {
+      "sha256": "57aefec3c3b5167cddd640a5e4eea820a32c3ad8ba32fc63e9ba0acb20cc9662",
+      "size_bytes": 52513,
+      "rows": 237,
+      "columns": 28,
+      "description": "237 authentic historical macroeconomic and crypto market structure events (2022-2026)"
+    },
+    "historical_macro_coverage_11_23.json": {
+      "sha256": "3b8a7ec85f5ad8bb62ef090932f0bb75728514851d81babbea0a9aa8053ebbc2",
+      "size_bytes": 1185,
+      "description": "Coverage statistics by year, category, and source tier"
+    },
+    "event_evidence_manifest_11_23.json": {
+      "sha256": "fb2176b2a9dd21f59072b411bc73869df6cfba88ccd0579d152ac7d58f6a37a2",
+      "size_bytes": 1258,
+      "description": "Cryptographic hashes and acquisition methods for event evidence files"
+    },
+    "btc_event_reaction_ledger_11_23.parquet": {
+      "sha256": "c667950e1746d6cc5f456784badc0119debb00bc7aede098c41a8283ae1042be",
+      "size_bytes": 72133,
+      "rows": 237,
+      "columns": 38,
+      "description": "Event study ledger aligned with canonical 5m BTC candles, pre/post returns, MFE/MAE, vol and path"
+    },
+    "event_study_audit_11_23.json": {
+      "sha256": "4c75148f7181178c1db8c65c1653de93cf2d50c21812ea14ca40f313ee3fe775",
+      "size_bytes": 3825,
+      "description": "Statistical event study audit across 237 events vs matched non-event controls"
+    },
+    "macro_surprise_research_11_23.json": {
+      "sha256": "f89bfc1e5f1d6e676c2d838fb8bf9fb6ce84dd3e57163a99268b759b5bbb67aa",
+      "size_bytes": 13126,
+      "description": "Causal standardized surprise analysis, regression models, and regime conditioning"
+    },
+    "event_session_interaction_11_23.json": {
+      "sha256": "512c38e9e9814de9091226877b2efd340284048d84e4eee4521756d1dce05ea5",
+      "size_bytes": 4300,
+      "description": "TSE, HKEX, LSE, NYSE session context, proximity to open, and session regime analysis"
+    },
+    "news_event_readiness_11_23.json": {
+      "sha256": "454be0e601622ed6274d98e5fd408be30f57d45d571a2bddf345463a09dfa5d1",
+      "size_bytes": 5448,
+      "description": "Readiness classification of 9 architectural modules and point-in-time eligibility"
+    },
+    "research_report_11_23.md": {
+      "sha256": "6c8ab30ba0e2a06bfa518ce7c788d294688958db771abedc1d74a19ca80532cb",
+      "size_bytes": 18930,
+      "description": "Comprehensive scientific audit and findings report for Sprint 11.23"
+    }
+  },
+  "regeneration_commands": [
+    ".\\.venv\\Scripts\\python.exe scripts/sprint11_23_accounting_closure_gate.py",
+    ".\\.venv\\Scripts\\python.exe scripts/build_historical_macro_dataset_11_23.py",
+    ".\\.venv\\Scripts\\python.exe scripts/run_btc_event_reaction_study_11_23.py",
+    ".\\.venv\\Scripts\\python.exe scripts/run_macro_surprise_research_11_23.py",
+    ".\\.venv\\Scripts\\python.exe scripts/run_event_session_interaction_11_23.py",
+    ".\\.venv\\Scripts\\python.exe src/coin_behavior_engine/research/news_event_readiness.py",
+    ".\\.venv\\Scripts\\pytest.exe tests/test_sprint11_23_macro_events_and_reactions.py -v"
+  ]
+}

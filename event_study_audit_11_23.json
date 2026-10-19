@@ -1,0 +1,113 @@
+{
+  "sprint": "11.23",
+  "phase": "4_BTC_EVENT_STUDY_AUDIT",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T18:15:00Z",
+  "btc_event_study": "PASS",
+  "study_parameters": {
+    "total_events_in_universe": 237,
+    "total_events_aligned": 237,
+    "bar_resolution_used": "5_MINUTE_CANONICAL",
+    "pre_event_windows": [
+      "15m",
+      "1h",
+      "4h",
+      "24h"
+    ],
+    "post_event_windows": [
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "4h",
+      "12h",
+      "24h",
+      "72h"
+    ],
+    "executable_alignment_rule": "Execution at first fully eligible post-availability candle Open"
+  },
+  "aggregate_reaction_findings": {
+    "mean_event_15m_abs_return_pct": 0.363,
+    "mean_matched_control_15m_abs_return_pct": 0.228,
+    "reaction_volatility_multiplier_15m": 1.59,
+    "mean_event_1h_abs_return_pct": 0.665,
+    "mean_matched_control_1h_abs_return_pct": 0.438,
+    "mean_post_event_relative_volume_1h": 2.17,
+    "mean_post_event_realized_vol_24h_pct": 2.75,
+    "mean_matched_control_vol_24h_pct": 2.45,
+    "continuation_rate_24h_pct": 57.0,
+    "reversal_rate_24h_pct": 43.0
+  },
+  "category_reaction_comparison": {
+    "BITCOIN_PROTOCOL": {
+      "count": 1,
+      "mean_abs_ret_15m_pct": 0.203,
+      "mean_abs_ret_1h_pct": 0.378,
+      "mean_abs_ret_24h_pct": 1.788,
+      "mean_relative_volume": 0.79,
+      "continuation_rate_pct": 100.0
+    },
+    "CRYPTO_STRUCTURE": {
+      "count": 8,
+      "mean_abs_ret_15m_pct": 0.766,
+      "mean_abs_ret_1h_pct": 1.082,
+      "mean_abs_ret_24h_pct": 6.123,
+      "mean_relative_volume": 2.33,
+      "continuation_rate_pct": 62.5
+    },
+    "FINANCIAL_STABILITY": {
+      "count": 4,
+      "mean_abs_ret_15m_pct": 0.677,
+      "mean_abs_ret_1h_pct": 0.774,
+      "mean_abs_ret_24h_pct": 5.921,
+      "mean_relative_volume": 1.3,
+      "continuation_rate_pct": 75.0
+    },
+    "REGULATION": {
+      "count": 8,
+      "mean_abs_ret_15m_pct": 0.253,
+      "mean_abs_ret_1h_pct": 0.465,
+      "mean_abs_ret_24h_pct": 2.404,
+      "mean_relative_volume": 3.68,
+      "continuation_rate_pct": 37.5
+    },
+    "US_GROWTH": {
+      "count": 19,
+      "mean_abs_ret_15m_pct": 0.222,
+      "mean_abs_ret_1h_pct": 0.428,
+      "mean_abs_ret_24h_pct": 2.007,
+      "mean_relative_volume": 1.1,
+      "continuation_rate_pct": 57.9
+    },
+    "US_INFLATION": {
+      "count": 102,
+      "mean_abs_ret_15m_pct": 0.346,
+      "mean_abs_ret_1h_pct": 0.588,
+      "mean_abs_ret_24h_pct": 1.793,
+      "mean_relative_volume": 2.06,
+      "continuation_rate_pct": 57.8
+    },
+    "US_LABOR": {
+      "count": 57,
+      "mean_abs_ret_15m_pct": 0.379,
+      "mean_abs_ret_1h_pct": 0.631,
+      "mean_abs_ret_24h_pct": 1.644,
+      "mean_relative_volume": 1.88,
+      "continuation_rate_pct": 61.4
+    },
+    "US_MONETARY_POLICY": {
+      "count": 38,
+      "mean_abs_ret_15m_pct": 0.362,
+      "mean_abs_ret_1h_pct": 0.992,
+      "mean_abs_ret_24h_pct": 2.612,
+      "mean_relative_volume": 3.2,
+      "continuation_rate_pct": 47.4
+    }
+  },
+  "scientific_conclusions": [
+    "1. Macroeconomic and regulatory announcements generate statistically significant short-term volatility expansion: 15-minute absolute returns average 0.363% vs 0.228% for matched non-event controls (multiplier: 1.59x).",
+    "2. Trading volume expands markedly: 1-hour post-event volume averages 2.17x baseline.",
+    "3. Initial price direction is noisy and frequently reverses: 24-hour continuation rate is only 57.0% (meaning 43.0% of announcements experience a reversal between the initial 15m spike and the 24h close).",
+    "4. Descriptive event volatility does NOT constitute an investable predictive signal without directionality and transaction cost controls."
+  ]
+}

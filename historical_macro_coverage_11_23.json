@@ -1,0 +1,43 @@
+{
+  "sprint": "11.23",
+  "phase": "3_HISTORICAL_MACRO_COVERAGE",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T18:05:00Z",
+  "coverage_summary": {
+    "target_events_count": 150,
+    "total_discovered_events": 237,
+    "total_verified_events": 237,
+    "total_partially_verified_events": 0,
+    "total_rejected_events": 0,
+    "target_achieved": true,
+    "records_with_verified_publication_time": 237,
+    "records_with_verified_public_availability": 237,
+    "records_with_pre_release_consensus": 216,
+    "records_with_reliable_actual_values": 237,
+    "records_with_contemporaneous_previous_values": 95
+  },
+  "coverage_by_year": {
+    "2022": 53,
+    "2023": 56,
+    "2024": 55,
+    "2025": 46,
+    "2026": 27
+  },
+  "coverage_by_category": {
+    "US_INFLATION": 102,
+    "US_LABOR": 57,
+    "US_MONETARY_POLICY": 38,
+    "US_GROWTH": 19,
+    "CRYPTO_STRUCTURE": 8,
+    "REGULATION": 8,
+    "FINANCIAL_STABILITY": 4,
+    "BITCOIN_PROTOCOL": 1
+  },
+  "coverage_by_source_tier": {
+    "TIER_1_OFFICIAL": 237
+  },
+  "coverage_by_verification_status": {
+    "VERIFIED_EVENT_UNCERTAIN_LATENCY": 198,
+    "VERIFIED_POINT_IN_TIME": 39
+  }
+}
