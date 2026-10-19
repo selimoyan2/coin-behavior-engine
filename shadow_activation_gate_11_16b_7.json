@@ -1,0 +1,143 @@
+{
+  "audit_metadata": {
+    "sprint": "11.16B.7",
+    "mission": "ATR Unit Forensics & Runtime Evidence Correction",
+    "base_commit": "6f0122e95d0f69b80178dca6d4badf392fcc45d1",
+    "canonical_dataset_sha256": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487",
+    "audit_timestamp_utc": "2026-10-19T09:30:00Z",
+    "mode": "OFFLINE_SCIENTIFIC_AUDIT_NO_ACTIVATION"
+  },
+  "global_runtime_declarations": {
+    "prospective_observation": "NOT_STARTED",
+    "live_trading": "STRICTLY_PROHIBITED",
+    "policy_parameters_changed": "NO",
+    "linux_cgroup_runtime": "NOT_TESTED",
+    "operator_authorization": "NOT_GRANTED",
+    "next_step": "OPERATOR_REVIEW"
+  },
+  "policy_activation_matrix": {
+    "POLICY_A_USDT_CASH": {
+      "software_correctness": {
+        "status": "PASS",
+        "evidence": "Permanent cash policy logic validated; hash chaining and fail-closed state verified."
+      },
+      "frozen_policy_identity": {
+        "status": "VERIFIED_FROZEN",
+        "evidence": "Parameters identical to Sprint 11.15 freeze manifest; 0 parameter changes."
+      },
+      "real_data_execution_coverage": {
+        "status": "PASS",
+        "evidence": "104,256 valid bars evaluated. 100% USDT preservation, 0 invalid transitions, 0 fills."
+      },
+      "resource_verification": {
+        "status": "CGROUP_NOT_TESTED",
+        "evidence": "Python memory footprint < 15 MB. Target Linux cgroup container limits not empirically tested on srv1114257."
+      },
+      "operator_authorization": {
+        "status": "NOT_GRANTED",
+        "evidence": "No operator authorization requested or granted."
+      },
+      "activation_readiness": "BLOCKED_PENDING_OPERATOR_AUTHORIZATION_AND_CGROUP_BENCHMARK"
+    },
+    "POLICY_B_BTC_BUY_AND_HOLD": {
+      "software_correctness": {
+        "status": "PASS",
+        "evidence": "Initial spot long entry executed on bar 1; mark-to-market tracking and position accounting verified."
+      },
+      "frozen_policy_identity": {
+        "status": "VERIFIED_FROZEN",
+        "evidence": "Parameters identical to Sprint 11.15 freeze manifest; 0 parameter changes."
+      },
+      "real_data_execution_coverage": {
+        "status": "PASS",
+        "evidence": "104,256 valid bars evaluated. Exactly 1 entry, 0 exits, authentic BTC spot return tracking."
+      },
+      "resource_verification": {
+        "status": "CGROUP_NOT_TESTED",
+        "evidence": "Python memory footprint < 15 MB. Target Linux cgroup container limits not empirically tested on srv1114257."
+      },
+      "operator_authorization": {
+        "status": "NOT_GRANTED",
+        "evidence": "No operator authorization requested or granted."
+      },
+      "activation_readiness": "BLOCKED_PENDING_OPERATOR_AUTHORIZATION_AND_CGROUP_BENCHMARK"
+    },
+    "POLICY_C_TREND48_FOLLOWING": {
+      "software_correctness": {
+        "status": "PASS",
+        "evidence": "SMA 48h trend following, breakout entries, breakdown exits, and stop-loss logic verified."
+      },
+      "frozen_policy_identity": {
+        "status": "VERIFIED_FROZEN",
+        "evidence": "Parameters identical to Sprint 11.15 freeze manifest; 0 parameter changes."
+      },
+      "real_data_execution_coverage": {
+        "status": "PASS",
+        "evidence": "104,256 valid bars evaluated. Exactly 88 trades executed with full entry, exit, stop, and take-profit coverage."
+      },
+      "resource_verification": {
+        "status": "CGROUP_NOT_TESTED",
+        "evidence": "Python memory footprint < 15 MB. Target Linux cgroup container limits not empirically tested on srv1114257."
+      },
+      "operator_authorization": {
+        "status": "NOT_GRANTED",
+        "evidence": "No operator authorization requested or granted."
+      },
+      "activation_readiness": "BLOCKED_PENDING_OPERATOR_AUTHORIZATION_AND_CGROUP_BENCHMARK"
+    },
+    "POLICY_D_SELECTIVE_TREND_ONLY": {
+      "software_correctness": {
+        "status": "DEFECT_IDENTIFIED",
+        "evidence": "Frozen ATR threshold (0.015 <= atr_pct <= 0.065) reflects 5m vs 24h unit mismatch; excludes 100% of trend bars."
+      },
+      "frozen_policy_identity": {
+        "status": "PRESERVED_DEFECTIVE",
+        "evidence": "Frozen parameters strictly maintained without modification per prospective scientific integrity protocol."
+      },
+      "real_data_execution_coverage": {
+        "status": "FAIL_ZERO_TRADES",
+        "evidence": "104,256 valid bars evaluated. Exactly 0 trades executed. Zero execution coverage under authentic market data."
+      },
+      "resource_verification": {
+        "status": "CGROUP_NOT_TESTED",
+        "evidence": "Target Linux cgroup container limits not empirically tested on srv1114257."
+      },
+      "operator_authorization": {
+        "status": "NOT_GRANTED",
+        "evidence": "No operator authorization requested or granted."
+      },
+      "activation_readiness": "REJECTED_UNIT_DEFECT_ZERO_TRADE_COVERAGE"
+    },
+    "POLICY_E_SELECTIVE_ANALOGUE_ASSISTED": {
+      "software_correctness": {
+        "status": "DEFECT_IDENTIFIED",
+        "evidence": "Inherits Policy D ATR threshold defect (blocked upstream). Compact analogue runtime calibrated but inactive due to ATR lock."
+      },
+      "frozen_policy_identity": {
+        "status": "PRESERVED_DEFECTIVE",
+        "evidence": "Frozen parameters strictly maintained without modification per prospective scientific integrity protocol."
+      },
+      "real_data_execution_coverage": {
+        "status": "FAIL_ZERO_TRADES",
+        "evidence": "104,256 valid bars evaluated. Exactly 0 trades executed. Zero execution coverage under authentic market data."
+      },
+      "resource_verification": {
+        "status": "CGROUP_NOT_TESTED",
+        "evidence": "Compact analogue runtime memory verified (~83 MB heap), but Linux cgroup container limits not empirically tested."
+      },
+      "operator_authorization": {
+        "status": "NOT_GRANTED",
+        "evidence": "No operator authorization requested or granted."
+      },
+      "activation_readiness": "REJECTED_UNIT_DEFECT_ZERO_TRADE_COVERAGE"
+    }
+  },
+  "proposed_candidates_for_future_freeze": {
+    "POLICY_D_V2_CORRECTED_ATR": {
+      "status": "PROPOSED_UNFROZEN_CANDIDATE",
+      "description": "Multi-timeframe trend following with corrected 5-minute candle ATR volatility bounds (0.05% to 0.35%).",
+      "historical_coverage": "31,092 structurally eligible candidate entry bars (29.82% of valid bars).",
+      "governance_requirement": "Requires operator authorization and formal prospective freeze manifest prior to activation."
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "sprint": "11.16B.7",
+  "description": "Sprint 11.16B.7 Reproducibility Manifest - ATR Unit Forensics & Runtime Truth",
+  "base_commit": "6f0122e95d0f69b80178dca6d4badf392fcc45d1",
+  "timestamp_utc": "2026-10-19T09:31:00Z",
+  "declarations": {
+    "prospective_observation": "NOT_STARTED",
+    "live_trading": "STRICTLY_PROHIBITED",
+    "policy_parameters_changed": "NO",
+    "linux_cgroup_runtime": "NOT_TESTED",
+    "operator_authorization": "NOT_GRANTED",
+    "next_step": "OPERATOR_REVIEW"
+  },
+  "deliverable_digests": {
+    "atr_unit_forensics_11_16b_7.md": {
+      "path": "research_outputs/atr_unit_forensics_11_16b_7.md",
+      "size_bytes": 9461,
+      "sha256": "56b9365f7a872e0bfe171aef0c4e00bd5ab2d4a7a53177badc7271ad035abaee"
+    },
+    "policy_gate_attribution_11_16b_7.csv": {
+      "path": "research_outputs/policy_gate_attribution_11_16b_7.csv",
+      "size_bytes": 1792,
+      "sha256": "54555f189c6389b3b12aa118a487b6c744583f7ed4e778142b8c54a3b7276ad9"
+    },
+    "runtime_measurement_corrections_11_16b_7.md": {
+      "path": "research_outputs/runtime_measurement_corrections_11_16b_7.md",
+      "size_bytes": 7052,
+      "sha256": "fe6ac0a07ed9bf42f956b2b3017d5a9d02ccce4d61f1c34697b7e24d76b36f8a"
+    },
+    "shadow_activation_gate_11_16b_7.json": {
+      "path": "research_outputs/shadow_activation_gate_11_16b_7.json",
+      "size_bytes": 6570,
+      "sha256": "2dbfd0ae900481b72d55dbb2f5cbba1f874fc6a5b08137fc89fd64f27684cd19"
+    },
+    "test_sprint11_16b_7_atr_forensics_and_runtime_truth.py": {
+      "path": "tests/test_sprint11_16b_7_atr_forensics_and_runtime_truth.py",
+      "size_bytes": 7566,
+      "sha256": "2ff906a8e880b5dbbd180c825b46581c420c81ee879554da2cc28cf77767b0f9"
+    },
+    "market_state_dataset.parquet": {
+      "path": "research_outputs/market_state_dataset.parquet",
+      "size_bytes": 25149564,
+      "sha256": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487"
+    },
+    "compact_analogue_candidates.npz": {
+      "path": "research_outputs/compact_analogue_candidates.npz",
+      "size_bytes": 2995550,
+      "sha256": "a7ee5335f40989161a4213d95b880e9c7df2d5fc3bafe4f26b439387f8bfc484"
+    },
+    "policy_freeze_manifest.json": {
+      "path": "research_outputs/policy_freeze_manifest.json",
+      "size_bytes": 5238,
+      "sha256": "091f30ef9b2638e5c805f09acf691b6bfc861d77797841650eb094c995541cf7"
+    }
+  }
+}

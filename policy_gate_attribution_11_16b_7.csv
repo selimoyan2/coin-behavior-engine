@@ -1,0 +1,11 @@
+gate_id,gate_name,eligible_bars,eligible_pct,blocked_bars,blocked_pct,role_in_rejection
+GATE_0_WARMUP_EXCLUSION,Minimum Warmup Bars (864 bars),104256,99.1781,864,0.8219,Initial SMA-72h lookback buffer requirement
+GATE_1_TREND_ALIGNMENT,Multi-Timeframe Trend (close > SMA24h AND close > SMA72h),38569,36.9945,65687,63.0055,Blocks non-bullish market phases (63.01% of bars)
+GATE_2_ANTI_CHASE,Anti-Chase Extension (close <= SMA24h * 1.0225),100330,96.2343,3926,3.7657,Blocks overextended breakouts >2.25% above 24h SMA (3.77% of bars)
+GATE_3_STRUCTURAL_ELIGIBLE,Structural Alignment (Trend Aligned AND Anti-Chase OK),34813,33.3918,69443,66.6082,Total structurally sound entry opportunities (33.39% of bars)
+GATE_4_FROZEN_ATR_FILTER,Frozen 5m ATR Gate (0.015 <= atr_pct <= 0.065),4,0.0038,104252,99.9962,PRIMARY BLOCKER: Rejects 99.9962% of bars due to 5m vs 24h unit mismatch
+GATE_5_POLICY_D_FROZEN_COMBINED,Policy D Frozen Combined (Structural AND Frozen ATR),0,0.0,104256,100.0,100% BLOCKED (0 trades): 34813 valid trend bars extinguished by ATR mismatch
+GATE_6_ANALOGUE_POSITIVE_TEST,Analogue Positive on Test Split (prob_up >= 0.60),5,0.0366,13657,99.9634,High hurdle filter (prob_up >= 0.60); rarely approved under calibrated k-NN
+GATE_7_POLICY_E_FROZEN_COMBINED,Policy E Frozen Combined (Policy D Frozen AND Analogue OK),0,0.0,104256,100.0,100% BLOCKED (0 trades): Blocked upstream by Frozen ATR gate
+GATE_8_PROPOSED_CORRECTED_ATR,Proposed Corrected 5m ATR (0.0005 <= atr_pct <= 0.0035),89675,86.0142,14581,13.9858,Filters extreme volatility droughts (<5 bps) and extreme panics (>35 bps)
+GATE_9_POLICY_D_V2_PROPOSED_COMBINED,Policy D V2 Proposed (Structural AND Proposed ATR),31092,29.8227,73164,70.1773,Produces 31092 candidate entry bars for future V2 prospective evaluation
