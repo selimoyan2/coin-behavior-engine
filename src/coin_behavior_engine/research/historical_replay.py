@@ -27,6 +27,7 @@ from coin_behavior_engine.macro.global_session_calendar import (
 
 @dataclass(frozen=True)
 class ReplayState:
+    engine_version: str
     query_time_utc: str
     query_timestamp_ms: int
     last_closed_candle: Optional[Dict[str, Any]]
@@ -35,11 +36,14 @@ class ReplayState:
     session_relative_windows: Dict[str, Any]
     visible_events: List[Dict[str, Any]]
     visible_event_count: int
+    uncertain_events: List[Dict[str, Any]]
     state_hash_sha256: str
 
 
 class HistoricalReplayEngine:
     """Deterministic, point-in-time historical replay engine ensuring causal isolation."""
+
+    VERSION = "1.1.0"
 
     def __init__(
         self,
@@ -51,7 +55,7 @@ class HistoricalReplayEngine:
         
         Args:
             candles_df: DataFrame containing at least ['open_time', 'open', 'high', 'low', 'close', 'volume', 'close_time']
-            events: List of event dicts conforming to CBEPointInTimeEventSchema
+            events: List of event dicts conforming to CBEPointInTimeEventSchema or RealHistoricalEvent
             calendar: GlobalSessionCalendar instance
         """
         self.calendar = calendar or GlobalSessionCalendar()
@@ -80,8 +84,6 @@ class HistoricalReplayEngine:
     def _parse_timestamp_ms(self, ts: Union[str, int, float, pd.Timestamp, datetime.datetime]) -> int:
         """Convert input timestamp to epoch milliseconds."""
         if isinstance(ts, (int, np.integer)):
-            # If greater than 1e11 (1973+ in ms), it is already in ms.
-            # For testing with synthetic small integers, keep as integer.
             return int(ts)
         elif isinstance(ts, float):
             return int(ts)
@@ -100,14 +102,11 @@ class HistoricalReplayEngine:
         active_sessions = []
         session_windows = {}
 
-        # Query time in UTC
         q_dt = timestamp_utc.to_pydatetime()
         if q_dt.tzinfo is None:
             q_dt = q_dt.replace(tzinfo=datetime.timezone.utc)
 
-        # Check all 4 exchanges
         for ex in self.calendar.EXCHANGES:
-            # Exchange opening time for today
             tz = getattr(self.calendar, f"TZ_{'HONG_KONG' if ex == 'HKEX' else ('NEW_YORK' if ex == 'NYSE' else ('TOKYO' if ex == 'TSE' else 'LONDON'))}")
             local_dt = q_dt.astimezone(tz)
             local_date = local_dt.date()
@@ -116,14 +115,7 @@ class HistoricalReplayEngine:
             window_info = {"status": "CLOSED", "minutes_to_open": None, "relative_tag": "OFF_SESSION"}
 
             if open_utc is not None:
-                # Exchange duration: regular hours
-                # TSE: 09:00 - 15:00 JST (6h)
-                # HKEX: 09:30 - 16:00 HKT (6.5h)
-                # LSE: 08:00 - 16:30 London (8.5h)
-                # NYSE: 09:30 - 16:00 New York (6.5h)
                 durations_hours = {"TSE": 6.0, "HKEX": 6.5, "LSE": 8.5, "NYSE": 6.5}
-                close_utc = open_utc + pd.Timedelta(hours=durations_hours[ex])
-
                 diff_minutes = (timestamp_utc - open_utc).total_seconds() / 60.0
 
                 if 0 <= diff_minutes <= durations_hours[ex] * 60:
@@ -136,7 +128,6 @@ class HistoricalReplayEngine:
 
                 window_info["minutes_to_open"] = round(-diff_minutes, 1) if diff_minutes < 0 else round(diff_minutes, 1)
 
-                # Pre-open / Post-open tags
                 if -60 <= diff_minutes < 0:
                     if -10 <= diff_minutes < 0:
                         window_info["relative_tag"] = "PRE_OPEN_10M"
@@ -159,18 +150,28 @@ class HistoricalReplayEngine:
             "session_windows": session_windows
         }
 
-    def get_point_in_time_state(self, timestamp: Union[str, int, float, pd.Timestamp, datetime.datetime]) -> ReplayState:
-        """Construct the exact point-in-time market, event, and session state for query time."""
+    def get_point_in_time_state(
+        self,
+        timestamp: Union[str, int, float, pd.Timestamp, datetime.datetime],
+        conservative_mode: bool = True
+    ) -> ReplayState:
+        """Construct the exact point-in-time market, event, and session state for query time.
+        
+        Args:
+            timestamp: Point-in-time decision moment.
+            conservative_mode: If True, events in availability uncertainty windows are withheld
+                              until latest_conservative_available_at_utc.
+        """
         ts_ms = self._parse_timestamp_ms(timestamp)
         ts_dt = pd.to_datetime(ts_ms, unit="ms", utc=True)
         ts_iso = ts_dt.isoformat()
 
         # 1. Closed market candles: close_time <= ts_ms
-        # Binary search for rightmost closed candle
         idx = np.searchsorted(self._candle_close_times, ts_ms, side="right")
         candle_count = int(idx)
         
         last_closed = None
+        recent_candles = []
         if candle_count > 0:
             row = self.candles_df.iloc[candle_count - 1]
             last_closed = {
@@ -183,42 +184,107 @@ class HistoricalReplayEngine:
                 "close": float(row["close"]),
                 "volume": float(row["volume"])
             }
+            # Last 12 closed candles for path hashing
+            start_recent = max(0, candle_count - 12)
+            recent_sub = self.candles_df.iloc[start_recent:candle_count]
+            for _, r in recent_sub.iterrows():
+                recent_candles.append([
+                    int(r["open_time"]), int(r["close_time"]),
+                    float(r["open"]), float(r["high"]), float(r["low"]), float(r["close"]), float(r["volume"])
+                ])
 
-        # 2. Point-in-time events: available_at_utc <= ts_iso
+        recent_path_hash = hashlib.sha256(json.dumps(recent_candles).encode("utf-8")).hexdigest()
+
+        # 2. Point-in-time events with uncertainty interval handling
         visible_events = []
-        for evt in self.events:
-            avail_str = evt.get("available_at_utc")
-            if avail_str:
-                avail_ms = self._parse_timestamp_ms(avail_str)
-                if avail_ms <= ts_ms:
-                    visible_events.append({
-                        "event_id": evt["event_id"],
-                        "category": evt.get("category"),
-                        "available_at_utc": avail_str,
-                        "headline": evt.get("headline"),
-                        "sentiment_label": evt.get("sentiment_label"),
-                        "checksum_sha256": evt.get("checksum_sha256")
-                    })
+        uncertain_events = []
 
-        # Sort visible events deterministically by event_id
+        for evt in self.events:
+            event_id = evt["event_id"]
+            
+            # Check if event has explicit uncertainty interval
+            uncert = evt.get("availability_uncertainty_interval")
+            if uncert:
+                earliest_ms = self._parse_timestamp_ms(uncert["earliest_machine_available_at_utc"])
+                latest_ms = self._parse_timestamp_ms(uncert["latest_conservative_available_at_utc"])
+                
+                if ts_ms >= latest_ms:
+                    # Confirmed available
+                    visible_events.append({
+                        "event_id": event_id,
+                        "category": evt.get("category"),
+                        "nominal_published_at_utc": evt.get("nominal_published_at_utc"),
+                        "available_at_utc": uncert["latest_conservative_available_at_utc"],
+                        "headline": evt.get("title") or evt.get("headline"),
+                        "actual_value": evt.get("economic_data", {}).get("actual_value") if "economic_data" in evt else evt.get("actual_value"),
+                        "sentiment_label": evt.get("sentiment_label", "NEUTRAL"),
+                        "checksum_sha256": evt.get("content_sha256") or evt.get("checksum_sha256")
+                    })
+                elif ts_ms >= earliest_ms:
+                    # Within dissemination uncertainty window
+                    if not conservative_mode:
+                        visible_events.append({
+                            "event_id": event_id,
+                            "category": evt.get("category"),
+                            "available_at_utc": uncert["earliest_machine_available_at_utc"],
+                            "headline": evt.get("title") or evt.get("headline"),
+                            "actual_value": evt.get("economic_data", {}).get("actual_value") if "economic_data" in evt else evt.get("actual_value"),
+                            "sentiment_label": evt.get("sentiment_label", "NEUTRAL"),
+                            "checksum_sha256": evt.get("content_sha256") or evt.get("checksum_sha256")
+                        })
+                    else:
+                        uncertain_events.append({
+                            "event_id": event_id,
+                            "status": "DISSEMINATION_UNCERTAINTY_PENDING",
+                            "earliest_ms": earliest_ms,
+                            "latest_ms": latest_ms
+                        })
+            else:
+                avail_str = evt.get("available_at_utc")
+                if avail_str:
+                    avail_ms = self._parse_timestamp_ms(avail_str)
+                    if avail_ms <= ts_ms:
+                        visible_events.append({
+                            "event_id": event_id,
+                            "category": evt.get("category"),
+                            "available_at_utc": avail_str,
+                            "headline": evt.get("headline"),
+                            "actual_value": evt.get("actual_value"),
+                            "sentiment_label": evt.get("sentiment_label", "NEUTRAL"),
+                            "checksum_sha256": evt.get("checksum_sha256")
+                        })
+
         visible_events.sort(key=lambda x: x["event_id"])
+        uncertain_events.sort(key=lambda x: x["event_id"])
 
         # 3. Session status
         sess_data = self.get_session_status(ts_dt)
 
-        # 4. Deterministic state hash
+        # 4. Comprehensive deterministic state hash sealing the information set
         hash_payload = {
+            "engine_version": self.VERSION,
             "query_timestamp_ms": ts_ms,
             "candle_count_observed": candle_count,
-            "last_candle_close_time": last_closed["close_time"] if last_closed else None,
-            "last_candle_close": last_closed["close"] if last_closed else None,
+            "last_closed_candle": last_closed,
+            "recent_path_hash": recent_path_hash,
             "active_sessions": sess_data["active_sessions"],
-            "visible_event_ids": [e["event_id"] for e in visible_events]
+            "session_windows_tags": {ex: info.get("relative_tag") for ex, info in sess_data["session_windows"].items()},
+            "visible_events": [
+                {
+                    "event_id": e["event_id"],
+                    "actual_value": e.get("actual_value"),
+                    "sentiment_label": e.get("sentiment_label"),
+                    "checksum_sha256": e.get("checksum_sha256")
+                }
+                for e in visible_events
+            ],
+            "uncertain_event_ids": [u["event_id"] for u in uncertain_events]
         }
         payload_bytes = json.dumps(hash_payload, sort_keys=True).encode("utf-8")
         state_hash = hashlib.sha256(payload_bytes).hexdigest()
 
         return ReplayState(
+            engine_version=self.VERSION,
             query_time_utc=ts_iso,
             query_timestamp_ms=ts_ms,
             last_closed_candle=last_closed,
@@ -227,5 +293,6 @@ class HistoricalReplayEngine:
             session_relative_windows=sess_data["session_windows"],
             visible_events=visible_events,
             visible_event_count=len(visible_events),
+            uncertain_events=uncertain_events,
             state_hash_sha256=state_hash
         )

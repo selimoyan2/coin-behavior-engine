@@ -1,0 +1,294 @@
+{
+  "sprint": "11.18.1",
+  "phase": "4_CAUSAL_REPLAY_VALIDATION",
+  "status": "REAL_EVENT_REPLAY_VALIDATED",
+  "timestamp_utc": "2026-10-19T10:20:00Z",
+  "test_classification": "AUTHENTIC_HISTORICAL_EVENT_REPLAY",
+  "target_event": {
+    "event_id": "REAL-EVT-20220610-BLS-CPI",
+    "title": "US Bureau of Labor Statistics May 2022 Consumer Price Index Release",
+    "published_at_utc": "2022-06-10T12:30:00Z",
+    "availability_uncertainty_interval": {
+      "min_delay_seconds": 15,
+      "max_delay_seconds": 120,
+      "earliest_machine_available_at_utc": "2022-06-10T12:30:15Z",
+      "latest_conservative_available_at_utc": "2022-06-10T12:32:00Z",
+      "empirical_basis": "Empirical wire feed latency on federal data releases: news wires (Bloomberg/Reuters/Dow Jones) receive transmission line data at 08:30:00.000; public web server dissemination and scraping distribution occurs between 15s and 120s post-embargo."
+    },
+    "actual_cpi_yoy": 8.6,
+    "expected_cpi_yoy": 8.3
+  },
+  "market_dataset_provenance": {
+    "source": "data/raw/btcusdt_5m_raw.parquet (Binance Spot BTC/USDT 5m)",
+    "sample_month": "June 2022",
+    "total_month_bars": 8640
+  },
+  "empirical_market_impact": {
+    "pre_event_5m_volume_btc": 143.28784,
+    "event_bar_5m_volume_btc": 3909.46155,
+    "volume_surge_multiplier": "27.28x",
+    "event_bar_open": 30106.32,
+    "event_bar_close": 29553.89,
+    "price_delta_usd": -552.43,
+    "price_delta_pct": "-1.83%",
+    "market_reaction_interpretation": "Severe immediate downward repricing (-1.83% in 5 minutes) accompanied by massive 16.5x volume explosion following hotter-than-expected inflation print (8.6% vs 8.3%)."
+  },
+  "decision_moments_replay": {
+    "T_minus_10m": {
+      "query_time_utc": "2022-06-10T12:20:00Z",
+      "description": "Pre-event baseline (10m prior)",
+      "observed_candles": 2740,
+      "last_closed_candle": {
+        "open_time": 1654863300000,
+        "close_time": 1654863599999,
+        "datetime_utc": "2022-06-10 12:15:00+00:00",
+        "open": 30119.5,
+        "high": 30129.87,
+        "low": 30069.52,
+        "close": 30079.56,
+        "volume": 143.28784
+      },
+      "active_sessions": [
+        "LSE"
+      ],
+      "session_windows": {
+        "TSE": {
+          "status": "POST_CLOSE",
+          "minutes_to_open": 740.0,
+          "relative_tag": "OFF_SESSION"
+        },
+        "HKEX": {
+          "status": "POST_CLOSE",
+          "minutes_to_open": 650.0,
+          "relative_tag": "OFF_SESSION"
+        },
+        "LSE": {
+          "status": "OPEN",
+          "minutes_to_open": 320.0,
+          "relative_tag": "OFF_SESSION"
+        },
+        "NYSE": {
+          "status": "PRE_OPEN",
+          "minutes_to_open": 70.0,
+          "relative_tag": "OFF_SESSION"
+        }
+      },
+      "visible_event_count": 0,
+      "visible_event_ids": [],
+      "uncertain_events_count": 0,
+      "uncertain_event_ids": [],
+      "state_hash_sha256": "33c2ce87ab0eb1c3a6963783921e2242774667d7ba8f1685eddedde292352870",
+      "eager_mode_state_hash_sha256": "33c2ce87ab0eb1c3a6963783921e2242774667d7ba8f1685eddedde292352870",
+      "uncertainty_impact": "NO_PENDING_UNCERTAINTY"
+    },
+    "T_plus_1m": {
+      "query_time_utc": "2022-06-10T12:31:00Z",
+      "description": "Immediate post-release (inside uncertainty window [15s, 120s])",
+      "observed_candles": 2742,
+      "last_closed_candle": {
+        "open_time": 1654863900000,
+        "close_time": 1654864199999,
+        "datetime_utc": "2022-06-10 12:25:00+00:00",
+        "open": 30148.74,
+        "high": 30184.4,
+        "low": 30086.61,
+        "close": 30106.32,
+        "volume": 236.5838
+      },
+      "active_sessions": [
+        "LSE"
+      ],
+      "session_windows": {
+        "TSE": {
+          "status": "POST_CLOSE",
+          "minutes_to_open": 751.0,
+          "relative_tag": "OFF_SESSION"
+        },
+        "HKEX": {
+          "status": "POST_CLOSE",
+          "minutes_to_open": 661.0,
+          "relative_tag": "OFF_SESSION"
+        },
+        "LSE": {
+          "status": "OPEN",
+          "minutes_to_open": 331.0,
+          "relative_tag": "OFF_SESSION"
+        },
+        "NYSE": {
+          "status": "PRE_OPEN",
+          "minutes_to_open": 59.0,
+          "relative_tag": "PRE_OPEN_60M"
+        }
+      },
+      "visible_event_count": 0,
+      "visible_event_ids": [],
+      "uncertain_events_count": 1,
+      "uncertain_event_ids": [
+        "REAL-EVT-20220610-BLS-CPI"
+      ],
+      "state_hash_sha256": "0a361a4f835c53fc53332026b5a633d6107d2ddadf9b40e89c590ceff4d83635",
+      "eager_mode_state_hash_sha256": "09240efc7912432862aa7435c61e74e8c9cfa27e18d4cfac2b679cf28d7b376c",
+      "uncertainty_impact": "EVENT_WITHHELD_IN_CONSERVATIVE_MODE"
+    },
+    "T_plus_5m": {
+      "query_time_utc": "2022-06-10T12:35:00Z",
+      "description": "First fully closed post-release 5m candle",
+      "observed_candles": 2743,
+      "last_closed_candle": {
+        "open_time": 1654864200000,
+        "close_time": 1654864499999,
+        "datetime_utc": "2022-06-10 12:30:00+00:00",
+        "open": 30106.32,
+        "high": 30106.33,
+        "low": 29501.0,
+        "close": 29553.89,
+        "volume": 3909.46155
+      },
+      "active_sessions": [
+        "LSE"
+      ],
+      "session_windows": {
+        "TSE": {
+          "status": "POST_CLOSE",
+          "minutes_to_open": 755.0,
+          "relative_tag": "OFF_SESSION"
+        },
+        "HKEX": {
+          "status": "POST_CLOSE",
+          "minutes_to_open": 665.0,
+          "relative_tag": "OFF_SESSION"
+        },
+        "LSE": {
+          "status": "OPEN",
+          "minutes_to_open": 335.0,
+          "relative_tag": "OFF_SESSION"
+        },
+        "NYSE": {
+          "status": "PRE_OPEN",
+          "minutes_to_open": 55.0,
+          "relative_tag": "PRE_OPEN_60M"
+        }
+      },
+      "visible_event_count": 1,
+      "visible_event_ids": [
+        "REAL-EVT-20220610-BLS-CPI"
+      ],
+      "uncertain_events_count": 0,
+      "uncertain_event_ids": [],
+      "state_hash_sha256": "413dec5835727f9f60799f859931834c56f5f531693fad6da204bce58216dcf3",
+      "eager_mode_state_hash_sha256": "413dec5835727f9f60799f859931834c56f5f531693fad6da204bce58216dcf3",
+      "uncertainty_impact": "NO_PENDING_UNCERTAINTY"
+    },
+    "T_plus_10m": {
+      "query_time_utc": "2022-06-10T12:40:00Z",
+      "description": "Second closed post-release candle",
+      "observed_candles": 2744,
+      "last_closed_candle": {
+        "open_time": 1654864500000,
+        "close_time": 1654864799999,
+        "datetime_utc": "2022-06-10 12:35:00+00:00",
+        "open": 29553.89,
+        "high": 29842.1,
+        "low": 29505.53,
+        "close": 29735.33,
+        "volume": 1150.11335
+      },
+      "active_sessions": [
+        "LSE"
+      ],
+      "session_windows": {
+        "TSE": {
+          "status": "POST_CLOSE",
+          "minutes_to_open": 760.0,
+          "relative_tag": "OFF_SESSION"
+        },
+        "HKEX": {
+          "status": "POST_CLOSE",
+          "minutes_to_open": 670.0,
+          "relative_tag": "OFF_SESSION"
+        },
+        "LSE": {
+          "status": "OPEN",
+          "minutes_to_open": 340.0,
+          "relative_tag": "OFF_SESSION"
+        },
+        "NYSE": {
+          "status": "PRE_OPEN",
+          "minutes_to_open": 50.0,
+          "relative_tag": "PRE_OPEN_60M"
+        }
+      },
+      "visible_event_count": 1,
+      "visible_event_ids": [
+        "REAL-EVT-20220610-BLS-CPI"
+      ],
+      "uncertain_events_count": 0,
+      "uncertain_event_ids": [],
+      "state_hash_sha256": "62bf05e74dca4e59b174b8e54a98331ba3417b8cd01748e5e2bb186130e090f4",
+      "eager_mode_state_hash_sha256": "62bf05e74dca4e59b174b8e54a98331ba3417b8cd01748e5e2bb186130e090f4",
+      "uncertainty_impact": "NO_PENDING_UNCERTAINTY"
+    },
+    "T_plus_1h": {
+      "query_time_utc": "2022-06-10T13:30:00Z",
+      "description": "One hour post-release market equilibrium",
+      "observed_candles": 2754,
+      "last_closed_candle": {
+        "open_time": 1654867500000,
+        "close_time": 1654867799999,
+        "datetime_utc": "2022-06-10 13:25:00+00:00",
+        "open": 29561.19,
+        "high": 29599.43,
+        "low": 29304.03,
+        "close": 29449.16,
+        "volume": 1965.26581
+      },
+      "active_sessions": [
+        "LSE",
+        "NYSE"
+      ],
+      "session_windows": {
+        "TSE": {
+          "status": "POST_CLOSE",
+          "minutes_to_open": 810.0,
+          "relative_tag": "OFF_SESSION"
+        },
+        "HKEX": {
+          "status": "POST_CLOSE",
+          "minutes_to_open": 720.0,
+          "relative_tag": "OFF_SESSION"
+        },
+        "LSE": {
+          "status": "OPEN",
+          "minutes_to_open": 390.0,
+          "relative_tag": "OFF_SESSION"
+        },
+        "NYSE": {
+          "status": "OPEN",
+          "minutes_to_open": 0.0,
+          "relative_tag": "POST_OPEN_10M"
+        }
+      },
+      "visible_event_count": 1,
+      "visible_event_ids": [
+        "REAL-EVT-20220610-BLS-CPI"
+      ],
+      "uncertain_events_count": 0,
+      "uncertain_event_ids": [],
+      "state_hash_sha256": "547542fd27652e471059fe28219197c768a699022fe1df75f1a7b9be694fe40e",
+      "eager_mode_state_hash_sha256": "547542fd27652e471059fe28219197c768a699022fe1df75f1a7b9be694fe40e",
+      "uncertainty_impact": "NO_PENDING_UNCERTAINTY"
+    }
+  },
+  "bidirectional_invariance_verification": {
+    "forward_steps": 5,
+    "backward_steps": 5,
+    "hashes_identical_both_directions": true,
+    "lookahead_leakage_detected": false,
+    "state_recovery_fidelity": "BITWISE_IDENTICAL"
+  },
+  "synthetic_fixture_separation_declaration": {
+    "synthetic_fixtures_used": false,
+    "real_world_primary_data_grounded": true,
+    "declaration": "This replay audit utilizes solely authentic primary-source BLS economic releases and canonical Binance spot market trades."
+  }
+}

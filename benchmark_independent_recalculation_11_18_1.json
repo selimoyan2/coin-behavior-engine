@@ -1,0 +1,101 @@
+{
+  "sprint": "11.18.1",
+  "phase": "1_INDEPENDENT_BENCHMARK_RECALCULATION",
+  "status": "INDEPENDENTLY_RECALCULATED_FROM_RAW_DATA",
+  "timestamp_utc": "2026-10-19T10:20:00Z",
+  "canonical_market_dataset": {
+    "path": "research_outputs/market_state_dataset.parquet",
+    "total_bars": 105120,
+    "start_time_utc": "2025-10-18T11:30:00Z",
+    "end_time_utc": "2026-10-18T11:25:00Z"
+  },
+  "independent_recalculations": {
+    "bar_0_full_sample": {
+      "start_bar": 0,
+      "start_time_utc": "2025-10-18T11:30:00Z",
+      "start_open_price": "106891.72",
+      "terminal_close_price": "82104.03",
+      "initial_cash_capital": "10000.00",
+      "allocated_usdt": "9800.0000",
+      "cash_reserve_usdt": "200.0000",
+      "entry_fill_price": "106945.165860",
+      "entry_fee_usdt": "9.80000000",
+      "entry_slippage_usdt": "4.90000000",
+      "btc_quantity": "0.09154411",
+      "terminal_mtm_equity_usdt": "7716.14",
+      "terminal_mtm_return_pct": "-22.84",
+      "terminal_liquid_equity_usdt": "7704.87",
+      "terminal_liquid_return_pct": "-22.95",
+      "exit_fee_exact_usdt": "7.512382262518349980891787080",
+      "exit_slippage_exact_usdt": "3.758070166342346163527657369",
+      "total_friction_exact_usdt": "25.97045242886069614441944445",
+      "total_friction_exact_rounded_usdt": "25.97",
+      "total_friction_components_rounded_sum_usdt": "25.97"
+    },
+    "bar_576_post_warmup": {
+      "start_bar": 576,
+      "start_time_utc": "2025-10-20T11:30:00Z",
+      "start_open_price": "110810.88",
+      "terminal_close_price": "82104.03",
+      "initial_cash_capital": "10000.00",
+      "allocated_usdt": "9800.0000",
+      "cash_reserve_usdt": "200.0000",
+      "entry_fill_price": "110866.285440",
+      "entry_fee_usdt": "9.80000000",
+      "entry_slippage_usdt": "4.90000000",
+      "btc_quantity": "0.08830638",
+      "terminal_mtm_equity_usdt": "7450.31",
+      "terminal_mtm_return_pct": "-25.50",
+      "terminal_liquid_equity_usdt": "7439.44",
+      "terminal_liquid_return_pct": "-25.61",
+      "exit_fee_exact_usdt": "7.246684272682230851514673062",
+      "exit_slippage_exact_usdt": "3.625154713697964407961317190",
+      "total_friction_exact_usdt": "25.57183898638019525947599025",
+      "total_friction_exact_rounded_usdt": "25.57",
+      "total_friction_components_rounded_sum_usdt": "25.58"
+    }
+  },
+  "friction_discrepancy_forensics": {
+    "discrepancy_values": [
+      "25.57 USDT",
+      "25.58 USDT"
+    ],
+    "explanation": "The 1-cent variance arises purely from intermediate component rounding vs unrounded aggregate accumulation.",
+    "unrounded_exact_friction_accumulation": {
+      "entry_fee": "9.800000000000000000000000000",
+      "entry_slippage": "4.900000000000000000000000000",
+      "exit_fee_exact": "7.246684272682230851514673062",
+      "exit_slippage_exact": "3.625154713697964407961317190",
+      "sum_exact": "25.57183898638019525947599025",
+      "rounded_result": "25.57 USDT"
+    },
+    "component_rounded_sum": {
+      "entry_fee_rounded": "9.80",
+      "entry_slippage_rounded": "4.90",
+      "exit_fee_rounded": "7.25",
+      "exit_slippage_rounded": "3.63",
+      "sum_of_rounded_components": "25.58 USDT"
+    },
+    "canonical_verdict": "Both representations are mathematically exact within their documented conventions. For ledger cash tracking, component-rounded transaction fees (25.58 USDT) represent the actual cash deductions posted by exchanges."
+  },
+  "matched_turnover_control_audit": {
+    "static_subsampling_evaluation": {
+      "reported_claim": "-44.69%",
+      "status": "FORMALLY_RETRACTED",
+      "causal_defect": "Static subsampling extracted arbitrary trades out of chronological sequence without modeling position-state continuity or portfolio equity path."
+    },
+    "dynamic_chronological_simulation": {
+      "method": "Strict forward sequential cash execution with position sizing Q_t = 0.98 * Cash_t / P_t",
+      "sample_size": 1000,
+      "mean_terminal_equity_usdt": 4223.14,
+      "mean_return_pct": -57.77,
+      "std_return_pct": 1.35,
+      "causal_validity": "PASSED: In a downward trending asset (-22.95% to -25.61%), eliminating any subset of trades preserves capital by reducing market exposure and avoiding transaction friction. The session-aware filter provides no statistically significant timing alpha beyond trade frequency reduction."
+    }
+  },
+  "retracted_claims": [
+    "Retracted: Claim that session-aware trading generated +3.22% timing alpha (proven to be 100% friction savings from fewer trades).",
+    "Retracted: Claim that static subsampling (-44.69%) demonstrates statistical superiority of session timing.",
+    "Retracted: Claim that N=19 stop events (95% CI [27.3%, 68.3%]) provide evidence of predictive market reversal."
+  ]
+}

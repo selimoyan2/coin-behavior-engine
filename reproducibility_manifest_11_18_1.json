@@ -1,0 +1,56 @@
+{
+  "sprint": "11.18.1",
+  "timestamp_utc": "2026-10-19T10:25:00Z",
+  "base_commit": "88542c52b0c98369bd64c7393740c06d7042d7ff",
+  "git_branch": "main",
+  "execution_mode": "STRICTLY_OFFLINE_RESEARCH",
+  "trading_scope": "SPOT_BTC_USDT_LONG_ONLY",
+  "artifacts": {
+    "research_outputs/benchmark_independent_recalculation_11_18_1.json": {
+      "size_bytes": 4861,
+      "sha256": "208fc1220f5599f39ba9a9b4f0b7345c498200a0b28a852d6609002e68549dda"
+    },
+    "research_outputs/binance_monthly_coverage_11_18_1.json": {
+      "size_bytes": 40465,
+      "sha256": "52ee2b4a2ed757c9a28f3cc9feb3a9b8c805bc5ba3cead2ad77b8339a7babdb1"
+    },
+    "research_outputs/real_historical_event_inventory_11_18_1.json": {
+      "size_bytes": 7517,
+      "sha256": "c89017830b8d9623bd4285bbe6d7ba2e682c161251495e223c348f621f2969f8"
+    },
+    "research_outputs/real_event_replay_audit_11_18_1.json": {
+      "size_bytes": 10135,
+      "sha256": "0d32f94733a1c3b4c3a072774e9960d06424a6fd8d63b6903ab85fc2ec108025"
+    },
+    "research_outputs/research_report_11_18_1.md": {
+      "size_bytes": 14878,
+      "sha256": "01ae2ebf869422c6406a772a1152b666dd01d70bf1ac2d8363b8bee279eb8fe1"
+    },
+    "tests/test_sprint11_18_1_data_integrity.py": {
+      "size_bytes": 11632,
+      "sha256": "92b1d9e80c3a8b59024fd7ff53ed9f5802ddb535c234dec1457c8c782a2fcede"
+    },
+    "src/coin_behavior_engine/research/historical_replay.py": {
+      "size_bytes": 13383,
+      "sha256": "8dd90684aafdbbcb7c946ea0374e31f1e12318c74d3a0a11d4ef52d4f4f27745"
+    }
+  },
+  "acceptance_gates": {
+    "BENCHMARK_INDEPENDENTLY_VERIFIED": "YES",
+    "MULTI_YEAR_COVERAGE_INVENTORIED": "YES",
+    "REAL_HISTORICAL_EVENTS_VERIFIED": 3,
+    "REAL_EVENT_CAUSAL_REPLAY": "PASS",
+    "LOOKAHEAD_ISOLATION": "PASS",
+    "RESEARCH_CONTAMINATION": "PRESERVED",
+    "PROSPECTIVE_OBSERVATION": "NOT_STARTED",
+    "LIVE_TRADING": "PROHIBITED",
+    "OPERATOR_AUTHORIZATION": "NOT_GRANTED",
+    "SPRINT_STATUS": "PASS"
+  },
+  "verification_suite": {
+    "test_file": "tests/test_sprint11_18_1_data_integrity.py",
+    "tests_passed": 9,
+    "tests_failed": 0,
+    "total_sprint_regression_tests_passed": 36
+  }
+}
