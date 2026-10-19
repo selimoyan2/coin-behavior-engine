@@ -1,0 +1,26 @@
+{
+  "sprint": "11.23.3",
+  "phase": "4_IMMUTABLE_EVIDENCE_VAULT_INTEGRITY",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T23:50:00Z",
+  "vault_root": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\data\\prospective",
+  "trust_model": "LOCAL_CONTENT_ADDRESSED_APPEND_ONLY_JOURNAL",
+  "schema_version": "1.0.0",
+  "total_objects_scanned": 1,
+  "total_verified": 1,
+  "total_corrupt": 0,
+  "journal_entries": 1,
+  "manifest": {
+    "schema_version": "1.0.0",
+    "exported_at_utc": "2026-10-19T13:48:42Z",
+    "vault_status": "HEALTHY",
+    "total_artifacts": 1,
+    "artifacts": {
+      "schedules/a2b595cf5719c205416798efee34b9336a95e79eaf9a712bf33d25627741f7d3.json": {
+        "sha256": "a2b595cf5719c205416798efee34b9336a95e79eaf9a712bf33d25627741f7d3",
+        "byte_size": 6085,
+        "category": "schedules"
+      }
+    }
+  }
+}

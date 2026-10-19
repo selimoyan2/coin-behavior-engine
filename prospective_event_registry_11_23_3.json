@@ -1,0 +1,160 @@
+[
+  {
+    "event_id": "PRSP-BLS-CPI-20261112",
+    "event_category": "US_INFLATION",
+    "indicator": "CPI_YOY",
+    "issuing_organization": "Bureau of Labor Statistics",
+    "official_source_url": "https://www.bls.gov/news.release/cpi.nr0.htm",
+    "scheduled_publication_at_utc": "2026-11-12T13:30:00Z",
+    "schedule_verification_at_utc": "2026-10-19T20:00:00Z",
+    "original_timezone": "America/New_York",
+    "event_status": "SCHEDULE_VERIFIED",
+    "timestamp_uncertainty_seconds": 30.0,
+    "source_evidence_ref": null,
+    "last_update_utc": "2026-10-19T13:48:42.884405+00:00",
+    "revision_history": [
+      {
+        "revision_id": "REV-INIT",
+        "timestamp_utc": "2026-10-19T13:48:42.884405+00:00",
+        "field_changed": "INIT",
+        "old_value": null,
+        "new_value": "2026-11-12T13:30:00Z",
+        "reason": "Initial authoritative schedule registration"
+      }
+    ],
+    "directional_trading_eligible": false
+  },
+  {
+    "event_id": "PRSP-BLS-NFP-20261106",
+    "event_category": "US_LABOR",
+    "indicator": "NONFARM_PAYROLLS",
+    "issuing_organization": "Bureau of Labor Statistics",
+    "official_source_url": "https://www.bls.gov/news.release/empsit.nr0.htm",
+    "scheduled_publication_at_utc": "2026-11-06T13:30:00Z",
+    "schedule_verification_at_utc": "2026-10-19T20:00:00Z",
+    "original_timezone": "America/New_York",
+    "event_status": "SCHEDULE_VERIFIED",
+    "timestamp_uncertainty_seconds": 30.0,
+    "source_evidence_ref": null,
+    "last_update_utc": "2026-10-19T13:48:42.884405+00:00",
+    "revision_history": [
+      {
+        "revision_id": "REV-INIT",
+        "timestamp_utc": "2026-10-19T13:48:42.884405+00:00",
+        "field_changed": "INIT",
+        "old_value": null,
+        "new_value": "2026-11-06T13:30:00Z",
+        "reason": "Initial authoritative schedule registration"
+      }
+    ],
+    "directional_trading_eligible": false
+  },
+  {
+    "event_id": "PRSP-BEA-PCE-20261125",
+    "event_category": "US_INFLATION",
+    "indicator": "PCE_CORE_YOY",
+    "issuing_organization": "Bureau of Economic Analysis",
+    "official_source_url": "https://www.bea.gov/data/personal-consumption-expenditures-price-index",
+    "scheduled_publication_at_utc": "2026-11-25T13:30:00Z",
+    "schedule_verification_at_utc": "2026-10-19T20:00:00Z",
+    "original_timezone": "America/New_York",
+    "event_status": "SCHEDULE_VERIFIED",
+    "timestamp_uncertainty_seconds": 30.0,
+    "source_evidence_ref": null,
+    "last_update_utc": "2026-10-19T13:48:42.884405+00:00",
+    "revision_history": [
+      {
+        "revision_id": "REV-INIT",
+        "timestamp_utc": "2026-10-19T13:48:42.884405+00:00",
+        "field_changed": "INIT",
+        "old_value": null,
+        "new_value": "2026-11-25T13:30:00Z",
+        "reason": "Initial authoritative schedule registration"
+      }
+    ],
+    "directional_trading_eligible": false
+  },
+  {
+    "event_id": "PRSP-BEA-GDP-20261125",
+    "event_category": "US_GROWTH",
+    "indicator": "GDP_ANNUALIZED",
+    "issuing_organization": "Bureau of Economic Analysis",
+    "official_source_url": "https://www.bea.gov/data/gdp/gross-domestic-product",
+    "scheduled_publication_at_utc": "2026-11-25T13:30:00Z",
+    "schedule_verification_at_utc": "2026-10-19T20:00:00Z",
+    "original_timezone": "America/New_York",
+    "event_status": "SCHEDULE_VERIFIED",
+    "timestamp_uncertainty_seconds": 30.0,
+    "source_evidence_ref": null,
+    "last_update_utc": "2026-10-19T13:48:42.884405+00:00",
+    "revision_history": [
+      {
+        "revision_id": "REV-INIT",
+        "timestamp_utc": "2026-10-19T13:48:42.884405+00:00",
+        "field_changed": "INIT",
+        "old_value": null,
+        "new_value": "2026-11-25T13:30:00Z",
+        "reason": "Initial authoritative schedule registration"
+      }
+    ],
+    "directional_trading_eligible": false
+  },
+  {
+    "event_id": "PRSP-FED-FOMC-20261104",
+    "event_category": "US_MONETARY_POLICY",
+    "indicator": "FOMC_RATE_DECISION",
+    "issuing_organization": "Federal Reserve Board",
+    "official_source_url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261104a.htm",
+    "scheduled_publication_at_utc": "2026-11-04T19:00:00Z",
+    "schedule_verification_at_utc": "2026-10-19T21:00:00Z",
+    "original_timezone": "America/New_York",
+    "event_status": "SCHEDULE_VERIFIED",
+    "timestamp_uncertainty_seconds": 45.0,
+    "source_evidence_ref": null,
+    "last_update_utc": "2026-10-19T13:48:42.884405+00:00",
+    "revision_history": [
+      {
+        "revision_id": "REV-INIT",
+        "timestamp_utc": "2026-10-19T13:48:42.884405+00:00",
+        "field_changed": "INIT",
+        "old_value": null,
+        "new_value": "2026-11-04T19:00:00Z",
+        "reason": "Initial authoritative schedule registration"
+      },
+      {
+        "revision_id": "REV-002",
+        "timestamp_utc": "2026-10-19T21:00:00Z",
+        "field_changed": "scheduled_publication_at_utc",
+        "old_value": "2026-11-04T19:00:00Z",
+        "new_value": "2026-11-04T19:00:00Z",
+        "reason": "Routine schedule audit confirmation"
+      }
+    ],
+    "directional_trading_eligible": false
+  },
+  {
+    "event_id": "PRSP-CRYPTO-ETH-UPGRADE-2026",
+    "event_category": "CRYPTO_PROTOCOL",
+    "indicator": "ETH_NETWORK_UPGRADE",
+    "issuing_organization": "Ethereum Core Developers",
+    "official_source_url": "https://github.com/ethereum/execution-specs",
+    "scheduled_publication_at_utc": "2026-11-15T12:00:00Z",
+    "schedule_verification_at_utc": "2026-10-19T20:00:00Z",
+    "original_timezone": "UTC",
+    "event_status": "SCHEDULE_VERIFIED",
+    "timestamp_uncertainty_seconds": 12.0,
+    "source_evidence_ref": null,
+    "last_update_utc": "2026-10-19T13:48:42.884405+00:00",
+    "revision_history": [
+      {
+        "revision_id": "REV-INIT",
+        "timestamp_utc": "2026-10-19T13:48:42.884405+00:00",
+        "field_changed": "INIT",
+        "old_value": null,
+        "new_value": "2026-11-15T12:00:00Z",
+        "reason": "Initial authoritative schedule registration"
+      }
+    ],
+    "directional_trading_eligible": false
+  }
+]

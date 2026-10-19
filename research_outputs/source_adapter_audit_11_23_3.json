@@ -1,0 +1,85 @@
+{
+  "sprint": "11.23.3",
+  "phase": "2_SOURCE_ADAPTER_ARCHITECTURE",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T23:50:00Z",
+  "adapters_evaluated": [
+    {
+      "name": "BLSSourceAdapter",
+      "organization": "Bureau of Labor Statistics",
+      "base_url": "https://www.bls.gov",
+      "allowed_content_types": [
+        "application/pdf",
+        "text/html",
+        "text/plain"
+      ],
+      "target_indicators": [
+        "CPI_YOY",
+        "NONFARM_PAYROLLS",
+        "UNEMPLOYMENT_RATE"
+      ],
+      "failure_handling": "EXPLICIT_CLASSIFICATION_AND_BACKOFF"
+    },
+    {
+      "name": "BEASourceAdapter",
+      "organization": "Bureau of Economic Analysis",
+      "base_url": "https://www.bea.gov",
+      "allowed_content_types": [
+        "application/pdf",
+        "text/html",
+        "application/json"
+      ],
+      "target_indicators": [
+        "GDP_ANNUALIZED",
+        "PCE_CORE_YOY"
+      ],
+      "failure_handling": "EXPLICIT_CLASSIFICATION_AND_BACKOFF"
+    },
+    {
+      "name": "FederalReserveSourceAdapter",
+      "organization": "Federal Reserve Board",
+      "base_url": "https://www.federalreserve.gov",
+      "allowed_content_types": [
+        "text/html",
+        "application/pdf"
+      ],
+      "target_indicators": [
+        "FOMC_RATE_DECISION"
+      ],
+      "failure_handling": "EXPLICIT_CLASSIFICATION_AND_BACKOFF"
+    },
+    {
+      "name": "CryptoProtocolAdapter",
+      "organization": "Consensus Specifications & On-Chain Milestones",
+      "base_url": "https://mempool.space",
+      "allowed_content_types": [
+        "application/json",
+        "text/plain"
+      ],
+      "target_indicators": [
+        "ETH_NETWORK_UPGRADE",
+        "BTC_CONSENSUS"
+      ],
+      "failure_handling": "EXPLICIT_CLASSIFICATION_AND_BACKOFF"
+    },
+    {
+      "name": "ConsensusProviderAdapter",
+      "organization": "Approved Contemporaneous Survey Providers",
+      "base_url": "https://consensus-provider.internal",
+      "allowed_content_types": [
+        "application/json"
+      ],
+      "target_indicators": [
+        "CONTEMPORANEOUS_SURVEY_CONSENSUS"
+      ],
+      "failure_handling": "EXPLICIT_CLASSIFICATION_AND_BACKOFF"
+    }
+  ],
+  "adapter_governance_rules": {
+    "captcha_bypass": "PROHIBITED",
+    "proxy_rotation_evasion": "PROHIBITED",
+    "unattended_production_polling": "DISABLED",
+    "silent_fallback_to_secondary": "PROHIBITED",
+    "transparent_failure_recording": "ENFORCED"
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "sprint": "11.23.3",
+  "phase": "0_BASELINE_VERIFICATION_AND_FREEZE",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T23:45:00Z",
+  "base_commit_full": "61abe1aec748efcbcef6c1a84cd8f50e145a2352",
+  "base_commit_short": "61abe1a",
+  "clean_working_tree_at_start": false,
+  "environment": {
+    "python_version": "3.11.16 (main, Aug 25 2026, 13:59:19) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "processor": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "packages": {
+      "pandas": "3.0.6",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "pytest": "9.1.1"
+    }
+  },
+  "mismatches": [],
+  "frozen_artifacts_count": 11,
+  "frozen_artifacts": {
+    "sprint11_23_1_source_freeze_11_23_2.json": {
+      "path": "research_outputs/sprint11_23_1_source_freeze_11_23_2.json",
+      "sha256": "fd343c93a7ac82813adb48f09bc3080fdabddb43f4b3eec6befe73eaeee878db",
+      "size_bytes": 10154,
+      "mirror_identical": true,
+      "matches_11_23_2_manifest": true
+    },
+    "canonical_event_verification_11_23_2.parquet": {
+      "path": "research_outputs/canonical_event_verification_11_23_2.parquet",
+      "sha256": "6b71563af63119edeea955f5fca60927bac551534ede72a9f61b72cea6226aeb",
+      "size_bytes": 28838,
+      "mirror_identical": true,
+      "matches_11_23_2_manifest": true,
+      "rows": 237,
+      "columns": 21,
+      "column_names": [
+        "event_id",
+        "event_category",
+        "event_name",
+        "blockchain_block_hash",
+        "blockchain_block_height",
+        "source_document_path",
+        "source_document_sha256",
+        "source_document_bytes_verified",
+        "source_document_status",
+        "scheduled_release_at_utc",
+        "official_published_at_utc",
+        "first_verified_public_at_utc",
+        "research_available_at_utc",
+        "publication_timestamp_uncertainty_seconds",
+        "actual_value",
+        "consensus_forecast_value",
+        "consensus_vintage_verified",
+        "consensus_status",
+        "canonical_verification_status",
+        "quarantine_reason",
+        "directional_trading_eligible"
+      ]
+    },
+    "event_source_evidence_11_23_2.parquet": {
+      "path": "research_outputs/event_source_evidence_11_23_2.parquet",
+      "sha256": "aab190cf965a59a2fbd12bccc1f4dffb2e0a4f7d3d9629c98979bca6eb039f65",
+      "size_bytes": 32571,
+      "mirror_identical": true,
+      "matches_11_23_2_manifest": true,
+      "rows": 237,
+      "columns": 22,
+      "column_names": [
+        "event_id",
+        "event_category",
+        "event_name",
+        "primary_source_url",
+        "blockchain_block_hash",
+        "blockchain_block_height",
+        "source_document_path",
+        "source_document_sha256",
+        "source_document_bytes_verified",
+        "source_document_status",
+        "scheduled_release_at_utc",
+        "official_published_at_utc",
+        "first_verified_public_at_utc",
+        "research_available_at_utc",
+        "publication_timestamp_uncertainty_seconds",
+        "actual_value",
+        "consensus_forecast_value",
+        "consensus_vintage_verified",
+        "consensus_status",
+        "canonical_verification_status",
+        "quarantine_reason",
+        "directional_trading_eligible"
+      ]
+    },
+    "causal_event_eligibility_11_23_2.parquet": {
+      "path": "research_outputs/causal_event_eligibility_11_23_2.parquet",
+      "sha256": "04ab2aeaadbabe87917fb3b710c0c0e1bb13ec0e345b9f8169e99d5c37974589",
+      "size_bytes": 24633,
+      "mirror_identical": true,
+      "matches_11_23_2_manifest": true,
+      "rows": 237,
+      "columns": 16,
+      "column_names": [
+        "event_id",
+        "event_category",
+        "event_name",
+        "canonical_verification_status",
+        "quarantine_reason",
+        "schedule_conditioning_eligible",
+        "post_publication_execution_eligible",
+        "directional_trading_eligible",
+        "official_published_at_utc",
+        "research_available_at_utc",
+        "publication_timestamp_uncertainty_seconds",
+        "safe_access_time_utc",
+        "safe_candle_idx",
+        "safe_candle_open_utc",
+        "intra_candle_close_leakage",
+        "candle_open_after_safe_time"
+      ]
+    },
+    "verified_event_reaction_ledger_11_23_2.parquet": {
+      "path": "research_outputs/verified_event_reaction_ledger_11_23_2.parquet",
+      "sha256": "ab69aca8efcfb6d70794bd4687f00ce08737697f39568423dfe55f63c2eec033",
+      "size_bytes": 49376,
+      "mirror_identical": true,
+      "matches_11_23_2_manifest": true,
+      "rows": 236,
+      "columns": 20,
+      "column_names": [
+        "event_id",
+        "event_category",
+        "event_name",
+        "safe_candle_idx",
+        "safe_candle_open_utc",
+        "exec_open_price",
+        "ret_pre_15m_pct",
+        "ret_pre_1h_pct",
+        "ret_post_15m_pct",
+        "abs_ret_15m_pct",
+        "ret_post_1h_pct",
+        "ret_post_24h_pct",
+        "abs_ret_24h_pct",
+        "mfe_24h_pct",
+        "mae_24h_pct",
+        "realized_vol_24h",
+        "relative_volume_1h",
+        "continuation_24h",
+        "matched_control_abs_15m_pct",
+        "matched_control_datetime"
+      ]
+    },
+    "matched_event_controls_11_23_2.parquet": {
+      "path": "research_outputs/matched_event_controls_11_23_2.parquet",
+      "sha256": "aec487c578c6709a95103be5ec57e051192d62660518a56ea42a17ce4fb6f436",
+      "size_bytes": 17191,
+      "mirror_identical": true,
+      "matches_11_23_2_manifest": true,
+      "rows": 231,
+      "columns": 8,
+      "column_names": [
+        "event_id",
+        "event_category",
+        "matched_control_candle_idx",
+        "matched_weeks_prior",
+        "control_abs_ret_15m_pct",
+        "control_abs_ret_1h_pct",
+        "control_realized_vol_24h_pct",
+        "volatility_match_distance"
+      ]
+    },
+    "evidence_integrity_audit_11_23_2.json": {
+      "path": "research_outputs/evidence_integrity_audit_11_23_2.json",
+      "sha256": "5b1939fe4167eeff793e17f31df0346474f2cde2f7eec4655f01e9bf6042ba70",
+      "size_bytes": 1682,
+      "mirror_identical": true,
+      "matches_11_23_2_manifest": true
+    },
+    "causal_safety_audit_11_23_2.json": {
+      "path": "research_outputs/causal_safety_audit_11_23_2.json",
+      "sha256": "2cec58aa7b226b839a0ac1881d11a4e33393bc357d18d126735f2c88aa95ea49",
+      "size_bytes": 1142,
+      "mirror_identical": true,
+      "matches_11_23_2_manifest": true
+    },
+    "statistical_revalidation_11_23_2.json": {
+      "path": "research_outputs/statistical_revalidation_11_23_2.json",
+      "sha256": "3e34d0deefd1cddc1bb0473f4e64c45603acdeb9c39b9db4af05ac26948585ca",
+      "size_bytes": 9442,
+      "mirror_identical": true,
+      "matches_11_23_2_manifest": true
+    },
+    "research_report_11_23_2.md": {
+      "path": "research_outputs/research_report_11_23_2.md",
+      "sha256": "26e9c32dc5de906b2b127acc8cb7be7034605aaaba701111f6fbf3f8103e3662",
+      "size_bytes": 10390,
+      "mirror_identical": true,
+      "matches_11_23_2_manifest": true
+    },
+    "reproducibility_manifest_11_23_2.json": {
+      "path": "research_outputs/reproducibility_manifest_11_23_2.json",
+      "sha256": "a449f042241e815f9a3eb4f093266de358603ede0f2a398cf513903a3ed6c7f2",
+      "size_bytes": 2589,
+      "mirror_identical": true,
+      "matches_11_23_2_manifest": true
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "sprint": "11.23.3",
+  "phase": "5_MARKET_OBSERVATION_READINESS",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T23:50:00Z",
+  "supported_timeframes": [
+    "1m",
+    "5m"
+  ],
+  "candle_validation_rules": [
+    "High >= max(Open, Close, Low)",
+    "Low <= min(Open, Close, High)",
+    "Volume >= 0",
+    "Finite numerical values",
+    "Deterministic timestamp deduplication",
+    "Missing interval gap detection"
+  ],
+  "observation_windows": [
+    "-60m",
+    "+15m",
+    "+1h",
+    "+4h",
+    "+24h"
+  ],
+  "trading_isolation": {
+    "directional_trading_signals_generated": false,
+    "portfolio_allocation_authorized": false,
+    "private_credentials_required": false
+  },
+  "sample_observation_report": {
+    "status": "MOCKED_PASS",
+    "directional_trading_signal": "NONE_PROHIBITED",
+    "portfolio_allocation_authorized": false
+  }
+}
