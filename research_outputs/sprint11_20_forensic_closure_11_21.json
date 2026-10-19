@@ -1,0 +1,189 @@
+{
+  "sprint": "11.21",
+  "phase": "0_SPRINT_11_20_FORENSIC_CLOSURE",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T15:30:00Z",
+  "mandatory_reclassifications": {
+    "ANALOG_FILTER_VALUE": "NOT_SUPPORTED",
+    "ANALOG_FILTER_RECLASSIFICATION_REASON": "Analog-informed strategy (-4.01% net return) underperformed its true matched-turnover control (mean: -1.26%, median: -1.75%) and matched-exposure control (mean: 1.72%). Mere trade count reduction (99 to 7) does not establish economic value when the remaining trades exhibit negative alpha over matched random timing."
+  },
+  "matched_turnover_control_distribution": {
+    "evaluation_window_bars": 50001,
+    "evaluation_window_days": 173.6,
+    "matched_trade_count": 7,
+    "capital_allocation_pct": 98.0,
+    "fee_rate_bps": 10.0,
+    "slippage_rate_bps": 5.0,
+    "nominal_roundtrip_friction_bps": 30.0,
+    "monte_carlo_seeds_count": 20,
+    "return_distribution_pct": {
+      "mean": -1.26,
+      "median": -1.75,
+      "min": -10.14,
+      "max": 8.33,
+      "std": 4.96
+    },
+    "analog_strategy_net_return_pct": -4.01,
+    "alpha_over_matched_turnover_mean_pct": -2.75,
+    "seed_results": [
+      {
+        "seed": 42,
+        "return_pct": -2.34,
+        "final_equity_usdt": 9765.64,
+        "friction_usdt": 202.81
+      },
+      {
+        "seed": 43,
+        "return_pct": -4.72,
+        "final_equity_usdt": 9527.54,
+        "friction_usdt": 199.69
+      },
+      {
+        "seed": 44,
+        "return_pct": -5.21,
+        "final_equity_usdt": 9478.87,
+        "friction_usdt": 200.66
+      },
+      {
+        "seed": 45,
+        "return_pct": 7.95,
+        "final_equity_usdt": 10795.13,
+        "friction_usdt": 221.64
+      },
+      {
+        "seed": 46,
+        "return_pct": -4.11,
+        "final_equity_usdt": 9588.83,
+        "friction_usdt": 203.97
+      },
+      {
+        "seed": 47,
+        "return_pct": -5.58,
+        "final_equity_usdt": 9442.27,
+        "friction_usdt": 199.75
+      },
+      {
+        "seed": 48,
+        "return_pct": -5.39,
+        "final_equity_usdt": 9461.19,
+        "friction_usdt": 199.0
+      },
+      {
+        "seed": 49,
+        "return_pct": -0.48,
+        "final_equity_usdt": 9951.62,
+        "friction_usdt": 205.94
+      },
+      {
+        "seed": 50,
+        "return_pct": 7.49,
+        "final_equity_usdt": 10749.3,
+        "friction_usdt": 217.16
+      },
+      {
+        "seed": 51,
+        "return_pct": 4.34,
+        "final_equity_usdt": 10434.07,
+        "friction_usdt": 215.29
+      },
+      {
+        "seed": 52,
+        "return_pct": 1.62,
+        "final_equity_usdt": 10162.4,
+        "friction_usdt": 209.75
+      },
+      {
+        "seed": 53,
+        "return_pct": -1.16,
+        "final_equity_usdt": 9883.99,
+        "friction_usdt": 205.02
+      },
+      {
+        "seed": 54,
+        "return_pct": -10.14,
+        "final_equity_usdt": 8986.29,
+        "friction_usdt": 201.6
+      },
+      {
+        "seed": 55,
+        "return_pct": -1.14,
+        "final_equity_usdt": 9885.82,
+        "friction_usdt": 202.94
+      },
+      {
+        "seed": 56,
+        "return_pct": -6.27,
+        "final_equity_usdt": 9372.84,
+        "friction_usdt": 200.6
+      },
+      {
+        "seed": 57,
+        "return_pct": 8.33,
+        "final_equity_usdt": 10832.65,
+        "friction_usdt": 212.18
+      },
+      {
+        "seed": 58,
+        "return_pct": 0.66,
+        "final_equity_usdt": 10065.53,
+        "friction_usdt": 207.52
+      },
+      {
+        "seed": 59,
+        "return_pct": -0.45,
+        "final_equity_usdt": 9955.28,
+        "friction_usdt": 206.87
+      },
+      {
+        "seed": 60,
+        "return_pct": -4.68,
+        "final_equity_usdt": 9532.22,
+        "friction_usdt": 212.97
+      },
+      {
+        "seed": 61,
+        "return_pct": -3.83,
+        "final_equity_usdt": 9617.37,
+        "friction_usdt": 200.44
+      }
+    ]
+  },
+  "matched_exposure_control_distribution": {
+    "total_analog_holding_bars": 1513,
+    "time_in_market_pct": 3.03,
+    "monte_carlo_seeds_count": 20,
+    "return_distribution_pct": {
+      "mean": 1.72,
+      "median": 1.03,
+      "min": -11.37,
+      "max": 13.18
+    },
+    "analog_strategy_net_return_pct": -4.01,
+    "alpha_over_matched_exposure_mean_pct": -5.73
+  },
+  "transaction_cost_model_audit": {
+    "entry_fee_bps": 10.0,
+    "entry_slippage_bps": 5.0,
+    "exit_fee_bps": 10.0,
+    "exit_slippage_bps": 5.0,
+    "one_way_friction_bps": 15.0,
+    "nominal_round_trip_friction_bps": 30.0,
+    "clarification_note": "Prior sprint documentation referencing '15 bps friction' referred to one-way execution drag (10 bps fee + 5 bps slippage). Total round-trip execution cost is nominal 30 bps (15 bps on buy + 15 bps on sell). The calculation in code has always applied 15 bps on entry and 15 bps on exit symmetrically.",
+    "accounting_conservation_verified": true
+  },
+  "abstention_threshold_reconciliation": {
+    "base_similarity_threshold": 0.4,
+    "strict_evaluated_threshold": 0.5,
+    "reconciliation_explanation": "In Sprint 11.19, the default similarity threshold was 0.40 but no multi-criteria filter existed, resulting in 0% abstention. In Sprint 11.20, both an elevated 0.50 threshold and a principled multi-criteria filter (regime confidence, Kish ESS, dispersion) were implemented, lifting the abstention rate to 67.50%.",
+    "total_predictions": 8000,
+    "accepted_predictions": 2600,
+    "abstained_predictions": 5400,
+    "abstention_rate_pct": 67.5,
+    "accepted_subset_skill": {
+      "analog_brier": 0.2671,
+      "unconditional_ref_brier": 0.2495,
+      "brier_skill_score": -0.0707,
+      "skill_verdict": "NOT_SUPPORTED"
+    }
+  }
+}

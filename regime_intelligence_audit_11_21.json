@@ -1,0 +1,109 @@
+{
+  "sprint": "11.21",
+  "phase": "1_CAUSAL_MARKET_REGIME_INTELLIGENCE",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T15:40:00Z",
+  "regime_classification": "PASS",
+  "regime_predictive_value": "NOT_SUPPORTED",
+  "summary": {
+    "total_sampled_moments": 41543,
+    "step_bars": 12,
+    "step_hours": 1.0,
+    "regime_distribution_pct": {
+      "TREND_UP": 9.23,
+      "TREND_DOWN": 7.44,
+      "RANGE": 14.49,
+      "HIGH_VOLATILITY": 4.97,
+      "TRANSITION": 0.4,
+      "UNCERTAIN": 63.47
+    },
+    "regime_persistence": {
+      "TREND_UP": {
+        "total_episodes": 859,
+        "mean_duration_bars": 53.6,
+        "mean_duration_hours": 4.46,
+        "max_duration_hours": 31.0
+      },
+      "TREND_DOWN": {
+        "total_episodes": 757,
+        "mean_duration_bars": 49.0,
+        "mean_duration_hours": 4.08,
+        "max_duration_hours": 29.0
+      },
+      "RANGE": {
+        "total_episodes": 2904,
+        "mean_duration_bars": 24.9,
+        "mean_duration_hours": 2.07,
+        "max_duration_hours": 12.0
+      },
+      "HIGH_VOLATILITY": {
+        "total_episodes": 116,
+        "mean_duration_bars": 213.5,
+        "mean_duration_hours": 17.79,
+        "max_duration_hours": 118.0
+      },
+      "TRANSITION": {
+        "total_episodes": 140,
+        "mean_duration_bars": 14.2,
+        "mean_duration_hours": 1.19,
+        "max_duration_hours": 5.0
+      },
+      "UNCERTAIN": {
+        "total_episodes": 4262,
+        "mean_duration_bars": 74.2,
+        "mean_duration_hours": 6.19,
+        "max_duration_hours": 66.0
+      }
+    },
+    "transition_matrix": {
+      "TREND_UP": {
+        "TREND_UP": 0.776,
+        "TREND_DOWN": 0.0,
+        "RANGE": 0.0232,
+        "HIGH_VOLATILITY": 0.0065,
+        "TRANSITION": 0.0089,
+        "UNCERTAIN": 0.1854
+      },
+      "TREND_DOWN": {
+        "TREND_UP": 0.0,
+        "TREND_DOWN": 0.7551,
+        "RANGE": 0.023,
+        "HIGH_VOLATILITY": 0.0094,
+        "TRANSITION": 0.0142,
+        "UNCERTAIN": 0.1983
+      },
+      "RANGE": {
+        "TREND_UP": 0.0128,
+        "TREND_DOWN": 0.0101,
+        "RANGE": 0.5176,
+        "HIGH_VOLATILITY": 0.0,
+        "TRANSITION": 0.0003,
+        "UNCERTAIN": 0.4591
+      },
+      "HIGH_VOLATILITY": {
+        "TREND_UP": 0.0092,
+        "TREND_DOWN": 0.0053,
+        "RANGE": 0.0005,
+        "HIGH_VOLATILITY": 0.9438,
+        "TRANSITION": 0.0015,
+        "UNCERTAIN": 0.0397
+      },
+      "TRANSITION": {
+        "TREND_UP": 0.1386,
+        "TREND_DOWN": 0.1084,
+        "RANGE": 0.0241,
+        "HIGH_VOLATILITY": 0.0241,
+        "TRANSITION": 0.1566,
+        "UNCERTAIN": 0.5482
+      },
+      "UNCERTAIN": {
+        "TREND_UP": 0.0281,
+        "TREND_DOWN": 0.0253,
+        "RANGE": 0.1039,
+        "HIGH_VOLATILITY": 0.0022,
+        "TRANSITION": 0.0022,
+        "UNCERTAIN": 0.8384
+      }
+    }
+  }
+}

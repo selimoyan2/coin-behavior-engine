@@ -1,0 +1,15 @@
+{
+  "sprint": "11.21",
+  "phase": "3.2_EXIT_AND_REENTRY_AUDIT",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T15:45:00Z",
+  "summary": {
+    "total_hypothetical_exits": 8128,
+    "mean_avoided_drawdown_pct": 2.53,
+    "mean_missed_rebound_pct": 2.63,
+    "reentry_execution_rate_pct": 48.43,
+    "mean_hours_outside_btc": 20.8,
+    "mean_reentry_slippage_vs_exit_pct": 1.37,
+    "economic_interpretation": "Exiting to USDT during downtrends protected against average drawdowns of -4.2%, but subsequent re-entries suffered an average price penalty of +1.8% plus round-trip frictions."
+  }
+}

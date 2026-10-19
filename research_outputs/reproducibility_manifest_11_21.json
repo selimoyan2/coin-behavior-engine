@@ -1,0 +1,72 @@
+{
+  "sprint": "11.21",
+  "phase": "7_REPRODUCIBILITY_MANIFEST",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T15:58:00Z",
+  "artifacts": {
+    "scripts/forensic_closure_11_20_in_11_21.py": {
+      "sha256": "e5d56c71078b9b27bd247f984339047afc693112c6de9eb73bd64faf02a01bd5",
+      "size_bytes": 12633
+    },
+    "scripts/run_sprint11_21_master_audit.py": {
+      "sha256": "fe1113c0aa669b048a4a9f21bcc263d8da778aae9a3224d6fbc3a1d0731cce77",
+      "size_bytes": 12170
+    },
+    "src/coin_behavior_engine/regimes/causal_regime_engine.py": {
+      "sha256": "75f1d198020cb7be6f1b4d3e5c039130939452d61613ae1e92caf1a2416dc735",
+      "size_bytes": 16097
+    },
+    "src/coin_behavior_engine/regimes/patient_decision_engine.py": {
+      "sha256": "03a0414446c2f9bc845a17accacd9ef5bc52daea3e0e327c7a0637f88399294f",
+      "size_bytes": 17286
+    },
+    "src/coin_behavior_engine/regimes/portfolio_replay.py": {
+      "sha256": "410a4d56c0f0a89f686b84e74252d9da9164ab51312161c56bbf3734b782646d",
+      "size_bytes": 13660
+    },
+    "tests/test_sprint11_21_regime_and_patient_decision.py": {
+      "sha256": "2850b89c2c9dc6cd62420b4bb4a43a47ccb04b83533f84ffcc78c43ac9404dbb",
+      "size_bytes": 9477
+    },
+    "research_outputs/sprint11_20_forensic_closure_11_21.json": {
+      "sha256": "f662f7b047c818c6225a4296b2632fd8437517d654cd28fdd9ee3e63d286e62c",
+      "size_bytes": 5845
+    },
+    "research_outputs/regime_intelligence_audit_11_21.json": {
+      "sha256": "a8039040566d512af54ac21d0210b777aed0ebbb9d00d927e778a2fff96d782c",
+      "size_bytes": 2933
+    },
+    "research_outputs/regime_transition_matrix_11_21.json": {
+      "sha256": "04c0969d6ef5b10ee0a9c4b0f93ed0c1a419edeb369c45bcca36ee3a87534db1",
+      "size_bytes": 2498
+    },
+    "research_outputs/opportunity_cost_audit_11_21.json": {
+      "sha256": "e18fdd8ff8b67ba4b2b10c9f9cdbf0e82ad25be09c4f02485c5ea6cf4f11c296",
+      "size_bytes": 3497
+    },
+    "research_outputs/exit_reentry_audit_11_21.json": {
+      "sha256": "3880ca1127aa1de706936810c3c3f4cc29b42e705143b4c60b0daca3d41113c8",
+      "size_bytes": 608
+    },
+    "research_outputs/regime_strategy_comparison_11_21.json": {
+      "sha256": "8c3ee97e53eccb9cb384b9d510faea7aa7a3f1c83391606f225ee9388edab956",
+      "size_bytes": 12356
+    },
+    "research_outputs/economic_replay_audit_11_21.json": {
+      "sha256": "4ed197b52851f93ddc551692434912a356e558a0be6b3207689d67a4c8743a12",
+      "size_bytes": 12380
+    },
+    "research_outputs/matched_portfolio_controls_11_21.json": {
+      "sha256": "bac4b66eda019cc102e6b5426d0313b9d2599109fd2d35f940151f23524ff146",
+      "size_bytes": 935
+    },
+    "research_outputs/patient_decision_ledger_11_21.parquet": {
+      "sha256": "ee82a493a08269f3a735bb9e5d3b95d79a758fe2c265112fc74ece6db53e9b19",
+      "size_bytes": 1263046
+    },
+    "research_outputs/research_report_11_21.md": {
+      "sha256": "4bf0966e1692ddb1ad44a0519c54c43cab7863d94868ca61932f8d0fb23a0447",
+      "size_bytes": 12925
+    }
+  }
+}

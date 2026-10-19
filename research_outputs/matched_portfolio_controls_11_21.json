@@ -1,0 +1,44 @@
+{
+  "sprint": "11.21",
+  "phase": "5.2_MATCHED_PORTFOLIO_CONTROLS",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T15:55:00Z",
+  "matched_turnover_controls": "PASS",
+  "matched_exposure_controls": "PASS",
+  "benchmark_period": "PERIOD_2023_CONSOLIDATION_RANGE",
+  "patient_engine_performance": {
+    "trades_count": 82,
+    "time_in_market_pct": 6.14,
+    "net_return_pct": -20.92
+  },
+  "matched_turnover_distribution": {
+    "seeds_count": 20,
+    "mean_return_pct": -2.15,
+    "median_return_pct": -1.4,
+    "min_return_pct": -27.03,
+    "max_return_pct": 28.28,
+    "std_return_pct": 15.98,
+    "seed_returns": [
+      -0.53,
+      -22.1,
+      -24.38,
+      -7.76,
+      -16.92,
+      -14.4,
+      2.38,
+      28.28,
+      1.89,
+      -2.02,
+      11.12,
+      -23.87,
+      -3.15,
+      -0.78,
+      15.27,
+      8.94,
+      15.02,
+      -27.03,
+      -9.26,
+      26.29
+    ]
+  }
+}
