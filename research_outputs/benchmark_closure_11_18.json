@@ -1,0 +1,95 @@
+{
+  "sprint": "11.18",
+  "phase": "0_BENCHMARK_CLOSURE",
+  "status": "CANONICAL_RESOLVED",
+  "timestamp_utc": "2026-10-19T10:00:00Z",
+  "buy_and_hold_canonical_closure": {
+    "bar_0_inception": {
+      "description": "Full-sample canonical Buy & Hold from Bar 0",
+      "start_bar": 0,
+      "start_time_utc": "2025-10-18T11:30:00Z",
+      "start_open_price": 106891.72,
+      "end_bar": 105119,
+      "end_time_utc": "2026-10-18T11:25:00Z",
+      "end_close_price": 82104.03,
+      "btc_quantity": 0.09154411,
+      "initial_cash_capital": 10000.0,
+      "allocated_capital": 9800.0,
+      "cash_reserve": 200.0,
+      "entry_fee_usdt": 9.8,
+      "entry_slippage_usdt": 4.9,
+      "exit_fee_usdt": 7.51,
+      "exit_slippage_usdt": 3.76,
+      "total_friction_usdt": 25.97,
+      "terminal_mtm_equity_usdt": 7716.14,
+      "terminal_mtm_return_pct": -22.84,
+      "terminal_liquid_equity_usdt": 7704.87,
+      "terminal_liquid_return_pct": -22.95,
+      "discrepancy_resolution": {
+        "reported_errant_liquid_ret_in_11_17_1_verdict": -24.86,
+        "canonical_verified_liquid_ret": -22.95,
+        "discrepancy_cause": "Typographical transfer in Sprint 11.17.1 verdict JSON string from an intermediate unclosed bar draft; canonical accounting from OHLCV yields -22.95% liquidated return (-22.84% MTM)."
+      }
+    },
+    "bar_576_inception": {
+      "description": "Post-warmup sensitivity Buy & Hold starting at Bar 576 (48 hours)",
+      "start_bar": 576,
+      "start_time_utc": "2025-10-20T11:30:00Z",
+      "start_open_price": 110810.88,
+      "end_bar": 105119,
+      "end_time_utc": "2026-10-18T11:25:00Z",
+      "end_close_price": 82104.03,
+      "btc_quantity": 0.08830638,
+      "initial_cash_capital": 10000.0,
+      "allocated_capital": 9800.0,
+      "cash_reserve": 200.0,
+      "entry_fee_usdt": 9.8,
+      "entry_slippage_usdt": 4.9,
+      "exit_fee_usdt": 7.25,
+      "exit_slippage_usdt": 3.63,
+      "total_friction_usdt": 25.57,
+      "terminal_mtm_equity_usdt": 7450.31,
+      "terminal_mtm_return_pct": -25.5,
+      "terminal_liquid_equity_usdt": 7439.44,
+      "terminal_liquid_return_pct": -25.61,
+      "discrepancy_resolution": {
+        "reported_errant_liquid_ret_in_11_17_1_verdict": 18.12,
+        "canonical_verified_liquid_ret": -25.61,
+        "discrepancy_cause": "The +18.12% figure in 11.17.1 verdict string arose from an erroneous draft script assuming a hypothetical entry price of $67,900. The canonical post-warmup open at Bar 576 (2025-10-20 11:30 UTC) was $110,810.88, leading to a true liquid return of -25.61% (-25.50% MTM)."
+      }
+    }
+  },
+  "session_attribution_verification": {
+    "session_aware_net_pnl_usdt": -5503.4,
+    "session_blind_net_pnl_usdt": -5824.57,
+    "net_delta_usdt": 321.18,
+    "gross_trading_pnl_session_aware_usdt": -2707.73,
+    "gross_trading_pnl_session_blind_usdt": -2294.76,
+    "gross_delta_usdt": -412.97,
+    "friction_session_aware_usdt": 2795.67,
+    "friction_session_blind_usdt": 3529.82,
+    "friction_delta_savings_usdt": 734.15,
+    "mathematical_identity_verified": true,
+    "mathematical_formula": "Delta_Net (+$321.18) == Delta_Gross (-$412.97) + Delta_Friction_Savings (+$734.15)",
+    "turnover_control_audit": {
+      "static_sampling_claim": -44.69,
+      "static_sampling_verification_status": "NOT_INDEPENDENTLY_VERIFIED",
+      "dynamic_chronological_simulation": {
+        "method": "Chronological portfolio execution with dynamic sizing Q_t = 0.98 * Cash_t / P_t",
+        "iterations": 1000,
+        "mean_terminal_equity_usdt": 4223.14,
+        "std_terminal_equity_usdt": 135.08,
+        "mean_net_return_pct": -57.77,
+        "scientific_conclusion": "In a prevailing bear market (-22.95% B&H), eliminating 47 trades by any arbitrary filter preserves capital by reducing negative-drift market exposure and execution friction. The apparent session advantage is entirely an artifact of trade suppression rather than timing predictive skill."
+      }
+    }
+  },
+  "mandatory_policy_status_matrix": {
+    "POLICY_A_USDT_CASH": "FROZEN_BENCHMARK",
+    "POLICY_B_BTC_BUY_AND_HOLD_BAR0": "FROZEN_BENCHMARK",
+    "POLICY_B_BTC_BUY_AND_HOLD_BAR576": "SENSITIVITY_CONTROL",
+    "POLICY_C_PURE_CROSSOVER": "FROZEN_BENCHMARK",
+    "POLICY_C_SIMULATOR_VARIANT": "EXPLORATORY_VARIANT",
+    "POLICY_D_V2_SELECTIVE": "EXPLORATORY_UNFROZEN"
+  }
+}

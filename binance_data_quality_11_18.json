@@ -1,0 +1,56 @@
+{
+  "sprint": "11.18",
+  "dataset": "BTCUSDT-1m-2022-01",
+  "provenance_url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2022-01.zip",
+  "official_sha256": "ce0e16e834331e70b3041677c7f409818d5904bb59cb7b880695e4cacd34fc09",
+  "calculated_sha256": "ce0e16e834331e70b3041677c7f409818d5904bb59cb7b880695e4cacd34fc09",
+  "checksum_verified": true,
+  "file_size_bytes": 2229634,
+  "sampling_interval_ms": 60000,
+  "expected_1m_bars": 44640,
+  "actual_1m_bars": 44640,
+  "start_time_utc": "2022-01-01 00:00:00+00:00",
+  "end_time_utc": "2022-01-31 23:59:00+00:00",
+  "data_quality_metrics": {
+    "is_strictly_sorted": true,
+    "duplicate_timestamps": 0,
+    "timestamp_gaps": 0,
+    "negative_volume_bars": 0,
+    "negative_or_zero_price_bars": 0,
+    "high_below_low_violations": 0,
+    "high_below_open_violations": 0,
+    "high_below_close_violations": 0,
+    "low_above_open_violations": 0,
+    "low_above_close_violations": 0,
+    "synthetic_price_filling_applied": false,
+    "missing_data_strategy": "FAIL_CLOSED_NO_SYNTHETIC_IMPUTATION"
+  },
+  "resampling_verification": {
+    "5m": {
+      "expected_bars": 8928,
+      "actual_bars": 8928,
+      "matches_expected": true
+    },
+    "15m": {
+      "expected_bars": 2976,
+      "actual_bars": 2976,
+      "matches_expected": true
+    },
+    "1h": {
+      "expected_bars": 744,
+      "actual_bars": 744,
+      "matches_expected": true
+    },
+    "4h": {
+      "expected_bars": 186,
+      "actual_bars": 186,
+      "matches_expected": true
+    },
+    "1d": {
+      "expected_bars": 31,
+      "actual_bars": 31,
+      "matches_expected": true
+    }
+  },
+  "validation_verdict": "PILOT_DATA_QUALITY_PRISTINE"
+}

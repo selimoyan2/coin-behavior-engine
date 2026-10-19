@@ -1,0 +1,53 @@
+{
+  "sprint": "11.18",
+  "phase": "5_HISTORICAL_REPLAY_FOUNDATION",
+  "status": "CAUSAL_DETERMINISM_VERIFIED",
+  "timestamp_utc": "2026-10-19T10:00:00Z",
+  "market_dataset": "research_outputs/market_state_dataset.parquet",
+  "total_market_bars": 105120,
+  "causal_separation_case": {
+    "exchange": "NYSE",
+    "date": "2026-01-05",
+    "session_open_utc": "2026-01-05T14:30:00Z",
+    "pre_open_query_utc": "2026-01-05T14:20:00Z",
+    "post_open_query_utc": "2026-01-05T14:40:00Z",
+    "pre_open_state": {
+      "active_sessions": [
+        "LSE"
+      ],
+      "nyse_session_status": "PRE_OPEN",
+      "nyse_relative_tag": "PRE_OPEN_10M",
+      "observed_candles": 22786,
+      "last_closed_candle_time": "2026-01-05 14:15:00+00:00",
+      "visible_event_count": 2,
+      "visible_event_ids": [
+        "EVT-20220610-CPI-FIRST-RELEASE",
+        "EVT-20240110-SEC-ETF-APPROVAL"
+      ],
+      "state_hash_sha256": "bae47d1421ba6e6fc83aef3f50dfbe9159bec10ba833facb83d357859c037de3"
+    },
+    "post_open_state": {
+      "active_sessions": [
+        "LSE",
+        "NYSE"
+      ],
+      "nyse_session_status": "OPEN",
+      "nyse_relative_tag": "POST_OPEN_10M",
+      "observed_candles": 22790,
+      "last_closed_candle_time": "2026-01-05 14:35:00+00:00",
+      "visible_event_count": 3,
+      "visible_event_ids": [
+        "EVT-20220610-CPI-FIRST-RELEASE",
+        "EVT-20240110-SEC-ETF-APPROVAL",
+        "EVT-20260105-NYSE-OPEN-FLASH"
+      ],
+      "state_hash_sha256": "d40cfc71b32d5d0aba566cdc4abbb45b07dce0492e9414c92b598f0067e909f9"
+    }
+  },
+  "invariants_verified": {
+    "causal_event_isolation": true,
+    "future_candle_exclusion": true,
+    "deterministic_state_hash_reproducibility": true,
+    "session_window_transition": true
+  }
+}

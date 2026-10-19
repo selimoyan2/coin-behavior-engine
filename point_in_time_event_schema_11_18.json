@@ -1,0 +1,186 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CBEPointInTimeEventSchema",
+  "description": "Standardized causal point-in-time financial and macroeconomic event schema for Coin Behavior Engine historical research.",
+  "type": "object",
+  "required": [
+    "event_id",
+    "published_at_utc",
+    "available_at_utc",
+    "source_id",
+    "category",
+    "headline",
+    "raw_text",
+    "entities",
+    "sentiment_label",
+    "sentiment_score",
+    "expected_value",
+    "actual_value",
+    "previous_value",
+    "revision_indicator",
+    "vintage_date",
+    "is_first_release",
+    "causal_delay_seconds",
+    "source_url",
+    "checksum_sha256"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^EVT-[A-Z0-9_-]+$",
+      "description": "Deterministic unique event identifier."
+    },
+    "published_at_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Nominal publication or press release timestamp in ISO 8601 UTC."
+    },
+    "available_at_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Earliest timestamp at which the event was deterministically ingestible by an algorithmic consumer without lookahead bias."
+    },
+    "source_id": {
+      "type": "string",
+      "enum": [
+        "ALFRED_STLOUIS_FED",
+        "BLS_PRESS_RELEASE",
+        "SEC_EDGAR_API",
+        "CRYPTOPANIC_API",
+        "GDELT_GKG_20",
+        "BINANCE_ANNOUNCEMENT",
+        "OFFICIAL_COURT_DOCKET"
+      ],
+      "description": "Authenticated primary data provider identifier."
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "MACRO_MONETARY_POLICY",
+        "MACRO_INFLATION",
+        "MACRO_LABOR",
+        "REGULATORY_ENFORCEMENT",
+        "SPOT_ETF_DEVELOPMENT",
+        "EXCHANGE_SOLVENCY_STRESS",
+        "CRYPTO_ECOSYSTEM_NEWS"
+      ],
+      "description": "Primary taxonomy classification for financial market impact."
+    },
+    "headline": {
+      "type": "string",
+      "maxLength": 512,
+      "description": "Unedited point-in-time headline text."
+    },
+    "raw_text": {
+      "type": "string",
+      "description": "Original text body, summary snippet, or official press excerpt."
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Recognized financial and economic entities (e.g., BTC, FED, SEC, BINANCE, CPI)."
+    },
+    "sentiment_label": {
+      "type": "string",
+      "enum": ["BULLISH", "BEARISH", "NEUTRAL", "AMBIGUOUS"],
+      "description": "Point-in-time qualitative impact classification."
+    },
+    "sentiment_score": {
+      "type": ["number", "null"],
+      "minimum": -1.0,
+      "maximum": 1.0,
+      "description": "Normalized point-in-time sentiment score bounded in [-1.0, 1.0]."
+    },
+    "expected_value": {
+      "type": ["number", "null"],
+      "description": "Consensus market expectation prior to release (null if not a quantitative macroeconomic release)."
+    },
+    "actual_value": {
+      "type": ["number", "null"],
+      "description": "Released actual value corresponding to this vintage."
+    },
+    "previous_value": {
+      "type": ["number", "null"],
+      "description": "Previous period released value as understood at this vintage."
+    },
+    "revision_indicator": {
+      "type": "boolean",
+      "description": "True if this record represents a subsequent revision of an earlier release period."
+    },
+    "vintage_date": {
+      "type": "string",
+      "format": "date",
+      "description": "ALFRED vintage date (YYYY-MM-DD) determining point-in-time availability."
+    },
+    "is_first_release": {
+      "type": "boolean",
+      "description": "True if this is the initial unrevised data release available at T_0."
+    },
+    "causal_delay_seconds": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Enforced ingestion delay in seconds (e.g., 60 for economic releases, 300 for news wire syndications)."
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Canonical archival reference URL."
+    },
+    "checksum_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 cryptographic digest of canonical event contents (event_id + raw_text + published_at_utc)."
+    }
+  },
+  "causal_rules": {
+    "temporal_invariance": "available_at_utc >= published_at_utc + causal_delay_seconds",
+    "simulation_eligibility": "Event is visible in bar ending at T_bar if and only if available_at_utc <= T_bar",
+    "revision_handling": "Every revision creates a distinct event_id with is_first_release=false and its own available_at_utc"
+  },
+  "example_events": [
+    {
+      "event_id": "EVT-20220610-CPI-FIRST-RELEASE",
+      "published_at_utc": "2022-06-10T12:30:00Z",
+      "available_at_utc": "2022-06-10T12:31:00Z",
+      "source_id": "BLS_PRESS_RELEASE",
+      "category": "MACRO_INFLATION",
+      "headline": "US May 2022 CPI Accelerates to 8.6% Year-over-Year, Highest Since 1981",
+      "raw_text": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 1.0 percent in May on a seasonally adjusted basis after rising 0.3 percent in April. Over the last 12 months, the all items index increased 8.6 percent before seasonal adjustment.",
+      "entities": ["BLS", "CPI", "USD", "FED", "INFLATION"],
+      "sentiment_label": "BEARISH",
+      "sentiment_score": -0.85,
+      "expected_value": 8.3,
+      "actual_value": 8.6,
+      "previous_value": 8.3,
+      "revision_indicator": false,
+      "vintage_date": "2022-06-10",
+      "is_first_release": true,
+      "causal_delay_seconds": 60,
+      "source_url": "https://www.bls.gov/news.release/archives/cpi_06102022.htm",
+      "checksum_sha256": "8f480396dd5f1d4aa696b99de0795c3702580ecadbebb13e17631ce55eb7c8d8"
+    },
+    {
+      "event_id": "EVT-20240110-SEC-ETF-APPROVAL",
+      "published_at_utc": "2024-01-10T20:45:00Z",
+      "available_at_utc": "2024-01-10T20:46:00Z",
+      "source_id": "SEC_EDGAR_API",
+      "category": "SPOT_ETF_DEVELOPMENT",
+      "headline": "SEC Approves Accelerated Listing of 11 Spot Bitcoin Exchange-Traded Products",
+      "raw_text": "The Securities and Exchange Commission today approved the accelerated registration and listing applications for 11 spot bitcoin exchange-traded funds on NYSE Arca, Nasdaq, and Cboe BZX.",
+      "entities": ["SEC", "BTC", "ETF", "BLACKROCK", "GRAYSCALE", "NASDAQ", "NYSE"],
+      "sentiment_label": "BULLISH",
+      "sentiment_score": 0.95,
+      "expected_value": null,
+      "actual_value": null,
+      "previous_value": null,
+      "revision_indicator": false,
+      "vintage_date": "2024-01-10",
+      "is_first_release": true,
+      "causal_delay_seconds": 60,
+      "source_url": "https://www.sec.gov/news/press-release/2024-3",
+      "checksum_sha256": "4b68ff5f3cb9b840eb142b947dbbbcb71dc98276fdb291d9e29a39f67aeb5036"
+    }
+  ]
+}

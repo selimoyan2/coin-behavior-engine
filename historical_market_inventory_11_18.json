@@ -1,0 +1,144 @@
+{
+  "sprint": "11.18",
+  "inventory_type": "HISTORICAL_MARKET_DATA_INVENTORY",
+  "timestamp_utc": "2026-10-19T10:00:00Z",
+  "canonical_baseline_dataset": "research_outputs/market_state_dataset.parquet",
+  "canonical_baseline_rows": 105120,
+  "datasets": [
+    {
+      "file_path": "data/raw/btcusdt_5m_raw.parquet",
+      "file_size_bytes": 53399235,
+      "sha256": "ae5e087377f727a69ab8f06d22fc8d788c289c28d7439405ccb15761cbb7ce8a",
+      "row_count": 602240,
+      "columns": [
+        "timestamp_open",
+        "open",
+        "high",
+        "low",
+        "close",
+        "base_volume",
+        "timestamp_close",
+        "quote_volume",
+        "trade_count",
+        "taker_buy_base_volume",
+        "taker_buy_quote_volume"
+      ],
+      "time_range_start": "2021-01-01 00:00:00+00:00",
+      "time_range_end": "2026-09-23 20:20:00+00:00"
+    },
+    {
+      "file_path": "data/research_lab/binance_BTCUSDT_1m_recent.parquet",
+      "file_size_bytes": 2866473,
+      "sha256": "8d2719fe8a24e2ea6bb35b9b529e06238a0b42c38a3cc9dfab4bf380cfed1286",
+      "row_count": 36000,
+      "columns": [
+        "timestamp_open",
+        "timestamp_close",
+        "datetime_open_utc",
+        "datetime_close_utc",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "quote_volume",
+        "trades_count",
+        "taker_buy_base_volume",
+        "is_closed",
+        "symbol",
+        "interval",
+        "provenance"
+      ],
+      "time_range_start": "2026-09-23 11:34:00+00:00",
+      "time_range_end": "2026-10-18 11:33:00+00:00"
+    },
+    {
+      "file_path": "research_outputs/market_state_dataset.parquet",
+      "file_size_bytes": 25149564,
+      "sha256": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487",
+      "row_count": 105120,
+      "columns": [
+        "timestamp_open",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "datetime_utc",
+        "trend_5m_pct",
+        "trend_15m_pct",
+        "trend_1h_pct",
+        "trend_4h_pct",
+        "price_acceleration",
+        "realized_vol_24",
+        "realized_vol_72",
+        "volatility_compression_ratio",
+        "relative_volume_20",
+        "distance_to_support_pct",
+        "distance_to_resistance_pct",
+        "drawdown_from_peak_pct",
+        "runup_from_trough_pct",
+        "breakout_state",
+        "regime",
+        "event_context_status",
+        "event_sentiment_score",
+        "fwd_ret_15m",
+        "fwd_ret_1h",
+        "fwd_ret_4h",
+        "fwd_ret_24h",
+        "max_favorable_excursion_pct",
+        "max_adverse_excursion_pct",
+        "hit_resistance_first",
+        "hit_support_first"
+      ],
+      "time_range_start": "2025-10-18 11:30:00+00:00",
+      "time_range_end": "2026-10-18 11:25:00+00:00"
+    },
+    {
+      "file_path": "data/normalized/derivatives/perp_klines_5m.parquet",
+      "file_size_bytes": 36514542,
+      "sha256": "35f1273a715b75929222382b2ca4112f06f2bcec8de432e6529329b6e1ec0096",
+      "row_count": 601920,
+      "columns": [
+        "datetime_open",
+        "open_time",
+        "perp_open",
+        "perp_high",
+        "perp_low",
+        "perp_close",
+        "perp_volume",
+        "perp_quote_volume",
+        "perp_taker_buy_base_volume",
+        "perp_taker_buy_quote_volume"
+      ]
+    },
+    {
+      "file_path": "data/normalized/derivatives/funding_rates.parquet",
+      "file_size_bytes": 145925,
+      "sha256": "afd2d0adebb0d1b05813f81648a4832f12d4dd660e2d19b66088b45349f8b8bf",
+      "row_count": 6271,
+      "columns": [
+        "datetime_calc",
+        "calc_time",
+        "funding_rate"
+      ]
+    },
+    {
+      "file_path": "data/normalized/derivatives/metrics_5m.parquet",
+      "file_size_bytes": 33760609,
+      "sha256": "60e819d0f8938466553d9bd9d9c9b12ce28eb6458cd043351b66598b1d6d8e31",
+      "row_count": 601319,
+      "columns": [
+        "create_time",
+        "symbol",
+        "sum_open_interest",
+        "sum_open_interest_value",
+        "count_toptrader_long_short_ratio",
+        "sum_toptrader_long_short_ratio",
+        "count_long_short_ratio",
+        "sum_taker_long_short_vol_ratio",
+        "datetime_open"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "sprint": "11.18",
+  "timestamp_utc": "2026-10-19T10:00:00Z",
+  "base_commit": "30f1c9516c8c5a9a3a494380a788b9b753a36518",
+  "git_branch": "main",
+  "execution_mode": "STRICTLY_OFFLINE_RESEARCH",
+  "trading_scope": "SPOT_BTC_USDT_LONG_ONLY",
+  "artifacts": {
+    "research_outputs/benchmark_closure_11_18.json": {
+      "size_bytes": 4438,
+      "sha256": "ddeaecf3e0aab2656f6da9b4c5c1d2f04bd44c0ab64dacd22409ee7481f74268"
+    },
+    "research_outputs/historical_market_inventory_11_18.json": {
+      "size_bytes": 4331,
+      "sha256": "3c3b2aaf054f1e8627e50229ee1c54adc0d164f0e22aa3df25596cab0b00bd3a"
+    },
+    "research_outputs/binance_data_quality_11_18.json": {
+      "size_bytes": 1747,
+      "sha256": "826f7619a76ab57b5599b3ebdb84e3efd5457f93ea4aad133f672bcc1c859357"
+    },
+    "research_outputs/historical_news_source_audit_11_18.md": {
+      "size_bytes": 12096,
+      "sha256": "9e3e71e62bd15e796eba092c464b67818c42b444c9a457b5203f3e01db37dcc6"
+    },
+    "research_outputs/point_in_time_event_schema_11_18.json": {
+      "size_bytes": 6944,
+      "sha256": "7354134c3e5f4110a7f0f8057f5f8b9257b0b04884378b016c841391e647602e"
+    },
+    "research_outputs/historical_replay_audit_11_18.json": {
+      "size_bytes": 1802,
+      "sha256": "3fd8f69eac0b3b0c1a2438d84be640d6f41f9c41a3afcdd4fd199bd6129e2d3f"
+    },
+    "research_outputs/research_report_11_18.md": {
+      "size_bytes": 11429,
+      "sha256": "71b2e8c1831e02d69f76b0cbb2902ac13e5969844cb4302bd10a0dbb6984b4b9"
+    },
+    "tests/test_sprint11_18_causal_data_foundation.py": {
+      "size_bytes": 11098,
+      "sha256": "4e63d18bc0a03cc7059274e74a1b0b0105cc1626811f8b84685414f1790fe2dc"
+    },
+    "src/coin_behavior_engine/research/historical_replay.py": {
+      "size_bytes": 9842,
+      "sha256": "b29e226818d4fe7428833259f02791805b688a94e97f2c9764afbddaef9d69ec"
+    }
+  },
+  "verification_suite": {
+    "test_file": "tests/test_sprint11_18_causal_data_foundation.py",
+    "tests_passed": 8,
+    "tests_failed": 0,
+    "total_sprint_regression_tests_passed": 27
+  },
+  "mandatory_declarations": {
+    "execution_mode": "STRICTLY_OFFLINE_RESEARCH",
+    "benchmark_closure": "CANONICAL_RESOLVED",
+    "binance_pilot_ingestion": "PRISTINE_SHA256_VERIFIED",
+    "point_in_time_causality": "CERTIFIED",
+    "prospective_observation": "NOT_STARTED",
+    "live_trading": "PROHIBITED",
+    "operator_authorization": "NOT_GRANTED",
+    "next_step": "OPERATOR_REVIEW"
+  }
+}
