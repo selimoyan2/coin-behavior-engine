@@ -1,0 +1,89 @@
+{
+  "total_audited_events": 237,
+  "source_document_verified_count": 1,
+  "source_document_unavailable_count": 236,
+  "consensus_vintage_verified_count": 0,
+  "consensus_unverified_count": 237,
+  "category_audit": {
+    "US_INFLATION": {
+      "total": 102,
+      "doc_verified": 0,
+      "doc_unavailable": 102,
+      "consensus_claimed": 102,
+      "consensus_verified": 0,
+      "statuses": {
+        "OFFICIAL_SCHEDULE_ONLY": 102
+      }
+    },
+    "US_LABOR": {
+      "total": 57,
+      "doc_verified": 0,
+      "doc_unavailable": 57,
+      "consensus_claimed": 57,
+      "consensus_verified": 0,
+      "statuses": {
+        "OFFICIAL_SCHEDULE_ONLY": 57
+      }
+    },
+    "US_MONETARY_POLICY": {
+      "total": 38,
+      "doc_verified": 0,
+      "doc_unavailable": 38,
+      "consensus_claimed": 38,
+      "consensus_verified": 0,
+      "statuses": {
+        "OFFICIAL_SCHEDULE_ONLY": 38
+      }
+    },
+    "US_GROWTH": {
+      "total": 19,
+      "doc_verified": 0,
+      "doc_unavailable": 19,
+      "consensus_claimed": 19,
+      "consensus_verified": 0,
+      "statuses": {
+        "OFFICIAL_SCHEDULE_ONLY": 19
+      }
+    },
+    "CRYPTO_STRUCTURE": {
+      "total": 8,
+      "doc_verified": 0,
+      "doc_unavailable": 8,
+      "consensus_claimed": 8,
+      "consensus_verified": 0,
+      "statuses": {
+        "SECONDARY_TIMESTAMP_ONLY": 8
+      }
+    },
+    "FINANCIAL_STABILITY": {
+      "total": 4,
+      "doc_verified": 0,
+      "doc_unavailable": 4,
+      "consensus_claimed": 4,
+      "consensus_verified": 0,
+      "statuses": {
+        "SECONDARY_TIMESTAMP_ONLY": 4
+      }
+    },
+    "REGULATION": {
+      "total": 8,
+      "doc_verified": 0,
+      "doc_unavailable": 8,
+      "consensus_claimed": 8,
+      "consensus_verified": 0,
+      "statuses": {
+        "SECONDARY_TIMESTAMP_ONLY": 8
+      }
+    },
+    "BITCOIN_PROTOCOL": {
+      "total": 1,
+      "doc_verified": 1,
+      "doc_unavailable": 0,
+      "consensus_claimed": 1,
+      "consensus_verified": 0,
+      "statuses": {
+        "VERIFIED_POINT_IN_TIME": 1
+      }
+    }
+  }
+}

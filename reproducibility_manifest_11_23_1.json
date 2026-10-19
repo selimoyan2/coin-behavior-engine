@@ -1,0 +1,131 @@
+{
+  "sprint": "11.23.1",
+  "name": "Historical Evidence Authenticity & Point-in-Time Repair",
+  "base_commit": "763f10bbae67fd5edc08334d23134844a270b54f",
+  "timestamp_utc": "2026-10-19T21:30:00Z",
+  "status_summary": {
+    "SPRINT_11_23_1_STATUS": "PARTIAL",
+    "TOTAL_ORIGINAL_EVENTS": 237,
+    "SOURCE_DOCUMENTS_VERIFIED": 1,
+    "SOURCE_DOCUMENTS_UNAVAILABLE": 236,
+    "POINT_IN_TIME_VERIFIED_EVENTS": 1,
+    "UNCERTAIN_LATENCY_EVENTS": 0,
+    "QUARANTINED_EVENTS": 236,
+    "PRE_RELEASE_CONSENSUS_VERIFIED": 0,
+    "PRE_RELEASE_CONSENSUS_UNVERIFIED": 216,
+    "VERIFICATION_DISTRIBUTION_RECONCILED": "PASS",
+    "CAUSAL_EVENT_ELIGIBILITY": "PASS",
+    "EVENT_STUDY_REVALIDATION": "PASS",
+    "MACRO_SURPRISE_REVALIDATION": "INSUFFICIENT_EVIDENCE",
+    "SESSION_INTERACTION_REVALIDATION": "PASS",
+    "NEWS_CONDITIONED_EDGE": "NOT_ESTABLISHED",
+    "HISTORICAL_DATA_STATUS": "RESEARCH_CONTAMINATED",
+    "PROSPECTIVE_OBSERVATION": "NOT_STARTED",
+    "LIVE_TRADING": "PROHIBITED",
+    "OPERATOR_AUTHORIZATION": "NOT_GRANTED"
+  },
+  "deliverables_manifest": {
+    "sprint11_23_source_freeze_11_23_1.json": {
+      "sha256": "9564cef6f4e51e970bd0ef7356f157160d89cab45fb977f5c6f57db611243de4",
+      "size_bytes": 3999,
+      "description": "Cryptographic freeze of all Sprint 11.23 baseline artifacts"
+    },
+    "event_source_evidence_11_23_1.parquet": {
+      "sha256": "8198aee7dd939dd5c20002eb9312ae988bde47257ddfaa02b977c19a59cf798c",
+      "size_bytes": 56560,
+      "rows": 237,
+      "columns": 24,
+      "description": "Comprehensive 24-field evidence audit table for all 237 events"
+    },
+    "source_authenticity_audit_11_23_1.json": {
+      "sha256": "98a706d83af07103c04a6a1cd706c720937bda2f0a841617df5b40540ac50f3c",
+      "size_bytes": 1496,
+      "description": "Forensic findings on document byte hashes, remote access constraints, and quarantine rationale"
+    },
+    "source_evidence_inventory_11_23_1.json": {
+      "sha256": "34daf2bd27b6ed895a36de2d79ab58a03dd383141b43e33dd496d8805852f31b",
+      "size_bytes": 2146,
+      "description": "Inventory breakdown across categories, document status, and consensus status"
+    },
+    "canonical_event_verification_11_23_1.parquet": {
+      "sha256": "3133aefefc534a104f7c4644eadb18eda8113fee9f393c39ad2cb57a798321a0",
+      "size_bytes": 58267,
+      "rows": 237,
+      "columns": 26,
+      "description": "Unified canonical event verification ledger replacing conflicting Sprint 11.23 outputs"
+    },
+    "verification_discrepancy_closure_11_23_1.json": {
+      "sha256": "169296daeda06a881f621cc4c721c28c33503336897e4d535fb78e22af5c6566",
+      "size_bytes": 3261,
+      "description": "Code-level forensic closure of 39/198 vs 216/21 dual-heuristic discrepancy"
+    },
+    "consensus_vintage_audit_11_23_1.parquet": {
+      "sha256": "c2eb43142de421bc4efb2af869e8cd42b0953d78404202f6a1fbb697766033fc",
+      "size_bytes": 16287,
+      "rows": 237,
+      "columns": 12,
+      "description": "Consensus vintage audit ledger nullifying unverified survey values for causal signals"
+    },
+    "consensus_verification_summary_11_23_1.json": {
+      "sha256": "10b07ab5c7410e4ffc9f5807319d77bbdbfb6f1d4038e61a5b9d96d7c22576ed",
+      "size_bytes": 2608,
+      "description": "Summary of consensus provenance audit, survey vintage gaps, and retrospective caveats"
+    },
+    "causal_event_eligibility_11_23_1.parquet": {
+      "sha256": "fdc8ae1e3fe470cb2967c482cbad9d1597d94a505eed1c606de7632908c59a9f",
+      "size_bytes": 22022,
+      "rows": 237,
+      "columns": 15,
+      "description": "Dual research universe ledger (Schedule-Only vs Post-Publication) and safe execution candle mapping"
+    },
+    "causal_availability_audit_11_23_1.json": {
+      "sha256": "62778a4863578fa3e80c990db5e8620b007598e048c857e084d4d1839cdc55aa",
+      "size_bytes": 1918,
+      "description": "Audit of safe candle selection, zero intra-candle close leakage, and directional signal quarantine"
+    },
+    "verified_event_reaction_ledger_11_23_1.parquet": {
+      "sha256": "ac5fc59338306e99371106e240476590bbd5d22ea03611ca78998fe3fde0bf73",
+      "size_bytes": 47736,
+      "rows": 236,
+      "columns": 20,
+      "description": "Revalidated BTC market reaction ledger aligned strictly with safe execution candle opens"
+    },
+    "matched_event_controls_11_23_1.parquet": {
+      "sha256": "aec487c578c6709a95103be5ec57e051192d62660518a56ea42a17ce4fb6f436",
+      "size_bytes": 17191,
+      "rows": 231,
+      "columns": 8,
+      "description": "Multi-candidate event-free matched controls (1-4 weeks prior, volatility matched)"
+    },
+    "event_study_revalidation_11_23_1.json": {
+      "sha256": "8952d102a6924e81c439d53a587f2b785bd926f9f3e0fdcd78f0f9f9119d1018",
+      "size_bytes": 1823,
+      "description": "Statistical revalidation of event reaction study with permutation and bootstrap tests"
+    },
+    "verified_macro_surprise_audit_11_23_1.json": {
+      "sha256": "e902710a3c33bcd3903a8372875b4a6be57b157e2eba8d416067942b4dbe72df",
+      "size_bytes": 3341,
+      "description": "Surprise regression revalidation with Benjamini-Hochberg FDR correction and hit-rate analysis"
+    },
+    "verified_session_interaction_audit_11_23_1.json": {
+      "sha256": "6f51cc474817ce5bbda984dca87bdef26eec35a9b3a812960ab325a1d8d92695",
+      "size_bytes": 3609,
+      "description": "Global session interaction audit explicitly flagging small-sample regimes (n <= 4)"
+    },
+    "research_report_11_23_1.md": {
+      "sha256": "95f89a01e8d783e19d7058ddf19665cf835b0e92437f33fc2bb08dbdb04db8f2",
+      "size_bytes": 19112,
+      "description": "Comprehensive scientific audit and forensic evidence findings report for Sprint 11.23.1"
+    }
+  },
+  "regeneration_commands": [
+    ".\\.venv\\Scripts\\python.exe scripts/sprint11_23_1_phase0_freeze.py",
+    ".\\.venv\\Scripts\\python.exe scripts/run_phase1_source_evidence_audit_11_23_1.py",
+    ".\\.venv\\Scripts\\python.exe scripts/run_phase2_verification_closure_11_23_1.py",
+    ".\\.venv\\Scripts\\python.exe scripts/run_phase3_consensus_audit_11_23_1.py",
+    ".\\.venv\\Scripts\\python.exe scripts/run_phase4_causal_availability_11_23_1.py",
+    ".\\.venv\\Scripts\\python.exe scripts/run_phase5_event_study_revalidation_11_23_1.py",
+    ".\\.venv\\Scripts\\python.exe scripts/run_phase6_surprise_and_session_revalidation_11_23_1.py",
+    ".\\.venv\\Scripts\\pytest.exe tests/test_sprint11_23_1_evidence_authenticity.py -v"
+  ]
+}

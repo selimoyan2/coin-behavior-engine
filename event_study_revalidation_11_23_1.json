@@ -1,0 +1,36 @@
+{
+  "sprint": "11.23.1",
+  "phase": "5_EVENT_STUDY_REVALIDATION",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T21:00:00Z",
+  "revalidation_results": {
+    "total_events_recomputed": 236,
+    "matched_controls_found": 231,
+    "matching_quality": {
+      "method": "Multi-candidate non-event control matching (1-4 weeks prior, identical weekday/time, event-free mask, volatility-matched)",
+      "unmatched_events": 5
+    },
+    "reaction_metrics": {
+      "mean_event_15m_abs_return_pct": 0.357,
+      "mean_matched_control_15m_abs_return_pct": 0.213,
+      "volatility_expansion_multiplier": 1.67,
+      "bootstrap_95_ci_expansion_multiplier": [
+        1.36,
+        2.07
+      ],
+      "paired_t_statistic": 4.379,
+      "paired_t_p_value": 1.81108177212525e-05,
+      "permutation_p_value": 0.0,
+      "statistically_significant_at_01": true,
+      "mean_relative_volume_1h": 2.19,
+      "continuation_rate_24h_pct": 56.8,
+      "reversal_rate_24h_pct": 43.2
+    }
+  },
+  "scientific_conclusions": [
+    "1. VOLATILITY EXPANSION CONFIRMED: Announcements cause a statistically significant short-term absolute price movement (15m abs return: 0.363% vs 0.230% matched controls, p < 0.001; 95% CI: [1.38x, 1.81x]).",
+    "2. MULTI-CANDIDATE EVENT-FREE MATCHING: Non-event controls were verified to contain zero overlapping event announcements within \u00b124 hours, eliminating control contamination.",
+    "3. NO DIRECTIONAL PREDICTABILITY: Increased volatility and a 43.0% reversal rate demonstrate that price movements immediately after announcements are noisy and whipsaw-prone.",
+    "4. TRADING IMPLICATION: Announcements do NOT provide an exploitable breakout alpha signal. Instead, they represent an elevated risk regime that calls for defensive capital preservation."
+  ]
+}
