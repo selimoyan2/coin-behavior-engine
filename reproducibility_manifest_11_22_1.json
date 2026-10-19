@@ -1,0 +1,72 @@
+{
+  "sprint": "11.22.1",
+  "phase": "5_REPRODUCIBILITY_MANIFEST",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T17:40:00Z",
+  "artifacts": {
+    "scripts/sprint11_22_1_preflight.py": {
+      "sha256": "0b31f70583b15aee66bf7f606b49caa307f3a13b1825c3726d0fd52dd99b79b6",
+      "size_bytes": 4209
+    },
+    "scripts/reconcile_friction_11_22_1.py": {
+      "sha256": "7228c3f72a91d06c3ca7c964f99a10145f4c5b4b1c78929632e7ff0183760cbd",
+      "size_bytes": 9654
+    },
+    "src/coin_behavior_engine/accounting/connected_decision_replay.py": {
+      "sha256": "c10c8ceaa74509ee7c8cf8605bd8f056df46fbbfb68f814c239d34085173671e",
+      "size_bytes": 14763
+    },
+    "scripts/run_decision_provenance_and_audit_11_22_1.py": {
+      "sha256": "ab9688bce18065310b3e4d85a684d48d87cbce2dc71b04747323d46decd1334c",
+      "size_bytes": 8341
+    },
+    "scripts/run_independent_replay_verification_11_22_1.py": {
+      "sha256": "324f09fb83a061645e5830e9ca963af1bf3d5e555b210f7dad66c7f951b177f3",
+      "size_bytes": 8722
+    },
+    "scripts/run_loss_attribution_closure_11_22_1.py": {
+      "sha256": "dd337d078acbd8bba71abb2d256389b3ece45268421af8bf829fbcd3e0b328ac",
+      "size_bytes": 11267
+    },
+    "scripts/generate_canonical_economic_metrics_11_22_1.py": {
+      "sha256": "fbcde87d3cc807153f144c350629ffe3dbcfcdb5df3083d6dddf04172978385d",
+      "size_bytes": 8630
+    },
+    "tests/test_sprint11_22_1_accounting_and_attribution.py": {
+      "sha256": "7ed7aaafffc33a3b8c4e9dcf8635d2e6befd8765fbd2e85245bb73b0d75b735e",
+      "size_bytes": 15973
+    },
+    "research_outputs/preflight_11_22_1.json": {
+      "sha256": "3e72f5d6768249fb1c8662ede4790fbe59e4942aff09b7d150af5fd85e8748b3",
+      "size_bytes": 1567
+    },
+    "research_outputs/friction_reconciliation_11_22_1.json": {
+      "sha256": "77503c52b429b847db00d278654355cdd3e80d18fbe8b4cb834b3478b542fb84",
+      "size_bytes": 3004
+    },
+    "research_outputs/decision_fill_provenance_11_22_1.parquet": {
+      "sha256": "56cca38cb237447054ce2736072ccb8a59f20ad55aed8906724f11fe95b55b56",
+      "size_bytes": 247237
+    },
+    "research_outputs/decision_execution_audit_11_22_1.json": {
+      "sha256": "7c561c09f17a60a51488607af3b51410bd96371cee2db8299737cd621291222e",
+      "size_bytes": 2428
+    },
+    "research_outputs/independent_replay_verification_11_22_1.json": {
+      "sha256": "fbdef090e3c0a6e281c380c28a2425e9155b6640ab9abcabdce19854f159d86c",
+      "size_bytes": 1631
+    },
+    "research_outputs/loss_attribution_closure_11_22_1.json": {
+      "sha256": "8e5166b389538fc0afbbd389ade439898d9c894fbdb03fb637d63befbb938a62",
+      "size_bytes": 7138
+    },
+    "research_outputs/canonical_economic_metrics_11_22_1.json": {
+      "sha256": "b04352295fb1348bf0533f704017eef5923ed0128d5d887dc2581d10260b6640",
+      "size_bytes": 6013
+    },
+    "research_outputs/research_report_11_22_1.md": {
+      "sha256": "04e4e9235c2cd09e73ed92ffef3125a5cde0a25f77070866882df2451dbe1e7e",
+      "size_bytes": 16824
+    }
+  }
+}
