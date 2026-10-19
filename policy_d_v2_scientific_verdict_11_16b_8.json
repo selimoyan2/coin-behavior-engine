@@ -1,0 +1,136 @@
+{
+  "audit_metadata": {
+    "sprint": "11.16B.8",
+    "mission": "Independent ATR Recalculation & Corrected Policy Economic Validation",
+    "base_commit": "d9b515405a73d9e64817af266230fee88068557b",
+    "canonical_dataset_sha256": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487",
+    "evaluation_timestamp_utc": "2026-10-19T10:45:00Z",
+    "mode": "OFFLINE_SCIENTIFIC_VALIDATION_ONLY"
+  },
+  "global_declarations": {
+    "policy_d_v2_status": "EXPLORATORY_UNFROZEN",
+    "policy_e_v2_status": "EXPLORATORY_REJECTED_NO_ALPHA",
+    "prospective_observation": "NOT_STARTED",
+    "live_trading": "PROHIBITED",
+    "operator_authorization": "NOT_GRANTED",
+    "next_step": "OPERATOR_REVIEW"
+  },
+  "independent_gate_reconciliation": {
+    "total_dataset_candles": 105120,
+    "valid_evaluation_bars": 104256,
+    "warmup_lookback_bars": 864,
+    "trend_aligned_bars": 38569,
+    "anti_chase_eligible_bars": 100330,
+    "structural_eligible_bars": 34813,
+    "frozen_atr_eligible_bars": 4,
+    "frozen_policy_d_eligible_bars": 0,
+    "proposed_corrected_atr_eligible_bars": 89675,
+    "proposed_policy_d_v2_eligible_bars": 31092,
+    "sprint_11_14_vol_24h_eligible_bars": 96789,
+    "reconciliation_status": "EXACT_RECONCILIATION_ZERO_DISCREPANCY"
+  },
+  "volatility_definition_comparison": {
+    "vol_24h_annualized_log_ret": {
+      "definition": "288-bar rolling std of 5m log returns * sqrt(105120) * 100.0",
+      "dimension": "Percent per annum (%/yr)",
+      "mean": 40.975,
+      "median": 38.816,
+      "p10": 21.112,
+      "p90": 62.884,
+      "min": 6.770,
+      "max": 166.813,
+      "historical_filter_range": "15.0 to 80.0",
+      "pass_rate_pct": 92.84
+    },
+    "atr_5m_fraction": {
+      "definition": "14-bar Average True Range of 5m candles / close price",
+      "dimension": "Unitless fractional move per 5-minute candle",
+      "mean": 0.001603,
+      "median": 0.001338,
+      "p10": 0.000551,
+      "p90": 0.002941,
+      "min": 0.000016,
+      "max": 0.015394,
+      "frozen_filter_range": "0.015 to 0.065 (1.5% to 6.5% per 5m bar)",
+      "frozen_pass_rate_pct": 0.0038,
+      "proposed_corrected_range": "0.0005 to 0.0035 (0.05% to 0.35% per 5m bar)",
+      "proposed_pass_rate_pct": 86.01
+    },
+    "correlation_between_measures": 0.6514,
+    "mathematical_interchangeability": "FALSE_DIFFERENT_UNITS_AND_HORIZONS"
+  },
+  "policy_d_v2_economic_performance": {
+    "full_canonical_dataset": {
+      "bars_count": 104256,
+      "trades_count": 140,
+      "initial_capital_usdt": 10000.0,
+      "ending_equity_usdt": 6467.17,
+      "net_return_pct": -35.33,
+      "max_drawdown_pct": 37.25,
+      "turnover_usdt": 2187779.67,
+      "fees_paid_usdt": 2187.78,
+      "slippage_cost_usdt": 1093.89,
+      "total_friction_usdt": 3281.67,
+      "time_in_btc_pct": 49.52,
+      "time_in_usdt_pct": 50.48,
+      "win_rate_pct": 27.86,
+      "profit_factor": 0.584,
+      "exit_breakdown": {
+        "TREND_VIOLATION": 114,
+        "TAKE_PROFIT": 20,
+        "STOP_LOSS": 6
+      }
+    },
+    "walk_forward_partitions": {
+      "fold_1_train": {
+        "bars": 67176,
+        "trades": 89,
+        "net_return_pct": -21.61,
+        "max_drawdown_pct": 28.23,
+        "total_friction_usdt": 2229.75,
+        "btc_benchmark_return_pct": -41.13
+      },
+      "fold_2_holdout": {
+        "bars": 18684,
+        "trades": 24,
+        "net_return_pct": -17.52,
+        "max_drawdown_pct": 19.52,
+        "total_friction_usdt": 644.87,
+        "btc_benchmark_return_pct": -0.11
+      },
+      "fold_3_test": {
+        "bars": 18396,
+        "trades": 27,
+        "net_return_pct": -0.54,
+        "max_drawdown_pct": 11.29,
+        "total_friction_usdt": 853.75,
+        "btc_benchmark_return_pct": 29.47
+      }
+    }
+  },
+  "benchmark_policy_comparison": {
+    "full_canonical": {
+      "POLICY_A_USDT_CASH": { "net_return_pct": 0.0, "max_dd_pct": 0.0, "trades": 0, "rank": 1 },
+      "POLICY_B_BTC_BUY_AND_HOLD": { "net_return_pct": -23.87, "max_dd_pct": 49.00, "trades": 1, "rank": 2 },
+      "POLICY_D_V2_CORRECTED_ATR": { "net_return_pct": -35.33, "max_dd_pct": 37.25, "trades": 140, "rank": 3 },
+      "POLICY_C_TREND48_FOLLOWING": { "net_return_pct": -97.58, "max_dd_pct": 97.67, "trades": 1184, "rank": 4 },
+      "POLICY_D_FROZEN": { "net_return_pct": 0.0, "max_dd_pct": 0.0, "trades": 0, "status": "BLOCKED_UNIT_DEFECT" },
+      "POLICY_E_FROZEN": { "net_return_pct": 0.0, "max_dd_pct": 0.0, "trades": 0, "status": "BLOCKED_UNIT_DEFECT" }
+    }
+  },
+  "policy_e_v2_analogue_feasibility": {
+    "total_candidate_trades": 140,
+    "trades_passing_hurdle_0_60": 0,
+    "trades_passing_hurdle_0_50": 0,
+    "trades_passing_hurdle_0_40": 10,
+    "trades_passing_hurdle_0_30": 36,
+    "correlation_prob_up_vs_net_pnl": 0.2179,
+    "incremental_alpha_verdict": "FAIL_NO_ALPHA_AT_FROZEN_HURDLE",
+    "recommendation": "DO_NOT_FREEZE_POLICY_E_V2"
+  },
+  "scientific_economic_verdict": {
+    "verdict": "ECONOMIC_VALIDATION_FAILED",
+    "rationale": "Proposed Policy D V2 fixes the software execution defect (restoring execution coverage from 0 to 140 trades), but fails to establish economic viability. After canonical 30 bps roundtrip friction, Policy D V2 loses -35.33% of initial capital across the 365-day dataset, underperforming even passive USDT cash (0.00%) and BTC Buy-and-Hold (-23.87%). Over 81.4% of exits are trend violations caused by whipsaws. Transaction friction (3,281.67 USDT) consumes over 32.8% of capital. Policy D V2 must NOT be prospectively frozen without structural model redesign.",
+    "prospective_readiness": "REJECTED_FOR_PROSPECTIVE_OBSERVATION"
+  }
+}

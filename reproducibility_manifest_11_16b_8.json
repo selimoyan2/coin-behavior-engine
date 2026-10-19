@@ -1,0 +1,76 @@
+{
+  "sprint": "11.16B.8",
+  "description": "Sprint 11.16B.8 Reproducibility Manifest - ATR Recalculation & Policy D V2 Economic Validation",
+  "base_commit": "d9b515405a73d9e64817af266230fee88068557b",
+  "timestamp_utc": "2026-10-19T10:48:00Z",
+  "declarations": {
+    "policy_d_v2_status": "EXPLORATORY_UNFROZEN",
+    "policy_e_v2_status": "EXPLORATORY_REJECTED_NO_ALPHA",
+    "prospective_observation": "NOT_STARTED",
+    "live_trading": "PROHIBITED",
+    "operator_authorization": "NOT_GRANTED",
+    "next_step": "OPERATOR_REVIEW"
+  },
+  "deliverable_digests": {
+    "research_report_11_16b_8.md": {
+      "path": "research_outputs/research_report_11_16b_8.md",
+      "size_bytes": 20062,
+      "sha256": "b3351b54b7c8f65fa3610a3288eba189643139fd54a403e40b654fe7b4b249fe"
+    },
+    "policy_d_v2_trade_ledger_11_16b_8.csv": {
+      "path": "research_outputs/policy_d_v2_trade_ledger_11_16b_8.csv",
+      "size_bytes": 44835,
+      "sha256": "7d811b1d332057ec54e3f89c6e56cc4acddc22bcf3cb898ff363580f703e2ca9"
+    },
+    "walk_forward_evaluation_11_16b_8.csv": {
+      "path": "research_outputs/walk_forward_evaluation_11_16b_8.csv",
+      "size_bytes": 2983,
+      "sha256": "964883839301a745971fa21928c30e192760b6ddf4c7f6d055838a88211a95a0"
+    },
+    "policy_e_v2_feasibility_analysis_11_16b_8.csv": {
+      "path": "research_outputs/policy_e_v2_feasibility_analysis_11_16b_8.csv",
+      "size_bytes": 19179,
+      "sha256": "caa2aeea2eeb0617f0f6c853df8d171234a154da5c6546c5b19a00c1e78e7890"
+    },
+    "policy_e_v2_feasibility_verdict_11_16b_8.json": {
+      "path": "research_outputs/policy_e_v2_feasibility_verdict_11_16b_8.json",
+      "size_bytes": 878,
+      "sha256": "5fff0ddb1bb6f5db26280d72e04fcda3e6bab05ab6f484332d881777845b6001"
+    },
+    "policy_d_v2_scientific_verdict_11_16b_8.json": {
+      "path": "research_outputs/policy_d_v2_scientific_verdict_11_16b_8.json",
+      "size_bytes": 5612,
+      "sha256": "776e239853dee2d17b38a98bd4f264639ff80455e3c11682bcd609c2b4ba2891"
+    },
+    "recalculate_atr_and_gates_11_16b_8.py": {
+      "path": "scripts/recalculate_atr_and_gates_11_16b_8.py",
+      "size_bytes": 25460,
+      "sha256": "905b9f1ab074ff4d5550c909f6330e070acdfdb8edecd990b1cb77a75ad89c52"
+    },
+    "analogue_incremental_value_11_16b_8.py": {
+      "path": "scripts/analogue_incremental_value_11_16b_8.py",
+      "size_bytes": 6836,
+      "sha256": "579eae41974749dc24f4af9a861bc5aeeeac45d2bb88e5fb274aa0c40887ac02"
+    },
+    "test_sprint11_16b_8_economic_validation.py": {
+      "path": "tests/test_sprint11_16b_8_economic_validation.py",
+      "size_bytes": 9330,
+      "sha256": "d1c5e46b4bc563b83e3791b76c5d8b5071963440efbd2b18c3f068df5103a531"
+    },
+    "market_state_dataset.parquet": {
+      "path": "research_outputs/market_state_dataset.parquet",
+      "size_bytes": 25149564,
+      "sha256": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487"
+    },
+    "compact_analogue_candidates.npz": {
+      "path": "research_outputs/compact_analogue_candidates.npz",
+      "size_bytes": 2995550,
+      "sha256": "a7ee5335f40989161a4213d95b880e9c7df2d5fc3bafe4f26b439387f8bfc484"
+    },
+    "policy_freeze_manifest.json": {
+      "path": "research_outputs/policy_freeze_manifest.json",
+      "size_bytes": 5238,
+      "sha256": "091f30ef9b2638e5c805f09acf691b6bfc861d77797841650eb094c995541cf7"
+    }
+  }
+}
