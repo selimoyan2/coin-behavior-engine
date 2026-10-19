@@ -1,0 +1,271 @@
+{
+  "sprint": "11.23.2",
+  "phase": "0_BASELINE_VERIFICATION_AND_FREEZE",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T22:00:00Z",
+  "base_commit": "c586cd6e9d6e073c55cc006e84805b571449a657",
+  "clean_working_tree_at_start": false,
+  "environment": {
+    "python_version": "3.11.16 (main, Aug 25 2026, 13:59:19) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26300-SP0",
+    "processor": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "packages": {
+      "pandas": "3.0.6",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "pytest": "9.1.1"
+    }
+  },
+  "mismatches": [],
+  "frozen_artifacts_count": 17,
+  "frozen_artifacts": {
+    "sprint11_23_source_freeze_11_23_1.json": {
+      "path": "research_outputs/sprint11_23_source_freeze_11_23_1.json",
+      "sha256": "9564cef6f4e51e970bd0ef7356f157160d89cab45fb977f5c6f57db611243de4",
+      "size_bytes": 3999,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true
+    },
+    "event_source_evidence_11_23_1.parquet": {
+      "path": "research_outputs/event_source_evidence_11_23_1.parquet",
+      "sha256": "8198aee7dd939dd5c20002eb9312ae988bde47257ddfaa02b977c19a59cf798c",
+      "size_bytes": 56560,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true,
+      "rows": 237,
+      "columns": 24,
+      "column_names": [
+        "event_id",
+        "event_category",
+        "event_name",
+        "scheduled_release_at_utc",
+        "official_published_at_utc",
+        "first_verified_public_at_utc",
+        "research_available_at_utc",
+        "primary_source_url",
+        "source_document_url",
+        "source_document_sha256",
+        "source_document_retrieved_at_utc",
+        "source_document_verified",
+        "publication_timestamp_evidence",
+        "publication_timestamp_evidence_url",
+        "publication_timestamp_uncertainty_seconds",
+        "actual_value",
+        "actual_value_source",
+        "release_vintage",
+        "consensus_forecast_value",
+        "consensus_source_url",
+        "consensus_published_at_utc",
+        "consensus_vintage_verified",
+        "verification_status",
+        "rejection_or_quarantine_reason"
+      ]
+    },
+    "source_authenticity_audit_11_23_1.json": {
+      "path": "research_outputs/source_authenticity_audit_11_23_1.json",
+      "sha256": "98a706d83af07103c04a6a1cd706c720937bda2f0a841617df5b40540ac50f3c",
+      "size_bytes": 1496,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true
+    },
+    "source_evidence_inventory_11_23_1.json": {
+      "path": "research_outputs/source_evidence_inventory_11_23_1.json",
+      "sha256": "34daf2bd27b6ed895a36de2d79ab58a03dd383141b43e33dd496d8805852f31b",
+      "size_bytes": 2146,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true
+    },
+    "canonical_event_verification_11_23_1.parquet": {
+      "path": "research_outputs/canonical_event_verification_11_23_1.parquet",
+      "sha256": "3133aefefc534a104f7c4644eadb18eda8113fee9f393c39ad2cb57a798321a0",
+      "size_bytes": 58267,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true,
+      "rows": 237,
+      "columns": 26,
+      "column_names": [
+        "event_id",
+        "event_category",
+        "event_name",
+        "scheduled_release_at_utc",
+        "official_published_at_utc",
+        "first_verified_public_at_utc",
+        "research_available_at_utc",
+        "primary_source_url",
+        "source_document_url",
+        "source_document_sha256",
+        "source_document_retrieved_at_utc",
+        "source_document_verified",
+        "publication_timestamp_evidence",
+        "publication_timestamp_evidence_url",
+        "publication_timestamp_uncertainty_seconds",
+        "actual_value",
+        "actual_value_source",
+        "release_vintage",
+        "consensus_forecast_value",
+        "consensus_source_url",
+        "consensus_published_at_utc",
+        "consensus_vintage_verified",
+        "verification_status",
+        "rejection_or_quarantine_reason",
+        "canonical_verification_status",
+        "canonical_quarantine_reason"
+      ]
+    },
+    "verification_discrepancy_closure_11_23_1.json": {
+      "path": "research_outputs/verification_discrepancy_closure_11_23_1.json",
+      "sha256": "169296daeda06a881f621cc4c721c28c33503336897e4d535fb78e22af5c6566",
+      "size_bytes": 3261,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true
+    },
+    "consensus_vintage_audit_11_23_1.parquet": {
+      "path": "research_outputs/consensus_vintage_audit_11_23_1.parquet",
+      "sha256": "c2eb43142de421bc4efb2af869e8cd42b0953d78404202f6a1fbb697766033fc",
+      "size_bytes": 16287,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true,
+      "rows": 237,
+      "columns": 12,
+      "column_names": [
+        "event_id",
+        "event_category",
+        "event_name",
+        "official_published_at_utc",
+        "actual_value",
+        "claimed_consensus_value",
+        "claimed_consensus_source",
+        "contemporaneous_survey_wire_archived",
+        "consensus_vintage_verified",
+        "causally_eligible_consensus_value",
+        "consensus_verification_status",
+        "quarantine_reason"
+      ]
+    },
+    "consensus_verification_summary_11_23_1.json": {
+      "path": "research_outputs/consensus_verification_summary_11_23_1.json",
+      "sha256": "10b07ab5c7410e4ffc9f5807319d77bbdbfb6f1d4038e61a5b9d96d7c22576ed",
+      "size_bytes": 2608,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true
+    },
+    "causal_event_eligibility_11_23_1.parquet": {
+      "path": "research_outputs/causal_event_eligibility_11_23_1.parquet",
+      "sha256": "fdc8ae1e3fe470cb2967c482cbad9d1597d94a505eed1c606de7632908c59a9f",
+      "size_bytes": 22022,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true,
+      "rows": 237,
+      "columns": 15,
+      "column_names": [
+        "event_id",
+        "event_category",
+        "event_name",
+        "official_published_at_utc",
+        "timestamp_uncertainty_seconds",
+        "safe_access_time_utc",
+        "safe_candle_idx",
+        "safe_candle_open_utc",
+        "scheduled_known_in_advance",
+        "schedule_only_universe_eligible",
+        "schedule_only_role",
+        "post_pub_volatility_eligible",
+        "post_pub_directional_eligible",
+        "directional_quarantine_reason",
+        "intra_candle_close_leakage"
+      ]
+    },
+    "causal_availability_audit_11_23_1.json": {
+      "path": "research_outputs/causal_availability_audit_11_23_1.json",
+      "sha256": "62778a4863578fa3e80c990db5e8620b007598e048c857e084d4d1839cdc55aa",
+      "size_bytes": 1918,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true
+    },
+    "verified_event_reaction_ledger_11_23_1.parquet": {
+      "path": "research_outputs/verified_event_reaction_ledger_11_23_1.parquet",
+      "sha256": "ac5fc59338306e99371106e240476590bbd5d22ea03611ca78998fe3fde0bf73",
+      "size_bytes": 47736,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true,
+      "rows": 236,
+      "columns": 20,
+      "column_names": [
+        "event_id",
+        "event_category",
+        "event_name",
+        "safe_candle_idx",
+        "exec_open_price",
+        "ret_pre_15m_pct",
+        "ret_pre_1h_pct",
+        "ret_post_15m_pct",
+        "abs_ret_15m_pct",
+        "ret_post_1h_pct",
+        "abs_ret_1h_pct",
+        "ret_post_24h_pct",
+        "abs_ret_24h_pct",
+        "mfe_24h_pct",
+        "mae_24h_pct",
+        "realized_vol_24h_pct",
+        "relative_volume_1h",
+        "matched_control_abs_15m_pct",
+        "matched_control_abs_1h_pct",
+        "continuation_24h"
+      ]
+    },
+    "matched_event_controls_11_23_1.parquet": {
+      "path": "research_outputs/matched_event_controls_11_23_1.parquet",
+      "sha256": "aec487c578c6709a95103be5ec57e051192d62660518a56ea42a17ce4fb6f436",
+      "size_bytes": 17191,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true,
+      "rows": 231,
+      "columns": 8,
+      "column_names": [
+        "event_id",
+        "event_category",
+        "matched_control_candle_idx",
+        "matched_weeks_prior",
+        "control_abs_ret_15m_pct",
+        "control_abs_ret_1h_pct",
+        "control_realized_vol_24h_pct",
+        "volatility_match_distance"
+      ]
+    },
+    "event_study_revalidation_11_23_1.json": {
+      "path": "research_outputs/event_study_revalidation_11_23_1.json",
+      "sha256": "8952d102a6924e81c439d53a587f2b785bd926f9f3e0fdcd78f0f9f9119d1018",
+      "size_bytes": 1823,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true
+    },
+    "verified_macro_surprise_audit_11_23_1.json": {
+      "path": "research_outputs/verified_macro_surprise_audit_11_23_1.json",
+      "sha256": "e902710a3c33bcd3903a8372875b4a6be57b157e2eba8d416067942b4dbe72df",
+      "size_bytes": 3341,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true
+    },
+    "verified_session_interaction_audit_11_23_1.json": {
+      "path": "research_outputs/verified_session_interaction_audit_11_23_1.json",
+      "sha256": "6f51cc474817ce5bbda984dca87bdef26eec35a9b3a812960ab325a1d8d92695",
+      "size_bytes": 3609,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true
+    },
+    "research_report_11_23_1.md": {
+      "path": "research_outputs/research_report_11_23_1.md",
+      "sha256": "95f89a01e8d783e19d7058ddf19665cf835b0e92437f33fc2bb08dbdb04db8f2",
+      "size_bytes": 19112,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true
+    },
+    "reproducibility_manifest_11_23_1.json": {
+      "path": "research_outputs/reproducibility_manifest_11_23_1.json",
+      "sha256": "671d7c7a61623d50c5934295d332384d442d9d487d8fcc01377558cc5bbab515",
+      "size_bytes": 6440,
+      "mirror_identical": true,
+      "matches_11_23_1_manifest": true
+    }
+  }
+}

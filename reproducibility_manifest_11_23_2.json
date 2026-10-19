@@ -1,0 +1,70 @@
+{
+  "sprint": "11.23.2",
+  "name": "Evidence Integrity Hardening & Research Revalidation",
+  "base_commit": "c586cd6e9d6e073c55cc006e84805b571449a657",
+  "timestamp_utc": "2026-10-19T23:00:00Z",
+  "status_summary": {
+    "SPRINT_11_23_2_STATUS": "PASS",
+    "SOURCE_EVIDENCE_INTEGRITY": "PASS",
+    "POINT_IN_TIME_CAUSAL_SAFETY": "PASS",
+    "STATISTICAL_REPORT_CONSISTENCY": "PASS",
+    "CONTROL_MATCHING_VALIDATION": "PASS",
+    "REPRODUCIBILITY": "PASS",
+    "NEWS_CONDITIONED_EDGE": "NOT_ESTABLISHED",
+    "HISTORICAL_DATA_STATUS": "RESEARCH_CONTAMINATED",
+    "LIVE_TRADING": "PROHIBITED",
+    "OPERATOR_AUTHORIZATION": "NOT_GRANTED"
+  },
+  "deliverables_manifest": {
+    "sprint11_23_1_source_freeze_11_23_2.json": {
+      "sha256": "fd343c93a7ac82813adb48f09bc3080fdabddb43f4b3eec6befe73eaeee878db",
+      "size_bytes": 10154
+    },
+    "canonical_event_verification_11_23_2.parquet": {
+      "sha256": "6b71563af63119edeea955f5fca60927bac551534ede72a9f61b72cea6226aeb",
+      "size_bytes": 28838,
+      "rows": 237,
+      "columns": 21
+    },
+    "event_source_evidence_11_23_2.parquet": {
+      "sha256": "aab190cf965a59a2fbd12bccc1f4dffb2e0a4f7d3d9629c98979bca6eb039f65",
+      "size_bytes": 32571,
+      "rows": 237,
+      "columns": 22
+    },
+    "causal_event_eligibility_11_23_2.parquet": {
+      "sha256": "04ab2aeaadbabe87917fb3b710c0c0e1bb13ec0e345b9f8169e99d5c37974589",
+      "size_bytes": 24633,
+      "rows": 237,
+      "columns": 16
+    },
+    "verified_event_reaction_ledger_11_23_2.parquet": {
+      "sha256": "ab69aca8efcfb6d70794bd4687f00ce08737697f39568423dfe55f63c2eec033",
+      "size_bytes": 49376,
+      "rows": 236,
+      "columns": 20
+    },
+    "matched_event_controls_11_23_2.parquet": {
+      "sha256": "aec487c578c6709a95103be5ec57e051192d62660518a56ea42a17ce4fb6f436",
+      "size_bytes": 17191,
+      "rows": 231,
+      "columns": 8
+    },
+    "evidence_integrity_audit_11_23_2.json": {
+      "sha256": "5b1939fe4167eeff793e17f31df0346474f2cde2f7eec4655f01e9bf6042ba70",
+      "size_bytes": 1682
+    },
+    "causal_safety_audit_11_23_2.json": {
+      "sha256": "2cec58aa7b226b839a0ac1881d11a4e33393bc357d18d126735f2c88aa95ea49",
+      "size_bytes": 1142
+    },
+    "statistical_revalidation_11_23_2.json": {
+      "sha256": "3e34d0deefd1cddc1bb0473f4e64c45603acdeb9c39b9db4af05ac26948585ca",
+      "size_bytes": 9442
+    },
+    "research_report_11_23_2.md": {
+      "sha256": "26e9c32dc5de906b2b127acc8cb7be7034605aaaba701111f6fbf3f8103e3662",
+      "size_bytes": 10390
+    }
+  }
+}

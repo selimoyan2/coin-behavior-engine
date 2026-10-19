@@ -1,0 +1,239 @@
+{
+  "sprint": "11.23.2",
+  "phase": "3_AND_4_STATISTICAL_REVALIDATION_AND_MACRO_SURPRISE_AUDIT",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T22:30:00Z",
+  "market_data_continuity_audit": {
+    "total_5m_bars": 499376,
+    "start_time_utc": "2022-01-01T00:00:00.000",
+    "end_time_utc": "2026-09-30T23:55:00.000",
+    "non_5m_transitions": 1,
+    "continuity_pct": 99.9998,
+    "known_maintenance_windows": [
+      {
+        "timestamp_utc": "2023-03-24T11:30:00Z",
+        "duration_minutes": 85,
+        "event": "Binance Spot Engine Scheduled Maintenance"
+      }
+    ]
+  },
+  "event_control_matching_quality": {
+    "total_events_recomputed": 236,
+    "matched_controls_found": 231,
+    "unmatched_events": 5,
+    "control_window_overlap_count": 0,
+    "control_window_overlap_rate_pct": 0.0,
+    "matching_rules": "1-4 weeks prior, identical weekday/time, \u00b124h event-free mask, volatility-matched"
+  },
+  "statistical_revalidation_metrics": {
+    "full_sample": {
+      "n_pairs": 231,
+      "mean_event_15m_abs_return_pct": 0.357,
+      "mean_matched_control_15m_abs_return_pct": 0.213,
+      "volatility_expansion_multiplier": 1.67,
+      "bootstrap_95_ci": [
+        1.35,
+        2.08
+      ],
+      "paired_t_statistic": 4.379,
+      "paired_t_p_value": 1.8116674963404216e-05,
+      "permutation_samples": 10000,
+      "permutation_exceedances": 0,
+      "permutation_p_value": 9.999000099990002e-05,
+      "statistically_significant_01": true
+    },
+    "cluster_heads_sensitivity": {
+      "n_pairs": 200,
+      "mean_event_15m_abs_return_pct": 0.372,
+      "mean_matched_control_15m_abs_return_pct": 0.205,
+      "volatility_expansion_multiplier": 1.82,
+      "bootstrap_95_ci": [
+        1.45,
+        2.26
+      ],
+      "paired_t_statistic": 4.605,
+      "paired_t_p_value": 7.34547334245359e-06,
+      "permutation_samples": 5000,
+      "permutation_exceedances": 0,
+      "permutation_p_value": 0.0001999600079984003,
+      "statistically_significant_01": true
+    },
+    "isolated_singletons_sensitivity": {
+      "n_pairs": 175,
+      "mean_event_15m_abs_return_pct": 0.356,
+      "mean_matched_control_15m_abs_return_pct": 0.212,
+      "volatility_expansion_multiplier": 1.68,
+      "bootstrap_95_ci": [
+        1.33,
+        2.11
+      ],
+      "paired_t_statistic": 4.021,
+      "paired_t_p_value": 8.637809454284357e-05,
+      "permutation_samples": 5000,
+      "permutation_exceedances": 0,
+      "permutation_p_value": 0.0001999600079984003,
+      "statistically_significant_01": true
+    },
+    "directional_behavior": {
+      "continuation_rate_24h_pct": 56.8,
+      "reversal_rate_24h_pct": 43.2,
+      "mean_relative_volume_1h": 2.54
+    }
+  },
+  "event_clustering_summary": {
+    "total_events": 231,
+    "total_clusters": 200,
+    "isolated_singleton_clusters": 175,
+    "multi_event_clusters": 25
+  },
+  "macro_surprise_audit": {
+    "indicator_evaluations": {
+      "US_INFLATION": {
+        "total_events": 102,
+        "claimed_consensus_count": 102,
+        "verified_contemporaneous_consensus_count": 0,
+        "consensus_provenance_status": "CONSENSUS_UNVERIFIED",
+        "retrospective_analysis": {
+          "r_squared_15m": 0.0254,
+          "raw_p_value_15m": 0.1098,
+          "r_squared_24h": 0.0,
+          "raw_p_value_24h": 0.9783,
+          "naive_directional_concordance_pct": 29.4,
+          "economic_aligned_concordance_pct": 29.4,
+          "baseline_random_walk_hit_rate_pct": 50.0
+        },
+        "audit_verdict": "INSUFFICIENT_VERIFIED_DATA_FOR_CAUSAL_SURPRISE_SIGNALS"
+      },
+      "US_LABOR": {
+        "total_events": 56,
+        "claimed_consensus_count": 56,
+        "verified_contemporaneous_consensus_count": 0,
+        "consensus_provenance_status": "CONSENSUS_UNVERIFIED",
+        "retrospective_analysis": {
+          "r_squared_15m": 0.1055,
+          "raw_p_value_15m": 0.0146,
+          "r_squared_24h": 0.0233,
+          "raw_p_value_24h": 0.261,
+          "naive_directional_concordance_pct": 32.1,
+          "economic_aligned_concordance_pct": 32.1,
+          "baseline_random_walk_hit_rate_pct": 50.0
+        },
+        "audit_verdict": "INSUFFICIENT_VERIFIED_DATA_FOR_CAUSAL_SURPRISE_SIGNALS"
+      },
+      "US_MONETARY_POLICY": {
+        "total_events": 38,
+        "claimed_consensus_count": 38,
+        "verified_contemporaneous_consensus_count": 0,
+        "consensus_provenance_status": "CONSENSUS_UNVERIFIED",
+        "retrospective_analysis": {
+          "r_squared_15m": 0.0,
+          "raw_p_value_15m": 1.0,
+          "r_squared_24h": 0.0,
+          "raw_p_value_24h": 1.0,
+          "naive_directional_concordance_pct": 50.0,
+          "economic_aligned_concordance_pct": 50.0,
+          "baseline_random_walk_hit_rate_pct": 50.0
+        },
+        "audit_verdict": "INSUFFICIENT_VERIFIED_DATA_FOR_CAUSAL_SURPRISE_SIGNALS"
+      },
+      "US_GROWTH": {
+        "total_events": 19,
+        "claimed_consensus_count": 19,
+        "verified_contemporaneous_consensus_count": 0,
+        "consensus_provenance_status": "CONSENSUS_UNVERIFIED",
+        "retrospective_analysis": {
+          "r_squared_15m": 0.0105,
+          "raw_p_value_15m": 0.6761,
+          "r_squared_24h": 0.0148,
+          "raw_p_value_24h": 0.62,
+          "naive_directional_concordance_pct": 31.6,
+          "economic_aligned_concordance_pct": 31.6,
+          "baseline_random_walk_hit_rate_pct": 50.0
+        },
+        "audit_verdict": "INSUFFICIENT_VERIFIED_DATA_FOR_CAUSAL_SURPRISE_SIGNALS"
+      }
+    },
+    "hypothesis_families": {
+      "family_1_macro_surprise_to_15m_return": {
+        "family_description": "OLS linear regression of macro surprise onto BTC 15m return",
+        "alpha_fdr": 0.05,
+        "hypotheses_evaluated": 4,
+        "statistically_significant_count": 0,
+        "results": {
+          "US_LABOR": {
+            "rank": 1,
+            "raw_p_value": 0.01458,
+            "critical_value_fdr_05": 0.0125,
+            "adjusted_p_value": 0.05834,
+            "significant_at_fdr_05": false
+          },
+          "US_INFLATION": {
+            "rank": 2,
+            "raw_p_value": 0.10977,
+            "critical_value_fdr_05": 0.025,
+            "adjusted_p_value": 0.21953,
+            "significant_at_fdr_05": false
+          },
+          "US_GROWTH": {
+            "rank": 3,
+            "raw_p_value": 0.6761,
+            "critical_value_fdr_05": 0.0375,
+            "adjusted_p_value": 0.90147,
+            "significant_at_fdr_05": false
+          },
+          "US_MONETARY_POLICY": {
+            "rank": 4,
+            "raw_p_value": 1.0,
+            "critical_value_fdr_05": 0.05,
+            "adjusted_p_value": 1.0,
+            "significant_at_fdr_05": false
+          }
+        }
+      },
+      "family_2_macro_surprise_to_24h_return": {
+        "family_description": "OLS linear regression of macro surprise onto BTC 24h return",
+        "alpha_fdr": 0.05,
+        "hypotheses_evaluated": 4,
+        "statistically_significant_count": 0,
+        "results": {
+          "US_LABOR": {
+            "rank": 1,
+            "raw_p_value": 0.261,
+            "critical_value_fdr_05": 0.0125,
+            "adjusted_p_value": 1.0,
+            "significant_at_fdr_05": false
+          },
+          "US_GROWTH": {
+            "rank": 2,
+            "raw_p_value": 0.62001,
+            "critical_value_fdr_05": 0.025,
+            "adjusted_p_value": 1.0,
+            "significant_at_fdr_05": false
+          },
+          "US_INFLATION": {
+            "rank": 3,
+            "raw_p_value": 0.97835,
+            "critical_value_fdr_05": 0.0375,
+            "adjusted_p_value": 1.0,
+            "significant_at_fdr_05": false
+          },
+          "US_MONETARY_POLICY": {
+            "rank": 4,
+            "raw_p_value": 1.0,
+            "critical_value_fdr_05": 0.05,
+            "adjusted_p_value": 1.0,
+            "significant_at_fdr_05": false
+          }
+        }
+      }
+    }
+  },
+  "scientific_conclusions": [
+    "1. VOLATILITY EXPANSION REVALIDATED: Across 231 matched event-control pairs, announcements generate a statistically significant 15m absolute return (0.357% vs 0.213% matched controls, multiplier: 1.67x; 95% bootstrap CI: [1.35x, 2.08x]; permutation p = 0.000100).",
+    "2. CLUSTER SENSITIVITY ROBUST: Volatility expansion persists when restricted to cluster heads (1.82x, n=200, p = 0.000200) and strictly isolated events (1.68x, n=175, p = 0.000200).",
+    "3. WHIPSAW RISK AND ZERO DIRECTIONAL EDGE: High 24h reversal rate (43.2%) and near-zero retrospective R^2 (CPI 15m R^2 = 0.0254) confirm announcements induce two-way whipsaws without directional alpha.",
+    "4. FAMILY-WISE FDR SIGNALS ZERO DISCOVERIES: Zero macro surprise models achieved statistical significance after Benjamini-Hochberg FDR correction (FDR=0.05: 0 significant in 15m family, 0 significant in 24h family).",
+    "5. ACCURATE DIRECTIONAL REPORTING: Naive surprise sign concordances (29.4% for CPI, 32.1% for Labor) reflect inverse/noisy relationships and provide zero directional trade edge over a 50.0% coin flip baseline.",
+    "6. STRICT DEFENSIVE MANDATE: Historical events represent elevated volatility risk requiring defensive risk reduction, not speculative directional exposure."
+  ]
+}
