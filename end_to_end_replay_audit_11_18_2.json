@@ -1,0 +1,657 @@
+{
+  "sprint": "11.18.2",
+  "phase": "4_END_TO_END_CAUSAL_REPLAY",
+  "status": "END_TO_END_CAUSAL_REPLAY_PASS",
+  "timestamp_utc": "2026-10-19T11:15:00Z",
+  "replay_engine_version": "1.1.0",
+  "total_events_replayed": 3,
+  "events": {
+    "REAL-EVT-20220610-BLS-CPI": {
+      "event_name": "BLS CPI May 2022 Release",
+      "market_data_source": "data/binance_spot_multiyear/5m/BTCUSDT-5m-2022-06.parquet",
+      "total_moments_evaluated": 5,
+      "moments": [
+        {
+          "moment_key": "T_minus_10m",
+          "timestamp_utc": "2022-06-10T12:20:00Z",
+          "description": "Pre-event baseline (10m prior to release)",
+          "observed_candles": 2740,
+          "last_closed_candle": {
+            "open_time": 1654863300000,
+            "close_time": 1654863599999,
+            "datetime_utc": "2022-06-10 12:15:00+00:00",
+            "open": 30119.5,
+            "high": 30129.87,
+            "low": 30069.52,
+            "close": 30079.56,
+            "volume": 143.28784000000002
+          },
+          "active_sessions": [
+            "LSE"
+          ],
+          "session_windows": {
+            "TSE": "OFF_SESSION",
+            "HKEX": "OFF_SESSION",
+            "LSE": "OFF_SESSION",
+            "NYSE": "OFF_SESSION"
+          },
+          "conservative_mode": {
+            "visible_events": [],
+            "uncertain_events": [],
+            "state_hash_sha256": "54c66a54242b0e9527c6d7ba6e4688156e3267823bc9d400aeb2c30ae47e58b1"
+          },
+          "eager_mode": {
+            "visible_events": [],
+            "state_hash_sha256": "54c66a54242b0e9527c6d7ba6e4688156e3267823bc9d400aeb2c30ae47e58b1"
+          },
+          "uncertainty_divergence": false
+        },
+        {
+          "moment_key": "T_plus_1m",
+          "timestamp_utc": "2022-06-10T12:31:00Z",
+          "description": "Inside uncertainty interval [15s, 120s]",
+          "observed_candles": 2742,
+          "last_closed_candle": {
+            "open_time": 1654863900000,
+            "close_time": 1654864199999,
+            "datetime_utc": "2022-06-10 12:25:00+00:00",
+            "open": 30148.74,
+            "high": 30184.4,
+            "low": 30086.61,
+            "close": 30106.32,
+            "volume": 236.5838
+          },
+          "active_sessions": [
+            "LSE"
+          ],
+          "session_windows": {
+            "TSE": "OFF_SESSION",
+            "HKEX": "OFF_SESSION",
+            "LSE": "OFF_SESSION",
+            "NYSE": "PRE_OPEN_60M"
+          },
+          "conservative_mode": {
+            "visible_events": [],
+            "uncertain_events": [
+              "REAL-EVT-20220610-BLS-CPI"
+            ],
+            "state_hash_sha256": "36e24c43d734d45231030382a1c1cd7625f36fa522fc7e8f731204b392632279"
+          },
+          "eager_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI"
+            ],
+            "state_hash_sha256": "3eea5223a318de8d077d79ab280248f4ffc861d4d2875037b8c2c2b91c60a827"
+          },
+          "uncertainty_divergence": true
+        },
+        {
+          "moment_key": "T_plus_5m",
+          "timestamp_utc": "2022-06-10T12:35:00Z",
+          "description": "First closed post-release 5m candle",
+          "observed_candles": 2743,
+          "last_closed_candle": {
+            "open_time": 1654864200000,
+            "close_time": 1654864499999,
+            "datetime_utc": "2022-06-10 12:30:00+00:00",
+            "open": 30106.32,
+            "high": 30106.33,
+            "low": 29501.0,
+            "close": 29553.89,
+            "volume": 3909.46155
+          },
+          "active_sessions": [
+            "LSE"
+          ],
+          "session_windows": {
+            "TSE": "OFF_SESSION",
+            "HKEX": "OFF_SESSION",
+            "LSE": "OFF_SESSION",
+            "NYSE": "PRE_OPEN_60M"
+          },
+          "conservative_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI"
+            ],
+            "uncertain_events": [],
+            "state_hash_sha256": "c090d763f912a13dd35117d51da6798d48a2dd46087358ae3930a38e6ca8167c"
+          },
+          "eager_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI"
+            ],
+            "state_hash_sha256": "c090d763f912a13dd35117d51da6798d48a2dd46087358ae3930a38e6ca8167c"
+          },
+          "uncertainty_divergence": false
+        },
+        {
+          "moment_key": "T_plus_10m",
+          "timestamp_utc": "2022-06-10T12:40:00Z",
+          "description": "Second closed post-release 5m candle",
+          "observed_candles": 2744,
+          "last_closed_candle": {
+            "open_time": 1654864500000,
+            "close_time": 1654864799999,
+            "datetime_utc": "2022-06-10 12:35:00+00:00",
+            "open": 29553.89,
+            "high": 29842.1,
+            "low": 29505.53,
+            "close": 29735.33,
+            "volume": 1150.11335
+          },
+          "active_sessions": [
+            "LSE"
+          ],
+          "session_windows": {
+            "TSE": "OFF_SESSION",
+            "HKEX": "OFF_SESSION",
+            "LSE": "OFF_SESSION",
+            "NYSE": "PRE_OPEN_60M"
+          },
+          "conservative_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI"
+            ],
+            "uncertain_events": [],
+            "state_hash_sha256": "cf0c7fd7787b9aeea9586168eb3d9ac2996fe1430e694fd9a3e74944a89f3ba2"
+          },
+          "eager_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI"
+            ],
+            "state_hash_sha256": "cf0c7fd7787b9aeea9586168eb3d9ac2996fe1430e694fd9a3e74944a89f3ba2"
+          },
+          "uncertainty_divergence": false
+        },
+        {
+          "moment_key": "T_plus_1h",
+          "timestamp_utc": "2022-06-10T13:30:00Z",
+          "description": "One hour post-release market equilibrium",
+          "observed_candles": 2754,
+          "last_closed_candle": {
+            "open_time": 1654867500000,
+            "close_time": 1654867799999,
+            "datetime_utc": "2022-06-10 13:25:00+00:00",
+            "open": 29561.19,
+            "high": 29599.43,
+            "low": 29304.03,
+            "close": 29449.16,
+            "volume": 1965.2658099999999
+          },
+          "active_sessions": [
+            "LSE",
+            "NYSE"
+          ],
+          "session_windows": {
+            "TSE": "OFF_SESSION",
+            "HKEX": "OFF_SESSION",
+            "LSE": "OFF_SESSION",
+            "NYSE": "POST_OPEN_10M"
+          },
+          "conservative_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI"
+            ],
+            "uncertain_events": [],
+            "state_hash_sha256": "593207d229914c0de5b67e536a13f336c02a4327119cb075dec6670d986de59a"
+          },
+          "eager_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI"
+            ],
+            "state_hash_sha256": "593207d229914c0de5b67e536a13f336c02a4327119cb075dec6670d986de59a"
+          },
+          "uncertainty_divergence": false
+        }
+      ],
+      "verification_invariants": {
+        "repeatability_verified": true,
+        "bidirectional_navigation_invariance": true,
+        "future_mutation_invariance": true,
+        "uncertainty_mode_divergence_verified": true
+      }
+    },
+    "REAL-EVT-20220615-FOMC-STATEMENT": {
+      "event_name": "FOMC 75 bps Rate Hike Statement",
+      "market_data_source": "data/binance_spot_multiyear/5m/BTCUSDT-5m-2022-06.parquet",
+      "total_moments_evaluated": 5,
+      "moments": [
+        {
+          "moment_key": "T_minus_10m",
+          "timestamp_utc": "2022-06-15T17:50:00Z",
+          "description": "Pre-event baseline (10m prior to statement)",
+          "observed_candles": 4246,
+          "last_closed_candle": {
+            "open_time": 1655315100000,
+            "close_time": 1655315399999,
+            "datetime_utc": "2022-06-15 17:45:00+00:00",
+            "open": 20730.01,
+            "high": 20814.17,
+            "low": 20685.1,
+            "close": 20701.23,
+            "volume": 514.51518
+          },
+          "active_sessions": [
+            "NYSE"
+          ],
+          "session_windows": {
+            "TSE": "OFF_SESSION",
+            "HKEX": "OFF_SESSION",
+            "LSE": "OFF_SESSION",
+            "NYSE": "OFF_SESSION"
+          },
+          "conservative_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI"
+            ],
+            "uncertain_events": [],
+            "state_hash_sha256": "e5c7235ac881ea5542460e407d5029806bedab13c926f4e65fc58a4fded34846"
+          },
+          "eager_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI"
+            ],
+            "state_hash_sha256": "e5c7235ac881ea5542460e407d5029806bedab13c926f4e65fc58a4fded34846"
+          },
+          "uncertainty_divergence": false
+        },
+        {
+          "moment_key": "T_plus_1m",
+          "timestamp_utc": "2022-06-15T18:01:00Z",
+          "description": "Inside uncertainty interval [10s, 90s]",
+          "observed_candles": 4248,
+          "last_closed_candle": {
+            "open_time": 1655315700000,
+            "close_time": 1655315999999,
+            "datetime_utc": "2022-06-15 17:55:00+00:00",
+            "open": 21256.75,
+            "high": 21507.04,
+            "low": 20924.94,
+            "close": 21117.26,
+            "volume": 1625.8357700000001
+          },
+          "active_sessions": [
+            "NYSE"
+          ],
+          "session_windows": {
+            "TSE": "OFF_SESSION",
+            "HKEX": "OFF_SESSION",
+            "LSE": "OFF_SESSION",
+            "NYSE": "OFF_SESSION"
+          },
+          "conservative_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI"
+            ],
+            "uncertain_events": [
+              "REAL-EVT-20220615-FOMC-STATEMENT"
+            ],
+            "state_hash_sha256": "6beea43d2c2d58a6ab5ac7c4a65f75647b6901c7f1189ea46db09bb19ec4f3a7"
+          },
+          "eager_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT"
+            ],
+            "state_hash_sha256": "9b25458d26ef6d1683b33a0c94265c04d42af89fecb5f430277b6d9d0fe39cd6"
+          },
+          "uncertainty_divergence": true
+        },
+        {
+          "moment_key": "T_plus_5m",
+          "timestamp_utc": "2022-06-15T18:05:00Z",
+          "description": "First closed post-release 5m candle",
+          "observed_candles": 4249,
+          "last_closed_candle": {
+            "open_time": 1655316000000,
+            "close_time": 1655316299999,
+            "datetime_utc": "2022-06-15 18:00:00+00:00",
+            "open": 21117.26,
+            "high": 21557.95,
+            "low": 20563.79,
+            "close": 20730.11,
+            "volume": 4310.9934
+          },
+          "active_sessions": [
+            "NYSE"
+          ],
+          "session_windows": {
+            "TSE": "OFF_SESSION",
+            "HKEX": "OFF_SESSION",
+            "LSE": "OFF_SESSION",
+            "NYSE": "OFF_SESSION"
+          },
+          "conservative_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT"
+            ],
+            "uncertain_events": [],
+            "state_hash_sha256": "aab8b091d83074e752ff5f83d4c14a2350d67cbb67c49b6aefcf00ad0bea31ef"
+          },
+          "eager_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT"
+            ],
+            "state_hash_sha256": "aab8b091d83074e752ff5f83d4c14a2350d67cbb67c49b6aefcf00ad0bea31ef"
+          },
+          "uncertainty_divergence": false
+        },
+        {
+          "moment_key": "T_plus_10m",
+          "timestamp_utc": "2022-06-15T18:10:00Z",
+          "description": "Second closed post-release 5m candle",
+          "observed_candles": 4250,
+          "last_closed_candle": {
+            "open_time": 1655316300000,
+            "close_time": 1655316599999,
+            "datetime_utc": "2022-06-15 18:05:00+00:00",
+            "open": 20731.83,
+            "high": 20788.05,
+            "low": 20300.0,
+            "close": 20420.58,
+            "volume": 2874.71905
+          },
+          "active_sessions": [
+            "NYSE"
+          ],
+          "session_windows": {
+            "TSE": "OFF_SESSION",
+            "HKEX": "OFF_SESSION",
+            "LSE": "OFF_SESSION",
+            "NYSE": "OFF_SESSION"
+          },
+          "conservative_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT"
+            ],
+            "uncertain_events": [],
+            "state_hash_sha256": "5712dda45749815059ae231641211492abf875d97947f9fc20f27a377fd4fca7"
+          },
+          "eager_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT"
+            ],
+            "state_hash_sha256": "5712dda45749815059ae231641211492abf875d97947f9fc20f27a377fd4fca7"
+          },
+          "uncertainty_divergence": false
+        },
+        {
+          "moment_key": "T_plus_1h",
+          "timestamp_utc": "2022-06-15T19:00:00Z",
+          "description": "One hour post-release (post-press conference)",
+          "observed_candles": 4260,
+          "last_closed_candle": {
+            "open_time": 1655319300000,
+            "close_time": 1655319599999,
+            "datetime_utc": "2022-06-15 18:55:00+00:00",
+            "open": 21537.93,
+            "high": 21750.0,
+            "low": 21372.71,
+            "close": 21540.07,
+            "volume": 1432.6513
+          },
+          "active_sessions": [
+            "NYSE"
+          ],
+          "session_windows": {
+            "TSE": "OFF_SESSION",
+            "HKEX": "OFF_SESSION",
+            "LSE": "OFF_SESSION",
+            "NYSE": "OFF_SESSION"
+          },
+          "conservative_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT"
+            ],
+            "uncertain_events": [],
+            "state_hash_sha256": "6a54a634372a8764694a7f96a1191a848372a21014a3265d89ead265d8279214"
+          },
+          "eager_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT"
+            ],
+            "state_hash_sha256": "6a54a634372a8764694a7f96a1191a848372a21014a3265d89ead265d8279214"
+          },
+          "uncertainty_divergence": false
+        }
+      ],
+      "verification_invariants": {
+        "repeatability_verified": true,
+        "bidirectional_navigation_invariance": true,
+        "future_mutation_invariance": true,
+        "uncertainty_mode_divergence_verified": true
+      }
+    },
+    "REAL-EVT-20240110-SEC-ETF-APPROVAL": {
+      "event_name": "SEC Spot Bitcoin ETF Approval Order",
+      "market_data_source": "data/binance_spot_multiyear/5m/BTCUSDT-5m-2024-01.parquet",
+      "total_moments_evaluated": 5,
+      "moments": [
+        {
+          "moment_key": "T_minus_10m",
+          "timestamp_utc": "2024-01-10T20:35:00Z",
+          "description": "Pre-event baseline (10m prior to nominal approval)",
+          "observed_candles": 2839,
+          "last_closed_candle": {
+            "open_time": 1704918600000,
+            "close_time": 1704918899999,
+            "datetime_utc": "2024-01-10 20:30:00+00:00",
+            "open": 45752.54,
+            "high": 45907.01,
+            "low": 45736.73,
+            "close": 45856.35,
+            "volume": 302.89035
+          },
+          "active_sessions": [
+            "NYSE"
+          ],
+          "session_windows": {
+            "TSE": "OFF_SESSION",
+            "HKEX": "OFF_SESSION",
+            "LSE": "OFF_SESSION",
+            "NYSE": "OFF_SESSION"
+          },
+          "conservative_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT"
+            ],
+            "uncertain_events": [],
+            "state_hash_sha256": "16724b0fd5912b7bf8e767f1d8a8cd049f4f667852c94db5c35a23dae92a7fae"
+          },
+          "eager_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT"
+            ],
+            "state_hash_sha256": "16724b0fd5912b7bf8e767f1d8a8cd049f4f667852c94db5c35a23dae92a7fae"
+          },
+          "uncertainty_divergence": false
+        },
+        {
+          "moment_key": "T_plus_3m",
+          "timestamp_utc": "2024-01-10T20:48:00Z",
+          "description": "Inside uncertainty interval [60s, 420s] during SEC 404/503 spikes",
+          "observed_candles": 2841,
+          "last_closed_candle": {
+            "open_time": 1704919200000,
+            "close_time": 1704919499999,
+            "datetime_utc": "2024-01-10 20:40:00+00:00",
+            "open": 45882.4,
+            "high": 46254.01,
+            "low": 45000.0,
+            "close": 45479.73,
+            "volume": 1591.8409699999997
+          },
+          "active_sessions": [
+            "NYSE"
+          ],
+          "session_windows": {
+            "TSE": "OFF_SESSION",
+            "HKEX": "OFF_SESSION",
+            "LSE": "OFF_SESSION",
+            "NYSE": "OFF_SESSION"
+          },
+          "conservative_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT"
+            ],
+            "uncertain_events": [
+              "REAL-EVT-20240110-SEC-ETF-APPROVAL"
+            ],
+            "state_hash_sha256": "2d95c5b9453650ca7e696294f995cb97a328f4fb9be22f02be46f23f809c86fd"
+          },
+          "eager_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT",
+              "REAL-EVT-20240110-SEC-ETF-APPROVAL"
+            ],
+            "state_hash_sha256": "686353d5d1b60723cbc2c01a3bb9b0bd19239c159c7a1b084583490ebdafb626"
+          },
+          "uncertainty_divergence": true
+        },
+        {
+          "moment_key": "T_plus_10m",
+          "timestamp_utc": "2024-01-10T20:55:00Z",
+          "description": "First closed bar after CDN stabilization (20:52 UTC)",
+          "observed_candles": 2843,
+          "last_closed_candle": {
+            "open_time": 1704919800000,
+            "close_time": 1704920099999,
+            "datetime_utc": "2024-01-10 20:50:00+00:00",
+            "open": 45630.01,
+            "high": 45879.97,
+            "low": 45450.42,
+            "close": 45695.84,
+            "volume": 920.3785799999999
+          },
+          "active_sessions": [
+            "NYSE"
+          ],
+          "session_windows": {
+            "TSE": "OFF_SESSION",
+            "HKEX": "OFF_SESSION",
+            "LSE": "OFF_SESSION",
+            "NYSE": "OFF_SESSION"
+          },
+          "conservative_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT",
+              "REAL-EVT-20240110-SEC-ETF-APPROVAL"
+            ],
+            "uncertain_events": [],
+            "state_hash_sha256": "ecbfb2b50ab7feeb53f1f66843f75db46abac336d3fdba09dcfc9874f4aed3e7"
+          },
+          "eager_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT",
+              "REAL-EVT-20240110-SEC-ETF-APPROVAL"
+            ],
+            "state_hash_sha256": "ecbfb2b50ab7feeb53f1f66843f75db46abac336d3fdba09dcfc9874f4aed3e7"
+          },
+          "uncertainty_divergence": false
+        },
+        {
+          "moment_key": "T_plus_30m",
+          "timestamp_utc": "2024-01-10T21:15:00Z",
+          "description": "Thirty minutes post-approval",
+          "observed_candles": 2847,
+          "last_closed_candle": {
+            "open_time": 1704921000000,
+            "close_time": 1704921299999,
+            "datetime_utc": "2024-01-10 21:10:00+00:00",
+            "open": 46069.49,
+            "high": 46236.81,
+            "low": 46015.02,
+            "close": 46015.03,
+            "volume": 523.06338
+          },
+          "active_sessions": [],
+          "session_windows": {
+            "TSE": "OFF_SESSION",
+            "HKEX": "OFF_SESSION",
+            "LSE": "OFF_SESSION",
+            "NYSE": "OFF_SESSION"
+          },
+          "conservative_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT",
+              "REAL-EVT-20240110-SEC-ETF-APPROVAL"
+            ],
+            "uncertain_events": [],
+            "state_hash_sha256": "51ca72a77d1a81704d59380acce73583fd71a09b345d2b5168619d49544c3d01"
+          },
+          "eager_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT",
+              "REAL-EVT-20240110-SEC-ETF-APPROVAL"
+            ],
+            "state_hash_sha256": "51ca72a77d1a81704d59380acce73583fd71a09b345d2b5168619d49544c3d01"
+          },
+          "uncertainty_divergence": false
+        },
+        {
+          "moment_key": "T_plus_1h",
+          "timestamp_utc": "2024-01-10T21:45:00Z",
+          "description": "One hour post-approval market equilibrium",
+          "observed_candles": 2853,
+          "last_closed_candle": {
+            "open_time": 1704922800000,
+            "close_time": 1704923099999,
+            "datetime_utc": "2024-01-10 21:40:00+00:00",
+            "open": 45280.0,
+            "high": 45488.54,
+            "low": 45080.0,
+            "close": 45478.09,
+            "volume": 618.755
+          },
+          "active_sessions": [],
+          "session_windows": {
+            "TSE": "OFF_SESSION",
+            "HKEX": "OFF_SESSION",
+            "LSE": "OFF_SESSION",
+            "NYSE": "OFF_SESSION"
+          },
+          "conservative_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT",
+              "REAL-EVT-20240110-SEC-ETF-APPROVAL"
+            ],
+            "uncertain_events": [],
+            "state_hash_sha256": "b9b97ff0e1760eceb85514435b0a0d78af2a63499cc8aa10e60cf15a2c7ced1a"
+          },
+          "eager_mode": {
+            "visible_events": [
+              "REAL-EVT-20220610-BLS-CPI",
+              "REAL-EVT-20220615-FOMC-STATEMENT",
+              "REAL-EVT-20240110-SEC-ETF-APPROVAL"
+            ],
+            "state_hash_sha256": "b9b97ff0e1760eceb85514435b0a0d78af2a63499cc8aa10e60cf15a2c7ced1a"
+          },
+          "uncertainty_divergence": false
+        }
+      ],
+      "verification_invariants": {
+        "repeatability_verified": true,
+        "bidirectional_navigation_invariance": true,
+        "future_mutation_invariance": true,
+        "uncertainty_mode_divergence_verified": true
+      }
+    }
+  },
+  "all_verification_invariants_passed": true,
+  "overall_replay_status": "PASS"
+}

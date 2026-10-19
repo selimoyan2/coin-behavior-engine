@@ -47,5 +47,8 @@ data/derived/
 data/reports/test_*/
 data/shadow_v080/
 data/cache/
+data/binance_spot_multiyear/
+data/multiyear/
+
 
 

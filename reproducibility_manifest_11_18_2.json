@@ -1,0 +1,91 @@
+{
+  "sprint": "11.18.2",
+  "phase": "REPRODUCIBILITY_MANIFEST",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T11:30:00Z",
+  "base_commit": "4c2c35380e74c71bf1dbf6c139443a8c39b839e2",
+  "python_version": "3.11.16",
+  "platform": "Windows-10-10.0.26100-SP0",
+  "mandatory_status": {
+    "MULTI_YEAR_MARKET_DATA": "COMPLETE",
+    "LOCAL_MONTHS_VERIFIED": 57,
+    "CROSS_DATASET_RECONCILIATION": "PASS",
+    "EVENT_PROVENANCE": "VERIFIED",
+    "END_TO_END_CAUSAL_REPLAY": "PASS",
+    "LEARNING_DATASET_CONTRACT": "READY",
+    "MODEL_TRAINING": "NOT_STARTED",
+    "HISTORICAL_DATA_STATUS": "RESEARCH_CONTAMINATED",
+    "PROSPECTIVE_OBSERVATION": "NOT_STARTED",
+    "LIVE_TRADING": "PROHIBITED",
+    "OPERATOR_AUTHORIZATION": "NOT_GRANTED",
+    "SPRINT_STATUS": "PASS"
+  },
+  "dataset_summary": {
+    "symbol": "BTCUSDT",
+    "start_utc": "2022-01-01 00:00:00+00:00",
+    "end_utc": "2026-09-30 23:59:00+00:00",
+    "total_months": 57,
+    "total_1m_bars": 2496880,
+    "total_5m_bars": 499376,
+    "total_15m_bars": 166459,
+    "total_1h_bars": 41615,
+    "total_4h_bars": 10404,
+    "total_1d_bars": 1734,
+    "known_exchange_outages": [
+      {
+        "date": "2023-03-24",
+        "missing_bars_1m": 80,
+        "cause": "Binance spot matching engine paused trailing stop bug",
+        "synthetic_imputation": false
+      }
+    ]
+  },
+  "file_manifest": {
+    "scripts/build_multiyear_dataset_11_18_2.py": {
+      "size_bytes": 15576,
+      "sha256": "02604493843f86b7b9d6ae446cb0ba706ad00e65a8f1d7264a7a232ba22cca9c"
+    },
+    "scripts/reconcile_cross_datasets_11_18_2.py": {
+      "size_bytes": 10389,
+      "sha256": "cc70d1490c94355a81b61727cdc6b710c5ad2ca5e5f7ad1566a9f86d262cd482"
+    },
+    "scripts/audit_historical_event_evidence_11_18_2.py": {
+      "size_bytes": 19596,
+      "sha256": "857b96206fbf526f71f6c5e40605697e75d8385c7843760c1a61a4f430b3215f"
+    },
+    "scripts/audit_end_to_end_replay_11_18_2.py": {
+      "size_bytes": 11352,
+      "sha256": "0641c3da0c4a3483ba77ddbe27a1b63757bf8780c7dd284b9f30f6eb0d4e1e6b"
+    },
+    "research_outputs/multiyear_market_dataset_manifest_11_18_2.json": {
+      "size_bytes": 53726,
+      "sha256": "441ae85c6d8cc948c539e5899c1aee41e39a837a45f4e20e0042bfdad2d28a79"
+    },
+    "research_outputs/cross_dataset_reconciliation_11_18_2.json": {
+      "size_bytes": 2876,
+      "sha256": "9ecea3b44c508ee3a428043ed0cf8167d1b0f6ac349bf3513fd69e956c43c677"
+    },
+    "research_outputs/historical_event_evidence_audit_11_18_2.json": {
+      "size_bytes": 14620,
+      "sha256": "686bf1ff52c10b51c43fc4dde83a12e199af1462b47b7edd325d77b0f5d1dff3"
+    },
+    "research_outputs/end_to_end_replay_audit_11_18_2.json": {
+      "size_bytes": 23728,
+      "sha256": "456e914a3d20c429d33263ed6d1ec7eafd7447f072377f85f02b50966cedd858"
+    },
+    "research_outputs/analog_learning_dataset_contract_11_18_2.md": {
+      "size_bytes": 12729,
+      "sha256": "fd78f6d70084ef3d512bcc8c0e5eca1fc47dc5f47cc4bb0f1c60e64ff72096ac"
+    },
+    "tests/test_sprint11_18_2_multiyear_replay.py": {
+      "size_bytes": 12376,
+      "sha256": "f8ffe7205b93f450eb69f30af86a04963dbffecd9b6ec348963673ed106afd5d"
+    }
+  },
+  "test_execution_summary": {
+    "total_tests_executed": 34,
+    "total_tests_passed": 34,
+    "total_tests_failed": 0,
+    "duration_seconds": 0.77
+  }
+}
