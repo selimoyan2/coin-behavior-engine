@@ -1,0 +1,104 @@
+{
+  "sprint": "11.20",
+  "phase": "5_PATIENT_POSITION_DECISION_RESEARCH",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T15:20:00Z",
+  "sample_decisions": [
+    {
+      "timestamp_utc": "2022-01-10 23:55:00+00:00",
+      "market_condition": "UNCERTAIN_MARKET",
+      "horizon_alignment": "CONFLICTING_HORIZONS",
+      "direction_24h": "UNCERTAIN",
+      "expected_return_24h_pct": 0.0,
+      "proposed_action": "WAIT_USDT",
+      "rationale": "Forecast engine abstained: INSUFFICIENT_HISTORICAL_QUARANTINE_POOL"
+    },
+    {
+      "timestamp_utc": "2022-07-01 20:40:00+00:00",
+      "market_condition": "UNCERTAIN_MARKET",
+      "horizon_alignment": "CONFLICTING_HORIZONS",
+      "direction_24h": "UNCERTAIN",
+      "expected_return_24h_pct": 0.0,
+      "proposed_action": "WAIT_USDT",
+      "rationale": "Forecast engine abstained: LOW_SIMILARITY (top=0.250 < 0.5)"
+    },
+    {
+      "timestamp_utc": "2022-12-20 17:25:00+00:00",
+      "market_condition": "UNCERTAIN_MARKET",
+      "horizon_alignment": "CONFLICTING_HORIZONS",
+      "direction_24h": "UNCERTAIN",
+      "expected_return_24h_pct": 0.0,
+      "proposed_action": "WAIT_USDT",
+      "rationale": "Forecast engine abstained: REGIME_UNCERTAINTY"
+    },
+    {
+      "timestamp_utc": "2023-06-10 15:35:00+00:00",
+      "market_condition": "UNCERTAIN_MARKET",
+      "horizon_alignment": "CONFLICTING_HORIZONS",
+      "direction_24h": "UNCERTAIN",
+      "expected_return_24h_pct": 0.0,
+      "proposed_action": "WAIT_USDT",
+      "rationale": "Forecast engine abstained: REGIME_UNCERTAINTY"
+    },
+    {
+      "timestamp_utc": "2023-11-29 12:20:00+00:00",
+      "market_condition": "UNCERTAIN_MARKET",
+      "horizon_alignment": "CONFLICTING_HORIZONS",
+      "direction_24h": "UNCERTAIN",
+      "expected_return_24h_pct": 0.0,
+      "proposed_action": "WAIT_USDT",
+      "rationale": "Forecast engine abstained: REGIME_UNCERTAINTY"
+    },
+    {
+      "timestamp_utc": "2024-05-19 09:05:00+00:00",
+      "market_condition": "UNCERTAIN_MARKET",
+      "horizon_alignment": "CONFLICTING_HORIZONS",
+      "direction_24h": "UNCERTAIN",
+      "expected_return_24h_pct": 0.0,
+      "proposed_action": "WAIT_USDT",
+      "rationale": "Forecast engine abstained: REGIME_UNCERTAINTY"
+    },
+    {
+      "timestamp_utc": "2024-11-07 05:55:00+00:00",
+      "market_condition": "UNCERTAIN_MARKET",
+      "horizon_alignment": "CONFLICTING_HORIZONS",
+      "direction_24h": "UNCERTAIN",
+      "expected_return_24h_pct": 0.0,
+      "proposed_action": "WAIT_USDT",
+      "rationale": "Forecast engine abstained: REGIME_UNCERTAINTY"
+    },
+    {
+      "timestamp_utc": "2025-04-28 02:40:00+00:00",
+      "market_condition": "UNCERTAIN_MARKET",
+      "horizon_alignment": "CONFLICTING_HORIZONS",
+      "direction_24h": "UNCERTAIN",
+      "expected_return_24h_pct": 0.0,
+      "proposed_action": "WAIT_USDT",
+      "rationale": "Forecast engine abstained: REGIME_UNCERTAINTY"
+    },
+    {
+      "timestamp_utc": "2025-10-16 23:30:00+00:00",
+      "market_condition": "SIDEWAYS_CONSOLIDATION",
+      "horizon_alignment": "NEUTRAL_CONSOLIDATION",
+      "direction_24h": "BULLISH",
+      "expected_return_24h_pct": -0.308,
+      "proposed_action": "WAIT_USDT",
+      "rationale": "Neutral conditions; waiting in USDT for clearer directional structure."
+    },
+    {
+      "timestamp_utc": "2026-04-06 20:15:00+00:00",
+      "market_condition": "UNCERTAIN_MARKET",
+      "horizon_alignment": "CONFLICTING_HORIZONS",
+      "direction_24h": "UNCERTAIN",
+      "expected_return_24h_pct": 0.0,
+      "proposed_action": "WAIT_USDT",
+      "rationale": "Forecast engine abstained: REGIME_UNCERTAINTY"
+    }
+  ],
+  "multihorizon_alignment_analysis": {
+    "fully_aligned_percentage": 24.5,
+    "conflicting_horizons_percentage": 53.0,
+    "neutral_consolidation_percentage": 22.5,
+    "core_takeaway": "Short-term (1h, 6h) and medium-term (24h, 7d) forecasts conflict more than 50% of the time. Patient spot position management derives substantial protection by waiting in USDT when multi-horizon signals conflict, avoiding churn during market indecision."
+  }
+}

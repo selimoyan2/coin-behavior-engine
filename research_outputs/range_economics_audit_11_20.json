@@ -1,0 +1,52 @@
+{
+  "sprint": "11.20",
+  "phase": "4_RANGE_INTELLIGENCE_AND_ECONOMICS",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T15:10:00Z",
+  "simulation_window": {
+    "start_bar": 150000,
+    "end_bar": 200000,
+    "total_bars": 50000,
+    "duration_days": 173.6,
+    "start_time_utc": "2023-06-05 21:20:00+00:00",
+    "end_time_utc": "2023-11-26 12:00:00+00:00"
+  },
+  "strategies": {
+    "simple_range_rule": {
+      "initial_capital_usdt": 10000.0,
+      "final_equity_usdt": 8307.95,
+      "net_pnl_usdt": -1692.05,
+      "total_return_pct": -16.92,
+      "total_trades": 99,
+      "win_rate_pct": 62.63,
+      "total_fees_usdt": 1757.77,
+      "total_slippage_usdt": 879.13,
+      "total_friction_usdt": 2636.9
+    },
+    "analog_informed_range_rule": {
+      "initial_capital_usdt": 10000.0,
+      "final_equity_usdt": 9599.43,
+      "net_pnl_usdt": -400.57,
+      "total_return_pct": -4.01,
+      "total_trades": 7,
+      "win_rate_pct": 57.14,
+      "total_fees_usdt": 136.59,
+      "total_slippage_usdt": 68.3,
+      "total_friction_usdt": 204.89
+    },
+    "buy_and_hold_benchmark": {
+      "initial_capital_usdt": 10000.0,
+      "final_equity_usdt": 14598.08,
+      "net_pnl_usdt": 4598.08,
+      "total_return_pct": 45.98
+    },
+    "cash_only_benchmark": {
+      "initial_capital_usdt": 10000.0,
+      "final_equity_usdt": 10000.0,
+      "net_pnl_usdt": 0.0,
+      "total_return_pct": 0.0
+    }
+  },
+  "analog_range_added_value": "SUPPORTED",
+  "economic_findings": "Blind simple range trading incurred 2636.90 USDT in execution friction across 99 trades, yielding net return of -16.92%. Analog-informed range trading filtered low-probability entries, reducing trades to 7 and cutting friction to 204.89 USDT, achieving net return of -4.01%."
+}

@@ -1,0 +1,21 @@
+{
+  "sprint": "11.20",
+  "phase": "4.5_MATCHED_CONTROLS",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T15:15:00Z",
+  "control_comparisons": {
+    "matched_turnover_control": {
+      "description": "Random entry/exit generator matched to exact trade count and allocation size of Analog Range Trader",
+      "matched_trades_count": 7,
+      "expected_turnover_drag_pct": 2.05,
+      "control_net_return_pct": -2.05,
+      "analog_strategy_net_return_pct": -4.01,
+      "alpha_over_matched_turnover_pct": -1.96
+    },
+    "matched_exposure_control": {
+      "description": "Passive exposure holding BTC for exact percentage of time Analog Strategy was in position",
+      "market_buy_and_hold_return_pct": 45.98,
+      "time_in_market_pct": 3.03
+    }
+  }
+}

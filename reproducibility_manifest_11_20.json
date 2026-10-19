@@ -1,0 +1,72 @@
+{
+  "sprint": "11.20",
+  "phase": "7_REPRODUCIBILITY_MANIFEST",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T15:25:00Z",
+  "artifacts": {
+    "scripts/reconcile_range_metrics_11_20.py": {
+      "sha256": "9a8d3cc379ff133f4efc89c6d240e248afe3ae1543d36ee1a62ef139d108f5a2",
+      "size_bytes": 9191
+    },
+    "scripts/run_large_scale_analog_audit_11_20.py": {
+      "sha256": "6ea6fe7df9d998e7654634f705e407dc81116933042b12246a0c6666cb3a5a4d",
+      "size_bytes": 26248
+    },
+    "src/coin_behavior_engine/analogs/similarity_engine.py": {
+      "sha256": "b07ef391d66d8bc05bb422a4ba37855909113d1b4894920ef029715d73185105",
+      "size_bytes": 12901
+    },
+    "src/coin_behavior_engine/analogs/range_trader.py": {
+      "sha256": "342966756935a7d459c072c2aff1263fd166b5a7f668f476240e461b26851c82",
+      "size_bytes": 12177
+    },
+    "src/coin_behavior_engine/analogs/patient_decision.py": {
+      "sha256": "f3bd6fd576d6da2eeb3352e55f7769cecec5897d914beb45080d1bef3abbf690",
+      "size_bytes": 6512
+    },
+    "tests/test_sprint11_20_large_scale_analogs.py": {
+      "sha256": "655284e0a4af756b7595433a6a236f76e7507d0de354b31844298d82034fca9b",
+      "size_bytes": 9231
+    },
+    "research_outputs/range_metric_reconciliation_11_20.json": {
+      "sha256": "c9b8e451a9be94f3091503553c5a0fd59a49eb5dba1cfa9e15d9e18f3171247e",
+      "size_bytes": 2124
+    },
+    "research_outputs/multihorizon_skill_audit_11_20.json": {
+      "sha256": "26d1d8714275b506206941af7d2ac74eccf5c563fc7297e6144056ff6064dad6",
+      "size_bytes": 3513
+    },
+    "research_outputs/calibration_and_abstention_audit_11_20.json": {
+      "sha256": "3adc87e82916db1fc3308f75d672b2a5d937e5b0490e9c2ae355209cc8a7dd66",
+      "size_bytes": 4394
+    },
+    "research_outputs/range_economics_audit_11_20.json": {
+      "sha256": "39042715ceeabaecee96b0b7815d462d4591afdcfacead82e965679cd0837e51",
+      "size_bytes": 1805
+    },
+    "research_outputs/matched_controls_11_20.json": {
+      "sha256": "47cbfb99112dd46ac2a031b0fef921852015f14b35684190619e29351ce369c6",
+      "size_bytes": 780
+    },
+    "research_outputs/patient_decision_research_11_20.json": {
+      "sha256": "94deffc73483b7c7208c75017e152621eb3d9a4028e0be80fc879d0b67731445",
+      "size_bytes": 4195
+    },
+    "research_outputs/news_coverage_requirements_11_20.md": {
+      "sha256": "de9dda0d7c1586a68621fd9eea101bd834a742c17bfe4cf05a31130fd9cc06f0",
+      "size_bytes": 2332
+    },
+    "research_outputs/research_report_11_20.md": {
+      "sha256": "d8d30eb977e301e1fb06b0608611ab48b0d87f5cff52af7d001f3fedf3d8c50c",
+      "size_bytes": 13287
+    },
+    "research_outputs/forecast_evaluation_ledger_11_20.parquet": {
+      "sha256": "75ce425d27147d35538439e6f5be270034c1d24cfc184320370a1e120265fb37",
+      "size_bytes": 476925
+    },
+    "research_outputs/range_trade_ledger_11_20.parquet": {
+      "sha256": "c0c353baf3664cfe8bfb7da8ef2f0b70e01801dea31100947d4b8efa266313f4",
+      "size_bytes": 29628
+    }
+  }
+}

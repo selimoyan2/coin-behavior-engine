@@ -1,4 +1,4 @@
-"""Causal Historical Analog Retrieval Engine for Sprint 11.19.
+"""Causal Historical Analog Retrieval Engine for Sprint 11.20.
 
 Implements causal nearest-neighbor pattern matching:
 1. Strict Forward Outcome Quarantine: Candidate c is eligible if and only if
@@ -7,13 +7,12 @@ Implements causal nearest-neighbor pattern matching:
 2. Temporal Exclusion & Clustering: Enforces a minimum temporal separation
    (e.g., 288 bars / 24h) between candidate analogs to eliminate auto-correlated clusters.
 3. Volatility-Normalized Distance: Weighted Euclidean distance scaled by feature variance.
-4. Comprehensive Analog Diagnostics:
-   - Analog timestamps and dates
-   - Continuous similarity scores in [0, 1]
-   - Regime distribution among analogs
-   - Number of independent clusters
-   - Effective sample size (ESS)
-   - Abstention reasons (e.g., INSUFFICIENT_ANALOGS, HIGH_FEATURE_DIVERGENCE).
+4. High-Performance Partitioning: Utilizes np.argpartition for sub-millisecond candidate retrieval.
+5. Principled Multi-Criteria Abstention Engine:
+   - Low similarity threshold (top_sim < min_similarity_threshold)
+   - Insufficient effective sample size (ESS < min_effective_sample_size)
+   - Regime uncertainty (UNCERTAIN regime with conflicting signals)
+   - Excessive outcome dispersion across analogs.
 """
 
 from __future__ import annotations
@@ -88,6 +87,8 @@ class CausalSimilarityEngine:
         max_horizon_bars: int = 2016,            # 7 days forward outcome quarantine
         min_required_analogs: int = 5,
         min_similarity_threshold: float = 0.40,
+        min_effective_sample_size: float = 3.0,
+        enable_multicriteria_abstention: bool = False,
         temperature: float = 2.5
     ):
         self.df_5m = df_5m.copy().sort_values("open_time").reset_index(drop=True)
@@ -97,6 +98,8 @@ class CausalSimilarityEngine:
         self.max_horizon_bars = max_horizon_bars
         self.min_required_analogs = min_required_analogs
         self.min_similarity_threshold = min_similarity_threshold
+        self.min_effective_sample_size = min_effective_sample_size
+        self.enable_multicriteria_abstention = enable_multicriteria_abstention
         self.temperature = temperature
 
         # Build feature matrix
@@ -106,7 +109,7 @@ class CausalSimilarityEngine:
         self.low_prices = self.df_5m["low"].to_numpy()
         self.feature_matrix = self.df_5m[self.FEATURE_COLS].to_numpy(dtype=np.float64)
 
-        # Precompute std dev for scaling (using sample clipping to prevent div by zero)
+        # Precompute std dev for scaling (clipping to prevent div by zero)
         feat_stds = np.nanstd(self.feature_matrix, axis=0)
         self.scale_factors = np.where(feat_stds < 1e-6, 1.0, feat_stds)
 
@@ -116,24 +119,18 @@ class CausalSimilarityEngine:
         query_fv: FeatureVector,
         horizons_map: Optional[Dict[str, int]] = None
     ) -> AnalogSearchResult:
-        """Find historical analogs for query candle ensuring 100% causal isolation.
-        
-        Args:
-            query_idx: Integer index of query candle in df_5m.
-            query_fv: FeatureVector at query time T_0.
-            horizons_map: Dict of horizon name to bar count (e.g. {'1h': 12, '24h': 288, '7d': 2016}).
-        """
+        """Find historical analogs for query candle ensuring 100% causal isolation."""
         if horizons_map is None:
             horizons_map = {
                 "1h": 12, "3h": 36, "6h": 72, "12h": 144,
                 "24h": 288, "48h": 576, "72h": 864, "7d": 2016
             }
 
-        q_regime = self.regime_classifier.classify(query_fv).regime
+        reg_dec = self.regime_classifier.classify(query_fv)
+        q_regime = reg_dec.regime
 
         # 1. Strict Causality Invariant:
         # Candidate candle index c must satisfy: c + max_horizon_bars <= query_idx
-        # This guarantees that candidate's 7-day outcome was fully completed BEFORE query moment!
         max_candidate_idx = query_idx - self.max_horizon_bars
         if max_candidate_idx <= 864:  # Need at least 864 bars of history for candidates
             return AnalogSearchResult(
@@ -158,27 +155,27 @@ class CausalSimilarityEngine:
         # Query feature vector
         q_feat = np.array([getattr(query_fv, col) for col in self.FEATURE_COLS], dtype=np.float64)
 
-        # 3. Volatility-normalized weighted Euclidean distance
+        # 3. Volatility-normalized weighted squared distance
         diff = (cand_feats - q_feat) / self.scale_factors
         weighted_sq_diff = (diff ** 2) * self.FEATURE_WEIGHTS
-        dists = np.sqrt(np.sum(weighted_sq_diff, axis=1))
+        dists_sq = np.sum(weighted_sq_diff, axis=1)
 
-        # Sort candidate indices by distance
-        sorted_order = np.argsort(dists)
+        # Fast argpartition to extract top candidates
+        num_candidates = len(dists_sq)
+        num_to_inspect = min(num_candidates, self.k_neighbors * 15)
+        part_idx = np.argpartition(dists_sq, num_to_inspect)[:num_to_inspect]
+        sorted_rel_order = part_idx[np.argsort(dists_sq[part_idx])]
 
         # 4. Temporal Exclusion & Clustering Selection
         selected_analogs: List[HistoricalAnalog] = []
         selected_cand_indices: List[int] = []
 
-        for rel_idx in sorted_order:
+        for rel_idx in sorted_rel_order:
             actual_cand_idx = candidate_indices[rel_idx]
-            cand_dist = float(dists[rel_idx])
+            cand_dist = float(np.sqrt(dists_sq[rel_idx]))
             sim_score = float(np.exp(-cand_dist / self.temperature))
 
-            if sim_score < self.min_similarity_threshold and len(selected_analogs) >= self.min_required_analogs:
-                break
-
-            # Temporal separation check
+            # Temporal separation check (minimum 288 bars between analogs)
             is_too_close = False
             for prev_idx in selected_cand_indices:
                 if abs(actual_cand_idx - prev_idx) < self.min_cluster_sep:
@@ -208,11 +205,10 @@ class CausalSimilarityEngine:
                     fwd_mfe[h_label] = np.nan
                     fwd_mae[h_label] = np.nan
 
-            # Determine analog's regime
             c_open_time = int(self.open_times[actual_cand_idx])
             c_dt_utc = str(pd.to_datetime(c_open_time, unit="ms", utc=True))
 
-            # Approximate regime from cand feature values
+            # Approximate regime from candidate features
             cand_strength = cand_feats[rel_idx, self.FEATURE_COLS.index("trend_strength")]
             cand_atr = cand_feats[rel_idx, self.FEATURE_COLS.index("atr_5m_pct")]
             if cand_atr > 0.008:
@@ -244,22 +240,10 @@ class CausalSimilarityEngine:
             if len(selected_analogs) >= self.k_neighbors:
                 break
 
-        # 5. Abstention Evaluation
-        is_abstained = False
-        abstention_reason = None
-
-        if len(selected_analogs) < self.min_required_analogs:
-            is_abstained = True
-            abstention_reason = f"INSUFFICIENT_ANALOGS_FOUND ({len(selected_analogs)} < {self.min_required_analogs})"
-        elif selected_analogs[0].similarity_score < self.min_similarity_threshold:
-            is_abstained = True
-            abstention_reason = f"HIGH_FEATURE_DIVERGENCE (top_sim={selected_analogs[0].similarity_score:.3f} < {self.min_similarity_threshold})"
-
-        # 6. Aggregate Diagnostics
+        # 5. Diagnostic Metrics Calculation
         sim_scores = [a.similarity_score for a in selected_analogs]
         mean_sim = float(np.mean(sim_scores)) if sim_scores else 0.0
-        # Kish's Effective Sample Size: (sum(w))^2 / sum(w^2)
-        if sim_scores:
+        if sim_scores and sum(sim_scores) > 0:
             weights = np.array(sim_scores) / sum(sim_scores)
             ess = float(1.0 / np.sum(weights ** 2))
         else:
@@ -268,6 +252,30 @@ class CausalSimilarityEngine:
         regime_counts = {}
         for a in selected_analogs:
             regime_counts[a.regime] = regime_counts.get(a.regime, 0) + 1
+
+        # 6. Principled Multi-Criteria Abstention Evaluation
+        is_abstained = False
+        abstention_reason = None
+
+        if len(selected_analogs) < self.min_required_analogs:
+            is_abstained = True
+            abstention_reason = f"INSUFFICIENT_ANALOGS ({len(selected_analogs)} < {self.min_required_analogs})"
+        elif selected_analogs[0].similarity_score < self.min_similarity_threshold:
+            is_abstained = True
+            abstention_reason = f"LOW_SIMILARITY (top={selected_analogs[0].similarity_score:.3f} < {self.min_similarity_threshold})"
+        elif self.enable_multicriteria_abstention:
+            if ess < self.min_effective_sample_size:
+                is_abstained = True
+                abstention_reason = f"LOW_EFFECTIVE_SAMPLE_SIZE (ESS={ess:.2f} < {self.min_effective_sample_size})"
+            elif q_regime == "UNCERTAIN" and reg_dec.confidence < 0.60:
+                is_abstained = True
+                abstention_reason = "REGIME_UNCERTAINTY"
+            elif len(selected_analogs) >= 5:
+                # Check for extreme outcome dispersion
+                rets_24h = [a.forward_returns.get("24h", 0.0) for a in selected_analogs if not np.isnan(a.forward_returns.get("24h", np.nan))]
+                if rets_24h and np.std(rets_24h) > 0.08:  # Standard deviation > 8%
+                    is_abstained = True
+                    abstention_reason = f"HIGH_OUTCOME_DISPERSION (std_24h={np.std(rets_24h):.3f})"
 
         return AnalogSearchResult(
             query_timestamp_utc=query_fv.datetime_utc,

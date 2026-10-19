@@ -1,0 +1,40 @@
+{
+  "sprint": "11.20",
+  "phase": "0.1_RANGE_METRIC_RECONCILIATION",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T14:55:00Z",
+  "forensic_investigation": {
+    "discrepancy_identified": {
+      "metric": "Expected MAE and Risk/Reward Ratio for 65,000-65,700 USDT Channel",
+      "narrative_report_values": {
+        "mae_pct": -1.42,
+        "risk_reward": 0.55
+      },
+      "json_artifact_values": {
+        "mae_pct": -0.426,
+        "risk_reward": 1.82
+      }
+    },
+    "root_cause_explanation": "The discrepancy stems from differing measurement horizons in the code versus narrative drafting. The JSON artifact (-0.426%, R:R=1.82) recorded the IN-TRADE PATH MAE, which terminates the measurement the instant a trade touches either the upper target or the lower breakdown buffer. The narrative report (-1.42%, R:R=0.55) recorded the FULL 24-HOUR UNHEDGED HORIZON MAE, measuring the maximum drawdown experienced if holding through range failure without an immediate stop.",
+    "canonical_resolution": "Both metrics are statistically valid when explicitly defined. Henceforth, CBE canonical reports must report both metrics with distinct labels, eliminating conflation between path MAE and horizon MAE."
+  },
+  "canonical_recalculated_metrics": {
+    "scenario": "BTC 65,000 - 65,700 USDT Consolidation Channel",
+    "matched_historical_episodes": 595,
+    "gross_range_width_pct": 1.077,
+    "round_trip_friction_pct": 0.3,
+    "net_tradable_room_pct": 0.777,
+    "prob_mean_reversion_pct": 36.3,
+    "prob_breakdown_pct": 57.98,
+    "prob_continuation_pct": 5.71,
+    "metrics": {
+      "in_trade_path_mae_pct": -0.426,
+      "in_trade_risk_reward_ratio": 1.82,
+      "unhedged_full_24h_mae_pct": -1.497,
+      "unhedged_risk_reward_ratio": 0.52,
+      "breakdown_episodes_mae_pct": -1.99
+    },
+    "canonical_verdict": "NO_EDGE",
+    "canonical_verdict_rationale": "Breakdown risk (58.0%) exceeds mean-reversion probability (36.3%). While in-trade path R:R is 1.82, unhedged risk is -1.5% with unhedged R:R of 0.52, producing a negative mathematical expectation."
+  }
+}
