@@ -1,0 +1,24 @@
+{
+  "sprint": "11.17",
+  "timestamp_utc": "2026-10-19T09:10:15.339083+00:00",
+  "scientific_classification": "SESSION_EDGE_NOT_SUPPORTED",
+  "justification": "Empirical directional accuracy of global exchange opening signals (46.0% - 58.3%, overall mean ~51.8%) is statistically indistinguishable from unconditional base rates after Holm-Bonferroni correction (adjusted p > 0.05 across all horizons). Net expected value after 30 bps roundtrip friction is uniformly negative (-7 to -63 bps). While session filtering reduces trade frequency from 202 to 155 trades (saving friction drag), the signal provides no statistically significant incremental predictive alpha or positive economic edge.",
+  "empirical_findings": {
+    "mean_directional_accuracy_range": "49.8% - 53.6%",
+    "hypothesized_70_80_accuracy_supported": false,
+    "statistically_significant_signals_count": 0,
+    "friction_drag_impact": "30 bps roundtrip nominal friction erodes gross edge across all exchange opening horizons",
+    "session_aware_net_return_pct": -55.0339530175915,
+    "session_blind_net_return_pct": -58.245722785884645,
+    "delta_net_return_pct": 3.211769768293145,
+    "patient_holding_impact": "Patient holding and structural trailing stops reduce trade frequency from 1,184 to <30 trades, substantially cutting transaction cost drag",
+    "stop_loss_capital_preservation_rate_24h": 47.368421052631575
+  },
+  "mandatory_declarations": {
+    "session_intelligence": "EXPLORATORY",
+    "prospective_observation": "NOT_STARTED",
+    "live_trading": "PROHIBITED",
+    "operator_authorization": "NOT_GRANTED",
+    "next_step": "OPERATOR_REVIEW"
+  }
+}

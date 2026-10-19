@@ -1,0 +1,48 @@
+{
+  "sprint": "11.17",
+  "timestamp_utc": "2026-10-19T09:10:08.801875+00:00",
+  "total_opening_events": 990,
+  "exchanges": {
+    "TSE": {
+      "name": "Tokyo Stock Exchange",
+      "timezone": "Asia/Tokyo",
+      "local_open_time": "09:00",
+      "utc_open_winter": "00:00:00Z",
+      "utc_open_summer": "00:00:00Z",
+      "dst_active": false,
+      "trading_days": 241,
+      "total_holidays": 38
+    },
+    "HKEX": {
+      "name": "Hong Kong Stock Exchange",
+      "timezone": "Asia/Hong_Kong",
+      "local_open_time": "09:30",
+      "utc_open_winter": "01:30:00Z",
+      "utc_open_summer": "01:30:00Z",
+      "dst_active": false,
+      "trading_days": 247,
+      "total_holidays": 28
+    },
+    "LSE": {
+      "name": "London Stock Exchange",
+      "timezone": "Europe/London",
+      "local_open_time": "08:00",
+      "utc_open_winter": "08:00:00Z (GMT)",
+      "utc_open_summer": "07:00:00Z (BST)",
+      "dst_active": true,
+      "trading_days": 252,
+      "total_holidays": 16
+    },
+    "NYSE": {
+      "name": "New York Stock Exchange / Nasdaq",
+      "timezone": "America/New_York",
+      "local_open_time": "09:30",
+      "utc_open_winter": "14:30:00Z (EST)",
+      "utc_open_summer": "13:30:00Z (EDT)",
+      "dst_active": true,
+      "trading_days": 250,
+      "total_holidays": 20,
+      "early_closes": 5
+    }
+  }
+}

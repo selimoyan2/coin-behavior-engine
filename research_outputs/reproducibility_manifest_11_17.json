@@ -1,0 +1,83 @@
+{
+  "sprint": "11.17",
+  "description": "Sprint 11.17 Reproducibility Manifest - Global Market Session Intelligence & Patient Spot Trading Research",
+  "timestamp_utc": "2026-10-19T12:15:00Z",
+  "declarations": {
+    "session_intelligence": "EXPLORATORY",
+    "prospective_observation": "NOT_STARTED",
+    "live_trading": "PROHIBITED",
+    "operator_authorization": "NOT_GRANTED",
+    "next_step": "OPERATOR_REVIEW"
+  },
+  "verifications": {
+    "scientific_classification": "SESSION_EDGE_NOT_SUPPORTED",
+    "hypothesized_70_80_accuracy_refuted": true,
+    "mean_directional_accuracy_pct": 51.8,
+    "multiple_comparison_correction": "Holm-Bonferroni (all p_adj > 0.05)",
+    "transaction_cost_model": "Canonical Execution Policy V2 (30 bps nominal roundtrip)",
+    "cost_adjusted_net_ev": "Uniformly Negative (-7 to -63 bps)",
+    "patient_holding_verified": true
+  },
+  "deliverable_digests": {
+    "research_report_11_17.md": {
+      "path": "research_outputs/research_report_11_17.md",
+      "size_bytes": 18289,
+      "sha256": "0e08df375cf1e920cca130b939e8ef01909bc61f98189b1aaa9dc53ab9461848"
+    },
+    "session_intelligence_verdict_11_17.json": {
+      "path": "research_outputs/session_intelligence_verdict_11_17.json",
+      "size_bytes": 1660,
+      "sha256": "63987bed93fc6097250099eb945c82bafc4e12f1fb0241244b0d1c61d6d4eb59"
+    },
+    "global_exchange_session_calendar_audit_11_17.json": {
+      "path": "research_outputs/global_exchange_session_calendar_audit_11_17.json",
+      "size_bytes": 1380,
+      "sha256": "626050447a95b2d7503e580a1ec05bd93e5647ea6acb3c41afef3574db48e985"
+    },
+    "session_event_study_11_17.csv": {
+      "path": "research_outputs/session_event_study_11_17.csv",
+      "size_bytes": 532610,
+      "sha256": "abd2700e3b02dd8c9d2c3de4062c41c5fc265fe516bf0eb09fbf7c16abfbe02d"
+    },
+    "session_behavior_summary_11_17.csv": {
+      "path": "research_outputs/session_behavior_summary_11_17.csv",
+      "size_bytes": 1111,
+      "sha256": "570665a36a0df921ba1cf2d7d174b53cb18738e25043725465cddbebc00390fd"
+    },
+    "session_predictive_metrics_11_17.csv": {
+      "path": "research_outputs/session_predictive_metrics_11_17.csv",
+      "size_bytes": 17836,
+      "sha256": "b2ed633acc0dd5ea7b9066f493d20cb00e67c1febf9984d55022c4f1f2c53858"
+    },
+    "stop_reentry_forensics_11_17.csv": {
+      "path": "research_outputs/stop_reentry_forensics_11_17.csv",
+      "size_bytes": 2203,
+      "sha256": "9b4c37384edcedc32f0f6134f9ad1e605aec6039468f50dd8514260fe3167b10"
+    },
+    "session_vs_blind_comparison_11_17.csv": {
+      "path": "research_outputs/session_vs_blind_comparison_11_17.csv",
+      "size_bytes": 846,
+      "sha256": "b49f93299547203ef851cf22871ac674593e8c565805f20f822042889735f186"
+    },
+    "patient_session_trade_ledger_11_17.csv": {
+      "path": "research_outputs/patient_session_trade_ledger_11_17.csv",
+      "size_bytes": 31500,
+      "sha256": "afb41bb2d6b3db61c7ad536a1d39a379bd65578a242a37526ce5b8bcf11ad187"
+    },
+    "global_session_calendar.py": {
+      "path": "src/coin_behavior_engine/macro/global_session_calendar.py",
+      "size_bytes": 15805,
+      "sha256": "a77e2b1159e791c463a36f3c74b25da18d53856ec940fe5ddbf03d4c27dd998e"
+    },
+    "run_sprint11_17_session_research.py": {
+      "path": "scripts/run_sprint11_17_session_research.py",
+      "size_bytes": 38474,
+      "sha256": "1faf919ef82185c2f6cfa84c8a18913899f2cdec2ace58b8bf938f9fb7bc8b60"
+    },
+    "market_state_dataset.parquet": {
+      "path": "research_outputs/market_state_dataset.parquet",
+      "size_bytes": 25149564,
+      "sha256": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487"
+    }
+  }
+}
