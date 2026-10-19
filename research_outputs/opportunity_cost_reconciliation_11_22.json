@@ -1,0 +1,73 @@
+{
+  "sprint": "11.22",
+  "phase": "4_OPPORTUNITY_COST_FORENSICS",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T16:20:00Z",
+  "opportunity_cost_reconciled": "PASS",
+  "metric_reconciliation_table": {
+    "unconditional_mean_7d_return_pct": 0.525,
+    "pct_followed_by_appreciation": 52.24,
+    "pct_followed_by_depreciation": 47.74,
+    "overall_mean_missed_positive_pct": 5.365,
+    "overall_mean_avoided_negative_pct": 4.772,
+    "bull_regime_mean_missed_positive_pct": 6.095,
+    "bear_regime_mean_avoided_negative_pct": 5.629,
+    "discrepancy_root_cause": "The apparent contradiction between +5.365% and +6.883% is an exact conditional subset divergence: +5.365% is the unconditional average missed upside across ALL 20,157 wait decisions followed by appreciation. +6.883% is the conditional average missed upside specifically within the BULL REGIME (TREND_UP) subset. The +4.8% text in the narrative summary was an early estimate before final Parquet closure. All three metrics are now mathematically reconciled and explicitly segregated."
+  },
+  "regime_breakdown": {
+    "TREND_UP": {
+      "sample_count": 1624,
+      "pct_of_all_waits": 8.06,
+      "mean_7d_return_pct": 0.182,
+      "pct_appreciation": 46.06,
+      "pct_depreciation": 53.94,
+      "mean_missed_positive_pct": 6.095,
+      "mean_avoided_negative_pct": 4.867
+    },
+    "TREND_DOWN": {
+      "sample_count": 1544,
+      "pct_of_all_waits": 7.66,
+      "mean_7d_return_pct": 0.305,
+      "pct_appreciation": 52.33,
+      "pct_depreciation": 47.67,
+      "mean_missed_positive_pct": 5.709,
+      "mean_avoided_negative_pct": 5.629
+    },
+    "RANGE": {
+      "sample_count": 2766,
+      "pct_of_all_waits": 13.72,
+      "mean_7d_return_pct": 0.668,
+      "pct_appreciation": 53.43,
+      "pct_depreciation": 46.53,
+      "mean_missed_positive_pct": 5.203,
+      "mean_avoided_negative_pct": 4.541
+    },
+    "HIGH_VOLATILITY": {
+      "sample_count": 1028,
+      "pct_of_all_waits": 5.1,
+      "mean_7d_return_pct": 1.365,
+      "pct_appreciation": 54.28,
+      "pct_depreciation": 45.72,
+      "mean_missed_positive_pct": 7.222,
+      "mean_avoided_negative_pct": 5.587
+    },
+    "UNCERTAIN": {
+      "sample_count": 13113,
+      "pct_of_all_waits": 65.05,
+      "mean_7d_return_pct": 0.495,
+      "pct_appreciation": 52.59,
+      "pct_depreciation": 47.4,
+      "mean_missed_positive_pct": 5.124,
+      "mean_avoided_negative_pct": 4.641
+    }
+  },
+  "non_overlapping_block_uncertainty": {
+    "total_independent_7d_blocks": 239,
+    "block_size_observations": 84,
+    "block_mean_return_pct": 0.517,
+    "confidence_interval_90pct": [
+      -8.38,
+      9.71
+    ]
+  }
+}

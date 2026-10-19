@@ -1,0 +1,76 @@
+{
+  "sprint": "11.22",
+  "phase": "7_REPRODUCIBILITY_MANIFEST",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T16:45:00Z",
+  "artifacts": {
+    "src/coin_behavior_engine/accounting/independent_portfolio_accountant.py": {
+      "sha256": "aacb19d43c1b4a286433dd98a0c85d92a19a642e55d0cbd8ea8951a950fbf6b4",
+      "size_bytes": 18452
+    },
+    "scripts/sprint11_22_preflight.py": {
+      "sha256": "aba4bad1bd67387ca39ab476cb6e848881dfd838d1c823f9c26eee7a8985f5bb",
+      "size_bytes": 4951
+    },
+    "scripts/regenerate_and_reconcile_economic_replay_11_22.py": {
+      "sha256": "4eac2c08aaf33f558bc7dc1fcbcd8d17fc6aa867191230573d6aa3909c395e5a",
+      "size_bytes": 9970
+    },
+    "scripts/reconcile_decision_execution_11_22.py": {
+      "sha256": "fabbdb5055a28a15a0579eb2f67cf1154c4efd6dd7b9d46a2cded6eb4f89841b",
+      "size_bytes": 4859
+    },
+    "scripts/reconcile_opportunity_and_reentry_11_22.py": {
+      "sha256": "93cf2b3cfff41e34828c912dc2e573d1b3c21ceb41b89bef26820b92fb10d511",
+      "size_bytes": 7962
+    },
+    "scripts/run_loss_attribution_11_22.py": {
+      "sha256": "b14de65fe532b37f77da25e044bf5c957c71bd76344bfbdd1ed745d51b259dc6",
+      "size_bytes": 8429
+    },
+    "tests/test_sprint11_22_economic_replay_and_attribution.py": {
+      "sha256": "b4c07831574f64084d53a902e970bba1f077c36f2c3e285abfd798f961cefbc1",
+      "size_bytes": 19732
+    },
+    "research_outputs/sprint11_22_preflight.json": {
+      "sha256": "cf8e62eb7413ed9152933009a6eac5f59c16d85763ebfce57700537fa84d8bad",
+      "size_bytes": 2240
+    },
+    "research_outputs/independent_accounting_audit_11_22.json": {
+      "sha256": "812590dc69626fb6952956c016cea1ed1fb2f33bc2f2cf11a38b0b21f26f30ef",
+      "size_bytes": 14294
+    },
+    "research_outputs/canonical_fill_ledger_11_22.parquet": {
+      "sha256": "1de04c3dbcf674e437e77369e092cea7da8f53a1c327538660a1dc631c95697a",
+      "size_bytes": 890706
+    },
+    "research_outputs/economic_replay_reconciliation_11_22.json": {
+      "sha256": "3ff9a0545d55cbd0403a629758acbd00f998ca1e072cbf3af4f99d5d7aa15140",
+      "size_bytes": 13216
+    },
+    "research_outputs/decision_execution_reconciliation_11_22.json": {
+      "sha256": "fb9a1ca3262b0e9df1d4c32c011223e6987eb836d66e9e2d19cdd93d3e3f05ce",
+      "size_bytes": 2409
+    },
+    "research_outputs/opportunity_cost_reconciliation_11_22.json": {
+      "sha256": "688ee55c40f651c8ed949d028aa88f870afcca3cc67bea7cfe11dcb46926130a",
+      "size_bytes": 2726
+    },
+    "research_outputs/exit_reentry_reconciliation_11_22.json": {
+      "sha256": "81491f36d048d0fb315a915bc13f6fc94e117b3d271a587eb7a907757fc4059e",
+      "size_bytes": 1699
+    },
+    "research_outputs/patient_loss_attribution_11_22.json": {
+      "sha256": "be68560b995c4be92ad36f11018af8cfb84ecacd81e5f6dd75327f2b0e7ccf18",
+      "size_bytes": 2750
+    },
+    "research_outputs/matched_counterfactual_controls_11_22.json": {
+      "sha256": "e4aebead13d342d2449a8223d26a877102b56677d3f5985bf3f70b8f9dd25f03",
+      "size_bytes": 824
+    },
+    "research_outputs/research_report_11_22.md": {
+      "sha256": "b51e8dedd72b6b782eb4afb847719867b6d1b8a26ce58d359d65108a80149080",
+      "size_bytes": 17370
+    }
+  }
+}

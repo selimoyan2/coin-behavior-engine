@@ -1,0 +1,56 @@
+{
+  "sprint": "11.22",
+  "phase": "6_PATIENT_LOSS_ATTRIBUTION",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T16:25:00Z",
+  "loss_attribution": "PASS",
+  "primary_research_question": "Why did Patient Decision Engine return -73.94% while Buy & Hold returned +90.48%?",
+  "executive_attribution_summary": {
+    "initial_capital_usdt": 10000.0,
+    "final_equity_usdt": 2605.84,
+    "net_loss_usdt": -7394.16,
+    "net_return_pct": -73.94,
+    "buy_and_hold_return_pct": 90.48,
+    "underperformance_spread_vs_bh_pct": -164.42
+  },
+  "quantitative_component_decomposition": {
+    "gross_vs_net_breakdown": {
+      "gross_pnl_before_frictions_usdt": 2154.73,
+      "gross_return_before_frictions_pct": 21.55,
+      "total_fees_paid_usdt": 6365.92,
+      "total_fees_drag_pct": 63.66,
+      "total_slippage_paid_usdt": 3182.96,
+      "total_slippage_drag_pct": 31.83,
+      "total_friction_paid_usdt": 9548.89,
+      "total_friction_drag_pct": 95.49,
+      "key_finding_1": "The Patient Engine's raw directional timing was positive (+2,154.73 USDT gross, +21.55% gross return). However, executing 627 rapid round-trip transactions incurred 9,548.89 USDT in fees and slippage (95.49% of initial capital), completely destroying gross gains."
+    },
+    "market_exposure_breakdown": {
+      "time_in_market_pct": 6.64,
+      "time_in_cash_pct": 93.36,
+      "uncaptured_macro_trend_drag_pct": -84.47,
+      "key_finding_2": "Sitting in cash for 93.36% of the 4.6-year period protected against drawdowns during bear regimes, but forfeited approximately 84.47 percentage points of BTC macro appreciation."
+    },
+    "whipsaw_and_churn_breakdown": {
+      "total_trades": 627,
+      "win_rate_pct": 24.4,
+      "average_holding_duration_hours": 4.2,
+      "key_finding_3": "A win rate of 24.40% across 627 short-duration trades indicates severe whipsaw vulnerability. The engine repeatedly entered on short-term momentum confirmation and exited on minor pullbacks."
+    },
+    "additive_attribution_table": {
+      "total_spread_vs_buy_and_hold_pct": -164.42,
+      "component_1_friction_destruction_pct": -95.49,
+      "component_2_forfeited_macro_exposure_pct": -84.47,
+      "component_3_gross_timing_alpha_pct": 15.54,
+      "interaction_and_rounding_residual_pct": 0.0
+    }
+  },
+  "counterfactual_replays_summary": {
+    "counterfactual_1_patient_engine_zero_friction_pct": 21.55,
+    "counterfactual_2_patient_engine_zero_slippage_pct": -42.11,
+    "counterfactual_3_matched_turnover_random_control_pct": -2.15,
+    "counterfactual_4_matched_exposure_random_control_pct": 1.72,
+    "counterfactual_5_buy_and_hold_benchmark_pct": 90.48,
+    "counterfactual_6_cash_only_benchmark_pct": 0.0
+  }
+}

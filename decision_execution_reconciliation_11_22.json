@@ -1,0 +1,52 @@
+{
+  "sprint": "11.22",
+  "phase": "3_DECISION_EXECUTION_TRACEABILITY",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T16:15:00Z",
+  "decision_execution_traceability": "PASS",
+  "sampling_frequency_reconciliation": {
+    "decision_research_sampling_step_bars": 24,
+    "decision_research_sampling_step_hours": 2.0,
+    "total_evaluated_decision_observations": 20688,
+    "total_wait_usdt_decisions": 20157,
+    "wait_usdt_percentage": 97.43,
+    "economic_replay_sampling_step_bars": 12,
+    "economic_replay_sampling_step_hours": 1.0,
+    "total_simulation_evaluated_bars": 40000,
+    "total_executed_trades": 627,
+    "reconciliation_explanation": "The 20,688 decision records and 627 simulation trades originate from two distinct, rigorously defined sampling protocols: 1. Decision intelligence and opportunity cost research sampled the multi-year history every 24 bars (2 hours), recording 20,688 static decision states, of which 20,157 (97.43%) were WAIT_USDT. 2. Economic replay simulation stepped through the multi-year interval every 12 bars (1 hour), evaluating 40,000 chronological steps. Out of 40,000 steps, exactly 627 trades were executed, representing a trade frequency of 1.57% of evaluated bars. The two metrics are completely compatible."
+  },
+  "state_machine_idempotence_audit": {
+    "states_defined": [
+      "HOLD_BTC",
+      "ENTER_BTC",
+      "EXIT_TO_USDT",
+      "WAIT_USDT",
+      "WAIT_FOR_REENTRY",
+      "NO_TRADE",
+      "INSUFFICIENT_EVIDENCE"
+    ],
+    "action_frequency_in_decisions": {
+      "WAIT_USDT": 20157,
+      "ENTER_BTC": 531
+    },
+    "scenario_frequency_in_decisions": {
+      "SCENARIO_E_TRANSITION": 14141,
+      "SCENARIO_C_RANGE": 2999,
+      "SCENARIO_A_DIP_UPTREND": 1922,
+      "SCENARIO_B_DOWNTREND": 1544,
+      "SCENARIO_D_BREAKOUT": 82
+    },
+    "idempotence_verifications": {
+      "wait_while_in_usdt": "IDEMPOTENT_NO_ORDER",
+      "hold_while_in_btc": "IDEMPOTENT_NO_ORDER",
+      "enter_while_in_btc": "REJECTED_NO_DUPLICATE_ALLOCATION",
+      "exit_while_in_usdt": "REJECTED_NO_NEGATIVE_BALANCE"
+    }
+  },
+  "signal_to_execution_traceability": {
+    "traceability_status": "VERIFIED",
+    "chain": "Market State -> Decision -> Portfolio State -> Order -> Fill -> Updated Portfolio",
+    "execution_mapping": "Strictly Next-Bar Open Price +/- 5 bps slippage with 10 bps fee deducted"
+  }
+}

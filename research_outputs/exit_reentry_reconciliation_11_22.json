@@ -1,0 +1,23 @@
+{
+  "sprint": "11.22",
+  "phase": "5_EXIT_AND_REENTRY_FORENSICS",
+  "status": "PASS",
+  "timestamp_utc": "2026-10-19T16:20:00Z",
+  "exit_reentry_reconciled": "PASS",
+  "metric_reconciliation_table": {
+    "total_hypothetical_exit_observations": 8128,
+    "actual_executed_replay_exits": 627,
+    "all_exits_avoided_drawdown_pct": 2.53,
+    "all_exits_reentry_price_penalty_pct": 1.37,
+    "downtrend_exits_avoided_drawdown_pct": 4.22,
+    "downtrend_exits_reentry_price_penalty_pct": 1.84,
+    "reentry_execution_rate_pct": 48.43,
+    "mean_hours_outside_btc": 20.8,
+    "discrepancy_root_cause": "The discrepancy between 2.53% vs 4.22% avoided drawdown and 1.37% vs 1.84% reentry penalty originates from full-dataset pooling vs downtrend-regime filtering: 1. Across all 8,128 hypothetical exit observations (including ranges and uncertain regimes), the mean avoided drawdown was 2.53% and the mean reentry price disadvantage was 1.37%. 2. When isolating the DOWNTREND REGIME (TREND_DOWN) exits specifically, exiting protected against an average forward drawdown of 4.22%, but re-entering suffered an average penalty of 1.84% higher price. Both numbers are valid descriptions of their respective subsets."
+  },
+  "hypothetical_vs_actual_exits_comparison": {
+    "hypothetical_observations_count": 8128,
+    "actual_executed_exits_count": 627,
+    "explanation": "Hypothetical exits evaluate every sampled point as if the portfolio held BTC and was forced to consider exiting. Actual executed exits occurred only when the simulated portfolio was genuinely in a BTC position. Because the Patient Engine held BTC only 6.64% of the time, only 627 actual exits were executed."
+  }
+}
