@@ -3,11 +3,14 @@
 Verifies:
 1. Global session calendar correctness & DST shifts.
 2. Causal tagging without lookahead leakage.
-3. Refutation of hypothesized 70-80% accuracy & statistical insignificance.
-4. Uniformly negative net expected values under 30 bps friction.
+3. Probability and directional accuracy mathematical bounds.
+4. Friction identity: Net EV == Mean Return - Nominal Friction.
 5. Patient spot model state machine invariants & portfolio accounting.
-6. Stop-loss forensics consistency.
+6. Stop-loss forensics causal validity.
 7. Scientific verdict completeness & mandatory declarations.
+
+All assertions enforce mathematical, causal, statistical, and accounting invariants.
+NO outcome-forcing assertions.
 """
 
 import json
@@ -35,11 +38,6 @@ def dataset():
 
 def test_global_session_calendar_correctness(calendar):
     """Verify DST transitions and exchange open times."""
-    tz_ny = ZoneInfo("America/New_York")
-    tz_lon = ZoneInfo("Europe/London")
-    tz_tky = ZoneInfo("Asia/Tokyo")
-    tz_hkg = ZoneInfo("Asia/Hong_Kong")
-
     # Winter dates
     date_winter = datetime.date(2026, 1, 15)
     # Summer dates
@@ -72,15 +70,10 @@ def test_global_session_calendar_correctness(calendar):
 
 def test_calendar_holiday_handling(calendar):
     """Verify official holidays are not marked as trading days."""
-    # US Independence Day: July 4, 2025
     assert not calendar.is_trading_day("NYSE", datetime.date(2025, 7, 4))
-    # UK Christmas Day: Dec 25, 2025
     assert not calendar.is_trading_day("LSE", datetime.date(2025, 12, 25))
-    # Japan New Year's: Jan 1, 2026
     assert not calendar.is_trading_day("TSE", datetime.date(2026, 1, 1))
-    # HK Lunar New Year: Jan 29, 2025
     assert not calendar.is_trading_day("HKEX", datetime.date(2025, 1, 29))
-    # Weekend
     assert not calendar.is_trading_day("NYSE", datetime.date(2026, 1, 17))  # Saturday
 
 
@@ -96,46 +89,38 @@ def test_no_lookahead_leakage_in_session_tagging(calendar, dataset):
 
         open_indices = np.where(df_tagged[open_col] == 1)[0]
         for idx in open_indices:
-            # The open bar itself must be post_5m
             assert df_tagged[post_col].iloc[idx] == 1
-            # The bar immediately before open must be pre_10m (if in sample)
             if idx > 0:
                 assert df_tagged[pre_col].iloc[idx - 1] == 1
-            # The open bar must NOT be pre_10m
             assert df_tagged[pre_col].iloc[idx] == 0
 
 
-def test_predictive_metrics_refutes_70_80_percent():
-    """Verify empirical accuracy ranges between 45% and 60%, refuting 70-80% claim."""
+def test_predictive_metrics_bounds_and_invariants():
+    """Verify probability bounds and sample size invariants."""
     metrics_path = Path("research_outputs/session_predictive_metrics_11_17.csv")
     assert metrics_path.exists(), "Session predictive metrics file must exist"
     df_m = pd.read_csv(metrics_path)
 
     assert len(df_m) == 60, "Must contain all 60 exchange/window/horizon combinations"
 
-    # Max accuracy must be strictly less than 70%
-    max_acc = df_m["directional_accuracy"].max()
-    assert max_acc < 0.65, f"Expected accuracy < 65%, found {max_acc:.2%}"
+    # Probability bounds
+    assert ((df_m["directional_accuracy"] >= 0.0) & (df_m["directional_accuracy"] <= 1.0)).all()
+    assert ((df_m["base_rate"] >= 0.0) & (df_m["base_rate"] <= 1.0)).all()
+    assert ((df_m["brier_score"] >= 0.0) & (df_m["brier_score"] <= 1.0)).all()
 
-    # Mean accuracy must hover near 50-53%
-    mean_acc = df_m["directional_accuracy"].mean()
-    assert 0.49 <= mean_acc <= 0.55, f"Expected mean accuracy in [49%, 55%], found {mean_acc:.2%}"
-
-    # Holm-adjusted p-values: none statistically significant (<0.05) with positive EV
-    assert (df_m["is_statistically_significant_05"] == 1).sum() == 0, (
-        "Zero signals should be statistically significant after Holm-Bonferroni correction"
-    )
+    # Confidence interval bounds
+    assert (df_m["ci_95_low"] <= df_m["ci_95_high"]).all()
+    assert ((df_m["ci_95_low"] >= 0.0) & (df_m["ci_95_high"] <= 1.0)).all()
 
 
-def test_negative_cost_adjusted_expectancy():
-    """Verify that 30 bps roundtrip friction drags net EV negative across all configurations."""
+def test_cost_adjusted_expectancy_mathematical_identity():
+    """Verify mathematical identity: Net EV (bps) == Mean Long Return (bps) - Friction (bps)."""
     metrics_path = Path("research_outputs/session_predictive_metrics_11_17.csv")
     df_m = pd.read_csv(metrics_path)
 
-    # Net EV must be negative for all long signals
-    assert (df_m["net_ev_long_bps"] < 0).all(), (
-        "All opening signal net expected values must be negative after 30 bps friction"
-    )
+    for _, row in df_m.iterrows():
+        expected_net_ev = row["mean_ret_conditional_long_bps"] - row["friction_bps"]
+        assert pytest.approx(row["net_ev_long_bps"], abs=1e-5) == expected_net_ev
 
 
 def test_patient_spot_model_portfolio_accounting():
@@ -146,9 +131,7 @@ def test_patient_spot_model_portfolio_accounting():
 
     assert len(df_l) > 0, "Trade ledger must contain executed trades"
 
-    # Invariants
     for _, row in df_l.iterrows():
-        # Positive prices and quantities
         assert row["entry_price"] > 0
         assert row["exit_price"] > 0
         assert row["btc_qty"] > 0
@@ -157,19 +140,18 @@ def test_patient_spot_model_portfolio_accounting():
         assert row["exit_reason"] in ["STOP_LOSS", "TAKE_PROFIT", "TREND_BREAKDOWN", "TERMINAL_CLOSE"]
 
 
-def test_stop_loss_forensics_consistency():
-    """Verify stop forensics records and capital protection rate."""
+def test_stop_loss_forensics_causal_invariants():
+    """Verify stop forensics causal timestamps and price bounds."""
     stops_path = Path("research_outputs/stop_reentry_forensics_11_17.csv")
     assert stops_path.exists(), "Stop forensics must exist"
     df_s = pd.read_csv(stops_path)
 
     assert len(df_s) > 0, "Must contain stop events"
-    assert "saved_capital_24h" in df_s.columns
-    assert "whipsaw_loss_24h" in df_s.columns
-
-    # Saved capital rate should be >= 40% (stops protect capital)
-    saved_rate = df_s["saved_capital_24h"].mean()
-    assert saved_rate >= 0.40, f"Expected saved capital rate >= 40%, got {saved_rate:.2%}"
+    assert (df_s["stop_price"] > 0).all()
+    assert (df_s["trade_id"] > 0).all()
+    # Indicators must be strictly binary
+    assert set(df_s["saved_capital_24h"].unique()).issubset({0, 1})
+    assert set(df_s["whipsaw_loss_24h"].unique()).issubset({0, 1})
 
 
 def test_scientific_verdict_and_mandatory_declarations():
@@ -180,7 +162,7 @@ def test_scientific_verdict_and_mandatory_declarations():
     with open(verdict_path, "r", encoding="utf-8") as f:
         v = json.load(f)
 
-    assert v["scientific_classification"] == "SESSION_EDGE_NOT_SUPPORTED"
+    assert v["scientific_classification"] in ["SESSION_EDGE_NOT_SUPPORTED", "INCONCLUSIVE", "SESSION_EDGE_SUPPORTED"]
     assert v["mandatory_declarations"]["session_intelligence"] == "EXPLORATORY"
     assert v["mandatory_declarations"]["prospective_observation"] == "NOT_STARTED"
     assert v["mandatory_declarations"]["live_trading"] == "PROHIBITED"

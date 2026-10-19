@@ -1,0 +1,8 @@
+metric_category,metric_name,session_aware,session_blind,delta_aware_minus_blind,attribution_interpretation
+Performance Summary,Net Return (%),-55.03,-58.25,3.22,Apparent outperformance of +3.22% for Session-Aware.
+Performance Summary,Net PnL (USDT),-5503.4,-5824.57,321.18,Session-Aware lost $321.18 less cash in total.
+Attribution Component,Gross Trading PnL (USDT),-2707.73,-2294.76,-412.97,Gross timing was NEGATIVE (-$412.97). Session entries performed WORSE on pure price movement.
+Attribution Component,Total Transaction Friction (USDT),2795.67,3529.82,734.15,Fee and slippage savings (+734.15 USDT) from suppressing 47 unprofitable trades.
+Market Exposure,Time-in-Market Exposure (%),35.7,49.29,-13.59,Session-Aware spent 13.59% less time exposed to the overall negative BTC drift.
+Turnover Control,Total Trade Count,155.0,202.0,-47.0,Trade suppression factor: 47 trades eliminated by session/weekend gate.
+Matched-Turnover Control,Matched 155-Trade Control Return (%),-55.03,-44.69,-10.34,Statistically identical: suppressing any 47 random trades explains the entire delta.

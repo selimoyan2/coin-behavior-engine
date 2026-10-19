@@ -1,0 +1,76 @@
+{
+  "sprint": "11.17.1",
+  "description": "Sprint 11.17.1 Reproducibility Manifest - Session Research Integrity, Benchmark Parity & Statistical Audit",
+  "timestamp_utc": "2026-10-19T12:25:00Z",
+  "declarations": {
+    "session_intelligence": "EXPLORATORY",
+    "historical_data_status": "RESEARCH_CONTAMINATED",
+    "prospective_observation": "NOT_STARTED",
+    "live_trading": "PROHIBITED",
+    "operator_authorization": "NOT_GRANTED",
+    "next_step": "OPERATOR_REVIEW"
+  },
+  "audit_reconciliations": {
+    "d_v2_friction_reconciled": "Canonical 3,281.67 USDT confirmed vs 822 USDT errant static estimate",
+    "policy_d_v2_status": "EXPLORATORY_UNFROZEN",
+    "attribution_decomposition": "Net delta +3.22% = -$412.97 gross alpha + $734.15 friction savings (pure trade suppression)",
+    "stop_loss_counts_reconciled": "47.37% (9/19 strict) vs 52.63% (10/19 breakeven threshold)",
+    "n_19_sample_size_caveat": "Wilson 95% CI is [27.3%, 68.3%]; no predictive advantage claimed",
+    "hac_dependence_corrected": "Newey-West variance inflation of 1.1x to 1.8x",
+    "brier_skill_scores": "Bounded in [-0.026, +0.013], confirming zero predictive skill over base rate",
+    "outcome_forcing_tests_removed": true,
+    "invariant_tests_passing": true
+  },
+  "deliverable_digests": {
+    "research_report_11_17_1.md": {
+      "path": "research_outputs/research_report_11_17_1.md",
+      "size_bytes": 14636,
+      "sha256": "49b1c604303f11660aff515277c1e22375d54d8185538c9697d39589213f12bc"
+    },
+    "session_intelligence_verdict_11_17_1.json": {
+      "path": "research_outputs/session_intelligence_verdict_11_17_1.json",
+      "size_bytes": 1596,
+      "sha256": "dcbf5b199e607a55b0212a3a800e5a0bfdaf306d190e0585ce2b68818b8bbb1e"
+    },
+    "calendar_verification_audit_11_17_1.json": {
+      "path": "research_outputs/calendar_verification_audit_11_17_1.json",
+      "size_bytes": 1729,
+      "sha256": "641865906657e91a9e4b2c6a36397a40741cd9eb2231d23d9e1c7bc19dd57421"
+    },
+    "benchmark_comparison_11_17_1.csv": {
+      "path": "research_outputs/benchmark_comparison_11_17_1.csv",
+      "size_bytes": 1987,
+      "sha256": "cab3135af94d1686fe33755bde5ae0a969aeeedcfaedb08ed7955c64c9249708"
+    },
+    "session_attribution_decomposition_11_17_1.csv": {
+      "path": "research_outputs/session_attribution_decomposition_11_17_1.csv",
+      "size_bytes": 1090,
+      "sha256": "6b895ade2a0f76516d866cf640c9eb12e6fdb41e3fe158eb1f71c5fa3e327768"
+    },
+    "session_statistical_audit_11_17_1.csv": {
+      "path": "research_outputs/session_statistical_audit_11_17_1.csv",
+      "size_bytes": 16460,
+      "sha256": "9536d03ee8021dd70c24d2dc08668a1b69e53f715bacf37229293183df2c6185"
+    },
+    "stop_reentry_reconciliation_11_17_1.csv": {
+      "path": "research_outputs/stop_reentry_reconciliation_11_17_1.csv",
+      "size_bytes": 2539,
+      "sha256": "8cf6e9bf9a49509477c58a55fc74de1b198252c5bcf90eee229f64118b51000d"
+    },
+    "audit_sprint11_17_1.py": {
+      "path": "scripts/audit_sprint11_17_1.py",
+      "size_bytes": 29401,
+      "sha256": "aca35d0a8d7c75eee0ca37d6c3d702bd28b5612263db3eac3be7aa2997982deb"
+    },
+    "test_sprint11_17_1_research_integrity.py": {
+      "path": "tests/test_sprint11_17_1_research_integrity.py",
+      "size_bytes": 7140,
+      "sha256": "19bc2189340f08a77152550baa294901dcaee9691b67c1f2417a1a88115c82d6"
+    },
+    "market_state_dataset.parquet": {
+      "path": "research_outputs/market_state_dataset.parquet",
+      "size_bytes": 25149564,
+      "sha256": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487"
+    }
+  }
+}

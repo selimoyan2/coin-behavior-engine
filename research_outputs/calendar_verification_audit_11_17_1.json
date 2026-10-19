@@ -1,0 +1,54 @@
+{
+  "sprint": "11.17.1",
+  "timestamp_utc": "2026-10-19T09:20:21.014298+00:00",
+  "total_opening_events_verified": 990,
+  "is_reproducible": true,
+  "exchange_counts": {
+    "TSE": 241,
+    "HKEX": 247,
+    "LSE": 252,
+    "NYSE": 250
+  },
+  "exchanges": {
+    "TSE": {
+      "name": "Tokyo Stock Exchange",
+      "timezone": "Asia/Tokyo",
+      "local_open": "09:00 JST",
+      "utc_open": "00:00:00Z",
+      "dst_active": false,
+      "verified_trading_days": 241,
+      "verified_holidays": 38
+    },
+    "HKEX": {
+      "name": "Hong Kong Stock Exchange",
+      "timezone": "Asia/Hong_Kong",
+      "local_open": "09:30 HKT",
+      "utc_open": "01:30:00Z",
+      "dst_active": false,
+      "verified_trading_days": 247,
+      "verified_holidays": 28
+    },
+    "LSE": {
+      "name": "London Stock Exchange",
+      "timezone": "Europe/London",
+      "local_open": "08:00 Local",
+      "utc_open_gmt_winter": "08:00:00Z",
+      "utc_open_bst_summer": "07:00:00Z",
+      "dst_active": true,
+      "verified_trading_days": 252,
+      "verified_holidays": 16
+    },
+    "NYSE": {
+      "name": "New York Stock Exchange / Nasdaq",
+      "timezone": "America/New_York",
+      "local_open": "09:30 Local",
+      "utc_open_est_winter": "14:30:00Z",
+      "utc_open_edt_summer": "13:30:00Z",
+      "dst_active": true,
+      "verified_trading_days": 250,
+      "verified_holidays": 20,
+      "verified_early_closes": 5
+    }
+  },
+  "market_convention_declaration": "Cryptocurrency spot markets (BTC/USDT) operate continuously 24/7/365 with zero scheduled exchange closures. The 990 audited events represent equity market opening times for institutional price discovery benchmarks."
+}

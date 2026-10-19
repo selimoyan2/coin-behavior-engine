@@ -1,0 +1,27 @@
+{
+  "sprint": "11.17.1",
+  "timestamp_utc": "2026-10-19T09:20:21.114678+00:00",
+  "scientific_classification": "SESSION_EDGE_NOT_SUPPORTED",
+  "reconciliation_verifications": {
+    "d_v2_friction_reconciled": true,
+    "d_v2_true_friction_usdt": 3281.67,
+    "d_v2_reported_friction_errant_usdt": 822.0,
+    "d_v2_label_corrected_to_unfrozen": true,
+    "policy_c_reconciled": "Pure frozen crossover (1,149 cycles) vs simulator stop/target variant (1,184 trades)",
+    "buy_and_hold_reconciled": "Bar 0 Inception (-24.86% liquid) vs Post-Warmup Bar 576 (+18.12% liquid)",
+    "stop_preservation_discrepancy_resolved": "47.37% (9/19 under strict drop) vs 52.63% (10/19 under flat threshold)",
+    "n_19_statistical_caveat": "Sample size N=19 has a 95% confidence interval of [27.3%, 68.3%]; no reliable predictive advantage can be claimed",
+    "session_attribution_decomposed": "Net +3.22% delta is completely driven by +$734.15 fee savings from suppressing 47 trades in a bear market; gross timing alpha was negative (-$412.97)",
+    "hac_dependence_audited": "Newey-West variance inflation of 1.1x to 1.8x confirms serial correlation across overlapping forward horizons",
+    "all_holm_adjusted_p_values_ge_05": true,
+    "cost_adjusted_net_ev_uniformly_negative": true
+  },
+  "mandatory_declarations": {
+    "session_intelligence": "EXPLORATORY",
+    "historical_data_status": "RESEARCH_CONTAMINATED",
+    "prospective_observation": "NOT_STARTED",
+    "live_trading": "PROHIBITED",
+    "operator_authorization": "NOT_GRANTED",
+    "next_step": "OPERATOR_REVIEW"
+  }
+}
