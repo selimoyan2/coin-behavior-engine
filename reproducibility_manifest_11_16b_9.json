@@ -1,0 +1,63 @@
+{
+  "sprint": "11.16B.9",
+  "description": "Sprint 11.16B.9 Reproducibility Manifest - Canonical Portfolio Accounting & Cross-Sprint Replay Reconciliation",
+  "base_commit": "c5f4f823b001e6cbc099ce7114bfe1e45799ef83",
+  "timestamp_utc": "2026-10-19T12:00:00Z",
+  "declarations": {
+    "prospective_observation": "NOT_STARTED",
+    "live_trading": "PROHIBITED",
+    "policy_parameters_changed": "NO",
+    "operator_authorization": "NOT_GRANTED",
+    "next_step": "OPERATOR_REVIEW"
+  },
+  "verifications": {
+    "usdt_18_07_residual_resolved": true,
+    "residual_amount_usdt": 0.0,
+    "terminal_unrealized_mtm_gain_usdt": 18.0665,
+    "policy_c_reconciled": true,
+    "cost_model_verified": "Canonical Execution Policy V2 (30 bps nominal roundtrip + next-open fill)",
+    "research_contamination_registered": true
+  },
+  "deliverable_digests": {
+    "research_report_11_16b_9.md": {
+      "path": "research_outputs/research_report_11_16b_9.md",
+      "size_bytes": 15800,
+      "sha256": "fd6e44e4e3b241c4cbba701c3d0905f4851ce25908223d4cb42683bb5a303fd4"
+    },
+    "policy_d_v2_canonical_trade_ledger_11_16b_9.csv": {
+      "path": "research_outputs/policy_d_v2_canonical_trade_ledger_11_16b_9.csv",
+      "size_bytes": 46147,
+      "sha256": "de7f34b67931dacf87440a58664ed19168d3f41d4f286e4f6da449f3478a2db1"
+    },
+    "policy_c_cross_sprint_reconciliation_11_16b_9.csv": {
+      "path": "research_outputs/policy_c_cross_sprint_reconciliation_11_16b_9.csv",
+      "size_bytes": 1208,
+      "sha256": "68a7b43d9be3fb9a00ec227e4e4959e5bd3a33af57456880f47e02795753e641"
+    },
+    "historical_evaluation_contamination_register_11_16b_9.json": {
+      "path": "research_outputs/historical_evaluation_contamination_register_11_16b_9.json",
+      "size_bytes": 1593,
+      "sha256": "b39a1b27175a7094cc590ab9805cb12203011a9a1b3bb4580575f824fb4151ff"
+    },
+    "policy_d_v2_canonical_verdict_11_16b_9.json": {
+      "path": "research_outputs/policy_d_v2_canonical_verdict_11_16b_9.json",
+      "size_bytes": 2500,
+      "sha256": "8bf565b43b25f96e8ab9b4b8601c4ffcdbac976c8a747ef1d2f986136fc0b868"
+    },
+    "reconcile_portfolio_and_cross_sprint_11_16b_9.py": {
+      "path": "scripts/reconcile_portfolio_and_cross_sprint_11_16b_9.py",
+      "size_bytes": 25483,
+      "sha256": "4399ab38b693bee66a84de4446206419ce1c1f1a82a190e8246014c4df530ce4"
+    },
+    "test_sprint11_16b_9_canonical_portfolio_accounting.py": {
+      "path": "tests/test_sprint11_16b_9_canonical_portfolio_accounting.py",
+      "size_bytes": 8784,
+      "sha256": "61312cb600e55274829e7015cf32c7e87bb51eb4e6eb54c70282d96232671c65"
+    },
+    "market_state_dataset.parquet": {
+      "path": "research_outputs/market_state_dataset.parquet",
+      "size_bytes": 25149564,
+      "sha256": "2e99190189dcc7b041de67e7833c3581770c87737cf42e0d35ebd1d52fd2c487"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "manifest_id": "CONTAMINATION-REGISTER-SPRINT-11-16B-9",
+  "timestamp_utc": "2026-10-19T11:55:00Z",
+  "partitions": {
+    "FOLD_1_IN_SAMPLE_TRAINING": {
+      "bars_range": "864 to 68040",
+      "days_count": 233,
+      "classification": "IN_SAMPLE_RESEARCH_CALIBRATION",
+      "contamination_status": "CONTAMINATED_BY_MODEL_FIT",
+      "inspection_history": "Used in Sprints 11.05-11.09 to compute normalization stats and candidate analogues."
+    },
+    "FOLD_2_CHRONOLOGICAL_HOLDOUT": {
+      "bars_range": "68040 to 86724",
+      "days_count": 65,
+      "classification": "RETROSPECTIVE_HOLDOUT",
+      "contamination_status": "RESEARCH_CONTAMINATED_REPEATED_AUDIT",
+      "inspection_history": "Repeatedly backtested and inspected across Sprints 11.10-11.14 and 11.16B.6."
+    },
+    "FOLD_3_OUT_OF_SAMPLE_TEST": {
+      "bars_range": "86724 to 105120",
+      "days_count": 64,
+      "classification": "RETROSPECTIVE_OUT_OF_SAMPLE",
+      "contamination_status": "CONTAMINATED_BY_EX_POST_BENCHMARKING",
+      "inspection_history": "Inspected in Sprint 11.16B.6, 11.16B.7, and 11.16B.8 for trade-active and ATR forensics."
+    },
+    "PROSPECTIVE_OBSERVATION_UNSEEN": {
+      "bars_range": "Unseen future real-time market data",
+      "days_count": 0,
+      "classification": "TRUE_PROSPECTIVE_SHADOW_OBSERVATION",
+      "contamination_status": "UNCONTAMINATED_NOT_STARTED",
+      "status": "NOT_STARTED"
+    }
+  },
+  "governance_rule": "Retrospective replays must never be labeled as walk-forward retraining or uncontaminated prospective evidence."
+}

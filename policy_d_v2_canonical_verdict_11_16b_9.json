@@ -1,0 +1,56 @@
+{
+  "sprint": "11.16B.9",
+  "mission": "Canonical Portfolio Accounting & Cross-Sprint Replay Reconciliation",
+  "timestamp_utc": "2026-10-19T11:55:00Z",
+  "global_declarations": {
+    "prospective_observation": "NOT_STARTED",
+    "live_trading": "PROHIBITED",
+    "policy_parameters_changed": "NO",
+    "operator_authorization": "NOT_GRANTED",
+    "next_step": "OPERATOR_REVIEW"
+  },
+  "residual_18_07_explanation": {
+    "status": "FULLY_EXPLAINED_ZERO_RESIDUAL",
+    "closed_trades_count": 140,
+    "cumulative_realized_loss_usdt": -3550.8959,
+    "cash_balance_after_trade_140_usdt": 6449.1041,
+    "unresolved_trade_141": {
+      "trade_id": 141,
+      "entry_bar": 105002,
+      "entry_fill_price": 81788.44,
+      "btc_acquired": 0.077274,
+      "cost_usdt": 6320.12,
+      "entry_fee_usdt": 6.32,
+      "remaining_unallocated_cash_usdt": 122.662,
+      "terminal_bar": 105119,
+      "final_close_price": 82104.03,
+      "terminal_mtm_value_btc_usdt": 6344.5087,
+      "unrealized_mtm_gain_usdt": 18.0665
+    },
+    "reconciliation_equation": "Portfolio Equity (6467.17) = Realized Cash (6449.10) + Trade 141 Unrealized Gain (+18.07)",
+    "terminal_liquidation_equity_usdt": 6457.66,
+    "terminal_liquidation_net_return_pct": -35.42
+  },
+  "cross_sprint_policy_c_reconciliation": {
+    "sprint_11_16b_6_window_trades": 26,
+    "sprint_11_16b_7_text_placeholder": 88,
+    "sprint_11_16b_8_full_dataset_reentry_trades": 1184,
+    "pure_crossover_trades_full_dataset": 1149,
+    "explanation": "11.16B.6 evaluated only 4,000 bars (4 regimes); 11.16B.7 quoted an unverified placeholder '88'; 11.16B.8 evaluated all 104,256 bars with immediate post-stop trend re-entries."
+  },
+  "cost_audit_summary": {
+    "total_turnover_usdt": 2188327.8,
+    "actual_fees_usdt": 2187.78,
+    "expected_fees_from_10bps": 2188.33,
+    "fee_discrepancy_usdt": 0.5453,
+    "actual_slippage_usdt": 1093.89,
+    "expected_slippage_from_5bps": 1094.16,
+    "slippage_discrepancy_usdt": 0.2743,
+    "total_friction_usdt": 3281.67,
+    "effective_friction_rate_bps": 15.0,
+    "nominal_policy_v2_standard_bps": 30.0,
+    "cost_reconciliation_verdict": "PERFECT_CANONICAL_ALIGNMENT"
+  },
+  "policy_d_v2_status": "EXPLORATORY_UNFROZEN_ECONOMICALLY_REJECTED",
+  "scientific_conclusion": "Policy D V2 exhibits significant negative expectancy (-35.33% MTM, -35.42% fully liquidated) and massive friction drag (3,281.67 USDT). It is rejected for prospective freezing."
+}
