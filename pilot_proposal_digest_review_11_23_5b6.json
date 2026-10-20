@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "sprint": "11.23.5B-6",
+  "generated_at_utc": "2026-10-20T21:33:38Z",
+  "proposal_id": "PRP-CPI-2026M10-V3",
+  "proposal_version": "3.0.0",
+  "canonical_proposal_digest": "73ff970d0f85ec31072d875fdf2ec26b18bdb93e20a84005c75ff808578fa765",
+  "reconciliation_impact_assessment": {
+    "sampling_plan_changed": false,
+    "explanation": "The 13 operational milestones and 8 macro horizons established in Sprint B-4 and B-5 represent the exact same 35-minute observation window (2100s duration, 20 request quota). No proposal parameters were mutated; proposal digest PRP-CPI-2026M10-V3 remains verified and stable.",
+    "proposal_digest_status": "VERIFIED_STABLE"
+  },
+  "proposal_parameters": {
+    "target_market": "BTC/USDT Spot (Binance)",
+    "observation_duration_seconds": 2100,
+    "max_request_quota": 20,
+    "planned_milestone_requests": 13,
+    "reserve_quota": 7,
+    "max_byte_budget": 5242880,
+    "approved_domains": [
+      "api.binance.com",
+      "data-api.binance.vision",
+      "www.bls.gov"
+    ]
+  },
+  "review_status": "PILOT_PROPOSAL_DIGEST: VERIFIED"
+}

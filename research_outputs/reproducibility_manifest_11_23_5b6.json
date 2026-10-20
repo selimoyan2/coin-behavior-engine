@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "sprint": "11.23.5B-6",
+  "generated_at_utc": "2026-10-20T21:33:38Z",
+  "base_commit": "5f51df912489f7e004cea8a21dc2300bb1453cb8",
+  "git_commit": "376f2950a78ef1d64cbb4ecd79af867fbdf1d59c",
+  "environment": {
+    "os": "Windows",
+    "python_version": "3.11.16",
+    "pytest_version": "9.1.1"
+  },
+  "test_suite": {
+    "sprint_test_file": "tests/test_sprint11_23_5b6_bls_acquisition.py",
+    "sprint_test_count": 30,
+    "sprint_test_passed": 30,
+    "overall_regression_count": 290,
+    "overall_regression_passed": 290
+  },
+  "reproduction_commands": [
+    ".\\.venv\\Scripts\\pytest.exe tests/test_sprint11_23_5b6_bls_acquisition.py -v",
+    ".\\.venv\\Scripts\\pytest.exe (Get-ChildItem tests\\test_sprint11_23*.py) -v",
+    ".\\.venv\\Scripts\\python.exe scripts/generate_sprint11_23_5b6_artifacts.py"
+  ],
+  "artifact_sha256": {
+    "bls_acquisition_request_11_23_5b6.json": "1ba562b4d25e95b0f68d051707a5b04dcec55ac630a11ffdd6be6ea3864918a3",
+    "acquisition_authorization_scope_11_23_5b6.json": "591e0b662d0fb4b36276e7ed84f74529510178f86b7d4c171526a01399176df0",
+    "https_acquisition_rehearsal_11_23_5b6.json": "43fedb75d3ca0cfa697dc66e3ec587ca98f226a37efc89937abcd906e67cb73a",
+    "official_schedule_parser_audit_11_23_5b6.json": "6e71560f154ecaf67e07f317fd498939dfe9247fe1e99701d601c697aa1f7c3e",
+    "event_identity_verification_11_23_5b6.json": "8ebd2069416a79261fe72bca1d82532a85d7107e5597dabf8149d817d37cc86e",
+    "sampling_plan_reconciliation_11_23_5b6.json": "8bbc727e892840500aa524f6b40b1125986da47d25f8886ad8fd535074182984",
+    "pilot_proposal_digest_review_11_23_5b6.json": "152a3d6e0e20633ef7c53801de26a6dbc0b0b70f7a6b9a695928d9c2ddeb06d4",
+    "operator_handoff_11_23_5b6.md": "7190d88ced4357c028795db0bf9280c1ed21b12cb358ff029be863f62b231e83",
+    "research_report_11_23_5b6.md": "9408fc172972c5c79d62fa09be7fb34d851851276024b543ef91922ab109d683"
+  }
+}

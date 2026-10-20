@@ -185,6 +185,23 @@ from .https_provenance import (
     ScheduleAcceptanceResult,
     OFFICIAL_PUBLISHER_DOMAINS,
 )
+from .bls_acquisition import (
+    OfficialScheduleAcquisitionRequest,
+    ParsedCpiSchedule,
+    BlsCpiScheduleParser,
+    ScheduleParsingError,
+    AcquisitionScopeError,
+    CanonicalSamplingMilestone,
+    CanonicalSamplingPlanReconciler,
+    OfflinePilotRehearsalRunnerV5,
+    MAX_ACQUISITION_ATTEMPTS,
+    MAX_SUCCESSFUL_ACQUISITIONS,
+    MAX_ACQUISITION_RESPONSE_BYTES,
+    OFFICIAL_BLS_HOST,
+    OFFICIAL_BLS_CPI_URL,
+    TARGET_EVENT_ID,
+    TARGET_EVENT_RELEASE_UTC,
+)
 from .end_to_end_pilot_sim import EndToEndPilotSimulationSuite
 from .recovery_simulation import EndToEndRecoverySimulationRunner
 
@@ -359,4 +376,20 @@ __all__ = [
     "OfficialScheduleAcceptancePolicy",
     "ScheduleAcceptanceResult",
     "OFFICIAL_PUBLISHER_DOMAINS",
+    # Sprint 11.23.5B-6 additions
+    "OfficialScheduleAcquisitionRequest",
+    "ParsedCpiSchedule",
+    "BlsCpiScheduleParser",
+    "ScheduleParsingError",
+    "AcquisitionScopeError",
+    "CanonicalSamplingMilestone",
+    "CanonicalSamplingPlanReconciler",
+    "OfflinePilotRehearsalRunnerV5",
+    "MAX_ACQUISITION_ATTEMPTS",
+    "MAX_SUCCESSFUL_ACQUISITIONS",
+    "MAX_ACQUISITION_RESPONSE_BYTES",
+    "OFFICIAL_BLS_HOST",
+    "OFFICIAL_BLS_CPI_URL",
+    "TARGET_EVENT_ID",
+    "TARGET_EVENT_RELEASE_UTC",
 ]

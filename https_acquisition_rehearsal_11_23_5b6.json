@@ -1,0 +1,96 @@
+{
+  "rehearsal_sprint": "11.23.5B-6",
+  "executed_at_utc": "2026-10-20T21:33:38Z",
+  "total_steps": 14,
+  "passed_steps": 14,
+  "rehearsal_status": "ALL_14_STEPS_PASSED",
+  "is_simulation_only": true,
+  "real_requests_made": 0,
+  "steps": [
+    {
+      "step": 1,
+      "name": "ACQUISITION_REQUEST_GENERATED",
+      "digest": "b1792ee85282de66c2aaf8a2e06cfbfeab87e1cd7503977269c3f9e9da8b91c6",
+      "status": "PASS"
+    },
+    {
+      "step": 2,
+      "name": "TOKEN_PREPARED",
+      "token_id": "TOK-BLS-ACQ-MOCK-001",
+      "status": "PASS"
+    },
+    {
+      "step": 3,
+      "name": "MOCK_APPROVAL_STORED",
+      "approval_id": "APPR-9A6979B40C03",
+      "status": "PASS"
+    },
+    {
+      "step": 4,
+      "name": "NETWORK_GATE_EVALUATED",
+      "allowed": true,
+      "status": "PASS"
+    },
+    {
+      "step": 5,
+      "name": "HTTPS_MOCK_ACQUIRED",
+      "bytes": 756,
+      "sha256": "d4865111aed23d3ba9c25e2177a22eea08fb1b1c8ca833511b09fb857172ff71",
+      "status": "PASS"
+    },
+    {
+      "step": 6,
+      "name": "PROVENANCE_RECORD_GENERATED",
+      "level": "Level_B",
+      "status": "PASS"
+    },
+    {
+      "step": 7,
+      "name": "EVIDENCE_VAULT_STORED",
+      "sha256": "d4865111aed23d3ba9c25e2177a22eea08fb1b1c8ca833511b09fb857172ff71",
+      "status": "PASS"
+    },
+    {
+      "step": 8,
+      "name": "SCHEDULE_PARSED",
+      "release_date": "2026-11-10",
+      "status": "PASS"
+    },
+    {
+      "step": 9,
+      "name": "REFERENCE_PERIOD_VERIFIED",
+      "period": "2026M10",
+      "status": "PASS"
+    },
+    {
+      "step": 10,
+      "name": "EVENT_IDENTITY_FROZEN",
+      "event_id": "EVT-BLS-CPI-2026M10-20261110",
+      "status": "PASS"
+    },
+    {
+      "step": 11,
+      "name": "SAMPLING_PLAN_RECONCILED",
+      "milestones": 13,
+      "horizons": 8,
+      "status": "PASS"
+    },
+    {
+      "step": 12,
+      "name": "PROPOSAL_DIGEST_REVIEWED",
+      "digest": "05b403087124d133ad560a00af915e58fc92f315f9f0943cfbc8a12f26b97a23",
+      "status": "PASS"
+    },
+    {
+      "step": 13,
+      "name": "AUTHORIZATION_REVOKED",
+      "revocation_verified": true,
+      "status": "PASS"
+    },
+    {
+      "step": 14,
+      "name": "CLEAN_SHUTDOWN",
+      "status": "PASS"
+    }
+  ]
+}

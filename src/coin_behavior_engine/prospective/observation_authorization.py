@@ -108,6 +108,7 @@ class NetworkActivationGateError(AuthorizationError):
 class AuthorizationCapability(str, Enum):
     OFFLINE_SIMULATION = "OFFLINE_SIMULATION"
     READ_ONLY_EXTERNAL_OBSERVATION = "READ_ONLY_EXTERNAL_OBSERVATION"
+    OFFICIAL_SCHEDULE_EVIDENCE_ACQUISITION = "OFFICIAL_SCHEDULE_EVIDENCE_ACQUISITION"
     LIVE_ORDER_EXECUTION = "LIVE_ORDER_EXECUTION"  # Permanently prohibited
 
 
@@ -791,6 +792,7 @@ class NetworkActivationGate:
         method: str = "GET",
         headers: Optional[Dict[str, str]] = None,
         estimated_bytes: int = 0,
+        expected_request_digest: Optional[str] = None,
     ) -> Tuple[bool, str]:
         """
         Evaluates the 10 mandatory conditions for network retrieval.
@@ -807,12 +809,16 @@ class NetworkActivationGate:
         if not token.verify_signature(key_registry=self.key_registry):
             return False, "INVALID_SIGNATURE: Token cryptographic signature digest verification failed."
 
-        # Condition 8: Research-only capability (Trading Isolation)
+        # Condition 8: Research-only capability (Trading Isolation & Capability Separation)
         if token.capability == AuthorizationCapability.LIVE_ORDER_EXECUTION:
             raise TradingIsolationViolation(
                 "CRITICAL GOVERNANCE VIOLATION: LIVE_ORDER_EXECUTION is permanently prohibited!"
             )
-        if token.capability != AuthorizationCapability.READ_ONLY_EXTERNAL_OBSERVATION:
+        allowed_capabilities = {
+            AuthorizationCapability.READ_ONLY_EXTERNAL_OBSERVATION,
+            AuthorizationCapability.OFFICIAL_SCHEDULE_EVIDENCE_ACQUISITION,
+        }
+        if token.capability not in allowed_capabilities:
             return False, f"PROHIBITED_CAPABILITY: Token capability '{token.capability.value}' not authorized for network."
 
         # Condition 9: Safe HTTPS transport checks
@@ -825,6 +831,16 @@ class NetworkActivationGate:
         for pattern in DENYLISTED_TRADING_ENDPOINTS:
             if re.search(pattern, path):
                 raise TradingIsolationViolation(f"Trading endpoint access denied: '{path}'")
+
+        # Phase 2 Isolation: OFFICIAL_SCHEDULE_EVIDENCE_ACQUISITION strictly prohibits exchange/market API access
+        if token.capability == AuthorizationCapability.OFFICIAL_SCHEDULE_EVIDENCE_ACQUISITION:
+            host_check = (parsed.hostname or "").lower().strip()
+            EXCHANGE_MARKET_DOMAINS = {"api.binance.com", "data-api.binance.vision", "binance.com"}
+            if any(host_check == d or host_check.endswith("." + d) for d in EXCHANGE_MARKET_DOMAINS):
+                raise TradingIsolationViolation(
+                    f"AUTHORIZATION_ISOLATION_VIOLATION: OFFICIAL_SCHEDULE_EVIDENCE_ACQUISITION strictly prohibits "
+                    f"exchange/market data access to '{host_check}'."
+                )
 
         # Condition 1: Explicit operator approval in trusted store
         approval = self.approval_store.get_approval(token.token_id)
@@ -858,6 +874,14 @@ class NetworkActivationGate:
                 return False, f"EXPIRED: Current time {now_utc.isoformat()} > {approval.expires_at_utc}."
         except Exception as e:
             return False, f"TIME_FORMAT_ERROR: {e}"
+
+        # Request / Proposal Digest binding check
+        if expected_request_digest and approval.proposal_digest:
+            if approval.proposal_digest != expected_request_digest:
+                return False, (
+                    f"DIGEST_MISMATCH: Approval proposal_digest '{approval.proposal_digest}' does not match "
+                    f"expected request digest '{expected_request_digest}'."
+                )
 
         # Condition 6 & 7: Available request quota and byte quota (Atomic reservation)
         reserved, res_msg = self.approval_store.reserve_quota(token.token_id, estimated_bytes=estimated_bytes)

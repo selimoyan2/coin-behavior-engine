@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "sprint": "11.23.5B-6",
+  "generated_at_utc": "2026-10-20T21:33:38Z",
+  "candidate_event": {
+    "publisher": "BLS",
+    "series": "CPI",
+    "reference_period": "2026M10",
+    "scheduled_release_date": "2026-11-10",
+    "scheduled_release_time_local": "08:30:00",
+    "local_timezone": "America/New_York",
+    "scheduled_release_utc": "2026-11-10T13:30:00Z",
+    "candidate_event_id": "EVT-BLS-CPI-2026M10-20261110",
+    "status": "CANDIDATE_PENDING_SCHEDULE_VERIFICATION",
+    "schedule_evidence_sha256": null,
+    "verification_notes": "Event parameters derived from BLS announcement schedule candidate values. Pending official schedule document import and cryptographic provenance verification."
+  },
+  "mandatory_freezing_conditions": [
+    {
+      "condition_id": "COND_01_PROVENANCE_LEVEL",
+      "description": "Source provenance verified at Level A (Publisher Signature) or Level B (Official HTTPS Acquisition).",
+      "current_status": "PENDING_ACQUISITION"
+    },
+    {
+      "condition_id": "COND_02_RELEASE_DATE_MATCH",
+      "description": "Parsed official release date matches candidate release date (2026-11-10).",
+      "current_status": "PENDING_ACQUISITION"
+    },
+    {
+      "condition_id": "COND_03_REF_PERIOD_MATCH",
+      "description": "Parsed official reference period matches candidate reference period (2026M10).",
+      "current_status": "PENDING_ACQUISITION"
+    },
+    {
+      "condition_id": "COND_04_TIMEZONE_UTC_MATCH",
+      "description": "Parsed local time and timezone convert to candidate UTC release timestamp (2026-11-10T13:30:00Z).",
+      "current_status": "PENDING_ACQUISITION"
+    },
+    {
+      "condition_id": "COND_05_CONTENT_HASH_RECORDED",
+      "description": "Raw evidence payload SHA-256 is recorded and bound to event identity.",
+      "current_status": "PENDING_ACQUISITION"
+    },
+    {
+      "condition_id": "COND_06_NO_CONTRADICTIONS",
+      "description": "No unresolved conflicting schedule document or supersession notice exists.",
+      "current_status": "PENDING_ACQUISITION"
+    }
+  ],
+  "final_event_identity_status": "CANDIDATE_PENDING_SCHEDULE_VERIFICATION",
+  "governance_note": "Event identity preserved as CANDIDATE_PENDING_SCHEDULE_VERIFICATION until genuine official evidence is acquired and verified."
+}

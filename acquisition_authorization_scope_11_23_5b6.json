@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0.0",
+  "sprint": "11.23.5B-6",
+  "generated_at_utc": "2026-10-20T21:33:38Z",
+  "capability_name": "OFFICIAL_SCHEDULE_EVIDENCE_ACQUISITION",
+  "description": "Narrowly scoped capability for one-time read-only acquisition of official economic schedule documents.",
+  "permitted_operations": [
+    {
+      "operation": "HTTPS_GET_SCHEDULE",
+      "hostname": "www.bls.gov",
+      "url": "https://www.bls.gov/schedule/news_release/cpi.htm",
+      "max_attempts": 2,
+      "max_response_bytes": 2097152,
+      "transport": "TLS_PINNED_HTTPS"
+    }
+  ],
+  "strictly_prohibited_operations": [
+    {
+      "category": "MARKET_DATA_ACCESS",
+      "prohibited_domains": [
+        "api.binance.com",
+        "data-api.binance.vision",
+        "binance.com"
+      ],
+      "reason": "Acquisition capability cannot be used to retrieve live market quotes or klines.",
+      "enforcement": "TradingIsolationViolation raised if exchange domain targeted."
+    },
+    {
+      "category": "ORDER_EXECUTION_AND_TRADING",
+      "prohibited_endpoints": [
+        "/api/v3/order",
+        "/api/v3/openOrders",
+        "/api/v3/userDataStream"
+      ],
+      "reason": "Live trading and order submission are permanently prohibited across the entire engine.",
+      "enforcement": "Permanent TradingIsolationViolation."
+    },
+    {
+      "category": "UNATTENDED_MONITORING_AND_SCHEDULING",
+      "reason": "Background crons, loops, and automated polling are strictly disabled.",
+      "enforcement": "Fail-closed execution boundary."
+    },
+    {
+      "category": "THIRD_PARTY_CALENDARS",
+      "reason": "Aggregator websites, commercial calendars, and news outlets are denied.",
+      "enforcement": "Official domain allowlist strictly enforced."
+    }
+  ],
+  "governance_roles": {
+    "requestor_role": "RESEARCH_OPERATOR",
+    "approval_role": "APPROVAL_ADMIN",
+    "self_approval_permitted": false,
+    "production_token_status": "NOT_GRANTED"
+  },
+  "canonical_request_digest_bound": "b1792ee85282de66c2aaf8a2e06cfbfeab87e1cd7503977269c3f9e9da8b91c6"
+}

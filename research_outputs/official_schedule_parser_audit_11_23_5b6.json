@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "sprint": "11.23.5B-6",
+  "generated_at_utc": "2026-10-20T21:33:38Z",
+  "parser_component": "BlsCpiScheduleParser",
+  "extraction_capabilities": [
+    "Publisher identification (BLS)",
+    "Series keyword verification (Consumer Price Index / CPI)",
+    "Reference period extraction (e.g. October 2026 -> 2026M10)",
+    "Release date parsing (YYYY-MM-DD)",
+    "Release time parsing (HH:MM:SS local)",
+    "Timezone conversion (EST, UTC-5 -> UTC)",
+    "Canonical event ID derivation",
+    "Contradiction detection against candidate parameters",
+    "Revision indicator detection"
+  ],
+  "verified_scenarios": [
+    {
+      "scenario": "Exact Candidate Alignment",
+      "document_reference_period": "October 2026",
+      "document_release_date": "2026-11-10",
+      "document_release_time": "08:30 AM",
+      "result": "MATCH_CONFIRMED",
+      "contradicts_candidate": false,
+      "derived_event_id": "EVT-BLS-CPI-2026M10-20261110"
+    },
+    {
+      "scenario": "Conflicting Official Schedule Date",
+      "document_reference_period": "October 2026",
+      "document_release_date": "2026-11-12",
+      "document_release_time": "08:30 AM",
+      "result": "CONTRADICTION_FLAGGED",
+      "contradicts_candidate": true,
+      "action": "Preserve both candidate (2026-11-10) and parsed (2026-11-12) values in audit report. Block automatic freezing and require operator review."
+    },
+    {
+      "scenario": "Unrelated Document Missing CPI",
+      "document_text": "Employment Situation Schedule",
+      "result": "PARSING_ERROR_RAISED",
+      "error": "Document lacks required 'Consumer Price Index' or 'CPI' series markers."
+    }
+  ],
+  "current_production_state": {
+    "status": "SCHEDULE_VERIFICATION_PENDING",
+    "reason": "Authentic BLS document acquisition pending separate operator authorization. Real external network collection disabled."
+  }
+}
