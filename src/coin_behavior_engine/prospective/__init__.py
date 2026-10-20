@@ -203,6 +203,7 @@ from .bls_acquisition import (
     BlsAcquisitionExecutor,
     BlsAcquisitionCLI,
     OfflineOperatorSessionRunner,
+    OfflineProductionPathRehearsalRunner,
     MAX_ACQUISITION_ATTEMPTS,
     MAX_SUCCESSFUL_ACQUISITIONS,
     MAX_ACQUISITION_RESPONSE_BYTES,
@@ -411,4 +412,6 @@ __all__ = [
     "BlsAcquisitionExecutor",
     "BlsAcquisitionCLI",
     "OfflineOperatorSessionRunner",
+    # Sprint 11.23.5B-6.2 additions
+    "OfflineProductionPathRehearsalRunner",
 ]

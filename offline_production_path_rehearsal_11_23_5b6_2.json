@@ -1,0 +1,110 @@
+{
+  "session_sprint": "11.23.5B-6.2",
+  "executed_at_utc": "2026-10-20T22:40:35Z",
+  "total_steps": 14,
+  "passed_steps": 14,
+  "session_status": "ALL_STEPS_PASSED",
+  "is_simulation_only": true,
+  "real_requests_made": 0,
+  "steps": [
+    {
+      "step": 1,
+      "action": "REQUEST_PREPARATION",
+      "status": "PASS",
+      "request_id": "REQ-BLS-CPI-2026M10-ACQ-20261020224035355430",
+      "digest": "b80af9da60d3f107074c0b96d196fd7a42402d780ac9c19b65a94d3ee804bd64"
+    },
+    {
+      "step": 2,
+      "action": "SEPARATION_OF_DUTIES_VERIFICATION",
+      "status": "PASS",
+      "creator": "OP-RESEARCH-LEAD-01",
+      "approver": "OP-APPROVAL-ADMIN-01"
+    },
+    {
+      "step": 3,
+      "action": "PROVISION_PRODUCTION_LIKE_KEY",
+      "status": "PASS",
+      "key_id": "prod-op-key-01",
+      "key_file": "C:\\Users\\selim\\AppData\\Local\\Temp\\tmpv_40350a\\keys\\prod-op-key-01.key"
+    },
+    {
+      "step": 4,
+      "action": "CANONICAL_DIGEST_BINDING",
+      "status": "PASS",
+      "token_id": "TOK-PROD-REHEARSAL-20261020224035",
+      "signature_digest": "330a723971a30306badd29e9153b08902839561f1c9bdf3bbf4606a40c0fe125"
+    },
+    {
+      "step": 5,
+      "action": "APPROVAL_PERSISTENCE",
+      "status": "PASS",
+      "approval_id": "APPR-AD46FDC50DDF",
+      "status_stored": "ACTIVE"
+    },
+    {
+      "step": 6,
+      "action": "NETWORK_GATE_VALIDATION",
+      "status": "PASS",
+      "gate_allowed": true
+    },
+    {
+      "step": 7,
+      "action": "MOCK_HTTPS_ACQUISITION",
+      "status": "PASS",
+      "evidence_sha256": "d4865111aed23d3ba9c25e2177a22eea08fb1b1c8ca833511b09fb857172ff71"
+    },
+    {
+      "step": 8,
+      "action": "EVIDENCE_VAULT_STORAGE_VERIFICATION",
+      "status": "PASS",
+      "stored_path": "C:\\Users\\selim\\AppData\\Local\\Temp\\tmpv_40350a\\vault\\releases\\d4865111aed23d3ba9c25e2177a22eea08fb1b1c8ca833511b09fb857172ff71.html"
+    },
+    {
+      "step": 9,
+      "action": "EVIDENCE_VERIFICATION",
+      "status": "PASS",
+      "event_id": "EVT-BLS-CPI-2026M10-20261110",
+      "scheduled_release_utc": "2026-11-10T13:30:00Z"
+    },
+    {
+      "step": 10,
+      "action": "AUTHORIZATION_CONSUMPTION_VERIFIED",
+      "status": "PASS",
+      "token_status": "CONSUMED"
+    },
+    {
+      "step": 11,
+      "action": "EXPLICIT_REVOCATION",
+      "status": "PASS",
+      "details": {
+        "token_id": "TOK-PROD-REHEARSAL-20261020224035",
+        "revoked": true,
+        "revoked_by": "OP-APPROVAL-ADMIN-01",
+        "reason": "Rehearsal teardown revocation",
+        "timestamp_utc": "2026-10-20T22:40:35Z"
+      }
+    },
+    {
+      "step": 12,
+      "action": "REPLAY_REJECTION_VERIFIED",
+      "status": "PASS",
+      "status_code": "FAILED_AUTHORIZATION_AUDIT"
+    },
+    {
+      "step": 13,
+      "action": "EXPIRED_REQUEST_RENEWAL_VERIFIED",
+      "status": "PASS",
+      "old_digest": "b80af9da60d3f107074c0b96d196fd7a42402d780ac9c19b65a94d3ee804bd64",
+      "new_digest": "0e17af15a7614703b59fa44f604ea8196206c5f2e72909540aad0d65a232036e",
+      "mismatch_detected": true
+    },
+    {
+      "step": 14,
+      "action": "CLEAN_SHUTDOWN",
+      "status": "PASS",
+      "resources_closed": true,
+      "zero_persistent_prod_artifacts": true
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "sprint": "11.23.5B-6.2",
+  "generated_at_utc": "2026-10-20T22:40:35Z",
+  "key_provider": "coin_behavior_engine.prospective.operator_workflow.FileBackedKeyProvider",
+  "key_id_format": "^[a-zA-Z0-9_\\-]+$",
+  "key_storage_requirements": {
+    "directory_permissions": "0700 (POSIX) / Restricted ACLs (Windows)",
+    "file_permissions": "0600 (POSIX) / Administrator+Owner Read Only (Windows)",
+    "min_secret_bytes": 32,
+    "algorithm": "HMAC-SHA256",
+    "test_key_isolation": "Strictly segregated. is_test_key=True rejected in production mode."
+  },
+  "audit_verification_checklist": [
+    {
+      "check": "KEY_DIRECTORY_PERMISSIONS",
+      "status": "VERIFIED_SECURE",
+      "details": "Directory restricted to operator user."
+    },
+    {
+      "check": "KEY_FILE_PERMISSIONS",
+      "status": "VERIFIED_SECURE",
+      "details": "Key files restricted to owner read/write (0600 equivalent)."
+    },
+    {
+      "check": "KEY_ID_FORMAT_VALIDATION",
+      "status": "VERIFIED_SECURE",
+      "details": "Regex ^[a-zA-Z0-9_\\-]+$ prevents directory traversal."
+    },
+    {
+      "check": "MINIMUM_ENTROPY_LENGTH",
+      "status": "VERIFIED_SECURE",
+      "details": "Keys < 16 bytes rejected; production keys require >= 32 bytes."
+    },
+    {
+      "check": "TEST_KEY_REJECTION_IN_PRODUCTION",
+      "status": "VERIFIED_SECURE",
+      "details": "SigningKeyRegistry.is_test_key rejects test keys for prod."
+    },
+    {
+      "check": "KEY_ROTATION_METADATA",
+      "status": "VERIFIED_SECURE",
+      "details": "Key metadata stores issued_at_utc and expires_at_utc."
+    },
+    {
+      "check": "SECRETS_MANAGER_READY",
+      "status": "VERIFIED_SECURE",
+      "details": "FileBackedKeyProvider interface compatible with cloud KMS / HSM."
+    }
+  ],
+  "compliance_verdict": "PRODUCTION_KEY_PROVISIONING_AUDIT_PASS"
+}

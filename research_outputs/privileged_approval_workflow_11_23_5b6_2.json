@@ -1,0 +1,35 @@
+{
+  "sprint": "11.23.5B-6.2",
+  "generated_at_utc": "2026-10-20T22:40:35Z",
+  "command": "cbe bls-acquisition approve",
+  "roles": {
+    "creator_role": "RESEARCH_OPERATOR",
+    "approver_role": "APPROVAL_ADMIN",
+    "separation_of_duties": "ENFORCED (creator_id != approver_id)"
+  },
+  "parameters": {
+    "request_binding": "Canonical SHA-256 digest of OfficialScheduleAcquisitionRequest",
+    "max_validity_hours": 24,
+    "max_attempts": 2,
+    "max_successful_acquisitions": 1,
+    "max_response_bytes": 2097152,
+    "capability": "OFFICIAL_SCHEDULE_EVIDENCE_ACQUISITION",
+    "target_event_id": "EVT-BLS-CPI-2026M10-20261110"
+  },
+  "lifecycle_states": {
+    "PROPOSED": "Created by Research Operator; awaiting Approval Admin signature.",
+    "ACTIVE": "Digitally signed by Approval Admin; stored in TrustedApprovalStore.",
+    "CONSUMED": "Evidence successfully retrieved and vaulted; permanently non-reusable.",
+    "EXHAUSTED": "Request quota exhausted without successful vaulting.",
+    "REVOKED": "Explicit operator revocation recorded with reason and timestamp.",
+    "EXPIRED": "Current time passed expires_at_utc."
+  },
+  "security_controls": {
+    "self_approval_blocked": true,
+    "expired_request_rejection": true,
+    "test_key_in_prod_rejection": true,
+    "digest_tamper_detection": true,
+    "durable_audit_log": true
+  },
+  "compliance_verdict": "PRIVILEGED_APPROVAL_WORKFLOW_VERIFIED"
+}

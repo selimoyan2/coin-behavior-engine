@@ -1,0 +1,46 @@
+{
+  "sprint": "11.23.5B-6.2",
+  "generated_at_utc": "2026-10-20T22:40:35Z",
+  "state_transitions": [
+    {
+      "from": "NONE",
+      "to": "PROPOSED",
+      "trigger": "cbe bls-acquisition prepare",
+      "authorized_by": "RESEARCH_OPERATOR"
+    },
+    {
+      "from": "PROPOSED",
+      "to": "ACTIVE",
+      "trigger": "cbe bls-acquisition approve",
+      "authorized_by": "APPROVAL_ADMIN"
+    },
+    {
+      "from": "ACTIVE",
+      "to": "CONSUMED",
+      "trigger": "Evidence vaulted successfully",
+      "enforced_by": "TrustedApprovalStore.consume_approval"
+    },
+    {
+      "from": "ACTIVE",
+      "to": "EXHAUSTED",
+      "trigger": "spent_requests >= max_attempts without success",
+      "enforced_by": "NetworkActivationGate"
+    },
+    {
+      "from": "ACTIVE",
+      "to": "REVOKED",
+      "trigger": "cbe bls-acquisition revoke",
+      "authorized_by": "OPERATOR"
+    },
+    {
+      "from": "ACTIVE",
+      "to": "EXPIRED",
+      "trigger": "now_utc > expires_at_utc",
+      "enforced_by": "NetworkActivationGate"
+    }
+  ],
+  "replay_prevention_guarantee": "Once an acquisition attempt vaults official evidence, token status transitions to CONSUMED. All subsequent executions fail closed with STATUS_CONSUMED regardless of remaining attempt quota.",
+  "durability_mechanism": "Atomic SQLite updates within isolated transactions with WAL mode.",
+  "audit_trail_table": "audit_trail (action, token_id, event_id, timestamp_utc, details_json)",
+  "compliance_verdict": "LIFECYCLE_AUDIT_PASS"
+}

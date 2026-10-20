@@ -1,0 +1,17 @@
+{
+  "sprint": "11.23.5B-6.2",
+  "generated_at_utc": "2026-10-20T22:40:35Z",
+  "concurrency_protection": {
+    "mechanism": "SQLite atomic transaction + RLock thread serialization",
+    "tested_scenario": "5 concurrent threads attempting quota reservation on 2-attempt budget",
+    "result": "Exactly 2 succeeded, 3 failed-closed with REQUEST_QUOTA_EXCEEDED",
+    "overspending_detected": false
+  },
+  "crash_recovery": {
+    "mechanism": "Durable SQLite state committed before network dispatch",
+    "tested_scenario": "Simulated hard process termination after reservation, followed by store reconnect",
+    "result": "Quota reservation was durably preserved; token remained bound; no quota leak",
+    "fail_closed_posture": "PRESERVED"
+  },
+  "compliance_verdict": "CONCURRENCY_AND_CRASH_RECOVERY_VERIFIED"
+}

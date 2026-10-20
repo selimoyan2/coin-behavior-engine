@@ -751,6 +751,29 @@ class TrustedApprovalStore:
             finally:
                 self._close_connection(conn)
 
+    def consume_approval(self, token_id: str, reason: str = "Acquisition completed successfully") -> bool:
+        """
+        Marks an active approval as CONSUMED after a successful acquisition.
+        Prevents any further acquisitions using this authorization token.
+        """
+        with self._lock:
+            conn = self._get_connection()
+            try:
+                with conn:
+                    cursor = conn.execute(
+                        "UPDATE approval_records SET status = 'CONSUMED' WHERE token_id = ? AND status IN ('ACTIVE', 'EXHAUSTED')",
+                        (token_id,)
+                    )
+                    affected = cursor.rowcount > 0
+                    if affected:
+                        conn.execute(
+                            "INSERT INTO audit_trail (action, token_id, event_id, timestamp_utc, details_json) VALUES (?, ?, ?, ?, ?)",
+                            ("APPROVAL_CONSUMED", token_id, "", datetime.now(timezone.utc).isoformat(), json.dumps({"reason": reason}))
+                        )
+                    return affected
+            finally:
+                self._close_connection(conn)
+
 
 # ==============================================================================
 # 6. NETWORK ACTIVATION GATE (10 MANDATORY GATES)

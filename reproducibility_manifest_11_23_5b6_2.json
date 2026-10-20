@@ -1,0 +1,26 @@
+{
+  "sprint": "11.23.5B-6.2",
+  "generated_at_utc": "2026-10-20T22:40:35Z",
+  "base_commit": "3c61288b5ab7de71b759d2f01873eba5bb14d065",
+  "commit_sha": "5c499b7c2d6c39fb2d8720e24114dff472d2f26b",
+  "target_publisher": "BLS",
+  "target_event_id": "EVT-BLS-CPI-2026M10-20261110",
+  "target_event_release_utc": "2026-11-10T13:30:00Z",
+  "target_url": "https://www.bls.gov/schedule/news_release/cpi.htm",
+  "total_regression_tests": 357,
+  "tests_passed": 357,
+  "execution_mode": "STRICTLY_OFFLINE_DEVELOPMENT",
+  "real_network_requests": 0,
+  "operator_authorization": "NOT_GRANTED",
+  "production_gate_decision": "TECHNICALLY_READY_AWAITING_OPERATOR_AUTHORIZATION",
+  "deliverables": {
+    "production_key_provisioning_audit_11_23_5b6_2.json": "af78b5cfc866d84e5f91e3bed75c3ae79b619923f57ff05bbe2f74485c619dd9",
+    "privileged_approval_workflow_11_23_5b6_2.json": "2f59d84ca454c346f4cfdc4fe9634706bc07425884dc62bc375672fdae1403df",
+    "production_gate_readiness_11_23_5b6_2.json": "f19d8e52c307f6414f6335a89679e3852de807270506edf8045e64f328c73fc3",
+    "acquisition_lifecycle_audit_11_23_5b6_2.json": "1f02c5965e01b4af12ec46cca43638d7139b3a27fb97b0a2676ed38a616653ba",
+    "concurrency_crash_recovery_11_23_5b6_2.json": "96075230e97e237d99b283a64cfe43046db26b41cbeb8bc2dbb89199bc4343f3",
+    "offline_production_path_rehearsal_11_23_5b6_2.json": "4b70e0956131907fe8505bb67b4e61b8b10f1e1a3ee5bb4781f0b57fffd54612",
+    "operator_handoff_11_23_5b6_2.md": "5412f8ac6405b197db3d73662822b75bce4e1f87fe2bd279e425664a014131dc",
+    "research_report_11_23_5b6_2.md": "eea4562b59523fccc8f8a506ddb124814dea6c735c4e303e6d8b04a669b2c6bf"
+  }
+}

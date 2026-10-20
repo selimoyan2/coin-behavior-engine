@@ -1,0 +1,74 @@
+{
+  "sprint": "11.23.5B-6.2",
+  "generated_at_utc": "2026-10-20T22:40:35Z",
+  "target_url": "https://www.bls.gov/schedule/news_release/cpi.htm",
+  "target_event_id": "EVT-BLS-CPI-2026M10-20261110",
+  "decision": "TECHNICALLY_READY_AWAITING_OPERATOR_AUTHORIZATION",
+  "is_production_ready": true,
+  "is_production_authorized": false,
+  "governance_policy": "POLICY_FREEZE (Explicit operator production authorization strictly NOT_GRANTED)",
+  "technical_preflight_checklist": [
+    {
+      "gate": 1,
+      "name": "Cryptographic Token Verification",
+      "status": "PASS",
+      "details": "HMAC-SHA256 signature matches canonical payload."
+    },
+    {
+      "gate": 2,
+      "name": "Approval Store Record",
+      "status": "PASS",
+      "details": "Active approval record found in TrustedApprovalStore."
+    },
+    {
+      "gate": 3,
+      "name": "Event ID Scope",
+      "status": "PASS",
+      "details": "Target event matches EVT-BLS-CPI-2026M10-20261110."
+    },
+    {
+      "gate": 4,
+      "name": "Domain Authorization",
+      "status": "PASS",
+      "details": "www.bls.gov matches approved_domains list."
+    },
+    {
+      "gate": 5,
+      "name": "Validity Window",
+      "status": "PASS",
+      "details": "Current UTC within [not_before, expires_at]."
+    },
+    {
+      "gate": 6,
+      "name": "Request Quota",
+      "status": "PASS",
+      "details": "spent_requests (0) < max_attempts (2)."
+    },
+    {
+      "gate": 7,
+      "name": "Byte Quota",
+      "status": "PASS",
+      "details": "spent_bytes (0) + estimated (100KB) <= 2MB."
+    },
+    {
+      "gate": 8,
+      "name": "Capability Isolation",
+      "status": "PASS",
+      "details": "OFFICIAL_SCHEDULE_EVIDENCE_ACQUISITION prohibits trading/Binance."
+    },
+    {
+      "gate": 9,
+      "name": "Transport Security",
+      "status": "PASS",
+      "details": "Strict HTTPS, GET only, SSRF and redirect controls verified."
+    },
+    {
+      "gate": 10,
+      "name": "Request Digest Binding",
+      "status": "PASS",
+      "details": "Canonical digest matches proposal_digest."
+    }
+  ],
+  "rehearsal_result": "PASS (14/14 steps completed)",
+  "operational_posture": "FAIL_CLOSED_MAINTAINED"
+}
