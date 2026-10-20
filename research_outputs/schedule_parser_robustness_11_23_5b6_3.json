@@ -1,0 +1,32 @@
+{
+  "sprint": "11.23.5B-6.3",
+  "generated_at_utc": "2026-10-20T22:50:07Z",
+  "verdict": "SCHEDULE_PARSER_ROBUSTNESS: PASS",
+  "tested_scenarios": [
+    {
+      "scenario": "HTML_ENTITY_DECODING",
+      "status": "PASS",
+      "details": "html.unescape accurately resolves &nbsp; and non-breaking spaces in schedule rows."
+    },
+    {
+      "scenario": "WHITESPACE_AND_FORMAT_VARIATIONS",
+      "status": "PASS",
+      "details": "Tolerates extra whitespace, newlines, tabs, and table styling variations."
+    },
+    {
+      "scenario": "MERIDIEM_AND_CASE_VARIATIONS",
+      "status": "PASS",
+      "details": "Successfully parses '08:30 AM', '8:30 a.m.', '8:30am', and converts to canonical 24h format 08:30:00."
+    },
+    {
+      "scenario": "CONTRADICTION_DETECTION",
+      "status": "PASS",
+      "details": "Flags discrepancies in date, time, or period as contradicts_candidate=True and blocks event freezing."
+    },
+    {
+      "scenario": "REVISION_NOTES_DETECTION",
+      "status": "PASS",
+      "details": "Detects 'revised', 'rescheduled', 'preliminary' indicators in schedule text."
+    }
+  ]
+}

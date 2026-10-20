@@ -95,8 +95,13 @@ def verify_key_file_permissions(filepath: Union[str, Path]) -> bool:
     Verifies that key file permissions are restrictive.
     On POSIX, strictly enforces 0600 (read/write by owner only; no group or world bits).
     On Windows, verifies file exists and is accessible.
+    Rejects symbolic links unconditionally across all platforms.
     """
-    p = Path(filepath).resolve()
+    raw_p = Path(filepath)
+    if raw_p.is_symlink():
+        raise KeyStorePermissionError(f"Symlinks are strictly prohibited for key files: '{filepath}'.")
+
+    p = raw_p.resolve()
     if not p.exists() or not p.is_file():
         raise FileNotFoundError(f"Key file '{p}' does not exist or is not a file.")
 
@@ -115,7 +120,8 @@ def verify_key_file_permissions(filepath: Union[str, Path]) -> bool:
 class FileBackedKeyProvider:
     """
     Loads signing keys from local filesystem with strict permission enforcement.
-    Fails closed if permissions are too broad or file is missing.
+    Fails closed if permissions are too broad, file is missing, symlinks are used,
+    or path traversal is attempted.
     """
     def __init__(self, key_dir: Union[str, Path]) -> None:
         self.key_dir = Path(key_dir).resolve()
@@ -125,10 +131,18 @@ class FileBackedKeyProvider:
             raise ValueError(f"Invalid key ID format: '{key_id}'")
 
         key_file = self.key_dir / f"{key_id}.key"
+        if key_file.is_symlink():
+            raise KeyStorePermissionError(f"Symlinks are prohibited for key files: '{key_file}'")
+
+        resolved_file = key_file.resolve()
+        if not resolved_file.is_relative_to(self.key_dir) or resolved_file.parent != self.key_dir:
+            raise ValueError(f"Path traversal detected: '{key_file}' resolves outside key directory '{self.key_dir}'.")
+
         verify_key_file_permissions(key_file)
         data = key_file.read_bytes().strip()
-        if len(data) < 16:
-            raise ValueError(f"Key '{key_id}' length ({len(data)} B) is less than required 16 bytes.")
+        min_bytes = 16 if is_test_key else 32
+        if len(data) < min_bytes:
+            raise ValueError(f"Key '{key_id}' length ({len(data)} B) is less than required {min_bytes} bytes.")
         return data
 
 

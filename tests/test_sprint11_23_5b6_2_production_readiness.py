@@ -208,7 +208,7 @@ def test_03_malformed_production_key(tmp_path):
     short_file = key_dir / "short-key.key"
     short_file.write_bytes(b"too_short")
     provider = FileBackedKeyProvider(key_dir=key_dir)
-    with pytest.raises(ValueError, match="less than required 16 bytes"):
+    with pytest.raises(ValueError, match=r"less than required (16|32) bytes"):
         provider.load_key("short-key")
 
 

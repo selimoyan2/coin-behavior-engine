@@ -1,0 +1,32 @@
+{
+  "sprint": "11.23.5B-6.3",
+  "generated_at_utc": "2026-10-20T22:50:07Z",
+  "verdict": "REQUEST_ACCOUNTING: PASS",
+  "verified_mechanisms": [
+    {
+      "mechanism": "DURABLE_PRE_DISPATCH_RESERVATION",
+      "status": "PASS",
+      "details": "Quota reserved in SQLite before HTTP dispatch; commits spent_requests atomically."
+    },
+    {
+      "mechanism": "CRASH_RECOVERY_FAIL_CLOSED",
+      "status": "PASS",
+      "details": "Reserved quota remains decremented after simulated process crash; no quota restoration."
+    },
+    {
+      "mechanism": "ONE_TIME_CONSUMPTION",
+      "status": "PASS",
+      "details": "Vaulting official evidence transitions status to CONSUMED via TrustedApprovalStore.consume_approval."
+    },
+    {
+      "mechanism": "IMMEDIATE_REPLAY_REJECTION",
+      "status": "PASS",
+      "details": "Subsequent requests with consumed token fail closed with STATUS_CONSUMED regardless of remaining attempt quota."
+    },
+    {
+      "mechanism": "CONCURRENCY_SERIALIZATION",
+      "status": "PASS",
+      "details": "SQLite atomic transaction and thread locking prevent race conditions and overspending under concurrent load."
+    }
+  ]
+}

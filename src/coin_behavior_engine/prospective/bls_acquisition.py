@@ -308,7 +308,7 @@ class BlsCpiScheduleParser:
             raise ScheduleParsingError("Cannot parse empty schedule document bytes.")
 
         content_sha256 = hashlib.sha256(raw_bytes).hexdigest()
-        text = raw_bytes.decode("utf-8", errors="replace")
+        text = html.unescape(raw_bytes.decode("utf-8", errors="replace"))
 
         # 1. Verify CPI series keywords
         if not re.search(r"Consumer\s+Price\s+Index|CPI", text, re.IGNORECASE):

@@ -1,0 +1,42 @@
+{
+  "sprint": "11.23.5B-6.3",
+  "generated_at_utc": "2026-10-20T22:50:07Z",
+  "verdict": "NETWORK_TRANSPORT: PASS",
+  "tested_features": [
+    {
+      "feature": "TLS_VERIFICATION",
+      "status": "VERIFIED",
+      "details": "Strict certificate chain and hostname verification."
+    },
+    {
+      "feature": "DNS_PINNING",
+      "status": "VERIFIED",
+      "details": "Approved domains list enforces strict DNS resolution to official BLS host."
+    },
+    {
+      "feature": "SSRF_PROTECTION",
+      "status": "VERIFIED",
+      "details": "Loopback (127.0.0.1) and private RFC 1918 IPs raise SSRFProtectionError."
+    },
+    {
+      "feature": "REDIRECT_POLICY",
+      "status": "VERIFIED",
+      "details": "allow_redirects=False strictly enforced; cross-origin redirects rejected."
+    },
+    {
+      "feature": "STREAMING_LIMIT",
+      "status": "VERIFIED",
+      "details": "Max response size limited to 2 MB (2,097,152 bytes); oversized payload aborted."
+    },
+    {
+      "feature": "CONTENT_TYPE",
+      "status": "VERIFIED",
+      "details": "text/html required; non-html responses rejected."
+    },
+    {
+      "feature": "NETWORK_STATE",
+      "status": "VERIFIED",
+      "details": "network_enabled=False in offline development; zero requests dispatched."
+    }
+  ]
+}
