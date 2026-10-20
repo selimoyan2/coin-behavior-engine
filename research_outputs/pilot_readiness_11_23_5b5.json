@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "sprint": "11.23.5B-5",
+  "generated_at_utc": "2026-10-20T20:03:44Z",
+  "pilot_proposal": {
+    "version": "3.0.0",
+    "canonical_digest": "73ff970d0f85ec31072d875fdf2ec26b18bdb93e20a84005c75ff808578fa765",
+    "target_market": "BTC/USDT Spot (Binance)",
+    "research_type": "Descriptive volatility observation only",
+    "observation_window_minutes": 35,
+    "request_quota": 20,
+    "sparse_milestones": 8
+  },
+  "readiness_evaluation": {
+    "PROVENANCE_POLICY": "READY",
+    "OFFICIAL_HTTPS_VERIFICATION": "IMPLEMENTED",
+    "PUBLISHER_SIGNATURE_VERIFICATION": "PRESERVED",
+    "OFFICIAL_SCHEDULE_EVIDENCE": "PENDING",
+    "EVENT_IDENTITY": "CANDIDATE_PENDING_VERIFICATION",
+    "PILOT_PROPOSAL": "READY_FOR_OPERATOR_REVIEW",
+    "OPERATOR_AUTHORIZATION": "NOT_GRANTED",
+    "REAL_NETWORK_COLLECTION": "DISABLED",
+    "REAL_WORLD_PILOT": "NOT_STARTED",
+    "UNATTENDED_MONITORING": "DISABLED",
+    "LIVE_ORDER_EXECUTION": "PROHIBITED",
+    "DIRECTIONAL_TRADING_ELIGIBILITY": "ZERO",
+    "NEWS_CONDITIONED_EDGE": "NOT_ESTABLISHED",
+    "HISTORICAL_DATA_STATUS": "RESEARCH_CONTAMINATED"
+  },
+  "blockers": [
+    "Operator authorization token has not been signed or provisioned.",
+    "Official schedule document has not yet been acquired via live authenticated HTTPS session.",
+    "Production event identity remains CANDIDATE_PENDING_VERIFICATION."
+  ]
+}

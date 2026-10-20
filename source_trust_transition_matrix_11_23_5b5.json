@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0.0",
+  "sprint": "11.23.5B-5",
+  "generated_at_utc": "2026-10-20T20:03:44Z",
+  "description": "State transition matrix mapping evidence ingestion inputs, verification steps, resulting trust level, and schedule acceptance eligibility.",
+  "transitions": [
+    {
+      "scenario": "Official HTTPS fetch with full TLS/DNS verification and network token",
+      "input_type": "Authenticated HTTPS response",
+      "sidecar": "HttpsAcquisitionProvenanceRecord",
+      "tls_valid": true,
+      "dns_pinned": true,
+      "token_valid": true,
+      "signature_valid": null,
+      "result_trust_level": "VERIFIED_OFFICIAL_HTTPS_ACQUISITION",
+      "satisfies_official_schedule": true,
+      "reason": "Complete cryptographic transport attestation from allowlisted endpoint."
+    },
+    {
+      "scenario": "Publisher signed release document with valid publisher key",
+      "input_type": "Document bytes + detached signature",
+      "sidecar": "PublisherSignatureProvenanceRecord",
+      "tls_valid": null,
+      "dns_pinned": null,
+      "token_valid": null,
+      "signature_valid": true,
+      "result_trust_level": "VERIFIED_PUBLISHER_SIGNATURE",
+      "satisfies_official_schedule": true,
+      "reason": "Cryptographic document signature verified against known publisher key."
+    },
+    {
+      "scenario": "Local HTML file claimed to be from BLS without acquisition sidecar",
+      "input_type": "Local HTML file",
+      "sidecar": null,
+      "tls_valid": false,
+      "dns_pinned": false,
+      "token_valid": false,
+      "signature_valid": false,
+      "result_trust_level": "SOURCE_CLAIMED_OFFICIAL",
+      "satisfies_official_schedule": false,
+      "reason": "Lacks verifiable cryptographic transport or document signature provenance."
+    },
+    {
+      "scenario": "HTTPS acquisition attempt with hostname mismatch or untrusted cert",
+      "input_type": "HTTP/TLS stream",
+      "sidecar": "Malformed/Failed TLS metadata",
+      "tls_valid": false,
+      "dns_pinned": true,
+      "token_valid": true,
+      "signature_valid": null,
+      "result_trust_level": "SOURCE_UNTRUSTED",
+      "satisfies_official_schedule": false,
+      "reason": "TLS hostname mismatch, invalid certificate chain, or expired cert."
+    },
+    {
+      "scenario": "DNS rebinding or private IP detected during connection",
+      "input_type": "HTTP/TLS stream",
+      "sidecar": "SSRF/Rebinding anomaly",
+      "tls_valid": true,
+      "dns_pinned": false,
+      "token_valid": true,
+      "signature_valid": null,
+      "result_trust_level": "SOURCE_UNTRUSTED",
+      "satisfies_official_schedule": false,
+      "reason": "Connected IP differs from resolved IP or resolves to non-public/private subnet."
+    },
+    {
+      "scenario": "Attempted HTTP downgrade (plain HTTP url)",
+      "input_type": "HTTP URL",
+      "sidecar": null,
+      "tls_valid": false,
+      "dns_pinned": false,
+      "token_valid": true,
+      "signature_valid": null,
+      "result_trust_level": "SOURCE_UNTRUSTED",
+      "satisfies_official_schedule": false,
+      "reason": "Plain HTTP violates strict HTTPS-only transport policy."
+    },
+    {
+      "scenario": "Network token expired or revoked mid-request",
+      "input_type": "HTTPS fetch",
+      "sidecar": "Revoked/Expired token",
+      "tls_valid": true,
+      "dns_pinned": true,
+      "token_valid": false,
+      "signature_valid": null,
+      "result_trust_level": "SOURCE_UNTRUSTED",
+      "satisfies_official_schedule": false,
+      "reason": "NetworkActivationGate denies request when authorization is revoked or expired."
+    },
+    {
+      "scenario": "Tampered response bytes (SHA-256 mismatch)",
+      "input_type": "Corrupted response body",
+      "sidecar": "Valid TLS metadata with mismatched hash",
+      "tls_valid": true,
+      "dns_pinned": true,
+      "token_valid": true,
+      "signature_valid": null,
+      "result_trust_level": "SOURCE_UNTRUSTED",
+      "satisfies_official_schedule": false,
+      "reason": "Response byte digest differs from recorded SHA-256."
+    },
+    {
+      "scenario": "Forged publisher signature with invalid public key",
+      "input_type": "Document bytes + forged signature",
+      "sidecar": "PublisherSignatureProvenanceRecord",
+      "tls_valid": null,
+      "dns_pinned": null,
+      "token_valid": null,
+      "signature_valid": false,
+      "result_trust_level": "SOURCE_UNTRUSTED",
+      "satisfies_official_schedule": false,
+      "reason": "Signature verification fails against registered publisher public keys."
+    }
+  ]
+}

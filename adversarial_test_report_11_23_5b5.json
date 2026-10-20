@@ -1,0 +1,195 @@
+{
+  "schema_version": "1.0.0",
+  "sprint": "11.23.5B-5",
+  "generated_at_utc": "2026-10-20T20:03:44Z",
+  "test_suite_file": "tests/test_sprint11_23_5b5_https_provenance.py",
+  "total_adversarial_tests": 30,
+  "passed_tests": 30,
+  "failed_tests": 0,
+  "execution_mode": "STRICTLY_OFFLINE",
+  "network_requests_made": 0,
+  "overall_regression_suite_count": 260,
+  "overall_regression_suite_passed": 260,
+  "test_results": [
+    {
+      "test_id": "ADV_01",
+      "name": "Valid authenticated HTTPS fixture",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_02",
+      "name": "Valid publisher-signed fixture",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_03",
+      "name": "HTTPS-only evidence not misclassified as signed",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_04",
+      "name": "Claimed official local HTML rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_05",
+      "name": "Forged TLS verification metadata rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_06",
+      "name": "Invalid certificate chain rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_07",
+      "name": "Hostname mismatch rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_08",
+      "name": "Expired certificate rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_09",
+      "name": "Unauthorized redirect rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_10",
+      "name": "DNS rebinding rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_11",
+      "name": "Connected-IP mismatch or private IP rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_12",
+      "name": "Source outside allowlist rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_13",
+      "name": "HTTP downgrade rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_14",
+      "name": "Missing network authorization rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_15",
+      "name": "Expired authorization rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_16",
+      "name": "Mid-request revocation denies provenance",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_17",
+      "name": "Request quota exhaustion blocks acquisition",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_18",
+      "name": "Byte budget exhaustion blocks acquisition",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_19",
+      "name": "Tampered response bytes hash mismatch",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_20",
+      "name": "Duplicate evidence idempotency",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_21",
+      "name": "Contradictory CPI schedules isolated",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_22",
+      "name": "Incorrect reference period rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_23",
+      "name": "Incorrect timezone conversion rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_24",
+      "name": "Stale schedule evidence rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_25",
+      "name": "Proposal digest mismatch invalidates approval",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_26",
+      "name": "Old approval reused with new proposal rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_27",
+      "name": "Untrusted local file promoted to verified rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_28",
+      "name": "Forged publisher signature rejected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_29",
+      "name": "Evidence vault mutation detected",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    },
+    {
+      "test_id": "ADV_30",
+      "name": "Trading capability invocation permanently prohibited",
+      "status": "PASSED",
+      "phase": "PHASE_7"
+    }
+  ]
+}

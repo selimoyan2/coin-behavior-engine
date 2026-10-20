@@ -106,10 +106,21 @@ class VintageViolationError(EvidenceAcquisitionError):
 # ==============================================================================
 
 class SourceAuthenticityLevel(str, Enum):
+    VERIFIED_PUBLISHER_SIGNATURE = "VERIFIED_PUBLISHER_SIGNATURE"
+    VERIFIED_OFFICIAL_HTTPS_ACQUISITION = "VERIFIED_OFFICIAL_HTTPS_ACQUISITION"
     SOURCE_AUTHENTICITY_VERIFIED = "SOURCE_AUTHENTICITY_VERIFIED"
     SOURCE_CLAIMED_OFFICIAL = "SOURCE_CLAIMED_OFFICIAL"
     SOURCE_UNAUTHENTICATED = "SOURCE_UNAUTHENTICATED"
     SOURCE_THIRD_PARTY_REJECTED = "SOURCE_THIRD_PARTY_REJECTED"
+    SOURCE_UNTRUSTED = "SOURCE_UNTRUSTED"
+
+    @property
+    def is_authentic_official(self) -> bool:
+        return self in {
+            SourceAuthenticityLevel.VERIFIED_PUBLISHER_SIGNATURE,
+            SourceAuthenticityLevel.VERIFIED_OFFICIAL_HTTPS_ACQUISITION,
+            SourceAuthenticityLevel.SOURCE_AUTHENTICITY_VERIFIED,
+        }
 
 
 class DocumentMimeType(str, Enum):
@@ -257,22 +268,23 @@ class ControlledEvidenceImporter:
         now_utc = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
         # Determine authenticity level
-        from urllib.parse import urlparse
-        parsed = urlparse(declared_source_url)
-        host = (parsed.hostname or "").lower()
-
+        from .https_provenance import EvidenceProvenanceVerifier, ProvenanceTrustLevel
         sidecar = provenance_sidecar or {}
-        has_cryptographic_attestation = bool(sidecar.get("gpg_signature") or sidecar.get("cryptographic_attestation"))
+        trust_level, diag, verified_meta = EvidenceProvenanceVerifier.evaluate_provenance(
+            raw_bytes=raw_bytes,
+            source_url=declared_source_url,
+            sidecar=sidecar,
+            expected_sha256=expected_sha256,
+        )
 
-        if host in {"bls.gov", "www.bls.gov"}:
-            if has_cryptographic_attestation:
-                auth_level = SourceAuthenticityLevel.SOURCE_AUTHENTICITY_VERIFIED
-            else:
-                auth_level = SourceAuthenticityLevel.SOURCE_CLAIMED_OFFICIAL
-        elif host:
-            auth_level = SourceAuthenticityLevel.SOURCE_THIRD_PARTY_REJECTED
+        if trust_level == ProvenanceTrustLevel.VERIFIED_PUBLISHER_SIGNATURE:
+            auth_level = SourceAuthenticityLevel.SOURCE_AUTHENTICITY_VERIFIED
+        elif trust_level == ProvenanceTrustLevel.VERIFIED_OFFICIAL_HTTPS_ACQUISITION:
+            auth_level = SourceAuthenticityLevel.VERIFIED_OFFICIAL_HTTPS_ACQUISITION
+        elif trust_level == ProvenanceTrustLevel.SOURCE_CLAIMED_OFFICIAL:
+            auth_level = SourceAuthenticityLevel.SOURCE_CLAIMED_OFFICIAL
         else:
-            auth_level = SourceAuthenticityLevel.SOURCE_UNAUTHENTICATED
+            auth_level = SourceAuthenticityLevel.SOURCE_UNTRUSTED
 
         # Determine extension from MIME
         ext_map = {

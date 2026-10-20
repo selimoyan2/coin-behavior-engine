@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HttpsAcquisitionProvenanceRecord",
+  "description": "Canonical schema for authenticated HTTPS evidence acquisition provenance records in Coin Behavior Engine.",
+  "type": "object",
+  "properties": {
+    "source_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Official target URL, must strictly use https scheme."
+    },
+    "canonical_hostname": {
+      "type": "string",
+      "description": "Allowlisted canonical hostname (e.g. www.bls.gov)."
+    },
+    "publisher_id": {
+      "type": "string",
+      "description": "Identifier of the publisher (e.g. BLS, BEA)."
+    },
+    "acquisition_timestamp_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Exact UTC timestamp when the response was received."
+    },
+    "request_method": {
+      "type": "string",
+      "enum": [
+        "GET",
+        "HEAD"
+      ],
+      "description": "HTTP request method used (strictly read-only)."
+    },
+    "http_status": {
+      "type": "integer",
+      "enum": [
+        200
+      ],
+      "description": "HTTP status code; must be 200 OK."
+    },
+    "content_type": {
+      "type": "string",
+      "description": "MIME type of the acquired payload."
+    },
+    "content_length": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10485760,
+      "description": "Byte length of response body, bounded by byte quota."
+    },
+    "response_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Deterministic SHA-256 digest of raw response bytes."
+    },
+    "tls_verification_status": {
+      "type": "string",
+      "enum": [
+        "VERIFIED"
+      ],
+      "description": "Status of TLS certificate and protocol verification."
+    },
+    "tls_hostname_verified": {
+      "type": "boolean",
+      "const": true,
+      "description": "Whether SNI and certificate SAN/CN strictly match canonical hostname."
+    },
+    "certificate_chain_validation": {
+      "type": "string",
+      "enum": [
+        "VALID"
+      ],
+      "description": "Validation result of the X.509 certificate chain against trusted roots."
+    },
+    "resolved_ip": {
+      "type": "string",
+      "description": "Public IP address resolved via secure DNS resolution."
+    },
+    "connected_ip": {
+      "type": "string",
+      "description": "Socket connection remote IP; must match resolved_ip and not be private/loopback."
+    },
+    "redirect_chain": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      },
+      "description": "List of redirect hops; cross-host redirects are prohibited."
+    },
+    "network_authorization_id": {
+      "type": "string",
+      "description": "Identifier of the signed ObservationAuthorizationToken authorizing network access."
+    },
+    "network_gate_decision": {
+      "type": "string",
+      "enum": [
+        "ALLOWED"
+      ],
+      "description": "Decision returned by NetworkActivationGate."
+    },
+    "evidence_vault_object_id": {
+      "type": "string",
+      "description": "Unique content-addressed ID in ImmutableEvidenceVault."
+    },
+    "provenance_schema_version": {
+      "type": "string",
+      "const": "1.0.0",
+      "description": "Version of the provenance schema."
+    }
+  },
+  "required": [
+    "source_url",
+    "canonical_hostname",
+    "publisher_id",
+    "acquisition_timestamp_utc",
+    "request_method",
+    "http_status",
+    "content_type",
+    "content_length",
+    "response_sha256",
+    "tls_verification_status",
+    "tls_hostname_verified",
+    "certificate_chain_validation",
+    "resolved_ip",
+    "connected_ip",
+    "redirect_chain",
+    "network_authorization_id",
+    "network_gate_decision",
+    "evidence_vault_object_id",
+    "provenance_schema_version"
+  ],
+  "additionalProperties": false
+}

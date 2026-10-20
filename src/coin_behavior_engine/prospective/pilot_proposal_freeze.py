@@ -69,6 +69,7 @@ from .evidence_acquisition import (
     LicensingViolationError,
     VintageViolationError,
 )
+from .https_provenance import ProvenanceTrustLevel
 
 
 # ==============================================================================
@@ -377,18 +378,28 @@ class EventIdentityManager:
         cls,
         candidate: CandidateEventIdentity,
         verified_schedule_sha256: str,
-        is_provenance_verified: bool,
+        is_provenance_verified: bool = False,
+        trust_level: Optional[Union[ProvenanceTrustLevel, str]] = None,
     ) -> CandidateEventIdentity:
         """
         Binds candidate event ID to verified schedule evidence hash.
         Fails if provenance is unverified or SHA-256 is missing.
+        Accepts either Level A (VERIFIED_PUBLISHER_SIGNATURE) or Level B (VERIFIED_OFFICIAL_HTTPS_ACQUISITION).
         """
         if not verified_schedule_sha256 or len(verified_schedule_sha256) != 64:
             raise ValueError(f"Invalid schedule evidence SHA-256 hash: '{verified_schedule_sha256}'")
 
-        if not is_provenance_verified:
+        verified = is_provenance_verified
+        if trust_level is not None:
+            if hasattr(trust_level, "is_authentic_official"):
+                verified = trust_level.is_authentic_official
+            elif str(trust_level) in {"VERIFIED_PUBLISHER_SIGNATURE", "VERIFIED_OFFICIAL_HTTPS_ACQUISITION", "SOURCE_AUTHENTICITY_VERIFIED"}:
+                verified = True
+
+        if not verified:
             raise ValueError(
-                "Cannot freeze event identity: Schedule evidence lacks cryptographic provenance verification."
+                "Cannot freeze event identity: Schedule evidence lacks cryptographic provenance verification "
+                "(requires either VERIFIED_PUBLISHER_SIGNATURE or VERIFIED_OFFICIAL_HTTPS_ACQUISITION)."
             )
 
         return CandidateEventIdentity(

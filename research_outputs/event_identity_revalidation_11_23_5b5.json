@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "sprint": "11.23.5B-5",
+  "generated_at_utc": "2026-10-20T20:03:44Z",
+  "candidate_event": {
+    "publisher": "BLS",
+    "series": "CPI",
+    "reference_period": "2026M10",
+    "scheduled_release_date": "2026-11-10",
+    "scheduled_release_time_local": "08:30:00",
+    "local_timezone": "America/New_York",
+    "scheduled_release_utc": "2026-11-10T13:30:00Z",
+    "candidate_event_id": "EVT-BLS-CPI-2026M10-20261110",
+    "status": "CANDIDATE_PENDING_SCHEDULE_VERIFICATION",
+    "schedule_evidence_sha256": null,
+    "verification_notes": "Event parameters derived from BLS announcement schedule candidate values. Pending official schedule document import and cryptographic provenance verification."
+  },
+  "binding_rules": {
+    "provenance_trust_levels_accepted": [
+      "VERIFIED_PUBLISHER_SIGNATURE",
+      "VERIFIED_OFFICIAL_HTTPS_ACQUISITION"
+    ],
+    "unverified_handling": "Candidate events without verified provenance retain status CANDIDATE_PENDING_VERIFICATION.",
+    "proposal_invalidation": "Any change to release time, date, period, or official hash invalidates existing proposal digest and revokes prior operator approval."
+  },
+  "current_status": {
+    "event_identity_status": "CANDIDATE_PENDING_SCHEDULE_VERIFICATION",
+    "is_frozen_for_execution": false,
+    "reason": "Authentic production evidence acquisition pending operator authorization."
+  }
+}

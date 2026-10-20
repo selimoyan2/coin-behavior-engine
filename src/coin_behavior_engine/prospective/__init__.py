@@ -175,6 +175,16 @@ from .pilot_proposal_freeze import (
     OfflinePilotRehearsalRunnerV4,
     PilotProposalFreezeDecisionEngine,
 )
+from .https_provenance import (
+    ProvenanceTrustLevel,
+    HttpsAcquisitionProvenanceRecord,
+    PublisherSignatureProvenanceRecord,
+    ProvenanceValidationError,
+    EvidenceProvenanceVerifier,
+    OfficialScheduleAcceptancePolicy,
+    ScheduleAcceptanceResult,
+    OFFICIAL_PUBLISHER_DOMAINS,
+)
 from .end_to_end_pilot_sim import EndToEndPilotSimulationSuite
 from .recovery_simulation import EndToEndRecoverySimulationRunner
 
@@ -340,4 +350,13 @@ __all__ = [
     "PilotProposalV3Builder",
     "OfflinePilotRehearsalRunnerV4",
     "PilotProposalFreezeDecisionEngine",
+    # Sprint 11.23.5B-5 additions
+    "ProvenanceTrustLevel",
+    "HttpsAcquisitionProvenanceRecord",
+    "PublisherSignatureProvenanceRecord",
+    "ProvenanceValidationError",
+    "EvidenceProvenanceVerifier",
+    "OfficialScheduleAcceptancePolicy",
+    "ScheduleAcceptanceResult",
+    "OFFICIAL_PUBLISHER_DOMAINS",
 ]

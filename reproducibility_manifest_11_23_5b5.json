@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "sprint": "11.23.5B-5",
+  "generated_at_utc": "2026-10-20T20:03:44Z",
+  "base_commit": "f5de81e3b03961d873139ee88d6da939d8436226",
+  "git_commit": "e2964cf1e0f845cbcb1324e5a52d9970822610c0",
+  "environment": {
+    "os": "Windows",
+    "python_version": "3.11.16",
+    "pytest_version": "9.1.1"
+  },
+  "test_suite": {
+    "sprint_test_file": "tests/test_sprint11_23_5b5_https_provenance.py",
+    "sprint_test_count": 30,
+    "sprint_test_passed": 30,
+    "overall_regression_count": 260,
+    "overall_regression_passed": 260
+  },
+  "reproduction_commands": [
+    ".\\.venv\\Scripts\\pytest.exe tests/test_sprint11_23_5b5_https_provenance.py -v",
+    ".\\.venv\\Scripts\\pytest.exe tests/ -v",
+    ".\\.venv\\Scripts\\python.exe scripts/generate_sprint11_23_5b5_artifacts.py"
+  ],
+  "artifact_sha256": {
+    "provenance_policy_11_23_5b5.json": "741de4fd615ec61cc862770256e2e937a448f96dfca9a603f610ccf4bfab263c",
+    "https_acquisition_provenance_schema_11_23_5b5.json": "b64bb915c4f49820dbf2ca5d8650f6830e8c091a84af09cb205598c9d3fd6a0d",
+    "source_trust_transition_matrix_11_23_5b5.json": "761ebc7eabe69706f09c64201df1f2906dc09c10f46d8a64ae7cf70c6c8ae5a2",
+    "official_schedule_acceptance_11_23_5b5.json": "2db1589c873f1fb3eadf5bd25dbabffc98532a39ffb89bc7d439e7e9acda3024",
+    "event_identity_revalidation_11_23_5b5.json": "1828ed82bdab2baba377e3684644dfbddf7be8dfeaf6431f3472f45f194962eb",
+    "pilot_readiness_11_23_5b5.json": "a4e13d92d9a09027648ecfcacf5dba700460594c33b187688e397d05a33b0875",
+    "adversarial_test_report_11_23_5b5.json": "211c2d4bfd2251044bcf414f288b75165f901163ed3bfbeebc76b922a965c2e3",
+    "research_report_11_23_5b5.md": "84424ed5a8f56f8df16d8626024d34f92b50a521be65aaa8608aa8d8c034a456"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "sprint": "11.23.5B-5",
+  "generated_at_utc": "2026-10-20T20:03:44Z",
+  "policy_component": "OfficialScheduleAcceptancePolicy",
+  "verification_criteria": [
+    {
+      "criterion_id": "CRIT_01_PROVENANCE_LEVEL",
+      "description": "Source provenance must be either Level A (VERIFIED_PUBLISHER_SIGNATURE) or Level B (VERIFIED_OFFICIAL_HTTPS_ACQUISITION).",
+      "enforcement": "MANDATORY"
+    },
+    {
+      "criterion_id": "CRIT_02_PUBLISHER_IDENTITY",
+      "description": "Publisher must match authoritative agency (BLS for CPI releases).",
+      "enforcement": "MANDATORY"
+    },
+    {
+      "criterion_id": "CRIT_03_ENDPOINT_ALLOWLIST",
+      "description": "Canonical hostname must match approved official domain (www.bls.gov).",
+      "enforcement": "MANDATORY"
+    },
+    {
+      "criterion_id": "CRIT_04_SERIES_MATCH",
+      "description": "Document content must contain the relevant economic series keywords (Consumer Price Index / CPI).",
+      "enforcement": "MANDATORY"
+    },
+    {
+      "criterion_id": "CRIT_05_REFERENCE_PERIOD",
+      "description": "Extracted reference period must match target period (e.g. October 2026 / 2026M10).",
+      "enforcement": "MANDATORY"
+    },
+    {
+      "criterion_id": "CRIT_06_RELEASE_DATE_UTC",
+      "description": "Release date and time parsed and converted to standard UTC (e.g. 2026-11-10T13:30:00Z from 08:30 EST).",
+      "enforcement": "MANDATORY"
+    },
+    {
+      "criterion_id": "CRIT_07_CONTENT_HASH_BINDING",
+      "description": "Original raw document bytes SHA-256 must be computed and bound to the event identity record.",
+      "enforcement": "MANDATORY"
+    },
+    {
+      "criterion_id": "CRIT_08_NO_CONTRADICTIONS",
+      "description": "No conflicting or superseding schedule document for the same reference period exists in the evidence vault.",
+      "enforcement": "MANDATORY"
+    }
+  ],
+  "current_production_state": {
+    "official_schedule_evidence": "PENDING",
+    "candidate_event_id": "EVT-BLS-CPI-2026M10-20261110",
+    "operational_status": "OFFLINE_SIMULATION_ONLY",
+    "real_requests_made": 0,
+    "governance_note": "Simulated test fixtures validated all 8 verification criteria. In accordance with governance invariants, simulated test results are not reported as real production evidence."
+  }
+}

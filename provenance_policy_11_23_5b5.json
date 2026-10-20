@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0.0",
+  "sprint": "11.23.5B-5",
+  "generated_at_utc": "2026-10-20T20:03:44Z",
+  "title": "Official HTTPS Evidence Provenance & Verification Policy",
+  "objective": "Establish a scientifically defensible, multi-tier provenance trust model distinguishing official authenticated HTTPS acquisition from publisher document signatures, local files, and untrusted sources.",
+  "trust_levels": {
+    "Level_A": {
+      "name": "VERIFIED_PUBLISHER_SIGNATURE",
+      "code": "VERIFIED_PUBLISHER_SIGNATURE",
+      "description": "Document-level digital signature verified against a trusted publisher signing key (e.g. GPG/PGP attestation).",
+      "satisfies_official_authenticity": true,
+      "required_evidence": [
+        "original_document_bytes",
+        "signature_bytes",
+        "trusted_key_identity",
+        "signature_verification_result",
+        "sha256",
+        "verification_timestamp",
+        "source_metadata"
+      ]
+    },
+    "Level_B": {
+      "name": "VERIFIED_OFFICIAL_HTTPS_ACQUISITION",
+      "code": "VERIFIED_OFFICIAL_HTTPS_ACQUISITION",
+      "description": "Document acquired through an authenticated HTTPS session from an explicitly allowlisted official publisher endpoint.",
+      "satisfies_official_authenticity": true,
+      "required_evidence": [
+        "https_scheme",
+        "exact_allowlisted_hostname",
+        "valid_tls_certificate_chain",
+        "hostname_verification",
+        "verified_certificate_validity",
+        "dns_resolution_and_pinned_connection_identity",
+        "no_unauthorized_redirects",
+        "original_response_bytes",
+        "sha256",
+        "acquisition_timestamp",
+        "response_metadata",
+        "network_authorization_evidence",
+        "evidence_vault_object_id"
+      ],
+      "governance_rule": "HTTPS acquisition provenance must never be promoted or misclassified as a publisher document signature."
+    },
+    "Level_C": {
+      "name": "SOURCE_CLAIMED_OFFICIAL",
+      "code": "SOURCE_CLAIMED_OFFICIAL",
+      "description": "Local file, manual entry, or document claiming official publisher origin without verifiable acquisition provenance.",
+      "satisfies_official_authenticity": false,
+      "treatment": "Cannot independently satisfy official schedule authenticity; retains candidate/unverified status."
+    },
+    "Level_D": {
+      "name": "SOURCE_UNTRUSTED",
+      "code": "SOURCE_UNTRUSTED",
+      "description": "Unknown, altered, conflicting, unsafe, or unauthorized evidence.",
+      "satisfies_official_authenticity": false,
+      "treatment": "Must be rejected or quarantined immediately."
+    }
+  },
+  "acceptance_criteria": {
+    "dual_track_acceptance": "Either Level A (VERIFIED_PUBLISHER_SIGNATURE) or Level B (VERIFIED_OFFICIAL_HTTPS_ACQUISITION) independently satisfies official source authenticity.",
+    "strict_isolation": "Client-provided claims of TLS success are rejected; only trusted acquisition component can generate Level B provenance.",
+    "immutability": "Acquired evidence must be immutably hashed and vaulted with no silent upgrade of historical evidence."
+  }
+}
