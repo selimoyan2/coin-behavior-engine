@@ -1,0 +1,30 @@
+{
+  "overall_decision": "BLOCKED_OFFICIAL_SCHEDULE",
+  "component_statuses": {
+    "schedule_evidence": "PENDING",
+    "source_authenticity": "PENDING (SOURCE_CLAIMED_OFFICIAL)",
+    "event_identity": "PENDING (EVT-BLS-CPI-2026-PENDING)",
+    "consensus_evidence": "UNAVAILABLE",
+    "market_observation_feasibility": "PASS_WITH_DURATION_LIMITATION",
+    "operator_dossier_completeness": "COMPLETE",
+    "authorization_readiness": "READY_FOR_OPERATOR_REVIEW"
+  },
+  "operational_execution_authorized": "NO",
+  "real_external_collection": "DISABLED",
+  "unattended_monitoring": "DISABLED",
+  "live_trading": "PROHIBITED",
+  "operator_authorization": "NOT_GRANTED",
+  "blockers": [
+    "Official BLS release schedule calendar document is not yet imported as authentic evidence",
+    "Event identity retains unresolved placeholder pending official schedule verification",
+    "Consensus evidence is UNAVAILABLE",
+    "Operator authorization is strictly NOT_GRANTED",
+    "Production signing key is not provisioned"
+  ],
+  "required_actions": [
+    "Operator to acquire authentic official BLS CPI release calendar document",
+    "Import document via ControlledEvidenceImporter",
+    "Verify schedule and freeze canonical event ID",
+    "Operator review of dossier and formal approval decision"
+  ]
+}

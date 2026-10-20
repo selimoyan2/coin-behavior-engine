@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T17:29:11.687164+00:00",
+  "document_name": "Event Identity Standard & Proposal Digest Freeze Document",
+  "canonical_format": "EVT-{PUBLISHER}-{SERIES}-{REF_PERIOD}-{SCHEDULED_DATE}",
+  "example_valid_id": "EVT-BLS-CPI-2026M09-20261013",
+  "prohibited_elements": [
+    "PENDING",
+    "PLACEHOLDER",
+    "TBD",
+    "XXX",
+    "*",
+    "machine_local_timestamp"
+  ],
+  "current_event_identity": {
+    "event_id": "EVT-BLS-CPI-2026-PENDING",
+    "freeze_status": "FROZEN_AS_PENDING",
+    "activation_eligibility": "PROHIBITED_FROM_ACTIVATION",
+    "unresolved_reason": "Official schedule release date and reference period await authentic BLS calendar document."
+  },
+  "digest_invalidation_policy": {
+    "rule": "Any modification to event ID, domains, quotas, or release windows alters canonical digest",
+    "consequence": "Material changes immediately invalidate previous operator approvals (ApprovalRecordTamperedError)"
+  },
+  "verdict": "EVENT_IDENTITY_FROZEN_PENDING_SCHEDULE"
+}

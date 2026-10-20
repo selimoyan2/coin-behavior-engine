@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T17:29:11.687164+00:00",
+  "acquisition_name": "Official U.S. BLS CPI Schedule Evidence Acquisition Specification",
+  "publisher": {
+    "primary_agency": "U.S. Bureau of Labor Statistics (BLS)",
+    "official_website": "https://www.bls.gov/",
+    "preferred_schedule_url": "https://www.bls.gov/schedule/news_release/cpi.htm",
+    "alternative_calendar_url": "https://www.bls.gov/schedule/2026/home.htm"
+  },
+  "acquisition_policy": {
+    "external_network_access": "DISABLED (Prohibited without explicit operator authorization)",
+    "third_party_calendars": "REJECTED (Aggregators and financial blogs are not acceptable evidence)",
+    "search_snippets": "REJECTED (Search engine summaries cannot establish causal provenance)",
+    "current_acquisition_status": "SCHEDULE_VERIFICATION_PENDING",
+    "missing_evidence": "Authentic byte-level official BLS schedule release calendar document"
+  },
+  "verification_requirements_upon_acquisition": [
+    "Raw byte preservation and immutable vault ingestion",
+    "Cryptographic SHA-256 byte checksum calculation",
+    "Release family identification (Consumer Price Index - All Urban Consumers)",
+    "Reference period validation (ensuring reference month != release month)",
+    "Scheduled local time (08:30:00 AM Eastern Time)",
+    "Deterministic zoneinfo UTC conversion handling daylight saving transitions",
+    "Contemporaneous retrieval timestamp and operator identity logging",
+    "Revision history and supersession check"
+  ],
+  "verdict": "OFFICIAL_EVIDENCE_ACQUISITION_SPECIFICATION_FROZEN"
+}

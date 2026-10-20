@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T17:29:11.687164+00:00",
+  "audit_name": "Schedule Evidence Source Authenticity & Ingestion Security Audit",
+  "importer_component": "ControlledEvidenceImporter",
+  "security_controls": {
+    "max_document_size_bytes": 10485760,
+    "allowed_extensions": [
+      ".html",
+      ".htm",
+      ".pdf",
+      ".json",
+      ".txt"
+    ],
+    "prohibited_extensions": [
+      ".exe",
+      ".bat",
+      ".cmd",
+      ".sh",
+      ".py",
+      ".js",
+      ".zip",
+      ".tar",
+      ".gz"
+    ],
+    "path_traversal_protection": "STRICT (Relative path escaping strictly rejected)",
+    "content_inspection": "Magic-byte MIME detection and validation",
+    "executable_processing": "NONE (Read-only binary ingestion)",
+    "external_resource_resolution": "PROHIBITED (No external CSS/JS/images fetched)"
+  },
+  "authenticity_classification_rules": {
+    "SOURCE_AUTHENTICITY_VERIFIED": "Official agency domain + verified cryptographic signature/attestation",
+    "SOURCE_CLAIMED_OFFICIAL": "Official agency domain metadata, but lacks cryptographic attestation",
+    "SOURCE_THIRD_PARTY_REJECTED": "Non-official domain or aggregator source",
+    "SOURCE_UNAUTHENTICATED": "Unknown origin or missing provenance"
+  },
+  "current_status": {
+    "source_authenticity_level": "SOURCE_UNAUTHENTICATED",
+    "reason": "No official schedule bytes have been imported into the production evidence vault yet."
+  },
+  "verdict": "SOURCE_AUTHENTICITY_CONTROLS_VERIFIED"
+}

@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T17:29:11.687164+00:00",
+  "sprint": "11.23.5B-3",
+  "sprint_title": "Official Evidence Acquisition & Operator Review Package",
+  "base_commit": "192524507416d9b9010bad07dcb2b6805b94c6cc",
+  "head_commit": "0b5fc2524fa69e225ab1a13c41fd0d12652e6928",
+  "python_version": "3.11.16",
+  "platform": "win32",
+  "execution_mode": "OFFLINE_FIRST_EVIDENCE_BASED_DEVELOPMENT",
+  "total_deliverables": 10,
+  "total_test_suite_size": 225,
+  "total_tests_passed": 225,
+  "total_tests_failed": 0,
+  "artifacts": {
+    "official_evidence_acquisition_11_23_5b3.json": {
+      "sha256": "c07da2bdce95ba6b64979aaf9e3cfc4dfd00ca6b42b90cfc548d844e94712bb8",
+      "byte_size": 1642,
+      "mirrored_to_root": true
+    },
+    "schedule_source_authenticity_11_23_5b3.json": {
+      "sha256": "5d37e32e9ba9202a0d2f8bb68fa794e8b3ccdbfb4edac0df751cf3fd30444ae5",
+      "byte_size": 1559,
+      "mirrored_to_root": true
+    },
+    "consensus_source_assessment_11_23_5b3.json": {
+      "sha256": "2b9e6ddb6878b7f0218e310c592c34b1c6ec8866f477a040792a8362481882f4",
+      "byte_size": 2344,
+      "mirrored_to_root": true
+    },
+    "event_identity_freeze_11_23_5b3.json": {
+      "sha256": "a3fb040fda21746ccc586fff8f90d4136bfa7b537f13bfb6e616d61532c82469",
+      "byte_size": 1072,
+      "mirrored_to_root": true
+    },
+    "market_observation_feasibility_11_23_5b3.json": {
+      "sha256": "9e039e0fd5181030940a828c2a91ea2f12c3370050e8b38d9425ce3fe74bf023",
+      "byte_size": 4489,
+      "mirrored_to_root": true
+    },
+    "operator_review_dossier_11_23_5b3.md": {
+      "sha256": "a50783e07bcac698c4646039dbe41ddba6526e55b04cc15ba0f256a824ecdb3a",
+      "byte_size": 5120,
+      "mirrored_to_root": true
+    },
+    "operator_acquisition_checklist_11_23_5b3.md": {
+      "sha256": "1b1b727eb3c39beced0080a587e5a823e058c1bdee9c32be2b252471ca56d815",
+      "byte_size": 2989,
+      "mirrored_to_root": true
+    },
+    "offline_pilot_rehearsal_11_23_5b3.json": {
+      "sha256": "a086a178cd64aecb4001263bbdfc5d8d8046005071cbda53ea0fb649de7adfb3",
+      "byte_size": 2023,
+      "mirrored_to_root": true
+    },
+    "pilot_evidence_readiness_11_23_5b3.json": {
+      "sha256": "a477152015b0b6043ae0ee80e207ee92dfa917d3980622f33e1ad2fef4537a66",
+      "byte_size": 1324,
+      "mirrored_to_root": true
+    },
+    "research_report_11_23_5b3.md": {
+      "sha256": "648b36ca83407e42e6014a513dd1edaaf4a74d963ae9b0ffd4b5bde22f891e3c",
+      "byte_size": 7841,
+      "mirrored_to_root": true
+    }
+  },
+  "governance_status": {
+    "sprint_status": "PASS",
+    "baseline_integrity": "PASS",
+    "official_schedule_evidence": "PENDING",
+    "source_authenticity": "PENDING",
+    "event_identity": "PENDING",
+    "consensus_evidence": "UNAVAILABLE",
+    "market_observation_feasibility": "PASS",
+    "operator_review_dossier": "COMPLETE",
+    "offline_rehearsal": "PASS",
+    "regression_tests": "PASS",
+    "pilot_evidence_readiness": "BLOCKED",
+    "operational_execution_authorized": "NO",
+    "real_external_collection": "DISABLED",
+    "real_world_pilot": "NOT_STARTED",
+    "unattended_monitoring": "DISABLED",
+    "operator_authorization": "NOT_GRANTED",
+    "live_order_execution": "PROHIBITED",
+    "directional_trading_eligibility": "ZERO",
+    "historical_data_status": "RESEARCH_CONTAMINATED"
+  }
+}

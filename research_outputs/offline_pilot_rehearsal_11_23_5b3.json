@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T17:29:11.687164+00:00",
+  "rehearsal_name": "Phase 7 End-to-End Offline Pilot Rehearsal Report",
+  "execution_mode": "DETERMINISTIC_OFFLINE_FIXTURES",
+  "overall_status": "PASS",
+  "steps_executed": [
+    {
+      "step": 1,
+      "name": "EVIDENCE_IMPORT",
+      "evidence_id": "EVD-F4D9F3B9CA7F559F"
+    },
+    {
+      "step": 2,
+      "name": "PROVENANCE_VALIDATION",
+      "auth_level": "SOURCE_CLAIMED_OFFICIAL"
+    },
+    {
+      "step": 3,
+      "name": "SCHEDULE_PARSING_DST",
+      "scheduled_utc": "2026-10-13T12:30:00Z"
+    },
+    {
+      "step": 4,
+      "name": "EVENT_IDENTITY",
+      "event_id": "EVT-BLS-CPI-2026M09-20261013"
+    },
+    {
+      "step": 5,
+      "name": "CONSENSUS_VALIDATION",
+      "status": "VERIFIED_CONTEMPORANEOUS"
+    },
+    {
+      "step": 6,
+      "name": "PROPOSAL_DIGEST",
+      "digest": "dfc16a1081650e56"
+    },
+    {
+      "step": 7,
+      "name": "MOCK_AUTHORIZATION",
+      "token_id": "AUTH-55F0AD37C7FB"
+    },
+    {
+      "step": 8,
+      "name": "SIMULATED_OBSERVATION",
+      "allowed": true
+    },
+    {
+      "step": 9,
+      "name": "QUOTA_ACCOUNTING",
+      "committed_bytes": 3850
+    },
+    {
+      "step": 10,
+      "name": "REVOCATION_TEST",
+      "revoked_denied": true
+    },
+    {
+      "step": 11,
+      "name": "REHEARSAL_COMPLETE",
+      "result": "PASS"
+    }
+  ],
+  "governance_invariants_verified": {
+    "test_key_quarantine": "Test keys (is_test_key=True) permanently barred from production use",
+    "mock_authorization_isolation": "Mock tokens valid only within isolated test memory store",
+    "network_isolation": "Zero real external network requests initiated",
+    "trading_isolation": "No order placement, no trade allocation, no BUY/SELL recommendations",
+    "revocation_revalidation": "Mid-session revocation immediately halts simulated observation loop"
+  },
+  "verdict": "OFFLINE_REHEARSAL_SUCCESSFUL"
+}

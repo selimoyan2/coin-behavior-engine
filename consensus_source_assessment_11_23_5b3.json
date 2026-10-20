@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T17:29:11.687164+00:00",
+  "assessment_name": "Research-Grade Consensus Evidence & Anti-Leakage Assessment",
+  "candidate_source_types": [
+    {
+      "type": "Contemporaneous Financial Wire Survey",
+      "examples": [
+        "Bloomberg Survey (CPI YOY)",
+        "Reuters/Refinitiv Poll"
+      ],
+      "licensing_status": "LICENSED_SUBSCRIPTION_REQUIRED",
+      "compliance_rule": "Scraping or unauthorized redistribution is strictly PROHIBITED"
+    },
+    {
+      "type": "Archived Analyst Consensus Report",
+      "examples": [
+        "Major Investment Bank Morning Notes"
+      ],
+      "licensing_status": "LICENSED_SUBSCRIPTION_REQUIRED",
+      "compliance_rule": "Requires licensed research access and authenticated timestamp receipt"
+    },
+    {
+      "type": "Public Aggregator Calendar",
+      "examples": [
+        "TradingEconomics",
+        "Investing.com"
+      ],
+      "licensing_status": "UNLICENSED_SCRAPED_PROHIBITED",
+      "compliance_rule": "REJECTED for research-grade verification due to unauthenticated revisions"
+    }
+  ],
+  "metric_comparability_rules": {
+    "target_metric": "U.S. Headline CPI YoY (Year-over-Year Percentage Change)",
+    "prohibited_comparisons": [
+      "CPI MoM (Month-over-Month) vs CPI YoY",
+      "Core CPI (excluding Food and Energy) vs Headline CPI",
+      "Seasonally adjusted vs Unadjusted indices"
+    ],
+    "enforcement": "MetricMismatchError raised if candidate metric is not Headline YoY"
+  },
+  "causality_law": {
+    "condition": "first_verifiable_availability_utc < scheduled_release_utc",
+    "anti_lookahead_rule": "Consensus published or observed on or after release is rejected as VINTAGE_VIOLATION",
+    "revision_handling": "Later-revised consensus values cannot be substituted for contemporaneous forecasts"
+  },
+  "current_pilot_status": {
+    "status": "CONSENSUS_EVIDENCE: UNAVAILABLE",
+    "synthetic_forecast_policy": "STRICTLY_PROHIBITED (Zero fabrication of forecast values)",
+    "pilot_impact": "Descriptive market observations (returns, realized volatility, spread) will proceed normally. Economic surprise calculations and surprise-conditioned conclusions are explicitly DISABLED."
+  },
+  "verdict": "CONSENSUS_SOURCE_ASSESSMENT_COMPLETE"
+}

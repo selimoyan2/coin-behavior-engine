@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T17:29:11.687164+00:00",
+  "plan_name": "20-Request Market Observation Envelope & Feasibility Matrix",
+  "envelope_parameters": {
+    "max_duration_seconds": 1800,
+    "max_requests": 20,
+    "max_bytes": 5242880,
+    "min_polling_interval_seconds": 5.0
+  },
+  "request_allocation": {
+    "pre_event_baseline": 2,
+    "release_polling": 10,
+    "post_event_market": 5,
+    "buffer_retry_reserve": 3,
+    "total_planned_requests": 20
+  },
+  "feasibility_matrix": [
+    {
+      "measurement_name": "Pre-event baseline price",
+      "target_horizon": "T-15m to T-1m",
+      "request_allocation": 2,
+      "feasibility_status": "FULLY_FEASIBLE",
+      "data_source": "Binance Spot /api/v3/klines + /api/v3/ticker/bookTicker",
+      "notes": "Single historical klines fetch with limit=15 captures the entire baseline."
+    },
+    {
+      "measurement_name": "Immediate event reaction",
+      "target_horizon": "T+0 to T+1m",
+      "request_allocation": 1,
+      "feasibility_status": "FULLY_FEASIBLE",
+      "data_source": "Binance Spot /api/v3/ticker/bookTicker",
+      "notes": "Captures immediate top-of-book spread and post-release quote changes."
+    },
+    {
+      "measurement_name": "1-minute post-event return",
+      "target_horizon": "T+1m",
+      "request_allocation": 1,
+      "feasibility_status": "FULLY_FEASIBLE",
+      "data_source": "Binance Spot /api/v3/klines (1m bar)",
+      "notes": "Evaluated once 1m bar closes at T+1m."
+    },
+    {
+      "measurement_name": "5-minute post-event return",
+      "target_horizon": "T+5m",
+      "request_allocation": 1,
+      "feasibility_status": "FULLY_FEASIBLE",
+      "data_source": "Binance Spot /api/v3/klines (1m bars aggregated)",
+      "notes": "Evaluated once 5th 1m bar closes at T+5m."
+    },
+    {
+      "measurement_name": "15-minute post-event return",
+      "target_horizon": "T+15m",
+      "request_allocation": 1,
+      "feasibility_status": "FULLY_FEASIBLE",
+      "data_source": "Binance Spot /api/v3/klines (1m bars aggregated)",
+      "notes": "Evaluated once 15th 1m bar closes at T+15m."
+    },
+    {
+      "measurement_name": "30-minute post-event return",
+      "target_horizon": "T+30m",
+      "request_allocation": 1,
+      "feasibility_status": "CONDITIONAL_DURATION_BOUNDED",
+      "data_source": "Binance Spot /api/v3/klines (1m bars aggregated)",
+      "notes": "DESIGN LIMITATION: Under a strict 30-minute (1800s) pilot budget starting at T-1m, the runner terminates at T+29m. Full 30m post-event observation requires either extending duration to 35m (1800s -> 2100s) or fetching up to T+29m."
+    },
+    {
+      "measurement_name": "Realized volatility (1m bars)",
+      "target_horizon": "T-15m to T+29m",
+      "request_allocation": 0,
+      "feasibility_status": "FULLY_FEASIBLE",
+      "data_source": "Calculated from retrieved klines",
+      "notes": "Computed over closed 1m bars without additional network requests."
+    },
+    {
+      "measurement_name": "Tick-level order book depth / trade flow",
+      "target_horizon": "High-frequency",
+      "request_allocation": 0,
+      "feasibility_status": "PROHIBITED",
+      "data_source": "WebSocket / Depth Streams",
+      "notes": "Out of scope: 1-minute OHLCV candles do not represent tick-level microstructure."
+    }
+  ],
+  "design_limitations_and_tradeoffs": [
+    {
+      "issue": "30-Minute Post-Event Horizon Duration Boundedness",
+      "explanation": "A 30-minute (1800s) pilot duration starting at T-1m terminates at T+29m. Observing a complete 30-minute post-event window requires either: (1) Operator decision to extend duration to 35m (2100s), OR (2) Explicitly bounding post-event observation at T+29m.",
+      "resolution": "Operator decision required in Dossier Section D."
+    },
+    {
+      "issue": "Candle Granularity vs Microstructure",
+      "explanation": "1-minute OHLCV candles aggregate executed trades and do not represent tick-level order book depth.",
+      "resolution": "Tick-level depth analysis is explicitly classified as OUT_OF_SCOPE."
+    },
+    {
+      "issue": "Quote vs Trade Price Semantics",
+      "explanation": "Top-of-book best bid/ask (bookTicker) cannot be treated as executed trade prices.",
+      "resolution": "Enforced by MarketDataSpecificationError."
+    }
+  ],
+  "verdict": "MARKET_OBSERVATION_FEASIBILITY_EVALUATION_COMPLETE"
+}
