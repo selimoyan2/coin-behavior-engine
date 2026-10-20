@@ -159,6 +159,23 @@ class SigningKeyRegistry:
         with cls._lock:
             cls._instance = cls()
 
+    def __repr__(self) -> str:
+        with self._reg_lock:
+            masked = {
+                k: {
+                    "is_test_key": v["is_test_key"],
+                    "is_revoked": v["is_revoked"],
+                    "description": v["description"],
+                    "key_bytes": "[REDACTED_SECRET_KEY_BYTES]",
+                    "registered_at_utc": v["registered_at_utc"],
+                }
+                for k, v in self._keys.items()
+            }
+            return f"<SigningKeyRegistry keys={masked}>"
+
+    def __str__(self) -> str:
+        return self.__repr__()
+
     def register_key(
         self,
         key_id: str,
@@ -374,6 +391,8 @@ class TrustedApprovalRecord:
     status: str  # ACTIVE, REVOKED, EXHAUSTED, EXPIRED
     created_at_utc: str
     is_production: bool = False
+    proposal_digest: str = ""
+    approved_by_operator_id: str = ""
 
 
 class TrustedApprovalStore:
@@ -400,20 +419,37 @@ class TrustedApprovalStore:
         if self._mem_conn is not None:
             return self._mem_conn
         conn = sqlite3.connect(self.db_path, timeout=30.0, check_same_thread=False)
-        conn.row_factory = sqlite3.Row
-        conn.execute("PRAGMA foreign_keys = ON;")
-        if self.db_path != ":memory:":
-            conn.execute("PRAGMA journal_mode = WAL;")
-        return conn
+        try:
+            conn.row_factory = sqlite3.Row
+            conn.execute("PRAGMA foreign_keys = ON;")
+            if self.db_path != ":memory:":
+                conn.execute("PRAGMA journal_mode = WAL;")
+            return conn
+        except BaseException:
+            conn.close()
+            raise
 
     def _close_connection(self, conn: sqlite3.Connection) -> None:
-        if conn is not self._mem_conn:
-            conn.close()
+        if conn is not None and conn is not self._mem_conn:
+            try:
+                conn.close()
+            except Exception:
+                pass
+
+    def close(self) -> None:
+        with self._lock:
+            if self._mem_conn is not None:
+                try:
+                    self._mem_conn.close()
+                except Exception:
+                    pass
+                self._mem_conn = None
 
     def _init_db(self) -> None:
         with self._lock:
-            conn = self._get_connection()
+            conn = None
             try:
+                conn = self._get_connection()
                 with conn:
                     conn.execute("""
                         CREATE TABLE IF NOT EXISTS approval_records (
@@ -433,7 +469,9 @@ class TrustedApprovalStore:
                             policy_version TEXT NOT NULL,
                             status TEXT NOT NULL,
                             created_at_utc TEXT NOT NULL,
-                            is_production INTEGER NOT NULL DEFAULT 0
+                            is_production INTEGER NOT NULL DEFAULT 0,
+                            proposal_digest TEXT NOT NULL DEFAULT '',
+                            approved_by_operator_id TEXT NOT NULL DEFAULT ''
                         );
                     """)
                     conn.execute("""
@@ -455,6 +493,29 @@ class TrustedApprovalStore:
                             details_json TEXT NOT NULL
                         );
                     """)
+            except sqlite3.DatabaseError:
+                pass
+            finally:
+                if conn is not None:
+                    self._close_connection(conn)
+
+    def audit_log(
+        self,
+        action: str,
+        token_id: str,
+        event_id: str,
+        details: Dict[str, Any],
+    ) -> None:
+        """Appends an immutable audit record to the audit trail."""
+        now_utc = datetime.now(timezone.utc).isoformat()
+        with self._lock:
+            conn = self._get_connection()
+            try:
+                with conn:
+                    conn.execute("""
+                        INSERT INTO audit_trail (action, token_id, event_id, timestamp_utc, details_json)
+                        VALUES (?, ?, ?, ?, ?)
+                    """, (action, token_id, event_id, now_utc, json.dumps(details)))
             finally:
                 self._close_connection(conn)
 
@@ -463,6 +524,7 @@ class TrustedApprovalStore:
         token: ObservationAuthorizationToken,
         privileged_operator: str,
         is_production: bool = False,
+        proposal_digest: str = "",
     ) -> TrustedApprovalRecord:
         """
         Creates an explicit operator approval record in the trusted store.
@@ -470,7 +532,7 @@ class TrustedApprovalStore:
         """
         if is_production:
             raise AuthorizationError(
-                "GOVERNANCE VIOLATION: Production approvals are strictly NOT authorized in Sprint 11.23.5B-0."
+                "GOVERNANCE VIOLATION: Production approvals are strictly NOT authorized in this sprint."
             )
         if token.capability == AuthorizationCapability.LIVE_ORDER_EXECUTION:
             raise TradingIsolationViolation(
@@ -492,8 +554,8 @@ class TrustedApprovalStore:
                             authorized_event_id, approved_domains_json, max_request_count,
                             max_byte_allowance, spent_requests, spent_bytes, issued_at_utc,
                             not_before_utc, expires_at_utc, policy_version, status,
-                            created_at_utc, is_production
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?, ?, ?, ?, 'ACTIVE', ?, ?)
+                            created_at_utc, is_production, proposal_digest, approved_by_operator_id
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?, ?, ?, ?, 'ACTIVE', ?, ?, ?, ?)
                     """, (
                         approval_id,
                         token.token_id,
@@ -509,6 +571,8 @@ class TrustedApprovalStore:
                         token.policy_version,
                         now_utc,
                         1 if is_production else 0,
+                        proposal_digest,
+                        privileged_operator,
                     ))
                     conn.execute("""
                         INSERT INTO audit_trail (action, token_id, event_id, timestamp_utc, details_json)
@@ -518,7 +582,11 @@ class TrustedApprovalStore:
                         token.token_id,
                         token.authorized_event_id,
                         now_utc,
-                        json.dumps({"approval_id": approval_id, "approved_by": privileged_operator}),
+                        json.dumps({
+                            "approval_id": approval_id,
+                            "approved_by": privileged_operator,
+                            "proposal_digest": proposal_digest,
+                        }),
                     ))
             finally:
                 self._close_connection(conn)
@@ -530,34 +598,43 @@ class TrustedApprovalStore:
 
     def get_approval(self, token_id: str) -> Optional[TrustedApprovalRecord]:
         with self._lock:
-            conn = self._get_connection()
+            conn = None
             try:
-                row = conn.execute(
-                    "SELECT * FROM approval_records WHERE token_id = ?", (token_id,)
-                ).fetchone()
-                if not row:
+                conn = self._get_connection()
+                try:
+                    row = conn.execute(
+                        "SELECT * FROM approval_records WHERE token_id = ?", (token_id,)
+                    ).fetchone()
+                    if not row:
+                        return None
+                    return TrustedApprovalRecord(
+                        approval_id=row["approval_id"],
+                        token_id=row["token_id"],
+                        operator_identity=row["operator_identity"],
+                        capability=AuthorizationCapability(row["capability"]),
+                        authorized_event_id=row["authorized_event_id"],
+                        approved_domains=json.loads(row["approved_domains_json"]),
+                        max_request_count=row["max_request_count"],
+                        max_byte_allowance=row["max_byte_allowance"],
+                        spent_requests=row["spent_requests"],
+                        spent_bytes=row["spent_bytes"],
+                        issued_at_utc=row["issued_at_utc"],
+                        not_before_utc=row["not_before_utc"],
+                        expires_at_utc=row["expires_at_utc"],
+                        policy_version=row["policy_version"],
+                        status=row["status"],
+                        created_at_utc=row["created_at_utc"],
+                        is_production=bool(row["is_production"]),
+                        proposal_digest=row["proposal_digest"] if "proposal_digest" in row.keys() else "",
+                        approved_by_operator_id=row["approved_by_operator_id"] if "approved_by_operator_id" in row.keys() else "",
+                    )
+                except sqlite3.DatabaseError:
                     return None
-                return TrustedApprovalRecord(
-                    approval_id=row["approval_id"],
-                    token_id=row["token_id"],
-                    operator_identity=row["operator_identity"],
-                    capability=AuthorizationCapability(row["capability"]),
-                    authorized_event_id=row["authorized_event_id"],
-                    approved_domains=json.loads(row["approved_domains_json"]),
-                    max_request_count=row["max_request_count"],
-                    max_byte_allowance=row["max_byte_allowance"],
-                    spent_requests=row["spent_requests"],
-                    spent_bytes=row["spent_bytes"],
-                    issued_at_utc=row["issued_at_utc"],
-                    not_before_utc=row["not_before_utc"],
-                    expires_at_utc=row["expires_at_utc"],
-                    policy_version=row["policy_version"],
-                    status=row["status"],
-                    created_at_utc=row["created_at_utc"],
-                    is_production=bool(row["is_production"]),
-                )
+            except sqlite3.DatabaseError:
+                return None
             finally:
-                self._close_connection(conn)
+                if conn is not None:
+                    self._close_connection(conn)
 
     def revoke_approval(self, token_id: str, revoked_by: str, reason: str) -> bool:
         rev_id = f"REV-{uuid.uuid4().hex[:12].upper()}"

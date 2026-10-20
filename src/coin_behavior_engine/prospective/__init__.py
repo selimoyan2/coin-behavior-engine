@@ -101,6 +101,20 @@ from .observation_authorization import (
     OutOfScopeError,
     NetworkActivationGateError,
 )
+from .operator_workflow import (
+    OperatorRole,
+    OperatorIdentity,
+    ProposalStatus,
+    PilotProposal,
+    OperatorApprovalWorkflowEngine,
+    OperatorWorkflowError,
+    UnauthorizedOperatorActionError,
+    ProposalIntegrityError,
+    KeyStorePermissionError,
+    FileBackedKeyProvider,
+    verify_key_file_permissions,
+    redact_secret_string,
+)
 from .end_to_end_pilot_sim import EndToEndPilotSimulationSuite
 from .recovery_simulation import EndToEndRecoverySimulationRunner
 
@@ -195,6 +209,18 @@ __all__ = [
     "QuotaExceededError",
     "OutOfScopeError",
     "NetworkActivationGateError",
+    "OperatorRole",
+    "OperatorIdentity",
+    "ProposalStatus",
+    "PilotProposal",
+    "OperatorApprovalWorkflowEngine",
+    "OperatorWorkflowError",
+    "UnauthorizedOperatorActionError",
+    "ProposalIntegrityError",
+    "KeyStorePermissionError",
+    "FileBackedKeyProvider",
+    "verify_key_file_permissions",
+    "redact_secret_string",
     "EndToEndPilotSimulationSuite",
     "EndToEndRecoverySimulationRunner",
 ]

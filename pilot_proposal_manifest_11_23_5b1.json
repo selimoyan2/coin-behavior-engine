@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:51:05.022342+00:00",
+  "manifest_name": "Controlled Prospective Single-Event Pilot Proposal Manifest",
+  "proposal_status": "PROPOSED",
+  "schedule_status": "SCHEDULE_VERIFICATION_PENDING",
+  "proposal_details": {
+    "proposal_id": "PROP-PILOT-CPI-2026-001",
+    "proposal_version": "1.0.0",
+    "created_by_operator_id": "OP-RESEARCH-LEAD-01",
+    "created_at_utc": "2026-10-20T12:51:05.022342+00:00",
+    "canonical_digest_sha256": "b842d373efda8844d3a019eed17c9b70fadb91ed6781846c332d071d972b2aca",
+    "target_economic_event": {
+      "event_id": "EVT-BLS-CPI-2026-PENDING",
+      "event_name": "US Consumer Price Index (CPI) YoY Release",
+      "source_agency": "U.S. Bureau of Labor Statistics",
+      "official_source_url": "https://www.bls.gov/news.release/cpi.nr0.htm",
+      "approved_domains": [
+        "bls.gov",
+        "data-api.binance.vision"
+      ]
+    },
+    "target_market_data": {
+      "market_symbol": "BTCUSDT",
+      "exchange": "Binance Spot",
+      "endpoints": [
+        "https://data-api.binance.vision/api/v3/ticker/bookTicker?symbol=BTCUSDT",
+        "https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval=1m"
+      ],
+      "credentials_required": false
+    },
+    "operating_envelope": {
+      "max_duration_seconds": 1800,
+      "max_requests": 20,
+      "max_bytes": 5242880,
+      "polling_interval_seconds": 5.0,
+      "emergency_stop_conditions": [
+        "HTTP 429 Rate Limit Encountered",
+        "Network Connection Timeout Breached",
+        "Payload Size Exceeds 5 MB",
+        "Target Domain Not in Approved List",
+        "Quota Allowance Reached (20 requests)",
+        "Checksum Mismatch on Checkpoint Save",
+        "Any Sensitive Credential Header Present"
+      ]
+    }
+  },
+  "governance_requirements": [
+    "Approval must be granted by an operator holding APPROVAL_ADMIN role",
+    "Approver cannot be OP-RESEARCH-LEAD-01 (two-person rule)",
+    "Signing key must be loaded via FileBackedKeyProvider with strict permissions",
+    "Official BLS release schedule date and exact release time must be verified before activation",
+    "Operator authorization remains NOT_GRANTED until schedule verification is complete"
+  ],
+  "verdict": "PILOT_PROPOSAL_MANIFEST_INITIALIZED"
+}

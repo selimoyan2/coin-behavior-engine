@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:51:05.021834+00:00",
+  "audit_name": "Revocation & Emergency Stop Reliability Audit",
+  "status": "PASS",
+  "revocation_mechanisms": {
+    "store_revocation": "TrustedApprovalStore.revoke_approval() marks status REVOKED",
+    "durable_persistence": "Stored in SQLite revocation_records with operator ID and reason",
+    "process_restart_survival": true,
+    "immediate_gate_rejection": true
+  },
+  "runtime_session_protection": {
+    "in_flight_revalidation": "ProspectivePilotRunner passes auth_token & target_event_id to transport",
+    "mid_session_revocation_abort": "Subsequent requests within running loop immediately blocked by NetworkActivationGate",
+    "emergency_stop_method": "ProspectivePilotRunner.request_stop() terminates gracefully"
+  },
+  "verdict": "REVOCATION_AND_EMERGENCY_STOP_VERIFIED"
+}

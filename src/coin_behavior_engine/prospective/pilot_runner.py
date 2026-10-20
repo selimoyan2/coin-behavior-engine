@@ -344,7 +344,12 @@ class ProspectivePilotRunner:
             step_count += 1
             t_req_start = time.time()
             try:
-                resp = self.transport.execute_request("GET", event.official_source_url)
+                resp = self.transport.execute_request(
+                    "GET",
+                    event.official_source_url,
+                    auth_token=self.token if hasattr(self.token, "token_id") else None,
+                    target_event_id=event_id,
+                )
                 lat = time.time() - t_req_start
                 self.obs.record_request(lat)
                 release_doc = ReleaseDocument(

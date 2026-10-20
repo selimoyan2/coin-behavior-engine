@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:51:05.021304+00:00",
+  "audit_name": "Production Signing Key Security & Secret Protection Audit",
+  "status": "PASS",
+  "key_provider": {
+    "component": "FileBackedKeyProvider",
+    "storage_interface": "FILE_BACKED_EXPLICIT_PROVISIONING",
+    "posix_permission_enforcement": "0600 (owner read-write only)",
+    "non_posix_behavior": "LOG_WARNING_ALLOW_FILE_READ",
+    "file_existence_check": "FAIL_CLOSED_ON_MISSING_OR_EMPTY",
+    "content_validation": "MINIMUM_16_BYTES_KEY_ENTROPY"
+  },
+  "secret_redaction": {
+    "component": "redact_secret_string",
+    "rules": [
+      "Empty or None string returns [REDACTED]",
+      "Strings <= 8 chars replaced with [REDACTED_SECRET]",
+      "Strings > 8 chars preserve first 3 and last 3 chars with ******* in middle"
+    ],
+    "enforcement_points": [
+      "SigningKeyRegistry.__repr__",
+      "SigningKeyRegistry.__str__",
+      "FileBackedKeyProvider.__repr__",
+      "Audit logs and exception traces"
+    ],
+    "leak_prevention_verified": true
+  },
+  "environment_isolation": {
+    "test_key_segregation": true,
+    "production_key_flag": "is_test_key=False",
+    "allow_test_key_in_production": false,
+    "hardcoded_fallback_present": false
+  },
+  "verdict": "PRODUCTION_KEY_SECURITY_VERIFIED"
+}

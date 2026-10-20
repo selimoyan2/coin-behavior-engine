@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:51:05.021304+00:00",
+  "audit_name": "Multi-Role Privileged Operator Approval Workflow Audit",
+  "status": "PASS",
+  "role_definitions": {
+    "RESEARCH_OPERATOR": "Can draft and submit observation proposals. Cannot approve any proposal.",
+    "APPROVAL_ADMIN": "Can approve proposals submitted by other operators. Cannot approve own proposals. Can revoke approvals.",
+    "AUDITOR": "Strictly read-only inspection of proposals, approval records, tokens, and audit trails. Cannot submit or approve."
+  },
+  "separation_of_duties_invariants": {
+    "submitter_self_approval_blocked": true,
+    "research_operator_approval_blocked": true,
+    "auditor_approval_blocked": true,
+    "two_person_rule_enforced": true
+  },
+  "workflow_engine": {
+    "component": "OperatorApprovalWorkflowEngine",
+    "supported_actions": [
+      "submit_proposal",
+      "approve_proposal",
+      "reject_proposal",
+      "revoke_approval"
+    ],
+    "audit_trail_logging": "MANDATORY_FOR_ALL_TRANSITIONS"
+  },
+  "verdict": "OPERATOR_APPROVAL_WORKFLOW_VERIFIED"
+}

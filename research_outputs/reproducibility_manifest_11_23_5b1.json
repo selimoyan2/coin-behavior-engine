@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:51:05.236023+00:00",
+  "sprint": "11.23.5B-1",
+  "sprint_title": "Operator Approval Workflow, Production Key Security & Final Pilot Readiness",
+  "base_commit": "a73c409468b8f0a8133c2c2e6e7a1ba57d761207",
+  "head_commit": "740154137d3560789337bf19341cf7bc4616b98f",
+  "python_version": "3.11.16",
+  "platform": "win32",
+  "execution_mode": "STRICTLY_OFFLINE_DEVELOPMENT_AND_CONTROLLED_SIMULATION",
+  "total_deliverables": 9,
+  "total_test_suite_size": 176,
+  "total_tests_passed": 176,
+  "total_tests_failed": 0,
+  "artifacts": {
+    "production_key_security_audit_11_23_5b1.json": {
+      "sha256": "4c2531024acf9a15fe35bd46a19a99178ebf02ac6cc29b8d14d64a83a356eb66",
+      "byte_size": 1352,
+      "mirrored_to_root": true
+    },
+    "operator_approval_workflow_audit_11_23_5b1.json": {
+      "sha256": "fcd9e663d17c8a393ff672587fa1dd88f52460d5fd6015de35ce134c89d0b564",
+      "byte_size": 1136,
+      "mirrored_to_root": true
+    },
+    "approval_integrity_audit_11_23_5b1.json": {
+      "sha256": "b854ece0c919790cf8f12fabe40d5689a1e5ad002e4a6965f57c8c428097a13e",
+      "byte_size": 1057,
+      "mirrored_to_root": true
+    },
+    "revocation_emergency_stop_audit_11_23_5b1.json": {
+      "sha256": "5c348adfce9933e0d4ee3d488f56b6f36db06026fcb621e03c497c0f0f90cc9c",
+      "byte_size": 895,
+      "mirrored_to_root": true
+    },
+    "pilot_proposal_manifest_11_23_5b1.json": {
+      "sha256": "de93ace4e7893ed23aa7ac592f142407a19e00dbae0647a60badeab87d861802",
+      "byte_size": 2367,
+      "mirrored_to_root": true
+    },
+    "pilot_readiness_decision_11_23_5b1.json": {
+      "sha256": "1010f901436b502dda8abff01f1d74000f3e0084342fc78271fe1665c4df4b5b",
+      "byte_size": 1191,
+      "mirrored_to_root": true
+    },
+    "operator_attack_simulation_11_23_5b1.json": {
+      "sha256": "c2116db718a041df50d6dea3d56ccf70017408ef1739c85a54cc741e5a24d63d",
+      "byte_size": 4076,
+      "mirrored_to_root": true
+    },
+    "performance_safety_audit_11_23_5b1.json": {
+      "sha256": "2cb8aa9ecc13f08540a4ec9b1f085a970ba6d6715f3b01ceb8ce9f5f2daf0d9b",
+      "byte_size": 837,
+      "mirrored_to_root": true
+    },
+    "research_report_11_23_5b1.md": {
+      "sha256": "37bec8c2095a8dbc221a1e4ba9a560df695104aa0a66f333ae6a5b783c25b69c",
+      "byte_size": 8981,
+      "mirrored_to_root": true
+    }
+  },
+  "governance_status": {
+    "technical_readiness": "READY_FOR_OPERATOR_REVIEW",
+    "pilot_execution_status": "EXECUTION_BLOCKED",
+    "schedule_verification_status": "SCHEDULE_VERIFICATION_PENDING",
+    "real_network_collection": "DISABLED",
+    "real_world_pilot": "NOT_STARTED",
+    "unattended_monitoring": "DISABLED",
+    "operator_authorization": "NOT_GRANTED",
+    "live_order_execution": "PROHIBITED",
+    "directional_trading_eligibility": "ZERO",
+    "historical_data_status": "RESEARCH_CONTAMINATED",
+    "sprint_status": "PASS"
+  }
+}

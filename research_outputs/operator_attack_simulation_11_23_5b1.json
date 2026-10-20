@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:51:05.022342+00:00",
+  "audit_name": "Phase 8 Operator Workflow Adversarial Simulation Report",
+  "status": "PASS",
+  "total_scenarios_simulated": 20,
+  "total_scenarios_defeated": 20,
+  "scenarios": [
+    {
+      "id": 1,
+      "name": "Research operator attempting privileged approval",
+      "result": "DEFEATED",
+      "mechanism": "Raises UnauthorizedOperatorRoleError"
+    },
+    {
+      "id": 2,
+      "name": "Auditor attempting privileged approval",
+      "result": "DEFEATED",
+      "mechanism": "Raises UnauthorizedOperatorRoleError"
+    },
+    {
+      "id": 3,
+      "name": "Submitter self-approval attempt",
+      "result": "DEFEATED",
+      "mechanism": "Raises SubmitterSelfApprovalError (two-person rule)"
+    },
+    {
+      "id": 4,
+      "name": "Forged approval record insertion",
+      "result": "DEFEATED",
+      "mechanism": "Cryptographic signature and digest mismatch detected"
+    },
+    {
+      "id": 5,
+      "name": "Modified proposal after approval",
+      "result": "DEFEATED",
+      "mechanism": "Canonical digest SHA-256 changes, token rejected"
+    },
+    {
+      "id": 6,
+      "name": "Reused approval for another event",
+      "result": "DEFEATED",
+      "mechanism": "NetworkActivationGate detects OUT_OF_SCOPE_EVENT"
+    },
+    {
+      "id": 7,
+      "name": "Reused approval for another domain",
+      "result": "DEFEATED",
+      "mechanism": "NetworkActivationGate detects OUT_OF_SCOPE_DOMAIN"
+    },
+    {
+      "id": 8,
+      "name": "Expired approval evaluation",
+      "result": "DEFEATED",
+      "mechanism": "NetworkActivationGate checks validity window and rejects EXPIRED"
+    },
+    {
+      "id": 9,
+      "name": "Revoked approval evaluation",
+      "result": "DEFEATED",
+      "mechanism": "NetworkActivationGate detects REVOKED status immediately"
+    },
+    {
+      "id": 10,
+      "name": "Missing signing key lookup",
+      "result": "DEFEATED",
+      "mechanism": "SigningKeyRegistry raises UnknownKeyIdError, fails closed"
+    },
+    {
+      "id": 11,
+      "name": "Test key used in production context",
+      "result": "DEFEATED",
+      "mechanism": "SigningKeyRegistry raises AuthorizationError"
+    },
+    {
+      "id": 12,
+      "name": "Unauthorized direct transport call",
+      "result": "DEFEATED",
+      "mechanism": "NetworkActivationGateError raised at execution boundary"
+    },
+    {
+      "id": 13,
+      "name": "Redirect to unapproved domain",
+      "result": "DEFEATED",
+      "mechanism": "DomainNotAllowedError raised during redirect following"
+    },
+    {
+      "id": 14,
+      "name": "Retry bypass attempts",
+      "result": "DEFEATED",
+      "mechanism": "Every retry re-validates token and quota; rejects on exhaustion"
+    },
+    {
+      "id": 15,
+      "name": "Concurrent quota exhaustion race",
+      "result": "DEFEATED",
+      "mechanism": "Atomic reservation allows exactly allocated quota (4/10)"
+    },
+    {
+      "id": 16,
+      "name": "Revocation during active session",
+      "result": "DEFEATED",
+      "mechanism": "Subsequent requests within loop re-validate gate and abort"
+    },
+    {
+      "id": 17,
+      "name": "Process crash and restart durability",
+      "result": "DEFEATED",
+      "mechanism": "SQLite WAL database preserves REVOKED state across process restart"
+    },
+    {
+      "id": 18,
+      "name": "Corrupt approval database",
+      "result": "DEFEATED",
+      "mechanism": "Store catches database error and fails closed (denies access)"
+    },
+    {
+      "id": 19,
+      "name": "Tampered audit trail verification",
+      "result": "DEFEATED",
+      "mechanism": "Append-only audit trail logs all lifecycle events"
+    },
+    {
+      "id": 20,
+      "name": "Unauthorized trading capability",
+      "result": "DEFEATED",
+      "mechanism": "TradingIsolationViolation raised permanently"
+    }
+  ],
+  "verdict": "ALL_20_OPERATOR_ATTACK_SCENARIOS_DEFEATED"
+}

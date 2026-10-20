@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:51:05.021834+00:00",
+  "audit_name": "Approval Record Integrity & Anti-Bypass Audit",
+  "status": "PASS",
+  "cryptographic_proposal_binding": {
+    "digest_algorithm": "SHA256_CANONICAL_JSON",
+    "bound_proposal_attributes": [
+      "proposal_id",
+      "title",
+      "created_by_operator_id",
+      "event_id",
+      "source_agency",
+      "official_domain",
+      "target_url_patterns",
+      "market_symbol",
+      "exchange",
+      "market_data_endpoints",
+      "max_requests",
+      "max_bytes",
+      "validity_hours"
+    ],
+    "anti_tampering_guarantee": "Modifying any proposal attribute changes digest and fails verification"
+  },
+  "scope_restrictions": {
+    "wildcard_event_id_prohibited": true,
+    "exact_event_matching_required": true,
+    "domain_whitelist_enforced": [
+      "bls.gov",
+      "data-api.binance.vision"
+    ],
+    "request_quota_cap": 20,
+    "byte_quota_cap": 5242880
+  },
+  "verdict": "APPROVAL_INTEGRITY_VERIFIED"
+}
