@@ -1,0 +1,25 @@
+{
+  "sprint": "11.23.5B-6.1",
+  "generated_at_utc": "2026-10-20T22:00:50Z",
+  "verifier_class": "coin_behavior_engine.prospective.OfficialEvidenceVerifier",
+  "checks_enforced": [
+    "Raw document SHA-256 integrity against vault key",
+    "Evidence vault tamper-resistance (verify_vault_integrity)",
+    "Provenance trust level (VERIFIED_OFFICIAL_HTTPS_ACQUISITION or VERIFIED_PUBLISHER_SIGNATURE)",
+    "Source hostname strictly equals www.bls.gov",
+    "TLS verification evidence (VERIFIED_VALID_CHAIN, hostname verified, trusted root CA)",
+    "Acquisition authorization linkage in TrustedApprovalStore",
+    "CPI release series identification ('Consumer Price Index (CPI)')",
+    "Target reference period 2026M10 (October 2026)",
+    "Official scheduled release date 2026-11-10",
+    "Official scheduled release time 08:30:00 local",
+    "UTC release conversion 2026-11-10T13:30:00Z (America/New_York EST UTC-5)",
+    "Contradictory schedule detection & revision indicator isolation"
+  ],
+  "binding_behavior": {
+    "all_checks_pass": "EventIdentityStatus.VERIFIED_FROZEN (EVT-BLS-CPI-2026M10-20261110)",
+    "any_check_fails": "EventIdentityStatus.CANDIDATE_PENDING_SCHEDULE_VERIFICATION",
+    "market_observation_link": "DISCONNECTED (Real market observation pilot remains NOT_STARTED)"
+  },
+  "verification_status": "READY_AND_AUDITED"
+}

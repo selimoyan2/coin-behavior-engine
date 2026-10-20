@@ -1,0 +1,117 @@
+{
+  "session_sprint": "11.23.5B-6.1",
+  "executed_at_utc": "2026-10-20T22:00:50Z",
+  "total_steps": 11,
+  "passed_steps": 11,
+  "session_status": "ALL_STEPS_PASSED",
+  "is_simulation_only": true,
+  "real_requests_made": 0,
+  "steps": [
+    {
+      "step": 1,
+      "action": "INSPECT_REQUEST",
+      "status": "PASS",
+      "details": {
+        "canonical_url": "https://www.bls.gov/schedule/news_release/cpi.htm",
+        "http_method": "GET",
+        "request_id": "REQ-BLS-CPI-2026M10-ACQ01",
+        "request_digest": "b1792ee85282de66c2aaf8a2e06cfbfeab87e1cd7503977269c3f9e9da8b91c6",
+        "request_budget": {
+          "max_attempts": 2,
+          "max_successful": 1
+        },
+        "byte_budget_bytes": 2097152,
+        "created_at_utc": "2026-10-20T22:00:50Z",
+        "expires_at_utc": "2026-10-21T22:00:50Z",
+        "is_expired": false,
+        "approval_state": "PENDING (no active approval found)",
+        "network_gate_state": "DISABLED (fail-closed)"
+      }
+    },
+    {
+      "step": 2,
+      "action": "PREPARE_REQUEST",
+      "status": "PASS",
+      "request_id": "REQ-BLS-CPI-2026M10-ACQ-20261020220050",
+      "digest": "533663ac8adac8fbc702d5262c7069fc38d5b66d1e6f9fb12c3bd28db0d7a500"
+    },
+    {
+      "step": 3,
+      "action": "CREATE_APPROVAL",
+      "status": "PASS",
+      "approval_id": "APPR-A6D8280226E2",
+      "token_id": "TOK-BLS-ACQ-20261020220050"
+    },
+    {
+      "step": 4,
+      "action": "VERIFY_APPROVAL_STATUS",
+      "status": "PASS",
+      "details": {
+        "token_id": "TOK-BLS-ACQ-20261020220050",
+        "approval_id": "APPR-A6D8280226E2",
+        "status": "ACTIVE",
+        "capability": "OFFICIAL_SCHEDULE_EVIDENCE_ACQUISITION",
+        "authorized_event_id": "EVT-BLS-CPI-2026M10-20261110",
+        "approved_domains": [
+          "www.bls.gov"
+        ],
+        "spent_requests": 0,
+        "max_requests": 2,
+        "spent_bytes": 0,
+        "max_bytes": 2097152,
+        "issued_at_utc": "2026-10-20T22:00:50Z",
+        "expires_at_utc": "2026-10-21T00:00:50Z",
+        "proposal_digest": "533663ac8adac8fbc702d5262c7069fc38d5b66d1e6f9fb12c3bd28db0d7a500",
+        "approved_by": "OP-APPROVAL-ADMIN-01",
+        "is_production": false
+      }
+    },
+    {
+      "step": 5,
+      "action": "EXECUTE_MOCK_ACQUISITION",
+      "status": "PASS",
+      "evidence_sha": "d4865111aed23d3ba9c25e2177a22eea08fb1b1c8ca833511b09fb857172ff71"
+    },
+    {
+      "step": 6,
+      "action": "VERIFY_VAULT_STORAGE",
+      "status": "PASS",
+      "bytes_verified": 756
+    },
+    {
+      "step": 7,
+      "action": "VERIFY_EVIDENCE",
+      "status": "PASS",
+      "parsed_period": "2026M10"
+    },
+    {
+      "step": 8,
+      "action": "BIND_EVENT_IDENTITY",
+      "status": "PASS",
+      "frozen_event_id": "EVT-BLS-CPI-2026M10-20261110"
+    },
+    {
+      "step": 9,
+      "action": "REVOKE_AUTHORIZATION",
+      "status": "PASS",
+      "details": {
+        "token_id": "TOK-BLS-ACQ-20261020220050",
+        "revoked": true,
+        "revoked_by": "OP-APPROVAL-ADMIN-01",
+        "reason": "Post-acquisition teardown",
+        "timestamp_utc": "2026-10-20T22:00:50Z"
+      }
+    },
+    {
+      "step": 10,
+      "action": "VERIFY_REPLAY_REJECTION",
+      "status": "PASS",
+      "rejection_status": "FAILED_AUTHORIZATION_AUDIT"
+    },
+    {
+      "step": 11,
+      "action": "VERIFY_PRODUCTION_PATH_BLOCKED",
+      "status": "PASS"
+    }
+  ]
+}

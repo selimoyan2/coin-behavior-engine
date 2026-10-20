@@ -876,8 +876,8 @@ class NetworkActivationGate:
             return False, f"TIME_FORMAT_ERROR: {e}"
 
         # Request / Proposal Digest binding check
-        if expected_request_digest and approval.proposal_digest:
-            if approval.proposal_digest != expected_request_digest:
+        if expected_request_digest:
+            if not approval.proposal_digest or approval.proposal_digest != expected_request_digest:
                 return False, (
                     f"DIGEST_MISMATCH: Approval proposal_digest '{approval.proposal_digest}' does not match "
                     f"expected request digest '{expected_request_digest}'."

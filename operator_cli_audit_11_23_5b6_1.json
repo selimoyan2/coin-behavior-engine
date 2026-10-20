@@ -1,0 +1,70 @@
+{
+  "sprint": "11.23.5B-6.1",
+  "generated_at_utc": "2026-10-20T22:00:50Z",
+  "entry_points": {
+    "console_script": "cbe bls-acquisition <subcommand>",
+    "module_invocation": "python -m coin_behavior_engine.cli bls-acquisition <subcommand>",
+    "programmatic_interface": "coin_behavior_engine.prospective.BlsAcquisitionCLI"
+  },
+  "subcommands": {
+    "inspect": {
+      "description": "Inspect canonical request parameters, budget, approval state, and gate status without network calls.",
+      "options": [
+        "--request-file",
+        "--store-path"
+      ],
+      "network_access": "DISABLED",
+      "status": "VERIFIED_EXECUTABLE"
+    },
+    "prepare": {
+      "description": "Generate a new OfficialScheduleAcquisitionRequest with unique ID, timestamp, expiration, and canonical digest.",
+      "options": [
+        "--operator-id",
+        "--validity-hours",
+        "--output-file"
+      ],
+      "network_access": "DISABLED",
+      "status": "VERIFIED_EXECUTABLE"
+    },
+    "approval-status": {
+      "description": "Read TrustedApprovalStore and display authorization state without leaking secret key bytes.",
+      "options": [
+        "--token-id",
+        "--store-path"
+      ],
+      "network_access": "DISABLED",
+      "status": "VERIFIED_EXECUTABLE"
+    },
+    "execute": {
+      "description": "Execute acquisition only under verified authorization and runtime gate. Fails closed on violations.",
+      "options": [
+        "--production"
+      ],
+      "network_access": "CONTROLLED_FAIL_CLOSED",
+      "production_status": "BLOCKED_PRODUCTION_NOT_GRANTED",
+      "status": "VERIFIED_EXECUTABLE"
+    },
+    "verify": {
+      "description": "Verify vaulted official evidence against 12 cryptographic and parsing checks without network access.",
+      "options": [
+        "--evidence-sha",
+        "--vault-dir",
+        "--store-path"
+      ],
+      "network_access": "DISABLED",
+      "status": "VERIFIED_EXECUTABLE"
+    },
+    "revoke": {
+      "description": "Revoke an authorization token in TrustedApprovalStore with persistent audit trail.",
+      "options": [
+        "--token-id",
+        "--revoker-id",
+        "--reason",
+        "--store-path"
+      ],
+      "network_access": "DISABLED",
+      "status": "VERIFIED_EXECUTABLE"
+    }
+  },
+  "audit_verdict": "OPERATOR_CLI_READY"
+}

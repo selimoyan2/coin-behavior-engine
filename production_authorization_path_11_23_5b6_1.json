@@ -1,0 +1,44 @@
+{
+  "sprint": "11.23.5B-6.1",
+  "generated_at_utc": "2026-10-20T22:00:50Z",
+  "production_authorization_policy": "NOT_GRANTED",
+  "target_event_id": "EVT-BLS-CPI-2026M10-20261110",
+  "target_url": "https://www.bls.gov/schedule/news_release/cpi.htm",
+  "required_capability": "OFFICIAL_SCHEDULE_EVIDENCE_ACQUISITION",
+  "security_requirements": {
+    "key_provider": {
+      "class": "FileBackedKeyProvider",
+      "permissions_enforced": "0600_POSIX_RESTRICTED",
+      "test_key_rejection": "ENFORCED (SigningKeyRegistry.is_test_key strictly rejects test keys)"
+    },
+    "role_separation": {
+      "submitter_role": "RESEARCH_OPERATOR (OP-RESEARCH-LEAD-01)",
+      "approver_role": "APPROVAL_ADMIN (OP-APPROVAL-ADMIN-01)",
+      "self_approval_prevention": "ENFORCED (Submitter cannot approve own request)"
+    },
+    "digest_binding": {
+      "algorithm": "SHA-256",
+      "binding_target": "OfficialScheduleAcquisitionRequest.compute_canonical_digest()",
+      "digest_mismatch_behavior": "FAIL_CLOSED (DIGEST_MISMATCH)"
+    },
+    "scope_isolation": {
+      "allowed_hostnames": [
+        "www.bls.gov"
+      ],
+      "binance_access": "STRICTLY_PROHIBITED (DomainNotAllowedError / TradingIsolationViolation)",
+      "trading_endpoints": "PERMANENTLY_PROHIBITED (TradingIsolationViolation)",
+      "background_monitoring": "DISABLED (One-shot CLI only)"
+    },
+    "bounded_lifetime": {
+      "default_validity_hours": 24,
+      "expiration_enforcement": "FAIL_CLOSED (REQUEST_EXPIRED / TOKEN_EXPIRED)"
+    },
+    "revocation": {
+      "mechanism": "TrustedApprovalStore.revoke_approval()",
+      "persistence": "IMMEDIATE_ATOMIC_SQLITE_UPDATE",
+      "audit_retention": "PERMANENT"
+    }
+  },
+  "current_governance_blocker": "Production authorization requires separate manual operator provisioning of production key material and explicit authorization token issuance after schedule freeze.",
+  "path_verification_status": "VERIFIED_FAIL_CLOSED"
+}

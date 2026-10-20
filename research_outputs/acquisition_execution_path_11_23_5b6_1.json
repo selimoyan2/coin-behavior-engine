@@ -1,0 +1,113 @@
+{
+  "sprint": "11.23.5B-6.1",
+  "generated_at_utc": "2026-10-20T22:00:50Z",
+  "execution_class": "coin_behavior_engine.prospective.BlsAcquisitionExecutor",
+  "twenty_step_sequence": [
+    {
+      "step": 1,
+      "name": "LOAD_ACQUISITION_REQUEST",
+      "verification": "Scope boundaries & non-expired timestamp validated."
+    },
+    {
+      "step": 2,
+      "name": "VERIFY_REQUEST_INTEGRITY",
+      "verification": "Deterministic SHA-256 request digest computed."
+    },
+    {
+      "step": 3,
+      "name": "LOAD_AUTHORIZATION_TOKEN",
+      "verification": "Signature verified against SigningKeyRegistry."
+    },
+    {
+      "step": 4,
+      "name": "AUDIT_PRODUCTION_KEY",
+      "verification": "Test keys rejected if production execution requested."
+    },
+    {
+      "step": 5,
+      "name": "CHECK_CAPABILITY_SCOPE",
+      "verification": "Must be OFFICIAL_SCHEDULE_EVIDENCE_ACQUISITION."
+    },
+    {
+      "step": 6,
+      "name": "CHECK_EXPIRATION_AND_REVOCATION",
+      "verification": "Active status verified in TrustedApprovalStore."
+    },
+    {
+      "step": 7,
+      "name": "CHECK_QUOTAS_AND_BUDGETS",
+      "verification": "Requests spent < 2, bytes spent < 2 MB."
+    },
+    {
+      "step": 8,
+      "name": "EVALUATE_NETWORK_ACTIVATION_GATE",
+      "verification": "10 fail-closed runtime gate conditions verified."
+    },
+    {
+      "step": 9,
+      "name": "VALIDATE_EXACT_BLS_URL",
+      "verification": "Must strictly equal https://www.bls.gov/schedule/news_release/cpi.htm."
+    },
+    {
+      "step": 10,
+      "name": "RESOLVE_DNS_TRUSTED_TRANSPORT",
+      "verification": "Non-private IP checked against SSRF list."
+    },
+    {
+      "step": 11,
+      "name": "VALIDATE_PUBLIC_IP_IDENTITY",
+      "verification": "Public routable IP confirmed."
+    },
+    {
+      "step": 12,
+      "name": "ESTABLISH_VERIFIED_TLS_SESSION",
+      "verification": "Valid chain, hostname verified, trusted root CA."
+    },
+    {
+      "step": 13,
+      "name": "PERFORM_READONLY_HTTPS_GET",
+      "verification": "Single bounded GET request dispatched."
+    },
+    {
+      "step": 14,
+      "name": "ENFORCE_RESPONSE_SIZE_LIMIT",
+      "verification": "Streaming cutoff at 2,097,152 bytes."
+    },
+    {
+      "step": 15,
+      "name": "VALIDATE_STATUS_AND_CONTENT_TYPE",
+      "verification": "HTTP 200 and text/html or text/plain verified."
+    },
+    {
+      "step": 16,
+      "name": "PRESERVE_ORIGINAL_RESPONSE_BYTES",
+      "verification": "Exact wire bytes preserved in memory."
+    },
+    {
+      "step": 17,
+      "name": "GENERATE_TRUSTED_PROVENANCE_RECORD",
+      "verification": "HttpsAcquisitionProvenanceRecord Level B created."
+    },
+    {
+      "step": 18,
+      "name": "STORE_EVIDENCE_IMMUTABLY",
+      "verification": "Stored in ImmutableEvidenceVault /releases/."
+    },
+    {
+      "step": 19,
+      "name": "RECORD_ACQUISITION_AUDIT",
+      "verification": "Audit event recorded in TrustedApprovalStore."
+    },
+    {
+      "step": 20,
+      "name": "COMMIT_QUOTA_ACCOUNTING",
+      "verification": "Actual bytes and request count atomically committed."
+    }
+  ],
+  "isolation_controls": {
+    "market_data_access": "BLOCKED",
+    "trading_endpoints": "PROHIBITED",
+    "background_loops": "DISABLED"
+  },
+  "path_status": "READY_AND_AUDITED"
+}

@@ -1,0 +1,27 @@
+{
+  "sprint": "11.23.5B-6.1",
+  "generated_at_utc": "2026-10-20T22:00:50Z",
+  "renewal_interface": "coin_behavior_engine.prospective.renew_acquisition_request()",
+  "old_request": {
+    "request_id": "REQ-BLS-CPI-2026M10-ACQ01",
+    "created_at_utc": "2026-10-20T22:00:50Z",
+    "expires_at_utc": "2026-10-21T22:00:50Z",
+    "canonical_digest": "b1792ee85282de66c2aaf8a2e06cfbfeab87e1cd7503977269c3f9e9da8b91c6"
+  },
+  "renewed_request": {
+    "request_id": "REQ-BLS-CPI-2026M10-ACQ-20261020220050-513D",
+    "created_at_utc": "2026-10-20T22:00:50Z",
+    "expires_at_utc": "2026-10-21T22:00:50Z",
+    "canonical_digest": "7e10a3128211ea190ecfc07b53c46983b41be194cc91b929d0ec4c68e6f515e7",
+    "prior_request_id": "REQ-BLS-CPI-2026M10-ACQ01"
+  },
+  "security_invariants": {
+    "unique_request_id": true,
+    "unique_canonical_digest": true,
+    "prior_request_traceability": true,
+    "automatic_approval_granted": false,
+    "old_approval_transfer": "REJECTED (DIGEST_MISMATCH)",
+    "silent_extension_allowed": false
+  },
+  "audit_verdict": "REQUEST_RENEWAL_VERIFIED"
+}

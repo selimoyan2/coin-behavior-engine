@@ -1,0 +1,76 @@
+{
+  "sprint": "11.23.5B-6.1",
+  "generated_at_utc": "2026-10-20T22:00:50Z",
+  "base_commit": "883b154d61548bd709231a8beb149d8bb506af05",
+  "test_suite": {
+    "total_tests": 323,
+    "passed_tests": 323,
+    "failed_tests": 0,
+    "deselected_tests": 1685,
+    "command": "pytest -k sprint11_23 -q",
+    "status": "PASS"
+  },
+  "changed_files": [
+    "src/coin_behavior_engine/cli.py",
+    "src/coin_behavior_engine/prospective/__init__.py",
+    "src/coin_behavior_engine/prospective/observation_authorization.py",
+    "src/coin_behavior_engine/prospective/bls_acquisition.py",
+    "tests/test_sprint11_23_5b6_1_operator_handoff.py",
+    "scripts/generate_sprint11_23_5b6_1_artifacts.py"
+  ],
+  "deliverables": {
+    "operator_cli_audit_11_23_5b6_1.json": {
+      "sha256": "f8981a0f42cf3672ec48c6b494ca1488064ab440fc94ef160e5b82c605a0821d",
+      "mirrored_path": "research_outputs/operator_cli_audit_11_23_5b6_1.json"
+    },
+    "production_authorization_path_11_23_5b6_1.json": {
+      "sha256": "f7f598ab9b276913eeadfd1e95fdb9a3f8b6a3c366a4f84bedd3e47e486583b7",
+      "mirrored_path": "research_outputs/production_authorization_path_11_23_5b6_1.json"
+    },
+    "acquisition_execution_path_11_23_5b6_1.json": {
+      "sha256": "8cb9412b6137275f86dea3d375629400ed5879b4dc0cf268e19dc7170807b9f3",
+      "mirrored_path": "research_outputs/acquisition_execution_path_11_23_5b6_1.json"
+    },
+    "request_renewal_audit_11_23_5b6_1.json": {
+      "sha256": "f1ab09b1c55f520b717a51b1827e366729c4d582049d599bdb97679a10b83390",
+      "mirrored_path": "research_outputs/request_renewal_audit_11_23_5b6_1.json"
+    },
+    "evidence_verification_audit_11_23_5b6_1.json": {
+      "sha256": "1f344733fae637415c61cc053bbf1c6335f35ebcd837c178b0d1aff665fb9b74",
+      "mirrored_path": "research_outputs/evidence_verification_audit_11_23_5b6_1.json"
+    },
+    "offline_operator_session_11_23_5b6_1.json": {
+      "sha256": "8a33ec338817e9125cf7d904247468453b808e5fc4de9923a4c7595a0632da57",
+      "mirrored_path": "research_outputs/offline_operator_session_11_23_5b6_1.json"
+    },
+    "operator_handoff_11_23_5b6_1.md": {
+      "sha256": "6be4a9a58666423b3b44818a472931291402f3cdb784f231c893b2ec3404e042",
+      "mirrored_path": "research_outputs/operator_handoff_11_23_5b6_1.md"
+    },
+    "research_report_11_23_5b6_1.md": {
+      "sha256": "0cd6d570289a2690037502d3bf65f338a7f40eaf40008f0f41b971ac1e964d68",
+      "mirrored_path": "research_outputs/research_report_11_23_5b6_1.md"
+    }
+  },
+  "final_status": {
+    "SPRINT_11_23_5B6_1_STATUS": "PASS",
+    "OPERATOR_CLI": "READY",
+    "PRODUCTION_AUTHORIZATION_PATH": "VERIFIED",
+    "ACQUISITION_EXECUTION_PATH": "READY",
+    "REQUEST_RENEWAL": "VERIFIED",
+    "EVIDENCE_VERIFICATION": "READY",
+    "OFFLINE_OPERATOR_SESSION": "PASS",
+    "REGRESSION_TESTS": "PASS",
+    "OFFICIAL_SCHEDULE_EVIDENCE": "PENDING",
+    "EVENT_IDENTITY": "CANDIDATE_PENDING_VERIFICATION",
+    "PRODUCTION_AUTHORIZATION": "NOT_GRANTED",
+    "REAL_NETWORK_COLLECTION": "DISABLED",
+    "REAL_WORLD_PILOT": "NOT_STARTED",
+    "UNATTENDED_MONITORING": "DISABLED",
+    "LIVE_ORDER_EXECUTION": "PROHIBITED",
+    "DIRECTIONAL_TRADING_ELIGIBILITY": "ZERO",
+    "NEWS_CONDITIONED_EDGE": "NOT_ESTABLISHED",
+    "HISTORICAL_DATA_STATUS": "RESEARCH_CONTAMINATED"
+  },
+  "git_commit_sha": "d2d885bc768ada0e3281e2c86368846e826f4524"
+}

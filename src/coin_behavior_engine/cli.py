@@ -177,12 +177,19 @@ def cmd_research(config):
     return results
 
 
-def main():
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv[1:]
+
+    if argv and argv[0] == "bls-acquisition":
+        from coin_behavior_engine.prospective.bls_acquisition import BlsAcquisitionCLI
+        return BlsAcquisitionCLI.main(argv[1:])
+
     parser = argparse.ArgumentParser(description="Coin Behavior Engine CLI")
-    parser.add_argument("command", choices=["download", "validate", "build", "research", "all"], help="Command to run")
+    parser.add_argument("command", choices=["download", "validate", "build", "research", "all", "bls-acquisition"], help="Command to run")
     parser.add_argument("--config", default="config/research.yaml", help="Path to research.yaml")
 
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     config = load_config(args.config)
 
     if args.command == "download":
