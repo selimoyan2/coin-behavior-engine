@@ -1,0 +1,33 @@
+{
+  "schema_version": "2.0.0",
+  "generated_at_utc": "2026-10-20T16:07:17.826746+00:00",
+  "proposal_name": "Prospective Pilot Event Identity & Proposal Specification",
+  "previous_proposal_review": {
+    "proposal_id": "PROP-PILOT-CPI-2026-001",
+    "proposal_version": "1.0.0",
+    "event_id": "EVT-BLS-CPI-2026-PENDING",
+    "assessment": "REJECTED_FOR_ACTIVATION: Event ID contains pending placeholder."
+  },
+  "event_identity_standard": {
+    "pattern": "EVT-{PUBLISHER}-{SERIES}-{REF_PERIOD}-{SCHEDULED_DATE}",
+    "example_canonical_id": "EVT-BLS-CPI-2026M09-20261013",
+    "prohibited_elements": [
+      "PENDING",
+      "TBD",
+      "PLACEHOLDER",
+      "*",
+      "machine_local_time"
+    ]
+  },
+  "proposal_v2_specification": {
+    "proposal_id": "PROP-PILOT-CPI-2026-002",
+    "proposal_version": "2.0.0",
+    "event_family": "US_CPI",
+    "target_agency": "BLS",
+    "market_symbol": "BTCUSDT",
+    "exchange": "Binance Spot",
+    "status": "DRAFT_AWAITING_SCHEDULE_VERIFICATION",
+    "canonical_digest_policy": "Any modification to parameters invalidates prior approval digest"
+  },
+  "verdict": "EVENT_IDENTITY_SPECIFICATION_FROZEN"
+}

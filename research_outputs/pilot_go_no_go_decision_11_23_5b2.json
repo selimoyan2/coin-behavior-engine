@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T16:07:17.826746+00:00",
+  "decision_name": "Prospective Pilot Official Go/No-Go Decision",
+  "overall_decision": "NO_GO_SCHEDULE_UNVERIFIED",
+  "technical_preflight_status": "PASS",
+  "operational_execution_authorized": "NO",
+  "blockers": [
+    "Official BLS release schedule verification is PENDING (no authenticated local calendar document provided)",
+    "Event ID contains placeholder (EVT-BLS-CPI-2026-PENDING) pending schedule verification",
+    "Operator authorization is strictly NOT GRANTED",
+    "Production signing key is not provisioned (offline research mode)",
+    "Pre-release consensus evidence is UNAVAILABLE"
+  ],
+  "governance_mandate": "The system is NOT authorized to activate prospective observation. Real network collection remains DISABLED. Unattended monitoring remains DISABLED. Live trading remains PROHIBITED.",
+  "verdict": "NO_GO_SCHEDULE_UNVERIFIED_EXECUTION_BLOCKED"
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T16:07:17.826746+00:00",
+  "audit_name": "Clock Synchronization, Precision & Timestamp Integrity Audit",
+  "clock_architecture": {
+    "internal_time_standard": "UTC (ISO-8601 with trailing Z)",
+    "duration_timing": "time.monotonic() strictly used for elapsed pilot duration, timeouts, and rate limits",
+    "evidence_timestamps": "Wall-clock UTC at exact point of physical receipt",
+    "timezone_library": "Python 3.11 zoneinfo (America/New_York) with deterministic DST transitions",
+    "clock_drift_measurement": "Local vs exchange server timestamp recorded via Binance /api/v3/time",
+    "retroactive_rewriting": "PROHIBITED (Append-only vault journals)"
+  },
+  "precision_and_uncertainty": {
+    "official_source_precision": "Whole minute (BLS scheduled at 08:30:00)",
+    "subsecond_claims": "Not claimed for official release document (network polling granularity ~5s)",
+    "market_data_precision": "Millisecond exchange timestamp on klines/bookTicker"
+  },
+  "verdict": "CLOCK_AND_TIMESTAMP_INTEGRITY_VERIFIED"
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T16:07:17.826746+00:00",
+  "market_readiness_name": "Binance BTC/USDT Spot Market Observation Specification",
+  "exchange_target": {
+    "exchange": "Binance Spot",
+    "symbol": "BTCUSDT",
+    "klines_endpoint": "https://data-api.binance.vision/api/v3/klines",
+    "book_ticker_endpoint": "https://data-api.binance.vision/api/v3/ticker/bookTicker",
+    "credential_requirement": "NONE (Public Market Data Only)"
+  },
+  "semantic_price_distinction": {
+    "bookTicker": "Top-of-book best bid and best ask quotes. Strictly prohibited from being treated as executed trade prices.",
+    "klines": "Aggregated executed trades (OHLCV, volume, trade count). Used for return and volatility measurements.",
+    "rule_enforcement": "MarketDataSpecificationError raised if bookTicker is supplied for trade-price returns."
+  },
+  "observation_windows": {
+    "pre_event_baseline_minutes": [
+      -15,
+      -5,
+      -1
+    ],
+    "event_window_minute": 0,
+    "post_event_horizons_minutes": [
+      1,
+      5,
+      15,
+      30
+    ],
+    "measurement_metrics": [
+      "1-minute post-event return",
+      "5-minute post-event return",
+      "15-minute post-event return",
+      "30-minute post-event return",
+      "Post-event realized volatility",
+      "Pre-event baseline realized volatility"
+    ]
+  },
+  "candle_integrity_rules": {
+    "partial_candle_handling": "Candles whose close_time > wall_clock_time are flagged as partial and excluded from closed-bar metrics.",
+    "missing_candle_handling": "Gaps in 1m timestamp sequences are detected and flagged in data continuity status."
+  },
+  "trading_isolation": {
+    "directional_signal_generation": "PROHIBITED",
+    "order_placement": "PROHIBITED",
+    "portfolio_allocation": "PROHIBITED"
+  },
+  "verdict": "MARKET_DATA_READINESS_VERIFIED"
+}

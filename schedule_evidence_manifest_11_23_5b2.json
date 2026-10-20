@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T16:07:17.826746+00:00",
+  "manifest_name": "Immutable Schedule Evidence Vault Manifest",
+  "vault_storage": {
+    "category": "schedules",
+    "storage_path": "manifests/prospective_vault/schedules/",
+    "content_addressed": true,
+    "hashing_algorithm": "SHA256"
+  },
+  "required_schema_fields": [
+    "event_id",
+    "release_name",
+    "reference_period",
+    "scheduled_local_datetime",
+    "scheduled_timezone",
+    "scheduled_utc_datetime",
+    "official_source_url",
+    "retrieved_at_utc",
+    "raw_document_sha256",
+    "verification_status",
+    "revision_status",
+    "source_authenticity_status"
+  ],
+  "core_invariants": {
+    "scheduled_vs_actual_distinction": "Scheduled publication timestamp must never be represented as actual publication timestamp",
+    "supersession_on_revision": "Revisions retain both original and revised records; original marked SUPERSEDED",
+    "anti_conflicting_evidence": "Conflicting evidence quarantined with crash-recovery integrity"
+  },
+  "sample_evidence_structure": {
+    "event_id": "EVT-BLS-CPI-2026-PENDING",
+    "release_name": "Consumer Price Index",
+    "reference_period": "SCHEDULE_VERIFICATION_PENDING",
+    "scheduled_local_datetime": "SCHEDULE_VERIFICATION_PENDING",
+    "scheduled_timezone": "America/New_York",
+    "scheduled_utc_datetime": "SCHEDULE_VERIFICATION_PENDING",
+    "official_source_url": "https://www.bls.gov/schedule/news_release/cpi.htm",
+    "retrieved_at_utc": "2026-10-20T16:07:17Z",
+    "raw_document_sha256": "",
+    "verification_status": "SCHEDULE_VERIFICATION_PENDING",
+    "revision_status": "ORIGINAL",
+    "source_authenticity_status": "UNAUTHENTICATED",
+    "supersedes_event_id": null,
+    "superseded_by_event_id": null,
+    "revision_number": 1,
+    "actual_publication_time_utc": null,
+    "evidence_notes": "Offline preflight: no authenticated local schedule document provided. Real external access disabled.",
+    "canonical_digest": "44db888bef3d21f6d8ce49950453677ef1291afbc1f56d393c786bd30ea9ef1e"
+  },
+  "verdict": "SCHEDULE_EVIDENCE_SPECIFICATION_VERIFIED"
+}

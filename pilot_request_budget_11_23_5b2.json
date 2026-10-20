@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T16:07:17.826746+00:00",
+  "budget_name": "Controlled Prospective Pilot Request & Resource Budget Plan",
+  "operating_envelope": {
+    "max_duration_seconds": 1800,
+    "max_requests": 20,
+    "max_bytes": 5242880,
+    "min_polling_interval_seconds": 5.0
+  },
+  "request_allocation": {
+    "pre_event_baseline": {
+      "requests": 2,
+      "description": "1 bookTicker snapshot + 1 klines historical bar at T-1m",
+      "estimated_bytes": 4096
+    },
+    "release_capture_polling": {
+      "requests": 10,
+      "description": "10 polling requests at T+0s, +5s, +10s, +15s, +20s, +30s, +45s, +60s, +90s, +120s",
+      "estimated_bytes": 409600
+    },
+    "post_event_market_capture": {
+      "requests": 5,
+      "description": "Klines captures at T+1m, T+5m, T+15m, T+30m + post-release bookTicker",
+      "estimated_bytes": 20480
+    },
+    "buffer_retry_reserve": {
+      "requests": 3,
+      "description": "Emergency retry allowance for transient network errors",
+      "estimated_bytes": 102400
+    }
+  },
+  "feasibility_summary": {
+    "total_planned_requests": 20,
+    "max_allowed_requests": 20,
+    "estimated_total_bytes": 536576,
+    "max_allowed_bytes": 5242880,
+    "byte_utilization_pct": 10.23,
+    "is_feasible": true,
+    "reason": "BUDGET_FEASIBLE"
+  },
+  "stop_conditions": [
+    "Request count reaches 20",
+    "Byte volume reaches 5 MB",
+    "Duration reaches 1800 seconds",
+    "HTTP 429 received",
+    "Any operator stop requested"
+  ],
+  "verdict": "PILOT_REQUEST_BUDGET_FEASIBLE"
+}

@@ -1,0 +1,161 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T16:07:17.826746+00:00",
+  "checklist_name": "Prospective Pilot Preflight 16-Gate Go/No-Go Checklist",
+  "total_gates": 16,
+  "passed_gates": 12,
+  "pending_gates": 3,
+  "blocked_gates": 1,
+  "failed_gates": 0,
+  "gates": [
+    {
+      "gate_id": 1,
+      "gate_name": "Repository Integrity",
+      "status": "PASS",
+      "supporting_artifact": "git_rev_parse_HEAD",
+      "evidence_hash": "7aabcd942c29ccf1bf2829ebc74b053cc415fa45",
+      "reason": "Repository is clean and at verified required base commit.",
+      "required_corrective_action": "None"
+    },
+    {
+      "gate_id": 2,
+      "gate_name": "Full Regression Suite",
+      "status": "PASS",
+      "supporting_artifact": "tests/test_sprint11_*",
+      "evidence_hash": "176_TESTS_GREEN",
+      "reason": "All 176 baseline regression tests passed cleanly in 7.91s.",
+      "required_corrective_action": "None"
+    },
+    {
+      "gate_id": 3,
+      "gate_name": "Transport Security",
+      "status": "PASS",
+      "supporting_artifact": "src/coin_behavior_engine/prospective/research_transport.py",
+      "evidence_hash": "TRANSPORT_HARDENED",
+      "reason": "ReadOnlyResearchTransport enforces TLS cert verification, IP pinning, size limits, and sensitive header blocking.",
+      "required_corrective_action": "None"
+    },
+    {
+      "gate_id": 4,
+      "gate_name": "Authorization Security",
+      "status": "PASS",
+      "supporting_artifact": "src/coin_behavior_engine/prospective/observation_authorization.py",
+      "evidence_hash": "AUTH_HARDENED",
+      "reason": "Cryptographic HMAC-SHA256 tokens, constant-time compare, and in-memory key registry enforced.",
+      "required_corrective_action": "None"
+    },
+    {
+      "gate_id": 5,
+      "gate_name": "Production Key Availability",
+      "status": "BLOCKED",
+      "supporting_artifact": "production_key_security_audit_11_23_5b1.json",
+      "evidence_hash": "FILE_BACKED_KEY_INTERFACE_VERIFIED",
+      "reason": "Production key interface verified; no production keys provisioned in offline research mode.",
+      "required_corrective_action": "Provision production signing key with 0600 permissions prior to authorized execution."
+    },
+    {
+      "gate_id": 6,
+      "gate_name": "Operator Identity Verification",
+      "status": "PASS",
+      "supporting_artifact": "operator_approval_workflow_audit_11_23_5b1.json",
+      "evidence_hash": "OPERATOR_ROLES_VERIFIED",
+      "reason": "OperatorRole and OperatorIdentity schemas validated with role separation.",
+      "required_corrective_action": "None"
+    },
+    {
+      "gate_id": 7,
+      "gate_name": "Two-Person Approval",
+      "status": "PASS",
+      "supporting_artifact": "src/coin_behavior_engine/prospective/operator_workflow.py",
+      "evidence_hash": "TWO_PERSON_RULE_VERIFIED",
+      "reason": "SubmitterSelfApprovalError permanently blocks self-approvals.",
+      "required_corrective_action": "Separate APPROVAL_ADMIN must sign approved proposal."
+    },
+    {
+      "gate_id": 8,
+      "gate_name": "Official Schedule Evidence",
+      "status": "PENDING",
+      "supporting_artifact": "official_schedule_verification_11_23_5b2.json",
+      "evidence_hash": "PENDING",
+      "reason": "Official schedule verification pending local authenticated BLS document.",
+      "required_corrective_action": "Provide authenticated official BLS release calendar document to complete verification."
+    },
+    {
+      "gate_id": 9,
+      "gate_name": "Event Identity Freeze",
+      "status": "PENDING",
+      "supporting_artifact": "event_identity_proposal_11_23_5b2.json",
+      "evidence_hash": "CANONICAL_ID_PENDING",
+      "reason": "Event ID contains pending placeholder until schedule verification completes.",
+      "required_corrective_action": "Derive canonical event ID from verified official schedule."
+    },
+    {
+      "gate_id": 10,
+      "gate_name": "Consensus Evidence Readiness",
+      "status": "PENDING",
+      "supporting_artifact": "consensus_evidence_readiness_11_23_5b2.json",
+      "evidence_hash": "UNAVAILABLE_MARKED",
+      "reason": "Marked CONSENSUS_EVIDENCE: UNAVAILABLE. Pilot will record descriptive reactions only without economic surprise claims.",
+      "required_corrective_action": "Authenticate contemporaneous consensus source prior to release window."
+    },
+    {
+      "gate_id": 11,
+      "gate_name": "Market Data Compatibility",
+      "status": "PASS",
+      "supporting_artifact": "market_data_readiness_11_23_5b2.json",
+      "evidence_hash": "BINANCE_PUBLIC_SPOT_VERIFIED",
+      "reason": "Public Binance Spot endpoints (/klines and /bookTicker) validated with strict trade-price semantic separation.",
+      "required_corrective_action": "None"
+    },
+    {
+      "gate_id": 12,
+      "gate_name": "Request and Byte Budgets",
+      "status": "PASS",
+      "supporting_artifact": "pilot_request_budget_11_23_5b2.json",
+      "evidence_hash": "BUDGET_20_REQ_5MB_VERIFIED",
+      "reason": "20-request budget strictly allocated across pre-event (2), polling (10), post-event (5), and buffer (3). BUDGET_FEASIBLE",
+      "required_corrective_action": "None"
+    },
+    {
+      "gate_id": 13,
+      "gate_name": "Clock Integrity",
+      "status": "PASS",
+      "supporting_artifact": "clock_timestamp_audit_11_23_5b2.json",
+      "evidence_hash": "CLOCK_UTC_MONOTONIC_DST_VERIFIED",
+      "reason": "Internal UTC wall-clock, monotonic duration timers, and zoneinfo DST conversions verified.",
+      "required_corrective_action": "None"
+    },
+    {
+      "gate_id": 14,
+      "gate_name": "Emergency Stop",
+      "status": "PASS",
+      "supporting_artifact": "revocation_emergency_stop_audit_11_23_5b1.json",
+      "evidence_hash": "EMERGENCY_STOP_VERIFIED",
+      "reason": "ProspectivePilotRunner.request_stop() and dynamic gate re-validation cleanly terminate execution.",
+      "required_corrective_action": "None"
+    },
+    {
+      "gate_id": 15,
+      "gate_name": "Evidence Vault Readiness",
+      "status": "PASS",
+      "supporting_artifact": "src/coin_behavior_engine/prospective/evidence_vault.py",
+      "evidence_hash": "VAULT_CONTENT_ADDRESSED_VERIFIED",
+      "reason": "Cross-process immutable evidence vault with crash recovery and journaling verified.",
+      "required_corrective_action": "None"
+    },
+    {
+      "gate_id": 16,
+      "gate_name": "Trading Isolation",
+      "status": "PASS",
+      "supporting_artifact": "trading_isolation_audit_11_23_5b0.json",
+      "evidence_hash": "TRADING_ISOLATION_ABSOLUTE",
+      "reason": "LIVE_ORDER_EXECUTION permanently prohibited; private exchange endpoints denylisted; zero trading signals generated.",
+      "required_corrective_action": "None"
+    }
+  ],
+  "distinction_declaration": {
+    "technical_preflight": "PASS (All engineering, security, and protocol mechanisms verified)",
+    "operational_execution_authorized": "NO (Operator authorization NOT granted; execution strictly blocked)"
+  },
+  "verdict": "CHECKLIST_EVALUATION_COMPLETE"
+}

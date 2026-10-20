@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T16:07:17.826746+00:00",
+  "readiness_name": "Pre-Release Consensus Evidence Requirement & Vintage Audit",
+  "consensus_specification": {
+    "named_publishers": [
+      "Bloomberg",
+      "Reuters/Refinitiv",
+      "Wall Street Journal",
+      "Dow Jones"
+    ],
+    "metric": "CPI YoY Percentage Change",
+    "units": "Percentage points (%)",
+    "causality_law": "First verifiable availability timestamp must be strictly prior to scheduled release UTC (first_available < release_utc)",
+    "anti_leakage_rule": "Later-revised consensus values cannot be substituted for contemporaneous forecasts",
+    "source_proof": "Cryptographic SHA-256 byte hash of original source document required for verified status"
+  },
+  "offline_research_status": {
+    "status": "CONSENSUS_EVIDENCE: UNAVAILABLE",
+    "synthetic_data_policy": "STRICTLY_PROHIBITED (Zero fabrication of forecast values)",
+    "impact_on_pilot": "Pilot will produce descriptive market observations only; no verified economic surprise relationship will be claimed"
+  },
+  "verdict": "CONSENSUS_SPECIFICATION_VERIFIED_DATA_UNAVAILABLE"
+}

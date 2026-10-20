@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T16:07:17.826746+00:00",
+  "sprint": "11.23.5B-2",
+  "sprint_title": "Official Event Schedule Verification, Evidence Readiness & Pilot Go/No-Go",
+  "base_commit": "7aabcd942c29ccf1bf2829ebc74b053cc415fa45",
+  "head_commit": "a4d6b58de77c96eebdc4458c7ff73d56f0ec2b6f",
+  "python_version": "3.11.16",
+  "platform": "win32",
+  "execution_mode": "OFFLINE_FIRST_DEVELOPMENT_AND_CONTROLLED_PREFLIGHT",
+  "total_deliverables": 10,
+  "total_test_suite_size": 200,
+  "total_tests_passed": 200,
+  "total_tests_failed": 0,
+  "artifacts": {
+    "official_schedule_verification_11_23_5b2.json": {
+      "sha256": "73390e80e27de99441f4d9efb936e7e253119e8b917eb4edf9629609a6fe6d79",
+      "byte_size": 1371,
+      "mirrored_to_root": true
+    },
+    "schedule_evidence_manifest_11_23_5b2.json": {
+      "sha256": "cc761815559145eb5ad53fe5da0d5cba8a392541023f3937253cd45a19c8d575",
+      "byte_size": 2176,
+      "mirrored_to_root": true
+    },
+    "event_identity_proposal_11_23_5b2.json": {
+      "sha256": "d567fd40d1652a32d9827c0be651fe37e63e2f66218c3cbea8e8c4e152cfede1",
+      "byte_size": 1181,
+      "mirrored_to_root": true
+    },
+    "market_data_readiness_11_23_5b2.json": {
+      "sha256": "c428ca083af700eca5866fa4f86980f5b3095277a3b9d73d1a828af142f0e9f8",
+      "byte_size": 1908,
+      "mirrored_to_root": true
+    },
+    "consensus_evidence_readiness_11_23_5b2.json": {
+      "sha256": "74a8abe82194b67b9257301803c3777c81f5480feb290debf0961d40bb850889",
+      "byte_size": 1185,
+      "mirrored_to_root": true
+    },
+    "clock_timestamp_audit_11_23_5b2.json": {
+      "sha256": "916b7285b640d8bd8ed66c3ef2531f0329a06283d619053ba30810fefad00b52",
+      "byte_size": 1105,
+      "mirrored_to_root": true
+    },
+    "pilot_request_budget_11_23_5b2.json": {
+      "sha256": "e6fc10c5422988f86dbe5660a83cf27ce361e0f74b929451f638a4dcc8083b7f",
+      "byte_size": 1621,
+      "mirrored_to_root": true
+    },
+    "pilot_go_no_go_checklist_11_23_5b2.json": {
+      "sha256": "2b7801bab57280afbc8199892266da55cfb8e141696b8274923851b79dc13496",
+      "byte_size": 7177,
+      "mirrored_to_root": true
+    },
+    "pilot_go_no_go_decision_11_23_5b2.json": {
+      "sha256": "03fce506d1f42ab3305368c21b45f72f19cca02397e90cd4aff2a9bcc1883b28",
+      "byte_size": 982,
+      "mirrored_to_root": true
+    },
+    "research_report_11_23_5b2.md": {
+      "sha256": "7335d4de39a923129d68bd11bee1d9b9674d76fcd6d7e0151114a0277876cc5e",
+      "byte_size": 9410,
+      "mirrored_to_root": true
+    }
+  },
+  "governance_status": {
+    "sprint_status": "PASS",
+    "repository_integrity": "PASS",
+    "schedule_verification": "PENDING",
+    "schedule_evidence_integrity": "PASS",
+    "event_identity": "PENDING",
+    "market_data_readiness": "PASS",
+    "consensus_evidence_readiness": "PENDING",
+    "clock_timestamp_integrity": "PASS",
+    "request_budget_feasibility": "PASS",
+    "go_no_go_checklist": "COMPLETE",
+    "regression_tests": "PASS",
+    "technical_preflight": "PASS",
+    "operational_execution_authorized": "NO",
+    "real_network_collection": "DISABLED",
+    "real_world_pilot": "NOT_STARTED",
+    "unattended_monitoring": "DISABLED",
+    "operator_authorization": "NOT_GRANTED",
+    "live_order_execution": "PROHIBITED",
+    "directional_trading_eligibility": "ZERO",
+    "historical_data_status": "RESEARCH_CONTAMINATED"
+  }
+}

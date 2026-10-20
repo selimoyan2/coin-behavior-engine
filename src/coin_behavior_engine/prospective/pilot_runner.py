@@ -132,6 +132,11 @@ class ProspectivePilotRunner:
         """Gracefully signals the runner to stop after the current step."""
         self._stop_requested = True
 
+    @property
+    def stop_requested(self) -> bool:
+        """Returns True if a stop has been requested."""
+        return self._stop_requested
+
     def enqueue_event(self, event: ProspectiveEventRecord) -> None:
         """Enqueues an event for sequential processing, enforcing bounded queue depth."""
         if len(self._queue) >= self.config.max_event_queue_size:
