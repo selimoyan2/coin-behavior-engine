@@ -264,6 +264,7 @@ class ReadOnlyResearchTransport:
         max_redirects: int = 3,
         dns_resolver: Optional[Callable[[str], List[str]]] = None,
         socket_factory: Optional[Callable[[str, int, float], Any]] = None,
+        activation_gate: Optional[Any] = None,
     ) -> None:
         self.network_enabled = network_enabled
         self.approved_domains = set(approved_domains) if approved_domains else set(DEFAULT_APPROVED_DOMAINS)
@@ -276,6 +277,7 @@ class ReadOnlyResearchTransport:
         self.max_redirects = max_redirects
         self._dns_resolver = dns_resolver or self._default_dns_resolve
         self._socket_factory = socket_factory
+        self.activation_gate = activation_gate
 
         # Mock response registry: url -> TransportResponse or Exception
         self._mock_registry: Dict[str, Any] = {}
@@ -598,6 +600,8 @@ class ReadOnlyResearchTransport:
         url: str,
         headers: Optional[Dict[str, str]] = None,
         visited_urls: Optional[Set[str]] = None,
+        auth_token: Optional[Any] = None,
+        target_event_id: str = "",
     ) -> TransportResponse:
         """
         Executes a validated read-only request.
@@ -672,7 +676,14 @@ class ReadOnlyResearchTransport:
                 if not self.allow_redirects:
                     return resp
                 next_url = urllib.parse.urljoin(url, resp.headers["location"])
-                return self.execute_request(method, next_url, headers=headers, visited_urls=visited)
+                return self.execute_request(
+                    method,
+                    next_url,
+                    headers=headers,
+                    visited_urls=visited,
+                    auth_token=auth_token,
+                    target_event_id=target_event_id,
+                )
 
             return resp
 
@@ -703,6 +714,24 @@ class ReadOnlyResearchTransport:
 
         pinned_ip = resolved_ips[0]
 
+        # Enforce Network Activation Gate (10 Mandatory Conditions)
+        from .observation_authorization import NetworkActivationGate, NetworkActivationGateError
+        gate = self.activation_gate or NetworkActivationGate()
+        allowed, gate_reason = gate.evaluate_request(
+            token=auth_token,
+            target_url=url,
+            target_event_id=target_event_id,
+            method=method_norm,
+            headers=headers,
+        )
+        if not allowed:
+            audit_entry["status"] = "BLOCKED_ACTIVATION_GATE"
+            audit_entry["error"] = gate_reason
+            self._request_audit_log.append(audit_entry)
+            raise NetworkActivationGateError(
+                f"External network retrieval blocked by network activation gate: {gate_reason}"
+            )
+
         # Execute real TLS connection
         try:
             resp = self._execute_real_https_connection(method_norm, parsed, headers, pinned_ip, start_time)
@@ -712,12 +741,23 @@ class ReadOnlyResearchTransport:
             audit_entry["sha256"] = resp.raw_sha256
             self._request_audit_log.append(audit_entry)
 
+            # Reconcile quota usage if gate has store
+            if gate and gate.approval_store and auth_token:
+                gate.approval_store.commit_quota(auth_token.token_id, actual_bytes=len(resp.body))
+
             # Handle redirects
             if resp.status_code in (301, 302, 303, 307, 308) and "location" in resp.headers:
                 if not self.allow_redirects:
                     return resp
                 next_url = urllib.parse.urljoin(url, resp.headers["location"])
-                return self.execute_request(method, next_url, headers=headers, visited_urls=visited)
+                return self.execute_request(
+                    method,
+                    next_url,
+                    headers=headers,
+                    visited_urls=visited,
+                    auth_token=auth_token,
+                    target_event_id=target_event_id,
+                )
 
             return resp
         except Exception as e:

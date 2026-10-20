@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:37:45.120860+00:00",
+  "audit_name": "Cryptographic Authorization Security & Secrets Remediation Audit",
+  "status": "PASS",
+  "secret_hygiene": {
+    "hardcoded_secrets_removed": true,
+    "eliminated_keys": [
+      "CBE_PROSPECTIVE_AUTH_SALT_V1"
+    ],
+    "fallback_secrets_permitted": false,
+    "fail_closed_when_key_missing": true,
+    "test_production_key_segregation": true
+  },
+  "key_registry": {
+    "component": "SigningKeyRegistry",
+    "storage_type": "IN_MEMORY_EXPLICIT_REGISTRATION",
+    "constant_time_comparison": "hmac.compare_digest",
+    "key_rotation_support": true,
+    "revocation_tracking": true
+  },
+  "signed_payload_binding": {
+    "algorithm": "HMAC_SHA256",
+    "bound_fields": [
+      "token_id",
+      "capability",
+      "authorized_event_id",
+      "operator_identity",
+      "issuer_identity",
+      "issued_at_utc",
+      "not_before_utc",
+      "expires_at_utc",
+      "approved_domains",
+      "max_request_count",
+      "max_byte_allowance",
+      "policy_version",
+      "key_id"
+    ],
+    "untrusted_boolean_neutralized": true,
+    "is_authorized_field_effect": "ZERO_AUTHORIZATION_POWER"
+  },
+  "verdict": "VULNERABILITIES_FULLY_REMEDIATED"
+}

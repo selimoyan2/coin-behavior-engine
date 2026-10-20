@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:37:45.341945+00:00",
+  "sprint": "11.23.5B-0",
+  "sprint_title": "Authorization Security Remediation & Real-World Observation Preflight",
+  "base_commit": "569317831ff2d7c6da324238dff2f127c2a490e8",
+  "head_commit": "569317831ff2d7c6da324238dff2f127c2a490e8",
+  "python_version": "3.11.16",
+  "platform": "win32",
+  "execution_mode": "STRICTLY_OFFLINE_SECURITY_REMEDIATION_AND_SIMULATION",
+  "total_deliverables": 8,
+  "total_test_suite_size": 156,
+  "total_tests_passed": 156,
+  "total_tests_failed": 0,
+  "artifacts": {
+    "authorization_security_audit_11_23_5b0.json": {
+      "sha256": "0a1baab5966c44ce94723037b20cc5a3c7dcfcd0bf71b2c00af5bfecc61c929e",
+      "byte_size": 1296,
+      "mirrored_to_root": true
+    },
+    "trusted_approval_store_audit_11_23_5b0.json": {
+      "sha256": "2aa3c94b827919a21a4a859ac57af1996a2a38882db9bc7d1d4c3513ffde66ee",
+      "byte_size": 895,
+      "mirrored_to_root": true
+    },
+    "network_activation_gate_audit_11_23_5b0.json": {
+      "sha256": "babe139a65ebc8643f00a75ddd24abee126e9d1871e4a310a484f03c942ac90c",
+      "byte_size": 1200,
+      "mirrored_to_root": true
+    },
+    "quota_concurrency_audit_11_23_5b0.json": {
+      "sha256": "579de9b8c63975a5c11bdd33670cc242d824a2de4cafefe567e44186b30bba46",
+      "byte_size": 668,
+      "mirrored_to_root": true
+    },
+    "authorization_attack_simulation_11_23_5b0.json": {
+      "sha256": "b19fe61bfdcb97c8a53399198eda0a586f7b4b2d7eb4a079505cc178bf1cdcc7",
+      "byte_size": 3936,
+      "mirrored_to_root": true
+    },
+    "trading_isolation_audit_11_23_5b0.json": {
+      "sha256": "a9d6c5d36e0690daa2bfcad67fd2408148f1b48b1d78b15709bed457df4d53e5",
+      "byte_size": 984,
+      "mirrored_to_root": true
+    },
+    "pilot_preflight_plan_11_23_5b0.json": {
+      "sha256": "cf5fb96147b60991255f9f507a74d8a2ef594fde9d35422a49327209374832a1",
+      "byte_size": 2530,
+      "mirrored_to_root": true
+    },
+    "research_report_11_23_5b0.md": {
+      "sha256": "8e015f5b6d3b5953d9db0baf1d95f53c36135c96657347bcbceb0535051674f1",
+      "byte_size": 9118,
+      "mirrored_to_root": true
+    }
+  },
+  "governance_status": {
+    "real_network_collection": "DISABLED",
+    "real_world_pilot": "NOT_STARTED",
+    "unattended_monitoring": "DISABLED",
+    "operator_authorization": "NOT_GRANTED",
+    "live_order_execution": "PROHIBITED",
+    "directional_trading_eligibility": "ZERO",
+    "historical_data_status": "RESEARCH_CONTAMINATED",
+    "sprint_status": "PASS"
+  }
+}

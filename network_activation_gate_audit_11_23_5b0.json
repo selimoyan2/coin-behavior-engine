@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:37:45.121371+00:00",
+  "audit_name": "Network Activation Gate Audit",
+  "status": "PASS",
+  "activation_state": "DISABLED_DEFAULT_FAIL_CLOSED",
+  "boundary_enforcement": "TRANSPORT_EXECUTION_BOUNDARY",
+  "mandatory_conditions": [
+    "1. Explicit operator approval in trusted store (ACTIVE status)",
+    "2. Valid cryptographic token signature (HMAC-SHA256, constant-time)",
+    "3. Approved event ID matches target event",
+    "4. Approved source domain matches request hostname",
+    "5. Valid time window [not_before_utc, expires_at_utc]",
+    "6. Available request quota in trusted approval store",
+    "7. Available byte quota in trusted approval store",
+    "8. Research-only capability (never LIVE_ORDER_EXECUTION)",
+    "9. Safe HTTPS transport (TLS cert, anti-SSRF, pinned IP, size limits)",
+    "10. Explicit runtime activation (gate_enabled=True AND operator_authorization_granted=True)"
+  ],
+  "bypass_prevention": {
+    "direct_transport_call_blocked": true,
+    "config_change_alone_insufficient": true,
+    "redirects_re_evaluated": true
+  },
+  "verdict": "NETWORK_ACTIVATION_GATE_VERIFIED"
+}

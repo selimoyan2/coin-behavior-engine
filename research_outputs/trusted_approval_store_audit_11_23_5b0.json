@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:37:45.121371+00:00",
+  "audit_name": "Trusted Approval & Revocation Store Audit",
+  "status": "PASS",
+  "architecture": {
+    "engine": "SQLite_WAL",
+    "isolation": "TRANSACTION_IMMEDIATE_LOCKING",
+    "default_policy": "DEFAULT_DENY"
+  },
+  "tables": {
+    "approval_records": "Tracks explicit operator approvals, quotas, timestamps, status",
+    "revocation_records": "Durable revocation records with operator identity, timestamp, reason",
+    "audit_trail": "Immutable log of all authorization operations and gate requests"
+  },
+  "invariants_verified": {
+    "untrusted_json_cannot_create_approval": true,
+    "production_approvals_strictly_blocked": true,
+    "durable_revocations_survive_restarts": true,
+    "transactional_quota_reservation": true
+  },
+  "verdict": "STORE_VERIFIED_FAIL_CLOSED"
+}

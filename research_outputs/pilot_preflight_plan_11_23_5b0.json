@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:37:45.148522+00:00",
+  "plan_name": "Controlled Prospective Single-Event Observation Pilot Preflight Plan",
+  "pilot_status": "NOT_STARTED",
+  "schedule_status": "SCHEDULE_VERIFICATION_PENDING",
+  "trading_authorization": "PROHIBITED",
+  "operator_authorization": "NOT_GRANTED",
+  "target_economic_event": {
+    "event_name": "US Consumer Price Index (CPI) YoY Release",
+    "event_id": "EVT-BLS-CPI-2026-PENDING",
+    "source_agency": "U.S. Bureau of Labor Statistics",
+    "official_domain": "bls.gov",
+    "target_url_pattern": "https://www.bls.gov/news.release/cpi.nr0.htm",
+    "expected_publication_window_utc": "SCHEDULE_VERIFICATION_PENDING",
+    "consensus_evidence_requirements": [
+      "Contemporaneous survey recorded prior to official release time",
+      "Cryptographic byte hash of consensus source document",
+      "Explicit uncertainty interval [survey_min, survey_max]"
+    ],
+    "btc_market_data_source": {
+      "exchange": "Binance Spot",
+      "symbol": "BTCUSDT",
+      "endpoints": [
+        "https://data-api.binance.vision/api/v3/ticker/bookTicker?symbol=BTCUSDT",
+        "https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval=1m"
+      ],
+      "credential_requirement": "NONE (Public Market Data Only)"
+    }
+  },
+  "operating_constraints": {
+    "max_pilot_duration_seconds": 1800,
+    "max_requests_allowed": 20,
+    "max_bytes_allowed": 5242880,
+    "min_polling_interval_seconds": 5.0,
+    "evidence_vault_destination": "manifests/prospective_vault/releases/"
+  },
+  "automatic_stop_conditions": [
+    "HTTP 429 Rate Limit Encountered",
+    "Network Connection Timeout Breached",
+    "Payload Size Exceeds 5 MB",
+    "Target Domain Not in Approved List",
+    "Quota Allowance Reached (20 requests)",
+    "Checksum Mismatch on Checkpoint Save",
+    "Any Sensitive Credential Header Present"
+  ],
+  "governance_procedures": {
+    "operator_approval_procedure": "Human operator signs ObservationAuthorizationToken with offline HSM/key and inserts approval into TrustedApprovalStore",
+    "revocation_procedure": "Invoking TrustedApprovalStore.revoke_approval() immediately switches token state to REVOKED and blocks transport",
+    "emergency_stop_procedure": "Invoking ProspectivePilotRunner.request_stop() terminates execution loop cleanly without state corruption"
+  },
+  "background_automations": "STRICTLY_NONE (No crons, no daemons, no background tasks)"
+}

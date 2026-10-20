@@ -53,6 +53,7 @@ from coin_behavior_engine.prospective import (
     ObservationAuthorizationEngine,
     AuthorizationCapability,
     AuthorizationStatus,
+    SigningKeyRegistry,
     TradingIsolationViolation,
     ProspectiveGovernanceGuard,
     ProspectiveEventRecord,
@@ -382,6 +383,7 @@ def test_16_authorization_live_trading_permanently_prohibited():
 
 
 def test_17_authorization_token_fails_closed_in_sprint_11_23_5a():
+    SigningKeyRegistry.get_instance().register_key("test-key-default", b"test_key_bytes_11_23_5a_test_only", is_test_key=True)
     now = datetime.now(timezone.utc)
     token = ObservationAuthorizationToken(
         token_id="AUTH-TEST-001",

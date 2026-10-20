@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:37:45.148522+00:00",
+  "audit_name": "Phase 7 Offline Attack Simulation Report",
+  "status": "PASS",
+  "total_scenarios_simulated": 20,
+  "total_scenarios_defeated": 20,
+  "scenarios": [
+    {
+      "id": 1,
+      "name": "Hardcoded secret fallback",
+      "result": "DEFEATED",
+      "behavior": "Raises UnknownKeyIdError, no fallback secret exists"
+    },
+    {
+      "id": 2,
+      "name": "Missing signing key",
+      "result": "DEFEATED",
+      "behavior": "Fails closed with UnknownKeyIdError / signature invalid"
+    },
+    {
+      "id": 3,
+      "name": "Modified authorization Boolean",
+      "result": "DEFEATED",
+      "behavior": "Untrusted is_authorized=True ignored; requires trusted store approval"
+    },
+    {
+      "id": 4,
+      "name": "Modified event ID",
+      "result": "DEFEATED",
+      "behavior": "Cryptographic HMAC signature mismatch detected and rejected"
+    },
+    {
+      "id": 5,
+      "name": "Modified domain",
+      "result": "DEFEATED",
+      "behavior": "HMAC signature mismatch detected and rejected"
+    },
+    {
+      "id": 6,
+      "name": "Extended expiration",
+      "result": "DEFEATED",
+      "behavior": "HMAC signature mismatch detected and rejected"
+    },
+    {
+      "id": 7,
+      "name": "Increased request quota",
+      "result": "DEFEATED",
+      "behavior": "HMAC signature mismatch detected and rejected"
+    },
+    {
+      "id": 8,
+      "name": "Increased byte quota",
+      "result": "DEFEATED",
+      "behavior": "HMAC signature mismatch detected and rejected"
+    },
+    {
+      "id": 9,
+      "name": "Invalid signature",
+      "result": "DEFEATED",
+      "behavior": "Constant-time comparison fails and rejects token"
+    },
+    {
+      "id": 10,
+      "name": "Unknown signing key ID",
+      "result": "DEFEATED",
+      "behavior": "UnknownKeyIdError raised; verification fails closed"
+    },
+    {
+      "id": 11,
+      "name": "Revoked authorization",
+      "result": "DEFEATED",
+      "behavior": "Store marks REVOKED; immediate gate rejection"
+    },
+    {
+      "id": 12,
+      "name": "Expired authorization",
+      "result": "DEFEATED",
+      "behavior": "Expired timestamp checked before execution; rejected"
+    },
+    {
+      "id": 13,
+      "name": "Missing approval record",
+      "result": "DEFEATED",
+      "behavior": "Valid token without store approval rejected with MISSING_APPROVAL_RECORD"
+    },
+    {
+      "id": 14,
+      "name": "Forged approval configuration",
+      "result": "DEFEATED",
+      "behavior": "Production approval creation strictly prohibited"
+    },
+    {
+      "id": 15,
+      "name": "Concurrent quota exhaustion",
+      "result": "DEFEATED",
+      "behavior": "Atomic reservation prevents overspending under multi-threaded races"
+    },
+    {
+      "id": 16,
+      "name": "Redirect to unapproved domain",
+      "result": "DEFEATED",
+      "behavior": "Domain security re-evaluates redirect and blocks target"
+    },
+    {
+      "id": 17,
+      "name": "Direct transport authorization bypass",
+      "result": "DEFEATED",
+      "behavior": "Direct execute_request blocked by NetworkActivationGate"
+    },
+    {
+      "id": 18,
+      "name": "Unauthorized trading endpoint",
+      "result": "DEFEATED",
+      "behavior": "Trading endpoints raise TradingIsolationViolation"
+    },
+    {
+      "id": 19,
+      "name": "Restart after authorization revocation",
+      "result": "DEFEATED",
+      "behavior": "Durable SQLite store preserves REVOKED state across process restarts"
+    },
+    {
+      "id": 20,
+      "name": "Key rotation and old-key rejection",
+      "result": "DEFEATED",
+      "behavior": "Revoking key in registry immediately invalidates tokens signed by it"
+    }
+  ],
+  "verdict": "ALL_ATTACKS_DEFEATED_FAIL_CLOSED"
+}

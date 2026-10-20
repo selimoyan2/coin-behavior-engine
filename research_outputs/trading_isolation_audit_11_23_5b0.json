@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:37:45.148522+00:00",
+  "audit_name": "Trading Isolation Enforcement Audit",
+  "status": "PASS",
+  "prohibitions": {
+    "LIVE_ORDER_EXECUTION": "PERMANENTLY_PROHIBITED",
+    "private_exchange_api_requests": "DENYLISTED_AND_BLOCKED",
+    "exchange_credentials": "SENSITIVE_HEADER_REJECTION_ACTIVE",
+    "order_submission": "PROHIBITED",
+    "portfolio_allocation": "PROHIBITED",
+    "automated_decisions": "PROHIBITED"
+  },
+  "denylisted_endpoints": [
+    "/api/v[0-9]+/order",
+    "/api/v[0-9]+/openOrders",
+    "/api/v[0-9]+/allOrders",
+    "/fapi/v[0-9]+/order",
+    "/dapi/v[0-9]+/order",
+    "/sapi/v[0-9]+/margin/order",
+    "/sapi/v[0-9]+/sub-account",
+    "/sapi/v[0-9]+/capital/withdraw"
+  ],
+  "credential_headers_prohibited": [
+    "authorization",
+    "proxy-authorization",
+    "cookie",
+    "set-cookie",
+    "x-mbx-apikey"
+  ],
+  "verdict": "TRADING_ISOLATION_ABSOLUTE"
+}
