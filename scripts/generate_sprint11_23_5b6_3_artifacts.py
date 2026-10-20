@@ -435,6 +435,7 @@ The engine architecture demonstrates exceptional engineering discipline in trans
         "sprint": "11.23.5B-6.3",
         "generated_at_utc": now_utc,
         "base_commit": "f49817242f9164e0fbd3dd176e425e511db0f8d2",
+        "commit_sha": "40e04a52cc9e79186d16e64bd6bc6e4cec6bb488",
         "target_publisher": "U.S. Bureau of Labor Statistics (BLS)",
         "target_url": OFFICIAL_BLS_CPI_URL,
         "candidate_event_id": TARGET_EVENT_ID,

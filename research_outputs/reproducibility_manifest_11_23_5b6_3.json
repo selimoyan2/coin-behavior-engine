@@ -1,7 +1,8 @@
 {
   "sprint": "11.23.5B-6.3",
-  "generated_at_utc": "2026-10-20T22:50:07Z",
+  "generated_at_utc": "2026-10-20T22:51:02Z",
   "base_commit": "f49817242f9164e0fbd3dd176e425e511db0f8d2",
+  "commit_sha": "40e04a52cc9e79186d16e64bd6bc6e4cec6bb488",
   "target_publisher": "U.S. Bureau of Labor Statistics (BLS)",
   "target_url": "https://www.bls.gov/schedule/news_release/cpi.htm",
   "candidate_event_id": "EVT-BLS-CPI-2026M10-20261110",
@@ -14,12 +15,12 @@
   "governance_authorization": "NOT_GRANTED",
   "operator_identity_authentication": "BLOCKED",
   "deliverables": {
-    "final_go_no_go_11_23_5b6_3.json": "c835d4983294969d533fdad247b1c740b1de847eb5b506620503f5d520a36e03",
-    "operator_identity_security_audit_11_23_5b6_3.json": "9ef015c9395307129ad26ba925c2658d78fe5c10f0f6af05c21806da9759d14a",
-    "production_key_security_audit_11_23_5b6_3.json": "49a3076f3e348f153bfe775156d6c8606ca440994b8abb32a02c5ec04011c5ca",
-    "network_transport_audit_11_23_5b6_3.json": "f74307585ed96fcfa1895ecdadb25d5510cbea2685947a8de1672888d484b3e8",
-    "request_accounting_audit_11_23_5b6_3.json": "7bc4f6c9e57e24687c9a4c420b442426d068afec9a5b94a759f7ee1712a715c8",
-    "schedule_parser_robustness_11_23_5b6_3.json": "cf6eda53ba2551438f0229b5c4431ea31625cb1571dcecc4ade12382fa4eaa73",
+    "final_go_no_go_11_23_5b6_3.json": "ae956f1c93dc39e14c5ece9da17633cbb1b3f719ae852f74351848af14d2de82",
+    "operator_identity_security_audit_11_23_5b6_3.json": "7f58bee898a7c7e9d371cb442f6599209b74479c4e279882664bcebd309e4401",
+    "production_key_security_audit_11_23_5b6_3.json": "75b7be6fe84eb165bb9a270b2162d6b087b1b98bdb435c1faa97789c2d46150c",
+    "network_transport_audit_11_23_5b6_3.json": "4b44d0a0542b3d554dfa9e2ef72c2d6d444f3cc8002cdc6dbdde81074751c913",
+    "request_accounting_audit_11_23_5b6_3.json": "881934dc2fe757b0079f8b346ba3f7280a62194bff0c8b97cb299957bc6c555f",
+    "schedule_parser_robustness_11_23_5b6_3.json": "c92779bdd9acdde1bead50b168586de38d574ff1988c0c34342f2649d878dffb",
     "operator_authorization_decision_package_11_23_5b6_3.md": "287b059ce1009305c3266f244d71f0d827aef7348e2333d55d02302847e20f77",
     "research_report_11_23_5b6_3.md": "99980e6eb2568bb31ff94ae11f8b1ab6bd28516df8470f7bfc734e1502abde38"
   }
