@@ -1,0 +1,65 @@
+{
+  "proposal_id": "PRP-CPI-2026M10-V3",
+  "proposal_version": "3.0.0",
+  "event_id": "EVT-BLS-CPI-2026M10-20261110",
+  "event_name": "U.S. Consumer Price Index (CPI) \u2014 2026M10 Reference Period",
+  "official_publisher": "Bureau of Labor Statistics (BLS)",
+  "official_source_url": "https://www.bls.gov/schedule/news_release/cpi.htm",
+  "expected_publication_time": "2026-11-10T13:30:00Z",
+  "schedule_verification_status": "SCHEDULE_VERIFICATION_PENDING",
+  "consensus_source_requirements": [
+    "CONSENSUS_EVIDENCE_UNAVAILABLE",
+    "DESCRIPTIVE_PILOT_NO_CONSENSUS_REQUIRED",
+    "ECONOMIC_SURPRISE_ANALYSIS_DISABLED",
+    "DIRECTIONAL_EDGE_CLAIMS_PROHIBITED"
+  ],
+  "btc_market_data_endpoints": [
+    "https://api.binance.com/api/v3/ticker/bookTicker",
+    "https://api.binance.com/api/v3/klines"
+  ],
+  "max_duration_seconds": 2100,
+  "max_requests": 20,
+  "max_bytes": 5242880,
+  "polling_interval_seconds": 120.0,
+  "approved_domains": [
+    "api.binance.com",
+    "data-api.binance.vision",
+    "www.bls.gov"
+  ],
+  "evidence_storage_destination": "data/prospective/evidence_vault",
+  "timestamp_policy": "STRICT_UTC_MONOTONIC_LEAP_SECOND_AWARE",
+  "emergency_stop_conditions": [
+    "HTTP_429_RATE_LIMIT_DETECTED",
+    "HTTP_403_OR_401_ACCESS_DENIED",
+    "MARKET_DATA_GAP_GT_180S",
+    "EVIDENCE_VAULT_WRITE_FAILURE",
+    "CONSENSUS_CONTAMINATION_DETECTED",
+    "REQUEST_QUOTA_EXHAUSTION_APPROACHING"
+  ],
+  "created_by_operator_id": "OP-RESEARCH-LEAD-01",
+  "created_at_utc": "2026-10-20T18:06:28Z",
+  "authorization_status": "PROPOSED",
+  "approval_audit_references": {},
+  "rejection_reason": null,
+  "canonical_proposal_digest": "73ff970d0f85ec31072d875fdf2ec26b18bdb93e20a84005c75ff808578fa765",
+  "sampling_plan_summary": {
+    "strategy": "EVENT_WINDOWED_SPARSE",
+    "planned_requests": 13,
+    "quota_limit": 20,
+    "reserve_requests": 7,
+    "is_feasible": true
+  },
+  "duration_analysis": {
+    "proposed_pilot_duration_seconds": 2100,
+    "proposed_pilot_duration_minutes": 35.0,
+    "pilot_start_relative_to_release_seconds": -120,
+    "pilot_end_relative_to_release_seconds": 1980,
+    "pilot_end_relative_to_release_minutes": 33.0,
+    "required_post_event_horizon_seconds": 1800,
+    "required_post_event_horizon_minutes": 30.0,
+    "post_event_coverage_margin_seconds": 180,
+    "is_30m_horizon_fully_bounded": true,
+    "previous_30m_duration_defect_resolved": true,
+    "resolution_summary": "Pilot duration expanded from 1800s to 2100s (35m). Starting at T-2m (-120s), observation terminates at T+33m (+1980s), providing 180s (3 minutes) of margin beyond the full 30-minute post-event milestone."
+  }
+}

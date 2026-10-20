@@ -1,0 +1,101 @@
+{
+  "rehearsal_id": "REH-V4-5219FF77F454",
+  "executed_at_utc": "2026-10-20T18:06:28Z",
+  "steps": [
+    {
+      "step": 1,
+      "name": "BASELINE_INTEGRITY",
+      "status": "PASS",
+      "details": "Verified 225 baseline regression tests and pristine working tree."
+    },
+    {
+      "step": 2,
+      "name": "UNAUTHENTICATED_IMPORT_QUARANTINE",
+      "status": "PASS",
+      "details": "Unauthenticated evidence quarantined with status SOURCE_CLAIMED_OFFICIAL."
+    },
+    {
+      "step": 3,
+      "name": "CANDIDATE_EVENT_IDENTITY_DERIVATION",
+      "status": "PASS",
+      "candidate_event_id": "EVT-BLS-CPI-2026M10-20261110",
+      "utc_timestamp": "2026-11-10T13:30:00Z"
+    },
+    {
+      "step": 4,
+      "name": "AUTHENTIC_SCHEDULE_IMPORT",
+      "status": "PASS",
+      "details": "Attested fixture imported with level SOURCE_AUTHENTICITY_VERIFIED."
+    },
+    {
+      "step": 5,
+      "name": "EVENT_IDENTITY_BINDING",
+      "status": "PASS",
+      "frozen_event_id": "EVT-BLS-CPI-2026M10-20261110",
+      "bound_schedule_sha256": "4b169bf19a968e8bec7c74ce2d85425a34407f465c67c29f5c2986f88edd3f1a"
+    },
+    {
+      "step": 6,
+      "name": "OBSERVATION_WINDOW_BOUNDEDNESS",
+      "status": "PASS",
+      "post_event_coverage_margin_seconds": 180
+    },
+    {
+      "step": 7,
+      "name": "SAMPLING_PLAN_FEASIBILITY",
+      "status": "PASS",
+      "continuous_requests": 36,
+      "continuous_feasible": false,
+      "windowed_requests": 13,
+      "windowed_feasible": true
+    },
+    {
+      "step": 8,
+      "name": "CONSENSUS_POLICY_ASSERTION",
+      "status": "PASS",
+      "consensus_evidence": "UNAVAILABLE",
+      "consensus_required_for_descriptive_pilot": false,
+      "economic_surprise_analysis": "DISABLED",
+      "directional_edge_claims": "PROHIBITED"
+    },
+    {
+      "step": 9,
+      "name": "PROPOSAL_V3_DIGEST_COMPUTATION",
+      "status": "PASS",
+      "proposal_id": "PRP-CPI-2026M10-V3",
+      "proposal_version": "3.0.0",
+      "proposal_digest": "05b403087124d133ad560a00af915e58fc92f315f9f0943cfbc8a12f26b97a23"
+    },
+    {
+      "step": 10,
+      "name": "OPERATOR_APPROVAL_WORKFLOW",
+      "status": "PASS",
+      "token_id": "AUTH-8B71D8AC3C97"
+    },
+    {
+      "step": 11,
+      "name": "GATE_EVALUATION_AND_QUOTA",
+      "status": "PASS",
+      "spent_requests": 2
+    },
+    {
+      "step": 12,
+      "name": "DURABLE_REVOCATION",
+      "status": "PASS",
+      "details": "Revocation blocked subsequent access: REVOKED: Approval has been revoked by operator."
+    },
+    {
+      "step": 13,
+      "name": "TRADING_ISOLATION_ASSERTION",
+      "status": "PASS",
+      "details": "Order placement permanently disabled. Capability token permits read-only observation only."
+    },
+    {
+      "step": 14,
+      "name": "VAULT_INTEGRITY_CHECK",
+      "status": "PASS",
+      "details": "Sandbox vault verified; no cross-contamination to production directories."
+    }
+  ],
+  "overall_status": "PASS"
+}

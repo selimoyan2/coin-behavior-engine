@@ -162,6 +162,19 @@ from .evidence_acquisition import (
     OfflinePilotRehearsalRunner,
     PilotEvidenceReadinessEvaluator,
 )
+from .pilot_proposal_freeze import (
+    SamplingStrategy,
+    EventIdentityStatus,
+    PilotProposalReviewStatus,
+    ObservationMilestone,
+    SamplingPlanEvaluation,
+    ObservationWindowPlanEvaluator,
+    CandidateEventIdentity,
+    EventIdentityManager,
+    PilotProposalV3Builder,
+    OfflinePilotRehearsalRunnerV4,
+    PilotProposalFreezeDecisionEngine,
+)
 from .end_to_end_pilot_sim import EndToEndPilotSimulationSuite
 from .recovery_simulation import EndToEndRecoverySimulationRunner
 
@@ -315,4 +328,16 @@ __all__ = [
     "MarketObservationPlanEvaluator",
     "OfflinePilotRehearsalRunner",
     "PilotEvidenceReadinessEvaluator",
+    # Sprint 11.23.5B-4 additions
+    "SamplingStrategy",
+    "EventIdentityStatus",
+    "PilotProposalReviewStatus",
+    "ObservationMilestone",
+    "SamplingPlanEvaluation",
+    "ObservationWindowPlanEvaluator",
+    "CandidateEventIdentity",
+    "EventIdentityManager",
+    "PilotProposalV3Builder",
+    "OfflinePilotRehearsalRunnerV4",
+    "PilotProposalFreezeDecisionEngine",
 ]

@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T18:06:28Z",
+  "sprint": "11.23.5B-4",
+  "authenticity_model": {
+    "demarcation": {
+      "SOURCE_CLAIMED_OFFICIAL": "Upstream URL claimed as official but document lacks independent cryptographic signature or certificate chain.",
+      "SOURCE_AUTHENTICITY_VERIFIED": "Document bytes cryptographically verified against official publisher signing key or government public key infrastructure.",
+      "SOURCE_THIRD_PARTY_REJECTED": "Secondary aggregator or unofficial vendor feed.",
+      "SOURCE_UNAUTHENTICATED": "Unsigned or unauthenticated data."
+    },
+    "security_invariants": [
+      "User-entered URLs or filenames never constitute proof of source authenticity.",
+      "Unauthenticated evidence is automatically quarantined in data/prospective/evidence_vault/quarantine/.",
+      "Quarantined evidence cannot satisfy official schedule verification preconditions."
+    ]
+  },
+  "evidence_record_requirements": [
+    "original_source_url",
+    "original_document_bytes",
+    "sha256",
+    "acquisition_timestamp_utc",
+    "document_mime_type",
+    "source_provenance",
+    "verification_method",
+    "scheduled_release_date_and_time",
+    "reference_period",
+    "timezone_conversion_proof",
+    "evidence_vault_object_id"
+  ],
+  "current_evaluation": {
+    "source_authenticity_level": "PENDING_CRYPTOGRAPHIC_PROVENANCE",
+    "quarantine_active": true,
+    "execution_gate_blocker": "BLOCKED_SOURCE_AUTHENTICITY"
+  }
+}

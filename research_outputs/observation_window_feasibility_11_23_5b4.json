@@ -1,0 +1,189 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T18:06:28Z",
+  "sprint": "11.23.5B-4",
+  "post_event_horizon_analysis": {
+    "proposed_pilot_duration_seconds": 2100,
+    "proposed_pilot_duration_minutes": 35.0,
+    "pilot_start_relative_to_release_seconds": -120,
+    "pilot_end_relative_to_release_seconds": 1980,
+    "pilot_end_relative_to_release_minutes": 33.0,
+    "required_post_event_horizon_seconds": 1800,
+    "required_post_event_horizon_minutes": 30.0,
+    "post_event_coverage_margin_seconds": 180,
+    "is_30m_horizon_fully_bounded": true,
+    "previous_30m_duration_defect_resolved": true,
+    "resolution_summary": "Pilot duration expanded from 1800s to 2100s (35m). Starting at T-2m (-120s), observation terminates at T+33m (+1980s), providing 180s (3 minutes) of margin beyond the full 30-minute post-event milestone."
+  },
+  "milestones": [
+    {
+      "name": "PRE_EVENT_BASELINE_T_MINUS_2M",
+      "offset_seconds_from_release": -120,
+      "target_utc": "2026-11-10T13:28:00Z",
+      "purpose": "Pre-event quiet window volatility & liquidity baseline.",
+      "required_request": true
+    },
+    {
+      "name": "PRE_EVENT_CONFIRMATION_T_MINUS_1M",
+      "offset_seconds_from_release": -60,
+      "target_utc": "2026-11-10T13:29:00Z",
+      "purpose": "Final pre-event order book snapshot & spread check.",
+      "required_request": true
+    },
+    {
+      "name": "RELEASE_INSTANT_T0",
+      "offset_seconds_from_release": 0,
+      "target_utc": "2026-11-10T13:30:00Z",
+      "purpose": "Official release second; initial reaction capture.",
+      "required_request": true
+    },
+    {
+      "name": "POST_EVENT_T_PLUS_1M",
+      "offset_seconds_from_release": 60,
+      "target_utc": "2026-11-10T13:31:00Z",
+      "purpose": "Immediate price displacement and first candle close.",
+      "required_request": true
+    },
+    {
+      "name": "POST_EVENT_T_PLUS_2M",
+      "offset_seconds_from_release": 120,
+      "target_utc": "2026-11-10T13:32:00Z",
+      "purpose": "Secondary shock propagation & quote recovery.",
+      "required_request": true
+    },
+    {
+      "name": "POST_EVENT_T_PLUS_3M",
+      "offset_seconds_from_release": 180,
+      "target_utc": "2026-11-10T13:33:00Z",
+      "purpose": "Mid-window equilibrium discovery.",
+      "required_request": true
+    },
+    {
+      "name": "POST_EVENT_T_PLUS_5M",
+      "offset_seconds_from_release": 300,
+      "target_utc": "2026-11-10T13:35:00Z",
+      "purpose": "5-minute standardized reaction milestone.",
+      "required_request": true
+    },
+    {
+      "name": "POST_EVENT_T_PLUS_10M",
+      "offset_seconds_from_release": 600,
+      "target_utc": "2026-11-10T13:40:00Z",
+      "purpose": "Intermediate trend continuation or reversal check.",
+      "required_request": true
+    },
+    {
+      "name": "POST_EVENT_T_PLUS_15M",
+      "offset_seconds_from_release": 900,
+      "target_utc": "2026-11-10T13:45:00Z",
+      "purpose": "15-minute standardized reaction milestone.",
+      "required_request": true
+    },
+    {
+      "name": "POST_EVENT_T_PLUS_20M",
+      "offset_seconds_from_release": 1200,
+      "target_utc": "2026-11-10T13:50:00Z",
+      "purpose": "Mid-term drift evaluation.",
+      "required_request": true
+    },
+    {
+      "name": "POST_EVENT_T_PLUS_25M",
+      "offset_seconds_from_release": 1500,
+      "target_utc": "2026-11-10T13:55:00Z",
+      "purpose": "Pre-terminal trend stabilization check.",
+      "required_request": true
+    },
+    {
+      "name": "POST_EVENT_T_PLUS_30M",
+      "offset_seconds_from_release": 1800,
+      "target_utc": "2026-11-10T14:00:00Z",
+      "purpose": "Primary 30-minute macro reaction horizon milestone.",
+      "required_request": true
+    },
+    {
+      "name": "TERMINAL_RECONCILIATION_T_PLUS_32M",
+      "offset_seconds_from_release": 1920,
+      "target_utc": "2026-11-10T14:02:00Z",
+      "purpose": "Post-event reconciliation, gap check, and clean shutdown.",
+      "required_request": true
+    }
+  ],
+  "sampling_plan_comparison": {
+    "continuous_1m_polling": {
+      "strategy": "CONTINUOUS_1M",
+      "total_duration_seconds": 2100,
+      "sampling_offsets_seconds": [
+        -120,
+        -60,
+        0,
+        60,
+        120,
+        180,
+        240,
+        300,
+        360,
+        420,
+        480,
+        540,
+        600,
+        660,
+        720,
+        780,
+        840,
+        900,
+        960,
+        1020,
+        1080,
+        1140,
+        1200,
+        1260,
+        1320,
+        1380,
+        1440,
+        1500,
+        1560,
+        1620,
+        1680,
+        1740,
+        1800,
+        1860,
+        1920,
+        1980
+      ],
+      "planned_requests": 36,
+      "quota_limit": 20,
+      "reserve_requests": -16,
+      "is_feasible": false,
+      "feasibility_blocker": "Continuous 1-minute sampling requires 36 requests, exceeding the hard quota limit of 20 requests. Must either adopt event-windowed sparse sampling or request privileged operator quota expansion to 36 requests."
+    },
+    "event_windowed_sparse_sampling": {
+      "strategy": "EVENT_WINDOWED_SPARSE",
+      "total_duration_seconds": 2100,
+      "sampling_offsets_seconds": [
+        -120,
+        -60,
+        0,
+        60,
+        120,
+        180,
+        300,
+        600,
+        900,
+        1200,
+        1500,
+        1800,
+        1920
+      ],
+      "planned_requests": 13,
+      "quota_limit": 20,
+      "reserve_requests": 7,
+      "is_feasible": true,
+      "feasibility_blocker": null
+    }
+  },
+  "feasibility_verdict": {
+    "windowed_sampling_status": "FEASIBLE",
+    "continuous_sampling_status": "BLOCKED_QUOTA_EXCEEDED",
+    "operator_decision_recommendation": "Adopt the 13-point event-windowed sparse sampling schedule (consuming 13 of 20 authorized requests, leaving 7 reserve requests for network retries), OR explicitly increase authorized request quota from 20 to 40 requests in the proposal before approval."
+  }
+}
