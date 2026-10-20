@@ -1,0 +1,25 @@
+{
+  "sprint": "11.23.5B-6.4",
+  "generated_at_utc": "2026-10-20T23:13:56Z",
+  "architecture": "Two Distinct Cryptographic Security Layers",
+  "layer_a": {
+    "name": "Operator Identity Authentication",
+    "algorithm": "Ed25519 (RFC 8032 Asymmetric Digital Signatures)",
+    "key_type": "32-byte Ed25519 private seed / public key pair",
+    "scope": "Authenticates operator identity, assigned role, request digest, and nonce",
+    "enforcement_point": "BlsAcquisitionCLI.approve"
+  },
+  "layer_b": {
+    "name": "Execution Capability Authorization Token",
+    "algorithm": "HMAC-SHA256 (Symmetric Authenticated MAC)",
+    "key_type": "32-byte secret HMAC key (managed via FileBackedKeyProvider)",
+    "scope": "Binds execution quota (attempts, bytes), time window, allowed hosts, and event ID",
+    "enforcement_point": "NetworkActivationGate.evaluate_request"
+  },
+  "isolation_proof": {
+    "compromised_layer_b_cannot_forge_layer_a": true,
+    "layer_a_signature_alone_cannot_bypass_gate": true,
+    "both_layers_sequentially_required": true
+  },
+  "audit_verdict": "PASS (Clean architectural separation and mutual independence verified)"
+}

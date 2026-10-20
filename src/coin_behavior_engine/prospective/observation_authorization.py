@@ -494,6 +494,15 @@ class TrustedApprovalStore:
                             details_json TEXT NOT NULL
                         );
                     """)
+                    conn.execute("""
+                        CREATE TABLE IF NOT EXISTS approval_nonces (
+                            nonce TEXT PRIMARY KEY,
+                            token_id TEXT NOT NULL,
+                            request_digest TEXT NOT NULL,
+                            consumed_at_utc TEXT NOT NULL,
+                            expires_at_utc TEXT NOT NULL
+                        );
+                    """)
             except sqlite3.DatabaseError:
                 pass
             finally:
@@ -520,16 +529,77 @@ class TrustedApprovalStore:
             finally:
                 self._close_connection(conn)
 
+    def is_nonce_consumed(self, nonce: str) -> bool:
+        """Checks whether a cryptographic nonce has already been consumed."""
+        if not nonce:
+            return False
+        with self._lock:
+            conn = self._get_connection()
+            try:
+                cursor = conn.execute(
+                    "SELECT 1 FROM approval_nonces WHERE nonce = ?",
+                    (nonce,),
+                )
+                return cursor.fetchone() is not None
+            finally:
+                self._close_connection(conn)
+
+    def consume_nonce(
+        self,
+        nonce: str,
+        token_id: str,
+        request_digest: str,
+        expires_at_utc: str,
+        consumed_at_utc: Optional[str] = None,
+    ) -> Tuple[bool, str]:
+        """
+        Atomically records and consumes a single-use approval nonce.
+        Returns (True, 'CONSUMED') on success or (False, reason) if already consumed.
+        """
+        if not nonce or len(nonce.strip()) < 16:
+            return False, "INVALID_NONCE: Nonce must be at least 16 characters"
+
+        c_time = consumed_at_utc or datetime.now(timezone.utc).isoformat()
+        with self._lock:
+            conn = self._get_connection()
+            try:
+                with conn:
+                    cursor = conn.execute(
+                        "SELECT token_id, consumed_at_utc FROM approval_nonces WHERE nonce = ?",
+                        (nonce,),
+                    )
+                    row = cursor.fetchone()
+                    if row is not None:
+                        return False, (
+                            f"NONCE_ALREADY_CONSUMED: Nonce '{nonce}' was already consumed by "
+                            f"token '{row['token_id']}' at {row['consumed_at_utc']}"
+                        )
+
+                    conn.execute(
+                        """
+                        INSERT INTO approval_nonces (nonce, token_id, request_digest, consumed_at_utc, expires_at_utc)
+                        VALUES (?, ?, ?, ?, ?)
+                        """,
+                        (nonce, token_id, request_digest, c_time, expires_at_utc),
+                    )
+                    return True, "NONCE_CONSUMED"
+            except sqlite3.IntegrityError:
+                return False, f"NONCE_ALREADY_CONSUMED: Unique constraint violation for nonce '{nonce}'"
+            finally:
+                self._close_connection(conn)
+
     def create_privileged_approval(
         self,
         token: ObservationAuthorizationToken,
         privileged_operator: str,
         is_production: bool = False,
         proposal_digest: str = "",
+        nonce: Optional[str] = None,
     ) -> TrustedApprovalRecord:
         """
         Creates an explicit operator approval record in the trusted store.
         Production approvals are permanently prohibited in this sprint.
+        Atomically records single-use nonce if provided.
         """
         if is_production:
             raise AuthorizationError(
@@ -549,6 +619,25 @@ class TrustedApprovalStore:
             conn = self._get_connection()
             try:
                 with conn:
+                    if nonce:
+                        cursor = conn.execute(
+                            "SELECT token_id, consumed_at_utc FROM approval_nonces WHERE nonce = ?",
+                            (nonce,),
+                        )
+                        row = cursor.fetchone()
+                        if row is not None:
+                            raise AuthorizationError(
+                                f"REPLAY_ATTACK_DETECTED_NONCE_ALREADY_USED: Nonce '{nonce}' was already "
+                                f"consumed by token '{row['token_id']}' at {row['consumed_at_utc']}"
+                            )
+                        conn.execute(
+                            """
+                            INSERT INTO approval_nonces (nonce, token_id, request_digest, consumed_at_utc, expires_at_utc)
+                            VALUES (?, ?, ?, ?, ?)
+                            """,
+                            (nonce, token.token_id, proposal_digest, now_utc, token.expires_at_utc),
+                        )
+
                     conn.execute("""
                         INSERT INTO approval_records (
                             approval_id, token_id, operator_identity, capability,

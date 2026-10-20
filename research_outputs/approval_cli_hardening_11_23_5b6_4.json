@@ -1,0 +1,29 @@
+{
+  "sprint": "11.23.5B-6.4",
+  "generated_at_utc": "2026-10-20T23:13:56Z",
+  "subcommand": "cbe bls-acquisition approve",
+  "vulnerability_remediated": "HIGH-01 Operator Role & Identity Self-Declaration",
+  "remediation_mechanism": "Cryptographic Ed25519 Operator Signature & Trusted Registry Lookup",
+  "supported_cli_flags": [
+    "--request-file",
+    "--signed-intent-file",
+    "--operator-registry-path",
+    "--approver-key-file",
+    "--nonce",
+    "--store-path",
+    "--validity-hours",
+    "--production"
+  ],
+  "hardening_guarantees": {
+    "unauthenticated_callers_blocked": true,
+    "role_spoofing_prevented": true,
+    "self_approval_prevented": true,
+    "tampered_signature_rejected": true,
+    "tampered_payload_rejected": true,
+    "replayed_nonce_rejected": true,
+    "expired_intent_rejected": true,
+    "revoked_identity_rejected": true,
+    "production_governance_freeze_enforced": true
+  },
+  "backward_compatibility": "Ephemeral test mode permitted only when is_production=False with explicit test keys"
+}

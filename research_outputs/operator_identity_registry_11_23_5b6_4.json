@@ -1,0 +1,93 @@
+{
+  "sprint": "11.23.5B-6.4",
+  "generated_at_utc": "2026-10-20T23:13:56Z",
+  "registry_version": "v1",
+  "signature_algorithm": "Ed25519 (RFC 8032)",
+  "security_policy": "STRICT_ROLE_REGISTRY_ENFORCEMENT",
+  "identities": [
+    {
+      "operator_id": "OP-APPROVAL-ADMIN-01",
+      "role": "APPROVAL_ADMIN",
+      "operator_name": "Primary Approval Administrator",
+      "public_key_hex": "742f8d8ea2a15b3a9fe13e9d162283a74d5f586c65798a6d4cb820e50e0dcbe8",
+      "key_id": "KEY-ADMIN-01",
+      "fingerprint": "418fcb2170d94dbd482164dbe42997ab64a9644062c79d240830cf812bf5f6ba",
+      "active_from_utc": "2026-01-01T00:00:00Z",
+      "expires_at_utc": "2028-01-01T00:00:00Z",
+      "is_revoked": false,
+      "revocation_reason": null,
+      "allowed_capabilities": [
+        "ACQUISITION_EXECUTE",
+        "SCHEDULE_VERIFY",
+        "*"
+      ]
+    },
+    {
+      "operator_id": "OP-RESEARCH-LEAD-01",
+      "role": "RESEARCH_OPERATOR",
+      "operator_name": "Lead Research Analyst",
+      "public_key_hex": "8c2fb63d4de2979b51bdb395c1f94c4a0eeb2f13adeb30ce5938a289ceffdef3",
+      "key_id": "KEY-RESEARCH-01",
+      "fingerprint": "efad72b86b2b20404f4dc4aebce3c18f5524fff1d9f0c36ec76bd1c4154fe276",
+      "active_from_utc": "2026-01-01T00:00:00Z",
+      "expires_at_utc": "2028-01-01T00:00:00Z",
+      "is_revoked": false,
+      "revocation_reason": null,
+      "allowed_capabilities": [
+        "SCHEDULE_PROPOSE",
+        "SCHEDULE_VERIFY"
+      ]
+    },
+    {
+      "operator_id": "OP-AUDITOR-01",
+      "role": "AUDITOR",
+      "operator_name": "Independent Security Auditor",
+      "public_key_hex": "dca1dfee56c5a8cba3c95e0d34079fee96d393282776dcbb9095ded1f470494b",
+      "key_id": "KEY-AUDITOR-01",
+      "fingerprint": "5efc5ead7cebaf0880c0fdd9233cedce17588291ad75b6d2ad6aa5dd2990e700",
+      "active_from_utc": "2026-01-01T00:00:00Z",
+      "expires_at_utc": "2028-01-01T00:00:00Z",
+      "is_revoked": false,
+      "revocation_reason": null,
+      "allowed_capabilities": [
+        "AUDIT_INSPECT",
+        "READ_ONLY"
+      ]
+    },
+    {
+      "operator_id": "OP-OPERATOR-02",
+      "role": "RESEARCH_OPERATOR",
+      "operator_name": "Secondary Operations Engineer",
+      "public_key_hex": "7ceb9a01d70f6c2521e5d8f2169935dc2ec37c37c29ce714b4a7e698c41c9e59",
+      "key_id": "KEY-OPERATOR-02",
+      "fingerprint": "d60f71743aef5324f456e674d486e1eebd45441d0f763a7b823a1759b9ade6bf",
+      "active_from_utc": "2026-01-01T00:00:00Z",
+      "expires_at_utc": "2028-01-01T00:00:00Z",
+      "is_revoked": false,
+      "revocation_reason": null,
+      "allowed_capabilities": [
+        "SCHEDULE_PROPOSE"
+      ]
+    }
+  ],
+  "role_hierarchy": {
+    "APPROVAL_ADMIN": [
+      "BLS_ACQUISITION_APPROVAL",
+      "TOKEN_ISSUE",
+      "IDENTITY_REVOCATION"
+    ],
+    "RESEARCH_OPERATOR": [
+      "ACQUISITION_REQUEST_PROPOSE",
+      "SCHEDULE_VERIFY"
+    ],
+    "AUDITOR": [
+      "READ_ONLY_INSPECT",
+      "SECURITY_AUDIT"
+    ]
+  },
+  "anti_spoofing_rules": [
+    "Caller self-declared roles via CLI arguments are strictly ignored.",
+    "Authoritative role is retrieved exclusively from TrustedOperatorIdentityRegistry.",
+    "Possession of registered Ed25519 private key is cryptographically verified."
+  ]
+}

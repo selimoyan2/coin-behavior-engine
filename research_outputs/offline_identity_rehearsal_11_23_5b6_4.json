@@ -1,0 +1,112 @@
+{
+  "rehearsal_name": "Sprint 11.23.5B-6.4 Cryptographic Identity & Dual-Layer Authorization Rehearsal",
+  "timestamp_utc": "2026-10-20T23:13:56Z",
+  "total_steps": 15,
+  "steps_passed": 15,
+  "rehearsal_status": "SUCCESS",
+  "layer_a_operator_identity": "VERIFIED_ED25519",
+  "layer_b_token_capability": "VERIFIED_HMAC_SHA256",
+  "replay_protection": "VERIFIED_ATOMIC_NONCE",
+  "separation_of_duties": "VERIFIED_ENFORCED",
+  "role_anti_spoofing": "VERIFIED_ENFORCED",
+  "governance_policy_freeze": "VERIFIED_ACTIVE",
+  "log": [
+    {
+      "step": 1,
+      "name": "ACQUISITION_REQUEST_GENERATED",
+      "request_id": "REQ-BLS-CPI-2026M10-ACQ01",
+      "creator": "OP-RESEARCH-LEAD-01",
+      "status": "PASS"
+    },
+    {
+      "step": 2,
+      "name": "CANONICAL_DIGEST_COMPUTED",
+      "digest": "b1792ee85282de66c2aaf8a2e06cfbfeab87e1cd7503977269c3f9e9da8b91c6",
+      "status": "PASS"
+    },
+    {
+      "step": 3,
+      "name": "SELF_APPROVAL_REJECTED",
+      "result": "OPERATOR_IDENTITY_VERIFICATION_FAILED",
+      "status": "PASS"
+    },
+    {
+      "step": 4,
+      "name": "ROLE_SPOOFING_REJECTED",
+      "error": "OPERATOR_IDENTITY_VERIFICATION_FAILED",
+      "status": "PASS"
+    },
+    {
+      "step": 5,
+      "name": "OPERATOR_APPROVAL_INTENT_SIGNED",
+      "operator_id": "OP-APPROVAL-ADMIN-01",
+      "key_id": "KEY-ADMIN-01",
+      "intent_digest": "67b56d8c41a9c762c4afbc74c5740211b45227225739c606bbe9e07e66e98aa4",
+      "status": "PASS"
+    },
+    {
+      "step": 6,
+      "name": "LAYER_A_CRYPTOGRAPHIC_VERIFICATION",
+      "result": "INTENT_VERIFIED",
+      "status": "PASS"
+    },
+    {
+      "step": 7,
+      "name": "NONCE_REPLAY_PROTECTION_INITIALIZED",
+      "nonce": "NONCE-9a110dd0005945dea0dc1d5a677f0743",
+      "status": "PASS"
+    },
+    {
+      "step": 8,
+      "name": "LAYER_B_HMAC_TOKEN_CREATED",
+      "token_id": "TOK-BLS-ACQ-20261020231356",
+      "capability": "OFFICIAL_SCHEDULE_EVIDENCE_ACQUISITION",
+      "status": "PASS"
+    },
+    {
+      "step": 9,
+      "name": "PRIVILEGED_APPROVAL_RECORDED",
+      "approval_id": "APPR-1D968CD7A00C",
+      "status": "PASS"
+    },
+    {
+      "step": 10,
+      "name": "NONCE_REPLAY_ATTACK_REJECTED",
+      "error": "REPLAY_ATTACK_DETECTED_NONCE_ALREADY_USED",
+      "status": "PASS"
+    },
+    {
+      "step": 11,
+      "name": "PRODUCTION_AUTHORIZATION_BLOCKED",
+      "error": "PRODUCTION_AUTHORIZATION_NOT_GRANTED",
+      "status": "PASS"
+    },
+    {
+      "step": 12,
+      "name": "NETWORK_GATE_EVALUATED",
+      "authorized": true,
+      "status": "PASS"
+    },
+    {
+      "step": 13,
+      "name": "EVIDENCE_VAULTED",
+      "sha256": "d4865111aed23d3ba9c25e2177a22eea08fb1b1c8ca833511b09fb857172ff71",
+      "status": "PASS"
+    },
+    {
+      "step": 14,
+      "name": "SCHEDULE_PARSED_AND_EVENT_VERIFIED",
+      "release_date": "2026-11-10",
+      "release_time": "08:30:00",
+      "reference_period": "2026M10",
+      "status": "PASS"
+    },
+    {
+      "step": 15,
+      "name": "QUOTA_DEPLETED_RE_ACTIVATION_BLOCKED",
+      "re_activation_authorized": false,
+      "reason": "APPROVAL_STATUS_EXHAUSTED: Approval is not active.",
+      "status": "PASS"
+    }
+  ]
+}

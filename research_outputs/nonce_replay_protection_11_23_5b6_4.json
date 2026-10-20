@@ -1,0 +1,10 @@
+{
+  "sprint": "11.23.5B-6.4",
+  "generated_at_utc": "2026-10-20T23:13:56Z",
+  "table_name": "approval_nonces",
+  "storage_engine": "SQLite (WAL mode)",
+  "schema_ddl": "CREATE TABLE IF NOT EXISTS approval_nonces (nonce TEXT PRIMARY KEY, token_id TEXT NOT NULL, request_digest TEXT NOT NULL, consumed_at_utc TEXT NOT NULL, expires_at_utc TEXT NOT NULL);",
+  "entropy_requirement": "Minimum 16 characters / 128 bits cryptographic entropy",
+  "atomicity_guarantee": "Atomic consumption within SQLite transaction during approval creation",
+  "verification_result": "PASS (Replay attempts rejected with REPLAY_ATTACK_DETECTED_NONCE_ALREADY_USED)"
+}

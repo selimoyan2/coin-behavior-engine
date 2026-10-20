@@ -1,0 +1,23 @@
+{
+  "sprint": "11.23.5B-6.4",
+  "generated_at_utc": "2026-10-20T23:13:56Z",
+  "base_commit": "40e04a52cc9e79186d16e64bd6bc6e4cec6bb488",
+  "commit_sha": "98e61807d770a73840e0c59fdf82ab3795e4b9d1",
+  "python_version": "3.11",
+  "total_test_count": 401,
+  "tests_passed": 401,
+  "tests_failed": 0,
+  "deliverables": {
+    "operator_identity_registry_11_23_5b6_4.json": "9e28571a52e876107431f781caf80439955e1b6a0c2936d97c782d38a822541b",
+    "ed25519_approval_intent_audit_11_23_5b6_4.json": "3b0559f92f0ed7843dae418e1046ba1f2f386998fb901c4b69d978578a205213",
+    "approval_cli_hardening_11_23_5b6_4.json": "674cbd25791970ddaff8f47f79c9a9bbe0634f6649cd5c6076800a30ddf8f48f",
+    "nonce_replay_protection_11_23_5b6_4.json": "59914d3a8a7906c310bca9fe471111d1db78cc50369abd8d0c81e3f6e2691dc1",
+    "dual_layer_authorization_audit_11_23_5b6_4.json": "19a79e2c8d856709004306832187c62f94d1cc4c3fd898d29a1c6d613ad80d0e",
+    "offline_identity_rehearsal_11_23_5b6_4.json": "a49c9a569457fb27d1a1b7afbeb6232da6d5362f0de97f83b515ca7a1883e9c9",
+    "final_go_no_go_11_23_5b6_4.json": "7f030b11bbcba1eb0ab73348cec6551aeede9127be5903ee2853f74a07237d0f",
+    "operator_handoff_11_23_5b6_4.md": "3bb49c2048f852bed41ac0620abec92054feb7aabb06f01746d6b4578ee0223d",
+    "research_report_11_23_5b6_4.md": "09d5d252644b1e79b5d227e73caf9aff8d9c586072bd060ed3a2eb37f1fcd480"
+  },
+  "governance_status": "GOVERNANCE_POLICY_FREEZE_ACTIVE",
+  "final_decision": "TECHNICAL_GO_AWAITING_HUMAN_AUTHORIZATION"
+}

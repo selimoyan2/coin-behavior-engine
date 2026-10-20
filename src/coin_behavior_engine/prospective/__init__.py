@@ -185,6 +185,20 @@ from .https_provenance import (
     ScheduleAcceptanceResult,
     OFFICIAL_PUBLISHER_DOMAINS,
 )
+from .ed25519 import (
+    ed25519_keygen,
+    ed25519_public_key,
+    ed25519_sign,
+    ed25519_verify,
+    ed25519_fingerprint,
+)
+from .operator_identity_registry import (
+    TrustedOperatorIdentity,
+    TrustedOperatorIdentityRegistry,
+    OperatorApprovalIntent,
+    DOMAIN_SEPARATION_PREFIX,
+)
+from .bls_acquisition import OfflineIdentityRehearsalRunner
 from .bls_acquisition import (
     OfficialScheduleAcquisitionRequest,
     ParsedCpiSchedule,
@@ -414,4 +428,15 @@ __all__ = [
     "OfflineOperatorSessionRunner",
     # Sprint 11.23.5B-6.2 additions
     "OfflineProductionPathRehearsalRunner",
+    # Sprint 11.23.5B-6.4 additions
+    "ed25519_keygen",
+    "ed25519_public_key",
+    "ed25519_sign",
+    "ed25519_verify",
+    "ed25519_fingerprint",
+    "TrustedOperatorIdentity",
+    "TrustedOperatorIdentityRegistry",
+    "OperatorApprovalIntent",
+    "DOMAIN_SEPARATION_PREFIX",
+    "OfflineIdentityRehearsalRunner",
 ]
