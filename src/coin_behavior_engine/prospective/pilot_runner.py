@@ -10,10 +10,15 @@ from __future__ import annotations
 from collections import deque
 from dataclasses import dataclass, field, asdict
 from datetime import datetime, timedelta, timezone
+import hashlib
 import json
+import os
 from pathlib import Path
+import shutil
+import sys
 import time
 from typing import Any, Callable, Dict, List, Optional, Tuple
+import uuid
 import pandas as pd
 
 from .event_models import (
@@ -60,6 +65,11 @@ class PilotExecutionError(Exception):
     pass
 
 
+class CheckpointCorruptionError(PilotExecutionError):
+    """Raised when a checkpoint fails cryptographic integrity, schema, or payload validation."""
+    pass
+
+
 class ProspectivePilotRunner:
     """
     Sequential, single-event prospective pilot execution runner.
@@ -87,6 +97,7 @@ class ProspectivePilotRunner:
         self._queue: deque[ProspectiveEventRecord] = deque(maxlen=config.max_event_queue_size)
         self._stop_requested: bool = False
         self._checkpoints_saved: List[str] = []
+        self._last_checkpoint_ref: Optional[str] = None
 
         # Validate fail-closed safety invariants on initialization
         self._enforce_governance_invariants()
@@ -97,6 +108,8 @@ class ProspectivePilotRunner:
         else:
             self.checkpoint_dir = self.vault.vault_root / "manifests" / "checkpoints"
         self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
+        self.quarantine_dir = self.checkpoint_dir / "quarantine"
+        self.quarantine_dir.mkdir(parents=True, exist_ok=True)
 
     def _enforce_governance_invariants(self) -> None:
         """Enforces that operator authorization is NOT granted, trading is prohibited, and dry-run is active."""
@@ -136,23 +149,128 @@ class ProspectivePilotRunner:
         step_name: str,
         state_data: Dict[str, Any],
     ) -> Path:
-        """Persists a deterministic checkpoint JSON to disk after each step."""
+        """
+        Atomically persists a deterministic, cryptographically hashed checkpoint JSON
+        to disk with fsync and safe atomic replacement.
+        """
         filename = f"checkpoint_{event_id}_step{step_number:02d}_{step_name}.json"
         cp_path = self.checkpoint_dir / filename
+
+        # Compute deterministic content SHA-256 over serialized state_data
+        canonical_state_bytes = json.dumps(state_data, indent=2, sort_keys=True).encode("utf-8")
+        content_sha256 = hashlib.sha256(canonical_state_bytes).hexdigest()
+
+        evidence_refs: List[str] = []
+        if isinstance(state_data, dict):
+            for k in ["vault_sha256", "source_evidence_ref", "sha256"]:
+                if k in state_data and state_data[k]:
+                    evidence_refs.append(str(state_data[k]))
+
         checkpoint_payload = {
+            "schema_version": "1.1.0",
             "checkpoint_id": filename,
             "event_id": event_id,
             "step_number": step_number,
             "step_name": step_name,
             "saved_at_utc": datetime.now(timezone.utc).isoformat(),
             "dry_run": self.config.dry_run,
+            "execution_mode": "OFFLINE_SIMULATION",
+            "evidence_references": evidence_refs,
+            "content_sha256": content_sha256,
+            "previous_checkpoint_ref": self._last_checkpoint_ref,
+            "recovery_status": "VERIFIED",
             "state_data": state_data,
         }
-        with open(cp_path, "w", encoding="utf-8") as f:
-            json.dump(checkpoint_payload, f, indent=2, sort_keys=True)
+
+        nonce = f"{os.getpid()}_{uuid.uuid4().hex[:8]}"
+        temp_file = self.checkpoint_dir / f".tmp_{filename}_{nonce}"
+        payload_bytes = json.dumps(checkpoint_payload, indent=2, sort_keys=True).encode("utf-8")
+
+        try:
+            with open(temp_file, "wb") as f:
+                f.write(payload_bytes)
+                f.flush()
+                os.fsync(f.fileno())
+
+            # Atomic rename / replace
+            os.replace(temp_file, cp_path)
+
+            # Sync directory on POSIX systems where supported
+            if hasattr(os, "O_DIRECTORY") and sys.platform != "win32":
+                try:
+                    dfd = os.open(str(self.checkpoint_dir), os.O_RDONLY | os.O_DIRECTORY)
+                    os.fsync(dfd)
+                    os.close(dfd)
+                except OSError:
+                    pass
+        finally:
+            if temp_file.exists():
+                try:
+                    temp_file.unlink()
+                except OSError:
+                    pass
 
         self._checkpoints_saved.append(str(cp_path))
+        self._last_checkpoint_ref = filename
         return cp_path
+
+    def verify_checkpoint_integrity(self, checkpoint_path: Path) -> Tuple[bool, Optional[str], Optional[Dict[str, Any]]]:
+        """
+        Verifies schema, structure, and cryptographic SHA-256 payload integrity of a checkpoint.
+        Quarantines corrupted checkpoints.
+        Returns: (is_valid, status, payload_dict)
+        """
+        if not checkpoint_path.exists() or not checkpoint_path.is_file():
+            return False, "FILE_NOT_FOUND", None
+
+        try:
+            with open(checkpoint_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+
+            required_fields = [
+                "schema_version", "checkpoint_id", "event_id", "step_number",
+                "step_name", "content_sha256", "recovery_status", "state_data"
+            ]
+            for rf in required_fields:
+                if rf not in data:
+                    raise CheckpointCorruptionError(f"Missing required field '{rf}' in checkpoint {checkpoint_path.name}")
+
+            # Re-verify content SHA-256 over state_data
+            canonical_bytes = json.dumps(data["state_data"], indent=2, sort_keys=True).encode("utf-8")
+            actual_sha = hashlib.sha256(canonical_bytes).hexdigest()
+            if actual_sha != data["content_sha256"]:
+                raise CheckpointCorruptionError(
+                    f"Content SHA mismatch in checkpoint {checkpoint_path.name}: expected {data['content_sha256']}, got {actual_sha}"
+                )
+
+            return True, "VERIFIED", data
+
+        except Exception as e:
+            # Quarantine corrupt checkpoint
+            q_dest = self.quarantine_dir / f"{checkpoint_path.name}.corrupted.{int(time.time())}"
+            try:
+                shutil.move(str(checkpoint_path), str(q_dest))
+            except OSError:
+                pass
+            return False, f"CORRUPTION_QUARANTINED: {e}", None
+
+    def recover_latest_checkpoint(self, event_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Scans all checkpoints for an event, validates integrity, quarantines corrupt entries,
+        and returns the highest verified checkpoint state.
+        """
+        cp_files = sorted(
+            [f for f in self.checkpoint_dir.glob(f"checkpoint_{event_id}_step*.json") if not f.name.startswith(".tmp_")],
+            key=lambda x: str(x.name),
+            reverse=True,
+        )
+
+        for cp_file in cp_files:
+            is_valid, status, payload = self.verify_checkpoint_integrity(cp_file)
+            if is_valid and payload:
+                return payload
+
+        return None
 
     def process_next_event(
         self,

@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:05:24.627179+00:00",
+  "audit_name": "Deterministic Recovery Simulation Audit",
+  "status": "PASS",
+  "event_id": "EVT-RECOVERY-SIM-01",
+  "simulated_crash_stage": "STAGE_7 (AFTER_VAULT_WRITE_BEFORE_WINDOW_COMPLETE)",
+  "recovered_at_step": 7,
+  "terminal_state": "RESEARCH_ELIGIBILITY_REVIEW",
+  "total_checkpoints_created": 13,
+  "canonical_scientific_hash": "78c62a33d866a3336ad72913b0d803be7b33d0df9dd4901e6a94a993f3cc6640",
+  "canonical_results": {
+    "event_id": "EVT-RECOVERY-SIM-01",
+    "indicator": "CPI_MOM",
+    "survey_value": 0.2,
+    "actual_value": 0.3,
+    "calculated_surprise": 0.1,
+    "pre_event_open": 65000.0,
+    "pre_event_close": 65018.08,
+    "post_event_open": 65000.0,
+    "post_event_close": 65030.24,
+    "source_evidence_sha256": "7c3f7963829e3076b1bad1b50c2d2b68cd7cdeba06022bb652793fcc28f5434d",
+    "directional_trading_signal": "NONE_PROHIBITED",
+    "terminal_status": "RESEARCH_ELIGIBILITY_REVIEW"
+  },
+  "reproducibility_verified": true,
+  "directional_trading_signals_produced": 0,
+  "capital_allocated_usd": 0.0
+}

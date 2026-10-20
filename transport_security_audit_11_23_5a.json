@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.1.0",
+  "generated_at_utc": "2026-10-20T12:05:24.510621+00:00",
+  "audit_name": "Read-Only HTTPS Transport Security Audit",
+  "status": "PASS",
+  "network_enabled_by_default": false,
+  "connection_protocol": "STRICT_HTTPS_ONLY",
+  "tls_verification": {
+    "mode": "CERT_REQUIRED",
+    "check_hostname": true,
+    "ca_validation": "SYSTEM_DEFAULT_TRUSTED_CAS",
+    "sni_preservation": true
+  },
+  "allowed_http_methods": [
+    "GET",
+    "HEAD"
+  ],
+  "prohibited_methods_rejected": [
+    "POST",
+    "PUT",
+    "DELETE",
+    "PATCH",
+    "CONNECT",
+    "OPTIONS"
+  ],
+  "domain_allowlist": {
+    "approved_domains_count": 9,
+    "approved_domains": [
+      "api.binance.com",
+      "bea.gov",
+      "bls.gov",
+      "data-api.binance.vision",
+      "federalreserve.gov",
+      "mempool.space",
+      "www.bea.gov",
+      "www.bls.gov",
+      "www.federalreserve.gov"
+    ],
+    "suffix_spoofing_rejected": true,
+    "ip_literals_rejected": true
+  },
+  "anti_ssrf_and_dns_rebinding": {
+    "inspection_scope": "ALL_A_AND_AAAA_RECORDS",
+    "mixed_public_private_resolution": "FAIL_CLOSED_REJECTED",
+    "connection_pinning": "DIRECT_SOCKET_TO_VERIFIED_PUBLIC_IP",
+    "peer_ip_verification": "ENFORCED_AFTER_CONNECT",
+    "blocked_ip_ranges": [
+      "127.0.0.0/8",
+      "10.0.0.0/8",
+      "172.16.0.0/12",
+      "192.168.0.0/16",
+      "169.254.0.0/16",
+      "100.64.0.0/10",
+      "198.18.0.0/15",
+      "::1",
+      "fc00::/7",
+      "fe80::/10",
+      "192.0.2.0/24",
+      "198.51.100.0/24",
+      "203.0.113.0/24",
+      "2001:db8::/32",
+      "::ffff:0:0/96"
+    ]
+  },
+  "redirect_security": {
+    "redirects_enabled_by_default": false,
+    "revalidation_on_redirect": true,
+    "redirect_to_http_rejected": true,
+    "redirect_to_unapproved_domain_rejected": true,
+    "redirect_loop_detection": true,
+    "max_redirects_limit": 3
+  },
+  "resource_bounds": {
+    "max_response_size_bytes": 10485760,
+    "streaming_size_cutoff": true,
+    "max_decompressed_size_bytes": 20971520,
+    "decompression_bomb_protection": true,
+    "connect_timeout_seconds": 5.0,
+    "read_timeout_seconds": 10.0,
+    "total_request_deadline_seconds": 15.0
+  },
+  "trading_and_credential_isolation": {
+    "trading_endpoint_patterns_blocked": 8,
+    "prohibited_request_headers": [
+      "api-key",
+      "apikey",
+      "authorization",
+      "cookie",
+      "proxy-authorization",
+      "secret-key",
+      "set-cookie",
+      "x-api-key",
+      "x-mbx-apikey"
+    ],
+    "credential_forwarding_blocked": true,
+    "automatic_proxy_credential_leak_blocked": true
+  }
+}

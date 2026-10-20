@@ -39,6 +39,9 @@ from .evidence_vault import (
     ImmutableEvidenceVault,
     VaultCorruptionError,
     VaultSecurityError,
+    VaultLockTimeoutError,
+    VaultRecoveryStatus,
+    CrossProcessVaultLock,
 )
 from .market_observer import ProspectiveMarketObserver, MarketCandle, EventObservationReport
 from .event_state_machine import EventStateMachine, EventLifecycleTransitionError
@@ -66,6 +69,8 @@ from .research_transport import (
     ResponseSizeExceededError,
     TransportTimeoutError,
     RateLimitExceededError,
+    TLSVerificationError,
+    RedirectSecurityError,
 )
 from .observability import ProspectiveObservability
 from .pilot_runner import (
@@ -73,8 +78,16 @@ from .pilot_runner import (
     PilotConfig,
     PilotAuthorizationToken,
     PilotExecutionError,
+    CheckpointCorruptionError,
+)
+from .observation_authorization import (
+    ObservationAuthorizationToken,
+    ObservationAuthorizationEngine,
+    AuthorizationCapability,
+    AuthorizationStatus,
 )
 from .end_to_end_pilot_sim import EndToEndPilotSimulationSuite
+from .recovery_simulation import EndToEndRecoverySimulationRunner
 
 __all__ = [
     "verify_sprint07_freeze",
@@ -122,6 +135,9 @@ __all__ = [
     "TimestampProvenanceClassification",
     "VaultCorruptionError",
     "VaultSecurityError",
+    "VaultLockTimeoutError",
+    "VaultRecoveryStatus",
+    "CrossProcessVaultLock",
     "CapabilityType",
     "ProspectiveCapabilityToken",
     "ReadOnlyResearchTransport",
@@ -137,10 +153,18 @@ __all__ = [
     "ResponseSizeExceededError",
     "TransportTimeoutError",
     "RateLimitExceededError",
+    "TLSVerificationError",
+    "RedirectSecurityError",
     "ProspectiveObservability",
     "ProspectivePilotRunner",
     "PilotConfig",
     "PilotAuthorizationToken",
     "PilotExecutionError",
+    "CheckpointCorruptionError",
+    "ObservationAuthorizationToken",
+    "ObservationAuthorizationEngine",
+    "AuthorizationCapability",
+    "AuthorizationStatus",
     "EndToEndPilotSimulationSuite",
+    "EndToEndRecoverySimulationRunner",
 ]

@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:05:24.561655+00:00",
+  "audit_name": "Real-World Observation Authorization Framework Audit",
+  "status": "PASS",
+  "capabilities_segregation": {
+    "OFFLINE_SIMULATION": "PERMITTED_IN_SPRINT_11_23_5A",
+    "READ_ONLY_EXTERNAL_OBSERVATION": "DESIGNED_AND_TESTED_BUT_NOT_AUTHORIZED",
+    "LIVE_ORDER_EXECUTION": "PERMANENTLY_PROHIBITED_IN_RESEARCH_SUBSYSTEM"
+  },
+  "token_structure": {
+    "token_id": "UUID_V4",
+    "capability": "EXPLICIT_ENUM",
+    "operator_name": "STRING",
+    "issued_at_utc": "ISO_UTC",
+    "not_before_utc": "ISO_UTC",
+    "expires_at_utc": "ISO_UTC",
+    "authorized_event_id": "STRING_OR_WILDCARD",
+    "approved_domains": "LIST_OF_STRINGS",
+    "max_requests_allowed": "INTEGER",
+    "max_bytes_allowed": "INTEGER",
+    "signature_digest": "HMAC_SHA256",
+    "is_authorized": "BOOLEAN (STRICTLY_FALSE_IN_THIS_SPRINT)",
+    "is_revoked": "BOOLEAN"
+  },
+  "fail_closed_validation": {
+    "unauthorized_tokens_rejected": true,
+    "expired_tokens_rejected": true,
+    "revoked_tokens_rejected": true,
+    "out_of_scope_domains_rejected": true,
+    "request_quota_enforced": true,
+    "byte_volume_quota_enforced": true,
+    "trading_capability_strictly_prohibited": true
+  },
+  "sprint_11_23_5a_activation_status": "REAL_WORLD_COLLECTION_DISABLED_AND_UNAUTHORIZED"
+}

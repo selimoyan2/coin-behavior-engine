@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:05:24.562218+00:00",
+  "audit_name": "Point-in-Time Evidence Chain & Consensus Vintage Audit",
+  "status": "PASS",
+  "provenance_fields_tracked": [
+    "scheduled_publication_at_utc",
+    "actual_official_publication_at_utc",
+    "first_observed_at_utc",
+    "retrieval_start_at_utc",
+    "retrieval_complete_at_utc",
+    "timestamp_uncertainty_seconds",
+    "survey_published_at_utc",
+    "raw_document_sha256",
+    "source_evidence_ref",
+    "candle_start_utc",
+    "candle_end_utc"
+  ],
+  "vintage_law_enforcement": {
+    "rule": "consensus_first_observed_at < release_publication_at AND survey_published_at < release_publication_at",
+    "post_release_surveys": "REJECTED_WITH_VINTAGE_VIOLATION_STATUS",
+    "retrospective_calendar_matching": "REJECTED_FROM_VERIFICATION (STATUS_REMAINS_CONSENSUS_UNVERIFIED)",
+    "physical_byte_hash_requirement": "MANDATORY_64_CHAR_SHA256_OVER_RAW_DOCUMENT"
+  },
+  "timing_uncertainty_gates": {
+    "max_acceptable_uncertainty_seconds": 300.0,
+    "uncertainty_breach_action": "QUARANTINE_TO_TIMESTAMP_UNCERTAIN",
+    "directional_trading_promotion": "PERMANENTLY_BLOCKED"
+  }
+}

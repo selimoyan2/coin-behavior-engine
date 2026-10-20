@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-10-20T12:05:24.562218+00:00",
+  "audit_name": "Official Statistical Agency & Market Interface Compatibility Audit",
+  "status": "PASS",
+  "execution_mode": "OFFLINE_FIXTURE_SIMULATED",
+  "live_scraping_circumvention": "STRICTLY_PROHIBITED",
+  "source_specifications": {
+    "Bureau_of_Labor_Statistics": {
+      "base_url": "https://www.bls.gov",
+      "indicators": [
+        "CPI_YOY",
+        "NONFARM_PAYROLLS",
+        "UNEMPLOYMENT_RATE"
+      ],
+      "content_types": [
+        "application/pdf",
+        "text/html",
+        "text/plain"
+      ],
+      "publication_timing": "08:30:00 US Eastern (DST aware)",
+      "expected_response_size_kb": "50 - 250 KB",
+      "rate_limit_policy": "Maximum 50 requests/minute",
+      "failure_modes": [
+        "403 Cloudflare WAF",
+        "429 Rate Limit",
+        "404 Restructure",
+        "503 Maintenance"
+      ]
+    },
+    "Bureau_of_Economic_Analysis": {
+      "base_url": "https://www.bea.gov",
+      "indicators": [
+        "GDP_ANNUALIZED",
+        "PCE_CORE_YOY"
+      ],
+      "content_types": [
+        "application/pdf",
+        "text/html",
+        "application/json"
+      ],
+      "publication_timing": "08:30:00 US Eastern",
+      "expected_response_size_kb": "100 - 500 KB",
+      "rate_limit_policy": "Maximum 100 requests/minute",
+      "failure_modes": [
+        "403 WAF",
+        "429 Rate Limit",
+        "JSON schema evolution"
+      ]
+    },
+    "Federal_Reserve_Board": {
+      "base_url": "https://www.federalreserve.gov",
+      "indicators": [
+        "FOMC_RATE_DECISION",
+        "FOMC_STATEMENT"
+      ],
+      "content_types": [
+        "text/html",
+        "application/pdf"
+      ],
+      "publication_timing": "14:00:00 US Eastern",
+      "expected_response_size_kb": "30 - 150 KB",
+      "rate_limit_policy": "Maximum 30 requests/minute",
+      "failure_modes": [
+        "403 Access Denied",
+        "High latency at 14:00 ET release spike"
+      ]
+    },
+    "Binance_Spot_Public_Interface": {
+      "base_url": "https://api.binance.com",
+      "endpoints": [
+        "/api/v3/klines",
+        "/api/v3/ticker/price"
+      ],
+      "content_types": [
+        "application/json"
+      ],
+      "market": "BTCUSDT Spot Only",
+      "weight_policy": "Max 1200 weight/minute IP limit",
+      "private_api_access": "STRICTLY_PROHIBITED",
+      "order_endpoints": "DENYLISTED_AND_BLOCKED"
+    }
+  }
+}

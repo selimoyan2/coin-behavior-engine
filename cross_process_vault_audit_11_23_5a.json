@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.2.0",
+  "generated_at_utc": "2026-10-20T12:05:24.539049+00:00",
+  "audit_name": "Cross-Process Evidence Vault Durability Audit",
+  "status": "PASS",
+  "coordination_primitive": "OS_ADVISORY_FILE_LOCK (msvcrt on Windows, fcntl on Unix)",
+  "cross_process_multiprocessing_tested": true,
+  "multiprocessing_concurrency_verified": "GENUINE_SEPARATE_OS_PROCESSES",
+  "create_if_absent_protocol": "PREVENTS_SILENT_OVERWRITE_AND_TAMPERING",
+  "atomic_persistence_pipeline": "UNIQUE_TEMP_STAGE -> FSYNC -> ATOMIC_REPLACE",
+  "journal_resilience": "APPEND_ONLY_FSYNC_WITH_TRUNCATED_LINE_ISOLATION",
+  "explicit_recovery_statuses": [
+    "VERIFIED",
+    "RECOVERABLE",
+    "INCOMPLETE",
+    "CORRUPTED",
+    "QUARANTINED"
+  ],
+  "path_traversal_and_symlink_defense": "RESOLVED_ROOT_ANCHORING_ACTIVE",
+  "vault_health_status": "HEALTHY",
+  "recovery_status_verdict": "VERIFIED"
+}

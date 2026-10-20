@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.1.0",
+  "generated_at_utc": "2026-10-20T12:05:24.561655+00:00",
+  "audit_name": "Atomic Checkpoint Persistence & Durability Audit",
+  "status": "PASS",
+  "persistence_sequence": "VALIDATE -> UNIQUE_STAGING_TMP -> CANONICAL_HASH -> FSYNC -> ATOMIC_REPLACE -> DIR_SYNC",
+  "required_schema_fields": [
+    "schema_version",
+    "checkpoint_id",
+    "event_id",
+    "step_number",
+    "step_name",
+    "saved_at_utc",
+    "dry_run",
+    "execution_mode",
+    "evidence_references",
+    "content_sha256",
+    "previous_checkpoint_ref",
+    "recovery_status",
+    "state_data"
+  ],
+  "cryptographic_verification": "RECALCULATES_SHA256_OVER_STATE_DATA",
+  "corruption_handling": "QUARANTINES_MALFORMED_CHECKPOINTS",
+  "fallback_recovery": "SCANS_AND_FALLS_BACK_TO_HIGHEST_VERIFIED_CHECKPOINT",
+  "sample_checkpoint_verification": "VERIFIED",
+  "sample_checkpoint_valid": true
+}

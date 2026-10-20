@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0.0",
+  "sprint": "11.23.5A",
+  "timestamp_utc": "2026-10-20T11:58:55.421298+00:00",
+  "git_preflight": {
+    "head_commit": "f11f21e34764f62aea5c0e98f192f4132b83a506",
+    "clean_tree": false,
+    "status_output": "?? scripts/sprint11_23_5a_phase0_baseline_freeze.py",
+    "remote": "origin\thttps://github.com/selimoyan2/coin-behavior-engine.git (fetch)\norigin\thttps://github.com/selimoyan2/coin-behavior-engine.git (push)"
+  },
+  "base_commit_verified": true,
+  "total_artifacts_frozen": 10,
+  "artifacts": {
+    "sprint11_23_3_source_freeze_11_23_4.json": {
+      "sha256": "ad3707f3290a6b5088e662abedd0e6f442b6eaab4ac5dddf16751192471a582d",
+      "byte_size": 3821,
+      "mirrored_to_root": true,
+      "verified": true
+    },
+    "security_hardening_audit_11_23_4.json": {
+      "sha256": "4c104925027207582f375af4181cc3745b46d802a11c7e5db96a828742efd8e0",
+      "byte_size": 1009,
+      "mirrored_to_root": true,
+      "verified": true
+    },
+    "read_only_transport_audit_11_23_4.json": {
+      "sha256": "3d0c9066019caf0c6fbd4b7f121e74f467bc2c1b1cd72cc367b2afa5d53f1f0a",
+      "byte_size": 1478,
+      "mirrored_to_root": true,
+      "verified": true
+    },
+    "evidence_vault_durability_audit_11_23_4.json": {
+      "sha256": "e16dbf7b104b122bdefa83d75bb838738e7046816ae9340b42b7fb85bd470b37",
+      "byte_size": 732,
+      "mirrored_to_root": true,
+      "verified": true
+    },
+    "timestamp_provenance_audit_11_23_4.json": {
+      "sha256": "00dd2640ebba47ec6c2a6ca7b14182563b8e9a5eb2c94eb5fa55bdeb4938d648",
+      "byte_size": 784,
+      "mirrored_to_root": true,
+      "verified": true
+    },
+    "consensus_vintage_audit_11_23_4.json": {
+      "sha256": "ef34c1da1e569d67df9a4c82277d867828010df16c674df3c81029a08936fa4e",
+      "byte_size": 642,
+      "mirrored_to_root": true,
+      "verified": true
+    },
+    "pilot_simulation_audit_11_23_4.json": {
+      "sha256": "ff0d7343b0aa3fa0e5ac576fe8a6a804c337a1dfcc9639f7c2a59559d88c5f2d",
+      "byte_size": 2640,
+      "mirrored_to_root": true,
+      "verified": true
+    },
+    "performance_safety_audit_11_23_4.json": {
+      "sha256": "a1a44ce8716b5f637eec50ca96400d98ec1c3d440893070863f1e417e15f9e7e",
+      "byte_size": 537,
+      "mirrored_to_root": true,
+      "verified": true
+    },
+    "research_report_11_23_4.md": {
+      "sha256": "ea4d728be9625d46eeeb9366beac6e20a503bec7eb0417a19eb5682cc66d0461",
+      "byte_size": 8499,
+      "mirrored_to_root": true,
+      "verified": true
+    },
+    "reproducibility_manifest_11_23_4.json": {
+      "sha256": "2e4bcf30b1513316da1e9df3e43a2a2541536f5c841af3638f9e3a06b83d0261",
+      "byte_size": 2482,
+      "mirrored_to_root": true,
+      "verified": true
+    }
+  },
+  "baseline_tests_collected": 116,
+  "baseline_tests_passed": 116,
+  "governance_baseline": {
+    "real_network_collection": "DISABLED",
+    "unattended_monitoring": "DISABLED",
+    "live_trading": "PROHIBITED",
+    "operator_authorization": "NOT_GRANTED",
+    "directional_trading_eligibility": "ZERO"
+  }
+}
