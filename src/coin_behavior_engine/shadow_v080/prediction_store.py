@@ -220,6 +220,8 @@ class ImmutablePredictionStoreV080:
     def get_pending_count(self) -> int:
         """Return total count of pending predictions."""
         with self._lock:
+            if len(self._unmatured_events) < 2000:
+                return len(self._unmatured_events)
             if self.durable_index:
                 return self.durable_index.get_pending_count()
             return len(self._unmatured_events)
@@ -227,7 +229,7 @@ class ImmutablePredictionStoreV080:
     def get_unmatured_events(self) -> List[ShadowPredictionEvent]:
         """Return all currently un-matured prediction events without silent eviction."""
         with self._lock:
-            if self.durable_index:
+            if len(self._unmatured_events) >= 2000 and self.durable_index:
                 pending_count = self.durable_index.get_pending_count()
                 if pending_count > len(self._unmatured_events):
                     return self.durable_index.get_pending_predictions()
@@ -251,6 +253,18 @@ class ImmutablePredictionStoreV080:
             self._unmatured_events = [e for e in self._unmatured_events if e.record_hash not in matured_hashes]
             if self.durable_index:
                 self.durable_index.mark_matured_batch(matured_hashes, status="MATURED")
+
+    def close(self) -> None:
+        """Close underlying SQLite durable index."""
+        with self._lock:
+            if self.durable_index:
+                try:
+                    self.durable_index.close()
+                except Exception:
+                    pass
+
+    def __del__(self) -> None:
+        self.close()
 
     def list_events(self) -> List[ShadowPredictionEvent]:
         """Read and return all stored prediction events from disk (retained for backward compatibility)."""

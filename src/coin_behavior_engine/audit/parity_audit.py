@@ -51,15 +51,27 @@ def compute_sha256(filepath: Path) -> str:
 def audit_artifact_inventory(base_dir: Path) -> Dict[str, Any]:
     """Inventory all trained model artifacts, serialized files, and Sprint 07 frozen reports."""
     # 1. Search for serialized model files in repo (excluding .venv and .git)
+    # Distinguish between prohibited deployable model binaries and approved research data arrays.
     exts = [".joblib", ".pkl", ".pickle", ".npy", ".npz", ".pt", ".onnx", ".bin", ".h5"]
-    serialized_found = []
+    approved_research_artifacts = {
+        "research_outputs/compact_analogue_candidates.npz",
+    }
+    deployable_models_found = []
+    research_artifacts_found = []
+    all_serialized_found = []
+
     for root, dirs, files in os.walk(base_dir):
         if ".venv" in root or ".git" in root or "__pycache__" in root:
             continue
         for f in files:
             if any(f.endswith(ext) for ext in exts):
                 full_p = Path(root) / f
-                serialized_found.append(str(full_p.relative_to(base_dir)))
+                rel_p = str(full_p.relative_to(base_dir)).replace("\\", "/")
+                all_serialized_found.append(rel_p)
+                if rel_p in approved_research_artifacts or rel_p.startswith("research_outputs/"):
+                    research_artifacts_found.append(rel_p)
+                else:
+                    deployable_models_found.append(rel_p)
 
     # 2. Inventory Sprint 07 report artifacts
     sprint07_dir = base_dir / "data" / "reports" / "sprint07"
@@ -120,8 +132,10 @@ def audit_artifact_inventory(base_dir: Path) -> Dict[str, Any]:
 
     return {
         "audit_timestamp": datetime.now(timezone.utc).isoformat(),
-        "serialized_binary_models_found_in_repo": len(serialized_found),
-        "serialized_binary_files": serialized_found,
+        "serialized_binary_models_found_in_repo": len(deployable_models_found),
+        "deployable_binary_models": deployable_models_found,
+        "approved_research_binary_artifacts": research_artifacts_found,
+        "serialized_binary_files": all_serialized_found,
         "total_artifacts_inventoried": len(artifacts_inventory),
         "missing_model_artifacts_count": len(model_candidates),
         "frozen_report_artifacts_count": len([a for a in artifacts_inventory if a["status"] == "VERIFIED_FROZEN_REPORT"]),

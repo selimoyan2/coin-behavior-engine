@@ -193,6 +193,8 @@ def test_01_long_run_10000_sequential_events_stress(tmp_path):
     assert rec_duration < 1.0, f"Restart recovery {rec_duration:.3f} s exceeded 1.0 s threshold"
     assert recovered_store.count == n_events
     assert recovered_store.latest_entry_hash == engine.evidence_store.latest_entry_hash
+    recovered_store.close()
+    engine.evidence_store.close()
 
 
 def test_02_persistence_before_continuity_transactional_guarantee(tmp_path):

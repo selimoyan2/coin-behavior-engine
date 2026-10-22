@@ -146,24 +146,24 @@ class SnapshotManagerV080:
         if not candles:
             raise SnapshotError("Cannot persist empty candle buffer.")
 
-        # Serialize candle payload to canonical JSON
+        # Serialize candle payload to canonical JSON with pre-sorted keys
         candle_dicts = [
             {
-                "timestamp_open": c.timestamp_open,
-                "timestamp_close": c.timestamp_close,
-                "datetime_open": c.datetime_open,
-                "datetime_close": c.datetime_close,
-                "open": c.open,
-                "high": c.high,
-                "low": c.low,
                 "close": c.close,
-                "volume": c.volume,
+                "datetime_close": c.datetime_close,
+                "datetime_open": c.datetime_open,
+                "high": c.high,
                 "is_closed": c.is_closed,
+                "low": c.low,
+                "open": c.open,
                 "receipt_timestamp_utc": c.receipt_timestamp_utc,
+                "timestamp_close": c.timestamp_close,
+                "timestamp_open": c.timestamp_open,
+                "volume": c.volume,
             }
             for c in candles
         ]
-        payload_bytes = json.dumps(candle_dicts, sort_keys=True).encode("utf-8")
+        payload_bytes = json.dumps(candle_dicts).encode("utf-8")
         payload_hash = hashlib.sha256(payload_bytes).hexdigest()
 
         header = SnapshotHeader(

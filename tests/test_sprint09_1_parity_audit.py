@@ -26,9 +26,11 @@ from coin_behavior_engine.prospective.freeze import verify_sprint07_freeze
 
 
 def test_artifact_inventory_and_search():
-    """Verify that audit_artifact_inventory detects 0 model artifacts and discovers 29 Sprint 07 reports."""
+    """Verify that audit_artifact_inventory detects 0 deployable model artifacts and distinguishes approved research artifacts."""
     res = audit_artifact_inventory(Path("."))
     assert res["serialized_binary_models_found_in_repo"] == 0
+    assert len(res["deployable_binary_models"]) == 0
+    assert "research_outputs/compact_analogue_candidates.npz" in res["approved_research_binary_artifacts"]
     assert res["missing_model_artifacts_count"] == 5
     assert res["frozen_report_artifacts_count"] >= 29
     assert res["total_artifacts_inventoried"] >= 34

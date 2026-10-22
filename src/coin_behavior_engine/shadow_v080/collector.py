@@ -352,7 +352,7 @@ class ShadowCollectorV080:
             warmup_status="FULL_WINDOW" if buf_len >= 288 else "WARMING_UP",
             clock_trusted=clock_trusted,
             total_predictions=self.prediction_store.event_count,
-            pending_outcomes=len(self.prediction_store.get_unmatured_events()),
+            pending_outcomes=self.prediction_store.get_pending_count(),
             matured_outcomes=len(self.outcome_resolver._seen_predictions),
             invalidated_outcomes=0,
             hash_chain_valid=hash_chain_valid,
@@ -370,3 +370,20 @@ class ShadowCollectorV080:
             "cycle_latency_ms": round(cycle_ms, 2),
             "telemetry": telemetry.to_dict(),
         }
+
+    def close(self) -> None:
+        """Close subordinate resources including SQLite connections."""
+        if hasattr(self, "prediction_store") and self.prediction_store:
+            try:
+                self.prediction_store.close()
+            except Exception:
+                pass
+        if hasattr(self, "outcome_resolver") and self.outcome_resolver:
+            if hasattr(self.outcome_resolver, "durable_index") and self.outcome_resolver.durable_index:
+                try:
+                    self.outcome_resolver.durable_index.close()
+                except Exception:
+                    pass
+
+    def __del__(self) -> None:
+        self.close()

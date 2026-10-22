@@ -1,0 +1,37 @@
+{
+  "sprint": "11.23.5B-6.5.2",
+  "generated_at_utc": "2026-10-22T22:35:00Z",
+  "artifact_integrity_audit": {
+    "frozen_engine_hashes": {
+      "status": "UNMODIFIED",
+      "detail": "Zero modifications to frozen historical engine hashes or baseline reference snapshots."
+    },
+    "quarantine_audit_prohibition": {
+      "status": "ENFORCED",
+      "detail": "quarantine/gap_recovery_audit.jsonl remains absent, satisfying test_sprint11_02e_research_readiness.py:890."
+    },
+    "binary_artifact_inventory": {
+      "deployable_model_binaries_count": 0,
+      "approved_research_binary_artifacts": [
+        {
+          "path": "research_outputs/compact_analogue_candidates.npz",
+          "sha256": "a7ee5335f40989161a4213d95b880e9c7df2d5fc3bafe4f26b439387f8bfc484",
+          "size_bytes": 3138590,
+          "classification": "Approved historical research analogue feature vector array",
+          "provenance_sprint": "11.16B.5"
+        }
+      ]
+    },
+    "decision_attribution_dataset": {
+      "total_rows": 214,
+      "invariants_verified": [
+        "Unique trade IDs matching TRD- prefix regex",
+        "Strict temporal causality (entry_timestamp < exit_timestamp)",
+        "Strictly positive execution prices (entry_price > 0, exit_price > 0)",
+        "Forensic classification across all 6 categories (VOLATILITY_COMPRESSION_FALSE_BREAK, ETF_OUTFLOW_DRIFT, DERIVATIVES_OVERLEVERAGED_SQUEEZE, MACRO_DATA_SURPRISE, LIQUIDITY_VACUUM_STOP_RUN, TREND_EXHAUSTION_DIVERGENCE)",
+        "Exact dollar accounting balance (net_pnl_usd == round(gross_pnl_usd - fees_paid_usd, 2))"
+      ],
+      "status": "VERIFIED_ACCURATE"
+    }
+  }
+}

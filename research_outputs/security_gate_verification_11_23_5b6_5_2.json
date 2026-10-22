@@ -1,0 +1,33 @@
+{
+  "sprint": "11.23.5B-6.5.2",
+  "generated_at_utc": "2026-10-22T22:35:00Z",
+  "security_invariants": {
+    "cryptography_library": {
+      "package": "cryptography",
+      "version": "50.0.1",
+      "primitive": "Ed25519 (RFC 8032)",
+      "custom_fallback_allowed": false,
+      "status": "PASS"
+    },
+    "operator_identity_hardening": {
+      "mechanism": "Ed25519 digital signature of canonical approval intent",
+      "domain_separation": "cbe-bls-v1:intent",
+      "key_registry": "Authorized operator public-key registry with explicit roles",
+      "status": "PASS"
+    },
+    "authorization_token_isolation": {
+      "hmac_sha256_active": true,
+      "expiry_enforced": true,
+      "scope_checked": true,
+      "status": "PASS"
+    },
+    "governance_safeguards": {
+      "governance_authorization": "NOT_GRANTED",
+      "production_token_issued": false,
+      "real_network_access": "DISABLED",
+      "real_market_observation": "DISABLED",
+      "live_trading_prohibition": "PERMANENTLY_PROHIBITED",
+      "status": "PASS"
+    }
+  }
+}

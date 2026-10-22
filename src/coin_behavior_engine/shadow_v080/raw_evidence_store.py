@@ -92,6 +92,7 @@ class RawMarketEvidenceStore:
         self._latest_open_ts: int = -1
         self._latest_entry_hash: str = GENESIS_PREV_HASH
         self._index_conn: Optional[sqlite3.Connection] = None
+        self._evidence_file_handle: Optional[Any] = None
 
         self._ensure_dirs()
         self._init_disk_index()
@@ -229,7 +230,15 @@ class RawMarketEvidenceStore:
         self._index_conn.commit()
 
     def close(self) -> None:
-        """Close SQLite index connection cleanly."""
+        """Close SQLite index connection and open file handles cleanly."""
+        if getattr(self, "_evidence_file_handle", None) and not self._evidence_file_handle.closed:
+            try:
+                self._evidence_file_handle.flush()
+                os.fsync(self._evidence_file_handle.fileno())
+                self._evidence_file_handle.close()
+            except Exception:
+                pass
+            self._evidence_file_handle = None
         if self._index_conn:
             try:
                 self._index_conn.close()
@@ -588,7 +597,10 @@ class RawMarketEvidenceStore:
             raise ValueError("candle cannot be None")
 
         # 1. Duplicate & Conflict Check (checks bounded cache and disk index)
-        if (candle.timestamp_open in self._recent_candles_by_ts) or self._index_has_timestamp(candle.timestamp_open):
+        # If timestamp is strictly greater than latest observed open_ts, it cannot be a duplicate
+        if (candle.timestamp_open <= self._latest_open_ts) and (
+            (candle.timestamp_open in self._recent_candles_by_ts) or self._index_has_timestamp(candle.timestamp_open)
+        ):
             existing = self.get_candle_by_timestamp(candle.timestamp_open)
             if existing is not None:
                 if existing.matches_payload(candle):
@@ -644,12 +656,13 @@ class RawMarketEvidenceStore:
 
         try:
             encoded_line = (entry.to_json() + "\n").encode("utf-8")
-            with open(self.evidence_file, "ab") as f:
-                f.seek(0, os.SEEK_END)
-                line_offset = f.tell()
-                f.write(encoded_line)
-                f.flush()
-                os.fsync(f.fileno())
+            if self._evidence_file_handle is None or self._evidence_file_handle.closed:
+                self._evidence_file_handle = open(self.evidence_file, "a+b")
+            self._evidence_file_handle.seek(0, os.SEEK_END)
+            line_offset = self._evidence_file_handle.tell()
+            self._evidence_file_handle.write(encoded_line)
+            self._evidence_file_handle.flush()
+            os.fsync(self._evidence_file_handle.fileno())
         except OSError as e:
             if e.errno == errno.EROFS:
                 raise EvidencePersistenceError(f"Read-only filesystem: cannot persist candle to {self.evidence_file}: {e}")

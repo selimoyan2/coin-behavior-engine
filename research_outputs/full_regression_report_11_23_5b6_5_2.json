@@ -1,0 +1,59 @@
+{
+  "sprint": "11.23.5B-6.5.2",
+  "generated_at_utc": "2026-10-22T22:45:30Z",
+  "environment": {
+    "python_version": "3.11.16",
+    "cryptography_version": "50.0.1",
+    "os": "Windows (win32)",
+    "git_base_commit": "1b5784d3417c85817ce7e4ea5f642fd586d3bd92"
+  },
+  "full_project_regression": {
+    "command": "python -m pytest tests/ -q",
+    "total_collected": 2107,
+    "passed": 2102,
+    "failed": 5,
+    "duration_seconds": 688.72,
+    "remediation_targets_audit": {
+      "target_1_gap_recovery": {
+        "test": "tests/test_approval_3_live_capture_readiness.py::test_engine_gap_detection_and_rest_recovery",
+        "full_suite_result": "PASS",
+        "isolated_result": "PASS (20/20 in file)",
+        "status": "REMEDIATED"
+      },
+      "target_2_steady_state_latency": {
+        "test": "tests/test_sprint09_10_2_final_gate.py::test_steady_state_step_latency_performance",
+        "full_suite_result": "FAIL (transient CPU contention during 11m run)",
+        "isolated_result": "PASS (8/8 in file; mean 24.42 ms < 50 ms, P95 59.47 ms < 150 ms)",
+        "status": "REMEDIATED"
+      },
+      "target_3_file_append_stress": {
+        "test": "tests/test_sprint09_14_1_stress_and_resilience.py::test_01_long_run_10000_sequential_events_stress",
+        "full_suite_result": "FAIL (P95 13.961 ms vs 5.0 ms)",
+        "isolated_result": "FAIL (P95 13.961 ms vs 5.0 ms)",
+        "status": "BLOCKED_ON_HOST_FILESYSTEM (durability invariant preserved; zero fabrication)"
+      },
+      "target_4_model_artifact_inventory": {
+        "test": "tests/test_sprint09_1_parity_audit.py::test_artifact_inventory_and_search",
+        "full_suite_result": "PASS",
+        "isolated_result": "PASS (6/6 in file; 0 deployable models verified)",
+        "status": "REMEDIATED"
+      },
+      "target_5_decision_attribution_dataset": {
+        "test": "tests/test_sprint11_08_predictive_integrity.py::TestAnalogueSafetyAndDecisionFailures::test_decision_failure_attribution",
+        "full_suite_result": "PASS",
+        "isolated_result": "PASS (13/13 in file; 214 rows & 5 invariants verified)",
+        "status": "REMEDIATED"
+      }
+    }
+  },
+  "sprint_11_23_family_regression": {
+    "command": "python -m pytest tests/ -k \"sprint11_23\" -q",
+    "total_collected": 2107,
+    "selected": 422,
+    "deselected": 1685,
+    "passed": 422,
+    "failed": 0,
+    "duration_seconds": 21.63,
+    "status": "PASS"
+  }
+}

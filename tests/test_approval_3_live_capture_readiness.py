@@ -585,14 +585,23 @@ def test_engine_gap_detection_and_rest_recovery(authorized_env, tmp_path):
     assert gap_event.recovered is True
     assert gap_event.recovery_provenance == ProvenanceSource.REST_GAP_RECOVERY.value
 
-    # Verify audit file was written
-    audit_file = config.quarantine_dir / "gap_recovery_audit.jsonl"
-    assert audit_file.exists()
-    lines = audit_file.read_text(encoding="utf-8").strip().splitlines()
+    # Verify authoritative recovery evidence in durable recovery store
+    metadata_file = engine.recovery_store.metadata_file
+    assert metadata_file.exists()
+    lines = metadata_file.read_text(encoding="utf-8").strip().splitlines()
     assert len(lines) == 1
-    audit_entry = json.loads(lines[0])
-    assert audit_entry["gap_id"] == gap_id
-    assert audit_entry["recovery_provenance"] == "REST_GAP_RECOVERY"
+    meta_entry = json.loads(lines[0])
+    assert meta_entry["gap_id"] == gap_id
+    assert meta_entry["recovered_candles_count"] == 1
+    assert meta_entry["status"] == "COMMITTED"
+
+    journal_file = engine.recovery_store.journal_file
+    assert journal_file.exists()
+    jlines = journal_file.read_text(encoding="utf-8").strip().splitlines()
+    assert len(jlines) == 1
+    j_entry = json.loads(jlines[0])
+    assert j_entry["gap_id"] == gap_id
+    assert j_entry["provenance"] == ProvenanceSource.REST_GAP_RECOVERY.value
 
 
 # ==============================================================================

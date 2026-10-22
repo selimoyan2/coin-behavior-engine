@@ -81,6 +81,7 @@ def test_steady_state_step_latency_performance():
         p95 = sorted_s[int(len(sorted_s) * 0.95)]
         mean_lat = sum(steady) / len(steady)
 
+        col.close()
         assert mean_lat < 50.0, f"Mean latency {mean_lat:.2f} ms exceeds 50 ms"
         assert p95 < 150.0, f"P95 latency {p95:.2f} ms exceeds 150 ms target"
 

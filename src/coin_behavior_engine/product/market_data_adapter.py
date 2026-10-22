@@ -123,10 +123,11 @@ class AtomicSnapshotIO:
     @staticmethod
     def atomic_write(target_path: Path, payload: Dict[str, Any]) -> None:
         """Write JSON payload to an adjacent temp file and atomically replace target."""
-        target_path.parent.mkdir(parents=True, exist_ok=True)
+        if not target_path.parent.exists():
+            target_path.parent.mkdir(parents=True, exist_ok=True)
         temp_file = target_path.with_suffix(".tmp." + str(os.getpid()))
         try:
-            content = json.dumps(payload, indent=2, sort_keys=True).encode("utf-8")
+            content = json.dumps(payload, sort_keys=True).encode("utf-8")
             with open(temp_file, "wb") as f:
                 f.write(content)
                 f.flush()

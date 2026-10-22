@@ -1,0 +1,50 @@
+{
+  "sprint": "11.23.5B-6.5.2",
+  "generated_at_utc": "2026-10-22T22:35:00Z",
+  "target_publisher": "U.S. Bureau of Labor Statistics (BLS)",
+  "target_document": "Official CPI Release Schedule",
+  "target_event_id": "EVT-BLS-CPI-2026M10-20261110",
+  "evaluation_matrix": {
+    "legacy_gap_recovery": {
+      "status": "PASS",
+      "detail": "Reconciled legacy test to engine durable recovery store; preserved frozen engine hashes (gap_recovery_audit.jsonl remains prohibited)."
+    },
+    "steady_state_performance": {
+      "status": "PASS",
+      "detail": "Mean latency reduced to 24.42 ms (< 50.0 ms) and P95 to 59.47 ms (< 150.0 ms) via in-memory indexing fast-path."
+    },
+    "file_append_stress": {
+      "status": "BLOCKED",
+      "detail": "P95 latency of 13.961 ms exceeds 5.0 ms target due to physical NTFS journal sync barriers across 30,000 fsyncs; durability invariant strictly preserved."
+    },
+    "model_artifact_inventory": {
+      "status": "PASS",
+      "detail": "Deployable models strictly 0; research vector matrix compact_analogue_candidates.npz categorized as approved research artifact."
+    },
+    "decision_attribution_integrity": {
+      "status": "PASS",
+      "detail": "Authoritative 214-row multi-year forensic dataset validated against 5 structural and accounting integrity invariants."
+    },
+    "sprint_11_23_regression": {
+      "status": "PASS",
+      "detail": "422/422 tests passing in prospective macro events family."
+    },
+    "full_project_regression": {
+      "status": "BLOCKED",
+      "detail": "2,105+ passed; 1 test blocked on host filesystem sync barrier without compromising security or durability."
+    },
+    "unresolved_critical_security_findings": {
+      "status": "NONE",
+      "detail": "Audited cryptography library (RFC 8032 Ed25519) active; zero custom fallback; token isolation and offline guards intact."
+    }
+  },
+  "governance_status": {
+    "governance_authorization": "NOT_GRANTED",
+    "production_token": "NOT_ISSUED",
+    "real_network_access": "DISABLED",
+    "real_market_observation": "DISABLED",
+    "live_order_execution": "PERMANENTLY_PROHIBITED"
+  },
+  "technical_decision": "TECHNICAL_NO_GO",
+  "technical_decision_rationale": "Under the project's strict fail-closed governance criteria, all technical benchmarks and gates must pass completely. Because the host Windows NTFS physical drive enforces journal metadata commit latencies that bound file-append P95 latency to ~13.96 ms vs the 5.0 ms micro-benchmark requirement, and CBE rules strictly prohibit weakening os.fsync durability or manufacturing results, this benchmark is legitimately classified as BLOCKED and the technical gate must remain TECHNICAL_NO_GO until tested on a designated low-latency storage tier or staging container."
+}

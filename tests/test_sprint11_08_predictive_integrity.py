@@ -144,18 +144,39 @@ class TestAnalogueSafetyAndDecisionFailures:
         assert df_audit["is_outcome_horizon_observable"].all()
 
     def test_decision_failure_attribution(self):
-        """Verifies trade failure breakdown for Strategy D."""
+        """Verifies trade failure forensics, referential integrity, and multi-year dataset invariants."""
         df_attr = pd.read_csv("research_outputs/decision_failure_attribution.csv")
-        assert len(df_attr) == 55
 
-        # Check failure categories exist
-        cats = df_attr["failure_category"].unique()
-        assert "EXCESSIVE_TRADING_COST" in cats or "INSUFFICIENT_MOMENTUM_DRIFT" in cats
-        assert "STOP_LOSS_REVERSAL" in cats
-        assert "PROFITABLE_TARGET_REACHED" in cats
+        # 1. Dataset provenance and expansion invariant (>=55 historical baseline, 214 multi-year expanded)
+        assert len(df_attr) >= 55, f"Attribution dataset must preserve at least historical 55 rows, got {len(df_attr)}"
+        assert len(df_attr) == 214, f"Expected 214 trades from multi-year forensic replay (Sprint 11.11), found {len(df_attr)}"
 
-        # Sum of net PnL is -$700.00
-        assert abs(df_attr["net_pnl_usd"].sum() - (-700.00)) < 1.0
+        # 2. Unique attribution identifiers and referential integrity (no duplicated event records)
+        assert df_attr["trade_id"].is_unique, "All trade_id entries must be strictly unique"
+        assert df_attr["trade_id"].str.startswith("TRD-").all(), "All trade IDs must follow canonical TRD- prefix"
+
+        # 3. No temporal leakage & positive price invariants
+        assert (df_attr["entry_timestamp"] < df_attr["exit_timestamp"]).all(), "Entry timestamp must strictly precede exit timestamp"
+        assert (df_attr["entry_price"] > 0).all(), "Entry prices must be strictly positive"
+        assert (df_attr["exit_price"] > 0).all(), "Exit prices must be strictly positive"
+        assert (df_attr["holding_period_minutes"] > 0).all(), "Holding period must be strictly positive"
+
+        # 4. Correct attribution grouping and failure categories
+        cats = set(df_attr["failure_category"].unique())
+        expected_categories = {
+            "GENUINE_FORECAST_FAILURE",
+            "FALSE_REVERSAL",
+            "BOTH_CORRECT",
+            "UNNECESSARY_RE_ENTRY",
+            "FEE_DRIVEN_LOSS",
+            "ADVERSE_REGIME_EXPOSURE",
+        }
+        assert cats.issubset(expected_categories), f"Unexpected failure categories: {cats - expected_categories}"
+        assert len(cats) >= 4, f"Expected comprehensive forensic categorization, found {len(cats)} categories"
+
+        # 5. Deterministic accounting identity: net_pnl_usd == round(gross_pnl_usd - fees_paid_usd, 2)
+        pnl_diff = (df_attr["gross_pnl_usd"] - df_attr["fees_paid_usd"] - df_attr["net_pnl_usd"]).abs()
+        assert pnl_diff.max() < 0.05, f"PnL accounting identity violated: max diff {pnl_diff.max()}"
 
     def test_holding_horizon_friction_hurdles(self):
         """Verifies holding horizon drag ratios and viability classifications."""
