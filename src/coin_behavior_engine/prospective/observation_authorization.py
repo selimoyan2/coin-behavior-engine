@@ -630,13 +630,18 @@ class TrustedApprovalStore:
                                 f"REPLAY_ATTACK_DETECTED_NONCE_ALREADY_USED: Nonce '{nonce}' was already "
                                 f"consumed by token '{row['token_id']}' at {row['consumed_at_utc']}"
                             )
-                        conn.execute(
-                            """
-                            INSERT INTO approval_nonces (nonce, token_id, request_digest, consumed_at_utc, expires_at_utc)
-                            VALUES (?, ?, ?, ?, ?)
-                            """,
-                            (nonce, token.token_id, proposal_digest, now_utc, token.expires_at_utc),
-                        )
+                        try:
+                            conn.execute(
+                                """
+                                INSERT INTO approval_nonces (nonce, token_id, request_digest, consumed_at_utc, expires_at_utc)
+                                VALUES (?, ?, ?, ?, ?)
+                                """,
+                                (nonce, token.token_id, proposal_digest, now_utc, token.expires_at_utc),
+                            )
+                        except sqlite3.IntegrityError:
+                            raise AuthorizationError(
+                                f"REPLAY_ATTACK_DETECTED_NONCE_ALREADY_USED: Nonce '{nonce}' was already consumed concurrently"
+                            )
 
                     conn.execute("""
                         INSERT INTO approval_records (

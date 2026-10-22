@@ -1,0 +1,33 @@
+{
+  "sprint": "11.23.5B-6.5",
+  "generated_at_utc": "2026-10-22T21:37:16Z",
+  "root_cause_analysis_sprint_6_4_commit_mismatch": {
+    "manifest_commit_sha": "98e61807d770a73840e0c59fdf82ab3795e4b9d1",
+    "actual_git_commit_sha": "9c6088d37cb3103dc1b79b19a0a2b105788207ee",
+    "mechanism_of_divergence": "A Git commit SHA is a SHA-1/SHA-256 hash calculated over the commit object, which includes the tree hash (containing all file contents), parent commit hash, author name, committer name, and exact author/committer timestamps down to the second. Attempting to embed the prospective commit SHA inside a tracked file prior to running 'git commit' alters the content of the file, thereby changing the tree hash, which in turn alters the resulting commit SHA. This creates a circular self-referential paradox that is mathematically impossible to satisfy. Additionally, rebasing onto remote changes alters parent commit hashes, further guaranteeing divergent commit hashes.",
+    "mathematical_impossibility": "Commit SHA is a non-linear cryptographic function of its own contents."
+  },
+  "remediation_architecture": {
+    "stage_1_in_tree_manifest": {
+      "file": "reproducibility_manifest_11_23_5b6_5.json",
+      "scope": "Tracks immutable content hashes of code, deliverables, tests, base commit, and environment",
+      "base_commit": "9c6088d37cb3103dc1b79b19a0a2b105788207ee",
+      "omits_circular_hash": true
+    },
+    "stage_2_detached_post_commit_attestation": {
+      "file": "post_commit_attestation_11_23_5b6_5.json",
+      "verifier_script": "scripts/verify_post_commit_attestation.py",
+      "scope": "Attests to the exact Git commit SHA after 'git commit' is finalized",
+      "attestation_fields": [
+        "final_commit_sha",
+        "parent_commit_sha",
+        "tree_sha",
+        "manifest_content_sha256",
+        "attestation_timestamp_utc",
+        "attestation_signature_or_digest"
+      ]
+    }
+  },
+  "circular_dependency_eliminated": true,
+  "audit_result": "PASS"
+}

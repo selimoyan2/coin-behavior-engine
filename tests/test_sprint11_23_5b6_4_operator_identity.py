@@ -108,7 +108,7 @@ def test_1_valid_approval_intent_success(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-{uuid.uuid4().hex}",
         is_production=False,
     )
@@ -145,7 +145,7 @@ def test_2_unknown_operator_rejected(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-{uuid.uuid4().hex}",
         is_production=False,
     )
@@ -172,7 +172,7 @@ def test_3_spoofed_role_rejected(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-{uuid.uuid4().hex}",
         is_production=False,
     )
@@ -195,7 +195,7 @@ def test_4_tampered_signature_rejected(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-{uuid.uuid4().hex}",
         is_production=False,
     )
@@ -224,7 +224,7 @@ def test_5_tampered_payload_rejected(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-{uuid.uuid4().hex}",
         is_production=False,
     )
@@ -253,7 +253,7 @@ def test_6_wrong_key_for_operator(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-{uuid.uuid4().hex}",
         is_production=False,
     )
@@ -304,7 +304,7 @@ def test_8_revoked_operator_rejected(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-{uuid.uuid4().hex}",
         is_production=False,
     )
@@ -333,7 +333,7 @@ def test_9_not_yet_active_operator_rejected(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-{uuid.uuid4().hex}",
         is_production=False,
     )
@@ -362,7 +362,7 @@ def test_10_expired_operator_rejected(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-{uuid.uuid4().hex}",
         is_production=False,
     )
@@ -392,7 +392,7 @@ def test_11_self_approval_prohibited(test_setup):
         canonical_url=self_req.canonical_url,
         capability=self_req.required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-{uuid.uuid4().hex}",
         is_production=False,
     )
@@ -427,7 +427,7 @@ def test_12_request_digest_mismatch_rejected(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-{uuid.uuid4().hex}",
         is_production=False,
     )
@@ -458,7 +458,7 @@ def test_13_target_event_mismatch_rejected(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-{uuid.uuid4().hex}",
         is_production=False,
     )
@@ -489,7 +489,7 @@ def test_14_canonical_url_mismatch_rejected(test_setup):
         canonical_url="https://www.bls.gov/different/url.htm",
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-{uuid.uuid4().hex}",
         is_production=False,
     )
@@ -522,7 +522,7 @@ def test_15_nonce_replay_attack_rejected(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=same_nonce,
         is_production=False,
     )
@@ -562,7 +562,7 @@ def test_16_nonce_empty_or_short_rejected(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce="short_123",  # < 16 chars
         is_production=False,
     )
@@ -585,7 +585,7 @@ def test_17_canonical_serialization_deterministic(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce="NONCE-STATIC-0000000000000001",
         is_production=False,
     )
@@ -608,7 +608,7 @@ def test_18_domain_separation_enforced(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-{uuid.uuid4().hex}",
         is_production=False,
     )
@@ -638,7 +638,7 @@ def test_19_two_distinct_layers_isolated(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-{uuid.uuid4().hex}",
         is_production=False,
     )
@@ -663,7 +663,7 @@ def test_20_production_flag_enforced_fail_closed(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-PROD-{uuid.uuid4().hex}",
         is_production=True,
     )
@@ -706,7 +706,7 @@ def test_22_cli_approve_with_signed_intent_file(test_setup):
         canonical_url=setup["req"].canonical_url,
         capability=setup["req"].required_capability,
         issued_at_utc="2026-10-21T00:00:00Z",
-        expires_at_utc="2026-10-22T00:00:00Z",
+        expires_at_utc="2028-10-22T00:00:00Z",
         nonce=f"NONCE-{uuid.uuid4().hex}",
         is_production=False,
     )

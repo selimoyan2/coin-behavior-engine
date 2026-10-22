@@ -2004,16 +2004,20 @@ class BlsAcquisitionCLI:
                 intent = OperatorApprovalIntent.from_json(f.read())
         elif signed_intent_json:
             intent = OperatorApprovalIntent.from_json(signed_intent_json)
-        elif approver_key_file and Path(approver_key_file).exists():
-            with open(approver_key_file, "rb") as f:
-                raw_seed = f.read()
-                try:
-                    text_seed = raw_seed.decode("ascii").strip()
-                    if len(text_seed) == 64:
-                        raw_seed = bytes.fromhex(text_seed)
-                except Exception:
-                    pass
-                approver_seed = raw_seed
+        elif approver_key_file:
+            from .key_security import SecureKeyManager
+            try:
+                approver_seed = SecureKeyManager.load_private_key(
+                    approver_key_file,
+                    is_test_key=not is_production,
+                    is_production=is_production,
+                )
+            except Exception as e:
+                return {
+                    "success": False,
+                    "error": "KEY_LOAD_SECURITY_VIOLATION",
+                    "message": str(e),
+                }
 
         if intent is None and approver_seed is not None:
             now_dt = datetime.now(timezone.utc)
@@ -2167,13 +2171,26 @@ class BlsAcquisitionCLI:
             )
             token.signature_digest = token.compute_canonical_digest(key_registry=key_reg)
 
-            record = store.create_privileged_approval(
-                token=token,
-                privileged_operator=effective_approver_id,
-                is_production=False,
-                proposal_digest=req_digest,
-                nonce=used_nonce,
-            )
+            try:
+                record = store.create_privileged_approval(
+                    token=token,
+                    privileged_operator=effective_approver_id,
+                    is_production=False,
+                    proposal_digest=req_digest,
+                    nonce=used_nonce,
+                )
+            except AuthorizationError as ae:
+                if 'REPLAY_ATTACK_DETECTED_NONCE_ALREADY_USED' in str(ae):
+                    return {
+                        'success': False,
+                        'error': 'REPLAY_ATTACK_DETECTED_NONCE_ALREADY_USED',
+                        'message': str(ae),
+                    }
+                return {
+                    'success': False,
+                    'error': 'AUTHORIZATION_ERROR',
+                    'message': str(ae),
+                }
 
             return {
                 "success": True,

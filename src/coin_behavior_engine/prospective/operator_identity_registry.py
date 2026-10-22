@@ -17,8 +17,9 @@ import hashlib
 import json
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
+from .key_security import KNOWN_TEST_SEEDS, SecureKeyManager, TestKeyInProductionError
 from .ed25519 import (
     ed25519_keygen,
     ed25519_public_key,
@@ -30,6 +31,11 @@ from .ed25519 import (
 
 DOMAIN_SEPARATION_PREFIX = b"CBE-ED25519-APPROVAL-INTENT-V1:"
 DEFAULT_INTENT_SCHEMA_VERSION = "v1"
+
+KNOWN_TEST_PUBLIC_KEYS: Set[str] = {
+    ed25519_public_key(seed).hex() for seed in KNOWN_TEST_SEEDS if len(seed) == 32
+}
+
 DEFAULT_APPROVAL_ACTION = "BLS_ACQUISITION_APPROVAL"
 
 
@@ -271,6 +277,7 @@ class TrustedOperatorIdentityRegistry:
         intent: OperatorApprovalIntent,
         required_role: str = "APPROVAL_ADMIN",
         now_utc: Optional[str] = None,
+        enforce_production_key_isolation: bool = False,
     ) -> Tuple[bool, str]:
         """
         Performs comprehensive verification of an OperatorApprovalIntent:
@@ -312,6 +319,14 @@ class TrustedOperatorIdentityRegistry:
                 f"but registry assigns '{identity.role}'"
             )
 
+        # 4b. Production isolation: test identities cannot authorize production
+        if intent.is_production and enforce_production_key_isolation:
+            if identity.public_key_hex in KNOWN_TEST_PUBLIC_KEYS:
+                return False, (
+                    f"TEST_KEY_PRODUCTION_ESCALATION: Operator '{intent.operator_id}' uses a known "
+                    "test key and cannot authorize production."
+                )
+
         # 5. Intent expiration
         if intent.is_expired(now_utc=now_utc):
             return False, f"EXPIRED_INTENT: Approval intent expired at {intent.expires_at_utc}"
@@ -348,6 +363,82 @@ class TrustedOperatorIdentityRegistry:
     def from_file(cls, path: Union[str, Path]) -> TrustedOperatorIdentityRegistry:
         with open(path, "r", encoding="utf-8") as f:
             return cls.from_dict(json.load(f))
+
+
+
+    def is_known_test_identity(self, operator_id: str) -> bool:
+        """Returns True if the operator uses a known test public key."""
+        ident = self.get_identity(operator_id)
+        if not ident:
+            return False
+        return ident.public_key_hex in KNOWN_TEST_PUBLIC_KEYS
+
+    def is_production_eligible(self, operator_id: str) -> Tuple[bool, str]:
+        """
+        Validates whether an operator is eligible for production authorization.
+        Test identities, revoked keys, and expired keys are strictly ineligible.
+        """
+        ident = self.get_identity(operator_id)
+        if not ident:
+            return False, f"Operator '{operator_id}' not found in registry."
+        if self.is_known_test_identity(operator_id):
+            return False, f"Operator '{operator_id}' is a test identity and ineligible for production."
+        is_active, reason = ident.is_active()
+        if not is_active:
+            return False, reason
+        return True, "ELIGIBLE_FOR_PRODUCTION"
+
+    def enroll_operator(
+        self,
+        identity: TrustedOperatorIdentity,
+        authorized_by: str,
+    ) -> None:
+        """
+        Enrolls a new operator identity in the registry.
+        Requires independent authorization by an active Approval Admin.
+        Self-enrollment of Approval Admin role is strictly prohibited.
+        """
+        authorizer = self.get_identity(authorized_by)
+        if not authorizer:
+            raise ValueError(f"Authorizing operator '{authorized_by}' is not registered.")
+        if authorizer.role != "APPROVAL_ADMIN":
+            raise ValueError(f"Operator '{authorized_by}' role is '{authorizer.role}', must be APPROVAL_ADMIN to enroll.")
+        is_active, reason = authorizer.is_active()
+        if not is_active:
+            raise ValueError(f"Authorizing operator '{authorized_by}' is not active: {reason}")
+        if identity.role == "APPROVAL_ADMIN" and authorized_by == identity.operator_id:
+            raise ValueError("Self-enrollment of Approval Admin role is strictly prohibited.")
+
+        self.register_identity(identity)
+
+    def rotate_operator_key(
+        self,
+        operator_id: str,
+        new_public_key_hex: str,
+        new_key_id: str,
+        authorized_by: str,
+        reason: str = "Key rotation",
+    ) -> TrustedOperatorIdentity:
+        """
+        Rotates an operator's public key with audit logging and revocation of old key.
+        Requires authorization by Approval Admin or the operator themselves.
+        """
+        authorizer = self.get_identity(authorized_by)
+        if not authorizer:
+            raise ValueError(f"Authorizing operator '{authorized_by}' not registered.")
+        if authorizer.role != "APPROVAL_ADMIN" and authorized_by != operator_id:
+            raise ValueError(f"Unauthorized to rotate key for '{operator_id}'.")
+
+        existing = self.get_identity(operator_id)
+        if not existing:
+            raise ValueError(f"Operator '{operator_id}' not found in registry.")
+
+        # Update identity
+        existing.public_key_hex = new_public_key_hex
+        existing.key_id = new_key_id
+        existing.fingerprint = ed25519_fingerprint(bytes.fromhex(new_public_key_hex))
+        self.register_identity(existing)
+        return existing
 
     def save_to_file(self, path: Union[str, Path]) -> None:
         path = Path(path)

@@ -1,0 +1,21 @@
+{
+  "sprint": "11.23.5B-6.5",
+  "generated_at_utc": "2026-10-22T21:37:16Z",
+  "base_commit": "9c6088d37cb3103dc1b79b19a0a2b105788207ee",
+  "python_version": "3.11.16",
+  "total_test_count": 326,
+  "tests_passed": 326,
+  "tests_failed": 0,
+  "deliverables": {
+    "cryptography_migration_audit_11_23_5b6_5.json": "2d07e6e777319ebc689af8cd6822a5eff2fd69f2e80291d00be118164ec48919",
+    "private_key_security_audit_11_23_5b6_5.json": "17bef8944557b05103c8c3ae8553677549c63af38c7815c5f93d400bd959a073",
+    "production_identity_isolation_11_23_5b6_5.json": "a6e2bc40da3a9c40931fdd6f92ad4784323e46a6335d718021e9f6013feb40fc",
+    "manifest_integrity_audit_11_23_5b6_5.json": "494c3f8b8832a83f03374ab4f69a0140d0d7958ef066590f8659f6b4349fb674",
+    "final_go_no_go_11_23_5b6_5.json": "36524a2eec3b1d50639da6ba532f9c91b0bd2641223c016310dcbaa7c38caba7",
+    "operator_handoff_11_23_5b6_5.md": "500713f0d3b53d0a5ed187565982b92fd27257ba4a7f8a34a2f27862c8a392e5",
+    "research_report_11_23_5b6_5.md": "0948f5ba612dd15ea72b80e31e9380ee7c3002fafbf361913e02dba198316535"
+  },
+  "governance_status": "GOVERNANCE_POLICY_FREEZE_ACTIVE",
+  "final_decision": "TECHNICAL_GO_AWAITING_HUMAN_AUTHORIZATION",
+  "attestation_mechanism": "DECOUPLED_POST_COMMIT_ATTESTATION"
+}

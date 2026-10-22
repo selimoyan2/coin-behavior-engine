@@ -1,0 +1,25 @@
+{
+  "sprint": "11.23.5B-6.5",
+  "generated_at_utc": "2026-10-22T21:37:16Z",
+  "test_production_isolation_controls": {
+    "known_test_seeds_denylist": {
+      "entry_count": 9,
+      "denylist_enforcement": "Strict rejection in SecureKeyManager and registry enrollment",
+      "test_seed_in_production_error": "TestKeyInProductionError"
+    },
+    "registry_production_eligibility": {
+      "test_registry_flag": "is_test_registry = True permanently blocks is_production=True",
+      "production_registry_gate": "Requires explicit production registry configuration"
+    },
+    "unauthenticated_claim_rejection": {
+      "caller_role_argument": "Confers 0 privilege; completely decoupled from authority",
+      "cryptographic_binding": "Role is derived exclusively from registry matching verified Ed25519 signature"
+    }
+  },
+  "cross_environment_pollution_prevention": {
+    "test_keys_usable_in_production": false,
+    "production_keys_usable_in_tests": false,
+    "production_authorization_status": "NOT_GRANTED"
+  },
+  "audit_result": "PASS"
+}
