@@ -1,0 +1,56 @@
+{
+  "sprint": "11.23.5B-6.5.1",
+  "generated_at_utc": "2026-10-22T22:09:10Z",
+  "invariants": {
+    "inv_01_maintained_cryptography_library": {
+      "status": "PASS",
+      "detail": "Ed25519 signing and verification implemented using cryptography.hazmat.primitives.asymmetric.ed25519 (version 50.0.1)."
+    },
+    "inv_02_zero_custom_fallback": {
+      "status": "PASS",
+      "detail": "ZERO_CUSTOM_FALLBACK = True enforced. Pure-Python math routines removed; operations fail closed if cryptography is missing."
+    },
+    "inv_03_test_key_isolation": {
+      "status": "PASS",
+      "detail": "KNOWN_TEST_SEEDS denylist blocks deterministic test seeds from production enrollment or usage."
+    },
+    "inv_04_authoritative_registry_roles": {
+      "status": "PASS",
+      "detail": "Operator roles derived strictly from immutable TrustedOperatorIdentityRegistry records."
+    },
+    "inv_05_caller_role_conveys_zero_privilege": {
+      "status": "PASS",
+      "detail": "CLI parameter --approver-role has no authoritative effect; caller authority is validated solely against Ed25519 signature."
+    },
+    "inv_06_approval_signature_digest_binding": {
+      "status": "PASS",
+      "detail": "Approval intent binds exact canonical request digest and domain separation prefix (CBE-ED25519-APPROVAL-INTENT-V1:)."
+    },
+    "inv_07_single_use_nonces": {
+      "status": "PASS",
+      "detail": "Nonces tracked atomically in SQLite approval_nonces; replay attempts rejected with REPLAY_ATTACK_DETECTED_NONCE_ALREADY_USED."
+    },
+    "inv_08_hmac_capability_tokens_independent": {
+      "status": "PASS",
+      "detail": "Layer B HMAC-SHA256 capability tokens require valid Layer A Ed25519 signed intent before issuance."
+    },
+    "inv_09_governance_freeze_active": {
+      "status": "PASS",
+      "detail": "is_production=True strictly prohibited; raises AuthorizationError with governance violation message."
+    },
+    "inv_10_external_network_requests_disabled": {
+      "status": "PASS",
+      "detail": "NetworkActivationGate fail-closed; zero external HTTP requests performed during execution."
+    },
+    "inv_11_market_observation_disabled": {
+      "status": "PASS",
+      "detail": "Prospective market observation runner inactive; no live exchange connections."
+    },
+    "inv_12_live_trading_prohibited": {
+      "status": "PASS",
+      "detail": "LIVE_ORDER_EXECUTION capability permanently blocked with TradingIsolationViolation."
+    }
+  },
+  "all_invariants_passed": true,
+  "status": "PASS"
+}

@@ -1,0 +1,21 @@
+{
+  "sprint": "11.23.5B-6.5.1",
+  "generated_at_utc": "2026-10-22T22:09:10Z",
+  "base_commit": "11467f653e0dc96229806330c422919c97ce08cd",
+  "python_version": "3.11.16",
+  "total_test_count": 2107,
+  "tests_passed": 2102,
+  "tests_failed": 5,
+  "sprint_11_23_tests_passed": 422,
+  "deliverables": {
+    "git_commit_reconciliation_11_23_5b6_5_1.json": "216ffabb02243cb71e091e93b8ccd2bf733e77de2220f92280b47cd9b2809ee0",
+    "attestation_verification_11_23_5b6_5_1.json": "811053111ec557798ee1821f45dc26ba390bf258b8e99875802186147d5bf541",
+    "full_regression_report_11_23_5b6_5_1.json": "fbaed3d8e7929d0235a4f24a1146d5cc9a474c43db721628c93b23cbe2edc263",
+    "security_invariants_11_23_5b6_5_1.json": "db199e4c34be693741ac72a26e3274ca6db1def94f13c87e32feea22af6f503e",
+    "final_go_no_go_11_23_5b6_5_1.json": "9cc5f5a02f97b75362178281f037a113449d06a25c22745f2fa39312a719a6ef",
+    "research_report_11_23_5b6_5_1.md": "c2bd467ab43d97b8d77ed8b4016b9ebbe0ce2bde04cf19c36c1ed23afcc74c62"
+  },
+  "governance_status": "GOVERNANCE_POLICY_FREEZE_ACTIVE",
+  "technical_decision": "TECHNICAL_NO_GO",
+  "attestation_mechanism": "DECOUPLED_POST_COMMIT_ATTESTATION"
+}

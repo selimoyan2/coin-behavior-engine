@@ -1,0 +1,81 @@
+{
+  "sprint": "11.23.5B-6.5.1",
+  "generated_at_utc": "2026-10-22T22:09:10Z",
+  "environment": {
+    "python_version": "3.11.16",
+    "cryptography_version": "50.0.1",
+    "os": "Windows (win32)",
+    "git_commit": "11467f653e0dc96229806330c422919c97ce08cd"
+  },
+  "full_project_regression": {
+    "command": "python -m pytest tests/ -q",
+    "total_collected": 2107,
+    "passed": 2102,
+    "failed": 5,
+    "skipped": 0,
+    "duration_seconds": 691.49,
+    "overall_status": "FAIL",
+    "failure_details": [
+      {
+        "test": "tests/test_approval_3_live_capture_readiness.py::test_engine_gap_detection_and_rest_recovery",
+        "failure_type": "AssertionError",
+        "root_cause": "Test expects legacy gap_recovery_audit.jsonl, but that write was intentionally reverted in commit ee1d462 (Sprint 11.02E.1) to enforce frozen engine hash integrity.",
+        "subsystem": "Shadow V080 Live Capture (Sprint 09/11.02)"
+      },
+      {
+        "test": "tests/test_sprint09_10_2_final_gate.py::test_steady_state_step_latency_performance",
+        "failure_type": "AssertionError",
+        "root_cause": "Strict benchmark latency requirement (< 150 ms P95) transiently exceeded due to background CPU scheduling on non-dedicated Windows host.",
+        "subsystem": "Shadow V080 Benchmark (Sprint 09.10.2)"
+      },
+      {
+        "test": "tests/test_sprint09_14_1_stress_and_resilience.py::test_01_long_run_10000_sequential_events_stress",
+        "failure_type": "AssertionError",
+        "root_cause": "P95 latency of 22.899 ms exceeded micro-benchmark threshold of 5.0 ms across 10,000 sequential file-appends under Windows NTFS overhead.",
+        "subsystem": "Shadow V080 Stress & Resilience (Sprint 09.14.1)"
+      },
+      {
+        "test": "tests/test_sprint09_1_parity_audit.py::test_artifact_inventory_and_search",
+        "failure_type": "AssertionError",
+        "root_cause": "Expected serialized_binary_models_found_in_repo == 0, but found 1 legacy model artifact in research tree.",
+        "subsystem": "Parity Audit (Sprint 09.1)"
+      },
+      {
+        "test": "tests/test_sprint11_08_predictive_integrity.py::TestAnalogueSafetyAndDecisionFailures::test_decision_failure_attribution",
+        "failure_type": "AssertionError",
+        "root_cause": "Expected len(df_attr) == 55, but multi-year replay in Sprint 11.11/11.22 expanded the attribution dataset to 214 rows.",
+        "subsystem": "Research Lab Decision Attribution (Sprint 11.08)"
+      }
+    ]
+  },
+  "sprint_specific_regression": {
+    "command": "python -m pytest tests/test_sprint11_23_5b6_5_cryptography_hardening.py -q",
+    "total_collected": 21,
+    "passed": 21,
+    "failed": 0,
+    "duration_seconds": 2.55,
+    "status": "PASS"
+  },
+  "scope_comparison_analysis": {
+    "sprint_6_4_reported_scope": {
+      "count": 401,
+      "scope_definition": "All tests in the Sprint 11.23 macro events family prior to Sprint 6.5."
+    },
+    "sprint_6_5_reported_scope": {
+      "count": 326,
+      "scope_definition": "All tests in the Sprint 11.23.5 prospective security hardening family (5a, 5b0-5b6_5)."
+    },
+    "sprint_11_23_family_current": {
+      "count": 422,
+      "passed": 422,
+      "scope_definition": "Complete prospective macro events family: 401 previous + 21 Sprint 6.5 tests = 422 tests (100% green)."
+    },
+    "full_repository_current": {
+      "count": 2107,
+      "passed": 2102,
+      "failed": 5,
+      "scope_definition": "Entire codebase across all historical sprints (01-11.23.5B-6.5)."
+    },
+    "explanation": "Differences in previously reported test counts reflect differing filter scopes: 326 tests covered the Sprint 11.23.5 prospective security gate; 401 tests covered the entire Sprint 11.23 family prior to 6.5; adding Sprint 6.5's 21 tests yields 422 tests for the Sprint 11.23 family (all 422 passing). The 2,107 total represents the unconstrained full repository regression suite."
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "sprint": "11.23.5B-6.5.1",
+  "generated_at_utc": "2026-10-22T22:09:10Z",
+  "authoritative_commit_history": {
+    "base_commit": "9c6088d37cb3103dc1b79b19a0a2b105788207ee",
+    "primary_implementation_commit": "1d9abd3c5a57b269b0061ce23167aa24d7041524",
+    "attestation_publication_commit": "11467f653e0dc96229806330c422919c97ce08cd"
+  },
+  "discrepancy_investigation": {
+    "reported_in_sprint_6_5_summary": "11467f66a877d943fe0dfb2f1559ee5e4905d214",
+    "actual_git_commit_sha": "11467f653e0dc96229806330c422919c97ce08cd",
+    "root_cause_analysis": "When 'git commit' was executed for the detached attestation, Git assigned the short hash 11467f6. In compiling the human-readable summary response, the 7-character prefix 11467f6 was inadvertently expanded with an unverified pseudo-hash rather than querying 'git rev-parse HEAD'. Git repository inspection confirms the genuine, authoritative commit object is 11467f653e0dc96229806330c422919c97ce08cd.",
+    "historical_immutability": "Preserved. Historical commits were not amended or rewritten."
+  },
+  "git_object_relationships": {
+    "primary_commit_parent": "9c6088d37cb3103dc1b79b19a0a2b105788207ee (matches base commit)",
+    "primary_commit_tree": "1a4b343da69b1c442b9ec8b58e7149c2ca4ef514",
+    "attestation_commit_parent": "1d9abd3c5a57b269b0061ce23167aa24d7041524 (matches primary implementation commit)",
+    "remote_tracking_status": "Up to date with origin/main (all commits pushed)"
+  },
+  "reconciliation_verdict": "PASS_AUTHORITATIVE_HASHES_CONFIRMED"
+}

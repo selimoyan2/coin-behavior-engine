@@ -1,0 +1,72 @@
+{
+  "sprint": "11.23.5B-6.5.1",
+  "verifier_run_at_utc": "2026-10-22T22:09:10Z",
+  "attestation_classification": "UNSIGNED_INTEGRITY_ATTESTATION",
+  "cryptographic_signer_authentication": false,
+  "distinction_note": "This document is an unsigned Git tree integrity attestation. It establishes cryptographic integrity via SHA-256 and Git SHA-1 object hashes, but does not constitute an asymmetric digital signature by a third-party signer.",
+  "commit_roles": {
+    "implementation_commit": "1d9abd3c5a57b269b0061ce23167aa24d7041524",
+    "publication_commit": "11467f653e0dc96229806330c422919c97ce08cd",
+    "base_commit": "9c6088d37cb3103dc1b79b19a0a2b105788207ee"
+  },
+  "checks": {
+    "attestation_file_exists": true,
+    "attestation_json_valid": true,
+    "field_completeness": true,
+    "attested_commit_identity": true,
+    "attested_commit_object_exists": true,
+    "parent_commit_matches": true,
+    "tree_hash_matches": true,
+    "manifest_object_exists": true,
+    "manifest_sha256_matches": true,
+    "manifest_json_valid": true,
+    "deliverables_verified": true,
+    "publication_commit_identity": true,
+    "publication_parent_matches_attested": true,
+    "publication_commit_in_head_ancestry": true
+  },
+  "status": "PASS",
+  "errors": [],
+  "manifest_sha256_git_raw": "988377f227b6fb2df06b7eb08580c64d0781c4a6f01b01b2562916e8cd3ba6e2",
+  "manifest_sha256_working_tree": "eeb22d165ce4a88b64b662843464c4bc57ed69fde05afa262f058462bf3d5487",
+  "deliverable_verification": {
+    "cryptography_migration_audit_11_23_5b6_5.json": {
+      "status": "PASS",
+      "git_blob_sha256": "7257fae4a63740d8e0f76d874433539842a84ed00307d8e6bc5a0195329c09b9",
+      "working_tree_sha256": "2d07e6e777319ebc689af8cd6822a5eff2fd69f2e80291d00be118164ec48919"
+    },
+    "private_key_security_audit_11_23_5b6_5.json": {
+      "status": "PASS",
+      "git_blob_sha256": "17b67e7ca9048c4c7968018f83d419b34aa025a0e2a74e3aeb716ff8a231a9cc",
+      "working_tree_sha256": "17bef8944557b05103c8c3ae8553677549c63af38c7815c5f93d400bd959a073"
+    },
+    "production_identity_isolation_11_23_5b6_5.json": {
+      "status": "PASS",
+      "git_blob_sha256": "176cabe3344818c40bb06ddeed4c92b7a39fa5f4ffa916fc6e72e9c8171def4a",
+      "working_tree_sha256": "a6e2bc40da3a9c40931fdd6f92ad4784323e46a6335d718021e9f6013feb40fc"
+    },
+    "manifest_integrity_audit_11_23_5b6_5.json": {
+      "status": "PASS",
+      "git_blob_sha256": "d25a028d7283eae94dbd5eba360f27c55334c2d3b48e462bd192b32586f9a6a0",
+      "working_tree_sha256": "494c3f8b8832a83f03374ab4f69a0140d0d7958ef066590f8659f6b4349fb674"
+    },
+    "final_go_no_go_11_23_5b6_5.json": {
+      "status": "PASS",
+      "git_blob_sha256": "7f3529ab2682fdeb356aa485fc8311f42752756e47a149fc7633728d789cc214",
+      "working_tree_sha256": "36524a2eec3b1d50639da6ba532f9c91b0bd2641223c016310dcbaa7c38caba7"
+    },
+    "operator_handoff_11_23_5b6_5.md": {
+      "status": "PASS",
+      "git_blob_sha256": "6b2524f060bb787165ac1833e8ff6fe381cfb1a6ea9a255bc4f9e8ed3e9332b7",
+      "working_tree_sha256": "500713f0d3b53d0a5ed187565982b92fd27257ba4a7f8a34a2f27862c8a392e5"
+    },
+    "research_report_11_23_5b6_5.md": {
+      "status": "PASS",
+      "git_blob_sha256": "06500bf554096f62933c224b0fb2c91442aa8e60cb6db99922f691f55eeab98c",
+      "working_tree_sha256": "0948f5ba612dd15ea72b80e31e9380ee7c3002fafbf361913e02dba198316535"
+    }
+  },
+  "publication_commit_found": "11467f653e0dc96229806330c422919c97ce08cd",
+  "current_head": "11467f653e0dc96229806330c422919c97ce08cd",
+  "message": "Post-commit attestation verified successfully: Attested implementation commit, tree hash, reproducibility manifest, and deliverables all match bit-for-bit in Git history."
+}
