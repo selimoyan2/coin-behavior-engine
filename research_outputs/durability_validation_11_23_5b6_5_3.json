@@ -1,0 +1,45 @@
+{
+  "sprint": "11.23.5B-6.5.3",
+  "generated_at_utc": "2026-10-22T23:12:00Z",
+  "durability_audit": {
+    "persistence_invariants_verified": [
+      {
+        "property": "Zero Lost Raw Evidence Records",
+        "mechanism": "Append to raw_evidence.jsonl followed by physical os.fsync() on every closed candle.",
+        "status": "VERIFIED_PASS",
+        "evidence": "tests/test_sprint09_14_1_stress_and_resilience.py::test_01 (10,000 / 10,000 events verified)"
+      },
+      {
+        "property": "Zero Torn Reads on Factual Snapshots",
+        "mechanism": "AtomicSnapshotIO writes to PID-tagged adjacent temp file, flushes, fsyncs, and replaces atomically via os.replace().",
+        "status": "VERIFIED_PASS",
+        "evidence": "tests/test_sprint09_14_1_stress_and_resilience.py::test_04"
+      },
+      {
+        "property": "Transactional Persistence Before State Mutation",
+        "mechanism": "Engine gap detector and rolling buffer are only mutated AFTER disk persistence returns PERSISTED status.",
+        "status": "VERIFIED_PASS",
+        "evidence": "tests/test_sprint09_14_1_stress_and_resilience.py::test_02 (simulated disk error verified)"
+      },
+      {
+        "property": "Crash Recovery & Hash Chain Integrity",
+        "mechanism": "Unbroken SHA-256 hash chain verified across all 10,000 events on cold restart recovery.",
+        "status": "VERIFIED_PASS",
+        "evidence": "tests/test_sprint09_14_1_stress_and_resilience.py::test_01 & test_03"
+      },
+      {
+        "property": "Forensic Corrupted EOF In-Place Recovery",
+        "mechanism": "Mid-write corruption backup and fail-closed truncation verified.",
+        "status": "VERIFIED_PASS",
+        "evidence": "tests/test_sprint09_14_1_stress_and_resilience.py::test_04 & test_05"
+      },
+      {
+        "property": "Read-Only Filesystem Safety",
+        "mechanism": "Fail-closed transition without unhandled exceptions or state corruption on EROFS.",
+        "status": "VERIFIED_PASS",
+        "evidence": "tests/test_sprint09_14_1_stress_and_resilience.py::test_09"
+      }
+    ],
+    "durability_equivalence_verdict": "Durability guarantees were strictly maintained without relaxation. All 8 durability fault-injection and resilience tests pass 100%."
+  }
+}

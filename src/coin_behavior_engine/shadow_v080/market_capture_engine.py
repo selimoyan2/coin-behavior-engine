@@ -162,6 +162,18 @@ class MarketCaptureEngineV080:
         self.is_running = False
         logger.info("MarketCaptureEngineV080 stopped.")
 
+    def close(self) -> None:
+        """Cleanly close underlying store handles and connections."""
+        if hasattr(self, "evidence_store") and self.evidence_store:
+            self.evidence_store.close()
+
+    def __del__(self) -> None:
+        try:
+            self.close()
+        except Exception:
+            pass
+
+
     def record_queue_overflow(self, dropped_count: int = 1) -> None:
         """Record inbound queue overflow, engage degraded state, and reset contiguity."""
         self.overflow_events_count += dropped_count

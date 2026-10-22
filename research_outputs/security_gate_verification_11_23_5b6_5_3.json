@@ -1,0 +1,60 @@
+{
+  "sprint": "11.23.5B-6.5.3",
+  "generated_at_utc": "2026-10-22T23:12:00Z",
+  "security_invariants": {
+    "1_cryptography_library_installed": {
+      "package": "cryptography",
+      "version": "50.0.1",
+      "status": "PASS"
+    },
+    "2_rfc8032_ed25519_primitives": {
+      "implementation": "cryptography.hazmat.primitives.asymmetric.ed25519",
+      "status": "PASS"
+    },
+    "3_zero_custom_fallback": {
+      "custom_crypto_prohibited": true,
+      "status": "PASS"
+    },
+    "4_domain_separated_intent": {
+      "domain_tag": "cbe-bls-v1:intent",
+      "status": "PASS"
+    },
+    "5_authorized_operator_registry": {
+      "registry_type": "OperatorPublicKeyRegistry",
+      "enforced": true,
+      "status": "PASS"
+    },
+    "6_approval_admin_role_enforcement": {
+      "role": "APPROVAL_ADMIN",
+      "enforced": true,
+      "status": "PASS"
+    },
+    "7_private_key_permissions_isolation": {
+      "world_readable_rejected": true,
+      "status": "PASS"
+    },
+    "8_hmac_sha256_token_isolation": {
+      "token_verifier_active": true,
+      "scope_checked": true,
+      "status": "PASS"
+    },
+    "9_real_network_access_disabled": {
+      "external_http_permitted": false,
+      "status": "PASS"
+    },
+    "10_prospective_observation_disabled": {
+      "active": false,
+      "status": "PASS"
+    },
+    "11_live_trading_permanently_prohibited": {
+      "prohibited": true,
+      "status": "PASS"
+    },
+    "12_governance_authorization_gate": {
+      "governance_authorization": "NOT_GRANTED",
+      "production_token_issued": false,
+      "status": "PASS"
+    }
+  },
+  "overall_security_verdict": "PASS"
+}

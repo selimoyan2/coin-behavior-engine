@@ -1,0 +1,30 @@
+{
+  "sprint": "11.23.5B-6.5.3",
+  "source_xml": "research_outputs/full_suite_11_23_5b6_5_3.xml",
+  "total_collected": 2107,
+  "passed": 2105,
+  "failed": 2,
+  "errors": 0,
+  "skipped": 0,
+  "duration_seconds": 625.81,
+  "failures": [
+    {
+      "classname": "tests.test_sprint09_14_1_stress_and_resilience",
+      "name": "test_01_long_run_10000_sequential_events_stress",
+      "file": null,
+      "line": null,
+      "time_seconds": 108.479,
+      "message": "AssertionError: P95 latency 20.171 ms exceeded 5.0 ms threshold\nassert 20.17069997964427 < 5.0",
+      "text": "tmp_path = WindowsPath('C:/Users/selim/AppData/Local/Temp/pytest-of-selim/pytest-287/test_01_long_run_10000_sequent0')\n\n    def test_01_long_run_10000_sequential_events_stress(tmp_path):\n        \"\"\"Stress test processing >= 10,000 synthetic events:\n    \n        Verifies:\n        - P95 latency < 5.0 ms.\n        - Memory growth bounded (delta < 25 MB).\n        - Rolling buffer strictly bounded (<= max_buffer_candles).\n        - Restart recovery for 10,000 events completes in < 1.0 s.\n        - Unbroken SHA-256 hash chain verified.\n        \"\"\"\n        cfg = ShadowCollectorConfig(\n            shadow_data_dir=tmp_path / \"shadow\",\n            max_buffer_candles=350,\n            full_warmup_bars=288,\n        )\n        engine = MarketCaptureEngineV080(cfg)\n    \n        t0 = (1700000000000 // CANDLE_INTERVAL_MS) * CANDLE_INTERVAL_MS\n        n_events = 10000\n        latencies = []\n        initial_rss = get_current_rss_mb()\n    \n        for i in range(n_events):\n            step_start = time.perf_counter()\n            ts_open = t0 + i * CANDLE_INTERVAL_MS\n            ts_close = ts_open + CANDLE_INTERVAL_MS - 1\n            msg = {\n                \"e\": \"kline\",\n                \"E\": ts_close + 10,\n                \"s\": \"BTCUSDT\",\n                \"k\": {\n                    \"t\": ts_open,\n                    \"T\": ts_close,\n                    \"s\": \"BTCUSDT\",\n                    \"i\": \"5m\",\n                    \"o\": \"65000.00\",\n                    \"c\": \"65100.00\",\n                    \"h\": \"65200.00\",\n                    \"l\": \"64950.00\",\n                    \"v\": \"100.5\",\n                    \"n\": 500,\n                    \"x\": True,\n                    \"q\": \"6542550.00\",\n                    \"V\": \"50.25\",\n                },\n            }\n            res = engine.process_raw_message(msg)\n            step_lat_ms = (time.perf_counter() - step_start) * 1000.0\n            latencies.append(step_lat_ms)\n            assert res[\"status\"] == \"PERSISTED\"\n    \n        # Latency verification\n        latencies.sort()\n        p95_lat = latencies[int(n_events * 0.95)]\n        mean_lat = sum(latencies) / len(latencies)\n>       assert p95_lat < 5.0, f\"P95 latency {p95_lat:.3f} ms exceeded 5.0 ms threshold\"\nE       AssertionError: P95 latency 20.171 ms exceeded 5.0 ms threshold\nE       assert 20.17069997964427 < 5.0\n\ntests\\test_sprint09_14_1_stress_and_resilience.py:175: AssertionError"
+    },
+    {
+      "classname": "tests.test_sprint09_38_funding_predictability",
+      "name": "test_10_pure_compute_latency_and_report_file",
+      "file": null,
+      "line": null,
+      "time_seconds": 0.831,
+      "message": "AssertionError: Median pure compute latency 108.48 ms exceeded 50 ms budget\nassert 108.47560002002865 < 50.0",
+      "text": "master_report = Sprint38MasterReport(sprint_id='CBE-09.38', baseline_commit_sha='3ce9da321308cd92fd29af07c921991a1d7956a1', timestamp_...-2,054.84 USDT) relative to passive continuous carry. The signal has no standalone or incremental economic viability.')\nauditor = <coin_behavior_engine.research.historical.funding_predictability_sprint38.Sprint38FundingAuditor object at 0x000001E79B82D090>\n\n    def test_10_pure_compute_latency_and_report_file(master_report: Sprint38MasterReport, auditor: Sprint38FundingAuditor):\n        \"\"\"Test 10: Pure compute latency is < 50 ms and JSON report is written.\"\"\"\n        report_file = Path(\"data/reports/sprint09_38_funding_predictability_report.json\")\n        assert report_file.exists()\n        assert report_file.stat().st_size > 5000\n    \n        with open(report_file, \"r\", encoding=\"utf-8\") as f:\n            loaded = json.load(f)\n        assert loaded[\"sprint_id\"] == \"CBE-09.38\"\n        assert loaded[\"decision_gate_classification\"] == \"STATISTICALLY_INTERESTING_BUT_NOT_ECONOMIC\"\n    \n        # Verify pure compute latency on in-memory features is strictly under 50 ms\n        import gc\n        df_feat = auditor.extract_point_in_time_features()\n        gc.collect()\n    \n        latencies = []\n        for _ in range(5):\n            t0 = time.perf_counter()\n            _ = auditor.run_walk_forward_evaluation(df_feat)\n            t1 = time.perf_counter()\n            latencies.append((t1 - t0) * 1000.0)\n    \n        median_lat = sorted(latencies)[len(latencies) // 2]\n>       assert median_lat < 50.0, f\"Median pure compute latency {median_lat:.2f} ms exceeded 50 ms budget\"\nE       AssertionError: Median pure compute latency 108.48 ms exceeded 50 ms budget\nE       assert 108.47560002002865 < 50.0\n\ntests\\test_sprint09_38_funding_predictability.py:226: AssertionError"
+    }
+  ]
+}

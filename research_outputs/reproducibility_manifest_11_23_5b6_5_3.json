@@ -1,0 +1,49 @@
+{
+  "sprint": "11.23.5B-6.5.3",
+  "generated_at_utc": "2026-10-22T23:12:00Z",
+  "tested_commit": "af93d946b57826347f3c21db15d13b6dc76d6ef2",
+  "reproduction_commands": [
+    {
+      "scope": "Full Test Suite with JUnit XML",
+      "command": "python -m pytest tests/ -q --junitxml=research_outputs/full_suite_11_23_5b6_5_3.xml"
+    },
+    {
+      "scope": "Sprint 11.23 Macro Events Family",
+      "command": "python -m pytest tests/ -k \"sprint11_23\" -q"
+    },
+    {
+      "scope": "Steady-State Step Latency",
+      "command": "python -m pytest tests/test_sprint09_10_2_final_gate.py -v"
+    },
+    {
+      "scope": "Stress & Resilience Invariants",
+      "command": "python -m pytest tests/test_sprint09_14_1_stress_and_resilience.py -v"
+    },
+    {
+      "scope": "Funding Predictability Latency",
+      "command": "python -m pytest tests/test_sprint09_38_funding_predictability.py -v"
+    }
+  ],
+  "environment": {
+    "os": "Windows 11 (10.0.26300.0, win32)",
+    "cpu": "13th Gen Intel(R) Core(TM) i7-13620H (10C/16T)",
+    "ram_gb": 63.71,
+    "python": "3.11.16",
+    "pytest": "9.1.1",
+    "cryptography": "50.0.1",
+    "storage_type": "NTFS (D:)"
+  },
+  "deliverables": [
+    "research_outputs/environment_inventory_11_23_5b6_5_3.json",
+    "research_outputs/exact_failure_inventory_11_23_5b6_5_3.json",
+    "research_outputs/performance_forensics_11_23_5b6_5_3.json",
+    "research_outputs/filesystem_comparison_11_23_5b6_5_3.json",
+    "research_outputs/durability_validation_11_23_5b6_5_3.json",
+    "research_outputs/full_regression_report_11_23_5b6_5_3.json",
+    "research_outputs/security_gate_verification_11_23_5b6_5_3.json",
+    "research_outputs/final_go_no_go_11_23_5b6_5_3.json",
+    "research_outputs/research_report_11_23_5b6_5_3.md",
+    "research_outputs/reproducibility_manifest_11_23_5b6_5_3.json",
+    "research_outputs/full_suite_11_23_5b6_5_3.xml"
+  ]
+}

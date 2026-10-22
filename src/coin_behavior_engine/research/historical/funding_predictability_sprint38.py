@@ -381,6 +381,7 @@ class Sprint38FundingAuditor:
         Xty_mv = X_mv[:burn_in][mask_mv].T @ y_all[:burn_in][mask_mv]
 
         cum_sum_y = float(np.sum(y_all[:burn_in]))
+        cs_y = np.cumsum(np.insert(y_all, 0, 0.0))
         b_ar1 = np.linalg.solve(XtX_ar1, Xty_ar1)
         b_ar3 = np.linalg.solve(XtX_ar3, Xty_ar3)
         b_mv = np.linalg.solve(XtX_mv, Xty_mv)
@@ -407,11 +408,11 @@ class Sprint38FundingAuditor:
             predictions_sign["random_walk"].append(1 if p_last > 0 else -1)
 
             # 4. Rolling 3 & 21
-            p_roll3 = float(np.mean(y_all[t_global - 3:t_global]))
+            p_roll3 = float((cs_y[t_global] - cs_y[t_global - 3]) / 3.0)
             predictions["roll3"].append(p_roll3)
             predictions_sign["roll3"].append(1 if p_roll3 > 0 else -1)
 
-            p_roll21 = float(np.mean(y_all[t_global - 21:t_global]))
+            p_roll21 = float((cs_y[t_global] - cs_y[t_global - 21]) / 21.0)
             predictions["roll21"].append(p_roll21)
             predictions_sign["roll21"].append(1 if p_roll21 > 0 else -1)
 

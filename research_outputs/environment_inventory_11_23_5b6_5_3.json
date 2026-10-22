@@ -1,0 +1,64 @@
+{
+  "sprint": "11.23.5B-6.5.3",
+  "generated_at_utc": "2026-10-22T22:52:00Z",
+  "host_hardware": {
+    "cpu_model": "13th Gen Intel(R) Core(TM) i7-13620H",
+    "cpu_physical_cores": 10,
+    "cpu_logical_processors": 16,
+    "total_memory_bytes": 68408958976,
+    "total_memory_gb": 63.71,
+    "free_memory_bytes": 24896409600,
+    "free_memory_gb": 23.18
+  },
+  "operating_system": {
+    "os_name": "Microsoft Windows 11",
+    "os_version": "10.0.26300.0",
+    "architecture": "64-bit",
+    "platform": "win32"
+  },
+  "storage_filesystems": [
+    {
+      "drive": "C:",
+      "filesystem": "NTFS",
+      "size_gb": 1861.74,
+      "free_gb": 1336.26
+    },
+    {
+      "drive": "D:",
+      "filesystem": "NTFS",
+      "workspace_location": true,
+      "size_gb": 1863.00,
+      "free_gb": 425.99
+    }
+  ],
+  "virtualization_and_containers": {
+    "wsl2_installed": true,
+    "wsl2_distributions": [
+      {
+        "name": "docker-desktop",
+        "state": "Running",
+        "version": 2
+      }
+    ],
+    "docker_installed": true,
+    "docker_version": "29.7.2, build a7dcaa6",
+    "permission_to_provision_new": false
+  },
+  "runtime_dependencies": {
+    "python_version": "3.11.16",
+    "pytest_version": "9.1.1",
+    "cryptography_version": "50.0.1",
+    "numpy_version": "2.2.6",
+    "pandas_version": "2.3.2"
+  },
+  "git_baseline": {
+    "head_commit": "af93d946b57826347f3c21db15d13b6dc76d6ef2",
+    "parent_commit": "1b5784d3417c85817ce7e4ea5f642fd586d3bd92",
+    "branch": "main",
+    "working_tree_clean": true
+  },
+  "phase0_reconciliation": {
+    "identified_discrepancy": "Sprint 6.5.2 full_regression_report recorded 2,102 passed / 5 failed from the actual 11-minute run, whereas final_go_no_go reported '2,105+ passed / 1 blocked' reflecting individual target isolation outcomes.",
+    "authoritative_baseline_policy": "Strictly report raw pytest test results directly from execution output without extrapolation or replacement."
+  }
+}
