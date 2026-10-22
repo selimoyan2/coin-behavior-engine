@@ -1,0 +1,47 @@
+{
+  "sprint": "11.23.5B-6.5.4",
+  "generated_at_utc": "2026-10-22T23:22:30Z",
+  "durability_invariants_audit": {
+    "1_raw_evidence_durability": {
+      "mechanism": "Physical os.fsync() on evidence file descriptor immediately following each candle line write.",
+      "status": "PASS",
+      "verification": "10,000 / 10,000 events committed with zero lost records."
+    },
+    "2_recovery_journal_integrity": {
+      "mechanism": "DurableGapRecoveryStore writes metadata and journal entries before acknowledging bridge recovery.",
+      "status": "PASS",
+      "verification": "All recovery journal entries intact; frozen hash integrity preserved."
+    },
+    "3_atomic_factual_snapshot_publication": {
+      "mechanism": "AtomicSnapshotIO writes to PID-tagged temp file, flushes, fsyncs, and performs atomic os.replace().",
+      "status": "PASS",
+      "verification": "Both btcusdt_factual_latest.json and live_market_state.json published atomically."
+    },
+    "4_crash_recovery_and_hash_chain": {
+      "mechanism": "Unbroken SHA-256 hash chain verified from genesis entry to latest entry on restart.",
+      "status": "PASS",
+      "verification": "test_sprint09_14_1_stress_and_resilience.py::test_03 passed."
+    },
+    "5_torn_read_prevention": {
+      "mechanism": "Atomic directory rename ensures readers never observe partial JSON payload.",
+      "status": "PASS",
+      "verification": "test_sprint09_14_1_stress_and_resilience.py::test_04 passed."
+    },
+    "6_state_mutation_precedence": {
+      "mechanism": "Transactional consistency: gap detector and rolling buffer only mutate after disk write confirms PERSISTED.",
+      "status": "PASS",
+      "verification": "test_sprint09_14_1_stress_and_resilience.py::test_02 passed (simulated disk write failure fails closed)."
+    },
+    "7_read_only_filesystem_safety": {
+      "mechanism": "Engine gracefully enters fail-closed state without corruption when filesystem is read-only (EROFS).",
+      "status": "PASS",
+      "verification": "test_sprint09_14_1_stress_and_resilience.py::test_09 passed."
+    },
+    "8_prohibition_of_memory_backing": {
+      "mechanism": "No substitution of disk-backed storage with RAM/tmpfs to artificially bypass latency thresholds.",
+      "status": "ENFORCED"
+    }
+  },
+  "crash_simulation_limitations": "Offline fault-injection simulates application crashes, unexpected process exits, and OS write errors. Real hardware power-loss testing requires specialized non-volatile power-cut testing benches. Under the tested physical NTFS configuration, all durability contracts required by live_capture_read_contract_audit.md are strictly satisfied.",
+  "durability_verdict": "PASS"
+}

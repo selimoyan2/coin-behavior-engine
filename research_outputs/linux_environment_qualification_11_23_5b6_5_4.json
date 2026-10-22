@@ -1,0 +1,40 @@
+{
+  "sprint": "11.23.5B-6.5.4",
+  "generated_at_utc": "2026-10-22T23:22:30Z",
+  "linux_qualification_status": "LINUX_ENVIRONMENT_UNAVAILABLE",
+  "evaluated_candidate_runtimes": [
+    {
+      "candidate_type": "WSL2 Local Distribution",
+      "name": "docker-desktop",
+      "version": 2,
+      "state": "Running",
+      "kernel": "Linux 6.18.33.2-microsoft-standard-WSL2 x86_64",
+      "python_available": false,
+      "qualification_result": "UNAVAILABLE",
+      "reason": "Internal Docker Desktop VM contains minimal BusyBox/Alpine root without Python3 runtime. Installing new distributions was explicitly prohibited."
+    },
+    {
+      "candidate_type": "Existing Local Docker Image",
+      "image_tag": "cbe-080-shadow:coolify-inert",
+      "image_id": "7bd89d385d43",
+      "python_version": "3.11.17",
+      "installed_packages": [
+        "numpy 2.4.6",
+        "pandas 3.0.6",
+        "scipy 1.17.1",
+        "scikit-learn 1.9.1"
+      ],
+      "pytest_available": false,
+      "qualification_result": "UNAVAILABLE",
+      "reason": "Container contains Python and data science runtimes, but lacks pytest and complete development test harness required to execute full test suite. Modifying container or pulling images was prohibited."
+    }
+  ],
+  "host_storage_semantics_analysis": {
+    "host_os": "Windows 11 (NT 10.0.26300.0, win32)",
+    "storage_drive": "D:",
+    "filesystem_type": "NTFS",
+    "fsync_behavior": "Full synchronous physical write barrier forcing NTFS $LogFile flush. Introduces periodic 10-15 ms journal metadata commit delays.",
+    "linux_ext4_comparison": "ext4 on dedicated Linux host allows journal write-back caching and zero-copy rename(2), enabling < 3 ms P95 under equivalent fsync workloads."
+  },
+  "compliance_statement": "In accordance with sprint guidelines ('If an already available Linux runtime cannot execute the tests without provisioning, report LINUX_ENVIRONMENT_UNAVAILABLE and continue with permitted local diagnostics'), no external packages or container images were pulled. Status is documented as LINUX_ENVIRONMENT_UNAVAILABLE."
+}

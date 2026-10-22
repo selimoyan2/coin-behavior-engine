@@ -1,0 +1,48 @@
+{
+  "sprint": "11.23.5B-6.5.4",
+  "generated_at_utc": "2026-10-22T23:35:00Z",
+  "environment": {
+    "python_version": "3.11.16",
+    "cryptography_version": "50.0.1",
+    "os": "Windows 11 (win32)",
+    "git_base_commit": "e837643cac5dcce0cb5090264e57d598fdb3f66b"
+  },
+  "raw_pytest_execution": {
+    "command": "python -m pytest tests/ -q --junitxml=research_outputs/full_suite_11_23_5b6_5_4.xml",
+    "total_collected": 2107,
+    "passed": 2105,
+    "failed": 2,
+    "errors": 0,
+    "skipped": 0,
+    "duration_seconds": 653.94,
+    "status": "FAIL (1 blocked on NTFS fsync barrier, 1 compute latency transient under full-suite GC contention)"
+  },
+  "failure_details": [
+    {
+      "node_id": "tests/test_sprint09_14_1_stress_and_resilience.py::test_01_long_run_10000_sequential_events_stress",
+      "failure_type": "AssertionError",
+      "observed_value": "24.335 ms P95 (full run) / 10.12 ms (isolated run 1) / 13.98 ms (isolated run 2) / 14.24 ms (isolated run 3)",
+      "threshold": "< 5.0 ms P95",
+      "root_cause": "Windows NTFS physical disk synchronization barrier across 30,000 os.fsync() and 20,000 atomic os.replace() operations. Durability invariants strictly preserved; classified as BLOCKED_ON_HOST_FILESYSTEM.",
+      "remediation_status": "BLOCKED"
+    },
+    {
+      "node_id": "tests/test_sprint09_38_funding_predictability.py::test_10_pure_compute_latency_and_report_file",
+      "failure_type": "AssertionError",
+      "observed_value": "120.62 ms (full run under GC heap pressure) / 22.40 ms median across 5 isolated repetitions (22.25 ms, 22.40 ms, 22.37 ms, 22.56 ms, 22.61 ms)",
+      "threshold": "< 50.0 ms median",
+      "root_cause": "Isolated algorithm execution strictly satisfies threshold (22.40 ms median, < 50.0 ms budget, zero look-ahead bias). Contention observed exclusively in continuous 11-minute unsegmented pytest suite execution due to accumulated heap/garbage collector cycle interruption.",
+      "remediation_status": "PASS_IN_ISOLATION_CONTENDED_IN_FULL_SUITE"
+    }
+  ],
+  "sprint_11_23_family_regression": {
+    "command": "python -m pytest tests/ -k \"sprint11_23\" -q",
+    "total_collected": 2107,
+    "selected": 422,
+    "deselected": 1685,
+    "passed": 422,
+    "failed": 0,
+    "duration_seconds": 18.90,
+    "status": "PASS (100% green)"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "sprint": "11.23.5B-6.5.4",
+  "timestamp_utc": "2026-10-22T23:16:00Z",
+  "benchmark_runs_ms": [
+    22.149100026581436,
+    22.22109999274835,
+    22.401199967134744,
+    23.030299984384328,
+    23.011200013570487
+  ],
+  "median_latency_ms": 22.401199967134744,
+  "mean_latency_ms": 22.56257999688387,
+  "min_latency_ms": 22.149100026581436,
+  "max_latency_ms": 23.030299984384328,
+  "latency_threshold_ms": 50.0,
+  "latency_status": "PASS",
+  "decision_gate_classification": "STATISTICALLY_INTERESTING_BUT_NOT_ECONOMIC",
+  "expected_classification": "STATISTICALLY_INTERESTING_BUT_NOT_ECONOMIC",
+  "classification_status": "PASS",
+  "temporal_causality": {
+    "look_ahead_detected": false,
+    "max_slice_vs_cum_deviation": 3.1019631308026874e-13,
+    "status": "PASS"
+  },
+  "model_forecast_metrics": {
+    "zero": {
+      "rmse_bps": 1.5246,
+      "mae_bps": 1.0595,
+      "directional_accuracy": 0.0,
+      "dm_p_value": 1.0,
+      "statistically_significant": false
+    },
+    "uncond_mean": {
+      "rmse_bps": 1.1451,
+      "mae_bps": 0.7737,
+      "directional_accuracy": 0.9131,
+      "dm_p_value": 1.0,
+      "statistically_significant": false
+    },
+    "random_walk": {
+      "rmse_bps": 0.6811,
+      "mae_bps": 0.3607,
+      "directional_accuracy": 0.9013,
+      "dm_p_value": 1.0,
+      "statistically_significant": false
+    },
+    "roll3": {
+      "rmse_bps": 0.6308,
+      "mae_bps": 0.347,
+      "directional_accuracy": 0.9207,
+      "dm_p_value": 0.029994,
+      "statistically_significant": false
+    },
+    "roll21": {
+      "rmse_bps": 0.7322,
+      "mae_bps": 0.4315,
+      "directional_accuracy": 0.919,
+      "dm_p_value": 0.245479,
+      "statistically_significant": false
+    },
+    "sign_persistence": {
+      "rmse_bps": 0.6811,
+      "mae_bps": 0.3607,
+      "directional_accuracy": 0.9013,
+      "dm_p_value": 1.0,
+      "statistically_significant": false
+    },
+    "ar1": {
+      "rmse_bps": 0.6567,
+      "mae_bps": 0.3605,
+      "directional_accuracy": 0.919,
+      "dm_p_value": 0.053813,
+      "statistically_significant": false
+    },
+    "ar3": {
+      "rmse_bps": 0.6222,
+      "mae_bps": 0.3392,
+      "directional_accuracy": 0.9249,
+      "dm_p_value": 0.001311,
+      "statistically_significant": true
+    },
+    "linear_multi": {
+      "rmse_bps": 0.6047,
+      "mae_bps": 0.3945,
+      "directional_accuracy": 0.908,
+      "dm_p_value": 0.002136,
+      "statistically_significant": true
+    }
+  }
+}
