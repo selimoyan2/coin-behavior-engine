@@ -1,0 +1,20 @@
+{
+  "sprint": "11.23.5B-6.5",
+  "attestation_type": "DETACHED_POST_COMMIT_CRYPTOGRAPHIC_ATTESTATION",
+  "generated_at_utc": "2026-10-22T21:37:39Z",
+  "base_commit": "9c6088d37cb3103dc1b79b19a0a2b105788207ee",
+  "final_commit_sha": "1d9abd3c5a57b269b0061ce23167aa24d7041524",
+  "parent_commit_sha": "9c6088d37cb3103dc1b79b19a0a2b105788207ee",
+  "tree_sha": "1a4b343da69b1c442b9ec8b58e7149c2ca4ef514",
+  "commit_date": "2026-10-23T00:37:34+03:00",
+  "commit_author": "Coin Behavior Engine <engine@local>",
+  "commit_subject": "CBE - SPRINT 11.23.5B-6.5: Cryptography Hardening & Final Production Sign-off",
+  "manifest_file": "reproducibility_manifest_11_23_5b6_5.json",
+  "manifest_sha256": "eeb22d165ce4a88b64b662843464c4bc57ed69fde05afa262f058462bf3d5487",
+  "deliverable_verification": {
+    "total_verified": 7,
+    "mismatches": [],
+    "status": "PASS"
+  },
+  "circular_dependency_status": "RESOLVED_VIA_DETACHED_ATTESTATION"
+}
