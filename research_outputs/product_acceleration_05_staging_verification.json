@@ -1,0 +1,91 @@
+{
+  "sprint": "CBE-SPRINT-PRODUCT-ACCELERATION-05",
+  "verification_time_utc": "2026-10-24T02:20:06Z",
+  "infrastructure": {
+    "host": "srv1114257 (168.231.125.238)",
+    "orchestrator": "Coolify v4.4.7",
+    "staging_service_uuid": "dzzfws54by1whlbq6fk4ywut",
+    "staging_container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+    "container_id": "cbe-market-intelligence-staging",
+    "binding": "127.0.0.1:18080->8000/tcp",
+    "deployed_commit": "93f7f89838ceddc369325a72a44452bbd6958368",
+    "deployed_commit_short": "93f7f898",
+    "image_tag": "cbe-market-intelligence:staging",
+    "image_id": "sha256:649d2f96264114f2e59cc0b1cdaac00a6108856efa1a976ba85f2ba63d51b51f",
+    "dataset_manifest_version": "cbe-manifest-v2-73a6212acca3",
+    "production_container_untouched": "6t63aehpaw0cw1bbt4zcm09g-20261023T225406 (Up 25 minutes, healthy, VERIFIED UNTOUCHED)"
+  },
+  "endpoints_verified": [
+    {
+      "path": "/health",
+      "method": "GET",
+      "status": 200,
+      "status_text": "healthy"
+    },
+    {
+      "path": "/product",
+      "method": "GET",
+      "status": 200,
+      "status_text": "OK"
+    },
+    {
+      "path": "/api/v1/product/runtime-build",
+      "method": "GET",
+      "status": 200,
+      "build_commit": "93f7f89838ceddc369325a72a44452bbd6958368",
+      "build_commit_short": "93f7f898",
+      "dataset_manifest_version": "cbe-manifest-v2-73a6212acca3",
+      "runtime_identity_verified": true
+    },
+    {
+      "path": "/api/v1/product/dataset-catalog",
+      "method": "GET",
+      "status": 200,
+      "status_text": "OK"
+    },
+    {
+      "path": "/api/v1/product/dataset-coverage",
+      "method": "GET",
+      "status": 200,
+      "available_months_count": 57,
+      "calendar_entries": 24
+    },
+    {
+      "path": "/api/v1/product/dataset-quality",
+      "method": "GET",
+      "status": 200,
+      "integrity_verdict": "VERIFIED_PASS",
+      "missing_gaps_count": 0
+    },
+    {
+      "path": "/api/v1/product/available-dates?interval=5m",
+      "method": "GET",
+      "status": 200,
+      "latest_month": "2026-09"
+    },
+    {
+      "path": "/api/v1/product/historical-candles?month=2026-10",
+      "method": "GET",
+      "status": 200,
+      "empty_month_handling": "PASS",
+      "status_field": "no_data",
+      "available": false,
+      "message": "Ekim 2026 için doğrulanmış tarihsel mum verisi henüz bulunmuyor."
+    },
+    {
+      "path": "/api/v1/product/governance",
+      "method": "GET",
+      "status": 200,
+      "technical_decision": "TECHNICAL_NO_GO",
+      "governance_authorization": "NOT_GRANTED"
+    }
+  ],
+  "governance_invariants": {
+    "technical_decision": "TECHNICAL_NO_GO",
+    "governance_authorization": "NOT_GRANTED",
+    "production_token_issued": false,
+    "real_market_network_collection": "DISABLED",
+    "live_order_execution": "PROHIBITED"
+  },
+  "overall_verification_status": "PASSED_STAGING_ACCEPTANCE_FULL"
+}
