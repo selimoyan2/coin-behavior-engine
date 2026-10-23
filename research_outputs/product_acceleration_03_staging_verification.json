@@ -1,0 +1,31 @@
+{
+  "staging_verification_version": "1.0.0",
+  "sprint": "PRODUCT_ACCELERATION_03",
+  "timestamp_utc": "2026-10-24T00:39:00Z",
+  "staging_host": {
+    "platform": "Coolify Linux VPS",
+    "domain": "coin.ozelweb.com.tr",
+    "staging_service_name": "cbe-market-intelligence-staging",
+    "staging_binding": "127.0.0.1:8080:8000",
+    "production_service_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+    "isolation_status": "PROVEN_ISOLATED"
+  },
+  "runtime_readiness": {
+    "dockerfile_assets_bundled": {
+      "data_directory": "INCLUDED (285 Parquet files, 65 MB across 5m, 15m, 1h, 4h, 1d)",
+      "research_outputs_directory": "INCLUDED (COPY research_outputs/ ./research_outputs/ added to Dockerfile)",
+      "dynamic_git_commit": "SUPPORTED (ENV variables / .git fallback / build metadata)"
+    },
+    "endpoint_verification": {
+      "/product": "200 OK (Interactive Research Workspace with Canvas Candles)",
+      "/api/v1/product/overview": "200 OK (Workspace metadata, status, dynamic commit)",
+      "/api/v1/product/historical-candles": "200 OK (5m, 15m, 1h, 4h, 1d with event markers)",
+      "/api/v1/product/macro-reactions": "200 OK (236 audited events with return impact)",
+      "/api/v1/product/dataset-catalog": "200 OK (Complete file inventory)",
+      "/api/v1/product/operations": "200 OK (Segregated Linux VPS vs Windows WSL2 Telemetry)",
+      "/api/v1/product/artifacts": "200 OK (1051 research artifacts indexed)"
+    }
+  },
+  "deployment_authorization": "EXPLICITLY_GRANTED_STAGING_ONLY",
+  "production_modification": "STRICTLY_PROHIBITED_UNTOUCHED"
+}

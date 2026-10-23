@@ -222,7 +222,7 @@ def test_08_operations_endpoint(api):
     assert data["status"] == "success"
     assert data["app_name"] == "Coin Behavior Engine (CBE)"
     assert data["model_version"] == "CBE-0.7.0"
-    assert data["git_revision"] == "2e7ad236ba07f71eee54dac01d6ffe9c115ba9d9"
+    assert isinstance(data["git_revision"], str) and len(data["git_revision"]) >= 7
     assert data["health_state"] == "HEALTHY"
     assert "storage_status" in data
     assert data["storage_status"]["artifacts_indexed_count"] > 0

@@ -26,6 +26,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 COPY src/ ./src/
 COPY data/ ./data/
 COPY config/ ./config/
+COPY research_outputs/ ./research_outputs/
 
 # Install the engine package in editable/local mode
 RUN pip install --no-cache-dir -e .

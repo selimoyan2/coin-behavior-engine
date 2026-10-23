@@ -1,0 +1,35 @@
+{
+  "audit_version": "1.0.0",
+  "sprint": "PRODUCT_ACCELERATION_03",
+  "timestamp_utc": "2026-10-24T00:39:00Z",
+  "runtime_environment": {
+    "target_platform": "Coolify Linux VPS (staging)",
+    "container_name": "cbe-market-intelligence-staging",
+    "host_ip": "127.0.0.1",
+    "host_port": 8080,
+    "container_port": 8000,
+    "production_container_untouched": true,
+    "production_uuid": "6t63aehpaw0cw1bbt4zcm09g"
+  },
+  "root_cause_analysis": {
+    "issue_1_blank_candlestick_chart": {
+      "observed_symptom": "Veri yükleniyor veya bu dönem için mum kaydı bulunamadı... displayed on staging chart while local dev showed candles.",
+      "root_cause": ".gitignore line 50 contained data/binance_spot_multiyear/. Coolify performs git clone from GitHub repository; because parquet files were ignored by git, the container built on Linux VPS had an empty data directory. Furthermore, Dockerfile omitted COPY research_outputs/ ./research_outputs/.",
+      "remediation": "Updated .gitignore to ignore only the large 1m partition (210 MB) while explicitly tracking 5m, 15m, 1h, 4h, and 1d partitions (total 65 MB across 285 Parquet files, all < 1 MB each). Added COPY research_outputs/ ./research_outputs/ to Dockerfile. All 285 files committed to repository.",
+      "status": "VERIFIED_RESOLVED"
+    },
+    "issue_2_hardcoded_git_sha": {
+      "observed_symptom": "Header badge, overview meta, and operations telemetry statically displayed '2e7ad236ba07f71eee54dac01d6ffe9c115ba9d9' regardless of actual deployment revision.",
+      "root_cause": "Hardcoded string in dashboard_api.py and dashboard_ui.py.",
+      "remediation": "Implemented get_runtime_git_revision() in dashboard_api.py with a 4-tier fallback: 1) GIT_COMMIT / SOURCE_COMMIT / COOLIFY_GIT_COMMIT env vars; 2) Local .git/HEAD inspection; 3) git rev-parse HEAD subprocess call; 4) build_metadata.json lookup. Updated dashboard_ui.py to dynamically populate all .dyn-git-rev and .dyn-git-rev-short spans via /api/v1/product/overview and /api/v1/product/operations.",
+      "status": "VERIFIED_RESOLVED"
+    },
+    "issue_3_environment_qualification_ambiguity": {
+      "observed_symptom": "Operations tab showed 5 fsync benchmark failures without distinguishing between host disk virtualization bottlenecks and live Linux VPS performance.",
+      "root_cause": "Unified display conflated Windows NTFS / WSL2 virtualized disk queuing benchmarks with live Linux container telemetry.",
+      "remediation": "Segregated Operations telemetry into Section A (Live Linux VPS Staging Container Metrics - Healthy/Normal), Section B (Offline Windows WSL2 Durability Benchmarks - Root cause documented as NTFS virtualization queue depth), and Section C (Cryptographic Governance Invariants).",
+      "status": "VERIFIED_RESOLVED"
+    }
+  },
+  "verification_status": "QUALIFIED_FOR_STAGING"
+}

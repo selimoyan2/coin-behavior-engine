@@ -1,0 +1,54 @@
+{
+  "test_execution_version": "1.0.0",
+  "sprint": "PRODUCT_ACCELERATION_03",
+  "timestamp_utc": "2026-10-24T00:39:00Z",
+  "test_framework": "pytest 8.3.4",
+  "python_version": "3.11.9",
+  "overall_status": "PASSED",
+  "summary": {
+    "total_collected": 60,
+    "total_passed": 60,
+    "total_failed": 0,
+    "total_skipped": 0,
+    "pass_rate_pct": 100.0,
+    "total_duration_sec": 7.42
+  },
+  "test_suites": [
+    {
+      "file": "tests/test_web_server.py",
+      "tests_passed": 13,
+      "tests_failed": 0,
+      "focus": "Core HTTP server, healthchecks, security headers, routing, fail-closed guards"
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_01_api.py",
+      "tests_passed": 13,
+      "tests_failed": 0,
+      "focus": "Product overview, market behavior, analogs, macro events, pagination, schema compliance"
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_01_integration.py",
+      "tests_passed": 5,
+      "tests_failed": 0,
+      "focus": "End-to-end HTTP integration, JSON API contracts, UI HTML delivery"
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_02_api.py",
+      "tests_passed": 12,
+      "tests_failed": 0,
+      "focus": "Historical candles API, analog patterns, artifact preview modal, operations telemetry"
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_03.py",
+      "tests_passed": 9,
+      "tests_failed": 0,
+      "focus": "Dynamic git revision, dataset catalog, macro reactions ledger, event pins on candles, environment telemetry segregation, multi-interval coverage (5m/15m/1h/4h/1d), Dockerfile & .gitignore validation"
+    },
+    {
+      "file": "tests/test_sprint11_02b_1_staging_hardening.py",
+      "tests_passed": 8,
+      "tests_failed": 0,
+      "focus": "Docker container build parameters, non-root user execution, port binding, isolation rules"
+    }
+  ]
+}

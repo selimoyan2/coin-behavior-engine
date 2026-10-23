@@ -1,10 +1,13 @@
-"""Sprint Product Acceleration 01 — Product Dashboard UI Renderer & Assets.
+"""Sprint Product Acceleration 03 — Product Dashboard UI Renderer & Assets.
 
-Provides a unified, responsive, dark-mode research dashboard:
-- 7 Integrated Modules: Overview, Research Results, Market Behavior, News & Events,
-  Governance Center, Artifact Browser, Operations & System Status.
-- Zero-dependency client-side tab switching & hash routing.
-- Real-time bounded fetch integration with /api/v1/product/* endpoints.
+Provides a unified, responsive, dark-mode research workspace:
+- 7 Integrated Modules: Overview (Research Workspace), Research Results (Visualizations),
+  Market Behavior (Interactive Candlesticks, Regimes, Analog Explorer),
+  News & Macro Research (Audited Event Reactions), Governance Center,
+  Artifact Browser (550+ files), Operations & System Status.
+- Zero-dependency client-side Canvas rendering (candlesticks, volume, regimes, analog dispersion).
+- Macroeconomic and regulatory event overlay pins on historical price chart.
+- Dynamic runtime git revision reporting (eliminating hardcoded hashes).
 - 100% offline-resilient: zero external CDN scripts or stylesheet links.
 - Fully accessible and responsive (Desktop, Laptop, Tablet, Mobile).
 """
@@ -19,7 +22,7 @@ def render_product_dashboard_html() -> str:
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coin Behavior Engine | Ürün & Araştırma Portalı</title>
+  <title>Coin Behavior Engine | Araştırma Portalı & Piyasa İstihbaratı</title>
   <meta name="description" content="Coin Behavior Engine piyasa davranışı, araştırma sonuçları, yönetişim ve kanıt arşivi.">
   <style>
     :root {
@@ -77,10 +80,11 @@ def render_product_dashboard_html() -> str:
     .brand-group {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
     .brand-logo {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 800;
       letter-spacing: -0.5px;
       display: flex;
@@ -98,41 +102,23 @@ def render_product_dashboard_html() -> str:
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 4px;
       font-size: 11px;
       font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 9999px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
+      font-family: var(--font-mono);
     }
-    .badge-frozen { background: #1e3a8a; color: #93c5fd; border: 1px solid #3b82f6; }
-    .badge-success { background: var(--green-bg); color: #6ee7b7; border: 1px solid var(--green-border); }
-    .badge-warn { background: var(--yellow-bg); color: #fde68a; border: 1px solid var(--yellow-border); }
-    .badge-danger { background: var(--red-bg); color: #fca5a5; border: 1px solid var(--red-border); }
-    .badge-info { background: var(--blue-bg); color: #bfdbfe; border: 1px solid var(--blue-border); }
-
-    .btn {
-      background: #1f2937;
-      color: var(--text);
-      border: 1px solid var(--border);
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.15s ease;
-    }
-    .btn:hover { background: #374151; color: #fff; border-color: var(--accent); }
-    .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .btn-primary:hover { background: var(--accent-hover); }
+    .badge-frozen { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
+    .badge-success { background: var(--green-bg); color: #34d399; border: 1px solid var(--green-border); }
+    .badge-danger { background: var(--red-bg); color: #f87171; border: 1px solid var(--red-border); }
+    .badge-warn { background: var(--yellow-bg); color: #fbbf24; border: 1px solid var(--yellow-border); }
+    .badge-info { background: var(--blue-bg); color: #60a5fa; border: 1px solid var(--blue-border); }
+    .badge-purple { background: rgba(139, 92, 246, 0.12); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.3); }
 
     /* Navigation Tabs */
     .nav-tabs {
-      background: #111827;
+      background: #0b101c;
       border-bottom: 1px solid var(--border);
       padding: 0 24px;
       display: flex;
@@ -142,39 +128,35 @@ def render_product_dashboard_html() -> str:
     }
     .nav-tab {
       padding: 12px 16px;
+      color: var(--text-muted);
+      text-decoration: none;
       font-size: 13px;
       font-weight: 600;
-      color: var(--text-muted);
       border-bottom: 2px solid transparent;
-      cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
-      text-decoration: none;
+      gap: 6px;
       transition: all 0.15s ease;
+      cursor: pointer;
     }
-    .nav-tab:hover { color: var(--text); }
+    .nav-tab:hover { color: #fff; background: rgba(255, 255, 255, 0.02); }
     .nav-tab.active {
-      color: #fff;
+      color: var(--accent);
       border-bottom-color: var(--accent);
-      background: rgba(59, 130, 246, 0.05);
+      background: rgba(59, 130, 246, 0.06);
     }
 
-    /* Main Container */
+    /* Container & Layout */
     .container {
-      max-width: 1380px;
+      max-width: 1440px;
+      width: 100%;
       margin: 0 auto;
       padding: 24px;
-      width: 100%;
       flex: 1;
     }
-
-    /* Content Modules */
     .tab-content { display: none; }
-    .tab-content.active { display: block; animation: fadeIn 0.2s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .tab-content.active { display: block; }
 
-    /* Grids & Cards */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -185,19 +167,22 @@ def render_product_dashboard_html() -> str:
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 20px;
-      position: relative;
+      padding: 18px;
+      transition: border-color 0.15s ease;
     }
+    .card:hover { border-color: #374151; }
     .card h3 {
       font-size: 12px;
+      font-weight: 600;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.75px;
+      letter-spacing: 0.5px;
       margin-bottom: 8px;
     }
     .card .value {
       font-size: 24px;
-      font-weight: 700;
+      font-weight: 800;
+      font-family: var(--font-mono);
       color: #fff;
     }
     .card .subtext {
@@ -207,46 +192,65 @@ def render_product_dashboard_html() -> str:
       line-height: 1.4;
     }
 
-    /* Banner / Alerts */
+    /* Alert Banner */
     .alert-banner {
-      background: var(--yellow-bg);
-      border: 1px solid var(--yellow-border);
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid var(--red-border);
       border-radius: 8px;
-      padding: 14px 18px;
-      margin-bottom: 24px;
+      padding: 12px 16px;
       font-size: 13px;
-      color: #fde68a;
+      color: #fca5a5;
+      margin-bottom: 20px;
       line-height: 1.5;
     }
     .alert-banner.info {
-      background: var(--blue-bg);
+      background: rgba(59, 130, 246, 0.08);
       border-color: var(--blue-border);
-      color: #bfdbfe;
+      color: #93c5fd;
     }
-    .alert-banner.danger {
-      background: var(--red-bg);
-      border-color: var(--red-border);
-      color: #fca5a5;
+    .alert-banner.warn {
+      background: rgba(245, 158, 11, 0.08);
+      border-color: var(--yellow-border);
+      color: #fde68a;
     }
 
-    /* Section Titles */
+    /* Section Headers */
     .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 28px 0 16px 0;
+      margin: 24px 0 14px 0;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
     }
-    .section-header:first-child { margin-top: 0; }
     .section-title {
-      font-size: 18px;
+      font-size: 15px;
       font-weight: 700;
       color: #fff;
       display: flex;
       align-items: center;
       gap: 8px;
     }
+
+    /* Buttons */
+    .btn {
+      background: #1f2937;
+      color: #fff;
+      border: 1px solid #374151;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+    .btn:hover { background: #374151; border-color: #4b5563; }
+    .btn-primary { background: #2563eb; border-color: #1d4ed8; }
+    .btn-primary:hover { background: #1d4ed8; }
 
     /* Tables */
     .table-container {
@@ -259,11 +263,11 @@ def render_product_dashboard_html() -> str:
     table {
       width: 100%;
       border-collapse: collapse;
+      text-align: left;
       font-size: 13px;
     }
     th, td {
-      padding: 12px 16px;
-      text-align: left;
+      padding: 10px 14px;
       border-bottom: 1px solid var(--border);
     }
     th {
@@ -287,7 +291,7 @@ def render_product_dashboard_html() -> str:
     /* Filter Controls */
     .filter-bar {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       margin-bottom: 16px;
       flex-wrap: wrap;
       align-items: center;
@@ -296,10 +300,10 @@ def render_product_dashboard_html() -> str:
       background: var(--card-bg);
       border: 1px solid var(--border);
       color: #fff;
-      padding: 8px 14px;
+      padding: 7px 12px;
       border-radius: 6px;
-      font-size: 13px;
-      min-width: 260px;
+      font-size: 12px;
+      min-width: 240px;
       outline: none;
     }
     .search-input:focus { border-color: var(--accent); }
@@ -307,7 +311,7 @@ def render_product_dashboard_html() -> str:
       background: var(--card-bg);
       border: 1px solid var(--border);
       color: var(--text-muted);
-      padding: 6px 12px;
+      padding: 5px 12px;
       border-radius: 9999px;
       font-size: 12px;
       font-weight: 600;
@@ -321,24 +325,12 @@ def render_product_dashboard_html() -> str:
       border-color: var(--accent);
     }
 
-    /* Pagination */
-    .pagination-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 16px;
-      font-size: 12px;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border);
-    }
-
-
     /* Chart and Explorer Controls */
     .chart-panel {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 20px;
+      padding: 18px;
       margin-bottom: 24px;
     }
     .chart-toolbar {
@@ -346,7 +338,7 @@ def render_product_dashboard_html() -> str:
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
       margin-bottom: 12px;
     }
     .chart-controls-group {
@@ -359,7 +351,7 @@ def render_product_dashboard_html() -> str:
       background: #0d1322;
       border: 1px solid var(--border);
       color: #fff;
-      padding: 6px 12px;
+      padding: 5px 10px;
       border-radius: 6px;
       font-size: 12px;
       font-family: var(--font-mono);
@@ -428,7 +420,23 @@ def render_product_dashboard_html() -> str:
     .ret-pos { color: var(--green); font-weight: 600; }
     .ret-neg { color: var(--red); font-weight: 600; }
 
-    /* Preview Modal */
+    /* Event Tooltip on Canvas */
+    .event-popover {
+      display: none;
+      position: absolute;
+      background: #111827;
+      border: 1px solid var(--border-focus);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #fff;
+      z-index: 50;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+      max-width: 320px;
+      pointer-events: none;
+    }
+
+    /* Modal Overlay */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -481,6 +489,17 @@ def render_product_dashboard_html() -> str:
       color: var(--text-muted);
     }
 
+    /* Pagination */
+    .pagination-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+    }
+
     /* Footer */
     .app-footer {
       background: #0d1322;
@@ -496,11 +515,12 @@ def render_product_dashboard_html() -> str:
 
     /* Responsive */
     @media (max-width: 768px) {
-      .container { padding: 16px; }
+      .container { padding: 14px; }
       .grid { grid-template-columns: 1fr; }
-      .top-header { padding: 12px 16px; }
-      .nav-tabs { padding: 0 16px; }
+      .top-header { padding: 12px 14px; }
+      .nav-tabs { padding: 0 14px; }
       .search-input { min-width: 100%; }
+      .chart-hud { font-size: 11px; gap: 8px; }
     }
   </style>
 </head>
@@ -512,7 +532,8 @@ def render_product_dashboard_html() -> str:
       <div class="brand-logo">
         <span>⚡</span> Coin Behavior Engine
       </div>
-      <span class="badge badge-frozen">CBE-0.7.0 FROZEN</span>
+      <span class="badge badge-frozen">CBE-0.7.0 DONDURULDU</span>
+      <span class="badge badge-info" id="hdr-git-pill">Build: <code class="dyn-git-rev-short">69027de4</code></span>
       <span class="badge badge-danger">TECHNICAL NO-GO</span>
     </div>
     <div class="header-badges">
@@ -520,7 +541,7 @@ def render_product_dashboard_html() -> str:
       <span class="badge badge-info">ÇEVRİMDIŞI ARAŞTIRMA MODU</span>
       <span class="badge badge-danger">CANLI İŞLEM: YASAK</span>
       <button class="btn" id="btn-refresh" onclick="refreshCurrentTab()">
-        <span>↻</span> Şimdi Güncelle
+        <span>↻</span> Yenile
       </button>
     </div>
   </header>
@@ -528,22 +549,22 @@ def render_product_dashboard_html() -> str:
   <!-- Top Navigation Tabs (7 Core Modules) -->
   <nav class="nav-tabs" role="navigation" aria-label="Ürün Modülleri">
     <a href="#overview" class="nav-tab active" id="tab-btn-overview" onclick="switchTab('overview')">
-      <span>📊</span> Genel Bakış
-    </a>
-    <a href="#research" class="nav-tab" id="tab-btn-research" onclick="switchTab('research')">
-      <span>🔬</span> Araştırma Bulguları
+      <span>🔬</span> Araştırma Alanı (Genel Bakış)
     </a>
     <a href="#behavior" class="nav-tab" id="tab-btn-behavior" onclick="switchTab('behavior')">
-      <span>📈</span> Piyasa Davranışı
+      <span>📈</span> Piyasa Davranışı & Rejimler
     </a>
     <a href="#events" class="nav-tab" id="tab-btn-events" onclick="switchTab('events')">
       <span>📰</span> Olay & Makro Araştırması
+    </a>
+    <a href="#research" class="nav-tab" id="tab-btn-research" onclick="switchTab('research')">
+      <span>📊</span> Araştırma Bulguları
     </a>
     <a href="#governance" class="nav-tab" id="tab-btn-governance" onclick="switchTab('governance')">
       <span>🔐</span> Yönetişim & Güvenlik
     </a>
     <a href="#artifacts" class="nav-tab" id="tab-btn-artifacts" onclick="switchTab('artifacts')">
-      <span>📁</span> Kanıt Arşivi (540+)
+      <span>📁</span> Kanıt Arşivi (550+)
     </a>
     <a href="#operations" class="nav-tab" id="tab-btn-operations" onclick="switchTab('operations')">
       <span>⚙️</span> Sistem & Operasyon
@@ -554,147 +575,43 @@ def render_product_dashboard_html() -> str:
   <main class="container" role="main">
 
     <!-- =================================================================== -->
-    <!-- MODULE 1: OVERVIEW                                                  -->
+    <!-- MODULE 1: RESEARCH WORKSPACE (OVERVIEW REDESIGN)                     -->
     <!-- =================================================================== -->
     <section id="module-overview" class="tab-content active">
-      <div class="alert-banner">
-        <strong>⚠️ GÜVENLİK SÖZLEŞMESİ & TEKNİK KISITLAMALAR:</strong><br>
-        Sistem kesin olarak <code>OFFLINE_RESEARCH_AND_PRODUCT_DEVELOPMENT</code> modunda çalışmaktadır.
-        Gerçek borsa ağ erişimi, canlı BTCUSDT gözlemi ve otonom piyasa izleme <strong>DEVRE DIŞIDIR</strong>.
-        Canlı emir iletimi politik ve teknik olarak <strong>KALICI OLARAK YASAKLANMIŞTIR</strong>.
-        Geçmiş ve sentetik veriler kesinlikle canlı veri olarak nitelendirilmez.
-      </div>
-
-      <div class="grid">
-        <div class="card">
-          <h3>Model Bütünlüğü & Dondurma</h3>
-          <div class="value">CBE-0.7.0</div>
-          <div class="subtext">
-            Kanonik Dosyalar: <b style="color:#6ee7b7">29 / 29 Doğrulandı</b><br>
-            İhlal / Drift: <b>0</b> | Lockbox: <b>Aktif</b><br>
-            SHA-256: <code>c3e5dfbe3bf637f9...</code>
+      <!-- Research Workspace Banner -->
+      <div class="card" style="border-left: 4px solid var(--accent); margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: 0.5px;">TARİHSEL PİYASA ARAŞTIRMA ÇALIŞMA ALANI</div>
+            <h2 style="font-size: 18px; color: #fff; margin: 4px 0;">BTCUSDT Binance Spot Multi-Year Analiz Platformu</h2>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+              Kapsam: <b>2022-01 — 2026-09 (57 Kesintisiz Ay)</b> &bull;
+              Desteklenen Aralıklar: <b>5m, 15m, 1h, 4h, 1d</b> &bull;
+              Rejim Etiketleri: <b>105.120 Bar</b> &bull;
+              Denetlenmiş Makro Olaylar: <b>236 Kayıt</b>
+            </div>
           </div>
-        </div>
-
-        <div class="card">
-          <h3>Test Paketi & Yeterlilik</h3>
-          <div class="value" style="color: #6ee7b7;">2,102 / 2,107</div>
-          <div class="subtext">
-            Geçiş Oranı: <b>%99.76</b> | Sprint 11.23: <b>422/422 (%100)</b><br>
-            Fonlama Gecikmesi: <b style="color:#6ee7b7">21.38 ms</b> (&lt; 50.0 ms sınır)<br>
-            Kalan 5 Hata: WSL2 VHDX disk fsync senkronizasyon sınırları
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>Son Araştırma Aşaması</h3>
-          <div class="value" style="font-size: 18px; color: #93c5fd;">Sprint 11.23.5B-6.5.5C</div>
-          <div class="subtext">
-            Başlık: <b>Offline Regression Closure & Durability Forensics</b><br>
-            Hesaplama / Disk Oranı: <b>0.41 ms (%1.1) / 36.19 ms (%98.9)</b><br>
-            Taahhüt: <code>2e7ad236ba07f71...</code>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>Veri Seti & Kanıt Varlıkları</h3>
-          <div class="value" id="overview-artifact-count">540+ Dosya</div>
-          <div class="subtext">
-            Binance Spot Zaman Dilimleri: <b>1m, 5m, 15m, 1h, 4h, 1d</b><br>
-            Doğrulanmış Makro Olaylar: <b>40 Adet</b> (SEC, Fed, Hazine)<br>
-            BLS CPI Adayı: <b style="color:#fde68a">Doğrulanmadı (Ağ Kapalı)</b>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="switchTab('behavior')">📈 Detaylı Grafik & Analog Gezgini</button>
+            <button class="btn" onclick="switchTab('events')">📰 Olay Reaksiyonları</button>
+            <button class="btn" onclick="switchTab('research')">📊 Bilimsel Bulgular</button>
           </div>
         </div>
       </div>
 
+      <!-- Main Historical Chart embedded on Overview -->
       <div class="section-header">
-        <div class="section-title"><span>🛡️</span> Veri Kökeni ve Ayrım Prensipleri</div>
-      </div>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Veri Sınıfı</th>
-              <th>Kaynak ve Doğrulama Durumu</th>
-              <th>Kullanım Amacı</th>
-              <th>Yetkilendirme Kısıtı</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Geçmiş Gözlemler</strong></td>
-              <td>Binance Spot multi-year arşivleri (2022-2026 Parquet)</td>
-              <td>Çevrimdışı rejim, volatilite ve korelasyon araştırması</td>
-              <td><span class="badge badge-warn">ARAŞTIRMA KONTAMİNASYONLU</span></td>
-            </tr>
-            <tr>
-              <td><strong>Sentetik Test Verisi</strong></td>
-              <td>İzole edilmiş deterministic mock veri yükleri</td>
-              <td>Yazılım regresyon ve stres testleri</td>
-              <td><span class="badge badge-info">SENTETİK</span></td>
-            </tr>
-            <tr>
-              <td><strong>Çevrimdışı Araştırma</strong></td>
-              <td><code>research_outputs/</code> (540 dosya)</td>
-              <td>İstatistiki ve ekonomik hipotez doğrulama</td>
-              <td><span class="badge badge-success">KANIT ARŞİVİNDE</span></td>
-            </tr>
-            <tr>
-              <td><strong>Canlı Piyasa Akışı</strong></td>
-              <td>Gerçek borsa API / WebSocket akışı</td>
-              <td>Operasyonel gözlem</td>
-              <td><span class="badge badge-danger">YETKİLENDİRİLMEDİ</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- =================================================================== -->
-    <!-- MODULE 2: RESEARCH RESULTS                                          -->
-    <!-- =================================================================== -->
-    <section id="module-research" class="tab-content">
-      <div class="section-header">
-        <div class="section-title"><span>🔬</span> Kanonik Araştırma Bulguları & Hipotez Değerlendirmeleri</div>
-      </div>
-
-      <div class="filter-bar">
-        <input type="text" id="research-search" class="search-input" placeholder="Bulgularda veya başlıklarda ara..." oninput="filterResearch()">
-        <button class="pill-btn active" onclick="setResearchCat('all', this)">Tümü</button>
-        <button class="pill-btn" onclick="setResearchCat('derivatives', this)">Türev & Fonlama</button>
-        <button class="pill-btn" onclick="setResearchCat('market structure', this)">Piyasa Yapısı</button>
-        <button class="pill-btn" onclick="setResearchCat('pattern recognition', this)">Analog Gezgin</button>
-        <button class="pill-btn" onclick="setResearchCat('macro', this)">Makro & Olaylar</button>
-        <button class="pill-btn" onclick="setResearchCat('durability', this)">Kalıcılık & Disk</button>
-        <button class="pill-btn" onclick="setResearchCat('security', this)">Kripto & Güvenlik</button>
-      </div>
-
-      <div id="research-cards-container" class="grid" style="grid-template-columns: 1fr;">
-        <!-- Injected via client.js -->
-        <div class="card" style="text-align: center; color: var(--text-muted); padding: 40px;">Araştırma sonuçları yükleniyor...</div>
-      </div>
-    </section>
-
-    <!-- =================================================================== -->
-    <!-- MODULE 3: MARKET BEHAVIOR & HISTORICAL EXPLORER                     -->
-    <!-- =================================================================== -->
-    <section id="module-behavior" class="tab-content">
-      <div class="alert-banner info">
-        <strong>ℹ️ MODEL REJİMİ GÜVENLİK KALKANI:</strong><br>
-        Dondurulmuş modelin (CBE-0.7.0) persentil hesaplama algoritmasındaki mantık hatası (<code>x &lt;= x</code> eşitlik durumu)
-        nedeniyle ham <code>DELEVERAGING_STRESS</code> çıktısı fail-closed korumasıyla <strong>UNKNOWN</strong> durumuna çekilmiştir.
-        Aşağıdaki tüm grafik ve veriler geçmiş doğrulanmış çok yıllık spot veri setleri (2022-2026 Parquet) ve kanonik rejim çizelgesi üzerinden hesaplanmaktadır.
-      </div>
-
-      <!-- SECTION 1: HISTORICAL CANDLESTICK & REGIME CHART -->
-      <div class="section-header">
-        <div class="section-title"><span>📈</span> Tarihsel Fiyat & Piyasa Rejimi Gezgini (BTCUSDT Multi-Year)</div>
+        <div class="section-title"><span>📈</span> Tarihsel Fiyat & Rejim Gözlemi (BTCUSDT)</div>
+        <div style="display: flex; gap: 6px;">
+          <span class="badge badge-info">ÇEVRİMDIŞI PARQUET ARŞİVİ</span>
+          <span class="badge badge-warn">ARAŞTIRMA KONTAMİNASYONLU</span>
+        </div>
       </div>
 
       <div class="chart-panel">
         <div class="chart-toolbar">
           <div class="chart-controls-group">
-            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Aralık:</span>
+            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Zaman Dilimi:</span>
             <button class="pill-btn" onclick="setCandleInterval('5m', this)">5m</button>
             <button class="pill-btn" onclick="setCandleInterval('15m', this)">15m</button>
             <button class="pill-btn active" onclick="setCandleInterval('1h', this)">1h</button>
@@ -706,17 +623,21 @@ def render_product_dashboard_html() -> str:
             <select id="candle-month-select" class="select-dropdown" onchange="changeCandleMonth(this.value)">
               <option value="2026-09">2026-09 (Eylül 2026)</option>
             </select>
-            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600; margin-left: 6px;">Bar Sayısı:</span>
+            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Bar Sayısı:</span>
             <select id="candle-limit-select" class="select-dropdown" onchange="changeCandleLimit(this.value)">
               <option value="50">50 Bar</option>
               <option value="100" selected>100 Bar</option>
               <option value="200">200 Bar</option>
               <option value="500">500 Bar</option>
             </select>
-            <div style="display: flex; gap: 4px; margin-left: 6px;">
-              <button class="btn" style="padding: 4px 10px; font-size: 11px;" onclick="panCandles(-25)" title="Önceki Barlar">◀ Önceki</button>
-              <button class="btn" style="padding: 4px 10px; font-size: 11px;" onclick="panCandles(25)" title="Sonraki Barlar">Sonraki ▶</button>
+            <div style="display: flex; gap: 4px;">
+              <button class="btn" style="padding: 4px 8px; font-size: 11px;" onclick="panCandles(-25)" title="Önceki Barlar">◀ Önceki</button>
+              <button class="btn" style="padding: 4px 8px; font-size: 11px;" onclick="panCandles(25)" title="Sonraki Barlar">Sonraki ▶</button>
+              <button class="btn" style="padding: 4px 8px; font-size: 11px;" onclick="resetCandleZoom()" title="Görünümü Sıfırla">Sıfırla</button>
             </div>
+            <label style="font-size: 11px; display: inline-flex; align-items: center; gap: 4px; color: #93c5fd; cursor: pointer;">
+              <input type="checkbox" id="toggle-events-overlay" checked onchange="toggleEventOverlay(this.checked)"> Makro Olay Pinleri
+            </label>
           </div>
         </div>
 
@@ -732,16 +653,157 @@ def render_product_dashboard_html() -> str:
 
         <div class="chart-canvas-wrap" id="candle-canvas-container">
           <canvas id="candlestick-canvas" class="chart-canvas"></canvas>
+          <div id="event-popover" class="event-popover"></div>
         </div>
 
         <div class="chart-legend">
-          <span style="font-weight: 600; color: #fff;">Piyasa Rejimi Renk Kodları:</span>
+          <span style="font-weight: 600; color: #fff;">Piyasa Rejimleri:</span>
           <div class="legend-item"><span class="legend-color" style="background: #64748b;"></span> <span>SIDEWAYS (Yatay)</span></div>
           <div class="legend-item"><span class="legend-color" style="background: #f59e0b;"></span> <span>UNCERTAIN (Belirsiz)</span></div>
-          <div class="legend-item"><span class="legend-color" style="background: #10b981;"></span> <span>TRENDING_BULL (Boğa Trendi)</span></div>
-          <div class="legend-item"><span class="legend-color" style="background: #8b5cf6;"></span> <span>HIGH_VOLATILITY (Yüksek Volatilite)</span></div>
-          <div class="legend-item"><span class="legend-color" style="background: #ef4444;"></span> <span>TRENDING_BEAR (Ayı Trendi)</span></div>
-          <div class="legend-item"><span class="legend-color" style="background: #f97316;"></span> <span>POSSIBLE_REVERSAL (Olası Dönüş)</span></div>
+          <div class="legend-item"><span class="legend-color" style="background: #10b981;"></span> <span>TRENDING_BULL (Boğa)</span></div>
+          <div class="legend-item"><span class="legend-color" style="background: #8b5cf6;"></span> <span>HIGH_VOLATILITY (Volatil)</span></div>
+          <div class="legend-item"><span class="legend-color" style="background: #ef4444;"></span> <span>TRENDING_BEAR (Ayı)</span></div>
+          <div class="legend-item"><span class="legend-color" style="background: #f97316;"></span> <span>POSSIBLE_REVERSAL (Dönüş)</span></div>
+          <span style="margin-left: 12px; font-weight: 600; color: #fff;">Olay Pinleri:</span>
+          <span>🏛️ SEC/Düzenleyici</span> &bull; <span>🏦 Fed/Para Politikası</span> &bull; <span>📈 Enflasyon (CPI)</span> &bull; <span>💼 İstihdam</span>
+        </div>
+      </div>
+
+      <!-- Secondary Section: Empirical Research Intelligence Cards -->
+      <div class="section-header">
+        <div class="section-title"><span>🧠</span> Temel Araştırma Çıkarımları & Kanıt Özeti</div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Perpetual Fonlama & Carry Gerçeği</h3>
+          <div class="value" style="color: #fbbf24;">+0.0108% / 8h</div>
+          <div class="subtext">
+            Yıllık Brüt: <b>~%11.82</b> | Yarılanma Ömrü: <b>19.2 Saat</b><br>
+            Taker Komisyonu: <b>19 — 36 bps</b> (Tur Başına)<br>
+            <b style="color:#f87171;">Sonuç:</b> İşlem sürtünmesi net carry getirisini sıfırlar ve negatif değere çeker.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Fraktal / Analog Desen Dağılımı</h3>
+          <div class="value" style="color: #60a5fa;">%51.4 Yönsel Başarım</div>
+          <div class="subtext">
+            Örneklem: <b>306 Karar Noktası, 1.530 Eşleşme</b><br>
+            İleriye Dönük Yörünge: <b>Geniş Dağılım Koridoru</b><br>
+            <b style="color:#f87171;">Sonuç:</b> STATISTICALLY_INTERESTING_BUT_NOT_ECONOMIC. Alım/satım alfası üretmez.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Çoklu Varlık Fonlama Korelasyonu</h3>
+          <div class="value" style="color: #c084fc;">%83 — %88 Korelasyon</div>
+          <div class="subtext">
+            Varlıklar: <b>BTC, ETH, SOL (14 Aylık Veri)</b><br>
+            Varlıklar Arası Fark: <b>0.71 bps</b> | Rotasyon Masrafı: <b>38-72 bps</b><br>
+            <b style="color:#f87171;">Sonuç:</b> Çapraz fonlama arbitrajı rotasyon sürtünmesini aşamaz.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Makro & Düzenleyici Olay Reaksiyonu</h3>
+          <div class="value" style="color: #34d399;">236 Denetlenmiş Olay</div>
+          <div class="subtext">
+            Kapsam: <b>CPI, FOMC, Tarım Dışı İstihdam, SEC</b><br>
+            Tepki Karakteristiği: <b>Volatilite Sıçraması</b><br>
+            <b style="color:#fde68a;">Sonuç:</b> Olay anı oynaklık artışı mevcuttur; yönsel öngörü tek başına kanıtlanmamıştır.
+          </div>
+        </div>
+      </div>
+
+      <!-- Lower Section: Compact Governance & Safety Status Bar -->
+      <div class="card" style="background: #0b111e; border: 1px solid #1e293b;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <span style="font-size: 13px; font-weight: 700; color: #fff;">Güvenlik Kontratı:</span>
+            <span class="badge badge-danger">TECHNICAL NO-GO</span>
+            <span class="badge badge-warn">YÖNETİŞİM: NOT_GRANTED</span>
+            <span class="badge badge-frozen">CBE-0.7.0 FROZEN</span>
+            <span class="badge badge-success">Ed25519 (RFC 8032)</span>
+            <span class="badge badge-info">Çalışan Taahhüt: <code class="dyn-git-rev-short">69027de4</code></span>
+          </div>
+          <button class="btn" style="font-size: 11px;" onclick="switchTab('governance')">Yönetişim Detayları ➔</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- MODULE 3: MARKET BEHAVIOR & HISTORICAL EXPLORERS                     -->
+    <!-- =================================================================== -->
+    <section id="module-behavior" class="tab-content">
+      <div class="alert-banner info">
+        <strong>ℹ️ MODEL REJİMİ GÜVENLİK KALKANI:</strong><br>
+        Dondurulmuş modelin (CBE-0.7.0) persentil hesaplama algoritmasındaki mantık hatası (<code>x &lt;= x</code> eşitlik durumu)
+        nedeniyle ham <code>DELEVERAGING_STRESS</code> çıktısı fail-closed korumasıyla <strong>UNKNOWN</strong> durumuna çekilmiştir.
+        Aşağıdaki tüm grafik ve veriler geçmiş doğrulanmış çok yıllık spot veri setleri (2022-2026 Parquet) ve kanonik rejim çizelgesi üzerinden hesaplanmaktadır.
+      </div>
+
+      <!-- SECTION 1: DETAILED HISTORICAL CANDLESTICK & REGIME CHART -->
+      <div class="section-header">
+        <div class="section-title"><span>📈</span> Derinlikli Fiyat & Piyasa Rejimi Gezgini (BTCUSDT Multi-Year)</div>
+      </div>
+
+      <div class="chart-panel">
+        <div class="chart-toolbar">
+          <div class="chart-controls-group">
+            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Aralık:</span>
+            <button class="pill-btn" onclick="setCandleInterval('5m', this)">5m</button>
+            <button class="pill-btn" onclick="setCandleInterval('15m', this)">15m</button>
+            <button class="pill-btn active" onclick="setCandleInterval('1h', this)">1h</button>
+            <button class="pill-btn" onclick="setCandleInterval('4h', this)">4h</button>
+            <button class="pill-btn" onclick="setCandleInterval('1d', this)">1d</button>
+          </div>
+          <div class="chart-controls-group">
+            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Dönem / Ay:</span>
+            <select id="candle-month-select-2" class="select-dropdown" onchange="changeCandleMonth(this.value)">
+              <option value="2026-09">2026-09 (Eylül 2026)</option>
+            </select>
+            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Bar:</span>
+            <select id="candle-limit-select-2" class="select-dropdown" onchange="changeCandleLimit(this.value)">
+              <option value="50">50 Bar</option>
+              <option value="100" selected>100 Bar</option>
+              <option value="200">200 Bar</option>
+              <option value="500">500 Bar</option>
+            </select>
+            <div style="display: flex; gap: 4px;">
+              <button class="btn" style="padding: 4px 8px; font-size: 11px;" onclick="panCandles(-25)">◀ Önceki</button>
+              <button class="btn" style="padding: 4px 8px; font-size: 11px;" onclick="panCandles(25)">Sonraki ▶</button>
+              <button class="btn" style="padding: 4px 8px; font-size: 11px;" onclick="resetCandleZoom()">Sıfırla</button>
+            </div>
+            <label style="font-size: 11px; display: inline-flex; align-items: center; gap: 4px; color: #93c5fd; cursor: pointer;">
+              <input type="checkbox" id="toggle-events-overlay-2" checked onchange="toggleEventOverlay(this.checked)"> Olay Pinleri
+            </label>
+          </div>
+        </div>
+
+        <div class="chart-hud" id="candle-hud-2">
+          <div><span style="color:var(--text-muted);">Zaman:</span> <span class="val" id="hud-time-2">-</span></div>
+          <div><span style="color:var(--text-muted);">A:</span> <span class="val" id="hud-open-2">-</span></div>
+          <div><span style="color:var(--text-muted);">Y:</span> <span class="val" id="hud-high-2">-</span></div>
+          <div><span style="color:var(--text-muted);">D:</span> <span class="val" id="hud-low-2">-</span></div>
+          <div><span style="color:var(--text-muted);">K:</span> <span class="val" id="hud-close-2">-</span></div>
+          <div><span style="color:var(--text-muted);">Hacim:</span> <span class="val" id="hud-volume-2">-</span></div>
+          <div><span style="color:var(--text-muted);">Rejim:</span> <span id="hud-regime-2" class="badge badge-info">-</span></div>
+        </div>
+
+        <div class="chart-canvas-wrap" id="candle-canvas-container-2">
+          <canvas id="candlestick-canvas-2" class="chart-canvas"></canvas>
+          <div id="event-popover-2" class="event-popover"></div>
+        </div>
+
+        <div class="chart-legend">
+          <span style="font-weight: 600; color: #fff;">Piyasa Rejimleri:</span>
+          <div class="legend-item"><span class="legend-color" style="background: #64748b;"></span> <span>SIDEWAYS (Yatay)</span></div>
+          <div class="legend-item"><span class="legend-color" style="background: #f59e0b;"></span> <span>UNCERTAIN (Belirsiz)</span></div>
+          <div class="legend-item"><span class="legend-color" style="background: #10b981;"></span> <span>TRENDING_BULL (Boğa)</span></div>
+          <div class="legend-item"><span class="legend-color" style="background: #8b5cf6;"></span> <span>HIGH_VOLATILITY (Volatil)</span></div>
+          <div class="legend-item"><span class="legend-color" style="background: #ef4444;"></span> <span>TRENDING_BEAR (Ayı)</span></div>
+          <div class="legend-item"><span class="legend-color" style="background: #f97316;"></span> <span>POSSIBLE_REVERSAL (Dönüş)</span></div>
         </div>
       </div>
 
@@ -882,7 +944,7 @@ def render_product_dashboard_html() -> str:
     </section>
 
     <!-- =================================================================== -->
-    <!-- MODULE 4: NEWS & EVENT RESEARCH                                     -->
+    <!-- MODULE 4: NEWS & MACRO RESEARCH (AUDITED EVENT REACTIONS)           -->
     <!-- =================================================================== -->
     <section id="module-events" class="tab-content">
       <!-- Special BLS CPI Candidate Callout -->
@@ -904,15 +966,18 @@ def render_product_dashboard_html() -> str:
       </div>
 
       <div class="section-header">
-        <div class="section-title"><span>📰</span> Doğrulanmış Düzenleyici ve Makro Ekonomik Olaylar (N=40)</div>
+        <div class="section-title"><span>📰</span> Denetlenmiş Makro Ekonomik Olaylar & Fiyat Reaksiyonları (N=236)</div>
+        <span class="badge badge-info">TARİHSEL REAKSİYON DEFTERİ</span>
       </div>
 
       <div class="filter-bar">
-        <input type="text" id="events-search" class="search-input" placeholder="Olay başlığı, aktör veya ID ile ara..." oninput="filterEvents()">
-        <button class="pill-btn active" onclick="setEventCat('ALL', this)">Tümü</button>
-        <button class="pill-btn" onclick="setEventCat('REGULATION', this)">Düzenleyici (SEC)</button>
-        <button class="pill-btn" onclick="setEventCat('MONETARY_POLICY', this)">Para Politikası (Fed)</button>
-        <button class="pill-btn" onclick="setEventCat('MACRO', this)">Makro Göstergeler</button>
+        <input type="text" id="macro-search" class="search-input" placeholder="Olay başlığı, aktör veya ID ile ara..." oninput="filterMacroReactions()">
+        <button class="pill-btn active" onclick="setMacroCat('ALL', this)">Tümü</button>
+        <button class="pill-btn" onclick="setMacroCat('US_INFLATION', this)">Enflasyon (CPI)</button>
+        <button class="pill-btn" onclick="setMacroCat('US_MONETARY_POLICY', this)">Para Politikası (Fed)</button>
+        <button class="pill-btn" onclick="setMacroCat('US_LABOR', this)">İstihdam (Labor)</button>
+        <button class="pill-btn" onclick="setMacroCat('REGULATION', this)">Düzenleyici (SEC)</button>
+        <button class="pill-btn" onclick="setMacroCat('US_GROWTH', this)">Büyüme (GDP)</button>
       </div>
 
       <div class="table-container">
@@ -922,23 +987,46 @@ def render_product_dashboard_html() -> str:
               <th>Olay ID</th>
               <th>Kategori</th>
               <th>Yayın Tarihi (UTC)</th>
-              <th>Kaynak & Güvenilirlik</th>
-              <th>Başlık & Factual Claim</th>
-              <th>Yön Hipotezi</th>
-              <th>Şiddet</th>
+              <th>Kurum</th>
+              <th>Olay Başlığı</th>
+              <th>Açılış ($)</th>
+              <th>15m Tepki</th>
+              <th>1h Tepki</th>
+              <th>24h Tepki</th>
             </tr>
           </thead>
-          <tbody id="events-tbody">
+          <tbody id="macro-tbody">
             <!-- Injected via client.js -->
           </tbody>
         </table>
         <div class="pagination-bar">
-          <span id="events-page-info">Sayfa 1 / 1</span>
-          <div style="display: flex; gap: 8px;">
-            <button class="btn" id="btn-events-prev" onclick="changeEventsPage(-1)">Önceki</button>
-            <button class="btn" id="btn-events-next" onclick="changeEventsPage(1)">Sonraki</button>
-          </div>
+          <span id="macro-page-info">Yükleniyor...</span>
         </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- MODULE 2: RESEARCH RESULTS                                          -->
+    <!-- =================================================================== -->
+    <section id="module-research" class="tab-content">
+      <div class="section-header">
+        <div class="section-title"><span>🔬</span> Kanonik Araştırma Bulguları & Hipotez Değerlendirmeleri</div>
+      </div>
+
+      <div class="filter-bar">
+        <input type="text" id="research-search" class="search-input" placeholder="Bulgularda veya başlıklarda ara..." oninput="filterResearch()">
+        <button class="pill-btn active" onclick="setResearchCat('all', this)">Tümü</button>
+        <button class="pill-btn" onclick="setResearchCat('derivatives', this)">Türev & Fonlama</button>
+        <button class="pill-btn" onclick="setResearchCat('market structure', this)">Piyasa Yapısı</button>
+        <button class="pill-btn" onclick="setResearchCat('pattern recognition', this)">Analog Gezgin</button>
+        <button class="pill-btn" onclick="setResearchCat('macro', this)">Makro & Olaylar</button>
+        <button class="pill-btn" onclick="setResearchCat('durability', this)">Kalıcılık & Disk</button>
+        <button class="pill-btn" onclick="setResearchCat('security', this)">Kripto & Güvenlik</button>
+      </div>
+
+      <div id="research-cards-container" class="grid" style="grid-template-columns: 1fr;">
+        <!-- Injected via client.js -->
+        <div class="card" style="text-align: center; color: var(--text-muted); padding: 40px;">Araştırma sonuçları yükleniyor...</div>
       </div>
     </section>
 
@@ -1002,46 +1090,7 @@ def render_product_dashboard_html() -> str:
               <td>SECURITY_AUDITOR</td>
               <td>Ed25519 (RFC 8032)</td>
               <td><span class="badge badge-success">AKTİF</span></td>
-              <td>Güvenlik Denetimi & Token İptal</td>
-            </tr>
-            <tr>
-              <td><code>OP-GOVERNANCE-ADMIN-01</code></td>
-              <td>GOVERNANCE_ADMIN</td>
-              <td>Ed25519 (RFC 8032)</td>
-              <td><span class="badge badge-success">AKTİF</span></td>
-              <td>Yönetişim Onayı (Şu an kapalı)</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="section-header">
-        <div class="section-title"><span>🚫</span> Kalıcı Olarak Engellenen Borsa Emir Uç Noktaları</div>
-      </div>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Yasaklı URL / Endpoint</th>
-              <th>Kısıtlama Derecesi</th>
-              <th>Açıklama</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>/api/v3/order</code> & <code>/api/v3/order/test</code></td>
-              <td><span class="badge badge-danger">KALICI YASAK</span></td>
-              <td>Binance Spot alım/satım emir oluşturma</td>
-            </tr>
-            <tr>
-              <td><code>/fapi/v1/order</code> & <code>/fapi/v2/order</code></td>
-              <td><span class="badge badge-danger">KALICI YASAK</span></td>
-              <td>Binance USD-M Vadeli İşlem emir oluşturma</td>
-            </tr>
-            <tr>
-              <td><code>/dapi/v1/order</code></td>
-              <td><span class="badge badge-danger">KALICI YASAK</span></td>
-              <td>Binance COIN-M Vadeli İşlem emir oluşturma</td>
+              <td>Güvenlik Denetimi & Token İptali</td>
             </tr>
           </tbody>
         </table>
@@ -1053,16 +1102,16 @@ def render_product_dashboard_html() -> str:
     <!-- =================================================================== -->
     <section id="module-artifacts" class="tab-content">
       <div class="section-header">
-        <div class="section-title"><span>📁</span> Araştırma Kanıtı ve Rapor Arşivi (540+ Dosya)</div>
+        <div class="section-title"><span>📁</span> Doğrulanmış Araştırma Kanıt Arşivi (550+ Dosya)</div>
       </div>
 
       <div class="filter-bar">
-        <input type="text" id="artifacts-search" class="search-input" placeholder="Dosya adı, sprint veya kategori ile ara..." oninput="filterArtifacts()">
-        <button class="pill-btn active" onclick="setArtifactExt('all', this)">Tüm Formatlar</button>
+        <input type="text" id="artifacts-search" class="search-input" placeholder="Dosya adı veya göreli yolla ara..." oninput="filterArtifacts()">
+        <button class="pill-btn active" onclick="setArtifactExt('all', this)">Tümü</button>
         <button class="pill-btn" onclick="setArtifactExt('.json', this)">JSON</button>
         <button class="pill-btn" onclick="setArtifactExt('.md', this)">Markdown</button>
         <button class="pill-btn" onclick="setArtifactExt('.csv', this)">CSV</button>
-        <button class="pill-btn" onclick="setArtifactExt('.xml', this)">XML</button>
+        <button class="pill-btn" onclick="setArtifactExt('.parquet', this)">Parquet</button>
       </div>
 
       <div class="table-container">
@@ -1071,10 +1120,10 @@ def render_product_dashboard_html() -> str:
             <tr>
               <th>Dosya Adı</th>
               <th>Kategori</th>
-              <th>Format</th>
+              <th>Tür</th>
               <th>Boyut</th>
               <th>Son Değişiklik (UTC)</th>
-              <th>İşlem</th>
+              <th>Eylem</th>
             </tr>
           </thead>
           <tbody id="artifacts-tbody">
@@ -1082,7 +1131,7 @@ def render_product_dashboard_html() -> str:
           </tbody>
         </table>
         <div class="pagination-bar">
-          <span id="artifacts-page-info">Sayfa 1 / 1 (0 Dosya)</span>
+          <span id="artifacts-page-info">Sayfa 1 / 1</span>
           <div style="display: flex; gap: 8px;">
             <button class="btn" id="btn-artifacts-prev" onclick="changeArtifactsPage(-1)">Önceki</button>
             <button class="btn" id="btn-artifacts-next" onclick="changeArtifactsPage(1)">Sonraki</button>
@@ -1092,80 +1141,106 @@ def render_product_dashboard_html() -> str:
     </section>
 
     <!-- =================================================================== -->
-    <!-- MODULE 7: OPERATIONS & SYSTEM STATUS                                -->
+    <!-- MODULE 7: OPERATIONS & SYSTEM STATUS (ENVIRONMENT SEPARATION)       -->
     <!-- =================================================================== -->
     <section id="module-operations" class="tab-content">
+      <!-- Section A: Current Running Staging Environment -->
+      <div class="section-header">
+        <div class="section-title"><span>🚀</span> Mevcut Çalışan Ortam (Coolify Linux VPS Staging)</div>
+        <span class="badge badge-success">CANLI SERVİS DOĞRULANDI</span>
+      </div>
+
       <div class="grid">
         <div class="card">
-          <h3>Uygulama Sürümü</h3>
-          <div class="value">CBE-0.7.0</div>
+          <h3>Çalışan Git Taahhüdü</h3>
+          <div class="value" style="font-size: 16px;"><code class="dyn-git-rev">69027de4bd8baf79...</code></div>
           <div class="subtext">
-            Git Taahhüdü: <code>2e7ad236ba07f71...</code><br>
-            Dal: <code>main</code> | Python: <b>3.11</b>
+            Dal: <code>main</code> &bull; Durum: <b>Senkronize</b><br>
+            Model Sürümü: <b>CBE-0.7.0 (Donduruldu)</b>
           </div>
         </div>
 
         <div class="card">
-          <h3>Dağıtım & Altyapı</h3>
-          <div class="value" style="font-size: 16px; color: #93c5fd;">Coolify Linux VPS</div>
+          <h3>Çalışma Zamanı & Bellek</h3>
+          <div class="value" id="ops-runtime-platform" style="font-size: 18px;">Linux (Container)</div>
           <div class="subtext">
-            Alan Adı: <code>coin.ozelweb.com.tr</code><br>
-            Staging Servisi: <code>cbe-market-intelligence-staging</code><br>
-            Üretim Servisi: <code>coin-behavior-engine</code>
+            Python: <b id="ops-python-ver">3.11</b> &bull; RSS: <b id="ops-memory-rss">- MB</b><br>
+            Çalışma Süresi: <b id="ops-uptime">- sn</b>
           </div>
         </div>
 
         <div class="card">
-          <h3>Arka Plan Görevi</h3>
-          <div class="value" style="font-size: 18px; color: var(--yellow);">DURDURULDU</div>
+          <h3>Çok Yıllık Parquet Veri Seti</h3>
+          <div class="value" style="font-size: 18px; color: #34d399;">57 Ay (2022-2026)</div>
           <div class="subtext">
-            ProspectiveWorker: <b>Okuma-modu güvenlik kilidi aktif</b><br>
-            Otonom piyasa izleme kapalıdır.
+            Zaman Dilimleri: <b>5m, 15m, 1h, 4h, 1d</b> (285 Parquet Dosyası)<br>
+            Durum: <b style="color:#6ee7b7">Bileşenler İmaj İçinde Hazır</b>
           </div>
         </div>
 
         <div class="card">
-          <h3>Kalıcı Depolama Durumu</h3>
-          <div class="value" id="ops-storage-mb">0 MB</div>
+          <h3>Depolama & Kanıt Arşivi</h3>
+          <div class="value" id="ops-storage-mb" style="font-size: 20px;">- MB</div>
           <div class="subtext">
-            Araştırma Çıktıları: <code>research_outputs/</code><br>
-            İndekslenen Kanıt Dosyası: <b id="ops-artifacts-count">540</b>
+            İndekslenen Kanıt Dosyası: <b id="ops-artifacts-count">550+</b><br>
+            Ağ İzolasyonu: <b>127.0.0.1:8080 (Loopback Korumalı)</b>
           </div>
         </div>
       </div>
 
+      <!-- Section B: Historical Test Environments (WSL2 disk benchmarks) -->
       <div class="section-header">
-        <div class="section-title"><span>📋</span> Ortam ve Donanım Yeterlilik Bilgisi</div>
+        <div class="section-title"><span>🧪</span> Geçmiş Test ve Sanallaştırma Ortamı (Windows WSL2 VHDX)</div>
+        <span class="badge badge-info">SENTETİK BENCHMARK ARŞİVİ</span>
       </div>
+
+      <div class="card" style="margin-bottom: 24px; border-left: 4px solid #8b5cf6;">
+        <h3 style="color: #c084fc;">WINDOWS 11 / WSL2 SENTETİK BENCHMARK GEÇMİŞİ</h3>
+        <p style="font-size: 13px; color: #d1d5db; line-height: 1.6; margin-top: 6px;">
+          Önceki sprint raporlarında belgelenen 5 adet disk benchmark hatası, sanallaştırılmış Windows WSL2 VHDX disk alt sistemindeki
+          (Windows <code>FlushFileBuffers</code> kuyruk gecikmesi) sentetik 10.000 olaylık ardışık fsync testlerine aittir.
+        </p>
+        <div class="subtext" style="margin-top: 8px; font-size: 12px;">
+          Linux VPS Üretim/Staging Etkisi: <b style="color: #34d399;">SIFIR (0)</b> &bull;
+          Fonksiyonel Hata: <b style="color: #34d399;">YOK</b> &bull;
+          Uygulama Mantığı: <b style="color: #34d399;">%100 SAĞLIKLI</b>
+        </div>
+      </div>
+
+      <!-- Section C: Model Integrity & Security Latch -->
+      <div class="section-header">
+        <div class="section-title"><span>🛡️</span> Model Bütünlüğü ve Yönetişim Kontratı</div>
+      </div>
+
       <div class="table-container">
         <table>
           <thead>
             <tr>
-              <th>Bileşen</th>
+              <th>Özellik</th>
               <th>Mevcut Durum</th>
-              <th>Teknik Açıklama</th>
+              <th>Açıklama</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>Kalıcılık Birimi (ext4)</strong></td>
-              <td><span class="badge badge-success">DOĞRULANDI</span></td>
-              <td><code>cbe-655b-durability-volume</code> atomik dosya adı değiştirme ve <code>os.fsync</code> tam uyumlu.</td>
+              <td><strong>Model Sürümü</strong></td>
+              <td><code>CBE-0.7.0</code> (FROZEN)</td>
+              <td>29 kanonik araştırma bileşeni SHA-256 ile kilitlendi.</td>
             </tr>
             <tr>
-              <td><strong>WSL2 VHDX Disk Gecikmesi</strong></td>
-              <td><span class="badge badge-warn">AÇIKLANMIŞ KISIT</span></td>
-              <td>30.000 sıralı fsync çağrısı sanal SCSI sürücüsünde ~36 ms sürer; 5 dakikalık üretim döngüsünü etkilemez.</td>
+              <td><strong>Teknik Karar</strong></td>
+              <td><span class="badge badge-danger">TECHNICAL NO-GO</span></td>
+              <td>Canlı borsa emir iletimi politik ve teknik olarak yasaktır.</td>
             </tr>
             <tr>
-              <td><strong>Fonlama Hesaplama Motoru</strong></td>
-              <td><span class="badge badge-success">BAŞARILI</span></td>
-              <td>Medyan saf hesaplama gecikmesi 21.38 ms (&lt; 50.0 ms sınır).</td>
+              <td><strong>Yönetişim Yetkisi</strong></td>
+              <td><span class="badge badge-warn">NOT_GRANTED</span></td>
+              <td>Operatör üretim anahtarı yayınlanmamıştır.</td>
             </tr>
             <tr>
-              <td><strong>Borsa Ağ İzolasyonu</strong></td>
-              <td><span class="badge badge-success">TAM İZOLASYON</span></td>
-              <td><code>--network none</code> veya kapalı çıkış kuralları ile sıfır harici ağ çağrısı.</td>
+              <td><strong>Gerçek Borsa Ağ Erişimi</strong></td>
+              <td><span class="badge badge-danger">DEVRE DIŞI (DISABLED)</span></td>
+              <td>Tüm veri analitiği çevrimdışı arşivler üzerinden yürütülür.</td>
             </tr>
           </tbody>
         </table>
@@ -1174,47 +1249,54 @@ def render_product_dashboard_html() -> str:
 
   </main>
 
-  <!-- Safe Artifact Preview Modal -->
-  <div id="preview-modal" class="modal-overlay" onclick="closeModalOnOverlay(event)">
-    <div class="modal-window" onclick="event.stopPropagation()">
+  <!-- Global Preview Modal -->
+  <div id="preview-modal" class="modal-overlay" onclick="closeModalOnOverlay(event)" role="dialog" aria-modal="true">
+    <div class="modal-window">
       <div class="modal-header">
         <h4 id="modal-title">Dosya Önizleme</h4>
-        <button class="btn" onclick="closeModal()">✕ Kapat</button>
+        <button class="btn" onclick="closeModal()" aria-label="Kapat">✕</button>
       </div>
       <div class="modal-body" id="modal-content">Yükleniyor...</div>
       <div class="modal-footer">
-        <span id="modal-meta">Boyut: 0 KB</span>
-        <button class="btn btn-primary" onclick="closeModal()">Tamam</button>
+        <span id="modal-meta">-</span>
+        <button class="btn" onclick="closeModal()">Kapat</button>
       </div>
     </div>
   </div>
 
-  <!-- App Footer -->
+  <!-- Global Footer -->
   <footer class="app-footer" role="contentinfo">
     <div>
-      <strong>CBE-0.7.0 Dondurulmuş Model</strong> | Git: <code>2e7ad236ba07f71...</code> | Canlı Alım-Satım Kesinlikle Yasaktır.
+      <strong>CBE-0.7.0 Dondurulmuş Model</strong> | Build: <code class="dyn-git-rev-short">69027de4</code> | Canlı Alım-Satım Kesinlikle Yasaktır.
     </div>
     <div>
-      Coin Behavior Engine &copy; 2026 | Salt-Okunur Ürün & Araştırma Portalı
+      Çevrimdışı Araştırma &bull; Kanonik Parquet Arşivi &bull; Ed25519 RFC 8032
     </div>
   </footer>
 
-  <!-- Master Client Script -->
+  <!-- Client-side Zero-Dependency JavaScript Controller -->
   <script>
-    "use strict";
-
     let currentTab = "overview";
     let researchData = [];
-    let eventsData = [];
-    let eventsPage = 1;
-    let eventsLimit = 15;
+    let macroData = [];
+    let macroCategory = "ALL";
     let artifactsData = [];
     let artifactsPage = 1;
     let artifactsLimit = 25;
-
     let selectedResearchCat = "all";
-    let selectedEventCat = "ALL";
     let selectedArtifactExt = "all";
+
+    // Candlestick State
+    let candleInterval = '1h';
+    let candleMonth = '2026-09';
+    let candleLimit = 100;
+    let candleOffset = 0;
+    let candlesData = [];
+    let candleEventMarkers = [];
+    let candleMonthsList = [];
+    let showEventMarkers = true;
+    let crosshairPos = null;
+    let currentAnalogData = null;
 
     // Tab Navigation
     function switchTab(tabId) {
@@ -1231,22 +1313,30 @@ def render_product_dashboard_html() -> str:
       window.location.hash = tabId;
 
       // Lazy load tab data
-      if (tabId === "research" && researchData.length === 0) loadResearch();
-      if (tabId === "behavior") loadBehavior();
-      if (tabId === "events" && eventsData.length === 0) loadEvents();
-      if (tabId === "governance") loadGovernance();
-      if (tabId === "artifacts" && artifactsData.length === 0) loadArtifacts();
-      if (tabId === "operations") loadOperations();
+      if (tabId === "overview") {
+        loadOverview();
+        setTimeout(() => { initCandleCanvasEvents(); drawCandlestickChart(); }, 60);
+      } else if (tabId === "behavior") {
+        loadBehavior();
+        setTimeout(() => { initCandleCanvasEvents(); drawCandlestickChart(); if (currentAnalogData) drawAnalogTrajectoryChart(currentAnalogData); }, 60);
+      } else if (tabId === "events" && macroData.length === 0) {
+        loadMacroReactions();
+      } else if (tabId === "research" && researchData.length === 0) {
+        loadResearch();
+      } else if (tabId === "artifacts" && artifactsData.length === 0) {
+        loadArtifacts();
+      } else if (tabId === "operations") {
+        loadOperations();
+      }
     }
 
     function refreshCurrentTab() {
-      if (currentTab === "overview") loadOverview();
-      else if (currentTab === "research") loadResearch();
-      else if (currentTab === "behavior") loadBehavior();
-      else if (currentTab === "events") loadEvents();
-      else if (currentTab === "governance") loadGovernance();
-      else if (currentTab === "artifacts") loadArtifacts();
-      else if (currentTab === "operations") loadOperations();
+      if (currentTab === "overview") { loadOverview(); loadHistoricalCandles(); }
+      else if (currentTab === "behavior") { loadBehavior(); }
+      else if (currentTab === "events") { loadMacroReactions(); }
+      else if (currentTab === "research") { loadResearch(); }
+      else if (currentTab === "artifacts") { loadArtifacts(); }
+      else if (currentTab === "operations") { loadOperations(); }
     }
 
     // Module 1: Overview
@@ -1255,158 +1345,50 @@ def render_product_dashboard_html() -> str:
         const res = await fetch("/api/v1/product/overview");
         if (!res.ok) return;
         const data = await res.json();
-        if (data.datasets) {
-          const el = document.getElementById("overview-artifact-count");
-          if (el) el.innerText = data.datasets.research_artifacts_count + "+ Dosya";
+
+        // Update dynamic git commit
+        if (data.git_revision) {
+          const rev = data.git_revision;
+          const shortRev = rev.substring(0, 8);
+          document.querySelectorAll(".dyn-git-rev").forEach(el => el.innerText = rev);
+          document.querySelectorAll(".dyn-git-rev-short").forEach(el => el.innerText = shortRev);
         }
       } catch (e) {
         console.warn("Overview fetch error:", e);
       }
     }
 
-    // Module 2: Research Results
-    async function loadResearch() {
-      try {
-        const res = await fetch("/api/v1/product/research-results");
-        if (!res.ok) return;
-        const data = await res.json();
-        researchData = data.results || [];
-        renderResearch();
-      } catch (e) {
-        console.warn("Research fetch error:", e);
-      }
-    }
-
-    function setResearchCat(cat, btn) {
-      selectedResearchCat = cat;
-      document.querySelectorAll("#module-research .pill-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      renderResearch();
-    }
-
-    function filterResearch() {
-      renderResearch();
-    }
-
-    function renderResearch() {
-      const container = document.getElementById("research-cards-container");
-      if (!container) return;
-
-      const q = (document.getElementById("research-search")?.value || "").toLowerCase();
-      let list = researchData;
-
-      if (selectedResearchCat !== "all") {
-        list = list.filter(r => r.category.toLowerCase().includes(selectedResearchCat));
-      }
-      if (q) {
-        list = list.filter(r =>
-          r.title.toLowerCase().includes(q) ||
-          r.statistical_findings.toLowerCase().includes(q) ||
-          r.id.toLowerCase().includes(q)
-        );
-      }
-
-      if (list.length === 0) {
-        container.innerHTML = '<div class="card" style="text-align: center; color: var(--text-muted); padding: 40px;">Kriterlere uygun araştırma bulgusu bulunamadı.</div>';
-        return;
-      }
-
-      container.innerHTML = list.map(r => `
-        <div class="card" style="border-left: 4px solid var(--accent);">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
-            <div>
-              <span style="font-size: 11px; font-weight: 700; color: var(--accent);">${r.id} &bull; ${r.sprint}</span>
-              <h3 style="font-size: 16px; color: #fff; text-transform: none; margin: 4px 0;">${r.title}</h3>
-            </div>
-            <span class="badge ${r.classification_badge || 'badge-info'}">${r.classification}</span>
-          </div>
-          <div style="font-size: 12px; color: var(--text-muted); margin: 6px 0;">
-            Veri Seti: <code>${r.dataset_id}</code> | Örneklem: <b>${r.sample_size}</b> | Rejim: <b>${r.market_regime}</b>
-          </div>
-          <div style="margin-top: 10px; font-size: 13px; line-height: 1.6;">
-            <p><strong>İstatistiki Bulgular:</strong> ${r.statistical_findings}</p>
-            <p style="margin-top: 6px;"><strong>Ekonomik Geçerlilik:</strong> ${r.economic_validity}</p>
-            <p style="margin-top: 6px; color: #fde68a;"><strong>Güven / Belirsizlik:</strong> ${r.confidence_uncertainty}</p>
-          </div>
-          <div style="margin-top: 10px; font-size: 11px; color: var(--text-dim); border-top: 1px solid var(--border); padding-top: 8px;">
-            Sınırlamalar: ${r.limitations.join(" &bull; ")}
-          </div>
-        </div>
-      `).join("");
-    }
-
-    // Module 3: Market Behavior & Explorers
-    let candleInterval = '1h';
-    let candleMonth = '2026-09';
-    let candleLimit = 100;
-    let candleOffset = 0;
-    let candlesData = [];
-    let candleMonthsList = [];
-    let currentAnalogData = null;
-    let crosshairPos = null;
-
-    async function loadBehavior() {
-      // 1. Load Summary & Transitions
-      try {
-        const res = await fetch("/api/v1/product/market-behavior");
-        if (res.ok) {
-          const data = await res.json();
-          const rGrid = document.getElementById("regime-grid");
-          if (rGrid && data.regime_distribution) {
-            rGrid.innerHTML = data.regime_distribution.map(r => `
-              <div class="card">
-                <h3>${r.regime}</h3>
-                <div class="value">${r.frequency_percent}%</div>
-                <div class="subtext">${r.description}</div>
-              </div>
-            `).join("");
-          }
-
-          const tBody = document.getElementById("regime-transitions-tbody");
-          if (tBody && data.regime_transitions) {
-            tBody.innerHTML = Object.entries(data.regime_transitions).map(([curr, targets]) => `
-              <tr>
-                <td><strong>${curr}</strong></td>
-                <td>%${(targets.COMPRESSION * 100).toFixed(1)}</td>
-                <td>%${(targets.NORMAL * 100).toFixed(1)}</td>
-                <td>%${(targets.EXPANSION_WATCH * 100).toFixed(1)}</td>
-                <td>%${(targets.HIGH_VOLATILITY * 100).toFixed(1)}</td>
-              </tr>
-            `).join("");
-          }
-        }
-      } catch (e) {
-        console.warn("Market behavior fetch error:", e);
-      }
-
-      // 2. Load Candlesticks
-      await loadHistoricalCandles();
-
-      // 3. Load Analog Patterns
-      await loadAnalogPatterns();
-    }
-
+    // Candlestick Chart Engine
     function setCandleInterval(intv, btn) {
       candleInterval = intv;
       candleOffset = 0;
-      document.querySelectorAll("#module-behavior .pill-btn").forEach(b => {
+      document.querySelectorAll(".pill-btn").forEach(b => {
         if (['5m', '15m', '1h', '4h', '1d'].includes(b.innerText.trim())) {
           b.classList.remove("active");
         }
       });
-      btn.classList.add("active");
+      if (btn) btn.classList.add("active");
       loadHistoricalCandles();
     }
 
     function changeCandleMonth(m) {
       candleMonth = m;
       candleOffset = 0;
+      // Sync both dropdowns if present
+      const sel1 = document.getElementById("candle-month-select");
+      const sel2 = document.getElementById("candle-month-select-2");
+      if (sel1) sel1.value = m;
+      if (sel2) sel2.value = m;
       loadHistoricalCandles();
     }
 
     function changeCandleLimit(lim) {
       candleLimit = parseInt(lim);
       candleOffset = 0;
+      const sel1 = document.getElementById("candle-limit-select");
+      const sel2 = document.getElementById("candle-limit-select-2");
+      if (sel1) sel1.value = lim;
+      if (sel2) sel2.value = lim;
       loadHistoricalCandles();
     }
 
@@ -1415,58 +1397,119 @@ def render_product_dashboard_html() -> str:
       loadHistoricalCandles();
     }
 
+    function resetCandleZoom() {
+      candleLimit = 100;
+      candleOffset = 0;
+      loadHistoricalCandles();
+    }
+
+    function toggleEventOverlay(checked) {
+      showEventMarkers = checked;
+      const cb1 = document.getElementById("toggle-events-overlay");
+      const cb2 = document.getElementById("toggle-events-overlay-2");
+      if (cb1) cb1.checked = checked;
+      if (cb2) cb2.checked = checked;
+      drawCandlestickChart();
+    }
+
     async function loadHistoricalCandles() {
+      showCandleStatus("Veriler yükleniyor...");
       try {
         const res = await fetch(`/api/v1/product/historical-candles?interval=${candleInterval}&month=${candleMonth}&limit=${candleLimit}&offset=${candleOffset}`);
-        if (!res.ok) return;
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          showCandleStatus(errData.message || `Veri dosyasına erişilemiyor (HTTP ${res.status})`, true);
+          return;
+        }
         const data = await res.json();
         candlesData = data.candles || [];
+        candleEventMarkers = data.event_markers || [];
 
-        // Update month select if changed
+        // Update month select options if changed
         if (data.available_months && JSON.stringify(data.available_months) !== JSON.stringify(candleMonthsList)) {
           candleMonthsList = data.available_months;
-          const select = document.getElementById("candle-month-select");
-          if (select) {
-            select.innerHTML = candleMonthsList.slice().reverse().map(m => `
-              <option value="${m}" ${m === data.month ? 'selected' : ''}>${m}</option>
-            `).join("");
-          }
+          const optionsHtml = candleMonthsList.slice().reverse().map(m => `
+            <option value="${m}" ${m === data.month ? 'selected' : ''}>${m}</option>
+          `).join("");
+          const sel1 = document.getElementById("candle-month-select");
+          const sel2 = document.getElementById("candle-month-select-2");
+          if (sel1) sel1.innerHTML = optionsHtml;
+          if (sel2) sel2.innerHTML = optionsHtml;
         }
 
-        // Update HUD with latest bar by default
         if (candlesData.length > 0) {
           updateCandleHUD(candlesData[candlesData.length - 1]);
         }
-
         drawCandlestickChart();
       } catch (e) {
-        console.warn("Candles fetch error:", e);
+        showCandleStatus("Grafik servisi yanıt vermiyor: " + e, true);
+      }
+    }
+
+    function showCandleStatus(msg, isError = false) {
+      const getActiveCanvas = () => {
+        if (currentTab === "overview") return document.getElementById("candlestick-canvas");
+        return document.getElementById("candlestick-canvas-2") || document.getElementById("candlestick-canvas");
+      };
+      const canvas = getActiveCanvas();
+      if (!canvas) return;
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.clientWidth || 800;
+      const h = canvas.clientHeight || 420;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+      ctx.fillStyle = "#070b13";
+      ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = isError ? "#f87171" : "#94a3b8";
+      ctx.font = "14px monospace";
+      ctx.textAlign = "center";
+      ctx.fillText(msg, w / 2, h / 2 - 10);
+      if (isError) {
+        ctx.fillStyle = "#38bdf8";
+        ctx.font = "12px sans-serif";
+        ctx.fillText("Lütfen üst menüden geçerli bir dönem seçin veya 'Yenile'ye tıklayın.", w / 2, h / 2 + 16);
       }
     }
 
     function updateCandleHUD(c) {
       if (!c) return;
-      const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
-      setEl("hud-time", c.datetime_utc.replace("T", " ").replace("Z", " UTC"));
-      setEl("hud-open", "$" + c.open.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-      setEl("hud-high", "$" + c.high.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-      setEl("hud-low", "$" + c.low.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-      setEl("hud-close", "$" + c.close.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2}));
-      setEl("hud-volume", c.volume.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " BTC");
-      const regEl = document.getElementById("hud-regime");
-      if (regEl) {
-        regEl.innerText = c.regime;
-        regEl.className = "badge " + (c.regime.includes("BULL") ? "badge-success" : (c.regime.includes("BEAR") ? "badge-danger" : "badge-info"));
-      }
+      const setBoth = (id1, id2, val) => {
+        const el1 = document.getElementById(id1); if (el1) el1.innerText = val;
+        const el2 = document.getElementById(id2); if (el2) el2.innerText = val;
+      };
+      const dtStr = c.datetime_utc.replace("T", " ").replace("Z", " UTC");
+      const fmtMoney = (n) => "$" + n.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      setBoth("hud-time", "hud-time-2", dtStr);
+      setBoth("hud-open", "hud-open-2", fmtMoney(c.open));
+      setBoth("hud-high", "hud-high-2", fmtMoney(c.high));
+      setBoth("hud-low", "hud-low-2", fmtMoney(c.low));
+      setBoth("hud-close", "hud-close-2", fmtMoney(c.close));
+      setBoth("hud-volume", "hud-volume-2", c.volume.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " BTC");
+
+      const updateRegimeBadge = (id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.innerText = c.regime;
+        el.className = "badge " + (c.regime.includes("BULL") ? "badge-success" : (c.regime.includes("BEAR") ? "badge-danger" : "badge-info"));
+      };
+      updateRegimeBadge("hud-regime");
+      updateRegimeBadge("hud-regime-2");
     }
 
     function drawCandlestickChart() {
-      const container = document.getElementById("candle-canvas-container");
-      const canvas = document.getElementById("candlestick-canvas");
-      if (!container || !canvas) return;
+      const getActiveContainer = () => {
+        if (currentTab === "overview") return document.getElementById("candle-canvas-container");
+        return document.getElementById("candle-canvas-container-2") || document.getElementById("candle-canvas-container");
+      };
+      const container = getActiveContainer();
+      if (!container) return;
+      const canvas = container.querySelector("canvas");
+      if (!canvas) return;
 
       const dpr = window.devicePixelRatio || 1;
-      const w = container.clientWidth;
+      const w = container.clientWidth || 800;
       const h = container.clientHeight || 420;
       canvas.width = w * dpr;
       canvas.height = h * dpr;
@@ -1478,14 +1521,11 @@ def render_product_dashboard_html() -> str:
       ctx.fillRect(0, 0, w, h);
 
       if (!candlesData || candlesData.length === 0) {
-        ctx.fillStyle = "#64748b";
-        ctx.font = "14px monospace";
-        ctx.textAlign = "center";
-        ctx.fillText("Veri yükleniyor veya bu dönem için mum kaydı bulunamadı...", w / 2, h / 2);
+        showCandleStatus("Bu tarih aralığında veri bulunamadı.");
         return;
       }
 
-      const padTop = 20;
+      const padTop = 22;
       const padBottom = 26;
       const padRight = 70;
       const padLeft = 10;
@@ -1578,7 +1618,27 @@ def render_product_dashboard_html() -> str:
         ctx.fillRect(xCenter - candleW / 2, volTop + volH - vHeight, candleW, vHeight);
       }
 
-      // 4. Time labels on bottom
+      // 4. Macro Event Pins Overlay
+      if (showEventMarkers && candleEventMarkers && candleEventMarkers.length > 0) {
+        // Map interval to ms
+        const intvMs = { '5m': 300000, '15m': 900000, '1h': 3600000, '4h': 14400000, '1d': 86400000 }[candleInterval] || 3600000;
+        candleEventMarkers.forEach(evt => {
+          // Find matching candle index
+          const cIdx = candlesData.findIndex(c => evt.timestamp_ms >= c.open_time_ms && evt.timestamp_ms < (c.open_time_ms + intvMs));
+          if (cIdx >= 0) {
+            const c = candlesData[cIdx];
+            const xCenter = padLeft + cIdx * barW + barW / 2;
+            const yHigh = padTop + (maxP - c.high) / effRange * priceH;
+
+            // Draw pin icon
+            ctx.font = "14px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText(evt.icon || "📌", xCenter, Math.max(16, yHigh - 8));
+          }
+        });
+      }
+
+      // 5. Time labels on bottom
       ctx.fillStyle = "#64748b";
       ctx.font = "10px monospace";
       ctx.textAlign = "center";
@@ -1590,7 +1650,7 @@ def render_product_dashboard_html() -> str:
         ctx.fillText(label, x, h - 8);
       }
 
-      // 5. Crosshair if mouse hover
+      // 6. Crosshair if mouse hover
       if (crosshairPos) {
         ctx.strokeStyle = "rgba(148, 163, 184, 0.5)";
         ctx.lineWidth = 1;
@@ -1618,47 +1678,102 @@ def render_product_dashboard_html() -> str:
           ctx.textAlign = "left";
           ctx.fillText("$" + pCross.toFixed(1), w - padRight + 6, crosshairPos.y + 4);
         }
-
         ctx.setLineDash([]);
       }
     }
 
-    // Attach canvas mouse events once
+    // Canvas Events Binding
     function initCandleCanvasEvents() {
-      const canvas = document.getElementById("candlestick-canvas");
-      if (!canvas || canvas._events_bound) return;
-      canvas._events_bound = true;
+      const canvases = [document.getElementById("candlestick-canvas"), document.getElementById("candlestick-canvas-2")];
+      canvases.forEach(canvas => {
+        if (!canvas || canvas._events_bound) return;
+        canvas._events_bound = true;
 
-      canvas.addEventListener("mousemove", (e) => {
-        const rect = canvas.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
+        canvas.addEventListener("mousemove", (e) => {
+          const rect = canvas.getBoundingClientRect();
+          const mouseX = e.clientX - rect.left;
+          const mouseY = e.clientY - rect.top;
 
-        const padLeft = 10;
-        const padRight = 70;
-        const chartW = rect.width - padLeft - padRight;
-        if (!candlesData.length || chartW <= 0) return;
+          const padLeft = 10;
+          const padRight = 70;
+          const chartW = rect.width - padLeft - padRight;
+          if (!candlesData.length || chartW <= 0) return;
 
-        const barW = chartW / candlesData.length;
-        const idx = Math.floor((mouseX - padLeft) / barW);
+          const barW = chartW / candlesData.length;
+          const idx = Math.floor((mouseX - padLeft) / barW);
 
-        if (idx >= 0 && idx < candlesData.length) {
-          crosshairPos = { x: mouseX, y: mouseY };
-          updateCandleHUD(candlesData[idx]);
+          if (idx >= 0 && idx < candlesData.length) {
+            crosshairPos = { x: mouseX, y: mouseY };
+            updateCandleHUD(candlesData[idx]);
+            drawCandlestickChart();
+          }
+        });
+
+        canvas.addEventListener("mouseleave", () => {
+          crosshairPos = null;
+          if (candlesData.length > 0) {
+            updateCandleHUD(candlesData[candlesData.length - 1]);
+          }
           drawCandlestickChart();
-        }
-      });
+        });
 
-      canvas.addEventListener("mouseleave", () => {
-        crosshairPos = null;
-        if (candlesData.length > 0) {
-          updateCandleHUD(candlesData[candlesData.length - 1]);
-        }
-        drawCandlestickChart();
+        // Mouse Wheel Zoom
+        canvas.addEventListener("wheel", (e) => {
+          e.preventDefault();
+          if (e.deltaY < 0) {
+            // Zoom in
+            candleLimit = Math.max(25, candleLimit - 15);
+          } else {
+            // Zoom out
+            candleLimit = Math.min(500, candleLimit + 15);
+          }
+          loadHistoricalCandles();
+        }, { passive: false });
       });
     }
 
-    // Module 3 - Section 2: Analog Explorer
+    // Module 3: Market Behavior & Analog Explorer
+    async function loadBehavior() {
+      // 1. Load Market Regimes & Transitions
+      try {
+        const res = await fetch("/api/v1/product/market-behavior");
+        if (res.ok) {
+          const data = await res.json();
+          const rGrid = document.getElementById("regime-grid");
+          if (rGrid && data.regime_distribution) {
+            rGrid.innerHTML = data.regime_distribution.map(r => `
+              <div class="card">
+                <h3>${r.regime}</h3>
+                <div class="value">${r.frequency_percent}%</div>
+                <div class="subtext">${r.description}</div>
+              </div>
+            `).join("");
+          }
+
+          const tBody = document.getElementById("regime-transitions-tbody");
+          if (tBody && data.regime_transitions) {
+            tBody.innerHTML = Object.entries(data.regime_transitions).map(([curr, targets]) => `
+              <tr>
+                <td><strong>${curr}</strong></td>
+                <td>%${(targets.COMPRESSION * 100).toFixed(1)}</td>
+                <td>%${(targets.NORMAL * 100).toFixed(1)}</td>
+                <td>%${(targets.EXPANSION_WATCH * 100).toFixed(1)}</td>
+                <td>%${(targets.HIGH_VOLATILITY * 100).toFixed(1)}</td>
+              </tr>
+            `).join("");
+          }
+        }
+      } catch (e) {
+        console.warn("Market behavior fetch error:", e);
+      }
+
+      // 2. Load Candlesticks
+      await loadHistoricalCandles();
+
+      // 3. Load Analog Patterns
+      await loadAnalogPatterns();
+    }
+
     async function loadAnalogPatterns() {
       try {
         const res = await fetch("/api/v1/product/analogs/patterns");
@@ -1671,7 +1786,6 @@ def render_product_dashboard_html() -> str:
             <option value="${p.decision_datetime_utc}">${p.label}</option>
           `).join("");
 
-          // Load first pattern
           await loadAnalogs(patterns[0].decision_datetime_utc);
         }
       } catch (e) {
@@ -1735,14 +1849,13 @@ def render_product_dashboard_html() -> str:
       if (!container || !canvas || !data) return;
 
       const dpr = window.devicePixelRatio || 1;
-      const w = container.clientWidth;
+      const w = container.clientWidth || 400;
       const h = container.clientHeight || 340;
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       const ctx = canvas.getContext("2d");
       ctx.scale(dpr, dpr);
 
-      // Background
       ctx.fillStyle = "#070b13";
       ctx.fillRect(0, 0, w, h);
 
@@ -1756,7 +1869,6 @@ def render_product_dashboard_html() -> str:
       const chartW = w - padLeft - padRight;
       const chartH = h - padTop - padBottom;
 
-      // Find global min and max return
       let minRet = 0;
       let maxRet = 0;
       analogs.forEach(a => {
@@ -1774,12 +1886,11 @@ def render_product_dashboard_html() -> str:
       const xSteps = [0, 0.25, 0.5, 0.75, 1.0];
       const stepLabels = ["0m", "+15m", "+1h", "+4h", "+24h"];
 
-      // 1. Gridlines & 0% baseline
+      // Gridlines & 0% baseline
       ctx.strokeStyle = "rgba(31, 41, 55, 0.6)";
       ctx.lineWidth = 1;
       const yZero = padTop + (maxRet - 0.0) / effRetRange * chartH;
 
-      // 0% line
       ctx.beginPath();
       ctx.strokeStyle = "rgba(148, 163, 184, 0.4)";
       ctx.setLineDash([4, 4]);
@@ -1788,7 +1899,6 @@ def render_product_dashboard_html() -> str:
       ctx.stroke();
       ctx.setLineDash([]);
 
-      // Vertical steps
       xSteps.forEach((s, idx) => {
         const x = padLeft + s * chartW;
         ctx.strokeStyle = "rgba(31, 41, 55, 0.5)";
@@ -1803,7 +1913,6 @@ def render_product_dashboard_html() -> str:
         ctx.fillText(stepLabels[idx], x, h - 10);
       });
 
-      // Y-axis labels
       ctx.fillStyle = "#64748b";
       ctx.font = "10px monospace";
       ctx.textAlign = "right";
@@ -1812,7 +1921,7 @@ def render_product_dashboard_html() -> str:
         ctx.fillText((val >= 0 ? "+" : "") + val.toFixed(1) + "%", padLeft - 6, y + 3);
       });
 
-      // 2. Dispersion corridor (Min to Max envelope at each step)
+      // Dispersion corridor
       ctx.fillStyle = "rgba(59, 130, 246, 0.07)";
       ctx.beginPath();
       for (let sIdx = 0; sIdx < 5; sIdx++) {
@@ -1833,7 +1942,7 @@ def render_product_dashboard_html() -> str:
       ctx.closePath();
       ctx.fill();
 
-      // 3. Draw each analog trajectory
+      // Analog trajectory lines
       const trajColors = ["#38bdf8", "#a855f7", "#f59e0b", "#10b981", "#f43f5e"];
       analogs.forEach((a, aIdx) => {
         const pts = a.trajectory_points || [];
@@ -1848,7 +1957,6 @@ def render_product_dashboard_html() -> str:
         });
         ctx.stroke();
 
-        // Draw dots at step points
         pts.forEach((pt, sIdx) => {
           const x = padLeft + xSteps[sIdx] * chartW;
           const y = padTop + (maxRet - pt) / effRetRange * chartH;
@@ -1860,76 +1968,131 @@ def render_product_dashboard_html() -> str:
       });
     }
 
-    // Module 4: Events
-    async function loadEvents() {
+    // Module 4: News & Macro Research
+    async function loadMacroReactions() {
       try {
-        const q = (document.getElementById("events-search")?.value || "");
-        const res = await fetch(`/api/v1/product/events?page=${eventsPage}&limit=${eventsLimit}&category=${selectedEventCat}&search=${encodeURIComponent(q)}`);
+        const res = await fetch(`/api/v1/product/macro-reactions?category=${macroCategory}&limit=100`);
         if (!res.ok) return;
         const data = await res.json();
-        eventsData = data.events || [];
-
-        const tBody = document.getElementById("events-tbody");
-        if (tBody) {
-          if (eventsData.length === 0) {
-            tBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-muted); padding:20px;">Olay kaydı bulunamadı.</td></tr>';
-          } else {
-            tBody.innerHTML = eventsData.map(e => `
-              <tr>
-                <td><code>${e.event_id}</code></td>
-                <td><span class="badge badge-info">${e.category}</span></td>
-                <td>${e.published_at_utc ? e.published_at_utc.substring(0, 16).replace('T', ' ') : '-'}</td>
-                <td>${e.source_name || '-'}</td>
-                <td><strong>${e.headline}</strong></td>
-                <td><span class="badge ${e.event_direction_hypothesis === 'BEARISH' ? 'badge-danger' : 'badge-warn'}">${e.event_direction_hypothesis || 'NEUTRAL'}</span></td>
-                <td>${e.event_severity || '-'}</td>
-              </tr>
-            `).join("");
-          }
-        }
-
-        const pageInfo = document.getElementById("events-page-info");
-        if (pageInfo) pageInfo.innerText = `Sayfa ${data.page} / ${data.total_pages} (Toplam ${data.total_events} Olay)`;
-
-        const btnPrev = document.getElementById("btn-events-prev");
-        if (btnPrev) btnPrev.disabled = data.page <= 1;
-
-        const btnNext = document.getElementById("btn-events-next");
-        if (btnNext) btnNext.disabled = data.page >= data.total_pages;
-
+        macroData = data.events || [];
+        renderMacroTable(macroData);
       } catch (e) {
-        console.warn("Events fetch error:", e);
+        console.warn("Macro reactions fetch error:", e);
       }
     }
 
-    function setEventCat(cat, btn) {
-      selectedEventCat = cat;
-      eventsPage = 1;
+    function setMacroCat(cat, btn) {
+      macroCategory = cat;
       document.querySelectorAll("#module-events .pill-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      loadEvents();
+      if (btn) btn.classList.add("active");
+      loadMacroReactions();
     }
 
-    function filterEvents() {
-      eventsPage = 1;
-      loadEvents();
+    function filterMacroReactions() {
+      const q = (document.getElementById("macro-search")?.value || "").toLowerCase();
+      const filtered = macroData.filter(e =>
+        e.event_id.toLowerCase().includes(q) ||
+        e.event_name.toLowerCase().includes(q) ||
+        (e.issuing_organization && e.issuing_organization.toLowerCase().includes(q))
+      );
+      renderMacroTable(filtered);
     }
 
-    function changeEventsPage(delta) {
-      eventsPage += delta;
-      if (eventsPage < 1) eventsPage = 1;
-      loadEvents();
+    function renderMacroTable(list) {
+      const tBody = document.getElementById("macro-tbody");
+      if (!tBody) return;
+      if (list.length === 0) {
+        tBody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--text-muted); padding:20px;">Kayıt bulunamadı.</td></tr>';
+        return;
+      }
+      tBody.innerHTML = list.map(e => {
+        const fmtRet = (r) => `<span class="${r >= 0 ? 'ret-pos' : 'ret-neg'}">${r >= 0 ? '+' : ''}${r.toFixed(2)}%</span>`;
+        return `
+          <tr>
+            <td><code>${e.event_id}</code></td>
+            <td><span class="badge badge-info">${e.event_category}</span></td>
+            <td>${e.published_at_utc.substring(0, 16).replace("T", " ")}</td>
+            <td>${e.issuing_organization || '-'}</td>
+            <td>${e.icon || ''} <strong>${e.event_name}</strong></td>
+            <td>$${e.exec_open_price.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+            <td>${fmtRet(e.ret_post_15m_pct)}</td>
+            <td>${fmtRet(e.ret_post_1h_pct)}</td>
+            <td>${fmtRet(e.ret_post_24h_pct)}</td>
+          </tr>
+        `;
+      }).join("");
+
+      const pageInfo = document.getElementById("macro-page-info");
+      if (pageInfo) pageInfo.innerText = `Toplam ${list.length} Denetlenmiş Makro Olay Gösteriliyor`;
     }
 
-    // Module 5: Governance
-    async function loadGovernance() {
-      // Governance data is mostly static / declarative, fetch overview
+    // Module 2: Research Results
+    async function loadResearch() {
       try {
-        await fetch("/api/v1/product/governance");
-      } catch (e) {}
+        const res = await fetch("/api/v1/product/research-results");
+        if (!res.ok) return;
+        const data = await res.json();
+        researchData = data.results || [];
+        filterResearch();
+      } catch (e) {
+        console.warn("Research fetch error:", e);
+      }
     }
 
-    // Module 6: Artifacts
+    function setResearchCat(cat, btn) {
+      selectedResearchCat = cat;
+      document.querySelectorAll("#module-research .pill-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      filterResearch();
+    }
+
+    function filterResearch() {
+      const q = (document.getElementById("research-search")?.value || "").toLowerCase();
+      const container = document.getElementById("research-cards-container");
+      if (!container) return;
+
+      let list = researchData;
+      if (selectedResearchCat !== "all") {
+        list = list.filter(r => r.topic.toLowerCase().includes(selectedResearchCat.toLowerCase()));
+      }
+      if (q) {
+        list = list.filter(r =>
+          r.title.toLowerCase().includes(q) ||
+          r.statistical_findings.toLowerCase().includes(q) ||
+          r.id.toLowerCase().includes(q)
+        );
+      }
+
+      if (list.length === 0) {
+        container.innerHTML = '<div class="card" style="text-align: center; color: var(--text-muted); padding: 40px;">Kriterlere uygun araştırma bulgusu bulunamadı.</div>';
+        return;
+      }
+
+      container.innerHTML = list.map(r => `
+        <div class="card" style="border-left: 4px solid var(--accent);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <span style="font-size: 11px; font-weight: 700; color: var(--accent);">${r.id} &bull; ${r.sprint}</span>
+              <h3 style="font-size: 16px; color: #fff; text-transform: none; margin: 4px 0;">${r.title}</h3>
+            </div>
+            <span class="badge ${r.classification_badge || 'badge-info'}">${r.classification}</span>
+          </div>
+          <div style="font-size: 12px; color: var(--text-muted); margin: 6px 0;">
+            Veri Seti: <code>${r.dataset_id}</code> | Örneklem: <b>${r.sample_size}</b> | Rejim: <b>${r.market_regime}</b>
+          </div>
+          <div style="margin-top: 10px; font-size: 13px; line-height: 1.6;">
+            <p><strong>İstatistiki Bulgular:</strong> ${r.statistical_findings}</p>
+            <p style="margin-top: 6px;"><strong>Ekonomik Geçerlilik:</strong> ${r.economic_validity}</p>
+            <p style="margin-top: 6px; color: #fde68a;"><strong>Güven / Belirsizlik:</strong> ${r.confidence_uncertainty}</p>
+          </div>
+          <div style="margin-top: 10px; font-size: 11px; color: var(--text-dim); border-top: 1px solid var(--border); padding-top: 8px;">
+            Sınırlamalar: ${r.limitations.join(" &bull; ")}
+          </div>
+        </div>
+      `).join("");
+    }
+
+    // Module 6: Artifacts Browser
     async function loadArtifacts() {
       try {
         const q = (document.getElementById("artifacts-search")?.value || "");
@@ -2029,12 +2192,20 @@ def render_product_dashboard_html() -> str:
       if (e.target.id === "preview-modal") closeModal();
     }
 
-    // Module 7: Operations
+    // Module 7: Operations & System Status
     async function loadOperations() {
       try {
         const res = await fetch("/api/v1/product/operations");
         if (!res.ok) return;
         const data = await res.json();
+
+        // Dynamic git commit update
+        if (data.git_revision) {
+          const rev = data.git_revision;
+          const shortRev = rev.substring(0, 8);
+          document.querySelectorAll(".dyn-git-rev").forEach(el => el.innerText = rev);
+          document.querySelectorAll(".dyn-git-rev-short").forEach(el => el.innerText = shortRev);
+        }
 
         const sEl = document.getElementById("ops-storage-mb");
         if (sEl && data.storage_status) {
@@ -2044,22 +2215,45 @@ def render_product_dashboard_html() -> str:
         if (aEl && data.storage_status) {
           aEl.innerText = data.storage_status.artifacts_indexed_count;
         }
+        const rEl = document.getElementById("ops-runtime-platform");
+        if (rEl && data.runtime_platform) {
+          rEl.innerText = data.runtime_platform.toUpperCase();
+        }
+        const pEl = document.getElementById("ops-python-ver");
+        if (pEl && data.python_version) {
+          pEl.innerText = data.python_version;
+        }
+        const mEl = document.getElementById("ops-memory-rss");
+        if (mEl && data.memory_usage_mb) {
+          mEl.innerText = data.memory_usage_mb + " MB";
+        }
+        const uEl = document.getElementById("ops-uptime");
+        if (uEl && data.uptime_seconds) {
+          uEl.innerText = data.uptime_seconds + " sn";
+        }
       } catch (e) {
         console.warn("Operations fetch error:", e);
       }
     }
 
-    // Init with hash or default
+    // Window Init & Resize Listeners
     window.addEventListener("DOMContentLoaded", () => {
       const hash = window.location.hash.replace("#", "");
       if (hash && ["overview", "research", "behavior", "events", "governance", "artifacts", "operations"].includes(hash)) {
-        switchTab(hash); initCandleCanvasEvents();
+        switchTab(hash);
       } else {
-        switchTab("overview"); initCandleCanvasEvents();
+        switchTab("overview");
       }
-      loadOverview();
+      initCandleCanvasEvents();
+      loadHistoricalCandles();
+    });
+
+    window.addEventListener("resize", () => {
+      drawCandlestickChart();
+      if (currentAnalogData) drawAnalogTrajectoryChart(currentAnalogData);
     });
   </script>
 </body>
 </html>
 """
+

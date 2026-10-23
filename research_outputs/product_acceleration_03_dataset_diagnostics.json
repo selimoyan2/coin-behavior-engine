@@ -1,0 +1,68 @@
+{
+  "diagnostic_version": "1.0.0",
+  "sprint": "PRODUCT_ACCELERATION_03",
+  "timestamp_utc": "2026-10-24T00:39:00Z",
+  "dataset_summary": {
+    "symbol": "BTCUSDT",
+    "exchange": "Binance Spot",
+    "date_range": "2022-01 to 2026-09",
+    "total_months": 57,
+    "tracked_intervals": ["5m", "15m", "1h", "4h", "1d"],
+    "ignored_intervals": ["1m (210 MB, reserved for high-frequency offline backtests)"],
+    "total_tracked_files": 285,
+    "total_tracked_size_bytes": 68134720,
+    "total_tracked_size_mb": 64.98
+  },
+  "partition_breakdown": {
+    "1d": {
+      "months_available": 57,
+      "files_count": 57,
+      "avg_file_size_kb": 12.4,
+      "sample_row_count_per_month": 30,
+      "verified_complete": true
+    },
+    "4h": {
+      "months_available": 57,
+      "files_count": 57,
+      "avg_file_size_kb": 32.1,
+      "sample_row_count_per_month": 180,
+      "verified_complete": true
+    },
+    "1h": {
+      "months_available": 57,
+      "files_count": 57,
+      "avg_file_size_kb": 85.6,
+      "sample_row_count_per_month": 720,
+      "verified_complete": true
+    },
+    "15m": {
+      "months_available": 57,
+      "files_count": 57,
+      "avg_file_size_kb": 268.4,
+      "sample_row_count_per_month": 2880,
+      "verified_complete": true
+    },
+    "5m": {
+      "months_available": 57,
+      "files_count": 57,
+      "avg_file_size_kb": 745.2,
+      "sample_row_count_per_month": 8640,
+      "verified_complete": true
+    }
+  },
+  "macroeconomic_events": {
+    "historical_macro_events_file": "data/macro/historical_macro_events_11_23.parquet",
+    "verified_event_reactions_ledger": "research_outputs/verified_event_reaction_ledger_11_23_1.parquet",
+    "total_verified_events": 236,
+    "event_categories": [
+      "US_INFLATION",
+      "US_MONETARY_POLICY",
+      "US_LABOR",
+      "REGULATION",
+      "US_GROWTH"
+    ],
+    "reaction_horizons": ["ret_post_15m_pct", "ret_post_1h_pct", "ret_post_24h_pct"],
+    "audited_integrity": "100% verified across 2022-2026 history"
+  },
+  "catalog_endpoint": "/api/v1/product/dataset-catalog"
+}
