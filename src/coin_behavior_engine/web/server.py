@@ -24,6 +24,8 @@ import time
 from typing import Any, Dict, Optional
 from urllib.parse import parse_qs, urlparse
 
+from coin_behavior_engine.product.dashboard_api import ProductDashboardApiService
+from coin_behavior_engine.product.dashboard_ui import render_product_dashboard_html
 from coin_behavior_engine.product.intelligence_api import MarketIntelligenceApiService
 from coin_behavior_engine.product.ui import (
     get_intelligence_css,
@@ -1285,6 +1287,16 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
 
         engine = get_analytics_engine()
 
+        if url_path.startswith("/api/v1/product"):
+            status_code, response_data = ProductDashboardApiService.handle_request(url_path, query_params)
+            self._send_response_json(status_code, response_data)
+            return
+
+        if url_path in ("/product", "/portal", "/app"):
+            html = render_product_dashboard_html()
+            self._send_response_html(HTTPStatus.OK, html)
+            return
+
         if url_path.startswith("/api/v1/intelligence"):
             status_code, response_data = MarketIntelligenceApiService.handle_request(url_path, query_params)
             self._send_response_json(status_code, response_data)
@@ -1366,8 +1378,11 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
             data = engine.get_prospective_timeline()
             self._send_response_json(HTTPStatus.OK, data)
         elif url_path in ("/", "/dashboard"):
-            state = get_engine_state()
-            html = render_dashboard_html(state)
+            if url_path == "/" and query_params.get("view", ["product"])[0] != "legacy":
+                html = render_product_dashboard_html()
+            else:
+                state = get_engine_state()
+                html = render_dashboard_html(state)
             self._send_response_html(HTTPStatus.OK, html)
         else:
             self._send_response_json(
@@ -1376,6 +1391,8 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
                     "error": "Endpoint not found",
                     "available": [
                         "/",
+                        "/product",
+                        "/dashboard",
                         "/health",
                         "/api/status",
                         "/api/metrics",
@@ -1386,6 +1403,13 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
                         "/api/analytics/data-quality",
                         "/api/analytics/integrity",
                         "/api/analytics/timeline",
+                        "/api/v1/product/overview",
+                        "/api/v1/product/research-results",
+                        "/api/v1/product/market-behavior",
+                        "/api/v1/product/events",
+                        "/api/v1/product/governance",
+                        "/api/v1/product/artifacts",
+                        "/api/v1/product/operations",
                         "/api/v1/intelligence",
                         "/intelligence",
                     ],

@@ -1,0 +1,119 @@
+{
+  "sprint": "CBE_PRODUCT_ACCELERATION_01",
+  "timestamp_utc": "2026-10-23T20:51:30Z",
+  "base_commit": "2e7ad236ba07f71eee54dac01d6ffe9c115ba9d9",
+  "execution_mode": "OFFLINE_RESEARCH_AND_PRODUCT_DEVELOPMENT",
+  "test_suites_evaluated": [
+    {
+      "test_file": "tests/test_sprint_product_acceleration_01_api.py",
+      "test_type": "UNIT_TEST",
+      "collected": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 2.69,
+      "status": "PASS",
+      "cases": [
+        {"name": "test_01_overview_endpoint", "status": "PASSED"},
+        {"name": "test_02_research_results_endpoint", "status": "PASSED"},
+        {"name": "test_03_market_behavior_endpoint", "status": "PASSED"},
+        {"name": "test_04_events_endpoint", "status": "PASSED"},
+        {"name": "test_05_governance_endpoint", "status": "PASSED"},
+        {"name": "test_06_artifacts_listing_and_filtering", "status": "PASSED"},
+        {"name": "test_07_artifact_preview_security_and_traversal_guards", "status": "PASSED"},
+        {"name": "test_08_operations_endpoint", "status": "PASSED"},
+        {"name": "test_09_unknown_endpoint", "status": "PASSED"}
+      ]
+    },
+    {
+      "test_file": "tests/test_sprint_product_acceleration_01_integration.py",
+      "test_type": "INTEGRATION_TEST_HTTP_SERVER",
+      "collected": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 4.23,
+      "status": "PASS",
+      "cases": [
+        {"name": "test_http_get_root_serves_product_dashboard", "status": "PASSED"},
+        {"name": "test_http_get_product_route", "status": "PASSED"},
+        {"name": "test_http_get_dashboard_legacy_route", "status": "PASSED"},
+        {"name": "test_http_get_product_api_overview", "status": "PASSED"},
+        {"name": "test_http_get_product_api_artifacts", "status": "PASSED"},
+        {"name": "test_http_get_artifact_preview_security_traversal_blocked", "status": "PASSED"},
+        {"name": "test_http_get_healthcheck", "status": "PASSED"}
+      ]
+    },
+    {
+      "test_file": "tests/test_web_server.py",
+      "test_type": "REGRESSION_WEB_SERVER",
+      "collected": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 2.15,
+      "status": "PASS"
+    },
+    {
+      "test_file": "tests/test_sprint10_03_market_intelligence_api.py",
+      "test_type": "REGRESSION_INTELLIGENCE_API",
+      "collected": 17,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 0.73,
+      "status": "PASS"
+    },
+    {
+      "test_file": "tests/test_sprint11_05_verified_market_intelligence.py",
+      "test_type": "REGRESSION_VERIFIED_INTELLIGENCE",
+      "collected": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 3.60,
+      "status": "PASS"
+    }
+  ],
+  "aggregate_product_test_results": {
+    "total_collected": 46,
+    "total_passed": 46,
+    "total_failed": 0,
+    "total_skipped": 0,
+    "pass_rate_percent": 100.0,
+    "total_duration_seconds": 13.40
+  },
+  "known_linux_performance_failures_preserved": [
+    {
+      "test_name": "test_collector_step_latency_within_budget",
+      "file": "tests/test_sprint09_14_binance_capture_foundation.py",
+      "category": "WSL2_VHDX_FSYNC_LATENCY_BOUND",
+      "status": "PRESERVED_AND_DISCLOSED"
+    },
+    {
+      "test_name": "test_steady_state_step_latency_performance",
+      "file": "tests/test_sprint09_14_3_restart_continuity_and_sqlite_perf.py",
+      "category": "WSL2_VHDX_FSYNC_LATENCY_BOUND",
+      "status": "PRESERVED_AND_DISCLOSED"
+    },
+    {
+      "test_name": "test_03_benchmark_staging_linux_pipeline",
+      "file": "tests/test_sprint09_10_2_final_gate.py",
+      "category": "WSL2_VHDX_FSYNC_LATENCY_BOUND",
+      "status": "PRESERVED_AND_DISCLOSED"
+    },
+    {
+      "test_name": "test_10_memory_and_durability_under_synthetic_load",
+      "file": "tests/test_sprint09_10_2_final_gate.py",
+      "category": "WSL2_VHDX_FSYNC_LATENCY_BOUND",
+      "status": "PRESERVED_AND_DISCLOSED"
+    },
+    {
+      "test_name": "test_01_long_run_10000_sequential_events_stress",
+      "file": "tests/test_sprint09_14_1_stress_and_resilience.py",
+      "category": "WSL2_VHDX_FSYNC_LATENCY_BOUND",
+      "status": "PRESERVED_AND_DISCLOSED"
+    }
+  ],
+  "technical_verdict": "PRODUCT_TESTS_GREEN_TECHNICAL_NO_GO_MAINTAINED"
+}
