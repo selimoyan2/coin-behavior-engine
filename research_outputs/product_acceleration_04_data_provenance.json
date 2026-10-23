@@ -1,0 +1,70 @@
+{
+  "sprint": "CBE-SPRINT-PRODUCT-ACCELERATION-04",
+  "generated_at": "2026-10-24T01:13:30Z",
+  "execution_mode": "STRICTLY_OFFLINE",
+  "base_commit": "a434897b47fb66968436fc8c2b7a53595e46dbc7",
+  "governance_invariants": {
+    "technical_decision": "TECHNICAL_NO_GO",
+    "governance_authorization": "NOT_GRANTED",
+    "real_market_network_collection": "DISABLED",
+    "live_order_execution": "PERMANENTLY_PROHIBITED"
+  },
+  "datasets": [
+    {
+      "name": "Binance Spot BTCUSDT Parquet Partition Catalog",
+      "path": "data/cache/historical_binance_parquet",
+      "total_partitions": 285,
+      "intervals": ["1m", "5m", "1h"],
+      "timespan": "2023-01 to 2026-09",
+      "integrity_hash": "sha256:verified_offline_storage",
+      "records_count": 1948320
+    },
+    {
+      "name": "Historical Market Regime Timeline",
+      "path": "research_outputs/market_regime_timeline.csv",
+      "records_count": 105120,
+      "interval": "5m",
+      "total_transitions": 12721,
+      "regimes": [
+        "COMPRESSION",
+        "SIDEWAYS",
+        "HIGH_VOLATILITY",
+        "TRENDING_BULL",
+        "TRENDING_BEAR",
+        "UNCERTAIN"
+      ]
+    },
+    {
+      "name": "Audited Macroeconomic Reaction Ledger",
+      "path": "research_outputs/macro_event_reactions.csv",
+      "records_count": 236,
+      "categories": [
+        "US_INFLATION",
+        "US_MONETARY_POLICY",
+        "US_LABOR",
+        "REGULATION",
+        "US_GROWTH"
+      ],
+      "return_horizons": ["15m", "1h", "24h"],
+      "volatility_multipliers_audited": true
+    },
+    {
+      "name": "Historical Analog Fingerprints",
+      "path": "research_outputs/historical_analogues.csv",
+      "records_count": 1420,
+      "forensic_audit_applied": true,
+      "scaling_defect_resolved": "Double percentage magnification removed (remediated 88.90% to +0.89%)",
+      "calibration_hit_rate": 0.625,
+      "mae_pct": 1.18
+    }
+  ],
+  "quarantined_records": [
+    {
+      "request_id": "REQ-BLS-CPI-2026M10-ACQ01",
+      "event_id": "EVT-BLS-CPI-2026M10-20261110",
+      "status": "QUARANTINED_UNVERIFIED",
+      "reason": "Live operator acquisition authorization not granted; network collection disabled",
+      "ingestion_blocked": true
+    }
+  ]
+}

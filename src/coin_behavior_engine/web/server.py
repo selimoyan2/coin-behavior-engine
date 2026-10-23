@@ -1416,6 +1416,29 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
                 },
             )
 
+    def do_POST(self) -> None:  # noqa: N802
+        parsed_url = urlparse(self.path)
+        url_path = parsed_url.path
+        query_params = parse_qs(parsed_url.query)
+
+        try:
+            content_length = int(self.headers.get("Content-Length", 0))
+            post_body = self.rfile.read(content_length) if content_length > 0 else b"{}"
+            body_json = json.loads(post_body.decode("utf-8")) if post_body else {}
+        except Exception as e:
+            self._send_response_json(HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": f"Malformed JSON: {e}"})
+            return
+
+        if url_path.startswith("/api/v1/product"):
+            status_code, response_data = ProductDashboardApiService.handle_post_request(url_path, query_params, body_json)
+            self._send_response_json(status_code, response_data)
+            return
+
+        self._send_response_json(
+            HTTPStatus.NOT_FOUND,
+            {"error": "Not Found", "message": f"POST endpoint '{url_path}' not found."},
+        )
+
     def log_message(self, format: str, *args: Any) -> None:  # noqa: A002
         logger.info("%s - - [%s] %s" % (self.client_address[0], self.log_date_time_string(), format % args))
 

@@ -1,0 +1,73 @@
+{
+  "sprint": "CBE-SPRINT-PRODUCT-ACCELERATION-04",
+  "generated_at": "2026-10-24T01:13:35Z",
+  "framework": "pytest-9.1.1",
+  "python_version": "3.11.16",
+  "platform": "win32",
+  "summary": {
+    "total": 72,
+    "passed": 72,
+    "failed": 0,
+    "skipped": 0,
+    "duration_seconds": 10.32,
+    "status": "GREEN_100_PERCENT"
+  },
+  "test_suites": [
+    {
+      "file": "tests/test_web_server.py",
+      "tests": 6,
+      "passed": 6,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_01_api.py",
+      "tests": 9,
+      "passed": 9,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_01_integration.py",
+      "tests": 7,
+      "passed": 7,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_02_api.py",
+      "tests": 9,
+      "passed": 9,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_03.py",
+      "tests": 9,
+      "passed": 9,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_04.py",
+      "tests": 12,
+      "passed": 12,
+      "failed": 0,
+      "cases": [
+        "test_sprint04_regime_analytics_endpoint",
+        "test_sprint04_regime_transitions_endpoint_and_stochasticity",
+        "test_sprint04_regime_persistence_endpoint",
+        "test_sprint04_macro_impact_endpoint",
+        "test_sprint04_analog_scaling_resolution",
+        "test_sprint04_analog_validation_endpoint",
+        "test_sprint04_scenario_evaluate_endpoint",
+        "test_sprint04_scenario_evaluate_volatility_expansion",
+        "test_sprint04_scenario_invalid_parameters",
+        "test_sprint04_export_csv_formula_injection_defense",
+        "test_sprint04_export_json",
+        "test_sprint04_governance_invariants"
+      ]
+    },
+    {
+      "file": "tests/test_sprint11_02b_1_staging_hardening.py",
+      "tests": 20,
+      "passed": 20,
+      "failed": 0
+    }
+  ]
+}

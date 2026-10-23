@@ -1,0 +1,50 @@
+{
+  "baseline_version": "1.0.0",
+  "sprint": "PRODUCT_ACCELERATION_04",
+  "timestamp_utc": "2026-10-24T01:00:00Z",
+  "remote_host": {
+    "server_name": "srv1114257",
+    "ip_address": "168.231.125.238",
+    "orchestrator": "Coolify v4.4.6 / v4.4.7",
+    "domain": "coin.ozelweb.com.tr"
+  },
+  "staging_service_verification": {
+    "coolify_resource_uuid": "dzzfws54by1whlbq6fk4ywut",
+    "service_name": "cbe-market-intelligence-staging",
+    "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+    "container_id": "1c29d31326f7a7099339ee48b899af374aed4f699248ea6005073eabff837a88",
+    "image_digest": "sha256:1215d76e5911456e39bda90d65421836bc8db87c2c93406859901b947dbf00e3",
+    "image_tag": "cbe-market-intelligence:staging",
+    "verified_git_revision": "a434897b47fb66968436fc8c2b7a53595e46dbc7",
+    "container_status": "running",
+    "health_status": "healthy",
+    "host_port_binding": "127.0.0.1:18080->8000/tcp",
+    "volume_mounts": [
+      {
+        "name": "zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data",
+        "destination": "/app/data/live_capture",
+        "mode": "ro"
+      }
+    ],
+    "previous_container_backup_tag": "cbe-market-intelligence:staging-backup-sprint03"
+  },
+  "production_service_isolation": {
+    "coolify_resource_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+    "container_name": "6t63aehpaw0cw1bbt4zcm09g-20261023T214226",
+    "container_id": "842777a2d927e5cd122e6cb2b40a2df1c9b69d3cd67dc3704fcb94879d222574",
+    "status": "running",
+    "health": "healthy",
+    "public_endpoint": "https://coin.ozelweb.com.tr",
+    "isolation_status": "UNTOUCHED_ISOLATED"
+  },
+  "verified_staging_endpoints": {
+    "/health": "200 OK (CBE-0.7.0 FROZEN)",
+    "/product": "200 OK (Interactive Research Workspace)",
+    "/api/v1/product/overview": "200 OK (revision a434897b47fb66968436fc8c2b7a53595e46dbc7)",
+    "/api/v1/product/dataset-catalog": "200 OK (285 Parquet files, 5m/15m/1h/4h/1d)",
+    "/api/v1/product/historical-candles": "200 OK (candle arrays with event markers)",
+    "/api/v1/product/macro-reactions": "200 OK (236 audited events)",
+    "/api/v1/product/operations": "200 OK (telemetry separated)"
+  },
+  "phase_a_verdict": "REAL_COOLIFY_STAGING_ACCEPTANCE_CONFIRMED"
+}
