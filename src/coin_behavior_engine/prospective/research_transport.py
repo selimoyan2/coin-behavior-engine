@@ -275,6 +275,7 @@ class ReadOnlyResearchTransport:
         self.total_deadline_seconds = total_deadline_seconds
         self.allow_redirects = allow_redirects
         self.max_redirects = max_redirects
+        self._custom_dns_resolver = dns_resolver
         self._dns_resolver = dns_resolver or self._default_dns_resolve
         self._socket_factory = socket_factory
         self.activation_gate = activation_gate
@@ -696,23 +697,26 @@ class ReadOnlyResearchTransport:
             )
 
         # Anti-SSRF: Resolve all A and AAAA records and verify ALL
-        resolved_ips = self._dns_resolver(host)
-        if not resolved_ips:
-            audit_entry["status"] = "DNS_EMPTY"
-            self._request_audit_log.append(audit_entry)
-            raise SSRFProtectionError(f"DNS resolution returned no IP addresses for host '{host}'")
+        dns_exception = None
+        try:
+            resolved_ips = self._dns_resolver(host)
+        except (TransportSecurityError, socket.gaierror, Exception) as dns_err:
+            resolved_ips = None
+            dns_exception = dns_err
+            # If a custom dns_resolver was explicitly provided, raise immediately
+            if self._custom_dns_resolver is not None:
+                raise
 
-        # Mixed DNS check: if ANY resolved IP is private/restricted, reject the whole host
-        for ip_addr in resolved_ips:
-            if is_private_or_restricted_ip(ip_addr):
-                audit_entry["status"] = "BLOCKED_SSRF"
-                audit_entry["resolved_ip"] = ip_addr
-                self._request_audit_log.append(audit_entry)
-                raise SSRFProtectionError(
-                    f"SSRF violation: Host '{host}' resolves to restricted IP '{ip_addr}'"
-                )
-
-        pinned_ip = resolved_ips[0]
+        if resolved_ips:
+            # Mixed DNS check: if ANY resolved IP is private/restricted, reject the whole host
+            for ip_addr in resolved_ips:
+                if is_private_or_restricted_ip(ip_addr):
+                    audit_entry["status"] = "BLOCKED_SSRF"
+                    audit_entry["resolved_ip"] = ip_addr
+                    self._request_audit_log.append(audit_entry)
+                    raise SSRFProtectionError(
+                        f"SSRF violation: Host '{host}' resolves to restricted IP '{ip_addr}'"
+                    )
 
         # Enforce Network Activation Gate (10 Mandatory Conditions)
         from .observation_authorization import NetworkActivationGate, NetworkActivationGateError
@@ -731,6 +735,21 @@ class ReadOnlyResearchTransport:
             raise NetworkActivationGateError(
                 f"External network retrieval blocked by network activation gate: {gate_reason}"
             )
+
+        # If gate allowed the request, but DNS resolution had failed, fail closed now
+        if dns_exception is not None:
+            audit_entry["status"] = "DNS_ERROR"
+            self._request_audit_log.append(audit_entry)
+            if isinstance(dns_exception, TransportSecurityError):
+                raise dns_exception
+            raise TransportSecurityError(f"DNS resolution failure for host '{host}': {dns_exception}")
+
+        if not resolved_ips:
+            audit_entry["status"] = "DNS_EMPTY"
+            self._request_audit_log.append(audit_entry)
+            raise SSRFProtectionError(f"DNS resolution returned no IP addresses for host '{host}'")
+
+        pinned_ip = resolved_ips[0]
 
         # Execute real TLS connection
         try:

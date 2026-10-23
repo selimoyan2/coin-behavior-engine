@@ -1,0 +1,74 @@
+{
+  "sprint": "11.23.5B-6.5.5B",
+  "benchmark_timestamp_utc": "2026-10-23T19:46:00Z",
+  "storage_backend": "Docker Named Volume (cbe-655b-durability-volume, ext4 on WSL2 VHDX)",
+  "benchmark_target": "tests/test_sprint09_14_1_stress_and_resilience.py::test_01_long_run_10000_sequential_events_stress",
+  "total_events_per_run": 10000,
+  "repetitions": [
+    {
+      "run_id": 1,
+      "mean_latency_ms": 3.614,
+      "median_latency_ms": 3.457,
+      "p95_latency_ms": 4.763,
+      "threshold_ms": 5.0,
+      "p95_passed": true,
+      "restart_recovery_seconds": 0.167,
+      "recovery_threshold_seconds": 1.0,
+      "recovery_passed": true,
+      "unbroken_hash_chain": true,
+      "memory_delta_mb": 11.4
+    },
+    {
+      "run_id": 2,
+      "mean_latency_ms": 4.074,
+      "median_latency_ms": 3.873,
+      "p95_latency_ms": 5.712,
+      "threshold_ms": 5.0,
+      "p95_passed": false,
+      "restart_recovery_seconds": 0.157,
+      "recovery_threshold_seconds": 1.0,
+      "recovery_passed": true,
+      "unbroken_hash_chain": true,
+      "memory_delta_mb": 12.1
+    },
+    {
+      "run_id": 3,
+      "mean_latency_ms": 3.765,
+      "median_latency_ms": 3.586,
+      "p95_latency_ms": 4.983,
+      "threshold_ms": 5.0,
+      "p95_passed": true,
+      "restart_recovery_seconds": 0.184,
+      "recovery_threshold_seconds": 1.0,
+      "recovery_passed": true,
+      "unbroken_hash_chain": true,
+      "memory_delta_mb": 11.8
+    },
+    {
+      "run_id": 4,
+      "mean_latency_ms": 3.921,
+      "median_latency_ms": 3.712,
+      "p95_latency_ms": 5.339,
+      "threshold_ms": 5.0,
+      "p95_passed": false,
+      "restart_recovery_seconds": 0.171,
+      "recovery_threshold_seconds": 1.0,
+      "recovery_passed": true,
+      "unbroken_hash_chain": true,
+      "memory_delta_mb": 12.6
+    }
+  ],
+  "aggregate_statistics": {
+    "total_repetitions": 4,
+    "passing_repetitions": 2,
+    "failing_repetitions": 2,
+    "overall_mean_latency_ms": 3.843,
+    "overall_median_p95_ms": 5.161,
+    "min_p95_ms": 4.763,
+    "max_p95_ms": 5.712,
+    "mean_recovery_seconds": 0.170,
+    "windows_ntfs_p95_baseline_ms": 11.820,
+    "latency_reduction_vs_windows_percent": 67.5
+  },
+  "root_cause_analysis": "Native Linux ext4 reduces fsync latency from 11.8ms on Windows NTFS to an average of 3.8ms. However, under WSL2 virtualization, the virtual ext4 filesystem is backed by a Windows host VHDX file on an active multi-tasking host OS. Host background I/O contention causes occasional transient commit latency spikes to ~5.3-5.7ms, producing inconsistent results around the strict 5.0ms P95 boundary. Qualification requires dedicated bare-metal Linux NVMe storage or production Linux cloud runner."
+}

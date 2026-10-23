@@ -1,0 +1,38 @@
+{
+  "sprint": "11.23.5B-6.5.5B",
+  "qualification_timestamp_utc": "2026-10-23T19:45:00Z",
+  "host": {
+    "os": "Windows 11 Enterprise",
+    "wsl_version": "WSL2 (Kernel 6.18.33.2-microsoft-standard-WSL2)",
+    "docker_desktop_version": "29.7.2",
+    "storage_drive": "D:\\ (NTFS)"
+  },
+  "container_environment": {
+    "image_name": "cbe-655b-test-runner:py311",
+    "image_id": "sha256:4e779192423e9941f14b254e28f49cd4193f82daf4a54fd5e466df3cc3be397a",
+    "base_os": "Linux 6.18.33.2-microsoft-standard-WSL2 x86_64 (Debian GNU/Linux 13 / trixie)",
+    "python_version": "3.11.17",
+    "pytest_version": "9.1.1",
+    "execution_user": "1000:1000 (cbe)",
+    "network_mode": "none",
+    "capabilities_dropped": "ALL",
+    "security_options": ["no-new-privileges:true"],
+    "resource_limits": {
+      "cpus": 4,
+      "memory": "8GB"
+    }
+  },
+  "storage_environment": {
+    "primary_volume": "cbe-655b-durability-volume",
+    "filesystem": "ext4",
+    "mount_device": "/dev/sde",
+    "available_space_gb": 945.0,
+    "workspace_volume": "cbe-655b-test-workspace",
+    "durability_invariants": {
+      "fsync_enforced": true,
+      "atomic_rename": true,
+      "sqlite_journal_mode": "WAL"
+    }
+  },
+  "status": "QUALIFIED_WITH_VIRTUALIZATION_IO_JITTER"
+}

@@ -1,0 +1,49 @@
+{
+  "sprint": "11.23.5B-6.5.5B",
+  "verification_timestamp_utc": "2026-10-23T19:49:00Z",
+  "security_invariants": {
+    "network_isolation": {
+      "mode": "--network none",
+      "external_calls_allowed": false,
+      "dns_resolution_under_airgap": "FAIL_CLOSED",
+      "status": "VERIFIED"
+    },
+    "container_privilege": {
+      "user": "1000:1000 (cbe)",
+      "capabilities_dropped": "ALL",
+      "no_new_privileges": true,
+      "status": "VERIFIED"
+    },
+    "governance_and_trading_gates": {
+      "cbe_trading_disabled": true,
+      "cbe_prospective_observation_enabled": false,
+      "cbe_binance_collection_enabled": false,
+      "governance_authorization": "NOT_GRANTED",
+      "status": "VERIFIED"
+    },
+    "cryptographic_integrity": {
+      "algorithm": "Ed25519 (RFC 8032)",
+      "provider": "cryptography.hazmat.primitives.asymmetric.ed25519",
+      "canonical_serialization": "deterministic_sorted_json",
+      "domain_separation": "enforced",
+      "status": "VERIFIED"
+    }
+  },
+  "durability_invariants": {
+    "fsync_integrity": {
+      "fsync_called_every_event": true,
+      "atomic_rename_used": true,
+      "relaxed_durability_shortcuts": false,
+      "status": "VERIFIED"
+    },
+    "event_durability_stress_metrics": {
+      "events_processed": 10000,
+      "events_recovered_on_restart": 10000,
+      "hash_chain_integrity": "100% UNBROKEN",
+      "recovery_time_seconds": 0.170,
+      "recovery_threshold_seconds": 1.0,
+      "status": "VERIFIED"
+    }
+  },
+  "verdict": "SECURITY_AND_DURABILITY_INVARIANTS_UNCOMPROMISED"
+}

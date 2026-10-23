@@ -1,0 +1,62 @@
+{
+  "sprint": "11.23.5B-6.5.5B",
+  "report_timestamp_utc": "2026-10-23T19:48:00Z",
+  "environments_evaluated": {
+    "windows_11_host": {
+      "python_version": "3.11.16",
+      "sprint_11_23_suite": {
+        "collected": 422,
+        "passed": 422,
+        "failed": 0,
+        "skipped": 0,
+        "duration_seconds": 24.83,
+        "status": "PASS"
+      },
+      "full_project_suite": {
+        "collected": 2107,
+        "passed": 2105,
+        "failed": 2,
+        "failing_tests": [
+          "tests/test_sprint09_14_1_stress_and_resilience.py::test_01_long_run_10000_sequential_events_stress",
+          "tests/test_sprint09_38_funding_predictability.py::test_10_pure_compute_latency_and_report_file"
+        ],
+        "isolated_recheck": {
+          "test_sprint09_38_test_10": "PASS (passed in 2.08s)",
+          "test_sprint09_14_1_test_01": "FAIL (NTFS fsync P95 = 11.8ms vs 5.0ms threshold)"
+        }
+      }
+    },
+    "docker_linux_ext4_harness": {
+      "image": "cbe-655b-test-runner:py311",
+      "network": "none",
+      "python_version": "3.11.17",
+      "sprint_11_23_suite": {
+        "collected": 422,
+        "passed": 422,
+        "failed": 0,
+        "duration_seconds": 11.95,
+        "status": "PASS"
+      },
+      "funding_benchmark_isolated": {
+        "test": "tests/test_sprint09_38_funding_predictability.py::test_10_pure_compute_latency_and_report_file",
+        "median_latency_ms": 21.384,
+        "status": "PASS"
+      },
+      "durability_stress_benchmark_isolated": {
+        "test": "tests/test_sprint09_14_1_stress_and_resilience.py::test_01_long_run_10000_sequential_events_stress",
+        "repetitions_passed": 2,
+        "repetitions_failed": 2,
+        "p95_range_ms": [4.763, 5.712],
+        "status": "INCONSISTENT_DUE_TO_WSL2_VHDX_HOST_IO_JITTER"
+      },
+      "full_project_suite": {
+        "collected": 2107,
+        "passed": 2087,
+        "failed": 20,
+        "xml_report": "research_outputs/full_suite_docker_linux_6_5_5b.xml",
+        "duration_seconds": 262.57
+      }
+    }
+  },
+  "overall_verdict": "FULL_SUITE_NOT_COMPLETELY_RESOLVED_ON_VIRTUALIZED_ENVIRONMENT"
+}

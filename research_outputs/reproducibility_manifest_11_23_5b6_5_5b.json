@@ -1,0 +1,25 @@
+{
+  "sprint": "11.23.5B-6.5.5B",
+  "manifest_timestamp_utc": "2026-10-23T19:50:00Z",
+  "base_commit": "a021197d2c3201ddb946f34162f396a1efa93dfb",
+  "branch": "main",
+  "docker_artifacts": {
+    "dockerfile": "deploy/test_harness/Dockerfile.test_runner",
+    "requirements_file": "deploy/test_harness/requirements-test.txt",
+    "image_tag": "cbe-655b-test-runner:py311",
+    "image_digest": "sha256:4e779192423e9941f14b254e28f49cd4193f82daf4a54fd5e466df3cc3be397a",
+    "volumes_created": [
+      "cbe-655b-durability-volume",
+      "cbe-655b-test-workspace"
+    ]
+  },
+  "reproduction_commands": {
+    "build_image": "docker build -t cbe-655b-test-runner:py311 -f deploy/test_harness/Dockerfile.test_runner .",
+    "create_durability_volume": "docker volume create cbe-655b-durability-volume",
+    "create_workspace_volume": "docker volume create cbe-655b-test-workspace",
+    "sync_workspace": "docker run --rm --user 1000:1000 -v \"${PWD}:/mnt_host:ro\" -v cbe-655b-test-workspace:/workspace cbe-655b-test-runner:py311 /bin/sh -c \"cp -r /mnt_host/src /mnt_host/tests /mnt_host/pyproject.toml /workspace/\"",
+    "run_sprint_11_23_suite": "docker run --rm --network none --user 1000:1000 --cap-drop=ALL --security-opt=no-new-privileges:true --cpus 4 --memory 8g -e PYTHONPATH=/workspace/src:/workspace -v cbe-655b-durability-volume:/durability_volume -v cbe-655b-test-workspace:/workspace cbe-655b-test-runner:py311 /bin/sh -c \"umask 0077 && cd /workspace && python3 -m pytest tests/ -k 'sprint11_23' -q\"",
+    "run_funding_benchmark": "docker run --rm --network none --user 1000:1000 --cap-drop=ALL --security-opt=no-new-privileges:true --cpus 4 --memory 8g -e PYTHONPATH=/workspace/src:/workspace -v cbe-655b-durability-volume:/durability_volume -v cbe-655b-test-workspace:/workspace cbe-655b-test-runner:py311 /bin/sh -c \"cd /workspace && python3 -m pytest tests/test_sprint09_38_funding_predictability.py -k 'test_10' -q\"",
+    "run_durability_benchmark": "docker run --rm --network none --user 1000:1000 --cap-drop=ALL --security-opt=no-new-privileges:true --cpus 4 --memory 8g -e PYTHONPATH=/workspace/src:/workspace -v cbe-655b-durability-volume:/durability_volume -v cbe-655b-test-workspace:/workspace cbe-655b-test-runner:py311 /bin/sh -c \"cd /durability_volume && python3 -m pytest /workspace/tests/test_sprint09_14_1_stress_and_resilience.py -k 'test_01' -q --basetemp=/durability_volume/tmp_stress\""
+  }
+}

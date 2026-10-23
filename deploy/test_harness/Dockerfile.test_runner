@@ -1,0 +1,49 @@
+# ==============================================================================
+# SPRINT 11.23.5B-6.5.5B: DOCKER ISOLATED TEST HARNESS
+# ==============================================================================
+# Image: cbe-655b-test-runner:py311
+# Base: python:3.11-slim (Debian Linux amd64)
+# Purpose: Offline test execution with full dependency suite and native Linux ext4.
+# Security: Non-root user (1000:1000), no network at runtime, no secrets.
+# ==============================================================================
+
+FROM python:3.11-slim
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONPATH=/app/src \
+    CBE_ENV=staging_offline \
+    CBE_TRADING_DISABLED=true \
+    CBE_PROSPECTIVE_OBSERVATION_ENABLED=false \
+    CBE_BINANCE_COLLECTION_ENABLED=false
+
+# Install minimal OS prerequisites: curl, nodejs (for verify_frontend_client.js), ca-certificates
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    nodejs \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create unprivileged cbe user (1000:1000)
+RUN groupadd -g 1000 cbe && \
+    useradd -u 1000 -g cbe -s /bin/sh -m cbe
+
+WORKDIR /app
+
+# Install Python test and runtime dependencies
+COPY deploy/test_harness/requirements-test.txt /app/requirements-test.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r /app/requirements-test.txt
+
+# Install Playwright browser dependencies and Chromium / Firefox
+RUN playwright install-deps chromium firefox && \
+    playwright install chromium firefox
+
+# Prepare mount points and permissions
+RUN mkdir -p /app/src /app/tests /app/data /app/config /app/research_outputs /durability_volume /workspace && \
+    chown -R cbe:cbe /app /durability_volume /workspace
+
+USER 1000:1000
+
+# Default command: print python and pytest versions
+CMD ["python3", "-m", "pytest", "--version"]
