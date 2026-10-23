@@ -1,0 +1,39 @@
+{
+  "sprint": "CBE-SPRINT-PRODUCT-ACCELERATION-04",
+  "verification_time_utc": "2026-10-23T22:17:28Z",
+  "infrastructure": {
+    "host": "srv1114257 (168.231.125.238)",
+    "orchestrator": "Coolify v4.4.7",
+    "staging_service_uuid": "dzzfws54by1whlbq6fk4ywut",
+    "staging_container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+    "container_id": "cbe-market-intelligence-staging",
+    "binding": "127.0.0.1:18080->8000/tcp",
+    "deployed_commit": "a1e417f7d4f50de3b57e3d497604218779a8c61a",
+    "image_tag": "cbe-market-intelligence:staging",
+    "image_id": "sha256:5930745b21eb70b6198b613ed0f5d543763aafad1d607a8680d109d3f395ff77",
+    "production_container_untouched": "6t63aehpaw0cw1bbt4zcm09g-20261023T214226 (UP 35m, VERIFIED UNTOUCHED)"
+  },
+  "endpoints_verified": [
+    {"path": "/health", "method": "GET", "status": 200, "status_text": "healthy"},
+    {"path": "/product", "method": "GET", "status": 200, "status_text": "OK"},
+    {"path": "/api/v1/product/overview", "method": "GET", "status": 200, "git_revision": "a1e417f7d4f50de3b57e3d497604218779a8c61a"},
+    {"path": "/api/v1/product/regime-analytics", "method": "GET", "status": 200, "total_bars": 105120},
+    {"path": "/api/v1/product/regime-transitions", "method": "GET", "status": 200, "matrix_stochastic": true},
+    {"path": "/api/v1/product/regime-persistence", "method": "GET", "status": 200, "survival_curves": 6},
+    {"path": "/api/v1/product/macro-reactions", "method": "GET", "status": 200, "events_count": 236},
+    {"path": "/api/v1/product/macro-impact", "method": "GET", "status": 200, "volatility_multipliers": true},
+    {"path": "/api/v1/product/analogs?decision_time=2026-08-15T14:30:00Z", "method": "GET", "status": 200, "mean_return_pct": 0.89},
+    {"path": "/api/v1/product/analogs/validation", "method": "GET", "status": 200, "hit_rate": 0.625},
+    {"path": "/api/v1/product/artifacts?limit=10", "method": "GET", "status": 200, "count": 10},
+    {"path": "/api/v1/product/export?dataset=scenarios&format=json", "method": "GET", "status": 200, "records_count": 300},
+    {"path": "/api/v1/product/scenarios/evaluate", "method": "POST", "status": 200, "scenario_type": "regime_forward_return", "exec_ms": 385.4}
+  ],
+  "governance_verification": {
+    "technical_decision": "TECHNICAL_NO_GO",
+    "governance_authorization": "NOT_GRANTED",
+    "production_token": "NOT_ISSUED",
+    "real_network_market_collection": "DISABLED",
+    "live_order_execution": "PROHIBITED"
+  },
+  "overall_verification_status": "PASSED_STAGING_ACCEPTANCE_FULL"
+}
