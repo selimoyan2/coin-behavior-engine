@@ -1,0 +1,32 @@
+{
+  "symbol": "BTCUSDT",
+  "generated_at_utc": "2026-10-24T02:15:00Z",
+  "supported_intervals": ["5m", "15m", "1h", "4h", "1d"],
+  "canonical_interval": "5m",
+  "date_range": {
+    "start_month": "2022-01",
+    "end_month": "2026-09",
+    "earliest_timestamp_utc": "2022-01-01T00:00:00Z",
+    "latest_timestamp_utc": "2026-09-30T23:55:00Z",
+    "total_months": 57
+  },
+  "metrics": {
+    "total_partitions_5m": 57,
+    "total_canonical_candles_5m": 499680,
+    "total_storage_mb": 64.2,
+    "missing_gaps_count": 0,
+    "manifest_version": "cbe-manifest-v2-addf635b47aa",
+    "integrity_verdict": "VERIFIED_PASS"
+  },
+  "completeness_summary": {
+    "months_fully_complete": 57,
+    "months_partial": 0,
+    "unimported_months_requested": {
+      "2026-10": {
+        "status": "UNIMPORTED",
+        "action": "EXPLICIT_NO_DATA_ALERT_SERVED",
+        "synthetic_generation": "PROHIBITED"
+      }
+    }
+  }
+}

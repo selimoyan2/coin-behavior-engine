@@ -1,0 +1,8 @@
+{
+  "application_version": "CBE-0.7.0",
+  "git_revision": "36ccafcc8543a241ba7bf193e4aceb28c8bf7858",
+  "git_revision_short": "36ccafcc",
+  "build_timestamp_utc": "2026-10-24T02:06:00Z",
+  "environment": "staging",
+  "provenance": "CBE Product Acceleration Build Pipeline"
+}

@@ -1,0 +1,56 @@
+{
+  "sprint": "CBE-SPRINT-PRODUCT-ACCELERATION-05",
+  "generated_at": "2026-10-24T02:02:50Z",
+  "investigation": "Git Commit & Staging Deployment Reconciliation",
+  "reconciled_references": {
+    "a1e417f7d4f50de3b57e3d497604218779a8c61a": {
+      "status": "VALID_CANONICAL_COMMIT",
+      "type": "Code Implementation Commit",
+      "author_date": "2026-10-24T01:13:45+03:00",
+      "message": "CBE - SPRINT PRODUCT ACCELERATION 04: Market Research Workbench, Regime Intelligence & Scenario Lab",
+      "staging_deployment": "Built into docker image sha256:5930745b21eb70b6198b613ed0f5d543763aafad1d607a8680d109d3f395ff77 and running on staging container 694c087b428b"
+    },
+    "36ccafcc8543a241ba7bf193e4aceb28c8bf7858": {
+      "status": "VALID_CANONICAL_COMMIT",
+      "type": "Documentation & Verification Commit (Current origin/main HEAD)",
+      "author_date": "2026-10-24T01:17:53+03:00",
+      "message": "docs(research): complete Sprint 04 delivery reports and staging verification",
+      "short_sha": "36ccafcc",
+      "relation_to_a1e417f": "Direct child (parent is a1e417f7d4f50de3b57e3d497604218779a8c61a)"
+    },
+    "36ccafce2ee93c834a02d4e68e46950ee0b9dfb2": {
+      "status": "ERRONEOUS_REPORTED_STRING",
+      "type": "Typo / Pre-commit Placeholder in Sprint 04 Markdown Text",
+      "explanation": "Recorded in product_acceleration_04_delivery_report.md before git commit finalized the true tree sha 36ccafcc8543a241ba7bf193e4aceb28c8bf7858. The first 7 characters (36ccafc) match the real commit prefix, but the tail was distorted."
+    },
+    "36ccafcc": {
+      "status": "VALID_SHORT_SHA",
+      "type": "UI Build Badge",
+      "target_commit": "36ccafcc8543a241ba7bf193e4aceb28c8bf7858",
+      "explanation": "The 8-character prefix of the actual git commit HEAD."
+    }
+  },
+  "staging_container_audit": {
+    "host": "srv1114257 (168.231.125.238)",
+    "container_id": "694c087b428b",
+    "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+    "image_name": "cbe-market-intelligence:staging",
+    "image_id": "sha256:5930745b21eb70b6198b613ed0f5d543763aafad1d607a8680d109d3f395ff77",
+    "startup_time": "2026-10-23T22:16:32Z",
+    "environment_source_commit": "a1e417f7d4f50de3b57e3d497604218779a8c61a",
+    "runtime_reported_commit": "a1e417f7d4f50de3b57e3d497604218779a8c61a",
+    "health_status": "healthy",
+    "port_binding": "127.0.0.1:18080->8000/tcp"
+  },
+  "production_container_audit": {
+    "container_id": "6t63aehpaw0cw1bbt4zcm09g-20261023T214226",
+    "status": "UP (healthy)",
+    "isolation": "UNTOUCHED"
+  },
+  "remediation_actions": [
+    "Implement GET /api/v1/product/runtime-build endpoint with strict contract",
+    "Embed deterministic build_metadata.json during Docker build and packaging",
+    "Eliminate hardcoded fallback '69027de4bd8baf79aa1a6c7874e52ec623e41dcc'; return 'UNKNOWN' if undetectable",
+    "Separate build commit, dataset revision, and latest historical candle timestamp in API and UI"
+  ]
+}

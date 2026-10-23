@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install project dependencies
-COPY pyproject.toml README.md ./
+COPY pyproject.toml README.md build_metadata.json* ./
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir hatchling && \
     pip install --no-cache-dir "pandas>=2.2.0" "numpy>=1.26.0" "scipy>=1.12.0" "scikit-learn>=1.4.0" "pyarrow>=15.0.0" "requests>=2.31.0" "httpx>=0.27.0" "pydantic>=2.6.0" "pyyaml>=6.0.1" "matplotlib>=3.8.0"

@@ -1,0 +1,77 @@
+{
+  "sprint": "CBE_PRODUCT_ACCELERATION_05",
+  "execution_timestamp_utc": "2026-10-24T02:15:00Z",
+  "test_environment": {
+    "platform": "win32",
+    "python_version": "3.11.16",
+    "pytest_version": "9.1.1",
+    "network_mode": "STRICTLY_OFFLINE"
+  },
+  "summary": {
+    "total_tests_collected": 85,
+    "total_tests_passed": 85,
+    "total_tests_failed": 0,
+    "total_tests_skipped": 0,
+    "pass_rate_percent": 100.0,
+    "total_duration_seconds": 10.93
+  },
+  "test_suites": [
+    {
+      "file": "tests/test_sprint_product_acceleration_05.py",
+      "tests_passed": 13,
+      "tests_failed": 0,
+      "duration_seconds": 2.71,
+      "test_cases": [
+        "test_01_build_identity_contract",
+        "test_02_dynamic_dataset_catalog",
+        "test_03_dataset_coverage_and_completeness_calendar",
+        "test_04_dataset_quality_endpoint",
+        "test_05_available_dates_endpoint",
+        "test_06_unimported_month_empty_data_behavior",
+        "test_07_day_and_time_slot_filtering",
+        "test_08_data_importer_validation_valid_file",
+        "test_09_data_importer_rejects_corrupted_ohlc",
+        "test_10_data_importer_rejects_duplicate_timestamps",
+        "test_11_data_importer_detects_overlap_conflicts",
+        "test_12_synthetic_current_month_test_fixture_isolation",
+        "test_13_governance_invariants"
+      ]
+    },
+    {
+      "file": "tests/test_web_server.py",
+      "tests_passed": 6,
+      "tests_failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_01_api.py",
+      "tests_passed": 9,
+      "tests_failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_01_integration.py",
+      "tests_passed": 7,
+      "tests_failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_02_api.py",
+      "tests_passed": 9,
+      "tests_failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_03.py",
+      "tests_passed": 9,
+      "tests_failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_04.py",
+      "tests_passed": 12,
+      "tests_failed": 0
+    },
+    {
+      "file": "tests/test_sprint11_02b_1_staging_hardening.py",
+      "tests_passed": 20,
+      "tests_failed": 0
+    }
+  ],
+  "regression_verdict": "ZERO_REGRESSIONS_CONFIRMED"
+}
