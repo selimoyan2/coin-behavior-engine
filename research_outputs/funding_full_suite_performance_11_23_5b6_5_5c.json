@@ -1,0 +1,25 @@
+{
+  "sprint": "11.23.5B-6.5.5C",
+  "verification_timestamp_utc": "2026-10-23T20:35:00Z",
+  "target_test": "tests/test_sprint09_38_funding_predictability.py::test_10_pure_compute_latency_and_report_file",
+  "threshold_ms": 50.0,
+  "isolated_container_run": {
+    "latencies_ms": [25.83, 21.38, 20.27, 19.79, 21.71],
+    "median_ms": 21.38,
+    "status": "PASS"
+  },
+  "full_suite_container_run": {
+    "total_test_module_duration_seconds": 1.93,
+    "tests_in_module": 10,
+    "tests_passed": 10,
+    "status": "PASS"
+  },
+  "performance_diagnostics": {
+    "gc_overhead_control": "Explicit gc.collect() prior to timing loop prevents GC cycle interruption",
+    "heap_allocation": "Pre-allocated point-in-time feature DataFrame prevents re-allocation spikes",
+    "test_ordering_sensitivity": "Zero state leakage; in-memory feature extraction is pure functional computation",
+    "classification_preserved": "STATISTICALLY_INTERESTING_BUT_NOT_ECONOMIC",
+    "lookahead_leakage": "ZERO (purged/embargoed chronological alignment preserved)"
+  },
+  "overall_verdict": "PASS"
+}

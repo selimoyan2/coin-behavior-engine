@@ -466,9 +466,10 @@ class NewsIngestionCoordinator:
                 logger.error(f"Error executing adapter {name}: {e}")
 
         # 2. If live ingestion returned insufficient events (e.g. offline execution), load cached snapshot
-        if len(all_events) < 5 and self.cache_file.exists():
-            logger.info(f"Loading verified events from persistent cache: {self.cache_file}")
-            with open(self.cache_file, "r", encoding="utf-8") as f:
+        fallback_cache = self.cache_file if (self.cache_file and self.cache_file.exists()) else Path("data/research_lab/verified_events_cache.json")
+        if len(all_events) < 5 and fallback_cache.exists():
+            logger.info(f"Loading verified events from persistent cache: {fallback_cache}")
+            with open(fallback_cache, "r", encoding="utf-8") as f:
                 cached_data = json.load(f)
                 for item in cached_data:
                     if item["event_id"] not in all_events:

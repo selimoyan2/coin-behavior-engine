@@ -448,66 +448,73 @@ class TrustedApprovalStore:
 
     def _init_db(self) -> None:
         with self._lock:
-            conn = None
-            try:
-                conn = self._get_connection()
-                with conn:
-                    conn.execute("""
-                        CREATE TABLE IF NOT EXISTS approval_records (
-                            approval_id TEXT PRIMARY KEY,
-                            token_id TEXT UNIQUE NOT NULL,
-                            operator_identity TEXT NOT NULL,
-                            capability TEXT NOT NULL,
-                            authorized_event_id TEXT NOT NULL,
-                            approved_domains_json TEXT NOT NULL,
-                            max_request_count INTEGER NOT NULL,
-                            max_byte_allowance INTEGER NOT NULL,
-                            spent_requests INTEGER NOT NULL DEFAULT 0,
-                            spent_bytes INTEGER NOT NULL DEFAULT 0,
-                            issued_at_utc TEXT NOT NULL,
-                            not_before_utc TEXT NOT NULL,
-                            expires_at_utc TEXT NOT NULL,
-                            policy_version TEXT NOT NULL,
-                            status TEXT NOT NULL,
-                            created_at_utc TEXT NOT NULL,
-                            is_production INTEGER NOT NULL DEFAULT 0,
-                            proposal_digest TEXT NOT NULL DEFAULT '',
-                            approved_by_operator_id TEXT NOT NULL DEFAULT ''
-                        );
-                    """)
-                    conn.execute("""
-                        CREATE TABLE IF NOT EXISTS revocation_records (
-                            revocation_id TEXT PRIMARY KEY,
-                            token_id TEXT NOT NULL,
-                            revoked_by TEXT NOT NULL,
-                            revoked_at_utc TEXT NOT NULL,
-                            reason TEXT NOT NULL
-                        );
-                    """)
-                    conn.execute("""
-                        CREATE TABLE IF NOT EXISTS audit_trail (
-                            audit_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            action TEXT NOT NULL,
-                            token_id TEXT,
-                            event_id TEXT,
-                            timestamp_utc TEXT NOT NULL,
-                            details_json TEXT NOT NULL
-                        );
-                    """)
-                    conn.execute("""
-                        CREATE TABLE IF NOT EXISTS approval_nonces (
-                            nonce TEXT PRIMARY KEY,
-                            token_id TEXT NOT NULL,
-                            request_digest TEXT NOT NULL,
-                            consumed_at_utc TEXT NOT NULL,
-                            expires_at_utc TEXT NOT NULL
-                        );
-                    """)
-            except sqlite3.DatabaseError:
-                pass
-            finally:
-                if conn is not None:
-                    self._close_connection(conn)
+            for attempt in range(10):
+                conn = None
+                try:
+                    conn = self._get_connection()
+                    with conn:
+                        conn.execute("""
+                            CREATE TABLE IF NOT EXISTS approval_records (
+                                approval_id TEXT PRIMARY KEY,
+                                token_id TEXT UNIQUE NOT NULL,
+                                operator_identity TEXT NOT NULL,
+                                capability TEXT NOT NULL,
+                                authorized_event_id TEXT NOT NULL,
+                                approved_domains_json TEXT NOT NULL,
+                                max_request_count INTEGER NOT NULL,
+                                max_byte_allowance INTEGER NOT NULL,
+                                spent_requests INTEGER NOT NULL DEFAULT 0,
+                                spent_bytes INTEGER NOT NULL DEFAULT 0,
+                                issued_at_utc TEXT NOT NULL,
+                                not_before_utc TEXT NOT NULL,
+                                expires_at_utc TEXT NOT NULL,
+                                policy_version TEXT NOT NULL,
+                                status TEXT NOT NULL,
+                                created_at_utc TEXT NOT NULL,
+                                is_production INTEGER NOT NULL DEFAULT 0,
+                                proposal_digest TEXT NOT NULL DEFAULT '',
+                                approved_by_operator_id TEXT NOT NULL DEFAULT ''
+                            );
+                        """)
+                        conn.execute("""
+                            CREATE TABLE IF NOT EXISTS revocation_records (
+                                revocation_id TEXT PRIMARY KEY,
+                                token_id TEXT NOT NULL,
+                                revoked_by TEXT NOT NULL,
+                                revoked_at_utc TEXT NOT NULL,
+                                reason TEXT NOT NULL
+                            );
+                        """)
+                        conn.execute("""
+                            CREATE TABLE IF NOT EXISTS audit_trail (
+                                audit_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                action TEXT NOT NULL,
+                                token_id TEXT,
+                                event_id TEXT,
+                                timestamp_utc TEXT NOT NULL,
+                                details_json TEXT NOT NULL
+                            );
+                        """)
+                        conn.execute("""
+                            CREATE TABLE IF NOT EXISTS approval_nonces (
+                                nonce TEXT PRIMARY KEY,
+                                token_id TEXT NOT NULL,
+                                request_digest TEXT NOT NULL,
+                                consumed_at_utc TEXT NOT NULL,
+                                expires_at_utc TEXT NOT NULL
+                            );
+                        """)
+                    break
+                except sqlite3.OperationalError:
+                    if attempt < 9:
+                        time.sleep(0.05)
+                    else:
+                        raise
+                except sqlite3.DatabaseError:
+                    pass
+                finally:
+                    if conn is not None:
+                        self._close_connection(conn)
 
     def audit_log(
         self,

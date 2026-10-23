@@ -98,10 +98,25 @@ def test_archive_downloader_parse_and_validate(tmp_path: Path):
     assert candles[0]["is_closed"] is True
 
 
-def test_archive_downloader_budget_limit(tmp_path: Path):
+def test_archive_downloader_budget_limit(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     store = HistoricalDatasetStore(base_dir=tmp_path / "data" / "historical")
     # Set tiny budget (0.0001 MB = 104 bytes)
     downloader = BinanceArchivalDownloader(store=store, max_budget_mb=0.0001)
+
+    # Mock urllib.request.urlopen at test boundary for deterministic offline execution
+    import urllib.request
+
+    class MockResponse:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            pass
+
+        def read(self):
+            return b"x" * 200
+
+    monkeypatch.setattr(urllib.request, "urlopen", lambda req, timeout=None: MockResponse())
 
     with pytest.raises(HistoricalDataStorageError, match="Download budget exceeded"):
         # Downloading any archive or checksum will exceed 104 bytes

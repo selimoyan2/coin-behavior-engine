@@ -1,0 +1,70 @@
+{
+  "sprint": "11.23.5B-6.5.5C",
+  "forensics_timestamp_utc": "2026-10-23T20:36:00Z",
+  "target_benchmark": "tests/test_sprint09_14_1_stress_and_resilience.py::test_01_long_run_10000_sequential_events_stress",
+  "sample_size_events": 2000,
+  "storage_device": "Docker named volume cbe-655b-durability-volume (ext4 on /dev/sde via WSL2 VHDX)",
+  "workload_stage_profiling": {
+    "1_validation_and_parsing": {
+      "mean_ms": 0.0881,
+      "p95_ms": 0.1466,
+      "pct_of_total": 0.24,
+      "type": "CPU_IN_MEMORY"
+    },
+    "2_gap_evaluation": {
+      "mean_ms": 0.0025,
+      "p95_ms": 0.0039,
+      "pct_of_total": 0.01,
+      "type": "CPU_IN_MEMORY"
+    },
+    "3_hash_chain_computation": {
+      "mean_ms": 0.1268,
+      "p95_ms": 0.2224,
+      "pct_of_total": 0.35,
+      "type": "CPU_IN_MEMORY"
+    },
+    "4_journal_file_append": {
+      "mean_ms": 0.0204,
+      "p95_ms": 0.0353,
+      "pct_of_total": 0.06,
+      "type": "OS_FILE_BUFFER_WRITE"
+    },
+    "5_journal_fsync": {
+      "mean_ms": 11.8324,
+      "p95_ms": 15.9172,
+      "pct_of_total": 32.28,
+      "type": "PHYSICAL_DISK_FSYNC"
+    },
+    "6_sqlite_index_commit": {
+      "mean_ms": 0.1679,
+      "p95_ms": 0.1707,
+      "pct_of_total": 0.46,
+      "type": "SQLITE_WAL_TRANSACTION"
+    },
+    "7_snapshot_1_write_and_fsync": {
+      "mean_ms": 12.2771,
+      "p95_ms": 16.3101,
+      "pct_of_total": 33.50,
+      "type": "ATOMIC_SNAPSHOT_FSYNC"
+    },
+    "8_snapshot_2_write_and_fsync": {
+      "mean_ms": 12.0835,
+      "p95_ms": 16.2893,
+      "pct_of_total": 32.97,
+      "type": "ATOMIC_SNAPSHOT_FSYNC"
+    }
+  },
+  "aggregate_metrics": {
+    "total_pure_compute_time_ms": 0.4057,
+    "pure_compute_pct": 1.12,
+    "total_physical_fsync_time_ms": 36.1930,
+    "physical_fsync_pct": 98.88,
+    "measured_total_step_mean_ms": 36.6505,
+    "measured_total_step_p95_ms": 46.0462
+  },
+  "root_cause_diagnosis": {
+    "bottleneck_source": "VIRTUALIZED_FSYNC_COMMIT_SERIALIZATION",
+    "details": "For each closed candle, MarketCaptureEngineV080 issues 3 independent, synchronous physical fsync system calls: 1 on the immutable raw evidence JSONL ledger, 1 on btcusdt_factual_latest.json, and 1 on live_market_state.json. Each fsync requires hypervisor traversal from WSL2 Linux guest to Windows host NTFS FlushFileBuffers. In production, 36 ms per 300,000 ms candle is 0.012% duty cycle. In an unbatched sequential 10,000-event stress test, 30,000 synchronous fsync calls sequentially queue behind host disk commits, making mean latency < 2.0 ms physically impossible without native Linux NVMe hardware."
+  },
+  "architectural_verdict": "PHYSICAL_FSYNC_DURABILITY_INVARIANT_PRESERVED_WITHOUT_SHORTCUTS"
+}

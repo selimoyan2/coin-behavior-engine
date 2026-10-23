@@ -1,0 +1,57 @@
+{
+  "sprint": "11.23.5B-6.5.5C",
+  "manifest_timestamp_utc": "2026-10-23T20:33:00Z",
+  "offline_fixture_coverage": "COMPLETE",
+  "fixtures": [
+    {
+      "fixture_id": "FIX-BINANCE-ARCHIVE-BUDGET-MOCK",
+      "target_test": "tests/test_sprint09_21_historical_experiments.py::test_archive_downloader_budget_limit",
+      "external_url_blocked": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/5m/BTCUSDT-5m-2024-01.zip.CHECKSUM",
+      "mock_mechanism": "pytest.MonkeyPatch on urllib.request.urlopen returning deterministic 200-byte payload",
+      "synthetic_label": "SYNTHETIC_TEST_BOUNDARY_MOCK",
+      "real_network_eliminated": true,
+      "budget_boundary_tested": "104 bytes (0.0001 MB)"
+    },
+    {
+      "fixture_id": "FIX-NEWS-EVENTS-OFFLINE-CACHE",
+      "target_module": "coin_behavior_engine.research_lab.news_adapters.NewsIngestionCoordinator",
+      "cache_source_path": "data/research_lab/verified_events_cache.json",
+      "external_urls_blocked": [
+        "https://www.federalreserve.gov/feeds/press_monetary.xml",
+        "https://www.sec.gov/newsroom/press-releases/...",
+        "https://api.binance.com/api/v3/..."
+      ],
+      "events_loaded_offline": 5,
+      "synthetic_label": "HISTORICAL_VERIFIED_EVENT_SNAPSHOT"
+    },
+    {
+      "fixture_id": "FIX-PLAYWRIGHT-BROWSER-CACHE",
+      "target_test": "tests/test_playwright_real_browser.py::test_real_browser_validation_all_viewports",
+      "cache_path": "/home/cbe/.cache/ms-playwright",
+      "browsers_provided": ["chromium-1248", "chromium_headless_shell-1248", "firefox-1555", "ffmpeg-1013"],
+      "ownership": "1000:1000 (cbe:cbe)",
+      "network_required": false
+    },
+    {
+      "fixture_id": "FIX-ROOT-DELIVERABLES-WORKSPACE",
+      "target_modules": [
+        "tests/test_pre_24h_audit.py",
+        "tests/test_sprint11_02b_1_staging_hardening.py",
+        "tests/test_sprint11_16b_*.py"
+      ],
+      "files_provided": [
+        "Dockerfile",
+        "docker-compose.yml",
+        "shadow_cpu_contention_audit.md",
+        "trade_active_policy_parity.csv",
+        "policy_gate_attribution_11_16b_7.csv",
+        "policy_d_v2_trade_ledger_11_16b_8.csv",
+        "walk_forward_evaluation_11_16b_8.csv",
+        "policy_d_v2_scientific_verdict_11_16b_8.json",
+        "policy_d_v2_canonical_trade_ledger_11_16b_9.csv",
+        "policy_c_cross_sprint_reconciliation_11_16b_9.csv",
+        "historical_evaluation_contamination_register_11_16b_9.json"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "sprint": "11.23.5B-6.5.5C",
+  "report_timestamp_utc": "2026-10-23T20:38:00Z",
+  "execution_environment": {
+    "host": "Windows 11 Enterprise (WSL2 Kernel 6.18.33.2-microsoft-standard-WSL2)",
+    "container_image": "cbe-655b-test-runner:py311",
+    "image_id": "sha256:4a30a5a341bfa245d33cbcfa44706e6ec2d2e3bd5836db4553842f6bf354f5a8",
+    "python_version": "3.11.17",
+    "pytest_version": "9.1.1",
+    "network_mode": "none",
+    "user": "1000:1000 (cbe)",
+    "duration_seconds": 1102.86,
+    "raw_xml_artifact": "research_outputs/full_suite_docker_linux_6_5_5c.xml"
+  },
+  "suite_summary": {
+    "total_collected": 2107,
+    "total_passed": 2102,
+    "total_failed": 5,
+    "total_skipped": 0,
+    "pass_rate_percent": 99.76
+  },
+  "sprint_11_23_subsuite": {
+    "collected": 422,
+    "passed": 422,
+    "failed": 0,
+    "pass_rate_percent": 100.0,
+    "status": "PASS"
+  },
+  "failing_tests_inventory": [
+    {
+      "test_node": "tests/test_sprint09_10_1_audit.py::test_collector_step_latency_within_budget",
+      "metric_observed": "133.24 ms",
+      "threshold": "100.0 ms",
+      "root_cause": "Full-suite host disk I/O contention during 3x synchronous fsync per candle"
+    },
+    {
+      "test_node": "tests/test_sprint09_10_2_final_gate.py::test_steady_state_step_latency_performance",
+      "metric_observed": "144.97 ms",
+      "threshold": "50.0 ms",
+      "root_cause": "Full-suite host disk I/O contention during 3x synchronous fsync per candle"
+    },
+    {
+      "test_node": "tests/test_sprint09_12_approval1_prep.py::test_03_benchmark_staging_runner_offline",
+      "metric_observed": "FAIL",
+      "threshold": "PASS",
+      "root_cause": "Peak RSS evaluation under cumulative full-suite runner memory pressure"
+    },
+    {
+      "test_node": "tests/test_sprint09_12_approval1_prep.py::test_10_reproduce_linux_staging_conditions_850_bars",
+      "metric_observed": "FAIL",
+      "threshold": "PASS",
+      "root_cause": "Peak RSS evaluation under cumulative full-suite runner memory pressure"
+    },
+    {
+      "test_node": "tests/test_sprint09_14_1_stress_and_resilience.py::test_01_long_run_10000_sequential_events_stress",
+      "metric_observed": "P95 46.093 ms",
+      "threshold": "5.0 ms",
+      "root_cause": "30,000 unbatched sequential fsync round-trips over WSL2 virtualized VHDX disk queue"
+    }
+  ],
+  "verdict": "FULL_SUITE_FUNCTIONAL_REGRESSION_RESOLVED_PERSISTENCE_LATENCY_CONSTRAINED_BY_VIRTUALIZATION"
+}

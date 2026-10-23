@@ -37,7 +37,10 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 # Install Playwright browser dependencies and Chromium / Firefox
 RUN playwright install-deps chromium firefox && \
-    playwright install chromium firefox
+    playwright install chromium firefox && \
+    mkdir -p /home/cbe/.cache && \
+    cp -r /root/.cache/ms-playwright /home/cbe/.cache/ && \
+    chown -R cbe:cbe /home/cbe/.cache
 
 # Prepare mount points and permissions
 RUN mkdir -p /app/src /app/tests /app/data /app/config /app/research_outputs /durability_volume /workspace && \

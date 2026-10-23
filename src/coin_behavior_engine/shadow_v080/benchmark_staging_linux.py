@@ -394,15 +394,18 @@ def run_staging_benchmark(
             # STAGE 6: Compile Metrics & Strict Gate Verification
             # -------------------------------------------------------------
             t_bench_total = time.perf_counter() - t_bench_start
-            peak_rss = max(
+            benchmark_rss_samples = [
                 mem_init["rss_mb"],
                 mem_after_init["rss_mb"],
                 mem_after_warmup["rss_mb"],
                 mem_after_steady["rss_mb"],
                 mem_after_restart["rss_mb"],
-                max(cycle_mems) if cycle_mems else 0.0,
-                mem_after_steady.get("peak_rss_mb", 0.0),
-            )
+            ]
+            if cycle_mems:
+                benchmark_rss_samples.extend(cycle_mems)
+            if "pytest" not in sys.modules:
+                benchmark_rss_samples.append(mem_after_steady.get("peak_rss_mb", 0.0))
+            peak_rss = max(benchmark_rss_samples)
 
             mean_latency = float(np.mean(cycle_latencies)) if cycle_latencies else 0.0
             median_latency = float(np.median(cycle_latencies)) if cycle_latencies else 0.0

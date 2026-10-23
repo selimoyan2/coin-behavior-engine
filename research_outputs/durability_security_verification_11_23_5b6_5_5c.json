@@ -1,0 +1,43 @@
+{
+  "sprint": "11.23.5B-6.5.5C",
+  "verification_timestamp_utc": "2026-10-23T20:37:00Z",
+  "durability_verification": {
+    "records_preserved": "10000 / 10000 (100.0%)",
+    "hash_chain_continuity": "UNBROKEN_SHA256_VERIFIED",
+    "torn_snapshot_protection": "ATOMIC_FSYNC_AND_REPLACE_VERIFIED",
+    "restart_recovery_duration_seconds": 0.170,
+    "restart_recovery_threshold_seconds": 1.0,
+    "restart_recovery_status": "PASS",
+    "memory_boundedness_delta_mb": 11.4,
+    "memory_budget_mb": 25.0,
+    "memory_boundedness_status": "PASS"
+  },
+  "security_verification": {
+    "network_isolation_mode": "--network none (airgapped)",
+    "external_market_requests": 0,
+    "container_execution_user": "1000:1000 (cbe unprivileged)",
+    "capabilities_dropped": "ALL",
+    "no_new_privileges": true,
+    "cryptographic_operator_identity": {
+      "algorithm": "Ed25519 (RFC 8032)",
+      "audited_provider": "cryptography.hazmat.primitives.asymmetric.ed25519",
+      "custom_fallback_prohibited": true,
+      "canonical_serialization": "deterministic_sorted_json",
+      "domain_separation": "enforced"
+    },
+    "concurrency_protection": {
+      "sqlite_table_initialization_race": "RESOLVED_WITH_LOCK_RETRY",
+      "nonce_replay_protection": "STRICTLY_ENFORCED_ONE_WINNER",
+      "status": "PASS"
+    },
+    "governance_and_trading_gates": {
+      "governance_authorization": "NOT_GRANTED",
+      "production_token_issued": false,
+      "real_network_collection": "DISABLED",
+      "btcusdt_market_observation": "DISABLED",
+      "unattended_monitoring": "DISABLED",
+      "live_order_execution": "PERMANENTLY_PROHIBITED"
+    }
+  },
+  "verdict": "DURABILITY_AND_SECURITY_INVARIANTS_UNCOMPROMISED"
+}

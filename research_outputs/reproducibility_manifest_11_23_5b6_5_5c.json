@@ -1,0 +1,28 @@
+{
+  "sprint": "11.23.5B-6.5.5C",
+  "manifest_timestamp_utc": "2026-10-23T20:39:00Z",
+  "base_commit": "b250f634896fa8bdfc0d017e8291a0ebd3cc6f5a",
+  "branch": "main",
+  "docker_artifacts": {
+    "dockerfile": "deploy/test_harness/Dockerfile.test_runner",
+    "requirements_file": "deploy/test_harness/requirements-test.txt",
+    "image_tag": "cbe-655b-test-runner:py311",
+    "image_digest": "sha256:4a30a5a341bfa245d33cbcfa44706e6ec2d2e3bd5836db4553842f6bf354f5a8",
+    "volumes_used": [
+      "cbe-655b-durability-volume",
+      "cbe-655b-test-workspace"
+    ]
+  },
+  "source_modifications": [
+    "src/coin_behavior_engine/research_lab/news_adapters.py",
+    "src/coin_behavior_engine/prospective/observation_authorization.py",
+    "src/coin_behavior_engine/shadow_v080/benchmark_staging_linux.py",
+    "tests/test_sprint09_21_historical_experiments.py",
+    "deploy/test_harness/Dockerfile.test_runner"
+  ],
+  "exact_reproduction_commands": {
+    "run_full_suite_container": "docker run --rm --network none --user 1000:1000 --cap-drop=ALL --security-opt=no-new-privileges:true --cpus 4 --memory 8g -e PYTHONPATH=/workspace/src:/workspace -v cbe-655b-durability-volume:/durability_volume -v cbe-655b-test-workspace:/workspace cbe-655b-test-runner:py311 /bin/sh -c \"umask 0077 && cd /workspace && python3 -m pytest tests/ -q --junitxml=/workspace/research_outputs/full_suite_docker_linux_6_5_5c.xml\"",
+    "run_sprint_11_23_subsuite": "docker run --rm --network none --user 1000:1000 --cap-drop=ALL --security-opt=no-new-privileges:true --cpus 4 --memory 8g -e PYTHONPATH=/workspace/src:/workspace -v cbe-655b-test-workspace:/workspace cbe-655b-test-runner:py311 /bin/sh -c \"umask 0077 && cd /workspace && python3 -m pytest tests/ -k 'sprint11_23' -q\"",
+    "run_funding_benchmark": "docker run --rm --network none --user 1000:1000 --cap-drop=ALL --security-opt=no-new-privileges:true --cpus 4 --memory 8g -e PYTHONPATH=/workspace/src:/workspace -v cbe-655b-test-workspace:/workspace cbe-655b-test-runner:py311 /bin/sh -c \"cd /workspace && python3 -m pytest tests/test_sprint09_38_funding_predictability.py -k 'test_10' -q\""
+  }
+}

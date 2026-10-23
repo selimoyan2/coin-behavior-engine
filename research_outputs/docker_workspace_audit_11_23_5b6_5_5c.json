@@ -1,0 +1,39 @@
+{
+  "sprint": "11.23.5B-6.5.5C",
+  "audit_timestamp_utc": "2026-10-23T20:34:00Z",
+  "docker_environment": {
+    "image_name": "cbe-655b-test-runner:py311",
+    "image_id": "sha256:4a30a5a341bfa245d33cbcfa44706e6ec2d2e3bd5836db4553842f6bf354f5a8",
+    "base_os": "Debian GNU/Linux 13 (trixie) x86_64",
+    "python_version": "3.11.17",
+    "pytest_version": "9.1.1",
+    "execution_user": "1000:1000 (cbe)",
+    "capabilities_dropped": "ALL",
+    "security_opt": "no-new-privileges:true",
+    "network_mode": "none"
+  },
+  "volume_configuration": {
+    "workspace_volume": {
+      "name": "cbe-655b-test-workspace",
+      "mount_point": "/workspace",
+      "filesystem": "ext4",
+      "ownership": "1000:1000 (cbe:cbe)",
+      "contents": ["src", "tests", "data", "config", "deploy", "docs", "research_outputs", "root_fixtures"]
+    },
+    "durability_volume": {
+      "name": "cbe-655b-durability-volume",
+      "mount_point": "/durability_volume",
+      "filesystem": "ext4",
+      "backing_device": "/dev/sde",
+      "purpose": "Dedicated high-throughput persistence stress benchmark storage"
+    }
+  },
+  "safety_boundaries": {
+    "host_filesystem_mounted_rw": false,
+    "production_secrets_mounted": false,
+    "docker_socket_mounted": false,
+    "privileged_mode": false,
+    "external_network_available": false
+  },
+  "audit_verdict": "WORKSPACE_ISOLATION_AND_FIXTURE_TOPOLOGY_VERIFIED"
+}
