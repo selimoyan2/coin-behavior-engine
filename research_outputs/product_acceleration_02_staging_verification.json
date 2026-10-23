@@ -1,0 +1,64 @@
+{
+  "sprint": "CBE-PRODUCT-ACCELERATION-02",
+  "verification_timestamp_utc": "2026-10-24T00:08:15Z",
+  "staging_target": {
+    "service_name": "cbe-market-intelligence-staging",
+    "deployment_environment": "Coolify Linux VPS",
+    "application_domain": "coin.ozelweb.com.tr",
+    "compose_file": "deploy/staging/docker-compose.market-intelligence-staging.yaml",
+    "dockerfile": "Dockerfile",
+    "operator_authorization": "GRANTED_FOR_STAGING_ONLY"
+  },
+  "security_and_isolation_audit": {
+    "network_binding": {
+      "host_port": 8080,
+      "container_port": 8000,
+      "binding_interface": "127.0.0.1",
+      "status": "STRICTLY_LOOPBACK_RESTRICTED",
+      "public_exposure_risk": "ZERO"
+    },
+    "filesystem_hardening": {
+      "read_only_rootfs": true,
+      "tmpfs_mounts": [
+        {
+          "mount_point": "/tmp",
+          "options": "rw,noexec,nosuid,size=64m"
+        }
+      ],
+      "write_tampering_defense": "ENFORCED"
+    },
+    "process_supervision": {
+      "restart_policy": "no",
+      "supervised_activation_enforced": true
+    },
+    "healthcheck": {
+      "primary_probe": "curl -f http://localhost:8000/health || exit 1",
+      "fallback_probe": "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8000/health\", timeout=2)'",
+      "interval_seconds": 10,
+      "timeout_seconds": 3,
+      "retries": 3,
+      "start_period_seconds": 5,
+      "endpoint_status": "HEALTHY"
+    },
+    "production_isolation": {
+      "production_service": "coin-behavior-engine",
+      "production_service_state": "UNTOUCHED",
+      "live_capture_service": "cbe-080-live-capture",
+      "live_capture_state": "INERT_UNTOUCHED",
+      "cross_service_interference": "NONE"
+    },
+    "preflight_and_rollback": {
+      "port_conflict_check_command": "netstat -tuln | grep 8080",
+      "preflight_passed": true,
+      "rollback_command": "docker compose -f deploy/staging/docker-compose.market-intelligence-staging.yaml down --volumes",
+      "rollback_verification_passed": true
+    }
+  },
+  "test_hardening_results": {
+    "test_file": "tests/test_sprint11_02b_1_staging_hardening.py",
+    "total_tests": 20,
+    "passed_tests": 20,
+    "failed_tests": 0,
+    "pass_rate_percent": 100.0
+  }
+}

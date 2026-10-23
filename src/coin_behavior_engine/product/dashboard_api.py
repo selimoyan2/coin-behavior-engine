@@ -74,6 +74,11 @@ class ProductDashboardApiService:
     _cached_events: Optional[List[Dict[str, Any]]] = None
     _cached_events_ts: float = 0.0
 
+    _cached_regime_map: Optional[Dict[int, str]] = None
+    _cached_candles_store: Dict[str, List[Dict[str, Any]]] = {}
+    _cached_analogs_df: Optional[Any] = None
+    _cached_patterns_list: Optional[List[Dict[str, Any]]] = None
+
     @classmethod
     def handle_request(
         cls,
@@ -94,6 +99,14 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.get_research_results(query_params)
             elif sub_path == "market-behavior":
                 return HTTPStatus.OK, cls.get_market_behavior(query_params)
+            elif sub_path == "historical-candles":
+                return cls.get_historical_candles(query_params)
+            elif sub_path == "historical-regimes":
+                return HTTPStatus.OK, cls.get_historical_regimes(query_params)
+            elif sub_path == "analogs":
+                return cls.get_analogs(query_params)
+            elif sub_path == "analogs/patterns":
+                return HTTPStatus.OK, cls.get_analog_patterns()
             elif sub_path == "events":
                 return HTTPStatus.OK, cls.get_events(query_params)
             elif sub_path == "governance":
@@ -112,6 +125,10 @@ class ProductDashboardApiService:
                         f"{cls.API_PREFIX}/overview",
                         f"{cls.API_PREFIX}/research-results",
                         f"{cls.API_PREFIX}/market-behavior",
+                        f"{cls.API_PREFIX}/historical-candles",
+                        f"{cls.API_PREFIX}/historical-regimes",
+                        f"{cls.API_PREFIX}/analogs",
+                        f"{cls.API_PREFIX}/analogs/patterns",
                         f"{cls.API_PREFIX}/events",
                         f"{cls.API_PREFIX}/governance",
                         f"{cls.API_PREFIX}/artifacts",
@@ -883,6 +900,338 @@ class ProductDashboardApiService:
                 "live_capture_service": "cbe-080-live-capture (INERT)",
             },
         }
+
+    # -------------------------------------------------------------------------
+    # 8. Historical Candlestick Explorer
+    # -------------------------------------------------------------------------
+    @classmethod
+    def get_historical_candles(cls, params: Dict[str, List[str]]) -> Tuple[int, Dict[str, Any]]:
+        """Retrieve bounded historical candles with market regime overlay."""
+        interval = params.get("interval", ["1h"])[0].lower()
+        allowed_intervals = ("5m", "15m", "1h", "4h", "1d")
+        if interval not in allowed_intervals:
+            return HTTPStatus.BAD_REQUEST, {
+                "error": "Bad Request",
+                "message": f"Geçersiz zaman aralığı: '{interval}'. Desteklenenler: {', '.join(allowed_intervals)}",
+            }
+
+        interval_dir = REPO_ROOT / "data" / "binance_spot_multiyear" / interval
+        if not interval_dir.exists():
+            return HTTPStatus.NOT_FOUND, {
+                "error": "Not Found",
+                "message": f"'{interval}' zaman aralığı için veri dizini bulunamadı.",
+            }
+
+        # Discover available months
+        parquet_files = sorted(interval_dir.glob(f"BTCUSDT-{interval}-*.parquet"))
+        available_months = []
+        for p in parquet_files:
+            m = p.stem.replace(f"BTCUSDT-{interval}-", "")
+            if m:
+                available_months.append(m)
+
+        if not available_months:
+            return HTTPStatus.NOT_FOUND, {
+                "error": "Not Found",
+                "message": f"'{interval}' için parquet veri dosyası bulunamadı.",
+            }
+
+        # Select month (default: latest available month)
+        month = params.get("month", [""])[0].strip()
+        if not month or month not in available_months:
+            month = available_months[-1]
+
+        target_file = interval_dir / f"BTCUSDT-{interval}-{month}.parquet"
+        if not target_file.exists():
+            return HTTPStatus.NOT_FOUND, {
+                "error": "Not Found",
+                "message": f"'{month}' ayı için veri dosyası bulunamadı: {target_file.name}",
+            }
+
+        limit = min(1000, max(1, int(params.get("limit", ["500"])[0])))
+        offset = max(0, int(params.get("offset", ["0"])[0]))
+
+        # Read or retrieve from cache
+        cache_key = f"{interval}_{month}"
+        with cls._cache_lock:
+            if cache_key in cls._cached_candles_store:
+                raw_candles = cls._cached_candles_store[cache_key]
+            else:
+                import pandas as pd
+                try:
+                    df = pd.read_parquet(
+                        target_file,
+                        columns=["open_time", "open", "high", "low", "close", "volume"],
+                    )
+                except Exception as e:
+                    return HTTPStatus.INTERNAL_SERVER_ERROR, {
+                        "error": "Read Error",
+                        "message": f"Parquet okuma hatası: {e}",
+                    }
+
+                # Load regime map if not loaded
+                if cls._cached_regime_map is None:
+                    cls._load_regime_timeline_map()
+
+                reg_map = cls._cached_regime_map or {}
+
+                raw_candles = []
+                for _, row in df.iterrows():
+                    ot = int(row["open_time"])
+                    sec = ot // 1000
+                    # Format UTC string
+                    dt_str = datetime.fromtimestamp(sec, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+                    # Regime lookup
+                    reg = reg_map.get(ot, "SIDEWAYS")
+
+                    raw_candles.append({
+                        "time": sec,
+                        "open_time_ms": ot,
+                        "datetime_utc": dt_str,
+                        "open": round(float(row["open"]), 2),
+                        "high": round(float(row["high"]), 2),
+                        "low": round(float(row["low"]), 2),
+                        "close": round(float(row["close"]), 2),
+                        "volume": round(float(row["volume"]), 2),
+                        "regime": reg,
+                    })
+
+                # Keep in memory cache (cap cache to last 6 months)
+                if len(cls._cached_candles_store) > 10:
+                    cls._cached_candles_store.clear()
+                cls._cached_candles_store[cache_key] = raw_candles
+
+        total_in_month = len(raw_candles)
+        sliced = raw_candles[offset : offset + limit]
+
+        return HTTPStatus.OK, {
+            "status": "success",
+            "symbol": "BTCUSDT",
+            "interval": interval,
+            "month": month,
+            "available_months": available_months,
+            "provenance": f"data/binance_spot_multiyear/{interval}/{target_file.name}",
+            "contamination_status": "RESEARCH_CONTAMINATED",
+            "count": len(sliced),
+            "total_in_month": total_in_month,
+            "offset": offset,
+            "limit": limit,
+            "candles": sliced,
+            "regime_colors": {
+                "SIDEWAYS": "#3b82f6",
+                "UNCERTAIN": "#9ca3af",
+                "TRENDING_BULL": "#10b981",
+                "TRENDING_BEAR": "#ef4444",
+                "HIGH_VOLATILITY": "#f59e0b",
+                "POSSIBLE_REVERSAL": "#ec4899",
+                "NORMAL": "#3b82f6",
+                "COMPRESSION": "#8b5cf6",
+                "EXPANSION_WATCH": "#f59e0b",
+            },
+            "disclaimer": (
+                "Veriler araştırma ve analiz amacıyla saklanan yerel çok yıllık Parquet arşivinden okunmuştur "
+                "(RESEARCH_CONTAMINATED). Canlı borsa akışı DEĞİLDİR."
+            ),
+        }
+
+    @classmethod
+    def _load_regime_timeline_map(cls) -> None:
+        """Load market_regime_timeline.csv into fast memory map."""
+        import pandas as pd
+        csv_path = REPO_ROOT / "research_outputs" / "market_regime_timeline.csv"
+        if not csv_path.exists():
+            cls._cached_regime_map = {}
+            return
+
+        try:
+            df = pd.read_csv(csv_path, usecols=["timestamp_open", "regime"])
+            cls._cached_regime_map = dict(zip(df["timestamp_open"].astype(int), df["regime"].astype(str)))
+        except Exception as e:
+            logger.warning(f"Error loading regime timeline map: {e}")
+            cls._cached_regime_map = {}
+
+    # -------------------------------------------------------------------------
+    # 9. Historical Regimes Summary
+    # -------------------------------------------------------------------------
+    @classmethod
+    def get_historical_regimes(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return historical market regime distribution and transition events."""
+        import pandas as pd
+        csv_path = REPO_ROOT / "research_outputs" / "market_regime_timeline.csv"
+        if not csv_path.exists():
+            return {"status": "empty", "message": "market_regime_timeline.csv bulunamadı."}
+
+        try:
+            df = pd.read_csv(csv_path)
+            counts = df["regime"].value_counts()
+            total = len(df)
+            dist = [
+                {
+                    "regime": reg,
+                    "count": int(cnt),
+                    "percentage": round(float(cnt / total) * 100, 2),
+                }
+                for reg, cnt in counts.items()
+            ]
+
+            # Recent transitions
+            transitions_df = df[df["is_transition_point"] == True].tail(10)
+            transitions = []
+            for _, r in transitions_df.iterrows():
+                transitions.append({
+                    "timestamp": int(r["timestamp_open"]),
+                    "datetime_utc": str(r["datetime_utc"]),
+                    "transition_from": str(r.get("transition_from", "UNKNOWN")),
+                    "transition_to": str(r["regime"]),
+                    "close_price": round(float(r["close_price"]), 2),
+                    "detection_delay_bars": int(r.get("detection_delay_bars", 0)),
+                })
+
+            return {
+                "status": "success",
+                "total_bars_analyzed": total,
+                "regime_distribution": dist,
+                "recent_transitions": transitions,
+                "provenance": "research_outputs/market_regime_timeline.csv",
+            }
+        except Exception as e:
+            return {"status": "error", "message": str(e)}
+
+    # -------------------------------------------------------------------------
+    # 10. Historical Analog Similarity Explorer
+    # -------------------------------------------------------------------------
+    @classmethod
+    def get_analogs(cls, params: Dict[str, List[str]]) -> Tuple[int, Dict[str, Any]]:
+        """Return nearest historical analogs and trajectory dispersion for a selected reference pattern."""
+        import pandas as pd
+        csv_path = REPO_ROOT / "research_outputs" / "historical_analogues.csv"
+        if not csv_path.exists():
+            return HTTPStatus.NOT_FOUND, {
+                "error": "Not Found",
+                "message": "historical_analogues.csv dosyası bulunamadı.",
+            }
+
+        with cls._cache_lock:
+            if cls._cached_analogs_df is None:
+                try:
+                    cls._cached_analogs_df = pd.read_csv(csv_path)
+                except Exception as e:
+                    return HTTPStatus.INTERNAL_SERVER_ERROR, {
+                        "error": "Read Error",
+                        "message": f"Analog verisi okunamadı: {e}",
+                    }
+
+        df = cls._cached_analogs_df
+        available_decisions = df["decision_datetime_utc"].unique().tolist()
+        if not available_decisions:
+            return HTTPStatus.NOT_FOUND, {"error": "No decisions available in analog dataset."}
+
+        # Pick decision time
+        decision_time = params.get("decision_time", [""])[0].strip()
+        if not decision_time or decision_time not in available_decisions:
+            decision_time = available_decisions[0]
+
+        limit = min(15, max(1, int(params.get("limit", ["5"])[0])))
+
+        # Filter decision rows
+        subset = df[df["decision_datetime_utc"] == decision_time].sort_values("similarity_distance").head(limit)
+        if subset.empty:
+            return HTTPStatus.NOT_FOUND, {"error": f"Pattern '{decision_time}' not found."}
+
+        first_row = subset.iloc[0]
+        decision_ts = int(first_row["decision_timestamp"])
+
+        analogs_list = []
+        fwd_24h_list = []
+        for idx, (_, r) in enumerate(subset.iterrows(), start=1):
+            dist = float(r["similarity_distance"])
+            sim_score = round(max(0.0, min(100.0, (1.0 / (1.0 + dist)) * 100)), 1)
+            fwd_15m = round(float(r["fwd_ret_15m"]) * 100, 3)
+            fwd_1h = round(float(r["fwd_ret_1h"]) * 100, 3)
+            fwd_4h = round(float(r["fwd_ret_4h"]) * 100, 3)
+            fwd_24h = round(float(r["fwd_ret_24h"]) * 100, 3)
+            fwd_24h_list.append(fwd_24h)
+
+            analogs_list.append({
+                "rank": idx,
+                "analogue_datetime_utc": str(r["analogue_datetime_utc"]),
+                "analogue_timestamp": int(r["analogue_timestamp"]),
+                "similarity_distance": round(dist, 4),
+                "similarity_score_percent": sim_score,
+                "analogue_regime": str(r["analogue_regime"]),
+                "fwd_ret_15m_percent": fwd_15m,
+                "fwd_ret_1h_percent": fwd_1h,
+                "fwd_ret_4h_percent": fwd_4h,
+                "fwd_ret_24h_percent": fwd_24h,
+                "max_favorable_excursion_percent": round(float(r["max_favorable_excursion_pct"]), 3),
+                "max_adverse_excursion_percent": round(float(r["max_adverse_excursion_pct"]), 3),
+                "hit_resistance_first": bool(r.get("hit_resistance_first", False)),
+                "hit_support_first": bool(r.get("hit_support_first", False)),
+                "trajectory_points": [0.0, fwd_15m, fwd_1h, fwd_4h, fwd_24h],
+            })
+
+        mean_24h = round(float(pd.Series(fwd_24h_list).mean()), 3) if fwd_24h_list else 0.0
+        median_24h = round(float(pd.Series(fwd_24h_list).median()), 3) if fwd_24h_list else 0.0
+        min_24h = min(fwd_24h_list) if fwd_24h_list else 0.0
+        max_24h = max(fwd_24h_list) if fwd_24h_list else 0.0
+
+        return HTTPStatus.OK, {
+            "status": "success",
+            "decision_datetime_utc": decision_time,
+            "decision_timestamp": decision_ts,
+            "analogs_count": len(analogs_list),
+            "analogs": analogs_list,
+            "trajectory_dispersion": {
+                "mean_24h_return_percent": mean_24h,
+                "median_24h_return_percent": median_24h,
+                "min_24h_return_percent": min_24h,
+                "max_24h_return_percent": max_24h,
+                "dispersion_range_percent": round(max_24h - min_24h, 3),
+            },
+            "research_contract": {
+                "classification": "STATISTICALLY_INTERESTING_BUT_NOT_ECONOMIC",
+                "sample_sufficiency": "SUFFICIENT_FOR_VOLATILITY_BOUNDS_ONLY",
+                "directional_edge": "NOT_ESTABLISHED",
+                "policy_notice": (
+                    "Tarihsel analog benzerlik skorları kesinlikle alım veya satım sinyali üretmez. "
+                    "Borsa komisyonları ve spread kayması sonrası net yönsel kar beklentisi sıfırdır."
+                ),
+            },
+            "provenance": "research_outputs/historical_analogues.csv",
+        }
+
+    @classmethod
+    def get_analog_patterns(cls) -> Dict[str, Any]:
+        """Return curated list of reference historical decision points for the Analog Explorer."""
+        import pandas as pd
+        csv_path = REPO_ROOT / "research_outputs" / "historical_analogues.csv"
+        if not csv_path.exists():
+            return {"status": "empty", "patterns": []}
+
+        with cls._cache_lock:
+            if cls._cached_patterns_list is not None:
+                return {"status": "success", "patterns": cls._cached_patterns_list}
+
+            try:
+                df = pd.read_csv(csv_path)
+                decs = df.drop_duplicates("decision_datetime_utc").head(50)
+                patterns = []
+                for idx, (_, r) in enumerate(decs.iterrows(), start=1):
+                    dt_str = str(r["decision_datetime_utc"])
+                    reg = str(r.get("analogue_regime", "SIDEWAYS"))
+                    dist = round(float(r["similarity_distance"]), 3)
+                    patterns.append({
+                        "id": f"PAT-{idx:03d}",
+                        "decision_datetime_utc": dt_str,
+                        "decision_timestamp": int(r["decision_timestamp"]),
+                        "label": f"{dt_str[:16].replace('T', ' ')} UTC — {reg} (d={dist})",
+                        "regime": reg,
+                        "initial_distance": dist,
+                    })
+                cls._cached_patterns_list = patterns
+                return {"status": "success", "count": len(patterns), "patterns": patterns}
+            except Exception as e:
+                return {"status": "error", "message": str(e), "patterns": []}
 
 
 START_TIME = time.time()

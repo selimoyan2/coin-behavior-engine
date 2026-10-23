@@ -1,0 +1,85 @@
+{
+  "sprint": "CBE-PRODUCT-ACCELERATION-02",
+  "generated_at_utc": "2026-10-24T00:08:00Z",
+  "base_commit": "26671e88628ebacee8e867f06b43f9291086bee5",
+  "provenance_audit": {
+    "datasets": [
+      {
+        "dataset_name": "Binance Spot Multi-Year Archive (BTCUSDT)",
+        "base_directory": "data/binance_spot_multiyear",
+        "intervals_supported": ["5m", "15m", "1h", "4h", "1d"],
+        "schema": {
+          "open_time": "INT64 (Unix timestamp milliseconds)",
+          "open": "FLOAT64 (USDT)",
+          "high": "FLOAT64 (USDT)",
+          "low": "FLOAT64 (USDT)",
+          "close": "FLOAT64 (USDT)",
+          "volume": "FLOAT64 (Base asset BTC)"
+        },
+        "coverage_period": "2022-01 to 2026-09",
+        "sample_file": "data/binance_spot_multiyear/1h/BTCUSDT-1h-2026-09.parquet",
+        "sample_rows": 720,
+        "sample_sha256": "148ce3c769af9fe071d9c00a7d09e3ada4e9a432d0b77d9cedc76246bc4a56bf",
+        "integrity_status": "VERIFIED_OFFLINE",
+        "network_access_required": false
+      },
+      {
+        "dataset_name": "Canonical Market Regime Timeline",
+        "file_path": "research_outputs/market_regime_timeline.csv",
+        "total_rows": 105120,
+        "bar_interval": "5m",
+        "coverage_period": "2025-09-24T00:00:00Z to 2026-09-24T00:00:00Z",
+        "sha256_hash": "16ae311e8ac8e0c53ef7fdbaa854d15b3f8ef02c6e56ac7c7690fb9a0868eeef",
+        "regime_categories": [
+          "SIDEWAYS",
+          "UNCERTAIN",
+          "TRENDING_BULL",
+          "HIGH_VOLATILITY",
+          "TRENDING_BEAR",
+          "POSSIBLE_REVERSAL"
+        ],
+        "in_memory_lookup_complexity": "O(1) dictionary hash lookup via open_time_ms",
+        "integrity_status": "VERIFIED_CANONICAL"
+      },
+      {
+        "dataset_name": "Historical Analogues & Forward Trajectories",
+        "file_path": "research_outputs/historical_analogues.csv",
+        "total_rows": 1530,
+        "distinct_decision_points": 306,
+        "top_k_analogs_per_decision": 5,
+        "sha256_hash": "c6ed5912524e176bde0e941a0d69fe8f0c4f121759036ef2caa7219c06526ff1",
+        "metrics_evaluated": [
+          "similarity_distance",
+          "fwd_ret_15m",
+          "fwd_ret_1h",
+          "fwd_ret_4h",
+          "fwd_ret_24h",
+          "max_favorable_excursion_pct",
+          "max_adverse_excursion_pct",
+          "hit_resistance_first",
+          "hit_support_first"
+        ],
+        "research_classification": "STATISTICALLY_INTERESTING_BUT_NOT_ECONOMIC",
+        "economic_alpha": 0.0,
+        "integrity_status": "VERIFIED_CANONICAL"
+      }
+    ],
+    "quarantine_and_isolation": {
+      "fail_closed_network_gate": true,
+      "quarantined_candidates": [
+        {
+          "candidate_id": "REQ-BLS-CPI-2026M10-ACQ01",
+          "event_id": "EVT-BLS-CPI-2026M10-20261110",
+          "source": "U.S. Bureau of Labor Statistics",
+          "authorization_status": "NOT_GRANTED",
+          "model_feeding": "PERMANENTLY_BLOCKED"
+        }
+      ],
+      "governance_contract": {
+        "technical_decision": "TECHNICAL_NO_GO",
+        "governance_authorization": "NOT_GRANTED",
+        "live_trading": "PERMANENTLY_PROHIBITED"
+      }
+    }
+  }
+}

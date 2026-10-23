@@ -332,6 +332,102 @@ def render_product_dashboard_html() -> str:
       border-top: 1px solid var(--border);
     }
 
+
+    /* Chart and Explorer Controls */
+    .chart-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .chart-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .chart-controls-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .select-dropdown {
+      background: #0d1322;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      outline: none;
+      cursor: pointer;
+    }
+    .select-dropdown:focus { border-color: var(--accent); }
+    .chart-hud {
+      background: #080c14;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #cbd5e1;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 12px;
+      min-height: 38px;
+    }
+    .chart-hud span.val { color: #fff; font-weight: 600; }
+    .chart-canvas-wrap {
+      position: relative;
+      width: 100%;
+      height: 420px;
+      background: #070b13;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: crosshair;
+    }
+    .chart-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .chart-legend {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .legend-color {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+    .analog-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 1024px) {
+      .analog-grid { grid-template-columns: 1fr; }
+    }
+    .ret-pos { color: var(--green); font-weight: 600; }
+    .ret-neg { color: var(--red); font-weight: 600; }
+
     /* Preview Modal */
     .modal-overlay {
       display: none;
@@ -580,16 +676,158 @@ def render_product_dashboard_html() -> str:
     </section>
 
     <!-- =================================================================== -->
-    <!-- MODULE 3: MARKET BEHAVIOR EXPLORER                                  -->
+    <!-- MODULE 3: MARKET BEHAVIOR & HISTORICAL EXPLORER                     -->
     <!-- =================================================================== -->
     <section id="module-behavior" class="tab-content">
       <div class="alert-banner info">
         <strong>ℹ️ MODEL REJİMİ GÜVENLİK KALKANI:</strong><br>
         Dondurulmuş modelin (CBE-0.7.0) persentil hesaplama algoritmasındaki mantık hatası (<code>x &lt;= x</code> eşitlik durumu)
         nedeniyle ham <code>DELEVERAGING_STRESS</code> çıktısı fail-closed korumasıyla <strong>UNKNOWN</strong> durumuna çekilmiştir.
-        Aşağıdaki dağılım geçmiş doğrulanmış çok yıllık spot veri setleri üzerinden hesaplanmıştır.
+        Aşağıdaki tüm grafik ve veriler geçmiş doğrulanmış çok yıllık spot veri setleri (2022-2026 Parquet) ve kanonik rejim çizelgesi üzerinden hesaplanmaktadır.
       </div>
 
+      <!-- SECTION 1: HISTORICAL CANDLESTICK & REGIME CHART -->
+      <div class="section-header">
+        <div class="section-title"><span>📈</span> Tarihsel Fiyat & Piyasa Rejimi Gezgini (BTCUSDT Multi-Year)</div>
+      </div>
+
+      <div class="chart-panel">
+        <div class="chart-toolbar">
+          <div class="chart-controls-group">
+            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Aralık:</span>
+            <button class="pill-btn" onclick="setCandleInterval('5m', this)">5m</button>
+            <button class="pill-btn" onclick="setCandleInterval('15m', this)">15m</button>
+            <button class="pill-btn active" onclick="setCandleInterval('1h', this)">1h</button>
+            <button class="pill-btn" onclick="setCandleInterval('4h', this)">4h</button>
+            <button class="pill-btn" onclick="setCandleInterval('1d', this)">1d</button>
+          </div>
+          <div class="chart-controls-group">
+            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Dönem / Ay:</span>
+            <select id="candle-month-select" class="select-dropdown" onchange="changeCandleMonth(this.value)">
+              <option value="2026-09">2026-09 (Eylül 2026)</option>
+            </select>
+            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600; margin-left: 6px;">Bar Sayısı:</span>
+            <select id="candle-limit-select" class="select-dropdown" onchange="changeCandleLimit(this.value)">
+              <option value="50">50 Bar</option>
+              <option value="100" selected>100 Bar</option>
+              <option value="200">200 Bar</option>
+              <option value="500">500 Bar</option>
+            </select>
+            <div style="display: flex; gap: 4px; margin-left: 6px;">
+              <button class="btn" style="padding: 4px 10px; font-size: 11px;" onclick="panCandles(-25)" title="Önceki Barlar">◀ Önceki</button>
+              <button class="btn" style="padding: 4px 10px; font-size: 11px;" onclick="panCandles(25)" title="Sonraki Barlar">Sonraki ▶</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-hud" id="candle-hud">
+          <div><span style="color:var(--text-muted);">Zaman:</span> <span class="val" id="hud-time">-</span></div>
+          <div><span style="color:var(--text-muted);">A:</span> <span class="val" id="hud-open">-</span></div>
+          <div><span style="color:var(--text-muted);">Y:</span> <span class="val" id="hud-high">-</span></div>
+          <div><span style="color:var(--text-muted);">D:</span> <span class="val" id="hud-low">-</span></div>
+          <div><span style="color:var(--text-muted);">K:</span> <span class="val" id="hud-close">-</span></div>
+          <div><span style="color:var(--text-muted);">Hacim:</span> <span class="val" id="hud-volume">-</span></div>
+          <div><span style="color:var(--text-muted);">Rejim:</span> <span id="hud-regime" class="badge badge-info">-</span></div>
+        </div>
+
+        <div class="chart-canvas-wrap" id="candle-canvas-container">
+          <canvas id="candlestick-canvas" class="chart-canvas"></canvas>
+        </div>
+
+        <div class="chart-legend">
+          <span style="font-weight: 600; color: #fff;">Piyasa Rejimi Renk Kodları:</span>
+          <div class="legend-item"><span class="legend-color" style="background: #64748b;"></span> <span>SIDEWAYS (Yatay)</span></div>
+          <div class="legend-item"><span class="legend-color" style="background: #f59e0b;"></span> <span>UNCERTAIN (Belirsiz)</span></div>
+          <div class="legend-item"><span class="legend-color" style="background: #10b981;"></span> <span>TRENDING_BULL (Boğa Trendi)</span></div>
+          <div class="legend-item"><span class="legend-color" style="background: #8b5cf6;"></span> <span>HIGH_VOLATILITY (Yüksek Volatilite)</span></div>
+          <div class="legend-item"><span class="legend-color" style="background: #ef4444;"></span> <span>TRENDING_BEAR (Ayı Trendi)</span></div>
+          <div class="legend-item"><span class="legend-color" style="background: #f97316;"></span> <span>POSSIBLE_REVERSAL (Olası Dönüş)</span></div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: HISTORICAL ANALOG SIMILARITY EXPLORER -->
+      <div class="section-header">
+        <div class="section-title"><span>🧬</span> Tarihsel Analog Benzerlik Gezgini & Yörünge Dağılımı</div>
+      </div>
+
+      <div class="alert-banner warn" style="margin-bottom: 16px;">
+        <strong>⚠️ ARAŞTIRMA DEĞERLENDİRMESİ — STATISTICALLY_INTERESTING_BUT_NOT_ECONOMIC:</strong><br>
+        Geçmiş piyasa fraktallarının ve analog benzerlik skorlarının gelecekteki fiyat hareketlerini öngörmede ekonomik bir üstünlük (alfa) sağlamadığı kanıtlanmıştır.
+        Yörüngeler 15m, 1h, 4h ve 24h vadelerde hızla dağılmakta; taker komisyonu, fonlama ve alış-satış spreadi net kar beklentisini sıfırlamaktadır.
+      </div>
+
+      <div class="chart-panel">
+        <div class="chart-toolbar">
+          <div class="chart-controls-group" style="width: 100%;">
+            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Referans Karar Noktası:</span>
+            <select id="analog-pattern-select" class="select-dropdown" style="flex: 1; max-width: 560px;" onchange="selectAnalogPattern(this.value)">
+              <option value="">Yükleniyor...</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 18px;" id="analog-stats-grid">
+          <div class="card" style="padding: 14px;">
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Ortalama 24h Getiri</div>
+            <div class="value" id="analog-stat-mean" style="font-size: 20px;">-%</div>
+          </div>
+          <div class="card" style="padding: 14px;">
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Medyan 24h Getiri</div>
+            <div class="value" id="analog-stat-median" style="font-size: 20px;">-%</div>
+          </div>
+          <div class="card" style="padding: 14px;">
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">24h Dağılım Genişliği (Max-Min)</div>
+            <div class="value" id="analog-stat-range" style="font-size: 20px;">-%</div>
+          </div>
+          <div class="card" style="padding: 14px;">
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Ekonomik Alfa Tespiti</div>
+            <div class="value" style="font-size: 16px; color: var(--red);">YOK (SIFIR)</div>
+          </div>
+        </div>
+
+        <div class="analog-grid">
+          <div>
+            <div style="font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 10px;">
+              En Yakın 5 Tarihsel Eşleşme (KNN Benzerlik)
+            </div>
+            <div class="table-container" style="max-height: 380px; overflow-y: auto;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Sıra</th>
+                    <th>Analog Tarihi (UTC)</th>
+                    <th>Skor</th>
+                    <th>15m</th>
+                    <th>1h</th>
+                    <th>4h</th>
+                    <th>24h</th>
+                    <th>MFE / MAE</th>
+                  </tr>
+                </thead>
+                <tbody id="analog-table-body">
+                  <tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:20px;">Yükleniyor...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <div style="font-size: 13px; font-weight: 700; color: #fff;">
+                İleriye Dönük Normalize Yörünge Dağılımı (%)
+              </div>
+              <div style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">
+                0m → 15m → 1h → 4h → 24h
+              </div>
+            </div>
+            <div class="chart-canvas-wrap" id="analog-canvas-container" style="height: 340px;">
+              <canvas id="analog-canvas" class="chart-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: REGIME DISTRIBUTION & TRANSITIONS (PRESERVED) -->
       <div class="section-header">
         <div class="section-title"><span>📊</span> Tarihsel Piyasa Rejimi Dağılımı (BTCUSDT 2022-2026)</div>
       </div>
@@ -1097,41 +1335,529 @@ def render_product_dashboard_html() -> str:
       `).join("");
     }
 
-    // Module 3: Market Behavior
+    // Module 3: Market Behavior & Explorers
+    let candleInterval = '1h';
+    let candleMonth = '2026-09';
+    let candleLimit = 100;
+    let candleOffset = 0;
+    let candlesData = [];
+    let candleMonthsList = [];
+    let currentAnalogData = null;
+    let crosshairPos = null;
+
     async function loadBehavior() {
+      // 1. Load Summary & Transitions
       try {
         const res = await fetch("/api/v1/product/market-behavior");
-        if (!res.ok) return;
-        const data = await res.json();
+        if (res.ok) {
+          const data = await res.json();
+          const rGrid = document.getElementById("regime-grid");
+          if (rGrid && data.regime_distribution) {
+            rGrid.innerHTML = data.regime_distribution.map(r => `
+              <div class="card">
+                <h3>${r.regime}</h3>
+                <div class="value">${r.frequency_percent}%</div>
+                <div class="subtext">${r.description}</div>
+              </div>
+            `).join("");
+          }
 
-        // Render Regimes
-        const rGrid = document.getElementById("regime-grid");
-        if (rGrid && data.regime_distribution) {
-          rGrid.innerHTML = data.regime_distribution.map(r => `
-            <div class="card">
-              <h3>${r.regime}</h3>
-              <div class="value">${r.frequency_percent}%</div>
-              <div class="subtext">${r.description}</div>
-            </div>
-          `).join("");
-        }
-
-        // Render Transitions
-        const tBody = document.getElementById("regime-transitions-tbody");
-        if (tBody && data.regime_transitions) {
-          tBody.innerHTML = Object.entries(data.regime_transitions).map(([curr, targets]) => `
-            <tr>
-              <td><strong>${curr}</strong></td>
-              <td>%${(targets.COMPRESSION * 100).toFixed(1)}</td>
-              <td>%${(targets.NORMAL * 100).toFixed(1)}</td>
-              <td>%${(targets.EXPANSION_WATCH * 100).toFixed(1)}</td>
-              <td>%${(targets.HIGH_VOLATILITY * 100).toFixed(1)}</td>
-            </tr>
-          `).join("");
+          const tBody = document.getElementById("regime-transitions-tbody");
+          if (tBody && data.regime_transitions) {
+            tBody.innerHTML = Object.entries(data.regime_transitions).map(([curr, targets]) => `
+              <tr>
+                <td><strong>${curr}</strong></td>
+                <td>%${(targets.COMPRESSION * 100).toFixed(1)}</td>
+                <td>%${(targets.NORMAL * 100).toFixed(1)}</td>
+                <td>%${(targets.EXPANSION_WATCH * 100).toFixed(1)}</td>
+                <td>%${(targets.HIGH_VOLATILITY * 100).toFixed(1)}</td>
+              </tr>
+            `).join("");
+          }
         }
       } catch (e) {
-        console.warn("Behavior fetch error:", e);
+        console.warn("Market behavior fetch error:", e);
       }
+
+      // 2. Load Candlesticks
+      await loadHistoricalCandles();
+
+      // 3. Load Analog Patterns
+      await loadAnalogPatterns();
+    }
+
+    function setCandleInterval(intv, btn) {
+      candleInterval = intv;
+      candleOffset = 0;
+      document.querySelectorAll("#module-behavior .pill-btn").forEach(b => {
+        if (['5m', '15m', '1h', '4h', '1d'].includes(b.innerText.trim())) {
+          b.classList.remove("active");
+        }
+      });
+      btn.classList.add("active");
+      loadHistoricalCandles();
+    }
+
+    function changeCandleMonth(m) {
+      candleMonth = m;
+      candleOffset = 0;
+      loadHistoricalCandles();
+    }
+
+    function changeCandleLimit(lim) {
+      candleLimit = parseInt(lim);
+      candleOffset = 0;
+      loadHistoricalCandles();
+    }
+
+    function panCandles(delta) {
+      candleOffset = Math.max(0, candleOffset + delta);
+      loadHistoricalCandles();
+    }
+
+    async function loadHistoricalCandles() {
+      try {
+        const res = await fetch(`/api/v1/product/historical-candles?interval=${candleInterval}&month=${candleMonth}&limit=${candleLimit}&offset=${candleOffset}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        candlesData = data.candles || [];
+
+        // Update month select if changed
+        if (data.available_months && JSON.stringify(data.available_months) !== JSON.stringify(candleMonthsList)) {
+          candleMonthsList = data.available_months;
+          const select = document.getElementById("candle-month-select");
+          if (select) {
+            select.innerHTML = candleMonthsList.slice().reverse().map(m => `
+              <option value="${m}" ${m === data.month ? 'selected' : ''}>${m}</option>
+            `).join("");
+          }
+        }
+
+        // Update HUD with latest bar by default
+        if (candlesData.length > 0) {
+          updateCandleHUD(candlesData[candlesData.length - 1]);
+        }
+
+        drawCandlestickChart();
+      } catch (e) {
+        console.warn("Candles fetch error:", e);
+      }
+    }
+
+    function updateCandleHUD(c) {
+      if (!c) return;
+      const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+      setEl("hud-time", c.datetime_utc.replace("T", " ").replace("Z", " UTC"));
+      setEl("hud-open", "$" + c.open.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+      setEl("hud-high", "$" + c.high.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+      setEl("hud-low", "$" + c.low.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+      setEl("hud-close", "$" + c.close.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+      setEl("hud-volume", c.volume.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " BTC");
+      const regEl = document.getElementById("hud-regime");
+      if (regEl) {
+        regEl.innerText = c.regime;
+        regEl.className = "badge " + (c.regime.includes("BULL") ? "badge-success" : (c.regime.includes("BEAR") ? "badge-danger" : "badge-info"));
+      }
+    }
+
+    function drawCandlestickChart() {
+      const container = document.getElementById("candle-canvas-container");
+      const canvas = document.getElementById("candlestick-canvas");
+      if (!container || !canvas) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      const w = container.clientWidth;
+      const h = container.clientHeight || 420;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+
+      // Background
+      ctx.fillStyle = "#070b13";
+      ctx.fillRect(0, 0, w, h);
+
+      if (!candlesData || candlesData.length === 0) {
+        ctx.fillStyle = "#64748b";
+        ctx.font = "14px monospace";
+        ctx.textAlign = "center";
+        ctx.fillText("Veri yükleniyor veya bu dönem için mum kaydı bulunamadı...", w / 2, h / 2);
+        return;
+      }
+
+      const padTop = 20;
+      const padBottom = 26;
+      const padRight = 70;
+      const padLeft = 10;
+      const chartW = w - padLeft - padRight;
+      const chartH = h - padTop - padBottom;
+      const priceH = chartH * 0.72;
+      const volH = chartH * 0.22;
+      const volTop = padTop + priceH + chartH * 0.06;
+
+      let minP = Infinity;
+      let maxP = -Infinity;
+      let maxV = 0;
+
+      for (let i = 0; i < candlesData.length; i++) {
+        const c = candlesData[i];
+        if (c.low < minP) minP = c.low;
+        if (c.high > maxP) maxP = c.high;
+        if (c.volume > maxV) maxV = c.volume;
+      }
+
+      const pRange = (maxP - minP) || 1;
+      minP -= pRange * 0.02;
+      maxP += pRange * 0.02;
+      const effRange = maxP - minP;
+
+      const regColors = {
+        "SIDEWAYS": "rgba(100, 116, 139, 0.12)",
+        "UNCERTAIN": "rgba(245, 158, 11, 0.12)",
+        "TRENDING_BULL": "rgba(16, 185, 129, 0.15)",
+        "HIGH_VOLATILITY": "rgba(139, 92, 246, 0.15)",
+        "TRENDING_BEAR": "rgba(239, 68, 68, 0.15)",
+        "POSSIBLE_REVERSAL": "rgba(249, 115, 22, 0.15)"
+      };
+
+      const n = candlesData.length;
+      const barW = chartW / n;
+      const candleW = Math.max(1.2, barW * 0.7);
+
+      // 1. Regime background bands
+      for (let i = 0; i < n; i++) {
+        const c = candlesData[i];
+        ctx.fillStyle = regColors[c.regime] || "rgba(100, 116, 139, 0.06)";
+        ctx.fillRect(padLeft + i * barW, padTop, barW, priceH);
+      }
+
+      // 2. Price grid horizontal lines
+      ctx.strokeStyle = "rgba(31, 41, 55, 0.6)";
+      ctx.fillStyle = "#64748b";
+      ctx.font = "10px monospace";
+      ctx.textAlign = "left";
+      const gridSteps = 4;
+      for (let g = 0; g <= gridSteps; g++) {
+        const pVal = minP + (effRange * (g / gridSteps));
+        const y = padTop + priceH - (g / gridSteps) * priceH;
+        ctx.beginPath();
+        ctx.moveTo(padLeft, y);
+        ctx.lineTo(w - padRight, y);
+        ctx.stroke();
+        ctx.fillText("$" + Math.round(pVal).toLocaleString("en-US"), w - padRight + 6, y + 3);
+      }
+
+      // 3. Draw Candles & Volume
+      for (let i = 0; i < n; i++) {
+        const c = candlesData[i];
+        const isUp = c.close >= c.open;
+        const col = isUp ? "#10b981" : "#ef4444";
+        const xCenter = padLeft + i * barW + barW / 2;
+
+        // Wick
+        const yHigh = padTop + (maxP - c.high) / effRange * priceH;
+        const yLow = padTop + (maxP - c.low) / effRange * priceH;
+        ctx.strokeStyle = col;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(xCenter, yHigh);
+        ctx.lineTo(xCenter, yLow);
+        ctx.stroke();
+
+        // Body
+        const yOpen = padTop + (maxP - c.open) / effRange * priceH;
+        const yClose = padTop + (maxP - c.close) / effRange * priceH;
+        const bodyTop = Math.min(yOpen, yClose);
+        const bodyH = Math.max(1.5, Math.abs(yOpen - yClose));
+        ctx.fillStyle = col;
+        ctx.fillRect(xCenter - candleW / 2, bodyTop, candleW, bodyH);
+
+        // Volume Bar
+        const vHeight = (c.volume / (maxV || 1)) * volH;
+        ctx.fillStyle = isUp ? "rgba(16, 185, 129, 0.4)" : "rgba(239, 68, 68, 0.4)";
+        ctx.fillRect(xCenter - candleW / 2, volTop + volH - vHeight, candleW, vHeight);
+      }
+
+      // 4. Time labels on bottom
+      ctx.fillStyle = "#64748b";
+      ctx.font = "10px monospace";
+      ctx.textAlign = "center";
+      const timeInterval = Math.max(1, Math.floor(n / 6));
+      for (let i = 0; i < n; i += timeInterval) {
+        const c = candlesData[i];
+        const x = padLeft + i * barW + barW / 2;
+        const label = c.datetime_utc.substring(5, 16).replace("T", " ");
+        ctx.fillText(label, x, h - 8);
+      }
+
+      // 5. Crosshair if mouse hover
+      if (crosshairPos) {
+        ctx.strokeStyle = "rgba(148, 163, 184, 0.5)";
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+
+        // Vertical
+        ctx.beginPath();
+        ctx.moveTo(crosshairPos.x, padTop);
+        ctx.lineTo(crosshairPos.x, h - padBottom);
+        ctx.stroke();
+
+        // Horizontal Price
+        if (crosshairPos.y <= padTop + priceH) {
+          ctx.beginPath();
+          ctx.moveTo(padLeft, crosshairPos.y);
+          ctx.lineTo(w - padRight, crosshairPos.y);
+          ctx.stroke();
+
+          // Price badge on right
+          const pCross = maxP - ((crosshairPos.y - padTop) / priceH) * effRange;
+          ctx.fillStyle = "#1e293b";
+          ctx.fillRect(w - padRight + 2, crosshairPos.y - 8, 65, 16);
+          ctx.fillStyle = "#93c5fd";
+          ctx.font = "10px monospace";
+          ctx.textAlign = "left";
+          ctx.fillText("$" + pCross.toFixed(1), w - padRight + 6, crosshairPos.y + 4);
+        }
+
+        ctx.setLineDash([]);
+      }
+    }
+
+    // Attach canvas mouse events once
+    function initCandleCanvasEvents() {
+      const canvas = document.getElementById("candlestick-canvas");
+      if (!canvas || canvas._events_bound) return;
+      canvas._events_bound = true;
+
+      canvas.addEventListener("mousemove", (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        const padLeft = 10;
+        const padRight = 70;
+        const chartW = rect.width - padLeft - padRight;
+        if (!candlesData.length || chartW <= 0) return;
+
+        const barW = chartW / candlesData.length;
+        const idx = Math.floor((mouseX - padLeft) / barW);
+
+        if (idx >= 0 && idx < candlesData.length) {
+          crosshairPos = { x: mouseX, y: mouseY };
+          updateCandleHUD(candlesData[idx]);
+          drawCandlestickChart();
+        }
+      });
+
+      canvas.addEventListener("mouseleave", () => {
+        crosshairPos = null;
+        if (candlesData.length > 0) {
+          updateCandleHUD(candlesData[candlesData.length - 1]);
+        }
+        drawCandlestickChart();
+      });
+    }
+
+    // Module 3 - Section 2: Analog Explorer
+    async function loadAnalogPatterns() {
+      try {
+        const res = await fetch("/api/v1/product/analogs/patterns");
+        if (!res.ok) return;
+        const data = await res.json();
+        const patterns = data.patterns || [];
+        const select = document.getElementById("analog-pattern-select");
+        if (select && patterns.length > 0) {
+          select.innerHTML = patterns.map(p => `
+            <option value="${p.decision_datetime_utc}">${p.label}</option>
+          `).join("");
+
+          // Load first pattern
+          await loadAnalogs(patterns[0].decision_datetime_utc);
+        }
+      } catch (e) {
+        console.warn("Analog patterns fetch error:", e);
+      }
+    }
+
+    async function selectAnalogPattern(dt) {
+      if (!dt) return;
+      await loadAnalogs(dt);
+    }
+
+    async function loadAnalogs(decisionTime) {
+      try {
+        const res = await fetch(`/api/v1/product/analogs?decision_time=${encodeURIComponent(decisionTime)}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        currentAnalogData = data;
+
+        // Dispersion Stats
+        const disp = data.trajectory_dispersion || {};
+        const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+        setEl("analog-stat-mean", (disp.mean_24h_return_percent >= 0 ? "+" : "") + (disp.mean_24h_return_percent || 0).toFixed(2) + "%");
+        setEl("analog-stat-median", (disp.median_24h_return_percent >= 0 ? "+" : "") + (disp.median_24h_return_percent || 0).toFixed(2) + "%");
+        setEl("analog-stat-range", (disp.dispersion_range_percent || 0).toFixed(2) + "%");
+
+        // Table
+        const tBody = document.getElementById("analog-table-body");
+        if (tBody) {
+          const analogs = data.analogs || [];
+          if (analogs.length === 0) {
+            tBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:20px;">Eşleşme bulunamadı.</td></tr>';
+          } else {
+            tBody.innerHTML = analogs.map(a => {
+              const fmtRet = (r) => `<span class="${r >= 0 ? 'ret-pos' : 'ret-neg'}">${r >= 0 ? '+' : ''}${r.toFixed(2)}%</span>`;
+              return `
+                <tr>
+                  <td><strong>#${a.rank}</strong></td>
+                  <td><code>${a.analogue_datetime_utc.substring(0, 16).replace("T", " ")}</code></td>
+                  <td><span class="badge badge-info">%${a.similarity_score_percent}</span></td>
+                  <td>${fmtRet(a.fwd_ret_15m_percent)}</td>
+                  <td>${fmtRet(a.fwd_ret_1h_percent)}</td>
+                  <td>${fmtRet(a.fwd_ret_4h_percent)}</td>
+                  <td>${fmtRet(a.fwd_ret_24h_percent)}</td>
+                  <td><span class="ret-pos">+${a.max_favorable_excursion_percent}%</span> / <span class="ret-neg">${a.max_adverse_excursion_percent}%</span></td>
+                </tr>
+              `;
+            }).join("");
+          }
+        }
+
+        drawAnalogTrajectoryChart(data);
+      } catch (e) {
+        console.warn("Analog load error:", e);
+      }
+    }
+
+    function drawAnalogTrajectoryChart(data) {
+      const container = document.getElementById("analog-canvas-container");
+      const canvas = document.getElementById("analog-canvas");
+      if (!container || !canvas || !data) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      const w = container.clientWidth;
+      const h = container.clientHeight || 340;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+
+      // Background
+      ctx.fillStyle = "#070b13";
+      ctx.fillRect(0, 0, w, h);
+
+      const analogs = data.analogs || [];
+      if (analogs.length === 0) return;
+
+      const padTop = 20;
+      const padBottom = 30;
+      const padLeft = 45;
+      const padRight = 20;
+      const chartW = w - padLeft - padRight;
+      const chartH = h - padTop - padBottom;
+
+      // Find global min and max return
+      let minRet = 0;
+      let maxRet = 0;
+      analogs.forEach(a => {
+        (a.trajectory_points || []).forEach(pt => {
+          if (pt < minRet) minRet = pt;
+          if (pt > maxRet) maxRet = pt;
+        });
+      });
+
+      const retRange = Math.max(1.0, (maxRet - minRet));
+      minRet -= retRange * 0.15;
+      maxRet += retRange * 0.15;
+      const effRetRange = maxRet - minRet;
+
+      const xSteps = [0, 0.25, 0.5, 0.75, 1.0];
+      const stepLabels = ["0m", "+15m", "+1h", "+4h", "+24h"];
+
+      // 1. Gridlines & 0% baseline
+      ctx.strokeStyle = "rgba(31, 41, 55, 0.6)";
+      ctx.lineWidth = 1;
+      const yZero = padTop + (maxRet - 0.0) / effRetRange * chartH;
+
+      // 0% line
+      ctx.beginPath();
+      ctx.strokeStyle = "rgba(148, 163, 184, 0.4)";
+      ctx.setLineDash([4, 4]);
+      ctx.moveTo(padLeft, yZero);
+      ctx.lineTo(w - padRight, yZero);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Vertical steps
+      xSteps.forEach((s, idx) => {
+        const x = padLeft + s * chartW;
+        ctx.strokeStyle = "rgba(31, 41, 55, 0.5)";
+        ctx.beginPath();
+        ctx.moveTo(x, padTop);
+        ctx.lineTo(x, padTop + chartH);
+        ctx.stroke();
+
+        ctx.fillStyle = "#64748b";
+        ctx.font = "10px monospace";
+        ctx.textAlign = "center";
+        ctx.fillText(stepLabels[idx], x, h - 10);
+      });
+
+      // Y-axis labels
+      ctx.fillStyle = "#64748b";
+      ctx.font = "10px monospace";
+      ctx.textAlign = "right";
+      [minRet, 0, maxRet].forEach(val => {
+        const y = padTop + (maxRet - val) / effRetRange * chartH;
+        ctx.fillText((val >= 0 ? "+" : "") + val.toFixed(1) + "%", padLeft - 6, y + 3);
+      });
+
+      // 2. Dispersion corridor (Min to Max envelope at each step)
+      ctx.fillStyle = "rgba(59, 130, 246, 0.07)";
+      ctx.beginPath();
+      for (let sIdx = 0; sIdx < 5; sIdx++) {
+        const stepVals = analogs.map(a => a.trajectory_points[sIdx]);
+        const sMax = Math.max(...stepVals);
+        const x = padLeft + xSteps[sIdx] * chartW;
+        const y = padTop + (maxRet - sMax) / effRetRange * chartH;
+        if (sIdx === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      for (let sIdx = 4; sIdx >= 0; sIdx--) {
+        const stepVals = analogs.map(a => a.trajectory_points[sIdx]);
+        const sMin = Math.min(...stepVals);
+        const x = padLeft + xSteps[sIdx] * chartW;
+        const y = padTop + (maxRet - sMin) / effRetRange * chartH;
+        ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fill();
+
+      // 3. Draw each analog trajectory
+      const trajColors = ["#38bdf8", "#a855f7", "#f59e0b", "#10b981", "#f43f5e"];
+      analogs.forEach((a, aIdx) => {
+        const pts = a.trajectory_points || [];
+        ctx.strokeStyle = trajColors[aIdx % trajColors.length];
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        pts.forEach((pt, sIdx) => {
+          const x = padLeft + xSteps[sIdx] * chartW;
+          const y = padTop + (maxRet - pt) / effRetRange * chartH;
+          if (sIdx === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+
+        // Draw dots at step points
+        pts.forEach((pt, sIdx) => {
+          const x = padLeft + xSteps[sIdx] * chartW;
+          const y = padTop + (maxRet - pt) / effRetRange * chartH;
+          ctx.fillStyle = trajColors[aIdx % trajColors.length];
+          ctx.beginPath();
+          ctx.arc(x, y, 3, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      });
     }
 
     // Module 4: Events
@@ -1327,9 +2053,9 @@ def render_product_dashboard_html() -> str:
     window.addEventListener("DOMContentLoaded", () => {
       const hash = window.location.hash.replace("#", "");
       if (hash && ["overview", "research", "behavior", "events", "governance", "artifacts", "operations"].includes(hash)) {
-        switchTab(hash);
+        switchTab(hash); initCandleCanvasEvents();
       } else {
-        switchTab("overview");
+        switchTab("overview"); initCandleCanvasEvents();
       }
       loadOverview();
     });

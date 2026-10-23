@@ -1,0 +1,73 @@
+{
+  "sprint": "CBE-PRODUCT-ACCELERATION-02",
+  "generated_at_utc": "2026-10-24T00:08:30Z",
+  "python_version": "3.11.16",
+  "platform": "win32 (Windows 11 / WSL2 Host Ready)",
+  "test_suites": [
+    {
+      "suite_file": "tests/test_sprint_product_acceleration_02_api.py",
+      "suite_purpose": "Historical Candlestick, Regime Mapping & Analog Trajectory Endpoints",
+      "collected": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "execution_time_seconds": 2.83,
+      "tests": [
+        "test_01_historical_candles_default_1h",
+        "test_02_historical_candles_intervals",
+        "test_03_historical_candles_month_selection",
+        "test_04_historical_regimes_summary",
+        "test_05_analog_patterns_list",
+        "test_06_analogs_retrieval_and_dispersion",
+        "test_07_http_live_historical_candles",
+        "test_08_http_live_analogs",
+        "test_09_http_live_analog_patterns"
+      ]
+    },
+    {
+      "suite_file": "tests/test_sprint_product_acceleration_01_api.py",
+      "suite_purpose": "Product Dashboard Core REST APIs (Overview, Governance, Artifacts, Operations)",
+      "collected": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "execution_time_seconds": 1.25
+    },
+    {
+      "suite_file": "tests/test_sprint_product_acceleration_01_integration.py",
+      "suite_purpose": "Live Ephemeral HTTP Server Route Dispatch & Security Traversal Defense",
+      "collected": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "execution_time_seconds": 1.40
+    },
+    {
+      "suite_file": "tests/test_web_server.py",
+      "suite_purpose": "Localization, Number Formatting, Legacy Monitor HTML Rendering",
+      "collected": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "execution_time_seconds": 0.45
+    },
+    {
+      "suite_file": "tests/test_sprint11_02b_1_staging_hardening.py",
+      "suite_purpose": "Coolify Staging Hardening, Loopback Binding, Read-Only FS, OCI Labels",
+      "collected": 20,
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "execution_time_seconds": 3.46
+    }
+  ],
+  "summary": {
+    "total_collected": 51,
+    "total_passed": 51,
+    "total_failed": 0,
+    "total_skipped": 0,
+    "pass_rate_percent": 100.0,
+    "total_duration_seconds": 9.39,
+    "status": "ALL_GREEN"
+  }
+}
