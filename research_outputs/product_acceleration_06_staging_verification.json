@@ -1,0 +1,90 @@
+{
+  "sprint": "CBE_PRODUCT_ACCELERATION_06",
+  "verified_at_utc": "2026-10-24T08:25:10Z",
+  "infrastructure": {
+    "vps_host": "srv1114257",
+    "vps_ip": "168.231.125.238",
+    "docker_version": "27.x",
+    "coolify_orchestrator": "active"
+  },
+  "deployment_target": {
+    "service_name": "cbe-market-intelligence-staging",
+    "service_uuid": "dzzfws54by1whlbq6fk4ywut",
+    "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+    "host_binding": "127.0.0.1:18080->8000/tcp",
+    "deployed_git_commit": "935a22050526178d28feef25d519454114816c66",
+    "deployed_git_commit_short": "935a2205",
+    "image_name": "cbe-market-intelligence:staging",
+    "image_digest": "sha256:eeef20be843bd119150da6b95d20e27892b1b01b32dd401e2c55804926e100d1",
+    "dataset_manifest_version": "cbe-manifest-v2-73a6212acca3"
+  },
+  "production_isolation_audit": {
+    "production_service_id": "6t63aehpaw0cw1bbt4zcm09g",
+    "production_container_id": "e27157318ede",
+    "production_status": "Up (healthy)",
+    "production_impact": "ZERO_MODIFICATION_STRICTLY_ISOLATED"
+  },
+  "verified_staging_endpoints": [
+    {
+      "endpoint": "/api/v1/product/runtime-build",
+      "http_status": 200,
+      "environment": "staging",
+      "build_commit": "935a22050526178d28feef25d519454114816c66",
+      "runtime_identity_verified": true
+    },
+    {
+      "endpoint": "/api/v1/product/interval-integrity",
+      "http_status": 200,
+      "overall_verdict": "PASS",
+      "total_candles_evaluated": 19558,
+      "total_discrepancies_detected": 0
+    },
+    {
+      "endpoint": "/api/v1/product/research-readiness?month=2026-09",
+      "http_status": 200,
+      "overall_verdict": "READY",
+      "overall_score_pct": 100.0,
+      "modules_evaluated": 5
+    },
+    {
+      "endpoint": "/api/v1/product/research-readiness?month=2026-10",
+      "http_status": 200,
+      "overall_verdict": "PARTIALLY_READY",
+      "lookahead_quarantine": "ACTIVE"
+    },
+    {
+      "endpoint": "/api/v1/product/dataset-catalog",
+      "http_status": 200,
+      "freshness_tier": "T-1_REFINED_ARCHIVE",
+      "candidate_month_status": "SOURCE_NOT_AVAILABLE"
+    },
+    {
+      "endpoint": "/api/v1/product/import-history",
+      "http_status": 200,
+      "status": "success",
+      "receipts_tracked": 0
+    },
+    {
+      "endpoint": "/api/v1/product/historical-candles?interval=1h&month=2026-10",
+      "http_status": 200,
+      "status": "no_data",
+      "available": false,
+      "candles_returned": 0,
+      "synthetic_fabrication_safeguard": "ENFORCED_ZERO_SYNTHETIC_CANDLES"
+    },
+    {
+      "endpoint": "/api/v1/product/governance",
+      "http_status": 200,
+      "technical_decision": "TECHNICAL_NO_GO",
+      "governance_authorization": "NOT_GRANTED",
+      "live_order_execution": "PERMANENTLY_PROHIBITED"
+    }
+  ],
+  "governance_invariants_preserved": {
+    "TECHNICAL_STATUS": "TECHNICAL_NO_GO",
+    "GOVERNANCE_AUTHORIZATION": "NOT_GRANTED",
+    "PRODUCTION_TOKEN": "NOT_ISSUED",
+    "DIRECTIONAL_TRADING_ELIGIBILITY": 0.0,
+    "LIVE_ORDER_EXECUTION": "PERMANENTLY_PROHIBITED"
+  }
+}
