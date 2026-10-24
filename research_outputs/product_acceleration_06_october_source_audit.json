@@ -1,0 +1,34 @@
+{
+  "audit_timestamp_utc": "2026-10-24T08:08:45Z",
+  "target_period": "2026-10 (October 2026)",
+  "target_symbol": "BTCUSDT",
+  "search_locations_audited": [
+    "data/binance_spot_multiyear/",
+    "data/raw/",
+    "data/imports/",
+    "data/reports/",
+    "research_outputs/import_receipts/",
+    "/tmp/ (Coolify VPS srv1114257)",
+    "/data/coolify/applications/dzzfws54by1whlbq6fk4ywut/ (Staging Directory)"
+  ],
+  "protected_locations_untouched": [
+    "Production Volume 6t63aehpaw0cw1bbt4zcm09g",
+    "Production Volume zgit1s3n1acdtqtsxp0s44vj"
+  ],
+  "candidate_files_found": [],
+  "findings_classification": "SOURCE_NOT_AVAILABLE",
+  "status_details": {
+    "genuine_october_data_present": false,
+    "unverified_october_data_present": false,
+    "synthetic_fabrication_permitted": false,
+    "external_network_download_permitted": false,
+    "governance_rule_enforced": "FAIL_CLOSED_OFFLINE_VERIFICATION"
+  },
+  "operational_directives": {
+    "october_2026_imported": false,
+    "october_2026_record_count": 0,
+    "ui_behavior": "DISPLAY_EXPLICIT_NO_DATA_WARNING_ALERT",
+    "synthetic_data_fabrication": "STRICTLY_PROHIBITED",
+    "operator_import_readiness": "WORKFLOW_STANDBY_AWAITING_GENUINE_SOURCE"
+  }
+}

@@ -182,6 +182,12 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.get_events(query_params)
             elif sub_path in ("macro-reactions", "events/reactions"):
                 return HTTPStatus.OK, cls.get_macro_reactions(query_params)
+            elif sub_path in ("interval-integrity", "quality/integrity"):
+                return HTTPStatus.OK, cls.get_interval_integrity(query_params)
+            elif sub_path in ("research-readiness", "readiness"):
+                return HTTPStatus.OK, cls.get_research_readiness(query_params)
+            elif sub_path in ("import-history", "imports"):
+                return HTTPStatus.OK, cls.get_import_history(query_params)
             elif sub_path in ("dataset-catalog", "datasets"):
                 return HTTPStatus.OK, cls.get_dataset_catalog()
             elif sub_path == "governance":
@@ -1114,7 +1120,7 @@ class ProductDashboardApiService:
                 "symbol": "BTCUSDT",
                 "interval": interval,
                 "month": req_month,
-                "message": f"{format_tr_month(req_month)} için doğrulanmış tarihsel mum verisi henüz bulunmuyor.",
+                "message": f"{format_tr_month(req_month)} için doğrulanmış tarihsel mum verisi henüz bulunmuyor. Sistem sahte veya sentetik mum üretmez.",
                 "requested_month": req_month,
                 "latest_available_month": latest_m,
                 "available_months": available_months,
@@ -1610,6 +1616,10 @@ class ProductDashboardApiService:
 
         return {
             "status": "success",
+            "total_partitions": total_p,
+            "total_size_mb": total_mb,
+            "manifest_version": manifest.get("manifest_version"),
+            "freshness_metrics": dm.get_freshness_metrics(),
             "datasets": {
                 "binance_spot_multiyear": {
                     "symbol": "BTCUSDT",
@@ -1638,6 +1648,33 @@ class ProductDashboardApiService:
             },
             "governance_classification": "RESEARCH_CONTAMINATED_HISTORICAL_DATA",
             "fail_closed_quarantine": True,
+        }
+
+    @classmethod
+    def get_interval_integrity(cls, params: Optional[Dict[str, List[str]]] = None) -> Dict[str, Any]:
+        """Return cross-interval mathematical consistency audit."""
+        from coin_behavior_engine.product.interval_integrity import CrossIntervalIntegrityEngine
+        engine = CrossIntervalIntegrityEngine.get_instance()
+        return engine.audit_archive_summary()
+
+    @classmethod
+    def get_research_readiness(cls, params: Optional[Dict[str, List[str]]] = None) -> Dict[str, Any]:
+        """Return research readiness and leakage boundaries evaluation."""
+        from coin_behavior_engine.product.research_readiness import ResearchReadinessEngine
+        target_period = (params or {}).get("period", [None])[0] or (params or {}).get("month", [None])[0]
+        return ResearchReadinessEngine.evaluate_readiness(target_period=target_period)
+
+    @classmethod
+    def get_import_history(cls, params: Optional[Dict[str, List[str]]] = None) -> Dict[str, Any]:
+        """Return historical import receipts audit trail."""
+        from coin_behavior_engine.data_import import HistoricalDataImporter
+        importer = HistoricalDataImporter()
+        receipts = importer.list_receipts()
+        return {
+            "status": "success",
+            "total_imports": len(receipts),
+            "total_receipts": len(receipts),
+            "receipts": receipts,
         }
 
     @classmethod

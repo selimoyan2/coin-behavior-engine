@@ -222,6 +222,12 @@ class HistoricalDataImporter:
         target_month = first_month
         expected_step = INTERVAL_DURATIONS_MS.get(interval, 300_000)
 
+        # Days in month and expected row count
+        days_in_month = pd.Period(target_month, freq="M").days_in_month
+        expected_month_candles = int((days_in_month * 86400 * 1000) / expected_step)
+        completeness_pct = round((len(norm_df) / max(1, expected_month_candles)) * 100, 2)
+        is_partial_month = len(norm_df) < expected_month_candles
+
         # Check gap frequency
         step_diffs = norm_df["open_time"].diff().iloc[1:]
         gap_count = (step_diffs > expected_step).sum()
@@ -277,6 +283,9 @@ class HistoricalDataImporter:
             "interval": interval,
             "target_month": target_month,
             "records_count": len(norm_df),
+            "expected_month_candles": expected_month_candles,
+            "completeness_pct": completeness_pct,
+            "is_partial_month": is_partial_month,
             "first_timestamp_utc": first_dt.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "last_timestamp_utc": last_dt.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "first_open_price": float(norm_df["open"].iloc[0]),
@@ -395,16 +404,147 @@ class HistoricalDataImporter:
         logger.info("Successfully imported %s into %s (Receipt: %s)", source_path, canonical_target, import_id)
         return receipt
 
+    def preview_file(
+        self,
+        source_path: Union[str, Path],
+        symbol: str = "BTCUSDT",
+        interval: str = "5m",
+        allow_partial: bool = True,
+    ) -> Dict[str, Any]:
+        """Dry-run preview candidate file without publishing to canonical partitions."""
+        val = self.validate_file(source_path, symbol, interval, allow_partial=allow_partial)
+        dm = DatasetManager.get_instance(self.base_dir)
+        cur_manifest = dm.get_manifest()
+
+        target_month = val["target_month"]
+        canonical_target = self.base_dir / interval / f"{symbol}-{interval}-{target_month}.parquet"
+        target_exists = canonical_target.exists()
+
+        preview_candles = []
+        try:
+            if str(source_path).endswith(".parquet"):
+                sample_df = pd.read_parquet(source_path).head(5)
+            else:
+                sample_df = pd.read_csv(source_path).head(5)
+            for _, r in sample_df.iterrows():
+                preview_candles.append({
+                    "open_time": int(r["open_time"]),
+                    "open": float(r["open"]),
+                    "high": float(r["high"]),
+                    "low": float(r["low"]),
+                    "close": float(r["close"]),
+                    "volume": float(r["volume"]),
+                })
+        except Exception:
+            pass
+
+        preview = {
+            "valid": val["valid"],
+            "status": "PREVIEW_READY",
+            "source_path": str(source_path),
+            "symbol": symbol,
+            "interval": interval,
+            "target_month": target_month,
+            "target_partition_path": str(canonical_target),
+            "partition_already_exists": target_exists,
+            "records_count": val["records_count"],
+            "preview_candles": preview_candles,
+            "is_partial_month": val.get("is_partial_month", False),
+            "completeness_pct": val.get("completeness_pct", 100.0),
+            "date_range": {
+                "first_timestamp_utc": val["first_timestamp_utc"],
+                "last_timestamp_utc": val["last_timestamp_utc"],
+            },
+            "price_envelope": {
+                "first_open": val["first_open_price"],
+                "last_close": val["last_close_price"],
+            },
+            "completeness": {
+                "is_partial": val["is_partial_month"],
+                "expected_month_candles": val["expected_month_candles"],
+                "completeness_pct": val["completeness_pct"],
+                "detected_gaps": val["gaps_count"],
+            },
+            "source_sha256": val["source_sha256"],
+            "current_manifest_version": cur_manifest.get("manifest_version", "UNKNOWN"),
+            "publication_impact": "WOULD_CREATE_NEW_PARTITION" if not target_exists else "WOULD_APPEND_PARTITION",
+        }
+        return preview
+
+    def verify_partition(
+        self,
+        symbol: str = "BTCUSDT",
+        interval: str = "5m",
+        month: str = "2026-09",
+    ) -> Dict[str, Any]:
+        """Verify an existing canonical partition against all ingestion validation criteria."""
+        partition_file = self.base_dir / interval / f"{symbol}-{interval}-{month}.parquet"
+        if not partition_file.exists():
+            raise FileNotFoundError(f"Kanonik partisyon bulunamadı: {partition_file}")
+
+        val = self.validate_file(partition_file, symbol, interval, allow_partial=True)
+        return {
+            "valid": val["valid"],
+            "status": "VERIFIED",
+            "partition_file": str(partition_file),
+            "symbol": symbol,
+            "interval": interval,
+            "month": month,
+            "records_count": val["records_count"],
+            "missing_candles": max(0, val.get("expected_month_candles", val["records_count"]) - val["records_count"]),
+            "first_timestamp_utc": val["first_timestamp_utc"],
+            "last_timestamp_utc": val["last_timestamp_utc"],
+            "sha256": val["source_sha256"],
+            "completeness_pct": val["completeness_pct"],
+            "gaps_count": val["gaps_count"],
+        }
+
+    def list_receipts(self, limit: int = 50) -> List[Dict[str, Any]]:
+        """List past import receipts sorted by newest first."""
+        receipts = []
+        if not self.receipt_dir.exists():
+            return receipts
+
+        for f in sorted(self.receipt_dir.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True)[:limit]:
+            try:
+                with open(f, "r", encoding="utf-8") as rf:
+                    data = json.load(rf)
+                    receipts.append(data)
+            except Exception as e:
+                logger.warning("Could not read receipt %s: %s", f, e)
+        return receipts
+
+    def get_receipt(self, receipt_id: str) -> Optional[Dict[str, Any]]:
+        """Find and parse a specific receipt by import_id."""
+        if not self.receipt_dir.exists():
+            return None
+        for f in self.receipt_dir.glob(f"{receipt_id}*.json"):
+            try:
+                with open(f, "r", encoding="utf-8") as rf:
+                    return json.load(rf)
+            except Exception:
+                pass
+        return None
+
 
 def main():
     """CLI Entrypoint for offline data import."""
     parser = argparse.ArgumentParser(
         description="Coin Behavior Engine — Offline Historical Market Data Importer"
     )
-    parser.add_argument("--source", "-s", required=True, help="Path to candidate data file (Parquet or CSV)")
+    parser.add_argument("--source", "-s", default=None, help="Path to candidate data file (Parquet or CSV)")
     parser.add_argument("--symbol", default="BTCUSDT", help="Target market symbol (default: BTCUSDT)")
     parser.add_argument("--interval", "-i", default="5m", choices=SUPPORTED_INTERVALS, help="Interval (default: 5m)")
-    parser.add_argument("--mode", "-m", choices=("validate", "import"), default="validate", help="Execution mode")
+    parser.add_argument(
+        "--mode",
+        "-m",
+        choices=("validate", "preview", "import", "verify"),
+        default="validate",
+        help="Execution mode (default: validate)",
+    )
+    parser.add_argument("--month", default=None, help="Target month for verify mode (e.g. 2026-09)")
+    parser.add_argument("--list-imports", action="store_true", help="List recent import receipts")
+    parser.add_argument("--inspect-receipt", default=None, help="Inspect specific receipt by ID")
     parser.add_argument("--allow-partial", action="store_true", default=True, help="Allow partial month datasets")
     parser.add_argument("--base-dir", default=None, help="Custom dataset target directory")
     parser.add_argument("--receipt-dir", default=None, help="Custom receipt output directory")
@@ -415,6 +555,37 @@ def main():
         base_dir=Path(args.base_dir) if args.base_dir else None,
         receipt_dir=Path(args.receipt_dir) if args.receipt_dir else None,
     )
+
+    if args.list_imports:
+        receipts = importer.list_receipts()
+        print(f"=== CBE IMPORT RECEIPTS AUDIT ({len(receipts)} found) ===")
+        for r in receipts:
+            print(f"  [{r.get('import_timestamp_utc')}] {r.get('receipt_id')} | {r.get('target_partition')} | {r.get('records_accepted')} rows | {r.get('status')}")
+        sys.exit(0)
+
+    if args.inspect_receipt:
+        rec = importer.get_receipt(args.inspect_receipt)
+        if rec:
+            print(json.dumps(rec, indent=2))
+            sys.exit(0)
+        else:
+            print(f"Receipt ID '{args.inspect_receipt}' not found.", file=sys.stderr)
+            sys.exit(1)
+
+    if args.mode == "verify":
+        target_m = args.month or "2026-09"
+        try:
+            res = importer.verify_partition(symbol=args.symbol, interval=args.interval, month=target_m)
+            print(f"\n[PARTITION VERIFICATION PASSED: {target_m}]")
+            print(json.dumps(res, indent=2))
+            sys.exit(0)
+        except Exception as e:
+            print(f"\n[PARTITION VERIFICATION FAILED: {target_m}] {e}", file=sys.stderr)
+            sys.exit(1)
+
+    if not args.source:
+        print("Error: --source is required for validate, preview, and import modes.", file=sys.stderr)
+        sys.exit(1)
 
     print(f"=== CBE OFFLINE DATA IMPORTER (Mode: {args.mode.upper()}) ===")
     print(f"Source:   {args.source}")
@@ -437,6 +608,17 @@ def main():
             print(f"  Last Close Price: ${res['last_close_price']:,.2f}")
             print(f"  Gaps Detected:    {res['gaps_count']}")
             print(f"  Source SHA256:    {res['source_sha256']}")
+            sys.exit(0)
+
+        elif args.mode == "preview":
+            preview = importer.preview_file(
+                source_path=Path(args.source),
+                symbol=args.symbol,
+                interval=args.interval,
+                allow_partial=args.allow_partial,
+            )
+            print("\n[IMPORT PREVIEW]")
+            print(json.dumps(preview, indent=2))
             sys.exit(0)
 
         elif args.mode == "import":

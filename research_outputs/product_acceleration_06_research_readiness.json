@@ -1,0 +1,156 @@
+{
+  "status": "success",
+  "evaluation_timestamp_utc": "2026-10-24T08:09:51.382209+00:00",
+  "target_period": "2026-09",
+  "period_imported": true,
+  "overall_platform_readiness": "READY",
+  "overall_readiness_score_pct": 100.0,
+  "manifest_version": "cbe-manifest-v2-addf635b47aa",
+  "modules": [
+    {
+      "module_id": "historical_charts",
+      "module_name_tr": "Tarihsel Mum ve Zaman \u00c7izelgesi",
+      "status": "READY",
+      "readiness_score_pct": 100.0,
+      "prerequisites": [
+        {
+          "name": "Partition Existence",
+          "satisfied": true,
+          "detail": "Partition for 2026-09 present in canonical store."
+        },
+        {
+          "name": "OHLCV Geometric Validation",
+          "satisfied": true,
+          "detail": "Passes positivity, finiteness, and high/low envelope constraints."
+        },
+        {
+          "name": "Monotonic UTC Timestamps",
+          "satisfied": true,
+          "detail": "Strict monotonic chronological ordering."
+        }
+      ],
+      "restrictions": [
+        "Strictly read-only bounded queries",
+        "Zero real-time streaming"
+      ],
+      "scientific_validity_note": "Visual and historical inspection only. Does not infer future path."
+    },
+    {
+      "module_id": "regime_intelligence",
+      "module_name_tr": "Piyasa Rejim & Volatilite \u0130stihbarat\u0131",
+      "status": "READY",
+      "readiness_score_pct": 100.0,
+      "prerequisites": [
+        {
+          "name": "Canonical 5m Partitions Available",
+          "satisfied": true,
+          "detail": "Raw candles available for 2026-09."
+        },
+        {
+          "name": "Frozen Regime Classifier Artifact",
+          "satisfied": true,
+          "detail": "Frozen HMM / Gaussian mixture classifications available."
+        },
+        {
+          "name": "Zero Future Lookahead Leakage",
+          "satisfied": true,
+          "detail": "Classifications calculated using strictly causal trailing indicators."
+        }
+      ],
+      "restrictions": [
+        "Frozen model weights (CBE-0.7.0)",
+        "No silent retraining"
+      ],
+      "scientific_validity_note": "Regime probabilities reflect historical state persistence, not directional buy/sell signals."
+    },
+    {
+      "module_id": "analog_intelligence",
+      "module_name_tr": "Tarihsel Benzerlik & Analog Analizi",
+      "status": "READY",
+      "readiness_score_pct": 100.0,
+      "prerequisites": [
+        {
+          "name": "Minimum 720-bar Lookback Context",
+          "satisfied": true,
+          "detail": "Sufficient trailing history available for normalized pattern distance matching."
+        },
+        {
+          "name": "Historical Analog Catalog",
+          "satisfied": true,
+          "detail": "Precomputed DTW / Euclidean distance vectors available."
+        },
+        {
+          "name": "Forward Outcome Window Isolation",
+          "satisfied": true,
+          "detail": "Self-matching and overlapping-window lookahead strictly quarantined."
+        }
+      ],
+      "restrictions": [
+        "Lookahead leakage protection active",
+        "Minimum 12-bar gap between analog anchor and test window"
+      ],
+      "scientific_validity_note": "Past pattern similarity does not guarantee future price replication."
+    },
+    {
+      "module_id": "macro_impact",
+      "module_name_tr": "Makroekonomik Etki Laboratuvar\u0131",
+      "status": "READY",
+      "readiness_score_pct": 100.0,
+      "prerequisites": [
+        {
+          "name": "Macro Economic Release Schedule Alignment",
+          "satisfied": true,
+          "detail": "Verified CPI, FOMC, and NFP event timestamps."
+        },
+        {
+          "name": "Price Window Alignment (T-60m to T+240m)",
+          "satisfied": true,
+          "detail": "High-resolution 5m candles surrounding announcement time."
+        },
+        {
+          "name": "Zero Synthetic Event Fabrication",
+          "satisfied": true,
+          "detail": "Macro events imported strictly from official BLS / Fed release schedules."
+        }
+      ],
+      "restrictions": [
+        "Zero external web requests",
+        "Historical event schedule frozen"
+      ],
+      "scientific_validity_note": "Measures historical volatility multiplier and kurtosis dispersion."
+    },
+    {
+      "module_id": "scenario_laboratory",
+      "module_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Senaryo & Sim\u00fclasyon Laboratuvar\u0131",
+      "status": "READY",
+      "readiness_score_pct": 100.0,
+      "prerequisites": [
+        {
+          "name": "Reproducible Manifest Hash",
+          "satisfied": true,
+          "detail": "Manifest Hash: addf635b47aa..."
+        },
+        {
+          "name": "Deterministic Counterfactual Engine",
+          "satisfied": true,
+          "detail": "Exact reproducible offline simulation without side-effects."
+        },
+        {
+          "name": "Partition Immutability Assurance",
+          "satisfied": true,
+          "detail": "Immutable Parquet files protected against in-place corruption."
+        }
+      ],
+      "restrictions": [
+        "Pure read-only computation",
+        "Deterministic RNG seed"
+      ],
+      "scientific_validity_note": "Stress testing evaluations remain strictly offline and hypothetical."
+    }
+  ],
+  "governance_safeguard": {
+    "predictive_validity_assertion": "NOT_CLAIMED",
+    "live_trading_suitability": "PERMANENTLY_PROHIBITED",
+    "scientific_status": "OFFLINE_QUANTITATIVE_RESEARCH_ONLY"
+  }
+}

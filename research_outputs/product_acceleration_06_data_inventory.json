@@ -1,0 +1,57 @@
+{
+  "inventory_timestamp_utc": "2026-10-24T08:08:30Z",
+  "symbol": "BTCUSDT",
+  "market": "BINANCE_SPOT",
+  "archive_base_dir": "data/binance_spot_multiyear",
+  "dataset_manifest_version": "cbe-manifest-v2-addf635b47aa",
+  "total_partitions": 285,
+  "total_archive_size_mb": 65.03,
+  "earliest_timestamp_utc": "2022-01-01T00:00:00Z",
+  "latest_timestamp_utc": "2026-09-30T23:55:00Z",
+  "total_continuous_months": 57,
+  "coverage_span": {
+    "start_month": "2022-01",
+    "end_month": "2026-09"
+  },
+  "intervals_inventory": {
+    "5m": {
+      "partition_count": 57,
+      "size_mb": 44.16,
+      "expected_candles_per_month_avg": 8760,
+      "total_approx_candles": 499680,
+      "storage_format": "Parquet (snappy)",
+      "status": "CANONICAL_SOURCE_COMPLETE"
+    },
+    "15m": {
+      "partition_count": 57,
+      "size_mb": 14.98,
+      "total_approx_candles": 166560,
+      "storage_format": "Parquet (snappy)",
+      "status": "DERIVED_INTERVAL_COMPLETE"
+    },
+    "1h": {
+      "partition_count": 57,
+      "size_mb": 4.02,
+      "total_approx_candles": 41640,
+      "storage_format": "Parquet (snappy)",
+      "status": "DERIVED_INTERVAL_COMPLETE"
+    },
+    "4h": {
+      "partition_count": 57,
+      "size_mb": 1.31,
+      "total_approx_candles": 10410,
+      "storage_format": "Parquet (snappy)",
+      "status": "DERIVED_INTERVAL_COMPLETE"
+    },
+    "1d": {
+      "partition_count": 57,
+      "size_mb": 0.56,
+      "total_approx_candles": 1735,
+      "storage_format": "Parquet (snappy)",
+      "status": "DERIVED_INTERVAL_COMPLETE"
+    }
+  },
+  "governance_classification": "HISTORICAL_RESEARCH_FROZEN_ARCHIVE",
+  "network_collection_status": "DISABLED",
+  "unimported_months": ["2026-10", "2026-11", "2026-12"]
+}

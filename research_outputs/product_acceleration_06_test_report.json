@@ -1,0 +1,114 @@
+{
+  "sprint": "CBE_PRODUCT_ACCELERATION_06",
+  "generated_at_utc": "2026-10-24T08:21:00Z",
+  "python_version": "3.11.16",
+  "pytest_version": "9.1.1",
+  "test_suites_evaluated": [
+    "tests/test_sprint_product_acceleration_01_api.py",
+    "tests/test_sprint_product_acceleration_01_integration.py",
+    "tests/test_sprint_product_acceleration_02_api.py",
+    "tests/test_sprint_product_acceleration_03.py",
+    "tests/test_sprint_product_acceleration_04.py",
+    "tests/test_sprint_product_acceleration_05.py",
+    "tests/test_sprint_product_acceleration_06.py"
+  ],
+  "total_tests_executed": 75,
+  "passed_tests": 75,
+  "failed_tests": 0,
+  "skipped_tests": 0,
+  "pass_rate_pct": 100.0,
+  "sprint_06_specific_tests": {
+    "total": 16,
+    "passed": 16,
+    "tests": [
+      {
+        "name": "test_01_cross_interval_integrity_canonical",
+        "description": "Verifies cross-interval consistency across canonical September 2026 partitions (5m, 15m, 1h, 4h, 1d)",
+        "verdict": "PASS"
+      },
+      {
+        "name": "test_02_cross_interval_mathematical_aggregation_rules",
+        "description": "Verifies mathematical aggregation rules (open==first, high==max, low==min, close==last, volume==sum)",
+        "verdict": "PASS"
+      },
+      {
+        "name": "test_03_cross_interval_incomplete_window_rejection",
+        "description": "Verifies detection and dropping of incomplete aggregation windows (11/12 bars) to prevent false pass",
+        "verdict": "PASS"
+      },
+      {
+        "name": "test_04_cross_interval_discrepancy_detection",
+        "description": "Verifies that corrupted aggregate values trigger immediate FAIL verdict with discrepancy telemetry",
+        "verdict": "PASS"
+      },
+      {
+        "name": "test_05_research_readiness_canonical_month",
+        "description": "Evaluates research readiness on canonical 2026-09 dataset across all 5 research modules (100.0% score)",
+        "verdict": "PASS"
+      },
+      {
+        "name": "test_06_research_readiness_leakage_protection_rules",
+        "description": "Verifies lookahead leakage safeguards and 720-bar lookback threshold in research readiness rules",
+        "verdict": "PASS"
+      },
+      {
+        "name": "test_07_research_readiness_unimported_month",
+        "description": "Verifies unimported October 2026 fails closed and flags missing partition prerequisites",
+        "verdict": "PASS"
+      },
+      {
+        "name": "test_08_importer_preview_mode",
+        "description": "Verifies importer preview mode audits candidate file without publishing or polluting storage",
+        "verdict": "PASS"
+      },
+      {
+        "name": "test_09_importer_partition_verification",
+        "description": "Verifies partition verification mode audits existing canonical partition without side-effects",
+        "verdict": "PASS"
+      },
+      {
+        "name": "test_10_importer_receipts_history",
+        "description": "Verifies listing and retrieval of atomic import receipts",
+        "verdict": "PASS"
+      },
+      {
+        "name": "test_11_api_interval_integrity_endpoint",
+        "description": "Verifies GET /api/v1/product/interval-integrity returns multi-interval verification and PASS verdict",
+        "verdict": "PASS"
+      },
+      {
+        "name": "test_12_api_research_readiness_endpoint",
+        "description": "Verifies GET /api/v1/product/research-readiness for both canonical (READY) and unimported (PARTIALLY_READY) months",
+        "verdict": "PASS"
+      },
+      {
+        "name": "test_13_api_import_history_endpoint",
+        "description": "Verifies GET /api/v1/product/import-history returns structured receipt ledger",
+        "verdict": "PASS"
+      },
+      {
+        "name": "test_14_api_dataset_catalog_freshness_metrics",
+        "description": "Verifies GET /api/v1/product/dataset-catalog includes dynamic freshness metrics (T-1_REFINED_ARCHIVE)",
+        "verdict": "PASS"
+      },
+      {
+        "name": "test_15_unimported_month_fail_closed_no_synthetic_fabrication",
+        "description": "Verifies unimported October 2026 returns no_data and zero synthetic candles",
+        "verdict": "PASS"
+      },
+      {
+        "name": "test_16_non_negotiable_governance_invariants",
+        "description": "Verifies strict fail-closed governance invariants (TECHNICAL_NO_GO, NOT_GRANTED, ORDER_EXECUTION PROHIBITED)",
+        "verdict": "PASS"
+      }
+    ]
+  },
+  "governance_safeguard_contract": {
+    "execution_mode": "OFFLINE_RESEARCH_AND_PRODUCT_DEVELOPMENT",
+    "technical_status": "TECHNICAL_NO_GO",
+    "governance_authorization": "NOT_GRANTED",
+    "production_token": "NOT_ISSUED",
+    "directional_trading_eligibility": 0.0,
+    "synthetic_price_generation": "PROHIBITED_ZERO_FABRICATION"
+  }
+}

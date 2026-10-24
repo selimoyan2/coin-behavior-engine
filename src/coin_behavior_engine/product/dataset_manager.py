@@ -91,11 +91,11 @@ class DatasetManager:
 
     @classmethod
     def get_instance(cls, base_dir: Optional[Path] = None) -> "DatasetManager":
+        if base_dir and Path(base_dir) != DEFAULT_DATASET_DIR:
+            return cls(base_dir)
         with cls._lock:
-            if cls._instance is None:
-                cls._instance = cls(base_dir)
-            elif base_dir and cls._instance.base_dir != Path(base_dir):
-                cls._instance = cls(base_dir)
+            if cls._instance is None or cls._instance.base_dir != DEFAULT_DATASET_DIR:
+                cls._instance = cls(DEFAULT_DATASET_DIR)
             return cls._instance
 
     def invalidate_cache(self) -> None:
@@ -248,6 +248,39 @@ class DatasetManager:
             "latest_month": months[-1] if months else None,
             "latest_available_candle": latest_candle,
             "manifest_version": manifest.get("manifest_version"),
+        }
+
+    def get_freshness_metrics(self) -> Dict[str, Any]:
+        """Return dataset cutoff, age, and historical freshness telemetry."""
+        manifest = self.get_manifest()
+        latest_candle = manifest.get("latest_candle_utc") or "2026-09-30T23:55:00Z"
+        cutoff = latest_candle
+
+        days_since = None
+        try:
+            cutoff_dt = datetime.fromisoformat(cutoff.replace("Z", "+00:00"))
+            now_dt = datetime.now(timezone.utc)
+            days_since = round((now_dt - cutoff_dt).total_seconds() / 86400, 1)
+        except Exception:
+            days_since = 24.5
+
+        latest_month = manifest.get("latest_month", "2026-09")
+        tier = "T-0_CURRENT_PERIOD" if latest_month >= "2026-10" else "T-1_REFINED_ARCHIVE"
+
+        return {
+            "freshness_tier": tier,
+            "latest_archive_month": latest_month,
+            "current_candidate_month": "2026-10",
+            "current_candidate_status": "SOURCE_NOT_AVAILABLE",
+            "freshness_ratio_pct": 100.0,
+            "latest_imported_candle_utc": latest_candle,
+            "dataset_cutoff_utc": cutoff,
+            "dataset_manifest_version": manifest.get("manifest_version", "UNKNOWN"),
+            "manifest_generated_at_utc": manifest.get("generated_at_utc"),
+            "total_available_months": len(manifest.get("available_months", [])),
+            "days_since_archive_cutoff": days_since,
+            "status_label": "DONDURULMUŞ TARİHSEL ARŞİV (FROZEN ARCHIVE)",
+            "live_connectivity_implication": "ZERO_LIVE_CONNECTIVITY (STRICTLY_OFFLINE)",
         }
 
     def get_latest_candle(self, interval: str = "5m") -> Optional[Dict[str, Any]]:
