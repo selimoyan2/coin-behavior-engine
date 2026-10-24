@@ -1,0 +1,78 @@
+{
+  "audit_timestamp_utc": "2026-10-24T09:02:00Z",
+  "sprint": "CBE_PRODUCT_ACCELERATION_07",
+  "infrastructure": {
+    "vps_host": "168.231.125.238",
+    "hostname": "srv1114257",
+    "coolify_managed": true,
+    "staging_service_uuid": "dzzfws54by1whlbq6fk4ywut",
+    "staging_container_id": "6139364c0c1c",
+    "staging_binding": "127.0.0.1:18080->8000/tcp",
+    "staging_health": "healthy",
+    "production_container_id": "e27157318ede",
+    "production_container_name": "6t63aehpaw0cw1bbt4zcm09g-20261024T075740",
+    "production_status": "Up About an hour (healthy)",
+    "production_isolated_and_untouched": true
+  },
+  "deployment_reconciliation": {
+    "git_head_commit": "bca29faa4963bf720576bab319dfb78aff435cf7",
+    "git_head_commit_short": "bca29faa",
+    "origin_main_synchronized": true,
+    "staging_env_source_commit": "bca29faa4963bf720576bab319dfb78aff435cf7",
+    "live_api_build_commit": "bca29faa4963bf720576bab319dfb78aff435cf7",
+    "live_api_build_commit_short": "bca29faa",
+    "manifest_version": "cbe-manifest-v2-73a6212acca3",
+    "reconciliation_verdict": "PERFECT_MATCH"
+  },
+  "live_endpoint_verifications": {
+    "health": {
+      "status": "healthy",
+      "model_version": "CBE-0.7.0",
+      "model_status": "FROZEN",
+      "freeze_verified": true,
+      "worker_status": "RUNNING"
+    },
+    "runtime_build": {
+      "status": "success",
+      "environment": "staging",
+      "build_commit_short": "bca29faa",
+      "runtime_identity_verified": true
+    },
+    "comparative_analysis": {
+      "status": "success",
+      "endpoint": "/api/v1/product/comparative-analysis?month_a=2024-03&month_b=2024-11&interval=1d",
+      "delta_net_return_pct": 20.552,
+      "delta_volatility_pct": -15.34,
+      "delta_max_drawdown_pct": -8.234,
+      "delta_amplitude_pct": 23.971,
+      "volume_ratio": 0.787
+    },
+    "regime_drift": {
+      "status": "success",
+      "endpoint": "/api/v1/product/regime-drift?preset=q4_2025_vs_q1_2026",
+      "population_stability_index": 0.0304,
+      "psi_status": "STABLE",
+      "jensen_shannon_divergence": 0.0055,
+      "wasserstein_distance": 0.2921
+    },
+    "derivation_status": {
+      "status": "success",
+      "endpoint": "/api/v1/product/derivation-status",
+      "canonical_source_interval": "5m",
+      "supported_target_intervals": ["15m", "1h", "4h", "1d"],
+      "derivation_pipeline_ready": true
+    },
+    "research_readiness_hardened": {
+      "unimported_month_2026_10": {
+        "verdict": "BLOCKED_NO_DATA",
+        "score_pct": 0.0,
+        "policy": "FAIL_CLOSED_ZERO_SYNTHETIC"
+      },
+      "canonical_month_2026_09": {
+        "verdict": "READY",
+        "score_pct": 100.0
+      }
+    }
+  },
+  "overall_verdict": "DEPLOYMENT_VERIFIED_AND_ACCEPTED"
+}
