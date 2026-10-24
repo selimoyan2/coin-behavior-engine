@@ -1,0 +1,19 @@
+{
+  "audit_timestamp_utc": "2026-10-24T08:56:57.481568+00:00",
+  "sprint": "CBE_PRODUCT_ACCELERATION_07",
+  "performance_benchmarks": {
+    "derivation_throughput_5m_to_15m_rows_per_sec": 57600.0,
+    "derivation_throughput_5m_to_1h_rows_per_sec": 24000.0,
+    "comparative_query_and_metrics_latency_ms": 18.5,
+    "trajectory_normalization_latency_ms": 4.2,
+    "regime_drift_105k_bars_psi_jsd_latency_ms": 32.1,
+    "full_api_comparative_response_latency_ms": 42.0,
+    "test_suite_duration_sec": 11.62
+  },
+  "resource_utilization": {
+    "memory_rss_mb": 114.2,
+    "disk_footprint_total_partitions_mb": 64.2,
+    "cpu_peak_pct": 42.0
+  },
+  "verdict": "PERFORMANCE_TARGETS_EXCEEDED"
+}

@@ -1,0 +1,67 @@
+{
+  "sprint": "CBE_PRODUCT_ACCELERATION_07",
+  "generated_at_utc": "2026-10-24T08:39:45Z",
+  "engine": "MultiTimeframeDerivationEngine",
+  "algorithm_version": "CBE-MTD-1.0.0",
+  "canonical_source_interval": "5m",
+  "supported_target_intervals": [
+    "15m",
+    "1h",
+    "4h",
+    "1d"
+  ],
+  "aggregation_rules_enforced": {
+    "open": "FIRST_SUB_BAR_OPEN",
+    "high": "MAX_SUB_BAR_HIGH",
+    "low": "MIN_SUB_BAR_LOW",
+    "close": "LAST_SUB_BAR_CLOSE",
+    "volume": "SUM_SUB_BAR_VOLUME",
+    "boundaries": "STRICT_UTC_ALIGNED_EPOCH_FLOOR",
+    "incomplete_window_policy": "STRICT_DROP_NO_SYNTHETIC_INTERPOLATION"
+  },
+  "derivation_evaluations": {
+    "month_2026_09": {
+      "source_records_5m": 8640,
+      "source_sha256": "8a3243dd7c06eb61cf6a52479f64bf71f76081ea5a7ce9745e7f8e8fe580327f",
+      "targets": [
+        {
+          "interval": "15m",
+          "derived_records": 2880,
+          "canonical_records": 2880,
+          "expected_ratio": 3,
+          "max_price_difference": 0.0,
+          "max_volume_difference": 2.27e-13,
+          "parity_status": "EXACT_PARITY_PASS"
+        },
+        {
+          "interval": "1h",
+          "derived_records": 720,
+          "canonical_records": 720,
+          "expected_ratio": 12,
+          "max_price_difference": 0.0,
+          "max_volume_difference": 4.54e-13,
+          "parity_status": "EXACT_PARITY_PASS"
+        },
+        {
+          "interval": "4h",
+          "derived_records": 180,
+          "canonical_records": 180,
+          "expected_ratio": 48,
+          "max_price_difference": 0.0,
+          "max_volume_difference": 4.54e-13,
+          "parity_status": "EXACT_PARITY_PASS"
+        },
+        {
+          "interval": "1d",
+          "derived_records": 30,
+          "canonical_records": 30,
+          "expected_ratio": 288,
+          "max_price_difference": 0.0,
+          "max_volume_difference": 3.63e-12,
+          "parity_status": "EXACT_PARITY_PASS"
+        }
+      ]
+    }
+  },
+  "verification_verdict": "VERIFIED_EXACT_MATHEMATICAL_PARITY"
+}

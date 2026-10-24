@@ -1,0 +1,131 @@
+{
+  "audit_timestamp_utc": "2026-10-24T08:45:06.098073+00:00",
+  "sprint": "CBE_PRODUCT_ACCELERATION_07",
+  "validation_status": "PASSED",
+  "comparative_capabilities": {
+    "dual_period_query": true,
+    "metric_calculations": [
+      "net_return_pct",
+      "realized_volatility_annualized_pct",
+      "max_drawdown_pct",
+      "amplitude_pct",
+      "volume"
+    ],
+    "normalized_trajectory_alignment": true,
+    "anchor_candle_locking": true,
+    "formula_injection_defense": true
+  },
+  "benchmark_comparison": {
+    "period_a": {
+      "month": "2024-03",
+      "interval": "1d",
+      "metrics": {
+        "candle_count": 31,
+        "start_time_utc": null,
+        "end_time_utc": null,
+        "start_price": 61130.99,
+        "end_price": 71280.01,
+        "high_price": 73777.0,
+        "low_price": 59005.0,
+        "abs_change": 10149.02,
+        "net_return_pct": 16.602,
+        "amplitude_pct": 25.035,
+        "max_drawdown_pct": 15.238,
+        "realized_volatility_annualized_pct": 75.67,
+        "total_volume": 1706807.38,
+        "avg_volume_per_bar": 55058.3,
+        "gaps_count": 0
+      }
+    },
+    "period_b": {
+      "month": "2024-11",
+      "interval": "1d",
+      "metrics": {
+        "candle_count": 30,
+        "start_time_utc": null,
+        "end_time_utc": null,
+        "start_price": 70292.01,
+        "end_price": 96407.99,
+        "high_price": 99588.01,
+        "low_price": 66835.0,
+        "abs_change": 26115.98,
+        "net_return_pct": 37.154,
+        "amplitude_pct": 49.006,
+        "max_drawdown_pct": 7.004,
+        "realized_volatility_annualized_pct": 60.33,
+        "total_volume": 1343559.24,
+        "avg_volume_per_bar": 44785.31,
+        "gaps_count": 0
+      }
+    },
+    "delta_metrics": {
+      "net_return_diff_pct": 20.552,
+      "volatility_diff_pct": -15.34,
+      "max_drawdown_diff_pct": -8.234,
+      "amplitude_diff_pct": 23.971,
+      "volume_ratio": 0.787
+    },
+    "trajectory_sample": [
+      {
+        "step": 0,
+        "time_a": null,
+        "price_a": 62387.9,
+        "return_pct_a": 0.0,
+        "volume_a": 47737.93473,
+        "time_b": null,
+        "price_b": 69496.01,
+        "return_pct_b": 0.0,
+        "volume_b": 38301.86755
+      },
+      {
+        "step": 1,
+        "time_a": null,
+        "price_a": 61987.28,
+        "return_pct_a": -0.642,
+        "volume_a": 25534.73659,
+        "time_b": null,
+        "price_b": 69374.74,
+        "return_pct_b": -0.174,
+        "volume_b": 10521.67243
+      },
+      {
+        "step": 2,
+        "time_a": null,
+        "price_a": 63113.97,
+        "return_pct_a": 1.164,
+        "volume_a": 28994.90903,
+        "time_b": null,
+        "price_b": 68775.99,
+        "return_pct_b": -1.036,
+        "volume_b": 24995.70243
+      },
+      {
+        "step": 3,
+        "time_a": null,
+        "price_a": 68245.71,
+        "return_pct_a": 9.389,
+        "volume_a": 84835.16005,
+        "time_b": null,
+        "price_b": 67850.01,
+        "return_pct_b": -2.368,
+        "volume_b": 29800.39187
+      },
+      {
+        "step": 4,
+        "time_a": null,
+        "price_a": 63724.01,
+        "return_pct_a": 2.142,
+        "volume_a": 132696.7813,
+        "time_b": null,
+        "price_b": 69372.01,
+        "return_pct_b": -0.178,
+        "volume_b": 33355.06888
+      }
+    ]
+  },
+  "governance_compliance": {
+    "offline_deterministic": true,
+    "zero_live_streaming": true,
+    "formula_injection_sanitization": true
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "audit_timestamp_utc": "2026-10-24T08:45:39.047230+00:00",
+  "sprint": "CBE_PRODUCT_ACCELERATION_07",
+  "validation_status": "PASSED",
+  "drift_engine_capabilities": {
+    "preset_windows_discovery": true,
+    "frequency_distribution_vector": true,
+    "transition_probability_matrix": true,
+    "mean_persistence_duration_hours": true,
+    "jensen_shannon_divergence": true,
+    "population_stability_index": true,
+    "wasserstein_distance_volatility_rank": true,
+    "zero_bin_laplace_smoothing": true
+  },
+  "benchmark_drift_run": {
+    "window_a": {
+      "label": "2025 Q4",
+      "total_bars": 21462
+    },
+    "window_b": {
+      "label": "2026 Q1",
+      "total_bars": 25920
+    },
+    "drift_telemetry": {
+      "population_stability_index": 0.0304,
+      "psi_status": "STABLE",
+      "psi_label_tr": "Dengeli (Düşük Yapısal Değişim)",
+      "jensen_shannon_divergence": 0.0055,
+      "wasserstein_distance": 0.2921
+    },
+    "comparison_rows": [
+      {
+        "regime": "SIDEWAYS",
+        "regime_name_tr": "Yatay / Konsolidasyon",
+        "count_a": 8085,
+        "pct_a": 37.67,
+        "count_b": 8170,
+        "pct_b": 31.52,
+        "delta_pct": -6.15,
+        "mean_hours_a": 0.89,
+        "mean_hours_b": 0.88
+      },
+      {
+        "regime": "UNCERTAIN",
+        "regime_name_tr": "Belirsiz / Kararsız",
+        "count_a": 5601,
+        "pct_a": 26.1,
+        "count_b": 6932,
+        "pct_b": 26.74,
+        "delta_pct": 0.64,
+        "mean_hours_a": 0.54,
+        "mean_hours_b": 0.55
+      },
+      {
+        "regime": "TRENDING_BULL",
+        "regime_name_tr": "Boğa Trendi (Yükseliş)",
+        "count_a": 2412,
+        "pct_a": 11.24,
+        "count_b": 2648,
+        "pct_b": 10.22,
+        "delta_pct": -1.02,
+        "mean_hours_a": 0.61,
+        "mean_hours_b": 0.58
+      },
+      {
+        "regime": "TRENDING_BEAR",
+        "regime_name_tr": "Ayı Trendi (Düşüş)",
+        "count_a": 1768,
+        "pct_a": 8.24,
+        "count_b": 2380,
+        "pct_b": 9.18,
+        "delta_pct": 0.94,
+        "mean_hours_a": 0.42,
+        "mean_hours_b": 0.42
+      },
+      {
+        "regime": "POSSIBLE_REVERSAL",
+        "regime_name_tr": "Olası Dönüş / Tepe-Dip",
+        "count_a": 448,
+        "pct_a": 2.09,
+        "count_b": 577,
+        "pct_b": 2.23,
+        "delta_pct": 0.14,
+        "mean_hours_a": 0.25,
+        "mean_hours_b": 0.26
+      },
+      {
+        "regime": "HIGH_VOLATILITY",
+        "regime_name_tr": "Yüksek Volatilite / Şok",
+        "count_a": 3148,
+        "pct_a": 14.67,
+        "count_b": 5213,
+        "pct_b": 20.11,
+        "delta_pct": 5.44,
+        "mean_hours_a": 1.68,
+        "mean_hours_b": 2.09
+      }
+    ]
+  },
+  "governance_compliance": {
+    "model_version": "CBE-0.7.0",
+    "predictive_alpha": "NOT_CLAIMED",
+    "scientific_status": "OFFLINE_DETERMINISTIC_EVALUATION"
+  }
+}

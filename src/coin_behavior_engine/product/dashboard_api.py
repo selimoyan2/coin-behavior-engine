@@ -220,6 +220,14 @@ class ProductDashboardApiService:
                 return cls.evaluate_scenario(query_params, {})
             elif sub_path in ("research-export", "export"):
                 return cls.get_research_export(query_params)
+            elif sub_path in ("comparative-analysis", "comparative/analysis", "comparison"):
+                return HTTPStatus.OK, cls.get_comparative_analysis(query_params)
+            elif sub_path in ("comparative-export", "comparative/export"):
+                return cls.get_comparative_export(query_params)
+            elif sub_path in ("regime-drift", "regimes/drift", "drift"):
+                return HTTPStatus.OK, cls.get_regime_drift(query_params)
+            elif sub_path in ("derivation-status", "timeframe-derivation", "derivation"):
+                return HTTPStatus.OK, cls.get_derivation_status(query_params)
             else:
                 return HTTPStatus.NOT_FOUND, {
                     "error": "Not Found",
@@ -233,6 +241,10 @@ class ProductDashboardApiService:
                         f"{cls.API_PREFIX}/regime-analytics",
                         f"{cls.API_PREFIX}/regime-transitions",
                         f"{cls.API_PREFIX}/regime-persistence",
+                        f"{cls.API_PREFIX}/comparative-analysis",
+                        f"{cls.API_PREFIX}/comparative-export",
+                        f"{cls.API_PREFIX}/regime-drift",
+                        f"{cls.API_PREFIX}/derivation-status",
                         f"{cls.API_PREFIX}/analogs",
                         f"{cls.API_PREFIX}/analogs/patterns",
                         f"{cls.API_PREFIX}/analog-validation",
@@ -2396,6 +2408,104 @@ class ProductDashboardApiService:
         except Exception as e:
             logger.error(f"Error generating research export: {e}", exc_info=True)
             return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal Server Error", "message": str(e)}
+
+    @classmethod
+    def get_comparative_analysis(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Execute comparative historical market analysis between Period A and Period B."""
+        from coin_behavior_engine.product.comparative_workbench import ComparativeMarketEngine
+        month_a = params.get("month_a", ["2024-03"])[0]
+        month_b = params.get("month_b", ["2024-11"])[0]
+        interval = params.get("interval", ["1d"])[0]
+        limit = min(2000, max(10, int(params.get("limit", ["500"])[0])))
+        anchor_a = max(0, int(params.get("anchor_a", ["0"])[0]))
+        anchor_b = max(0, int(params.get("anchor_b", ["0"])[0]))
+        start_utc_a = params.get("start_utc_a", [None])[0]
+        end_utc_a = params.get("end_utc_a", [None])[0]
+        start_utc_b = params.get("start_utc_b", [None])[0]
+        end_utc_b = params.get("end_utc_b", [None])[0]
+
+        period_a = {
+            "month": month_a,
+            "interval": interval,
+            "start_utc": start_utc_a,
+            "end_utc": end_utc_a,
+            "limit": limit,
+        }
+        period_b = {
+            "month": month_b,
+            "interval": interval,
+            "start_utc": start_utc_b,
+            "end_utc": end_utc_b,
+            "limit": limit,
+        }
+        return ComparativeMarketEngine.compare_periods(period_a, period_b, anchor_a=anchor_a, anchor_b=anchor_b)
+
+    @classmethod
+    def get_comparative_export(cls, params: Dict[str, List[str]]) -> Tuple[int, Dict[str, Any]]:
+        """Export comparative trajectory with formula injection defense."""
+        from coin_behavior_engine.product.comparative_workbench import ComparativeMarketEngine
+        fmt = params.get("format", ["csv"])[0].lower()
+        analysis = cls.get_comparative_analysis(params)
+        if fmt == "csv":
+            csv_str = ComparativeMarketEngine.export_comparison_csv(analysis)
+            return HTTPStatus.OK, {
+                "status": "success",
+                "format": "csv",
+                "filename": f"cbe_comparison_{int(time.time())}.csv",
+                "content": csv_str,
+                "formula_injection_defense": "ENFORCED",
+            }
+        else:
+            json_str = ComparativeMarketEngine.export_comparison_json(analysis)
+            return HTTPStatus.OK, {
+                "status": "success",
+                "format": "json",
+                "filename": f"cbe_comparison_{int(time.time())}.json",
+                "data": json.loads(json_str),
+                "formula_injection_defense": "ENFORCED",
+            }
+
+    @classmethod
+    def get_regime_drift(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Execute regime distribution drift analysis between two historical windows."""
+        from coin_behavior_engine.product.regime_drift import RegimeDriftEngine
+        presets = RegimeDriftEngine.get_preset_windows()
+        preset_id = params.get("preset", ["q4_2025_vs_q1_2026"])[0]
+
+        matched = next((p for p in presets if p["id"] == preset_id), None)
+        if matched and "start_utc_a" not in params:
+            window_a = matched["window_a"]
+            window_b = matched["window_b"]
+        else:
+            window_a = {
+                "label": params.get("label_a", ["Pencere A"])[0],
+                "start_utc": params.get("start_utc_a", ["2025-10-18T00:00:00Z"])[0],
+                "end_utc": params.get("end_utc_a", ["2025-12-31T23:59:59Z"])[0],
+            }
+            window_b = {
+                "label": params.get("label_b", ["Pencere B"])[0],
+                "start_utc": params.get("start_utc_b", ["2026-01-01T00:00:00Z"])[0],
+                "end_utc": params.get("end_utc_b", ["2026-03-31T23:59:59Z"])[0],
+            }
+
+        res = RegimeDriftEngine.analyze_drift(window_a, window_b)
+        res["presets"] = presets
+        res["active_preset"] = preset_id if matched else "custom"
+        return res
+
+    @classmethod
+    def get_derivation_status(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return status of multi-timeframe derivation engine and dataset lineage."""
+        from coin_behavior_engine.product.timeframe_derivation import MultiTimeframeDerivationEngine
+        from coin_behavior_engine.product.dataset_manager import DatasetManager
+        dm = DatasetManager.get_instance()
+        manifest = dm.get_manifest()
+        engine = MultiTimeframeDerivationEngine()
+        status_info = engine.get_derivation_status()
+        status_info["manifest_version"] = manifest.get("manifest_version")
+        status_info["total_partitions"] = manifest.get("total_partitions")
+        status_info["timestamp_utc"] = datetime.now(timezone.utc).isoformat()
+        return status_info
 
 
 START_TIME = time.time()

@@ -556,6 +556,12 @@ def render_product_dashboard_html() -> str:
     <a href="#behavior" class="nav-tab" id="tab-btn-behavior" onclick="switchTab('behavior')">
       <span>📈</span> Piyasa Davranışı
     </a>
+    <a href="#comparison" class="nav-tab" id="tab-btn-comparison" onclick="switchTab('comparison')">
+      <span>⚖️</span> Karşılaştırma Laboratuvarı
+    </a>
+    <a href="#drift" class="nav-tab" id="tab-btn-drift" onclick="switchTab('drift')">
+      <span>🧬</span> Rejim Dağılım & Değişim
+    </a>
     <a href="#quality" class="nav-tab" id="tab-btn-quality" onclick="switchTab('quality')">
       <span>🛡️</span> Veri Kapsamı & Kalite
     </a>
@@ -1047,6 +1053,273 @@ def render_product_dashboard_html() -> str:
             Kalıcılık Yarılanma Ömrü: <code>2.4 Periyot (19.2 saat)</code><br>
             Ticari Değerlendirme: <b>İşlem komisyonları net carry getirisini sıfırlar.</b>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- MODULE: COMPARATIVE HISTORICAL MARKET WORKBENCH (SPRINT 07)         -->
+    <!-- =================================================================== -->
+    <section id="module-comparison" class="tab-content">
+      <div class="card" style="border-left: 4px solid #38bdf8; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: #38bdf8; letter-spacing: 0.5px;">TARİHSEL PİYASA KARŞILAŞTIRMA TEZGAHI (SPRINT 07)</div>
+            <h2 style="font-size: 18px; color: #fff; margin: 4px 0;">Karşılaştırmalı Piyasa Araştırma Laboratuvarı</h2>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+              İki farklı tarihsel piyasa dönemini (fiyat seyrini, realize volatiliteyi, maksimum düşüşü ve normalize getiri eğrilerini) yan yana analiz edin.
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="runComparativeAnalysis()">↻ Karşılaştırmayı Çalıştır</button>
+            <button class="btn" onclick="exportComparativeData('csv')">📥 CSV İndir</button>
+            <button class="btn" onclick="exportComparativeData('json')">📥 JSON İndir</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison Parameters Control Card -->
+      <div class="card" style="margin-bottom: 20px; padding: 16px;">
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+          <!-- Period A Settings -->
+          <div style="background: rgba(56, 189, 248, 0.04); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 6px; padding: 14px;">
+            <div style="font-size: 13px; font-weight: 700; color: #38bdf8; margin-bottom: 10px;">🔷 DÖNEM A (REFERANS DÖNEM)</div>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Referans Ayı</label>
+                <select id="comp-month-a" class="input" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+                  <option value="2024-03" selected>Mart 2024 (ATH Öncesi)</option>
+                  <option value="2022-06">Haziran 2022 (Düşüş Dibi)</option>
+                  <option value="2023-01">Ocak 2023 (Toparlanma)</option>
+                  <option value="2024-11">Kasım 2024 (Ralli)</option>
+                  <option value="2026-09">Eylül 2026 (Son Arşiv)</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Zaman Aralığı</label>
+                <select id="comp-interval" class="input" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+                  <option value="1d" selected>1 Gün (1d)</option>
+                  <option value="4h">4 Saat (4h)</option>
+                  <option value="1h">1 Saat (1h)</option>
+                  <option value="15m">15 Dakika (15m)</option>
+                  <option value="5m">5 Dakika (5m)</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Mum Limiti</label>
+                <input type="number" id="comp-limit-a" class="input" value="100" min="10" max="1000" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+              </div>
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Anchor Mum İndeksi</label>
+                <input type="number" id="comp-anchor-a" class="input" value="0" min="0" max="500" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Period B Settings -->
+          <div style="background: rgba(245, 158, 11, 0.04); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 6px; padding: 14px;">
+            <div style="font-size: 13px; font-weight: 700; color: #f59e0b; margin-bottom: 10px;">🔶 DÖNEM B (KARŞILAŞTIRMA DÖNEMİ)</div>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Hedef Ay</label>
+                <select id="comp-month-b" class="input" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+                  <option value="2024-11" selected>Kasım 2024 (Ralli)</option>
+                  <option value="2024-03">Mart 2024 (ATH Öncesi)</option>
+                  <option value="2022-11">Kasım 2022 (FTX Çöküşü)</option>
+                  <option value="2025-10">Ekim 2025 (Tarihsel)</option>
+                  <option value="2026-09">Eylül 2026 (Son Arşiv)</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Zaman Aralığı</label>
+                <select id="comp-interval-b" class="input" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;" disabled>
+                  <option value="1d" selected>1 Gün (1d) [Senkron]</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Mum Limiti</label>
+                <input type="number" id="comp-limit-b" class="input" value="100" min="10" max="1000" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+              </div>
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Anchor Mum İndeksi</label>
+                <input type="number" id="comp-anchor-b" class="input" value="0" min="0" max="500" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Delta Telemetry Cards -->
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 20px;">
+        <div class="card" style="padding: 14px;">
+          <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">NET GETİRİ FARKI (Δ)</div>
+          <div class="value" id="comp-delta-return" style="font-size: 20px; color: #34d399;">-%</div>
+          <div class="subtext" style="font-size: 11px; margin-top: 4px;" id="comp-delta-return-sub">Dönem B vs Dönem A</div>
+        </div>
+        <div class="card" style="padding: 14px;">
+          <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">VOLATİLİTE FARKI (Δ)</div>
+          <div class="value" id="comp-delta-vol" style="font-size: 20px; color: #a78bfa;">-%</div>
+          <div class="subtext" style="font-size: 11px; margin-top: 4px;">Yıllıklandırılmış Realize Vol</div>
+        </div>
+        <div class="card" style="padding: 14px;">
+          <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">MAKS ÇEKİLME FARKI (Δ)</div>
+          <div class="value" id="comp-delta-mdd" style="font-size: 20px; color: #f87171;">-%</div>
+          <div class="subtext" style="font-size: 11px; margin-top: 4px;">Max Drawdown Değişimi</div>
+        </div>
+        <div class="card" style="padding: 14px;">
+          <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">FİYAT GENLİK FARKI (Δ)</div>
+          <div class="value" id="comp-delta-amp" style="font-size: 20px; color: #38bdf8;">-%</div>
+          <div class="subtext" style="font-size: 11px; margin-top: 4px;">Yüksek/Düşük Band Genişliği</div>
+        </div>
+        <div class="card" style="padding: 14px;">
+          <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">HACİM ORANI (B / A)</div>
+          <div class="value" id="comp-delta-vol-ratio" style="font-size: 20px; color: #facc15;">-x</div>
+          <div class="subtext" style="font-size: 11px; margin-top: 4px;">Kümülatif Likidite Oranı</div>
+        </div>
+      </div>
+
+      <!-- Normalized Trajectory Curve Canvas -->
+      <div class="card" style="margin-bottom: 20px; padding: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <div style="font-size: 14px; font-weight: 700; color: #fff;">📈 Normalize Edilmiş Getiri Seyri (Normalized % Return Trajectory)</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Başlangıç/Anchor mumu = %0.0 olarak eşitlenmiş göreceli fiyat performansı eğrisi</div>
+          </div>
+          <div style="display: flex; gap: 14px; align-items: center; font-size: 12px;">
+            <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; background: #38bdf8; border-radius: 2px; display: inline-block;"></span> <b id="comp-legend-a">Dönem A (%0.0)</b></div>
+            <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; background: #f59e0b; border-radius: 2px; display: inline-block;"></span> <b id="comp-legend-b">Dönem B (%0.0)</b></div>
+          </div>
+        </div>
+        <div class="chart-canvas-wrap" id="comp-trajectory-canvas-wrap" style="height: 320px; background: #070b13; border: 1px solid #1e293b; border-radius: 4px; position: relative;">
+          <canvas id="comp-trajectory-canvas" class="chart-canvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Side-by-Side Candlestick Charts -->
+      <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+        <!-- Canvas A -->
+        <div class="card" style="padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 13px; font-weight: 700; color: #38bdf8;" id="comp-chart-title-a">🔷 DÖNEM A FİYAT SEYRİ</span>
+            <span class="badge badge-info" id="comp-chart-badge-a">-</span>
+          </div>
+          <div class="chart-canvas-wrap" id="comp-canvas-wrap-a" style="height: 260px; background: #070b13; border: 1px solid #1e293b; border-radius: 4px;">
+            <canvas id="comp-canvas-a" class="chart-canvas"></canvas>
+          </div>
+        </div>
+        <!-- Canvas B -->
+        <div class="card" style="padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 13px; font-weight: 700; color: #f59e0b;" id="comp-chart-title-b">🔶 DÖNEM B FİYAT SEYRİ</span>
+            <span class="badge badge-warn" id="comp-chart-badge-b">-</span>
+          </div>
+          <div class="chart-canvas-wrap" id="comp-canvas-wrap-b" style="height: 260px; background: #070b13; border: 1px solid #1e293b; border-radius: 4px;">
+            <canvas id="comp-canvas-b" class="chart-canvas"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparative Metrics Table -->
+      <div class="card" style="margin-bottom: 20px;">
+        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px;">⚖️ Detaylı Karşılaştırmalı İstatistik Matrisi</div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Metrik Tanımı</th>
+                <th>Dönem A (Referans)</th>
+                <th>Dönem B (Karşılaştırma)</th>
+                <th>Göreceli Fark (Δ B - A)</th>
+              </tr>
+            </thead>
+            <tbody id="comp-metrics-tbody">
+              <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Karşılaştırma verisi yükleniyor...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- MODULE: REGIME DISTRIBUTION DRIFT INTELLIGENCE (SPRINT 07)          -->
+    <!-- =================================================================== -->
+    <section id="module-drift" class="tab-content">
+      <div class="card" style="border-left: 4px solid #a78bfa; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: #a78bfa; letter-spacing: 0.5px;">PİYASA REJİM DAĞILIM & DEĞİŞİM ANALİZİ (SPRINT 07)</div>
+            <h2 style="font-size: 18px; color: #fff; margin: 4px 0;">Regime Distribution Drift Intelligence</h2>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+              İki farklı zaman penceresi arasındaki rejim frekans kaymasını (Population Stability Index - PSI), Jensen-Shannon Divergence (JSD), Wasserstein Volatilite Mesafesini ve rejim kalıcılık sürelerini analiz edin.
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <select id="drift-preset-select" class="input" style="background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 12px; border-radius: 4px;" onchange="loadDriftData(this.value)">
+              <option value="q4_2025_vs_q1_2026" selected>2025-Q4 vs 2026-Q1</option>
+              <option value="h1_2026_vs_h2_2026">2026-H1 vs 2026-H2</option>
+              <option value="q1_2026_vs_q3_2026">2026-Q1 vs 2026-Q3</option>
+              <option value="last_30d_vs_prior_30d">Son 30 Gün vs Önceki 30 Gün</option>
+            </select>
+            <button class="btn btn-primary" onclick="loadDriftData()">↻ Drift Analizini Yenile</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Drift Telemetry Cards -->
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 20px;">
+        <div class="card" style="padding: 14px;">
+          <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">POPULATION STABILITY INDEX (PSI)</div>
+          <div class="value" id="drift-psi-val" style="font-size: 22px; color: #34d399;">-</div>
+          <div class="subtext" style="font-size: 11px; margin-top: 4px;" id="drift-psi-badge"><span class="badge badge-success">DENGELİ</span></div>
+        </div>
+        <div class="card" style="padding: 14px;">
+          <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">JENSEN-SHANNON DIVERGENCE (JSD)</div>
+          <div class="value" id="drift-jsd-val" style="font-size: 22px; color: #38bdf8;">-</div>
+          <div class="subtext" style="font-size: 11px; margin-top: 4px;">Simetrik KL Iraksaması (0.0 — 1.0)</div>
+        </div>
+        <div class="card" style="padding: 14px;">
+          <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">WASSERSTEIN VOLATİLİTE MESAFESİ</div>
+          <div class="value" id="drift-wass-val" style="font-size: 22px; color: #a78bfa;">-</div>
+          <div class="subtext" style="font-size: 11px; margin-top: 4px;">Sıralı Volatilite Durum Kayması</div>
+        </div>
+        <div class="card" style="padding: 14px;">
+          <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">ÖRNEKLEM BOYUTU (BAR)</div>
+          <div class="value" id="drift-sample-bars" style="font-size: 18px; color: #facc15;">-</div>
+          <div class="subtext" style="font-size: 11px; margin-top: 4px;" id="drift-sample-labels">Pencere A & B Toplamı</div>
+        </div>
+      </div>
+
+      <!-- Regime Distribution Comparison Bars & Table -->
+      <div class="card" style="margin-bottom: 20px; padding: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <div style="font-size: 14px; font-weight: 700; color: #fff;">📊 Rejim Frekans Dağılımı ve Göreceli Kayma</div>
+          <div style="font-size: 12px; display: flex; gap: 12px;">
+            <span style="color: #38bdf8;">■ Pencere A</span>
+            <span style="color: #f59e0b;">■ Pencere B</span>
+          </div>
+        </div>
+        <div class="chart-canvas-wrap" id="drift-dist-canvas-wrap" style="height: 260px; background: #070b13; border: 1px solid #1e293b; border-radius: 4px; margin-bottom: 16px;">
+          <canvas id="drift-dist-canvas" class="chart-canvas"></canvas>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Piyasa Rejimi</th>
+                <th>Pencere A Sayı</th>
+                <th>Pencere A %</th>
+                <th>Pencere B Sayı</th>
+                <th>Pencere B %</th>
+                <th>Net Kayma (Δ %)</th>
+                <th>Ort. Kalıcılık A (Saat)</th>
+                <th>Ort. Kalıcılık B (Saat)</th>
+              </tr>
+            </thead>
+            <tbody id="drift-comparison-tbody">
+              <tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Rejim verileri yükleniyor...</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
@@ -1841,6 +2114,10 @@ def render_product_dashboard_html() -> str:
       } else if (tabId === "behavior") {
         loadBehavior();
         setTimeout(() => { initCandleCanvasEvents(); drawCandlestickChart(); if (currentAnalogData) drawAnalogTrajectoryChart(currentAnalogData); }, 60);
+      } else if (tabId === "comparison") {
+        loadComparisonTab();
+      } else if (tabId === "drift") {
+        loadDriftTab();
       } else if (tabId === "quality") {
         loadQualityTab();
       } else if (tabId === "regimes") {
@@ -1861,6 +2138,8 @@ def render_product_dashboard_html() -> str:
     function refreshCurrentTab() {
       if (currentTab === "overview") { loadOverview(); loadHistoricalCandles(); }
       else if (currentTab === "behavior") { loadBehavior(); }
+      else if (currentTab === "comparison") { runComparativeAnalysis(); }
+      else if (currentTab === "drift") { loadDriftData(); }
       else if (currentTab === "quality") { loadQualityTab(); }
       else if (currentTab === "regimes") { loadRegimesTab(); }
       else if (currentTab === "events") { loadMacroReactions(); }
@@ -3467,7 +3746,7 @@ def render_product_dashboard_html() -> str:
       populateDayDropdowns();
       populateYearDropdowns();
       const hash = window.location.hash.replace("#", "");
-      if (hash && ["overview", "research", "behavior", "quality", "regimes", "events", "scenarios", "governance", "artifacts", "operations"].includes(hash)) {
+      if (hash && ["overview", "research", "behavior", "comparison", "drift", "quality", "regimes", "events", "scenarios", "governance", "artifacts", "operations"].includes(hash)) {
         switchTab(hash);
       } else {
         switchTab("overview");
@@ -3481,7 +3760,451 @@ def render_product_dashboard_html() -> str:
       if (currentAnalogData) drawAnalogTrajectoryChart(currentAnalogData);
       if (currentRegimeTransitions) drawRegimeMatrix(currentRegimeTransitions);
       if (currentRegimePersistence) drawRegimeSurvival(currentRegimePersistence);
+      if (currentComparisonData) {
+        drawComparativeTrajectoryCanvas(currentComparisonData);
+        drawCandlesOnCanvas("comp-canvas-a", currentComparisonData.candles_a || [], "#38bdf8");
+        drawCandlesOnCanvas("comp-canvas-b", currentComparisonData.candles_b || [], "#f59e0b");
+      }
+      if (currentDriftData) drawDriftDistributionCanvas(currentDriftData);
     });
+
+    // ===================================================================
+    // MODULE: COMPARATIVE WORKBENCH (SPRINT 07)
+    // ===================================================================
+    let currentComparisonData = null;
+
+    function syncCompInterval(val) {
+      const selB = document.getElementById("comp-interval-b");
+      if (selB) selB.innerHTML = `<option value="${val}" selected>${val} [Senkron]</option>`;
+    }
+
+    async function loadComparisonTab() {
+      if (!currentComparisonData) {
+        await runComparativeAnalysis();
+      } else {
+        renderComparisonView(currentComparisonData);
+      }
+    }
+
+    async function runComparativeAnalysis() {
+      const mA = document.getElementById("comp-month-a") ? document.getElementById("comp-month-a").value : "2024-03";
+      const mB = document.getElementById("comp-month-b") ? document.getElementById("comp-month-b").value : "2024-11";
+      const intv = document.getElementById("comp-interval") ? document.getElementById("comp-interval").value : "1d";
+      const limA = document.getElementById("comp-limit-a") ? document.getElementById("comp-limit-a").value : "100";
+      const limB = document.getElementById("comp-limit-b") ? document.getElementById("comp-limit-b").value : "100";
+      const ancA = document.getElementById("comp-anchor-a") ? document.getElementById("comp-anchor-a").value : "0";
+      const ancB = document.getElementById("comp-anchor-b") ? document.getElementById("comp-anchor-b").value : "0";
+
+      try {
+        const url = `/api/v1/product/comparative-analysis?month_a=${encodeURIComponent(mA)}&month_b=${encodeURIComponent(mB)}&interval=${encodeURIComponent(intv)}&limit=${encodeURIComponent(limA)}&anchor_a=${encodeURIComponent(ancA)}&anchor_b=${encodeURIComponent(ancB)}`;
+        const res = await fetch(url);
+        if (!res.ok) return;
+        const data = await res.json();
+        currentComparisonData = data;
+        renderComparisonView(data);
+      } catch (e) {
+        console.warn("Comparative analysis error:", e);
+      }
+    }
+
+    function renderComparisonView(data) {
+      if (!data || data.status !== "success") return;
+      const d = data.delta_metrics || {};
+      const pa = data.period_a || {};
+      const pb = data.period_b || {};
+      const ma = pa.metrics || {};
+      const mb = pb.metrics || {};
+
+      const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+      
+      const netRetDiff = d.net_return_diff_pct !== undefined ? d.net_return_diff_pct : 0;
+      const netEl = document.getElementById("comp-delta-return");
+      if (netEl) {
+        netEl.innerText = (netRetDiff > 0 ? "+" : "") + netRetDiff.toFixed(2) + "%";
+        netEl.style.color = netRetDiff >= 0 ? "var(--green)" : "var(--red)";
+      }
+      setEl("comp-delta-vol", (d.volatility_diff_pct !== undefined ? (d.volatility_diff_pct > 0 ? "+" : "") + d.volatility_diff_pct.toFixed(2) + "%" : "-"));
+      setEl("comp-delta-mdd", (d.max_drawdown_diff_pct !== undefined ? (d.max_drawdown_diff_pct > 0 ? "+" : "") + d.max_drawdown_diff_pct.toFixed(2) + "%" : "-"));
+      setEl("comp-delta-amp", (d.amplitude_diff_pct !== undefined ? (d.amplitude_diff_pct > 0 ? "+" : "") + d.amplitude_diff_pct.toFixed(2) + "%" : "-"));
+      setEl("comp-delta-vol-ratio", (d.volume_ratio !== undefined ? d.volume_ratio.toFixed(2) + "x" : "-"));
+
+      setEl("comp-legend-a", `Dönem A (${pa.params?.month || 'A'}): %${(ma.net_return_pct || 0).toFixed(2)}`);
+      setEl("comp-legend-b", `Dönem B (${pb.params?.month || 'B'}): %${(mb.net_return_pct || 0).toFixed(2)}`);
+
+      setEl("comp-chart-title-a", `🔷 DÖNEM A (${pa.params?.month || 'A'}) - ${pa.params?.interval || '1d'}`);
+      setEl("comp-chart-badge-a", `${ma.candle_count || 0} Mum | Getiri: %${(ma.net_return_pct || 0).toFixed(2)}`);
+      setEl("comp-chart-title-b", `🔶 DÖNEM B (${pb.params?.month || 'B'}) - ${pb.params?.interval || '1d'}`);
+      setEl("comp-chart-badge-b", `${mb.candle_count || 0} Mum | Getiri: %${(mb.net_return_pct || 0).toFixed(2)}`);
+
+      // Metrics table
+      const tbody = document.getElementById("comp-metrics-tbody");
+      if (tbody) {
+        const rows = [
+          ["Başlangıç Tarihi", ma.start_time_utc?.substring(0, 16).replace("T", " ") || "-", mb.start_time_utc?.substring(0, 16).replace("T", " ") || "-", "Zaman Uyumu"],
+          ["Bitiş Tarihi", ma.end_time_utc?.substring(0, 16).replace("T", " ") || "-", mb.end_time_utc?.substring(0, 16).replace("T", " ") || "-", "Zaman Uyumu"],
+          ["Başlangıç Fiyatı", `$${(ma.start_price || 0).toLocaleString()}`, `$${(mb.start_price || 0).toLocaleString()}`, `$${((mb.start_price || 0) - (ma.start_price || 0)).toFixed(2)}`],
+          ["Kapanış Fiyatı", `$${(ma.end_price || 0).toLocaleString()}`, `$${(mb.end_price || 0).toLocaleString()}`, `$${((mb.end_price || 0) - (ma.end_price || 0)).toFixed(2)}`],
+          ["Net Getiri (%)", `%${(ma.net_return_pct || 0).toFixed(2)}`, `%${(mb.net_return_pct || 0).toFixed(2)}`, `${netRetDiff > 0 ? "+" : ""}${netRetDiff.toFixed(2)}%`],
+          ["Realize Volatilite (Yıllık)", `%${(ma.realized_volatility_annualized_pct || 0).toFixed(2)}`, `%${(mb.realized_volatility_annualized_pct || 0).toFixed(2)}`, `${(d.volatility_diff_pct || 0) > 0 ? "+" : ""}${(d.volatility_diff_pct || 0).toFixed(2)}%`],
+          ["Maksimum Çekilme (MDD)", `%${(ma.max_drawdown_pct || 0).toFixed(2)}`, `%${(mb.max_drawdown_pct || 0).toFixed(2)}`, `${(d.max_drawdown_diff_pct || 0) > 0 ? "+" : ""}${(d.max_drawdown_diff_pct || 0).toFixed(2)}%`],
+          ["Fiyat Genlik Aralığı (Amp)", `%${(ma.amplitude_pct || 0).toFixed(2)}`, `%${(mb.amplitude_pct || 0).toFixed(2)}`, `${(d.amplitude_diff_pct || 0) > 0 ? "+" : ""}${(d.amplitude_diff_pct || 0).toFixed(2)}%`],
+          ["Kümülatif Hacim (BTC)", `${(ma.total_volume || 0).toLocaleString()} BTC`, `${(mb.total_volume || 0).toLocaleString()} BTC`, `${(d.volume_ratio || 0).toFixed(2)}x Oran`],
+          ["Toplam İncelenen Mum", `${ma.candle_count || 0}`, `${mb.candle_count || 0}`, `${(mb.candle_count || 0) - (ma.candle_count || 0)}`],
+          ["Veri Boşlukları (Gaps)", `${ma.gaps_count || 0}`, `${mb.gaps_count || 0}`, "Bütünlük Kontrolü"]
+        ];
+        tbody.innerHTML = rows.map(r => `
+          <tr>
+            <td><strong>${r[0]}</strong></td>
+            <td><code>${r[1]}</code></td>
+            <td><code>${r[2]}</code></td>
+            <td><strong style="color: var(--accent);">${r[3]}</strong></td>
+          </tr>
+        `).join("");
+      }
+
+      drawComparativeTrajectoryCanvas(data);
+      drawCandlesOnCanvas("comp-canvas-a", data.candles_a || [], "#38bdf8");
+      drawCandlesOnCanvas("comp-canvas-b", data.candles_b || [], "#f59e0b");
+    }
+
+    async function exportComparativeData(fmt) {
+      const mA = document.getElementById("comp-month-a") ? document.getElementById("comp-month-a").value : "2024-03";
+      const mB = document.getElementById("comp-month-b") ? document.getElementById("comp-month-b").value : "2024-11";
+      const intv = document.getElementById("comp-interval") ? document.getElementById("comp-interval").value : "1d";
+      try {
+        const url = `/api/v1/product/comparative-export?month_a=${encodeURIComponent(mA)}&month_b=${encodeURIComponent(mB)}&interval=${encodeURIComponent(intv)}&format=${fmt}`;
+        const res = await fetch(url);
+        if (!res.ok) return;
+        const result = await res.json();
+        const content = fmt === "csv" ? result.content : JSON.stringify(result.data, null, 2);
+        const mime = fmt === "csv" ? "text/csv;charset=utf-8;" : "application/json;charset=utf-8;";
+        const blob = new Blob([content], { type: mime });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = result.filename || `cbe_comparative_${Date.now()}.${fmt}`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (e) {
+        console.warn("Export error:", e);
+      }
+    }
+
+    function drawComparativeTrajectoryCanvas(data) {
+      const canvas = document.getElementById("comp-trajectory-canvas");
+      const wrap = document.getElementById("comp-trajectory-canvas-wrap");
+      if (!canvas || !wrap || !data) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      const w = wrap.clientWidth || 600;
+      const h = wrap.clientHeight || 320;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+
+      ctx.fillStyle = "#070b13";
+      ctx.fillRect(0, 0, w, h);
+
+      const trajectory = data.normalized_trajectory || [];
+      if (trajectory.length < 2) return;
+
+      const padTop = 20;
+      const padBottom = 30;
+      const padLeft = 55;
+      const padRight = 20;
+      const chartW = w - padLeft - padRight;
+      const chartH = h - padTop - padBottom;
+
+      let minVal = 0;
+      let maxVal = 0;
+      trajectory.forEach(pt => {
+        if (pt.return_pct_a !== null) {
+          if (pt.return_pct_a < minVal) minVal = pt.return_pct_a;
+          if (pt.return_pct_a > maxVal) maxVal = pt.return_pct_a;
+        }
+        if (pt.return_pct_b !== null) {
+          if (pt.return_pct_b < minVal) minVal = pt.return_pct_b;
+          if (pt.return_pct_b > maxVal) maxVal = pt.return_pct_b;
+        }
+      });
+
+      const range = (maxVal - minVal) || 10;
+      minVal -= range * 0.05;
+      maxVal += range * 0.05;
+
+      const getY = (val) => padTop + chartH - ((val - minVal) / (maxVal - minVal)) * chartH;
+      const getX = (idx) => padLeft + (idx / (trajectory.length - 1)) * chartW;
+
+      // Draw Grid & Zero Line
+      const yZero = getY(0);
+      if (yZero >= padTop && yZero <= padTop + chartH) {
+        ctx.strokeStyle = "#475569";
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(padLeft, yZero);
+        ctx.lineTo(w - padRight, yZero);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = "#94a3b8";
+        ctx.font = "10px sans-serif";
+        ctx.fillText("%0.0", 12, yZero + 3);
+      }
+
+      // Horizontal Grid Lines
+      for (let i = 0; i <= 4; i++) {
+        const v = minVal + (range / 4) * i;
+        const y = getY(v);
+        ctx.strokeStyle = "#162032";
+        ctx.beginPath();
+        ctx.moveTo(padLeft, y);
+        ctx.lineTo(w - padRight, y);
+        ctx.stroke();
+
+        ctx.fillStyle = "#64748b";
+        ctx.font = "9px sans-serif";
+        ctx.fillText((v >= 0 ? "+" : "") + v.toFixed(1) + "%", 8, y + 3);
+      }
+
+      // Series A (Cyan)
+      ctx.strokeStyle = "#38bdf8";
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      let startedA = false;
+      trajectory.forEach((pt, i) => {
+        if (pt.return_pct_a !== null) {
+          const x = getX(i);
+          const y = getY(pt.return_pct_a);
+          if (!startedA) { ctx.moveTo(x, y); startedA = true; } else { ctx.lineTo(x, y); }
+        }
+      });
+      ctx.stroke();
+
+      // Series B (Amber)
+      ctx.strokeStyle = "#f59e0b";
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      let startedB = false;
+      trajectory.forEach((pt, i) => {
+        if (pt.return_pct_b !== null) {
+          const x = getX(i);
+          const y = getY(pt.return_pct_b);
+          if (!startedB) { ctx.moveTo(x, y); startedB = true; } else { ctx.lineTo(x, y); }
+        }
+      });
+      ctx.stroke();
+    }
+
+    function drawCandlesOnCanvas(canvasId, candles, strokeColor) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas || !candles || candles.length === 0) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.parentElement.clientWidth || 300;
+      const h = canvas.parentElement.clientHeight || 260;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+
+      ctx.fillStyle = "#070b13";
+      ctx.fillRect(0, 0, w, h);
+
+      const padTop = 15;
+      const padBottom = 20;
+      const padLeft = 45;
+      const padRight = 10;
+      const chartW = w - padLeft - padRight;
+      const chartH = h - padTop - padBottom;
+
+      let minP = Infinity;
+      let maxP = -Infinity;
+      candles.forEach(c => {
+        const hi = parseFloat(c.high);
+        const lo = parseFloat(c.low);
+        if (hi > maxP) maxP = hi;
+        if (lo < minP) minP = lo;
+      });
+
+      const pRange = (maxP - minP) || 1;
+      minP -= pRange * 0.05;
+      maxP += pRange * 0.05;
+
+      const getY = (p) => padTop + chartH - ((p - minP) / (maxP - minP)) * chartH;
+      const barW = Math.max(1, (chartW / candles.length) * 0.7);
+
+      candles.forEach((c, i) => {
+        const x = padLeft + (i / candles.length) * chartW + barW / 2;
+        const o = parseFloat(c.open);
+        const h_val = parseFloat(c.high);
+        const l_val = parseFloat(c.low);
+        const cl = parseFloat(c.close);
+
+        const yO = getY(o);
+        const yH = getY(h_val);
+        const yL = getY(l_val);
+        const yC = getY(cl);
+
+        const isUp = cl >= o;
+        const color = isUp ? "var(--green)" : "var(--red)";
+
+        // Wick
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(x, yH);
+        ctx.lineTo(x, yL);
+        ctx.stroke();
+
+        // Body
+        ctx.fillStyle = color;
+        const bodyY = Math.min(yO, yC);
+        const bodyH = Math.max(1.5, Math.abs(yC - yO));
+        ctx.fillRect(x - barW / 2, bodyY, barW, bodyH);
+      });
+
+      ctx.fillStyle = "#64748b";
+      ctx.font = "9px sans-serif";
+      ctx.fillText(`$${Math.round(maxP).toLocaleString()}`, 6, padTop + 8);
+      ctx.fillText(`$${Math.round(minP).toLocaleString()}`, 6, padTop + chartH);
+    }
+
+    // ===================================================================
+    // MODULE: REGIME DRIFT INTELLIGENCE (SPRINT 07)
+    // ===================================================================
+    let currentDriftData = null;
+
+    async function loadDriftTab() {
+      if (!currentDriftData) {
+        await loadDriftData();
+      } else {
+        renderDriftView(currentDriftData);
+      }
+    }
+
+    async function loadDriftData(preset) {
+      const p = preset || (document.getElementById("drift-preset-select") ? document.getElementById("drift-preset-select").value : "q4_2025_vs_q1_2026");
+      try {
+        const res = await fetch(`/api/v1/product/regime-drift?preset=${encodeURIComponent(p)}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        currentDriftData = data;
+        renderDriftView(data);
+      } catch (e) {
+        console.warn("Drift data error:", e);
+      }
+    }
+
+    function renderDriftView(data) {
+      if (!data || data.status !== "success") return;
+      const t = data.drift_telemetry || {};
+      const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+
+      setEl("drift-psi-val", (t.population_stability_index !== undefined ? t.population_stability_index.toFixed(4) : "-"));
+      const badgeEl = document.getElementById("drift-psi-badge");
+      if (badgeEl) {
+        const st = t.psi_status || "STABLE";
+        const badgeClass = st === "STABLE" ? "badge-success" : (st === "MODERATE_DRIFT" ? "badge-warn" : "badge-danger");
+        badgeEl.innerHTML = `<span class="badge ${badgeClass}">${t.psi_label_tr || st}</span>`;
+      }
+
+      setEl("drift-jsd-val", (t.jensen_shannon_divergence !== undefined ? t.jensen_shannon_divergence.toFixed(4) : "-"));
+      setEl("drift-wass-val", (t.wasserstein_distance !== undefined ? t.wasserstein_distance.toFixed(4) : "-"));
+
+      const nA = data.window_a?.total_bars || 0;
+      const nB = data.window_b?.total_bars || 0;
+      setEl("drift-sample-bars", `${(nA + nB).toLocaleString()} Mum`);
+      setEl("drift-sample-labels", `Pencere A: ${nA.toLocaleString()} | Pencere B: ${nB.toLocaleString()}`);
+
+      const tbody = document.getElementById("drift-comparison-tbody");
+      if (tbody && data.comparison_rows) {
+        tbody.innerHTML = data.comparison_rows.map(r => {
+          const deltaColor = r.delta_pct > 0 ? "var(--green)" : (r.delta_pct < 0 ? "var(--red)" : "var(--text-muted)");
+          return `
+            <tr>
+              <td><strong>${r.regime_name_tr || r.regime}</strong></td>
+              <td>${(r.count_a || 0).toLocaleString()}</td>
+              <td><code>%${(r.pct_a || 0).toFixed(2)}</code></td>
+              <td>${(r.count_b || 0).toLocaleString()}</td>
+              <td><code>%${(r.pct_b || 0).toFixed(2)}</code></td>
+              <td><strong style="color: ${deltaColor};">${r.delta_pct > 0 ? "+" : ""}${(r.delta_pct || 0).toFixed(2)}%</strong></td>
+              <td>${(r.mean_hours_a || 0).toFixed(2)} sa</td>
+              <td>${(r.mean_hours_b || 0).toFixed(2)} sa</td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      drawDriftDistributionCanvas(data);
+    }
+
+    function drawDriftDistributionCanvas(data) {
+      const canvas = document.getElementById("drift-dist-canvas");
+      const wrap = document.getElementById("drift-dist-canvas-wrap");
+      if (!canvas || !wrap || !data || !data.comparison_rows) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      const w = wrap.clientWidth || 600;
+      const h = wrap.clientHeight || 260;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+
+      ctx.fillStyle = "#070b13";
+      ctx.fillRect(0, 0, w, h);
+
+      const rows = data.comparison_rows;
+      const padTop = 20;
+      const padBottom = 35;
+      const padLeft = 45;
+      const padRight = 20;
+      const chartW = w - padLeft - padRight;
+      const chartH = h - padTop - padBottom;
+
+      const maxPct = Math.max(...rows.map(r => Math.max(r.pct_a || 0, r.pct_b || 0)), 40);
+      const getY = (val) => padTop + chartH - (val / maxPct) * chartH;
+
+      for (let i = 0; i <= 4; i++) {
+        const val = (maxPct / 4) * i;
+        const y = getY(val);
+        ctx.strokeStyle = "#162032";
+        ctx.beginPath();
+        ctx.moveTo(padLeft, y);
+        ctx.lineTo(w - padRight, y);
+        ctx.stroke();
+
+        ctx.fillStyle = "#64748b";
+        ctx.font = "9px sans-serif";
+        ctx.fillText(`%${val.toFixed(0)}`, 10, y + 3);
+      }
+
+      const grpW = chartW / rows.length;
+      const barW = Math.max(4, grpW * 0.35);
+
+      rows.forEach((r, idx) => {
+        const grpX = padLeft + idx * grpW;
+        const xA = grpX + grpW * 0.12;
+        const xB = grpX + grpW * 0.52;
+
+        const yA = getY(r.pct_a || 0);
+        const yB = getY(r.pct_b || 0);
+        const hA = (padTop + chartH) - yA;
+        const hB = (padTop + chartH) - yB;
+
+        ctx.fillStyle = "#38bdf8";
+        ctx.fillRect(xA, yA, barW, hA);
+
+        ctx.fillStyle = "#f59e0b";
+        ctx.fillRect(xB, yB, barW, hB);
+
+        ctx.fillStyle = "#94a3b8";
+        ctx.font = "10px sans-serif";
+        const shortName = (r.regime || "").substring(0, 8);
+        ctx.fillText(shortName, grpX + grpW * 0.05, h - 12);
+      });
+    }
   </script>
 </body>
 </html>

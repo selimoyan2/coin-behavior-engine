@@ -58,6 +58,87 @@ class ResearchReadinessEngine:
         modules: List[ModuleReadinessStatus] = []
 
         # ---------------------------------------------------------------------
+        # If target period is not imported, strictly fail-closed with BLOCKED_NO_DATA
+        # ---------------------------------------------------------------------
+        if not is_imported:
+            warning_msg = "Bu dönem için doğrulanmış piyasa verisi bulunmuyor. Araştırma modülleri kullanılamaz."
+            modules = [
+                ModuleReadinessStatus(
+                    module_id="historical_charts",
+                    module_name_tr="Tarihsel Mum ve Zaman Çizelgesi",
+                    status="BLOCKED_NO_DATA",
+                    readiness_score_pct=0.0,
+                    prerequisites=[{"name": "Partition Existence", "satisfied": False, "detail": f"No partition for {eval_month}."}],
+                    restrictions=["Strictly read-only bounded queries", "Zero real-time streaming"],
+                    scientific_validity_note="Visual and historical inspection only. Does not infer future path.",
+                ),
+                ModuleReadinessStatus(
+                    module_id="regime_intelligence",
+                    module_name_tr="Piyasa Rejim & Volatilite İstihbaratı",
+                    status="BLOCKED_NO_DATA",
+                    readiness_score_pct=0.0,
+                    prerequisites=[{"name": "Canonical 5m Partitions Available", "satisfied": False, "detail": f"Raw candles missing for {eval_month}."}],
+                    restrictions=["Frozen model weights (CBE-0.7.0)", "No silent retraining"],
+                    scientific_validity_note="Regime probabilities reflect historical state persistence, not directional buy/sell signals.",
+                ),
+                ModuleReadinessStatus(
+                    module_id="analog_intelligence",
+                    module_name_tr="Tarihsel Benzerlik & Analog Analizi",
+                    status="BLOCKED_NO_DATA",
+                    readiness_score_pct=0.0,
+                    prerequisites=[{"name": "Minimum 720-bar Lookback Context", "satisfied": False, "detail": f"No market history for {eval_month}."}],
+                    restrictions=["Lookahead leakage protection active", "Minimum 12-bar gap between analog anchor and test window"],
+                    scientific_validity_note="Past pattern similarity does not guarantee future price replication.",
+                ),
+                ModuleReadinessStatus(
+                    module_id="macro_impact",
+                    module_name_tr="Makroekonomik Etki Laboratuvarı",
+                    status="BLOCKED_NO_DATA",
+                    readiness_score_pct=0.0,
+                    prerequisites=[{"name": "Price Window Alignment (T-60m to T+240m)", "satisfied": False, "detail": f"No candle data for {eval_month}."}],
+                    restrictions=["Zero external web requests", "Historical event schedule frozen"],
+                    scientific_validity_note="Measures historical volatility multiplier and kurtosis dispersion.",
+                ),
+                ModuleReadinessStatus(
+                    module_id="scenario_laboratory",
+                    module_name_tr="Çevrimdışı Senaryo & Simülasyon Laboratuvarı",
+                    status="BLOCKED_NO_DATA",
+                    readiness_score_pct=0.0,
+                    prerequisites=[{"name": "Partition Immutability Assurance", "satisfied": False, "detail": f"No partition for {eval_month}."}],
+                    restrictions=["Pure read-only computation", "Deterministic RNG seed"],
+                    scientific_validity_note="Stress testing evaluations remain strictly offline and hypothetical.",
+                ),
+            ]
+            module_dicts = []
+            for m in modules:
+                d = asdict(m)
+                d["module_name"] = m.module_name_tr
+                d["scientific_validity"] = m.scientific_validity_note
+                d["prerequisites_met"] = [p["name"] for p in m.prerequisites if p.get("satisfied")]
+                d["missing_prerequisites"] = [p["name"] for p in m.prerequisites if not p.get("satisfied")]
+                module_dicts.append(d)
+
+            return {
+                "status": "success",
+                "evaluation_timestamp_utc": datetime.now(timezone.utc).isoformat(),
+                "target_period": eval_month,
+                "target_month": eval_month,
+                "period_imported": False,
+                "overall_platform_readiness": "BLOCKED_NO_DATA",
+                "overall_verdict": "BLOCKED_NO_DATA",
+                "overall_readiness_score_pct": 0.0,
+                "overall_score_pct": 0.0,
+                "user_message": warning_msg,
+                "manifest_version": manifest.get("manifest_version", "UNKNOWN"),
+                "modules": module_dicts,
+                "governance_safeguard": {
+                    "predictive_validity_assertion": "NOT_CLAIMED",
+                    "live_trading_suitability": "PERMANENTLY_PROHIBITED",
+                    "scientific_status": "OFFLINE_QUANTITATIVE_RESEARCH_ONLY",
+                },
+            }
+
+        # ---------------------------------------------------------------------
         # 1. Historical Candlestick & Timeline Charts
         # ---------------------------------------------------------------------
         chart_prereqs = [
@@ -252,6 +333,7 @@ class ResearchReadinessEngine:
             "overall_verdict": verdict,
             "overall_readiness_score_pct": round(avg_score, 1),
             "overall_score_pct": round(avg_score, 1),
+            "user_message": "Seçili dönem için doğrulanmış piyasa verisi ve araştırma modülleri eksiksiz hazırdır." if all_ready else "Seçili dönem için bazı araştırma önkoşulları eksiktir.",
             "manifest_version": manifest.get("manifest_version", "UNKNOWN"),
             "modules": module_dicts,
             "governance_safeguard": {

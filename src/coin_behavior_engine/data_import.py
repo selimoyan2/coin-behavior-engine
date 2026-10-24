@@ -303,6 +303,7 @@ class HistoricalDataImporter:
         symbol: str = "BTCUSDT",
         interval: str = "5m",
         allow_partial: bool = True,
+        auto_derive: bool = False,
     ) -> Dict[str, Any]:
         """Atomically validate, transform, and publish historical dataset partition."""
         import_id = f"IMP-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:6]}"
@@ -368,6 +369,21 @@ class HistoricalDataImporter:
         manifest_after = dm.get_manifest(force_refresh=True)
         rev_after = manifest_after.get("manifest_version", "UNKNOWN")
 
+        # Optional Automatic Timeframe Derivation for 5m datasets
+        derived_receipts = None
+        if auto_derive and interval == "5m":
+            try:
+                derived_receipts = self.derive_timeframes(
+                    month=target_month,
+                    symbol=symbol,
+                    source_interval="5m",
+                    dry_run=False,
+                    overwrite=True,
+                )
+            except Exception as e:
+                logger.error("Auto derivation failed for %s: %s", target_month, e)
+                derived_receipts = {"status": "FAILED", "error": str(e)}
+
         # Step 7: Generate Machine-Readable Receipt
         duration_sec = round(time.time() - start_time, 3)
         receipt = {
@@ -388,6 +404,8 @@ class HistoricalDataImporter:
             "last_timestamp_utc": val_result["last_timestamp_utc"],
             "dataset_revision_before": rev_before,
             "dataset_revision_after": rev_after,
+            "auto_derive": auto_derive,
+            "derived_timeframes": derived_receipts,
             "governance_classification": "OFFLINE_AUDITED_IMPORT",
             "fail_closed_mode": "STRICTLY_OFFLINE",
         }
@@ -526,11 +544,32 @@ class HistoricalDataImporter:
                 pass
         return None
 
+    def derive_timeframes(
+        self,
+        month: str,
+        symbol: str = "BTCUSDT",
+        source_interval: str = "5m",
+        target_intervals: Optional[List[str]] = None,
+        dry_run: bool = False,
+        overwrite: bool = False,
+    ) -> Dict[str, Any]:
+        """Derive higher timeframes (15m, 1h, 4h, 1d) from source 5m partition."""
+        from coin_behavior_engine.product.timeframe_derivation import MultiTimeframeDerivationEngine
+        engine = MultiTimeframeDerivationEngine(dataset_dir=self.base_dir)
+        return engine.derive_month(
+            month=month,
+            symbol=symbol,
+            source_interval=source_interval,
+            target_intervals=target_intervals,
+            dry_run=dry_run,
+            overwrite=overwrite,
+        )
+
 
 def main():
     """CLI Entrypoint for offline data import."""
     parser = argparse.ArgumentParser(
-        description="Coin Behavior Engine — Offline Historical Market Data Importer"
+        description="Coin Behavior Engine — Offline Historical Market Data Importer & Derivation Pipeline"
     )
     parser.add_argument("--source", "-s", default=None, help="Path to candidate data file (Parquet or CSV)")
     parser.add_argument("--symbol", default="BTCUSDT", help="Target market symbol (default: BTCUSDT)")
@@ -538,11 +577,16 @@ def main():
     parser.add_argument(
         "--mode",
         "-m",
-        choices=("validate", "preview", "import", "verify"),
+        choices=("validate", "preview", "import", "verify", "derive"),
         default="validate",
         help="Execution mode (default: validate)",
     )
-    parser.add_argument("--month", default=None, help="Target month for verify mode (e.g. 2026-09)")
+    parser.add_argument("--month", default=None, help="Target month for verify or derive mode (e.g. 2026-09)")
+    parser.add_argument("--source-interval", default="5m", choices=SUPPORTED_INTERVALS, help="Source interval for derivation (default: 5m)")
+    parser.add_argument("--target-intervals", default="15m,1h,4h,1d", help="Comma-separated target intervals for derivation")
+    parser.add_argument("--dry-run", action="store_true", help="Perform derivation in dry-run preview mode")
+    parser.add_argument("--overwrite", action="store_true", help="Overwrite existing partitions during derivation")
+    parser.add_argument("--auto-derive", action="store_true", help="Automatically derive higher timeframes upon 5m import")
     parser.add_argument("--list-imports", action="store_true", help="List recent import receipts")
     parser.add_argument("--inspect-receipt", default=None, help="Inspect specific receipt by ID")
     parser.add_argument("--allow-partial", action="store_true", default=True, help="Allow partial month datasets")
@@ -581,6 +625,26 @@ def main():
             sys.exit(0)
         except Exception as e:
             print(f"\n[PARTITION VERIFICATION FAILED: {target_m}] {e}", file=sys.stderr)
+            sys.exit(1)
+
+    if args.mode == "derive":
+        target_m = args.month or "2026-09"
+        targets = [t.strip() for t in args.target_intervals.split(",") if t.strip()]
+        print(f"=== CBE TIMEFRAME DERIVATION (Month: {target_m}, Targets: {targets}, Dry-run: {args.dry_run}) ===")
+        try:
+            res = importer.derive_timeframes(
+                month=target_m,
+                symbol=args.symbol,
+                source_interval=args.source_interval,
+                target_intervals=targets,
+                dry_run=args.dry_run,
+                overwrite=args.overwrite,
+            )
+            print("\n[DERIVATION REPORT]")
+            print(json.dumps(res, indent=2))
+            sys.exit(0)
+        except Exception as e:
+            print(f"\n[DERIVATION FAILED] {e}", file=sys.stderr)
             sys.exit(1)
 
     if not args.source:

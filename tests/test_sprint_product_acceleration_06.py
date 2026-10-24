@@ -195,12 +195,12 @@ def test_07_research_readiness_unimported_month():
     res = evaluator.evaluate_readiness("2026-10")
 
     assert res["target_month"] == "2026-10"
-    assert res["overall_verdict"] in ("PARTIALLY_READY", "NOT_READY")
+    assert res["overall_verdict"] in ("BLOCKED_NO_DATA", "PARTIALLY_READY", "NOT_READY")
     assert res["overall_score_pct"] < 100.0
 
     # Modules depending on October partitions should flag missing prerequisites
     chart_mod = next(m for m in res["modules"] if m["module_id"] == "historical_charts")
-    assert chart_mod["status"] in ("NOT_READY", "PARTIALLY_READY", "BLOCKED_MISSING_DATA")
+    assert chart_mod["status"] in ("BLOCKED_NO_DATA", "NOT_READY", "PARTIALLY_READY", "BLOCKED_MISSING_DATA")
     assert len(chart_mod["missing_prerequisites"]) > 0
 
 
@@ -326,7 +326,7 @@ def test_12_api_research_readiness_endpoint():
     # Unimported month (2026-10)
     status_10, data_10 = ProductDashboardApiService.handle_request("/api/v1/product/research-readiness?month=2026-10")
     assert status_10 == HTTPStatus.OK
-    assert data_10["overall_verdict"] in ("PARTIALLY_READY", "NOT_READY")
+    assert data_10["overall_verdict"] in ("BLOCKED_NO_DATA", "PARTIALLY_READY", "NOT_READY")
     assert data_10["overall_score_pct"] < 100.0
 
 

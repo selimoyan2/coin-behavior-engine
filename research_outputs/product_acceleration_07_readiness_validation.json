@@ -1,0 +1,378 @@
+{
+  "audit_timestamp_utc": "2026-10-24T08:43:45.579398+00:00",
+  "sprint": "CBE_PRODUCT_ACCELERATION_07",
+  "readiness_hardening": {
+    "fail_closed_policy": "STRICT_ZERO_DATA_BLOCK",
+    "unimported_behavior": {
+      "period": "2026-10",
+      "verdict": "BLOCKED_NO_DATA",
+      "score_pct": 0.0,
+      "user_message": "Bu dönem için doğrulanmış piyasa verisi bulunmuyor. Araştırma modülleri kullanılamaz.",
+      "modules_status": {
+        "historical_charts": "BLOCKED_NO_DATA",
+        "regime_intelligence": "BLOCKED_NO_DATA",
+        "analog_intelligence": "BLOCKED_NO_DATA",
+        "macro_impact": "BLOCKED_NO_DATA",
+        "scenario_laboratory": "BLOCKED_NO_DATA"
+      }
+    },
+    "imported_behavior": {
+      "period": "2026-09",
+      "verdict": "READY",
+      "score_pct": 100.0,
+      "user_message": "Seçili dönem için doğrulanmış piyasa verisi ve araştırma modülleri eksiksiz hazırdır.",
+      "modules_status": {
+        "historical_charts": "READY",
+        "regime_intelligence": "READY",
+        "analog_intelligence": "READY",
+        "macro_impact": "READY",
+        "scenario_laboratory": "READY"
+      }
+    },
+    "scientific_leakage_protection": {
+      "lookahead_quarantine": true,
+      "zero_synthetic_data": true,
+      "fail_closed_unimported": true
+    }
+  },
+  "evaluation_2026_09": {
+    "status": "success",
+    "evaluation_timestamp_utc": "2026-10-24T08:43:45.579398+00:00",
+    "target_period": "2026-09",
+    "target_month": "2026-09",
+    "period_imported": true,
+    "overall_platform_readiness": "READY",
+    "overall_verdict": "READY",
+    "overall_readiness_score_pct": 100.0,
+    "overall_score_pct": 100.0,
+    "user_message": "Seçili dönem için doğrulanmış piyasa verisi ve araştırma modülleri eksiksiz hazırdır.",
+    "manifest_version": "cbe-manifest-v2-addf635b47aa",
+    "modules": [
+      {
+        "module_id": "historical_charts",
+        "module_name_tr": "Tarihsel Mum ve Zaman Çizelgesi",
+        "status": "READY",
+        "readiness_score_pct": 100.0,
+        "prerequisites": [
+          {
+            "name": "Partition Existence",
+            "satisfied": true,
+            "detail": "Partition for 2026-09 present in canonical store."
+          },
+          {
+            "name": "OHLCV Geometric Validation",
+            "satisfied": true,
+            "detail": "Passes positivity, finiteness, and high/low envelope constraints."
+          },
+          {
+            "name": "Monotonic UTC Timestamps",
+            "satisfied": true,
+            "detail": "Strict monotonic chronological ordering."
+          }
+        ],
+        "restrictions": [
+          "Strictly read-only bounded queries",
+          "Zero real-time streaming"
+        ],
+        "scientific_validity_note": "Visual and historical inspection only. Does not infer future path.",
+        "module_name": "Tarihsel Mum ve Zaman Çizelgesi",
+        "scientific_validity": "Visual and historical inspection only. Does not infer future path.",
+        "prerequisites_met": [
+          "Partition Existence",
+          "OHLCV Geometric Validation",
+          "Monotonic UTC Timestamps"
+        ],
+        "missing_prerequisites": []
+      },
+      {
+        "module_id": "regime_intelligence",
+        "module_name_tr": "Piyasa Rejim & Volatilite İstihbaratı",
+        "status": "READY",
+        "readiness_score_pct": 100.0,
+        "prerequisites": [
+          {
+            "name": "Canonical 5m Partitions Available",
+            "satisfied": true,
+            "detail": "Raw candles available for 2026-09."
+          },
+          {
+            "name": "Frozen Regime Classifier Artifact",
+            "satisfied": true,
+            "detail": "Frozen HMM / Gaussian mixture classifications available."
+          },
+          {
+            "name": "Zero Future Lookahead Leakage",
+            "satisfied": true,
+            "detail": "Classifications calculated using strictly causal trailing indicators."
+          }
+        ],
+        "restrictions": [
+          "Frozen model weights (CBE-0.7.0)",
+          "No silent retraining"
+        ],
+        "scientific_validity_note": "Regime probabilities reflect historical state persistence, not directional buy/sell signals.",
+        "module_name": "Piyasa Rejim & Volatilite İstihbaratı",
+        "scientific_validity": "Regime probabilities reflect historical state persistence, not directional buy/sell signals.",
+        "prerequisites_met": [
+          "Canonical 5m Partitions Available",
+          "Frozen Regime Classifier Artifact",
+          "Zero Future Lookahead Leakage"
+        ],
+        "missing_prerequisites": []
+      },
+      {
+        "module_id": "analog_intelligence",
+        "module_name_tr": "Tarihsel Benzerlik & Analog Analizi",
+        "status": "READY",
+        "readiness_score_pct": 100.0,
+        "prerequisites": [
+          {
+            "name": "Minimum 720-bar Lookback Context",
+            "satisfied": true,
+            "detail": "Sufficient trailing history available for normalized pattern distance matching."
+          },
+          {
+            "name": "Historical Analog Catalog",
+            "satisfied": true,
+            "detail": "Precomputed DTW / Euclidean distance vectors available."
+          },
+          {
+            "name": "Forward Outcome Window Isolation",
+            "satisfied": true,
+            "detail": "Self-matching and overlapping-window lookahead strictly quarantined."
+          }
+        ],
+        "restrictions": [
+          "Lookahead leakage protection active",
+          "Minimum 12-bar gap between analog anchor and test window"
+        ],
+        "scientific_validity_note": "Past pattern similarity does not guarantee future price replication.",
+        "module_name": "Tarihsel Benzerlik & Analog Analizi",
+        "scientific_validity": "Past pattern similarity does not guarantee future price replication.",
+        "prerequisites_met": [
+          "Minimum 720-bar Lookback Context",
+          "Historical Analog Catalog",
+          "Forward Outcome Window Isolation"
+        ],
+        "missing_prerequisites": []
+      },
+      {
+        "module_id": "macro_impact",
+        "module_name_tr": "Makroekonomik Etki Laboratuvarı",
+        "status": "READY",
+        "readiness_score_pct": 100.0,
+        "prerequisites": [
+          {
+            "name": "Macro Economic Release Schedule Alignment",
+            "satisfied": true,
+            "detail": "Verified CPI, FOMC, and NFP event timestamps."
+          },
+          {
+            "name": "Price Window Alignment (T-60m to T+240m)",
+            "satisfied": true,
+            "detail": "High-resolution 5m candles surrounding announcement time."
+          },
+          {
+            "name": "Zero Synthetic Event Fabrication",
+            "satisfied": true,
+            "detail": "Macro events imported strictly from official BLS / Fed release schedules."
+          }
+        ],
+        "restrictions": [
+          "Zero external web requests",
+          "Historical event schedule frozen"
+        ],
+        "scientific_validity_note": "Measures historical volatility multiplier and kurtosis dispersion.",
+        "module_name": "Makroekonomik Etki Laboratuvarı",
+        "scientific_validity": "Measures historical volatility multiplier and kurtosis dispersion.",
+        "prerequisites_met": [
+          "Macro Economic Release Schedule Alignment",
+          "Price Window Alignment (T-60m to T+240m)",
+          "Zero Synthetic Event Fabrication"
+        ],
+        "missing_prerequisites": []
+      },
+      {
+        "module_id": "scenario_laboratory",
+        "module_name_tr": "Çevrimdışı Senaryo & Simülasyon Laboratuvarı",
+        "status": "READY",
+        "readiness_score_pct": 100.0,
+        "prerequisites": [
+          {
+            "name": "Reproducible Manifest Hash",
+            "satisfied": true,
+            "detail": "Manifest Hash: addf635b47aa..."
+          },
+          {
+            "name": "Deterministic Counterfactual Engine",
+            "satisfied": true,
+            "detail": "Exact reproducible offline simulation without side-effects."
+          },
+          {
+            "name": "Partition Immutability Assurance",
+            "satisfied": true,
+            "detail": "Immutable Parquet files protected against in-place corruption."
+          }
+        ],
+        "restrictions": [
+          "Pure read-only computation",
+          "Deterministic RNG seed"
+        ],
+        "scientific_validity_note": "Stress testing evaluations remain strictly offline and hypothetical.",
+        "module_name": "Çevrimdışı Senaryo & Simülasyon Laboratuvarı",
+        "scientific_validity": "Stress testing evaluations remain strictly offline and hypothetical.",
+        "prerequisites_met": [
+          "Reproducible Manifest Hash",
+          "Deterministic Counterfactual Engine",
+          "Partition Immutability Assurance"
+        ],
+        "missing_prerequisites": []
+      }
+    ],
+    "governance_safeguard": {
+      "predictive_validity_assertion": "NOT_CLAIMED",
+      "live_trading_suitability": "PERMANENTLY_PROHIBITED",
+      "scientific_status": "OFFLINE_QUANTITATIVE_RESEARCH_ONLY"
+    }
+  },
+  "evaluation_2026_10": {
+    "status": "success",
+    "evaluation_timestamp_utc": "2026-10-24T08:43:45.579398+00:00",
+    "target_period": "2026-10",
+    "target_month": "2026-10",
+    "period_imported": false,
+    "overall_platform_readiness": "BLOCKED_NO_DATA",
+    "overall_verdict": "BLOCKED_NO_DATA",
+    "overall_readiness_score_pct": 0.0,
+    "overall_score_pct": 0.0,
+    "user_message": "Bu dönem için doğrulanmış piyasa verisi bulunmuyor. Araştırma modülleri kullanılamaz.",
+    "manifest_version": "cbe-manifest-v2-addf635b47aa",
+    "modules": [
+      {
+        "module_id": "historical_charts",
+        "module_name_tr": "Tarihsel Mum ve Zaman Çizelgesi",
+        "status": "BLOCKED_NO_DATA",
+        "readiness_score_pct": 0.0,
+        "prerequisites": [
+          {
+            "name": "Partition Existence",
+            "satisfied": false,
+            "detail": "No partition for 2026-10."
+          }
+        ],
+        "restrictions": [
+          "Strictly read-only bounded queries",
+          "Zero real-time streaming"
+        ],
+        "scientific_validity_note": "Visual and historical inspection only. Does not infer future path.",
+        "module_name": "Tarihsel Mum ve Zaman Çizelgesi",
+        "scientific_validity": "Visual and historical inspection only. Does not infer future path.",
+        "prerequisites_met": [],
+        "missing_prerequisites": [
+          "Partition Existence"
+        ]
+      },
+      {
+        "module_id": "regime_intelligence",
+        "module_name_tr": "Piyasa Rejim & Volatilite İstihbaratı",
+        "status": "BLOCKED_NO_DATA",
+        "readiness_score_pct": 0.0,
+        "prerequisites": [
+          {
+            "name": "Canonical 5m Partitions Available",
+            "satisfied": false,
+            "detail": "Raw candles missing for 2026-10."
+          }
+        ],
+        "restrictions": [
+          "Frozen model weights (CBE-0.7.0)",
+          "No silent retraining"
+        ],
+        "scientific_validity_note": "Regime probabilities reflect historical state persistence, not directional buy/sell signals.",
+        "module_name": "Piyasa Rejim & Volatilite İstihbaratı",
+        "scientific_validity": "Regime probabilities reflect historical state persistence, not directional buy/sell signals.",
+        "prerequisites_met": [],
+        "missing_prerequisites": [
+          "Canonical 5m Partitions Available"
+        ]
+      },
+      {
+        "module_id": "analog_intelligence",
+        "module_name_tr": "Tarihsel Benzerlik & Analog Analizi",
+        "status": "BLOCKED_NO_DATA",
+        "readiness_score_pct": 0.0,
+        "prerequisites": [
+          {
+            "name": "Minimum 720-bar Lookback Context",
+            "satisfied": false,
+            "detail": "No market history for 2026-10."
+          }
+        ],
+        "restrictions": [
+          "Lookahead leakage protection active",
+          "Minimum 12-bar gap between analog anchor and test window"
+        ],
+        "scientific_validity_note": "Past pattern similarity does not guarantee future price replication.",
+        "module_name": "Tarihsel Benzerlik & Analog Analizi",
+        "scientific_validity": "Past pattern similarity does not guarantee future price replication.",
+        "prerequisites_met": [],
+        "missing_prerequisites": [
+          "Minimum 720-bar Lookback Context"
+        ]
+      },
+      {
+        "module_id": "macro_impact",
+        "module_name_tr": "Makroekonomik Etki Laboratuvarı",
+        "status": "BLOCKED_NO_DATA",
+        "readiness_score_pct": 0.0,
+        "prerequisites": [
+          {
+            "name": "Price Window Alignment (T-60m to T+240m)",
+            "satisfied": false,
+            "detail": "No candle data for 2026-10."
+          }
+        ],
+        "restrictions": [
+          "Zero external web requests",
+          "Historical event schedule frozen"
+        ],
+        "scientific_validity_note": "Measures historical volatility multiplier and kurtosis dispersion.",
+        "module_name": "Makroekonomik Etki Laboratuvarı",
+        "scientific_validity": "Measures historical volatility multiplier and kurtosis dispersion.",
+        "prerequisites_met": [],
+        "missing_prerequisites": [
+          "Price Window Alignment (T-60m to T+240m)"
+        ]
+      },
+      {
+        "module_id": "scenario_laboratory",
+        "module_name_tr": "Çevrimdışı Senaryo & Simülasyon Laboratuvarı",
+        "status": "BLOCKED_NO_DATA",
+        "readiness_score_pct": 0.0,
+        "prerequisites": [
+          {
+            "name": "Partition Immutability Assurance",
+            "satisfied": false,
+            "detail": "No partition for 2026-10."
+          }
+        ],
+        "restrictions": [
+          "Pure read-only computation",
+          "Deterministic RNG seed"
+        ],
+        "scientific_validity_note": "Stress testing evaluations remain strictly offline and hypothetical.",
+        "module_name": "Çevrimdışı Senaryo & Simülasyon Laboratuvarı",
+        "scientific_validity": "Stress testing evaluations remain strictly offline and hypothetical.",
+        "prerequisites_met": [],
+        "missing_prerequisites": [
+          "Partition Immutability Assurance"
+        ]
+      }
+    ],
+    "governance_safeguard": {
+      "predictive_validity_assertion": "NOT_CLAIMED",
+      "live_trading_suitability": "PERMANENTLY_PROHIBITED",
+      "scientific_status": "OFFLINE_QUANTITATIVE_RESEARCH_ONLY"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "sprint": "CBE_PRODUCT_ACCELERATION_07",
+  "generated_at_utc": "2026-10-24T08:42:00Z",
+  "canonical_dataset": {
+    "symbol": "BTCUSDT",
+    "base_timeframe": "5m",
+    "supported_timeframes": ["5m", "15m", "1h", "4h", "1d"],
+    "total_partitions": 285,
+    "partitions_per_interval": 57,
+    "historical_range": {
+      "start_month": "2022-01",
+      "end_month": "2026-09",
+      "first_candle_utc": "2022-01-01T00:00:00Z",
+      "last_candle_utc": "2026-09-30T23:55:00Z"
+    }
+  },
+  "derivation_pipeline": {
+    "engine": "MultiTimeframeDerivationEngine",
+    "algorithm_version": "CBE-MTD-1.0.0",
+    "derivation_tree": {
+      "5m": {
+        "is_canonical_root": true,
+        "direct_descendants": ["15m", "1h", "4h", "1d"]
+      },
+      "15m": {"source": "5m", "aggregation_ratio": 3, "window_ms": 900000},
+      "1h": {"source": "5m", "aggregation_ratio": 12, "window_ms": 3600000},
+      "4h": {"source": "5m", "aggregation_ratio": 48, "window_ms": 14400000},
+      "1d": {"source": "5m", "aggregation_ratio": 288, "window_ms": 86400000}
+    },
+    "provenance_policies": {
+      "aggregation_math": "EXACT_VECTORIZED_OHLCV",
+      "incomplete_window_handling": "STRICT_DROP_NO_INTERPOLATION",
+      "atomic_publication": "WRITE_TEMP_THEN_ATOMIC_REPLACE",
+      "idempotent_execution": true
+    }
+  },
+  "reproducibility_contract": {
+    "manifest_version": "cbe-manifest-v2-73a6212acca3",
+    "model_version": "CBE-0.7.0",
+    "governance_classification": "OFFLINE_AUDITED_LINEAGE",
+    "immutable_snapshots": true
+  }
+}

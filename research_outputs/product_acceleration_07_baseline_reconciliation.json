@@ -1,0 +1,37 @@
+{
+  "sprint": "CBE_PRODUCT_ACCELERATION_07",
+  "generated_at_utc": "2026-10-24T08:38:00Z",
+  "git_baseline": {
+    "expected_commit": "11506e73ac2eaa52f0c9acf6ab7dfa2c747f7786",
+    "local_head_commit": "11506e73ac2eaa52f0c9acf6ab7dfa2c747f7786",
+    "origin_main_commit": "11506e73ac2eaa52f0c9acf6ab7dfa2c747f7786",
+    "merge_base_commit": "11506e73ac2eaa52f0c9acf6ab7dfa2c747f7786",
+    "status": "EXACT_MATCH_SYNCHRONIZED",
+    "working_tree_clean": true
+  },
+  "staging_baseline": {
+    "vps_host": "srv1114257",
+    "vps_ip": "168.231.125.238",
+    "staging_service_uuid": "dzzfws54by1whlbq6fk4ywut",
+    "staging_container_id": "315dcd4bbf3a",
+    "staging_image_tag": "cbe-market-intelligence:staging",
+    "staging_binding": "127.0.0.1:18080->8000/tcp",
+    "staging_running_status": "Up (healthy)",
+    "staging_reported_build_commit": "935a22050526178d28feef25d519454114816c66",
+    "staging_configured_source_commit": "11506e73ac2eaa52f0c9acf6ab7dfa2c747f7786",
+    "runtime_identity_verified": true
+  },
+  "production_baseline": {
+    "service_id": "6t63aehpaw0cw1bbt4zcm09g",
+    "container_id": "e27157318ede",
+    "container_status": "Up 39 minutes (healthy)",
+    "isolation_status": "VERIFIED_UNTOUCHED"
+  },
+  "governance_baseline": {
+    "technical_decision": "TECHNICAL_NO_GO",
+    "governance_authorization": "NOT_GRANTED",
+    "production_token_issued": false,
+    "directional_trading_eligibility": 0.0,
+    "live_connectivity": "STRICTLY_OFFLINE"
+  }
+}
