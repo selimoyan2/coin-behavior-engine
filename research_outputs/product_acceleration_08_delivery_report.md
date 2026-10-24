@@ -1,7 +1,7 @@
 # CBE Product Acceleration Sprint 08 — Executive Delivery Report
 
 **Repository:** `selimoyan2/coin-behavior-engine`  
-**Delivery Commit:** `9a1eb80d10db1ed0ee2df4026906e4cf6796abd6`  
+**Delivery Commit:** `f8518561998b157a6bdaa54f673b3f2af537411d`  
 **Branch:** `main`  
 **Model Version:** `CBE-0.7.0` (FROZEN)  
 **Execution Environment:** Coolify Linux VPS `srv1114257` (`168.231.125.238`)  
@@ -53,5 +53,5 @@ Sprint Product Acceleration 08 delivered four major strategic capabilities trans
 - **Automated Regression Test Suite:** 112 passing tests out of 112 collected (100% PASS across Sprints 01 through 08).
 - **Sprint 08 Test Coverage:** 18 dedicated tests covering authorization, traversal defense, ticket immutability, fail-closed multi-asset, $T_0$ alignment, sensitivity controls, formula injection, and governance.
 - **Playwright Browser Acceptance:** 18 high-resolution acceptance captures rendered and verified across Desktop, Tablet, and Mobile viewports.
-- **Staging Deployment:** Successfully built Docker image `cbe-market-intelligence:staging` (`83d3365e8355`) on VPS `srv1114257`, recreated container on port `18080`, and verified live endpoints.
+- **Staging Deployment:** Successfully built Docker image `cbe-market-intelligence:staging` (`2a61c3d4e16e`) on VPS `srv1114257`, recreated container on port `18080`, and verified live endpoints.
 - **Production Isolation:** Container `9b7fc7375956` verified intact, unmodified, and healthy.

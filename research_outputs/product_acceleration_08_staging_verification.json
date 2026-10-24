@@ -1,14 +1,14 @@
 {
-  "verification_timestamp_utc": "2026-10-24T10:29:09.604329+00:00",
+  "verification_timestamp_utc": "2026-10-24T10:30:20.429215+00:00",
   "model_version": "CBE-0.7.0",
   "environment": "staging",
   "host": "srv1114257 (168.231.125.238)",
   "staging_service_uuid": "dzzfws54by1whlbq6fk4ywut",
   "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
   "loopback_binding": "127.0.0.1:18080->8000/tcp",
-  "deployed_commit": "9a1eb80d10db1ed0ee2df4026906e4cf6796abd6",
-  "deployed_commit_short": "9a1eb80d",
-  "docker_image_id": "83d3365e8355",
+  "deployed_commit": "f8518561998b157a6bdaa54f673b3f2af537411d",
+  "deployed_commit_short": "f8518561",
+  "docker_image_id": "2a61c3d4e16e",
   "docker_image_tag": "cbe-market-intelligence:staging",
   "verified_live_endpoints": [
     {
@@ -19,7 +19,7 @@
     {
       "endpoint": "/api/v1/product/runtime-build",
       "status_code": 200,
-      "build_commit": "9a1eb80d10db1ed0ee2df4026906e4cf6796abd6"
+      "build_commit": "f8518561998b157a6bdaa54f673b3f2af537411d"
     },
     {
       "endpoint": "/api/v1/product/operations-status",
