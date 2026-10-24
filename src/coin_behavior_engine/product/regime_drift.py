@@ -230,6 +230,8 @@ class RegimeDriftEngine:
         q_props: Dict[str, float],
         regimes: Optional[List[str]] = None,
         epsilon: float = 1e-5,
+        threshold_moderate: float = 0.10,
+        threshold_significant: float = 0.25,
     ) -> Tuple[float, str, str]:
         """
         Compute Population Stability Index (PSI).
@@ -246,10 +248,10 @@ class RegimeDriftEngine:
 
         rounded_psi = round(float(total_psi), 4)
 
-        if rounded_psi < 0.10:
+        if rounded_psi < threshold_moderate:
             status = "STABLE"
             label_tr = "Dengeli (Düşük Yapısal Değişim)"
-        elif rounded_psi < 0.25:
+        elif rounded_psi < threshold_significant:
             status = "MODERATE_DRIFT"
             label_tr = "Orta Düzey Rejim Kayması (İzlenmeli)"
         else:
@@ -286,8 +288,13 @@ class RegimeDriftEngine:
         cls,
         window_a: Dict[str, Any],
         window_b: Dict[str, Any],
+        psi_threshold_moderate: float = 0.10,
+        psi_threshold_significant: float = 0.25,
+        jsd_threshold_moderate: float = 0.05,
+        jsd_threshold_significant: float = 0.15,
+        min_sample_bars: int = 100,
     ) -> Dict[str, Any]:
-        """Perform comprehensive comparative regime distribution drift analysis."""
+        """Perform comprehensive comparative regime distribution drift analysis with configurable evaluation thresholds."""
         records_a = cls.load_regimes_for_window(
             start_utc=window_a.get("start_utc"),
             end_utc=window_a.get("end_utc"),
@@ -307,8 +314,21 @@ class RegimeDriftEngine:
         trans_b = cls.compute_transition_matrix(records_b)
 
         jsd = cls.compute_jsd(freq_a["proportions"], freq_b["proportions"])
-        psi_score, psi_status, psi_label = cls.compute_psi(freq_a["proportions"], freq_b["proportions"])
+        psi_score, psi_status, psi_label = cls.compute_psi(
+            freq_a["proportions"],
+            freq_b["proportions"],
+            threshold_moderate=psi_threshold_moderate,
+            threshold_significant=psi_threshold_significant,
+        )
         wasserstein = cls.compute_wasserstein_volatility(freq_a["proportions"], freq_b["proportions"])
+
+        # Sample size warning check
+        sample_warning = None
+        if len(records_a) < min_sample_bars or len(records_b) < min_sample_bars:
+            sample_warning = (
+                f"Örneklem büyüklüğü minimum güven eşiğinin ({min_sample_bars} bar) altında: "
+                f"Pencere A: {len(records_a)}, Pencere B: {len(records_b)} bar."
+            )
 
         # Side-by-side distribution comparison table
         comparison_rows = []
@@ -361,6 +381,15 @@ class RegimeDriftEngine:
                 "psi_label_tr": psi_label,
                 "jensen_shannon_divergence": jsd,
                 "wasserstein_distance": wasserstein,
+                "sample_size_warning": sample_warning,
+            },
+            "sensitivity_parameters": {
+                "psi_threshold_moderate": psi_threshold_moderate,
+                "psi_threshold_significant": psi_threshold_significant,
+                "jsd_threshold_moderate": jsd_threshold_moderate,
+                "jsd_threshold_significant": jsd_threshold_significant,
+                "min_sample_bars": min_sample_bars,
+                "model_mutation_prohibited": True,
             },
             "comparison_rows": comparison_rows,
             "governance_safeguard": {
@@ -369,3 +398,47 @@ class RegimeDriftEngine:
                 "scientific_status": "OFFLINE_DETERMINISTIC_EVALUATION",
             },
         }
+
+    @classmethod
+    def analyze_drift_for_months(
+        cls,
+        baseline_month: str,
+        target_month: str,
+        psi_threshold_moderate: float = 0.10,
+        psi_threshold_significant: float = 0.25,
+        jsd_threshold_moderate: float = 0.05,
+        jsd_threshold_significant: float = 0.15,
+        min_sample_bars: int = 100,
+    ) -> Dict[str, Any]:
+        """Convenience method to compare two calendar months directly."""
+        import calendar
+        try:
+            yr_a, mn_a = int(baseline_month[:4]), int(baseline_month[5:7])
+            last_a = calendar.monthrange(yr_a, mn_a)[1]
+            start_a = f"{baseline_month}-01T00:00:00Z"
+            end_a = f"{baseline_month}-{last_a:02d}T23:59:59Z"
+        except Exception:
+            start_a = f"{baseline_month}-01T00:00:00Z"
+            end_a = f"{baseline_month}-28T23:59:59Z"
+
+        try:
+            yr_b, mn_b = int(target_month[:4]), int(target_month[5:7])
+            last_b = calendar.monthrange(yr_b, mn_b)[1]
+            start_b = f"{target_month}-01T00:00:00Z"
+            end_b = f"{target_month}-{last_b:02d}T23:59:59Z"
+        except Exception:
+            start_b = f"{target_month}-01T00:00:00Z"
+            end_b = f"{target_month}-28T23:59:59Z"
+
+        window_a = {"label": f"{baseline_month} (Referans)", "start_utc": start_a, "end_utc": end_a}
+        window_b = {"label": f"{target_month} (Gözlem)", "start_utc": start_b, "end_utc": end_b}
+
+        return cls.analyze_drift(
+            window_a=window_a,
+            window_b=window_b,
+            psi_threshold_moderate=psi_threshold_moderate,
+            psi_threshold_significant=psi_threshold_significant,
+            jsd_threshold_moderate=jsd_threshold_moderate,
+            jsd_threshold_significant=jsd_threshold_significant,
+            min_sample_bars=min_sample_bars,
+        )

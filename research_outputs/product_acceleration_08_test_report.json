@@ -1,0 +1,53 @@
+{
+  "test_suite": "CBE Product Acceleration Sprints 01-08 Regression Suite",
+  "executed_at_utc": "2026-10-24T10:19:38.378010+00:00",
+  "model_version": "CBE-0.7.0",
+  "total_tests_collected": 112,
+  "total_tests_passed": 112,
+  "total_tests_failed": 0,
+  "pass_rate_pct": 100.0,
+  "duration_seconds": 47.08,
+  "sprints_tested": [
+    {
+      "sprint": "Sprint 01 API & Integration",
+      "tests": 16,
+      "verdict": "PASSED"
+    },
+    {
+      "sprint": "Sprint 02 API",
+      "tests": 9,
+      "verdict": "PASSED"
+    },
+    {
+      "sprint": "Sprint 03 Analogs & Scenario",
+      "tests": 9,
+      "verdict": "PASSED"
+    },
+    {
+      "sprint": "Sprint 04 Historical Workbench",
+      "tests": 12,
+      "verdict": "PASSED"
+    },
+    {
+      "sprint": "Sprint 05 Rolling Data & Timeline",
+      "tests": 13,
+      "verdict": "PASSED"
+    },
+    {
+      "sprint": "Sprint 06 October Readiness & Quality",
+      "tests": 16,
+      "verdict": "PASSED"
+    },
+    {
+      "sprint": "Sprint 07 Timeframe Derivation & Drift",
+      "tests": 19,
+      "verdict": "PASSED"
+    },
+    {
+      "sprint": "Sprint 08 Operations, Multi-Asset, Macro, Reports",
+      "tests": 18,
+      "verdict": "PASSED"
+    }
+  ],
+  "governance_invariants_verified": true
+}

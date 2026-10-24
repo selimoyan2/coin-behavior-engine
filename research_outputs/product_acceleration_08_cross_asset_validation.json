@@ -1,0 +1,81 @@
+{
+  "validation_timestamp_utc": "2026-10-24T10:04:56.089525+00:00",
+  "model_version": "CBE-0.7.0",
+  "multi_asset_catalog": {
+    "supported_symbols": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT"
+    ],
+    "catalog": {
+      "BTCUSDT": {
+        "symbol": "BTCUSDT",
+        "status": "AVAILABLE",
+        "base_asset": "BTC",
+        "quote_asset": "USDT",
+        "market_type": "SPOT",
+        "available_intervals": [
+          "15m",
+          "1d",
+          "1h",
+          "1m",
+          "4h",
+          "5m"
+        ],
+        "available_months_count": 57,
+        "earliest_month": "2022-01",
+        "latest_month": "2026-09",
+        "total_partitions": 342,
+        "size_mb": 275.68,
+        "notes": "Orijinal Binance Spot ar\u015fivinden 57 ay do\u011fruland\u0131."
+      },
+      "ETHUSDT": {
+        "symbol": "ETHUSDT",
+        "status": "UNAVAILABLE_NO_DATA",
+        "base_asset": "ETH",
+        "quote_asset": "USDT",
+        "market_type": "SPOT",
+        "available_intervals": [],
+        "available_months_count": 0,
+        "earliest_month": null,
+        "latest_month": null,
+        "total_partitions": 0,
+        "size_mb": 0.0,
+        "notes": "Bu varl\u0131k i\u00e7in \u00e7evrimd\u0131\u015f\u0131 ar\u015fiv hen\u00fcz i\u00e7e aktar\u0131lmam\u0131\u015ft\u0131r. Sentetik veri \u00fcretimi engellenmi\u015ftir."
+      },
+      "SOLUSDT": {
+        "symbol": "SOLUSDT",
+        "status": "UNAVAILABLE_NO_DATA",
+        "base_asset": "SOL",
+        "quote_asset": "USDT",
+        "market_type": "SPOT",
+        "available_intervals": [],
+        "available_months_count": 0,
+        "earliest_month": null,
+        "latest_month": null,
+        "total_partitions": 0,
+        "size_mb": 0.0,
+        "notes": "Bu varl\u0131k i\u00e7in \u00e7evrimd\u0131\u015f\u0131 ar\u015fiv hen\u00fcz i\u00e7e aktar\u0131lmam\u0131\u015ft\u0131r. Sentetik veri \u00fcretimi engellenmi\u015ftir."
+      }
+    },
+    "governance_rule": "FAIL_CLOSED_NO_SYNTHETIC_DATA",
+    "active_symbol_default": "BTCUSDT"
+  },
+  "fail_closed_test": {
+    "tested_symbol": "ETHUSDT",
+    "is_loaded": false,
+    "returned_error": "Varl\u0131k 'ETHUSDT' i\u00e7in do\u011frulanm\u0131\u015f \u00e7evrimd\u0131\u015f\u0131 veri bulunamad\u0131. Sistem sentetik veri \u00fcretmez (G\u00fcvenlik Politikas\u0131: FAIL_CLOSED).",
+    "zero_synthetic_data_verified": true
+  },
+  "alignment_engine_test": {
+    "method": "SYNCHRONIZED_PEARSON_ROLLING_WINDOW",
+    "tested_intervals": [
+      "1h",
+      "4h",
+      "1d",
+      "5m",
+      "15m"
+    ],
+    "formula_injection_defense": "SINGLE_QUOTE_PREPEND"
+  }
+}

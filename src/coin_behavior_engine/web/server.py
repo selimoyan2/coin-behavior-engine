@@ -1287,8 +1287,8 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
 
         engine = get_analytics_engine()
 
-        if url_path.startswith("/api/v1/product"):
-            status_code, response_data = ProductDashboardApiService.handle_request(url_path, query_params)
+        if url_path.startswith("/api/v1/product") or url_path.startswith("/api/v1/operator"):
+            status_code, response_data = ProductDashboardApiService.handle_request(url_path, query_params, headers=dict(self.headers))
             self._send_response_json(status_code, response_data)
             return
 
@@ -1429,8 +1429,8 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
             self._send_response_json(HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": f"Malformed JSON: {e}"})
             return
 
-        if url_path.startswith("/api/v1/product"):
-            status_code, response_data = ProductDashboardApiService.handle_post_request(url_path, query_params, body_json)
+        if url_path.startswith("/api/v1/product") or url_path.startswith("/api/v1/operator"):
+            status_code, response_data = ProductDashboardApiService.handle_post_request(url_path, query_params, body_json, headers=dict(self.headers))
             self._send_response_json(status_code, response_data)
             return
 

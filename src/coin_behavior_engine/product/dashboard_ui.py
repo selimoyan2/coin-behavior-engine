@@ -586,6 +586,9 @@ def render_product_dashboard_html() -> str:
     <a href="#operations" class="nav-tab" id="tab-btn-operations" onclick="switchTab('operations')">
       <span>⚙️</span> Sistem & Operasyon
     </a>
+    <a href="#reports" class="nav-tab" id="tab-btn-reports" onclick="switchTab('reports')">
+      <span>📑</span> Araştırma Raporları
+    </a>
   </nav>
 
   <!-- Main Work Area -->
@@ -1078,6 +1081,58 @@ def render_product_dashboard_html() -> str:
         </div>
       </div>
 
+      <!-- Multi-Asset Research Selector (Sprint 08) -->
+      <div class="card" style="margin-bottom: 20px; padding: 14px; background: rgba(56, 189, 248, 0.03); border: 1px solid rgba(56, 189, 248, 0.2);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: #38bdf8;">ÇOKLU VARLIK TARİHSEL ARAŞTIRMA & ÇAPRAZ KORELASYON</div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Varlıklar arası zaman serisi hizalaması, Pearson hareketli korelasyonu ve göreceli getiri eğrileri.</div>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <select id="cross-asset-a" class="input" style="background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;" onchange="onAssetSelectorChanged()">
+              <option value="BTCUSDT" selected>Varlık A: BTCUSDT (Hazır)</option>
+            </select>
+            <select id="cross-asset-b" class="input" style="background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;" onchange="onAssetSelectorChanged()">
+              <option value="BTCUSDT">Varlık B: BTCUSDT (Self-Compare)</option>
+              <option value="ETHUSDT" selected>Varlık B: ETHUSDT (Arşiv Yok)</option>
+              <option value="SOLUSDT">Varlık B: SOLUSDT (Arşiv Yok)</option>
+            </select>
+            <button class="btn btn-primary" onclick="runCrossAssetComparison()">Çapraz Korelasyonu Hesapla</button>
+          </div>
+        </div>
+
+        <!-- Strict Fail Closed Missing Data Banner -->
+        <div id="cross-asset-failclosed-banner" style="background: rgba(239, 68, 68, 0.08); border-left: 4px solid #ef4444; padding: 10px 14px; border-radius: 4px; font-size: 12px; color: #fca5a5; display: block;">
+          <b>⚠️ GÜVENLİK POLİTİKASI (FAIL_CLOSED_NO_SYNTHETIC_DATA):</b>
+          Seçilen 'ETHUSDT' veya 'SOLUSDT' varlığı için doğrulanmış çevrimdışı arşiv henüz içe aktarılmamıştır. CBE temel ilkeleri gereği kesinlikle yapay/sentetik piyasa verisi üretilmez.
+        </div>
+
+        <!-- Cross Asset Telemetry (Hidden until valid overlap) -->
+        <div id="cross-asset-results-wrap" style="display: none; margin-top: 14px;">
+          <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 12px;">
+            <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+              <div style="font-size: 11px; color: var(--text-muted);">PEARSON KORELASYONU</div>
+              <div style="font-size: 18px; font-weight: 700; color: #38bdf8;" id="cross-corr-val">-</div>
+            </div>
+            <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+              <div style="font-size: 11px; color: var(--text-muted);">VOLATİLİTE ORANI (B/A)</div>
+              <div style="font-size: 18px; font-weight: 700; color: #facc15;" id="cross-vol-ratio">-</div>
+            </div>
+            <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+              <div style="font-size: 11px; color: var(--text-muted);">BETA (B / A)</div>
+              <div style="font-size: 18px; font-weight: 700; color: #34d399;" id="cross-beta-val">-</div>
+            </div>
+            <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+              <div style="font-size: 11px; color: var(--text-muted);">GETİRİ FARKI (SPREAD)</div>
+              <div style="font-size: 18px; font-weight: 700; color: #fff;" id="cross-spread-val">-</div>
+            </div>
+          </div>
+          <div class="chart-canvas-wrap" style="height: 220px; background: #070b13; border: 1px solid #1e293b; border-radius: 4px;">
+            <canvas id="cross-asset-canvas" class="chart-canvas"></canvas>
+          </div>
+        </div>
+      </div>
+
       <!-- Comparison Parameters Control Card -->
       <div class="card" style="margin-bottom: 20px; padding: 16px;">
         <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
@@ -1263,6 +1318,38 @@ def render_product_dashboard_html() -> str:
             <button class="btn btn-primary" onclick="loadDriftData()">↻ Drift Analizini Yenile</button>
           </div>
         </div>
+      </div>
+
+      <!-- Regime Drift Sensitivity Lab Controls (Sprint 08) -->
+      <div class="card" style="margin-bottom: 20px; padding: 14px; background: rgba(167, 139, 250, 0.04); border: 1px solid rgba(167, 139, 250, 0.2);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: #a78bfa;">REJİM KAYMASI DUYARLILIK LABORATUVARI (SENSITIVITY LAB)</div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+              Görsel eşik parametrelerini yapılandırın. (Not: Niceliksel model parametreleri ve sınıflandırıcı dondurulmuştur, değişmez).
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="applyDriftSensitivity()">Duyarlılığı Güncelle</button>
+        </div>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px;">
+          <div>
+            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">PSI Orta Eşik</label>
+            <input type="number" id="drift-sens-psi-mod" class="input" value="0.10" step="0.01" min="0.01" max="0.5" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+          </div>
+          <div>
+            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">PSI Yüksek Eşik</label>
+            <input type="number" id="drift-sens-psi-sig" class="input" value="0.25" step="0.01" min="0.05" max="1.0" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+          </div>
+          <div>
+            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">JSD Eşiği</label>
+            <input type="number" id="drift-sens-jsd" class="input" value="0.05" step="0.01" min="0.01" max="0.5" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+          </div>
+          <div>
+            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Min Örneklem (Bar)</label>
+            <input type="number" id="drift-sens-min-bars" class="input" value="100" step="10" min="20" max="1000" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+          </div>
+        </div>
+        <div id="drift-sample-warning" style="display: none; margin-top: 10px; background: rgba(245, 158, 11, 0.1); border-left: 4px solid #f59e0b; padding: 8px 12px; font-size: 12px; color: #fde68a; border-radius: 4px;"></div>
       </div>
 
       <!-- Drift Telemetry Cards -->
@@ -1631,6 +1718,74 @@ def render_product_dashboard_html() -> str:
           Yayıncı: <b>U.S. Bureau of Labor Statistics (BLS)</b> | Hedef URL: <code>https://www.bls.gov/schedule/news_release/cpi.htm</code><br>
           Operatör Yetkilendirmesi: <b style="color: var(--red);">NOT_GRANTED (Verilmedi)</b> | Gerçek Ağ İletişimi: <b style="color: var(--red);">DISABLED (Kapalı)</b><br>
           Açıklama: Resmi BLS API veya web sayfalarına ağ erişimi yapılmamıştır. Veri karantinada tutulmakta olup kesinlikle canlı modele beslenmez.
+        </div>
+      </div>
+
+      <!-- T0 Synchronized Macro Event Study (Sprint 08) -->
+      <div class="card" style="margin-bottom: 24px; padding: 16px; border-left: 4px solid #38bdf8;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: #38bdf8; letter-spacing: 0.5px;">T0 SENKRONİZE MAKRO OLAY ETKİ ÇALIŞMASI (EVENT-STUDY)</div>
+            <h3 style="margin: 2px 0; color: #fff;">Olay Çevresi Fiyat Hareket Laboratuvarı</h3>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+              Makro yayın anını T0 noktası (0. saat) kabul ederek [-24s, +24s] normalize fiyat seyrini ve kontaminasyonu analiz edin.
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+            <select id="macro-study-ev-a" class="input" style="max-width: 280px; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+              <option value="EVT-BLS-CPI-20220112">EVT-BLS-CPI-20220112 (CPI Enflasyon)</option>
+              <option value="EVT-BLS-NFP-20220107">EVT-BLS-NFP-20220107 (NFP İstihdam)</option>
+              <option value="EVT-FED-FOMC-20220316">EVT-FED-FOMC-20220316 (Fed Faiz)</option>
+            </select>
+            <select id="macro-study-ev-b" class="input" style="max-width: 280px; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+              <option value="NONE" selected>Olay B (İsteğe Bağlı Karşılaştırma Yok)</option>
+              <option value="EVT-BLS-CPI-20220210">EVT-BLS-CPI-20220210 (Şubat CPI)</option>
+              <option value="EVT-FED-FOMC-20220504">EVT-FED-FOMC-20220504 (Mayıs FOMC)</option>
+            </select>
+            <button class="btn btn-primary" onclick="runMacroSynchronizedStudy()">T0 Senkronizasyonunu Çalıştır</button>
+          </div>
+        </div>
+
+        <!-- Contamination Indicator Banner -->
+        <div id="macro-contamination-banner" style="background: rgba(16, 185, 129, 0.08); border-left: 4px solid #10b981; padding: 8px 12px; font-size: 12px; color: #6ee7b7; border-radius: 4px; margin-bottom: 14px;">
+          ✓ Kontaminasyon Denetimi: Seçilen pencere içerisinde çakışan başka bir yüksek önem dereceli makro olay tespit edilmedi.
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px;">
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 11px; color: var(--text-muted);">ÖNCEKİ GETİRİ (-24h)</div>
+            <div style="font-size: 16px; font-weight: 700; color: #fff;" id="macro-m-pre">-</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 11px; color: var(--text-muted);">SONRAKİ GETİRİ (+24h)</div>
+            <div style="font-size: 16px; font-weight: 700; color: #34d399;" id="macro-m-post">-</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 11px; color: var(--text-muted);">İLK TEPKİ (1h)</div>
+            <div style="font-size: 16px; font-weight: 700; color: #38bdf8;" id="macro-m-imm">-</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 11px; color: var(--text-muted);">MAX LEHTE (MFE)</div>
+            <div style="font-size: 16px; font-weight: 700; color: #10b981;" id="macro-m-mfe">-</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 11px; color: var(--text-muted);">MAX ALEYHTE (MAE)</div>
+            <div style="font-size: 16px; font-weight: 700; color: #f87171;" id="macro-m-mae">-</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 11px; color: var(--text-muted);">VOLATİLİTE DEĞİŞİMİ</div>
+            <div style="font-size: 16px; font-weight: 700; color: #facc15;" id="macro-m-vol">-</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 11px; color: var(--text-muted);">HACİM KAT SAYISI</div>
+            <div style="font-size: 16px; font-weight: 700; color: #c084fc;" id="macro-m-volmult">-</div>
+          </div>
+        </div>
+
+        <!-- T0 Synchronized Trajectory Canvas -->
+        <div class="chart-canvas-wrap" style="height: 240px; background: #070b13; border: 1px solid #1e293b; border-radius: 4px;">
+          <canvas id="macro-t0-canvas" class="chart-canvas"></canvas>
         </div>
       </div>
 
@@ -2035,6 +2190,250 @@ def render_product_dashboard_html() -> str:
           </tbody>
         </table>
       </div>
+
+      <!-- Section: Secure Data Operations Console (Sprint 08) -->
+      <div class="section-header" style="margin-top: 24px;">
+        <div class="section-title"><span>📥</span> Güvenli Veri İçe Aktarma & Staging Kuyruğu</div>
+        <span class="badge badge-info">ÇEVRİMDİŞİ İÇE AKTARMA</span>
+      </div>
+
+      <div class="card" style="margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <h3 style="margin: 0; color: #38bdf8;">Staging Intake Kuyruğu (data/staging_intake/)</h3>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+              Yetkili sunucu dizinine yüklenmiş aday arşiv dosyaları. İçe aktarmadan önce bütünlük ve OHLC geometrisi denetlenir.
+            </div>
+          </div>
+          <button class="btn" onclick="loadIntakeCandidates()">↻ Kuyruğu Yenile</button>
+        </div>
+
+        <div class="table-container" style="max-height: 200px; overflow-y: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Dosya Adı</th>
+                <th>Boyut</th>
+                <th>Format</th>
+                <th>Son Değişiklik (UTC)</th>
+                <th>İşlem</th>
+              </tr>
+            </thead>
+            <tbody id="ops-candidates-tbody">
+              <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Kuyruk taranıyor...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Manual Intake Candidate Form -->
+        <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid #1e293b; display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 180px;">
+            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Aday Dosya Adı</label>
+            <input type="text" id="ops-candidate-input" class="input" placeholder="BTCUSDT-5m-2026-10.parquet" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+          </div>
+          <div style="width: 120px;">
+            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Zaman Aralığı</label>
+            <select id="ops-target-intv" class="input" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+              <option value="5m" selected>5 Dakika (5m)</option>
+              <option value="15m">15 Dakika (15m)</option>
+              <option value="1h">1 Saat (1h)</option>
+            </select>
+          </div>
+          <div style="width: 120px;">
+            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Hedef Ay</label>
+            <input type="text" id="ops-target-month" class="input" value="2026-10" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+          </div>
+          <button class="btn btn-primary" onclick="createImportPreviewTicket()">🔍 Veriyi Kontrol Et (Önizle)</button>
+        </div>
+      </div>
+
+      <!-- Preview Ticket & Publication Card -->
+      <div id="ops-preview-card" class="card" style="display: none; margin-bottom: 20px; border-left: 4px solid #10b981; background: rgba(16, 185, 129, 0.03);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: #10b981; letter-spacing: 0.5px;">DOĞRULANMIŞ İÇE AKTARMA BİLETİ</div>
+            <h3 style="margin: 4px 0; color: #fff;" id="ops-preview-title">Bilet: prev_...</h3>
+            <div style="font-size: 12px; color: var(--text-muted);" id="ops-preview-hash">SHA256: ...</div>
+          </div>
+          <span class="badge badge-success" id="ops-preview-verdict">VALIDATED</span>
+        </div>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); margin: 16px 0; gap: 10px;">
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 11px; color: var(--text-muted);">MUM KAYIT SAYISI</div>
+            <div style="font-size: 18px; font-weight: 700; color: #fff;" id="ops-preview-records">-</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 11px; color: var(--text-muted);">ÇİFT / TEKRAR EDEN</div>
+            <div style="font-size: 18px; font-weight: 700; color: #34d399;" id="ops-preview-dups">0</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 11px; color: var(--text-muted);">GEÇERSİZ OHLC</div>
+            <div style="font-size: 18px; font-weight: 700; color: #34d399;" id="ops-preview-invalid">0</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 11px; color: var(--text-muted);">TARİH ARALIĞI</div>
+            <div style="font-size: 11px; font-weight: 600; color: #fff;" id="ops-preview-range">-</div>
+          </div>
+        </div>
+
+        <!-- Operator Token & Publication Trigger -->
+        <div style="background: #0a0f1d; border: 1px solid #1e293b; border-radius: 6px; padding: 14px;">
+          <div style="font-size: 12px; font-weight: 700; color: #f59e0b; margin-bottom: 8px;">🔐 OPERATÖR YETKİLENDİRME & KANONİK YAYIN</div>
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <input type="password" id="ops-token-input" class="input" placeholder="Operatör Yetki Anahtarı..." value="cbe-staging-operator-key-2026" style="flex: 1; min-width: 220px; background: #020617; color: #fff; border: 1px solid #334155; padding: 8px 12px; border-radius: 4px;">
+            <button class="btn btn-primary" onclick="publishImportTicket()">✓ Doğrulanmış Veriyi Arşive Ekle</button>
+            <button class="btn btn-danger" onclick="testUnauthorizedRejection()">⚠️ Yetkisiz Reddetme Testi</button>
+          </div>
+          <div id="ops-publish-alert" style="display: none; margin-top: 10px; padding: 10px; border-radius: 4px; font-size: 12px;"></div>
+        </div>
+      </div>
+
+      <!-- Timeframe Derivation Console -->
+      <div class="section-header">
+        <div class="section-title"><span>⏳</span> Çoklu Zaman Dilimi Deterministik Türetme</div>
+        <span class="badge badge-info">DETERMİNİSTİK TÜRETME</span>
+      </div>
+
+      <div class="card" style="margin-bottom: 20px;">
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+          5 dakikalık (5m) baz verilerden 15m, 1h, 4h ve 1d mumları matematiksel olarak tam ve deterministik şekilde türetin.
+        </div>
+        <div style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
+          <div style="width: 140px;">
+            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Türetilecek Ay</label>
+            <input type="text" id="ops-derive-month" class="input" value="2026-09" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+          </div>
+          <div style="width: 140px;">
+            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Hedef Aralık</label>
+            <select id="ops-derive-intv" class="input" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+              <option value="1h" selected>1 Saat (1h)</option>
+              <option value="15m">15 Dakika (15m)</option>
+              <option value="4h">4 Saat (4h)</option>
+              <option value="1d">1 Gün (1d)</option>
+            </select>
+          </div>
+          <button class="btn" onclick="previewDerivation()">Türetme Önizle</button>
+          <button class="btn btn-primary" onclick="publishDerivation()">Türetmeyi Yayınla</button>
+        </div>
+        <div id="ops-derive-alert" style="display: none; margin-top: 10px; padding: 10px; border-radius: 4px; font-size: 12px;"></div>
+      </div>
+
+      <!-- Audit Trail Ledger Table -->
+      <div class="section-header">
+        <div class="section-title"><span>📜</span> Operasyon Denetim İzi Defteri (Immutable Audit Log)</div>
+        <span class="badge badge-success">DEĞİŞMEZ DENETİM İZİ</span>
+      </div>
+
+      <div class="table-container" style="max-height: 240px; overflow-y: auto; margin-bottom: 24px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Zaman (UTC)</th>
+              <th>İşlem ID</th>
+              <th>Eylem</th>
+              <th>Aktör</th>
+              <th>Karar (Verdict)</th>
+              <th>Kaynak Özeti</th>
+              <th>Revizyon</th>
+            </tr>
+          </thead>
+          <tbody id="ops-audit-tbody">
+            <tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Denetim kayıtları yükleniyor...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- MODULE: REPRODUCIBLE RESEARCH REPORTS (SPRINT 08)                   -->
+    <!-- =================================================================== -->
+    <section id="module-reports" class="tab-content">
+      <div class="card" style="border-left: 4px solid #38bdf8; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: #38bdf8; letter-spacing: 0.5px;">TEKRARLANABİLİR BİLİMSEL ARAŞTIRMA RAPORLARI</div>
+            <h2 style="font-size: 18px; color: #fff; margin: 4px 0;">Araştırma Raporu Üretim Merkezi</h2>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+              Dönem karşılaştırma, makro olay reaksiyonu veya rejim kayması analizlerini kesin veri seti manifest hash değeri, model sürümü ve zorunlu yasal uyarı ile raporlayın.
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="generateResearchReport('json')">📋 Raporu Derle (JSON)</button>
+            <button class="btn" onclick="generateResearchReport('csv')">📥 Güvenli CSV İndir</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Report Parameters Card -->
+      <div class="card" style="margin-bottom: 20px; padding: 16px;">
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+          <div>
+            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Rapor Türü</label>
+            <select id="rpt-type-select" class="input" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;" onchange="updateReportFormFields()">
+              <option value="PERIOD_COMPARISON" selected>Tarihsel Dönem Karşılaştırması</option>
+              <option value="MACRO_EVENT">Makro Olay Etki Analizi (T0)</option>
+              <option value="REGIME_DRIFT">Rejim Dağılım Kayması (PSI & JSD)</option>
+            </select>
+          </div>
+          <div id="rpt-param-a-wrap">
+            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;" id="rpt-param-a-label">Dönem A (Referans)</label>
+            <input type="text" id="rpt-param-a" class="input" value="2026-08" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+          </div>
+          <div id="rpt-param-b-wrap">
+            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;" id="rpt-param-b-label">Dönem B (Gözlem)</label>
+            <input type="text" id="rpt-param-b" class="input" value="2026-09" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+          </div>
+          <div>
+            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Zaman Aralığı</label>
+            <select id="rpt-interval" class="input" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+              <option value="1h" selected>1 Saat (1h)</option>
+              <option value="4h">4 Saat (4h)</option>
+              <option value="1d">1 Gün (1d)</option>
+              <option value="15m">15 Dakika (15m)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Generated Report Preview Card -->
+      <div id="rpt-preview-card" class="card" style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 14px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: #38bdf8;" id="rpt-badge-id">RAPOR ID: -</div>
+            <h3 style="margin: 4px 0; color: #fff;" id="rpt-title">Rapor Hazırlanıyor...</h3>
+            <div style="font-size: 12px; color: var(--text-muted);" id="rpt-timestamp">Tarih: -</div>
+          </div>
+          <span class="badge badge-success">REPRODUCIBLE RESEARCH</span>
+        </div>
+
+        <!-- Mandatory Turkish Legal Disclaimer Callout -->
+        <div style="background: rgba(245, 158, 11, 0.08); border-left: 4px solid #f59e0b; padding: 10px 14px; border-radius: 4px; margin-bottom: 16px;">
+          <div style="font-size: 11px; font-weight: 700; color: #f59e0b;">ZORUNLU YASAL & METODOLOJİK UYARI</div>
+          <div style="font-size: 12px; color: #fde68a; margin-top: 2px;" id="rpt-disclaimer">
+            Bu rapor tarihsel veri araştırması amacıyla hazırlanmıştır. Yatırım tavsiyesi veya canlı alım-satım sinyali değildir.
+          </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px;">
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 11px; color: var(--text-muted);">MODEL SÜRÜMÜ</div>
+            <div style="font-size: 15px; font-weight: 700; color: #fff;" id="rpt-model-ver">CBE-0.7.0</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 11px; color: var(--text-muted);">MANIFEST HASH</div>
+            <div style="font-size: 12px; font-weight: 600; color: #34d399; word-break: break-all;" id="rpt-manifest-hash">-</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 11px; color: var(--text-muted);">FORMULA INJECTION SAVUNMASI</div>
+            <div style="font-size: 13px; font-weight: 700; color: #38bdf8;">AKTİF (SINGLE_QUOTE)</div>
+          </div>
+        </div>
+
+        <!-- Report Output Raw Preview -->
+        <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 6px;">Rapor İçeriği (Önizleme)</div>
+        <pre id="rpt-raw-output" style="background: #020617; border: 1px solid #1e293b; padding: 12px; border-radius: 4px; font-size: 11px; color: #e2e8f0; max-height: 280px; overflow-y: auto;">Henüz rapor derlenmedi. Yukarıdaki düğmeye tıklayarak raporu oluşturun.</pre>
+      </div>
     </section>
 
   </main>
@@ -2132,6 +2531,9 @@ def render_product_dashboard_html() -> str:
         loadArtifacts();
       } else if (tabId === "operations") {
         loadOperations();
+        loadIntakeCandidates();
+      } else if (tabId === "reports") {
+        loadReportsTab();
       }
     }
 
@@ -4204,6 +4606,501 @@ def render_product_dashboard_html() -> str:
         const shortName = (r.regime || "").substring(0, 8);
         ctx.fillText(shortName, grpX + grpW * 0.05, h - 12);
       });
+    }
+
+    // =========================================================================
+    // SPRINT 08 CLIENT LOGIC: OPERATIONS CONSOLE, MULTI-ASSET, MACRO STUDY, REPORTS
+    // =========================================================================
+
+    // Multi-Asset
+    function onAssetSelectorChanged() {
+      const b = document.getElementById("cross-asset-b").value;
+      const banner = document.getElementById("cross-asset-failclosed-banner");
+      if (b === "BTCUSDT") {
+        banner.style.display = "none";
+      } else {
+        banner.style.display = "block";
+        banner.innerHTML = "<b>⚠️ GÜVENLİK POLİTİKASI (FAIL_CLOSED_NO_SYNTHETIC_DATA):</b> Seçilen '" + b + "' varlığı için doğrulanmış çevrimdışı arşiv henüz içe aktarılmamıştır. CBE temel ilkeleri gereği kesinlikle yapay/sentetik piyasa verisi üretilmez.";
+      }
+    }
+
+    async function runCrossAssetComparison() {
+      const a = document.getElementById("cross-asset-a").value;
+      const b = document.getElementById("cross-asset-b").value;
+      const wrap = document.getElementById("cross-asset-results-wrap");
+      const banner = document.getElementById("cross-asset-failclosed-banner");
+
+      try {
+        const res = await fetch("/api/v1/product/cross-asset-comparison?symbol_a=" + a + "&symbol_b=" + b + "&month=2026-09&interval=1h");
+        const data = await res.json();
+        if (!res.ok || data.status === "BLOCKED_NO_DATA") {
+          banner.style.display = "block";
+          banner.innerHTML = "<b>⚠️ GÜVENLİK POLİTİKASI (FAIL_CLOSED_NO_SYNTHETIC_DATA):</b> " + (data.error || "Varlık verisi arşivde bulunamadı.");
+          wrap.style.display = "none";
+          return;
+        }
+
+        banner.style.display = "none";
+        wrap.style.display = "block";
+        document.getElementById("cross-corr-val").innerText = data.metrics.overall_pearson_correlation;
+        document.getElementById("cross-vol-ratio").innerText = data.metrics.volatility_ratio_b_to_a + "x";
+        document.getElementById("cross-beta-val").innerText = data.metrics.beta_b_to_a;
+        document.getElementById("cross-spread-val").innerText = data.metrics.return_spread_pct + "%";
+        drawCrossAssetCanvas(data);
+      } catch (e) {
+        console.error("Cross asset error:", e);
+      }
+    }
+
+    function drawCrossAssetCanvas(data) {
+      const canvas = document.getElementById("cross-asset-canvas");
+      if (!canvas) return;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = canvas.parentElement.clientWidth * dpr;
+      canvas.height = canvas.parentElement.clientHeight * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+      const w = canvas.parentElement.clientWidth;
+      const h = canvas.parentElement.clientHeight;
+      ctx.clearRect(0, 0, w, h);
+
+      const trajA = data.trajectories.trajectory_a;
+      const trajB = data.trajectories.trajectory_b;
+      if (!trajA || trajA.length < 2) return;
+
+      const allVals = trajA.concat(trajB);
+      const minV = Math.min(...allVals);
+      const maxV = Math.max(...allVals);
+      const span = maxV - minV || 1;
+
+      // Draw Trajectory A (Blue)
+      ctx.strokeStyle = "#38bdf8";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for (let i = 0; i < trajA.length; i++) {
+        const x = (i / (trajA.length - 1)) * (w - 40) + 20;
+        const y = h - 20 - ((trajA[i] - minV) / span) * (h - 40);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Draw Trajectory B (Orange)
+      ctx.strokeStyle = "#f59e0b";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for (let i = 0; i < trajB.length; i++) {
+        const x = (i / (trajB.length - 1)) * (w - 40) + 20;
+        const y = h - 20 - ((trajB[i] - minV) / span) * (h - 40);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
+    // Regime Drift Sensitivity Lab
+    async function applyDriftSensitivity() {
+      const psiMod = document.getElementById("drift-sens-psi-mod").value || 0.10;
+      const psiSig = document.getElementById("drift-sens-psi-sig").value || 0.25;
+      const jsdVal = document.getElementById("drift-sens-jsd").value || 0.05;
+      const minBars = document.getElementById("drift-sens-min-bars").value || 100;
+      const preset = document.getElementById("drift-preset-select").value || "q4_2025_vs_q1_2026";
+
+      try {
+        const res = await fetch("/api/v1/product/regime-drift-sensitivity?preset_id=" + preset +
+          "&psi_moderate=" + psiMod + "&psi_significant=" + psiSig + "&jsd_moderate=" + jsdVal + "&min_sample_bars=" + minBars);
+        if (!res.ok) return;
+        const data = await res.json();
+        renderDriftData(data);
+
+        const warnEl = document.getElementById("drift-sample-warning");
+        if (data.drift_telemetry && data.drift_telemetry.sample_size_warning) {
+          warnEl.style.display = "block";
+          warnEl.innerText = "⚠️ " + data.drift_telemetry.sample_size_warning;
+        } else {
+          warnEl.style.display = "none";
+        }
+      } catch (e) {
+        console.error("Sensitivity error:", e);
+      }
+    }
+
+    // Macro Event Synchronized Study
+    async function runMacroSynchronizedStudy() {
+      const evA = document.getElementById("macro-study-ev-a").value;
+      const evB = document.getElementById("macro-study-ev-b").value;
+      let url = "/api/v1/product/macro-event-comparison?event_id_a=" + evA;
+      if (evB && evB !== "NONE") url += "&event_id_b=" + evB;
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) return;
+        const data = await res.json();
+
+        const banner = document.getElementById("macro-contamination-banner");
+        let m = data.metrics || (data.event_a && data.event_a.metrics);
+        let cont = data.contamination || (data.event_a && data.event_a.contamination);
+
+        if (cont && cont.is_contaminated) {
+          banner.style.background = "rgba(245, 158, 11, 0.1)";
+          banner.style.borderLeftColor = "#f59e0b";
+          banner.style.color = "#fde68a";
+          banner.innerHTML = "⚠️ <b>Olay Kontaminasyonu:</b> Seçilen pencerede " + cont.confounding_count + " adet çakışan makro olay mevcut.";
+        } else {
+          banner.style.background = "rgba(16, 185, 129, 0.08)";
+          banner.style.borderLeftColor = "#10b981";
+          banner.style.color = "#6ee7b7";
+          banner.innerHTML = "✓ <b>Temiz Olay Penceresi:</b> Seçilen pencere içerisinde çakışan başka bir yüksek önem dereceli makro olay tespit edilmedi.";
+        }
+
+        if (m) {
+          document.getElementById("macro-m-pre").innerText = m.pre_return_pct + "%";
+          document.getElementById("macro-m-post").innerText = m.post_return_pct + "%";
+          document.getElementById("macro-m-imm").innerText = m.immediate_return_pct + "%";
+          document.getElementById("macro-m-mfe").innerText = "+" + m.mfe_pct + "%";
+          document.getElementById("macro-m-mae").innerText = m.mae_pct + "%";
+          document.getElementById("macro-m-vol").innerText = m.volatility_shift_ratio + "x";
+          document.getElementById("macro-m-volmult").innerText = m.volume_multiplier + "x";
+        }
+
+        drawMacroT0Canvas(data);
+      } catch (e) {
+        console.error("Macro study error:", e);
+      }
+    }
+
+    function drawMacroT0Canvas(data) {
+      const canvas = document.getElementById("macro-t0-canvas");
+      if (!canvas) return;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = canvas.parentElement.clientWidth * dpr;
+      canvas.height = canvas.parentElement.clientHeight * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+      const w = canvas.parentElement.clientWidth;
+      const h = canvas.parentElement.clientHeight;
+      ctx.clearRect(0, 0, w, h);
+
+      const traj = data.trajectory || (data.event_a && data.event_a.trajectory);
+      if (!traj || traj.length < 2) return;
+
+      const rets = traj.map(t => t.relative_return_pct);
+      const minR = Math.min(...rets, -1.0);
+      const maxR = Math.max(...rets, 1.0);
+      const span = maxR - minR || 1;
+
+      // Draw T0 vertical centerline
+      const midX = w / 2;
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(midX, 10);
+      ctx.lineTo(midX, h - 20);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "10px sans-serif";
+      ctx.fillText("T0 (Yayın Anı)", midX - 30, h - 6);
+
+      // Trajectory curve
+      ctx.strokeStyle = "#38bdf8";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for (let i = 0; i < traj.length; i++) {
+        const x = (i / (traj.length - 1)) * (w - 40) + 20;
+        const y = h - 20 - ((rets[i] - minR) / span) * (h - 40);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
+    // Operations Console Functions
+    let currentPreviewId = null;
+
+    async function loadIntakeCandidates() {
+      try {
+        const res = await fetch("/api/v1/product/operations/candidates");
+        const tbody = document.getElementById("ops-candidates-tbody");
+        if (!tbody) return;
+        if (!res.ok) {
+          tbody.innerHTML = "<tr><td colspan='5' style='text-align: center; color: var(--red);'>Kuyruk listesi alınamadı.</td></tr>";
+          return;
+        }
+        const data = await res.json();
+        const cands = data.candidates || [];
+        if (cands.length === 0) {
+          tbody.innerHTML = "<tr><td colspan='5' style='text-align: center; color: var(--text-muted);'>İçe aktarma kuyruğunda bekleyen dosya yok. Aşağıdan aday dosya adını belirterek kontrol edebilirsiniz.</td></tr>";
+          return;
+        }
+        let html = "";
+        cands.forEach(c => {
+          html += "<tr>" +
+            "<td><code>" + c.filename + "</code></td>" +
+            "<td>" + c.size_mb + " MB</td>" +
+            "<td><span class='badge badge-info'>" + c.extension + "</span></td>" +
+            "<td>" + (c.modified_utc ? c.modified_utc.substring(0, 19).replace('T', ' ') : '-') + "</td>" +
+            "<td><button class='btn' style='padding: 3px 8px; font-size: 11px;' onclick='selectCandidateForPreview(" + JSON.stringify(c.filename) + ")'>Kontrol Et</button></td>" +
+            "</tr>";
+        });
+        tbody.innerHTML = html;
+      } catch (e) {
+        console.error("Intake candidates error:", e);
+      }
+      loadOperationsAuditTrail();
+    }
+
+    function selectCandidateForPreview(fn) {
+      document.getElementById("ops-candidate-input").value = fn;
+      createImportPreviewTicket();
+    }
+
+    async function createImportPreviewTicket() {
+      const fn = document.getElementById("ops-candidate-input").value.trim();
+      const intv = document.getElementById("ops-target-intv").value;
+      const month = document.getElementById("ops-target-month").value.trim();
+      if (!fn) { alert("Lütfen aday dosya adını girin."); return; }
+
+      const card = document.getElementById("ops-preview-card");
+      try {
+        const res = await fetch("/api/v1/operator/import-preview", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ filename: fn, target_interval: intv, target_month: month })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          alert("Hata: " + (data.message || data.error));
+          return;
+        }
+
+        currentPreviewId = data.preview_id;
+        const p = data.preview;
+        card.style.display = "block";
+        document.getElementById("ops-preview-title").innerText = "Bilet ID: " + data.preview_id;
+        document.getElementById("ops-preview-hash").innerText = "SHA256: " + p.source_sha256;
+        document.getElementById("ops-preview-records").innerText = Number(p.record_count).toLocaleString();
+        document.getElementById("ops-preview-dups").innerText = p.duplicates_count;
+        document.getElementById("ops-preview-invalid").innerText = p.invalid_ohlc_count;
+        document.getElementById("ops-preview-range").innerText = (p.first_timestamp_utc || '').substring(0, 10) + " → " + (p.last_timestamp_utc || '').substring(0, 10);
+
+        const alertBox = document.getElementById("ops-publish-alert");
+        alertBox.style.display = "none";
+      } catch (e) {
+        console.error("Preview ticket error:", e);
+      }
+    }
+
+    async function publishImportTicket() {
+      if (!currentPreviewId) { alert("Önce geçerli bir önizleme bileti oluşturulmalıdır."); return; }
+      const token = document.getElementById("ops-token-input").value.trim();
+      const alertBox = document.getElementById("ops-publish-alert");
+
+      try {
+        const res = await fetch("/api/v1/operator/import-publish", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "X-Operator-Token": token },
+          body: JSON.stringify({ preview_id: currentPreviewId, confirmed: true })
+        });
+        const data = await res.json();
+        alertBox.style.display = "block";
+        if (res.ok) {
+          alertBox.style.background = "rgba(16, 185, 129, 0.1)";
+          alertBox.style.border = "1px solid #10b981";
+          alertBox.style.color = "#6ee7b7";
+          alertBox.innerHTML = "✓ <b>BAŞARILI:</b> Veri partisyonu sisteme dahil edildi. Revizyon: " + (data.dataset_revision_after || 'Güncellendi');
+          loadOperationsAuditTrail();
+        } else {
+          alertBox.style.background = "rgba(239, 68, 68, 0.1)";
+          alertBox.style.border = "1px solid #ef4444";
+          alertBox.style.color = "#fca5a5";
+          alertBox.innerHTML = "⚠️ <b>HATA (" + res.status + "):</b> " + (data.message || data.error);
+        }
+      } catch (e) {
+        console.error("Publish error:", e);
+      }
+    }
+
+    async function testUnauthorizedRejection() {
+      if (!currentPreviewId) {
+        alert("Önce bir dosya için önizleme bileti oluşturun.");
+        return;
+      }
+      const alertBox = document.getElementById("ops-publish-alert");
+      try {
+        const res = await fetch("/api/v1/operator/import-publish", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "X-Operator-Token": "invalid-hacker-key" },
+          body: JSON.stringify({ preview_id: currentPreviewId, confirmed: true })
+        });
+        const data = await res.json();
+        alertBox.style.display = "block";
+        alertBox.style.background = "rgba(239, 68, 68, 0.1)";
+        alertBox.style.border = "1px solid #ef4444";
+        alertBox.style.color = "#fca5a5";
+        alertBox.innerHTML = "🛡️ <b>GÜVENLİK TESTİ BAŞARILI (HTTP " + res.status + "):</b> Yetkisiz yayınlama talebi sunucu tarafında engellendi: " + (data.message || data.error);
+        loadOperationsAuditTrail();
+      } catch (e) {
+        console.error("Security test error:", e);
+      }
+    }
+
+    async function previewDerivation() {
+      const month = document.getElementById("ops-derive-month").value.trim();
+      const intv = document.getElementById("ops-derive-intv").value;
+      const alertBox = document.getElementById("ops-derive-alert");
+      try {
+        const res = await fetch("/api/v1/operator/derive-preview", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ month: month, target_interval: intv })
+        });
+        const data = await res.json();
+        alertBox.style.display = "block";
+        alertBox.style.background = "rgba(56, 189, 248, 0.1)";
+        alertBox.style.border = "1px solid #38bdf8";
+        alertBox.style.color = "#7dd3fc";
+        alertBox.innerHTML = "ℹ️ <b>TÜRETME ÖNİZLEME:</b> " + month + " (" + intv + ") için türetilecek bar sayısı: " + (data.derived_rows || data.bars_derived || 'Kayıtlar doğrulandı') + ".";
+      } catch (e) {
+        console.error("Derive preview error:", e);
+      }
+    }
+
+    async function publishDerivation() {
+      const month = document.getElementById("ops-derive-month").value.trim();
+      const intv = document.getElementById("ops-derive-intv").value;
+      const token = document.getElementById("ops-token-input").value.trim();
+      const alertBox = document.getElementById("ops-derive-alert");
+      try {
+        const res = await fetch("/api/v1/operator/derive-publish", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "X-Operator-Token": token },
+          body: JSON.stringify({ month: month, target_interval: intv })
+        });
+        const data = await res.json();
+        alertBox.style.display = "block";
+        if (res.ok) {
+          alertBox.style.background = "rgba(16, 185, 129, 0.1)";
+          alertBox.style.border = "1px solid #10b981";
+          alertBox.style.color = "#6ee7b7";
+          alertBox.innerHTML = "✓ <b>TÜRETME YAYINLANDI:</b> " + month + " " + intv + " partisyonu arşive yazıldı.";
+          loadOperationsAuditTrail();
+        } else {
+          alertBox.style.background = "rgba(239, 68, 68, 0.1)";
+          alertBox.style.border = "1px solid #ef4444";
+          alertBox.style.color = "#fca5a5";
+          alertBox.innerHTML = "⚠️ <b>HATA (" + res.status + "):</b> " + (data.message || data.error);
+        }
+      } catch (e) {
+        console.error("Derive publish error:", e);
+      }
+    }
+
+    async function loadOperationsAuditTrail() {
+      try {
+        const res = await fetch("/api/v1/product/operations-status");
+        if (!res.ok) return;
+        const data = await res.json();
+        const tbody = document.getElementById("ops-audit-tbody");
+        if (!tbody) return;
+        const trail = data.recent_audit_trail || [];
+        if (trail.length === 0) {
+          tbody.innerHTML = "<tr><td colspan='7' style='text-align: center; color: var(--text-muted);'>Henüz denetim kaydı bulunmuyor.</td></tr>";
+          return;
+        }
+        let html = "";
+        trail.slice().reverse().forEach(t => {
+          const isOk = (t.verdict === "VALIDATED" || t.verdict === "SUCCESS");
+          const badgeClass = isOk ? "badge-success" : "badge-danger";
+          html += "<tr>" +
+            "<td>" + (t.timestamp_utc ? t.timestamp_utc.substring(0, 19).replace('T', ' ') : '-') + "</td>" +
+            "<td><code>" + (t.operation_id || '-') + "</code></td>" +
+            "<td><b>" + t.action + "</b></td>" +
+            "<td>" + t.actor + "</td>" +
+            "<td><span class='badge " + badgeClass + "'>" + t.verdict + "</span></td>" +
+            "<td style='font-size: 11px;'>" + (t.source_hash ? t.source_hash.substring(0, 12) + "..." : '-') + "</td>" +
+            "<td style='font-size: 11px;'>" + (t.revision_after ? t.revision_after.substring(0, 16) : '-') + "</td>" +
+            "</tr>";
+        });
+        tbody.innerHTML = html;
+      } catch (e) {
+        console.error("Audit trail error:", e);
+      }
+    }
+
+    // Reproducible Research Reports
+    let lastReportData = null;
+
+    function updateReportFormFields() {
+      const type = document.getElementById("rpt-type-select").value;
+      const lblA = document.getElementById("rpt-param-a-label");
+      const lblB = document.getElementById("rpt-param-b-label");
+      const wrapB = document.getElementById("rpt-param-b-wrap");
+
+      if (type === "PERIOD_COMPARISON") {
+        lblA.innerText = "Dönem A (Referans Ay)";
+        lblB.innerText = "Dönem B (Gözlem Ayı)";
+        wrapB.style.display = "block";
+      } else if (type === "MACRO_EVENT") {
+        lblA.innerText = "Olay ID (A)";
+        lblB.innerText = "Olay ID (B - Opsiyonel)";
+        wrapB.style.display = "block";
+      } else if (type === "REGIME_DRIFT") {
+        lblA.innerText = "Temel Ay (Baseline)";
+        lblB.innerText = "Hedef Ay (Target)";
+        wrapB.style.display = "block";
+      }
+    }
+
+    async function generateResearchReport(fmt = "json") {
+      const type = document.getElementById("rpt-type-select").value;
+      const paramA = document.getElementById("rpt-param-a").value.trim();
+      const paramB = document.getElementById("rpt-param-b").value.trim();
+      const intv = document.getElementById("rpt-interval").value;
+
+      let url = "/api/v1/product/research-report?report_type=" + type + "&interval=" + intv + "&format=" + fmt;
+      if (type === "PERIOD_COMPARISON") {
+        url += "&month_a=" + paramA + "&month_b=" + paramB;
+      } else if (type === "MACRO_EVENT") {
+        url += "&event_id_a=" + paramA;
+        if (paramB) url += "&event_id_b=" + paramB;
+      } else if (type === "REGIME_DRIFT") {
+        url += "&baseline_month=" + paramA + "&target_month=" + paramB;
+      }
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        lastReportData = data;
+
+        document.getElementById("rpt-badge-id").innerText = "RAPOR ID: " + (data.report_id || '-');
+        document.getElementById("rpt-title").innerText = data.title || "Araştırma Raporu";
+        document.getElementById("rpt-timestamp").innerText = "Oluşturulma (UTC): " + (data.generated_at_utc || '-');
+        document.getElementById("rpt-model-ver").innerText = data.model_version || "CBE-0.7.0";
+        document.getElementById("rpt-manifest-hash").innerText = (data.dataset_provenance && data.dataset_provenance.manifest_hash) || "-";
+        document.getElementById("rpt-disclaimer").innerText = data.disclaimer_tr || "Bu rapor tarihsel veri araştırması amacıyla hazırlanmıştır.";
+
+        if (fmt === "csv" && data.csv_content) {
+          document.getElementById("rpt-raw-output").innerText = data.csv_content;
+          // Trigger file download
+          const blob = new Blob([data.csv_content], { type: "text/csv;charset=utf-8;" });
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.setAttribute("download", (data.report_id || "cbe_report") + ".csv");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else {
+          document.getElementById("rpt-raw-output").innerText = JSON.stringify(data, null, 2);
+        }
+      } catch (e) {
+        console.error("Report generation error:", e);
+      }
+    }
+
+    function loadReportsTab() {
+      updateReportFormFields();
+      if (!lastReportData) {
+        generateResearchReport('json');
+      }
     }
   </script>
 </body>

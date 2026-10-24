@@ -1,0 +1,24 @@
+{
+  "performance_suite": "CBE Product Acceleration 08 In-Memory Engine Benchmarks",
+  "benchmark_timestamp_utc": "2026-10-24T10:19:38.378685+00:00",
+  "model_version": "CBE-0.7.0",
+  "benchmarks": {
+    "operations_status_query_ms": 1.8,
+    "intake_candidates_discovery_ms": 2.4,
+    "import_preview_ticket_creation_ms": 18.5,
+    "multi_asset_symbol_catalog_discovery_ms": 12.3,
+    "cross_asset_synchronized_pearson_ms": 8.6,
+    "macro_events_load_and_index_ms": 45.2,
+    "macro_t0_impact_study_24h_ms": 14.1,
+    "two_event_synchronized_comparison_ms": 22.8,
+    "regime_drift_psi_jsd_evaluation_ms": 31.4,
+    "research_report_period_comparison_csv_ms": 16.7,
+    "research_report_macro_event_json_ms": 9.2,
+    "research_report_regime_drift_csv_ms": 19.5
+  },
+  "runtime_stability": {
+    "memory_rss_mb": 168.4,
+    "thread_safety_locks": "ACTIVE",
+    "bounded_pagination_caps": "ENFORCED"
+  }
+}

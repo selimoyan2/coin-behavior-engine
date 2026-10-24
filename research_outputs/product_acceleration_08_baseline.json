@@ -1,0 +1,32 @@
+{
+  "audit_timestamp_utc": "2026-10-24T10:00:45Z",
+  "sprint": "CBE_PRODUCT_ACCELERATION_08",
+  "baseline_reconciliation": {
+    "git_head_commit": "7fd955b51af64f6c368339926cd95f9bc8a50e23",
+    "git_head_commit_short": "7fd955b",
+    "origin_main_commit": "7fd955b51af64f6c368339926cd95f9bc8a50e23",
+    "git_status": "CLEAN",
+    "feature_commit_sprint07": "bca29faa4963bf720576bab319dfb78aff435cf7",
+    "staging_vps_host": "168.231.125.238",
+    "staging_vps_hostname": "srv1114257",
+    "staging_service_uuid": "dzzfws54by1whlbq6fk4ywut",
+    "staging_container_id": "6139364c0c1c",
+    "staging_binding": "127.0.0.1:18080->8000/tcp",
+    "staging_health": "healthy",
+    "staging_running_commit": "bca29faa4963bf720576bab319dfb78aff435cf7",
+    "production_container_id": "e27157318ede",
+    "production_container_name": "6t63aehpaw0cw1bbt4zcm09g-20261024T075740",
+    "production_state": "Up 2 hours (healthy)",
+    "production_isolation_verified": true,
+    "manifest_version": "cbe-manifest-v2-73a6212acca3"
+  },
+  "governance_status": {
+    "technical_decision": "TECHNICAL_NO_GO",
+    "governance_authorization": "NOT_GRANTED",
+    "production_token": "NOT_ISSUED",
+    "real_network_market_collection": "DISABLED",
+    "btcusdt_live_observation": "DISABLED",
+    "unattended_monitoring": "DISABLED",
+    "live_order_execution": "PERMANENTLY_PROHIBITED"
+  }
+}

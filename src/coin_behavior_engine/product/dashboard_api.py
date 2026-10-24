@@ -148,9 +148,11 @@ class ProductDashboardApiService:
         cls,
         path: str,
         query_params: Optional[Dict[str, List[str]]] = None,
+        headers: Optional[Dict[str, str]] = None,
     ) -> Tuple[int, Dict[str, Any]]:
         """Dispatch HTTP GET request to appropriate product endpoint."""
         query_params = query_params or {}
+        headers = headers or {}
 
         # Strip query string from path if present
         if "?" in path:
@@ -160,8 +162,13 @@ class ProductDashboardApiService:
             path = path_only
 
         # Normalize path
-        sub_path = path[len(cls.API_PREFIX):] if path.startswith(cls.API_PREFIX) else path
-        sub_path = sub_path.strip("/")
+        operator_prefix = "/api/v1/operator"
+        if path.startswith(operator_prefix):
+            sub_path = path[len(operator_prefix):].strip("/")
+        elif path.startswith(cls.API_PREFIX):
+            sub_path = path[len(cls.API_PREFIX):].strip("/")
+        else:
+            sub_path = path.strip("/")
 
         try:
             if sub_path in ("", "overview"):
@@ -228,6 +235,22 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.get_regime_drift(query_params)
             elif sub_path in ("derivation-status", "timeframe-derivation", "derivation"):
                 return HTTPStatus.OK, cls.get_derivation_status(query_params)
+            elif sub_path in ("operations-status", "operations/status"):
+                return HTTPStatus.OK, cls.get_operations_status()
+            elif sub_path in ("operations/candidates", "operations-candidates"):
+                return HTTPStatus.OK, cls.get_operations_candidates()
+            elif sub_path in ("available-symbols", "symbols"):
+                return HTTPStatus.OK, cls.get_available_symbols()
+            elif sub_path in ("cross-asset-comparison", "cross-asset"):
+                return cls.get_cross_asset_comparison(query_params)
+            elif sub_path in ("macro-events-catalog", "macro-events"):
+                return HTTPStatus.OK, cls.get_macro_events_catalog(query_params)
+            elif sub_path in ("macro-event-comparison", "macro-comparison"):
+                return cls.get_macro_event_comparison(query_params)
+            elif sub_path in ("regime-drift-sensitivity", "drift/sensitivity"):
+                return HTTPStatus.OK, cls.get_regime_drift_sensitivity(query_params)
+            elif sub_path in ("research-report", "reports/generate"):
+                return cls.get_research_report(query_params)
             else:
                 return HTTPStatus.NOT_FOUND, {
                     "error": "Not Found",
@@ -274,17 +297,32 @@ class ProductDashboardApiService:
         path: str,
         query_params: Optional[Dict[str, List[str]]] = None,
         body: Optional[Dict[str, Any]] = None,
+        headers: Optional[Dict[str, str]] = None,
     ) -> Tuple[int, Dict[str, Any]]:
-        """Dispatch HTTP POST request to appropriate product endpoint (read-only compute)."""
+        """Dispatch HTTP POST request to appropriate product endpoint."""
         query_params = query_params or {}
         body = body or {}
+        headers = headers or {}
 
-        sub_path = path[len(cls.API_PREFIX):] if path.startswith(cls.API_PREFIX) else path
-        sub_path = sub_path.strip("/")
+        operator_prefix = "/api/v1/operator"
+        if path.startswith(operator_prefix):
+            sub_path = path[len(operator_prefix):].strip("/")
+        elif path.startswith(cls.API_PREFIX):
+            sub_path = path[len(cls.API_PREFIX):].strip("/")
+        else:
+            sub_path = path.strip("/")
 
         try:
             if sub_path in ("scenarios/evaluate", "scenarios"):
                 return cls.evaluate_scenario(query_params, body)
+            elif sub_path in ("import-preview", "operations/import-preview"):
+                return cls.post_import_preview(body)
+            elif sub_path in ("import-publish", "operations/import-publish"):
+                return cls.post_import_publish(body, headers)
+            elif sub_path in ("derive-preview", "operations/derive-preview"):
+                return cls.post_derive_preview(body)
+            elif sub_path in ("derive-publish", "operations/derive-publish"):
+                return cls.post_derive_publish(body, headers)
             else:
                 return HTTPStatus.NOT_FOUND, {
                     "error": "Not Found",
@@ -2506,6 +2544,290 @@ class ProductDashboardApiService:
         status_info["total_partitions"] = manifest.get("total_partitions")
         status_info["timestamp_utc"] = datetime.now(timezone.utc).isoformat()
         return status_info
+
+    @classmethod
+    def get_operations_status(cls) -> Dict[str, Any]:
+        """Return operational state, intake health, and audit trail."""
+        from coin_behavior_engine.product.operations_console import OperationsConsoleEngine
+        engine = OperationsConsoleEngine()
+        return engine.get_operations_status()
+
+    @classmethod
+    def get_operations_candidates(cls) -> Dict[str, Any]:
+        """Return candidate files discovered in staging intake."""
+        from coin_behavior_engine.product.operations_console import OperationsConsoleEngine
+        candidates = OperationsConsoleEngine.list_intake_candidates()
+        intake_dir = OperationsConsoleEngine.get_intake_dir()
+        return {
+            "status": "success",
+            "candidates": candidates,
+            "total_candidates": len(candidates),
+            "intake_directory": str(intake_dir),
+            "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        }
+
+    @classmethod
+    def post_import_preview(cls, body: Dict[str, Any]) -> Tuple[int, Dict[str, Any]]:
+        """Validate candidate intake file and issue immutable preview ticket."""
+        from coin_behavior_engine.product.operations_console import OperationsConsoleEngine
+        filename = body.get("candidate_filename") or body.get("filename")
+        interval = body.get("target_interval") or body.get("interval", "5m")
+        symbol = body.get("symbol", "BTCUSDT")
+        if not filename:
+            return HTTPStatus.BAD_REQUEST, {"status": "error", "error": "candidate_filename gereklidir."}
+        res = OperationsConsoleEngine.create_import_preview(filename, declared_symbol=symbol, declared_interval=interval)
+        if res.get("status") != "success":
+            return HTTPStatus.BAD_REQUEST, res
+        return HTTPStatus.OK, res
+
+    @classmethod
+    def post_import_publish(cls, body: Dict[str, Any], headers: Dict[str, str]) -> Tuple[int, Dict[str, Any]]:
+        """Execute authorized import publication to dataset partition."""
+        from coin_behavior_engine.product.operations_console import OperationsConsoleEngine
+        preview_id = body.get("preview_id")
+        token = headers.get("x-operator-token") or headers.get("X-Operator-Token") or body.get("operator_token")
+        confirmed = body.get("confirmed", True)
+        if not preview_id:
+            return HTTPStatus.BAD_REQUEST, {"status": "error", "error": "preview_id gereklidir."}
+        res = OperationsConsoleEngine.publish_import(preview_id, token, confirmed=confirmed)
+        if res.get("status") != "success":
+            err_msg = str(res.get("error", "")).lower() + " " + str(res.get("message", "")).lower()
+            code = HTTPStatus.FORBIDDEN if "yetki" in err_msg or "unauthorized" in err_msg or "production" in err_msg or "token" in err_msg else HTTPStatus.BAD_REQUEST
+            return code, res
+        return HTTPStatus.OK, res
+
+    @classmethod
+    def post_derive_preview(cls, body: Dict[str, Any]) -> Tuple[int, Dict[str, Any]]:
+        """Preview deterministic timeframe aggregation."""
+        from coin_behavior_engine.product.operations_console import OperationsConsoleEngine
+        target_interval = body.get("target_interval")
+        month = body.get("month", "2026-09")
+        symbol = body.get("symbol", "BTCUSDT")
+        targets = [target_interval] if target_interval else None
+        res = OperationsConsoleEngine.preview_derivation(month=month, symbol=symbol, target_intervals=targets)
+        status_str = str(res.get("status", "")).upper()
+        if "ERROR" in status_str or "NOT_FOUND" in status_str:
+            return HTTPStatus.BAD_REQUEST, res
+        return HTTPStatus.OK, res
+
+    @classmethod
+    def post_derive_publish(cls, body: Dict[str, Any], headers: Dict[str, str]) -> Tuple[int, Dict[str, Any]]:
+        """Publish deterministic derived timeframe partition."""
+        from coin_behavior_engine.product.operations_console import OperationsConsoleEngine
+        target_interval = body.get("target_interval")
+        month = body.get("month", "2026-09")
+        symbol = body.get("symbol", "BTCUSDT")
+        token = headers.get("x-operator-token") or headers.get("X-Operator-Token") or body.get("operator_token")
+        targets = [target_interval] if target_interval else None
+        res = OperationsConsoleEngine.publish_derivation(month=month, operator_token=token, symbol=symbol, target_intervals=targets)
+        status_str = str(res.get("status", "")).upper()
+        if "ERROR" in status_str or res.get("error"):
+            err_msg = str(res.get("error", "")).lower() + " " + str(res.get("message", "")).lower()
+            code = HTTPStatus.FORBIDDEN if "yetki" in err_msg or "unauthorized" in err_msg or "production" in err_msg or "token" in err_msg else HTTPStatus.BAD_REQUEST
+            return code, res
+        return HTTPStatus.OK, res
+
+    @classmethod
+    def get_available_symbols(cls) -> Dict[str, Any]:
+        """Return multi-asset catalog summary with fail-closed statuses."""
+        from coin_behavior_engine.product.multi_asset import MultiAssetCatalogEngine
+        engine = MultiAssetCatalogEngine()
+        return engine.get_symbol_catalog_summary()
+
+    @classmethod
+    def get_cross_asset_comparison(cls, params: Dict[str, List[str]]) -> Tuple[int, Dict[str, Any]]:
+        """Perform cross-asset synchronized time series comparison."""
+        from coin_behavior_engine.product.multi_asset import MultiAssetCatalogEngine
+        sym_a = params.get("symbol_a", ["BTCUSDT"])[0]
+        sym_b = params.get("symbol_b", ["ETHUSDT"])[0]
+        month = params.get("month", ["2026-09"])[0]
+        interval = params.get("interval", ["1h"])[0]
+        try:
+            window_size = int(params.get("window_size", ["24"])[0])
+        except Exception:
+            window_size = 24
+
+        engine = MultiAssetCatalogEngine()
+        ok_a, candles_a, err_a = engine.load_symbol_candles(sym_a, interval=interval, month=month, limit=1000)
+        if not ok_a:
+            return HTTPStatus.BAD_REQUEST, {
+                "status": "BLOCKED_NO_DATA",
+                "symbol": sym_a,
+                "error": err_a,
+                "governance_rule": "FAIL_CLOSED_NO_SYNTHETIC_DATA"
+            }
+
+        ok_b, candles_b, err_b = engine.load_symbol_candles(sym_b, interval=interval, month=month, limit=1000)
+        if not ok_b:
+            return HTTPStatus.BAD_REQUEST, {
+                "status": "BLOCKED_NO_DATA",
+                "symbol": sym_b,
+                "error": err_b,
+                "governance_rule": "FAIL_CLOSED_NO_SYNTHETIC_DATA"
+            }
+
+        res = MultiAssetCatalogEngine.compare_assets(candles_a, candles_b, symbol_a=sym_a, symbol_b=sym_b, window_size=window_size)
+        return HTTPStatus.OK, res
+
+    @classmethod
+    def get_macro_events_catalog(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return catalog of authentic macro events."""
+        from coin_behavior_engine.product.macro_comparison import MacroEventComparisonEngine
+        cat = params.get("category", ["ALL"])[0]
+        search = params.get("search", [""])[0]
+        try:
+            limit = int(params.get("limit", ["100"])[0])
+        except Exception:
+            limit = 100
+        events = MacroEventComparisonEngine.get_events_catalog(category=cat, search=search, limit=limit)
+        return {
+            "status": "success",
+            "count": len(events),
+            "events": events,
+            "provenance": "research_outputs/historical_macro_events_11_23.parquet",
+            "model_version": "CBE-0.7.0",
+        }
+
+    @classmethod
+    def get_macro_event_comparison(cls, params: Dict[str, List[str]]) -> Tuple[int, Dict[str, Any]]:
+        """Synchronize market behavior around macro event T0 or compare two events."""
+        from coin_behavior_engine.product.macro_comparison import MacroEventComparisonEngine
+        ev_a = params.get("event_id_a", ["EVT-BLS-CPI-20220112"])[0]
+        ev_b = params.get("event_id_b", [None])[0]
+        interval = params.get("interval", ["1h"])[0]
+        try:
+            window_hours = int(params.get("window_hours", ["24"])[0])
+        except Exception:
+            window_hours = 24
+
+        if ev_b and ev_b.strip() and ev_b.strip().lower() != "none":
+            res = MacroEventComparisonEngine.compare_two_events(
+                event_id_a=ev_a,
+                event_id_b=ev_b,
+                interval=interval,
+                window_hours=window_hours,
+            )
+        else:
+            event_rec = MacroEventComparisonEngine.get_event_by_id(ev_a)
+            if not event_rec:
+                return HTTPStatus.NOT_FOUND, {"status": "NOT_FOUND", "error": f"Olay '{ev_a}' bulunamadı."}
+            res = MacroEventComparisonEngine.analyze_event_impact(
+                event=event_rec,
+                interval=interval,
+                pre_hours=window_hours,
+                post_hours=window_hours,
+            )
+
+        if res.get("status") in ("NOT_FOUND", "ERROR_EVENT_A", "ERROR_EVENT_B", "BLOCKED_NO_DATA"):
+            return HTTPStatus.BAD_REQUEST, res
+        return HTTPStatus.OK, res
+
+    @classmethod
+    def get_regime_drift_sensitivity(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Compute regime distribution drift with configurable display sensitivity."""
+        from coin_behavior_engine.product.regime_drift import RegimeDriftEngine
+        preset_id = params.get("preset_id", [None])[0]
+        base_m = params.get("baseline_month", [None])[0]
+        target_m = params.get("target_month", [None])[0]
+
+        try:
+            psi_mod = float(params.get("psi_moderate", ["0.10"])[0])
+            psi_sig = float(params.get("psi_significant", ["0.25"])[0])
+            jsd_mod = float(params.get("jsd_moderate", ["0.05"])[0])
+            jsd_sig = float(params.get("jsd_significant", ["0.15"])[0])
+            min_bars = int(params.get("min_sample_bars", ["100"])[0])
+        except Exception:
+            psi_mod, psi_sig, jsd_mod, jsd_sig, min_bars = 0.10, 0.25, 0.05, 0.15, 100
+
+        presets = RegimeDriftEngine.get_preset_windows()
+
+        if base_m and target_m:
+            res = RegimeDriftEngine.analyze_drift_for_months(
+                baseline_month=base_m,
+                target_month=target_m,
+                psi_threshold_moderate=psi_mod,
+                psi_threshold_significant=psi_sig,
+                jsd_threshold_moderate=jsd_mod,
+                jsd_threshold_significant=jsd_sig,
+                min_sample_bars=min_bars,
+            )
+            res["presets"] = presets
+            res["active_preset"] = "custom_months"
+            return res
+
+        matched = next((p for p in presets if p["id"] == preset_id), None)
+        if matched:
+            w_a, w_b = matched["window_a"], matched["window_b"]
+        else:
+            w_a, w_b = presets[0]["window_a"], presets[0]["window_b"]
+            preset_id = presets[0]["id"]
+
+        res = RegimeDriftEngine.analyze_drift(
+            window_a=w_a,
+            window_b=w_b,
+            psi_threshold_moderate=psi_mod,
+            psi_threshold_significant=psi_sig,
+            jsd_threshold_moderate=jsd_mod,
+            jsd_threshold_significant=jsd_sig,
+            min_sample_bars=min_bars,
+        )
+        res["presets"] = presets
+        res["active_preset"] = preset_id
+        return res
+
+    @classmethod
+    def get_research_report(cls, params: Dict[str, List[str]]) -> Tuple[int, Dict[str, Any]]:
+        """Generate reproducible historical research reports in JSON or CSV format."""
+        from coin_behavior_engine.product.research_reports import ResearchReportGenerator
+        rpt_type = params.get("report_type", ["PERIOD_COMPARISON"])[0].upper()
+        fmt = params.get("format", ["json"])[0].lower()
+
+        if rpt_type in ("PERIOD_COMPARISON", "PERIOD", "COMPARISON"):
+            month_a = params.get("month_a", ["2026-08"])[0]
+            month_b = params.get("month_b", ["2026-09"])[0]
+            interval = params.get("interval", ["1h"])[0]
+            res = ResearchReportGenerator.generate_period_comparison_report(
+                month_a=month_a,
+                month_b=month_b,
+                interval=interval,
+                export_format=fmt,
+            )
+            return HTTPStatus.OK, res
+
+        elif rpt_type in ("MACRO_EVENT", "MACRO"):
+            ev_a = params.get("event_id_a", ["EVT-BLS-CPI-20220112"])[0]
+            ev_b = params.get("event_id_b", [None])[0]
+            interval = params.get("interval", ["1h"])[0]
+            try:
+                window_hours = int(params.get("window_hours", ["24"])[0])
+            except Exception:
+                window_hours = 24
+            res = ResearchReportGenerator.generate_macro_event_report(
+                event_id_a=ev_a,
+                event_id_b=ev_b,
+                interval=interval,
+                window_hours=window_hours,
+                export_format=fmt,
+            )
+            return HTTPStatus.OK, res
+
+        elif rpt_type in ("REGIME_DRIFT", "DRIFT"):
+            base_m = params.get("baseline_month", ["2026-08"])[0]
+            target_m = params.get("target_month", ["2026-09"])[0]
+            interval = params.get("interval", ["1h"])[0]
+            res = ResearchReportGenerator.generate_regime_drift_report(
+                baseline_month=base_m,
+                target_month=target_m,
+                interval=interval,
+                export_format=fmt,
+            )
+            return HTTPStatus.OK, res
+
+        else:
+            return HTTPStatus.BAD_REQUEST, {
+                "status": "error",
+                "error": f"Bilinmeyen rapor türü: '{rpt_type}'. Desteklenenler: PERIOD_COMPARISON, MACRO_EVENT, REGIME_DRIFT",
+            }
 
 
 START_TIME = time.time()

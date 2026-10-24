@@ -1,0 +1,26 @@
+{
+  "workflow_timestamp_utc": "2026-10-24T10:10:35.354088+00:00",
+  "model_version": "CBE-0.7.0",
+  "intake_directory": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\data\\staging_intake",
+  "intake_candidates_count": 0,
+  "immutable_preview_ttl_seconds": 900,
+  "supported_extensions": [
+    ".parquet",
+    ".csv",
+    ".gz"
+  ],
+  "validation_pipeline_stages": [
+    "PATH_SAFETY_AND_REGEX_CHECK",
+    "SHA256_PAYLOAD_CHECKSUM",
+    "PANDAS_PARQUET_SCHEMA_VERIFICATION",
+    "MONOTONIC_TIMESTAMP_VALIDATION",
+    "OHLC_GEOMETRIC_CONSISTENCY_AUDIT",
+    "IMMUTABLE_PREVIEW_TICKET_GENERATION",
+    "OPERATOR_AUTH_VERIFICATION_HEADER",
+    "CANONICAL_PARTITION_WRITING",
+    "DATASET_MANIFEST_CACHE_INVALIDATION",
+    "IMMUTABLE_AUDIT_LOG_APPEND"
+  ],
+  "current_dataset_revision": "cbe-manifest-v2-addf635b47aa",
+  "active_audit_entries_count": 0
+}

@@ -1,0 +1,29 @@
+{
+  "generated_at_utc": "2026-10-24T10:06:17.350867+00:00",
+  "model_version": "CBE-0.7.0",
+  "reports_generated": {
+    "period_comparison": {
+      "report_id": "RPT-PER-COMP-6d07c13c3bfb",
+      "type": "HISTORICAL_PERIOD_COMPARISON",
+      "disclaimer_verified": true,
+      "has_csv": true
+    },
+    "macro_event": {
+      "report_id": "RPT-MACRO-2c4551eb6820",
+      "type": "MACRO_EVENT_SYNCHRONIZED_STUDY",
+      "disclaimer_verified": true,
+      "has_csv": true
+    },
+    "regime_drift": {
+      "report_id": "RPT-DRIFT-80520a2bab0f",
+      "type": "REGIME_DRIFT_INTELLIGENCE",
+      "disclaimer_verified": true,
+      "has_csv": true
+    }
+  },
+  "security_standards": {
+    "formula_injection_defense": "SINGLE_QUOTE_PREFIX_CHECK",
+    "exact_manifest_hash_included": true,
+    "frozen_model_version": "CBE-0.7.0"
+  }
+}
