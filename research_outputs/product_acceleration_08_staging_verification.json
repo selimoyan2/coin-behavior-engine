@@ -1,0 +1,51 @@
+{
+  "verification_timestamp_utc": "2026-10-24T10:29:09.604329+00:00",
+  "model_version": "CBE-0.7.0",
+  "environment": "staging",
+  "host": "srv1114257 (168.231.125.238)",
+  "staging_service_uuid": "dzzfws54by1whlbq6fk4ywut",
+  "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+  "loopback_binding": "127.0.0.1:18080->8000/tcp",
+  "deployed_commit": "9a1eb80d10db1ed0ee2df4026906e4cf6796abd6",
+  "deployed_commit_short": "9a1eb80d",
+  "docker_image_id": "83d3365e8355",
+  "docker_image_tag": "cbe-market-intelligence:staging",
+  "verified_live_endpoints": [
+    {
+      "endpoint": "/health",
+      "status_code": 200,
+      "state": "healthy"
+    },
+    {
+      "endpoint": "/api/v1/product/runtime-build",
+      "status_code": 200,
+      "build_commit": "9a1eb80d10db1ed0ee2df4026906e4cf6796abd6"
+    },
+    {
+      "endpoint": "/api/v1/product/operations-status",
+      "status_code": 200,
+      "environment": "staging"
+    },
+    {
+      "endpoint": "/api/v1/product/available-symbols",
+      "status_code": 200,
+      "governance_rule": "FAIL_CLOSED_NO_SYNTHETIC_DATA"
+    },
+    {
+      "endpoint": "/api/v1/product/macro-event-comparison",
+      "status_code": 200,
+      "status": "SUCCESS"
+    },
+    {
+      "endpoint": "/api/v1/product/research-report",
+      "status_code": 200,
+      "report_type": "HISTORICAL_PERIOD_COMPARISON"
+    }
+  ],
+  "production_isolation": {
+    "production_container_name": "6t63aehpaw0cw1bbt4zcm09g-20261024T095837",
+    "production_container_id": "9b7fc7375956",
+    "production_status": "Up (healthy)",
+    "production_modified": false
+  }
+}
