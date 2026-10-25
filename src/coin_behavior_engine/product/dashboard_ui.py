@@ -1626,107 +1626,225 @@ def render_product_dashboard_html() -> str:
       </div>
     </section>
     <section id="module-regimes" class="tab-content">
+      <!-- Sprint 14: Historical Regime Transition Laboratory -->
       <div class="card" style="border-left: 4px solid #8b5cf6; margin-bottom: 20px;">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
           <div>
-            <div style="font-size: 11px; font-weight: 700; color: #a78bfa; letter-spacing: 0.5px;">KAPSAMLI PİYASA REJİMİ İSTİHBARATI</div>
-            <h2 style="font-size: 18px; color: #fff; margin: 4px 0;">6-Rejim Durum Dağılımı, Markov Geçiş Matrisi & Süreklilik Analizi</h2>
-            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
-              Veri Seti: <code>research_outputs/market_regime_timeline.csv</code> &bull;
-              İncelenen Bar: <b>105.120 (5m)</b> &bull;
-              Gözlemlenen Geçiş: <b>12.721 Olay</b> &bull;
-              Süreç: <b>2025-10 — 2026-09</b>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="badge" style="background: #8b5cf6; color: #fff; font-weight: bold;">SPRINT 14 LABORATUVAR</span>
+              <span class="badge" style="background: #1e293b; color: #94a3b8; border: 1px solid #334155;">Model: CBE-0.7.0 (FROZEN)</span>
+            </div>
+            <h2 style="font-size: 20px; color: #fff; margin: 6px 0 2px 0;">Tarihsel Rejim Geçiş Laboratuvarı & İstatistiksel Kararlılık</h2>
+            <div style="font-size: 12px; color: var(--text-muted);">
+              6 Kanonik Piyasa Rejimi (<code>SIDEWAYS</code>, <code>UNCERTAIN</code>, <code>TRENDING_BULL</code>, <code>TRENDING_BEAR</code>, <code>POSSIBLE_REVERSAL</code>, <code>HIGH_VOLATILITY</code>) &bull;
+              Dirichlet-Multinomial Bayesian %95 Güven Aralıkları &bull; Kaplan-Meier Sağdan Sansürlü Kalıcılık Analizi &bull; Frobenius Matris Uzaklığı
             </div>
           </div>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="btn" onclick="exportResearchData('regimes', 'csv')">📥 Rejim Verilerini İndir (CSV)</button>
-            <button class="btn" onclick="exportResearchData('transitions', 'json')">📥 Geçiş Matrisini İndir (JSON)</button>
+            <button class="btn btn-primary" onclick="loadRegimeTransitionLab()">🔄 Laboratuvarı Güncelle</button>
+            <button class="btn" onclick="exportReportFromTab('HISTORICAL_REGIME_TRANSITION_MATRIX', 'pdf')">📄 Geçiş Matrisi PDF</button>
+            <button class="btn" onclick="exportReportFromTab('REGIME_PERSISTENCE_AND_DURATION', 'pdf')">📄 Kalıcılık PDF</button>
           </div>
         </div>
       </div>
 
-      <!-- 6 Regime Summary Cards -->
-      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 20px;" id="regime-cards-grid">
-        <div class="card" style="padding: 12px; border-top: 3px solid #6b7280;">
-          <div style="font-size: 11px; color: var(--text-muted);">SIDEWAYS (YATAY)</div>
-          <div class="value" style="font-size: 18px; color: #9ca3af;">%42.32</div>
-          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Medyan: <b>0.33h</b> &bull; Bar: 44.486</div>
-        </div>
-        <div class="card" style="padding: 12px; border-top: 3px solid #f59e0b;">
-          <div style="font-size: 11px; color: var(--text-muted);">UNCERTAIN (BELİRSİZ)</div>
-          <div class="value" style="font-size: 18px; color: #f59e0b;">%23.55</div>
-          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Medyan: <b>0.17h</b> &bull; Bar: 24.760</div>
-        </div>
-        <div class="card" style="padding: 12px; border-top: 3px solid #10b981;">
-          <div style="font-size: 11px; color: var(--text-muted);">TRENDING_BULL (BOĞA)</div>
-          <div class="value" style="font-size: 18px; color: #10b981;">%11.81</div>
-          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Medyan: <b>0.25h</b> &bull; Bar: 12.411</div>
-        </div>
-        <div class="card" style="padding: 12px; border-top: 3px solid #ef4444;">
-          <div style="font-size: 11px; color: var(--text-muted);">HIGH_VOLATILITY (YÜKSEK OYN.)</div>
-          <div class="value" style="font-size: 18px; color: #ef4444;">%11.71</div>
-          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Medyan: <b>1.33h</b> &bull; Bar: 12.306</div>
-        </div>
-        <div class="card" style="padding: 12px; border-top: 3px solid #f87171;">
-          <div style="font-size: 11px; color: var(--text-muted);">TRENDING_BEAR (AYI)</div>
-          <div class="value" style="font-size: 18px; color: #f87171;">%8.61</div>
-          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Medyan: <b>0.17h</b> &bull; Bar: 9.051</div>
-        </div>
-        <div class="card" style="padding: 12px; border-top: 3px solid #ec4899;">
-          <div style="font-size: 11px; color: var(--text-muted);">POSSIBLE_REVERSAL (DÖNÜŞ)</div>
-          <div class="value" style="font-size: 18px; color: #ec4899;">%2.00</div>
-          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Medyan: <b>0.17h</b> &bull; Bar: 2.106</div>
-        </div>
-      </div>
-
-      <!-- Markov Transition Matrix Canvas & Table -->
-      <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-        <div class="card">
-          <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px;">
-            <span>🔄</span> Empirik 6x6 Markov Geçiş Olasılık Matrisi Heatmap
+      <!-- Controls Row -->
+      <div class="card" style="margin-bottom: 20px; background: #0f172a; border: 1px solid #1e293b;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; align-items: flex-end;">
+          <div>
+            <label style="font-size: 11px; color: #94a3b8; font-weight: bold; display: block; margin-bottom: 4px;">MUM ZAMAN ARALIĞI</label>
+            <select id="regime-lab-interval" class="input" style="width: 100%; background: #1e293b; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;" onchange="loadRegimeTransitionLab()">
+              <option value="1h" selected>1 Saatlik (1h Mumlar)</option>
+              <option value="4h">4 Saatlik (4h Mumlar)</option>
+            </select>
           </div>
-          <div style="position: relative; width: 100%; height: 320px;">
-            <canvas id="regime-matrix-canvas" width="540" height="320" style="width: 100%; height: 100%; border-radius: 6px;"></canvas>
+          <div>
+            <label style="font-size: 11px; color: #94a3b8; font-weight: bold; display: block; margin-bottom: 4px;">ANALİZ DÖNEMİ</label>
+            <select id="regime-lab-period" class="input" style="width: 100%; background: #1e293b; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;" onchange="loadRegimeTransitionLab()">
+              <option value="ALL" selected>Tüm Tarihsel Dönem (2022 - 2026)</option>
+              <option value="TRAIN_2022_2023">Eğitim Dönemi (2022 - 2023)</option>
+              <option value="TEST_2025">Örneklem Dışı Test (2025)</option>
+              <option value="HOLDOUT_2026">Holdout Doğrulama (2026)</option>
+            </select>
           </div>
-          <div style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">
-            Satırlar: Kaynak Rejim (t) &bull; Sütunlar: Hedef Rejim (t+1). Renk yoğunluğu geçiş olasılığını temsil eder.
+          <div>
+            <label style="font-size: 11px; color: #94a3b8; font-weight: bold; display: block; margin-bottom: 4px;">DİRİCHLET ÖNSEL (ALPHA)</label>
+            <select id="regime-lab-alpha" class="input" style="width: 100%; background: #1e293b; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;" onchange="loadRegimeTransitionLab()">
+              <option value="1.0" selected>Standart Laplace / Uniform (alpha = 1.0)</option>
+              <option value="0.5">Jeffreys Önseli (alpha = 0.5)</option>
+              <option value="2.0">Düzleştirilmiş Önsel (alpha = 2.0)</option>
+            </select>
           </div>
-        </div>
-
-        <div class="card">
-          <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px;">
-            <span>⏳</span> Rejim Kalıcılık Analizi & Kaplan-Meier Hayatta Kalma Eğrileri S(t)
-          </div>
-          <div style="position: relative; width: 100%; height: 320px;">
-            <canvas id="regime-survival-canvas" width="540" height="320" style="width: 100%; height: 100%; border-radius: 6px;"></canvas>
-          </div>
-          <div style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">
-            X Ekseni: Süre (Saat) &bull; Y Ekseni: Rejimde Kalma Olasılığı S(t).
+          <div>
+            <label style="font-size: 11px; color: #94a3b8; font-weight: bold; display: block; margin-bottom: 4px;">KAYMA (DRIFT) MODU</label>
+            <select id="regime-lab-drift-mode" class="input" style="width: 100%; background: #1e293b; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;" onchange="loadRegimeDriftAnalysis()">
+              <option value="TRAIN_VS_TEST" selected>Eğitim vs Test (2022-23 vs 2025)</option>
+              <option value="YEAR_VS_YEAR">Yıl vs Yıl (2025_Q4 vs 2026_Q1)</option>
+            </select>
           </div>
         </div>
       </div>
 
-      <!-- Detailed Transition Table & Research Interpretation -->
+      <!-- Main Transition Matrix Heatmap & Cell Click Drawer Card -->
       <div class="card" style="margin-bottom: 20px;">
-        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px;">
-          <span>📋</span> Gözlemlenen Son Rejim Geçişleri (12.721 Toplam Olaydan Seçilenler)
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <h3 style="font-size: 16px; color: #fff; margin: 0;">6x6 İnteraktif Rejim Geçiş Matrisi & Dirichlet Bayesian %95 Güven Aralıkları</h3>
+            <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">
+              Satırlar: Başlangıç Rejimi (i) &bull; Sütunlar: Hedef Rejimi (j) &bull; Değerler: Geçiş Olasılığı P_ij [%] ve [%95 Bayesian Güven Aralığı] &bull; <i>Hücreye tıklayarak adli detayı açabilirsiniz.</i>
+            </div>
+          </div>
+          <div id="matrix-continuity-badge" style="font-size: 11px; background: #064e3b; color: #6ee7b7; padding: 4px 8px; border-radius: 4px; border: 1px solid #059669;">
+            ✓ Zaman Sürekliliği Doğrulandı (Gaps: 0)
+          </div>
         </div>
-        <div class="table-container" style="max-height: 280px; overflow-y: auto;">
-          <table>
+
+        <div style="overflow-x: auto;">
+          <table id="regime-matrix-table" style="width: 100%; border-collapse: separate; border-spacing: 4px; text-align: center; font-size: 11px;">
             <thead>
-              <tr>
-                <th>Zaman (UTC)</th>
-                <th>Önceki Rejim</th>
-                <th>Yeni Rejim</th>
-                <th>Fiyat (USD)</th>
-                <th>Tespit Gecikmesi</th>
+              <tr style="background: #1e293b; color: #94a3b8;">
+                <th style="padding: 10px; text-align: left; width: 140px;">BAŞLANGIÇ \ HEDEF</th>
+                <th style="padding: 10px; color: #9ca3af;">SIDEWAYS</th>
+                <th style="padding: 10px; color: #f59e0b;">UNCERTAIN</th>
+                <th style="padding: 10px; color: #10b981;">TRENDING_BULL</th>
+                <th style="padding: 10px; color: #ef4444;">TRENDING_BEAR</th>
+                <th style="padding: 10px; color: #8b5cf6;">POSSIBLE_REV</th>
+                <th style="padding: 10px; color: #ec4899;">HIGH_VOL</th>
               </tr>
             </thead>
-            <tbody id="regime-transitions-tbody">
-              <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Geçiş verileri yükleniyor...</td></tr>
+            <tbody id="regime-matrix-tbody">
+              <!-- Rendered via JS -->
             </tbody>
           </table>
         </div>
+
+        <!-- Cell Click Detail Drawer (Expandable) -->
+        <div id="regime-cell-drawer" style="display: none; margin-top: 16px; background: #0f172a; border: 1px solid #38bdf8; border-radius: 6px; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="font-size: 13px; font-weight: bold; color: #38bdf8;" id="drawer-cell-title">Geçiş Hücresi Detayı</div>
+            <button onclick="document.getElementById('regime-cell-drawer').style.display='none'" style="background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 14px;">✕ Kapat</button>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;" id="drawer-cell-stats">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Persistence (Kaplan-Meier) & Drift Side-by-Side -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px; margin-bottom: 20px;">
+        <!-- Card 1: Rejim Kalıcılık ve Süre Analizi -->
+        <div class="card">
+          <h3 style="font-size: 15px; color: #fff; margin-bottom: 8px;">Rejim Kalıcılık ve Kaplan-Meier Süre Analizi</h3>
+          <div style="font-size: 11px; color: #94a3b8; margin-bottom: 12px;">
+            Sağdan sansürlü (right-censored) epizodlar dahil edilmiş; medyan, ortalama ve %90 persentil süreler hesaplanmıştır.
+          </div>
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 11px; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 1px solid #334155; color: #94a3b8;">
+                  <th style="padding: 6px 8px;">Rejim</th>
+                  <th style="padding: 6px 8px;">Epizod</th>
+                  <th style="padding: 6px 8px;">Medyan</th>
+                  <th style="padding: 6px 8px;">Ortalama</th>
+                  <th style="padding: 6px 8px;">P90</th>
+                  <th style="padding: 6px 8px;">Sansürlü</th>
+                </tr>
+              </thead>
+              <tbody id="regime-durations-tbody">
+                <!-- Rendered via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Card 2: Tarihsel Rejim Kayma (Drift) Analizi -->
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <h3 style="font-size: 15px; color: #fff; margin: 0;">Tarihsel Rejim Kayma (Drift) Analizi</h3>
+            <span id="drift-eval-badge" class="badge badge-success">KARARLI (PSI < 0.10)</span>
+          </div>
+          <div style="font-size: 11px; color: #94a3b8; margin-bottom: 12px;">
+            Dönemler arası matris mesafesi (Frobenius Uzaklığı) ve rejim doluluk oranları PSI / Jensen-Shannon sapması.
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px;">
+            <div style="background: #0f172a; padding: 10px; border-radius: 4px; text-align: center; border: 1px solid #1e293b;">
+              <div style="font-size: 10px; color: #94a3b8;">FROBENIUS UZAKLIĞI</div>
+              <div style="font-size: 16px; font-weight: bold; color: #6366f1;" id="drift-frobenius-val">0.084</div>
+              <div style="font-size: 9px; color: #10b981;">Eşik: &lt; 0.50 (Kararlı)</div>
+            </div>
+            <div style="background: #0f172a; padding: 10px; border-radius: 4px; text-align: center; border: 1px solid #1e293b;">
+              <div style="font-size: 10px; color: #94a3b8;">DOLULUK ŞİFT PSI</div>
+              <div style="font-size: 16px; font-weight: bold; color: #0284c7;" id="drift-psi-val">0.0125</div>
+              <div style="font-size: 9px; color: #10b981;">Eşik: &lt; 0.10 (İstikrarlı)</div>
+            </div>
+            <div style="background: #0f172a; padding: 10px; border-radius: 4px; text-align: center; border: 1px solid #1e293b;">
+              <div style="font-size: 10px; color: #94a3b8;">JENSEN-SHANNON DIVERG.</div>
+              <div style="font-size: 16px; font-weight: bold; color: #10b981;" id="drift-jsd-val">0.0034</div>
+              <div style="font-size: 9px; color: #10b981;">Eşik: &lt; 0.15 (Tutarlı)</div>
+            </div>
+          </div>
+          <div style="font-size: 11px; color: #cbd5e1; background: #0f172a; padding: 8px 12px; border-radius: 4px; border-left: 3px solid #6366f1;" id="drift-interpretation-text">
+            Eğitim (2022-2023) ile Test (2025) dönemleri arasında rejim geçiş dinamikleri yüksek derecede istikrarlıdır.
+          </div>
+        </div>
+      </div>
+
+      <!-- Macro Event-Conditioned Transitions & Flow -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px; margin-bottom: 20px;">
+        <!-- Card 3: Makro Olay Koşullu Rejim Geçişleri -->
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+            <h3 style="font-size: 15px; color: #fff; margin: 0;">Makro Olay Koşullu Rejim Geçişleri</h3>
+            <select id="macro-regime-cohort-select" class="input" style="background: #0f172a; color: #fff; border: 1px solid #334155; padding: 4px 8px; border-radius: 4px; font-size: 11px;" onchange="loadMacroRegimeTransitions(this.value)">
+              <option value="US_CPI" selected>US CPI (57 Olay)</option>
+              <option value="US_INFLATION">US Enflasyon Üst Kohort (102 Olay)</option>
+              <option value="US_FOMC_RATE_DECISION">FOMC Faiz Kararları (32 Olay)</option>
+              <option value="US_NONFARM_PAYROLLS">Tarım Dışı İstihdam (54 Olay)</option>
+            </select>
+          </div>
+          <div style="font-size: 11px; color: #94a3b8; margin-bottom: 12px;">
+            Doğrulanmış makro şok anında (T0 ± 12h) gözlenen rejim değiştirme sıklığı ve olağan piyasa baz oranı karşılaştırması.
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px;">
+            <div style="background: #0f172a; padding: 10px; border-radius: 4px; text-align: center; border: 1px solid #1e293b;">
+              <div style="font-size: 10px; color: #94a3b8;">OLAY PENCERESİ GEÇİŞ</div>
+              <div style="font-size: 16px; font-weight: bold; color: #f59e0b;" id="macro-event-trans-rate">%28.4</div>
+              <div style="font-size: 9px; color: #cbd5e1;">Pencere: 12h</div>
+            </div>
+            <div style="background: #0f172a; padding: 10px; border-radius: 4px; text-align: center; border: 1px solid #1e293b;">
+              <div style="font-size: 10px; color: #94a3b8;">BAZ (NON-EVENT) GEÇİŞ</div>
+              <div style="font-size: 16px; font-weight: bold; color: #0284c7;" id="macro-base-trans-rate">%15.4</div>
+              <div style="font-size: 9px; color: #cbd5e1;">Olağan Piyasa</div>
+            </div>
+            <div style="background: #0f172a; padding: 10px; border-radius: 4px; text-align: center; border: 1px solid #1e293b;">
+              <div style="font-size: 10px; color: #94a3b8;">GEÇİŞ HAREKETLİLİĞİ (LIFT)</div>
+              <div style="font-size: 16px; font-weight: bold; color: #10b981;" id="macro-trans-lift">1.84x</div>
+              <div style="font-size: 9px; color: #10b981;">Artan Geçiş Olasılığı</div>
+            </div>
+          </div>
+          <div style="font-size: 10.5px; color: #fca5a5; background: #450a0a; padding: 8px 12px; border-radius: 4px; border-left: 3px solid #ef4444; line-height: 1.4;">
+            ⚠️ <b>Nedensellik ve Yönsel İddia Reddi:</b> Makro olaylar ile rejim geçişleri arasındaki ilişki istatistiki bir birlikteliktir. Rejimin yönsel avantaj üreteceğine dair bir taahhüt içermez.
+          </div>
+        </div>
+
+        <!-- Card 4: Rejim Geçiş Akışı (Sankey-Style Flow) & Timeline -->
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <h3 style="font-size: 15px; color: #fff; margin: 0;">Geçiş Akış Dinamikleri & Makro İğneli Zaman Çizelgesi</h3>
+            <span class="badge" style="background: #1e293b; color: #38bdf8;">En Yüksek Geçiş Yolları</span>
+          </div>
+          <div style="font-size: 11px; color: #94a3b8; margin-bottom: 12px;">
+            Rejimler arası en sık gerçekleşen rotalar ve makro olay iğneleri (CPI, FOMC, NFP) ile işaretlenmiş rejim dizilimi.
+          </div>
+          <div id="regime-flow-container" style="display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto;">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Legal Disclaimer -->
+      <div style="margin-top: 15px; padding: 12px; background: #0b1329; border: 1px solid #1e293b; border-radius: 6px; font-size: 11px; color: #94a3b8; text-align: center;">
+        <b>YASAL VE YÖNETİŞİM UYARISI:</b> Bu rejim geçiş laboratuvarındaki tüm geçiş olasılıkları, süre analizleri ve makro koşullu metrikler yalnızca geçmiş BTCUSDT piyasa verisinin (2022-2026) betimsel analizi içindir. Geleceğe yönelik kârlılık taahhüdü, canlı alım-satım sinyali veya yatırım tavsiyesi değildir.
       </div>
     </section>
 
@@ -2604,7 +2722,11 @@ def render_product_dashboard_html() -> str:
               <option value="SPECIFICATION_CURVE">İnteraktif Belirtim Eğrisi Raporu (V5)</option>
               <option value="EVIDENCE_QUALITY_PROFILE">12 Boyutlu Kanıt Kalite Profili (V5)</option>
               <option value="EVENT_DRILLDOWN">Makro Olay Adli İnceleme Raporu (V5)</option>
-            </select>
+              <option value="HISTORICAL_REGIME_TRANSITION_MATRIX">Tarihsel Rejim Geçiş Matrisi & Dirichlet Bayesian CI (V6)</option>
+                  <option value="REGIME_PERSISTENCE_AND_DURATION">Rejim Kalıcılık ve Kaplan-Meier Süre Analizi (V6)</option>
+                  <option value="HISTORICAL_REGIME_DRIFT">Tarihsel Rejim Kayma (Drift) ve Frobenius Matrisi (V6)</option>
+                  <option value="MACRO_CONDITIONED_REGIME_TRANSITIONS">Makro Şok Koşullu Rejim Geçişleri ve Reaksiyon (V6)</option>
+                </select>
           </div>
           <div id="rpt-param-a-wrap">
             <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;" id="rpt-param-a-label">Dönem A (Referans)</label>
@@ -3211,6 +3333,7 @@ def render_product_dashboard_html() -> str:
     }
 
     function switchTab(tabId) {
+      if (tabId === 'regimes') setTimeout(loadRegimeTransitionLab, 50);
       currentTab = tabId;
       document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
       document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
@@ -6658,7 +6781,239 @@ def render_product_dashboard_html() -> str:
         generateResearchReport('json');
       }
     }
-  </script>
+  
+    // =========================================================================
+    // SPRINT 14: HISTORICAL REGIME TRANSITION LABORATORY JS CONTROLLERS
+    // =========================================================================
+
+    let currentTransitionMatrixData = null;
+
+    async function loadRegimeTransitionLab() {
+      const interval = document.getElementById("regime-lab-interval") ? document.getElementById("regime-lab-interval").value : "1h";
+      const period = document.getElementById("regime-lab-period") ? document.getElementById("regime-lab-period").value : "ALL";
+      const alpha = document.getElementById("regime-lab-alpha") ? document.getElementById("regime-lab-alpha").value : "1.0";
+
+      try {
+        const [matRes, durRes, flowRes] = await Promise.all([
+          fetch(`/api/v1/product/regime-transition-matrix?interval=${interval}&period=${period}&prior_alpha=${alpha}`),
+          fetch(`/api/v1/product/regime-duration-analysis?interval=${interval}&period=${period}`),
+          fetch(`/api/v1/product/regime-transition-flow?interval=${interval}&period=${period}`),
+        ]);
+
+        if (matRes.ok) {
+          const matPayload = await matRes.json();
+          currentTransitionMatrixData = matPayload.data;
+          renderRegimeTransitionMatrix(matPayload.data);
+        }
+
+        if (durRes.ok) {
+          const durPayload = await durRes.json();
+          renderRegimeDurations(durPayload.data);
+        }
+
+        if (flowRes.ok) {
+          const flowPayload = await flowRes.json();
+          renderRegimeTransitionFlow(flowPayload.data);
+        }
+
+        // Also load drift and macro
+        loadRegimeDriftAnalysis();
+        loadMacroRegimeTransitions();
+      } catch (err) {
+        console.error("Error loading Regime Transition Lab:", err);
+      }
+    }
+
+    function renderRegimeTransitionMatrix(matData) {
+      const tbody = document.getElementById("regime-matrix-tbody");
+      if (!tbody || !matData || !matData.probabilities_matrix) return;
+
+      const regimes = matData.regimes || [];
+      const probs = matData.probabilities_matrix;
+      const cells = matData.cells || [];
+
+      let html = "";
+      for (let i = 0; i < regimes.length; i++) {
+        const fromR = regimes[i];
+        html += `<tr style="border-bottom: 1px solid #1e293b;">`;
+        html += `<td style="padding: 8px 10px; text-align: left; font-weight: bold; color: #cbd5e1; background: #0f172a;">${fromR}</td>`;
+
+        for (let j = 0; j < regimes.length; j++) {
+          const toR = regimes[j];
+          const p = probs[i][j];
+          const cellObj = cells.find(c => c.from_regime === fromR && c.to_regime === toR);
+          const ciLow = cellObj ? cellObj.bayesian_ci_lower_95 : 0;
+          const ciHigh = cellObj ? cellObj.bayesian_ci_upper_95 : 0;
+          const isDiag = (i === j);
+
+          // Color scale
+          let bg = "#0f172a";
+          if (p > 0.60) bg = "#1e3a8a";
+          else if (p > 0.30) bg = "#1e293b";
+          else if (p > 0.10) bg = "#172554";
+
+          const warnBadge = (cellObj && cellObj.low_sample_warning) ? `<span style="font-size: 8px; color: #f59e0b; display: block;">⚠️ N<30</span>` : "";
+
+          html += `
+            <td onclick="openRegimeCellDrawer('${fromR}', '${toR}')" style="background: ${bg}; padding: 8px 6px; cursor: pointer; border: 1px solid #334155; transition: all 0.2s;" onmouseover="this.style.borderColor='#38bdf8'" onmouseout="this.style.borderColor='#334155'">
+              <div style="font-weight: bold; color: ${isDiag ? '#60a5fa' : '#fff'}; font-size: 12px;">%${(p * 100).toFixed(1)}</div>
+              <div style="font-size: 9px; color: #94a3b8; margin-top: 2px;">[${ciLow.toFixed(2)}, ${ciHigh.toFixed(2)}]</div>
+              ${warnBadge}
+            </td>
+          `;
+        }
+        html += `</tr>`;
+      }
+      tbody.innerHTML = html;
+
+      // Update continuity badge
+      const badge = document.getElementById("matrix-continuity-badge");
+      if (badge) {
+        if (matData.timestamp_continuity_verified) {
+          badge.innerHTML = `✓ Zaman Sürekliliği Doğrulandı (Gözlem: ${matData.total_transitions_observed.toLocaleString()}, Gaps: ${matData.data_gap_count})`;
+          badge.style.background = "#064e3b";
+          badge.style.color = "#6ee7b7";
+        } else {
+          badge.innerHTML = `⚠️ Zaman Boşluğu Tespit Edildi (${matData.data_gap_count} kesinti)`;
+          badge.style.background = "#450a0a";
+          badge.style.color = "#fca5a5";
+        }
+      }
+    }
+
+    function openRegimeCellDrawer(fromRegime, toRegime) {
+      if (!currentTransitionMatrixData || !currentTransitionMatrixData.cells) return;
+      const cellObj = currentTransitionMatrixData.cells.find(c => c.from_regime === fromRegime && c.to_regime === toRegime);
+      if (!cellObj) return;
+
+      const drawer = document.getElementById("regime-cell-drawer");
+      const title = document.getElementById("drawer-cell-title");
+      const stats = document.getElementById("drawer-cell-stats");
+
+      const tCount = cellObj.transition_count !== undefined ? cellObj.transition_count : (cellObj.empirical_count || 0);
+      const sCount = cellObj.source_observation_count !== undefined ? cellObj.source_observation_count : (cellObj.source_regime_total_count || 0);
+      const prob = cellObj.transition_probability !== undefined ? cellObj.transition_probability : (cellObj.probability || 0);
+      const ciLow = cellObj.credible_interval_95 ? cellObj.credible_interval_95[0] : (cellObj.bayesian_ci_lower_95 || 0);
+      const ciHigh = cellObj.credible_interval_95 ? cellObj.credible_interval_95[1] : (cellObj.bayesian_ci_upper_95 || 0);
+
+      if (drawer && title && stats) {
+        drawer.style.display = "block";
+        title.innerHTML = `🔬 Geçiş Hücresi Adli İnceleme: <span style="color: #fff;">${fromRegime} → ${toRegime}</span>`;
+        stats.innerHTML = `
+          <div style="background: #1e293b; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 10px; color: #94a3b8;">GÖZLEMLENEN GEÇİŞ SAYISI</div>
+            <div style="font-size: 16px; font-weight: bold; color: #38bdf8;">${tCount} Adet</div>
+            <div style="font-size: 9px; color: #64748b;">Başlangıç Durumu Toplam: ${sCount}</div>
+          </div>
+          <div style="background: #1e293b; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 10px; color: #94a3b8;">NOKTA GEÇİŞ OLASILIĞI</div>
+            <div style="font-size: 16px; font-weight: bold; color: #10b981;">%${(prob * 100).toFixed(2)}</div>
+            <div style="font-size: 9px; color: #64748b;">Row-stochastic normalize</div>
+          </div>
+          <div style="background: #1e293b; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 10px; color: #94a3b8;">DİRİCHLET BAYESIAN %95 GÜVEN ARALIĞI</div>
+            <div style="font-size: 14px; font-weight: bold; color: #f59e0b;">[${Number(ciLow).toFixed(4)}, ${Number(ciHigh).toFixed(4)}]</div>
+            <div style="font-size: 9px; color: #64748b;">Beta Posterior İtibarlı Aralığı</div>
+          </div>
+          <div style="background: #1e293b; padding: 10px; border-radius: 4px;">
+            <div style="font-size: 10px; color: #94a3b8;">ÖRNEKLEM YETERLİLİK DURUMU</div>
+            <div style="font-size: 14px; font-weight: bold; color: ${cellObj.low_sample_warning ? '#ef4444' : '#10b981'};">
+              ${cellObj.low_sample_warning ? '⚠️ Düşük Örneklem (N < 30)' : '✓ İstatistiksel Olarak Yeterli'}
+            </div>
+            <div style="font-size: 9px; color: #64748b;">Asgari eşik N=30 geçiş</div>
+          </div>
+        `;
+      }
+    }
+
+    function renderRegimeDurations(durData) {
+      const tbody = document.getElementById("regime-durations-tbody");
+      if (!tbody || !durData) return;
+
+      let html = "";
+      for (const [regime, info] of Object.entries(durData)) {
+        html += `
+          <tr style="border-bottom: 1px solid #1e293b;">
+            <td style="padding: 6px 8px; font-weight: bold; color: #fff;">${regime}</td>
+            <td style="padding: 6px 8px; color: #94a3b8;">${info.episode_count}</td>
+            <td style="padding: 6px 8px; color: #38bdf8; font-weight: bold;">${info.median_duration_hours.toFixed(1)}h</td>
+            <td style="padding: 6px 8px; color: #cbd5e1;">${info.mean_duration_hours.toFixed(1)}h</td>
+            <td style="padding: 6px 8px; color: #10b981;">${info.p90_duration_hours.toFixed(1)}h</td>
+            <td style="padding: 6px 8px; color: #f59e0b;">${info.right_censored_count} adet</td>
+          </tr>
+        `;
+      }
+      tbody.innerHTML = html;
+    }
+
+    async function loadRegimeDriftAnalysis() {
+      const mode = document.getElementById("regime-lab-drift-mode") ? document.getElementById("regime-lab-drift-mode").value : "TRAIN_VS_TEST";
+      const interval = document.getElementById("regime-lab-interval") ? document.getElementById("regime-lab-interval").value : "1h";
+
+      try {
+        const res = await fetch(`/api/v1/product/regime-drift-analysis?mode=${mode}&interval=${interval}`);
+        if (res.ok) {
+          const payload = await res.json();
+          const d = payload.data;
+          const frobEl = document.getElementById("drift-frobenius-val");
+          const psiEl = document.getElementById("drift-psi-val");
+          const jsdEl = document.getElementById("drift-jsd-val");
+          const noteEl = document.getElementById("drift-interpretation-text");
+
+          if (frobEl) frobEl.innerText = d.frobenius_distance.toFixed(4);
+          if (psiEl) psiEl.innerText = d.occupancy_shift_psi.toFixed(4);
+          if (jsdEl) jsdEl.innerText = d.jensen_shannon_divergence.toFixed(4);
+          if (noteEl) noteEl.innerText = `${d.period_a_label} vs ${d.period_b_label}: ${d.drift_significance_tr}`;
+        }
+      } catch (e) {
+        console.warn("Drift fetch error:", e);
+      }
+    }
+
+    async function loadMacroRegimeTransitions(cohortVal) {
+      const cohort = cohortVal || (document.getElementById("macro-regime-cohort-select") ? document.getElementById("macro-regime-cohort-select").value : "US_CPI");
+      const interval = document.getElementById("regime-lab-interval") ? document.getElementById("regime-lab-interval").value : "1h";
+
+      try {
+        const res = await fetch(`/api/v1/product/macro-regime-transitions?cohort=${cohort}&interval=${interval}&window_hours=12`);
+        if (res.ok) {
+          const payload = await res.json();
+          const m = payload.data;
+          const evEl = document.getElementById("macro-event-trans-rate");
+          const baseEl = document.getElementById("macro-base-trans-rate");
+          const liftEl = document.getElementById("macro-trans-lift");
+
+          if (evEl) evEl.innerText = `%${(m.event_window_transition_rate * 100).toFixed(1)}`;
+          if (baseEl) baseEl.innerText = `%${(m.baseline_non_event_transition_rate * 100).toFixed(1)}`;
+          if (liftEl) liftEl.innerText = `${m.transition_rate_lift.toFixed(2)}x`;
+        }
+      } catch (e) {
+        console.warn("Macro regime fetch error:", e);
+      }
+    }
+
+    function renderRegimeTransitionFlow(flowData) {
+      const container = document.getElementById("regime-flow-container");
+      if (!container || !flowData || !flowData.links) return;
+
+      const links = flowData.links || [];
+      let html = "";
+      for (const link of links.slice(0, 8)) {
+        html += `
+          <div style="display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 6px 10px; border-radius: 4px; border: 1px solid #1e293b;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="badge badge-info" style="font-size: 10px;">${link.source}</span>
+              <span style="color: #94a3b8;">➔</span>
+              <span class="badge badge-success" style="font-size: 10px;">${link.target}</span>
+            </div>
+            <div style="font-weight: bold; color: #38bdf8; font-size: 11px;">%${(link.value * 100).toFixed(1)}</div>
+          </div>
+        `;
+      }
+      container.innerHTML = html;
+    }
+
+</script>
 </body>
 </html>
 """

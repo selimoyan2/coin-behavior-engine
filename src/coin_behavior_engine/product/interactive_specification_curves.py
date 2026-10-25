@@ -165,18 +165,18 @@ class InteractiveSpecificationCurveStudio:
         # Sort points based on requested key
         if sort_by == "effect_size":
             # Valid descending by point estimate, invalid at the end
-            raw_points.sort(key=lambda p: (not p.is_valid_specification, -p.point_estimate_ratio))
+            raw_points.sort(key=lambda p: (not p.is_valid_specification, -(p.point_estimate_ratio if p.point_estimate_ratio is not None else -9999.0)))
         elif sort_by == "window":
-            raw_points.sort(key=lambda p: (p.window_hours, -p.point_estimate_ratio))
+            raw_points.sort(key=lambda p: (p.window_hours, -(p.point_estimate_ratio if p.point_estimate_ratio is not None else -9999.0)))
         elif sort_by == "interval":
-            raw_points.sort(key=lambda p: (p.interval, -p.point_estimate_ratio))
+            raw_points.sort(key=lambda p: (p.interval, -(p.point_estimate_ratio if p.point_estimate_ratio is not None else -9999.0)))
         elif sort_by == "estimator":
-            raw_points.sort(key=lambda p: (p.estimator, -p.point_estimate_ratio))
+            raw_points.sort(key=lambda p: (p.estimator, -(p.point_estimate_ratio if p.point_estimate_ratio is not None else -9999.0)))
         elif sort_by == "statistical_support":
             # Significant first, then unsupported, then invalid
-            raw_points.sort(key=lambda p: (not p.is_valid_specification, not p.is_statistically_significant, -p.point_estimate_ratio))
+            raw_points.sort(key=lambda p: (not p.is_valid_specification, not p.is_statistically_significant, -(p.point_estimate_ratio if p.point_estimate_ratio is not None else -9999.0)))
         else:
-            raw_points.sort(key=lambda p: -p.point_estimate_ratio)
+            raw_points.sort(key=lambda p: -(p.point_estimate_ratio if p.point_estimate_ratio is not None else -9999.0))
 
         # Assign ranks
         for idx, pt in enumerate(raw_points, 1):
@@ -232,12 +232,12 @@ class InteractiveSpecificationCurveStudio:
         # Build detailed distributions and limitations
         pre_dist = {
             "mean_vol_pct": target_cell.mean_pre_vol,
-            "estimated_std": round(target_cell.mean_pre_vol * 0.42, 3),
+            "estimated_std": round(target_cell.mean_pre_vol * 0.42, 3) if target_cell.mean_pre_vol is not None else None,
             "bars_in_window": target_cell.window_hours if target_cell.interval == "1h" else target_cell.window_hours // 4,
         }
         post_dist = {
             "mean_vol_pct": target_cell.mean_post_vol,
-            "estimated_std": round(target_cell.mean_post_vol * 0.55, 3),
+            "estimated_std": round(target_cell.mean_post_vol * 0.55, 3) if target_cell.mean_post_vol is not None else None,
             "bars_in_window": target_cell.window_hours if target_cell.interval == "1h" else target_cell.window_hours // 4,
         }
 

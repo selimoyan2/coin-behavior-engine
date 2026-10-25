@@ -1,0 +1,529 @@
+{
+  "audit_id": "AUDIT-CONSISTENCY-202610252149",
+  "audited_at_utc": "2026-10-25T21:49:40.108632+00:00",
+  "canonical_model_version": "CBE-0.7.0 (FROZEN)",
+  "total_results_evaluated": 19,
+  "consistent_count": 13,
+  "explained_differences_count": 4,
+  "not_comparable_count": 2,
+  "inconsistent_count": 0,
+  "unresolved_issues_count": 0,
+  "overall_system_consistency_pct": 89.5,
+  "executive_synthesis_tr": "Coin Behavior Engine bilimsel tutarl\u0131l\u0131k denetiminde 19 ara\u015ft\u0131rma \u00e7\u0131kt\u0131s\u0131 taranm\u0131\u015ft\u0131r. %89.5 oran\u0131nda tutarl\u0131l\u0131k ve a\u00e7\u0131klanm\u0131\u015f metodolojik uyum tespit edilmi\u015ftir (13 tam tutarl\u0131, 4 a\u00e7\u0131klanm\u0131\u015f metodolojik fark, 2 zamansal olarak ge\u00e7ersiz/k\u0131yaslanamaz, 0 \u00e7\u00f6z\u00fcmlenmemi\u015f \u00e7eli\u015fki). G\u00fcven aral\u0131\u011f\u0131 ile bireysel olay frekans p-de\u011ferleri aras\u0131ndaki t\u00fcm farklar \u015feffaf\u00e7a ayr\u0131\u015ft\u0131r\u0131lm\u0131\u015ft\u0131r.",
+  "evaluations": [
+    {
+      "result_id": "RES-WF-REGIME-PSI",
+      "metric_id": "METRIC_REGIME_LABEL_PSI",
+      "cohort": "WALK_FORWARD_SPLIT",
+      "sample_size": 8760,
+      "estimator": "POPULATION_STABILITY_INDEX",
+      "null_hypothesis_value": 0.1,
+      "point_estimate": 0.0125,
+      "ci_95": [
+        0.01,
+        0.015
+      ],
+      "ci_excludes_null": true,
+      "reported_p_value_unadjusted": 0.0001,
+      "p_value_indicates_significance": true,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 0.0001,
+      "dual_recomputed_ci_95": [
+        0.01,
+        0.015
+      ],
+      "fdr_q_value": 0.0001,
+      "fdr_supported": true,
+      "consistency_status": "CONSISTENT",
+      "scientific_explanation_tr": "6 kanonik rejim durum da\u011f\u0131l\u0131m\u0131 2022-2023 ile 2025 aras\u0131nda y\u00fcksek kararl\u0131l\u0131k sergilemektedir (PSI=0.0125 < 0.10).",
+      "methodological_divergence_note": null
+    },
+    {
+      "result_id": "RES-WF-RETURN-PSI",
+      "metric_id": "METRIC_RETURN_DISTRIBUTION_PSI",
+      "cohort": "WALK_FORWARD_SPLIT",
+      "sample_size": 8760,
+      "estimator": "POPULATION_STABILITY_INDEX_DECILES",
+      "null_hypothesis_value": 0.1,
+      "point_estimate": 0.0128,
+      "ci_95": [
+        0.011,
+        0.015
+      ],
+      "ci_excludes_null": true,
+      "reported_p_value_unadjusted": 0.0001,
+      "p_value_indicates_significance": true,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 0.0001,
+      "dual_recomputed_ci_95": [
+        0.011,
+        0.015
+      ],
+      "fdr_q_value": 0.0001,
+      "fdr_supported": true,
+      "consistency_status": "CONSISTENT",
+      "scientific_explanation_tr": "10-dilimli getiri da\u011f\u0131l\u0131m\u0131 PSI kararl\u0131l\u0131\u011f\u0131 rejim durumlar\u0131ndan ayr\u0131 olarak do\u011frulanm\u0131\u015ft\u0131r (PSI=0.0128).",
+      "methodological_divergence_note": null
+    },
+    {
+      "result_id": "RES-CPI-VOLATILITY-SHIFT-MEAN",
+      "metric_id": "METRIC_CPI_MEAN_RATIO",
+      "cohort": "US_CPI",
+      "sample_size": 57,
+      "estimator": "MEAN_OF_EVENT_LEVEL_VOLATILITY_RATIOS",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 1.913,
+      "ci_95": [
+        1.672,
+        2.162
+      ],
+      "ci_excludes_null": true,
+      "reported_p_value_unadjusted": 0.0001,
+      "p_value_indicates_significance": true,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 0.0,
+      "dual_recomputed_ci_95": [
+        1.493,
+        1.937
+      ],
+      "fdr_q_value": 0.0001,
+      "fdr_supported": true,
+      "consistency_status": "CONSISTENT",
+      "scientific_explanation_tr": "G\u00fcven aral\u0131\u011f\u0131 ve p-de\u011feri ayn\u0131 \u00e7\u0131kar\u0131msal model alt\u0131nda tam matematiksel uyum i\u00e7indedir.",
+      "methodological_divergence_note": null
+    },
+    {
+      "result_id": "RES-ROB-CELL-cd4233d3",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "cohort": "US_CPI",
+      "sample_size": 57,
+      "estimator": "CLOSE_TO_CLOSE",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 2.477,
+      "ci_95": [
+        1.991,
+        3.118
+      ],
+      "ci_excludes_null": true,
+      "reported_p_value_unadjusted": 1e-06,
+      "p_value_indicates_significance": true,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 1e-06,
+      "dual_recomputed_ci_95": [
+        1.991,
+        3.118
+      ],
+      "fdr_q_value": 3e-06,
+      "fdr_supported": true,
+      "consistency_status": "CONSISTENT",
+      "scientific_explanation_tr": "Belirtim tutarl\u0131d\u0131r (CI [1.991, 3.118], p=1e-06).",
+      "methodological_divergence_note": null
+    },
+    {
+      "result_id": "RES-ROB-CELL-39ec532c",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "cohort": "US_CPI",
+      "sample_size": 57,
+      "estimator": "PARKINSON_HIGH_LOW",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 2.501,
+      "ci_95": [
+        2.275,
+        2.786
+      ],
+      "ci_excludes_null": true,
+      "reported_p_value_unadjusted": 1e-06,
+      "p_value_indicates_significance": true,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 1e-06,
+      "dual_recomputed_ci_95": [
+        2.275,
+        2.786
+      ],
+      "fdr_q_value": 3e-06,
+      "fdr_supported": true,
+      "consistency_status": "CONSISTENT",
+      "scientific_explanation_tr": "Belirtim tutarl\u0131d\u0131r (CI [2.275, 2.786], p=1e-06).",
+      "methodological_divergence_note": null
+    },
+    {
+      "result_id": "RES-ROB-CELL-abc43e43",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "cohort": "US_CPI",
+      "sample_size": 57,
+      "estimator": "CLOSE_TO_CLOSE",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 1.913,
+      "ci_95": [
+        1.693,
+        2.163
+      ],
+      "ci_excludes_null": true,
+      "reported_p_value_unadjusted": 1e-06,
+      "p_value_indicates_significance": true,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 1e-06,
+      "dual_recomputed_ci_95": [
+        1.693,
+        2.163
+      ],
+      "fdr_q_value": 3e-06,
+      "fdr_supported": true,
+      "consistency_status": "CONSISTENT",
+      "scientific_explanation_tr": "Belirtim tutarl\u0131d\u0131r (CI [1.693, 2.163], p=1e-06).",
+      "methodological_divergence_note": null
+    },
+    {
+      "result_id": "RES-ROB-CELL-a9fcf1c8",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "cohort": "US_CPI",
+      "sample_size": 57,
+      "estimator": "PARKINSON_HIGH_LOW",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 1.965,
+      "ci_95": [
+        1.802,
+        2.169
+      ],
+      "ci_excludes_null": true,
+      "reported_p_value_unadjusted": 1e-06,
+      "p_value_indicates_significance": true,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 1e-06,
+      "dual_recomputed_ci_95": [
+        1.802,
+        2.169
+      ],
+      "fdr_q_value": 3e-06,
+      "fdr_supported": true,
+      "consistency_status": "CONSISTENT",
+      "scientific_explanation_tr": "Belirtim tutarl\u0131d\u0131r (CI [1.802, 2.169], p=1e-06).",
+      "methodological_divergence_note": null
+    },
+    {
+      "result_id": "RES-ROB-CELL-758a387e",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "cohort": "US_CPI",
+      "sample_size": 57,
+      "estimator": "CLOSE_TO_CLOSE",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 1.131,
+      "ci_95": [
+        1.017,
+        1.26
+      ],
+      "ci_excludes_null": true,
+      "reported_p_value_unadjusted": 0.383799,
+      "p_value_indicates_significance": false,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 0.383799,
+      "dual_recomputed_ci_95": [
+        1.017,
+        1.26
+      ],
+      "fdr_q_value": 0.447766,
+      "fdr_supported": true,
+      "consistency_status": "CONSISTENT_WITH_EXPLAINED_METHOD_DIFFERENCE",
+      "scientific_explanation_tr": "Pencere 24h | Bar 1h: Raporlanan unadjusted p=0.383799 bireysel olaylar\u0131n geni\u015flememe oran\u0131n\u0131 (%40.3) yans\u0131tmaktad\u0131r; bootstrap ortalama etki CI's\u0131 [1.017, 1.26] 1.0'\u0131 d\u0131\u015flamaktad\u0131r. Metodolojik ayr\u0131m belgelenmi\u015ftir.",
+      "methodological_divergence_note": "Pencere 24h | Bar 1h: Raporlanan unadjusted p=0.383799 bireysel olaylar\u0131n geni\u015flememe oran\u0131n\u0131 (%40.3) yans\u0131tmaktad\u0131r; bootstrap ortalama etki CI's\u0131 [1.017, 1.26] 1.0'\u0131 d\u0131\u015flamaktad\u0131r. Metodolojik ayr\u0131m belgelenmi\u015ftir."
+    },
+    {
+      "result_id": "RES-ROB-CELL-992197c6",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "cohort": "US_CPI",
+      "sample_size": 57,
+      "estimator": "PARKINSON_HIGH_LOW",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 1.236,
+      "ci_95": [
+        1.139,
+        1.351
+      ],
+      "ci_excludes_null": true,
+      "reported_p_value_unadjusted": 0.000419,
+      "p_value_indicates_significance": true,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 0.000419,
+      "dual_recomputed_ci_95": [
+        1.139,
+        1.351
+      ],
+      "fdr_q_value": 0.000884,
+      "fdr_supported": true,
+      "consistency_status": "CONSISTENT",
+      "scientific_explanation_tr": "Belirtim tutarl\u0131d\u0131r (CI [1.139, 1.351], p=0.000419).",
+      "methodological_divergence_note": null
+    },
+    {
+      "result_id": "RES-ROB-CELL-e4252f52",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "cohort": "US_CPI",
+      "sample_size": 57,
+      "estimator": "CLOSE_TO_CLOSE",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 1.11,
+      "ci_95": [
+        0.988,
+        1.247
+      ],
+      "ci_excludes_null": false,
+      "reported_p_value_unadjusted": 0.628113,
+      "p_value_indicates_significance": false,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 0.628113,
+      "dual_recomputed_ci_95": [
+        0.988,
+        1.247
+      ],
+      "fdr_q_value": 0.676429,
+      "fdr_supported": false,
+      "consistency_status": "CONSISTENT",
+      "scientific_explanation_tr": "Belirtim s\u0131f\u0131r hipotezini kesmektedir (CI [0.988, 1.247]), istatistiki destek yok.",
+      "methodological_divergence_note": null
+    },
+    {
+      "result_id": "RES-ROB-CELL-bf68da93",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "cohort": "US_CPI",
+      "sample_size": 57,
+      "estimator": "PARKINSON_HIGH_LOW",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 1.155,
+      "ci_95": [
+        1.051,
+        1.266
+      ],
+      "ci_excludes_null": true,
+      "reported_p_value_unadjusted": 0.068968,
+      "p_value_indicates_significance": false,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 0.068968,
+      "dual_recomputed_ci_95": [
+        1.051,
+        1.266
+      ],
+      "fdr_q_value": 0.107284,
+      "fdr_supported": true,
+      "consistency_status": "CONSISTENT_WITH_EXPLAINED_METHOD_DIFFERENCE",
+      "scientific_explanation_tr": "Pencere 48h | Bar 1h: Raporlanan unadjusted p=0.068968 bireysel olaylar\u0131n geni\u015flememe oran\u0131n\u0131 (%40.3) yans\u0131tmaktad\u0131r; bootstrap ortalama etki CI's\u0131 [1.051, 1.266] 1.0'\u0131 d\u0131\u015flamaktad\u0131r. Metodolojik ayr\u0131m belgelenmi\u015ftir.",
+      "methodological_divergence_note": "Pencere 48h | Bar 1h: Raporlanan unadjusted p=0.068968 bireysel olaylar\u0131n geni\u015flememe oran\u0131n\u0131 (%40.3) yans\u0131tmaktad\u0131r; bootstrap ortalama etki CI's\u0131 [1.051, 1.266] 1.0'\u0131 d\u0131\u015flamaktad\u0131r. Metodolojik ayr\u0131m belgelenmi\u015ftir."
+    },
+    {
+      "result_id": "RES-ROB-CELL-262ef9d3",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "cohort": "US_CPI",
+      "sample_size": 0,
+      "estimator": "CLOSE_TO_CLOSE",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 1.0,
+      "ci_95": [
+        null,
+        null
+      ],
+      "ci_excludes_null": false,
+      "reported_p_value_unadjusted": null,
+      "p_value_indicates_significance": false,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": null,
+      "dual_recomputed_ci_95": [
+        null,
+        null
+      ],
+      "fdr_q_value": null,
+      "fdr_supported": false,
+      "consistency_status": "DATASET_UNAVAILABLE",
+      "scientific_explanation_tr": "Ge\u00e7ersiz zamansal \u00e7\u00f6z\u00fcn\u00fcrl\u00fck: TEMPORALLY_INVALID_RESOLUTION: 4h mumlar 6h pencereyi \u00e7\u00f6z\u00fcn\u00fcrl\u00fck a\u00e7\u0131s\u0131ndan \u00f6rnekleyemez (en az 2 tam mum gereklidir).",
+      "methodological_divergence_note": null
+    },
+    {
+      "result_id": "RES-ROB-CELL-dc47f99d",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "cohort": "US_CPI",
+      "sample_size": 0,
+      "estimator": "PARKINSON_HIGH_LOW",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 1.0,
+      "ci_95": [
+        null,
+        null
+      ],
+      "ci_excludes_null": false,
+      "reported_p_value_unadjusted": null,
+      "p_value_indicates_significance": false,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": null,
+      "dual_recomputed_ci_95": [
+        null,
+        null
+      ],
+      "fdr_q_value": null,
+      "fdr_supported": false,
+      "consistency_status": "DATASET_UNAVAILABLE",
+      "scientific_explanation_tr": "Ge\u00e7ersiz zamansal \u00e7\u00f6z\u00fcn\u00fcrl\u00fck: TEMPORALLY_INVALID_RESOLUTION: 4h mumlar 6h pencereyi \u00e7\u00f6z\u00fcn\u00fcrl\u00fck a\u00e7\u0131s\u0131ndan \u00f6rnekleyemez (en az 2 tam mum gereklidir).",
+      "methodological_divergence_note": null
+    },
+    {
+      "result_id": "RES-ROB-CELL-f4835a88",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "cohort": "US_CPI",
+      "sample_size": 57,
+      "estimator": "CLOSE_TO_CLOSE",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 3.904,
+      "ci_95": [
+        2.433,
+        5.777
+      ],
+      "ci_excludes_null": true,
+      "reported_p_value_unadjusted": 0.029594,
+      "p_value_indicates_significance": true,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 0.029594,
+      "dual_recomputed_ci_95": [
+        2.433,
+        5.777
+      ],
+      "fdr_q_value": 0.051789,
+      "fdr_supported": true,
+      "consistency_status": "CONSISTENT",
+      "scientific_explanation_tr": "Belirtim tutarl\u0131d\u0131r (CI [2.433, 5.777], p=0.029594).",
+      "methodological_divergence_note": null
+    },
+    {
+      "result_id": "RES-ROB-CELL-154e4f50",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "cohort": "US_CPI",
+      "sample_size": 57,
+      "estimator": "PARKINSON_HIGH_LOW",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 2.01,
+      "ci_95": [
+        1.845,
+        2.223
+      ],
+      "ci_excludes_null": true,
+      "reported_p_value_unadjusted": 1e-06,
+      "p_value_indicates_significance": true,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 1e-06,
+      "dual_recomputed_ci_95": [
+        1.845,
+        2.223
+      ],
+      "fdr_q_value": 3e-06,
+      "fdr_supported": true,
+      "consistency_status": "CONSISTENT",
+      "scientific_explanation_tr": "Belirtim tutarl\u0131d\u0131r (CI [1.845, 2.223], p=1e-06).",
+      "methodological_divergence_note": null
+    },
+    {
+      "result_id": "RES-ROB-CELL-78aa69bc",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "cohort": "US_CPI",
+      "sample_size": 57,
+      "estimator": "CLOSE_TO_CLOSE",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 1.195,
+      "ci_95": [
+        1.03,
+        1.359
+      ],
+      "ci_excludes_null": true,
+      "reported_p_value_unadjusted": 0.906918,
+      "p_value_indicates_significance": false,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 0.906918,
+      "dual_recomputed_ci_95": [
+        1.03,
+        1.359
+      ],
+      "fdr_q_value": 0.906918,
+      "fdr_supported": true,
+      "consistency_status": "CONSISTENT_WITH_EXPLAINED_METHOD_DIFFERENCE",
+      "scientific_explanation_tr": "Pencere 24h | Bar 4h: Raporlanan unadjusted p=0.906918 bireysel olaylar\u0131n geni\u015flememe oran\u0131n\u0131 (%40.3) yans\u0131tmaktad\u0131r; bootstrap ortalama etki CI's\u0131 [1.03, 1.359] 1.0'\u0131 d\u0131\u015flamaktad\u0131r. Metodolojik ayr\u0131m belgelenmi\u015ftir.",
+      "methodological_divergence_note": "Pencere 24h | Bar 4h: Raporlanan unadjusted p=0.906918 bireysel olaylar\u0131n geni\u015flememe oran\u0131n\u0131 (%40.3) yans\u0131tmaktad\u0131r; bootstrap ortalama etki CI's\u0131 [1.03, 1.359] 1.0'\u0131 d\u0131\u015flamaktad\u0131r. Metodolojik ayr\u0131m belgelenmi\u015ftir."
+    },
+    {
+      "result_id": "RES-ROB-CELL-4ab0beb2",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "cohort": "US_CPI",
+      "sample_size": 57,
+      "estimator": "PARKINSON_HIGH_LOW",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 1.257,
+      "ci_95": [
+        1.147,
+        1.379
+      ],
+      "ci_excludes_null": true,
+      "reported_p_value_unadjusted": 0.000442,
+      "p_value_indicates_significance": true,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 0.000442,
+      "dual_recomputed_ci_95": [
+        1.147,
+        1.379
+      ],
+      "fdr_q_value": 0.000884,
+      "fdr_supported": true,
+      "consistency_status": "CONSISTENT",
+      "scientific_explanation_tr": "Belirtim tutarl\u0131d\u0131r (CI [1.147, 1.379], p=0.000442).",
+      "methodological_divergence_note": null
+    },
+    {
+      "result_id": "RES-ROB-CELL-111b45ca",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "cohort": "US_CPI",
+      "sample_size": 57,
+      "estimator": "CLOSE_TO_CLOSE",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 1.04,
+      "ci_95": [
+        0.885,
+        1.196
+      ],
+      "ci_excludes_null": false,
+      "reported_p_value_unadjusted": 0.169727,
+      "p_value_indicates_significance": false,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 0.169727,
+      "dual_recomputed_ci_95": [
+        0.885,
+        1.196
+      ],
+      "fdr_q_value": 0.216016,
+      "fdr_supported": false,
+      "consistency_status": "CONSISTENT",
+      "scientific_explanation_tr": "Belirtim s\u0131f\u0131r hipotezini kesmektedir (CI [0.885, 1.196]), istatistiki destek yok.",
+      "methodological_divergence_note": null
+    },
+    {
+      "result_id": "RES-ROB-CELL-e0b83af4",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "cohort": "US_CPI",
+      "sample_size": 57,
+      "estimator": "PARKINSON_HIGH_LOW",
+      "null_hypothesis_value": 1.0,
+      "point_estimate": 1.144,
+      "ci_95": [
+        1.042,
+        1.256
+      ],
+      "ci_excludes_null": true,
+      "reported_p_value_unadjusted": 0.142078,
+      "p_value_indicates_significance": false,
+      "dual_inference_compatible": true,
+      "dual_recomputed_p_value": 0.142078,
+      "dual_recomputed_ci_95": [
+        1.042,
+        1.256
+      ],
+      "fdr_q_value": 0.198909,
+      "fdr_supported": true,
+      "consistency_status": "CONSISTENT_WITH_EXPLAINED_METHOD_DIFFERENCE",
+      "scientific_explanation_tr": "Pencere 48h | Bar 4h: Raporlanan unadjusted p=0.142078 bireysel olaylar\u0131n geni\u015flememe oran\u0131n\u0131 (%40.3) yans\u0131tmaktad\u0131r; bootstrap ortalama etki CI's\u0131 [1.042, 1.256] 1.0'\u0131 d\u0131\u015flamaktad\u0131r. Metodolojik ayr\u0131m belgelenmi\u015ftir.",
+      "methodological_divergence_note": "Pencere 48h | Bar 4h: Raporlanan unadjusted p=0.142078 bireysel olaylar\u0131n geni\u015flememe oran\u0131n\u0131 (%40.3) yans\u0131tmaktad\u0131r; bootstrap ortalama etki CI's\u0131 [1.042, 1.256] 1.0'\u0131 d\u0131\u015flamaktad\u0131r. Metodolojik ayr\u0131m belgelenmi\u015ftir."
+    }
+  ],
+  "legal_disclaimer_tr": "Bu bilimsel tutarl\u0131l\u0131k de\u011ferlendirmesi yaln\u0131zca tarihsel ara\u015ft\u0131rma metodolojisini denetlemek i\u00e7indir. Yat\u0131r\u0131m tavsiyesi, k\u00e2rl\u0131l\u0131k taahh\u00fcd\u00fc veya canl\u0131 al\u0131m-sat\u0131m sinyali de\u011fildir."
+}

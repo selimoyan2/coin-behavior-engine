@@ -1,0 +1,67 @@
+{
+  "analysis_mode": "TRAIN_VS_TEST",
+  "period_a_label": "2025_Q4",
+  "period_b_label": "2026_Q1",
+  "frobenius_distance": 0.2272,
+  "occupancy_shift_psi": 0.031,
+  "jensen_shannon_divergence": 0.0039,
+  "difference_matrix": [
+    [
+      -0.032,
+      0.0125,
+      0.0059,
+      0.002,
+      0.0,
+      0.0114
+    ],
+    [
+      -0.0057,
+      -0.0119,
+      0.0038,
+      0.0186,
+      -0.0005,
+      -0.0044
+    ],
+    [
+      -0.0321,
+      0.0366,
+      -0.0668,
+      0.0,
+      0.0181,
+      0.0443
+    ],
+    [
+      -0.0552,
+      0.0393,
+      -0.0068,
+      0.0166,
+      -0.0121,
+      0.0182
+    ],
+    [
+      0.1161,
+      0.0516,
+      0.0171,
+      -0.0779,
+      -0.0299,
+      -0.0769
+    ],
+    [
+      0.0031,
+      -0.0387,
+      -0.0154,
+      -0.0269,
+      0.0244,
+      0.0534
+    ]
+  ],
+  "duration_shifts": {
+    "SIDEWAYS": -0.35,
+    "UNCERTAIN": -0.06,
+    "TRENDING_BULL": -0.33,
+    "TRENDING_BEAR": 0.05,
+    "POSSIBLE_REVERSAL": -0.03,
+    "HIGH_VOLATILITY": 0.57
+  },
+  "drift_significance_tr": "2025_Q4 ile 2026_Q1 d\u00f6nemleri aras\u0131nda Frobenius matris mesafesi 0.2272 ve da\u011f\u0131l\u0131m PSI de\u011feri 0.031 olarak hesaplanm\u0131\u015ft\u0131r. Yap\u0131sal ge\u00e7i\u015f kararl\u0131l\u0131\u011f\u0131 y\u00fcksektir (PSI < 0.10). Bu de\u011fi\u015fimler tarihsel rejim s\u00fcreklili\u011finin d\u00f6nemsel dalgalanmas\u0131n\u0131 yans\u0131t\u0131r; gelece\u011fe y\u00f6nelik k\u00e2rl\u0131l\u0131k taahh\u00fcd\u00fc de\u011fildir."
+}

@@ -1,0 +1,862 @@
+{
+  "matrix_id": "RTM-1h-ALL-202610252149",
+  "regimes": [
+    "SIDEWAYS",
+    "UNCERTAIN",
+    "TRENDING_BULL",
+    "TRENDING_BEAR",
+    "POSSIBLE_REVERSAL",
+    "HIGH_VOLATILITY"
+  ],
+  "counts_matrix": [
+    [
+      2708,
+      560,
+      247,
+      154,
+      0,
+      45
+    ],
+    [
+      560,
+      1043,
+      112,
+      153,
+      14,
+      158
+    ],
+    [
+      260,
+      118,
+      567,
+      1,
+      26,
+      62
+    ],
+    [
+      130,
+      118,
+      3,
+      318,
+      101,
+      70
+    ],
+    [
+      48,
+      37,
+      30,
+      55,
+      14,
+      13
+    ],
+    [
+      7,
+      164,
+      76,
+      59,
+      42,
+      687
+    ]
+  ],
+  "probabilities_matrix": [
+    [
+      0.7291,
+      0.1508,
+      0.0665,
+      0.0415,
+      0.0,
+      0.0121
+    ],
+    [
+      0.2745,
+      0.5113,
+      0.0549,
+      0.075,
+      0.0069,
+      0.0775
+    ],
+    [
+      0.2515,
+      0.1141,
+      0.5484,
+      0.001,
+      0.0251,
+      0.06
+    ],
+    [
+      0.1757,
+      0.1595,
+      0.0041,
+      0.4297,
+      0.1365,
+      0.0946
+    ],
+    [
+      0.2437,
+      0.1878,
+      0.1523,
+      0.2792,
+      0.0711,
+      0.066
+    ],
+    [
+      0.0068,
+      0.1585,
+      0.0734,
+      0.057,
+      0.0406,
+      0.6638
+    ]
+  ],
+  "total_transitions_observed": 8760,
+  "data_gap_count": 0,
+  "timestamp_continuity_verified": true,
+  "time_interval": "1h",
+  "cells": [
+    {
+      "from_regime": "SIDEWAYS",
+      "to_regime": "SIDEWAYS",
+      "from_regime_label_tr": "Yatay / Konsolidasyon",
+      "to_regime_label_tr": "Yatay / Konsolidasyon",
+      "transition_count": 2708,
+      "source_observation_count": 3714,
+      "transition_probability": 0.7291,
+      "credible_interval_95": [
+        0.7138,
+        0.7424
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-18T12:00:00",
+        "2025-10-18T13:00:00",
+        "2025-10-18T14:00:00",
+        "2025-10-18T15:00:00",
+        "2025-10-18T16:00:00"
+      ]
+    },
+    {
+      "from_regime": "SIDEWAYS",
+      "to_regime": "UNCERTAIN",
+      "from_regime_label_tr": "Yatay / Konsolidasyon",
+      "to_regime_label_tr": "Belirsiz / Karars\u0131z",
+      "transition_count": 560,
+      "source_observation_count": 3714,
+      "transition_probability": 0.1508,
+      "credible_interval_95": [
+        0.1395,
+        0.1625
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-19T07:00:00",
+        "2025-10-20T00:00:00",
+        "2025-10-20T10:00:00",
+        "2025-10-21T00:00:00",
+        "2025-10-21T10:00:00"
+      ]
+    },
+    {
+      "from_regime": "SIDEWAYS",
+      "to_regime": "TRENDING_BULL",
+      "from_regime_label_tr": "Yatay / Konsolidasyon",
+      "to_regime_label_tr": "Bo\u011fa Trendi (Y\u00fckseli\u015f)",
+      "transition_count": 247,
+      "source_observation_count": 3714,
+      "transition_probability": 0.0665,
+      "credible_interval_95": [
+        0.0589,
+        0.0749
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-20T14:00:00",
+        "2025-10-24T00:00:00",
+        "2025-10-24T04:00:00",
+        "2025-10-25T04:00:00",
+        "2025-10-25T07:00:00"
+      ]
+    },
+    {
+      "from_regime": "SIDEWAYS",
+      "to_regime": "TRENDING_BEAR",
+      "from_regime_label_tr": "Yatay / Konsolidasyon",
+      "to_regime_label_tr": "Ay\u0131 Trendi (D\u00fc\u015f\u00fc\u015f)",
+      "transition_count": 154,
+      "source_observation_count": 3714,
+      "transition_probability": 0.0415,
+      "credible_interval_95": [
+        0.0355,
+        0.0483
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-22T11:00:00",
+        "2025-10-28T19:00:00",
+        "2025-10-29T15:00:00",
+        "2025-10-29T23:00:00",
+        "2025-10-30T10:00:00"
+      ]
+    },
+    {
+      "from_regime": "SIDEWAYS",
+      "to_regime": "POSSIBLE_REVERSAL",
+      "from_regime_label_tr": "Yatay / Konsolidasyon",
+      "to_regime_label_tr": "Olas\u0131 D\u00f6n\u00fc\u015f / Tepe-Dip",
+      "transition_count": 0,
+      "source_observation_count": 3714,
+      "transition_probability": 0.0,
+      "credible_interval_95": [
+        0.0,
+        0.001
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": []
+    },
+    {
+      "from_regime": "SIDEWAYS",
+      "to_regime": "HIGH_VOLATILITY",
+      "from_regime_label_tr": "Yatay / Konsolidasyon",
+      "to_regime_label_tr": "Y\u00fcksek Volatilite / \u015eok",
+      "transition_count": 45,
+      "source_observation_count": 3714,
+      "transition_probability": 0.0121,
+      "credible_interval_95": [
+        0.0091,
+        0.0162
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-20T03:00:00",
+        "2025-10-26T22:00:00",
+        "2025-11-11T01:00:00",
+        "2025-12-03T14:00:00",
+        "2025-12-07T14:00:00"
+      ]
+    },
+    {
+      "from_regime": "UNCERTAIN",
+      "to_regime": "SIDEWAYS",
+      "from_regime_label_tr": "Belirsiz / Karars\u0131z",
+      "to_regime_label_tr": "Yatay / Konsolidasyon",
+      "transition_count": 560,
+      "source_observation_count": 2040,
+      "transition_probability": 0.2745,
+      "credible_interval_95": [
+        0.2551,
+        0.2937
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-20T02:00:00",
+        "2025-10-20T11:00:00",
+        "2025-10-20T19:00:00",
+        "2025-10-22T05:00:00",
+        "2025-10-23T00:00:00"
+      ]
+    },
+    {
+      "from_regime": "UNCERTAIN",
+      "to_regime": "UNCERTAIN",
+      "from_regime_label_tr": "Belirsiz / Karars\u0131z",
+      "to_regime_label_tr": "Belirsiz / Karars\u0131z",
+      "transition_count": 1043,
+      "source_observation_count": 2040,
+      "transition_probability": 0.5113,
+      "credible_interval_95": [
+        0.4886,
+        0.5319
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-20T01:00:00",
+        "2025-10-20T16:00:00",
+        "2025-10-20T17:00:00",
+        "2025-10-20T18:00:00",
+        "2025-10-21T01:00:00"
+      ]
+    },
+    {
+      "from_regime": "UNCERTAIN",
+      "to_regime": "TRENDING_BULL",
+      "from_regime_label_tr": "Belirsiz / Karars\u0131z",
+      "to_regime_label_tr": "Bo\u011fa Trendi (Y\u00fckseli\u015f)",
+      "transition_count": 112,
+      "source_observation_count": 2040,
+      "transition_probability": 0.0549,
+      "credible_interval_95": [
+        0.0458,
+        0.0655
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-23T06:00:00",
+        "2025-10-23T08:00:00",
+        "2025-10-24T20:00:00",
+        "2025-10-28T10:00:00",
+        "2025-10-28T16:00:00"
+      ]
+    },
+    {
+      "from_regime": "UNCERTAIN",
+      "to_regime": "TRENDING_BEAR",
+      "from_regime_label_tr": "Belirsiz / Karars\u0131z",
+      "to_regime_label_tr": "Ay\u0131 Trendi (D\u00fc\u015f\u00fc\u015f)",
+      "transition_count": 153,
+      "source_observation_count": 2040,
+      "transition_probability": 0.075,
+      "credible_interval_95": [
+        0.0642,
+        0.0871
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-19T08:00:00",
+        "2025-10-21T04:00:00",
+        "2025-10-22T17:00:00",
+        "2025-10-22T21:00:00",
+        "2025-10-30T18:00:00"
+      ]
+    },
+    {
+      "from_regime": "UNCERTAIN",
+      "to_regime": "POSSIBLE_REVERSAL",
+      "from_regime_label_tr": "Belirsiz / Karars\u0131z",
+      "to_regime_label_tr": "Olas\u0131 D\u00f6n\u00fc\u015f / Tepe-Dip",
+      "transition_count": 14,
+      "source_observation_count": 2040,
+      "transition_probability": 0.0069,
+      "credible_interval_95": [
+        0.0041,
+        0.0115
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-11-13T07:00:00",
+        "2026-01-15T21:00:00",
+        "2026-04-10T08:00:00",
+        "2026-04-24T05:00:00",
+        "2026-05-11T04:00:00"
+      ]
+    },
+    {
+      "from_regime": "UNCERTAIN",
+      "to_regime": "HIGH_VOLATILITY",
+      "from_regime_label_tr": "Belirsiz / Karars\u0131z",
+      "to_regime_label_tr": "Y\u00fcksek Volatilite / \u015eok",
+      "transition_count": 158,
+      "source_observation_count": 2040,
+      "transition_probability": 0.0775,
+      "credible_interval_95": [
+        0.0665,
+        0.0897
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-21T13:00:00",
+        "2025-10-21T21:00:00",
+        "2025-10-23T15:00:00",
+        "2025-10-30T04:00:00",
+        "2025-10-31T15:00:00"
+      ]
+    },
+    {
+      "from_regime": "TRENDING_BULL",
+      "to_regime": "SIDEWAYS",
+      "from_regime_label_tr": "Bo\u011fa Trendi (Y\u00fckseli\u015f)",
+      "to_regime_label_tr": "Yatay / Konsolidasyon",
+      "transition_count": 260,
+      "source_observation_count": 1034,
+      "transition_probability": 0.2515,
+      "credible_interval_95": [
+        0.2251,
+        0.2777
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-19T19:00:00",
+        "2025-10-20T09:00:00",
+        "2025-10-24T03:00:00",
+        "2025-10-24T08:00:00",
+        "2025-10-24T22:00:00"
+      ]
+    },
+    {
+      "from_regime": "TRENDING_BULL",
+      "to_regime": "UNCERTAIN",
+      "from_regime_label_tr": "Bo\u011fa Trendi (Y\u00fckseli\u015f)",
+      "to_regime_label_tr": "Belirsiz / Karars\u0131z",
+      "transition_count": 118,
+      "source_observation_count": 1034,
+      "transition_probability": 0.1141,
+      "credible_interval_95": [
+        0.0958,
+        0.1344
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-20T15:00:00",
+        "2025-10-23T07:00:00",
+        "2025-10-23T10:00:00",
+        "2025-10-23T19:00:00",
+        "2025-10-28T15:00:00"
+      ]
+    },
+    {
+      "from_regime": "TRENDING_BULL",
+      "to_regime": "TRENDING_BULL",
+      "from_regime_label_tr": "Bo\u011fa Trendi (Y\u00fckseli\u015f)",
+      "to_regime_label_tr": "Bo\u011fa Trendi (Y\u00fckseli\u015f)",
+      "transition_count": 567,
+      "source_observation_count": 1034,
+      "transition_probability": 0.5484,
+      "credible_interval_95": [
+        0.5158,
+        0.5763
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-19T12:00:00",
+        "2025-10-19T13:00:00",
+        "2025-10-19T14:00:00",
+        "2025-10-19T15:00:00",
+        "2025-10-19T16:00:00"
+      ]
+    },
+    {
+      "from_regime": "TRENDING_BULL",
+      "to_regime": "TRENDING_BEAR",
+      "from_regime_label_tr": "Bo\u011fa Trendi (Y\u00fckseli\u015f)",
+      "to_regime_label_tr": "Ay\u0131 Trendi (D\u00fc\u015f\u00fc\u015f)",
+      "transition_count": 1,
+      "source_observation_count": 1034,
+      "transition_probability": 0.001,
+      "credible_interval_95": [
+        0.0002,
+        0.0054
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2026-07-29T19:00:00"
+      ]
+    },
+    {
+      "from_regime": "TRENDING_BULL",
+      "to_regime": "POSSIBLE_REVERSAL",
+      "from_regime_label_tr": "Bo\u011fa Trendi (Y\u00fckseli\u015f)",
+      "to_regime_label_tr": "Olas\u0131 D\u00f6n\u00fc\u015f / Tepe-Dip",
+      "transition_count": 26,
+      "source_observation_count": 1034,
+      "transition_probability": 0.0251,
+      "credible_interval_95": [
+        0.0172,
+        0.0365
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-11-24T19:00:00",
+        "2025-12-29T05:00:00",
+        "2026-01-05T03:00:00",
+        "2026-01-14T17:00:00",
+        "2026-01-27T21:00:00"
+      ]
+    },
+    {
+      "from_regime": "TRENDING_BULL",
+      "to_regime": "HIGH_VOLATILITY",
+      "from_regime_label_tr": "Bo\u011fa Trendi (Y\u00fckseli\u015f)",
+      "to_regime_label_tr": "Y\u00fcksek Volatilite / \u015eok",
+      "transition_count": 62,
+      "source_observation_count": 1034,
+      "transition_probability": 0.06,
+      "credible_interval_95": [
+        0.0469,
+        0.0758
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-23T17:00:00",
+        "2025-11-26T17:00:00",
+        "2025-11-28T14:00:00",
+        "2025-12-02T15:00:00",
+        "2025-12-03T02:00:00"
+      ]
+    },
+    {
+      "from_regime": "TRENDING_BEAR",
+      "to_regime": "SIDEWAYS",
+      "from_regime_label_tr": "Ay\u0131 Trendi (D\u00fc\u015f\u00fc\u015f)",
+      "to_regime_label_tr": "Yatay / Konsolidasyon",
+      "transition_count": 130,
+      "source_observation_count": 740,
+      "transition_probability": 0.1757,
+      "credible_interval_95": [
+        0.1492,
+        0.2037
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-22T03:00:00",
+        "2025-10-29T00:00:00",
+        "2025-10-30T02:00:00",
+        "2025-10-30T16:00:00",
+        "2025-10-30T21:00:00"
+      ]
+    },
+    {
+      "from_regime": "TRENDING_BEAR",
+      "to_regime": "UNCERTAIN",
+      "from_regime_label_tr": "Ay\u0131 Trendi (D\u00fc\u015f\u00fc\u015f)",
+      "to_regime_label_tr": "Belirsiz / Karars\u0131z",
+      "transition_count": 118,
+      "source_observation_count": 740,
+      "transition_probability": 0.1595,
+      "credible_interval_95": [
+        0.1341,
+        0.1866
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-22T20:00:00",
+        "2025-10-22T23:00:00",
+        "2025-11-03T07:00:00",
+        "2025-11-03T19:00:00",
+        "2025-11-03T22:00:00"
+      ]
+    },
+    {
+      "from_regime": "TRENDING_BEAR",
+      "to_regime": "TRENDING_BULL",
+      "from_regime_label_tr": "Ay\u0131 Trendi (D\u00fc\u015f\u00fc\u015f)",
+      "to_regime_label_tr": "Bo\u011fa Trendi (Y\u00fckseli\u015f)",
+      "transition_count": 3,
+      "source_observation_count": 740,
+      "transition_probability": 0.0041,
+      "credible_interval_95": [
+        0.0015,
+        0.0117
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-12-26T02:00:00",
+        "2026-06-20T14:00:00",
+        "2026-07-01T13:00:00"
+      ]
+    },
+    {
+      "from_regime": "TRENDING_BEAR",
+      "to_regime": "TRENDING_BEAR",
+      "from_regime_label_tr": "Ay\u0131 Trendi (D\u00fc\u015f\u00fc\u015f)",
+      "to_regime_label_tr": "Ay\u0131 Trendi (D\u00fc\u015f\u00fc\u015f)",
+      "transition_count": 318,
+      "source_observation_count": 740,
+      "transition_probability": 0.4297,
+      "credible_interval_95": [
+        0.3923,
+        0.4633
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-21T05:00:00",
+        "2025-10-22T22:00:00",
+        "2025-10-29T16:00:00",
+        "2025-10-30T11:00:00",
+        "2025-10-30T12:00:00"
+      ]
+    },
+    {
+      "from_regime": "TRENDING_BEAR",
+      "to_regime": "POSSIBLE_REVERSAL",
+      "from_regime_label_tr": "Ay\u0131 Trendi (D\u00fc\u015f\u00fc\u015f)",
+      "to_regime_label_tr": "Olas\u0131 D\u00f6n\u00fc\u015f / Tepe-Dip",
+      "transition_count": 101,
+      "source_observation_count": 740,
+      "transition_probability": 0.1365,
+      "credible_interval_95": [
+        0.113,
+        0.1623
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-21T06:00:00",
+        "2025-10-22T01:00:00",
+        "2025-10-22T18:00:00",
+        "2025-10-29T17:00:00",
+        "2025-10-30T00:00:00"
+      ]
+    },
+    {
+      "from_regime": "TRENDING_BEAR",
+      "to_regime": "HIGH_VOLATILITY",
+      "from_regime_label_tr": "Ay\u0131 Trendi (D\u00fc\u015f\u00fc\u015f)",
+      "to_regime_label_tr": "Y\u00fcksek Volatilite / \u015eok",
+      "transition_count": 70,
+      "source_observation_count": 740,
+      "transition_probability": 0.0946,
+      "credible_interval_95": [
+        0.0752,
+        0.1172
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-19T09:00:00",
+        "2025-10-22T12:00:00",
+        "2025-10-28T20:00:00",
+        "2025-10-30T13:00:00",
+        "2025-11-04T06:00:00"
+      ]
+    },
+    {
+      "from_regime": "POSSIBLE_REVERSAL",
+      "to_regime": "SIDEWAYS",
+      "from_regime_label_tr": "Olas\u0131 D\u00f6n\u00fc\u015f / Tepe-Dip",
+      "to_regime_label_tr": "Yatay / Konsolidasyon",
+      "transition_count": 48,
+      "source_observation_count": 197,
+      "transition_probability": 0.2437,
+      "credible_interval_95": [
+        0.1852,
+        0.3024
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-21T08:00:00",
+        "2025-11-28T20:00:00",
+        "2025-12-11T05:00:00",
+        "2025-12-17T07:00:00",
+        "2025-12-26T18:00:00"
+      ]
+    },
+    {
+      "from_regime": "POSSIBLE_REVERSAL",
+      "to_regime": "UNCERTAIN",
+      "from_regime_label_tr": "Olas\u0131 D\u00f6n\u00fc\u015f / Tepe-Dip",
+      "to_regime_label_tr": "Belirsiz / Karars\u0131z",
+      "transition_count": 37,
+      "source_observation_count": 197,
+      "transition_probability": 0.1878,
+      "credible_interval_95": [
+        0.1367,
+        0.2435
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-11-13T08:00:00",
+        "2025-11-19T07:00:00",
+        "2025-11-21T06:00:00",
+        "2025-12-05T20:00:00",
+        "2025-12-12T19:00:00"
+      ]
+    },
+    {
+      "from_regime": "POSSIBLE_REVERSAL",
+      "to_regime": "TRENDING_BULL",
+      "from_regime_label_tr": "Olas\u0131 D\u00f6n\u00fc\u015f / Tepe-Dip",
+      "to_regime_label_tr": "Bo\u011fa Trendi (Y\u00fckseli\u015f)",
+      "transition_count": 30,
+      "source_observation_count": 197,
+      "transition_probability": 0.1523,
+      "credible_interval_95": [
+        0.1067,
+        0.2052
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-11-24T20:00:00",
+        "2025-11-26T21:00:00",
+        "2025-12-29T06:00:00",
+        "2026-01-13T18:00:00",
+        "2026-01-27T22:00:00"
+      ]
+    },
+    {
+      "from_regime": "POSSIBLE_REVERSAL",
+      "to_regime": "TRENDING_BEAR",
+      "from_regime_label_tr": "Olas\u0131 D\u00f6n\u00fc\u015f / Tepe-Dip",
+      "to_regime_label_tr": "Ay\u0131 Trendi (D\u00fc\u015f\u00fc\u015f)",
+      "transition_count": 55,
+      "source_observation_count": 197,
+      "transition_probability": 0.2792,
+      "credible_interval_95": [
+        0.2167,
+        0.3392
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-22T02:00:00",
+        "2025-10-22T19:00:00",
+        "2025-10-28T23:00:00",
+        "2025-10-30T01:00:00",
+        "2025-11-16T15:00:00"
+      ]
+    },
+    {
+      "from_regime": "POSSIBLE_REVERSAL",
+      "to_regime": "POSSIBLE_REVERSAL",
+      "from_regime_label_tr": "Olas\u0131 D\u00f6n\u00fc\u015f / Tepe-Dip",
+      "to_regime_label_tr": "Olas\u0131 D\u00f6n\u00fc\u015f / Tepe-Dip",
+      "transition_count": 14,
+      "source_observation_count": 197,
+      "transition_probability": 0.0711,
+      "credible_interval_95": [
+        0.0422,
+        0.1136
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-21T07:00:00",
+        "2025-10-28T22:00:00",
+        "2025-11-26T20:00:00",
+        "2025-11-28T19:00:00",
+        "2026-01-07T11:00:00"
+      ]
+    },
+    {
+      "from_regime": "POSSIBLE_REVERSAL",
+      "to_regime": "HIGH_VOLATILITY",
+      "from_regime_label_tr": "Olas\u0131 D\u00f6n\u00fc\u015f / Tepe-Dip",
+      "to_regime_label_tr": "Y\u00fcksek Volatilite / \u015eok",
+      "transition_count": 13,
+      "source_observation_count": 197,
+      "transition_probability": 0.066,
+      "credible_interval_95": [
+        0.0384,
+        0.1075
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-29T18:00:00",
+        "2025-11-07T14:00:00",
+        "2025-11-14T22:00:00",
+        "2025-11-16T18:00:00",
+        "2025-12-15T19:00:00"
+      ]
+    },
+    {
+      "from_regime": "HIGH_VOLATILITY",
+      "to_regime": "SIDEWAYS",
+      "from_regime_label_tr": "Y\u00fcksek Volatilite / \u015eok",
+      "to_regime_label_tr": "Yatay / Konsolidasyon",
+      "transition_count": 7,
+      "source_observation_count": 1035,
+      "transition_probability": 0.0068,
+      "credible_interval_95": [
+        0.0033,
+        0.0138
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-12-04T21:00:00",
+        "2026-01-16T17:00:00",
+        "2026-03-06T03:00:00",
+        "2026-03-16T16:00:00",
+        "2026-04-21T21:00:00"
+      ]
+    },
+    {
+      "from_regime": "HIGH_VOLATILITY",
+      "to_regime": "UNCERTAIN",
+      "from_regime_label_tr": "Y\u00fcksek Volatilite / \u015eok",
+      "to_regime_label_tr": "Belirsiz / Karars\u0131z",
+      "transition_count": 164,
+      "source_observation_count": 1035,
+      "transition_probability": 0.1585,
+      "credible_interval_95": [
+        0.137,
+        0.1813
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-21T19:00:00",
+        "2025-10-22T16:00:00",
+        "2025-10-29T20:00:00",
+        "2025-10-30T06:00:00",
+        "2025-10-31T17:00:00"
+      ]
+    },
+    {
+      "from_regime": "HIGH_VOLATILITY",
+      "to_regime": "TRENDING_BULL",
+      "from_regime_label_tr": "Y\u00fcksek Volatilite / \u015eok",
+      "to_regime_label_tr": "Bo\u011fa Trendi (Y\u00fckseli\u015f)",
+      "transition_count": 76,
+      "source_observation_count": 1035,
+      "transition_probability": 0.0734,
+      "credible_interval_95": [
+        0.0589,
+        0.0906
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-19T11:00:00",
+        "2025-10-20T05:00:00",
+        "2025-10-23T16:00:00",
+        "2025-10-23T18:00:00",
+        "2025-10-27T00:00:00"
+      ]
+    },
+    {
+      "from_regime": "HIGH_VOLATILITY",
+      "to_regime": "TRENDING_BEAR",
+      "from_regime_label_tr": "Y\u00fcksek Volatilite / \u015eok",
+      "to_regime_label_tr": "Ay\u0131 Trendi (D\u00fc\u015f\u00fc\u015f)",
+      "transition_count": 59,
+      "source_observation_count": 1035,
+      "transition_probability": 0.057,
+      "credible_interval_95": [
+        0.0443,
+        0.0726
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-22T00:00:00",
+        "2025-10-30T15:00:00",
+        "2025-11-04T10:00:00",
+        "2025-11-04T17:00:00",
+        "2025-11-12T18:00:00"
+      ]
+    },
+    {
+      "from_regime": "HIGH_VOLATILITY",
+      "to_regime": "POSSIBLE_REVERSAL",
+      "from_regime_label_tr": "Y\u00fcksek Volatilite / \u015eok",
+      "to_regime_label_tr": "Olas\u0131 D\u00f6n\u00fc\u015f / Tepe-Dip",
+      "transition_count": 42,
+      "source_observation_count": 1035,
+      "transition_probability": 0.0406,
+      "credible_interval_95": [
+        0.0301,
+        0.0542
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-28T21:00:00",
+        "2025-11-21T05:00:00",
+        "2025-11-26T19:00:00",
+        "2025-11-28T18:00:00",
+        "2025-12-12T18:00:00"
+      ]
+    },
+    {
+      "from_regime": "HIGH_VOLATILITY",
+      "to_regime": "HIGH_VOLATILITY",
+      "from_regime_label_tr": "Y\u00fcksek Volatilite / \u015eok",
+      "to_regime_label_tr": "Y\u00fcksek Volatilite / \u015eok",
+      "transition_count": 687,
+      "source_observation_count": 1035,
+      "transition_probability": 0.6638,
+      "credible_interval_95": [
+        0.6319,
+        0.6893
+      ],
+      "low_sample_warning": false,
+      "historical_occurrence_dates": [
+        "2025-10-19T10:00:00",
+        "2025-10-20T04:00:00",
+        "2025-10-21T14:00:00",
+        "2025-10-21T15:00:00",
+        "2025-10-21T16:00:00"
+      ]
+    }
+  ],
+  "disclaimer_tr": "Bu rejim ge\u00e7i\u015fleri laboratuvar\u0131 yaln\u0131zca tarihsel piyasa davran\u0131\u015f\u0131 ve Markov ge\u00e7i\u015f dinamiklerini tan\u0131mlamak amac\u0131yla haz\u0131rlanm\u0131\u015ft\u0131r. Gelecekteki fiyat hareketlerini garanti etmez, yat\u0131r\u0131m tavsiyesi, k\u00e2rl\u0131l\u0131k taahh\u00fcd\u00fc veya canl\u0131 al\u0131m-sat\u0131m sinyali de\u011fildir."
+}

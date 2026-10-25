@@ -1,0 +1,30 @@
+{
+  "staging_deployment_status": "PENDING_VERIFICATION",
+  "timestamp_utc": "2026-10-25T21:49:42.443964+00:00",
+  "service_uuid": "dzzfws54by1whlbq6fk4ywut",
+  "staging_container_id": "86881ba01b3e",
+  "port_binding": "127.0.0.1:18080->8000/tcp",
+  "runtime_identity_contract": {
+    "schema_version": "1.0.0",
+    "canonical_model_version": "CBE-0.7.0 (FROZEN)",
+    "source_commit_sha": "PENDING_GIT_COMMIT",
+    "build_commit_sha": "PENDING_GIT_COMMIT",
+    "image_digest": "sha256:df870b4ef58bbf6d71ab48a575b1cf196d6618f6fc5ec6f1498de8ce3856dc27"
+  },
+  "endpoints_verified": [
+    "/health",
+    "/api/v1/product/runtime-identity",
+    "/api/v1/product/regime-transition-matrix",
+    "/api/v1/product/regime-duration-analysis",
+    "/api/v1/product/regime-drift-analysis",
+    "/api/v1/product/macro-regime-transitions",
+    "/api/v1/product/regime-transition-flow",
+    "/api/v1/product/regime-timeline",
+    "/api/v1/product/scientific-consistency"
+  ],
+  "production_container_verification": {
+    "application_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+    "container_id": "b716c7d5f9bf",
+    "zero_touch_verified": true
+  }
+}

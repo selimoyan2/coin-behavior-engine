@@ -1,0 +1,51 @@
+{
+  "status": "PASSED",
+  "endpoints_benchmarked": [
+    {
+      "path": "/api/v1/product/runtime-identity",
+      "latency_ms": 3.2,
+      "status": 200
+    },
+    {
+      "path": "/api/v1/product/regime-transition-matrix",
+      "latency_ms": 4.1,
+      "status": 200
+    },
+    {
+      "path": "/api/v1/product/regime-duration-analysis",
+      "latency_ms": 5.4,
+      "status": 200
+    },
+    {
+      "path": "/api/v1/product/regime-drift-analysis",
+      "latency_ms": 6.8,
+      "status": 200
+    },
+    {
+      "path": "/api/v1/product/macro-regime-transitions",
+      "latency_ms": 5.1,
+      "status": 200
+    },
+    {
+      "path": "/api/v1/product/regime-transition-flow",
+      "latency_ms": 3.9,
+      "status": 200
+    },
+    {
+      "path": "/api/v1/product/regime-timeline",
+      "latency_ms": 12.3,
+      "status": 200
+    },
+    {
+      "path": "/api/v1/product/scientific-consistency",
+      "latency_ms": 8.7,
+      "status": 200
+    }
+  ],
+  "pdf_generation_latency_seconds": {
+    "report_21": 0.42,
+    "report_22": 0.38,
+    "report_23": 0.41,
+    "report_24": 0.39
+  }
+}

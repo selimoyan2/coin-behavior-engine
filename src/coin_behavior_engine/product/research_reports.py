@@ -662,6 +662,102 @@ class ResearchReportGenerator:
         }
 
     @classmethod
+    def generate_regime_transition_matrix_report(
+        cls, interval: str = "1h", period: str = "ALL", export_format: str = "json"
+    ) -> Dict[str, Any]:
+        """Generate Historical Regime Transition Matrix Report (Report 21)."""
+        from coin_behavior_engine.product.historical_regime_transition_lab import (
+            HistoricalRegimeTransitionLabEngine,
+        )
+        from dataclasses import asdict
+        mat = HistoricalRegimeTransitionLabEngine.compute_transition_matrix(interval=interval, period=period)
+        rep_id = f"RPT-REG-MAT-{uuid.uuid4().hex[:12]}"
+        return {
+            "report_id": rep_id,
+            "report_type": "HISTORICAL_REGIME_TRANSITION_MATRIX",
+            "format": export_format,
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "title": f"Tarihsel Rejim Geçiş Matrisi ve Dirichlet Bayesian Güven Aralıkları ({period})",
+            "status": "success",
+            "model_version": "CBE-0.7.0 (FROZEN)",
+            "dataset_provenance": cls.get_dataset_provenance(),
+            "matrix": asdict(mat),
+            "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
+        }
+
+    @classmethod
+    def generate_regime_persistence_duration_report(
+        cls, interval: str = "1h", period: str = "ALL", export_format: str = "json"
+    ) -> Dict[str, Any]:
+        """Generate Regime Persistence and Duration Analysis Report (Report 22)."""
+        from coin_behavior_engine.product.historical_regime_transition_lab import (
+            HistoricalRegimeTransitionLabEngine,
+        )
+        from dataclasses import asdict
+        durations = HistoricalRegimeTransitionLabEngine.compute_regime_durations(interval=interval, period=period)
+        rep_id = f"RPT-REG-DUR-{uuid.uuid4().hex[:12]}"
+        return {
+            "report_id": rep_id,
+            "report_type": "REGIME_PERSISTENCE_AND_DURATION",
+            "format": export_format,
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "title": f"Piyasa Rejimi Kalıcılık ve Kaplan-Meier Süre Analizi ({period})",
+            "status": "success",
+            "model_version": "CBE-0.7.0 (FROZEN)",
+            "dataset_provenance": cls.get_dataset_provenance(),
+            "durations": {k: asdict(v) for k, v in durations.items()},
+            "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
+        }
+
+    @classmethod
+    def generate_historical_regime_drift_report(
+        cls, mode: str = "TRAIN_VS_TEST", param_a: str = "TRAIN_2022_2023", param_b: str = "TEST_2025", interval: str = "1h", export_format: str = "json"
+    ) -> Dict[str, Any]:
+        """Generate Historical Regime Drift and Stability Report (Report 23)."""
+        from coin_behavior_engine.product.historical_regime_transition_lab import (
+            HistoricalRegimeTransitionLabEngine,
+        )
+        from dataclasses import asdict
+        drift = HistoricalRegimeTransitionLabEngine.compute_regime_drift(mode=mode, param_a=param_a, param_b=param_b, interval=interval)
+        rep_id = f"RPT-REG-DRIFT-{uuid.uuid4().hex[:12]}"
+        return {
+            "report_id": rep_id,
+            "report_type": "HISTORICAL_REGIME_DRIFT",
+            "format": export_format,
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "title": f"Tarihsel Rejim Kayma (Drift) ve Frobenius Matris Ayrışma Raporu ({mode})",
+            "status": "success",
+            "model_version": "CBE-0.7.0 (FROZEN)",
+            "dataset_provenance": cls.get_dataset_provenance(),
+            "drift": asdict(drift),
+            "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
+        }
+
+    @classmethod
+    def generate_macro_conditioned_regime_transitions_report(
+        cls, cohort: str = "US_CPI", window_hours: int = 12, interval: str = "1h", export_format: str = "json"
+    ) -> Dict[str, Any]:
+        """Generate Macro Event Conditioned Regime Transitions Report (Report 24)."""
+        from coin_behavior_engine.product.historical_regime_transition_lab import (
+            HistoricalRegimeTransitionLabEngine,
+        )
+        from dataclasses import asdict
+        macro = HistoricalRegimeTransitionLabEngine.compute_macro_conditioned_transitions(cohort=cohort, window_hours=window_hours, interval=interval)
+        rep_id = f"RPT-MACRO-REG-{uuid.uuid4().hex[:12]}"
+        return {
+            "report_id": rep_id,
+            "report_type": "MACRO_CONDITIONED_REGIME_TRANSITIONS",
+            "format": export_format,
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "title": f"Makro Ekonomik Şok Koşullu Rejim Geçişleri ve Reaksiyon Raporu ({cohort})",
+            "status": "success",
+            "model_version": "CBE-0.7.0 (FROZEN)",
+            "dataset_provenance": cls.get_dataset_provenance(),
+            "macro_regimes": asdict(macro),
+            "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
+        }
+
+    @classmethod
     def export_report_as_pdf(cls, report: Dict[str, Any]) -> bytes:
         """
         Generate a professional, reproducible vector PDF research report
@@ -1112,9 +1208,9 @@ class ResearchReportGenerator:
                 ax_chart = fig.add_axes([0.08, 0.52, 0.84, 0.28])
                 ax_chart.set_facecolor("#f8fafc")
                 mat = report.get("robustness_matrix", {})
-                cells = mat.get("cells", [])
-                cell_labels = [f"{c.get('interval')}-{c.get('window_hours')}h-{c.get('estimator')[:4]}" for c in cells[:10]]
-                ratios = [c.get("mean_ratio", 0) for c in cells[:10]]
+                cells = [c for c in mat.get("cells", []) if c.get("is_valid_specification") and c.get("mean_ratio") is not None]
+                cell_labels = [f"{c.get('interval')}-{c.get('window_hours')}h-{c.get('estimator', '')[:4]}" for c in cells[:10]]
+                ratios = [float(c.get("mean_ratio") or 0.0) for c in cells[:10]]
                 x = list(range(len(cell_labels)))
                 ax_chart.bar(x, ratios, color="#0284c7", width=0.5, label="Oran (Sonrası / Öncesi)")
                 ax_chart.axhline(1.0, color="#ef4444", linestyle="--", label="Etkisizlik Çizgisi (1.0x)")
@@ -1272,6 +1368,166 @@ class ResearchReportGenerator:
                     elif row % 2 == 1:
                         cell.set_facecolor("#f1f5f9")
 
+            elif rpt_type == "HISTORICAL_REGIME_TRANSITION_MATRIX":
+                ax_chart = fig.add_axes([0.08, 0.48, 0.84, 0.32])
+                mat_data = report.get("matrix", {})
+                probs = mat_data.get("probabilities_matrix", [])
+                regimes = mat_data.get("regimes", [])
+                short_regimes = [r.replace("TRENDING_", "").replace("POSSIBLE_", "") for r in regimes]
+                if probs and len(probs) == len(regimes):
+                    import numpy as np
+                    p_arr = np.array(probs)
+                    im = ax_chart.imshow(p_arr, cmap="Blues", vmin=0, vmax=1)
+                    ax_chart.set_xticks(range(len(regimes)))
+                    ax_chart.set_yticks(range(len(regimes)))
+                    ax_chart.set_xticklabels(short_regimes, fontsize=7, rotation=30, ha="right", family="DejaVu Sans")
+                    ax_chart.set_yticklabels(short_regimes, fontsize=7, family="DejaVu Sans")
+                    for i in range(len(regimes)):
+                        for j in range(len(regimes)):
+                            val = p_arr[i, j]
+                            txt_color = "white" if val > 0.5 else "black"
+                            ax_chart.text(j, i, f"{val:.2f}", ha="center", va="center", color=txt_color, fontsize=7, weight="bold")
+                    ax_chart.set_title("6x6 Rejim Geçiş Olasılıkları Isı Haritası", fontsize=10, weight="bold", color="#1e293b", family="DejaVu Sans")
+                
+                table_data = [
+                    ["Rejim", "Kendi Kendine Geçiş (P_ii)", "Bayesian %95 Güven Aralığı", "Örneklem Durumu"],
+                ]
+                cells = mat_data.get("cells", [])
+                for i, r in enumerate(regimes):
+                    diag_cell = [c for c in cells if c.get("from_regime") == r and c.get("to_regime") == r]
+                    if diag_cell:
+                        c = diag_cell[0]
+                        p_val = c.get("probability", 0.0)
+                        ci_str = f"[{c.get('bayesian_ci_lower_95', 0.0):.3f}, {c.get('bayesian_ci_upper_95', 0.0):.3f}]"
+                        warn = "DÜŞÜK ÖRNEKLEM" if c.get("low_sample_warning") else "YETERLİ (N >= 30)"
+                        table_data.append([r, f"{p_val*100:.1f}%", ci_str, warn])
+                
+                ax_tbl = fig.add_axes([0.08, 0.20, 0.84, 0.24])
+                ax_tbl.axis("off")
+                tbl = ax_tbl.table(cellText=table_data, loc="center", cellLoc="center")
+                tbl.auto_set_font_size(False)
+                tbl.set_fontsize(7.5)
+                tbl.scale(1, 1.4)
+                for (row, col), cell in tbl.get_celld().items():
+                    if row == 0:
+                        cell.set_facecolor("#1e293b")
+                        cell.set_text_props(color="#ffffff", weight="bold")
+                    elif row % 2 == 1:
+                        cell.set_facecolor("#f1f5f9")
+
+            elif rpt_type == "REGIME_PERSISTENCE_AND_DURATION":
+                ax_chart = fig.add_axes([0.08, 0.52, 0.84, 0.28])
+                ax_chart.set_facecolor("#f8fafc")
+                dur_data = report.get("durations", {})
+                regimes = list(dur_data.keys())
+                short_regimes = [r.replace("TRENDING_", "").replace("POSSIBLE_", "") for r in regimes]
+                medians = [dur_data[r].get("median_duration_hours", 0) for r in regimes]
+                p90s = [dur_data[r].get("p90_duration_hours", 0) for r in regimes]
+                
+                x = list(range(len(regimes)))
+                w = 0.35
+                ax_chart.bar([p - w/2 for p in x], medians, w, label="Medyan Süre (Saat)", color="#0284c7")
+                ax_chart.bar([p + w/2 for p in x], p90s, w, label="P90 Süre (Saat)", color="#10b981")
+                ax_chart.set_xticks(x)
+                ax_chart.set_xticklabels(short_regimes, fontsize=7.5, rotation=25, ha="right", family="DejaVu Sans")
+                ax_chart.legend(loc="upper right", fontsize=8)
+                ax_chart.grid(True, linestyle="--", alpha=0.3, color="#94a3b8")
+                ax_chart.set_title("Rejim Kalıcılık ve Süre Karşılaştırması", fontsize=10, weight="bold", color="#1e293b", family="DejaVu Sans")
+                
+                table_data = [
+                    ["Rejim", "Epizod Adedi", "Medyan (Saat)", "Ortalama (Saat)", "P90 (Saat)", "Sağdan Sansürlü"],
+                ]
+                for r in regimes:
+                    d = dur_data[r]
+                    table_data.append([
+                        r,
+                        str(d.get("episode_count", 0)),
+                        f"{d.get('median_duration_hours', 0):.1f}h",
+                        f"{d.get('mean_duration_hours', 0):.1f}h",
+                        f"{d.get('p90_duration_hours', 0):.1f}h",
+                        f"{d.get('right_censored_count', 0)} adet",
+                    ])
+                ax_tbl = fig.add_axes([0.08, 0.20, 0.84, 0.28])
+                ax_tbl.axis("off")
+                tbl = ax_tbl.table(cellText=table_data, loc="center", cellLoc="center")
+                tbl.auto_set_font_size(False)
+                tbl.set_fontsize(7.5)
+                tbl.scale(1, 1.4)
+                for (row, col), cell in tbl.get_celld().items():
+                    if row == 0:
+                        cell.set_facecolor("#1e293b")
+                        cell.set_text_props(color="#ffffff", weight="bold")
+                    elif row % 2 == 1:
+                        cell.set_facecolor("#f1f5f9")
+
+            elif rpt_type == "HISTORICAL_REGIME_DRIFT":
+                drift_data = report.get("drift", {})
+                ax_chart = fig.add_axes([0.08, 0.52, 0.84, 0.28])
+                ax_chart.set_facecolor("#f8fafc")
+                frob = drift_data.get("frobenius_distance", 0.0)
+                psi_val = drift_data.get("occupancy_shift_psi", 0.0)
+                jsd_val = drift_data.get("jensen_shannon_divergence", 0.0)
+                
+                metrics_labels = ["Frobenius Uzaklığı", "Doluluk PSI Değeri", "Jensen-Shannon Iraksaması"]
+                vals = [frob, psi_val, jsd_val]
+                ax_chart.bar(metrics_labels, vals, color=["#6366f1", "#0284c7", "#10b981"], width=0.45)
+                ax_chart.set_title(f"Rejim Dağılım Kayması (Drift) Metrikleri: {drift_data.get('period_a_label')} vs {drift_data.get('period_b_label')}", fontsize=10, weight="bold", color="#1e293b", family="DejaVu Sans")
+                ax_chart.grid(True, linestyle="--", alpha=0.3, color="#94a3b8")
+                
+                table_data = [
+                    ["Drift Karakteristiği", "Hesaplanan Değer", "Eşik Kriteri", "Bilimsel Yorum"],
+                    ["Frobenius Matris Mesafesi", f"{frob:.4f}", "< 0.50 (Kararlı)", "Rejim geçiş olasılıklarının dönemsel kararlılığı"],
+                    ["Doluluk Dağılımı PSI", f"{psi_val:.4f}", "< 0.10 (Önemsiz Kayma)", "Rejim frekanslarında anlamlı yapısal kayma yok"],
+                    ["Jensen-Shannon Sapması", f"{jsd_val:.4f}", "< 0.15 (Tutarlı)", "Olasılık dağılımları simetrik yakınlık içinde"],
+                    ["Rejim Süre Kaymaları", "Hesaplandı", "Medyan süreler", drift_data.get("drift_significance_tr", "Kararlı")],
+                ]
+                ax_tbl = fig.add_axes([0.08, 0.20, 0.84, 0.28])
+                ax_tbl.axis("off")
+                tbl = ax_tbl.table(cellText=table_data, loc="center", cellLoc="center")
+                tbl.auto_set_font_size(False)
+                tbl.set_fontsize(7.5)
+                tbl.scale(1, 1.4)
+                for (row, col), cell in tbl.get_celld().items():
+                    if row == 0:
+                        cell.set_facecolor("#1e293b")
+                        cell.set_text_props(color="#ffffff", weight="bold")
+                    elif row % 2 == 1:
+                        cell.set_facecolor("#f1f5f9")
+
+            elif rpt_type == "MACRO_CONDITIONED_REGIME_TRANSITIONS":
+                macro_data = report.get("macro_regimes", {})
+                ax_chart = fig.add_axes([0.08, 0.52, 0.84, 0.28])
+                ax_chart.set_facecolor("#f8fafc")
+                ev_rate = macro_data.get("event_window_transition_rate", 0.0)
+                base_rate = macro_data.get("baseline_non_event_transition_rate", 0.0)
+                
+                ax_chart.bar(["Olay Penceresi Geçiş Oranı", "Baz Non-Event Geçiş Oranı"], [ev_rate * 100, base_rate * 100], color=["#f59e0b", "#0284c7"], width=0.4)
+                ax_chart.set_ylabel("Geçiş Olasılığı (%)", fontsize=8, family="DejaVu Sans")
+                ax_chart.set_title(f"Makro Olay ({macro_data.get('cohort')}) Koşullu vs Baz Geçiş Oranı (Lift: {macro_data.get('transition_rate_lift', 1.0):.2f}x)", fontsize=10, weight="bold", color="#1e293b", family="DejaVu Sans")
+                ax_chart.grid(True, linestyle="--", alpha=0.3, color="#94a3b8")
+                
+                table_data = [
+                    ["Analiz Parametresi", "Değer", "Açıklama"],
+                    ["İncelenen Kohort", str(macro_data.get("cohort")), "Doğrulanmış makroekonomik olay türü"],
+                    ["Olay Adedi", str(macro_data.get("events_analyzed_count")), "Pencereye dahil edilen olay sayısı"],
+                    ["Olay Penceresi Süresi", f"{macro_data.get('window_hours')} saat", "Olay öncesi ve sonrası incelenen süre"],
+                    ["Olay Penceresi Geçiş Oranı", f"{ev_rate*100:.1f}%", "Olay anında rejim değiştirme sıklığı"],
+                    ["Baz (Non-Event) Geçiş Oranı", f"{base_rate*100:.1f}%", "Olay dışı olağan piyasa geçiş sıklığı"],
+                    ["Geçiş Oranı Artışı (Lift)", f"{macro_data.get('transition_rate_lift', 1.0):.2f}x", "Olay anındaki rejim hareketliliği katsayısı"],
+                    ["İstatistiki Yorum", "Korelasyonel", macro_data.get("statistical_association_note_tr", "")[:40] + "..."],
+                ]
+                ax_tbl = fig.add_axes([0.08, 0.20, 0.84, 0.28])
+                ax_tbl.axis("off")
+                tbl = ax_tbl.table(cellText=table_data, loc="center", cellLoc="center")
+                tbl.auto_set_font_size(False)
+                tbl.set_fontsize(7.5)
+                tbl.scale(1, 1.4)
+                for (row, col), cell in tbl.get_celld().items():
+                    if row == 0:
+                        cell.set_facecolor("#1e293b")
+                        cell.set_text_props(color="#ffffff", weight="bold")
+                    elif row % 2 == 1:
+                        cell.set_facecolor("#f1f5f9")
             else:
                 ax_tbl = fig.add_axes([0.08, 0.35, 0.84, 0.40])
                 ax_tbl.axis("off")

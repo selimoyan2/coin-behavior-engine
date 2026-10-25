@@ -1,0 +1,41 @@
+{
+  "total_report_types": 24,
+  "sprint_14_new_reports": [
+    {
+      "type": "HISTORICAL_REGIME_TRANSITION_MATRIX",
+      "index": 21,
+      "title_tr": "Tarihsel Rejim Ge\u00e7i\u015f Matrisi Raporu",
+      "format": [
+        "JSON",
+        "PDF"
+      ]
+    },
+    {
+      "type": "REGIME_PERSISTENCE_AND_DURATION",
+      "index": 22,
+      "title_tr": "Rejim Kal\u0131c\u0131l\u0131\u011f\u0131 ve S\u00fcre Analizi Raporu",
+      "format": [
+        "JSON",
+        "PDF"
+      ]
+    },
+    {
+      "type": "HISTORICAL_REGIME_DRIFT",
+      "index": 23,
+      "title_tr": "Tarihsel Rejim Kaymas\u0131 (Drift) Raporu",
+      "format": [
+        "JSON",
+        "PDF"
+      ]
+    },
+    {
+      "type": "MACRO_CONDITIONED_REGIME_TRANSITIONS",
+      "index": 24,
+      "title_tr": "Makro Ko\u015fullu Rejim Ge\u00e7i\u015f Dinamikleri Raporu",
+      "format": [
+        "JSON",
+        "PDF"
+      ]
+    }
+  ]
+}

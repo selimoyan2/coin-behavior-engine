@@ -1,0 +1,466 @@
+{
+  "SIDEWAYS": {
+    "regime": "SIDEWAYS",
+    "regime_label_tr": "Yatay / Konsolidasyon",
+    "completed_episodes_count": 1006,
+    "censored_episodes_count": 0,
+    "mean_duration_bars": 3.69,
+    "mean_duration_hours": 3.69,
+    "mean_duration_days": 0.15,
+    "median_duration_hours": 2.0,
+    "max_duration_hours": 55.0,
+    "duration_quantiles_hours": {
+      "p10": 1.0,
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "p90": 7.5,
+      "p95": 11.0,
+      "p99": 26.8
+    },
+    "survival_curve": [
+      {
+        "time_hours": 0.0,
+        "survival_prob": 1.0
+      },
+      {
+        "time_hours": 1.0,
+        "survival_prob": 0.6332
+      },
+      {
+        "time_hours": 2.0,
+        "survival_prob": 0.4294
+      },
+      {
+        "time_hours": 3.0,
+        "survival_prob": 0.2952
+      },
+      {
+        "time_hours": 4.0,
+        "survival_prob": 0.2237
+      },
+      {
+        "time_hours": 5.0,
+        "survival_prob": 0.169
+      },
+      {
+        "time_hours": 6.0,
+        "survival_prob": 0.1272
+      },
+      {
+        "time_hours": 7.0,
+        "survival_prob": 0.1004
+      },
+      {
+        "time_hours": 8.0,
+        "survival_prob": 0.0795
+      },
+      {
+        "time_hours": 9.0,
+        "survival_prob": 0.0686
+      },
+      {
+        "time_hours": 10.0,
+        "survival_prob": 0.0547
+      },
+      {
+        "time_hours": 11.0,
+        "survival_prob": 0.0427
+      },
+      {
+        "time_hours": 12.0,
+        "survival_prob": 0.0398
+      },
+      {
+        "time_hours": 13.0,
+        "survival_prob": 0.0358
+      },
+      {
+        "time_hours": 14.0,
+        "survival_prob": 0.0328
+      },
+      {
+        "time_hours": 15.0,
+        "survival_prob": 0.0298
+      },
+      {
+        "time_hours": 16.0,
+        "survival_prob": 0.0278
+      },
+      {
+        "time_hours": 18.0,
+        "survival_prob": 0.0258
+      },
+      {
+        "time_hours": 19.0,
+        "survival_prob": 0.0209
+      },
+      {
+        "time_hours": 20.0,
+        "survival_prob": 0.0149
+      },
+      {
+        "time_hours": 21.0,
+        "survival_prob": 0.0139
+      },
+      {
+        "time_hours": 22.0,
+        "survival_prob": 0.0119
+      },
+      {
+        "time_hours": 23.0,
+        "survival_prob": 0.0109
+      },
+      {
+        "time_hours": 27.0,
+        "survival_prob": 0.0099
+      },
+      {
+        "time_hours": 30.0,
+        "survival_prob": 0.008
+      },
+      {
+        "time_hours": 33.0,
+        "survival_prob": 0.007
+      },
+      {
+        "time_hours": 40.0,
+        "survival_prob": 0.006
+      },
+      {
+        "time_hours": 42.0,
+        "survival_prob": 0.005
+      },
+      {
+        "time_hours": 43.0,
+        "survival_prob": 0.004
+      },
+      {
+        "time_hours": 44.0,
+        "survival_prob": 0.003
+      },
+      {
+        "time_hours": 47.0,
+        "survival_prob": 0.002
+      },
+      {
+        "time_hours": 50.0,
+        "survival_prob": 0.001
+      },
+      {
+        "time_hours": 55.0,
+        "survival_prob": 0.0
+      }
+    ]
+  },
+  "UNCERTAIN": {
+    "regime": "UNCERTAIN",
+    "regime_label_tr": "Belirsiz / Karars\u0131z",
+    "completed_episodes_count": 997,
+    "censored_episodes_count": 0,
+    "mean_duration_bars": 2.05,
+    "mean_duration_hours": 2.05,
+    "mean_duration_days": 0.09,
+    "median_duration_hours": 1.0,
+    "max_duration_hours": 10.0,
+    "duration_quantiles_hours": {
+      "p10": 1.0,
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "p90": 4.0,
+      "p95": 5.0,
+      "p99": 8.0
+    },
+    "survival_curve": [
+      {
+        "time_hours": 0.0,
+        "survival_prob": 1.0
+      },
+      {
+        "time_hours": 1.0,
+        "survival_prob": 0.4754
+      },
+      {
+        "time_hours": 2.0,
+        "survival_prob": 0.2487
+      },
+      {
+        "time_hours": 3.0,
+        "survival_prob": 0.1605
+      },
+      {
+        "time_hours": 4.0,
+        "survival_prob": 0.0822
+      },
+      {
+        "time_hours": 5.0,
+        "survival_prob": 0.0411
+      },
+      {
+        "time_hours": 6.0,
+        "survival_prob": 0.0231
+      },
+      {
+        "time_hours": 7.0,
+        "survival_prob": 0.011
+      },
+      {
+        "time_hours": 8.0,
+        "survival_prob": 0.003
+      },
+      {
+        "time_hours": 9.0,
+        "survival_prob": 0.001
+      },
+      {
+        "time_hours": 10.0,
+        "survival_prob": 0.0
+      }
+    ]
+  },
+  "TRENDING_BULL": {
+    "regime": "TRENDING_BULL",
+    "regime_label_tr": "Bo\u011fa Trendi (Y\u00fckseli\u015f)",
+    "completed_episodes_count": 467,
+    "censored_episodes_count": 1,
+    "mean_duration_bars": 2.21,
+    "mean_duration_hours": 2.21,
+    "mean_duration_days": 0.09,
+    "median_duration_hours": 2.0,
+    "max_duration_hours": 10.0,
+    "duration_quantiles_hours": {
+      "p10": 1.0,
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.0,
+      "p90": 4.0,
+      "p95": 5.0,
+      "p99": 7.0
+    },
+    "survival_curve": [
+      {
+        "time_hours": 0.0,
+        "survival_prob": 1.0
+      },
+      {
+        "time_hours": 1.0,
+        "survival_prob": 0.5385
+      },
+      {
+        "time_hours": 2.0,
+        "survival_prob": 0.3077
+      },
+      {
+        "time_hours": 3.0,
+        "survival_prob": 0.2115
+      },
+      {
+        "time_hours": 4.0,
+        "survival_prob": 0.0863
+      },
+      {
+        "time_hours": 5.0,
+        "survival_prob": 0.0453
+      },
+      {
+        "time_hours": 6.0,
+        "survival_prob": 0.013
+      },
+      {
+        "time_hours": 7.0,
+        "survival_prob": 0.0065
+      },
+      {
+        "time_hours": 8.0,
+        "survival_prob": 0.0043
+      },
+      {
+        "time_hours": 9.0,
+        "survival_prob": 0.0022
+      },
+      {
+        "time_hours": 10.0,
+        "survival_prob": 0.0
+      }
+    ]
+  },
+  "TRENDING_BEAR": {
+    "regime": "TRENDING_BEAR",
+    "regime_label_tr": "Ay\u0131 Trendi (D\u00fc\u015f\u00fc\u015f)",
+    "completed_episodes_count": 422,
+    "censored_episodes_count": 0,
+    "mean_duration_bars": 1.75,
+    "mean_duration_hours": 1.75,
+    "mean_duration_days": 0.07,
+    "median_duration_hours": 1.0,
+    "max_duration_hours": 7.0,
+    "duration_quantiles_hours": {
+      "p10": 1.0,
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 2.0,
+      "p90": 3.0,
+      "p95": 4.0,
+      "p99": 5.0
+    },
+    "survival_curve": [
+      {
+        "time_hours": 0.0,
+        "survival_prob": 1.0
+      },
+      {
+        "time_hours": 1.0,
+        "survival_prob": 0.4502
+      },
+      {
+        "time_hours": 2.0,
+        "survival_prob": 0.1777
+      },
+      {
+        "time_hours": 3.0,
+        "survival_prob": 0.0806
+      },
+      {
+        "time_hours": 4.0,
+        "survival_prob": 0.0308
+      },
+      {
+        "time_hours": 5.0,
+        "survival_prob": 0.0095
+      },
+      {
+        "time_hours": 6.0,
+        "survival_prob": 0.0047
+      },
+      {
+        "time_hours": 7.0,
+        "survival_prob": 0.0
+      }
+    ]
+  },
+  "POSSIBLE_REVERSAL": {
+    "regime": "POSSIBLE_REVERSAL",
+    "regime_label_tr": "Olas\u0131 D\u00f6n\u00fc\u015f / Tepe-Dip",
+    "completed_episodes_count": 183,
+    "censored_episodes_count": 0,
+    "mean_duration_bars": 1.08,
+    "mean_duration_hours": 1.08,
+    "mean_duration_days": 0.04,
+    "median_duration_hours": 1.0,
+    "max_duration_hours": 2.0,
+    "duration_quantiles_hours": {
+      "p10": 1.0,
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 1.0,
+      "p90": 1.0,
+      "p95": 2.0,
+      "p99": 2.0
+    },
+    "survival_curve": [
+      {
+        "time_hours": 0.0,
+        "survival_prob": 1.0
+      },
+      {
+        "time_hours": 1.0,
+        "survival_prob": 0.0765
+      },
+      {
+        "time_hours": 2.0,
+        "survival_prob": 0.0
+      }
+    ]
+  },
+  "HIGH_VOLATILITY": {
+    "regime": "HIGH_VOLATILITY",
+    "regime_label_tr": "Y\u00fcksek Volatilite / \u015eok",
+    "completed_episodes_count": 348,
+    "censored_episodes_count": 0,
+    "mean_duration_bars": 2.97,
+    "mean_duration_hours": 2.97,
+    "mean_duration_days": 0.12,
+    "median_duration_hours": 2.0,
+    "max_duration_hours": 25.0,
+    "duration_quantiles_hours": {
+      "p10": 1.0,
+      "p25": 2.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "p90": 6.0,
+      "p95": 7.0,
+      "p99": 14.53
+    },
+    "survival_curve": [
+      {
+        "time_hours": 0.0,
+        "survival_prob": 1.0
+      },
+      {
+        "time_hours": 1.0,
+        "survival_prob": 0.7586
+      },
+      {
+        "time_hours": 2.0,
+        "survival_prob": 0.3851
+      },
+      {
+        "time_hours": 3.0,
+        "survival_prob": 0.2615
+      },
+      {
+        "time_hours": 4.0,
+        "survival_prob": 0.158
+      },
+      {
+        "time_hours": 5.0,
+        "survival_prob": 0.1034
+      },
+      {
+        "time_hours": 6.0,
+        "survival_prob": 0.0603
+      },
+      {
+        "time_hours": 7.0,
+        "survival_prob": 0.0431
+      },
+      {
+        "time_hours": 8.0,
+        "survival_prob": 0.0345
+      },
+      {
+        "time_hours": 9.0,
+        "survival_prob": 0.0287
+      },
+      {
+        "time_hours": 10.0,
+        "survival_prob": 0.0259
+      },
+      {
+        "time_hours": 12.0,
+        "survival_prob": 0.023
+      },
+      {
+        "time_hours": 13.0,
+        "survival_prob": 0.0144
+      },
+      {
+        "time_hours": 14.0,
+        "survival_prob": 0.0115
+      },
+      {
+        "time_hours": 15.0,
+        "survival_prob": 0.0057
+      },
+      {
+        "time_hours": 19.0,
+        "survival_prob": 0.0029
+      },
+      {
+        "time_hours": 25.0,
+        "survival_prob": 0.0
+      }
+    ]
+  }
+}

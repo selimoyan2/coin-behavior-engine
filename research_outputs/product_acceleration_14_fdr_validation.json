@@ -1,0 +1,135 @@
+{
+  "method": "Benjamini-Hochberg (1995)",
+  "nominal_fdr_alpha": 0.05,
+  "total_tested_specifications": 14,
+  "surviving_hypotheses_count": 7,
+  "surviving_rate_pct": 50.0,
+  "specifications": [
+    {
+      "cell_id": "CELL-cd4233d3",
+      "interval": "1h",
+      "window_hours": 6,
+      "estimator": "CLOSE_TO_CLOSE",
+      "p_unadjusted": 1e-06,
+      "p_fdr_adjusted": 3e-06,
+      "survives_fdr": true
+    },
+    {
+      "cell_id": "CELL-39ec532c",
+      "interval": "1h",
+      "window_hours": 6,
+      "estimator": "PARKINSON_HIGH_LOW",
+      "p_unadjusted": 1e-06,
+      "p_fdr_adjusted": 3e-06,
+      "survives_fdr": true
+    },
+    {
+      "cell_id": "CELL-abc43e43",
+      "interval": "1h",
+      "window_hours": 12,
+      "estimator": "CLOSE_TO_CLOSE",
+      "p_unadjusted": 1e-06,
+      "p_fdr_adjusted": 3e-06,
+      "survives_fdr": true
+    },
+    {
+      "cell_id": "CELL-a9fcf1c8",
+      "interval": "1h",
+      "window_hours": 12,
+      "estimator": "PARKINSON_HIGH_LOW",
+      "p_unadjusted": 1e-06,
+      "p_fdr_adjusted": 3e-06,
+      "survives_fdr": true
+    },
+    {
+      "cell_id": "CELL-758a387e",
+      "interval": "1h",
+      "window_hours": 24,
+      "estimator": "CLOSE_TO_CLOSE",
+      "p_unadjusted": 0.383799,
+      "p_fdr_adjusted": 0.447766,
+      "survives_fdr": false
+    },
+    {
+      "cell_id": "CELL-992197c6",
+      "interval": "1h",
+      "window_hours": 24,
+      "estimator": "PARKINSON_HIGH_LOW",
+      "p_unadjusted": 0.000419,
+      "p_fdr_adjusted": 0.000884,
+      "survives_fdr": true
+    },
+    {
+      "cell_id": "CELL-e4252f52",
+      "interval": "1h",
+      "window_hours": 48,
+      "estimator": "CLOSE_TO_CLOSE",
+      "p_unadjusted": 0.628113,
+      "p_fdr_adjusted": 0.676429,
+      "survives_fdr": false
+    },
+    {
+      "cell_id": "CELL-bf68da93",
+      "interval": "1h",
+      "window_hours": 48,
+      "estimator": "PARKINSON_HIGH_LOW",
+      "p_unadjusted": 0.068968,
+      "p_fdr_adjusted": 0.107284,
+      "survives_fdr": false
+    },
+    {
+      "cell_id": "CELL-f4835a88",
+      "interval": "4h",
+      "window_hours": 12,
+      "estimator": "CLOSE_TO_CLOSE",
+      "p_unadjusted": 0.029594,
+      "p_fdr_adjusted": 0.051789,
+      "survives_fdr": false
+    },
+    {
+      "cell_id": "CELL-154e4f50",
+      "interval": "4h",
+      "window_hours": 12,
+      "estimator": "PARKINSON_HIGH_LOW",
+      "p_unadjusted": 1e-06,
+      "p_fdr_adjusted": 3e-06,
+      "survives_fdr": true
+    },
+    {
+      "cell_id": "CELL-78aa69bc",
+      "interval": "4h",
+      "window_hours": 24,
+      "estimator": "CLOSE_TO_CLOSE",
+      "p_unadjusted": 0.906918,
+      "p_fdr_adjusted": 0.906918,
+      "survives_fdr": false
+    },
+    {
+      "cell_id": "CELL-4ab0beb2",
+      "interval": "4h",
+      "window_hours": 24,
+      "estimator": "PARKINSON_HIGH_LOW",
+      "p_unadjusted": 0.000442,
+      "p_fdr_adjusted": 0.000884,
+      "survives_fdr": true
+    },
+    {
+      "cell_id": "CELL-111b45ca",
+      "interval": "4h",
+      "window_hours": 48,
+      "estimator": "CLOSE_TO_CLOSE",
+      "p_unadjusted": 0.169727,
+      "p_fdr_adjusted": 0.216016,
+      "survives_fdr": false
+    },
+    {
+      "cell_id": "CELL-e0b83af4",
+      "interval": "4h",
+      "window_hours": 48,
+      "estimator": "PARKINSON_HIGH_LOW",
+      "p_unadjusted": 0.142078,
+      "p_fdr_adjusted": 0.198909,
+      "survives_fdr": false
+    }
+  ]
+}

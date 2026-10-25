@@ -1,0 +1,26 @@
+{
+  "cohort": "US_CPI",
+  "events_analyzed_count": 11,
+  "window_hours": 12,
+  "event_window_transition_rate": 0.4822,
+  "baseline_non_event_transition_rate": 0.3908,
+  "transition_rate_lift": 1.234,
+  "event_conditioned_destination_probabilities": {
+    "SIDEWAYS": 0.2541,
+    "UNCERTAIN": 0.2787,
+    "TRENDING_BULL": 0.1393,
+    "TRENDING_BEAR": 0.1475,
+    "POSSIBLE_REVERSAL": 0.0574,
+    "HIGH_VOLATILITY": 0.123
+  },
+  "baseline_destination_probabilities": {
+    "SIDEWAYS": 0.4239,
+    "UNCERTAIN": 0.2329,
+    "TRENDING_BULL": 0.1181,
+    "TRENDING_BEAR": 0.0845,
+    "POSSIBLE_REVERSAL": 0.0225,
+    "HIGH_VOLATILITY": 0.1181
+  },
+  "statistical_association_note_tr": "US_CPI kohortundaki 11 do\u011frulanm\u0131\u015f olay \u00e7evresinde (\u00b112h) rejim ge\u00e7i\u015f frekans\u0131 %48.22 olarak g\u00f6zlenmi\u015ftir (Genel taban oran\u0131: %39.08, G\u00f6reli De\u011fi\u015fim: 1.234x). Bu istatistiki ili\u015fki olaylar\u0131n ge\u00e7i\u015fe do\u011frudan neden oldu\u011funu kan\u0131tlamaz; piyasa oynakl\u0131\u011f\u0131 k\u00fcmelenmesinin do\u011fal bir korelasyonudur.",
+  "disclaimer_tr": "Bu rejim ge\u00e7i\u015fleri laboratuvar\u0131 yaln\u0131zca tarihsel piyasa davran\u0131\u015f\u0131 ve Markov ge\u00e7i\u015f dinamiklerini tan\u0131mlamak amac\u0131yla haz\u0131rlanm\u0131\u015ft\u0131r. Gelecekteki fiyat hareketlerini garanti etmez, yat\u0131r\u0131m tavsiyesi, k\u00e2rl\u0131l\u0131k taahh\u00fcd\u00fc veya canl\u0131 al\u0131m-sat\u0131m sinyali de\u011fildir."
+}

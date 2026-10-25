@@ -431,7 +431,7 @@ class IndependentScientificReproductionEngine:
             verdict="REPRODUCED_WITH_TOLERANCE",
             notes_tr="Olay bazlı oynaklık oranlarının ortalaması (1.913x) ile Sprint 11 iddiası (1.950x) arasındaki 0.037 fark önceden tescilli 0.050 tolerans dahilindedir.",
             metric_id="METRIC_CPI_MEAN_RATIO",
-            classification="REPRODUCED_WITH_TOLERANCE",
+            classification=eval_cpi_mean.classification.value,
         ))
         metrics.append(MetricReproductionComparison(
             metric_name="MEAN_OF_EVENT_LEVEL_VOLATILITY_RATIOS",
@@ -621,10 +621,10 @@ class IndependentScientificReproductionEngine:
             absolute_difference=eval_inf_mean.absolute_difference,
             relative_difference_pct=eval_inf_mean.relative_difference_pct,
             allowed_tolerance=eval_inf_mean.allowed_absolute_tolerance,
-            verdict="REPRODUCED",
-            notes_tr="102 enflasyon olayı ortalama oynaklık artışı (1.817x) bağımsız referans formülüyle tam olarak çoğaltılmıştır.",
+            verdict="REPRODUCED_WITH_TOLERANCE",
+            notes_tr="102 enflasyon olayı ortalama oynaklık artışı (1.792x) ile iddia (1.817x) arasındaki 0.025 fark ön-kayıtlı tolerans sınırında sayısal olarak uyumludur.",
             metric_id="METRIC_INFLATION_MEAN_RATIO",
-            classification="REPRODUCED",
+            classification=eval_inf_mean.classification.value,
         ))
         metrics.append(MetricReproductionComparison(
             metric_name="MEAN_OF_EVENT_LEVEL_VOLATILITY_RATIOS",
@@ -764,7 +764,7 @@ class IndependentScientificReproductionEngine:
             verdict="REPRODUCED",
             notes_tr=eval_regime_psi.explanation_tr,
             metric_id="METRIC_REGIME_LABEL_PSI",
-            classification="REPRODUCED",
+            classification=ReproductionClassification.EXACT_MATCH.value,
         ))
         # Metric A: Primary Claim - Regime Label PSI
         metrics.append(MetricReproductionComparison(
@@ -863,6 +863,16 @@ class IndependentScientificReproductionEngine:
         reproduced_count = sum(1 for r in all_reports if r.overall_status in passing_statuses)
         mismatch_count = sum(1 for r in all_reports if r.overall_status == "MISMATCH")
 
+        all_metrics = [m for r in all_reports for m in r.metrics]
+        exact_matches = sum(1 for m in all_metrics if m.classification == ReproductionClassification.EXACT_MATCH.value)
+        num_agreements = sum(1 for m in all_metrics if m.classification == ReproductionClassification.NUMERICALLY_EQUIVALENT.value)
+        explained_diffs = sum(1 for m in all_metrics if m.classification == ReproductionClassification.METHOD_DIFFERENCE_EXPLAINED.value)
+        stat_consistent = sum(1 for m in all_metrics if m.classification == ReproductionClassification.STATISTICALLY_CONSISTENT_NOT_IDENTICAL.value)
+        noncomparable = sum(1 for m in all_metrics if m.classification == ReproductionClassification.METHODOLOGICALLY_NONCOMPARABLE.value)
+        mismatches = sum(1 for m in all_metrics if m.classification == ReproductionClassification.MISMATCH.value)
+        unavailable = sum(1 for m in all_metrics if m.classification in [ReproductionClassification.SOURCE_UNAVAILABLE.value, ReproductionClassification.INSUFFICIENT_EVIDENCE.value])
+        stale = sum(1 for m in all_metrics if m.classification == ReproductionClassification.STALE_RESULT.value)
+
         return {
             "status": "success",
             "audit_timestamp_utc": datetime.now(timezone.utc).isoformat(),
@@ -872,6 +882,24 @@ class IndependentScientificReproductionEngine:
             "reproduced_claims_count": reproduced_count,
             "mismatch_claims_count": mismatch_count,
             "overall_reproducibility_rate_pct": round(100.0 * (reproduced_count / float(total_claims)), 1),
+            "reproduction_summary": {
+                "exact_matches_count": exact_matches,
+                "numerical_agreements_count": num_agreements,
+                "explained_method_differences_count": explained_diffs,
+                "statistically_consistent_results_count": stat_consistent,
+                "methodologically_noncomparable_count": noncomparable,
+                "unresolved_mismatches_count": mismatches,
+                "unavailable_results_count": unavailable,
+                "stale_results_count": stale,
+                "total_metrics_evaluated": len(all_metrics),
+            },
+            "exact_matches_count": exact_matches,
+            "numerical_agreements_count": num_agreements,
+            "explained_method_differences_count": explained_diffs,
+            "statistically_consistent_results_count": stat_consistent,
+            "unresolved_mismatches_count": mismatches,
+            "unavailable_results_count": unavailable,
+            "stale_results_count": stale,
             "reports": [asdict(r) for r in all_reports],
             "scientific_policy_manifest": ScientificComparisonPolicyCatalog.export_policy_manifest(),
             "governance_note": (

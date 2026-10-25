@@ -1,0 +1,24 @@
+{
+  "sprint_id": "CBE_PRODUCT_ACCELERATION_14",
+  "timestamp_utc": "2026-10-25T21:49:37.075893+00:00",
+  "git_remote": "selimoyan2/coin-behavior-engine",
+  "branch": "main",
+  "canonical_model_version": "CBE-0.7.0",
+  "sprint_13_feature_commit": "1150c6cdf2dbb36f3f2e753d54bf80adc109b772",
+  "sprint_13_final_commit": "e11b72ffa46eab9e21a2ec9a7e0345509a55e54e",
+  "staging_environment": {
+    "vps": "srv1114257",
+    "ip": "168.231.125.238",
+    "service_name": "cbe-market-intelligence-staging",
+    "uuid": "dzzfws54by1whlbq6fk4ywut",
+    "binding": "127.0.0.1:18080->8000/tcp",
+    "container_id": "86881ba01b3e"
+  },
+  "protected_production": {
+    "application_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+    "container_id": "b716c7d5f9bf",
+    "public_domain": "coin.ozelweb.com.tr",
+    "binding": "127.0.0.1:8000->8000/tcp",
+    "status": "PROTECTED_ZERO_TOUCH"
+  }
+}

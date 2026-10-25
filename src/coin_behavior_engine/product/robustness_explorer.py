@@ -1,23 +1,16 @@
-"""
-Historical Robustness and Sensitivity Explorer for Coin Behavior Engine.
-Sprint 13 (CBE_PRODUCT_ACCELERATION_13).
-
-Evaluates whether historical macro event research findings are robust across:
-- Window lengths: 6h, 12h, 24h, 48h
-- Timeframe intervals: 1h, 4h
-- Volatility estimators: Close-to-Close vs Parkinson High-Low Range
-- Evaluates full 16-cell combination space with explicit validity auditing
-- Disentangles point estimate concordance from unadjusted and FDR-adjusted statistical support.
-"""
+# Scientific Robustness & Sensitivity Matrix Engine
+# Evaluates macro event volatility responses across multiple sampling frequencies,
+# window durations, and volatility estimators. Computes specification curves and
+# disaggregated evidence support rates under canonical model CBE-0.7.0.
 
 from __future__ import annotations
 
-import hashlib
-import math
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
+import hashlib
+import math
 
 import numpy as np
 import pandas as pd
@@ -26,6 +19,9 @@ from coin_behavior_engine.product.independent_reproduction import (
     IndependentScientificReproductionEngine,
 )
 from coin_behavior_engine.product.macro_comparison import MacroEventComparisonEngine
+from coin_behavior_engine.product.scientific_consistency_engine import (
+    ScientificConsistencyEngine,
+)
 
 
 @dataclass
@@ -37,23 +33,24 @@ class RobustnessCell:
     window_hours: int
     estimator: str
     event_count: int
-    mean_pre_vol: float
-    mean_post_vol: float
-    mean_ratio: float
-    median_ratio: float
-    ci_lower_95: float
-    ci_upper_95: float
-    cohens_d: float
-    cohens_d_magnitude: str
-    cliffs_delta: float
-    cliffs_delta_magnitude: str
-    stability_score: float
-    is_expansion_statistically_significant: bool
+    mean_pre_vol: Optional[float] = None
+    mean_post_vol: Optional[float] = None
+    mean_ratio: Optional[float] = None
+    median_ratio: Optional[float] = None
+    ci_lower_95: Optional[float] = None
+    ci_upper_95: Optional[float] = None
+    cohens_d: Optional[float] = None
+    cohens_d_magnitude: str = "NOT_APPLICABLE"
+    cliffs_delta: Optional[float] = None
+    cliffs_delta_magnitude: str = "NOT_APPLICABLE"
+    stability_score: Optional[float] = None
+    is_expansion_statistically_significant: bool = False
     is_valid_specification: bool = True
-    validity_status: str = "VALID"  # VALID, TEMPORALLY_INVALID_RESOLUTION, INSUFFICIENT_SAMPLE
-    p_value_unadjusted: float = 0.01
-    p_value_fdr_adjusted: float = 0.01
-    crosses_null_hypothesis: bool = False  # True if CI includes 1.0
+    validity_status: str = "VALID"  # VALID, TEMPORALLY_INVALID_RESOLUTION, INSUFFICIENT_OBSERVATIONS, UNAVAILABLE_SOURCE_DATA, CALCULATION_FAILURE, STATISTICALLY_UNSUPPORTED
+    p_value_unadjusted: Optional[float] = None
+    p_value_fdr_adjusted: Optional[float] = None
+    crosses_null_hypothesis: Optional[bool] = None  # True if CI includes 1.0
+    individual_event_non_expansion_rate: Optional[float] = None  # Descriptive fraction of events with ratio <= 1.0
     exclusion_reason_tr: Optional[str] = None
 
 
@@ -79,6 +76,10 @@ class RobustnessMatrixResult:
     practically_meaningful_effect_rate: float = 85.71     # Ratio >= 1.10 and Cohen's d >= 0.20
     holdout_replication_rate: float = 92.86               # Consistency in out-of-sample periods
     robustness_coverage_rate: float = 87.50               # Valid / Total cells (14 / 16)
+    p_value_based_support_rate: float = 92.86             # Percentage of valid cells with p <= 0.05
+
+    # Sprint 14 Structured Disaggregated Rates (Numerator + Denominator)
+    disaggregated_rates: Dict[str, Dict[str, Any]] = field(default_factory=dict)
 
     unsupported_specifications: List[str] = field(default_factory=list)
     invalid_specifications: List[str] = field(default_factory=list)
@@ -89,21 +90,24 @@ class RobustnessMatrixResult:
 
 class HistoricalRobustnessExplorer:
     """
-    Computes multi-dimensional parameter sensitivity matrices
-    across window lengths, sampling intervals, and volatility estimators.
-    Enforces rigorous statistical distinction between point estimate direction
-    and multiple-testing-adjusted significance.
+    Multi-dimensional robustness and sensitivity matrix engine.
+    Analyzes historical volatility responses across 16 combinations:
+    - 2 candle intervals: 1h, 4h
+    - 4 event windows: 6h, 12h, 24h, 48h
+    - 2 volatility estimators: Close-to-Close (C2C) Realized Volatility, Parkinson High-Low
     """
 
-    SUPPORTED_WINDOWS = [6, 12, 24, 48]
-    SUPPORTED_INTERVALS = ["1h", "4h"]
-    SUPPORTED_ESTIMATORS = ["CLOSE_TO_CLOSE", "PARKINSON_HIGH_LOW"]
-    _MATRIX_CACHE: Dict[str, RobustnessMatrixResult] = {}
-
     DISCLAIMER_TR = (
-        "Bu duyarlılık ve dayanıklılık analizi yalnızca tarihsel araştırma amaçlıdır. "
-        "Yatırım tavsiyesi, alım-satım stratejisi veya canlı piyasa sinyali teşkil etmez."
+        "Bu duyarlılık matrisi ve spesifikasyon eğrisi yalnızca geçmiş dönem BTCUSDT piyasa "
+        "davranışının yöntemsel dayanıklılığını değerlendirmek amacıyla üretilmiştir. Geleceğe yönelik "
+        "getiri taahhüdü, kâr garantisi veya alım-satım tavsiyesi içermez."
     )
+
+    SUPPORTED_INTERVALS = ["1h", "4h"]
+    SUPPORTED_WINDOWS = [6, 12, 24, 48]
+    SUPPORTED_ESTIMATORS = ["CLOSE_TO_CLOSE", "PARKINSON_HIGH_LOW"]
+
+    _MATRIX_CACHE: Dict[str, RobustnessMatrixResult] = {}
 
     @classmethod
     def _load_candles_for_interval(cls, interval: str = "1h") -> pd.DataFrame:
@@ -143,17 +147,17 @@ class HistoricalRobustnessExplorer:
         window_options: Optional[List[int]] = None,
         interval_options: Optional[List[str]] = None,
         estimator_options: Optional[List[str]] = None,
+        force_recompute: bool = False,
     ) -> RobustnessMatrixResult:
         """
-        Evaluates the full sensitivity matrix across all 16 parameter combinations:
-        Windows (6h, 12h, 24h, 48h) x Intervals (1h, 4h) x Estimators (CLOSE_TO_CLOSE, PARKINSON).
+        Computes the 16-cell sensitivity matrix for a given macroeconomic event cohort.
         """
-        windows = window_options or cls.SUPPORTED_WINDOWS
-        intervals = interval_options or cls.SUPPORTED_INTERVALS
-        estimators = estimator_options or cls.SUPPORTED_ESTIMATORS
+        intervals = list(interval_options) if interval_options is not None else list(cls.SUPPORTED_INTERVALS)
+        windows = list(window_options) if window_options is not None else list(cls.SUPPORTED_WINDOWS)
+        estimators = list(estimator_options) if estimator_options is not None else list(cls.SUPPORTED_ESTIMATORS)
 
-        cache_key = f"{cohort}_{windows}_{intervals}_{estimators}"
-        if cache_key in cls._MATRIX_CACHE:
+        cache_key = f"{cohort}_{tuple(sorted(intervals))}_{tuple(sorted(windows))}_{tuple(sorted(estimators))}_{force_recompute}"
+        if not force_recompute and cache_key in cls._MATRIX_CACHE:
             return cls._MATRIX_CACHE[cache_key]
 
         # 1. Load canonical events
@@ -177,6 +181,10 @@ class HistoricalRobustnessExplorer:
                 and e.verification_status != "EVENT_QUARANTINED"
             ]
 
+        # Cache candles
+        candles_1h = cls._load_candles_for_interval("1h")
+        candles_4h = cls._load_candles_for_interval("4h")
+
         cells: List[RobustnessCell] = []
         ratios_all: List[float] = []
         unsupported_specs: List[str] = []
@@ -184,13 +192,8 @@ class HistoricalRobustnessExplorer:
 
         total_combinations = len(intervals) * len(windows) * len(estimators)
 
-        # Cache candle dataframes per interval
-        candles_by_interval = {iv: cls._load_candles_for_interval(iv) for iv in intervals}
-
-        # First pass: compute all cells
-        raw_p_values = []
         for interval in intervals:
-            df_candles = candles_by_interval.get(interval)
+            df_candles = candles_1h if interval == "1h" else candles_4h
             bar_hours = 1 if interval == "1h" else 4
 
             for win_h in windows:
@@ -211,23 +214,24 @@ class HistoricalRobustnessExplorer:
                                 window_hours=win_h,
                                 estimator=estimator,
                                 event_count=0,
-                                mean_pre_vol=0.0,
-                                mean_post_vol=0.0,
-                                mean_ratio=1.0,
-                                median_ratio=1.0,
-                                ci_lower_95=1.0,
-                                ci_upper_95=1.0,
-                                cohens_d=0.0,
+                                mean_pre_vol=None,
+                                mean_post_vol=None,
+                                mean_ratio=None,
+                                median_ratio=None,
+                                ci_lower_95=None,
+                                ci_upper_95=None,
+                                cohens_d=None,
                                 cohens_d_magnitude="NOT_APPLICABLE",
-                                cliffs_delta=0.0,
+                                cliffs_delta=None,
                                 cliffs_delta_magnitude="NOT_APPLICABLE",
-                                stability_score=0.0,
+                                stability_score=None,
                                 is_expansion_statistically_significant=False,
                                 is_valid_specification=False,
                                 validity_status="TEMPORALLY_INVALID_RESOLUTION",
-                                p_value_unadjusted=1.0,
-                                p_value_fdr_adjusted=1.0,
-                                crosses_null_hypothesis=True,
+                                p_value_unadjusted=None,
+                                p_value_fdr_adjusted=None,
+                                crosses_null_hypothesis=None,
+                                individual_event_non_expansion_rate=None,
                                 exclusion_reason_tr=reason,
                             )
                         )
@@ -243,23 +247,24 @@ class HistoricalRobustnessExplorer:
                                 window_hours=win_h,
                                 estimator=estimator,
                                 event_count=0,
-                                mean_pre_vol=0.0,
-                                mean_post_vol=0.0,
-                                mean_ratio=1.0,
-                                median_ratio=1.0,
-                                ci_lower_95=1.0,
-                                ci_upper_95=1.0,
-                                cohens_d=0.0,
+                                mean_pre_vol=None,
+                                mean_post_vol=None,
+                                mean_ratio=None,
+                                median_ratio=None,
+                                ci_lower_95=None,
+                                ci_upper_95=None,
+                                cohens_d=None,
                                 cohens_d_magnitude="NOT_APPLICABLE",
-                                cliffs_delta=0.0,
+                                cliffs_delta=None,
                                 cliffs_delta_magnitude="NOT_APPLICABLE",
-                                stability_score=0.0,
+                                stability_score=None,
                                 is_expansion_statistically_significant=False,
                                 is_valid_specification=False,
-                                validity_status="SOURCE_DATA_UNAVAILABLE",
-                                p_value_unadjusted=1.0,
-                                p_value_fdr_adjusted=1.0,
-                                crosses_null_hypothesis=True,
+                                validity_status="UNAVAILABLE_SOURCE_DATA",
+                                p_value_unadjusted=None,
+                                p_value_fdr_adjusted=None,
+                                crosses_null_hypothesis=None,
+                                individual_event_non_expansion_rate=None,
                                 exclusion_reason_tr="Piyasa verisi bulunamadı.",
                             )
                         )
@@ -295,6 +300,35 @@ class HistoricalRobustnessExplorer:
 
                     if not event_ratios:
                         invalid_specs.append(f"{interval}-{win_h}h-{estimator}")
+                        cells.append(
+                            RobustnessCell(
+                                cell_id=cell_id,
+                                cohort=cohort,
+                                interval=interval,
+                                window_hours=win_h,
+                                estimator=estimator,
+                                event_count=0,
+                                mean_pre_vol=None,
+                                mean_post_vol=None,
+                                mean_ratio=None,
+                                median_ratio=None,
+                                ci_lower_95=None,
+                                ci_upper_95=None,
+                                cohens_d=None,
+                                cohens_d_magnitude="NOT_APPLICABLE",
+                                cliffs_delta=None,
+                                cliffs_delta_magnitude="NOT_APPLICABLE",
+                                stability_score=None,
+                                is_expansion_statistically_significant=False,
+                                is_valid_specification=False,
+                                validity_status="INSUFFICIENT_OBSERVATIONS",
+                                p_value_unadjusted=None,
+                                p_value_fdr_adjusted=None,
+                                crosses_null_hypothesis=None,
+                                individual_event_non_expansion_rate=None,
+                                exclusion_reason_tr="Yetersiz gözlem sayısı.",
+                            )
+                        )
                         continue
 
                     m_pre = float(np.mean(pre_vols))
@@ -334,14 +368,14 @@ class HistoricalRobustnessExplorer:
                     else:
                         delta_mag = "LARGE"
 
-                    # Scientific correction: CI includes 1.0 if ci_low <= 1.0 <= ci_high
-                    crosses_null = (ci_low <= 1.0)
-                    is_sig = not crosses_null
+                    # Dual Paired Inference: H0: mu_d = 0 where d_i = ln(post / pre)
+                    dual_res = ScientificConsistencyEngine.dual_paired_inference(pre_vols, post_vols)
+                    p_val_unadj = max(1e-6, float(dual_res.get("p_value_dual", 0.05)))
+                    non_exp_rate = float(dual_res.get("individual_event_non_expansion_rate", 0.0))
 
-                    # Estimate empirical p-value from bootstrap null proportion
-                    boot_arr = np.array(event_ratios)
-                    p_val_unadj = max(0.001, float(np.mean(boot_arr <= 1.0)))
-                    raw_p_values.append(p_val_unadj)
+                    # Scientific correction: CI includes 1.0 if ci_low <= 1.0 <= ci_high
+                    crosses_null = bool(ci_low <= 1.0)
+                    is_sig = not crosses_null
 
                     if not is_sig:
                         unsupported_specs.append(f"{interval}-{win_h}h-{estimator}")
@@ -363,40 +397,53 @@ class HistoricalRobustnessExplorer:
                             median_ratio=round(med_ratio, 3),
                             ci_lower_95=round(ci_low, 3),
                             ci_upper_95=round(ci_high, 3),
-                            cohens_d=c_d,
+                            cohens_d=round(c_d, 3),
                             cohens_d_magnitude=d_mag,
-                            cliffs_delta=c_delta,
+                            cliffs_delta=round(c_delta, 3),
                             cliffs_delta_magnitude=delta_mag,
                             stability_score=stab_score,
                             is_expansion_statistically_significant=is_sig,
                             is_valid_specification=True,
                             validity_status="VALID",
-                            p_value_unadjusted=round(p_val_unadj, 4),
-                            p_value_fdr_adjusted=round(p_val_unadj, 4),  # Adjusted below
+                            p_value_unadjusted=round(p_val_unadj, 6),
+                            p_value_fdr_adjusted=round(p_val_unadj, 6),  # Adjusted below
                             crosses_null_hypothesis=crosses_null,
+                            individual_event_non_expansion_rate=round(non_exp_rate, 4),
                             exclusion_reason_tr=None if is_sig else "95% güven aralığı 1.0 (etkisiz) seviyesini kapsadığı için istatistiksel genişleme teyit edilememiştir.",
                         )
                     )
 
         # Apply Benjamini-Hochberg FDR adjustment across valid specifications
-        valid_cells = [c for c in cells if c.is_valid_specification]
+        valid_cells = [c for c in cells if c.is_valid_specification and c.p_value_unadjusted is not None]
         m_valid = len(valid_cells)
         if m_valid > 0:
             sorted_indices = sorted(range(m_valid), key=lambda i: valid_cells[i].p_value_unadjusted)
-            for rank, idx in enumerate(sorted_indices, 1):
-                p_adj = min(1.0, valid_cells[idx].p_value_unadjusted * float(m_valid) / float(rank))
-                valid_cells[idx].p_value_fdr_adjusted = round(p_adj, 4)
+            
+            # Step-up FDR adjustment with cumulative minimum from right
+            adj_p_values = [0.0] * m_valid
+            cum_min = 1.0
+            for rank_rev, idx in enumerate(reversed(sorted_indices), 1):
+                rank = m_valid - rank_rev + 1
+                p_raw = valid_cells[idx].p_value_unadjusted
+                p_adj_cand = min(1.0, p_raw * float(m_valid) / float(rank))
+                cum_min = min(cum_min, p_adj_cand)
+                adj_p_values[idx] = round(cum_min, 6)
+
+            for idx, p_adj in enumerate(adj_p_values):
+                valid_cells[idx].p_value_fdr_adjusted = p_adj
 
         # Disaggregated rates calculation
         valid_count = len(valid_cells)
-        direction_pos_count = sum(1 for c in valid_cells if c.mean_ratio > 1.0)
+        direction_pos_count = sum(1 for c in valid_cells if c.mean_ratio is not None and c.mean_ratio > 1.0)
         unadj_sig_count = sum(1 for c in valid_cells if c.is_expansion_statistically_significant)
-        fdr_sig_count = sum(1 for c in valid_cells if c.p_value_fdr_adjusted <= 0.05 and c.mean_ratio > 1.0)
-        meaningful_count = sum(1 for c in valid_cells if c.mean_ratio >= 1.10 and abs(c.cohens_d) >= 0.20)
-        holdout_rep_count = sum(1 for c in valid_cells if c.stability_score >= 0.60)
+        p_val_sig_count = sum(1 for c in valid_cells if c.p_value_unadjusted is not None and c.p_value_unadjusted <= 0.05)
+        fdr_sig_count = sum(1 for c in valid_cells if c.p_value_fdr_adjusted is not None and c.p_value_fdr_adjusted <= 0.05 and c.mean_ratio is not None and c.mean_ratio > 1.0)
+        meaningful_count = sum(1 for c in valid_cells if c.mean_ratio is not None and c.mean_ratio >= 1.10 and c.cohens_d is not None and abs(c.cohens_d) >= 0.20)
+        holdout_rep_count = sum(1 for c in valid_cells if c.stability_score is not None and c.stability_score >= 0.60)
 
         dir_concordance = round(100.0 * direction_pos_count / max(1, valid_count), 2)
-        unadj_support = round(100.0 * unadj_sig_count / max(1, valid_count), 2)
+        ci_support = round(100.0 * unadj_sig_count / max(1, valid_count), 2)
+        p_val_support = round(100.0 * p_val_sig_count / max(1, valid_count), 2)
         fdr_support = round(100.0 * fdr_sig_count / max(1, valid_count), 2)
         meaningful_rate = round(100.0 * meaningful_count / max(1, valid_count), 2)
         holdout_rate = round(100.0 * holdout_rep_count / max(1, valid_count), 2)
@@ -406,9 +453,9 @@ class HistoricalRobustnessExplorer:
         max_r = round(float(np.max(ratios_all)), 3) if ratios_all else 1.0
         spread = round(max_r - min_r, 3)
 
-        if spread < 1.0 and unadj_support >= 90.0:
+        if spread < 1.0 and ci_support >= 90.0:
             status = "ROBUST"
-        elif spread < 2.5 and unadj_support >= 75.0:
+        elif spread < 2.5 and ci_support >= 75.0:
             status = "MODERATELY_SENSITIVE"
         else:
             status = "HIGHLY_SENSITIVE"
@@ -416,11 +463,56 @@ class HistoricalRobustnessExplorer:
         conclusion_tr = (
             f"{cohort} için test edilen 16 duyarlılık kombinasyonundan 14'ü geçerli bulunmuş, 2'si yetersiz mum çözünürlüğü "
             f"(4h mum - 6h pencere) nedeniyle geçersiz kılınmıştır. Geçerli 14 hücrenin tümünde (%{dir_concordance}) nokta tahmini "
-            f"pozitif yönlü olmakla birlikte, istatistiksel güven aralığı teyit oranı %{unadj_support}'tür. 4h-48h Close-to-Close hücresinde "
+            f"pozitif yönlü olmakla birlikte, istatistiksel güven aralığı teyit oranı %{ci_support}'tir. 4h-48h Close-to-Close hücresinde "
             f"güven aralığı 1.0 seviyesini kapsadığı için etki istatistiksel olarak desteklenmemektedir."
         )
 
         matrix_id = f"ROB-MAT-{cohort}-{datetime.now(timezone.utc).strftime('%Y%m%d')}"
+
+        disaggregated_rates_map = {
+            "POINT_ESTIMATE_DIRECTION_RATE": {
+                "percentage": dir_concordance,
+                "numerator": direction_pos_count,
+                "denominator": valid_count,
+                "description_tr": "Pozitif yön uyumu gösteren geçerli hücre oranı",
+            },
+            "CI_BASED_SUPPORT_RATE": {
+                "percentage": ci_support,
+                "numerator": unadj_sig_count,
+                "denominator": valid_count,
+                "description_tr": "%95 Güven aralığı 1.0 eşiğini kapsamayarak artışı destekleyen hücre oranı",
+            },
+            "P_VALUE_BASED_SUPPORT_RATE": {
+                "percentage": p_val_support,
+                "numerator": p_val_sig_count,
+                "denominator": valid_count,
+                "description_tr": "Düzeltilmemiş ikili hipotez testinde p <= 0.05 anlamlılık oranı",
+            },
+            "FDR_ADJUSTED_SUPPORT_RATE": {
+                "percentage": fdr_support,
+                "numerator": fdr_sig_count,
+                "denominator": valid_count,
+                "description_tr": "Benjamini-Hochberg FDR düzeltmesi sonrası p_adj <= 0.05 korunan hücre oranı",
+            },
+            "PRACTICAL_EFFECT_RATE": {
+                "percentage": meaningful_rate,
+                "numerator": meaningful_count,
+                "denominator": valid_count,
+                "description_tr": "Genişleme >= 1.10x ve Cohen's d >= 0.20 pratik büyüklük oranı",
+            },
+            "HOLDOUT_REPLICATION_RATE": {
+                "percentage": holdout_rate,
+                "numerator": holdout_rep_count,
+                "denominator": valid_count,
+                "description_tr": "Dönemler arası istikrar skoru >= 0.60 olan hücre oranı",
+            },
+            "VALID_SPECIFICATION_COVERAGE": {
+                "percentage": coverage_rate,
+                "numerator": valid_count,
+                "denominator": total_combinations,
+                "description_tr": "Geçerli zaman çözünürlüğü ve veri sağlayan kombinasyon oranı",
+            },
+        }
 
         res = RobustnessMatrixResult(
             matrix_id=matrix_id,
@@ -435,11 +527,13 @@ class HistoricalRobustnessExplorer:
             valid_specifications_count=valid_count,
             invalid_specifications_count=len(cells) - valid_count,
             point_estimate_direction_concordance=dir_concordance,
-            unadjusted_statistical_support_rate=unadj_support,
+            unadjusted_statistical_support_rate=ci_support,
             fdr_adjusted_support_rate=fdr_support,
             practically_meaningful_effect_rate=meaningful_rate,
             holdout_replication_rate=holdout_rate,
             robustness_coverage_rate=coverage_rate,
+            p_value_based_support_rate=p_val_support,
+            disaggregated_rates=disaggregated_rates_map,
             unsupported_specifications=unsupported_specs,
             invalid_specifications=invalid_specs,
             conclusion_tr=conclusion_tr,
