@@ -2600,6 +2600,10 @@ def render_product_dashboard_html() -> str:
               <option value="HISTORICAL_DISTRIBUTION">Tarihsel Dağılım & Uyum Analizi (V4)</option>
               <option value="ROBUSTNESS_SENSITIVITY">Tarihsel Dayanıklılık & Duyarlılık (V4)</option>
               <option value="PORTABLE_EXPERIMENT">Taşınabilir Hipotez Paketi (.cbe-hyp.json)</option>
+              <option value="SCIENTIFIC_RECONCILIATION">Bilimsel Tolerans ve Uzlaştırma Raporu (V5)</option>
+              <option value="SPECIFICATION_CURVE">İnteraktif Belirtim Eğrisi Raporu (V5)</option>
+              <option value="EVIDENCE_QUALITY_PROFILE">12 Boyutlu Kanıt Kalite Profili (V5)</option>
+              <option value="EVENT_DRILLDOWN">Makro Olay Adli İnceleme Raporu (V5)</option>
             </select>
           </div>
           <div id="rpt-param-a-wrap">
@@ -2881,10 +2885,71 @@ def render_product_dashboard_html() -> str:
         </div>
       </div>
 
+      <!-- Sprint 13: Disaggregated Robustness Rates Bar -->
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 20px;">
+        <div style="background: #0f172a; padding: 12px; border-radius: 6px; border-left: 3px solid #38bdf8;">
+          <div style="font-size: 11px; color: var(--text-muted);">YÖNSEL UYUM (CONCORDANCE)</div>
+          <div style="font-size: 18px; font-weight: 800; color: #38bdf8;" id="rob-dir-rate">100.0%</div>
+          <div style="font-size: 10px; color: #94a3b8;">14/14 Nokta Tahmini > 1.0x</div>
+        </div>
+        <div style="background: #0f172a; padding: 12px; border-radius: 6px; border-left: 3px solid #10b981;">
+          <div style="font-size: 11px; color: var(--text-muted);">İSTATİSTİKSEL TEYİT (CI > 1.0)</div>
+          <div style="font-size: 18px; font-weight: 800; color: #10b981;" id="rob-unadj-rate">85.7%</div>
+          <div style="font-size: 10px; color: #94a3b8;">12/14 Güven Aralığı Null Dışı</div>
+        </div>
+        <div style="background: #0f172a; padding: 12px; border-radius: 6px; border-left: 3px solid #f59e0b;">
+          <div style="font-size: 11px; color: var(--text-muted);">FDR ÇOKLU TEST KONTROLÜ</div>
+          <div style="font-size: 18px; font-weight: 800; color: #f59e0b;" id="rob-fdr-rate">7.1%</div>
+          <div style="font-size: 10px; color: #94a3b8;">Benjamini-Hochberg p <= 0.05</div>
+        </div>
+        <div style="background: #0f172a; padding: 12px; border-radius: 6px; border-left: 3px solid #a78bfa;">
+          <div style="font-size: 11px; color: var(--text-muted);">GEÇERLİ KAPSAM ORANI</div>
+          <div style="font-size: 18px; font-weight: 800; color: #a78bfa;" id="rob-cov-rate">87.5%</div>
+          <div style="font-size: 10px; color: #94a3b8;">14 Geçerli / 2 Geçersiz Hücre</div>
+        </div>
+      </div>
+
+      <!-- Sprint 13: Interactive Specification Curve SVG Chart -->
+      <div class="card" style="margin-bottom: 20px; padding: 18px; background: #020617; border: 1px solid #1e293b;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <h3 style="font-size: 14px; color: #38bdf8; margin: 0;">📉 İnteraktif Belirtim Eğrisi (Specification Curve)</h3>
+            <span style="font-size: 11px; color: #94a3b8;">Her nokta bir belirtim hücresidir; tıklayarak adli detaya inin. Kırmızı kesikli çizgi etkisiz seviyedir (1.0x).</span>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span style="font-size: 11px; color: var(--text-muted);">Sırala:</span>
+            <select id="spec-sort-by" class="input" style="background: #0f172a; color: #fff; border: 1px solid #334155; padding: 4px 8px; border-radius: 4px; font-size: 11px;" onchange="loadSpecificationCurve()">
+              <option value="effect_size" selected>Etki Büyüklüğü (Azalan)</option>
+              <option value="window">Pencere (Saat)</option>
+              <option value="interval">Zaman Aralığı</option>
+              <option value="statistical_support">İstatistiksel Anlamlılık</option>
+            </select>
+            <button class="btn" style="font-size: 11px;" onclick="openCompareModal()">⚖️ Karşılaştır</button>
+          </div>
+        </div>
+        <div style="position: relative; height: 220px; background: #091322; border-radius: 6px; padding: 12px 16px;">
+          <svg id="spec-curve-svg" width="100%" height="190" style="overflow: visible;"></svg>
+        </div>
+        <div style="display: flex; gap: 16px; margin-top: 10px; font-size: 11px; color: #94a3b8;">
+          <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; display: inline-block;"></span> Anlamlı Destek (CI > 1.0)</span>
+          <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; display: inline-block;"></span> Null Kesen (Desteklenmeyen)</span>
+          <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #94a3b8; display: inline-block;"></span> Geçersiz Çözünürlük (4h mum - 6h)</span>
+        </div>
+      </div>
+
+      <!-- Specification Drilldown Modal/Card -->
+      <div id="spec-drilldown-panel" style="display: none; margin-bottom: 20px; padding: 16px; background: #0f172a; border-radius: 6px; border-left: 4px solid #38bdf8;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <h4 style="font-size: 13px; color: #38bdf8; margin: 0;" id="drill-title">Belirtim Adli İncelemesi</h4>
+          <button class="btn" style="padding: 2px 8px; font-size: 11px;" onclick="closeDrilldown()">✕ Kapat</button>
+        </div>
+        <div id="drill-content" style="font-size: 12px; color: #cbd5e1; line-height: 1.6;">Yükleniyor...</div>
+      </div>
+
       <!-- Robustness Specification Curve Table -->
       <div class="card" style="margin-bottom: 24px; padding: 18px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-          <h3 style="font-size: 14px; color: #fff;">📊 Çok Boyutlu Duyarlılık Matrisi</h3>
+          <h3 style="font-size: 14px; color: #fff;">📊 Tüm Belirtimler Listesi</h3>
           <span class="badge badge-success" id="rob-status-badge">DAYANIKLILIK: ROBUST</span>
         </div>
         <div style="overflow-x: auto;">
@@ -2953,24 +3018,26 @@ def render_product_dashboard_html() -> str:
         </div>
       </div>
 
-      <!-- Health Score Banner -->
-      <div class="card" style="margin-bottom: 20px; padding: 18px; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+      <!-- Sprint 13: 12-Dimensional Evidence Quality Profile (Replacing legacy 100/100 score) -->
+      <div class="card" style="margin-bottom: 20px; padding: 18px; background: linear-gradient(135deg, #091322 0%, #171d3d 100%); border-left: 4px solid #38bdf8;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 16px;">
           <div>
-            <div style="font-size: 12px; color: #c7d2fe; font-weight: 600;">PLATFORM GENEL KANIT SAĞLIK PUANI</div>
-            <div style="font-size: 36px; font-weight: 800; color: #38bdf8; margin: 4px 0;" id="ev-health-score">100 / 100</div>
-            <div style="font-size: 12px; color: #94a3b8;" id="ev-health-desc">Aktif temel iddiaların tamamı (%100.0) bağımsız referans formüllerle doğrulanmıştır.</div>
+            <div style="font-size: 11px; color: #38bdf8; font-weight: 700; letter-spacing: 0.5px;">BİLİMSEL KANIT KALİTE PROFİLİ</div>
+            <div style="font-size: 24px; font-weight: 800; color: #fff; margin: 4px 0;" id="ev-class-title">MODERATE DESCRIPTIVE EVIDENCE</div>
+            <div style="font-size: 12px; color: #cbd5e1; max-width: 680px;" id="ev-health-desc">12 metodolojik boyut bağımsız olarak puanlanmış, bileşik endeks 8.5/10.0 olarak hesaplanmıştır.</div>
           </div>
-          <div style="display: flex; gap: 12px;">
-            <div style="background: rgba(15, 23, 42, 0.6); padding: 12px 18px; border-radius: 8px; border: 1px solid #334155; text-align: center;">
-              <div style="font-size: 11px; color: var(--text-muted);">ÇOĞALTILAN İDDİALAR</div>
-              <div style="font-size: 20px; font-weight: 700; color: #34d399;" id="ev-repro-cnt">4 / 4</div>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <div style="background: rgba(15, 23, 42, 0.8); padding: 12px 18px; border-radius: 8px; border: 1px solid #334155; text-align: center;">
+              <div style="font-size: 11px; color: var(--text-muted);">BİLEŞİK ENDEKS</div>
+              <div style="font-size: 22px; font-weight: 800; color: #38bdf8;" id="ev-composite-idx">8.48 / 10</div>
             </div>
-            <div style="background: rgba(15, 23, 42, 0.6); padding: 12px 18px; border-radius: 8px; border: 1px solid #334155; text-align: center;">
-              <div style="font-size: 11px; color: var(--text-muted);">ESKİMİŞ (SUPERSEDED)</div>
-              <div style="font-size: 20px; font-weight: 700; color: #f59e0b;" id="ev-stale-cnt">1</div>
-            </div>
+            <button class="btn btn-primary" onclick="openEventDrilldownModal()">🔍 57 CPI Olay İncelemesi</button>
           </div>
+        </div>
+
+        <!-- 12 Dimensions Grid -->
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px;" id="ev-dimensions-grid">
+          <!-- Dynamically populated 12 dimensions -->
         </div>
       </div>
 
@@ -6259,21 +6326,65 @@ def render_product_dashboard_html() -> str:
       const pA = document.getElementById("dist-param-a").value.trim();
       const pB = document.getElementById("dist-param-b").value.trim();
       const met = document.getElementById("dist-metric-select").value;
+      const binMethod = document.getElementById("dist-bin-method")?.value || "freedman_diaconis";
 
       try {
-        const res = await fetch(`/api/v1/product/distribution-lab?mode=${mode}&param_a=${pA}&param_b=${pB}&metric=${met}`);
+        const res = await fetch(`/api/v1/product/distribution-lab?mode=${mode}&param_a=${pA}&param_b=${pB}&metric=${met}&bin_method=${binMethod}`);
         const data = await res.json();
+
+        if (data.status === "DATA_RANGE_UNAVAILABLE" || !res.ok) {
+          const sumEl = document.getElementById("dist-summary-text");
+          if (sumEl) {
+            sumEl.innerHTML = `<span style="color:#ef4444; font-weight:700;">⚠️ Veri Kapsamı Dışında:</span> ${data.error_tr || 'Seçilen yıl/dönem doğrulanmış veri setinde mevcut değildir (Kapsam: 2022-2026).'}`;
+          }
+          return;
+        }
+
         if (data.status === "success" && data.result) {
           const r = data.result;
           document.getElementById("dist-ks-stat").textContent = `KS: ${r.ks_statistic} (p=${r.ks_p_value})`;
           document.getElementById("dist-wass-dist").textContent = r.wasserstein_distance;
           document.getElementById("dist-kurt-diff").textContent = `${r.metrics_a.kurtosis} vs ${r.metrics_b.kurtosis}`;
-          document.getElementById("dist-cliffs-delta").textContent = `${r.cliffs_delta} (${r.cliffs_delta > 0.3 ? 'MEDIUM' : 'NEGLIGIBLE'})`;
+          document.getElementById("dist-cliffs-delta").textContent = `${r.cliffs_delta} (${Math.abs(r.cliffs_delta) > 0.147 ? 'MEDIUM' : 'NEGLIGIBLE'})`;
           document.getElementById("dist-summary-text").textContent = r.divergence_summary_tr;
+
+          // Render Q-Q plot SVG
+          if (r.qq_plot_a && r.qq_plot_a.points) {
+            renderQqPlotSvg(r.qq_plot_a.points);
+          }
         }
       } catch (e) {
         console.error("Error running distribution comparison:", e);
       }
+    }
+
+    function renderQqPlotSvg(pts) {
+      const svg = document.getElementById("dist-qq-svg");
+      if (!svg || !pts.length) return;
+      const w = svg.clientWidth || 700;
+      const h = 140;
+      svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+
+      const minX = Math.min(...pts.map(p => p.theoretical));
+      const maxX = Math.max(...pts.map(p => p.theoretical));
+      const minY = Math.min(...pts.map(p => p.sample));
+      const maxY = Math.max(...pts.map(p => p.sample));
+      const padX = 40;
+      const padY = 15;
+
+      function sx(x) { return padX + ((x - minX) / (maxX - minX)) * (w - padX * 2); }
+      function sy(y) { return h - padY - ((y - minY) / (maxY - minY)) * (h - padY * 2); }
+
+      let svgHtml = `
+        <!-- Reference Line -->
+        <line x1="${sx(minX)}" y1="${sy(minY)}" x2="${sx(maxX)}" y2="${sy(maxY)}" stroke="#475569" stroke-width="1.5" stroke-dasharray="3,3"/>
+      `;
+
+      pts.forEach(p => {
+        svgHtml += `<circle cx="${sx(p.theoretical)}" cy="${sy(p.sample)}" r="3" fill="#a78bfa" opacity="0.85"><title>Teorik: ${p.theoretical}, Örneklem: ${p.sample}</title></circle>`;
+      });
+
+      svg.innerHTML = svgHtml;
     }
 
     function updateDistributionInputs() {
@@ -6299,51 +6410,209 @@ def render_product_dashboard_html() -> str:
     }
 
     async function loadRobustnessMatrix() {
-      const cohort = document.getElementById("rob-cohort-select").value;
+      await loadSpecificationCurve();
+    }
+
+    async function loadSpecificationCurve() {
+      const cohort = document.getElementById("rob-cohort-select")?.value || "US_CPI";
+      const sortBy = document.getElementById("spec-sort-by")?.value || "effect_size";
       try {
-        const res = await fetch(`/api/v1/product/robustness-matrix?cohort=${cohort}`);
+        const res = await fetch(`/api/v1/product/specification-curves?cohort=${cohort}&sort_by=${sortBy}`);
+        if (!res.ok) return;
         const data = await res.json();
-        if (data.status === "success" && data.matrix) {
-          const m = data.matrix;
-          document.getElementById("rob-status-badge").textContent = `DAYANIKLILIK: ${m.robustness_status}`;
-          const tbody = document.getElementById("rob-matrix-tbody");
-          tbody.innerHTML = "";
-          m.cells.slice(0, 10).forEach(c => {
-            const tr = document.createElement("tr");
-            tr.style.borderBottom = "1px solid #1e293b";
-            tr.innerHTML = `
+        if (data.status !== "success" || !data.curve) return;
+        const curve = data.curve;
+        const pts = curve.points || [];
+
+        // Update summary rates
+        const rates = curve.summary_rates || {};
+        if (document.getElementById("rob-dir-rate")) document.getElementById("rob-dir-rate").textContent = `${rates.point_estimate_direction_concordance}%`;
+        if (document.getElementById("rob-unadj-rate")) document.getElementById("rob-unadj-rate").textContent = `${rates.unadjusted_statistical_support_rate}%`;
+        if (document.getElementById("rob-fdr-rate")) document.getElementById("rob-fdr-rate").textContent = `${rates.fdr_adjusted_support_rate}%`;
+        if (document.getElementById("rob-cov-rate")) document.getElementById("rob-cov-rate").textContent = `${rates.robustness_coverage_rate}%`;
+
+        // Render SVG specification curve
+        renderSpecificationCurveSvg(pts);
+
+        // Populate table
+        const tbody = document.getElementById("rob-matrix-tbody");
+        if (tbody) {
+          tbody.innerHTML = pts.map(c => `
+            <tr style="border-bottom: 1px solid #1e293b; cursor: pointer;" onclick="openDrilldown('${c.point_id}')" title="Adli detayı görmek için tıklayın">
               <td style="padding: 8px;">${c.interval}</td>
               <td style="padding: 8px;">${c.window_hours}h</td>
-              <td style="padding: 8px;">${c.estimator}</td>
+              <td style="padding: 8px;"><code>${c.estimator}</code></td>
               <td style="padding: 8px;">%${c.mean_pre_vol}</td>
               <td style="padding: 8px;">%${c.mean_post_vol}</td>
-              <td style="padding: 8px; font-weight: 700; color: #38bdf8;">${c.mean_ratio}x</td>
-              <td style="padding: 8px; color: #34d399;">[${c.ci_lower_95}x, ${c.ci_upper_95}x]</td>
-              <td style="padding: 8px;">${c.cohens_d}</td>
+              <td style="padding: 8px; font-weight: 700; color: #38bdf8;">${c.point_estimate_ratio}x</td>
+              <td style="padding: 8px; color: ${c.is_statistically_significant ? '#34d399' : '#f59e0b'};">[${c.ci_lower_95}x, ${c.ci_upper_95}x]</td>
+              <td style="padding: 8px;">${c.cohens_d} (${c.cohens_d_magnitude})</td>
               <td style="padding: 8px;">${c.cliffs_delta}</td>
-              <td style="padding: 8px;"><span class="badge badge-success">${c.is_expansion_statistically_significant ? 'ANLAMLIDIR' : 'N/S'}</span></td>
-            `;
-            tbody.appendChild(tr);
-          });
+              <td style="padding: 8px;"><span class="badge ${c.is_valid_specification ? (c.is_statistically_significant ? 'badge-success' : 'badge-warn') : 'badge-danger'}">${c.is_valid_specification ? (c.is_statistically_significant ? 'DESTEKLENDİ' : 'NULL KESER') : 'GEÇERSİZ'}</span></td>
+            </tr>
+          `).join("");
         }
       } catch (e) {
-        console.error("Error loading robustness matrix:", e);
+        console.error("Error loading specification curve:", e);
       }
+    }
+
+    function renderSpecificationCurveSvg(pts) {
+      const svg = document.getElementById("spec-curve-svg");
+      if (!svg || !pts.length) return;
+      const w = svg.clientWidth || 800;
+      const h = 180;
+      svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+
+      const maxRatio = Math.max(4.0, ...pts.map(p => p.ci_upper_95));
+      const minRatio = Math.min(0.5, ...pts.map(p => p.ci_lower_95));
+      const padX = 40;
+      const padY = 20;
+
+      function scaleX(idx) {
+        return padX + (idx / Math.max(1, pts.length - 1)) * (w - padX * 2);
+      }
+      function scaleY(val) {
+        return h - padY - ((val - minRatio) / (maxRatio - minRatio)) * (h - padY * 2);
+      }
+
+      const nullY = scaleY(1.0);
+      let svgHtml = `
+        <!-- Null Reference Line y = 1.0 -->
+        <line x1="${padX}" y1="${nullY}" x2="${w - padX}" y2="${nullY}" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <text x="${w - padX + 5}" y="${nullY + 4}" fill="#ef4444" font-size="10" font-family="DejaVu Sans, sans-serif">1.0x (Null)</text>
+      `;
+
+      pts.forEach((p, i) => {
+        const cx = scaleX(i);
+        const cy = scaleY(p.point_estimate_ratio);
+        const yLow = scaleY(p.ci_lower_95);
+        const yHigh = scaleY(p.ci_upper_95);
+        const color = !p.is_valid_specification ? "#94a3b8" : (p.is_statistically_significant ? "#10b981" : "#f59e0b");
+
+        // CI Bar
+        svgHtml += `<line x1="${cx}" y1="${yLow}" x2="${cx}" y2="${yHigh}" stroke="#475569" stroke-width="1.5"/>`;
+        // Point
+        svgHtml += `<circle cx="${cx}" cy="${cy}" r="5" fill="${color}" stroke="#0f172a" stroke-width="1.5" style="cursor:pointer;" onclick="openDrilldown('${p.point_id}')"><title>${p.interval} ${p.window_hours}h ${p.estimator}: ${p.point_estimate_ratio}x [${p.ci_lower_95}, ${p.ci_upper_95}]</title></circle>`;
+      });
+
+      svg.innerHTML = svgHtml;
+    }
+
+    async function openDrilldown(pointId) {
+      const panel = document.getElementById("spec-drilldown-panel");
+      const content = document.getElementById("drill-content");
+      if (!panel || !content) return;
+      panel.style.display = "block";
+      content.innerHTML = `<div style="color: #38bdf8;">⏳ Belirtim detayı yükleniyor (${pointId})...</div>`;
+
+      try {
+        const res = await fetch(`/api/v1/product/specification-curves/drilldown?point_id=${pointId}`);
+        const data = await res.json();
+        if (data.status === "success" && data.drilldown) {
+          const d = data.drilldown;
+          document.getElementById("drill-title").textContent = `Belirtim Adli İncelemesi: ${d.interval} | ${d.window_hours}h | ${d.estimator}`;
+          content.innerHTML = `
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 10px;">
+              <div style="background: #091322; padding: 8px; border-radius: 4px;"><strong>Olay Sayısı:</strong> ${d.event_count}</div>
+              <div style="background: #091322; padding: 8px; border-radius: 4px;"><strong>Öncesi Vol:</strong> %${d.pre_event_distribution.mean_vol_pct}</div>
+              <div style="background: #091322; padding: 8px; border-radius: 4px;"><strong>Sonrası Vol:</strong> %${d.post_event_distribution.mean_vol_pct}</div>
+              <div style="background: #091322; padding: 8px; border-radius: 4px;"><strong>95% CI:</strong> [${d.confidence_interval_95[0]}x, ${d.confidence_interval_95[1]}x]</div>
+              <div style="background: #091322; padding: 8px; border-radius: 4px;"><strong>Cohen's d:</strong> ${d.effect_sizes.cohens_d} (${d.effect_sizes.cohens_d_magnitude})</div>
+              <div style="background: #091322; padding: 8px; border-radius: 4px;"><strong>FDR Düzeltilmiş p:</strong> ${d.p_values.fdr_adjusted}</div>
+            </div>
+            <div style="font-size: 11.5px; color: #94a3b8;"><strong>Metodolojik Sınırlılıklar:</strong> ${d.methodological_limitations_tr.join(" • ")}</div>
+          `;
+        }
+      } catch (e) {
+        content.innerHTML = `<div style="color: #ef4444;">Detay yüklenemedi: ${e.message}</div>`;
+      }
+    }
+
+    function closeDrilldown() {
+      const panel = document.getElementById("spec-drilldown-panel");
+      if (panel) panel.style.display = "none";
     }
 
     async function loadEvidenceIntelligence() {
       try {
-        const res = await fetch("/api/v1/product/evidence-intelligence");
+        const res = await fetch("/api/v1/product/evidence-profile");
         const data = await res.json();
-        if (data.status === "success" && data.intelligence) {
-          const intel = data.intelligence;
-          document.getElementById("ev-health-score").textContent = `${intel.evidence_health_score} / 100`;
-          document.getElementById("ev-health-desc").textContent = intel.executive_summary_tr;
-          document.getElementById("ev-repro-cnt").textContent = `${intel.reproduced_findings_count} / ${intel.total_findings_evaluated - intel.superseded_stale_count}`;
-          document.getElementById("ev-stale-cnt").textContent = intel.superseded_stale_count;
+        if (data.status === "success" && data.profile) {
+          const prof = data.profile;
+          document.getElementById("ev-class-title").textContent = prof.overall_classification.replace(/_/g, " ");
+          document.getElementById("ev-composite-idx").textContent = `${prof.composite_quality_index} / 10`;
+          document.getElementById("ev-health-desc").textContent = prof.consensus_summary_tr;
+
+          const grid = document.getElementById("ev-dimensions-grid");
+          if (grid && prof.dimensions) {
+            grid.innerHTML = prof.dimensions.map(d => `
+              <div style="background: rgba(15, 23, 42, 0.7); padding: 10px; border-radius: 6px; border: 1px solid #1e293b;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <span style="font-size: 11px; font-weight: 700; color: #fff;">${d.dimension_name_tr}</span>
+                  <span style="font-size: 12px; font-weight: 800; color: #38bdf8;">${d.score_out_of_10}/10</span>
+                </div>
+                <div style="font-size: 10.5px; color: #94a3b8; line-height: 1.4;">${d.findings_tr}</div>
+              </div>
+            `).join("");
+          }
         }
       } catch (e) {
-        console.error("Error loading evidence intelligence:", e);
+        console.error("Error loading evidence profile:", e);
+      }
+    }
+
+    async function openEventDrilldownModal() {
+      const modal = document.getElementById("preview-modal");
+      const title = document.getElementById("modal-title");
+      const body = document.getElementById("modal-content");
+      if (!modal || !body) return;
+
+      modal.classList.add("active");
+      title.textContent = "57 Doğrulanmış TÜFE (CPI) Olayının Adli İncelemesi";
+      body.innerHTML = `<div style="color: #38bdf8; padding: 20px; text-align: center;">⏳ 57 Makro Olay Kaydı Yükleniyor...</div>`;
+
+      try {
+        const res = await fetch("/api/v1/product/event-drilldown");
+        const data = await res.json();
+        const evs = data.events || [];
+        const rec = data.metrics_reconciled || {};
+
+        body.innerHTML = `
+          <div style="margin-bottom: 12px; padding: 10px; background: #091322; border-radius: 6px; border-left: 3px solid #38bdf8; font-size: 11.5px; color: #cbd5e1;">
+            <strong>Uzlaştırılmış Metrikler:</strong> Olay Bazlı Oran Ortalaması: <strong>${rec.mean_of_event_level_ratios}x</strong> | Medyan Oran: <strong>${rec.median_event_level_ratio}x</strong> | Kohort Oranı: <strong>${rec.ratio_of_cohort_mean_volatilities}x</strong>
+          </div>
+          <div style="max-height: 380px; overflow-y: auto;">
+            <table class="table" style="width: 100%; border-collapse: collapse; font-size: 11px;">
+              <thead>
+                <tr style="border-bottom: 2px solid #334155; color: #94a3b8; text-align: left;">
+                  <th style="padding: 6px;">Olay ID</th>
+                  <th style="padding: 6px;">Duyuru Zamanı (UTC)</th>
+                  <th style="padding: 6px;">T0 Fiyat</th>
+                  <th style="padding: 6px;">Öncesi Vol</th>
+                  <th style="padding: 6px;">Sonrası Vol</th>
+                  <th style="padding: 6px;">Oran</th>
+                  <th style="padding: 6px;">Statü</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${evs.slice(0, 58).map(e => `
+                  <tr style="border-bottom: 1px solid #1e293b;">
+                    <td style="padding: 6px; font-weight: 600;">${e.event_id}</td>
+                    <td style="padding: 6px;">${e.scheduled_release_utc.replace('T', ' ').substring(0, 16)}</td>
+                    <td style="padding: 6px;">$${Number(e.t0_close_price).toLocaleString()}</td>
+                    <td style="padding: 6px;">%${e.volatility_pre_pct}</td>
+                    <td style="padding: 6px;">%${e.volatility_post_pct}</td>
+                    <td style="padding: 6px; font-weight: 700; color: #38bdf8;">${e.event_volatility_ratio}x</td>
+                    <td style="padding: 6px;"><span class="badge ${e.is_quarantined ? 'badge-danger' : 'badge-success'}">${e.is_quarantined ? 'KARANTİNADA' : 'DOĞRULANDI'}</span></td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        `;
+      } catch (e) {
+        body.innerHTML = `<div style="color: #ef4444; padding: 20px;">Olay verisi yüklenemedi: ${e.message}</div>`;
       }
     }
 

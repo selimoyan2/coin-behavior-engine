@@ -284,11 +284,23 @@ class ProductDashboardApiService:
             elif sub_path in ("research-builder/preview", "builder/preview"):
                 return HTTPStatus.OK, cls.get_research_builder_preview_api(query_params)
             elif sub_path in ("distribution-lab", "distribution-lab/compare", "distribution/compare"):
-                return HTTPStatus.OK, cls.get_distribution_lab_api(query_params)
+                return cls.get_distribution_lab_api(query_params)
             elif sub_path in ("robustness-matrix", "robustness-explorer"):
                 return HTTPStatus.OK, cls.get_robustness_matrix_api(query_params)
+            elif sub_path in ("specification-curves", "specification-curve"):
+                return HTTPStatus.OK, cls.get_specification_curves_api(query_params)
+            elif sub_path in ("specification-curves/drilldown", "specification-curve/drilldown"):
+                return cls.get_specification_drilldown_api(query_params)
+            elif sub_path in ("specification-curves/compare", "specification-curve/compare"):
+                return HTTPStatus.OK, cls.get_specification_compare_api(query_params)
+            elif sub_path in ("event-drilldown", "events/drilldown"):
+                return HTTPStatus.OK, cls.get_event_drilldown_api(query_params)
             elif sub_path in ("evidence-intelligence", "evidence-health"):
                 return HTTPStatus.OK, cls.get_evidence_intelligence_api()
+            elif sub_path in ("evidence-profile", "evidence/profile"):
+                return HTTPStatus.OK, cls.get_evidence_profile_api()
+            elif sub_path in ("scientific-reconciliation", "reconciliation"):
+                return HTTPStatus.OK, cls.get_scientific_reconciliation_api()
             elif sub_path in ("experiment-package/export", "experiment-package"):
                 return HTTPStatus.OK, cls.get_experiment_package_export_api(query_params)
             elif sub_path in ("research-notebook/export", "notebook/export", "research-notebook"):
@@ -2982,6 +2994,21 @@ class ProductDashboardApiService:
         elif rpt_type in ("REPRODUCIBILITY", "REPRODUCIBILITY_REPORT", "REPRODUCIBILITY_AUDIT"):
             res = ResearchReportGenerator.generate_reproducibility_report(export_format=fmt)
 
+        elif rpt_type in ("SCIENTIFIC_RECONCILIATION", "RECONCILIATION", "RECONCILIATION_REPORT"):
+            res = ResearchReportGenerator.generate_scientific_reconciliation_report(export_format=fmt)
+
+        elif rpt_type in ("SPECIFICATION_CURVE", "SPECIFICATION_CURVES", "SPEC_CURVE"):
+            cohort = params.get("cohort", ["US_CPI"])[0]
+            sort_by = params.get("sort_by", ["effect_size"])[0]
+            res = ResearchReportGenerator.generate_specification_curve_report(cohort=cohort, sort_by=sort_by, export_format=fmt)
+
+        elif rpt_type in ("EVIDENCE_QUALITY_PROFILE", "EVIDENCE_PROFILE", "QUALITY_PROFILE"):
+            res = ResearchReportGenerator.generate_evidence_quality_profile_report(export_format=fmt)
+
+        elif rpt_type in ("EVENT_DRILLDOWN", "EVENT_LEVEL_DRILLDOWN", "DRILLDOWN"):
+            cohort = params.get("cohort", ["US_CPI"])[0]
+            res = ResearchReportGenerator.generate_event_drilldown_report(cohort=cohort, export_format=fmt)
+
         else:
             return HTTPStatus.BAD_REQUEST, {
                 "status": "error",
@@ -3192,28 +3219,73 @@ class ProductDashboardApiService:
             return {"status": "error", "message": str(ex)}
 
     @classmethod
-    def get_distribution_lab_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
-        """API handler for Historical Distribution Laboratory."""
+    def get_distribution_lab_api(cls, params: Dict[str, List[str]]) -> Tuple[int, Dict[str, Any]]:
+        """API handler for Historical Distribution Laboratory V2 with proper HTTP semantics."""
         from coin_behavior_engine.product.distribution_lab import HistoricalDistributionLabEngine
         mode = params.get("mode", ["YEAR_VS_YEAR"])[0]
         metric = params.get("metric", ["RETURNS_PCT"])[0]
         p_a = params.get("param_a", ["2022"])[0]
         p_b = params.get("param_b", ["2024"])[0]
-        interval = params.get("interval", ["1h"])[0]
-        return HistoricalDistributionLabEngine.compare_distributions(
-            mode=mode, metric=metric, param_a=p_a, param_b=p_b, interval=interval
+        bin_method = params.get("bin_method", ["fixed_30"])[0]
+        res = HistoricalDistributionLabEngine.compare_distributions(
+            mode=mode, metric=metric, param_a=p_a, param_b=p_b, bin_method=bin_method
         )
+        if res.get("status") == "DATA_RANGE_UNAVAILABLE":
+            return HTTPStatus(res.get("error_code", 404)), res
+        return HTTPStatus.OK, res
 
     @classmethod
     def get_robustness_matrix_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
         """API handler for Historical Robustness & Sensitivity Explorer."""
         from coin_behavior_engine.product.robustness_explorer import HistoricalRobustnessExplorer
         cohort = params.get("cohort", ["US_CPI"])[0]
-        res = HistoricalRobustnessExplorer.compute_robustness_matrix(cohort=cohort)
         return {
             "status": "success",
-            "matrix": HistoricalRobustnessExplorer.export_matrix_dict(res),
+            "matrix": HistoricalRobustnessExplorer.export_matrix_dict(cohort=cohort),
         }
+
+    @classmethod
+    def get_specification_curves_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for Interactive Specification Curve Studio."""
+        from coin_behavior_engine.product.interactive_specification_curves import InteractiveSpecificationCurveStudio
+        from dataclasses import asdict
+        cohort = params.get("cohort", ["US_CPI"])[0]
+        sort_by = params.get("sort_by", ["effect_size"])[0]
+        curve = InteractiveSpecificationCurveStudio.get_specification_curve(cohort=cohort, sort_by=sort_by)
+        return {"status": "success", "curve": asdict(curve)}
+
+    @classmethod
+    def get_specification_drilldown_api(cls, params: Dict[str, List[str]]) -> Tuple[int, Dict[str, Any]]:
+        """API handler for detailed specification point drilldown."""
+        from coin_behavior_engine.product.interactive_specification_curves import InteractiveSpecificationCurveStudio
+        from dataclasses import asdict
+        point_id = params.get("point_id", [""])[0]
+        cohort = params.get("cohort", ["US_CPI"])[0]
+        if not point_id:
+            return HTTPStatus.BAD_REQUEST, {"status": "error", "message": "point_id parameter required"}
+        drill = InteractiveSpecificationCurveStudio.get_specification_drilldown(cell_id=point_id, cohort=cohort)
+        if not drill:
+            return HTTPStatus.NOT_FOUND, {"status": "error", "message": f"Specification {point_id} not found"}
+        return HTTPStatus.OK, {"status": "success", "drilldown": asdict(drill)}
+
+    @classmethod
+    def get_specification_compare_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for side-by-side specification comparison."""
+        from coin_behavior_engine.product.interactive_specification_curves import InteractiveSpecificationCurveStudio
+        from dataclasses import asdict
+        ids_raw = params.get("ids", params.get("cell_ids", [""]))[0]
+        cell_ids = [x.strip() for x in ids_raw.split(",") if x.strip()]
+        cohort = params.get("cohort", ["US_CPI"])[0]
+        comp = InteractiveSpecificationCurveStudio.compare_specifications(cell_ids=cell_ids, cohort=cohort)
+        return {"status": "success", "comparison": asdict(comp)}
+
+    @classmethod
+    def get_event_drilldown_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for forensic event-level drilldown."""
+        from coin_behavior_engine.product.independent_reproduction import IndependentScientificReproductionEngine
+        cohort = params.get("cohort", ["US_CPI"])[0]
+        dd = IndependentScientificReproductionEngine.get_cpi_event_drilldown()
+        return dd
 
     @classmethod
     def get_evidence_intelligence_api(cls) -> Dict[str, Any]:
@@ -3223,6 +3295,27 @@ class ProductDashboardApiService:
             "status": "success",
             "intelligence": EvidenceIntelligenceEngine.export_report_dict(),
         }
+
+    @classmethod
+    def get_evidence_profile_api(cls) -> Dict[str, Any]:
+        """API handler for 12-Dimensional Evidence Quality Profile."""
+        from coin_behavior_engine.product.evidence_intelligence import EvidenceIntelligenceEngine
+        from dataclasses import asdict
+        rep = EvidenceIntelligenceEngine.generate_intelligence_report()
+        return {
+            "status": "success",
+            "overall_classification": rep.overall_evidence_classification,
+            "composite_quality_index": rep.evidence_quality_profile.composite_quality_index,
+            "profile": asdict(rep.evidence_quality_profile),
+            "limitations": [asdict(l) for l in rep.limitations],
+        }
+
+    @classmethod
+    def get_scientific_reconciliation_api(cls) -> Dict[str, Any]:
+        """API handler for comprehensive scientific comparison policy and reconciliation."""
+        from coin_behavior_engine.product.independent_reproduction import IndependentScientificReproductionEngine
+        audit = IndependentScientificReproductionEngine.run_full_reproduction_audit()
+        return audit
 
     @classmethod
     def get_experiment_package_export_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:

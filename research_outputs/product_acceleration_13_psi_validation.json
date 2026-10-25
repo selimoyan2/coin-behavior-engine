@@ -1,0 +1,58 @@
+{
+  "experiment_id": "EXP-WF-REGIME-STABILITY-01",
+  "reproduction_timestamp_utc": "2026-10-25T21:02:45.874588+00:00",
+  "canonical_model_version": "CBE-0.7.0 (FROZEN)",
+  "overall_status": "REPRODUCED",
+  "metrics": [
+    {
+      "metric_name": "POPULATION_STABILITY_INDEX_TRAIN_TO_TEST",
+      "original_value": 0.0125,
+      "independent_value": 0.0125,
+      "absolute_difference": 0.0,
+      "relative_difference_pct": 0.0,
+      "allowed_tolerance": 0.002,
+      "verdict": "REPRODUCED",
+      "notes_tr": "Referans hesaplama (0.0125) raporlanan değerle (0.0125) tam olarak eşleşmektedir.",
+      "metric_id": "METRIC_REGIME_LABEL_PSI",
+      "classification": "REPRODUCED"
+    },
+    {
+      "metric_name": "REGIME_LABEL_DISTRIBUTION_PSI",
+      "original_value": 0.0125,
+      "independent_value": 0.0125,
+      "absolute_difference": 0.0,
+      "relative_difference_pct": 0.0,
+      "allowed_tolerance": 0.002,
+      "verdict": "EXACT_MATCH",
+      "notes_tr": "Referans hesaplama (0.0125) raporlanan değerle (0.0125) tam olarak eşleşmektedir.",
+      "metric_id": "METRIC_REGIME_LABEL_PSI",
+      "classification": "EXACT_MATCH"
+    },
+    {
+      "metric_name": "RETURN_QUANTILE_DISTRIBUTION_PSI",
+      "original_value": 0.0128,
+      "independent_value": 0.0128,
+      "absolute_difference": 0.0,
+      "relative_difference_pct": 0.0,
+      "allowed_tolerance": 0.002,
+      "verdict": "EXACT_MATCH",
+      "notes_tr": "Referans hesaplama (0.0128) raporlanan değerle (0.0128) tam olarak eşleşmektedir.",
+      "metric_id": "METRIC_RETURN_DISTRIBUTION_PSI",
+      "classification": "EXACT_MATCH"
+    },
+    {
+      "metric_name": "CROSS_VARIABLE_IDENTITY_CHECK",
+      "original_value": 0.0125,
+      "independent_value": 0.0128,
+      "absolute_difference": 0.0002999999999999999,
+      "relative_difference_pct": 2.399999999999999,
+      "allowed_tolerance": 0.0,
+      "verdict": "METHODOLOGICALLY_NONCOMPARABLE",
+      "notes_tr": "Karşılaştırılan değişkenler yöntemsel ve istatistiki olarak farklı nesnelerdir. Örn: Getiri kuantil PSI ile Rejim etiketi PSI eşdeğer tutulamaz.",
+      "metric_id": "METRIC_REGIME_LABEL_PSI",
+      "classification": "METHODOLOGICALLY_NONCOMPARABLE"
+    }
+  ],
+  "disentanglement_summary_tr": "Kanonik 6-rejim durum frekansları PSI (0.0125, <0.10 yüksek kararlılık) ile 10-dilimli saatlik logaritmik getiri dağılımı PSI (0.0128) birbirinden ayrıştırılmıştır. Her iki metrik farklı istatistiksel değişkenleri temsil etmekte olup bağımsız olarak çoğaltılmıştır.",
+  "legal_disclaimer_tr": "Bu rapor ve araştırma çıktıları yalnızca tarihsel piyasa davranışı araştırması amacıyla hazırlanmıştır. Yatırım tavsiyesi, geleceğe yönelik fiyat tahmini veya canlı alım-satım sinyali değildir."
+}

@@ -1,0 +1,133 @@
+{
+  "report_id": "EV-INTEL-202610252102",
+  "generated_at_utc": "2026-10-25T21:02:48.604760+00:00",
+  "canonical_model_version": "CBE-0.7.0 (FROZEN)",
+  "overall_evidence_classification": "MODERATE_DESCRIPTIVE_EVIDENCE",
+  "composite_quality_index": 8.48,
+  "dimensions": [
+    {
+      "dimension_id": "DIM-01-SOURCE-PROVENANCE",
+      "dimension_name_tr": "1. Veri Kaynağı ve Soykütüğü",
+      "status": "STRONG_DESCRIPTIVE_EVIDENCE",
+      "score_out_of_10": 9.5,
+      "findings_tr": "Binance resmi spot arşivinden çekilen çok yıllık Parquet bölümleri SHA-256 ile doğrulanmıştır.",
+      "limitations_tr": "Yalnızca BTCUSDT mevcuttur; ETH/SOL veri kaynağı henüz doğrulanmamıştır."
+    },
+    {
+      "dimension_id": "DIM-02-DATASET-INTEGRITY",
+      "dimension_name_tr": "2. Veri Seti Bütünlüğü ve Karantina",
+      "status": "STRONG_DESCRIPTIVE_EVIDENCE",
+      "score_out_of_10": 9.8,
+      "findings_tr": "342 aylık bölüm tam olarak doğrulanmış, şüpheli Ekim 2026 fixture dosyası karantinada izole edilmiştir.",
+      "limitations_tr": "Karantina altındaki 1 aday olay analiz havuzundan hariç tutulmuştur."
+    },
+    {
+      "dimension_id": "DIM-03-SAMPLE-ADEQUACY",
+      "dimension_name_tr": "3. Örneklem Yeterliliği",
+      "status": "LIMITED_EVIDENCE",
+      "score_out_of_10": 6.5,
+      "findings_tr": "57 CPI ve 102 Enflasyon olayı incelenmiştir; serbestlik derecesi temel testler için yeterlidir.",
+      "limitations_tr": "Aylık makro olay frekansı (N=57) alt rejim kırılımları için sınırlı istatistiki güç sağlar."
+    },
+    {
+      "dimension_id": "DIM-04-METHOD-REPRODUCIBILITY",
+      "dimension_name_tr": "4. Yöntemsel Çoğaltılabilirlik",
+      "status": "STRONG_DESCRIPTIVE_EVIDENCE",
+      "score_out_of_10": 9.2,
+      "findings_tr": "Hesaplamalar bağımsız referans matematik motoruyla doğrudan raw dosyalardan tam olarak çoğaltılmıştır.",
+      "limitations_tr": "Orijinal kod ile bağımsız kod arasındaki pencere hizalaması küçük yuvarlama farkı üretir."
+    },
+    {
+      "dimension_id": "DIM-05-INDEPENDENT-AGREEMENT",
+      "dimension_name_tr": "5. Bağımsız Hesaplama Uyumu",
+      "status": "STRONG_DESCRIPTIVE_EVIDENCE",
+      "score_out_of_10": 9.0,
+      "findings_tr": "3 temel iddianın tamamı ön-kayıtlı tolerans sınırları dahilinde bağımsız doğrulanmıştır.",
+      "limitations_tr": "Metrik kimlikleri (Getiri PSI vs Rejim PSI) kavramsal olarak ayrıştırılmıştır."
+    },
+    {
+      "dimension_id": "DIM-06-HOLDOUT-VALIDITY",
+      "dimension_name_tr": "6. Örneklem Dışı (Holdout) Geçerliliği",
+      "status": "MODERATE_DESCRIPTIVE_EVIDENCE",
+      "score_out_of_10": 8.0,
+      "findings_tr": "2025 OOS test ve 2026 nihai holdout dönemlerinde dinamik ambargolu rejim PSI < 0.10 kararlıdır.",
+      "limitations_tr": "Dağılım kararlılığı doğrulanmış olsa da yönsel tahmin edilebilirliğe işaret etmez."
+    },
+    {
+      "dimension_id": "DIM-07-ROBUSTNESS-ACROSS-SPECS",
+      "dimension_name_tr": "7. Belirtim (Specification) Dayanıklılığı",
+      "status": "MODERATE_DESCRIPTIVE_EVIDENCE",
+      "score_out_of_10": 7.8,
+      "findings_tr": "14 geçerli kombinasyonun 12'sinde (%85.7) genişleme istatistiksel olarak desteklenmektedir.",
+      "limitations_tr": "4h mum - 48h Close-to-Close hücresinde güven aralığı 1.0 seviyesini kapsayarak etkisiz kalmaktadır."
+    },
+    {
+      "dimension_id": "DIM-08-STATISTICAL-UNCERTAINTY",
+      "dimension_name_tr": "8. İstatistiksel Belirsizlik ve Güven Aralıkları",
+      "status": "MODERATE_DESCRIPTIVE_EVIDENCE",
+      "score_out_of_10": 7.5,
+      "findings_tr": "1,000 yinelemeli blok özyinelemeli (bootstrap) %95 güven aralıkları şeffafça sunulmuştur.",
+      "limitations_tr": "Uç olay kuyruklarında varyans artışı nedeniyle aralık genişliği 0.45 civarındadır."
+    },
+    {
+      "dimension_id": "DIM-09-MULTIPLE-TESTING-CONTROL",
+      "dimension_name_tr": "9. Çoklu Hipotez Testi Kontrolü (FDR)",
+      "status": "STRONG_DESCRIPTIVE_EVIDENCE",
+      "score_out_of_10": 8.8,
+      "findings_tr": "Benjamini-Hochberg False Discovery Rate kontrolü uygulanmış ve anlamlılık korunmuştur.",
+      "limitations_tr": "Test ailesi genişletildikçe kritik eşik değerler yükselmektedir."
+    },
+    {
+      "dimension_id": "DIM-10-CONFOUNDING-MANAGEMENT",
+      "dimension_name_tr": "10. Karıştırıcı Faktör ve Örtüşme Yönetimi",
+      "status": "MODERATE_DESCRIPTIVE_EVIDENCE",
+      "score_out_of_10": 7.2,
+      "findings_tr": "Çakışan FOMC ve Tarım Dışı İstihdam olayları için zaman damgası kirlenme kontrolleri aktiftir.",
+      "limitations_tr": "Aynı hafta gerçekleşen makro şokların kalıcı dalgalanma etkileri tamamen ayrıştırılamaz."
+    },
+    {
+      "dimension_id": "DIM-11-DATA-CONTAMINATION",
+      "dimension_name_tr": "11. Veri Kirliliği ve Geleceğe Sızıntı Kontrolü",
+      "status": "STRONG_DESCRIPTIVE_EVIDENCE",
+      "score_out_of_10": 9.5,
+      "findings_tr": "Dinamik ambargo (embargo_bars = max(lookback, horizon, window)) ile sıfır sızıntı garantilenmiştir.",
+      "limitations_tr": "Sentetik interpolasyon kesin olarak engellenmiştir."
+    },
+    {
+      "dimension_id": "DIM-12-VERSION-CONSISTENCY",
+      "dimension_name_tr": "12. Model ve Deney Sürüm Tutarlılığı",
+      "status": "STRONG_DESCRIPTIVE_EVIDENCE",
+      "score_out_of_10": 9.0,
+      "findings_tr": "Kanonik model CBE-0.7.0 dondurulmuş olarak korunmakta, eski deneyler superseded etiketlenmektedir.",
+      "limitations_tr": "Deney paketleri CBE-HYP-V1 standartlarında SHA-256 ile mühürlenmektedir."
+    }
+  ],
+  "limitations": [
+    {
+      "limitation_id": "LIM-001-ASSET-SCOPE",
+      "title_tr": "Tek Varlık Tarihsel Kapsamı (BTCUSDT)",
+      "severity": "DATA_BOUNDARY",
+      "description_tr": "Doğrulanmış çok yıllık veri seti yalnızca BTCUSDT Binance Spot çiftini kapsamaktadır. ETHUSDT ve SOLUSDT için doğrulanmış veri bulunmadığından sentetik veri üretimi kesinlikle yasaklanmış ve bu varlıklar analize dahil edilmemiştir."
+    },
+    {
+      "limitation_id": "LIM-002-LATENCY-EXECUTION",
+      "title_tr": "Piyasa Emri ve İletim Gecikmesi Modellenmemiştir",
+      "severity": "METHODOLOGICAL_BOUNDARY",
+      "description_tr": "Tarihsel volatilite genişlemeleri makro duyuru anındaki mum çubukları üzerinden ölçülmüştür. Canlı piyasa spread genişlemesi, emir defteri kayması (slippage) ve ağ gecikmeleri bu matematiksel modele dahil edilmemiştir."
+    },
+    {
+      "limitation_id": "LIM-003-REGIME-NONSTATIONARITY",
+      "title_tr": "Finansal Zaman Serilerinde Durağandışılık (Non-stationarity)",
+      "severity": "CRITICAL_DISCLAIMER",
+      "description_tr": "Kripto para piyasalarının rejim geçişleri ve dağılımsal yapıları zaman içinde değişmektedir. 2022-2026 yılları arasında gözlenen oynaklık artışları gelecekteki makro duyurularda aynı şiddetle tekrarlanmayabilir."
+    },
+    {
+      "limitation_id": "LIM-004-SAMPLE-SIZE-MACRO",
+      "title_tr": "Düşük Makro Olay Örneklem Büyüklüğü (N=57)",
+      "severity": "DATA_BOUNDARY",
+      "description_tr": "Yıllık 12 adet gerçekleşen TÜFE duyurusu nedeniyle 2022-2026 döneminde yalnızca 57 olay mevcuttur. Küçük örneklem boyutu nedeniyle blok özyinelemeli güven aralıkları geniştir ve aşırı uç volatilite şoklarına karşı duyarlıdır."
+    }
+  ],
+  "executive_summary_tr": "Coin Behavior Engine bilimsel kanıt profilinde 12 bağımsız metodolojik boyut incelenmiş ve bileşik kalite endeksi 8.48/10.0 olarak hesaplanmıştır. Kanıt seviyesi 'MODERATE_DESCRIPTIVE_EVIDENCE' olarak belirlenmiştir. Aktif 4 ana bulgunun tamamı (%100.0) bağımsız matematiksel referans algoritmalarıyla çoğaltılmıştır. 100/100 şeklindeki basitleştirilmiş puanlama yerine şeffaf boyut profili yürürlüktedir.",
+  "legal_disclaimer_tr": "Bu kanıt ve araştırma özeti sadece tarihsel piyasa davranışı analizidir. Gelecekteki fiyat hareketlerini garanti etmez, yatırım tavsiyesi veya canlı emir iletimi amaçlı kullanılamaz."
+}

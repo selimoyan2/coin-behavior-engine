@@ -1,0 +1,10 @@
+{
+  "status": "VERIFIED_HARDENED",
+  "evaluated_at_utc": "2026-10-25T21:02:48.751950+00:00",
+  "input_validation": "STRICT_PATH_TRAVERSAL_AND_QUERY_BOUND_CHECKS",
+  "staging_isolation_enforced": true,
+  "production_app_identifier": "6t63aehpaw0cw1bbt4zcm09g",
+  "production_zero_touch_guarantee": true,
+  "legal_disclaimer_enforced": true,
+  "legal_disclaimer_tr": "Bu rapor ve araştırma çıktıları yalnızca tarihsel piyasa davranışı araştırması amacıyla hazırlanmıştır. Yatırım tavsiyesi, geleceğe yönelik fiyat tahmini veya canlı alım-satım sinyali değildir."
+}

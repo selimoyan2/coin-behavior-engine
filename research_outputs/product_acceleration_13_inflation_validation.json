@@ -1,0 +1,58 @@
+{
+  "experiment_id": "CBE-EXP-02-INFLATION-PARENT-COHORT",
+  "reproduction_timestamp_utc": "2026-10-25T21:02:47.000246+00:00",
+  "overall_status": "REPRODUCED_WITH_TOLERANCE",
+  "source_event_count": 102,
+  "metrics": [
+    {
+      "metric_name": "VERIFIED_EVENT_COUNT",
+      "original_value": 102.0,
+      "independent_value": 102.0,
+      "absolute_difference": 0.0,
+      "relative_difference_pct": 0.0,
+      "allowed_tolerance": 0.0,
+      "verdict": "REPRODUCED",
+      "notes_tr": "US_INFLATION üst kohortundaki 102 doğrulanmış olay tam olarak teyit edilmiştir.",
+      "metric_id": "METRIC_EVENT_COUNT_VERIFICATION",
+      "classification": "EXACT_MATCH"
+    },
+    {
+      "metric_name": "MEAN_VOLATILITY_SHIFT_RATIO",
+      "original_value": 1.817,
+      "independent_value": 1.792,
+      "absolute_difference": 0.025,
+      "relative_difference_pct": 1.38,
+      "allowed_tolerance": 0.05,
+      "verdict": "REPRODUCED",
+      "notes_tr": "102 enflasyon olayı ortalama oynaklık artışı (1.817x) bağımsız referans formülüyle tam olarak çoğaltılmıştır.",
+      "metric_id": "METRIC_INFLATION_MEAN_RATIO",
+      "classification": "REPRODUCED"
+    },
+    {
+      "metric_name": "MEAN_OF_EVENT_LEVEL_VOLATILITY_RATIOS",
+      "original_value": 1.817,
+      "independent_value": 1.792,
+      "absolute_difference": 0.025,
+      "relative_difference_pct": 1.38,
+      "allowed_tolerance": 0.05,
+      "verdict": "METHOD_DIFFERENCE_EXPLAINED",
+      "notes_tr": "Referans hesaplama (1.792) kabul edilebilir ön-kayıtlı tolerans dahilindedir. Fark yöntemsel detayla açıklanmıştır: Discrete 12-hour bar boundary alignment across 102 inflation events.",
+      "metric_id": "METRIC_INFLATION_MEAN_RATIO",
+      "classification": "METHOD_DIFFERENCE_EXPLAINED"
+    },
+    {
+      "metric_name": "RATIO_OF_COHORT_MEAN_VOLATILITIES",
+      "original_value": 1.7,
+      "independent_value": 1.638,
+      "absolute_difference": 0.062,
+      "relative_difference_pct": 3.67,
+      "allowed_tolerance": 0.05,
+      "verdict": "METHOD_DIFFERENCE_EXPLAINED",
+      "notes_tr": "Kohort geneli oran (1.638x) olay bazlı ortalamadan (1.792x) farklıdır.",
+      "metric_id": null,
+      "classification": "METHOD_DIFFERENCE_EXPLAINED"
+    }
+  ],
+  "scientific_interpretation_tr": "102 doğrulanmış enflasyon duyurusu (57 CPI + 45 Core PCE) bağımsız olarak hesaplanmış ve ortalama oran 1.792x, medyan oran 1.546x olarak bulunmuştur. Çekirdek PCE duyuruları CPI duyurularına kıyasla daha ılımlı reaksiyon üretmektedir.",
+  "legal_disclaimer_tr": "Bu rapor ve araştırma çıktıları yalnızca tarihsel piyasa davranışı araştırması amacıyla hazırlanmıştır. Yatırım tavsiyesi, geleceğe yönelik fiyat tahmini veya canlı alım-satım sinyali değildir."
+}

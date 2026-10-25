@@ -1,0 +1,30 @@
+{
+  "timestamp_utc": "2026-10-25T20:44:00Z",
+  "audit_version": "CBE-GIT-INTEGRITY-V1",
+  "repository": "selimoyan2/coin-behavior-engine",
+  "branch": "main",
+  "reconciled_git_history": {
+    "sprint_12_feature_commit_actual": "6775728f4ff020d230f7b9e2ded0d4e8b26b91f1",
+    "sprint_12_final_commit_actual": "364f5fbb6ff53e56d0464ffff1dd6c363a250f77",
+    "sprint_12_feature_commit_short": "6775728",
+    "sprint_12_final_commit_short": "364f5fb",
+    "discrepancy_root_cause": "The Sprint 12 delivery documentation contained a transcribing hallucination where the full 40-character SHA string was misformatted while the 7-character short SHA (6775728 and 364f5fb) matched git rev-parse. Reconciled and verified against local and remote git logs.",
+    "ancestry_verified": true,
+    "local_matches_remote_main": true
+  },
+  "canonical_model": {
+    "model_identifier": "CBE-0.7.0",
+    "status": "FROZEN_MAINTAINED",
+    "tampering_detected": false
+  },
+  "staging_service_identity": {
+    "service_name": "cbe-market-intelligence-staging",
+    "uuid": "dzzfws54by1whlbq6fk4ywut",
+    "binding": "127.0.0.1:18080->8000/tcp"
+  },
+  "production_service_identity": {
+    "application_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+    "public_domain": "coin.ozelweb.com.tr",
+    "policy": "STRICT_ZERO_TOUCH"
+  }
+}

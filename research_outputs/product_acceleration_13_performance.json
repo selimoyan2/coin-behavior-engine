@@ -1,0 +1,8 @@
+{
+  "status": "HEALTHY",
+  "benchmark_timestamp_utc": "2026-10-25T21:02:48.751950+00:00",
+  "cached_matrix_latency_ms": 0.1,
+  "distribution_lab_qq_kde_latency_ms": 42.5,
+  "specification_curve_sort_latency_ms": 1.2,
+  "all_benchmarks_under_p95_target": true
+}

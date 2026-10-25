@@ -576,6 +576,92 @@ class ResearchReportGenerator:
         }
 
     @classmethod
+    def generate_scientific_reconciliation_report(
+        cls, export_format: str = "json"
+    ) -> Dict[str, Any]:
+        """Generate Scientific Reconciliation Report (Report 17)."""
+        from coin_behavior_engine.product.independent_reproduction import IndependentScientificReproductionEngine
+        audit = IndependentScientificReproductionEngine.run_full_reproduction_audit()
+        rep_id = f"RPT-SCI-RECON-{uuid.uuid4().hex[:12]}"
+        return {
+            "report_id": rep_id,
+            "report_type": "SCIENTIFIC_RECONCILIATION",
+            "format": export_format,
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "title": "Bilimsel Yöntem ve Ön-Kayıtlı Tolerans Uzlaştırma Raporu",
+            "status": "success",
+            "model_version": "CBE-0.7.0 (FROZEN)",
+            "dataset_provenance": cls.get_dataset_provenance(),
+            "audit": audit,
+            "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
+        }
+
+    @classmethod
+    def generate_specification_curve_report(
+        cls, cohort: str = "US_CPI", sort_by: str = "effect_size", export_format: str = "json"
+    ) -> Dict[str, Any]:
+        """Generate Interactive Specification Curve Report (Report 18)."""
+        from coin_behavior_engine.product.interactive_specification_curves import InteractiveSpecificationCurveStudio
+        from dataclasses import asdict
+        curve = InteractiveSpecificationCurveStudio.get_specification_curve(cohort=cohort, sort_by=sort_by)
+        rep_id = f"RPT-SPEC-CURVE-{uuid.uuid4().hex[:12]}"
+        return {
+            "report_id": rep_id,
+            "report_type": "SPECIFICATION_CURVE",
+            "format": export_format,
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "title": f"Tarihsel Belirtim Eğrisi Raporu ({cohort})",
+            "status": "success",
+            "model_version": "CBE-0.7.0 (FROZEN)",
+            "dataset_provenance": cls.get_dataset_provenance(),
+            "curve": asdict(curve),
+            "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
+        }
+
+    @classmethod
+    def generate_evidence_quality_profile_report(
+        cls, export_format: str = "json"
+    ) -> Dict[str, Any]:
+        """Generate 12-Dimensional Evidence Quality Profile Report (Report 19)."""
+        from coin_behavior_engine.product.evidence_intelligence import EvidenceIntelligenceEngine
+        from dataclasses import asdict
+        intel = EvidenceIntelligenceEngine.generate_intelligence_report()
+        rep_id = f"RPT-EV-PROFILE-{uuid.uuid4().hex[:12]}"
+        return {
+            "report_id": rep_id,
+            "report_type": "EVIDENCE_QUALITY_PROFILE",
+            "format": export_format,
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "title": "12 Boyutlu Bilimsel Kanıt Kalite Profili Raporu",
+            "status": "success",
+            "model_version": "CBE-0.7.0 (FROZEN)",
+            "dataset_provenance": cls.get_dataset_provenance(),
+            "intelligence": asdict(intel),
+            "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
+        }
+
+    @classmethod
+    def generate_event_drilldown_report(
+        cls, cohort: str = "US_CPI", export_format: str = "json"
+    ) -> Dict[str, Any]:
+        """Generate Historical Macro Event Forensic Drilldown Report (Report 20)."""
+        from coin_behavior_engine.product.independent_reproduction import IndependentScientificReproductionEngine
+        drill = IndependentScientificReproductionEngine.get_cpi_event_drilldown()
+        rep_id = f"RPT-EVT-DRILL-{uuid.uuid4().hex[:12]}"
+        return {
+            "report_id": rep_id,
+            "report_type": "EVENT_DRILLDOWN",
+            "format": export_format,
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "title": f"Tarihsel Makro Olay Adli İnceleme Raporu ({cohort})",
+            "status": "success",
+            "model_version": "CBE-0.7.0 (FROZEN)",
+            "dataset_provenance": cls.get_dataset_provenance(),
+            "drilldown": drill,
+            "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
+        }
+
+    @classmethod
     def export_report_as_pdf(cls, report: Dict[str, Any]) -> bytes:
         """
         Generate a professional, reproducible vector PDF research report
@@ -1038,6 +1124,102 @@ class ResearchReportGenerator:
                 ax_chart.set_title(f"Spesifikasyon Eğrisi: Parametre Dayanıklılık Matrisi (Statü: {mat.get('robustness_status')})", fontsize=10, weight="bold")
                 ax_chart.legend(loc="upper right", fontsize=8)
                 ax_chart.grid(axis="y", linestyle="--", alpha=0.5)
+
+            elif rpt_type == "SCIENTIFIC_RECONCILIATION":
+                ax_tbl = fig.add_axes([0.08, 0.40, 0.84, 0.42])
+                ax_tbl.axis("off")
+                audit = report.get("audit", {})
+                reps = audit.get("reports", [])
+                tbl_data = [["Deney Kodu", "İddia Edilen", "Bağımsız Referans", "Fark", "Tolerans", "Sınıflandırma"]]
+                for r in reps:
+                    for m in r.get("metrics", [])[:2]:
+                        cls_name = m.get("classification") or m.get("verdict", "")
+                        tbl_data.append([
+                            r.get("experiment_id", "")[:18],
+                            str(m.get("original_value")),
+                            str(m.get("independent_value")),
+                            f"{m.get('absolute_difference'):+.4f}",
+                            f"±{m.get('allowed_tolerance')}",
+                            cls_name[:20],
+                        ])
+                tbl = ax_tbl.table(cellText=tbl_data, loc="center", cellLoc="center")
+                tbl.auto_set_font_size(False)
+                tbl.set_fontsize(7.5)
+                tbl.scale(1, 1.4)
+                for (row, col), cell in tbl.get_celld().items():
+                    if row == 0:
+                        cell.set_facecolor("#1e293b")
+                        cell.set_text_props(color="#ffffff", weight="bold")
+                    elif row % 2 == 1:
+                        cell.set_facecolor("#f8fafc")
+
+            elif rpt_type == "SPECIFICATION_CURVE":
+                ax_curve = fig.add_axes([0.08, 0.50, 0.84, 0.30])
+                ax_curve.set_facecolor("#f8fafc")
+                curve_data = report.get("curve", {})
+                pts = curve_data.get("points", [])
+                if pts:
+                    x_vals = list(range(len(pts)))
+                    y_vals = [p.get("point_estimate_ratio", 1.0) for p in pts]
+                    ci_l = [p.get("ci_lower_95", 1.0) for p in pts]
+                    ci_u = [p.get("ci_upper_95", 1.0) for p in pts]
+                    is_sigs = [p.get("is_statistically_significant", False) for p in pts]
+                    is_valids = [p.get("is_valid_specification", True) for p in pts]
+
+                    colors = []
+                    for s, v in zip(is_sigs, is_valids):
+                        if not v:
+                            colors.append("#94a3b8")
+                        elif s:
+                            colors.append("#10b981")
+                        else:
+                            colors.append("#f59e0b")
+
+                    # Null line y = 1.0
+                    ax_curve.axhline(1.0, color="#ef4444", linestyle="--", linewidth=1.2, label="Null (1.0x)")
+
+                    # Plot error bars and points
+                    for x, y, low, high, c in zip(x_vals, y_vals, ci_l, ci_u, colors):
+                        ax_curve.plot([x, x], [low, high], color="#cbd5e1", linewidth=1.5, zorder=2)
+                        ax_curve.scatter([x], [y], color=c, s=35, zorder=3)
+
+                    ax_curve.set_ylabel("Oynaklık Oranı", fontsize=8, family="DejaVu Sans")
+                    ax_curve.set_xlabel("Belirtim İndeksi (Sıralı)", fontsize=8, family="DejaVu Sans")
+                    ax_curve.set_title("16 Belirtim Eğrisi (Specification Curve) ve %95 Güven Aralıkları", fontsize=9, weight="bold", family="DejaVu Sans")
+                    ax_curve.grid(True, linestyle=":", alpha=0.5)
+
+            elif rpt_type == "EVIDENCE_QUALITY_PROFILE":
+                ax_dim = fig.add_axes([0.08, 0.40, 0.84, 0.42])
+                ax_dim.set_facecolor("#f8fafc")
+                intel = report.get("intelligence", {})
+                prof = intel.get("evidence_quality_profile", {})
+                dims = prof.get("dimensions", [])
+                if dims:
+                    y_pos = list(range(len(dims)))
+                    scores = [d.get("score_out_of_10", 0.0) for d in dims]
+                    names = [d.get("dimension_name_tr", "")[:28] for d in dims]
+                    ax_dim.barh(y_pos, scores, color="#38bdf8", height=0.6)
+                    ax_dim.set_yticks(y_pos)
+                    ax_dim.set_yticklabels(names, fontsize=7, family="DejaVu Sans")
+                    ax_dim.set_xlim(0, 10)
+                    ax_dim.set_xlabel("Kalite Puanı (10 Üzerinden)", fontsize=8, family="DejaVu Sans")
+                    ax_dim.invert_yaxis()
+                    ax_dim.grid(True, axis="x", linestyle=":", alpha=0.5)
+                    ax_dim.set_title(f"12 Boyutlu Kanıt Profili (Bileşik Endeks: {prof.get('composite_quality_index')}/10.0)", fontsize=9, weight="bold", family="DejaVu Sans")
+
+            elif rpt_type == "EVENT_DRILLDOWN":
+                ax_drill = fig.add_axes([0.08, 0.50, 0.84, 0.30])
+                ax_drill.set_facecolor("#f8fafc")
+                drill = report.get("drilldown", {})
+                ev_list = drill.get("events", [])
+                if ev_list:
+                    ratios = [e.get("event_volatility_ratio", 1.0) for e in ev_list if not e.get("is_quarantined")]
+                    ax_drill.axhline(1.0, color="#ef4444", linestyle="--", linewidth=1.2, label="Null (1.0x)")
+                    ax_drill.scatter(range(len(ratios)), ratios, color="#0284c7", s=30, alpha=0.8)
+                    ax_drill.set_ylabel("Olay Oranı (Sonrası / Öncesi)", fontsize=8, family="DejaVu Sans")
+                    ax_drill.set_xlabel("Olay Sırası (Kronolojik)", fontsize=8, family="DejaVu Sans")
+                    ax_drill.set_title(f"57 Doğrulanmış CPI Duyurusu Dağılımı (Medyan: {drill.get('metrics_reconciled', {}).get('median_event_level_ratio')}x)", fontsize=9, weight="bold", family="DejaVu Sans")
+                    ax_drill.grid(True, linestyle=":", alpha=0.5)
 
             elif rpt_type == "PORTABLE_EXPERIMENT":
                 ax_chart = fig.add_axes([0.08, 0.52, 0.84, 0.28])

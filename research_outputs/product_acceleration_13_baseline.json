@@ -1,0 +1,32 @@
+{
+  "timestamp_utc": "2026-10-25T20:44:30Z",
+  "sprint_identifier": "CBE_PRODUCT_ACCELERATION_13",
+  "base_commit": "364f5fbb6ff53e56d0464ffff1dd6c363a250f77",
+  "canonical_model_version": "CBE-0.7.0",
+  "model_status": "FROZEN",
+  "governance_invariants": {
+    "TECHNICAL_DECISION": "TECHNICAL_NO_GO",
+    "GOVERNANCE_AUTHORIZATION": "NOT_GRANTED",
+    "PRODUCTION_TOKEN": "NOT_ISSUED",
+    "REAL_NETWORK_MARKET_COLLECTION": "DISABLED",
+    "BTCUSDT_LIVE_OBSERVATION": "DISABLED",
+    "UNATTENDED_MONITORING": "DISABLED",
+    "LIVE_ORDER_EXECUTION": "PERMANENTLY_PROHIBITED",
+    "DIRECTIONAL_TRADING_ELIGIBILITY": "ZERO",
+    "NEWS_CONDITIONED_ECONOMIC_EDGE": "NOT_ESTABLISHED",
+    "HISTORICAL_RESEARCH_STATUS": "RESEARCH_CONTAMINATED",
+    "SYNTHETIC_PRICE_FABRICATION": "PROHIBITED"
+  },
+  "dataset_manifest": {
+    "version": "CBE-MANIFEST-V3",
+    "manifest_sha256": "686aeb854c80d346d292a7a7e22eccd44ab4b76e0014148006d98c0531f663d4",
+    "total_monthly_partitions": 342,
+    "quarantined_intake": "BTCUSDT-5m-2026-10-intake.parquet",
+    "quarantine_reason": "SYNTHETIC_FIXTURE_NO_AUTHENTIC_PROVENANCE"
+  },
+  "prior_sprint_test_baseline": {
+    "sprint_12_tests": 14,
+    "cumulative_tests_passing": 205,
+    "cumulative_tests_failing": 0
+  }
+}

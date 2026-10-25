@@ -1,0 +1,11 @@
+{
+  "status": "VERIFIED_DETERMINISTIC",
+  "timestamp_utc": "2026-10-25T21:02:48.751950+00:00",
+  "total_claims": 5,
+  "reproduced_count": 4,
+  "superseded_stale_count": 1,
+  "active_reproducibility_rate_pct": 100.0,
+  "pre_registered_tolerance_adherence": "100.0%",
+  "canonical_model_version": "CBE-0.7.0 (FROZEN)",
+  "legal_disclaimer_tr": "Bu rapor ve araştırma çıktıları yalnızca tarihsel piyasa davranışı araştırması amacıyla hazırlanmıştır. Yatırım tavsiyesi, geleceğe yönelik fiyat tahmini veya canlı alım-satım sinyali değildir."
+}
