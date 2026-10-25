@@ -1,0 +1,18 @@
+{
+  "timestamp_utc": "2026-10-25T19:05:00Z",
+  "sprint": "CBE_PRODUCT_ACCELERATION_10",
+  "memory_current_mb": 1.68,
+  "memory_peak_mb": 8.9,
+  "dataset_provenance_inventory_seconds": 0.0073,
+  "walk_forward_validation_seconds": 0.2885,
+  "walk_forward_pdf_export_seconds": 0.2444,
+  "pdf_size_bytes": 9,
+  "caching_strategy": "Dataset fingerprint invalidation (FPR-... based on partition mtime & byte size)",
+  "bounded_execution_invariants": {
+    "max_query_bars": 50000,
+    "max_bootstrap_iterations": 1000,
+    "vector_pdf_memory_cap_mb": 64,
+    "zero_leakage_embargo_bars": 24
+  },
+  "performance_status": "OPTIMAL"
+}

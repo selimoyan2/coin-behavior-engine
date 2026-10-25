@@ -1,0 +1,197 @@
+{
+  "timestamp": "2026-10-25T21:58:00Z",
+  "study": {
+    "status": "SUCCESS",
+    "category": "US_INFLATION",
+    "interval": "1h",
+    "window_hours": 12,
+    "total_verified_events": 102,
+    "analyzed_event_count": 102,
+    "excluded_event_count": 0,
+    "overlap_confounded_count": 0,
+    "quarantined_event_count": 1,
+    "sample_adequacy": {
+      "status": "SUFFICIENT_EVIDENCE",
+      "label_tr": "Yeterli İstatistiksel Kanıt",
+      "is_adequate": true,
+      "reason": "Örneklem büyüklüğü (102) istatistiksel güvenilirlik için yeterlidir."
+    },
+    "evidence_status": "STATISTICALLY_SUPPORTED_ASSOCIATION",
+    "scientific_interpretation": {
+      "tr": "Bu çalışma gözlemsel bir tarihsel araştırmadır. Olay öncesi ve sonrası rejim dağılımlarındaki farklılıklar nedensel bir kural veya kesin karlı alım-satım avantajı teşkil etmez.",
+      "en": "This study is observational historical research. Regime distribution shifts before and after macro events do not imply causal predictive edge or trading profitability."
+    },
+    "regime_distributions": {
+      "pre_event": {
+        "MOMENTUM_EXPANSION": 0.1658,
+        "COMPRESSION_ACCUMULATION": 0.2394,
+        "HIGH_VOLATILITY_EXPANSION": 0.156,
+        "SYSTEMIC_LIQUIDATION": 0.0,
+        "DRIFT_REVERSION": 0.1944,
+        "EQUILIBRIUM_CHOP": 0.2443
+      },
+      "post_event": {
+        "MOMENTUM_EXPANSION": 0.2737,
+        "COMPRESSION_ACCUMULATION": 0.0923,
+        "HIGH_VOLATILITY_EXPANSION": 0.2696,
+        "SYSTEMIC_LIQUIDATION": 0.0,
+        "DRIFT_REVERSION": 0.1863,
+        "EQUILIBRIUM_CHOP": 0.1781
+      },
+      "regime_distribution_shift_psi": 0.2777
+    },
+    "volatility_response": {
+      "mean_pre_vol_pct": 0.364,
+      "mean_post_vol_pct": 0.597,
+      "mean_vol_shift_ratio": 1.817,
+      "volatility_shift_ci": {
+        "point_estimate": 1.817,
+        "ci_lower": 1.6603,
+        "ci_upper": 1.9834,
+        "confidence_level": 0.95,
+        "block_size": 4,
+        "num_resamples": 1000,
+        "method": "moving_block_bootstrap",
+        "sample_size": 102,
+        "null_effect_included": false
+      },
+      "effect_size": {
+        "cohens_d": 0.7798,
+        "magnitude": "MEDIUM",
+        "absolute_diff": 0.2333,
+        "mean_pre": 0.3641,
+        "mean_post": 0.5974,
+        "pooled_std": 0.2992,
+        "status": "VALID"
+      }
+    },
+    "directional_descriptive": {
+      "mean_pre_return_pct": 0.249,
+      "mean_post_return_pct": -0.171,
+      "return_is_directional_edge": false
+    },
+    "analyzed_events_sample": [
+      {
+        "event_id": "EVT-BLS-CPI-20220112",
+        "event_name": "US Consumer Price Index (CPI YoY)",
+        "release_at_utc": "2022-01-12T13:30:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.296,
+        "post_vol_pct": 0.361,
+        "vol_shift_ratio": 1.22,
+        "immediate_return_pct": -0.163,
+        "mfe_pct": 0.91,
+        "mae_pct": -1.67
+      },
+      {
+        "event_id": "EVT-BEA-PCE-20220128",
+        "event_name": "US Core PCE Price Index (YoY)",
+        "release_at_utc": "2022-01-28T13:30:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.522,
+        "post_vol_pct": 0.65,
+        "vol_shift_ratio": 1.25,
+        "immediate_return_pct": -0.409,
+        "mfe_pct": 2.95,
+        "mae_pct": -1.89
+      },
+      {
+        "event_id": "EVT-BLS-CPI-20220210",
+        "event_name": "US Consumer Price Index (CPI YoY)",
+        "release_at_utc": "2022-02-10T13:30:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.228,
+        "post_vol_pct": 1.016,
+        "vol_shift_ratio": 4.47,
+        "immediate_return_pct": 1.634,
+        "mfe_pct": 4.99,
+        "mae_pct": -2.39
+      },
+      {
+        "event_id": "EVT-BEA-PCE-20220225",
+        "event_name": "US Core PCE Price Index (YoY)",
+        "release_at_utc": "2022-02-25T13:30:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.715,
+        "post_vol_pct": 0.843,
+        "vol_shift_ratio": 1.18,
+        "immediate_return_pct": -0.89,
+        "mfe_pct": 2.51,
+        "mae_pct": -2.09
+      },
+      {
+        "event_id": "EVT-BLS-CPI-20220310",
+        "event_name": "US Consumer Price Index (CPI YoY)",
+        "release_at_utc": "2022-03-10T13:30:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.954,
+        "post_vol_pct": 0.652,
+        "vol_shift_ratio": 0.68,
+        "immediate_return_pct": 1.077,
+        "mfe_pct": 3.67,
+        "mae_pct": -0.84
+      },
+      {
+        "event_id": "EVT-BEA-PCE-20220331",
+        "event_name": "US Core PCE Price Index (YoY)",
+        "release_at_utc": "2022-03-31T12:30:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.192,
+        "post_vol_pct": 0.596,
+        "vol_shift_ratio": 3.11,
+        "immediate_return_pct": -1.018,
+        "mfe_pct": 0.43,
+        "mae_pct": -4.63
+      },
+      {
+        "event_id": "EVT-BLS-CPI-20220412",
+        "event_name": "US Consumer Price Index (CPI YoY)",
+        "release_at_utc": "2022-04-12T12:30:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.356,
+        "post_vol_pct": 0.585,
+        "vol_shift_ratio": 1.64,
+        "immediate_return_pct": -0.535,
+        "mfe_pct": 0.2,
+        "mae_pct": -3.36
+      },
+      {
+        "event_id": "EVT-BEA-PCE-20220429",
+        "event_name": "US Core PCE Price Index (YoY)",
+        "release_at_utc": "2022-04-29T12:30:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.385,
+        "post_vol_pct": 0.569,
+        "vol_shift_ratio": 1.48,
+        "immediate_return_pct": 0.926,
+        "mfe_pct": 1.26,
+        "mae_pct": -1.91
+      },
+      {
+        "event_id": "EVT-BLS-CPI-20220511",
+        "event_name": "US Consumer Price Index (CPI YoY)",
+        "release_at_utc": "2022-05-11T12:30:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 1.549,
+        "post_vol_pct": 2.634,
+        "vol_shift_ratio": 1.7,
+        "immediate_return_pct": 6.487,
+        "mfe_pct": 9.11,
+        "mae_pct": -5.27
+      },
+      {
+        "event_id": "EVT-BEA-PCE-20220527",
+        "event_name": "US Core PCE Price Index (YoY)",
+        "release_at_utc": "2022-05-27T12:30:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.369,
+        "post_vol_pct": 0.828,
+        "vol_shift_ratio": 2.24,
+        "immediate_return_pct": 0.221,
+        "mfe_pct": 0.47,
+        "mae_pct": -3.34
+      }
+    ],
+    "excluded_events": []
+  }
+}

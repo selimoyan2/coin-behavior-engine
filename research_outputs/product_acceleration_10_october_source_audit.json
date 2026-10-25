@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-10-25T21:57:00Z",
+  "audit": {
+    "october_2026_source_status": "SOURCE_NOT_AVAILABLE",
+    "october_2026_imported": false,
+    "october_2026_record_count": 0,
+    "intake_candidate_present": true,
+    "candidate_file_name": "BTCUSDT-5m-2026-10-intake.parquet",
+    "candidate_verdict": "QUARANTINED",
+    "audit_reasons": [
+      "Yetkili yerel depoda ve çevrimdışı depolama dizinlerinde orijinal borsa soykütüğüne sahip Ekim 2026 verisi bulunmamaktadır.",
+      "Staging intake dizinindeki 'BTCUSDT-5m-2026-10-intake.parquet' dosyası analiz edilmiş ve yapay kurgu (sabit hacim 15.2) olduğu için karantinaya alınmıştır.",
+      "Yönetişim ilkeleri gereği sentetik veya tahmini fiyat üretimi kesinlikle yasaktır (SYNTHETIC_PRICE_FABRICATION: PROHIBITED)."
+    ],
+    "canonical_status": "OFFLINE_AUDITED_OCTOBER_BLOCKED",
+    "safe_to_publish": false
+  }
+}

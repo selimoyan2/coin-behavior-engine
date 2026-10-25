@@ -1,0 +1,63 @@
+{
+  "timestamp": "2026-10-25T21:57:00Z",
+  "provenance_lineage": {
+    "root_archive": {
+      "name": "Binance Spot Multi-Year Historical Archive",
+      "acquisition_method": "Authorized offline bulk dump",
+      "verified_range": "2022-01 to 2026-09",
+      "canonical_base": "BTCUSDT-5m"
+    },
+    "lineage_edges": [
+      {
+        "parent": "Original Archive",
+        "child": "BTCUSDT-5m",
+        "method": "Partition ingestion & verification",
+        "ratio": 1
+      },
+      {
+        "parent": "BTCUSDT-5m",
+        "child": "BTCUSDT-15m",
+        "method": "Vectorized 3:1 aggregation",
+        "ratio": 3
+      },
+      {
+        "parent": "BTCUSDT-5m",
+        "child": "BTCUSDT-1h",
+        "method": "Vectorized 12:1 aggregation",
+        "ratio": 12
+      },
+      {
+        "parent": "BTCUSDT-1h",
+        "child": "BTCUSDT-4h",
+        "method": "Vectorized 4:1 aggregation",
+        "ratio": 4
+      },
+      {
+        "parent": "BTCUSDT-1h",
+        "child": "BTCUSDT-1d",
+        "method": "Vectorized 24:1 aggregation",
+        "ratio": 24
+      }
+    ],
+    "quarantined_nodes": [
+      {
+        "node_id": "BTCUSDT-5m-2026-10-intake.parquet",
+        "status": "QUARANTINED",
+        "reason": "Synthetic fixture detection (constant volume 15.2, linear price step)",
+        "blocked_from_canonical": true
+      }
+    ],
+    "unavailable_assets": [
+      {
+        "asset": "ETHUSDT",
+        "status": "SOURCE_NOT_AVAILABLE",
+        "synthetic_fallback_prohibited": true
+      },
+      {
+        "asset": "SOLUSDT",
+        "status": "SOURCE_NOT_AVAILABLE",
+        "synthetic_fallback_prohibited": true
+      }
+    ]
+  }
+}

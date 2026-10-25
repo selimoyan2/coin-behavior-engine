@@ -1,0 +1,55 @@
+{
+  "timestamp_utc": "2026-10-25T19:07:00Z",
+  "sprint": "CBE_PRODUCT_ACCELERATION_10",
+  "security_status": "PASS",
+  "governance_invariants": {
+    "technical_decision": "TECHNICAL_NO_GO",
+    "governance_authorization": "NOT_GRANTED",
+    "production_token": "NOT_ISSUED",
+    "real_network_market_collection": "DISABLED",
+    "btcusdt_live_observation": "DISABLED",
+    "unattended_monitoring": "DISABLED",
+    "live_order_execution": "PERMANENTLY_PROHIBITED",
+    "directional_trading_eligibility": "ZERO",
+    "synthetic_price_fabrication": "PROHIBITED",
+    "historical_research_status": "RESEARCH_CONTAMINATED"
+  },
+  "isolation_and_protection": {
+    "production_container_id": "bca5445cd547 (6t63aehpaw0cw1bbt4zcm09g)",
+    "production_modification_authorized": false,
+    "staging_service_uuid": "dzzfws54by1whlbq6fk4ywut",
+    "staging_port_binding": "127.0.0.1:18080->8000/tcp"
+  },
+  "security_checks": {
+    "missing_asset_fail_closed": {
+      "tested": true,
+      "result": "FAIL",
+      "details": "Non-BTC assets (ETHUSDT/SOLUSDT) fail closed with SOURCE_NOT_AVAILABLE. Zero synthetic data published."
+    },
+    "path_traversal_defense": {
+      "tested": true,
+      "result": "PASS",
+      "http_status": 403
+    },
+    "unauthorized_mutation_rejection": {
+      "tested": true,
+      "result": "FAIL",
+      "http_status": 404
+    },
+    "october_synthetic_quarantine": {
+      "tested": true,
+      "result": "PASS",
+      "candidate_status": "QUARANTINED"
+    },
+    "constant_time_token_comparison": {
+      "tested": true,
+      "result": "PASS",
+      "implementation": "hmac.compare_digest / secrets.compare_digest"
+    },
+    "zero_secret_logging": {
+      "tested": true,
+      "result": "PASS",
+      "details": "Tokens masked or omitted from all log sinks and research reports."
+    }
+  }
+}

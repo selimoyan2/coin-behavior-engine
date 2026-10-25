@@ -249,6 +249,24 @@ class ProductDashboardApiService:
                 return cls.get_macro_event_comparison(query_params)
             elif sub_path in ("regime-drift-sensitivity", "drift/sensitivity"):
                 return HTTPStatus.OK, cls.get_regime_drift_sensitivity(query_params)
+            elif sub_path in ("dataset-provenance", "provenance"):
+                return HTTPStatus.OK, cls.get_dataset_provenance_api()
+            elif sub_path in ("dataset-lineage", "lineage"):
+                return HTTPStatus.OK, cls.get_dataset_lineage_api()
+            elif sub_path in ("october-source-audit", "october-audit"):
+                return HTTPStatus.OK, cls.get_october_source_audit_api()
+            elif sub_path in ("event-regime-study", "event-regime-cohorts", "event-regime"):
+                return HTTPStatus.OK, cls.get_event_regime_study_api(query_params)
+            elif sub_path in ("walk-forward-experiments", "walk-forward-results", "walk-forward"):
+                return HTTPStatus.OK, cls.get_walk_forward_results_api(query_params)
+            elif sub_path in ("research-findings", "findings"):
+                return HTTPStatus.OK, cls.get_research_findings_api()
+            elif sub_path in ("research-experiments", "experiments"):
+                return HTTPStatus.OK, cls.get_research_experiments_api()
+            elif sub_path in ("research-experiment-compare", "experiment-compare"):
+                return HTTPStatus.OK, cls.get_research_experiment_compare_api(query_params)
+            elif sub_path in ("research-evidence-summary", "evidence-summary"):
+                return HTTPStatus.OK, cls.get_research_findings_api()
             elif sub_path in ("research-report", "reports/generate"):
                 return cls.get_research_report(query_params)
             else:
@@ -2850,10 +2868,45 @@ class ProductDashboardApiService:
         elif rpt_type in ("DATA_QUALITY", "QUALITY", "AUDIT"):
             res = ResearchReportGenerator.generate_data_quality_report(export_format=fmt)
 
+        elif rpt_type in ("EVENT_CONDITIONED_REGIME_STUDY", "EVENT_REGIME", "EVENT_STUDY"):
+            category = params.get("category", ["US_INFLATION"])[0]
+            try:
+                window_hours = int(params.get("window_hours", ["12"])[0])
+            except Exception:
+                window_hours = 12
+            interval = params.get("interval", ["1h"])[0]
+            res = ResearchReportGenerator.generate_event_regime_study_report(
+                category=category,
+                window_hours=window_hours,
+                interval=interval,
+                export_format=fmt,
+            )
+
+        elif rpt_type in ("WALK_FORWARD_VALIDATION", "WALK_FORWARD"):
+            exp_id = params.get("experiment_id", ["EXP-WF-REGIME-STABILITY-01"])[0]
+            interval = params.get("interval", ["1h"])[0]
+            res = ResearchReportGenerator.generate_walk_forward_report(
+                experiment_id=exp_id,
+                interval=interval,
+                export_format=fmt,
+            )
+
+        elif rpt_type in ("SCIENTIFIC_EVIDENCE_SUMMARY", "EVIDENCE_SUMMARY", "FINDINGS_SUMMARY"):
+            res = ResearchReportGenerator.generate_evidence_summary_report(export_format=fmt)
+
+        elif rpt_type in ("EXPERIMENT_COMPARISON", "COMPARE_EXPERIMENTS"):
+            exp_a = params.get("exp_id_a", ["CBE-EXP-01-CPI-VOLATILITY-SHIFT"])[0]
+            exp_b = params.get("exp_id_b", ["CBE-EXP-02-FOMC-RATE-REACTIONS"])[0]
+            res = ResearchReportGenerator.generate_experiment_comparison_report(
+                exp_id_a=exp_a,
+                exp_id_b=exp_b,
+                export_format=fmt,
+            )
+
         else:
             return HTTPStatus.BAD_REQUEST, {
                 "status": "error",
-                "error": f"Bilinmeyen rapor türü: '{rpt_type}'. Desteklenenler: PERIOD_COMPARISON, MACRO_EVENT, REGIME_DRIFT, DATA_QUALITY",
+                "error": f"Bilinmeyen rapor türü: '{rpt_type}'. Desteklenenler: PERIOD_COMPARISON, MACRO_EVENT, REGIME_DRIFT, DATA_QUALITY, EVENT_CONDITIONED_REGIME_STUDY, WALK_FORWARD_VALIDATION, SCIENTIFIC_EVIDENCE_SUMMARY, EXPERIMENT_COMPARISON",
             }
 
         if fmt == "pdf":
@@ -2869,6 +2922,82 @@ class ProductDashboardApiService:
             }
 
         return HTTPStatus.OK, res
+
+    @classmethod
+    def get_dataset_provenance_api(cls) -> Dict[str, Any]:
+        """API handler for dataset provenance inventory."""
+        from coin_behavior_engine.product.dataset_provenance import DatasetProvenanceEngine
+        from dataclasses import asdict
+        inv = DatasetProvenanceEngine.get_dataset_inventory()
+        return {
+            "status": "success",
+            "provenance_records": {k: asdict(v) for k, v in inv.items()},
+            "manifest_hash": DatasetProvenanceEngine.get_manifest_hash(),
+        }
+
+    @classmethod
+    def get_dataset_lineage_api(cls) -> Dict[str, Any]:
+        """API handler for dataset lineage graph."""
+        from coin_behavior_engine.product.dataset_provenance import DatasetProvenanceEngine
+        return {
+            "status": "success",
+            "lineage": DatasetProvenanceEngine.get_lineage_graph(),
+        }
+
+    @classmethod
+    def get_october_source_audit_api(cls) -> Dict[str, Any]:
+        """API handler for October 2026 source readiness and integrity audit."""
+        from coin_behavior_engine.product.dataset_provenance import DatasetProvenanceEngine
+        return {
+            "status": "success",
+            "october_audit": DatasetProvenanceEngine.audit_october_source(),
+        }
+
+    @classmethod
+    def get_event_regime_study_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for event-conditioned regime dynamics."""
+        from coin_behavior_engine.product.event_regime_research import EventRegimeResearchEngine
+        cat = params.get("category", ["US_INFLATION"])[0]
+        try:
+            w_hours = int(params.get("window_hours", ["12"])[0])
+        except Exception:
+            w_hours = 12
+        interval = params.get("interval", ["1h"])[0]
+        return EventRegimeResearchEngine.run_cohort_study(category=cat, window_hours=w_hours, interval=interval)
+
+    @classmethod
+    def get_walk_forward_results_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for walk-forward validation experiments."""
+        from coin_behavior_engine.product.walk_forward_validation import WalkForwardValidationEngine
+        exp_id = params.get("experiment_id", ["EXP-WF-REGIME-STABILITY-01"])[0]
+        interval = params.get("interval", ["1h"])[0]
+        return WalkForwardValidationEngine.run_regime_stability_experiment(experiment_id=exp_id, interval=interval)
+
+    @classmethod
+    def get_research_findings_api(cls) -> Dict[str, Any]:
+        """API handler for structured findings intelligence cards."""
+        from coin_behavior_engine.product.experiment_registry import ExperimentRegistryEngine
+        return {
+            "status": "success",
+            "findings": ExperimentRegistryEngine.get_research_findings(),
+        }
+
+    @classmethod
+    def get_research_experiments_api(cls) -> Dict[str, Any]:
+        """API handler for registered experiments list."""
+        from coin_behavior_engine.product.experiment_registry import ExperimentRegistryEngine
+        return {
+            "status": "success",
+            "experiments": ExperimentRegistryEngine.get_registered_experiments(),
+        }
+
+    @classmethod
+    def get_research_experiment_compare_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for side-by-side experiment comparison."""
+        from coin_behavior_engine.product.experiment_registry import ExperimentRegistryEngine
+        exp_a = params.get("exp_id_a", ["CBE-EXP-01-CPI-VOLATILITY-SHIFT"])[0]
+        exp_b = params.get("exp_id_b", ["CBE-EXP-02-FOMC-RATE-REACTIONS"])[0]
+        return ExperimentRegistryEngine.compare_experiments(exp_a, exp_b)
 
 
 START_TIME = time.time()

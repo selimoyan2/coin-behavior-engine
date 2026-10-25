@@ -1,0 +1,197 @@
+{
+  "timestamp": "2026-10-25T21:58:00Z",
+  "study": {
+    "status": "SUCCESS",
+    "category": "US_MONETARY_POLICY",
+    "interval": "1h",
+    "window_hours": 12,
+    "total_verified_events": 38,
+    "analyzed_event_count": 38,
+    "excluded_event_count": 0,
+    "overlap_confounded_count": 0,
+    "quarantined_event_count": 1,
+    "sample_adequacy": {
+      "status": "SUFFICIENT_EVIDENCE",
+      "label_tr": "Yeterli İstatistiksel Kanıt",
+      "is_adequate": true,
+      "reason": "Örneklem büyüklüğü (38) istatistiksel güvenilirlik için yeterlidir."
+    },
+    "evidence_status": "STATISTICALLY_SUPPORTED_ASSOCIATION",
+    "scientific_interpretation": {
+      "tr": "Bu çalışma gözlemsel bir tarihsel araştırmadır. Olay öncesi ve sonrası rejim dağılımlarındaki farklılıklar nedensel bir kural veya kesin karlı alım-satım avantajı teşkil etmez.",
+      "en": "This study is observational historical research. Regime distribution shifts before and after macro events do not imply causal predictive edge or trading profitability."
+    },
+    "regime_distributions": {
+      "pre_event": {
+        "MOMENTUM_EXPANSION": 0.3092,
+        "COMPRESSION_ACCUMULATION": 0.0921,
+        "HIGH_VOLATILITY_EXPANSION": 0.1908,
+        "SYSTEMIC_LIQUIDATION": 0.0,
+        "DRIFT_REVERSION": 0.1754,
+        "EQUILIBRIUM_CHOP": 0.2325
+      },
+      "post_event": {
+        "MOMENTUM_EXPANSION": 0.2166,
+        "COMPRESSION_ACCUMULATION": 0.1619,
+        "HIGH_VOLATILITY_EXPANSION": 0.2976,
+        "SYSTEMIC_LIQUIDATION": 0.0,
+        "DRIFT_REVERSION": 0.1498,
+        "EQUILIBRIUM_CHOP": 0.1741
+      },
+      "regime_distribution_shift_psi": 0.1407
+    },
+    "volatility_response": {
+      "mean_pre_vol_pct": 0.502,
+      "mean_post_vol_pct": 0.575,
+      "mean_vol_shift_ratio": 1.51,
+      "volatility_shift_ci": {
+        "point_estimate": 1.5103,
+        "ci_lower": 1.0424,
+        "ci_upper": 2.1855,
+        "confidence_level": 0.95,
+        "block_size": 4,
+        "num_resamples": 1000,
+        "method": "moving_block_bootstrap",
+        "sample_size": 38,
+        "null_effect_included": false
+      },
+      "effect_size": {
+        "cohens_d": 0.207,
+        "magnitude": "SMALL",
+        "absolute_diff": 0.0736,
+        "mean_pre": 0.5019,
+        "mean_post": 0.5754,
+        "pooled_std": 0.3553,
+        "status": "VALID"
+      }
+    },
+    "directional_descriptive": {
+      "mean_pre_return_pct": 0.819,
+      "mean_post_return_pct": -0.123,
+      "return_is_directional_edge": false
+    },
+    "analyzed_events_sample": [
+      {
+        "event_id": "EVT-FED-FOMC-20220126",
+        "event_name": "Federal Reserve FOMC Policy Decision & Statement",
+        "release_at_utc": "2022-01-26T19:00:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.631,
+        "post_vol_pct": 1.161,
+        "vol_shift_ratio": 1.84,
+        "immediate_return_pct": -1.503,
+        "mfe_pct": 3.57,
+        "mae_pct": -5.52
+      },
+      {
+        "event_id": "EVT-FED-FOMC-20220316",
+        "event_name": "Federal Reserve FOMC Policy Decision & Statement",
+        "release_at_utc": "2022-03-16T18:00:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.708,
+        "post_vol_pct": 0.859,
+        "vol_shift_ratio": 1.21,
+        "immediate_return_pct": 2.378,
+        "mfe_pct": 3.88,
+        "mae_pct": -1.55
+      },
+      {
+        "event_id": "EVT-FED-FOMC-20220504",
+        "event_name": "Federal Reserve FOMC Policy Decision & Statement",
+        "release_at_utc": "2022-05-04T18:00:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.453,
+        "post_vol_pct": 0.252,
+        "vol_shift_ratio": 0.55,
+        "immediate_return_pct": 0.611,
+        "mfe_pct": 1.03,
+        "mae_pct": -2.59
+      },
+      {
+        "event_id": "EVT-FED-FOMC-20220615",
+        "event_name": "Federal Reserve FOMC Policy Decision & Statement",
+        "release_at_utc": "2022-06-15T18:00:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 2.025,
+        "post_vol_pct": 1.013,
+        "vol_shift_ratio": 0.5,
+        "immediate_return_pct": 0.427,
+        "mfe_pct": 6.76,
+        "mae_pct": -5.99
+      },
+      {
+        "event_id": "EVT-FED-FOMC-20220727",
+        "event_name": "Federal Reserve FOMC Policy Decision & Statement",
+        "release_at_utc": "2022-07-27T18:00:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.342,
+        "post_vol_pct": 0.83,
+        "vol_shift_ratio": 2.43,
+        "immediate_return_pct": 0.972,
+        "mfe_pct": 4.02,
+        "mae_pct": -4.16
+      },
+      {
+        "event_id": "EVT-FED-FOMC-20220921",
+        "event_name": "Federal Reserve FOMC Policy Decision & Statement",
+        "release_at_utc": "2022-09-21T18:00:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.95,
+        "post_vol_pct": 1.207,
+        "vol_shift_ratio": 1.27,
+        "immediate_return_pct": -3.234,
+        "mfe_pct": 1.63,
+        "mae_pct": -7.69
+      },
+      {
+        "event_id": "EVT-FED-FOMC-20221102",
+        "event_name": "Federal Reserve FOMC Policy Decision & Statement",
+        "release_at_utc": "2022-11-02T18:00:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.29,
+        "post_vol_pct": 0.38,
+        "vol_shift_ratio": 1.31,
+        "immediate_return_pct": -1.005,
+        "mfe_pct": 1.68,
+        "mae_pct": -2.0
+      },
+      {
+        "event_id": "EVT-FED-FOMC-20221214",
+        "event_name": "Federal Reserve FOMC Policy Decision & Statement",
+        "release_at_utc": "2022-12-14T19:00:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.33,
+        "post_vol_pct": 0.325,
+        "vol_shift_ratio": 0.98,
+        "immediate_return_pct": -0.151,
+        "mfe_pct": 3.13,
+        "mae_pct": -1.3
+      },
+      {
+        "event_id": "EVT-FED-FOMC-20230201",
+        "event_name": "Federal Reserve FOMC Policy Decision & Statement",
+        "release_at_utc": "2023-02-01T19:00:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.258,
+        "post_vol_pct": 0.68,
+        "vol_shift_ratio": 2.64,
+        "immediate_return_pct": 0.8,
+        "mfe_pct": 3.72,
+        "mae_pct": -2.68
+      },
+      {
+        "event_id": "EVT-FED-FOMC-20230322",
+        "event_name": "Federal Reserve FOMC Policy Decision & Statement",
+        "release_at_utc": "2023-03-22T18:00:00Z",
+        "is_confounded": false,
+        "pre_vol_pct": 0.366,
+        "post_vol_pct": 1.658,
+        "vol_shift_ratio": 4.53,
+        "immediate_return_pct": -4.855,
+        "mfe_pct": 3.0,
+        "mae_pct": -5.09
+      }
+    ],
+    "excluded_events": []
+  }
+}

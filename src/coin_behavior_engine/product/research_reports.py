@@ -233,6 +233,126 @@ class ResearchReportGenerator:
         return report_data
 
     @classmethod
+    def generate_event_regime_study_report(
+        cls,
+        category: str = "US_INFLATION",
+        window_hours: int = 12,
+        interval: str = "1h",
+        export_format: str = "json",
+    ) -> Dict[str, Any]:
+        """Generate research report for event-conditioned regime distribution shifts."""
+        from coin_behavior_engine.product.event_regime_research import EventRegimeResearchEngine
+        study = EventRegimeResearchEngine.run_cohort_study(category=category, window_hours=window_hours, interval=interval)
+        provenance = cls.get_dataset_provenance()
+        report_id = f"RPT-EVT-REG-{hashlib.sha256(f'{category}_{window_hours}_{datetime.now(timezone.utc).isoformat()}'.encode()).hexdigest()[:12]}"
+
+        report_data = {
+            "report_id": report_id,
+            "report_type": "EVENT_CONDITIONED_REGIME_STUDY",
+            "title": f"Makro Olay Koşullu Rejim Dağılımı ve Volatilite Araştırma Raporu ({category})",
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "model_version": "CBE-0.7.0",
+            "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
+            "dataset_provenance": provenance,
+            "parameters": {
+                "category": category,
+                "window_hours": window_hours,
+                "interval": interval,
+            },
+            "results": study,
+        }
+
+        if export_format.lower() == "csv":
+            report_data["csv_content"] = cls._convert_metrics_to_csv(report_data)
+        return report_data
+
+    @classmethod
+    def generate_walk_forward_report(
+        cls,
+        experiment_id: str = "EXP-WF-REGIME-STABILITY-01",
+        interval: str = "1h",
+        export_format: str = "json",
+    ) -> Dict[str, Any]:
+        """Generate walk-forward validation research report."""
+        from coin_behavior_engine.product.walk_forward_validation import WalkForwardValidationEngine
+        res = WalkForwardValidationEngine.run_regime_stability_experiment(experiment_id=experiment_id, interval=interval)
+        provenance = cls.get_dataset_provenance()
+        report_id = f"RPT-WF-{hashlib.sha256(f'{experiment_id}_{datetime.now(timezone.utc).isoformat()}'.encode()).hexdigest()[:12]}"
+
+        report_data = {
+            "report_id": report_id,
+            "report_type": "WALK_FORWARD_VALIDATION",
+            "title": f"İleriye Yönelik Doğrulama ve Rejim Kararlılığı Raporu ({experiment_id})",
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "model_version": "CBE-0.7.0",
+            "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
+            "dataset_provenance": provenance,
+            "parameters": {
+                "experiment_id": experiment_id,
+                "interval": interval,
+            },
+            "results": res,
+        }
+
+        if export_format.lower() == "csv":
+            report_data["csv_content"] = cls._convert_metrics_to_csv(report_data)
+        return report_data
+
+    @classmethod
+    def generate_evidence_summary_report(cls, export_format: str = "json") -> Dict[str, Any]:
+        """Generate research findings and scientific evidence summary report."""
+        from coin_behavior_engine.product.experiment_registry import ExperimentRegistryEngine
+        findings = ExperimentRegistryEngine.get_research_findings()
+        experiments = ExperimentRegistryEngine.get_registered_experiments()
+        provenance = cls.get_dataset_provenance()
+        report_id = f"RPT-EVID-{hashlib.sha256(f'evidence_summary_{datetime.now(timezone.utc).isoformat()}'.encode()).hexdigest()[:12]}"
+
+        report_data = {
+            "report_id": report_id,
+            "report_type": "SCIENTIFIC_EVIDENCE_SUMMARY",
+            "title": "Bilimsel Araştırma Bulguları ve İstatistiksel Kanıt Özeti",
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "model_version": "CBE-0.7.0",
+            "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
+            "dataset_provenance": provenance,
+            "findings_count": len(findings),
+            "findings": findings,
+            "experiments": experiments,
+        }
+
+        if export_format.lower() == "csv":
+            report_data["csv_content"] = cls._convert_metrics_to_csv(report_data)
+        return report_data
+
+    @classmethod
+    def generate_experiment_comparison_report(
+        cls,
+        exp_id_a: str,
+        exp_id_b: str,
+        export_format: str = "json",
+    ) -> Dict[str, Any]:
+        """Generate research report comparing two experiment specifications and outcomes."""
+        from coin_behavior_engine.product.experiment_registry import ExperimentRegistryEngine
+        comp = ExperimentRegistryEngine.compare_experiments(exp_id_a, exp_id_b)
+        provenance = cls.get_dataset_provenance()
+        report_id = f"RPT-EXP-COMP-{hashlib.sha256(f'{exp_id_a}_{exp_id_b}_{datetime.now(timezone.utc).isoformat()}'.encode()).hexdigest()[:12]}"
+
+        report_data = {
+            "report_id": report_id,
+            "report_type": "EXPERIMENT_COMPARISON",
+            "title": f"Tarihsel Araştırma Deney Karşılaştırma Raporu ({exp_id_a} vs {exp_id_b})",
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "model_version": "CBE-0.7.0",
+            "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
+            "dataset_provenance": provenance,
+            "comparison": comp.get("comparison", {}),
+        }
+
+        if export_format.lower() == "csv":
+            report_data["csv_content"] = cls._convert_metrics_to_csv(report_data)
+        return report_data
+
+    @classmethod
     def export_report_as_pdf(cls, report: Dict[str, Any]) -> bytes:
         """
         Generate a professional, reproducible vector PDF research report
@@ -411,6 +531,154 @@ class ResearchReportGenerator:
                 tbl.auto_set_font_size(False)
                 tbl.set_fontsize(8)
                 tbl.scale(1, 1.4)
+                for (row, col), cell in tbl.get_celld().items():
+                    if row == 0:
+                        cell.set_facecolor("#1e293b")
+                        cell.set_text_props(color="#ffffff", weight="bold")
+                    elif row % 2 == 1:
+                        cell.set_facecolor("#f1f5f9")
+
+            elif rpt_type == "EVENT_CONDITIONED_REGIME_STUDY":
+                res = report.get("results", {})
+                reg_dists = res.get("regime_distributions", {})
+                pre_d = reg_dists.get("pre_event", {})
+                post_d = reg_dists.get("post_event", {})
+                all_regs = sorted(list(set(pre_d.keys()) | set(post_d.keys())))
+
+                ax_chart = fig.add_axes([0.08, 0.52, 0.84, 0.28])
+                ax_chart.set_facecolor("#f8fafc")
+                pre_vals = [pre_d.get(r, 0) * 100 for r in all_regs]
+                post_vals = [post_d.get(r, 0) * 100 for r in all_regs]
+                x = list(range(len(all_regs)))
+                width = 0.35
+                ax_chart.bar([p - width/2 for p in x], pre_vals, width, label="Olay Öncesi (Pre-T0)", color="#3b82f6")
+                ax_chart.bar([p + width/2 for p in x], post_vals, width, label="Olay Sonrası (Post-T0)", color="#10b981")
+                ax_chart.set_xticks(x)
+                ax_chart.set_xticklabels([r[:12] for r in all_regs], fontsize=7, rotation=15, family="DejaVu Sans")
+                ax_chart.set_ylabel("Frekans (%)", fontsize=8, family="DejaVu Sans")
+                ax_chart.legend(loc="upper right", fontsize=8)
+                ax_chart.grid(True, linestyle="--", alpha=0.3, color="#94a3b8")
+                ax_chart.set_title(f"Olay Koşullu Rejim Dağılımı ({report.get('parameters', {}).get('category', 'US_INFLATION')} | PSI: {reg_dists.get('regime_distribution_shift_psi', 0):.4f})", fontsize=10, weight="bold", color="#1e293b", family="DejaVu Sans")
+
+                vol_resp = res.get("volatility_response", {})
+                eff = vol_resp.get("effect_size", {})
+                boot_ci = vol_resp.get("volatility_shift_ci", {})
+                table_data = [
+                    ["Olay Koşullu Araştırma Göstergesi", "Değer", "Açıklama"],
+                    ["Toplam Doğrulanmış Olay Sayısı", str(res.get("total_verified_events", 0)), "İncelenen bağımsız makro olaylar"],
+                    ["Örneklem Yeterlilik Kararı", str(res.get("sample_adequacy", {}).get("status", "BELİRSİZ")), str(res.get("sample_adequacy", {}).get("reason", ""))[:45]],
+                    ["Ortalama Volatilite Değişim Çarpanı", f"{vol_resp.get('mean_vol_shift_ratio', 1.0):.2f}x", "Olay sonrası gerçekleşen volatilite oranı"],
+                    ["Volatilite Değişimi %95 Güven Aralığı", f"[{boot_ci.get('ci_lower', '-')}, {boot_ci.get('ci_upper', '-')}]", "Moving Block Bootstrap (Serisel Bağımlılık)"],
+                    ["Standartlaştırılmış Etki Büyüklüğü (Cohen's d)", f"{eff.get('cohens_d', 0):.3f} ({eff.get('magnitude', 'N/A')})", "İstatiksel anlamlılık büyüklüğü"],
+                    ["Bilimsel Kanıt Seviyesi", str(res.get("evidence_status", "DESCRIPTIVE_ONLY")), "Yatırım sinyali veya alım-satım avantajı değildir"],
+                ]
+                ax_tbl = fig.add_axes([0.08, 0.18, 0.84, 0.29])
+                ax_tbl.axis("off")
+                tbl = ax_tbl.table(cellText=table_data, loc="center", cellLoc="center")
+                tbl.auto_set_font_size(False)
+                tbl.set_fontsize(8)
+                tbl.scale(1, 1.35)
+                for (row, col), cell in tbl.get_celld().items():
+                    if row == 0:
+                        cell.set_facecolor("#1e293b")
+                        cell.set_text_props(color="#ffffff", weight="bold")
+                    elif row % 2 == 1:
+                        cell.set_facecolor("#f1f5f9")
+
+            elif rpt_type == "WALK_FORWARD_VALIDATION":
+                res = report.get("results", {})
+                dists = res.get("distributions", {})
+                train_d = dists.get("in_sample_train", {})
+                test_d = dists.get("out_of_sample_test", {})
+                hold_d = dists.get("final_holdout_2026", {})
+                all_regs = sorted(list(set(train_d.keys()) | set(test_d.keys()) | set(hold_d.keys())))
+
+                ax_chart = fig.add_axes([0.08, 0.52, 0.84, 0.28])
+                ax_chart.set_facecolor("#f8fafc")
+                tr_vals = [train_d.get(r, 0) * 100 for r in all_regs]
+                te_vals = [test_d.get(r, 0) * 100 for r in all_regs]
+                ho_vals = [hold_d.get(r, 0) * 100 for r in all_regs]
+                x = list(range(len(all_regs)))
+                width = 0.25
+                ax_chart.bar([p - width for p in x], tr_vals, width, label="Eğitim 2022-2023 (IS)", color="#3b82f6")
+                ax_chart.bar(x, te_vals, width, label="Test 2025 (OOS)", color="#8b5cf6")
+                ax_chart.bar([p + width for p in x], ho_vals, width, label="Holdout 2026 (Son)", color="#10b981")
+                ax_chart.set_xticks(x)
+                ax_chart.set_xticklabels([r[:12] for r in all_regs], fontsize=7, rotation=15, family="DejaVu Sans")
+                ax_chart.set_ylabel("Dağılım Oranı (%)", fontsize=8, family="DejaVu Sans")
+                ax_chart.legend(loc="upper right", fontsize=8)
+                ax_chart.grid(True, linestyle="--", alpha=0.3, color="#94a3b8")
+                ax_chart.set_title("Kronolojik İleriye Yönelik Rejim Kararlılığı (Train vs Test vs Holdout)", fontsize=10, weight="bold", color="#1e293b", family="DejaVu Sans")
+
+                stab = res.get("stability_telemetry", {})
+                sc = res.get("sample_counts", {})
+                table_data = [
+                    ["İleriye Yönelik Doğrulama Metriği", "Değer", "Açıklama"],
+                    ["Eğitim (In-Sample) Bar Adedi", str(sc.get("in_sample_train_bars", 0)), "2022-01 → 2023-12 dönemi"],
+                    ["Örneklem Dışı Test (OOS) Bar Adedi", str(sc.get("out_of_sample_test_bars", 0)), "2025-01 → 2025-12 dönemi"],
+                    ["Nihai Holdout Bar Adedi", str(sc.get("holdout_2026_bars", 0)), "2026-01 → 2026-09 dondurulmuş dönem"],
+                    ["Eğitim → Test PSI Sapması", f"{stab.get('psi_train_to_test', 0):.4f}", "Eşik < 0.10: Yüksek Kararlılık"],
+                    ["Eğitim → Holdout PSI Sapması", f"{stab.get('psi_train_to_holdout', 0):.4f}", "Eşik < 0.25: Ilımlı / Kabul Edilebilir"],
+                    ["Örneklem Dışı Replikasyon Kararı", str(stab.get("replication_status", "UNKNOWN")), str(stab.get("stability_label_tr", ""))],
+                    ["Kanonik Model Dondurma Güvencesi", "CBE-0.7.0 (FROZEN)", "Model parametreleri kesinlikle güncellenmemiştir"],
+                ]
+                ax_tbl = fig.add_axes([0.08, 0.18, 0.84, 0.29])
+                ax_tbl.axis("off")
+                tbl = ax_tbl.table(cellText=table_data, loc="center", cellLoc="center")
+                tbl.auto_set_font_size(False)
+                tbl.set_fontsize(8)
+                tbl.scale(1, 1.35)
+                for (row, col), cell in tbl.get_celld().items():
+                    if row == 0:
+                        cell.set_facecolor("#1e293b")
+                        cell.set_text_props(color="#ffffff", weight="bold")
+                    elif row % 2 == 1:
+                        cell.set_facecolor("#f1f5f9")
+
+            elif rpt_type == "SCIENTIFIC_EVIDENCE_SUMMARY":
+                findings = report.get("findings", [])
+                table_data = [["Bulgu ID", "Araştırma Sorusu", "Örneklem", "Etki / Karar", "Kanıt Seviyesi"]]
+                for f in findings[:6]:
+                    table_data.append([
+                        f.get("finding_id", "")[:14],
+                        f.get("research_question", "")[:35] + "...",
+                        str(f.get("sample_count", 0)),
+                        f.get("effect_size_magnitude", "")[:12],
+                        f.get("evidence_status", "")[:24],
+                    ])
+
+                ax_tbl = fig.add_axes([0.08, 0.28, 0.84, 0.48])
+                ax_tbl.axis("off")
+                tbl = ax_tbl.table(cellText=table_data, loc="center", cellLoc="center")
+                tbl.auto_set_font_size(False)
+                tbl.set_fontsize(8)
+                tbl.scale(1, 1.5)
+                for (row, col), cell in tbl.get_celld().items():
+                    if row == 0:
+                        cell.set_facecolor("#1e293b")
+                        cell.set_text_props(color="#ffffff", weight="bold")
+                    elif row % 2 == 1:
+                        cell.set_facecolor("#f1f5f9")
+
+            elif rpt_type == "EXPERIMENT_COMPARISON":
+                comp = report.get("comparison", {})
+                exp_a = comp.get("experiment_a", {})
+                exp_b = comp.get("experiment_b", {})
+                table_data = [
+                    ["Karşılaştırma Boyutu", f"Deney A: {exp_a.get('experiment_id', '')[:20]}", f"Deney B: {exp_b.get('experiment_id', '')[:20]}"],
+                    ["Deney Başlığı", str(exp_a.get("title", ""))[:30] + "...", str(exp_b.get("title", ""))[:30] + "..."],
+                    ["Deney Türü", str(exp_a.get("experiment_type", "")), str(exp_b.get("experiment_type", ""))],
+                    ["Örneklem Sayısı", str(exp_a.get("sample_count", 0)), str(exp_b.get("sample_count", 0))],
+                    ["Kanıt Seviyesi", str(exp_a.get("evidence_status", "")), str(exp_b.get("evidence_status", ""))],
+                    ["Veri Manifest Uyumu", "EŞLEŞİYOR" if comp.get("manifest_match") else "FARKLI MANİFEST", "Ortak veri bütünlüğü"],
+                    ["Örneklem Farkı (Delta)", f"{comp.get('sample_size_delta', 0):+d} adet", "Örneklem boyutu farkı"],
+                ]
+                ax_tbl = fig.add_axes([0.08, 0.28, 0.84, 0.48])
+                ax_tbl.axis("off")
+                tbl = ax_tbl.table(cellText=table_data, loc="center", cellLoc="center")
+                tbl.auto_set_font_size(False)
+                tbl.set_fontsize(8)
+                tbl.scale(1, 1.5)
                 for (row, col), cell in tbl.get_celld().items():
                     if row == 0:
                         cell.set_facecolor("#1e293b")

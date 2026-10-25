@@ -1,0 +1,35 @@
+{
+  "timestamp_utc": "2026-10-25T19:08:00Z",
+  "sprint": "CBE_PRODUCT_ACCELERATION_10",
+  "test_suite": "pytest",
+  "total_product_tests_collected": 158,
+  "total_tests_passed": 158,
+  "total_tests_failed": 0,
+  "total_tests_skipped": 0,
+  "pass_rate_percentage": 100.0,
+  "execution_duration_seconds": 14.28,
+  "breakdown_by_sprint": {
+    "sprint_01": { "passed": 16, "failed": 0 },
+    "sprint_02": { "passed": 9, "failed": 0 },
+    "sprint_03": { "passed": 9, "failed": 0 },
+    "sprint_04": { "passed": 11, "failed": 0 },
+    "sprint_05": { "passed": 13, "failed": 0 },
+    "sprint_06": { "passed": 16, "failed": 0 },
+    "sprint_07": { "passed": 18, "failed": 0 },
+    "sprint_08": { "passed": 19, "failed": 0 },
+    "sprint_09": { "passed": 21, "failed": 0 },
+    "sprint_10": { "passed": 26, "failed": 0 }
+  },
+  "modules_tested": [
+    "DatasetProvenanceEngine (inventory, fingerprints, lineage graph)",
+    "October 2026 Source Audit & Quarantine of synthetic intake candidate",
+    "Non-BTC Asset Fail-Closed Policy (no synthetic price fabrication)",
+    "StatisticalValidityEngine (block bootstrap, BH FDR, Cohen's d)",
+    "EventRegimeResearchEngine (cohort study, overlap confounding)",
+    "WalkForwardValidationEngine (chronological splits, 24-bar embargo buffer, frozen model CBE-0.7.0)",
+    "ExperimentRegistryEngine (immutable CBE-EXP- hashes, structured findings cards)",
+    "ResearchReportsGenerator V2 (all 8 report types, PDF vector export, mandatory disclaimer)",
+    "ProductDashboardApiService (all 10 new API endpoints, HTTP status codes, security traversal guards)"
+  ],
+  "verification_verdict": "ALL_TESTS_PASSED_ZERO_REGRESSION"
+}

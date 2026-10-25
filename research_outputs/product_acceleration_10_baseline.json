@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-10-25T21:56:30Z",
+  "sprint": "CBE_PRODUCT_ACCELERATION_10",
+  "local_head_commit": "73a4b726487e4125b3fa30bc12891398bb36b9e3",
+  "remote_main_commit": "73a4b726487e4125b3fa30bc12891398bb36b9e3",
+  "sprint09_feature_commit": "1fc10b1a0d8ec889b7b9da54a6dbcd00e45cf56c",
+  "staging_runtime_commit": "1fc10b1a0d8ec889b7b9da54a6dbcd00e45cf56c",
+  "uncommitted_changes": false,
+  "staging_service": {
+    "uuid": "dzzfws54by1whlbq6fk4ywut",
+    "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+    "container_id": "f8aba3c5b457",
+    "binding": "127.0.0.1:18080->8000/tcp",
+    "health": "healthy",
+    "model_version": "CBE-0.7.0",
+    "model_status": "FROZEN"
+  },
+  "protected_production_service": {
+    "uuid": "6t63aehpaw0cw1bbt4zcm09g",
+    "container_id": "bca5445cd547",
+    "fqdn": "coin.ozelweb.com.tr",
+    "status": "healthy",
+    "zero_touch_enforced": true
+  },
+  "governance_invariants": {
+    "technical_decision": "TECHNICAL_NO_GO",
+    "governance_authorization": "NOT_GRANTED",
+    "production_token": "NOT_ISSUED",
+    "real_network_market_collection": "DISABLED",
+    "btcusdt_live_observation": "DISABLED",
+    "unattended_monitoring": "DISABLED",
+    "live_order_execution": "PERMANENTLY_PROHIBITED",
+    "directional_trading_eligibility": 0,
+    "news_conditioned_economic_edge": "NOT_ESTABLISHED",
+    "historical_research_status": "RESEARCH_CONTAMINATED",
+    "synthetic_price_fabrication": "PROHIBITED"
+  }
+}

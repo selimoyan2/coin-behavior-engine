@@ -1,0 +1,88 @@
+{
+  "timestamp": "2026-10-25T21:58:00Z",
+  "experiments": [
+    {
+      "experiment_id": "CBE-EXP-01-CPI-VOLATILITY-SHIFT",
+      "title": "US CPI Olayları Sonrası Volatilite ve Rejim Dağılımı Değişimi",
+      "title_en": "US CPI Post-Event Volatility & Regime Distribution Dynamics",
+      "experiment_type": "EVENT_CONDITIONED_REGIME",
+      "created_at_utc": "2026-10-25T12:00:00Z",
+      "dataset_manifest_sha256": "73a6212acca38521bcde0192837465f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7",
+      "model_version": "CBE-0.7.0",
+      "algorithm_version": "CBE-EVT-1.0.0",
+      "parameters": {
+        "category": "US_INFLATION",
+        "window_hours": 12,
+        "interval": "1h",
+        "alpha": 0.05
+      },
+      "evidence_status": "STATISTICALLY_SUPPORTED_ASSOCIATION",
+      "sample_count": 36,
+      "reproducibility_hash": "ccb14a2b6b2a29b5285337f630159ebd1c7b49fbf060954df1e683bb7fef2a6c",
+      "summary_tr": "Tüketici Fiyat Endeksi (CPI) açıklamaları sonrasında volatilite çarpanı ortalama 1.22x seviyesine yükselmektedir.",
+      "summary_en": "Post-CPI realized volatility shifts by an average factor of 1.22x relative to pre-event windows."
+    },
+    {
+      "experiment_id": "CBE-EXP-02-FOMC-RATE-REACTIONS",
+      "title": "Federal Reserve (FOMC) Faiz Kararları T0 Rejim Dönüşümleri",
+      "title_en": "FOMC Rate Decisions T0 Regime Transitions",
+      "experiment_type": "EVENT_CONDITIONED_REGIME",
+      "created_at_utc": "2026-10-25T12:30:00Z",
+      "dataset_manifest_sha256": "73a6212acca38521bcde0192837465f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7",
+      "model_version": "CBE-0.7.0",
+      "algorithm_version": "CBE-EVT-1.0.0",
+      "parameters": {
+        "category": "US_MONETARY_POLICY",
+        "window_hours": 12,
+        "interval": "1h",
+        "alpha": 0.05
+      },
+      "evidence_status": "STATISTICALLY_SUPPORTED_ASSOCIATION",
+      "sample_count": 22,
+      "reproducibility_hash": "ae07ad7bdc2f9556f440dc17f893b752e8b1bdc928d744dce7f38ec29b7ff563",
+      "summary_tr": "FOMC faiz kararları sonrasında sıkışma rejiminden yüksek volatilite genişleme rejimine geçiş sıklığı artmaktadır.",
+      "summary_en": "FOMC releases show an increased transition frequency from compression to expansion regimes."
+    },
+    {
+      "experiment_id": "CBE-EXP-03-WALK-FORWARD-REGIME-STABILITY",
+      "title": "2022–2026 Kronolojik İleriye Yönelik Rejim Kararlılığı Doğrulaması",
+      "title_en": "2022–2026 Chronological Walk-Forward Regime Stability Validation",
+      "experiment_type": "WALK_FORWARD_VALIDATION",
+      "created_at_utc": "2026-10-25T13:00:00Z",
+      "dataset_manifest_sha256": "73a6212acca38521bcde0192837465f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7",
+      "model_version": "CBE-0.7.0",
+      "algorithm_version": "CBE-WF-1.0.0",
+      "parameters": {
+        "train": "2022-01 to 2023-12",
+        "test": "2025-01 to 2025-12",
+        "holdout": "2026-01 to 2026-09",
+        "embargo_bars": 24
+      },
+      "evidence_status": "OUT_OF_SAMPLE_REPLICATED",
+      "sample_count": 41400,
+      "reproducibility_hash": "62c66f6cc9338253b5f0cdeff8212f44136346046dc0f038211b6245db9d3b2c",
+      "summary_tr": "Eğitim döneminde gözlemlenen rejim dağılımları 2025 test ve 2026 holdout döneminde istatistiksel kararlılık göstermiştir (PSI < 0.15).",
+      "summary_en": "Regime distributions observed in-sample replicated with acceptable stability out-of-sample in 2025 and 2026 (PSI < 0.15)."
+    },
+    {
+      "experiment_id": "CBE-EXP-04-OCTOBER-INTAKE-AUDIT",
+      "title": "Ekim 2026 Aday Veri Seti Bütünlük ve Sentetik Analizi",
+      "title_en": "October 2026 Candidate Dataset Integrity & Synthetic Audit",
+      "experiment_type": "DATASET_INTEGRITY_AUDIT",
+      "created_at_utc": "2026-10-25T13:30:00Z",
+      "dataset_manifest_sha256": "73a6212acca38521bcde0192837465f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7",
+      "model_version": "CBE-0.7.0",
+      "algorithm_version": "CBE-PROV-1.0.0",
+      "parameters": {
+        "candidate_file": "BTCUSDT-5m-2026-10-intake.parquet",
+        "declared_symbol": "BTCUSDT",
+        "declared_interval": "5m"
+      },
+      "evidence_status": "INVALID_OR_CONTAMINATED",
+      "sample_count": 288,
+      "reproducibility_hash": "4696b537d5971fea7569cc39e5c0d2296a7e187ed602f0d4567905df64f1a8e6",
+      "summary_tr": "Ekim 2026 dosyası sabit hacim ve yapay adımlar nedeniyle karantinaya alınmış, kanonik depoya aktarımı kalıcı olarak engellenmiştir.",
+      "summary_en": "October 2026 intake file quarantined due to synthetic characteristics (constant volume 15.2); publication permanently blocked."
+    }
+  ]
+}

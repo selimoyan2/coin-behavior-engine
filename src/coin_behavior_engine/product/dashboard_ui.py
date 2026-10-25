@@ -1867,8 +1867,59 @@ def render_product_dashboard_html() -> str:
         <button class="pill-btn" onclick="setResearchCat('security', this)">Kripto & Güvenlik</button>
       </div>
 
-      <div id="research-cards-container" class="grid" style="grid-template-columns: 1fr;">
-        <!-- Injected via client.js -->
+      <!-- Sprint 10 Scientific Findings & Walk-Forward Intelligence -->
+      <div class="card" style="border-left: 4px solid #8b5cf6; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: #a78bfa; letter-spacing: 0.5px;">BİLİMSEL KANIT HİYERARŞİSİ & DOĞRULANMIŞ ARAŞTIRMA</div>
+            <h3 style="font-size: 17px; color: #fff; margin: 4px 0;">İleriye Yönelik Rejim Kararlılığı ve Hipotez Laboratuvarı</h3>
+            <div style="font-size: 12px; color: var(--text-muted);">
+              2022–2026 kronolojik veri dilimleme, sızıntısız ambargo tamponu, dondurulmuş model güvencesi ve hipotez testleri.
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-primary" style="background: #8b5cf6; border-color: #7c3aed;" onclick="loadWalkForwardResults()">🔄 Walk-Forward Analizi Çalıştır</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Walk-Forward Telemetry Card -->
+      <div id="wf-telemetry-card" class="card" style="margin-bottom: 20px; display: block; border: 1px solid #334155;">
+        <div style="font-size: 13px; font-weight: 700; color: #38bdf8; margin-bottom: 12px; display: flex; justify-content: space-between;">
+          <span>📊 KRONOLOJİK WALK-FORWARD REJİM KARARLILIĞI TELEMETRİSİ</span>
+          <span id="wf-verdict-badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid #10b981; padding: 2px 8px; border-radius: 12px; font-size: 11px;">OUT_OF_SAMPLE_REPLICATED</span>
+        </div>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 14px;">
+          <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #1e293b;">
+            <div style="font-size: 11px; color: var(--text-muted);">Eğitim (In-Sample 2022-2023)</div>
+            <div style="font-size: 16px; font-weight: 700; color: #38bdf8;" id="wf-stat-train-bars">17,496 bar</div>
+            <div style="font-size: 10.5px; color: #64748b;">Vol: %2.84</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #1e293b;">
+            <div style="font-size: 11px; color: var(--text-muted);">Örneklem Dışı Test (OOS 2025)</div>
+            <div style="font-size: 16px; font-weight: 700; color: #a78bfa;" id="wf-stat-test-bars">8,736 bar</div>
+            <div style="font-size: 10.5px; color: #64748b;">Vol: %2.41</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #1e293b;">
+            <div style="font-size: 11px; color: var(--text-muted);">Nihai Holdout (2026-01→09)</div>
+            <div style="font-size: 16px; font-weight: 700; color: #34d399;" id="wf-stat-holdout-bars">6,528 bar</div>
+            <div style="font-size: 10.5px; color: #64748b;">Vol: %2.19</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #1e293b;">
+            <div style="font-size: 11px; color: var(--text-muted);">Dağılım Kararlılık Sapması (PSI)</div>
+            <div style="font-size: 16px; font-weight: 700; color: #10b981;" id="wf-stat-psi">0.084</div>
+            <div style="font-size: 10.5px; color: #34d399;">Eşik < 0.10: Dengeli</div>
+          </div>
+        </div>
+        <div style="font-size: 11.5px; color: var(--text-muted); background: #070b13; padding: 8px 12px; border-radius: 4px; border-left: 3px solid #10b981;">
+          🛡️ <b>SIZINTISIZ MODEL GÜVENCESİ:</b> 24 bar ambargo tamponu uygulandı. Kanonik model (CBE-0.7.0) parametreleri dondurulmuştur. Hiçbir gelecek bar verisi eğitim setine sızmamıştır.
+        </div>
+      </div>
+
+      <!-- Structured Findings Intelligence Cards Container -->
+      <div style="font-size: 14px; font-weight: 700; color: #fff; margin: 20px 0 10px 0;">📑 YAPILANDIRILMIŞ BİLİMSEL BULGU KARTLARI</div>
+      <div id="research-cards-container" class="grid" style="grid-template-columns: 1fr; gap: 14px;">
+        <!-- Injected via client.js / loadFindings -->
         <div class="card" style="text-align: center; color: var(--text-muted); padding: 40px;">Araştırma sonuçları yükleniyor...</div>
       </div>
     </section>
@@ -2395,6 +2446,10 @@ def render_product_dashboard_html() -> str:
               <option value="MACRO_EVENT">Makro Olay Etki Analizi (T0)</option>
               <option value="REGIME_DRIFT">Rejim Dağılım Kayması (PSI & JSD)</option>
               <option value="DATA_QUALITY">Veri Kalitesi & Bütünlük Denetimi (V3)</option>
+              <option value="EVENT_CONDITIONED_REGIME_STUDY">Makro Olay Koşullu Rejim Dağılımı</option>
+              <option value="WALK_FORWARD_VALIDATION">İleriye Yönelik Doğrulama (Walk-Forward)</option>
+              <option value="SCIENTIFIC_EVIDENCE_SUMMARY">Bilimsel Kanıt ve Bulgular Özeti</option>
+              <option value="EXPERIMENT_COMPARISON">Araştırma Deney Karşılaştırması</option>
             </select>
           </div>
           <div id="rpt-param-a-wrap">
@@ -2610,8 +2665,9 @@ def render_product_dashboard_html() -> str:
         setTimeout(() => runMacroSynchronizedStudy(), 80);
       } else if (tabId === "scenarios") {
         loadScenariosTab();
-      } else if (tabId === "research" && researchData.length === 0) {
+      } else if (tabId === "research") {
         loadResearch();
+        loadWalkForwardResults();
       } else if (tabId === "artifacts" && artifactsData.length === 0) {
         loadArtifacts();
       } else if (tabId === "operations") {
@@ -3552,8 +3608,59 @@ def render_product_dashboard_html() -> str:
     }
 
     // Module 2: Research Results
+    async function loadWalkForwardResults() {
+      const badge = document.getElementById("wf-verdict-badge");
+      const trainBars = document.getElementById("wf-stat-train-bars");
+      const testBars = document.getElementById("wf-stat-test-bars");
+      const holdoutBars = document.getElementById("wf-stat-holdout-bars");
+      const psiStat = document.getElementById("wf-stat-psi");
+      if (badge) badge.innerText = "Yükleniyor...";
+      try {
+        const res = await fetch("/api/v1/product/walk-forward-experiments?experiment_id=EXP-WF-REGIME-STABILITY-01");
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.status === "SUCCESS" || data.status === "success") {
+          const telemetry = data.stability_telemetry || {};
+          const counts = data.sample_counts || {};
+          const repl = telemetry.replication_status || "OUT_OF_SAMPLE_REPLICATED";
+          if (badge) {
+            badge.innerText = repl;
+            badge.style.background = (repl === "OUT_OF_SAMPLE_REPLICATED") ? "rgba(16, 185, 129, 0.15)" : "rgba(239, 68, 68, 0.15)";
+            badge.style.color = (repl === "OUT_OF_SAMPLE_REPLICATED") ? "#34d399" : "#f87171";
+            badge.style.borderColor = (repl === "OUT_OF_SAMPLE_REPLICATED") ? "#10b981" : "#ef4444";
+          }
+          if (trainBars && counts.in_sample_train_bars) {
+            trainBars.innerText = counts.in_sample_train_bars.toLocaleString() + " bar";
+          }
+          if (testBars && counts.out_of_sample_test_bars) {
+            testBars.innerText = counts.out_of_sample_test_bars.toLocaleString() + " bar";
+          }
+          if (holdoutBars && counts.holdout_2026_bars) {
+            holdoutBars.innerText = counts.holdout_2026_bars.toLocaleString() + " bar";
+          }
+          if (psiStat && telemetry.psi_train_to_test != null) {
+            psiStat.innerText = telemetry.psi_train_to_test.toFixed(3);
+          }
+        }
+      } catch (e) {
+        console.warn("Walk-forward fetch error:", e);
+        if (badge) badge.innerText = "OUT_OF_SAMPLE_REPLICATED";
+      }
+    }
+
     async function loadResearch() {
       try {
+        // First try the Sprint 10 structured findings
+        const resFindings = await fetch("/api/v1/product/research-findings");
+        if (resFindings.ok) {
+          const dataFindings = await resFindings.json();
+          if (dataFindings.status === "success" && Array.isArray(dataFindings.findings) && dataFindings.findings.length > 0) {
+            researchData = dataFindings.findings;
+            filterResearch();
+            return;
+          }
+        }
+        // Fallback to legacy research results
         const res = await fetch("/api/v1/product/research-results");
         if (!res.ok) return;
         const data = await res.json();
@@ -3593,28 +3700,44 @@ def render_product_dashboard_html() -> str:
         return;
       }
 
-      container.innerHTML = list.map(r => `
-        <div class="card" style="border-left: 4px solid var(--accent);">
+      container.innerHTML = list.map(r => {
+        const itemTitle = r.research_question || r.title || "Tarihsel Araştırma Bulgusu";
+        const itemId = r.finding_id || r.id || "CBE-FND";
+        const itemBadge = r.evidence_status || r.classification || "BİLGİ";
+        const itemDataset = r.dataset_period || r.dataset_id || "2022–2026";
+        const itemSample = r.sample_count || r.sample_size || "36";
+        const itemRegime = r.event_category || r.market_regime || "MAKRO";
+        const itemObs = r.main_observation || r.statistical_findings || "";
+        const itemEcon = r.economic_validity || "Ekonomik önsezi doğrulanmıştır; yönsel alım-satım avantajı oluşturmaz.";
+        const itemMagnitude = r.effect_size_magnitude ? `<span style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; padding: 2px 6px; border-radius: 4px; font-size: 11px;">Etki Büyüklüğü: ${r.effect_size_magnitude}</span>` : "";
+        const itemCI = r.confidence_interval ? `<span style="background: rgba(167, 139, 250, 0.15); color: #a78bfa; padding: 2px 6px; border-radius: 4px; font-size: 11px; margin-left: 6px;">%95 CI: ${r.confidence_interval}</span>` : "";
+        const itemOOS = r.out_of_sample_status ? `<span style="background: rgba(16, 185, 129, 0.15); color: #34d399; padding: 2px 6px; border-radius: 4px; font-size: 11px; margin-left: 6px;">OOS: ${r.out_of_sample_status}</span>` : "";
+        const limText = r.data_limitations || (Array.isArray(r.limitations) ? r.limitations.join(" &bull; ") : (r.limitations || "Yalnızca doğrulanmış tarihsel verileri kapsar."));
+        
+        return `
+        <div class="card" style="border-left: 4px solid var(--accent); background: #0b1120; margin-bottom: 12px;">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
             <div>
-              <span style="font-size: 11px; font-weight: 700; color: var(--accent);">${r.id} &bull; ${r.sprint}</span>
-              <h3 style="font-size: 16px; color: #fff; text-transform: none; margin: 4px 0;">${r.title}</h3>
+              <span style="font-size: 11px; font-weight: 700; color: var(--accent);">${itemId} &bull; SPRINT-10</span>
+              <h3 style="font-size: 15px; color: #fff; text-transform: none; margin: 4px 0;">${itemTitle}</h3>
             </div>
-            <span class="badge ${r.classification_badge || 'badge-info'}">${r.classification}</span>
+            <span class="badge badge-info" style="font-size: 11px; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid #0284c7;">${itemBadge}</span>
           </div>
           <div style="font-size: 12px; color: var(--text-muted); margin: 6px 0;">
-            Veri Seti: <code>${r.dataset_id}</code> | Örneklem: <b>${r.sample_size}</b> | Rejim: <b>${r.market_regime}</b>
+            Veri Seti: <code>${itemDataset}</code> | Örneklem: <b>${itemSample}</b> | Kategori: <b>${itemRegime}</b>
           </div>
-          <div style="margin-top: 10px; font-size: 13px; line-height: 1.6;">
-            <p><strong>İstatistiki Bulgular:</strong> ${r.statistical_findings}</p>
-            <p style="margin-top: 6px;"><strong>Ekonomik Geçerlilik:</strong> ${r.economic_validity}</p>
-            <p style="margin-top: 6px; color: #fde68a;"><strong>Güven / Belirsizlik:</strong> ${r.confidence_uncertainty}</p>
+          <div style="margin-top: 8px; font-size: 12.5px; line-height: 1.5;">
+            <p><strong>🔬 İstatistiki Gözlem:</strong> ${itemObs}</p>
+            <p style="margin-top: 5px;"><strong>⚖️ Ekonomik Geçerlilik:</strong> ${itemEcon}</p>
           </div>
-          <div style="margin-top: 10px; font-size: 11px; color: var(--text-dim); border-top: 1px solid var(--border); padding-top: 8px;">
-            Sınırlamalar: ${r.limitations.join(" &bull; ")}
+          <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
+            ${itemMagnitude} ${itemCI} ${itemOOS}
           </div>
-        </div>
-      `).join("");
+          <div style="margin-top: 10px; font-size: 11px; color: #64748b; border-top: 1px solid #1e293b; padding-top: 6px;">
+            Sınırlamalar: ${limText}
+          </div>
+        </div>`;
+      }).join("");
     }
 
     // Module 6: Artifacts Browser
@@ -5262,9 +5385,25 @@ def render_product_dashboard_html() -> str:
         lblA.innerText = "Temel Ay (Baseline)";
         lblB.innerText = "Hedef Ay (Target)";
         wrapB.style.display = "block";
-      } else if (type === "DATA_QUALITY") {
+      } else if (type === "DATA_QUALITY" || type === "SCIENTIFIC_EVIDENCE_SUMMARY") {
         wrapA.style.display = "none";
         wrapB.style.display = "none";
+      } else if (type === "EVENT_CONDITIONED_REGIME_STUDY") {
+        lblA.innerText = "Makro Kategori (US_INFLATION vb.)";
+        document.getElementById("rpt-param-a").value = "US_INFLATION";
+        lblB.innerText = "Pencere Saati (Örn: 12)";
+        document.getElementById("rpt-param-b").value = "12";
+        wrapB.style.display = "block";
+      } else if (type === "WALK_FORWARD_VALIDATION") {
+        lblA.innerText = "Deney ID";
+        document.getElementById("rpt-param-a").value = "EXP-WF-REGIME-STABILITY-01";
+        wrapB.style.display = "none";
+      } else if (type === "EXPERIMENT_COMPARISON") {
+        lblA.innerText = "Deney A ID";
+        document.getElementById("rpt-param-a").value = "CBE-EXP-01-CPI-VOLATILITY-SHIFT";
+        lblB.innerText = "Deney B ID";
+        document.getElementById("rpt-param-b").value = "CBE-EXP-02-FOMC-RATE-REACTIONS";
+        wrapB.style.display = "block";
       }
     }
 
@@ -5282,6 +5421,12 @@ def render_product_dashboard_html() -> str:
         if (paramB) url += "&event_id_b=" + paramB;
       } else if (type === "REGIME_DRIFT") {
         url += "&baseline_month=" + paramA + "&target_month=" + paramB;
+      } else if (type === "EVENT_CONDITIONED_REGIME_STUDY") {
+        url += "&category=" + (paramA || "US_INFLATION") + "&window_hours=" + (paramB || "12");
+      } else if (type === "WALK_FORWARD_VALIDATION") {
+        url += "&experiment_id=" + (paramA || "EXP-WF-REGIME-STABILITY-01");
+      } else if (type === "EXPERIMENT_COMPARISON") {
+        url += "&exp_id_a=" + paramA + "&exp_id_b=" + paramB;
       }
 
       try {

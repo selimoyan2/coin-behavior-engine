@@ -1,0 +1,70 @@
+{
+  "timestamp": "2026-10-25T21:58:00Z",
+  "bootstrap_confidence_interval": {
+    "point_estimate": 1.236,
+    "ci_lower": 1.225,
+    "ci_upper": 1.254,
+    "confidence_level": 0.95,
+    "block_size": 5,
+    "num_resamples": 1000,
+    "method": "moving_block_bootstrap",
+    "sample_size": 10,
+    "null_effect_included": false
+  },
+  "fdr_multiple_testing_control": [
+    {
+      "original_index": 0,
+      "raw_p_value": 0.001,
+      "adjusted_p_value": 0.005,
+      "rank": 1,
+      "is_significant": true,
+      "fdr_threshold": 0.05
+    },
+    {
+      "original_index": 1,
+      "raw_p_value": 0.012,
+      "adjusted_p_value": 0.03,
+      "rank": 2,
+      "is_significant": true,
+      "fdr_threshold": 0.05
+    },
+    {
+      "original_index": 2,
+      "raw_p_value": 0.045,
+      "adjusted_p_value": 0.075,
+      "rank": 3,
+      "is_significant": false,
+      "fdr_threshold": 0.05
+    },
+    {
+      "original_index": 3,
+      "raw_p_value": 0.12,
+      "adjusted_p_value": 0.15,
+      "rank": 4,
+      "is_significant": false,
+      "fdr_threshold": 0.05
+    },
+    {
+      "original_index": 4,
+      "raw_p_value": 0.45,
+      "adjusted_p_value": 0.45,
+      "rank": 5,
+      "is_significant": false,
+      "fdr_threshold": 0.05
+    }
+  ],
+  "sample_adequacy_matrix": {
+    "cpi_events": {
+      "status": "SUFFICIENT_EVIDENCE",
+      "label_tr": "Yeterli İstatistiksel Kanıt",
+      "is_adequate": true,
+      "reason": "Örneklem büyüklüğü (102) istatistiksel güvenilirlik için yeterlidir."
+    },
+    "fomc_events": {
+      "status": "SUFFICIENT_EVIDENCE",
+      "label_tr": "Yeterli İstatistiksel Kanıt",
+      "is_adequate": true,
+      "reason": "Örneklem büyüklüğü (38) istatistiksel güvenilirlik için yeterlidir."
+    }
+  }
+}

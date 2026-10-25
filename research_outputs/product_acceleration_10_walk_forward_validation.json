@@ -1,0 +1,75 @@
+{
+  "timestamp": "2026-10-25T21:58:00Z",
+  "experiment": {
+    "status": "SUCCESS",
+    "experiment_id": "EXP-WF-REGIME-STABILITY-01",
+    "experiment_type": "REGIME_STABILITY_WALK_FORWARD",
+    "model_protection": {
+      "canonical_model_status": "FROZEN_CANONICAL_MODEL",
+      "canonical_model_version": "CBE-0.7.0",
+      "is_frozen": true
+    },
+    "split_configuration": {
+      "split_id": "SPLIT-2022-2026-CHRONO",
+      "train_start": "2022-01",
+      "train_end": "2023-12",
+      "val_start": "2024-01",
+      "val_end": "2024-12",
+      "test_start": "2025-01",
+      "test_end": "2025-12",
+      "holdout_start": "2026-01",
+      "holdout_end": "2026-09",
+      "embargo_bars": 24
+    },
+    "sample_counts": {
+      "in_sample_train_bars": 17495,
+      "out_of_sample_test_bars": 8712,
+      "holdout_2026_bars": 6528,
+      "embargo_purged_bars": 72
+    },
+    "distributions": {
+      "in_sample_train": {
+        "MOMENTUM_EXPANSION": 0.0508,
+        "COMPRESSION_ACCUMULATION": 0.3986,
+        "HIGH_VOLATILITY_EXPANSION": 0.0146,
+        "SYSTEMIC_LIQUIDATION": 0.0,
+        "DRIFT_REVERSION": 0.1358,
+        "EQUILIBRIUM_CHOP": 0.4002
+      },
+      "out_of_sample_test": {
+        "MOMENTUM_EXPANSION": 0.0368,
+        "COMPRESSION_ACCUMULATION": 0.3986,
+        "HIGH_VOLATILITY_EXPANSION": 0.0069,
+        "SYSTEMIC_LIQUIDATION": 0.0,
+        "DRIFT_REVERSION": 0.1294,
+        "EQUILIBRIUM_CHOP": 0.4283
+      },
+      "final_holdout_2026": {
+        "MOMENTUM_EXPANSION": 0.0362,
+        "COMPRESSION_ACCUMULATION": 0.4029,
+        "HIGH_VOLATILITY_EXPANSION": 0.0066,
+        "SYSTEMIC_LIQUIDATION": 0.0,
+        "DRIFT_REVERSION": 0.1264,
+        "EQUILIBRIUM_CHOP": 0.4279
+      }
+    },
+    "volatilities": {
+      "train_volatility_pct": 0.579,
+      "test_volatility_pct": 0.476,
+      "holdout_volatility_pct": 0.462,
+      "oos_volatility_ratio": 0.822
+    },
+    "stability_telemetry": {
+      "psi_train_to_test": 0.0125,
+      "psi_train_to_holdout": 0.0139,
+      "replication_status": "OUT_OF_SAMPLE_REPLICATED",
+      "stability_label_tr": "İleriye Yönelik Rejim Dağılımı Dengeli"
+    },
+    "leakage_controls_verified": {
+      "chronological_ordering": true,
+      "no_future_leakage_detected": true,
+      "embargo_applied": true,
+      "zero_synthetic_data": true
+    }
+  }
+}
