@@ -279,6 +279,20 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.get_hypothesis_templates_api()
             elif sub_path in ("hypothesis-experiments", "hypothesis/execute"):
                 return HTTPStatus.OK, cls.execute_hypothesis_api(query_params)
+            elif sub_path in ("research-builder/templates", "builder/templates"):
+                return HTTPStatus.OK, cls.get_research_builder_templates_api()
+            elif sub_path in ("research-builder/preview", "builder/preview"):
+                return HTTPStatus.OK, cls.get_research_builder_preview_api(query_params)
+            elif sub_path in ("distribution-lab", "distribution-lab/compare", "distribution/compare"):
+                return HTTPStatus.OK, cls.get_distribution_lab_api(query_params)
+            elif sub_path in ("robustness-matrix", "robustness-explorer"):
+                return HTTPStatus.OK, cls.get_robustness_matrix_api(query_params)
+            elif sub_path in ("evidence-intelligence", "evidence-health"):
+                return HTTPStatus.OK, cls.get_evidence_intelligence_api()
+            elif sub_path in ("experiment-package/export", "experiment-package"):
+                return HTTPStatus.OK, cls.get_experiment_package_export_api(query_params)
+            elif sub_path in ("research-notebook/export", "notebook/export", "research-notebook"):
+                return HTTPStatus.OK, cls.get_research_notebook_export_api(query_params)
             elif sub_path in ("reproducibility-status", "reproducibility"):
                 return HTTPStatus.OK, cls.get_reproducibility_api()
             elif sub_path in ("research-evidence-summary", "evidence-summary"):
@@ -357,6 +371,11 @@ class ProductDashboardApiService:
                 return cls.post_derive_preview(body)
             elif sub_path in ("derive-publish", "operations/derive-publish"):
                 return cls.post_derive_publish(body, headers)
+            elif sub_path in ("research-builder/execute", "builder/execute"):
+                return HTTPStatus.OK, cls.post_research_builder_execute_api(body)
+            elif sub_path in ("experiment-package/validate", "package/validate"):
+                return HTTPStatus.OK, cls.post_experiment_package_validate_api(body)
+
             else:
                 return HTTPStatus.NOT_FOUND, {
                     "error": "Not Found",
@@ -2939,6 +2958,27 @@ class ProductDashboardApiService:
         elif rpt_type in ("DATASET_INTEGRITY", "DATASET_INTEGRITY_REPORT", "CONTENT_INTEGRITY"):
             res = ResearchReportGenerator.generate_dataset_integrity_report(export_format=fmt)
 
+        elif rpt_type in ("INDEPENDENT_REPRODUCTION", "INDEPENDENT_REPRO", "REPRO_AUDIT"):
+            res = ResearchReportGenerator.generate_independent_reproduction_report(export_format=fmt)
+
+        elif rpt_type in ("HISTORICAL_DISTRIBUTION", "DISTRIBUTION_LAB", "DISTRIBUTION"):
+            mode = params.get("mode", ["YEAR_VS_YEAR"])[0]
+            metric = params.get("metric", ["RETURNS_PCT"])[0]
+            p_a = params.get("param_a", ["2022"])[0]
+            p_b = params.get("param_b", ["2024"])[0]
+            interval = params.get("interval", ["1h"])[0]
+            res = ResearchReportGenerator.generate_historical_distribution_report(
+                mode=mode, metric=metric, param_a=p_a, param_b=p_b, interval=interval, export_format=fmt
+            )
+
+        elif rpt_type in ("ROBUSTNESS_SENSITIVITY", "ROBUSTNESS_MATRIX", "ROBUSTNESS"):
+            cohort = params.get("cohort", ["US_CPI"])[0]
+            res = ResearchReportGenerator.generate_robustness_sensitivity_report(cohort=cohort, export_format=fmt)
+
+        elif rpt_type in ("PORTABLE_EXPERIMENT", "EXPERIMENT_PACKAGE", "PACKAGE_INTEGRITY"):
+            hyp_id = params.get("hypothesis_id", ["HYP-CPI-VOL-01"])[0]
+            res = ResearchReportGenerator.generate_portable_experiment_report(hypothesis_id=hyp_id, export_format=fmt)
+
         elif rpt_type in ("REPRODUCIBILITY", "REPRODUCIBILITY_REPORT", "REPRODUCIBILITY_AUDIT"):
             res = ResearchReportGenerator.generate_reproducibility_report(export_format=fmt)
 
@@ -3096,6 +3136,136 @@ class ProductDashboardApiService:
         """API handler for reproducibility status."""
         from coin_behavior_engine.product.research_reports import ResearchReportGenerator
         return ResearchReportGenerator.generate_reproducibility_report()
+
+
+
+
+    @classmethod
+    def get_research_builder_templates_api(cls) -> Dict[str, Any]:
+        """API handler for visual hypothesis builder templates and bounded options."""
+        from coin_behavior_engine.product.visual_research_builder import VisualResearchBuilderEngine
+        return {
+            "status": "success",
+            "templates": VisualResearchBuilderEngine.get_builder_templates(),
+            "bounded_options": VisualResearchBuilderEngine.get_builder_options(),
+            "model_version": "CBE-0.7.0 (FROZEN)",
+        }
+
+    @classmethod
+    def get_research_builder_preview_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for visual hypothesis preview without data mutation."""
+        from coin_behavior_engine.product.visual_research_builder import VisualResearchBuilderEngine
+        try:
+            cfg = {
+                "hypothesis_id": params.get("hypothesis_id", ["HYP-PREVIEW"])[0],
+                "title_tr": params.get("title_tr", ["Önizleme Hipotezi"])[0],
+                "target_asset": params.get("target_asset", ["BTCUSDT"])[0],
+                "interval": params.get("interval", ["1h"])[0],
+                "event_cohort": params.get("cohort", params.get("event_cohort", ["US_CPI"]))[0],
+                "pre_event_window_hours": int(params.get("pre_hours", ["12"])[0]),
+                "post_event_window_hours": int(params.get("post_hours", ["12"])[0]),
+                "volatility_estimator": params.get("estimator", ["CLOSE_TO_CLOSE"])[0],
+            }
+            preview = VisualResearchBuilderEngine.generate_research_preview(cfg)
+            return {"status": "success", "preview": preview}
+        except Exception as ex:
+            return {"status": "error", "message": str(ex)}
+
+    @classmethod
+    def post_research_builder_execute_api(cls, body: Dict[str, Any]) -> Dict[str, Any]:
+        """API handler for executing visual research builder hypothesis within strict bounds."""
+        from coin_behavior_engine.product.visual_research_builder import VisualResearchBuilderEngine
+        try:
+            cfg = {
+                "hypothesis_id": body.get("hypothesis_id", "HYP-CUSTOM"),
+                "title_tr": body.get("title_tr", "Görsel Hipotez Analizi"),
+                "target_asset": body.get("target_asset", "BTCUSDT"),
+                "interval": body.get("interval", "1h"),
+                "event_cohort": body.get("event_cohort", "US_CPI"),
+                "pre_event_window_hours": int(body.get("pre_event_window_hours", 12)),
+                "post_event_window_hours": int(body.get("post_event_window_hours", 12)),
+                "volatility_estimator": body.get("volatility_estimator", "CLOSE_TO_CLOSE"),
+            }
+            result = VisualResearchBuilderEngine.execute_builder_research(cfg)
+            return {"status": "success", "result": result}
+        except Exception as ex:
+            return {"status": "error", "message": str(ex)}
+
+    @classmethod
+    def get_distribution_lab_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for Historical Distribution Laboratory."""
+        from coin_behavior_engine.product.distribution_lab import HistoricalDistributionLabEngine
+        mode = params.get("mode", ["YEAR_VS_YEAR"])[0]
+        metric = params.get("metric", ["RETURNS_PCT"])[0]
+        p_a = params.get("param_a", ["2022"])[0]
+        p_b = params.get("param_b", ["2024"])[0]
+        interval = params.get("interval", ["1h"])[0]
+        return HistoricalDistributionLabEngine.compare_distributions(
+            mode=mode, metric=metric, param_a=p_a, param_b=p_b, interval=interval
+        )
+
+    @classmethod
+    def get_robustness_matrix_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for Historical Robustness & Sensitivity Explorer."""
+        from coin_behavior_engine.product.robustness_explorer import HistoricalRobustnessExplorer
+        cohort = params.get("cohort", ["US_CPI"])[0]
+        res = HistoricalRobustnessExplorer.compute_robustness_matrix(cohort=cohort)
+        return {
+            "status": "success",
+            "matrix": HistoricalRobustnessExplorer.export_matrix_dict(res),
+        }
+
+    @classmethod
+    def get_evidence_intelligence_api(cls) -> Dict[str, Any]:
+        """API handler for Evidence Intelligence executive dashboard."""
+        from coin_behavior_engine.product.evidence_intelligence import EvidenceIntelligenceEngine
+        return {
+            "status": "success",
+            "intelligence": EvidenceIntelligenceEngine.export_report_dict(),
+        }
+
+    @classmethod
+    def get_experiment_package_export_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for exporting portable research experiment package (.cbe-hyp.json)."""
+        from coin_behavior_engine.product.experiment_packages import ExperimentPackageManager
+        from dataclasses import asdict
+        hyp_id = params.get("hypothesis_id", ["HYP-CPI-VOL-01"])[0]
+        cohort = params.get("cohort", ["US_CPI"])[0]
+        win_h = int(params.get("window_hours", ["12"])[0])
+        pkg = ExperimentPackageManager.create_package(
+            hypothesis_id=hyp_id,
+            title_tr=f"{cohort} Açıklamaları Sonrası Tarihsel Volatilite Genişlemesi",
+            description_tr="Tarihsel makro duyuru etrafındaki oynaklık davranışı ve güven aralıkları.",
+            event_cohort=cohort,
+            window_hours=win_h,
+        )
+        return {
+            "status": "success",
+            "package": asdict(pkg),
+            "filename": f"{hyp_id}.cbe-hyp.json",
+        }
+
+    @classmethod
+    def post_experiment_package_validate_api(cls, body: Dict[str, Any]) -> Dict[str, Any]:
+        """API handler for validating uploaded or received experiment package dictionary."""
+        from coin_behavior_engine.product.experiment_packages import ExperimentPackageManager
+        return ExperimentPackageManager.validate_package_dict(body)
+
+    @classmethod
+    def get_research_notebook_export_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for exporting self-contained offline Jupyter research notebook."""
+        from coin_behavior_engine.product.notebook_export import ResearchNotebookExporter
+        hyp_id = params.get("hypothesis_id", ["HYP-CPI-VOL-01"])[0]
+        cohort = params.get("cohort", ["US_CPI"])[0]
+        win_h = int(params.get("window_hours", ["12"])[0])
+        nb = ResearchNotebookExporter.generate_cpi_reproduction_notebook(
+            hypothesis_id=hyp_id, cohort=cohort, window_hours=win_h
+        )
+        return {
+            "status": "success",
+            "notebook": nb,
+            "filename": f"{hyp_id}_reproducible_research.ipynb",
+        }
 
 
 START_TIME = time.time()

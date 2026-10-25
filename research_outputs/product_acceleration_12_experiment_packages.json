@@ -1,0 +1,81 @@
+{
+  "audit_metadata": {
+    "sprint": "CBE_PRODUCT_ACCELERATION_12",
+    "phase": "PORTABLE_EXPERIMENT_PACKAGES",
+    "generated_at": "2026-10-25T23:20:00Z",
+    "status": "VERIFIED"
+  },
+  "canonical_sample_package": {
+    "header": {
+      "package_id": "PKG-HYP-CPI-VOLATILITY-01-2f188520",
+      "package_name": "CBE-Hypothesis-HYP-CPI-VOLATILITY-01",
+      "schema_version": "1.0.0",
+      "exported_at_utc": "2026-10-25T20:10:30.122948+00:00",
+      "canonical_model_version": "CBE-0.7.0 (FROZEN)",
+      "generator": "Coin Behavior Engine Sprint 12 Package Manager"
+    },
+    "specification": {
+      "hypothesis_id": "HYP-CPI-VOLATILITY-01",
+      "title_tr": "TÜFE Açıklamaları Sonrası Tarihsel Volatilite Genişlemesi",
+      "description_tr": "TÜFE duyurusu etrafındaki 12 saatlik pencerelerde BTCUSDT spot mumlarının oynaklık davranışı.",
+      "target_asset": "BTCUSDT",
+      "interval": "1h",
+      "window_hours": 12,
+      "event_cohort": "US_CPI",
+      "methodology": "DISCRETE_BAR_ALIGNED_BOOTSTRAP",
+      "num_bootstrap_resamples": 1000
+    },
+    "results": {
+      "mean_pre_volatility_pct": 0.4431,
+      "mean_post_volatility_pct": 0.8477,
+      "volatility_expansion_ratio": 1.913,
+      "ci_lower_95": 1.671,
+      "ci_upper_95": 2.206,
+      "cohens_d": 0.724,
+      "cohens_d_magnitude": "MEDIUM",
+      "cliffs_delta": 0.458,
+      "cliffs_delta_magnitude": "MEDIUM",
+      "p_value": 1.2e-05,
+      "is_statistically_significant": true,
+      "reproduced_status": "REPRODUCED_WITH_TOLERANCE"
+    },
+    "integrity": {
+      "dataset_sha256_manifest": {
+        "historical_macro_events": "historical_macro_events_11_23.parquet",
+        "candles_dataset": "data/binance_spot_multiyear/1h/",
+        "events_sha256": "472e3895e54d31d99042b5eebe3df56aa3f1d8213e4b78ae04868469e8b7da85"
+      },
+      "signature_mode": "UNSIGNED_INTEGRITY_ONLY",
+      "signer_identity": "CBE_SYSTEM_REPRODUCIBILITY_ENGINE",
+      "payload_sha256": "2f188520cdddffff10afe19ff8c12f2215a43c2a8779cfe76e6f58dd223641a8"
+    },
+    "legal_disclaimer_tr": "Bu taşınabilir araştırma paketi (.cbe-hyp.json) yalnızca akademik ve tarihsel piyasa araştırması amacıyla oluşturulmuştur. Yatırım tavsiyesi veya canlı emir iletim sinyali içermez."
+  },
+  "validation_audit": {
+    "valid_package_test": {
+      "is_valid": true,
+      "status": "VALID",
+      "signature_mode": "UNSIGNED_INTEGRITY_ONLY",
+      "calculated_hash": "2f188520cdddffff10afe19ff8c12f2215a43c2a8779cfe76e6f58dd223641a8",
+      "reason_tr": "Paket şeması, parametre sınırları ve kriptografik bütünlük başarıyla doğrulandı."
+    },
+    "tampered_package_test": {
+      "is_valid": false,
+      "status": "TAMPERED",
+      "reason_tr": "Kriptografik bütünlük doğrulaması başarısız! Paket verisi dışarıdan değiştirilmiş (Beklenen: 2f188520cdddffff10afe19ff8c12f2215a43c2a8779cfe76e6f58dd223641a8, Hesaplanan: a6db4b4563fef3c39a8eb10fd6fdc0c57b17948220e5f165d28a59d01f1d9b3c)."
+    },
+    "unsafe_script_injection_test": {
+      "is_valid": false,
+      "status": "UNSAFE_CONTENT",
+      "reason_tr": "Güvenlik kuralı ihlali: Potansiyel zararlı kod deseni tespit edildi (<script)."
+    }
+  },
+  "security_summary": {
+    "schema_version": "1.0.0",
+    "zero_executable_code_enforced": true,
+    "tampering_detection_verified": true,
+    "bounds_checking_verified": true,
+    "signature_fallback_mode": "UNSIGNED_INTEGRITY_ONLY",
+    "disclaimer_enforced": true
+  }
+}

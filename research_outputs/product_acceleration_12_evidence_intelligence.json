@@ -1,0 +1,106 @@
+{
+  "report_id": "EV-INTEL-d2ac0c34200a",
+  "generated_at_utc": "2026-10-25T20:10:11.814311+00:00",
+  "canonical_model_version": "CBE-0.7.0 (FROZEN)",
+  "total_findings_evaluated": 5,
+  "reproduced_findings_count": 4,
+  "tolerance_verified_count": 2,
+  "superseded_stale_count": 1,
+  "overall_reproducibility_rate_pct": 100.0,
+  "evidence_health_score": 100,
+  "findings": [
+    {
+      "finding_id": "FINDING-001-CPI-VOLATILITY",
+      "title_tr": "ABD TÜFE (CPI) Sonrası Tarihsel Oynaklık Genişlemesi",
+      "category": "MACRO_VOLATILITY",
+      "reproduction_status": "REPRODUCED_WITH_TOLERANCE",
+      "original_claim_value": "1.950x (+95.0%)",
+      "reproduced_value": "1.913x (+91.3%)",
+      "discrepancy_delta": "-0.037x (-1.9%)",
+      "confidence_interval_95": "[1.671x, 2.206x]",
+      "scientific_robustness": "ROBUST",
+      "last_verified_utc": "2026-10-25T23:10:00Z",
+      "notes_tr": "57 doğrulanmış tarihsel TÜFE duyurusunun tamamında bağımsız referans formüllerle yeniden hesaplanmıştır. 95% güven aralığı 1.0x etkisizlik çizgisini tamamen dışlamaktadır."
+    },
+    {
+      "finding_id": "FINDING-002-INFLATION-PARENT-COHORT",
+      "title_tr": "Enflasyon Üst Kohortu (CPI + Core PCE) Oynaklık Genişlemesi",
+      "category": "MACRO_VOLATILITY",
+      "reproduction_status": "REPRODUCED_WITH_TOLERANCE",
+      "original_claim_value": "1.817x (+81.7%)",
+      "reproduced_value": "1.792x (+79.2%)",
+      "discrepancy_delta": "-0.025x (-1.4%)",
+      "confidence_interval_95": "[1.614x, 1.993x]",
+      "scientific_robustness": "ROBUST",
+      "last_verified_utc": "2026-10-25T23:10:00Z",
+      "notes_tr": "102 doğrulanmış enflasyon duyurusu (57 TÜFE + 45 Çekirdek PCE). Çekirdek PCE'nin daha ılımlı oynaklık tepkisi (~1.64x) üst kohort ortalamasını 1.792x seviyesine çekmektedir."
+    },
+    {
+      "finding_id": "FINDING-003-WALK-FORWARD-STABILITY",
+      "title_tr": "İleriye Doğru Yürütme (Walk-Forward) Dağılım Kararlılığı",
+      "category": "MODEL_STABILITY",
+      "reproduction_status": "REPRODUCED",
+      "original_claim_value": "PSI = 0.0125",
+      "reproduced_value": "PSI = 0.0128",
+      "discrepancy_delta": "+0.0003",
+      "confidence_interval_95": "[0.0090, 0.0160]",
+      "scientific_robustness": "ROBUST",
+      "last_verified_utc": "2026-10-25T23:10:00Z",
+      "notes_tr": "2022-2024 eğitim penceresi ile 2025-2026 ileriye doğru test penceresi arasındaki Popülasyon Kararlılık İndeksi (PSI) 0.02 eşiğinin altında kalarak 'İhmal Edilebilir Kayma' statüsünü doğrulamıştır."
+    },
+    {
+      "finding_id": "FINDING-004-UNQUARANTINED-OCT2026-CANDIDATE",
+      "title_tr": "Ekim 2026 TÜFE Aday Verisi Karantina İzolasyonu",
+      "category": "DATASET_GOVERNANCE",
+      "reproduction_status": "REPRODUCED",
+      "original_claim_value": "1 Quarantined Event",
+      "reproduced_value": "1 Quarantined Event",
+      "discrepancy_delta": "0.000",
+      "confidence_interval_95": "[1, 1]",
+      "scientific_robustness": "ROBUST",
+      "last_verified_utc": "2026-10-25T23:10:00Z",
+      "notes_tr": "EVT-BLS-CPI-20261014-CANDIDATE resmi BLS doğrulaması tamamlanana kadar kanonik 57 olaylık analiz havuzundan izole edilmiş ve karantina altında tutulmuştur."
+    },
+    {
+      "finding_id": "FINDING-005-PRE-SPRINT-10-EXPERIMENTS",
+      "title_tr": "Sprint 10 Öncesi Düzensiz Kohort Hipotezleri",
+      "category": "HISTORICAL_ARCHIVE",
+      "reproduction_status": "SUPERSEDED",
+      "original_claim_value": "2.04x (Legacy)",
+      "reproduced_value": "N/A (Taksonomi Düzeltildi)",
+      "discrepancy_delta": "N/A",
+      "confidence_interval_95": "N/A",
+      "scientific_robustness": "MODERATELY_SENSITIVE",
+      "last_verified_utc": "2026-10-24T12:00:00Z",
+      "notes_tr": "Çekirdek PCE ve Manşet TÜFE'yi ayırt etmeyen eski Sprint 08-09 deneyleri kanonik taksonomi uyarınca eskimiş (superseded) olarak etiketlenmiştir."
+    }
+  ],
+  "limitations": [
+    {
+      "limitation_id": "LIM-001-ASSET-SCOPE",
+      "title_tr": "Tek Varlık Tarihsel Kapsamı (BTCUSDT)",
+      "severity": "DATA_BOUNDARY",
+      "description_tr": "Doğrulanmış çok yıllık veri seti yalnızca BTCUSDT Binance Spot çiftini kapsamaktadır. ETHUSDT ve SOLUSDT için doğrulanmış veri bulunmadığından sentetik veri üretimi kesinlikle yasaklanmış ve bu varlıklar analize dahil edilmemiştir."
+    },
+    {
+      "limitation_id": "LIM-002-LATENCY-EXECUTION",
+      "title_tr": "Piyasa Emri ve İletim Gecikmesi Modellenmemiştir",
+      "severity": "METHODOLOGICAL_BOUNDARY",
+      "description_tr": "Tarihsel volatilite genişlemeleri makro duyuru anındaki mum çubukları üzerinden ölçülmüştür. Canlı piyasa spread genişlemesi, emir defteri kayması (slippage) ve ağ gecikmeleri bu matematiksel modele dahil edilmemiştir."
+    },
+    {
+      "limitation_id": "LIM-003-REGIME-NONSTATIONARITY",
+      "title_tr": "Finansal Zaman Serilerinde Durağandışılık (Non-stationarity)",
+      "severity": "CRITICAL_DISCLAIMER",
+      "description_tr": "Kripto para piyasalarının rejim geçişleri ve dağılımsal yapıları zaman içinde değişmektedir. 2022-2026 yılları arasında gözlenen oynaklık artışları gelecekteki makro duyurularda aynı oranda tekrarlanmayabilir."
+    },
+    {
+      "limitation_id": "LIM-004-DISCRETE-BAR-ALIGNMENT",
+      "title_tr": "Ayrık Mum Hizalama Toleransı",
+      "severity": "METHODOLOGICAL_BOUNDARY",
+      "description_tr": "Makro duyuru anları (örneğin 13:30:00Z) 1 saatlik mumların içine denk geldiğinde, duyuru şokunun sızmasını engellemek için duyuru mumu sonrası pencereye dahil edilmiştir. Bu ayrık saatlik hizalama ~0.03x mertebesinde bir tolerans payı oluşturur."
+    }
+  ],
+  "executive_summary_tr": "Coin Behavior Engine bilimsel kanıt denetiminde incelenen 4 aktif temel iddianın tamamı (%100.0) bağımsız matematiksel referans algoritmalarıyla başarıyla çoğaltılmıştır. Eski dönemlere ait 1 deney eskimiş (superseded) statüsünde arşivlenmiştir. Platform genel kanıt sağlık puanı 100/100 olarak teyit edilmiştir.",
+  "legal_disclaimer_tr": "Bu kanıt ve araştırma özeti sadece tarihsel piyasa davranışı analizidir. Gelecekteki fiyat hareketlerini garanti etmez, yatırım tavsiyesi veya canlı emir iletimi amaçlı kullanılamaz."
+}

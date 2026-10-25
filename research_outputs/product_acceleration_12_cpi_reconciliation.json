@@ -1,0 +1,51 @@
+{
+  "timestamp_utc": "2026-10-25T20:03:30Z",
+  "audit_name": "Sprint 12 Independent CPI vs US_INFLATION Cohort Reconciliation",
+  "reconciliation_summary": {
+    "total_historical_events_discovered": 238,
+    "total_verified_events": 237,
+    "total_quarantined_events": 1,
+    "quarantined_event_id": "EVT-BLS-CPI-20261014-CANDIDATE",
+    "quarantine_reason": "Sentetik/aday veri kümesi kurgusu; kanonik zaman serisiyle birleştirilmesi yasaktır."
+  },
+  "inflation_cohort_breakdown": {
+    "parent_cohort": "US_INFLATION",
+    "total_verified_events": 102,
+    "specific_subtypes": {
+      "US_CPI": {
+        "release_type": "US Consumer Price Index (CPI YoY)",
+        "issuing_organization": "Bureau of Labor Statistics (BLS)",
+        "verified_count": 57,
+        "reported_shift_ratio": 1.950,
+        "independent_reproduced_shift_ratio": 1.913,
+        "cohens_d": 0.8404,
+        "cliffs_delta": 0.8120,
+        "confidence_interval_95": "[1.750x, 2.162x]",
+        "independent_ci_95": "[1.687x, 2.206x]",
+        "status": "REPRODUCED_WITH_TOLERANCE"
+      },
+      "US_CORE_PCE": {
+        "release_type": "US Core PCE Price Index (YoY)",
+        "issuing_organization": "Bureau of Economic Analysis (BEA)",
+        "verified_count": 45,
+        "reported_shift_ratio": 1.648,
+        "independent_reproduced_shift_ratio": 1.638,
+        "cohens_d": 0.7050,
+        "cliffs_delta": 0.6520,
+        "confidence_interval_95": "[1.416x, 1.918x]",
+        "status": "REPRODUCED_WITH_TOLERANCE"
+      }
+    },
+    "parent_cohort_combined": {
+      "verified_count": 102,
+      "reported_shift_ratio": 1.817,
+      "independent_reproduced_shift_ratio": 1.792,
+      "cohens_d": 0.7798,
+      "cliffs_delta": 0.5162,
+      "confidence_interval_95": "[1.660x, 1.988x]",
+      "independent_ci_95": "[1.621x, 1.994x]",
+      "status": "REPRODUCED_WITH_TOLERANCE"
+    }
+  },
+  "forensic_conclusion": "Sayısal farklılık bağımsız referans formülü ile üretim aşamasındaki yuvarlama toleransları dahilinde (%1.9 fark) doğrulanmıştır. 57 adet CPI ile 45 adet PCE ayrımı korunmuş olup, tek bir olayın oranının (1.22x) tüm kohorta genellenmesi hatası kesin olarak giderilmiştir."
+}

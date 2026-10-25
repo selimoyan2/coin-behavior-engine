@@ -221,16 +221,9 @@ class StatisticalValidityEngine:
                 "status": "INSUFFICIENT_SAMPLE",
             }
 
-        greater = 0
-        less = 0
-        for y in b:
-            for x in a:
-                if y > x:
-                    greater += 1
-                elif y < x:
-                    less += 1
-
-        delta = (greater - less) / float(n_a * n_b)
+        from scipy import stats
+        u_res = stats.mannwhitneyu(b, a, alternative="two-sided")
+        delta = (2.0 * float(u_res.statistic)) / float(n_a * n_b) - 1.0
         abs_delta = abs(delta)
 
         if abs_delta < 0.147:
@@ -281,16 +274,10 @@ class StatisticalValidityEngine:
 
         cohens_d = (m_b - m_a) / pooled_sd
 
-        # Non-parametric Cliff's delta
-        greater_count = 0
-        lesser_count = 0
-        for x in b:
-            for y in a:
-                if x > y:
-                    greater_count += 1
-                elif x < y:
-                    lesser_count += 1
-        cliffs_delta = (greater_count - lesser_count) / float(n_a * n_b)
+        # Non-parametric Cliff's delta (vectorized via Mann-Whitney U)
+        from scipy import stats
+        u_res = stats.mannwhitneyu(b, a, alternative="two-sided")
+        cliffs_delta = (2.0 * float(u_res.statistic)) / float(n_a * n_b) - 1.0
 
         abs_d = abs(cohens_d)
         if abs_d < 0.2:

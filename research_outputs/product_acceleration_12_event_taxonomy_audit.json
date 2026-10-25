@@ -1,0 +1,124 @@
+{
+  "timestamp_utc": "2026-10-25T20:04:00Z",
+  "audit_name": "Sprint 12 Canonical Macro Event Taxonomy and Source Audit",
+  "total_discovered_events": 238,
+  "total_verified": 237,
+  "total_quarantined": 1,
+  "subtype_distribution": {
+    "US_NONFARM_PAYROLLS": 57,
+    "US_CPI": 58,
+    "US_FOMC_RATE_DECISION": 39,
+    "US_GDP": 19,
+    "US_PCE": 45,
+    "CRYPTO_STRUCTURE": 8,
+    "FINANCIAL_STABILITY": 3,
+    "REGULATION": 8,
+    "BITCOIN_PROTOCOL": 1
+  },
+  "parent_cohort_distribution": {
+    "US_LABOR": 57,
+    "US_INFLATION": 103,
+    "US_MONETARY_POLICY": 39,
+    "US_GROWTH": 19,
+    "MARKET_STRUCTURE": 20
+  },
+  "source_organizations": {
+    "BLS": 115,
+    "Federal Reserve": 38,
+    "BEA": 64,
+    "Official Public Record": 21
+  },
+  "unresolved_subtypes_count": 0,
+  "events_sample": [
+    {
+      "event_id": "EVT-BLS-NFP-20220107",
+      "event_name": "US Nonfarm Payrolls Employment Change",
+      "specific_type": "US_NONFARM_PAYROLLS",
+      "parent_cohort": "US_LABOR",
+      "source_organization": "BLS",
+      "release_timestamp_utc": "2022-01-07T13:30:00Z",
+      "quarantine_status": "VERIFIED"
+    },
+    {
+      "event_id": "EVT-BLS-CPI-20220112",
+      "event_name": "US Consumer Price Index (CPI YoY)",
+      "specific_type": "US_CPI",
+      "parent_cohort": "US_INFLATION",
+      "source_organization": "BLS",
+      "release_timestamp_utc": "2022-01-12T13:30:00Z",
+      "quarantine_status": "VERIFIED"
+    },
+    {
+      "event_id": "EVT-FED-FOMC-20220126",
+      "event_name": "Federal Reserve FOMC Policy Decision & Statement",
+      "specific_type": "US_FOMC_RATE_DECISION",
+      "parent_cohort": "US_MONETARY_POLICY",
+      "source_organization": "Federal Reserve",
+      "release_timestamp_utc": "2022-01-26T19:00:00Z",
+      "quarantine_status": "VERIFIED"
+    },
+    {
+      "event_id": "EVT-BEA-GDP-20220127",
+      "event_name": "US Real GDP Annualized QoQ (Q4 2021 Advance)",
+      "specific_type": "US_GDP",
+      "parent_cohort": "US_GROWTH",
+      "source_organization": "BEA",
+      "release_timestamp_utc": "2022-01-27T13:30:00Z",
+      "quarantine_status": "VERIFIED"
+    },
+    {
+      "event_id": "EVT-BEA-PCE-20220128",
+      "event_name": "US Core PCE Price Index (YoY)",
+      "specific_type": "US_PCE",
+      "parent_cohort": "US_INFLATION",
+      "source_organization": "BEA",
+      "release_timestamp_utc": "2022-01-28T13:30:00Z",
+      "quarantine_status": "VERIFIED"
+    },
+    {
+      "event_id": "EVT-BLS-NFP-20220204",
+      "event_name": "US Nonfarm Payrolls Employment Change",
+      "specific_type": "US_NONFARM_PAYROLLS",
+      "parent_cohort": "US_LABOR",
+      "source_organization": "BLS",
+      "release_timestamp_utc": "2022-02-04T13:30:00Z",
+      "quarantine_status": "VERIFIED"
+    },
+    {
+      "event_id": "EVT-BLS-CPI-20220210",
+      "event_name": "US Consumer Price Index (CPI YoY)",
+      "specific_type": "US_CPI",
+      "parent_cohort": "US_INFLATION",
+      "source_organization": "BLS",
+      "release_timestamp_utc": "2022-02-10T13:30:00Z",
+      "quarantine_status": "VERIFIED"
+    },
+    {
+      "event_id": "EVT-BEA-PCE-20220225",
+      "event_name": "US Core PCE Price Index (YoY)",
+      "specific_type": "US_PCE",
+      "parent_cohort": "US_INFLATION",
+      "source_organization": "BEA",
+      "release_timestamp_utc": "2022-02-25T13:30:00Z",
+      "quarantine_status": "VERIFIED"
+    },
+    {
+      "event_id": "EVT-BLS-NFP-20220304",
+      "event_name": "US Nonfarm Payrolls Employment Change",
+      "specific_type": "US_NONFARM_PAYROLLS",
+      "parent_cohort": "US_LABOR",
+      "source_organization": "BLS",
+      "release_timestamp_utc": "2022-03-04T13:30:00Z",
+      "quarantine_status": "VERIFIED"
+    },
+    {
+      "event_id": "EVT-BLS-CPI-20220310",
+      "event_name": "US Consumer Price Index (CPI YoY)",
+      "specific_type": "US_CPI",
+      "parent_cohort": "US_INFLATION",
+      "source_organization": "BLS",
+      "release_timestamp_utc": "2022-03-10T13:30:00Z",
+      "quarantine_status": "VERIFIED"
+    }
+  ]
+}

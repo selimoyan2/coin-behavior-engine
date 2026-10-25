@@ -1,0 +1,63 @@
+{
+  "audit_metadata": {
+    "sprint": "CBE_PRODUCT_ACCELERATION_12",
+    "phase": "MULTI_ASSET_HISTORICAL_RESEARCH_FOUNDATION",
+    "audited_at_utc": "2026-10-25T23:30:00Z",
+    "status": "VERIFIED"
+  },
+  "assets": {
+    "BTCUSDT": {
+      "symbol": "BTCUSDT",
+      "base_asset": "BTC",
+      "quote_asset": "USDT",
+      "market_type": "BINANCE_SPOT",
+      "readiness_status": "VERIFIED_AVAILABLE",
+      "is_synthetic_prohibited": true,
+      "is_actual_verified_data": true,
+      "timeframes_available": [
+        "15m",
+        "1h",
+        "4h",
+        "1d"
+      ],
+      "file_counts": {
+        "15m": 57,
+        "1h": 57,
+        "4h": 57,
+        "1d": 57
+      },
+      "historical_coverage": "2022-01-01 to 2026-09-30 (Verified)",
+      "quarantined_intake": "October 2026 candidate isolated in data/quarantine/"
+    },
+    "ETHUSDT": {
+      "symbol": "ETHUSDT",
+      "base_asset": "ETH",
+      "quote_asset": "USDT",
+      "market_type": "BINANCE_SPOT",
+      "readiness_status": "SOURCE_NOT_AVAILABLE",
+      "is_synthetic_prohibited": true,
+      "is_actual_verified_data": false,
+      "intake_pipeline_ready": true,
+      "notes_tr": "ETHUSDT için resmi doğrulanmış Parquet arşivi henüz içe aktarılmamıştır. Sentetik veri üretimi kesinlikle yasaktır."
+    },
+    "SOLUSDT": {
+      "symbol": "SOLUSDT",
+      "base_asset": "SOL",
+      "quote_asset": "USDT",
+      "market_type": "BINANCE_SPOT",
+      "readiness_status": "SOURCE_NOT_AVAILABLE",
+      "is_synthetic_prohibited": true,
+      "is_actual_verified_data": false,
+      "intake_pipeline_ready": true,
+      "notes_tr": "SOLUSDT için resmi doğrulanmış Parquet arşivi henüz içe aktarılmamıştır. Sentetik veri üretimi kesinlikle yasaktır."
+    }
+  },
+  "governance_summary": {
+    "total_assets_registered": 3,
+    "verified_available_count": 1,
+    "awaiting_intake_count": 2,
+    "synthetic_fabrication_attempted": false,
+    "synthetic_fabrication_blocked": true,
+    "model_version_frozen": "CBE-0.7.0"
+  }
+}

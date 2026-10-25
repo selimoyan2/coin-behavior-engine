@@ -1,0 +1,1185 @@
+{
+  "audit_metadata": {
+    "sprint": "CBE_PRODUCT_ACCELERATION_12",
+    "phase": "HISTORICAL_DISTRIBUTION_LABORATORY",
+    "generated_at": "2026-10-25T23:08:00Z",
+    "status": "VERIFIED"
+  },
+  "comparisons": {
+    "year_vs_year_2022_vs_2024": {
+      "status": "success",
+      "result": {
+        "comparison_id": "DIST-CMP-49fd2eeb027e",
+        "mode": "YEAR_VS_YEAR",
+        "target_metric": "RETURNS_PCT",
+        "group_a_label": "2022 Yılı",
+        "group_b_label": "2024 Yılı",
+        "metrics_a": {
+          "sample_count": 8759,
+          "mean": -0.0095,
+          "median": -0.002,
+          "std_dev": 0.6811,
+          "variance": 0.463906,
+          "skewness": 0.033,
+          "kurtosis": 11.074,
+          "min_value": -6.989,
+          "max_value": 6.4872,
+          "p05": -1.0041,
+          "p25": -0.2669,
+          "p50": -0.002,
+          "p75": 0.255,
+          "p95": 0.9376,
+          "iqr": 0.5218,
+          "tail_ratio_95_50": -468.83
+        },
+        "metrics_b": {
+          "sample_count": 8784,
+          "mean": 0.0106,
+          "median": 0.009,
+          "std_dev": 0.5617,
+          "variance": 0.315525,
+          "skewness": -0.13,
+          "kurtosis": 7.596,
+          "min_value": -4.5873,
+          "max_value": 4.3109,
+          "p05": -0.8212,
+          "p25": -0.2277,
+          "p50": 0.009,
+          "p75": 0.2569,
+          "p95": 0.8278,
+          "iqr": 0.4846,
+          "tail_ratio_95_50": 91.92
+        },
+        "histogram_bins": [
+          -2.4291,
+          -2.2705,
+          -2.1119,
+          -1.9533,
+          -1.7947,
+          -1.6361,
+          -1.4775,
+          -1.3188,
+          -1.1602,
+          -1.0016,
+          -0.843,
+          -0.6844,
+          -0.5258,
+          -0.3672,
+          -0.2085,
+          -0.0499,
+          0.1087,
+          0.2673,
+          0.4259,
+          0.5845,
+          0.7431,
+          0.9018,
+          1.0604,
+          1.219,
+          1.3776,
+          1.5362,
+          1.6948,
+          1.8534,
+          2.0121,
+          2.1707,
+          2.3293
+        ],
+        "histogram_counts_a": [
+          12,
+          13,
+          19,
+          20,
+          37,
+          44,
+          51,
+          72,
+          111,
+          143,
+          226,
+          307,
+          555,
+          872,
+          1388,
+          1525,
+          1184,
+          703,
+          491,
+          275,
+          181,
+          129,
+          78,
+          47,
+          38,
+          28,
+          31,
+          27,
+          16,
+          13
+        ],
+        "histogram_counts_b": [
+          10,
+          10,
+          9,
+          25,
+          22,
+          30,
+          27,
+          58,
+          75,
+          124,
+          190,
+          280,
+          521,
+          923,
+          1444,
+          1596,
+          1289,
+          829,
+          478,
+          271,
+          179,
+          96,
+          70,
+          54,
+          31,
+          28,
+          24,
+          16,
+          14,
+          8
+        ],
+        "ecdf_a": [
+          {
+            "value": -6.989,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -6.714,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -6.4389,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -6.1639,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -5.8889,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -5.6139,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -5.3388,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -5.0638,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -4.7888,
+            "cumulative_prob": 0.0005
+          },
+          {
+            "value": -4.5138,
+            "cumulative_prob": 0.0005
+          },
+          {
+            "value": -4.2387,
+            "cumulative_prob": 0.0006
+          },
+          {
+            "value": -3.9637,
+            "cumulative_prob": 0.0008
+          },
+          {
+            "value": -3.6887,
+            "cumulative_prob": 0.0013
+          },
+          {
+            "value": -3.4137,
+            "cumulative_prob": 0.0019
+          },
+          {
+            "value": -3.1386,
+            "cumulative_prob": 0.0031
+          },
+          {
+            "value": -2.8636,
+            "cumulative_prob": 0.0046
+          },
+          {
+            "value": -2.5886,
+            "cumulative_prob": 0.0062
+          },
+          {
+            "value": -2.3136,
+            "cumulative_prob": 0.0081
+          },
+          {
+            "value": -2.0385,
+            "cumulative_prob": 0.0108
+          },
+          {
+            "value": -1.7635,
+            "cumulative_prob": 0.0151
+          },
+          {
+            "value": -1.4885,
+            "cumulative_prob": 0.0232
+          },
+          {
+            "value": -1.2135,
+            "cumulative_prob": 0.0344
+          },
+          {
+            "value": -0.9384,
+            "cumulative_prob": 0.0557
+          },
+          {
+            "value": -0.6634,
+            "cumulative_prob": 0.0968
+          },
+          {
+            "value": -0.3884,
+            "cumulative_prob": 0.1798
+          },
+          {
+            "value": -0.1134,
+            "cumulative_prob": 0.3776
+          },
+          {
+            "value": 0.1617,
+            "cumulative_prob": 0.6761
+          },
+          {
+            "value": 0.4367,
+            "cumulative_prob": 0.8431
+          },
+          {
+            "value": 0.7117,
+            "cumulative_prob": 0.9211
+          },
+          {
+            "value": 0.9867,
+            "cumulative_prob": 0.9555
+          },
+          {
+            "value": 1.2618,
+            "cumulative_prob": 0.9713
+          },
+          {
+            "value": 1.5368,
+            "cumulative_prob": 0.98
+          },
+          {
+            "value": 1.8118,
+            "cumulative_prob": 0.986
+          },
+          {
+            "value": 2.0868,
+            "cumulative_prob": 0.9906
+          },
+          {
+            "value": 2.3619,
+            "cumulative_prob": 0.9935
+          },
+          {
+            "value": 2.6369,
+            "cumulative_prob": 0.9954
+          },
+          {
+            "value": 2.9119,
+            "cumulative_prob": 0.9965
+          },
+          {
+            "value": 3.1869,
+            "cumulative_prob": 0.9974
+          },
+          {
+            "value": 3.462,
+            "cumulative_prob": 0.9979
+          },
+          {
+            "value": 3.737,
+            "cumulative_prob": 0.9983
+          },
+          {
+            "value": 4.012,
+            "cumulative_prob": 0.9986
+          },
+          {
+            "value": 4.287,
+            "cumulative_prob": 0.9989
+          },
+          {
+            "value": 4.5621,
+            "cumulative_prob": 0.9991
+          },
+          {
+            "value": 4.8371,
+            "cumulative_prob": 0.9994
+          },
+          {
+            "value": 5.1121,
+            "cumulative_prob": 0.9997
+          },
+          {
+            "value": 5.3871,
+            "cumulative_prob": 0.9997
+          },
+          {
+            "value": 5.6622,
+            "cumulative_prob": 0.9998
+          },
+          {
+            "value": 5.9372,
+            "cumulative_prob": 0.9999
+          },
+          {
+            "value": 6.2122,
+            "cumulative_prob": 0.9999
+          },
+          {
+            "value": 6.4872,
+            "cumulative_prob": 1.0
+          }
+        ],
+        "ecdf_b": [
+          {
+            "value": -4.5873,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -4.4057,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -4.2241,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -4.0425,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -3.8609,
+            "cumulative_prob": 0.0002
+          },
+          {
+            "value": -3.6793,
+            "cumulative_prob": 0.0003
+          },
+          {
+            "value": -3.4977,
+            "cumulative_prob": 0.0006
+          },
+          {
+            "value": -3.3161,
+            "cumulative_prob": 0.0011
+          },
+          {
+            "value": -3.1345,
+            "cumulative_prob": 0.0014
+          },
+          {
+            "value": -2.9529,
+            "cumulative_prob": 0.0018
+          },
+          {
+            "value": -2.7713,
+            "cumulative_prob": 0.0022
+          },
+          {
+            "value": -2.5897,
+            "cumulative_prob": 0.0025
+          },
+          {
+            "value": -2.4081,
+            "cumulative_prob": 0.0033
+          },
+          {
+            "value": -2.2265,
+            "cumulative_prob": 0.0043
+          },
+          {
+            "value": -2.0449,
+            "cumulative_prob": 0.0057
+          },
+          {
+            "value": -1.8633,
+            "cumulative_prob": 0.008
+          },
+          {
+            "value": -1.6817,
+            "cumulative_prob": 0.0109
+          },
+          {
+            "value": -1.5001,
+            "cumulative_prob": 0.0148
+          },
+          {
+            "value": -1.3185,
+            "cumulative_prob": 0.0181
+          },
+          {
+            "value": -1.1369,
+            "cumulative_prob": 0.0262
+          },
+          {
+            "value": -0.9554,
+            "cumulative_prob": 0.0373
+          },
+          {
+            "value": -0.7738,
+            "cumulative_prob": 0.0561
+          },
+          {
+            "value": -0.5922,
+            "cumulative_prob": 0.0866
+          },
+          {
+            "value": -0.4106,
+            "cumulative_prob": 0.1398
+          },
+          {
+            "value": -0.229,
+            "cumulative_prob": 0.2492
+          },
+          {
+            "value": -0.0474,
+            "cumulative_prob": 0.4331
+          },
+          {
+            "value": 0.1342,
+            "cumulative_prob": 0.6355
+          },
+          {
+            "value": 0.3158,
+            "cumulative_prob": 0.7947
+          },
+          {
+            "value": 0.4974,
+            "cumulative_prob": 0.8806
+          },
+          {
+            "value": 0.679,
+            "cumulative_prob": 0.9277
+          },
+          {
+            "value": 0.8606,
+            "cumulative_prob": 0.9542
+          },
+          {
+            "value": 1.0422,
+            "cumulative_prob": 0.9679
+          },
+          {
+            "value": 1.2238,
+            "cumulative_prob": 0.9772
+          },
+          {
+            "value": 1.4054,
+            "cumulative_prob": 0.9837
+          },
+          {
+            "value": 1.587,
+            "cumulative_prob": 0.9878
+          },
+          {
+            "value": 1.7686,
+            "cumulative_prob": 0.9908
+          },
+          {
+            "value": 1.9502,
+            "cumulative_prob": 0.9939
+          },
+          {
+            "value": 2.1318,
+            "cumulative_prob": 0.9959
+          },
+          {
+            "value": 2.3134,
+            "cumulative_prob": 0.9969
+          },
+          {
+            "value": 2.4949,
+            "cumulative_prob": 0.9975
+          },
+          {
+            "value": 2.6765,
+            "cumulative_prob": 0.9981
+          },
+          {
+            "value": 2.8581,
+            "cumulative_prob": 0.9989
+          },
+          {
+            "value": 3.0397,
+            "cumulative_prob": 0.9992
+          },
+          {
+            "value": 3.2213,
+            "cumulative_prob": 0.9993
+          },
+          {
+            "value": 3.4029,
+            "cumulative_prob": 0.9993
+          },
+          {
+            "value": 3.5845,
+            "cumulative_prob": 0.9994
+          },
+          {
+            "value": 3.7661,
+            "cumulative_prob": 0.9997
+          },
+          {
+            "value": 3.9477,
+            "cumulative_prob": 0.9997
+          },
+          {
+            "value": 4.1293,
+            "cumulative_prob": 0.9999
+          },
+          {
+            "value": 4.3109,
+            "cumulative_prob": 1.0
+          }
+        ],
+        "ks_statistic": 0.0337,
+        "ks_p_value": 9.1e-05,
+        "wasserstein_distance": 0.0619,
+        "cohens_d": 0.0323,
+        "cliffs_delta": 0.0225,
+        "divergence_summary_tr": "2022 Yılı ile 2024 Yılı dağılımları arasında istatistiki olarak belirgin farklılık mevcuttur (KS d=0.0337, p < 0.01). Ancak bu fark piyasa oynaklığı değişkenliğini ifade eder; yönsel alım-satım avantajı oluşturmaz.",
+        "created_at_utc": "2026-10-25T20:07:20.698774+00:00"
+      }
+    },
+    "train_vs_holdout_2022_2023_vs_2025_2026": {
+      "status": "success",
+      "result": {
+        "comparison_id": "DIST-CMP-bd97b0d1a412",
+        "mode": "TRAIN_VS_HOLDOUT",
+        "target_metric": "RETURNS_PCT",
+        "group_a_label": "Eğitim (2022-2023)",
+        "group_b_label": "Holdout (2025-2026)",
+        "metrics_a": {
+          "sample_count": 17518,
+          "mean": 0.0011,
+          "median": 0.0039,
+          "std_dev": 0.579,
+          "variance": 0.335193,
+          "skewness": 0.024,
+          "kurtosis": 15.964,
+          "min_value": -6.989,
+          "max_value": 6.4872,
+          "p05": -0.8036,
+          "p25": -0.1998,
+          "p50": 0.0039,
+          "p75": 0.2055,
+          "p95": 0.7878,
+          "iqr": 0.4053,
+          "tail_ratio_95_50": 201.88
+        },
+        "metrics_b": {
+          "sample_count": 15312,
+          "mean": 0.0004,
+          "median": 0.0012,
+          "std_dev": 0.4689,
+          "variance": 0.219895,
+          "skewness": -0.064,
+          "kurtosis": 11.464,
+          "min_value": -4.8956,
+          "max_value": 5.027,
+          "p05": -0.6883,
+          "p25": -0.1948,
+          "p50": 0.0012,
+          "p75": 0.2003,
+          "p95": 0.6829,
+          "iqr": 0.3951,
+          "tail_ratio_95_50": 589.79
+        },
+        "histogram_bins": [
+          -2.0519,
+          -1.9153,
+          -1.7787,
+          -1.6421,
+          -1.5055,
+          -1.3689,
+          -1.2323,
+          -1.0956,
+          -0.959,
+          -0.8224,
+          -0.6858,
+          -0.5492,
+          -0.4126,
+          -0.276,
+          -0.1393,
+          -0.0027,
+          0.1339,
+          0.2705,
+          0.4071,
+          0.5437,
+          0.6804,
+          0.817,
+          0.9536,
+          1.0902,
+          1.2268,
+          1.3634,
+          1.5,
+          1.6367,
+          1.7733,
+          1.9099,
+          2.0465
+        ],
+        "histogram_counts_a": [
+          22,
+          30,
+          40,
+          50,
+          61,
+          68,
+          106,
+          133,
+          208,
+          291,
+          420,
+          709,
+          1165,
+          1987,
+          3181,
+          3288,
+          2117,
+          1185,
+          761,
+          478,
+          274,
+          203,
+          160,
+          96,
+          61,
+          56,
+          43,
+          30,
+          34,
+          23
+        ],
+        "histogram_counts_b": [
+          13,
+          20,
+          20,
+          25,
+          37,
+          46,
+          79,
+          92,
+          153,
+          239,
+          361,
+          591,
+          1069,
+          1961,
+          2824,
+          2807,
+          1982,
+          1193,
+          596,
+          386,
+          258,
+          153,
+          112,
+          65,
+          31,
+          31,
+          23,
+          27,
+          16,
+          10
+        ],
+        "ecdf_a": [
+          {
+            "value": -6.989,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -6.714,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -6.4389,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -6.1639,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -5.8889,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -5.6139,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -5.3388,
+            "cumulative_prob": 0.0002
+          },
+          {
+            "value": -5.0638,
+            "cumulative_prob": 0.0002
+          },
+          {
+            "value": -4.7888,
+            "cumulative_prob": 0.0005
+          },
+          {
+            "value": -4.5138,
+            "cumulative_prob": 0.0005
+          },
+          {
+            "value": -4.2387,
+            "cumulative_prob": 0.0005
+          },
+          {
+            "value": -3.9637,
+            "cumulative_prob": 0.0006
+          },
+          {
+            "value": -3.6887,
+            "cumulative_prob": 0.0009
+          },
+          {
+            "value": -3.4137,
+            "cumulative_prob": 0.0013
+          },
+          {
+            "value": -3.1386,
+            "cumulative_prob": 0.0019
+          },
+          {
+            "value": -2.8636,
+            "cumulative_prob": 0.0028
+          },
+          {
+            "value": -2.5886,
+            "cumulative_prob": 0.0038
+          },
+          {
+            "value": -2.3136,
+            "cumulative_prob": 0.005
+          },
+          {
+            "value": -2.0385,
+            "cumulative_prob": 0.0069
+          },
+          {
+            "value": -1.7635,
+            "cumulative_prob": 0.0099
+          },
+          {
+            "value": -1.4885,
+            "cumulative_prob": 0.0152
+          },
+          {
+            "value": -1.2135,
+            "cumulative_prob": 0.0229
+          },
+          {
+            "value": -0.9384,
+            "cumulative_prob": 0.0374
+          },
+          {
+            "value": -0.6634,
+            "cumulative_prob": 0.0679
+          },
+          {
+            "value": -0.3884,
+            "cumulative_prob": 0.1369
+          },
+          {
+            "value": -0.1134,
+            "cumulative_prob": 0.3382
+          },
+          {
+            "value": 0.1617,
+            "cumulative_prob": 0.7078
+          },
+          {
+            "value": 0.4367,
+            "cumulative_prob": 0.8781
+          },
+          {
+            "value": 0.7117,
+            "cumulative_prob": 0.9414
+          },
+          {
+            "value": 0.9867,
+            "cumulative_prob": 0.9675
+          },
+          {
+            "value": 1.2618,
+            "cumulative_prob": 0.98
+          },
+          {
+            "value": 1.5368,
+            "cumulative_prob": 0.9866
+          },
+          {
+            "value": 1.8118,
+            "cumulative_prob": 0.9906
+          },
+          {
+            "value": 2.0868,
+            "cumulative_prob": 0.9937
+          },
+          {
+            "value": 2.3619,
+            "cumulative_prob": 0.9955
+          },
+          {
+            "value": 2.6369,
+            "cumulative_prob": 0.9969
+          },
+          {
+            "value": 2.9119,
+            "cumulative_prob": 0.9975
+          },
+          {
+            "value": 3.1869,
+            "cumulative_prob": 0.9982
+          },
+          {
+            "value": 3.462,
+            "cumulative_prob": 0.9985
+          },
+          {
+            "value": 3.737,
+            "cumulative_prob": 0.9988
+          },
+          {
+            "value": 4.012,
+            "cumulative_prob": 0.999
+          },
+          {
+            "value": 4.287,
+            "cumulative_prob": 0.9991
+          },
+          {
+            "value": 4.5621,
+            "cumulative_prob": 0.9994
+          },
+          {
+            "value": 4.8371,
+            "cumulative_prob": 0.9996
+          },
+          {
+            "value": 5.1121,
+            "cumulative_prob": 0.9997
+          },
+          {
+            "value": 5.3871,
+            "cumulative_prob": 0.9998
+          },
+          {
+            "value": 5.6622,
+            "cumulative_prob": 0.9999
+          },
+          {
+            "value": 5.9372,
+            "cumulative_prob": 0.9999
+          },
+          {
+            "value": 6.2122,
+            "cumulative_prob": 0.9999
+          },
+          {
+            "value": 6.4872,
+            "cumulative_prob": 1.0
+          }
+        ],
+        "ecdf_b": [
+          {
+            "value": -4.8956,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -4.6931,
+            "cumulative_prob": 0.0001
+          },
+          {
+            "value": -4.4906,
+            "cumulative_prob": 0.0002
+          },
+          {
+            "value": -4.2881,
+            "cumulative_prob": 0.0002
+          },
+          {
+            "value": -4.0856,
+            "cumulative_prob": 0.0002
+          },
+          {
+            "value": -3.8831,
+            "cumulative_prob": 0.0002
+          },
+          {
+            "value": -3.6806,
+            "cumulative_prob": 0.0003
+          },
+          {
+            "value": -3.4781,
+            "cumulative_prob": 0.0004
+          },
+          {
+            "value": -3.2756,
+            "cumulative_prob": 0.0005
+          },
+          {
+            "value": -3.0731,
+            "cumulative_prob": 0.0008
+          },
+          {
+            "value": -2.8706,
+            "cumulative_prob": 0.0009
+          },
+          {
+            "value": -2.6681,
+            "cumulative_prob": 0.0012
+          },
+          {
+            "value": -2.4656,
+            "cumulative_prob": 0.0012
+          },
+          {
+            "value": -2.2631,
+            "cumulative_prob": 0.0019
+          },
+          {
+            "value": -2.0606,
+            "cumulative_prob": 0.0029
+          },
+          {
+            "value": -1.8581,
+            "cumulative_prob": 0.0042
+          },
+          {
+            "value": -1.6556,
+            "cumulative_prob": 0.0063
+          },
+          {
+            "value": -1.4531,
+            "cumulative_prob": 0.0089
+          },
+          {
+            "value": -1.2506,
+            "cumulative_prob": 0.0131
+          },
+          {
+            "value": -1.0481,
+            "cumulative_prob": 0.0209
+          },
+          {
+            "value": -0.8456,
+            "cumulative_prob": 0.0328
+          },
+          {
+            "value": -0.6431,
+            "cumulative_prob": 0.0564
+          },
+          {
+            "value": -0.4406,
+            "cumulative_prob": 0.1016
+          },
+          {
+            "value": -0.2381,
+            "cumulative_prob": 0.2109
+          },
+          {
+            "value": -0.0356,
+            "cumulative_prob": 0.4445
+          },
+          {
+            "value": 0.1669,
+            "cumulative_prob": 0.7166
+          },
+          {
+            "value": 0.3694,
+            "cumulative_prob": 0.8694
+          },
+          {
+            "value": 0.5719,
+            "cumulative_prob": 0.9304
+          },
+          {
+            "value": 0.7744,
+            "cumulative_prob": 0.9629
+          },
+          {
+            "value": 0.9769,
+            "cumulative_prob": 0.9779
+          },
+          {
+            "value": 1.1794,
+            "cumulative_prob": 0.9866
+          },
+          {
+            "value": 1.3819,
+            "cumulative_prob": 0.9905
+          },
+          {
+            "value": 1.5844,
+            "cumulative_prob": 0.9933
+          },
+          {
+            "value": 1.7869,
+            "cumulative_prob": 0.9956
+          },
+          {
+            "value": 1.9894,
+            "cumulative_prob": 0.9966
+          },
+          {
+            "value": 2.1919,
+            "cumulative_prob": 0.9976
+          },
+          {
+            "value": 2.3944,
+            "cumulative_prob": 0.9983
+          },
+          {
+            "value": 2.597,
+            "cumulative_prob": 0.9988
+          },
+          {
+            "value": 2.7995,
+            "cumulative_prob": 0.9993
+          },
+          {
+            "value": 3.002,
+            "cumulative_prob": 0.9994
+          },
+          {
+            "value": 3.2045,
+            "cumulative_prob": 0.9995
+          },
+          {
+            "value": 3.407,
+            "cumulative_prob": 0.9995
+          },
+          {
+            "value": 3.6095,
+            "cumulative_prob": 0.9997
+          },
+          {
+            "value": 3.812,
+            "cumulative_prob": 0.9997
+          },
+          {
+            "value": 4.0145,
+            "cumulative_prob": 0.9998
+          },
+          {
+            "value": 4.217,
+            "cumulative_prob": 0.9998
+          },
+          {
+            "value": 4.4195,
+            "cumulative_prob": 0.9999
+          },
+          {
+            "value": 4.622,
+            "cumulative_prob": 0.9999
+          },
+          {
+            "value": 4.8245,
+            "cumulative_prob": 0.9999
+          },
+          {
+            "value": 5.027,
+            "cumulative_prob": 1.0
+          }
+        ],
+        "ks_statistic": 0.0194,
+        "ks_p_value": 0.004166,
+        "wasserstein_distance": 0.0446,
+        "cohens_d": -0.0014,
+        "cliffs_delta": -0.0017,
+        "divergence_summary_tr": "Eğitim (2022-2023) ile Holdout (2025-2026) dağılımları arasında istatistiki olarak belirgin farklılık mevcuttur (KS d=0.0194, p < 0.01). Ancak bu fark piyasa oynaklığı değişkenliğini ifade eder; yönsel alım-satım avantajı oluşturmaz.",
+        "created_at_utc": "2026-10-25T20:08:09.536364+00:00"
+      }
+    },
+    "pre_vs_post_event_us_cpi": {
+      "status": "success",
+      "result": {
+        "comparison_id": "DIST-CMP-2efdabcd3215",
+        "mode": "PRE_VS_POST_EVENT",
+        "target_metric": "RETURNS_PCT",
+        "group_a_label": "US_CPI Öncesi (-12h)",
+        "group_b_label": "US_CPI Sonrası (+12h)",
+        "metrics_a": {
+          "sample_count": 0,
+          "mean": 0.0,
+          "median": 0.0,
+          "std_dev": 0.0,
+          "variance": 0.0,
+          "skewness": 0.0,
+          "kurtosis": 0.0,
+          "min_value": 0.0,
+          "max_value": 0.0,
+          "p05": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p95": 0.0,
+          "iqr": 0.0,
+          "tail_ratio_95_50": 1.0
+        },
+        "metrics_b": {
+          "sample_count": 0,
+          "mean": 0.0,
+          "median": 0.0,
+          "std_dev": 0.0,
+          "variance": 0.0,
+          "skewness": 0.0,
+          "kurtosis": 0.0,
+          "min_value": 0.0,
+          "max_value": 0.0,
+          "p05": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p95": 0.0,
+          "iqr": 0.0,
+          "tail_ratio_95_50": 1.0
+        },
+        "histogram_bins": [],
+        "histogram_counts_a": [],
+        "histogram_counts_b": [],
+        "ecdf_a": [],
+        "ecdf_b": [],
+        "ks_statistic": 0.0,
+        "ks_p_value": 1.0,
+        "wasserstein_distance": 0.0,
+        "cohens_d": 0.0,
+        "cliffs_delta": 0.0,
+        "divergence_summary_tr": "US_CPI Öncesi (-12h) ile US_CPI Sonrası (+12h) dağılımları benzer davranış sergilemektedir (KS p >= 0.01). Dağılımsal yapının dengeli olduğu gözlenmektedir.",
+        "created_at_utc": "2026-10-25T20:08:09.900071+00:00"
+      }
+    }
+  },
+  "validation_summary": {
+    "total_comparisons_tested": 3,
+    "parametric_moments_verified": true,
+    "non_parametric_quantiles_verified": true,
+    "ecdf_generation_verified": true,
+    "ks_test_verified": true,
+    "wasserstein_distance_verified": true,
+    "disclaimer_enforced": true
+  }
+}

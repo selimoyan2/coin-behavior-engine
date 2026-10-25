@@ -1,0 +1,144 @@
+{
+  "status": "success",
+  "audit_timestamp_utc": "2026-10-25T20:03:16.486142+00:00",
+  "algorithm_revision": "IND-REF-MATH-V1.0",
+  "total_claims_evaluated": 3,
+  "reproduced_claims_count": 3,
+  "mismatch_claims_count": 0,
+  "overall_reproducibility_rate_pct": 100.0,
+  "reports": [
+    {
+      "experiment_id": "CBE-EXP-01-CPI-VOLATILITY-SHIFT",
+      "research_claim_tr": "US CPI duyurularının gerçekleşen volatiliteyi ortalama 1.950 katına çıkardığı iddiası",
+      "event_cohort": "US_CPI",
+      "source_partition_count": 57,
+      "source_event_count": 57,
+      "reproduction_timestamp_utc": "2026-10-25T20:03:15.647546+00:00",
+      "metrics": [
+        {
+          "metric_name": "VERIFIED_EVENT_COUNT",
+          "original_value": 57.0,
+          "independent_value": 57.0,
+          "absolute_difference": 0.0,
+          "relative_difference_pct": 0.0,
+          "allowed_tolerance": 0.0,
+          "verdict": "REPRODUCED",
+          "notes_tr": "BLS CPI duyuru kayıtları 57 adet olarak bağımsız şekilde doğrulanmıştır."
+        },
+        {
+          "metric_name": "MEAN_VOLATILITY_SHIFT_RATIO",
+          "original_value": 1.95,
+          "independent_value": 1.913,
+          "absolute_difference": 0.037,
+          "relative_difference_pct": 1.91,
+          "allowed_tolerance": 0.25,
+          "verdict": "REPRODUCED",
+          "notes_tr": "Bağımsız referans hesaplaması: 1.913x (Raporlanan: 1.950x)."
+        },
+        {
+          "metric_name": "BOOTSTRAP_CI_95_LOWER",
+          "original_value": 1.75,
+          "independent_value": 1.687,
+          "absolute_difference": 0.063,
+          "relative_difference_pct": 3.58,
+          "allowed_tolerance": 0.2,
+          "verdict": "REPRODUCED_WITH_TOLERANCE",
+          "notes_tr": "95% güven aralığı alt sınırı 1.0 (etkisiz) seviyesinin belirgin üzerindedir."
+        },
+        {
+          "metric_name": "BOOTSTRAP_CI_95_UPPER",
+          "original_value": 2.162,
+          "independent_value": 2.206,
+          "absolute_difference": 0.044,
+          "relative_difference_pct": 2.04,
+          "allowed_tolerance": 0.25,
+          "verdict": "REPRODUCED_WITH_TOLERANCE",
+          "notes_tr": "95% güven aralığı üst sınırı volatilite genişlemesini teyit etmektedir."
+        }
+      ],
+      "overall_status": "REPRODUCED_WITH_TOLERANCE",
+      "scientific_interpretation_tr": "Bağımsız referans hesaplaması 57 doğrulanmış CPI duyurusunda volatilite oranının 1.913x olduğunu teyit etmiştir. Güven aralığı 1.0 eşiğini kapsamamaktadır. Bu durum istatistiki bir volatilite genişlemesine işaret etmekle birlikte, alım-satım avantajı üretmez.",
+      "dataset_manifest_sha256": "686aeb854c80d346d292a7a7e22eccd44ab4b76e0014148006d98c0531f663d4",
+      "algorithm_revision": "IND-REF-MATH-V1.0"
+    },
+    {
+      "experiment_id": "CBE-EXP-03-INFLATION-PARENT-COHORT",
+      "research_claim_tr": "US_INFLATION (CPI + PCE) kohortunda gerçekleşen volatilite artışı iddiası",
+      "event_cohort": "US_INFLATION",
+      "source_partition_count": 57,
+      "source_event_count": 102,
+      "reproduction_timestamp_utc": "2026-10-25T20:03:16.164201+00:00",
+      "metrics": [
+        {
+          "metric_name": "VERIFIED_EVENT_COUNT",
+          "original_value": 102.0,
+          "independent_value": 102.0,
+          "absolute_difference": 0.0,
+          "relative_difference_pct": 0.0,
+          "allowed_tolerance": 0.0,
+          "verdict": "REPRODUCED",
+          "notes_tr": "US_INFLATION kohortu 57 CPI + 45 Core PCE olmak üzere toplam 102 doğrulanmış olay içerir."
+        },
+        {
+          "metric_name": "MEAN_VOLATILITY_SHIFT_RATIO",
+          "original_value": 1.817,
+          "independent_value": 1.792,
+          "absolute_difference": 0.025,
+          "relative_difference_pct": 1.39,
+          "allowed_tolerance": 0.25,
+          "verdict": "REPRODUCED",
+          "notes_tr": "Bağımsız referans hesaplaması: 1.792x (Raporlanan: 1.817x)."
+        },
+        {
+          "metric_name": "BOOTSTRAP_CI_95_LOWER",
+          "original_value": 1.66,
+          "independent_value": 1.614,
+          "absolute_difference": 0.046,
+          "relative_difference_pct": 2.75,
+          "allowed_tolerance": 0.2,
+          "verdict": "REPRODUCED_WITH_TOLERANCE",
+          "notes_tr": "Enflasyon kohortu alt güven sınırı 1.0 üzerinde kalmaya devam etmektedir."
+        },
+        {
+          "metric_name": "BOOTSTRAP_CI_95_UPPER",
+          "original_value": 1.988,
+          "independent_value": 1.993,
+          "absolute_difference": 0.005,
+          "relative_difference_pct": 0.25,
+          "allowed_tolerance": 0.2,
+          "verdict": "REPRODUCED_WITH_TOLERANCE",
+          "notes_tr": "Enflasyon kohortu üst güven sınırı bağımsız olarak hesaplanmıştır."
+        }
+      ],
+      "overall_status": "REPRODUCED_WITH_TOLERANCE",
+      "scientific_interpretation_tr": "US_INFLATION üst kohortundaki 102 olayda volatilite oranı 1.792x olarak bağımsız biçimde yeniden üretilmiştir. Çekirdek PCE duyuruları CPI'a kıyasla daha ılımlı reaksiyon göstermektedir.",
+      "dataset_manifest_sha256": "686aeb854c80d346d292a7a7e22eccd44ab4b76e0014148006d98c0531f663d4",
+      "algorithm_revision": "IND-REF-MATH-V1.0"
+    },
+    {
+      "experiment_id": "EXP-WF-REGIME-STABILITY-01",
+      "research_claim_tr": "Walk-forward test döneminde rejim olasılık dağılımının kararlı kaldığı (PSI < 0.10) iddiası",
+      "event_cohort": "MARKET_STRUCTURE",
+      "source_partition_count": 57,
+      "source_event_count": 26279,
+      "reproduction_timestamp_utc": "2026-10-25T20:03:16.484356+00:00",
+      "metrics": [
+        {
+          "metric_name": "POPULATION_STABILITY_INDEX_TRAIN_TO_TEST",
+          "original_value": 0.0125,
+          "independent_value": 0.0128,
+          "absolute_difference": 0.0003,
+          "relative_difference_pct": 2.61,
+          "allowed_tolerance": 0.0375,
+          "verdict": "REPRODUCED",
+          "notes_tr": "Bağımsız PSI hesaplaması: 0.0128. Eşik değer 0.10 altında kaldığı için dağılım kararlıdır."
+        }
+      ],
+      "overall_status": "REPRODUCED",
+      "scientific_interpretation_tr": "Bağımsız referans PSI değeri (0.0128) 0.10 kritik eşiğinin çok altındadır. Bu bulgu marjinal rejim dağılımının zaman içinde kararlı olduğunu doğrulamaktadır. Ancak bu durum gelecekteki fiyat yönünün tahmin edilebilir olduğunu göstermez.",
+      "dataset_manifest_sha256": "686aeb854c80d346d292a7a7e22eccd44ab4b76e0014148006d98c0531f663d4",
+      "algorithm_revision": "IND-REF-MATH-V1.0"
+    }
+  ],
+  "governance_note": "Tüm hesaplamalar izole yerel Parquet verileri üzerinde doğrudan bağımsız algoritmalarla yürütülmüştür."
+}
