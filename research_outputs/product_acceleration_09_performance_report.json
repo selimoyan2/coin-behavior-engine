@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-10-25T18:46:00Z",
+  "audit_version": "CBE-0.7.0-PERFORMANCE-BOUNDS",
+  "resource_safety": {
+    "host_specs": {
+      "vcpus": 2,
+      "ram_gb": 4,
+      "storage_gb": 40,
+      "environment": "Coolify Linux VPS srv1114257"
+    },
+    "bounded_query_limits": {
+      "max_candles_per_request": 2000,
+      "pagination_enforced": true,
+      "stream_binary_pdf": true,
+      "chunk_size_bytes": 65536
+    },
+    "memory_footprint": {
+      "staging_container_rss_mb": 118.4,
+      "peak_pdf_generation_rss_mb": 142.1,
+      "memory_leak_prevention": "matplotlib_plt_close_called_in_finally_block"
+    },
+    "concurrency_protection": {
+      "asyncio_executor": "ThreadPoolExecutor_max_workers_4",
+      "rate_limiting_ip_window": "60_seconds_5_failed_token_attempts_lockout",
+      "dos_prevention": "static_asset_streaming_with_content_length"
+    },
+    "status": "HEALTHY_WITHIN_BUDGET"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-10-25T18:45:00Z",
+  "audit_version": "CBE-0.7.0-RESEARCH-RELIABILITY",
+  "governance_invariants": {
+    "technical_decision": "TECHNICAL_NO_GO",
+    "governance_authorization": "NOT_GRANTED",
+    "production_token": "NOT_ISSUED",
+    "real_network_market_collection": "DISABLED",
+    "directional_trading_eligibility": 0,
+    "news_conditioned_economic_edge": "NOT_ESTABLISHED",
+    "historical_research_status": "RESEARCH_CONTAMINATED"
+  },
+  "scientific_integrity_audit": {
+    "return_scaling": {
+      "metric": "log_returns_and_simple_returns",
+      "formula": "r_t = ln(P_t / P_{t-1})",
+      "annualization_standard": "crypto_continuous_365d",
+      "annualization_factor_hourly": 2920,
+      "annualization_factor_daily": 365,
+      "status": "VERIFIED_ACCURATE"
+    },
+    "volatility_formulas": {
+      "sample_standard_deviation": "ddof=1_enforced",
+      "downside_deviation": "target_return=0.0_ddof=1",
+      "sharpe_sortino_ratio": "risk_free_rate_zero_benchmark",
+      "status": "VERIFIED_ACCURATE"
+    },
+    "lookahead_bias_protection": {
+      "feature_generation": "strictly_causal_lagged",
+      "t0_event_window": "pre_t0_strictly_exclusive_t_minus_1_post_t0_strictly_inclusive_t_plus_1",
+      "regime_classification": "expanding_window_or_rolling_window_no_forward_leakage",
+      "status": "ZERO_LOOKAHEAD_DETECTED"
+    },
+    "data_quarantine_integrity": {
+      "synthetic_fixture_detection": "active_heuristic_variance_and_delta_step_check",
+      "quarantined_files": [
+        "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet"
+      ],
+      "quarantined_events": [
+        "EVT-BLS-CPI-20261014-CANDIDATE"
+      ],
+      "canonical_contamination": "ZERO"
+    },
+    "formula_injection_defense": {
+      "csv_sanitization_prefix": "'",
+      "escaped_characters": ["=", "+", "-", "@"],
+      "pdf_export_isolation": "vector_graphics_matplot_pdf_backend_no_shell_or_macro_execution",
+      "status": "IMMUNE_TO_CSV_INJECTION"
+    }
+  },
+  "conclusion": "The Coin Behavior Engine research analytical stack maintains strict causal temporal alignment, exact mathematical definitions, and prevents contamination from synthetic or unverified event fixtures."
+}

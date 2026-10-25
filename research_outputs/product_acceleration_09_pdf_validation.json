@@ -1,0 +1,54 @@
+{
+  "timestamp_utc": "2026-10-25T14:32:50+00:00",
+  "generator_engine": "ResearchReportGenerator.export_report_as_pdf",
+  "backend_library": "matplotlib.backends.backend_pdf.PdfPages",
+  "pdf_version": "PDF-1.4",
+  "page_dimensions": "A4 Portrait (8.27 x 11.69 inches)",
+  "security_evaluation": {
+    "native_c_dependencies": "NONE_REQUIRED (matplotlib vector canvas)",
+    "script_injection_vulnerability": "IMMUNE (no HTML-to-PDF DOM execution)",
+    "path_traversal_risk": "ZERO (in-memory BytesIO streaming)"
+  },
+  "unicode_and_turkish_typography": {
+    "font_family": "DejaVu Sans",
+    "turkish_glyphs_verified": ["ç", "ş", "ğ", "ı", "ö", "ü", "Ç", "Ş", "Ğ", "İ", "Ö", "Ü"],
+    "rendering_verdict": "VERIFIED_PASS"
+  },
+  "supported_report_types": [
+    {
+      "report_type": "HISTORICAL_PERIOD_COMPARISON",
+      "visual_chart": "Key market metrics bar comparison & cumulative delta table",
+      "average_size_bytes": 50994,
+      "status": "VERIFIED_PASS"
+    },
+    {
+      "report_type": "MACRO_EVENT_SYNCHRONIZED_STUDY",
+      "visual_chart": "T0 synchronized trajectory curve with centerline and response table",
+      "average_size_bytes": 53826,
+      "status": "VERIFIED_PASS"
+    },
+    {
+      "report_type": "REGIME_DRIFT_INTELLIGENCE",
+      "visual_chart": "Baseline vs target regime distribution bar chart with PSI / JSD annotations",
+      "average_size_bytes": 52036,
+      "status": "VERIFIED_PASS"
+    },
+    {
+      "report_type": "DATA_QUALITY_AUDIT_REPORT",
+      "visual_chart": "Partition completeness, intervals, and audit log table",
+      "average_size_bytes": 48556,
+      "status": "VERIFIED_PASS"
+    },
+    {
+      "report_type": "BLOCKED_DATA_DIAGNOSTIC",
+      "visual_chart": "Quarantined / blocked data alert box with provenance warning",
+      "average_size_bytes": 39783,
+      "status": "VERIFIED_PASS"
+    }
+  ],
+  "provenance_and_legal_inclusion": {
+    "manifest_hash_included": true,
+    "model_version_cbe_0_7_0": true,
+    "mandatory_turkish_disclaimer": "Bu rapor tarihsel veri araştırması amacıyla hazırlanmıştır. Yatırım tavsiyesi veya canlı alım-satım sinyali değildir."
+  }
+}

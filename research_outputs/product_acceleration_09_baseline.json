@@ -1,0 +1,22 @@
+{
+  "timestamp_utc": "2026-10-25T14:18:40+00:00",
+  "base_commit": "6188cfb2cbf526563583846e737fe78d3e3f1a8d",
+  "branch": "main",
+  "model_version": "CBE-0.7.0",
+  "active_suite_tests": 112,
+  "vps_host": "srv1114257 (168.231.125.238)",
+  "staging_service_uuid": "dzzfws54by1whlbq6fk4ywut",
+  "production_service_id": "6t63aehpaw0cw1bbt4zcm09g",
+  "governance_status": {
+    "technical_decision": "TECHNICAL_NO_GO",
+    "governance_authorization": "NOT_GRANTED",
+    "production_token": "NOT_ISSUED",
+    "real_network_market_collection": "DISABLED",
+    "btcusdt_live_observation": "DISABLED",
+    "unattended_monitoring": "DISABLED",
+    "live_order_execution": "PERMANENTLY_PROHIBITED",
+    "directional_trading_eligibility": 0,
+    "news_conditioned_edge": "NOT_ESTABLISHED",
+    "historical_research_status": "RESEARCH_CONTAMINATED"
+  }
+}

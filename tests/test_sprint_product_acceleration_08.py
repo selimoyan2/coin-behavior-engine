@@ -77,7 +77,7 @@ class TestOperationsConsole:
 
     def test_05_production_mutation_latch(self, monkeypatch):
         monkeypatch.setenv("CBE_ENV", "production")
-        res = OperationsConsoleEngine.publish_import("prev_123", operator_token="cbe-staging-operator-key-2026", confirmed=True)
+        res = OperationsConsoleEngine.publish_import("prev_123", operator_token="authorized_test_token", confirmed=True)
         assert res.get("status") == "error"
         assert "MUTATIONS_PERMANENTLY_BLOCKED_IN_PRODUCTION" in res.get("message")
 

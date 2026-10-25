@@ -36,6 +36,7 @@ class MacroEventRecord:
     surprise_status: str
     raw_surprise: Optional[float]
     importance: str
+    verification_status: str = "VERIFIED_POINT_IN_TIME"
 
 
 class MacroEventComparisonEngine:
@@ -69,10 +70,27 @@ class MacroEventComparisonEngine:
                         surprise_status=str(row.get("surprise_status", "UNKNOWN")),
                         raw_surprise=float(row["raw_surprise"]) if pd.notnull(row.get("raw_surprise")) else None,
                         importance=str(row.get("event_importance_class", "HIGH")),
+                        verification_status=str(row.get("verification_status", "VERIFIED_POINT_IN_TIME")),
                     )
                     records.append(rec)
             except Exception as e:
                 logger.error("Failed loading macro events parquet: %s", e)
+
+        # Candidate quarantined CPI event for source trust verification testing (Phase E)
+        records.append(MacroEventRecord(
+            event_id="EVT-BLS-CPI-20261014-CANDIDATE",
+            event_category="US_INFLATION",
+            event_name="US CPI YoY October 2026 [Aday / Karantina]",
+            country="US",
+            release_at_utc="2026-10-14T12:30:00Z",
+            actual_value=None,
+            consensus_value=None,
+            previous_value=None,
+            surprise_status="UNAVAILABLE",
+            raw_surprise=None,
+            importance="CRITICAL",
+            verification_status="EVENT_QUARANTINED",
+        ))
 
         # Sort chronologically
         records.sort(key=lambda r: r.release_at_utc)
@@ -163,14 +181,49 @@ class MacroEventComparisonEngine:
     ) -> Dict[str, Any]:
         """
         Extract market candles around T0 and compute event-study metrics.
+        Enforces strict quarantine checks and distinguishes distinct failure categories.
         """
+        # Strict quarantine check (Phase E)
+        if getattr(event, "verification_status", "") == "EVENT_QUARANTINED":
+            return {
+                "status": "EVENT_QUARANTINED",
+                "event_id": event.event_id,
+                "event_name": event.event_name,
+                "category": event.event_category,
+                "release_at_utc": event.release_at_utc,
+                "verification_status": "EVENT_QUARANTINED",
+                "error": "Bu olay kaynak doğrulamasından geçmemiştir ve doğrulanmış tarihsel araştırma için kullanılamaz.",
+                "error_en": "This event has not passed source verification and cannot be used for validated historical research.",
+                "quarantine_reason": "UNVERIFIED_PROVENANCE_QUARANTINED",
+                "metrics": None,
+                "trajectory": [],
+            }
+
+        if not event.release_at_utc:
+            return {
+                "status": "EVENT_TIMESTAMP_UNVERIFIED",
+                "event_id": event.event_id,
+                "event_name": event.event_name,
+                "error": "Olay zaman damgası doğrulanmamış veya eksik.",
+                "error_en": "Event release timestamp is unverified or missing.",
+                "metrics": None,
+                "trajectory": [],
+            }
+
         from coin_behavior_engine.product.dataset_manager import DatasetManager
         dm = DatasetManager.get_instance()
 
         try:
             t0 = datetime.fromisoformat(event.release_at_utc.replace("Z", "+00:00"))
         except Exception as e:
-            return {"status": "INVALID_TIMESTAMP", "error": str(e)}
+            return {
+                "status": "EVENT_TIMESTAMP_UNVERIFIED",
+                "event_id": event.event_id,
+                "event_name": event.event_name,
+                "error": f"Geçersiz zaman damgası formatı: {e}",
+                "metrics": None,
+                "trajectory": [],
+            }
 
         start_time = t0 - timedelta(hours=pre_hours)
         end_time = t0 + timedelta(hours=post_hours)
@@ -211,10 +264,16 @@ class MacroEventComparisonEngine:
 
         if not candles:
             return {
-                "status": "BLOCKED_NO_DATA",
+                "status": "MARKET_DATA_UNAVAILABLE",
                 "event_id": event.event_id,
-                "error": f"Olay dönemi ({start_str} - {end_str}) için arşivde mum verisi bulunamadı.",
+                "event_name": event.event_name,
+                "category": event.event_category,
+                "release_at_utc": event.release_at_utc,
+                "error": f"Olay dönemi ({start_str} - {end_str}) için piyasa verisi arşivde bulunamadı.",
+                "error_en": f"Market data unavailable for event window ({start_str} - {end_str}).",
                 "candle_count": 0,
+                "metrics": None,
+                "trajectory": [],
             }
 
         # Find closest candle to T0
@@ -239,6 +298,28 @@ class MacroEventComparisonEngine:
         # Partition pre and post
         pre_candles = candles[:closest_idx]
         post_candles = candles[closest_idx:]
+
+        if len(pre_candles) < 2:
+            return {
+                "status": "INSUFFICIENT_PRE_EVENT_DATA",
+                "event_id": event.event_id,
+                "event_name": event.event_name,
+                "error": f"Olay öncesi veri yetersiz ({len(pre_candles)} mum, en az 2 gerekli).",
+                "error_en": f"Insufficient pre-event observations ({len(pre_candles)} candles).",
+                "metrics": None,
+                "trajectory": [],
+            }
+
+        if len(post_candles) < 2:
+            return {
+                "status": "INSUFFICIENT_POST_EVENT_DATA",
+                "event_id": event.event_id,
+                "event_name": event.event_name,
+                "error": f"Olay sonrası veri yetersiz ({len(post_candles)} mum, en az 2 gerekli).",
+                "error_en": f"Insufficient post-event observations ({len(post_candles)} candles).",
+                "metrics": None,
+                "trajectory": [],
+            }
 
         # Normalized curve with T0 relative hours
         synchronized_trajectory = []
@@ -362,9 +443,19 @@ class MacroEventComparisonEngine:
         res_b = cls.analyze_event_impact(ev_b, interval=interval, pre_hours=window_hours, post_hours=window_hours)
 
         if res_a.get("status") != "SUCCESS":
-            return {"status": "ERROR_EVENT_A", "error": res_a.get("error")}
+            return {
+                "status": "ERROR_EVENT_A",
+                "error": f"Olay A ({ev_a.event_id}): {res_a.get('error')}",
+                "detail_status": res_a.get("status"),
+                "event_id": ev_a.event_id,
+            }
         if res_b.get("status") != "SUCCESS":
-            return {"status": "ERROR_EVENT_B", "error": res_b.get("error")}
+            return {
+                "status": "ERROR_EVENT_B",
+                "error": f"Olay B ({ev_b.event_id}): {res_b.get('error')}",
+                "detail_status": res_b.get("status"),
+                "event_id": ev_b.event_id,
+            }
 
         # Build comparison summary deltas
         m_a = res_a["metrics"]

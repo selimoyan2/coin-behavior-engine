@@ -10,6 +10,7 @@ from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 import hashlib
 import json
+import hmac
 import logging
 import os
 from pathlib import Path
@@ -27,7 +28,15 @@ AUDIT_LOG_FILE = REPO_ROOT / "research_outputs" / "operations_audit_log.jsonl"
 
 SAFE_FILENAME_REGEX = re.compile(r"^[A-Za-z0-9_\-\.]+$")
 ALLOWED_EXTENSIONS = (".parquet", ".csv", ".gz")
-DEFAULT_STAGING_KEY = "cbe-staging-operator-key-2026"
+
+# Revoked tokens blacklist - any attempt to use these will be explicitly rejected as security violations
+REVOKED_OPERATOR_TOKENS = {
+    "cbe-staging-operator-key-2026",
+    "default-insecure-key",
+    "admin",
+    "operator",
+    "secret",
+}
 
 
 @dataclass
@@ -46,6 +55,10 @@ class ImportPreviewTicket:
     invalid_ohlc_count: int
     conflicting_count: int
     validation_verdict: str  # VALIDATED, REJECTED
+    provenance_verdict: str  # VERIFIED_IMPORTABLE, PARTIAL_VERIFIED_IMPORTABLE, QUARANTINED, INVALID_SOURCE
+    quarantine_reason: Optional[str]
+    completeness_pct: float
+    covered_dates: str
     created_at_utc: str
     expires_at_utc: str
     expected_partitions: List[str]
@@ -58,6 +71,9 @@ class OperationsConsoleEngine:
     _lock = threading.Lock()
     _active_previews: Dict[str, ImportPreviewTicket] = {}
     _job_history: List[Dict[str, Any]] = []
+    _failed_attempts: Dict[str, List[float]] = {}
+    MAX_FAILED_ATTEMPTS = 5
+    LOCKOUT_WINDOW_SECONDS = 60.0
 
     @classmethod
     def get_intake_dir(cls) -> Path:
@@ -67,14 +83,41 @@ class OperationsConsoleEngine:
         return intake
 
     @classmethod
-    def is_authorized_operator(cls, token: Optional[str]) -> Tuple[bool, str]:
-        """Validate operator token against environment configuration."""
+    def is_authorized_operator(cls, token: Optional[str], client_ip: str = "127.0.0.1") -> Tuple[bool, str]:
+        """
+        Validate operator token against environment configuration.
+        Enforces token revocation, brute-force lockout, and fail-closed security.
+        """
         env = os.environ.get("CBE_ENV", "staging").lower()
         if env == "production":
             return False, "MUTATIONS_PERMANENTLY_BLOCKED_IN_PRODUCTION"
 
-        expected_token = os.environ.get("OPERATOR_TOKEN", DEFAULT_STAGING_KEY)
-        if not token or token.strip() != expected_token.strip():
+        now = time.time()
+        with cls._lock:
+            attempts = cls._failed_attempts.get(client_ip, [])
+            attempts = [t for t in attempts if (now - t) < cls.LOCKOUT_WINDOW_SECONDS]
+            cls._failed_attempts[client_ip] = attempts
+            if len(attempts) >= cls.MAX_FAILED_ATTEMPTS:
+                return False, "OPERATOR_AUTH_RATE_LIMITED_LOCKOUT"
+
+        if not token or not token.strip():
+            with cls._lock:
+                cls._failed_attempts.setdefault(client_ip, []).append(now)
+            return False, "INVALID_OR_MISSING_OPERATOR_TOKEN"
+
+        clean_token = token.strip()
+        if clean_token in REVOKED_OPERATOR_TOKENS:
+            with cls._lock:
+                cls._failed_attempts.setdefault(client_ip, []).append(now)
+            return False, "OPERATOR_TOKEN_REVOKED"
+
+        expected_token = os.environ.get("CBE_OPERATOR_TOKEN") or os.environ.get("OPERATOR_TOKEN")
+        if not expected_token or not expected_token.strip():
+            return False, "OPERATOR_AUTH_NOT_CONFIGURED"
+
+        if not hmac.compare_digest(clean_token.encode("utf-8"), expected_token.strip().encode("utf-8")):
+            with cls._lock:
+                cls._failed_attempts.setdefault(client_ip, []).append(now)
             return False, "INVALID_OR_MISSING_OPERATOR_TOKEN"
 
         return True, "AUTHORIZED_STAGING_OPERATOR"
@@ -156,8 +199,20 @@ class OperationsConsoleEngine:
         first_utc = datetime.fromtimestamp(first_ms // 1000, tz=timezone.utc).isoformat()
         last_utc = datetime.fromtimestamp(last_ms // 1000, tz=timezone.utc).isoformat()
 
-        # Target month resolution
+        # Target month resolution and expected candles
         target_month = first_utc[:7]
+        # Calculate expected candles based on interval and month length
+        try:
+            year, mon = int(target_month[:4]), int(target_month[5:7])
+            import calendar
+            days_in_m = calendar.monthrange(year, mon)[1]
+        except Exception:
+            days_in_m = 31
+        
+        bars_per_day = 288 if declared_interval == "5m" else (24 if declared_interval == "1h" else 1440)
+        expected_full_month = days_in_m * bars_per_day
+        completeness_pct = min(100.0, round((record_count / expected_full_month) * 100.0, 2))
+        covered_dates = f"{first_utc[:10]} - {last_utc[:10]}"
 
         # OHLC Geometric constraints
         invalid_ohlc = int((
@@ -170,7 +225,32 @@ class OperationsConsoleEngine:
             (df["close"] <= 0)
         ).sum())
 
-        verdict = "VALIDATED" if (dups == 0 and invalid_ohlc == 0) else "REJECTED"
+        structural_valid = (dups == 0 and invalid_ohlc == 0)
+        verdict = "VALIDATED" if structural_valid else "REJECTED"
+
+        # Synthetic fixture & provenance checks (Phase C)
+        vol_nunique = int(df["volume"].nunique()) if "volume" in df.columns else 0
+        open_diffs = df["open"].diff().dropna()
+        open_diffs_nunique = int(open_diffs.nunique()) if len(open_diffs) > 0 else 0
+        
+        is_synthetic = False
+        quarantine_reason = None
+        if vol_nunique <= 1 and record_count >= 50:
+            is_synthetic = True
+            quarantine_reason = f"SYNTHETIC_FIXTURE_NO_AUTHENTIC_PROVENANCE: Sabit hacim ({float(df['volume'].iloc[0]) if len(df) > 0 else 0}) tespit edildi. Orijinal borsa soykütüğü doğrulanamadı."
+        elif open_diffs_nunique <= 2 and record_count >= 50:
+            is_synthetic = True
+            quarantine_reason = "SYNTHETIC_FIXTURE_NO_AUTHENTIC_PROVENANCE: Yapay doğrusal adım fiyatları tespit edildi."
+
+        if is_synthetic:
+            provenance_verdict = "QUARANTINED"
+        elif not structural_valid:
+            provenance_verdict = "INVALID_SOURCE"
+            quarantine_reason = f"Bütünlük hatası: {dups} mükerrer zaman damgası, {invalid_ohlc} geçersiz OHLC kaydı."
+        elif completeness_pct < 95.0:
+            provenance_verdict = "PARTIAL_VERIFIED_IMPORTABLE"
+        else:
+            provenance_verdict = "VERIFIED_IMPORTABLE"
 
         preview_id = f"prev_{uuid.uuid4().hex[:12]}"
         now_utc = datetime.now(timezone.utc)
@@ -190,10 +270,14 @@ class OperationsConsoleEngine:
             first_timestamp_utc=first_utc,
             last_timestamp_utc=last_utc,
             duplicates_count=dups,
-            missing_count=0,
+            missing_count=max(0, expected_full_month - record_count) if completeness_pct < 100.0 else 0,
             invalid_ohlc_count=invalid_ohlc,
             conflicting_count=0,
             validation_verdict=verdict,
+            provenance_verdict=provenance_verdict,
+            quarantine_reason=quarantine_reason,
+            completeness_pct=completeness_pct,
+            covered_dates=covered_dates,
             created_at_utc=now_utc.isoformat(),
             expires_at_utc=exp_utc.isoformat(),
             expected_partitions=expected_partitions,
@@ -208,16 +292,30 @@ class OperationsConsoleEngine:
             action="IMPORT_PREVIEW",
             actor="operator",
             source_hash=file_sha256,
-            verdict=verdict,
-            details={"filename": filename, "records": record_count, "month": target_month},
+            verdict=provenance_verdict,
+            details={
+                "filename": filename,
+                "records": record_count,
+                "month": target_month,
+                "provenance_verdict": provenance_verdict,
+                "quarantine_reason": quarantine_reason,
+            },
         )
+
+        safe_to_publish = (verdict == "VALIDATED" and provenance_verdict in ("VERIFIED_IMPORTABLE", "PARTIAL_VERIFIED_IMPORTABLE"))
 
         return {
             "status": "success",
             "preview_id": preview_id,
             "preview": asdict(ticket),
-            "safe_to_publish": verdict == "VALIDATED",
-            "message": "Önizleme başarıyla oluşturuldu. Yayın için doğrulama anahtarı gereklidir." if verdict == "VALIDATED" else "Veri bütünlük denetiminden geçemedi.",
+            "safe_to_publish": safe_to_publish,
+            "provenance_verdict": provenance_verdict,
+            "quarantine_reason": quarantine_reason,
+            "message": (
+                "Önizleme başarıyla oluşturuldu. Yayın için doğrulama anahtarı gereklidir."
+                if safe_to_publish
+                else f"Dosya yayınlanamaz ({provenance_verdict}): {quarantine_reason or 'Bütünlük denetiminden geçemedi.'}"
+            ),
         }
 
     @classmethod
@@ -255,6 +353,21 @@ class OperationsConsoleEngine:
 
         if ticket.validation_verdict != "VALIDATED":
             return {"status": "error", "error": "INTEGRITY_FAILURE", "message": "Geçersiz kılınmış veri partisyonu yayınlanamaz."}
+
+        if ticket.provenance_verdict == "QUARANTINED" or ticket.provenance_verdict not in ("VERIFIED_IMPORTABLE", "PARTIAL_VERIFIED_IMPORTABLE"):
+            cls._record_audit_log(
+                operation_id=preview_id,
+                action="IMPORT_PUBLISH",
+                actor="authenticated_operator",
+                source_hash=ticket.source_sha256,
+                verdict="REJECTED_QUARANTINED",
+                details={"reason": ticket.quarantine_reason or "Karantinaya alınmış kaynak yayınlanamaz."},
+            )
+            return {
+                "status": "error",
+                "error": "QUARANTINED_SOURCE_CANNOT_BE_PUBLISHED",
+                "message": f"Karantinaya alınmış aday dosya yayınlanamaz ({ticket.provenance_verdict}): {ticket.quarantine_reason or 'Yapay kurgu veya doğrulanmamış kaynak'}",
+            }
 
         target_file = cls.get_intake_dir() / ticket.filename
         if not target_file.exists():

@@ -1,0 +1,39 @@
+{
+  "timestamp_utc": "2026-10-25T14:33:00+00:00",
+  "version": "V3",
+  "dataset_inventory": {
+    "supported_symbols": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+    "available_symbols": ["BTCUSDT"],
+    "blocked_symbols": ["ETHUSDT", "SOLUSDT"],
+    "total_partitions": 285,
+    "total_size_mb": 65.0,
+    "canonical_intervals": ["5m", "1m"],
+    "derived_intervals": ["15m", "1h", "4h", "1d"],
+    "historical_range": "2022-01 — 2026-09",
+    "latest_verified_candle_utc": "2026-09-30T23:55:00Z"
+  },
+  "provenance_quality_breakdown": {
+    "source_verified_partitions": 285,
+    "pending_intake_candidates": 0,
+    "quarantined_candidates": 1,
+    "quarantined_candidate_details": [
+      {
+        "filename": "BTCUSDT-5m-2026-10-intake.parquet",
+        "reason": "Sabit hacim (15.2) ve yapay doğrusal fiyat artışı (+10.0) tespit edildi. Orijinal borsa soykütüğü doğrulanamadı.",
+        "status": "QUARANTINED_UNPUBLISHABLE"
+      }
+    ],
+    "invalid_partitions": 0
+  },
+  "research_readiness": {
+    "operational_data_readiness": "DATA_READY",
+    "scientific_research_readiness": "RESEARCH_READY_HISTORICAL_BOUNDED",
+    "governance_classification": "OFFLINE_AUDITED_HISTORICAL_DATA",
+    "predictive_edge_disclaimer": "Operasyonel veri bütünlüğü %100 doğrulanmıştır; ekonomik alfa veya yönsel getiri tahmini içermez."
+  },
+  "mathematical_integrity_audit": {
+    "cross_interval_consistency": "VERIFIED_PASS",
+    "monotonic_timestamp_ordering": "VERIFIED_PASS",
+    "zero_synthetic_data_guarantee": "ENFORCED"
+  }
+}

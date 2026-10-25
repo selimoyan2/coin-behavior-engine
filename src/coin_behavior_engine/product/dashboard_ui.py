@@ -549,7 +549,25 @@ def render_product_dashboard_html() -> str:
   </header>
 
   <!-- Top Navigation Tabs (10 Core Modules) -->
-  <nav class="nav-tabs" role="navigation" aria-label="Ürün Modülleri">
+    <!-- Grouped Category Navigation (Phase G) -->
+  <div class="nav-groups-bar" style="background: #020617; border-bottom: 1px solid #1e293b; padding: 8px 16px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+    <span style="font-size: 11px; font-weight: 700; color: #64748b; margin-right: 4px; text-transform: uppercase;">Modül Grubu:</span>
+    <button class="nav-group-pill active" id="group-btn-market" onclick="switchNavGroup('market')" style="background: #1e293b; border: 1px solid #38bdf8; color: #fff; padding: 5px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; font-weight: 600;">
+      📈 Piyasa Araştırması
+    </button>
+    <button class="nav-group-pill" id="group-btn-macro" onclick="switchNavGroup('macro')" style="background: transparent; border: 1px solid #334155; color: #94a3b8; padding: 5px 12px; border-radius: 20px; font-size: 12px; cursor: pointer;">
+      📰 Makro ve Senaryo
+    </button>
+    <button class="nav-group-pill" id="group-btn-data" onclick="switchNavGroup('data')" style="background: transparent; border: 1px solid #334155; color: #94a3b8; padding: 5px 12px; border-radius: 20px; font-size: 12px; cursor: pointer;">
+      📑 Veri ve Raporlar
+    </button>
+    <button class="nav-group-pill" id="group-btn-system" onclick="switchNavGroup('system')" style="background: transparent; border: 1px solid #334155; color: #94a3b8; padding: 5px 12px; border-radius: 20px; font-size: 12px; cursor: pointer;">
+      🛡️ Sistem Yönetimi
+    </button>
+  </div>
+
+  <!-- Top Navigation Tabs (Grouped Sub-Navigation) -->
+  <nav class="nav-tabs" role="navigation" aria-label="Ürün Modülleri" style="overflow-x: auto; white-space: nowrap; scrollbar-width: thin;">
     <a href="#overview" class="nav-tab active" id="tab-btn-overview" onclick="switchTab('overview')">
       <span>🔬</span> Araştırma Alanı
     </a>
@@ -1733,6 +1751,7 @@ def render_product_dashboard_html() -> str:
           </div>
           <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
             <select id="macro-study-ev-a" class="input" style="max-width: 280px; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 10px; border-radius: 4px;">
+              <option value="EVT-BLS-CPI-20261014-CANDIDATE">EVT-BLS-CPI-20261014-CANDIDATE (US CPI Ekim 2026 [Aday / Karantina])</option>
               <option value="EVT-BLS-CPI-20220112">EVT-BLS-CPI-20220112 (CPI Enflasyon)</option>
               <option value="EVT-BLS-NFP-20220107">EVT-BLS-NFP-20220107 (NFP İstihdam)</option>
               <option value="EVT-FED-FOMC-20220316">EVT-FED-FOMC-20220316 (Fed Faiz)</option>
@@ -2281,7 +2300,7 @@ def render_product_dashboard_html() -> str:
         <div style="background: #0a0f1d; border: 1px solid #1e293b; border-radius: 6px; padding: 14px;">
           <div style="font-size: 12px; font-weight: 700; color: #f59e0b; margin-bottom: 8px;">🔐 OPERATÖR YETKİLENDİRME & KANONİK YAYIN</div>
           <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <input type="password" id="ops-token-input" class="input" placeholder="Operatör Yetki Anahtarı..." value="cbe-staging-operator-key-2026" style="flex: 1; min-width: 220px; background: #020617; color: #fff; border: 1px solid #334155; padding: 8px 12px; border-radius: 4px;">
+            <input type="password" id="ops-token-input" class="input" placeholder="Operatör Yetki Anahtarı..." value="" style="flex: 1; min-width: 220px; background: #020617; color: #fff; border: 1px solid #334155; padding: 8px 12px; border-radius: 4px;">
             <button class="btn btn-primary" onclick="publishImportTicket()">✓ Doğrulanmış Veriyi Arşive Ekle</button>
             <button class="btn btn-danger" onclick="testUnauthorizedRejection()">⚠️ Yetkisiz Reddetme Testi</button>
           </div>
@@ -2361,6 +2380,7 @@ def render_product_dashboard_html() -> str:
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <button class="btn btn-primary" onclick="generateResearchReport('json')">📋 Raporu Derle (JSON)</button>
             <button class="btn" onclick="generateResearchReport('csv')">📥 Güvenli CSV İndir</button>
+            <button class="btn btn-primary" style="background: #e11d48; border-color: #be123c;" onclick="downloadReportPdf()">📄 Profesyonel PDF İndir</button>
           </div>
         </div>
       </div>
@@ -2374,6 +2394,7 @@ def render_product_dashboard_html() -> str:
               <option value="PERIOD_COMPARISON" selected>Tarihsel Dönem Karşılaştırması</option>
               <option value="MACRO_EVENT">Makro Olay Etki Analizi (T0)</option>
               <option value="REGIME_DRIFT">Rejim Dağılım Kayması (PSI & JSD)</option>
+              <option value="DATA_QUALITY">Veri Kalitesi & Bütünlük Denetimi (V3)</option>
             </select>
           </div>
           <div id="rpt-param-a-wrap">
@@ -2492,7 +2513,52 @@ def render_product_dashboard_html() -> str:
     let crosshairPos = null;
     let currentAnalogData = null;
 
-    // Tab Navigation
+    // Tab Navigation & Category Groups (Phase G)
+    const tabGroupsMap = {
+      overview: "market",
+      behavior: "market",
+      comparison: "market",
+      drift: "market",
+      regimes: "market",
+      events: "macro",
+      scenarios: "macro",
+      quality: "data",
+      reports: "data",
+      artifacts: "data",
+      research: "data",
+      operations: "system",
+      governance: "system"
+    };
+
+    function switchNavGroup(grpId) {
+      document.querySelectorAll(".nav-group-pill").forEach(p => {
+        p.classList.remove("active");
+        p.style.background = "transparent";
+        p.style.borderColor = "#334155";
+        p.style.color = "#94a3b8";
+        p.style.fontWeight = "normal";
+      });
+      const activePill = document.getElementById("group-btn-" + grpId);
+      if (activePill) {
+        activePill.classList.add("active");
+        activePill.style.background = "#1e293b";
+        activePill.style.borderColor = "#38bdf8";
+        activePill.style.color = "#fff";
+        activePill.style.fontWeight = "600";
+      }
+
+      // Default tab for group
+      const defaultTabs = {
+        market: "overview",
+        macro: "events",
+        data: "quality",
+        system: "operations"
+      };
+      if (defaultTabs[grpId]) {
+        switchTab(defaultTabs[grpId]);
+      }
+    }
+
     function switchTab(tabId) {
       currentTab = tabId;
       document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
@@ -2503,6 +2569,24 @@ def render_product_dashboard_html() -> str:
 
       const mod = document.getElementById("module-" + tabId);
       if (mod) mod.classList.add("active");
+
+      // Sync active group pill
+      const grp = tabGroupsMap[tabId] || "market";
+      document.querySelectorAll(".nav-group-pill").forEach(p => {
+        p.classList.remove("active");
+        p.style.background = "transparent";
+        p.style.borderColor = "#334155";
+        p.style.color = "#94a3b8";
+        p.style.fontWeight = "normal";
+      });
+      const activePill = document.getElementById("group-btn-" + grp);
+      if (activePill) {
+        activePill.classList.add("active");
+        activePill.style.background = "#1e293b";
+        activePill.style.borderColor = "#38bdf8";
+        activePill.style.color = "#fff";
+        activePill.style.fontWeight = "600";
+      }
 
       window.location.hash = tabId;
 
@@ -2521,8 +2605,9 @@ def render_product_dashboard_html() -> str:
         loadQualityTab();
       } else if (tabId === "regimes") {
         loadRegimesTab();
-      } else if (tabId === "events" && macroData.length === 0) {
-        loadMacroReactions();
+      } else if (tabId === "events") {
+        if (macroData.length === 0) loadMacroReactions();
+        setTimeout(() => runMacroSynchronizedStudy(), 80);
       } else if (tabId === "scenarios") {
         loadScenariosTab();
       } else if (tabId === "research" && researchData.length === 0) {
@@ -4723,7 +4808,7 @@ def render_product_dashboard_html() -> str:
       }
     }
 
-    // Macro Event Synchronized Study
+    // Macro Event Synchronized Study (Phase E & F Reliable Handling)
     async function runMacroSynchronizedStudy() {
       const evA = document.getElementById("macro-study-ev-a").value;
       const evB = document.getElementById("macro-study-ev-b").value;
@@ -4732,10 +4817,58 @@ def render_product_dashboard_html() -> str:
 
       try {
         const res = await fetch(url);
-        if (!res.ok) return;
-        const data = await res.json();
-
+        const data = await res.json().catch(() => ({ status: "API_ERROR", error: "Ağ yanıtı ayrıştırılamadı." }));
         const banner = document.getElementById("macro-contamination-banner");
+
+        // Handle Quarantined Event (Phase E3)
+        if (data.status === "EVENT_QUARANTINED") {
+          banner.style.background = "rgba(239, 68, 68, 0.12)";
+          banner.style.borderLeftColor = "#ef4444";
+          banner.style.color = "#fca5a5";
+          banner.innerHTML = "🚫 <b>Karantinaya Alınmış Makro Olay:</b> " + (data.error || "Bu olay kaynak doğrulamasından geçmemiştir ve doğrulanmış tarihsel araştırma için kullanılamaz.") +
+            "<br><span style='font-size:11px; opacity:0.85;'>English: " + (data.error_en || "This event has not passed source verification and cannot be used for validated historical research.") + "</span>";
+
+          document.getElementById("macro-m-pre").innerText = "KARANTİNA";
+          document.getElementById("macro-m-post").innerText = "KARANTİNA";
+          document.getElementById("macro-m-imm").innerText = "KARANTİNA";
+          document.getElementById("macro-m-mfe").innerText = "-";
+          document.getElementById("macro-m-mae").innerText = "-";
+          document.getElementById("macro-m-vol").innerText = "-";
+          document.getElementById("macro-m-volmult").innerText = "-";
+
+          drawMacroT0Canvas(data);
+          return;
+        }
+
+        // Handle Missing Market Data (Phase E2)
+        if (data.status === "MARKET_DATA_UNAVAILABLE" || data.status === "BLOCKED_NO_DATA") {
+          banner.style.background = "rgba(56, 189, 248, 0.1)";
+          banner.style.borderLeftColor = "#38bdf8";
+          banner.style.color = "#7dd3fc";
+          banner.innerHTML = "ℹ️ <b>Piyasa Fiyat Verisi Mevcut Değil:</b> " + (data.error || "Seçilen tarih penceresi için arşivde mum verisi bulunmamaktadır.");
+
+          document.getElementById("macro-m-pre").innerText = "-";
+          document.getElementById("macro-m-post").innerText = "-";
+          document.getElementById("macro-m-imm").innerText = "-";
+          document.getElementById("macro-m-mfe").innerText = "-";
+          document.getElementById("macro-m-mae").innerText = "-";
+          document.getElementById("macro-m-vol").innerText = "-";
+          document.getElementById("macro-m-volmult").innerText = "-";
+
+          drawMacroT0Canvas(data);
+          return;
+        }
+
+        // Handle Insufficient Window Observations
+        if (data.status === "INSUFFICIENT_PRE_EVENT_DATA" || data.status === "INSUFFICIENT_POST_EVENT_DATA") {
+          banner.style.background = "rgba(245, 158, 11, 0.1)";
+          banner.style.borderLeftColor = "#f59e0b";
+          banner.style.color = "#fde68a";
+          banner.innerHTML = "⚠️ <b>Yetersiz Gözlem Penceresi:</b> " + (data.error || "Olay penceresi sınırlarında yeterli sayıda mum kaydı bulunamadı.");
+          drawMacroT0Canvas(data);
+          return;
+        }
+
         let m = data.metrics || (data.event_a && data.event_a.metrics);
         let cont = data.contamination || (data.event_a && data.event_a.contamination);
 
@@ -4743,7 +4876,7 @@ def render_product_dashboard_html() -> str:
           banner.style.background = "rgba(245, 158, 11, 0.1)";
           banner.style.borderLeftColor = "#f59e0b";
           banner.style.color = "#fde68a";
-          banner.innerHTML = "⚠️ <b>Olay Kontaminasyonu:</b> Seçilen pencerede " + cont.confounding_count + " adet çakışan makro olay mevcut.";
+          banner.innerHTML = "⚠️ <b>Olay Kontaminasyonu Tespit Edildi:</b> Seçilen pencerede " + cont.confounding_count + " adet çakışan yüksek önem dereceli makro olay mevcut.";
         } else {
           banner.style.background = "rgba(16, 185, 129, 0.08)";
           banner.style.borderLeftColor = "#10b981";
@@ -4752,9 +4885,9 @@ def render_product_dashboard_html() -> str:
         }
 
         if (m) {
-          document.getElementById("macro-m-pre").innerText = m.pre_return_pct + "%";
-          document.getElementById("macro-m-post").innerText = m.post_return_pct + "%";
-          document.getElementById("macro-m-imm").innerText = m.immediate_return_pct + "%";
+          document.getElementById("macro-m-pre").innerText = (m.pre_return_pct >= 0 ? "+" : "") + m.pre_return_pct + "%";
+          document.getElementById("macro-m-post").innerText = (m.post_return_pct >= 0 ? "+" : "") + m.post_return_pct + "%";
+          document.getElementById("macro-m-imm").innerText = (m.immediate_return_pct >= 0 ? "+" : "") + m.immediate_return_pct + "%";
           document.getElementById("macro-m-mfe").innerText = "+" + m.mfe_pct + "%";
           document.getElementById("macro-m-mae").innerText = m.mae_pct + "%";
           document.getElementById("macro-m-vol").innerText = m.volatility_shift_ratio + "x";
@@ -4779,8 +4912,58 @@ def render_product_dashboard_html() -> str:
       const h = canvas.parentElement.clientHeight;
       ctx.clearRect(0, 0, w, h);
 
+      // Quarantined event visual placeholder (Phase E3)
+      if (data && data.status === "EVENT_QUARANTINED") {
+        ctx.fillStyle = "#070b13";
+        ctx.fillRect(0, 0, w, h);
+        ctx.strokeStyle = "#ef4444";
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(16, 16, w - 32, h - 32);
+        ctx.fillStyle = "rgba(239, 68, 68, 0.05)";
+        ctx.fillRect(16, 16, w - 32, h - 32);
+
+        ctx.fillStyle = "#ef4444";
+        ctx.font = "bold 13px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("⚠️ KARANTİNA: DOĞRULANMAMIŞ MAKRO OLAY", w / 2, h / 2 - 14);
+
+        ctx.fillStyle = "#fca5a5";
+        ctx.font = "11px sans-serif";
+        ctx.fillText("Bu olay kaynak doğrulamasından geçmemiştir ve doğrulanmış tarihsel araştırma için kullanılamaz.", w / 2, h / 2 + 8);
+        ctx.fillStyle = "#94a3b8";
+        ctx.font = "10px sans-serif";
+        ctx.fillText("This event has not passed source verification and cannot be used for validated historical research.", w / 2, h / 2 + 26);
+        ctx.textAlign = "left";
+        return;
+      }
+
+      // Missing market data visual placeholder (Phase E2)
+      if (data && (data.status === "MARKET_DATA_UNAVAILABLE" || data.status === "BLOCKED_NO_DATA")) {
+        ctx.fillStyle = "#070b13";
+        ctx.fillRect(0, 0, w, h);
+        ctx.strokeStyle = "#38bdf8";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(16, 16, w - 32, h - 32);
+        ctx.fillStyle = "#38bdf8";
+        ctx.font = "bold 13px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("ℹ️ PİYASA FİYAT VERİSİ ARŞİVDE BULUNAMADI", w / 2, h / 2 - 10);
+        ctx.fillStyle = "#94a3b8";
+        ctx.font = "11px sans-serif";
+        ctx.fillText("Doğrulanmış borsa arşivi 2022-01 ile 2026-09 aralığını kapsamaktadır.", w / 2, h / 2 + 10);
+        ctx.textAlign = "left";
+        return;
+      }
+
       const traj = data.trajectory || (data.event_a && data.event_a.trajectory);
-      if (!traj || traj.length < 2) return;
+      if (!traj || traj.length < 2) {
+        ctx.fillStyle = "#64748b";
+        ctx.font = "12px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("Görüntülenecek fiyat eğrisi bulunamadı.", w / 2, h / 2);
+        ctx.textAlign = "left";
+        return;
+      }
 
       const rets = traj.map(t => t.relative_return_pct);
       const minR = Math.min(...rets, -1.0);
@@ -4789,28 +4972,47 @@ def render_product_dashboard_html() -> str:
 
       // Draw T0 vertical centerline
       const midX = w / 2;
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.25)";
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
       ctx.moveTo(midX, 10);
-      ctx.lineTo(midX, h - 20);
+      ctx.lineTo(midX, h - 22);
       ctx.stroke();
       ctx.setLineDash([]);
 
+      // Draw zero reference line
+      const zeroY = h - 22 - ((0 - minR) / span) * (h - 44);
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
+      ctx.beginPath();
+      ctx.moveTo(20, zeroY);
+      ctx.lineTo(w - 20, zeroY);
+      ctx.stroke();
+
       ctx.fillStyle = "#94a3b8";
       ctx.font = "10px sans-serif";
-      ctx.fillText("T0 (Yayın Anı)", midX - 30, h - 6);
+      ctx.fillText("T0 (Yayın Anı)", midX - 32, h - 6);
+      ctx.fillText("%0 Referans", 24, zeroY - 4);
 
       // Trajectory curve
       ctx.strokeStyle = "#38bdf8";
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 2.2;
       ctx.beginPath();
       for (let i = 0; i < traj.length; i++) {
         const x = (i / (traj.length - 1)) * (w - 40) + 20;
-        const y = h - 20 - ((rets[i] - minR) / span) * (h - 40);
+        const y = h - 22 - ((rets[i] - minR) / span) * (h - 44);
         if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
       }
       ctx.stroke();
+
+      // Point highlights
+      ctx.fillStyle = "#38bdf8";
+      for (let i = 0; i < traj.length; i += 4) {
+        const x = (i / (traj.length - 1)) * (w - 40) + 20;
+        const y = h - 22 - ((rets[i] - minR) / span) * (h - 44);
+        ctx.beginPath();
+        ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
 
     // Operations Console Functions
@@ -4882,8 +5084,21 @@ def render_product_dashboard_html() -> str:
         document.getElementById("ops-preview-invalid").innerText = p.invalid_ohlc_count;
         document.getElementById("ops-preview-range").innerText = (p.first_timestamp_utc || '').substring(0, 10) + " → " + (p.last_timestamp_utc || '').substring(0, 10);
 
+        const verdictBadge = document.getElementById("ops-preview-verdict");
         const alertBox = document.getElementById("ops-publish-alert");
-        alertBox.style.display = "none";
+        if (data.provenance_verdict === "QUARANTINED") {
+          verdictBadge.className = "badge badge-danger";
+          verdictBadge.innerText = "QUARANTINED";
+          alertBox.style.display = "block";
+          alertBox.style.background = "rgba(239, 68, 68, 0.15)";
+          alertBox.style.border = "1px solid #ef4444";
+          alertBox.style.color = "#fca5a5";
+          alertBox.innerHTML = "🚫 <b>DOSYA KARANTİNAYA ALINDI:</b> " + (data.quarantine_reason || 'Doğrulanmamış kaynak') + "<br><span style='font-size:11px;'>Bu dosyanın kanonik arşive yayınlanması engellenmiştir.</span>";
+        } else {
+          verdictBadge.className = "badge badge-success";
+          verdictBadge.innerText = data.provenance_verdict || "VALIDATED";
+          alertBox.style.display = "none";
+        }
       } catch (e) {
         console.error("Preview ticket error:", e);
       }
@@ -5047,6 +5262,9 @@ def render_product_dashboard_html() -> str:
         lblA.innerText = "Temel Ay (Baseline)";
         lblB.innerText = "Hedef Ay (Target)";
         wrapB.style.display = "block";
+      } else if (type === "DATA_QUALITY") {
+        wrapA.style.display = "none";
+        wrapB.style.display = "none";
       }
     }
 
@@ -5093,6 +5311,42 @@ def render_product_dashboard_html() -> str:
         }
       } catch (e) {
         console.error("Report generation error:", e);
+      }
+    }
+
+        async function downloadReportPdf() {
+      const type = document.getElementById("rpt-type-select").value;
+      const paramA = document.getElementById("rpt-param-a").value.trim();
+      const paramB = document.getElementById("rpt-param-b").value.trim();
+      const intv = document.getElementById("rpt-interval").value;
+
+      let url = "/api/v1/product/research-report?report_type=" + type + "&interval=" + intv + "&format=pdf";
+      if (type === "PERIOD_COMPARISON") {
+        url += "&month_a=" + paramA + "&month_b=" + paramB;
+      } else if (type === "MACRO_EVENT") {
+        url += "&event_id_a=" + paramA;
+        if (paramB) url += "&event_id_b=" + paramB;
+      } else if (type === "REGIME_DRIFT") {
+        url += "&baseline_month=" + paramA + "&target_month=" + paramB;
+      }
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          alert("PDF Rapor Hatası: " + (errData.error || errData.message || res.statusText));
+          return;
+        }
+        const blob = await res.blob();
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.setAttribute("download", (lastReportData && lastReportData.report_id ? lastReportData.report_id : "cbe_research_report") + ".pdf");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (e) {
+        console.error("PDF download error:", e);
+        alert("PDF indirilemedi: " + e.message);
       }
     }
 

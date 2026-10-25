@@ -1,0 +1,46 @@
+{
+  "timestamp_utc": "2026-10-25T14:32:30+00:00",
+  "audit_version": "CBE-MACRO-0.9.0",
+  "root_cause_analysis_blank_chart": {
+    "issue_description": "In Sprint 08, macro event analysis errors or unavailable data returned raw HTTP 400 Bad Request which caused frontend fetch calls to silently exit (if (!res.ok) return), leaving metrics as dashes and the canvas completely blank.",
+    "remediation": "Updated dashboard_api to return structured JSON status (HTTP 200 with explicit status payload) and updated dashboard_ui to render informative warning canvases and Turkish/English status alerts instead of a blank canvas."
+  },
+  "failure_taxonomy_implemented": [
+    {
+      "status_code": "VERIFIED_READY",
+      "ui_treatment": "Green verified banner, metrics populated, interactive T0 trajectory rendered."
+    },
+    {
+      "status_code": "EVENT_QUARANTINED",
+      "ui_treatment": "Red/amber warning banner, metrics set to KARANTİNA, canvas draws quarantine warning badge."
+    },
+    {
+      "status_code": "EVENT_TIMESTAMP_UNVERIFIED",
+      "ui_treatment": "Warning banner indicating unverified or missing release timestamp."
+    },
+    {
+      "status_code": "MARKET_DATA_UNAVAILABLE",
+      "ui_treatment": "Sky blue info banner indicating absence of market candles for the event window."
+    },
+    {
+      "status_code": "INSUFFICIENT_PRE_EVENT_DATA",
+      "ui_treatment": "Warning banner indicating fewer than 2 pre-event bars available."
+    },
+    {
+      "status_code": "INSUFFICIENT_POST_EVENT_DATA",
+      "ui_treatment": "Warning banner indicating fewer than 2 post-event bars available."
+    },
+    {
+      "status_code": "CONTAMINATED_EVENT_WINDOW",
+      "ui_treatment": "Amber warning badge detailing confounding macroeconomic releases within the window."
+    }
+  ],
+  "quarantined_cpi_verification": {
+    "event_id": "EVT-BLS-CPI-20261014-CANDIDATE",
+    "event_name": "US Consumer Price Index (CPI YoY) [Aday / Karantina]",
+    "verification_verdict": "EVENT_QUARANTINED",
+    "required_turkish_explanation": "Bu olay kaynak doğrulamasından geçmemiştir ve doğrulanmış tarihsel araştırma için kullanılamaz.",
+    "required_english_explanation": "This event has not passed source verification and cannot be used for validated historical research.",
+    "ui_quarantine_enforced": true
+  }
+}

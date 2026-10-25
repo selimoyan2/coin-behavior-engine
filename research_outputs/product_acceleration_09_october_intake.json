@@ -1,0 +1,43 @@
+{
+  "inspection_timestamp_utc": "2026-10-25T14:32:10+00:00",
+  "candidate_file": "BTCUSDT-5m-2026-10-intake.parquet",
+  "file_path": "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet",
+  "file_size_bytes": 13733,
+  "file_size_mb": 0.01,
+  "source_sha256": "3cb07038e154f9a3528b1828131362e542c8d209b52a5c2d33405b57f08b3558",
+  "declared_metadata": {
+    "symbol": "BTCUSDT",
+    "interval": "5m",
+    "target_month": "2026-10"
+  },
+  "temporal_coverage": {
+    "first_timestamp_utc": "2026-10-01T00:00:00Z",
+    "last_timestamp_utc": "2026-10-01T23:55:00Z",
+    "covered_days": 1,
+    "record_count": 288,
+    "expected_month_candles": 8928,
+    "missing_month_candles": 8640,
+    "completeness_pct": 3.23
+  },
+  "structural_analysis": {
+    "duplicate_timestamps": 0,
+    "invalid_ohlc_records": 0,
+    "monotonic_timestamp_ordering": true,
+    "required_columns_present": true
+  },
+  "provenance_and_integrity_audit": {
+    "volume_variance": 0.0,
+    "unique_volume_values": [15.2],
+    "open_price_step": "+10.0 linear increment per bar",
+    "synthetic_pattern_detected": true,
+    "authentic_exchange_signature": false,
+    "provenance_lineage": "SYNTHETIC_TEST_FIXTURE_DEVELOPMENT_ONLY"
+  },
+  "decision": {
+    "provenance_verdict": "QUARANTINED",
+    "quarantine_reason": "SYNTHETIC_FIXTURE_NO_AUTHENTIC_PROVENANCE: Sabit hacim (15.2) ve yapay doğrusal fiyat artışı (+10.0) tespit edildi. Orijinal borsa soykütüğü doğrulanamadı.",
+    "safe_to_publish": false,
+    "publication_authorization": "STRICTLY_PROHIBITED",
+    "ui_display_action": "DISPLAY_QUARANTINE_WARNING_WITH_PROVENANCE_ALERT"
+  }
+}

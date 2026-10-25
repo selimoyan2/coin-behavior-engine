@@ -1,0 +1,42 @@
+{
+  "timestamp_utc": "2026-10-25T14:32:40+00:00",
+  "catalog_source": "research_outputs/historical_macro_events_11_23.parquet",
+  "total_authentic_events": 237,
+  "quarantined_test_candidates": 1,
+  "categories_supported": [
+    "US_INFLATION",
+    "US_LABOR",
+    "US_CENTRAL_BANK",
+    "US_GROWTH",
+    "REGULATORY_LEGAL"
+  ],
+  "event_filtering_features": {
+    "by_category": true,
+    "by_institution": true,
+    "by_verification_status": true,
+    "by_date_range": true
+  },
+  "comparative_t0_synchronization": {
+    "single_event_study": "VERIFIED_PASS",
+    "two_event_comparative_overlay": "VERIFIED_PASS",
+    "delta_metrics_computed": [
+      "pre_return_delta_pct",
+      "post_return_delta_pct",
+      "immediate_return_delta_pct",
+      "mfe_delta_pct",
+      "mae_delta_pct",
+      "volatility_shift_delta",
+      "volume_multiplier_delta"
+    ]
+  },
+  "contamination_engine": {
+    "detection_radius_hours": 24.0,
+    "confounding_events_identified": true,
+    "contamination_warning_emitted": true
+  },
+  "scientific_caveats_enforced": {
+    "correlation_not_causation": true,
+    "sample_adequacy_indicators": true,
+    "single_event_non_generalizability_warning": true
+  }
+}

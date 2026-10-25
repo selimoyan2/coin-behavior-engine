@@ -1,0 +1,53 @@
+{
+  "timestamp_utc": "2026-10-25T14:32:00+00:00",
+  "audit_version": "CBE-SEC-0.9.0",
+  "vulnerability_assessment": {
+    "exposed_credential_identified": "cbe-staging-operator-key-2026",
+    "exposure_locations": [
+      "research_outputs/product_acceleration_08_delivery_report.md",
+      "src/coin_behavior_engine/product/dashboard_ui.py (input prefill)"
+    ],
+    "compromise_status": "REVOKED_AND_QUARANTINED"
+  },
+  "hardening_actions_implemented": [
+    {
+      "action": "TOKEN_REVOCATION",
+      "description": "Explicit blacklist added for compromised token 'cbe-staging-operator-key-2026'. Any submission returns OPERATOR_TOKEN_REVOKED.",
+      "status": "ENFORCED"
+    },
+    {
+      "action": "CONSTANT_TIME_VERIFICATION",
+      "description": "Implemented hmac.compare_digest to prevent timing side-channel attacks on operator authorization token.",
+      "status": "ENFORCED"
+    },
+    {
+      "action": "BRUTE_FORCE_RATE_LIMITER",
+      "description": "Sliding window rate-limiter: maximum 5 failed attempts within 60 seconds triggers OPERATOR_AUTH_RATE_LIMITED_LOCKOUT.",
+      "status": "ENFORCED"
+    },
+    {
+      "action": "FAIL_CLOSED_ENVIRONMENT",
+      "description": "When neither CBE_OPERATOR_TOKEN nor OPERATOR_TOKEN is configured in environment, system fails closed with OPERATOR_AUTH_NOT_CONFIGURED.",
+      "status": "ENFORCED"
+    },
+    {
+      "action": "PRODUCTION_MUTATION_LATCH",
+      "description": "Permanent server-side block for mutating operations when CBE_ENV=production, regardless of provided token.",
+      "status": "ENFORCED"
+    },
+    {
+      "action": "FRONTEND_SECRET_REMOVAL",
+      "description": "Removed hardcoded password prefill in dashboard_ui.py. Operator input is blank by default.",
+      "status": "ENFORCED"
+    }
+  ],
+  "security_regression_results": {
+    "missing_token": "REJECTED_PASS",
+    "wrong_token": "REJECTED_PASS",
+    "revoked_token": "REJECTED_PASS",
+    "unconfigured_env": "REJECTED_FAIL_CLOSED_PASS",
+    "production_mutation_attempt": "REJECTED_LATCH_PASS",
+    "path_traversal_attack": "REJECTED_PASS",
+    "secret_exposure_in_json": "CLEAN_PASS"
+  }
+}
