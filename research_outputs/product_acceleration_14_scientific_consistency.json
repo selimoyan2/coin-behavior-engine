@@ -1,6 +1,6 @@
 {
-  "audit_id": "AUDIT-CONSISTENCY-202610252149",
-  "audited_at_utc": "2026-10-25T21:49:40.108632+00:00",
+  "audit_id": "AUDIT-CONSISTENCY-202610252152",
+  "audited_at_utc": "2026-10-25T21:52:36.273146+00:00",
   "canonical_model_version": "CBE-0.7.0 (FROZEN)",
   "total_results_evaluated": 19,
   "consistent_count": 13,

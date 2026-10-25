@@ -1,8 +1,15 @@
 {
-  "application_version": "CBE-0.7.0",
-  "git_revision": "36ccafcc8543a241ba7bf193e4aceb28c8bf7858",
-  "git_revision_short": "36ccafcc",
-  "build_timestamp_utc": "2026-10-24T02:06:00Z",
+  "application_version": "CBE-0.7.0 (FROZEN)",
+  "canonical_model_version": "CBE-0.7.0",
+  "source_commit_sha": "caa07dad19619635e44993d6436b09af93d5ba30",
+  "build_commit_sha": "caa07dad19619635e44993d6436b09af93d5ba30",
+  "git_commit": "caa07dad19619635e44993d6436b09af93d5ba30",
+  "git_revision": "caa07dad19619635e44993d6436b09af93d5ba30",
+  "git_revision_short": "caa07dad",
+  "build_timestamp_utc": "2026-10-26T00:52:18Z",
+  "image_digest": "sha256:df870b4ef58bbf6d71ab48a575b1cf196d6618f6fc5ec6f1498de8ce3856dc27",
+  "dataset_manifest_version": "cbe-manifest-v2-73a6212acca3",
+  "dataset_manifest_sha256": "73a6212acca38521bc569ec8dfbb7850a58a74ec4bc81fbcbf3b8655c68f18cf",
   "environment": "staging",
-  "provenance": "CBE Product Acceleration Build Pipeline"
+  "provenance": "CBE Product Acceleration Build Pipeline Sprint 14"
 }

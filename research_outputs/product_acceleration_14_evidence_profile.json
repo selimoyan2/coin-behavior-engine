@@ -1,5 +1,5 @@
 {
-  "profile_id": "EQP-202610252149",
+  "profile_id": "EQP-202610252152",
   "overall_classification": "MODERATE_DESCRIPTIVE_EVIDENCE",
   "composite_quality_index": 8.48,
   "dimensions": [
@@ -126,7 +126,7 @@
         "product_acceleration_14_robustness_recalculation.json"
       ],
       "missing_evidence_tr": "Daha geni\u015f makro olay aileleri i\u00e7in Benjamini-Yekutieli ba\u011f\u0131ml\u0131l\u0131k d\u00fczeltmesi hen\u00fcz uygulanmam\u0131\u015ft\u0131r.",
-      "last_verified_utc": "2026-10-25T21:49:41.419668+00:00",
+      "last_verified_utc": "2026-10-25T21:52:37.563585+00:00",
       "assessment_method_tr": "\u00d6nceden tan\u0131ml\u0131 14 ge\u00e7erli h\u00fccre p-de\u011ferleri s\u0131ralanarak q=0.05 Benjamini-Hochberg ad\u0131m-art\u0131rma y\u00f6ntemiyle denetlenmi\u015ftir."
     },
     {
@@ -159,7 +159,7 @@
         "product_acceleration_14_evidence_profile.json"
       ],
       "missing_evidence_tr": "Y\u00fcksek frekansl\u0131 (milisaniyelik) emir defteri s\u0131z\u0131nt\u0131 analizi mevcut veri kapsam\u0131 d\u0131\u015f\u0131ndad\u0131r.",
-      "last_verified_utc": "2026-10-25T21:49:41.419668+00:00",
+      "last_verified_utc": "2026-10-25T21:52:37.563585+00:00",
       "assessment_method_tr": "E\u011fitim ve test partition s\u0131n\u0131rlar\u0131nda zaman damgas\u0131 \u00e7ak\u0131\u015fma ve lookahead testleri \u00e7al\u0131\u015ft\u0131r\u0131lm\u0131\u015ft\u0131r."
     },
     {
