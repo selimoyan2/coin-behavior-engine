@@ -1,0 +1,114 @@
+{
+  "verified_at_utc": "2026-10-25T21:06:14Z",
+  "staging_container_id": "86881ba01b3e",
+  "staging_loopback_binding": "127.0.0.1:18080->8000/tcp",
+  "all_probes_passed": true,
+  "probes": {
+    "health": {
+      "code": 200,
+      "expected": 200,
+      "passed": true,
+      "sample": "Status: healthy"
+    },
+    "runtime_build": {
+      "code": 200,
+      "expected": 200,
+      "passed": true,
+      "sample": "Status: success"
+    },
+    "product_ui": {
+      "code": 200,
+      "expected": 200,
+      "passed": true,
+      "sample": "HTML (338466 bytes)"
+    },
+    "overview": {
+      "code": 200,
+      "expected": 200,
+      "passed": true,
+      "sample": "Status: success"
+    },
+    "specification_curves": {
+      "code": 200,
+      "expected": 200,
+      "passed": true,
+      "sample": "Status: success"
+    },
+    "evidence_profile": {
+      "code": 200,
+      "expected": 200,
+      "passed": true,
+      "sample": "Status: success"
+    },
+    "event_drilldown": {
+      "code": 200,
+      "expected": 200,
+      "passed": true,
+      "sample": "Status: SUCCESS"
+    },
+    "scientific_reconciliation": {
+      "code": 200,
+      "expected": 200,
+      "passed": true,
+      "sample": "Status: success"
+    },
+    "distribution_lab_valid": {
+      "code": 200,
+      "expected": 200,
+      "passed": true,
+      "sample": "Status: success"
+    },
+    "distribution_lab_out_of_range": {
+      "code": 404,
+      "expected": 404,
+      "passed": true,
+      "sample": "Status: DATA_RANGE_UNAVAILABLE"
+    },
+    "report_17_reconciliation_json": {
+      "code": 200,
+      "expected": 200,
+      "passed": true,
+      "sample": "Status: success"
+    },
+    "report_18_specification_curve_json": {
+      "code": 200,
+      "expected": 200,
+      "passed": true,
+      "sample": "Status: success"
+    },
+    "report_19_evidence_profile_json": {
+      "code": 200,
+      "expected": 200,
+      "passed": true,
+      "sample": "Status: success"
+    },
+    "report_20_event_drilldown_json": {
+      "code": 200,
+      "expected": 200,
+      "passed": true,
+      "sample": "Status: success"
+    },
+    "report_18_specification_curve_pdf": {
+      "code": 200,
+      "expected": 200,
+      "passed": true,
+      "sample": "Valid PDF header (52262 bytes)"
+    }
+  },
+  "staging_build_metadata": {
+    "status": "success",
+    "environment": "staging",
+    "application_version": "CBE-0.7.0",
+    "build_commit": "c403f9a7ae8a3a57d279841f2da706ec0ce48cca",
+    "build_commit_short": "c403f9a7",
+    "build_timestamp_utc": "2026-10-25T21:06:08.908124+00:00",
+    "dataset_manifest_version": "cbe-manifest-v2-73a6212acca3",
+    "runtime_identity_verified": true
+  },
+  "production_container_verification": {
+    "container_id": "b716c7d5f9bf",
+    "app_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+    "status": "b716c7d5f9bf | 6t63aehpaw0cw1bbt4zcm09g-20261025T204202 | Up 23 minutes (healthy) | 8000/tcp",
+    "zero_touch_preserved": true
+  }
+}
