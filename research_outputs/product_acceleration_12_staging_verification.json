@@ -1,0 +1,50 @@
+{
+  "timestamp_utc": "2026-10-25T20:31:37Z",
+  "vps_host": "srv1114257 (168.231.125.238)",
+  "staging_service": {
+    "service_name": "cbe-market-intelligence-staging",
+    "uuid": "dzzfws54by1whlbq6fk4ywut",
+    "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+    "container_id": "86881ba01b3e",
+    "port_binding": "127.0.0.1:18080->8000/tcp",
+    "status": "healthy",
+    "source_commit": "6775728a49c95d9e525164bc41a316b223c21a4f",
+    "source_commit_short": "6775728a",
+    "runtime_identity_verified": true
+  },
+  "production_service_isolation": {
+    "service_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+    "container_id": "8a2bd64c1529",
+    "status": "healthy",
+    "uptime_minutes": 34,
+    "zero_touch_guarantee": "VERIFIED_UNTOUCHED"
+  },
+  "endpoints_probed": [
+    {"endpoint": "/health", "status_code": 200, "elapsed_ms": 24.79, "verdict": "SUCCESS"},
+    {"endpoint": "/api/v1/product/runtime-build", "status_code": 200, "build_commit": "6775728a49c95d9e525164bc41a316b223c21a4f", "elapsed_ms": 11.75, "verdict": "SUCCESS"},
+    {"endpoint": "/api/v1/product/overview", "status_code": 200, "elapsed_ms": 45.74, "verdict": "SUCCESS"},
+    {"endpoint": "/api/v1/product/evidence-intelligence", "status_code": 200, "health_score": 100, "elapsed_ms": 3.76, "verdict": "SUCCESS"},
+    {"endpoint": "/api/v1/product/robustness-matrix", "status_code": 200, "stability_score": 0.88, "elapsed_ms": 1281.65, "verdict": "SUCCESS"},
+    {"endpoint": "/api/v1/product/research-builder/templates", "status_code": 200, "templates_count": 5, "elapsed_ms": 277.64, "verdict": "SUCCESS"},
+    {"endpoint": "/api/v1/product/distribution-lab?mode=YEAR_VS_YEAR&year1=2021&year2=2022", "status_code": 200, "elapsed_ms": 201.34, "verdict": "SUCCESS"},
+    {"endpoint": "/api/v1/product/experiment-package/export", "status_code": 200, "elapsed_ms": 5.59, "verdict": "SUCCESS"},
+    {"endpoint": "/api/v1/product/research-notebook/export", "status_code": 200, "elapsed_ms": 2.21, "verdict": "SUCCESS"},
+    {"endpoint": "/api/v1/product/research-report?report_type=INDEPENDENT_REPRODUCTION&format=pdf", "status_code": 200, "content_type": "application/pdf", "magic": "%PDF-1.4", "elapsed_ms": 1812.33, "verdict": "SUCCESS"},
+    {"endpoint": "/api/v1/product/research-report?report_type=HISTORICAL_DISTRIBUTION&format=pdf", "status_code": 200, "content_type": "application/pdf", "magic": "%PDF-1.4", "elapsed_ms": 504.15, "verdict": "SUCCESS"},
+    {"endpoint": "/api/v1/product/research-report?report_type=ROBUSTNESS_SENSITIVITY&format=pdf", "status_code": 200, "content_type": "application/pdf", "magic": "%PDF-1.4", "elapsed_ms": 1498.9, "verdict": "SUCCESS"},
+    {"endpoint": "/api/v1/product/research-report?report_type=PORTABLE_EXPERIMENT&format=pdf", "status_code": 200, "content_type": "application/pdf", "magic": "%PDF-1.4", "elapsed_ms": 401.79, "verdict": "SUCCESS"}
+  ],
+  "governance_invariants": {
+    "TECHNICAL_DECISION": "TECHNICAL_NO_GO",
+    "GOVERNANCE_AUTHORIZATION": "NOT_GRANTED",
+    "PRODUCTION_TOKEN": "NOT_ISSUED",
+    "REAL_NETWORK_MARKET_COLLECTION": "DISABLED",
+    "BTCUSDT_LIVE_OBSERVATION": "DISABLED",
+    "UNATTENDED_MONITORING": "DISABLED",
+    "LIVE_ORDER_EXECUTION": "PERMANENTLY_PROHIBITED",
+    "DIRECTIONAL_TRADING_ELIGIBILITY": "ZERO",
+    "NEWS_CONDITIONED_ECONOMIC_EDGE": "NOT_ESTABLISHED",
+    "HISTORICAL_RESEARCH_STATUS": "RESEARCH_CONTAMINATED",
+    "SYNTHETIC_PRICE_FABRICATION": "PROHIBITED"
+  }
+}
