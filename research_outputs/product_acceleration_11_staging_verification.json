@@ -1,0 +1,45 @@
+{
+  "timestamp_utc": "2026-10-25T19:54:00Z",
+  "vps_host": "srv1114257 (168.231.125.238)",
+  "staging_service": {
+    "service_name": "cbe-market-intelligence-staging",
+    "uuid": "dzzfws54by1whlbq6fk4ywut",
+    "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+    "container_id": "86881ba01b3e",
+    "port_binding": "127.0.0.1:18080->8000/tcp",
+    "status": "healthy",
+    "source_commit": "c403f9a7ae8a3a57d279841f2da706ec0ce48cca",
+    "source_commit_short": "c403f9a7",
+    "runtime_identity_verified": true
+  },
+  "production_service_isolation": {
+    "service_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+    "container_id": "f2d54fad36c9",
+    "status": "healthy",
+    "uptime_minutes": 24,
+    "zero_touch_guarantee": "VERIFIED_UNTOUCHED"
+  },
+  "endpoints_probed": [
+    {"endpoint": "/health", "status_code": 200, "verdict": "healthy"},
+    {"endpoint": "/api/v1/product/runtime-build", "status_code": 200, "build_commit": "c403f9a7ae8a3a57d279841f2da706ec0ce48cca"},
+    {"endpoint": "/api/v1/product/evidence-explorer", "status_code": 200, "cards_returned": 4},
+    {"endpoint": "/api/v1/product/macro-event-taxonomy", "status_code": 200, "total_events": 238, "verified": 237, "quarantined": 1},
+    {"endpoint": "/api/v1/product/dataset-content-integrity", "status_code": 200, "manifest_version": "CBE-MANIFEST-V3"},
+    {"endpoint": "/api/v1/product/hypothesis-templates", "status_code": 200, "templates_count": 4},
+    {"endpoint": "/api/v1/product/reproducibility-status", "status_code": 200, "audit_status": "REPRODUCIBLE"},
+    {"endpoint": "/api/v1/product/research-report?report_type=HYPOTHESIS_RESEARCH&format=pdf", "status_code": 200, "content_type": "application/pdf", "magic": "%PDF-1.4"}
+  ],
+  "governance_invariants": {
+    "TECHNICAL_DECISION": "TECHNICAL_NO_GO",
+    "GOVERNANCE_AUTHORIZATION": "NOT_GRANTED",
+    "PRODUCTION_TOKEN": "NOT_ISSUED",
+    "REAL_NETWORK_MARKET_COLLECTION": "DISABLED",
+    "BTCUSDT_LIVE_OBSERVATION": "DISABLED",
+    "UNATTENDED_MONITORING": "DISABLED",
+    "LIVE_ORDER_EXECUTION": "PERMANENTLY_PROHIBITED",
+    "DIRECTIONAL_TRADING_ELIGIBILITY": "ZERO",
+    "NEWS_CONDITIONED_ECONOMIC_EDGE": "NOT_ESTABLISHED",
+    "HISTORICAL_RESEARCH_STATUS": "RESEARCH_CONTAMINATED",
+    "SYNTHETIC_PRICE_FABRICATION": "PROHIBITED"
+  }
+}
