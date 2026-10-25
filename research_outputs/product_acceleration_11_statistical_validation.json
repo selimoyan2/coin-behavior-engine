@@ -1,0 +1,42 @@
+{
+  "timestamp_utc": "2026-10-25T19:32:10Z",
+  "sprint": "CBE_PRODUCT_ACCELERATION_11",
+  "statistical_hardening": {
+    "bootstrap_methodologies": {
+      "moving_block_bootstrap": {
+        "resampling_unit": "Contiguous time blocks of candle observations",
+        "purpose": "Preserves serial correlation, autocorrelation, and volatility clustering",
+        "default_block_size": 12,
+        "default_iterations": 1000
+      },
+      "event_level_bootstrap": {
+        "resampling_unit": "Macroeconomic event cluster as an independent unit",
+        "purpose": "Estimates true inter-event response dispersion across macro announcements",
+        "default_iterations": 1000
+      }
+    },
+    "multiple_testing_correction": {
+      "algorithm": "Benjamini-Hochberg False Discovery Rate (FDR)",
+      "target_q_threshold": 0.05,
+      "enforcement": "Applied across multiple event categories, timeframes, and window lengths"
+    },
+    "effect_size_metrics": {
+      "parametric": "Cohen's d with pooled variance",
+      "non_parametric": "Cliff's Delta",
+      "magnitude_categories": ["NEGLIGIBLE", "SMALL", "MEDIUM", "LARGE", "VERY_LARGE"]
+    },
+    "evidence_classification_v2": [
+      "DESCRIPTIVE_ONLY",
+      "EXPLORATORY_ASSOCIATION",
+      "STATISTICALLY_SUPPORTED_ASSOCIATION",
+      "DISTRIBUTIONAL_STABILITY_OBSERVED",
+      "OUT_OF_SAMPLE_EFFECT_REPLICATED",
+      "INSUFFICIENT_EVIDENCE",
+      "DATA_CONTAMINATED",
+      "INVALID_METHODOLOGY",
+      "NOT_EVALUABLE"
+    ],
+    "negative_findings_supported": true,
+    "degenerate_zero_variance_handled": true
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "timestamp_utc": "2026-10-25T19:33:50Z",
+  "sprint": "CBE_PRODUCT_ACCELERATION_11",
+  "reproducibility_audit": {
+    "deterministic_reruns_tested": true,
+    "hash_match_verified": true,
+    "point_estimate_tolerance": 0.000001,
+    "stale_experiment_detection": {
+      "strategy": "Dataset manifest SHA-256 pinning",
+      "action_on_manifest_mismatch": "Mark experiment as STALE_DATASET_REVISION_MISMATCH"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "timestamp_utc": "2026-10-25T19:33:40Z",
+  "sprint": "CBE_PRODUCT_ACCELERATION_11",
+  "hypothesis_studio_catalog": {
+    "templates_available": 4,
+    "bounded_input_guarantees": {
+      "raw_sql_prohibited": true,
+      "arbitrary_python_prohibited": true,
+      "filesystem_traversal_prohibited": true,
+      "min_window_hours": 2,
+      "max_window_hours": 48
+    },
+    "supported_metrics": [
+      "VOLATILITY_SHIFT_RATIO",
+      "REGIME_TRANSITION_PROBABILITY",
+      "CROSS_INTERVAL_RATIO_DELTA",
+      "HOLDOUT_EFFECT_PERSISTENCE"
+    ]
+  }
+}

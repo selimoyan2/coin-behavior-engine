@@ -1,0 +1,24 @@
+{
+  "timestamp_utc": "2026-10-25T19:32:00Z",
+  "sprint": "CBE_PRODUCT_ACCELERATION_11",
+  "walk_forward_semantics_audit": {
+    "psi_interpretation": "Low Population Stability Index (PSI = 0.0125 < 0.10) confirms historical stability of marginal market regime distributions. It does NOT demonstrate directional predictability, trading profitability, or causal edge.",
+    "evidence_categories_separated": [
+      "DISTRIBUTIONAL_STABILITY_OBSERVED",
+      "TRANSITION_STABILITY_OBSERVED",
+      "OUT_OF_SAMPLE_EFFECT_REPLICATED",
+      "PREDICTIVE_EDGE_NOT_ESTABLISHED"
+    ],
+    "dynamic_embargo_rule": "embargo_bars = max(feature_lookback_bars, label_horizon_bars, event_window_bars, 24)",
+    "canonical_model_protection": {
+      "model_version": "CBE-0.7.0",
+      "status": "FROZEN_CANONICAL_MODEL",
+      "holdout_data_leakage_prevented": true
+    },
+    "replication_verdict": {
+      "distribution_status": "DISTRIBUTIONAL_STABILITY_OBSERVED",
+      "predictive_edge_status": "PREDICTIVE_EDGE_NOT_ESTABLISHED",
+      "stability_label_tr": "İleriye Yönelik Rejim Dağılımı Dengeli"
+    }
+  }
+}

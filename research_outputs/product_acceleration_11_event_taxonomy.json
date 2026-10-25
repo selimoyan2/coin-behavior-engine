@@ -1,0 +1,36 @@
+{
+  "timestamp_utc": "2026-10-25T19:31:10Z",
+  "sprint": "CBE_PRODUCT_ACCELERATION_11",
+  "taxonomy_catalog": {
+    "total_canonical_events": 238,
+    "total_verified": 237,
+    "total_quarantined": 1,
+    "parent_cohorts": {
+      "US_INFLATION": {
+        "specific_types": ["US_CPI", "US_CORE_CPI", "US_PCE", "US_CORE_PCE"],
+        "verified_count": 102,
+        "quarantined_count": 1
+      },
+      "US_MONETARY_POLICY": {
+        "specific_types": ["US_FOMC_RATE_DECISION", "US_FOMC_PRESS_CONFERENCE"],
+        "verified_count": 38,
+        "quarantined_count": 0
+      },
+      "US_LABOR": {
+        "specific_types": ["US_NONFARM_PAYROLLS"],
+        "verified_count": 57,
+        "quarantined_count": 0
+      },
+      "US_GROWTH": {
+        "specific_types": ["US_GDP"],
+        "verified_count": 19,
+        "quarantined_count": 0
+      },
+      "MARKET_STRUCTURE": {
+        "specific_types": ["CRYPTO_STRUCTURE", "FINANCIAL_STABILITY", "REGULATION", "BITCOIN_PROTOCOL"],
+        "verified_count": 21,
+        "quarantined_count": 0
+      }
+    }
+  }
+}

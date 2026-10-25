@@ -1,0 +1,15 @@
+{
+  "timestamp_utc": "2026-10-25T19:33:30Z",
+  "sprint": "CBE_PRODUCT_ACCELERATION_11",
+  "evidence_explorer_catalog": {
+    "total_evidence_cards": 4,
+    "dimensions": {
+      "assets": ["BTCUSDT"],
+      "event_categories": ["US_INFLATION", "US_MONETARY_POLICY", "MARKET_STRUCTURE"],
+      "specific_event_types": ["US_CPI", "US_PCE", "US_FOMC_RATE_DECISION", "OTHER_VERIFIED_MACRO"],
+      "intervals": ["1h", "4h"],
+      "evidence_statuses": ["STATISTICALLY_SUPPORTED_ASSOCIATION", "DISTRIBUTIONAL_STABILITY_OBSERVED"]
+    },
+    "robustness_summary": "Volatilite genişlemesi etkisi zaman dilimleri (1h ve 4h) ve tarihsel dönemler arasında tutarlı şekilde korunmaktadır."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "timestamp_utc": "2026-10-25T19:31:40Z",
+  "sprint": "CBE_PRODUCT_ACCELERATION_11",
+  "content_integrity_manifest": {
+    "manifest_version": "CBE-MANIFEST-V3",
+    "manifest_sha256": "686aeb854c80d346d292a7a7e22eccd44ab4b76e0014148006d98c0531f663d4",
+    "total_partitions": 342,
+    "canonical_5m_partitions": 57,
+    "derived_partitions": 285,
+    "hashing_algorithm": "Streaming SHA-256 (64KB chunks)",
+    "quarantined_intake": {
+      "file_name": "BTCUSDT-5m-2026-10-intake.parquet",
+      "status": "QUARANTINED",
+      "size_bytes": 13733,
+      "content_sha256": "05874e97d06db21fad8e7583b5b8038141d4e3dcfbabf68238fca52f5efab718",
+      "reason": "Synthetic fixture detection (constant volume 15.2, linear price step)",
+      "blocked_from_canonical_manifest": true
+    },
+    "synthetic_data_published": false
+  }
+}

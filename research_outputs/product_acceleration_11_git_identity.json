@@ -1,0 +1,16 @@
+{
+  "timestamp_utc": "2026-10-25T19:29:10Z",
+  "sprint": "CBE_PRODUCT_ACCELERATION_11",
+  "build_identity_schema_v2": {
+    "source_commit": "bbc9e91ba875639daa473d8bc389a0e001fd5706",
+    "feature_commit_sprint_10": "00069917f79de0bcf38ea70d75ad47d0c3de9872",
+    "documentation_commit_sprint_10": "bbc9e91ba875639daa473d8bc389a0e001fd5706",
+    "feature_commit_sprint_09": "1fc10b148c3ffcb451d4b06f25a9062230cfb01f",
+    "documentation_commit_sprint_09": "73a4b72ebc351fd3a8bf0593130752e4b658841b",
+    "exact_sha_verification": {
+      "verified_via_git_rev_parse": true,
+      "no_prefix_reconstruction": true,
+      "reconciliation_rule": "Staging running a feature commit while main includes later documentation commit is verified as normal progressive deployment, not an identity error."
+    }
+  }
+}

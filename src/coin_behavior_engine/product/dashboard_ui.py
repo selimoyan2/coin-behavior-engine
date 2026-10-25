@@ -1853,8 +1853,137 @@ def render_product_dashboard_html() -> str:
     <!-- =================================================================== -->
     <section id="module-research" class="tab-content">
       <div class="section-header">
-        <div class="section-title"><span>🔬</span> Kanonik Araştırma Bulguları & Hipotez Değerlendirmeleri</div>
+        <div class="section-title"><span>🔬</span> Bilimsel Kanıt Gezgini & Hipotez Araştırma Stüdyosu</div>
       </div>
+
+      <!-- Sprint 11 Research Sub-navigation -->
+      <div style="display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid #1e293b; padding-bottom: 8px;">
+        <button id="res-sub-btn-explorer" class="pill-btn active" style="font-weight: 600;" onclick="switchResearchSubTab('explorer')">🔍 Kanıt Gezgini</button>
+        <button id="res-sub-btn-studio" class="pill-btn" style="font-weight: 600;" onclick="switchResearchSubTab('studio')">🧪 Hipotez Stüdyosu</button>
+        <button id="res-sub-btn-robustness" class="pill-btn" style="font-weight: 600;" onclick="switchResearchSubTab('robustness')">📊 Dayanıklılık Matrisi</button>
+        <button id="res-sub-btn-walkforward" class="pill-btn" style="font-weight: 600;" onclick="switchResearchSubTab('walkforward')">⏱️ Walk-Forward Telemetrisi</button>
+      </div>
+
+      <!-- SUB-PANEL 1: EVIDENCE EXPLORER -->
+      <div id="res-subpanel-explorer" style="display: block;">
+        <div class="card" style="margin-bottom: 14px; border: 1px solid #334155; background: #0b1120;">
+          <div style="font-size: 13px; font-weight: 700; color: #38bdf8; margin-bottom: 10px;">🔍 KANIT FİLTRELERİ & KOHORT SEÇİMİ</div>
+          <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;">
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted);">Varlık:</label>
+              <select id="exp-filter-asset" class="search-input" style="width: 100%;" onchange="loadEvidenceExplorer()">
+                <option value="BTCUSDT">BTCUSDT (Doğrulanmış Kanonik)</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted);">Makro Üst Grup:</label>
+              <select id="exp-filter-cat" class="search-input" style="width: 100%;" onchange="loadEvidenceExplorer()">
+                <option value="ALL">Tümü (Tüm Kategoriler)</option>
+                <option value="US_INFLATION">US Enflasyon (TÜFE & Çekirdek PCE)</option>
+                <option value="US_MONETARY_POLICY">US Para Politikası (FOMC)</option>
+                <option value="MARKET_STRUCTURE">Piyasa Yapısı & Rejimler</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted);">Spesifik Olay Türü:</label>
+              <select id="exp-filter-type" class="search-input" style="width: 100%;" onchange="loadEvidenceExplorer()">
+                <option value="ALL">Tümü</option>
+                <option value="US_CPI">US CPI (Tüketici Fiyat Endeksi)</option>
+                <option value="US_PCE">US Core PCE</option>
+                <option value="US_FOMC_RATE_DECISION">FOMC Faiz Kararı</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted);">Kanıt Durumu:</label>
+              <select id="exp-filter-status" class="search-input" style="width: 100%;" onchange="loadEvidenceExplorer()">
+                <option value="ALL">Tümü</option>
+                <option value="STATISTICALLY_SUPPORTED_ASSOCIATION">İstatistiki Olarak Desteklenen</option>
+                <option value="DISTRIBUTIONAL_STABILITY_OBSERVED">Dağılım Kararlılığı Gözlenen</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div id="explorer-cards-container" class="grid" style="grid-template-columns: 1fr; gap: 12px; margin-bottom: 20px;">
+          <!-- Injected via loadEvidenceExplorer -->
+        </div>
+      </div>
+
+      <!-- SUB-PANEL 2: HYPOTHESIS STUDIO -->
+      <div id="res-subpanel-studio" style="display: none;">
+        <div class="card" style="margin-bottom: 14px; border: 1px solid #7c3aed; background: #0f1123;">
+          <div style="font-size: 13px; font-weight: 700; color: #a78bfa; margin-bottom: 10px;">🧪 HİPOTEZ YAPILANDIRMA & DENEY ÇALIŞTIRMA</div>
+          <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 14px;">
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted);">Hipotez Şablonu:</label>
+              <select id="studio-template-select" class="search-input" style="width: 100%;" onchange="applyHypothesisTemplate()">
+                <option value="TMPL-01-EVENT-VOLATILITY-EXPANSION">Olay Sonrası Volatilite Genişlemesi</option>
+                <option value="TMPL-02-REGIME-TRANSITION-SHOCK">Olay Kaynaklı Rejim Kırılımı</option>
+                <option value="TMPL-03-CROSS-INTERVAL-STABILITY">Zaman Dilimleri Arası Etki Kararlılığı</option>
+                <option value="TMPL-04-OUT-OF-SAMPLE-REPLICATION">Örneklem Dışı Holdout Doğrulama</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted);">Olay Kohortu:</label>
+              <select id="studio-cohort-select" class="search-input" style="width: 100%;">
+                <option value="US_CPI">US CPI (TÜFE - 57 Olay)</option>
+                <option value="US_PCE">US Core PCE (45 Olay)</option>
+                <option value="US_FOMC_RATE_DECISION">FOMC Faiz Kararları (38 Olay)</option>
+                <option value="US_INFLATION">US Enflasyon Üst Grubu (102 Olay)</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted);">Zaman Dilimi:</label>
+              <select id="studio-interval-select" class="search-input" style="width: 100%;">
+                <option value="1h">1 Saat (1h)</option>
+                <option value="4h">4 Saat (4h)</option>
+                <option value="15m">15 Dakika (15m)</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted);">Pencere (Saat):</label>
+              <input type="number" id="studio-window-input" class="search-input" value="12" min="2" max="48" style="width: 100%;">
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div style="font-size: 11.5px; color: #94a3b8;">
+              🔒 <b>GÜVENLİK GÜVENCESİ:</b> Yalnızca sınırlandırılmış matematiksel parametreler. Ham kod veya keyfi sorgu çalıştırılamaz.
+            </div>
+            <button class="pill-btn" style="background: #7c3aed; color: #fff; font-weight: 700; border-color: #6d28d9; padding: 8px 18px;" onclick="runStudioExperiment()">🚀 Araştırmayı Çalıştır</button>
+          </div>
+        </div>
+        <div id="studio-result-card" class="card" style="display: none; border: 1px solid #10b981; margin-bottom: 20px;">
+          <!-- Injected via runStudioExperiment -->
+        </div>
+      </div>
+
+      <!-- SUB-PANEL 3: ROBUSTNESS MATRIX -->
+      <div id="res-subpanel-robustness" style="display: none;">
+        <div class="card" style="margin-bottom: 14px; border: 1px solid #0284c7; background: #071526;">
+          <div style="font-size: 13px; font-weight: 700; color: #38bdf8; margin-bottom: 8px;">📊 BİLİMSEL KANIT DAYANIKLILIK (ROBUSTNESS) MATRİSİ</div>
+          <div style="font-size: 12px; color: #94a3b8; margin-bottom: 12px;">Farklı zaman dilimleri, in-sample/out-of-sample tarihsel dönemleri ve yöntemler genelinde etkinin tutarlılığı:</div>
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 1px solid #1e293b; color: #64748b;">
+                  <th style="padding: 8px;">Kohort</th>
+                  <th style="padding: 8px;">Zaman Dilimi</th>
+                  <th style="padding: 8px;">Tarihsel Dönem</th>
+                  <th style="padding: 8px;">Volatilite Çarpanı</th>
+                  <th style="padding: 8px;">%95 Güven Aralığı</th>
+                  <th style="padding: 8px;">Kanıt Derecesi</th>
+                  <th style="padding: 8px;">Örneklem Durumu</th>
+                </tr>
+              </thead>
+              <tbody id="robustness-table-body">
+                <!-- Injected via loadRobustnessMatrix -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-PANEL 4: WALK FORWARD (Preserved) -->
+      <div id="res-subpanel-walkforward" style="display: none;">
 
       <div class="filter-bar">
         <input type="text" id="research-search" class="search-input" placeholder="Bulgularda veya başlıklarda ara..." oninput="filterResearch()">
@@ -2450,6 +2579,10 @@ def render_product_dashboard_html() -> str:
               <option value="WALK_FORWARD_VALIDATION">İleriye Yönelik Doğrulama (Walk-Forward)</option>
               <option value="SCIENTIFIC_EVIDENCE_SUMMARY">Bilimsel Kanıt ve Bulgular Özeti</option>
               <option value="EXPERIMENT_COMPARISON">Araştırma Deney Karşılaştırması</option>
+              <option value="HYPOTHESIS_RESEARCH">Hipotez Araştırma ve Doğrulama</option>
+              <option value="EVIDENCE_ROBUSTNESS">Kanıt Dayanıklılık & Bootstrap Matrisi</option>
+              <option value="DATASET_INTEGRITY">Veri Kümesi SHA-256 İçerik Bütünlüğü</option>
+              <option value="REPRODUCIBILITY">Tekrarlanabilirlik & Determinizm Denetimi</option>
             </select>
           </div>
           <div id="rpt-param-a-wrap">
@@ -3645,6 +3778,156 @@ def render_product_dashboard_html() -> str:
       } catch (e) {
         console.warn("Walk-forward fetch error:", e);
         if (badge) badge.innerText = "OUT_OF_SAMPLE_REPLICATED";
+      }
+    }
+
+    
+    // Sprint 11: Research Workspace Sub-tab Navigation
+    function switchResearchSubTab(subId) {
+      document.querySelectorAll("#module-research .pill-btn").forEach(b => {
+        if (b.id && b.id.startsWith("res-sub-btn-")) b.classList.remove("active");
+      });
+      const activeBtn = document.getElementById("res-sub-btn-" + subId);
+      if (activeBtn) activeBtn.classList.add("active");
+
+      document.getElementById("res-subpanel-explorer").style.display = (subId === "explorer") ? "block" : "none";
+      document.getElementById("res-subpanel-studio").style.display = (subId === "studio") ? "block" : "none";
+      document.getElementById("res-subpanel-robustness").style.display = (subId === "robustness") ? "block" : "none";
+      document.getElementById("res-subpanel-walkforward").style.display = (subId === "walkforward") ? "block" : "none";
+
+      if (subId === "explorer") loadEvidenceExplorer();
+      if (subId === "robustness") loadRobustnessMatrix();
+      if (subId === "walkforward") loadWalkForwardResults();
+    }
+
+    async function loadEvidenceExplorer() {
+      const asset = document.getElementById("exp-filter-asset")?.value || "BTCUSDT";
+      const cat = document.getElementById("exp-filter-cat")?.value || "ALL";
+      const spType = document.getElementById("exp-filter-type")?.value || "ALL";
+      const status = document.getElementById("exp-filter-status")?.value || "ALL";
+
+      const container = document.getElementById("explorer-cards-container");
+      if (!container) return;
+      container.innerHTML = '<div style="text-align:center; padding:20px; color:#94a3b8;">Kanıtlar yükleniyor...</div>';
+
+      try {
+        const url = `/api/v1/product/evidence-explorer?asset=${encodeURIComponent(asset)}&category=${encodeURIComponent(cat)}&specific_type=${encodeURIComponent(spType)}&evidence_status=${encodeURIComponent(status)}`;
+        const res = await fetch(url);
+        if (!res.ok) return;
+        const data = await res.json();
+        const cards = data.evidence_cards || [];
+
+        if (cards.length === 0) {
+          container.innerHTML = '<div class="card" style="text-align:center; color:#94a3b8; padding:30px;">Seçilen kriterlere uygun kanıt kartı bulunamadı.</div>';
+          return;
+        }
+
+        container.innerHTML = cards.map(c => `
+          <div class="card" style="border-left: 4px solid #38bdf8; background: #070f1e; margin-bottom: 10px;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px;">
+              <div>
+                <span style="font-size:11px; font-weight:700; color:#38bdf8;">${c.finding_id} &bull; ${c.target_asset} (${c.historical_period})</span>
+                <h3 style="font-size:15px; color:#fff; text-transform:none; margin:4px 0;">${c.research_question_tr}</h3>
+              </div>
+              <span class="badge badge-info" style="font-size:11px; background:rgba(56,189,248,0.15); color:#38bdf8; border:1px solid #0284c7;">${c.evidence_status}</span>
+            </div>
+            <div style="font-size:12px; color:var(--text-muted); margin:6px 0;">
+              Olay Türü: <b>${c.specific_event_type}</b> | Geçerli Olaylar: <b>${c.valid_events_count}</b> | Dışlanan / Karantina: <b>${c.excluded_events_count}</b>
+            </div>
+            <div style="margin-top:8px; font-size:12.5px; line-height:1.5;">
+              <p><strong>🔬 Gözlenen Etki:</strong> ${c.observed_effect_tr}</p>
+              <p style="margin-top:5px;"><strong>⚖️ İstatistiki Anlamlılık:</strong> ${c.statistical_significance_tr} (FDR q: ${c.p_value_fdr})</p>
+            </div>
+            <div style="margin-top:10px; display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+              <span style="background:rgba(56,189,248,0.15); color:#38bdf8; padding:2px 8px; border-radius:4px; font-size:11px;">Nokta Tahmini: ${c.point_estimate_ratio}x</span>
+              <span style="background:rgba(167,139,250,0.15); color:#a78bfa; padding:2px 8px; border-radius:4px; font-size:11px;">%95 CI: ${c.confidence_interval_95}</span>
+              <span style="background:rgba(16,185,129,0.15); color:#34d399; padding:2px 8px; border-radius:4px; font-size:11px;">OOS: ${c.out_of_sample_status}</span>
+            </div>
+            <div style="margin-top:10px; font-size:11px; color:#64748b; border-top:1px solid #1e293b; padding-top:6px;">
+              Sınırlamalar: ${c.data_limitations_tr}
+            </div>
+          </div>
+        `).join("");
+      } catch (e) {
+        console.warn("Evidence explorer fetch error:", e);
+      }
+    }
+
+    async function loadRobustnessMatrix() {
+      const tbody = document.getElementById("robustness-table-body");
+      if (!tbody) return;
+      try {
+        const res = await fetch("/api/v1/product/evidence-robustness");
+        if (!res.ok) return;
+        const data = await res.json();
+        const cells = data.matrix_cells || [];
+        tbody.innerHTML = cells.map(c => `
+          <tr style="border-bottom: 1px solid #1e293b;">
+            <td style="padding: 8px; font-weight:600; color:#38bdf8;">${c.event_cohort}</td>
+            <td style="padding: 8px;"><code>${c.timeframe}</code></td>
+            <td style="padding: 8px;">${c.period}</td>
+            <td style="padding: 8px; font-weight:700; color:#fff;">${c.shift_ratio}x</td>
+            <td style="padding: 8px; color:#a78bfa;">${c.ci_95}</td>
+            <td style="padding: 8px;"><span class="badge badge-info" style="font-size:10px;">${c.evidence_status}</span></td>
+            <td style="padding: 8px; color:#34d399;">${c.sample_adequacy}</td>
+          </tr>
+        `).join("");
+      } catch (e) {
+        console.warn("Robustness matrix fetch error:", e);
+      }
+    }
+
+    async function runStudioExperiment() {
+      const cohort = document.getElementById("studio-cohort-select")?.value || "US_CPI";
+      const interval = document.getElementById("studio-interval-select")?.value || "1h";
+      const windowH = parseInt(document.getElementById("studio-window-input")?.value || "12", 10);
+      const card = document.getElementById("studio-result-card");
+      if (!card) return;
+
+      card.style.display = "block";
+      card.innerHTML = `<div style="text-align:center; padding:20px; color:#a78bfa;">⏳ Deney yürütülüyor (deterministik hesaplama)...</div>`;
+
+      try {
+        const url = `/api/v1/product/hypothesis-experiments?event_cohort=${encodeURIComponent(cohort)}&interval=${encodeURIComponent(interval)}&pre_hours=${windowH}&post_hours=${windowH}`;
+        const res = await fetch(url);
+        if (!res.ok) return;
+        const data = await res.json();
+
+        if (data.status === "COMPLETED") {
+          const st = data.statistical_results || {};
+          card.innerHTML = `
+            <div style="font-size: 13px; font-weight: 700; color: #10b981; margin-bottom: 8px; display: flex; justify-content: space-between;">
+              <span>✅ HİPOTEZ DENEYİ TAMAMLANDI (${data.experiment_id})</span>
+              <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981;">${data.evidence_classification}</span>
+            </div>
+            <div style="font-size: 12.5px; color: #cbd5e1; margin-bottom: 10px;">
+              ${data.scientific_interpretation_tr}
+            </div>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-bottom: 10px;">
+              <div style="background: #091322; padding: 8px; border-radius: 4px; border: 1px solid #1e293b;">
+                <div style="font-size: 10.5px; color: var(--text-muted);">Nokta Tahmini:</div>
+                <div style="font-size: 16px; font-weight: 700; color: #38bdf8;">${st.point_estimate_ratio}x</div>
+              </div>
+              <div style="background: #091322; padding: 8px; border-radius: 4px; border: 1px solid #1e293b;">
+                <div style="font-size: 10.5px; color: var(--text-muted);">%95 Güven Aralığı:</div>
+                <div style="font-size: 14px; font-weight: 700; color: #a78bfa;">${st.ci_formatted}</div>
+              </div>
+              <div style="background: #091322; padding: 8px; border-radius: 4px; border: 1px solid #1e293b;">
+                <div style="font-size: 10.5px; color: var(--text-muted);">Cohen's d:</div>
+                <div style="font-size: 14px; font-weight: 700; color: #34d399;">${st.cohens_d} (${st.effect_magnitude})</div>
+              </div>
+              <div style="background: #091322; padding: 8px; border-radius: 4px; border: 1px solid #1e293b;">
+                <div style="font-size: 10.5px; color: var(--text-muted);">FDR p-değeri:</div>
+                <div style="font-size: 14px; font-weight: 700; color: #fbbf24;">${st.p_value_fdr}</div>
+              </div>
+            </div>
+            <div style="font-size: 11px; color: #64748b; border-top: 1px solid #1e293b; padding-top: 6px;">
+              Yeniden Üretilebilirlik Özeti (SHA-256): <code>${data.reproducibility_hash}</code>
+            </div>
+          `;
+        }
+      } catch (e) {
+        card.innerHTML = `<div style="color:#ef4444; padding:10px;">Deney yürütme hatası oluştu.</div>`;
       }
     }
 
@@ -5371,7 +5654,10 @@ def render_product_dashboard_html() -> str:
       const type = document.getElementById("rpt-type-select").value;
       const lblA = document.getElementById("rpt-param-a-label");
       const lblB = document.getElementById("rpt-param-b-label");
+      const wrapA = document.getElementById("rpt-param-a-wrap");
       const wrapB = document.getElementById("rpt-param-b-wrap");
+      if (wrapA) wrapA.style.display = "block";
+      if (wrapB) wrapB.style.display = "block";
 
       if (type === "PERIOD_COMPARISON") {
         lblA.innerText = "Dönem A (Referans Ay)";
@@ -5404,6 +5690,13 @@ def render_product_dashboard_html() -> str:
         lblB.innerText = "Deney B ID";
         document.getElementById("rpt-param-b").value = "CBE-EXP-02-FOMC-RATE-REACTIONS";
         wrapB.style.display = "block";
+      } else if (type === "HYPOTHESIS_RESEARCH") {
+        lblA.innerText = "Hipotez ID (HYP-01-CPI-VOL)";
+        document.getElementById("rpt-param-a").value = "HYP-01-CPI-VOL";
+        wrapB.style.display = "none";
+      } else if (type === "EVIDENCE_ROBUSTNESS" || type === "DATASET_INTEGRITY" || type === "REPRODUCIBILITY") {
+        wrapA.style.display = "none";
+        wrapB.style.display = "none";
       }
     }
 

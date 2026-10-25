@@ -1,0 +1,130 @@
+{
+  "timestamp": "2026-10-25T22:38:00+03:00",
+  "system": {
+    "model_version": "CBE-0.7.0",
+    "sprint": "CBE_PRODUCT_ACCELERATION_11"
+  },
+  "benchmarks": {
+    "macro_event_taxonomy_accounting": {
+      "latency_ms": 99.82,
+      "peak_memory_mb": 1.81,
+      "total_events_reconciled": 103,
+      "target_latency_ms": 250.0,
+      "passed": true
+    },
+    "content_integrity_manifest_generation": {
+      "latency_ms": 261.26,
+      "peak_memory_mb": 0.77,
+      "partitions_hashed": 342,
+      "target_latency_ms": 500.0,
+      "passed": true
+    },
+    "evidence_explorer_query": {
+      "latency_ms": 0.06,
+      "peak_memory_mb": 0.0,
+      "returned_records": 0,
+      "target_latency_ms": 50.0,
+      "passed": true
+    },
+    "evidence_robustness_matrix": {
+      "latency_ms": 0.01,
+      "peak_memory_mb": 0.0,
+      "evidence_items_evaluated": 5,
+      "target_latency_ms": 100.0,
+      "passed": true
+    },
+    "hypothesis_studio_execution": {
+      "latency_ms": 333.94,
+      "peak_memory_mb": 0.77,
+      "experiment_id": "CBE-HYP-C9A2300B1CDAFC60",
+      "target_latency_ms": 1500.0,
+      "passed": true
+    },
+    "walk_forward_validation_run": {
+      "latency_ms": 248.35,
+      "peak_memory_mb": 7.63,
+      "experiment_id": "EXP-WF-REGIME-STABILITY-01",
+      "target_latency_ms": 1000.0,
+      "passed": true
+    },
+    "pdf_report_generations": {
+      "PERIOD_COMPARISON": {
+        "latency_ms": 734.0,
+        "pdf_size_bytes": 51047,
+        "target_latency_ms": 3500.0,
+        "passed": true
+      },
+      "MACRO_EVENT": {
+        "latency_ms": 263.51,
+        "pdf_size_bytes": 53823,
+        "target_latency_ms": 3500.0,
+        "passed": true
+      },
+      "REGIME_DRIFT": {
+        "latency_ms": 640.26,
+        "pdf_size_bytes": 52031,
+        "target_latency_ms": 3500.0,
+        "passed": true
+      },
+      "DATA_QUALITY": {
+        "latency_ms": 517.17,
+        "pdf_size_bytes": 48148,
+        "target_latency_ms": 3500.0,
+        "passed": true
+      },
+      "EVENT_CONDITIONED_REGIME_STUDY": {
+        "latency_ms": 1620.79,
+        "pdf_size_bytes": 56217,
+        "target_latency_ms": 3500.0,
+        "passed": true
+      },
+      "WALK_FORWARD_VALIDATION": {
+        "latency_ms": 962.3,
+        "pdf_size_bytes": 53916,
+        "target_latency_ms": 3500.0,
+        "passed": true
+      },
+      "SCIENTIFIC_EVIDENCE_SUMMARY": {
+        "latency_ms": 659.85,
+        "pdf_size_bytes": 47590,
+        "target_latency_ms": 3500.0,
+        "passed": true
+      },
+      "EXPERIMENT_COMPARISON": {
+        "latency_ms": 753.41,
+        "pdf_size_bytes": 49296,
+        "target_latency_ms": 3500.0,
+        "passed": true
+      },
+      "HYPOTHESIS_RESEARCH": {
+        "latency_ms": 665.5,
+        "pdf_size_bytes": 50624,
+        "target_latency_ms": 3500.0,
+        "passed": true
+      },
+      "EVIDENCE_ROBUSTNESS": {
+        "latency_ms": 678.73,
+        "pdf_size_bytes": 48071,
+        "target_latency_ms": 3500.0,
+        "passed": true
+      },
+      "DATASET_INTEGRITY": {
+        "latency_ms": 1142.48,
+        "pdf_size_bytes": 48943,
+        "target_latency_ms": 3500.0,
+        "passed": true
+      },
+      "REPRODUCIBILITY": {
+        "latency_ms": 1545.04,
+        "pdf_size_bytes": 50329,
+        "target_latency_ms": 3500.0,
+        "passed": true
+      }
+    }
+  },
+  "summary": {
+    "all_benchmarks_passed": true,
+    "total_pdf_types_tested": 12,
+    "governance_note": "Zero live network dependencies. All benchmarks executed purely against offline local Parquet/data stores."
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "timestamp_utc": "2026-10-25T19:29:00Z",
+  "sprint": "CBE_PRODUCT_ACCELERATION_11",
+  "git_baseline": {
+    "local_head_sha": "bbc9e91ba875639daa473d8bc389a0e001fd5706",
+    "local_head_short": "bbc9e91",
+    "local_head_subject": "docs(sprint-10): complete delivery report, staging verification & next priorities",
+    "remote_origin_main_sha": "bbc9e91ba875639daa473d8bc389a0e001fd5706",
+    "ancestry_verified": true,
+    "ancestry_chain": [
+      {
+        "sha": "bbc9e91ba875639daa473d8bc389a0e001fd5706",
+        "type": "SPRINT_10_DOCUMENTATION_COMMIT",
+        "subject": "docs(sprint-10): complete delivery report, staging verification & next priorities"
+      },
+      {
+        "sha": "00069917f79de0bcf38ea70d75ad47d0c3de9872",
+        "type": "SPRINT_10_FEATURE_COMMIT",
+        "subject": "feat(sprint-10): deliver dataset provenance, event-regime research, walk-forward validation & scientific evidence"
+      },
+      {
+        "sha": "73a4b72ebc351fd3a8bf0593130752e4b658841b",
+        "type": "SPRINT_09_DOCUMENTATION_COMMIT",
+        "subject": "docs(sprint-09): delivery report, next priorities, and staging verification"
+      },
+      {
+        "sha": "1fc10b148c3ffcb451d4b06f25a9062230cfb01f",
+        "type": "SPRINT_09_FEATURE_COMMIT",
+        "subject": "feat(sprint-09): security hardening, October intake quarantine, macro reliability, PDF reports, and UI refinement"
+      }
+    ]
+  },
+  "staging_runtime_baseline": {
+    "vps_host": "srv1114257 (168.231.125.238)",
+    "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+    "container_id": "bf2ecde71350",
+    "port_binding": "127.0.0.1:18080->8000/tcp",
+    "health_status": "healthy",
+    "model_version": "CBE-0.7.0",
+    "model_status": "FROZEN",
+    "reported_build_commit_short": "00069911",
+    "verified_git_source_sha": "00069917f79de0bcf38ea70d75ad47d0c3de9872",
+    "audit_finding": "The staging container is actively executing feature code from commit 00069917f79de0bcf38ea70d75ad47d0c3de9872, but the Docker run environment variable SOURCE_COMMIT had an imperfectly padded hex suffix (00069911855a828cb3e7f4c9c1db1664bf87a177). An automated build identity mechanism will extract the genuine 40-character SHA directly from git rev-parse HEAD in Sprint 11."
+  },
+  "production_isolation": {
+    "application_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+    "container_id": "bca5445cd547",
+    "status": "Up 2 hours (healthy)",
+    "modification_status": "ZERO_TOUCH",
+    "restart_status": "ZERO_TOUCH"
+  },
+  "governance_invariants": {
+    "technical_decision": "TECHNICAL_NO_GO",
+    "governance_authorization": "NOT_GRANTED",
+    "production_token": "NOT_ISSUED",
+    "real_network_market_collection": "DISABLED",
+    "btcusdt_live_observation": "DISABLED",
+    "unattended_monitoring": "DISABLED",
+    "live_order_execution": "PERMANENTLY_PROHIBITED",
+    "directional_trading_eligibility": 0,
+    "news_conditioned_economic_edge": "NOT_ESTABLISHED",
+    "historical_research_status": "RESEARCH_CONTAMINATED",
+    "synthetic_price_fabrication": "PROHIBITED"
+  }
+}

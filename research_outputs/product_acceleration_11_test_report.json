@@ -1,0 +1,54 @@
+{
+  "timestamp": "2026-10-25T22:47:30+03:00",
+  "sprint": "CBE_PRODUCT_ACCELERATION_11",
+  "canonical_model_version": "CBE-0.7.0",
+  "canonical_model_status": "FROZEN_CANONICAL_MODEL",
+  "test_execution": {
+    "test_command": "pytest -k 'product_acceleration' tests",
+    "total_tests_selected": 191,
+    "total_tests_passed": 191,
+    "total_tests_failed": 0,
+    "pass_rate_pct": 100.0,
+    "duration_seconds": 49.38
+  },
+  "sprint_11_specific_tests": {
+    "total_sprint_11_tests": 33,
+    "passed": 33,
+    "failed": 0,
+    "categories": {
+      "macro_event_taxonomy": 3,
+      "content_integrity_streaming_sha256": 2,
+      "walk_forward_semantics_and_dynamic_embargo": 2,
+      "statistical_validity_and_event_level_bootstrap": 4,
+      "evidence_explorer_and_robustness_matrix": 3,
+      "hypothesis_studio_and_deterministic_reruns": 3,
+      "research_reports_all_12_pdf_exports": 12,
+      "product_dashboard_api_endpoints": 4
+    }
+  },
+  "prior_sprints_regression": {
+    "sprint_01_api_and_integration": 16,
+    "sprint_02_candles_and_analogs": 9,
+    "sprint_03_metadata_and_operations": 9,
+    "sprint_04_regimes_and_scenarios": 10,
+    "sprint_05_math_and_cross_interval": 8,
+    "sprint_06_macro_and_reports": 11,
+    "sprint_07_data_operations_console": 18,
+    "sprint_08_multi_asset_and_synchronization": 22,
+    "sprint_09_security_and_pdf_reports": 26,
+    "sprint_10_scientific_evidence_and_bootstrap": 29
+  },
+  "governance_invariants_verified": {
+    "TECHNICAL_DECISION": "TECHNICAL_NO_GO",
+    "GOVERNANCE_AUTHORIZATION": "NOT_GRANTED",
+    "PRODUCTION_TOKEN": "NOT_ISSUED",
+    "REAL_NETWORK_MARKET_COLLECTION": "DISABLED",
+    "BTCUSDT_LIVE_OBSERVATION": "DISABLED",
+    "UNATTENDED_MONITORING": "DISABLED",
+    "LIVE_ORDER_EXECUTION": "PERMANENTLY_PROHIBITED",
+    "DIRECTIONAL_TRADING_ELIGIBILITY": "ZERO",
+    "NEWS_CONDITIONED_ECONOMIC_EDGE": "NOT_ESTABLISHED",
+    "HISTORICAL_RESEARCH_STATUS": "RESEARCH_CONTAMINATED",
+    "SYNTHETIC_PRICE_FABRICATION": "PROHIBITED"
+  }
+}

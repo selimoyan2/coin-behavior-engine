@@ -1,0 +1,62 @@
+{
+  "timestamp_utc": "2026-10-25T19:31:20Z",
+  "sprint": "CBE_PRODUCT_ACCELERATION_11",
+  "accounting_manifests": {
+    "US_CPI": {
+      "cohort_name": "US_CPI",
+      "is_parent_cohort": false,
+      "specific_types_included": ["US_CPI"],
+      "total_discovered_events": 58,
+      "verified_events_count": 57,
+      "quarantined_events_count": 1,
+      "missing_market_coverage_count": 0,
+      "overlap_confounded_count": 0,
+      "invalid_timestamp_count": 0,
+      "insufficient_window_count": 0,
+      "analyzed_events_count": 57,
+      "mathematical_reconciliation_passed": true
+    },
+    "US_PCE": {
+      "cohort_name": "US_PCE",
+      "is_parent_cohort": false,
+      "specific_types_included": ["US_PCE"],
+      "total_discovered_events": 45,
+      "verified_events_count": 45,
+      "quarantined_events_count": 0,
+      "missing_market_coverage_count": 0,
+      "overlap_confounded_count": 0,
+      "invalid_timestamp_count": 0,
+      "insufficient_window_count": 0,
+      "analyzed_events_count": 45,
+      "mathematical_reconciliation_passed": true
+    },
+    "US_INFLATION": {
+      "cohort_name": "US_INFLATION",
+      "is_parent_cohort": true,
+      "specific_types_included": ["US_CPI", "US_CORE_CPI", "US_PCE", "US_CORE_PCE"],
+      "total_discovered_events": 103,
+      "verified_events_count": 102,
+      "quarantined_events_count": 1,
+      "missing_market_coverage_count": 0,
+      "overlap_confounded_count": 0,
+      "invalid_timestamp_count": 0,
+      "insufficient_window_count": 0,
+      "analyzed_events_count": 102,
+      "mathematical_reconciliation_passed": true
+    },
+    "US_MONETARY_POLICY": {
+      "cohort_name": "US_MONETARY_POLICY",
+      "is_parent_cohort": true,
+      "specific_types_included": ["US_FOMC_RATE_DECISION", "US_FOMC_PRESS_CONFERENCE"],
+      "total_discovered_events": 38,
+      "verified_events_count": 38,
+      "quarantined_events_count": 0,
+      "missing_market_coverage_count": 0,
+      "overlap_confounded_count": 0,
+      "invalid_timestamp_count": 0,
+      "insufficient_window_count": 0,
+      "analyzed_events_count": 38,
+      "mathematical_reconciliation_passed": true
+    }
+  }
+}

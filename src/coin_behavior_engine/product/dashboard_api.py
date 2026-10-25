@@ -265,6 +265,22 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.get_research_experiments_api()
             elif sub_path in ("research-experiment-compare", "experiment-compare"):
                 return HTTPStatus.OK, cls.get_research_experiment_compare_api(query_params)
+            elif sub_path in ("evidence-explorer", "explorer"):
+                return HTTPStatus.OK, cls.get_evidence_explorer_api(query_params)
+            elif sub_path in ("evidence-robustness", "robustness"):
+                return HTTPStatus.OK, cls.get_evidence_robustness_api()
+            elif sub_path in ("macro-event-taxonomy", "taxonomy"):
+                return HTTPStatus.OK, cls.get_macro_taxonomy_api()
+            elif sub_path in ("event-cohort-accounting", "cohort-accounting"):
+                return HTTPStatus.OK, cls.get_cohort_accounting_api(query_params)
+            elif sub_path in ("dataset-content-integrity", "content-integrity"):
+                return HTTPStatus.OK, cls.get_content_integrity_api()
+            elif sub_path in ("hypothesis-templates", "hypothesis/templates"):
+                return HTTPStatus.OK, cls.get_hypothesis_templates_api()
+            elif sub_path in ("hypothesis-experiments", "hypothesis/execute"):
+                return HTTPStatus.OK, cls.execute_hypothesis_api(query_params)
+            elif sub_path in ("reproducibility-status", "reproducibility"):
+                return HTTPStatus.OK, cls.get_reproducibility_api()
             elif sub_path in ("research-evidence-summary", "evidence-summary"):
                 return HTTPStatus.OK, cls.get_research_findings_api()
             elif sub_path in ("research-report", "reports/generate"):
@@ -2903,6 +2919,29 @@ class ProductDashboardApiService:
                 export_format=fmt,
             )
 
+        elif rpt_type in ("HYPOTHESIS_RESEARCH", "HYPOTHESIS_RESEARCH_REPORT", "HYPOTHESIS"):
+            cohort = params.get("cohort", ["US_CPI"])[0]
+            interval = params.get("interval", ["1h"])[0]
+            try:
+                window_hours = int(params.get("window_hours", ["12"])[0])
+            except Exception:
+                window_hours = 12
+            res = ResearchReportGenerator.generate_hypothesis_research_report(
+                cohort=cohort,
+                interval=interval,
+                window_hours=window_hours,
+                export_format=fmt,
+            )
+
+        elif rpt_type in ("EVIDENCE_ROBUSTNESS", "EVIDENCE_ROBUSTNESS_REPORT", "ROBUSTNESS"):
+            res = ResearchReportGenerator.generate_evidence_robustness_report(export_format=fmt)
+
+        elif rpt_type in ("DATASET_INTEGRITY", "DATASET_INTEGRITY_REPORT", "CONTENT_INTEGRITY"):
+            res = ResearchReportGenerator.generate_dataset_integrity_report(export_format=fmt)
+
+        elif rpt_type in ("REPRODUCIBILITY", "REPRODUCIBILITY_REPORT", "REPRODUCIBILITY_AUDIT"):
+            res = ResearchReportGenerator.generate_reproducibility_report(export_format=fmt)
+
         else:
             return HTTPStatus.BAD_REQUEST, {
                 "status": "error",
@@ -2998,6 +3037,65 @@ class ProductDashboardApiService:
         exp_a = params.get("exp_id_a", ["CBE-EXP-01-CPI-VOLATILITY-SHIFT"])[0]
         exp_b = params.get("exp_id_b", ["CBE-EXP-02-FOMC-RATE-REACTIONS"])[0]
         return ExperimentRegistryEngine.compare_experiments(exp_a, exp_b)
+
+
+
+    @classmethod
+    def get_evidence_explorer_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for Evidence Explorer catalog and filters."""
+        from coin_behavior_engine.product.evidence_explorer import EvidenceExplorerEngine
+        flat_params = {k: v[0] if isinstance(v, list) else v for k, v in params.items()}
+        return EvidenceExplorerEngine.filter_evidence(flat_params)
+
+    @classmethod
+    def get_evidence_robustness_api(cls) -> Dict[str, Any]:
+        """API handler for evidence robustness matrix."""
+        from coin_behavior_engine.product.evidence_explorer import EvidenceExplorerEngine
+        return EvidenceExplorerEngine.get_robustness_matrix()
+
+    @classmethod
+    def get_macro_taxonomy_api(cls) -> Dict[str, Any]:
+        """API handler for macro event taxonomy."""
+        from coin_behavior_engine.product.macro_event_taxonomy import MacroEventTaxonomyEngine
+        return MacroEventTaxonomyEngine.get_taxonomy_overview()
+
+    @classmethod
+    def get_cohort_accounting_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for event cohort accounting."""
+        from coin_behavior_engine.product.macro_event_taxonomy import MacroEventTaxonomyEngine
+        from dataclasses import asdict
+        cohort = params.get("cohort", ["US_CPI"])[0]
+        try:
+            wh = int(params.get("window_hours", ["12"])[0])
+        except Exception:
+            wh = 12
+        acc = MacroEventTaxonomyEngine.get_cohort_accounting(cohort=cohort, window_hours=wh)
+        return {"status": "success", "accounting": asdict(acc)}
+
+    @classmethod
+    def get_content_integrity_api(cls) -> Dict[str, Any]:
+        """API handler for dataset content integrity."""
+        from coin_behavior_engine.product.content_integrity import ContentIntegrityEngine
+        return ContentIntegrityEngine.generate_canonical_manifest()
+
+    @classmethod
+    def get_hypothesis_templates_api(cls) -> Dict[str, Any]:
+        """API handler for hypothesis templates."""
+        from coin_behavior_engine.product.hypothesis_studio import HypothesisStudioEngine
+        return {"status": "success", "templates": HypothesisStudioEngine.get_templates()}
+
+    @classmethod
+    def execute_hypothesis_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for controlled hypothesis execution."""
+        from coin_behavior_engine.product.hypothesis_studio import HypothesisStudioEngine
+        flat_params = {k: v[0] if isinstance(v, list) else v for k, v in params.items()}
+        return HypothesisStudioEngine.execute_hypothesis_experiment(flat_params)
+
+    @classmethod
+    def get_reproducibility_api(cls) -> Dict[str, Any]:
+        """API handler for reproducibility status."""
+        from coin_behavior_engine.product.research_reports import ResearchReportGenerator
+        return ResearchReportGenerator.generate_reproducibility_report()
 
 
 START_TIME = time.time()
