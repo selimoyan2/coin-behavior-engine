@@ -1,0 +1,833 @@
+{
+  "search_id": "SEARCH-PAT-20261026090313",
+  "asset": "BTCUSDT",
+  "interval": "1h",
+  "reference_start_utc": "2022-06-01T00:00:00+00:00",
+  "reference_end_utc": "2022-06-15T00:00:00+00:00",
+  "reference_duration_hours": 336.0,
+  "reference_regime_composition": {
+    "SIDEWAYS": 0.2077,
+    "MOMENTUM_EXPANSION": 0.0,
+    "HIGH_VOLATILITY": 0.2878,
+    "CAPITULATION": 0.0682,
+    "RECOVERY_ACCUMULATION": 0.4095,
+    "DISTRIBUTION": 0.0267
+  },
+  "reference_realized_volatility_pct": 81.59,
+  "total_historical_windows_scanned": 574,
+  "eligible_windows_evaluated": 564,
+  "excluded_overlapping_windows": 10,
+  "ranked_candidates": [
+    {
+      "rank": 1,
+      "candidate_id": "PAT-CAND-2022011300",
+      "start_utc": "2022-01-13T00:00:00+00:00",
+      "end_utc": "2022-01-27T00:00:00+00:00",
+      "duration_hours": 336.0,
+      "candle_count": 337,
+      "composite_distance": 0.0734,
+      "similarity_score_pct": 92.66,
+      "overlap_status": "DISJOINT",
+      "data_coverage_pct": 100.0,
+      "source_verification": "VERIFIED_CANONICAL_HISTORICAL",
+      "components": {
+        "REGIME_COMPOSITION": {
+          "dimension_id": "REGIME_COMPOSITION",
+          "dimension_name_tr": "Rejim Kompozisyonu Ayrışımı (JSD)",
+          "distance_value": 0.1309,
+          "weight": 0.3,
+          "weighted_contribution": 0.0393,
+          "contribution_pct": 53.51,
+          "metric_method": "JENSEN_SHANNON_DIVERGENCE",
+          "reference_value_summary": "En baskın: RECOVERY_ACCUMULATION (%40.9)",
+          "candidate_value_summary": "En baskın: RECOVERY_ACCUMULATION (%38.9)"
+        },
+        "REALIZED_VOLATILITY": {
+          "dimension_id": "REALIZED_VOLATILITY",
+          "dimension_name_tr": "Gerçekleşen Volatilite Farkı",
+          "distance_value": 0.0204,
+          "weight": 0.25,
+          "weighted_contribution": 0.0051,
+          "contribution_pct": 6.97,
+          "metric_method": "NORMALIZED_L1_VOLATILITY",
+          "reference_value_summary": "%81.6 Yıllık",
+          "candidate_value_summary": "%78.3 Yıllık"
+        },
+        "RETURN_DISTRIBUTION": {
+          "dimension_id": "RETURN_DISTRIBUTION",
+          "dimension_name_tr": "Getiri Dağılımı Uzaklığı (Wasserstein)",
+          "distance_value": 0.0168,
+          "weight": 0.2,
+          "weighted_contribution": 0.0034,
+          "contribution_pct": 4.57,
+          "metric_method": "WASSERSTEIN_1D",
+          "reference_value_summary": "Ort Getiri: %-0.11",
+          "candidate_value_summary": "Ort Getiri: %-0.05"
+        },
+        "TRANSITION_STRUCTURE": {
+          "dimension_id": "TRANSITION_STRUCTURE",
+          "dimension_name_tr": "Rejim Geçiş Matrisi Farkı (Frobenius)",
+          "distance_value": 0.1392,
+          "weight": 0.15,
+          "weighted_contribution": 0.0209,
+          "contribution_pct": 28.47,
+          "metric_method": "NORMALIZED_FROBENIUS_NORM",
+          "reference_value_summary": "6x6 Stokastik Geçiş Matrisi",
+          "candidate_value_summary": "6x6 Stokastik Geçiş Matrisi"
+        },
+        "REGIME_PERSISTENCE": {
+          "dimension_id": "REGIME_PERSISTENCE",
+          "dimension_name_tr": "Rejim Kalıcılığı Süre Uyumsuzluğu",
+          "distance_value": 0.0476,
+          "weight": 0.1,
+          "weighted_contribution": 0.0048,
+          "contribution_pct": 6.49,
+          "metric_method": "RELATIVE_EPISODE_DURATION_GAP",
+          "reference_value_summary": "15.3 Bar",
+          "candidate_value_summary": "16.9 Bar"
+        }
+      },
+      "regime_composition": {
+        "SIDEWAYS": 0.2315,
+        "MOMENTUM_EXPANSION": 0.0,
+        "HIGH_VOLATILITY": 0.3353,
+        "CAPITULATION": 0.0445,
+        "RECOVERY_ACCUMULATION": 0.3887,
+        "DISTRIBUTION": 0.0
+      },
+      "realized_volatility_pct": 78.32,
+      "mean_return_pct": -0.047
+    },
+    {
+      "rank": 2,
+      "candidate_id": "PAT-CAND-2024072801",
+      "start_utc": "2024-07-28T01:00:00+00:00",
+      "end_utc": "2024-08-11T01:00:00+00:00",
+      "duration_hours": 336.0,
+      "candle_count": 337,
+      "composite_distance": 0.0775,
+      "similarity_score_pct": 92.25,
+      "overlap_status": "DISJOINT",
+      "data_coverage_pct": 100.0,
+      "source_verification": "VERIFIED_CANONICAL_HISTORICAL",
+      "components": {
+        "REGIME_COMPOSITION": {
+          "dimension_id": "REGIME_COMPOSITION",
+          "dimension_name_tr": "Rejim Kompozisyonu Ayrışımı (JSD)",
+          "distance_value": 0.1343,
+          "weight": 0.3,
+          "weighted_contribution": 0.0403,
+          "contribution_pct": 51.99,
+          "metric_method": "JENSEN_SHANNON_DIVERGENCE",
+          "reference_value_summary": "En baskın: RECOVERY_ACCUMULATION (%40.9)",
+          "candidate_value_summary": "En baskın: RECOVERY_ACCUMULATION (%46.0)"
+        },
+        "REALIZED_VOLATILITY": {
+          "dimension_id": "REALIZED_VOLATILITY",
+          "dimension_name_tr": "Gerçekleşen Volatilite Farkı",
+          "distance_value": 0.0098,
+          "weight": 0.25,
+          "weighted_contribution": 0.0025,
+          "contribution_pct": 3.17,
+          "metric_method": "NORMALIZED_L1_VOLATILITY",
+          "reference_value_summary": "%81.6 Yıllık",
+          "candidate_value_summary": "%80.0 Yıllık"
+        },
+        "RETURN_DISTRIBUTION": {
+          "dimension_id": "RETURN_DISTRIBUTION",
+          "dimension_name_tr": "Getiri Dağılımı Uzaklığı (Wasserstein)",
+          "distance_value": 0.0168,
+          "weight": 0.2,
+          "weighted_contribution": 0.0034,
+          "contribution_pct": 4.35,
+          "metric_method": "WASSERSTEIN_1D",
+          "reference_value_summary": "Ort Getiri: %-0.11",
+          "candidate_value_summary": "Ort Getiri: %-0.03"
+        },
+        "TRANSITION_STRUCTURE": {
+          "dimension_id": "TRANSITION_STRUCTURE",
+          "dimension_name_tr": "Rejim Geçiş Matrisi Farkı (Frobenius)",
+          "distance_value": 0.1237,
+          "weight": 0.15,
+          "weighted_contribution": 0.0186,
+          "contribution_pct": 23.95,
+          "metric_method": "NORMALIZED_FROBENIUS_NORM",
+          "reference_value_summary": "6x6 Stokastik Geçiş Matrisi",
+          "candidate_value_summary": "6x6 Stokastik Geçiş Matrisi"
+        },
+        "REGIME_PERSISTENCE": {
+          "dimension_id": "REGIME_PERSISTENCE",
+          "dimension_name_tr": "Rejim Kalıcılığı Süre Uyumsuzluğu",
+          "distance_value": 0.1282,
+          "weight": 0.1,
+          "weighted_contribution": 0.0128,
+          "contribution_pct": 16.55,
+          "metric_method": "RELATIVE_EPISODE_DURATION_GAP",
+          "reference_value_summary": "15.3 Bar",
+          "candidate_value_summary": "19.8 Bar"
+        }
+      },
+      "regime_composition": {
+        "SIDEWAYS": 0.1899,
+        "MOMENTUM_EXPANSION": 0.0,
+        "HIGH_VOLATILITY": 0.3116,
+        "CAPITULATION": 0.0386,
+        "RECOVERY_ACCUMULATION": 0.4599,
+        "DISTRIBUTION": 0.0
+      },
+      "realized_volatility_pct": 80.0,
+      "mean_return_pct": -0.028
+    },
+    {
+      "rank": 3,
+      "candidate_id": "PAT-CAND-2024080301",
+      "start_utc": "2024-08-03T01:00:00+00:00",
+      "end_utc": "2024-08-17T01:00:00+00:00",
+      "duration_hours": 336.0,
+      "candle_count": 337,
+      "composite_distance": 0.0852,
+      "similarity_score_pct": 91.48,
+      "overlap_status": "DISJOINT",
+      "data_coverage_pct": 100.0,
+      "source_verification": "VERIFIED_CANONICAL_HISTORICAL",
+      "components": {
+        "REGIME_COMPOSITION": {
+          "dimension_id": "REGIME_COMPOSITION",
+          "dimension_name_tr": "Rejim Kompozisyonu Ayrışımı (JSD)",
+          "distance_value": 0.1855,
+          "weight": 0.3,
+          "weighted_contribution": 0.0557,
+          "contribution_pct": 65.28,
+          "metric_method": "JENSEN_SHANNON_DIVERGENCE",
+          "reference_value_summary": "En baskın: RECOVERY_ACCUMULATION (%40.9)",
+          "candidate_value_summary": "En baskın: HIGH_VOLATILITY (%42.7)"
+        },
+        "REALIZED_VOLATILITY": {
+          "dimension_id": "REALIZED_VOLATILITY",
+          "dimension_name_tr": "Gerçekleşen Volatilite Farkı",
+          "distance_value": 0.0179,
+          "weight": 0.25,
+          "weighted_contribution": 0.0045,
+          "contribution_pct": 5.26,
+          "metric_method": "NORMALIZED_L1_VOLATILITY",
+          "reference_value_summary": "%81.6 Yıllık",
+          "candidate_value_summary": "%84.6 Yıllık"
+        },
+        "RETURN_DISTRIBUTION": {
+          "dimension_id": "RETURN_DISTRIBUTION",
+          "dimension_name_tr": "Getiri Dağılımı Uzaklığı (Wasserstein)",
+          "distance_value": 0.0206,
+          "weight": 0.2,
+          "weighted_contribution": 0.0041,
+          "contribution_pct": 4.83,
+          "metric_method": "WASSERSTEIN_1D",
+          "reference_value_summary": "Ort Getiri: %-0.11",
+          "candidate_value_summary": "Ort Getiri: %-0.01"
+        },
+        "TRANSITION_STRUCTURE": {
+          "dimension_id": "TRANSITION_STRUCTURE",
+          "dimension_name_tr": "Rejim Geçiş Matrisi Farkı (Frobenius)",
+          "distance_value": 0.1245,
+          "weight": 0.15,
+          "weighted_contribution": 0.0187,
+          "contribution_pct": 21.9,
+          "metric_method": "NORMALIZED_FROBENIUS_NORM",
+          "reference_value_summary": "6x6 Stokastik Geçiş Matrisi",
+          "candidate_value_summary": "6x6 Stokastik Geçiş Matrisi"
+        },
+        "REGIME_PERSISTENCE": {
+          "dimension_id": "REGIME_PERSISTENCE",
+          "dimension_name_tr": "Rejim Kalıcılığı Süre Uyumsuzluğu",
+          "distance_value": 0.0233,
+          "weight": 0.1,
+          "weighted_contribution": 0.0023,
+          "contribution_pct": 2.73,
+          "metric_method": "RELATIVE_EPISODE_DURATION_GAP",
+          "reference_value_summary": "15.3 Bar",
+          "candidate_value_summary": "16.0 Bar"
+        }
+      },
+      "regime_composition": {
+        "SIDEWAYS": 0.1217,
+        "MOMENTUM_EXPANSION": 0.0,
+        "HIGH_VOLATILITY": 0.4273,
+        "CAPITULATION": 0.0386,
+        "RECOVERY_ACCUMULATION": 0.4125,
+        "DISTRIBUTION": 0.0
+      },
+      "realized_volatility_pct": 84.57,
+      "mean_return_pct": -0.005
+    },
+    {
+      "rank": 4,
+      "candidate_id": "PAT-CAND-2022110900",
+      "start_utc": "2022-11-09T00:00:00+00:00",
+      "end_utc": "2022-11-23T00:00:00+00:00",
+      "duration_hours": 336.0,
+      "candle_count": 337,
+      "composite_distance": 0.0857,
+      "similarity_score_pct": 91.43,
+      "overlap_status": "DISJOINT",
+      "data_coverage_pct": 100.0,
+      "source_verification": "VERIFIED_CANONICAL_HISTORICAL",
+      "components": {
+        "REGIME_COMPOSITION": {
+          "dimension_id": "REGIME_COMPOSITION",
+          "dimension_name_tr": "Rejim Kompozisyonu Ayrışımı (JSD)",
+          "distance_value": 0.1595,
+          "weight": 0.3,
+          "weighted_contribution": 0.0478,
+          "contribution_pct": 55.86,
+          "metric_method": "JENSEN_SHANNON_DIVERGENCE",
+          "reference_value_summary": "En baskın: RECOVERY_ACCUMULATION (%40.9)",
+          "candidate_value_summary": "En baskın: SIDEWAYS (%35.3)"
+        },
+        "REALIZED_VOLATILITY": {
+          "dimension_id": "REALIZED_VOLATILITY",
+          "dimension_name_tr": "Gerçekleşen Volatilite Farkı",
+          "distance_value": 0.0273,
+          "weight": 0.25,
+          "weighted_contribution": 0.0068,
+          "contribution_pct": 7.95,
+          "metric_method": "NORMALIZED_L1_VOLATILITY",
+          "reference_value_summary": "%81.6 Yıllık",
+          "candidate_value_summary": "%77.3 Yıllık"
+        },
+        "RETURN_DISTRIBUTION": {
+          "dimension_id": "RETURN_DISTRIBUTION",
+          "dimension_name_tr": "Getiri Dağılımı Uzaklığı (Wasserstein)",
+          "distance_value": 0.02,
+          "weight": 0.2,
+          "weighted_contribution": 0.004,
+          "contribution_pct": 4.66,
+          "metric_method": "WASSERSTEIN_1D",
+          "reference_value_summary": "Ort Getiri: %-0.11",
+          "candidate_value_summary": "Ort Getiri: %-0.04"
+        },
+        "TRANSITION_STRUCTURE": {
+          "dimension_id": "TRANSITION_STRUCTURE",
+          "dimension_name_tr": "Rejim Geçiş Matrisi Farkı (Frobenius)",
+          "distance_value": 0.1511,
+          "weight": 0.15,
+          "weighted_contribution": 0.0227,
+          "contribution_pct": 26.45,
+          "metric_method": "NORMALIZED_FROBENIUS_NORM",
+          "reference_value_summary": "6x6 Stokastik Geçiş Matrisi",
+          "candidate_value_summary": "6x6 Stokastik Geçiş Matrisi"
+        },
+        "REGIME_PERSISTENCE": {
+          "dimension_id": "REGIME_PERSISTENCE",
+          "dimension_name_tr": "Rejim Kalıcılığı Süre Uyumsuzluğu",
+          "distance_value": 0.0435,
+          "weight": 0.1,
+          "weighted_contribution": 0.0043,
+          "contribution_pct": 5.08,
+          "metric_method": "RELATIVE_EPISODE_DURATION_GAP",
+          "reference_value_summary": "15.3 Bar",
+          "candidate_value_summary": "14.0 Bar"
+        }
+      },
+      "regime_composition": {
+        "SIDEWAYS": 0.3531,
+        "MOMENTUM_EXPANSION": 0.0,
+        "HIGH_VOLATILITY": 0.2493,
+        "CAPITULATION": 0.0564,
+        "RECOVERY_ACCUMULATION": 0.3383,
+        "DISTRIBUTION": 0.003
+      },
+      "realized_volatility_pct": 77.26,
+      "mean_return_pct": -0.037
+    },
+    {
+      "rank": 5,
+      "candidate_id": "PAT-CAND-2024073101",
+      "start_utc": "2024-07-31T01:00:00+00:00",
+      "end_utc": "2024-08-14T01:00:00+00:00",
+      "duration_hours": 336.0,
+      "candle_count": 337,
+      "composite_distance": 0.0861,
+      "similarity_score_pct": 91.39,
+      "overlap_status": "DISJOINT",
+      "data_coverage_pct": 100.0,
+      "source_verification": "VERIFIED_CANONICAL_HISTORICAL",
+      "components": {
+        "REGIME_COMPOSITION": {
+          "dimension_id": "REGIME_COMPOSITION",
+          "dimension_name_tr": "Rejim Kompozisyonu Ayrışımı (JSD)",
+          "distance_value": 0.1523,
+          "weight": 0.3,
+          "weighted_contribution": 0.0457,
+          "contribution_pct": 53.09,
+          "metric_method": "JENSEN_SHANNON_DIVERGENCE",
+          "reference_value_summary": "En baskın: RECOVERY_ACCUMULATION (%40.9)",
+          "candidate_value_summary": "En baskın: RECOVERY_ACCUMULATION (%39.5)"
+        },
+        "REALIZED_VOLATILITY": {
+          "dimension_id": "REALIZED_VOLATILITY",
+          "dimension_name_tr": "Gerçekleşen Volatilite Farkı",
+          "distance_value": 0.0223,
+          "weight": 0.25,
+          "weighted_contribution": 0.0056,
+          "contribution_pct": 6.48,
+          "metric_method": "NORMALIZED_L1_VOLATILITY",
+          "reference_value_summary": "%81.6 Yıllık",
+          "candidate_value_summary": "%85.3 Yıllık"
+        },
+        "RETURN_DISTRIBUTION": {
+          "dimension_id": "RETURN_DISTRIBUTION",
+          "dimension_name_tr": "Getiri Dağılımı Uzaklığı (Wasserstein)",
+          "distance_value": 0.017,
+          "weight": 0.2,
+          "weighted_contribution": 0.0034,
+          "contribution_pct": 3.95,
+          "metric_method": "WASSERSTEIN_1D",
+          "reference_value_summary": "Ort Getiri: %-0.11",
+          "candidate_value_summary": "Ort Getiri: %-0.02"
+        },
+        "TRANSITION_STRUCTURE": {
+          "dimension_id": "TRANSITION_STRUCTURE",
+          "dimension_name_tr": "Rejim Geçiş Matrisi Farkı (Frobenius)",
+          "distance_value": 0.1238,
+          "weight": 0.15,
+          "weighted_contribution": 0.0186,
+          "contribution_pct": 21.58,
+          "metric_method": "NORMALIZED_FROBENIUS_NORM",
+          "reference_value_summary": "6x6 Stokastik Geçiş Matrisi",
+          "candidate_value_summary": "6x6 Stokastik Geçiş Matrisi"
+        },
+        "REGIME_PERSISTENCE": {
+          "dimension_id": "REGIME_PERSISTENCE",
+          "dimension_name_tr": "Rejim Kalıcılığı Süre Uyumsuzluğu",
+          "distance_value": 0.1282,
+          "weight": 0.1,
+          "weighted_contribution": 0.0128,
+          "contribution_pct": 14.9,
+          "metric_method": "RELATIVE_EPISODE_DURATION_GAP",
+          "reference_value_summary": "15.3 Bar",
+          "candidate_value_summary": "19.8 Bar"
+        }
+      },
+      "regime_composition": {
+        "SIDEWAYS": 0.1751,
+        "MOMENTUM_EXPANSION": 0.0,
+        "HIGH_VOLATILITY": 0.3917,
+        "CAPITULATION": 0.0386,
+        "RECOVERY_ACCUMULATION": 0.3947,
+        "DISTRIBUTION": 0.0
+      },
+      "realized_volatility_pct": 85.31,
+      "mean_return_pct": -0.023
+    },
+    {
+      "rank": 6,
+      "candidate_id": "PAT-CAND-2026012501",
+      "start_utc": "2026-01-25T01:00:00+00:00",
+      "end_utc": "2026-02-08T01:00:00+00:00",
+      "duration_hours": 336.0,
+      "candle_count": 337,
+      "composite_distance": 0.0925,
+      "similarity_score_pct": 90.75,
+      "overlap_status": "DISJOINT",
+      "data_coverage_pct": 100.0,
+      "source_verification": "VERIFIED_CANONICAL_HISTORICAL",
+      "components": {
+        "REGIME_COMPOSITION": {
+          "dimension_id": "REGIME_COMPOSITION",
+          "dimension_name_tr": "Rejim Kompozisyonu Ayrışımı (JSD)",
+          "distance_value": 0.177,
+          "weight": 0.3,
+          "weighted_contribution": 0.0531,
+          "contribution_pct": 57.39,
+          "metric_method": "JENSEN_SHANNON_DIVERGENCE",
+          "reference_value_summary": "En baskın: RECOVERY_ACCUMULATION (%40.9)",
+          "candidate_value_summary": "En baskın: RECOVERY_ACCUMULATION (%32.6)"
+        },
+        "REALIZED_VOLATILITY": {
+          "dimension_id": "REALIZED_VOLATILITY",
+          "dimension_name_tr": "Gerçekleşen Volatilite Farkı",
+          "distance_value": 0.0586,
+          "weight": 0.25,
+          "weighted_contribution": 0.0146,
+          "contribution_pct": 15.83,
+          "metric_method": "NORMALIZED_L1_VOLATILITY",
+          "reference_value_summary": "%81.6 Yıllık",
+          "candidate_value_summary": "%72.6 Yıllık"
+        },
+        "RETURN_DISTRIBUTION": {
+          "dimension_id": "RETURN_DISTRIBUTION",
+          "dimension_name_tr": "Getiri Dağılımı Uzaklığı (Wasserstein)",
+          "distance_value": 0.0171,
+          "weight": 0.2,
+          "weighted_contribution": 0.0034,
+          "contribution_pct": 3.7,
+          "metric_method": "WASSERSTEIN_1D",
+          "reference_value_summary": "Ort Getiri: %-0.11",
+          "candidate_value_summary": "Ort Getiri: %-0.07"
+        },
+        "TRANSITION_STRUCTURE": {
+          "dimension_id": "TRANSITION_STRUCTURE",
+          "dimension_name_tr": "Rejim Geçiş Matrisi Farkı (Frobenius)",
+          "distance_value": 0.1268,
+          "weight": 0.15,
+          "weighted_contribution": 0.019,
+          "contribution_pct": 20.57,
+          "metric_method": "NORMALIZED_FROBENIUS_NORM",
+          "reference_value_summary": "6x6 Stokastik Geçiş Matrisi",
+          "candidate_value_summary": "6x6 Stokastik Geçiş Matrisi"
+        },
+        "REGIME_PERSISTENCE": {
+          "dimension_id": "REGIME_PERSISTENCE",
+          "dimension_name_tr": "Rejim Kalıcılığı Süre Uyumsuzluğu",
+          "distance_value": 0.0233,
+          "weight": 0.1,
+          "weighted_contribution": 0.0023,
+          "contribution_pct": 2.51,
+          "metric_method": "RELATIVE_EPISODE_DURATION_GAP",
+          "reference_value_summary": "15.3 Bar",
+          "candidate_value_summary": "16.0 Bar"
+        }
+      },
+      "regime_composition": {
+        "SIDEWAYS": 0.2938,
+        "MOMENTUM_EXPANSION": 0.0,
+        "HIGH_VOLATILITY": 0.27,
+        "CAPITULATION": 0.0208,
+        "RECOVERY_ACCUMULATION": 0.3264,
+        "DISTRIBUTION": 0.089
+      },
+      "realized_volatility_pct": 72.56,
+      "mean_return_pct": -0.072
+    },
+    {
+      "rank": 7,
+      "candidate_id": "PAT-CAND-2025022301",
+      "start_utc": "2025-02-23T01:00:00+00:00",
+      "end_utc": "2025-03-09T01:00:00+00:00",
+      "duration_hours": 336.0,
+      "candle_count": 337,
+      "composite_distance": 0.0941,
+      "similarity_score_pct": 90.59,
+      "overlap_status": "DISJOINT",
+      "data_coverage_pct": 100.0,
+      "source_verification": "VERIFIED_CANONICAL_HISTORICAL",
+      "components": {
+        "REGIME_COMPOSITION": {
+          "dimension_id": "REGIME_COMPOSITION",
+          "dimension_name_tr": "Rejim Kompozisyonu Ayrışımı (JSD)",
+          "distance_value": 0.1875,
+          "weight": 0.3,
+          "weighted_contribution": 0.0562,
+          "contribution_pct": 59.78,
+          "metric_method": "JENSEN_SHANNON_DIVERGENCE",
+          "reference_value_summary": "En baskın: RECOVERY_ACCUMULATION (%40.9)",
+          "candidate_value_summary": "En baskın: HIGH_VOLATILITY (%47.5)"
+        },
+        "REALIZED_VOLATILITY": {
+          "dimension_id": "REALIZED_VOLATILITY",
+          "dimension_name_tr": "Gerçekleşen Volatilite Farkı",
+          "distance_value": 0.0101,
+          "weight": 0.25,
+          "weighted_contribution": 0.0025,
+          "contribution_pct": 2.69,
+          "metric_method": "NORMALIZED_L1_VOLATILITY",
+          "reference_value_summary": "%81.6 Yıllık",
+          "candidate_value_summary": "%83.3 Yıllık"
+        },
+        "RETURN_DISTRIBUTION": {
+          "dimension_id": "RETURN_DISTRIBUTION",
+          "dimension_name_tr": "Getiri Dağılımı Uzaklığı (Wasserstein)",
+          "distance_value": 0.0194,
+          "weight": 0.2,
+          "weighted_contribution": 0.0039,
+          "contribution_pct": 4.12,
+          "metric_method": "WASSERSTEIN_1D",
+          "reference_value_summary": "Ort Getiri: %-0.11",
+          "candidate_value_summary": "Ort Getiri: %-0.03"
+        },
+        "TRANSITION_STRUCTURE": {
+          "dimension_id": "TRANSITION_STRUCTURE",
+          "dimension_name_tr": "Rejim Geçiş Matrisi Farkı (Frobenius)",
+          "distance_value": 0.1805,
+          "weight": 0.15,
+          "weighted_contribution": 0.0271,
+          "contribution_pct": 28.78,
+          "metric_method": "NORMALIZED_FROBENIUS_NORM",
+          "reference_value_summary": "6x6 Stokastik Geçiş Matrisi",
+          "candidate_value_summary": "6x6 Stokastik Geçiş Matrisi"
+        },
+        "REGIME_PERSISTENCE": {
+          "dimension_id": "REGIME_PERSISTENCE",
+          "dimension_name_tr": "Rejim Kalıcılığı Süre Uyumsuzluğu",
+          "distance_value": 0.0435,
+          "weight": 0.1,
+          "weighted_contribution": 0.0043,
+          "contribution_pct": 4.62,
+          "metric_method": "RELATIVE_EPISODE_DURATION_GAP",
+          "reference_value_summary": "15.3 Bar",
+          "candidate_value_summary": "14.0 Bar"
+        }
+      },
+      "regime_composition": {
+        "SIDEWAYS": 0.1899,
+        "MOMENTUM_EXPANSION": 0.0,
+        "HIGH_VOLATILITY": 0.4748,
+        "CAPITULATION": 0.0178,
+        "RECOVERY_ACCUMULATION": 0.2967,
+        "DISTRIBUTION": 0.0208
+      },
+      "realized_volatility_pct": 83.26,
+      "mean_return_pct": -0.03
+    },
+    {
+      "rank": 8,
+      "candidate_id": "PAT-CAND-2024072501",
+      "start_utc": "2024-07-25T01:00:00+00:00",
+      "end_utc": "2024-08-08T01:00:00+00:00",
+      "duration_hours": 336.0,
+      "candle_count": 337,
+      "composite_distance": 0.0944,
+      "similarity_score_pct": 90.56,
+      "overlap_status": "DISJOINT",
+      "data_coverage_pct": 100.0,
+      "source_verification": "VERIFIED_CANONICAL_HISTORICAL",
+      "components": {
+        "REGIME_COMPOSITION": {
+          "dimension_id": "REGIME_COMPOSITION",
+          "dimension_name_tr": "Rejim Kompozisyonu Ayrışımı (JSD)",
+          "distance_value": 0.1961,
+          "weight": 0.3,
+          "weighted_contribution": 0.0588,
+          "contribution_pct": 62.33,
+          "metric_method": "JENSEN_SHANNON_DIVERGENCE",
+          "reference_value_summary": "En baskın: RECOVERY_ACCUMULATION (%40.9)",
+          "candidate_value_summary": "En baskın: RECOVERY_ACCUMULATION (%59.9)"
+        },
+        "REALIZED_VOLATILITY": {
+          "dimension_id": "REALIZED_VOLATILITY",
+          "dimension_name_tr": "Gerçekleşen Volatilite Farkı",
+          "distance_value": 0.0244,
+          "weight": 0.25,
+          "weighted_contribution": 0.0061,
+          "contribution_pct": 6.46,
+          "metric_method": "NORMALIZED_L1_VOLATILITY",
+          "reference_value_summary": "%81.6 Yıllık",
+          "candidate_value_summary": "%77.7 Yıllık"
+        },
+        "RETURN_DISTRIBUTION": {
+          "dimension_id": "RETURN_DISTRIBUTION",
+          "dimension_name_tr": "Getiri Dağılımı Uzaklığı (Wasserstein)",
+          "distance_value": 0.0165,
+          "weight": 0.2,
+          "weighted_contribution": 0.0033,
+          "contribution_pct": 3.49,
+          "metric_method": "WASSERSTEIN_1D",
+          "reference_value_summary": "Ort Getiri: %-0.11",
+          "candidate_value_summary": "Ort Getiri: %-0.04"
+        },
+        "TRANSITION_STRUCTURE": {
+          "dimension_id": "TRANSITION_STRUCTURE",
+          "dimension_name_tr": "Rejim Geçiş Matrisi Farkı (Frobenius)",
+          "distance_value": 0.1256,
+          "weight": 0.15,
+          "weighted_contribution": 0.0188,
+          "contribution_pct": 19.97,
+          "metric_method": "NORMALIZED_FROBENIUS_NORM",
+          "reference_value_summary": "6x6 Stokastik Geçiş Matrisi",
+          "candidate_value_summary": "6x6 Stokastik Geçiş Matrisi"
+        },
+        "REGIME_PERSISTENCE": {
+          "dimension_id": "REGIME_PERSISTENCE",
+          "dimension_name_tr": "Rejim Kalıcılığı Süre Uyumsuzluğu",
+          "distance_value": 0.0732,
+          "weight": 0.1,
+          "weighted_contribution": 0.0073,
+          "contribution_pct": 7.75,
+          "metric_method": "RELATIVE_EPISODE_DURATION_GAP",
+          "reference_value_summary": "15.3 Bar",
+          "candidate_value_summary": "17.7 Bar"
+        }
+      },
+      "regime_composition": {
+        "SIDEWAYS": 0.178,
+        "MOMENTUM_EXPANSION": 0.0,
+        "HIGH_VOLATILITY": 0.184,
+        "CAPITULATION": 0.0386,
+        "RECOVERY_ACCUMULATION": 0.5994,
+        "DISTRIBUTION": 0.0
+      },
+      "realized_volatility_pct": 77.7,
+      "mean_return_pct": -0.039
+    },
+    {
+      "rank": 9,
+      "candidate_id": "PAT-CAND-2022011600",
+      "start_utc": "2022-01-16T00:00:00+00:00",
+      "end_utc": "2022-01-30T00:00:00+00:00",
+      "duration_hours": 336.0,
+      "candle_count": 337,
+      "composite_distance": 0.0952,
+      "similarity_score_pct": 90.48,
+      "overlap_status": "DISJOINT",
+      "data_coverage_pct": 100.0,
+      "source_verification": "VERIFIED_CANONICAL_HISTORICAL",
+      "components": {
+        "REGIME_COMPOSITION": {
+          "dimension_id": "REGIME_COMPOSITION",
+          "dimension_name_tr": "Rejim Kompozisyonu Ayrışımı (JSD)",
+          "distance_value": 0.1958,
+          "weight": 0.3,
+          "weighted_contribution": 0.0587,
+          "contribution_pct": 61.74,
+          "metric_method": "JENSEN_SHANNON_DIVERGENCE",
+          "reference_value_summary": "En baskın: RECOVERY_ACCUMULATION (%40.9)",
+          "candidate_value_summary": "En baskın: HIGH_VOLATILITY (%46.9)"
+        },
+        "REALIZED_VOLATILITY": {
+          "dimension_id": "REALIZED_VOLATILITY",
+          "dimension_name_tr": "Gerçekleşen Volatilite Farkı",
+          "distance_value": 0.0046,
+          "weight": 0.25,
+          "weighted_contribution": 0.0012,
+          "contribution_pct": 1.21,
+          "metric_method": "NORMALIZED_L1_VOLATILITY",
+          "reference_value_summary": "%81.6 Yıllık",
+          "candidate_value_summary": "%82.3 Yıllık"
+        },
+        "RETURN_DISTRIBUTION": {
+          "dimension_id": "RETURN_DISTRIBUTION",
+          "dimension_name_tr": "Getiri Dağılımı Uzaklığı (Wasserstein)",
+          "distance_value": 0.0217,
+          "weight": 0.2,
+          "weighted_contribution": 0.0043,
+          "contribution_pct": 4.56,
+          "metric_method": "WASSERSTEIN_1D",
+          "reference_value_summary": "Ort Getiri: %-0.11",
+          "candidate_value_summary": "Ort Getiri: %-0.03"
+        },
+        "TRANSITION_STRUCTURE": {
+          "dimension_id": "TRANSITION_STRUCTURE",
+          "dimension_name_tr": "Rejim Geçiş Matrisi Farkı (Frobenius)",
+          "distance_value": 0.1395,
+          "weight": 0.15,
+          "weighted_contribution": 0.0209,
+          "contribution_pct": 21.99,
+          "metric_method": "NORMALIZED_FROBENIUS_NORM",
+          "reference_value_summary": "6x6 Stokastik Geçiş Matrisi",
+          "candidate_value_summary": "6x6 Stokastik Geçiş Matrisi"
+        },
+        "REGIME_PERSISTENCE": {
+          "dimension_id": "REGIME_PERSISTENCE",
+          "dimension_name_tr": "Rejim Kalıcılığı Süre Uyumsuzluğu",
+          "distance_value": 0.1,
+          "weight": 0.1,
+          "weighted_contribution": 0.01,
+          "contribution_pct": 10.51,
+          "metric_method": "RELATIVE_EPISODE_DURATION_GAP",
+          "reference_value_summary": "15.3 Bar",
+          "candidate_value_summary": "18.7 Bar"
+        }
+      },
+      "regime_composition": {
+        "SIDEWAYS": 0.1958,
+        "MOMENTUM_EXPANSION": 0.0,
+        "HIGH_VOLATILITY": 0.4688,
+        "CAPITULATION": 0.0445,
+        "RECOVERY_ACCUMULATION": 0.2908,
+        "DISTRIBUTION": 0.0
+      },
+      "realized_volatility_pct": 82.34,
+      "mean_return_pct": -0.035
+    },
+    {
+      "rank": 10,
+      "candidate_id": "PAT-CAND-2025022001",
+      "start_utc": "2025-02-20T01:00:00+00:00",
+      "end_utc": "2025-03-06T01:00:00+00:00",
+      "duration_hours": 336.0,
+      "candle_count": 337,
+      "composite_distance": 0.0978,
+      "similarity_score_pct": 90.22,
+      "overlap_status": "DISJOINT",
+      "data_coverage_pct": 100.0,
+      "source_verification": "VERIFIED_CANONICAL_HISTORICAL",
+      "components": {
+        "REGIME_COMPOSITION": {
+          "dimension_id": "REGIME_COMPOSITION",
+          "dimension_name_tr": "Rejim Kompozisyonu Ayrışımı (JSD)",
+          "distance_value": 0.1722,
+          "weight": 0.3,
+          "weighted_contribution": 0.0517,
+          "contribution_pct": 52.84,
+          "metric_method": "JENSEN_SHANNON_DIVERGENCE",
+          "reference_value_summary": "En baskın: RECOVERY_ACCUMULATION (%40.9)",
+          "candidate_value_summary": "En baskın: HIGH_VOLATILITY (%35.3)"
+        },
+        "REALIZED_VOLATILITY": {
+          "dimension_id": "REALIZED_VOLATILITY",
+          "dimension_name_tr": "Gerçekleşen Volatilite Farkı",
+          "distance_value": 0.0489,
+          "weight": 0.25,
+          "weighted_contribution": 0.0122,
+          "contribution_pct": 12.5,
+          "metric_method": "NORMALIZED_L1_VOLATILITY",
+          "reference_value_summary": "%81.6 Yıllık",
+          "candidate_value_summary": "%74.0 Yıllık"
+        },
+        "RETURN_DISTRIBUTION": {
+          "dimension_id": "RETURN_DISTRIBUTION",
+          "dimension_name_tr": "Getiri Dağılımı Uzaklığı (Wasserstein)",
+          "distance_value": 0.0226,
+          "weight": 0.2,
+          "weighted_contribution": 0.0045,
+          "contribution_pct": 4.62,
+          "metric_method": "WASSERSTEIN_1D",
+          "reference_value_summary": "Ort Getiri: %-0.11",
+          "candidate_value_summary": "Ort Getiri: %-0.02"
+        },
+        "TRANSITION_STRUCTURE": {
+          "dimension_id": "TRANSITION_STRUCTURE",
+          "dimension_name_tr": "Rejim Geçiş Matrisi Farkı (Frobenius)",
+          "distance_value": 0.1811,
+          "weight": 0.15,
+          "weighted_contribution": 0.0272,
+          "contribution_pct": 27.77,
+          "metric_method": "NORMALIZED_FROBENIUS_NORM",
+          "reference_value_summary": "6x6 Stokastik Geçiş Matrisi",
+          "candidate_value_summary": "6x6 Stokastik Geçiş Matrisi"
+        },
+        "REGIME_PERSISTENCE": {
+          "dimension_id": "REGIME_PERSISTENCE",
+          "dimension_name_tr": "Rejim Kalıcılığı Süre Uyumsuzluğu",
+          "distance_value": 0.0222,
+          "weight": 0.1,
+          "weighted_contribution": 0.0022,
+          "contribution_pct": 2.27,
+          "metric_method": "RELATIVE_EPISODE_DURATION_GAP",
+          "reference_value_summary": "15.3 Bar",
+          "candidate_value_summary": "14.7 Bar"
+        }
+      },
+      "regime_composition": {
+        "SIDEWAYS": 0.3175,
+        "MOMENTUM_EXPANSION": 0.0,
+        "HIGH_VOLATILITY": 0.3531,
+        "CAPITULATION": 0.0178,
+        "RECOVERY_ACCUMULATION": 0.2908,
+        "DISTRIBUTION": 0.0208
+      },
+      "realized_volatility_pct": 73.98,
+      "mean_return_pct": -0.015
+    }
+  ],
+  "weights_used": {
+    "REGIME_COMPOSITION": 0.3,
+    "REALIZED_VOLATILITY": 0.25,
+    "RETURN_DISTRIBUTION": 0.2,
+    "TRANSITION_STRUCTURE": 0.15,
+    "REGIME_PERSISTENCE": 0.1
+  },
+  "dataset_manifest_sha256": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
+  "canonical_model_version": "CBE-0.7.0 (FROZEN)",
+  "legal_disclaimer_tr": "Bu rapor ve benzerlik eşleştirmeleri yalnızca tarihsel piyasa davranışı araştırması amacıyla üretilmiştir. Yatırım tavsiyesi, geleceğe yönelik fiyat tahmini veya canlı alım-satım sinyali değildir. Geçmiş dönem benzerlikleri gelecekte benzer sonuçlar doğuracağını garanti etmez.",
+  "status": "SUCCESS"
+}

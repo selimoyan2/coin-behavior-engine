@@ -1,0 +1,67 @@
+{
+  "header": {
+    "package_id": "PKG-WIN-CMP-PKG-CMP-202206-202211-0c9c5839",
+    "package_name": "CBE-Hypothesis-WIN-CMP-PKG-CMP-202206-202211",
+    "schema_version": "3.0.0",
+    "exported_at_utc": "2026-10-26T09:04:37.437884+00:00",
+    "canonical_model_version": "CBE-0.7.0 (FROZEN)",
+    "generator": "Coin Behavior Engine Sprint 16 Package Manager V3",
+    "experiment_type": "HISTORICAL_WINDOW_COMPARISON"
+  },
+  "specification": {
+    "hypothesis_id": "WIN-CMP-PKG-CMP-202206-202211",
+    "title_tr": "Tarihsel Pencere Karşılaştırma Deneyi (2022-06-01T00:00:00Z vs 2022-01-13T00:00:00+00:00)",
+    "description_tr": "İki tarihsel BTCUSDT penceresinin endekslenmiş fiyat, rejim dağılımı ve makro olay senkronizasyonu.",
+    "target_asset": "BTCUSDT",
+    "interval": "1h",
+    "window_hours": 24,
+    "event_cohort": "HISTORICAL_WINDOW_COMPARISON",
+    "methodology": "SYNCHRONIZED_WINDOW_COMPARISON",
+    "num_bootstrap_resamples": 1000,
+    "historical_date_range": {
+      "start_utc": "2022-01-01T00:00:00Z",
+      "end_utc": "2026-10-18T11:25:00Z"
+    },
+    "metric_definitions": null,
+    "exclusion_policy": [
+      "2026-10 BTCUSDT quarantined",
+      "quarantined candidate events excluded"
+    ],
+    "research_parameters": {
+      "window_a_start": "2022-06-01T00:00:00Z",
+      "window_a_end": "2022-06-15T00:00:00Z",
+      "window_b_start": "2022-01-13T00:00:00+00:00",
+      "window_b_end": "2022-01-27T00:00:00+00:00"
+    }
+  },
+  "results": {
+    "mean_pre_volatility_pct": 0.0,
+    "mean_post_volatility_pct": 92.66,
+    "volatility_expansion_ratio": 1.0,
+    "ci_lower_95": 0.95,
+    "ci_upper_95": 1.05,
+    "cohens_d": 0.0,
+    "cohens_d_magnitude": "DESCRIPTIVE",
+    "cliffs_delta": 0.0,
+    "cliffs_delta_magnitude": "DESCRIPTIVE",
+    "p_value": 0.05,
+    "is_statistically_significant": false,
+    "reproduced_status": "WINDOW_COMPARISON_COMPUTED",
+    "additional_metrics": {
+      "overall_similarity_pct": 92.66,
+      "regime_jsd_distance": 0.1309,
+      "volatility_distance": 0.0204
+    }
+  },
+  "integrity": {
+    "dataset_sha256_manifest": {
+      "historical_macro_events": "historical_macro_events_11_23.parquet",
+      "candles_dataset": "data/binance_spot_multiyear/1h/",
+      "events_sha256": "472e3895e54d31d99042b5eebe3df56aa3f1d8213e4b78ae04868469e8b7da85"
+    },
+    "signature_mode": "UNSIGNED_INTEGRITY_ONLY",
+    "signer_identity": "CBE_SYSTEM_REPRODUCIBILITY_ENGINE",
+    "payload_sha256": "0c9c5839240b31ad66401c0006e27070cb1c1f50fe9a9f55052cc350fb0c916d"
+  },
+  "legal_disclaimer_tr": "Bu taşınabilir araştırma paketi (.cbe-hyp.json) yalnızca akademik ve tarihsel piyasa araştırması amacıyla oluşturulmuştur. Yatırım tavsiyesi veya canlı emir iletim sinyali içermez."
+}

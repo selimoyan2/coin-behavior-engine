@@ -355,6 +355,20 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.get_regime_episodes(query_params)
             elif sub_path in ("research-lineage", "research-provenance"):
                 return HTTPStatus.OK, cls.get_research_lineage(query_params)
+            elif sub_path in ("pattern-discovery/search", "patterns/search"):
+                return HTTPStatus.OK, cls.get_pattern_discovery_search(query_params)
+            elif sub_path in ("pattern-discovery/compare", "patterns/compare"):
+                return HTTPStatus.OK, cls.get_pattern_discovery_compare(query_params)
+            elif sub_path in ("pattern-discovery/sensitivity", "patterns/sensitivity"):
+                return HTTPStatus.OK, cls.get_pattern_discovery_sensitivity(query_params)
+            elif sub_path in ("evidence-panel", "evidence/panel"):
+                return HTTPStatus.OK, cls.get_evidence_panel(query_params)
+            elif sub_path in ("session-state", "session"):
+                return HTTPStatus.OK, cls.get_session_state_api()
+            elif sub_path in ("delivery-manifest", "manifest/delivery"):
+                return HTTPStatus.OK, cls.get_delivery_manifest_api()
+            elif sub_path in ("fdr-lineage", "lineage/fdr"):
+                return HTTPStatus.OK, cls.get_fdr_lineage_api(query_params)
             else:
                 return HTTPStatus.NOT_FOUND, {
                     "error": "Not Found",
@@ -431,6 +445,17 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.post_research_builder_execute_api(body)
             elif sub_path in ("experiment-package/validate", "package/validate"):
                 return HTTPStatus.OK, cls.post_experiment_package_validate_api(body)
+            elif sub_path in ("pattern-discovery/search", "patterns/search"):
+                params = {k: [str(v)] for k, v in body.items()} if body else query_params
+                return HTTPStatus.OK, cls.get_pattern_discovery_search(params)
+            elif sub_path in ("pattern-discovery/compare", "patterns/compare"):
+                params = {k: [str(v)] for k, v in body.items()} if body else query_params
+                return HTTPStatus.OK, cls.get_pattern_discovery_compare(params)
+            elif sub_path in ("pattern-discovery/sensitivity", "patterns/sensitivity"):
+                params = {k: [str(v)] for k, v in body.items()} if body else query_params
+                return HTTPStatus.OK, cls.get_pattern_discovery_sensitivity(params)
+            elif sub_path in ("session-state", "session"):
+                return HTTPStatus.OK, cls.post_session_state_api(body)
 
             else:
                 return HTTPStatus.NOT_FOUND, {
@@ -3161,6 +3186,36 @@ class ProductDashboardApiService:
                 export_format=fmt
             )
 
+        elif rpt_type in ("HISTORICAL_PATTERN_SIMILARITY", "PATTERN_SIMILARITY", "PATTERNS"):
+            ref_start = params.get("reference_start", ["2022-06-01T00:00:00Z"])[0]
+            ref_end = params.get("reference_end", ["2022-06-15T00:00:00Z"])[0]
+            res = ResearchReportGenerator.generate_historical_pattern_similarity_report(
+                reference_start=ref_start, reference_end=ref_end, export_format=fmt
+            )
+
+        elif rpt_type in ("HISTORICAL_WINDOW_COMPARISON", "WINDOW_COMPARISON"):
+            w_a_s = params.get("window_a_start", ["2022-06-01T00:00:00Z"])[0]
+            w_a_e = params.get("window_a_end", ["2022-06-15T00:00:00Z"])[0]
+            w_b_s = params.get("window_b_start", ["2022-11-01T00:00:00Z"])[0]
+            w_b_e = params.get("window_b_end", ["2022-11-15T00:00:00Z"])[0]
+            res = ResearchReportGenerator.generate_historical_window_comparison_report(
+                window_a_start=w_a_s, window_a_end=w_a_e,
+                window_b_start=w_b_s, window_b_end=w_b_e,
+                export_format=fmt
+            )
+
+        elif rpt_type in ("SIMILARITY_SENSITIVITY_ANALYSIS", "SIMILARITY_SENSITIVITY"):
+            ref_start = params.get("reference_start", ["2022-06-01T00:00:00Z"])[0]
+            ref_end = params.get("reference_end", ["2022-06-15T00:00:00Z"])[0]
+            res = ResearchReportGenerator.generate_similarity_sensitivity_analysis_report(
+                reference_start=ref_start, reference_end=ref_end, export_format=fmt
+            )
+
+        elif rpt_type in ("SCIENTIFIC_EVIDENCE_CLOSURE", "EVIDENCE_CLOSURE"):
+            res = ResearchReportGenerator.generate_scientific_evidence_closure_report(
+                export_format=fmt
+            )
+
         else:
             return HTTPStatus.BAD_REQUEST, {
                 "status": "error",
@@ -3223,7 +3278,9 @@ class ProductDashboardApiService:
         res = HistoricalRegimeComparisonStudio.compare_periods(
             mode=mode, param_a=param_a, param_b=param_b, interval=interval
         )
-        return asdict(res)
+        out = asdict(res)
+        out["status"] = "SUCCESS"
+        return out
 
     @classmethod
     def get_synchronized_chart(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
@@ -3306,6 +3363,140 @@ class ProductDashboardApiService:
                 "catalog": ResearchLineageExplorer.get_catalog(),
             }
         return ResearchLineageExplorer.trace_research_result(result_id)
+
+    _session_lock = threading.Lock()
+    _session_state: Dict[str, Any] = {
+        "active_tab": "pattern-discovery",
+        "selected_reference_window": {"start": "2022-06-01T00:00:00Z", "end": "2022-06-15T00:00:00Z"},
+        "selected_candidate_id": None,
+        "selected_report_type": "HISTORICAL_PATTERN_SIMILARITY",
+        "filters": {"interval": "1h", "min_similarity": 50.0},
+        "last_updated_utc": datetime.now(timezone.utc).isoformat(),
+    }
+
+    @classmethod
+    def get_session_state_api(cls) -> Dict[str, Any]:
+        with cls._session_lock:
+            return dict(cls._session_state)
+
+    @classmethod
+    def post_session_state_api(cls, body: Dict[str, Any]) -> Dict[str, Any]:
+        with cls._session_lock:
+            cls._session_state.update(body)
+            cls._session_state["last_updated_utc"] = datetime.now(timezone.utc).isoformat()
+            return dict(cls._session_state)
+
+    @classmethod
+    def get_pattern_discovery_search(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for historical pattern discovery multi-dimensional similarity search."""
+        from coin_behavior_engine.product.historical_pattern_discovery import HistoricalPatternDiscoveryEngine
+        from dataclasses import asdict
+        ref_start = params.get("reference_start_utc", params.get("reference_start", ["2022-06-01T00:00:00Z"]))[0]
+        ref_end = params.get("reference_end_utc", params.get("reference_end", ["2022-06-15T00:00:00Z"]))[0]
+        interval = params.get("interval", ["1h"])[0]
+        try:
+            top_n = int(params.get("max_candidates", params.get("top_n", ["10"]))[0])
+        except Exception:
+            top_n = 10
+        engine = HistoricalPatternDiscoveryEngine()
+        res = engine.search_similar_patterns(
+            reference_start_utc=ref_start,
+            reference_end_utc=ref_end,
+            interval=interval,
+            max_candidates=top_n,
+        )
+        out = asdict(res)
+        out["status"] = "SUCCESS"
+        return out
+
+    @classmethod
+    def get_pattern_discovery_compare(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for synchronized side-by-side historical window comparison."""
+        from coin_behavior_engine.product.historical_pattern_discovery import HistoricalPatternDiscoveryEngine
+        w_a_start = params.get("reference_start_utc", params.get("window_a_start", ["2022-06-01T00:00:00Z"]))[0]
+        w_a_end = params.get("reference_end_utc", params.get("window_a_end", ["2022-06-15T00:00:00Z"]))[0]
+        w_b_start = params.get("candidate_start_utc", params.get("window_b_start", ["2022-11-01T00:00:00Z"]))[0]
+        w_b_end = params.get("candidate_end_utc", params.get("window_b_end", ["2022-11-15T00:00:00Z"]))[0]
+        interval = params.get("interval", ["1h"])[0]
+        engine = HistoricalPatternDiscoveryEngine()
+        return engine.get_side_by_side_comparison(
+            reference_start_utc=w_a_start,
+            reference_end_utc=w_a_end,
+            candidate_start_utc=w_b_start,
+            candidate_end_utc=w_b_end,
+            interval=interval,
+        )
+
+    @classmethod
+    def get_pattern_discovery_sensitivity(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for ranking sensitivity and robustness perturbation analysis."""
+        from coin_behavior_engine.product.historical_pattern_discovery import HistoricalPatternDiscoveryEngine
+        ref_start = params.get("reference_start_utc", params.get("reference_start", ["2022-06-01T00:00:00Z"]))[0]
+        ref_end = params.get("reference_end_utc", params.get("reference_end", ["2022-06-15T00:00:00Z"]))[0]
+        interval = params.get("interval", ["1h"])[0]
+        engine = HistoricalPatternDiscoveryEngine()
+        return engine.analyze_ranking_sensitivity(
+            reference_start_utc=ref_start,
+            reference_end_utc=ref_end,
+            interval=interval,
+        )
+
+    @classmethod
+    def get_delivery_manifest_api(cls) -> Dict[str, Any]:
+        """API handler for runtime delivery manifest and git commit identity."""
+        from coin_behavior_engine.product.delivery_manifest import DeliveryManifestEngine
+        from dataclasses import asdict
+        return asdict(DeliveryManifestEngine.generate_delivery_manifest())
+
+    @classmethod
+    def get_fdr_lineage_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for FDR p-value lineage audit."""
+        from coin_behavior_engine.product.fdr_lineage_tracker import FDRLineageTracker
+        cell_id = params.get("cell_id", [None])[0]
+        if cell_id:
+            res = FDRLineageTracker.get_cell_lineage(cell_id)
+            if not res:
+                return {"status": "NOT_FOUND", "message": f"Cell {cell_id} not found in lineage audit."}
+            return {"status": "SUCCESS", "cell_lineage": res}
+        return FDRLineageTracker.get_full_lineage_audit()
+
+    @classmethod
+    def get_evidence_panel(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for common cross-tab evidence panel."""
+        from coin_behavior_engine.product.holdout_validation_engine import ChronologicalHoldoutValidationEngine
+        from coin_behavior_engine.product.fdr_lineage_tracker import FDRLineageTracker
+        from coin_behavior_engine.product.delivery_manifest import DeliveryManifestEngine
+        holdout = ChronologicalHoldoutValidationEngine.evaluate_holdout_replication()
+        lineage = FDRLineageTracker.get_cell_lineage("RES-ROB-CELL-758a387e")
+        from dataclasses import asdict
+        manifest = asdict(DeliveryManifestEngine.generate_delivery_manifest())
+        return {
+            "status": "SUCCESS",
+            "model_version": "CBE-0.7.0 (FROZEN)",
+            "holdout_replication": {
+                "replication_rate_pct": holdout.chronological_holdout_replication_rate_pct,
+                "declared_denominator": holdout.declared_denominator,
+                "replicated_specifications": holdout.replicated_specifications,
+                "eligible_specifications": holdout.eligible_specifications,
+                "holdout_exposure_status": holdout.holdout_exposure_status,
+                "configured_holdout_end": holdout.configured_holdout_end,
+                "actual_source_coverage_end": holdout.actual_source_coverage_end,
+                "last_eligible_event_timestamp": holdout.last_eligible_event_timestamp,
+            },
+            "fdr_audit": {
+                "target_cell": lineage.get("cell_id") if lineage else None,
+                "p_value_raw": lineage.get("p_value_raw") if lineage else None,
+                "fdr_adjusted_q": lineage.get("fdr_adjusted_q") if lineage else None,
+                "statistical_significance": lineage.get("statistical_significance") if lineage else None,
+                "transcription_typo_clarified": lineage.get("transcription_typo_clarified") if lineage else None,
+            },
+            "delivery_manifest": {
+                "sprint_id": manifest.get("sprint_id"),
+                "base_commit": manifest.get("git_metadata", {}).get("base_commit_sha"),
+                "head_commit": manifest.get("git_metadata", {}).get("current_commit_sha"),
+            },
+            "disclaimer_tr": "Bu kanıt paneli yalnızca bilimsel denetim ve akademik araştırma içindir. Canlı ticaret sinyali değildir."
+        }
 
     @classmethod
     def get_dataset_provenance_api(cls) -> Dict[str, Any]:

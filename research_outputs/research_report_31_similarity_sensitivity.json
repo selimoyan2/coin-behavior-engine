@@ -1,0 +1,62 @@
+{
+  "report_id": "RPT-SIM-SENS-6a7fc01bb7c6",
+  "report_type": "SIMILARITY_SENSITIVITY_ANALYSIS",
+  "format": "json",
+  "generated_at_utc": "2026-10-26T09:04:23.358001+00:00",
+  "title": "Benzerlik Parametre Duyarlılığı ve Sıralama Sağlamlığı Raporu (1h)",
+  "status": "success",
+  "model_version": "CBE-0.7.0 (FROZEN)",
+  "dataset_provenance": {
+    "manifest_version": "cbe-manifest-v2-addf635b47aa",
+    "manifest_hash": "addf635b47aa3b0f4ef8d86f70fef347724eaf1ab34c2d7bac7047e2806002ef",
+    "dataset_id": "BTCUSDT_BINANCE_SPOT_MULTIYEAR",
+    "available_months_count": 57,
+    "earliest_month": "2022-01",
+    "latest_month": "2026-09"
+  },
+  "sensitivity_analysis": {
+    "status": "SUCCESS",
+    "search_id": "SEARCH-PAT-20261026090423",
+    "reference_start_utc": "2022-06-01T00:00:00Z",
+    "reference_end_utc": "2022-06-15T00:00:00Z",
+    "ranking_stability_verdict": "HIGH_STABILITY",
+    "mean_top5_retention_pct": 80.0,
+    "weight_scenarios": {
+      "default": [
+        "PAT-CAND-2022011300",
+        "PAT-CAND-2024072801",
+        "PAT-CAND-2024080301",
+        "PAT-CAND-2022110900",
+        "PAT-CAND-2024073101"
+      ],
+      "volatility_heavy": [
+        "PAT-CAND-2024072801",
+        "PAT-CAND-2022011300",
+        "PAT-CAND-2022011600",
+        "PAT-CAND-2024073101",
+        "PAT-CAND-2024080301"
+      ],
+      "regime_heavy": [
+        "PAT-CAND-2024072801",
+        "PAT-CAND-2022011300",
+        "PAT-CAND-2024073101",
+        "PAT-CAND-2022110900",
+        "PAT-CAND-2026012501"
+      ]
+    },
+    "perturbation_evaluations": [
+      {
+        "scenario": "volatility_heavy",
+        "overlap_count": 4,
+        "retention_pct": 80.0
+      },
+      {
+        "scenario": "regime_heavy",
+        "overlap_count": 4,
+        "retention_pct": 80.0
+      }
+    ],
+    "legal_disclaimer_tr": "Bu rapor ve benzerlik eşleştirmeleri yalnızca tarihsel piyasa davranışı araştırması amacıyla üretilmiştir. Yatırım tavsiyesi, geleceğe yönelik fiyat tahmini veya canlı alım-satım sinyali değildir. Geçmiş dönem benzerlikleri gelecekte benzer sonuçlar doğuracağını garanti etmez."
+  },
+  "disclaimer_tr": "Bu rapor tarihsel veri araştırması amacıyla hazırlanmıştır. Yatırım tavsiyesi veya canlı alım-satım sinyali değildir."
+}

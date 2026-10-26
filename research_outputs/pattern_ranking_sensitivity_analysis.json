@@ -1,0 +1,44 @@
+{
+  "status": "SUCCESS",
+  "search_id": "SEARCH-PAT-20261026090335",
+  "reference_start_utc": "2022-06-01T00:00:00Z",
+  "reference_end_utc": "2022-06-15T00:00:00Z",
+  "ranking_stability_verdict": "HIGH_STABILITY",
+  "mean_top5_retention_pct": 80.0,
+  "weight_scenarios": {
+    "default": [
+      "PAT-CAND-2022011300",
+      "PAT-CAND-2024072801",
+      "PAT-CAND-2024080301",
+      "PAT-CAND-2022110900",
+      "PAT-CAND-2024073101"
+    ],
+    "volatility_heavy": [
+      "PAT-CAND-2024072801",
+      "PAT-CAND-2022011300",
+      "PAT-CAND-2022011600",
+      "PAT-CAND-2024073101",
+      "PAT-CAND-2024080301"
+    ],
+    "regime_heavy": [
+      "PAT-CAND-2024072801",
+      "PAT-CAND-2022011300",
+      "PAT-CAND-2024073101",
+      "PAT-CAND-2022110900",
+      "PAT-CAND-2026012501"
+    ]
+  },
+  "perturbation_evaluations": [
+    {
+      "scenario": "volatility_heavy",
+      "overlap_count": 4,
+      "retention_pct": 80.0
+    },
+    {
+      "scenario": "regime_heavy",
+      "overlap_count": 4,
+      "retention_pct": 80.0
+    }
+  ],
+  "legal_disclaimer_tr": "Bu rapor ve benzerlik eşleştirmeleri yalnızca tarihsel piyasa davranışı araştırması amacıyla üretilmiştir. Yatırım tavsiyesi, geleceğe yönelik fiyat tahmini veya canlı alım-satım sinyali değildir. Geçmiş dönem benzerlikleri gelecekte benzer sonuçlar doğuracağını garanti etmez."
+}

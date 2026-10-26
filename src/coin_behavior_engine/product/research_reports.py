@@ -879,6 +879,147 @@ class ResearchReportGenerator:
             "holdout_validation": hld,
             "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
         }
+    @classmethod
+    def generate_historical_pattern_similarity_report(
+        cls,
+        reference_start_utc: str = "2024-03-01T00:00:00Z",
+        reference_end_utc: str = "2024-03-07T00:00:00Z",
+        interval: str = "1h",
+        export_format: str = "json",
+    ) -> Dict[str, Any]:
+        """Generate Historical Pattern Similarity Discovery Report (Report 29)."""
+        from coin_behavior_engine.product.historical_pattern_discovery import (
+            HistoricalPatternDiscoveryEngine,
+        )
+        from dataclasses import asdict
+        search_res = asdict(HistoricalPatternDiscoveryEngine.search_similar_patterns(
+            reference_start_utc=reference_start_utc,
+            reference_end_utc=reference_end_utc,
+            interval=interval,
+            max_candidates=10,
+        ))
+        rep_id = f"RPT-PAT-SIM-{uuid.uuid4().hex[:12]}"
+        return {
+            "report_id": rep_id,
+            "report_type": "HISTORICAL_PATTERN_SIMILARITY",
+            "format": export_format,
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "title": f"Tarihsel Davranış Benzerlikleri ve Patern Keşif Raporu ({interval})",
+            "status": "success",
+            "model_version": "CBE-0.7.0 (FROZEN)",
+            "dataset_provenance": cls.get_dataset_provenance(),
+            "pattern_search": search_res,
+            "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
+        }
+
+    @classmethod
+    def generate_historical_window_comparison_report(
+        cls,
+        reference_start_utc: str = "2024-03-01T00:00:00Z",
+        reference_end_utc: str = "2024-03-07T00:00:00Z",
+        candidate_start_utc: str = "2022-06-30T00:00:00Z",
+        candidate_end_utc: str = "2022-07-06T00:00:00Z",
+        interval: str = "1h",
+        export_format: str = "json",
+    ) -> Dict[str, Any]:
+        """Generate Historical Window Synchronized Comparison Report (Report 30)."""
+        from coin_behavior_engine.product.historical_pattern_discovery import (
+            HistoricalPatternDiscoveryEngine,
+        )
+        cmp_res = HistoricalPatternDiscoveryEngine.get_side_by_side_comparison(
+            reference_start_utc=reference_start_utc,
+            reference_end_utc=reference_end_utc,
+            candidate_start_utc=candidate_start_utc,
+            candidate_end_utc=candidate_end_utc,
+            interval=interval,
+        )
+        rep_id = f"RPT-WIN-CMP-{uuid.uuid4().hex[:12]}"
+        return {
+            "report_id": rep_id,
+            "report_type": "HISTORICAL_WINDOW_COMPARISON",
+            "format": export_format,
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "title": f"İki Tarihsel Pencere Senkron Karşılaştırma Raporu ({interval})",
+            "status": "success",
+            "model_version": "CBE-0.7.0 (FROZEN)",
+            "dataset_provenance": cls.get_dataset_provenance(),
+            "window_comparison": cmp_res,
+            "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
+        }
+
+    @classmethod
+    def generate_similarity_sensitivity_analysis_report(
+        cls,
+        reference_start_utc: str = "2024-03-01T00:00:00Z",
+        reference_end_utc: str = "2024-03-07T00:00:00Z",
+        interval: str = "1h",
+        export_format: str = "json",
+    ) -> Dict[str, Any]:
+        """Generate Similarity Sensitivity and Ranking Robustness Report (Report 31)."""
+        from coin_behavior_engine.product.historical_pattern_discovery import (
+            HistoricalPatternDiscoveryEngine,
+        )
+        sens_res = HistoricalPatternDiscoveryEngine.analyze_ranking_sensitivity(
+            reference_start_utc=reference_start_utc,
+            reference_end_utc=reference_end_utc,
+            interval=interval,
+        )
+        rep_id = f"RPT-SIM-SENS-{uuid.uuid4().hex[:12]}"
+        return {
+            "report_id": rep_id,
+            "report_type": "SIMILARITY_SENSITIVITY_ANALYSIS",
+            "format": export_format,
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "title": f"Benzerlik Parametre Duyarlılığı ve Sıralama Sağlamlığı Raporu ({interval})",
+            "status": "success",
+            "model_version": "CBE-0.7.0 (FROZEN)",
+            "dataset_provenance": cls.get_dataset_provenance(),
+            "sensitivity_analysis": sens_res,
+            "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
+        }
+
+    @classmethod
+    def generate_scientific_evidence_closure_report(
+        cls,
+        export_format: str = "json",
+    ) -> Dict[str, Any]:
+        """Generate Scientific Evidence Closure and Discrepancy Reconciliation Report (Report 32)."""
+        from coin_behavior_engine.product.fdr_lineage_tracker import FDRLineageTracker
+        from coin_behavior_engine.product.delivery_manifest import DeliveryManifestEngine
+        from coin_behavior_engine.product.holdout_validation_engine import (
+            ChronologicalHoldoutValidationEngine,
+        )
+        from dataclasses import asdict
+        lineage = asdict(FDRLineageTracker.get_target_cell_lineage())
+        manifest = asdict(DeliveryManifestEngine.generate_delivery_manifest())
+        hld = asdict(ChronologicalHoldoutValidationEngine.evaluate_holdout_replication())
+        rep_id = f"RPT-EVID-CLOSE-{uuid.uuid4().hex[:12]}"
+        return {
+            "report_id": rep_id,
+            "report_type": "SCIENTIFIC_EVIDENCE_CLOSURE",
+            "format": export_format,
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "title": "Bilimsel Kanıt Bütünlüğü ve Mutabakat Raporu (Sprint 16 Kapanışı)",
+            "status": "success",
+            "model_version": "CBE-0.7.0 (FROZEN)",
+            "dataset_provenance": cls.get_dataset_provenance(),
+            "fdr_lineage": lineage,
+            "delivery_manifest": manifest,
+            "holdout_reconciliation": {
+                "total_specifications": hld.get("total_specifications"),
+                "eligible_specifications": hld.get("eligible_specifications"),
+                "replicated_specifications": hld.get("replicated_specifications"),
+                "replication_rate_pct": hld.get("chronological_holdout_replication_rate_pct"),
+                "declared_formula": hld.get("declared_formula"),
+                "exposure_status": hld.get("holdout_exposure_status"),
+                "coverage_end_dates": {
+                    "configured_end": hld.get("configured_holdout_end"),
+                    "actual_source_end": hld.get("actual_source_coverage_end"),
+                    "last_eligible_event": hld.get("last_eligible_event_timestamp"),
+                },
+            },
+            "disclaimer_tr": MANDATORY_DISCLAIMER_TR,
+        }
 
     @classmethod
     def export_report_as_pdf(cls, report: Dict[str, Any]) -> bytes:

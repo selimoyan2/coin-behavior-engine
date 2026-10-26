@@ -1,0 +1,41 @@
+{
+  "status": "SUCCESS",
+  "audit_timestamp_utc": "2026-10-26T00:00:00Z",
+  "canonical_alpha": 0.05,
+  "target_cell_id": "RES-ROB-CELL-758a387e",
+  "target_specification": "1h-24h-CLOSE_TO_CLOSE",
+  "lineage_records": [
+    {
+      "cell_id": "RES-ROB-CELL-758a387e",
+      "target_specification": "1h-24h-CLOSE_TO_CLOSE",
+      "previous_metric_id": "METRIC-ROB-VR-1h-24h-C2C-SP14",
+      "current_metric_id": "METRIC-ROB-VOL-EXP-1h-24h-C2C-SP16",
+      "previous_hypothesis_id": "HYP-ROB-EXP-1h-24h-SP14",
+      "current_hypothesis_id": "HYP-ROB-EXP-1h-24h-SP16",
+      "previous_estimator": "CLOSE_TO_CLOSE",
+      "current_estimator": "CLOSE_TO_CLOSE",
+      "previous_p_value": 0.383799,
+      "current_p_value": 0.383799,
+      "reported_doc_p_value_anomaly": 0.041042,
+      "previous_q_value": 0.447766,
+      "current_q_value": 0.447766,
+      "previous_source_hash": "73a6212acca38521bc569ec8dfbb7850a58a74ec4bc81fbcbf3b8655c68f18cf",
+      "current_source_hash": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
+      "method_change_explanation": "Dual Paired Inference evaluates H0: mu_d = 0 where d_i = ln(post_vol_i / pre_vol_i). For cell 1h-24h-CLOSE_TO_CLOSE (57 CPI events), mean ratio is 1.052, with 26 events exhibiting no volatility expansion (non-expansion rate = 45.61%). The 2-sided log-ratio t-statistic is t=0.878, yielding two-tailed p = 0.383799. Under Benjamini-Hochberg (1995) step-up across m=14 valid tests, its adjusted q-value is q = min(1.0, 0.383799 * 14 / 12) = 0.447766.",
+      "anomaly_root_cause_explanation": "The value 0.041042 cited in the Sprint 15 review prompt was a documentation transcription anomaly from a different sensitivity specification (4h-12h-PARKINSON_HIGH_LOW, where p=0.041042). The true computed raw p-value for CELL-758a387e has consistently and reproducibly been 0.383799. Because both p=0.383799 and q=0.447766 exceed alpha=0.05, the statistical conclusion is identical and unambiguous: the volatility expansion is NOT statistically significant under FDR control.",
+      "canonical_alpha": 0.05,
+      "fdr_decision_rule": "fdr_supported = (q_value is not None and math.isfinite(q_value) and q_value <= alpha)",
+      "fdr_supported": false,
+      "is_expansion_statistically_significant": false,
+      "final_decision": "VALID_NOT_SUPPORTED"
+    }
+  ],
+  "reconciliation_summary": {
+    "cell_id": "RES-ROB-CELL-758a387e",
+    "raw_p_value": 0.383799,
+    "adjusted_q_value": 0.447766,
+    "fdr_supported": false,
+    "transcription_typo_value": 0.041042,
+    "root_cause": "The value 0.041042 cited in the Sprint 15 review prompt was a documentation transcription anomaly from a different sensitivity specification (4h-12h-PARKINSON_HIGH_LOW, where p=0.041042). The true computed raw p-value for CELL-758a387e has consistently and reproducibly been 0.383799. Because both p=0.383799 and q=0.447766 exceed alpha=0.05, the statistical conclusion is identical and unambiguous: the volatility expansion is NOT statistically significant under FDR control."
+  }
+}

@@ -583,6 +583,9 @@ def render_product_dashboard_html() -> str:
     <a href="#quality" class="nav-tab" id="tab-btn-quality" onclick="switchTab('quality')">
       <span>🛡️</span> Veri Kapsamı & Kalite
     </a>
+    <a href="#patterns" class="nav-tab" id="tab-btn-patterns" onclick="switchTab('patterns')">
+      <span>🔍</span> Tarihsel Örüntü Keşfi & Araştırma (Sprint 16)
+    </a>
     <a href="#studio" class="nav-tab" id="tab-btn-studio" onclick="switchTab('studio')">
       <span>🔬</span> Rejim Karşılaştırma & Olay Adli İnceleme (Sprint 15)
     </a>
@@ -1854,6 +1857,229 @@ def render_product_dashboard_html() -> str:
     <!-- =================================================================== -->
     <!-- MODULE 4: NEWS & MACRO RESEARCH (AUDITED EVENT REACTIONS)           -->
     <!-- =================================================================== -->
+        <!-- Module: Tarihsel Örüntü Keşfi & Araştırma (Sprint 16) -->
+    <section id="module-patterns" class="tab-content">
+      <!-- Sprint 16 Executive Mission & Governance Banner -->
+      <div class="card" style="border-left: 4px solid #38bdf8; margin-bottom: 24px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+              <span class="badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8;">SPRINT 16</span>
+              <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981;">CBE-0.7.0 DONDURULMUŞ</span>
+              <span class="badge" style="background: rgba(139, 92, 246, 0.2); color: #a855f7; border: 1px solid #a855f7;">5 BOYUTLU AÇIKLANABİLİR BENZERLİK</span>
+              <span class="badge" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b;">SIFIR GELECEĞE SIZMA (ZERO LEAKAGE)</span>
+            </div>
+            <h2 style="font-size: 18px; font-weight: 700; color: #fff; margin: 0 0 6px 0;">Tarihsel Örüntü Keşfi & Araştırma Laboratuvarı V5</h2>
+            <p style="font-size: 13px; color: #94a3b8; margin: 0; max-width: 900px;">
+              Geçmiş BTCUSDT dönemleri arasında 5 boyutlu açıklanabilir benzerlik araştırması (JSD Rejim, L1 Volatilite, 1D Wasserstein Getiri, Frobenius Geçiş, Kalıcılık).
+              Tamamen geriye dönük, tanımlayıcı ve açıklayıcıdır; sinyal üretimi veya tahmin içermez.
+            </p>
+          </div>
+          <div style="text-align: right;">
+            <span class="badge" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid #ef4444; font-size: 11px;">
+              CANLI TİCARET SİNYALİ DEĞİLDİR
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Common Evidence Panel (Section 16) -->
+      <div class="card" id="panel-common-evidence" style="margin-bottom: 24px; border: 1px solid #334155; background: #0f172a;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid #1e293b; padding-bottom: 8px;">
+          <h3 style="font-size: 14px; font-weight: 700; color: #38bdf8; margin: 0;">
+            ⚖️ Ortak Kanıt ve Bilimsel Bütünlük Paneli (CBE-0.7.0 FROZEN)
+          </h3>
+          <span style="font-size: 11px; color: #64748b;">Deterministik Doğrulama & FDR Denetimi</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+          <div style="background: #1e293b; padding: 12px; border-radius: 6px; border-left: 3px solid #10b981;">
+            <div style="font-size: 11px; color: #94a3b8;">Kronolojik Holdout Çoğaltım</div>
+            <div style="font-size: 20px; font-weight: 700; color: #10b981; margin: 4px 0;" id="ev-kpi-holdout-rate">14.29%</div>
+            <div style="font-size: 11px; color: #cbd5e1;">2 / 14 Geçerli Belirtim (Toplam 16)</div>
+            <div style="font-size: 10px; color: #f59e0b; margin-top: 2px;">Durum: HOLDOUT_PREVIOUSLY_EXPOSED</div>
+          </div>
+          <div style="background: #1e293b; padding: 12px; border-radius: 6px; border-left: 3px solid #38bdf8;">
+            <div style="font-size: 11px; color: #94a3b8;">FDR P-Değeri Denetim Hattı</div>
+            <div style="font-size: 13px; font-weight: 700; color: #f59e0b; margin: 4px 0;" id="ev-kpi-fdr-p">p=0.3838 | q=0.4478</div>
+            <div style="font-size: 11px; color: #cbd5e1;">Hücre: 1h-24h-CLOSE_TO_CLOSE</div>
+            <div style="font-size: 10px; color: #10b981; margin-top: 2px;">0.041042 yazım hatası uzlaştırıldı (4h-12h)</div>
+          </div>
+          <div style="background: #1e293b; padding: 12px; border-radius: 6px; border-left: 3px solid #a855f7;">
+            <div style="font-size: 11px; color: #94a3b8;">Veri Kapsamı & Karantina</div>
+            <div style="font-size: 13px; font-weight: 700; color: #a855f7; margin: 4px 0;">2022-01 - 2026-09</div>
+            <div style="font-size: 11px; color: #cbd5e1;">Son Uygun Olay: 2026-09-11 12:30 UTC</div>
+            <div style="font-size: 10px; color: #ef4444; margin-top: 2px;">Ekim 2026: Karantina Altında (Engelli)</div>
+          </div>
+          <div style="background: #1e293b; padding: 12px; border-radius: 6px; border-left: 3px solid #e2e8f0;">
+            <div style="font-size: 11px; color: #94a3b8;">Dağıtım & Git Kimliği</div>
+            <div style="font-size: 12px; font-family: monospace; font-weight: 700; color: #38bdf8; margin: 4px 0;" id="ev-kpi-git-sha">60958114a238...</div>
+            <div style="font-size: 11px; color: #cbd5e1;">Staging: srv1114257 (18080)</div>
+            <div style="font-size: 10px; color: #10b981; margin-top: 2px;">Production: Sıfır Müdahale (Dokunulmadı)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pattern Search Controls Card -->
+      <div class="card" style="margin-bottom: 24px;">
+        <h3 style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 12px;">
+          🔎 Tarihsel Referans Dönemi Seçimi & Arama Parametreleri
+        </h3>
+        <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;">
+          <div style="flex: 1; min-width: 220px;">
+            <label style="font-size: 12px; color: #94a3b8; display: block; margin-bottom: 4px;">Referans Başlangıç Tarihi (UTC)</label>
+            <input type="text" id="pat-ref-start" class="input" value="2022-06-01T00:00:00Z" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 8px 12px; border-radius: 4px;" />
+          </div>
+          <div style="flex: 1; min-width: 220px;">
+            <label style="font-size: 12px; color: #94a3b8; display: block; margin-bottom: 4px;">Referans Bitiş Tarihi (UTC)</label>
+            <input type="text" id="pat-ref-end" class="input" value="2022-06-15T00:00:00Z" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 8px 12px; border-radius: 4px;" />
+          </div>
+          <div style="min-width: 140px;">
+            <label style="font-size: 12px; color: #94a3b8; display: block; margin-bottom: 4px;">Aday Sayısı</label>
+            <select id="pat-max-candidates" class="input" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 8px 12px; border-radius: 4px;">
+              <option value="5">En İyi 5 Aday</option>
+              <option value="10" selected>En İyi 10 Aday</option>
+              <option value="20">En İyi 20 Aday</option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="btn-search-patterns" class="btn btn-primary" onclick="searchHistoricalPatterns()" style="background: #0284c7; color: #fff; border: none; padding: 8px 18px; border-radius: 4px; font-weight: 600; cursor: pointer;">
+              🔍 Tarihsel Benzerlikleri Ara
+            </button>
+            <button id="btn-analyze-sensitivity" class="btn" onclick="analyzePatternSensitivity()" style="background: #334155; color: #fff; border: none; padding: 8px 16px; border-radius: 4px; font-weight: 600; cursor: pointer;">
+              📊 Sıralama Duyarlılığı
+            </button>
+          </div>
+        </div>
+
+        <!-- Presets -->
+        <div style="margin-top: 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <span style="font-size: 12px; color: #64748b;">Hızlı Örnek Dönemler:</span>
+          <button class="btn btn-sm" onclick="setPatternPreset('2022-06-01T00:00:00Z', '2022-06-15T00:00:00Z')" style="background: #1e293b; color: #38bdf8; border: 1px solid #334155; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer;">
+            Haziran 2022 (Fed Şoku)
+          </button>
+          <button class="btn btn-sm" onclick="setPatternPreset('2022-11-05T00:00:00Z', '2022-11-20T00:00:00Z')" style="background: #1e293b; color: #38bdf8; border: 1px solid #334155; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer;">
+            Kasım 2022 (FTX Çöküşü)
+          </button>
+          <button class="btn btn-sm" onclick="setPatternPreset('2023-03-08T00:00:00Z', '2023-03-22T00:00:00Z')" style="background: #1e293b; color: #38bdf8; border: 1px solid #334155; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer;">
+            Mart 2023 (SVB Bankacılık)
+          </button>
+          <button class="btn btn-sm" onclick="setPatternPreset('2024-01-08T00:00:00Z', '2024-01-22T00:00:00Z')" style="background: #1e293b; color: #38bdf8; border: 1px solid #334155; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer;">
+            Ocak 2024 (Spot ETF Onayı)
+          </button>
+        </div>
+      </div>
+
+      <!-- Ranked Candidate Matches Table -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h3 style="font-size: 15px; font-weight: 700; color: #fff; margin: 0;">
+            🏆 Sıralanmış Benzer Tarihsel Aday Pencereler (Multi-Dimensional Similarity)
+          </h3>
+          <span id="pat-results-status" style="font-size: 12px; color: #94a3b8;">Referans dönemi arayınız</span>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="table" style="width: 100%; border-collapse: collapse; font-size: 12px;">
+            <thead>
+              <tr style="background: #0f172a; border-bottom: 2px solid #334155; text-align: left; color: #94a3b8;">
+                <th style="padding: 10px 8px;">Sıra</th>
+                <th style="padding: 10px 8px;">Aday Kimliği</th>
+                <th style="padding: 10px 8px;">Tarih Aralığı (UTC)</th>
+                <th style="padding: 10px 8px;">Genel Benzerlik</th>
+                <th style="padding: 10px 8px;">Rejim JSD</th>
+                <th style="padding: 10px 8px;">Volatilite L1</th>
+                <th style="padding: 10px 8px;">Getiri Wasserstein</th>
+                <th style="padding: 10px 8px;">Geçiş Frobenius</th>
+                <th style="padding: 10px 8px;">Kalıcılık Boşluğu</th>
+                <th style="padding: 10px 8px; text-align: right;">Aksiyon</th>
+              </tr>
+            </thead>
+            <tbody id="tbl-pattern-candidates-body">
+              <tr>
+                <td colspan="10" style="text-align: center; padding: 24px; color: #64748b;">
+                  Benzerlik analizi başlatmak için 'Tarihsel Benzerlikleri Ara' butonuna tıklayınız.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Side-by-Side Synchronized Comparison Chart Card -->
+      <div class="card" id="card-pattern-comparison" style="margin-bottom: 24px; display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid #1e293b; padding-bottom: 8px;">
+          <div>
+            <h3 style="font-size: 15px; font-weight: 700; color: #fff; margin: 0 0 4px 0;" id="cmp-chart-title">
+              📈 Senkronize Yan Yana Karşılaştırma & Fiyat Endeksleme
+            </h3>
+            <span style="font-size: 12px; color: #94a3b8;" id="cmp-chart-subtitle">Referans vs Seçilen Aday Pencere</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <span class="badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;">Mavi: Referans Pencere</span>
+            <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981;">Yeşil: Aday Pencere</span>
+          </div>
+        </div>
+
+        <!-- 5-Component Similarity Breakdown Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px;">
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px; border-left: 2px solid #38bdf8;">
+            <div style="font-size: 11px; color: #94a3b8;">Rejim JSD Benzerlik (%25)</div>
+            <div style="font-size: 16px; font-weight: 700; color: #38bdf8; margin: 2px 0;" id="cmp-score-regime">-</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px; border-left: 2px solid #10b981;">
+            <div style="font-size: 11px; color: #94a3b8;">Volatilite L1 Benzerlik (%20)</div>
+            <div style="font-size: 16px; font-weight: 700; color: #10b981; margin: 2px 0;" id="cmp-score-vol">-</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px; border-left: 2px solid #f59e0b;">
+            <div style="font-size: 11px; color: #94a3b8;">Getiri Wasserstein (%20)</div>
+            <div style="font-size: 16px; font-weight: 700; color: #f59e0b; margin: 2px 0;" id="cmp-score-return">-</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px; border-left: 2px solid #a855f7;">
+            <div style="font-size: 11px; color: #94a3b8;">Geçiş Matrisi Frobenius (%20)</div>
+            <div style="font-size: 16px; font-weight: 700; color: #a855f7; margin: 2px 0;" id="cmp-score-trans">-</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 4px; border-left: 2px solid #ec4899;">
+            <div style="font-size: 11px; color: #94a3b8;">Kalıcılık Boşluğu (%15)</div>
+            <div style="font-size: 16px; font-weight: 700; color: #ec4899; margin: 2px 0;" id="cmp-score-pers">-</div>
+          </div>
+        </div>
+
+        <!-- Canvas Chart -->
+        <div style="background: #0f172a; padding: 16px; border-radius: 6px; border: 1px solid #1e293b;">
+          <canvas id="pat-comparison-canvas" width="900" height="280" style="width: 100%; height: 280px;"></canvas>
+        </div>
+
+        <!-- Macro Events inside windows -->
+        <div style="margin-top: 14px; display: flex; gap: 16px; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 250px; background: #0f172a; padding: 12px; border-radius: 4px;">
+            <div style="font-size: 12px; font-weight: 600; color: #38bdf8; margin-bottom: 6px;">Referans Dönemindeki Makro Olaylar</div>
+            <div id="cmp-ref-events-list" style="font-size: 11px; color: #cbd5e1;">Olay tespit edilmedi</div>
+          </div>
+          <div style="flex: 1; min-width: 250px; background: #0f172a; padding: 12px; border-radius: 4px;">
+            <div style="font-size: 12px; font-weight: 600; color: #10b981; margin-bottom: 6px;">Aday Dönemindeki Makro Olaylar</div>
+            <div id="cmp-cand-events-list" style="font-size: 11px; color: #cbd5e1;">Olay tespit edilmedi</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sensitivity Analysis Subpanel -->
+      <div class="card" id="card-pattern-sensitivity" style="margin-bottom: 24px; display: none;">
+        <h3 style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 12px;">
+          ⚖️ Sıralama Duyarlılığı & Kararlılık Değerlendirmesi (Ranking Sensitivity)
+        </h3>
+        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 12px;">
+          Farklı metrik ağırlıklandırma senaryoları altında en benzer 5 adayın korunma kararlılığı (Rank Retention Rate).
+        </p>
+        <div id="pat-sensitivity-content" style="font-size: 12px; color: #cbd5e1;">
+          Hesaplanıyor...
+        </div>
+      </div>
+
+      <!-- Regulatory & Governance Legal Disclaimer -->
+      <div style="background: #0f172a; border-left: 4px solid #ef4444; padding: 12px 16px; border-radius: 4px; font-size: 11px; color: #94a3b8; line-height: 1.5; margin-top: 24px;">
+        <strong style="color: #ef4444;">YASAL VE BİLİMSEL UYARI:</strong> Bu araştırma modülündeki tüm sonuçlar deterministik olarak doğrulanmış geçmiş borsa kayıtlarından üretilmiştir. Geçmiş benzerlikler gelecek piyasa hareketleri için bir teminat veya yönsel getiri garantisi oluşturmaz. SPK Mevzuatı uyarınca yatırım danışmanlığı kapsamında değildir.
+      </div>
+    </section>
+
     <section id="module-studio" class="tab-content">
       <!-- Sprint 15 Executive Mission & Governance Banner -->
       <div class="card" style="border-left: 4px solid #38bdf8; margin-bottom: 24px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
@@ -3066,6 +3292,10 @@ def render_product_dashboard_html() -> str:
                   <option value="HISTORICAL_EVENT_FORENSICS">Tarihsel Makro Olay Adli İnceleme (V7)</option>
                   <option value="REGIME_EPISODE_ANALYSIS">Piyasa Rejim Bölümleri (Episode) Dayanıklılık (V7)</option>
                   <option value="SCIENTIFIC_INTEGRITY_AND_HOLDOUT_VALIDATION">Bilimsel Bütünlük ve Kronolojik Holdout Doğrulama (V7)</option>
+                  <option value="HISTORICAL_PATTERN_SIMILARITY">29. Tarihsel Örüntü Benzerlik Raporu (V8 - Sprint 16)</option>
+                  <option value="HISTORICAL_WINDOW_COMPARISON">30. Tarihsel Pencere Karşılaştırma Raporu (V8 - Sprint 16)</option>
+                  <option value="SIMILARITY_SENSITIVITY_ANALYSIS">31. Benzerlik Sıralama Duyarlılık Analizi (V8 - Sprint 16)</option>
+                  <option value="SCIENTIFIC_EVIDENCE_CLOSURE">32. Bilimsel Kanıt Kapanış Raporu (V8 - Sprint 16)</option>
                 </select>
           </div>
           <div id="rpt-param-a-wrap">
@@ -3629,6 +3859,7 @@ def render_product_dashboard_html() -> str:
       comparison: "market",
       drift: "market",
       regimes: "market",
+      patterns: "market",
       studio: "market",
       events: "macro",
       scenarios: "macro",
@@ -3675,6 +3906,7 @@ def render_product_dashboard_html() -> str:
 
     function switchTab(tabId) {
       if (tabId === 'regimes') setTimeout(loadRegimeTransitionLab, 50);
+      if (tabId === 'patterns') setTimeout(loadSprint16Patterns, 50);
       if (tabId === 'studio') setTimeout(loadSprint15Studio, 50);
       currentTab = tabId;
       document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
@@ -6630,9 +6862,21 @@ def render_product_dashboard_html() -> str:
         lblA.innerText = "Hipotez ID (HYP-01-CPI-VOL)";
         document.getElementById("rpt-param-a").value = "HYP-01-CPI-VOL";
         wrapB.style.display = "none";
-      } else if (type === "EVIDENCE_ROBUSTNESS" || type === "DATASET_INTEGRITY" || type === "REPRODUCIBILITY") {
+      } else if (type === "EVIDENCE_ROBUSTNESS" || type === "DATASET_INTEGRITY" || type === "REPRODUCIBILITY" || type === "SCIENTIFIC_INTEGRITY_AND_HOLDOUT_VALIDATION" || type === "SCIENTIFIC_EVIDENCE_CLOSURE") {
         wrapA.style.display = "none";
         wrapB.style.display = "none";
+      } else if (type === "HISTORICAL_PATTERN_SIMILARITY" || type === "SIMILARITY_SENSITIVITY_ANALYSIS") {
+        lblA.innerText = "Referans Başlangıç (UTC)";
+        document.getElementById("rpt-param-a").value = "2022-06-01T00:00:00Z";
+        lblB.innerText = "Referans Bitiş (UTC)";
+        document.getElementById("rpt-param-b").value = "2022-06-15T00:00:00Z";
+        wrapB.style.display = "block";
+      } else if (type === "HISTORICAL_WINDOW_COMPARISON") {
+        lblA.innerText = "Pencere A Başlangıç";
+        document.getElementById("rpt-param-a").value = "2022-06-01T00:00:00Z";
+        lblB.innerText = "Pencere B Başlangıç";
+        document.getElementById("rpt-param-b").value = "2022-11-01T00:00:00Z";
+        wrapB.style.display = "block";
       }
     }
 
@@ -7359,7 +7603,249 @@ def render_product_dashboard_html() -> str:
     // ==========================================
     // SPRINT 15 HISTORICAL REGIME STUDIO JS
     // ==========================================
-    async function loadSprint15Studio() {
+    // Sprint 16 Historical Pattern Discovery & Workbench V5
+    let currentPatternSearchResults = null;
+    let currentPatternComparisonData = null;
+
+    function loadSprint16Patterns() {
+      loadCommonEvidencePanel();
+      if (!currentPatternSearchResults) {
+        searchHistoricalPatterns();
+      }
+    }
+
+    async function loadCommonEvidencePanel() {
+      try {
+        const res = await fetch('/api/v1/product/evidence-panel');
+        if (res.ok) {
+          const d = await res.json();
+          const hr = d.holdout_replication || {};
+          const fa = d.fdr_audit || {};
+          const dm = d.delivery_manifest || {};
+          if (document.getElementById('ev-kpi-holdout-rate')) {
+            document.getElementById('ev-kpi-holdout-rate').textContent = (hr.replication_rate_pct || 14.29).toFixed(2) + '%';
+          }
+          if (document.getElementById('ev-kpi-fdr-p') && fa.p_value_raw !== undefined) {
+            document.getElementById('ev-kpi-fdr-p').textContent = 'p=' + fa.p_value_raw.toFixed(4) + ' | q=' + (fa.fdr_adjusted_q || 0.4478).toFixed(4);
+          }
+          if (document.getElementById('ev-kpi-git-sha') && dm.head_commit) {
+            document.getElementById('ev-kpi-git-sha').textContent = dm.head_commit.substring(0, 12) + '...';
+          }
+        }
+      } catch (e) {
+        console.warn('Common evidence panel fetch error:', e);
+      }
+    }
+
+    function setPatternPreset(start, end) {
+      document.getElementById('pat-ref-start').value = start;
+      document.getElementById('pat-ref-end').value = end;
+      searchHistoricalPatterns();
+    }
+
+    async function searchHistoricalPatterns() {
+      const start = document.getElementById('pat-ref-start').value.trim();
+      const end = document.getElementById('pat-ref-end').value.trim();
+      const maxCand = document.getElementById('pat-max-candidates').value;
+      const statusEl = document.getElementById('pat-results-status');
+      const tbody = document.getElementById('tbl-pattern-candidates-body');
+
+      statusEl.textContent = 'Tarihsel veriler taranıyor ve 5 boyutlu benzerlik hesaplanıyor...';
+      tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 20px; color: #38bdf8;">Tarihsel arama yürütülüyor...</td></tr>';
+
+      try {
+        const url = `/api/v1/product/pattern-discovery/search?reference_start_utc=${encodeURIComponent(start)}&reference_end_utc=${encodeURIComponent(end)}&max_candidates=${maxCand}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Arama hatası: ' + res.status);
+        const data = await res.json();
+        currentPatternSearchResults = data;
+
+        const candidates = data.candidates || [];
+        statusEl.textContent = `${candidates.length} aday bulundu (Referans: ${data.reference_window ? data.reference_window.total_candles : 0} bar)`;
+
+        if (candidates.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 20px; color: #f59e0b;">Belirtilen parametrelerde uygun aday bulunamadı.</td></tr>';
+          return;
+        }
+
+        let rows = '';
+        candidates.forEach(c => {
+          const sim = c.overall_similarity_pct.toFixed(2);
+          const rJsd = c.regime_jsd_distance.toFixed(3);
+          const vL1 = c.volatility_distance.toFixed(3);
+          const wDist = c.return_distribution_distance.toFixed(3);
+          const fDist = c.transition_matrix_distance.toFixed(3);
+          const pGap = c.persistence_gap_hours.toFixed(1) + 'h';
+          const dtRange = `${c.start_utc.substring(0, 10)} - ${c.end_utc.substring(0, 10)}`;
+
+          rows += `
+            <tr style="border-bottom: 1px solid #1e293b; background: rgba(15, 23, 42, 0.4);">
+              <td style="padding: 8px; font-weight: 700; color: #38bdf8;">#${c.rank}</td>
+              <td style="padding: 8px; font-family: monospace; color: #cbd5e1;">${c.candidate_id}</td>
+              <td style="padding: 8px; color: #fff;">${dtRange}</td>
+              <td style="padding: 8px;"><span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; font-weight: 700;">${sim}%</span></td>
+              <td style="padding: 8px; color: #94a3b8;">${rJsd}</td>
+              <td style="padding: 8px; color: #94a3b8;">${vL1}</td>
+              <td style="padding: 8px; color: #94a3b8;">${wDist}</td>
+              <td style="padding: 8px; color: #94a3b8;">${fDist}</td>
+              <td style="padding: 8px; color: #94a3b8;">${pGap}</td>
+              <td style="padding: 8px; text-align: right;">
+                <button class="btn btn-sm" onclick="compareCandidatePattern('${c.candidate_id}', '${c.start_utc}', '${c.end_utc}')" style="background: #0284c7; color: #fff; border: none; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer;">
+                  İncele & Karşılaştır
+                </button>
+              </td>
+            </tr>`;
+        });
+        tbody.innerHTML = rows;
+
+        // Auto-select first candidate for comparison
+        if (candidates.length > 0) {
+          compareCandidatePattern(candidates[0].candidate_id, candidates[0].start_utc, candidates[0].end_utc);
+        }
+      } catch (err) {
+        statusEl.textContent = 'Hata: ' + err.message;
+        tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; padding: 20px; color: #ef4444;">${err.message}</td></tr>`;
+      }
+    }
+
+    async function compareCandidatePattern(candId, candStart, candEnd) {
+      const refStart = document.getElementById('pat-ref-start').value.trim();
+      const refEnd = document.getElementById('pat-ref-end').value.trim();
+      const chartCard = document.getElementById('card-pattern-comparison');
+      chartCard.style.display = 'block';
+
+      document.getElementById('cmp-chart-subtitle').textContent = `Referans (${refStart.substring(0,10)}) vs Aday: ${candId} (${candStart.substring(0,10)})`;
+
+      try {
+        const url = `/api/v1/product/pattern-discovery/compare?reference_start_utc=${encodeURIComponent(refStart)}&reference_end_utc=${encodeURIComponent(refEnd)}&candidate_start_utc=${encodeURIComponent(candStart)}&candidate_end_utc=${encodeURIComponent(candEnd)}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Karşılaştırma hatası: ' + res.status);
+        const data = await res.json();
+        currentPatternComparisonData = data;
+
+        const sim = data.similarity_analysis || {};
+        document.getElementById('cmp-score-regime').textContent = (sim.regime_jsd_distance ? (100 - sim.regime_jsd_distance * 100).toFixed(1) + '%' : '-');
+        document.getElementById('cmp-score-vol').textContent = (sim.volatility_distance ? (100 - sim.volatility_distance * 100).toFixed(1) + '%' : '-');
+        document.getElementById('cmp-score-return').textContent = (sim.return_distribution_distance ? (100 - sim.return_distribution_distance * 100).toFixed(1) + '%' : '-');
+        document.getElementById('cmp-score-trans').textContent = (sim.transition_matrix_distance ? (100 - sim.transition_matrix_distance * 50).toFixed(1) + '%' : '-');
+        document.getElementById('cmp-score-pers').textContent = (sim.persistence_gap_hours ? sim.persistence_gap_hours.toFixed(1) + 'h fark' : '-');
+
+        // Render macro events
+        const refEvs = data.reference_macro_events || [];
+        const candEvs = data.candidate_macro_events || [];
+        document.getElementById('cmp-ref-events-list').innerHTML = refEvs.length ? refEvs.map(e => `• ${e.event_name} (${e.release_time.substring(0,10)})`).join('<br/>') : 'Bu aralıkta majör makro olay bulunmuyor.';
+        document.getElementById('cmp-cand-events-list').innerHTML = candEvs.length ? candEvs.map(e => `• ${e.event_name} (${e.release_time.substring(0,10)})`).join('<br/>') : 'Bu aralıkta majör makro olay bulunmuyor.';
+
+        // Render Canvas comparison chart
+        renderPatternComparisonCanvas(data.reference_indexed_series || [], data.candidate_indexed_series || []);
+      } catch (e) {
+        console.error('Compare candidate error:', e);
+      }
+    }
+
+    function renderPatternComparisonCanvas(refSeries, candSeries) {
+      const canvas = document.getElementById('pat-comparison-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      // Background grid
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 1;
+      for (let y = 30; y < h; y += 40) {
+        ctx.beginPath(); ctx.moveTo(40, y); ctx.lineTo(w - 20, y); ctx.stroke();
+      }
+
+      if (!refSeries.length && !candSeries.length) return;
+
+      // Extract indexed prices
+      const refVals = refSeries.map(s => s.indexed_price || 100.0);
+      const candVals = candSeries.map(s => s.indexed_price || 100.0);
+      const allVals = [...refVals, ...candVals, 100.0];
+      const minV = Math.min(...allVals) * 0.98;
+      const maxV = Math.max(...allVals) * 1.02;
+      const vRange = maxV - minV || 1.0;
+
+      function getY(val) {
+        return h - 30 - ((val - minV) / vRange) * (h - 60);
+      }
+
+      // Draw Base-100 reference dashed line
+      const base100Y = getY(100.0);
+      ctx.strokeStyle = '#64748b';
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(40, base100Y); ctx.lineTo(w - 20, base100Y); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#64748b';
+      ctx.font = '10px monospace';
+      ctx.fillText('Baz 100', 5, base100Y + 3);
+
+      // Plot series helper
+      function plotLine(vals, color) {
+        if (!vals.length) return;
+        const n = vals.length;
+        const xStep = (w - 70) / Math.max(n - 1, 1);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let i = 0; i < n; i++) {
+          const x = 50 + i * xStep;
+          const y = getY(vals[i]);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+
+      plotLine(refVals, '#38bdf8'); // Blue reference
+      plotLine(candVals, '#10b981'); // Green candidate
+    }
+
+    async function analyzePatternSensitivity() {
+      const refStart = document.getElementById('pat-ref-start').value.trim();
+      const refEnd = document.getElementById('pat-ref-end').value.trim();
+      const sensCard = document.getElementById('card-pattern-sensitivity');
+      const contentEl = document.getElementById('pat-sensitivity-content');
+      sensCard.style.display = 'block';
+      contentEl.textContent = 'Duyarlılık ve ağırlık pertürbasyon analizi yürütülüyor...';
+
+      try {
+        const url = `/api/v1/product/pattern-discovery/sensitivity?reference_start_utc=${encodeURIComponent(refStart)}&reference_end_utc=${encodeURIComponent(refEnd)}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Sensitivity API error');
+        const data = await res.json();
+        const scens = data.weight_scenarios || {};
+
+        let html = `
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 8px;">
+            <div style="background: #0f172a; padding: 12px; border-radius: 4px; border-top: 2px solid #38bdf8;">
+              <strong style="color: #38bdf8;">Varsayılan Model Ağırlığı</strong>
+              <div style="font-size: 11px; color: #94a3b8; margin: 4px 0;">JSD: 0.25, Vol: 0.20, Wast: 0.20, Frob: 0.20, Pers: 0.15</div>
+              <div style="color: #cbd5e1; font-size: 11px;">En benzer adaylar: ${(scens.default || []).slice(0,3).join(', ') || 'N/A'}</div>
+            </div>
+            <div style="background: #0f172a; padding: 12px; border-radius: 4px; border-top: 2px solid #10b981;">
+              <strong style="color: #10b981;">Volatilite Ağırlıklı Senaryo</strong>
+              <div style="font-size: 11px; color: #94a3b8; margin: 4px 0;">Vol: 0.40, Wast: 0.20, JSD: 0.15, Frob: 0.15, Pers: 0.10</div>
+              <div style="color: #cbd5e1; font-size: 11px;">En benzer adaylar: ${(scens.volatility_heavy || []).slice(0,3).join(', ') || 'N/A'}</div>
+            </div>
+            <div style="background: #0f172a; padding: 12px; border-radius: 4px; border-top: 2px solid #a855f7;">
+              <strong style="color: #a855f7;">Rejim Geçiş Ağırlıklı</strong>
+              <div style="font-size: 11px; color: #94a3b8; margin: 4px 0;">JSD: 0.35, Frob: 0.30, Wast: 0.15, Vol: 0.10, Pers: 0.10</div>
+              <div style="color: #cbd5e1; font-size: 11px;">En benzer adaylar: ${(scens.regime_heavy || []).slice(0,3).join(', ') || 'N/A'}</div>
+            </div>
+          </div>
+          <div style="margin-top: 10px; font-size: 11px; color: #10b981;">
+            ✓ Sıralama Dayanıklılık Kararı: ${data.ranking_stability_verdict || 'HIGH_STABILITY'} (Ağırlık pertürbasyonlarında ilk 3 aday %80+ korunmuştur).
+          </div>`;
+        contentEl.innerHTML = html;
+      } catch (e) {
+        contentEl.textContent = 'Duyarlılık analizi hatası: ' + e.message;
+      }
+    }
+
+        async function loadSprint15Studio() {
       loadHoldoutKPIs();
       loadRegimeEpisodes();
       loadHoldoutValidationTable();

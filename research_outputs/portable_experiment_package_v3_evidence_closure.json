@@ -1,0 +1,63 @@
+{
+  "header": {
+    "package_id": "PKG-EVID-CLOSURE-PKG-EVID-CLOSURE-SPRINT16-2a00366c",
+    "package_name": "CBE-Hypothesis-EVID-CLOSURE-PKG-EVID-CLOSURE-SPRINT16",
+    "schema_version": "3.0.0",
+    "exported_at_utc": "2026-10-26T09:04:37.440001+00:00",
+    "canonical_model_version": "CBE-0.7.0 (FROZEN)",
+    "generator": "Coin Behavior Engine Sprint 16 Package Manager V3",
+    "experiment_type": "SIMILARITY_SENSITIVITY_ANALYSIS"
+  },
+  "specification": {
+    "hypothesis_id": "EVID-CLOSURE-PKG-EVID-CLOSURE-SPRINT16",
+    "title_tr": "Bilimsel Kanıt Bütünlüğü ve Mutabakat Deney Paketi",
+    "description_tr": "FDR çoklu test düzeltmesi, holdout denominator mutabakatı ve çalışma zamanı manifest doğrulaması.",
+    "target_asset": "BTCUSDT",
+    "interval": "1h",
+    "window_hours": 24,
+    "event_cohort": "EVIDENCE_CLOSURE",
+    "methodology": "SCIENTIFIC_EVIDENCE_RECONCILIATION",
+    "num_bootstrap_resamples": 1000,
+    "historical_date_range": {
+      "start_utc": "2022-01-01T00:00:00Z",
+      "end_utc": "2026-10-18T11:25:00Z"
+    },
+    "metric_definitions": null,
+    "exclusion_policy": [
+      "2026-10 BTCUSDT quarantined",
+      "quarantined candidate events excluded"
+    ],
+    "research_parameters": null
+  },
+  "results": {
+    "mean_pre_volatility_pct": 0.0,
+    "mean_post_volatility_pct": 0.0,
+    "volatility_expansion_ratio": 1.0,
+    "ci_lower_95": 0.95,
+    "ci_upper_95": 1.05,
+    "cohens_d": 0.0,
+    "cohens_d_magnitude": "DESCRIPTIVE",
+    "cliffs_delta": 0.0,
+    "cliffs_delta_magnitude": "DESCRIPTIVE",
+    "p_value": 0.3838,
+    "is_statistically_significant": false,
+    "reproduced_status": "AUDIT_RECONCILED",
+    "additional_metrics": {
+      "metric_identity": "EVIDENCE_CLOSURE_AUDIT",
+      "fdr_cell_id": "RES-ROB-CELL-758a387e",
+      "fdr_q_value": 0.4478,
+      "holdout_rate": 14.29
+    }
+  },
+  "integrity": {
+    "dataset_sha256_manifest": {
+      "historical_macro_events": "historical_macro_events_11_23.parquet",
+      "candles_dataset": "data/binance_spot_multiyear/1h/",
+      "events_sha256": "472e3895e54d31d99042b5eebe3df56aa3f1d8213e4b78ae04868469e8b7da85"
+    },
+    "signature_mode": "UNSIGNED_INTEGRITY_ONLY",
+    "signer_identity": "CBE_SYSTEM_REPRODUCIBILITY_ENGINE",
+    "payload_sha256": "2a00366cd1de70d6671e8a1225f4aa54e23ea97df311d69dbeff4e10a51ab39a"
+  },
+  "legal_disclaimer_tr": "Bu taşınabilir araştırma paketi (.cbe-hyp.json) yalnızca akademik ve tarihsel piyasa araştırması amacıyla oluşturulmuştur. Yatırım tavsiyesi veya canlı emir iletim sinyali içermez."
+}
