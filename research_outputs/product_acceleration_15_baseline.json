@@ -1,0 +1,16 @@
+{
+  "artifact_id": "ART-SP15-BASELINE-01",
+  "sprint_id": "CBE_PRODUCT_ACCELERATION_15",
+  "created_at_utc": "2026-10-26T01:35:24.085816+00:00",
+  "repository": "selimoyan2/coin-behavior-engine",
+  "branch": "main",
+  "baseline_commit_sha": "9e13de7e5cc3b7224892aa624794505f18a4c4e1",
+  "canonical_model": "CBE-0.7.0",
+  "is_model_frozen": true,
+  "staging_uuid": "dzzfws54by1whlbq6fk4ywut",
+  "staging_binding": "127.0.0.1:18080->8000/tcp",
+  "staging_vps": "srv1114257 (168.231.125.238)",
+  "production_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+  "production_status": "STRICT_ZERO_TOUCH_PROTECTED",
+  "legal_disclaimer_tr": "Bu rapor yalnızca tarihsel piyasa davranışı araştırması amacıyla hazırlanmıştır. Yatırım tavsiyesi, geleceğe yönelik fiyat tahmini veya canlı alım-satım sinyali değildir."
+}

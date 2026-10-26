@@ -1,0 +1,74 @@
+{
+  "artifact_id": "ART-SP15-CONSISTENCY-07",
+  "timestamp_utc": "2026-10-26T01:35:24.085816+00:00",
+  "audit_id": "AUDIT-CONSISTENCY-202610260135",
+  "total_evaluated": 19,
+  "consistent_count": 13,
+  "inconsistent_count": 0,
+  "explained_differences_count": 4,
+  "overall_system_consistency_pct": 89.5,
+  "all_evaluations_consistent": true,
+  "fdr_contradiction_eliminated": true,
+  "evaluations_summary": [
+    {
+      "result_id": "RES-WF-REGIME-PSI",
+      "metric_id": "METRIC_REGIME_LABEL_PSI",
+      "status": "CONSISTENT",
+      "fdr_supported": true
+    },
+    {
+      "result_id": "RES-WF-RETURN-PSI",
+      "metric_id": "METRIC_RETURN_DISTRIBUTION_PSI",
+      "status": "CONSISTENT",
+      "fdr_supported": true
+    },
+    {
+      "result_id": "RES-CPI-VOLATILITY-SHIFT-MEAN",
+      "metric_id": "METRIC_CPI_MEAN_RATIO",
+      "status": "CONSISTENT",
+      "fdr_supported": true
+    },
+    {
+      "result_id": "RES-ROB-CELL-cd4233d3",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "status": "CONSISTENT",
+      "fdr_supported": true
+    },
+    {
+      "result_id": "RES-ROB-CELL-39ec532c",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "status": "CONSISTENT",
+      "fdr_supported": true
+    },
+    {
+      "result_id": "RES-ROB-CELL-abc43e43",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "status": "CONSISTENT",
+      "fdr_supported": true
+    },
+    {
+      "result_id": "RES-ROB-CELL-a9fcf1c8",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "status": "CONSISTENT",
+      "fdr_supported": true
+    },
+    {
+      "result_id": "RES-ROB-CELL-758a387e",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "status": "CONSISTENT_WITH_EXPLAINED_METHOD_DIFFERENCE",
+      "fdr_supported": false
+    },
+    {
+      "result_id": "RES-ROB-CELL-992197c6",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "status": "CONSISTENT",
+      "fdr_supported": true
+    },
+    {
+      "result_id": "RES-ROB-CELL-e4252f52",
+      "metric_id": "ROBUSTNESS_CELL_SPECIFICATION",
+      "status": "CONSISTENT",
+      "fdr_supported": false
+    }
+  ]
+}

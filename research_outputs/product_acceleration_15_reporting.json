@@ -1,0 +1,43 @@
+{
+  "artifact_id": "ART-SP15-REPORTING-14",
+  "timestamp_utc": "2026-10-26T01:35:24.085816+00:00",
+  "total_available_reports": 28,
+  "report_generator_methods": [
+    "generate_data_quality_report",
+    "generate_dataset_integrity_report",
+    "generate_event_drilldown_report",
+    "generate_event_regime_study_report",
+    "generate_evidence_quality_profile_report",
+    "generate_evidence_robustness_report",
+    "generate_evidence_summary_report",
+    "generate_experiment_comparison_report",
+    "generate_historical_distribution_report",
+    "generate_historical_event_forensics_report",
+    "generate_historical_regime_comparison_report",
+    "generate_historical_regime_drift_report",
+    "generate_hypothesis_research_report",
+    "generate_independent_reproduction_report",
+    "generate_macro_conditioned_regime_transitions_report",
+    "generate_macro_event_report",
+    "generate_period_comparison_report",
+    "generate_portable_experiment_report",
+    "generate_regime_drift_report",
+    "generate_regime_episode_analysis_report",
+    "generate_regime_persistence_duration_report",
+    "generate_regime_transition_matrix_report",
+    "generate_reproducibility_report",
+    "generate_robustness_sensitivity_report",
+    "generate_scientific_integrity_and_holdout_validation_report",
+    "generate_scientific_reconciliation_report",
+    "generate_specification_curve_report",
+    "generate_walk_forward_report"
+  ],
+  "new_reports_sprint_15": [
+    "HISTORICAL_REGIME_COMPARISON",
+    "HISTORICAL_EVENT_FORENSICS",
+    "REGIME_EPISODE_ANALYSIS",
+    "SCIENTIFIC_INTEGRITY_AND_HOLDOUT_VALIDATION"
+  ],
+  "pdf_vector_generation_verified": true,
+  "disclaimer_tr": "Tüm raporlar zorunlu Türkçe yasal ve nedensellik reddi uyarısını içermektedir."
+}

@@ -1,0 +1,153 @@
+{
+  "result_id": "RES-ROB-CELL-758a387e",
+  "experiment_id": "EXP-ROBUSTNESS-MATRIX-01",
+  "result_label": "Sağlamlık Matrisi Hücresi (RES-ROB-CELL-758a387e)",
+  "metric_definition": {
+    "name": "Volatilite Genişleme Oranı",
+    "mathematical_formula": "VR = σ_post(t0, t0+W) / σ_pre(t0-W, t0)",
+    "unit": "ratio",
+    "interpretation": "1.0 üzeri değerler olay sonrası volatilitenin arttığını gösterir."
+  },
+  "algorithm_version": "CBE-0.7.0",
+  "event_cohort_or_regime": "US_INFLATION (57 CPI Olayı, 2022-2026)",
+  "dataset_manifest_hash": "73a6212acca38521bcde0192837465f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7",
+  "current_manifest_hash": "73a6212acca38521bcde0192837465f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7",
+  "is_stale": false,
+  "quarantine_status": "CLEAR",
+  "exclusion_policy": [
+    "Ekim 2026 BTCUSDT verileri (18-31 Ekim) kesinlikle karantinaya alınmış ve çıkarılmıştır.",
+    "EVT-BLS-CPI-20261014-CANDIDATE aday kaydı doğrulanmamış kaynak statüsünde karantinadadır.",
+    "ETHUSDT ve SOLUSDT gibi çoklu varlık veri eksiklikleri 'fail closed' politikasıyla reddedilir.",
+    "T0 anında ±24 saat içinde çakışan olaylar arındırma/kontaminasyon denetimine tabi tutulmuştur."
+  ],
+  "source_partitions": [
+    {
+      "partition_id": "BTCUSDT-1h-2022.parquet",
+      "asset": "BTCUSDT",
+      "sha256_prefix": "f7a4c9e18b1b5da7",
+      "status": "CANONICAL_AUTHENTIC",
+      "is_quarantined": false
+    },
+    {
+      "partition_id": "BTCUSDT-1h-2023.parquet",
+      "asset": "BTCUSDT",
+      "sha256_prefix": "8e6c79f85f91cdf2",
+      "status": "CANONICAL_AUTHENTIC",
+      "is_quarantined": false
+    },
+    {
+      "partition_id": "BTCUSDT-1h-2024.parquet",
+      "asset": "BTCUSDT",
+      "sha256_prefix": "ecb19fa011a8a9c3",
+      "status": "CANONICAL_AUTHENTIC",
+      "is_quarantined": false
+    },
+    {
+      "partition_id": "BTCUSDT-1h-2025.parquet",
+      "asset": "BTCUSDT",
+      "sha256_prefix": "7403f58b696feb90",
+      "status": "CANONICAL_AUTHENTIC",
+      "is_quarantined": false
+    },
+    {
+      "partition_id": "BTCUSDT-1h-2026.parquet",
+      "asset": "BTCUSDT",
+      "sha256_prefix": "acfe873da8990283",
+      "status": "CANONICAL_AUTHENTIC",
+      "is_quarantined": false
+    }
+  ],
+  "verified_historical_coverage": {
+    "asset": "BTCUSDT",
+    "source": "Binance Spot Multi-Year Historical Archive",
+    "acquisition_method": "Authorized offline bulk dump",
+    "start_utc": "2022-01-01T00:00:00Z",
+    "end_utc": "2026-10-18T11:25:00Z",
+    "verified_months_count": 58,
+    "quarantined_months": [
+      "2026-10 (partially)"
+    ]
+  },
+  "lineage_nodes": [
+    {
+      "id": "node_res",
+      "type": "RESULT",
+      "label": "Sağlamlık Matrisi Hücresi (RES-ROB-CELL-758a387e)",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "node_exp",
+      "type": "EXPERIMENT",
+      "label": "Deney: EXP-ROBUSTNESS-MATRIX-01",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "node_met",
+      "type": "METRIC",
+      "label": "Metrik: Volatilite Genişleme Oranı",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "node_alg",
+      "type": "ALGORITHM",
+      "label": "Model: CBE-0.7.0 (Dondurulmuş)",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "node_coh",
+      "type": "COHORT",
+      "label": "Kohort: US_INFLATION (57 CPI Olayı, 2022-2026)",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "node_man",
+      "type": "MANIFEST",
+      "label": "Manifest Hash: 73a6212acca3...",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "node_par",
+      "type": "PARTITION",
+      "label": "Kanonik Parquet Partisyonları (5 dosya)",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "node_cov",
+      "type": "COVERAGE",
+      "label": "Tarihsel Kapsam: 2022-01 - 2026-10",
+      "status": "VERIFIED"
+    }
+  ],
+  "lineage_edges": [
+    {
+      "source": "node_res",
+      "target": "node_exp"
+    },
+    {
+      "source": "node_exp",
+      "target": "node_met"
+    },
+    {
+      "source": "node_met",
+      "target": "node_alg"
+    },
+    {
+      "source": "node_alg",
+      "target": "node_coh"
+    },
+    {
+      "source": "node_coh",
+      "target": "node_man"
+    },
+    {
+      "source": "node_man",
+      "target": "node_par"
+    },
+    {
+      "source": "node_par",
+      "target": "node_cov"
+    }
+  ],
+  "methodology_version": "CBE-0.7.0",
+  "disclaimer_tr": "Bu soyağacı ve köken analizi yalnızca bilimsel tekrarlanabilirlik ve veri denetimi amacıyla sunulmuştur. Yatırım tavsiyesi veya alım-satım sinyali değildir."
+}

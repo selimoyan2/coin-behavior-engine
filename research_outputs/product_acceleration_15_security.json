@@ -1,0 +1,9 @@
+{
+  "artifact_id": "ART-SP15-SECURITY-15",
+  "timestamp_utc": "2026-10-26T01:35:24.085816+00:00",
+  "path_traversal_guards": "ENFORCED_WITH_CANONICAL_ABSOLUTE_PATH_BOUNDS",
+  "asset_fail_closed": "ENFORCED_ONLY_BTCUSDT_SUPPORTED",
+  "quarantine_protection": "ENFORCED_CANDIDATE_DATA_REJECTED",
+  "production_zero_touch": "ENFORCED_PRODUCTION_CONTAINER_UNTOUCHED",
+  "server_path_leakage_guards": "ENFORCED_INTERNAL_PATHS_MASKED"
+}

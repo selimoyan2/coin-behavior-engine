@@ -1,0 +1,13 @@
+{
+  "artifact_id": "ART-SP15-DATASET-04",
+  "timestamp_utc": "2026-10-26T01:35:24.085816+00:00",
+  "deterministic_manifest_hash": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
+  "expected_manifest_hash": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
+  "hash_match": true,
+  "total_partitions": 342,
+  "canonical_partitions_count": 57,
+  "derived_partitions_count": 285,
+  "quarantine_exclusion_enforced": true,
+  "quarantined_candidate_month": "2026-10",
+  "verified_coverage_range": "2021-03 to 2026-09"
+}

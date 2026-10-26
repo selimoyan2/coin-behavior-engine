@@ -126,10 +126,6 @@ class ContentIntegrityEngine:
                         }
                         records.append(rec)
 
-        # Deterministic manifest hash
-        records_serialized = json.dumps(records, sort_keys=True)
-        manifest_sha = hashlib.sha256(records_serialized.encode("utf-8")).hexdigest()
-
         # Audit intake quarantine
         quarantine_file = data_dir / "staging_intake" / "BTCUSDT-5m-2026-10-intake.parquet"
         quarantined_record = None
@@ -143,6 +139,36 @@ class ContentIntegrityEngine:
                 "reason": "Synthetic fixture detection (constant volume 15.2, linear price step)",
                 "blocked_from_canonical_manifest": True,
             }
+
+        # Deterministic canonical content hash (Sprint 15 Reconciliation)
+        # Excludes ephemeral filesystem timestamps (mtime_utc) to ensure 100% bitwise parity across OS environments
+        canonical_content_payload = {
+            "schema_version": "CBE-MANIFEST-V3",
+            "domain_prefix": "CBE-DATASET-INTEGRITY-2026",
+            "canonical_partitions": sorted(
+                [
+                    {
+                        "file_name": r["file_name"],
+                        "interval": r["interval"],
+                        "month": r["month"],
+                        "size_bytes": r["size_bytes"],
+                        "content_sha256": r["content_sha256"],
+                        "is_canonical": r["is_canonical"],
+                    }
+                    for r in records
+                ],
+                key=lambda x: (x["interval"], x["file_name"])
+            ),
+            "quarantined_exclusions": [
+                {
+                    "file_name": quarantined_record["file_name"],
+                    "content_sha256": quarantined_record["content_sha256"],
+                    "status": quarantined_record["status"]
+                }
+            ] if quarantined_record else []
+        }
+        manifest_serialized = json.dumps(canonical_content_payload, sort_keys=True)
+        manifest_sha = hashlib.sha256(manifest_serialized.encode("utf-8")).hexdigest()
 
         return {
             "manifest_version": "CBE-MANIFEST-V3",

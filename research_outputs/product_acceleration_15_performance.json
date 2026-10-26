@@ -1,0 +1,36 @@
+{
+  "artifact_id": "ART-SP15-PERFORMANCE-16",
+  "timestamp_utc": "2026-10-26T01:35:24.085816+00:00",
+  "endpoints_benchmarked": [
+    {
+      "endpoint": "/api/v1/product/overview",
+      "latency_ms": 12.4
+    },
+    {
+      "endpoint": "/api/v1/product/regime-comparison",
+      "latency_ms": 84.1
+    },
+    {
+      "endpoint": "/api/v1/product/synchronized-chart",
+      "latency_ms": 68.3
+    },
+    {
+      "endpoint": "/api/v1/product/event-forensics",
+      "latency_ms": 32.7
+    },
+    {
+      "endpoint": "/api/v1/product/regime-episodes",
+      "latency_ms": 45.6
+    },
+    {
+      "endpoint": "/api/v1/product/holdout-validation",
+      "latency_ms": 112.5
+    },
+    {
+      "endpoint": "/api/v1/product/research-lineage",
+      "latency_ms": 18.2
+    }
+  ],
+  "all_under_p95_500ms_sla": true,
+  "caching_strategy": "IN_MEMORY_LAZY_CANONICAL_PARTITION_CACHE"
+}

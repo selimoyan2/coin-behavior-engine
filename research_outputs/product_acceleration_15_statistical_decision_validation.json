@@ -1,0 +1,28 @@
+{
+  "artifact_id": "ART-SP15-STAT-DECISION-05",
+  "timestamp_utc": "2026-10-26T01:35:24.085816+00:00",
+  "fdr_method": "BENJAMINI_HOCHBERG_1995_STEP_UP",
+  "canonical_alpha": 0.05,
+  "monotonicity_verified": true,
+  "fdr_decision_rule": "fdr_supported = (fdr_q_value <= alpha)",
+  "sample_p_values": [
+    0.001,
+    0.015,
+    0.045,
+    0.2,
+    0.8
+  ],
+  "computed_q_values": [
+    0.005,
+    0.0375,
+    0.075,
+    0.25,
+    0.8
+  ],
+  "decision_statuses_supported": [
+    "VALID_SUPPORTED",
+    "VALID_NOT_SUPPORTED",
+    "INVALID_DATA",
+    "UNAVAILABLE"
+  ]
+}

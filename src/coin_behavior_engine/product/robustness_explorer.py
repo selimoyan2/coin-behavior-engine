@@ -431,18 +431,20 @@ class HistoricalRobustnessExplorer:
 
             for idx, p_adj in enumerate(adj_p_values):
                 valid_cells[idx].p_value_fdr_adjusted = p_adj
+                # Enforce FDR-governed significance flag
+                valid_cells[idx].is_expansion_statistically_significant = bool(p_adj is not None and p_adj <= 0.05 and valid_cells[idx].mean_ratio > 1.0)
 
         # Disaggregated rates calculation
         valid_count = len(valid_cells)
         direction_pos_count = sum(1 for c in valid_cells if c.mean_ratio is not None and c.mean_ratio > 1.0)
-        unadj_sig_count = sum(1 for c in valid_cells if c.is_expansion_statistically_significant)
+        ci_sig_count = sum(1 for c in valid_cells if c.crosses_null_hypothesis is False)
         p_val_sig_count = sum(1 for c in valid_cells if c.p_value_unadjusted is not None and c.p_value_unadjusted <= 0.05)
         fdr_sig_count = sum(1 for c in valid_cells if c.p_value_fdr_adjusted is not None and c.p_value_fdr_adjusted <= 0.05 and c.mean_ratio is not None and c.mean_ratio > 1.0)
         meaningful_count = sum(1 for c in valid_cells if c.mean_ratio is not None and c.mean_ratio >= 1.10 and c.cohens_d is not None and abs(c.cohens_d) >= 0.20)
         holdout_rep_count = sum(1 for c in valid_cells if c.stability_score is not None and c.stability_score >= 0.60)
 
         dir_concordance = round(100.0 * direction_pos_count / max(1, valid_count), 2)
-        ci_support = round(100.0 * unadj_sig_count / max(1, valid_count), 2)
+        ci_support = round(100.0 * ci_sig_count / max(1, valid_count), 2)
         p_val_support = round(100.0 * p_val_sig_count / max(1, valid_count), 2)
         fdr_support = round(100.0 * fdr_sig_count / max(1, valid_count), 2)
         meaningful_rate = round(100.0 * meaningful_count / max(1, valid_count), 2)
@@ -478,7 +480,7 @@ class HistoricalRobustnessExplorer:
             },
             "CI_BASED_SUPPORT_RATE": {
                 "percentage": ci_support,
-                "numerator": unadj_sig_count,
+                "numerator": ci_sig_count,
                 "denominator": valid_count,
                 "description_tr": "%95 Güven aralığı 1.0 eşiğini kapsamayarak artışı destekleyen hücre oranı",
             },

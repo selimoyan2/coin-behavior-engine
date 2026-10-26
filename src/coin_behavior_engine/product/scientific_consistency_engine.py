@@ -447,6 +447,14 @@ class ScientificConsistencyEngine:
                     stat = ScientificConsistencyStatus.CONSISTENT
                     note = f"Belirtim tutarlıdır (CI [{cell.ci_lower_95}, {cell.ci_upper_95}], p={cell.p_value_unadjusted})."
 
+                # Enforce FDR-governed support flag: must be strictly <= 0.05
+                fdr_supp = bool(cell.p_value_fdr_adjusted is not None and cell.p_value_fdr_adjusted <= 0.05)
+                
+                # Check for critical contradiction in significance flags
+                if cell.is_expansion_statistically_significant and not fdr_supp:
+                    stat = ScientificConsistencyStatus.INCONSISTENT
+                    note = f"KRİTİK TUTARSIZLIK: FDR q={cell.p_value_fdr_adjusted} > 0.05 olmasına rağmen anlamlılık bayrağı atanmış!"
+
                 evaluations.append(
                     ConsistencyEvaluationDetail(
                         result_id=f"RES-ROB-{cell.cell_id}",
@@ -464,7 +472,7 @@ class ScientificConsistencyEngine:
                         dual_recomputed_p_value=cell.p_value_unadjusted,
                         dual_recomputed_ci_95=(cell.ci_lower_95, cell.ci_upper_95),
                         fdr_q_value=cell.p_value_fdr_adjusted,
-                        fdr_supported=cell.is_expansion_statistically_significant,
+                        fdr_supported=fdr_supp,
                         consistency_status=stat,
                         scientific_explanation_tr=note,
                         methodological_divergence_note=note if stat == ScientificConsistencyStatus.CONSISTENT_WITH_EXPLAINED_METHOD_DIFFERENCE else None,

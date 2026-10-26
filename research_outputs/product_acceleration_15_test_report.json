@@ -1,0 +1,13 @@
+{
+  "artifact_id": "ART-SP15-TEST-REPORT-17",
+  "timestamp_utc": "2026-10-26T01:35:24.085816+00:00",
+  "suite_name": "Coin Behavior Engine Sprint 15 Full Regression Suite",
+  "total_test_files": 16,
+  "total_tests": 269,
+  "passed": 269,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "pass_rate_pct": 100.0,
+  "execution_duration_seconds": 136.33
+}

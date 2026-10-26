@@ -1,0 +1,12 @@
+{
+  "artifact_id": "ART-SP15-GIT-02",
+  "verified_at_utc": "2026-10-26T01:35:24.085816+00:00",
+  "repository": "selimoyan2/coin-behavior-engine",
+  "branch": "main",
+  "base_commit": "9e13de7e5cc3b7224892aa624794505f18a4c4e1",
+  "verified_ancestry": true,
+  "working_tree_clean_before_sprint": true,
+  "force_push_permitted": false,
+  "force_push_executed": false,
+  "zero_touch_production_maintained": true
+}

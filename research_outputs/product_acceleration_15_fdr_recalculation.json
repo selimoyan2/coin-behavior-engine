@@ -1,0 +1,63 @@
+{
+  "artifact_id": "ART-SP15-FDR-RECALC-06",
+  "timestamp_utc": "2026-10-26T01:35:24.085816+00:00",
+  "matrix_id": "ROB-MAT-US_CPI-20261026",
+  "cohort": "US_CPI",
+  "total_specifications": 16,
+  "valid_specifications": 14,
+  "invalid_specifications": 2,
+  "disaggregated_rates": {
+    "POINT_ESTIMATE_DIRECTION_RATE": {
+      "percentage": 100.0,
+      "numerator": 14,
+      "denominator": 14,
+      "description_tr": "Pozitif yön uyumu gösteren geçerli hücre oranı"
+    },
+    "CI_BASED_SUPPORT_RATE": {
+      "percentage": 85.71,
+      "numerator": 12,
+      "denominator": 14,
+      "description_tr": "%95 Güven aralığı 1.0 eşiğini kapsamayarak artışı destekleyen hücre oranı"
+    },
+    "P_VALUE_BASED_SUPPORT_RATE": {
+      "percentage": 57.14,
+      "numerator": 8,
+      "denominator": 14,
+      "description_tr": "Düzeltilmemiş ikili hipotez testinde p <= 0.05 anlamlılık oranı"
+    },
+    "FDR_ADJUSTED_SUPPORT_RATE": {
+      "percentage": 50.0,
+      "numerator": 7,
+      "denominator": 14,
+      "description_tr": "Benjamini-Hochberg FDR düzeltmesi sonrası p_adj <= 0.05 korunan hücre oranı"
+    },
+    "PRACTICAL_EFFECT_RATE": {
+      "percentage": 57.14,
+      "numerator": 8,
+      "denominator": 14,
+      "description_tr": "Genişleme >= 1.10x ve Cohen's d >= 0.20 pratik büyüklük oranı"
+    },
+    "HOLDOUT_REPLICATION_RATE": {
+      "percentage": 92.86,
+      "numerator": 13,
+      "denominator": 14,
+      "description_tr": "Dönemler arası istikrar skoru >= 0.60 olan hücre oranı"
+    },
+    "VALID_SPECIFICATION_COVERAGE": {
+      "percentage": 87.5,
+      "numerator": 14,
+      "denominator": 16,
+      "description_tr": "Geçerli zaman çözünürlüğü ve veri sağlayan kombinasyon oranı"
+    }
+  },
+  "target_cell_audit": {
+    "cell_id": "CELL-758a387e",
+    "window_hours": 24,
+    "estimator": "CLOSE_TO_CLOSE",
+    "p_value_unadjusted": 0.383799,
+    "p_value_fdr_adjusted": 0.447766,
+    "is_expansion_statistically_significant": false,
+    "fdr_supported": false,
+    "remediation_status": "CONTRADICTION_ELIMINATED"
+  }
+}

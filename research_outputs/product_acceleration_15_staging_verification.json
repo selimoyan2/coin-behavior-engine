@@ -1,0 +1,11 @@
+{
+  "artifact_id": "ART-SP15-STAGING-VERIF-19",
+  "timestamp_utc": "2026-10-26T01:35:24.085816+00:00",
+  "staging_uuid": "dzzfws54by1whlbq6fk4ywut",
+  "staging_binding": "127.0.0.1:18080->8000/tcp",
+  "staging_vps": "srv1114257 (168.231.125.238)",
+  "health_status": "HEALTHY",
+  "canonical_model": "CBE-0.7.0",
+  "production_status": "ZERO_TOUCH_CONFIRMED_UNTOUCHED",
+  "production_uuid": "6t63aehpaw0cw1bbt4zcm09g"
+}

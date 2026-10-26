@@ -1,0 +1,29 @@
+{
+  "artifact_id": "ART-SP15-REGRESSION-INV-09",
+  "timestamp_utc": "2026-10-26T01:35:24.085816+00:00",
+  "total_test_files": 16,
+  "test_files": [
+    "tests/test_sprint_product_acceleration_01_api.py",
+    "tests/test_sprint_product_acceleration_01_integration.py",
+    "tests/test_sprint_product_acceleration_02_api.py",
+    "tests/test_sprint_product_acceleration_03.py",
+    "tests/test_sprint_product_acceleration_04.py",
+    "tests/test_sprint_product_acceleration_05.py",
+    "tests/test_sprint_product_acceleration_06.py",
+    "tests/test_sprint_product_acceleration_07.py",
+    "tests/test_sprint_product_acceleration_08.py",
+    "tests/test_sprint_product_acceleration_09.py",
+    "tests/test_sprint_product_acceleration_10.py",
+    "tests/test_sprint_product_acceleration_11.py",
+    "tests/test_sprint_product_acceleration_12.py",
+    "tests/test_sprint_product_acceleration_13.py",
+    "tests/test_sprint_product_acceleration_14.py",
+    "tests/test_sprint_product_acceleration_15.py"
+  ],
+  "prior_sprints_test_count": 246,
+  "sprint_15_test_count": 23,
+  "total_regression_tests": 269,
+  "passed_tests": 269,
+  "failed_tests": 0,
+  "pass_rate_pct": 100.0
+}

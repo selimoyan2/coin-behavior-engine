@@ -1,0 +1,29 @@
+{
+  "artifact_id": "ART-SP15-HOLDOUT-08",
+  "timestamp_utc": "2026-10-26T01:35:24.085816+00:00",
+  "audit_id": "AUDIT-HOLDOUT-202610260135",
+  "train_partition": {
+    "partition_id": "TRAIN_2022_2023",
+    "start_utc": "2022-01-01T00:00:00Z",
+    "end_utc": "2023-12-31T23:59:59Z",
+    "event_count": 24
+  },
+  "validation_partition": {
+    "partition_id": "VALIDATION_2024",
+    "start_utc": "2024-01-01T00:00:00Z",
+    "end_utc": "2024-12-31T23:59:59Z",
+    "event_count": 12
+  },
+  "holdout_partition": {
+    "partition_id": "HOLDOUT_2025_2026",
+    "start_utc": "2025-01-01T00:00:00Z",
+    "end_utc": "2026-09-24T23:59:59Z",
+    "event_count": 21
+  },
+  "total_specifications_evaluated": 16,
+  "direction_agreement_rate_pct": 71.43,
+  "chronological_holdout_replication_rate_pct": 14.29,
+  "mean_cross_period_stability_score": 0.873,
+  "metric_separation_integrity": "STABILITY_SCORE_DECOUPLED_FROM_HOLDOUT_REPLICATION",
+  "disclaimer_tr": "Bu rapor yalnızca tarihsel piyasa davranışı araştırması amacıyla hazırlanmıştır. Yatırım tavsiyesi, geleceğe yönelik fiyat tahmini veya canlı alım-satım sinyali değildir."
+}

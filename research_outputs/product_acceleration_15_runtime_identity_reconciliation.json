@@ -1,0 +1,8 @@
+{
+  "artifact_id": "ART-SP15-RUNTIME-03",
+  "timestamp_utc": "2026-10-26T01:35:24.085816+00:00",
+  "build_metadata_priority": "EXPLICIT_FILE_OVER_ENV_OVER_FALLBACK",
+  "staging_environment": "STAGING_ISOLATED",
+  "model_version": "CBE-0.7.0",
+  "runtime_reconciliation_verdict": "VERIFIED_IDENTICAL"
+}

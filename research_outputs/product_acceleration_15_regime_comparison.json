@@ -1,0 +1,126 @@
+{
+  "comparison_id": "CMP-YEAR_VS_YEAR-202610260135",
+  "mode": "YEAR_VS_YEAR",
+  "asset": "BTCUSDT",
+  "interval": "1h",
+  "timestamp_utc": "2026-10-26T01:35:40.121122+00:00",
+  "period_a": {
+    "label": "Yıl 2023",
+    "start_utc": "2023-01-01T00:00:00+00:00",
+    "end_utc": "2023-12-31T23:59:59+00:00",
+    "candle_count": 8759,
+    "mean_return_pct": 0.0107,
+    "volatility_annualized_pct": 42.53,
+    "skewness": -0.117,
+    "kurtosis": 26.333,
+    "regime_occupancy_pct": {
+      "SIDEWAYS": 0.0,
+      "UNCERTAIN": 0.0,
+      "TRENDING_BULL": 0.0,
+      "TRENDING_BEAR": 0.0,
+      "POSSIBLE_REVERSAL": 0.0,
+      "HIGH_VOLATILITY": 0.0
+    },
+    "mean_regime_duration_hours": {},
+    "data_gap_count": 0,
+    "data_coverage_pct": 100.0
+  },
+  "period_b": {
+    "label": "Yıl 2025",
+    "start_utc": "2025-01-01T00:00:00+00:00",
+    "end_utc": "2025-12-31T23:59:59+00:00",
+    "candle_count": 8760,
+    "mean_return_pct": -0.0008,
+    "volatility_annualized_pct": 44.47,
+    "skewness": -0.237,
+    "kurtosis": 12.36,
+    "regime_occupancy_pct": {
+      "SIDEWAYS": 37.36,
+      "UNCERTAIN": 26.01,
+      "TRENDING_BULL": 11.41,
+      "TRENDING_BEAR": 8.22,
+      "POSSIBLE_REVERSAL": 1.9,
+      "HIGH_VOLATILITY": 15.1
+    },
+    "mean_regime_duration_hours": {
+      "SIDEWAYS": 3.6,
+      "UNCERTAIN": 2.3,
+      "TRENDING_BULL": 2.4,
+      "TRENDING_BEAR": 1.7,
+      "POSSIBLE_REVERSAL": 1.1,
+      "HIGH_VOLATILITY": 3.0
+    },
+    "data_gap_count": 0,
+    "data_coverage_pct": 100.0
+  },
+  "deltas": {
+    "frobenius_distance": 0.0,
+    "jensen_shannon_divergence": 0.0,
+    "occupancy_psi": 0.0,
+    "volatility_difference_pct": 1.94,
+    "transition_difference_matrix": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "regime_occupancy_shifts": {
+      "SIDEWAYS": 37.36,
+      "UNCERTAIN": 26.01,
+      "TRENDING_BULL": 11.41,
+      "TRENDING_BEAR": 8.22,
+      "POSSIBLE_REVERSAL": 1.9,
+      "HIGH_VOLATILITY": 15.1
+    }
+  },
+  "methodological_notes_tr": [
+    "Karşılaştırılan dönemler (Yıl 2023 vs Yıl 2025) arasındaki rejim geçiş matrisi Frobenius uzaklığı 0.000 olarak hesaplanmıştır.",
+    "Durum doluluk dağılımı Kararlılık İndeksi (PSI) = 0.0000 (Eşik 0.10 altında: kararlı rejim yapısı).",
+    "Yıllıklandırılmış volatilite farkı: %+1.94 puan."
+  ],
+  "disclaimer_tr": "Bu rapor ve karşılaştırma aracı yalnızca tarihsel piyasa davranışı araştırması amacıyla hazırlanmıştır. Geleceğe yönelik fiyat tahmini, getiri vaadi, yatırım tavsiyesi veya canlı alım-satım sinyali değildir."
+}

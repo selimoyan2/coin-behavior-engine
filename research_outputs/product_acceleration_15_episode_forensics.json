@@ -1,0 +1,120 @@
+{
+  "artifact_id": "ART-SP15-EPISODE-FORENSICS-12",
+  "timestamp_utc": "2026-10-26T01:35:24.085816+00:00",
+  "total_historical_episodes": 12721,
+  "page": 1,
+  "page_size": 20,
+  "right_censoring_handling": "RIGHT_CENSORED_PRESERVED_WITHOUT_FALSE_TRANSITIONS",
+  "sample_episodes": [
+    {
+      "episode_id": "EP-SID-202510181130-00001",
+      "regime_id": "SIDEWAYS",
+      "regime_label_tr": "Yatay / Konsolidasyon",
+      "start_timestamp": "2025-10-18T11:30:00Z",
+      "end_timestamp": "2025-10-18T16:10:00Z",
+      "duration_bars": 57,
+      "duration_hours": 4.75,
+      "duration_days": 0.1979,
+      "entry_transition": null,
+      "exit_transition": "UNCERTAIN",
+      "start_price": 106973.0,
+      "end_price": 106930.09,
+      "price_change_pct": -0.0401,
+      "realized_volatility": 0.236,
+      "verified_macro_events": [],
+      "source_partition_ids": [
+        "BTCUSDT-5m-2025-10.parquet"
+      ],
+      "censoring_status": "COMPLETED",
+      "methodology_version": "CBE-0.7.0"
+    },
+    {
+      "episode_id": "EP-UNC-202510181615-00002",
+      "regime_id": "UNCERTAIN",
+      "regime_label_tr": "Belirsiz / Kararsız",
+      "start_timestamp": "2025-10-18T16:15:00Z",
+      "end_timestamp": "2025-10-18T16:15:00Z",
+      "duration_bars": 1,
+      "duration_hours": 0.0833,
+      "duration_days": 0.0035,
+      "entry_transition": "SIDEWAYS",
+      "exit_transition": "SIDEWAYS",
+      "start_price": 106817.03,
+      "end_price": 106817.03,
+      "price_change_pct": 0.0,
+      "realized_volatility": 0.0,
+      "verified_macro_events": [],
+      "source_partition_ids": [
+        "BTCUSDT-5m-2025-10.parquet"
+      ],
+      "censoring_status": "COMPLETED",
+      "methodology_version": "CBE-0.7.0"
+    },
+    {
+      "episode_id": "EP-SID-202510181620-00003",
+      "regime_id": "SIDEWAYS",
+      "regime_label_tr": "Yatay / Konsolidasyon",
+      "start_timestamp": "2025-10-18T16:20:00Z",
+      "end_timestamp": "2025-10-18T16:25:00Z",
+      "duration_bars": 2,
+      "duration_hours": 0.1667,
+      "duration_days": 0.0069,
+      "entry_transition": "UNCERTAIN",
+      "exit_transition": "UNCERTAIN",
+      "start_price": 106767.96,
+      "end_price": 106815.68,
+      "price_change_pct": 0.0447,
+      "realized_volatility": 0.0,
+      "verified_macro_events": [],
+      "source_partition_ids": [
+        "BTCUSDT-5m-2025-10.parquet"
+      ],
+      "censoring_status": "COMPLETED",
+      "methodology_version": "CBE-0.7.0"
+    },
+    {
+      "episode_id": "EP-UNC-202510181630-00004",
+      "regime_id": "UNCERTAIN",
+      "regime_label_tr": "Belirsiz / Kararsız",
+      "start_timestamp": "2025-10-18T16:30:00Z",
+      "end_timestamp": "2025-10-18T16:40:00Z",
+      "duration_bars": 3,
+      "duration_hours": 0.25,
+      "duration_days": 0.0104,
+      "entry_transition": "SIDEWAYS",
+      "exit_transition": "SIDEWAYS",
+      "start_price": 106560.88,
+      "end_price": 106578.85,
+      "price_change_pct": 0.0169,
+      "realized_volatility": 0.1265,
+      "verified_macro_events": [],
+      "source_partition_ids": [
+        "BTCUSDT-5m-2025-10.parquet"
+      ],
+      "censoring_status": "COMPLETED",
+      "methodology_version": "CBE-0.7.0"
+    },
+    {
+      "episode_id": "EP-SID-202510181645-00005",
+      "regime_id": "SIDEWAYS",
+      "regime_label_tr": "Yatay / Konsolidasyon",
+      "start_timestamp": "2025-10-18T16:45:00Z",
+      "end_timestamp": "2025-10-18T20:25:00Z",
+      "duration_bars": 45,
+      "duration_hours": 3.75,
+      "duration_days": 0.1562,
+      "entry_transition": "UNCERTAIN",
+      "exit_transition": "TRENDING_BULL",
+      "start_price": 106677.96,
+      "end_price": 107235.4,
+      "price_change_pct": 0.5225,
+      "realized_volatility": 0.1835,
+      "verified_macro_events": [],
+      "source_partition_ids": [
+        "BTCUSDT-5m-2025-10.parquet"
+      ],
+      "censoring_status": "COMPLETED",
+      "methodology_version": "CBE-0.7.0"
+    }
+  ]
+}

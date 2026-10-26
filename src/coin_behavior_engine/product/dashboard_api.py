@@ -339,6 +339,22 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.get_regime_timeline_api(query_params)
             elif sub_path in ("scientific-consistency", "consistency/audit"):
                 return HTTPStatus.OK, cls.get_scientific_consistency_api(query_params)
+            elif sub_path in ("statistical-decisions", "statistical/decisions"):
+                return HTTPStatus.OK, cls.get_statistical_decisions(query_params)
+            elif sub_path in ("holdout-validation", "holdout"):
+                return HTTPStatus.OK, cls.get_holdout_validation(query_params)
+            elif sub_path in ("regime-comparison", "regimes/comparison"):
+                return HTTPStatus.OK, cls.get_regime_comparison(query_params)
+            elif sub_path in ("synchronized-chart", "charts/synchronized"):
+                return HTTPStatus.OK, cls.get_synchronized_chart(query_params)
+            elif sub_path in ("event-forensics", "events/forensics"):
+                return HTTPStatus.OK, cls.get_event_forensics(query_params)
+            elif sub_path in ("event-comparison", "events/comparison"):
+                return HTTPStatus.OK, cls.get_event_comparison(query_params)
+            elif sub_path in ("regime-episodes", "regimes/episodes"):
+                return HTTPStatus.OK, cls.get_regime_episodes(query_params)
+            elif sub_path in ("research-lineage", "research-provenance"):
+                return HTTPStatus.OK, cls.get_research_lineage(query_params)
             else:
                 return HTTPStatus.NOT_FOUND, {
                     "error": "Not Found",
@@ -3115,6 +3131,36 @@ class ProductDashboardApiService:
             interval = params.get("interval", ["1h"])[0]
             res = ResearchReportGenerator.generate_macro_conditioned_regime_transitions_report(cohort=cohort, window_hours=window_hours, interval=interval, export_format=fmt)
 
+        elif rpt_type in ("HISTORICAL_REGIME_COMPARISON", "REGIME_COMPARISON", "REGIME_STUDIO"):
+            mode = params.get("mode", ["YEAR_VS_YEAR"])[0]
+            param_a = params.get("param_a", [params.get("year_a", ["2023"])[0]])[0]
+            param_b = params.get("param_b", [params.get("year_b", ["2024"])[0]])[0]
+            res = ResearchReportGenerator.generate_historical_regime_comparison_report(
+                mode=mode, period_a=param_a, period_b=param_b, export_format=fmt
+            )
+
+        elif rpt_type in ("HISTORICAL_EVENT_FORENSICS", "EVENT_FORENSICS"):
+            event_id = params.get("event_id", ["EVT-FED-FOMC-20220126"])[0]
+            try:
+                window_hours = int(params.get("window_hours", ["12"])[0])
+            except Exception:
+                window_hours = 12
+            res = ResearchReportGenerator.generate_historical_event_forensics_report(
+                event_id=event_id, window_hours=window_hours, export_format=fmt
+            )
+
+        elif rpt_type in ("REGIME_EPISODE_ANALYSIS", "REGIME_EPISODES", "EPISODE_FORENSICS"):
+            regime = params.get("regime", [None])[0]
+            year = int(params.get("year")[0]) if params.get("year") else None
+            res = ResearchReportGenerator.generate_regime_episode_analysis_report(
+                regime=regime, year=year, export_format=fmt
+            )
+
+        elif rpt_type in ("SCIENTIFIC_INTEGRITY_AND_HOLDOUT_VALIDATION", "HOLDOUT_VALIDATION", "SCIENTIFIC_INTEGRITY"):
+            res = ResearchReportGenerator.generate_scientific_integrity_and_holdout_validation_report(
+                export_format=fmt
+            )
+
         else:
             return HTTPStatus.BAD_REQUEST, {
                 "status": "error",
@@ -3134,6 +3180,132 @@ class ProductDashboardApiService:
             }
 
         return HTTPStatus.OK, res
+
+    @classmethod
+    def get_statistical_decisions(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for canonical statistical significance decision contracts."""
+        from coin_behavior_engine.product.statistical_decision_engine import (
+            StatisticalDecisionEngine,
+        )
+        return {
+            "status": "success",
+            "alpha": StatisticalDecisionEngine.CANONICAL_ALPHA,
+            "decision_rules": {
+                "unadjusted_supported": "p_value <= alpha",
+                "fdr_supported": "fdr_q_value <= alpha (strictly enforced)",
+            },
+            "reference_methodology": "Benjamini-Hochberg (1995) FDR control with strict monotonicity",
+            "model_version": "CBE-0.7.0 (FROZEN)",
+            "disclaimer_tr": "Bu kararlar yalnizca coklu hipotez kontrolu amaclidir.",
+        }
+
+    @classmethod
+    def get_holdout_validation(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for true chronological holdout replication evaluation."""
+        from coin_behavior_engine.product.holdout_validation_engine import (
+            ChronologicalHoldoutValidationEngine,
+        )
+        from dataclasses import asdict
+        audit = ChronologicalHoldoutValidationEngine.evaluate_holdout_replication()
+        return asdict(audit)
+
+    @classmethod
+    def get_regime_comparison(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for Historical Regime Comparison Studio."""
+        from coin_behavior_engine.product.historical_regime_comparison_studio import (
+            HistoricalRegimeComparisonStudio,
+        )
+        from dataclasses import asdict
+        mode = params.get("mode", ["YEAR_VS_YEAR"])[0]
+        param_a = params.get("param_a", ["2023"])[0]
+        param_b = params.get("param_b", ["2025"])[0]
+        interval = params.get("interval", ["1h"])[0]
+        res = HistoricalRegimeComparisonStudio.compare_periods(
+            mode=mode, param_a=param_a, param_b=param_b, interval=interval
+        )
+        return asdict(res)
+
+    @classmethod
+    def get_synchronized_chart(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for synchronized price and regime timeline chart."""
+        from coin_behavior_engine.product.historical_regime_comparison_studio import (
+            HistoricalRegimeComparisonStudio,
+        )
+        start_utc = params.get("start_utc", ["2024-01-01T00:00:00Z"])[0]
+        end_utc = params.get("end_utc", ["2024-01-31T23:00:00Z"])[0]
+        interval = params.get("interval", ["1h"])[0]
+        try:
+            max_candles = int(params.get("max_candles", ["1000"])[0])
+        except Exception:
+            max_candles = 1000
+        return HistoricalRegimeComparisonStudio.get_synchronized_chart_data(
+            start_utc=start_utc, end_utc=end_utc, interval=interval, max_candles=max_candles
+        )
+
+    @classmethod
+    def get_event_forensics(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for historical event forensic detail."""
+        from coin_behavior_engine.product.historical_event_forensics import (
+            HistoricalEventForensicsEngine,
+        )
+        event_id = params.get("event_id", ["EVT-FED-FOMC-20220126"])[0]
+        try:
+            window_hours = int(params.get("window_hours", ["12"])[0])
+        except Exception:
+            window_hours = 12
+        return HistoricalEventForensicsEngine.get_event_forensic_detail(
+            event_id=event_id, window_hours=window_hours
+        )
+
+    @classmethod
+    def get_event_comparison(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for side-by-side historical event comparison."""
+        from coin_behavior_engine.product.historical_event_forensics import (
+            HistoricalEventForensicsEngine,
+        )
+        ev_a = params.get("event_a_id", ["EVT-FED-FOMC-20220126"])[0]
+        ev_b = params.get("event_b_id", ["EVT-FED-FOMC-20220316"])[0]
+        try:
+            window_hours = int(params.get("window_hours", ["12"])[0])
+        except Exception:
+            window_hours = 12
+        return HistoricalEventForensicsEngine.compare_two_events(
+            event_a_id=ev_a, event_b_id=ev_b, window_hours=window_hours
+        )
+
+    @classmethod
+    def get_regime_episodes(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for regime episode forensics and bounded pagination."""
+        from coin_behavior_engine.product.regime_episode_forensics import (
+            RegimeEpisodeForensicsEngine,
+        )
+        regime = params.get("regime", [None])[0]
+        year = int(params.get("year")[0]) if params.get("year") else None
+        try:
+            page = int(params.get("page", ["1"])[0])
+        except Exception:
+            page = 1
+        try:
+            page_size = int(params.get("page_size", ["50"])[0])
+        except Exception:
+            page_size = 50
+        return RegimeEpisodeForensicsEngine.query_episodes(
+            regime=regime, year=year, page=page, page_size=page_size
+        )
+
+    @classmethod
+    def get_research_lineage(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for research lineage and backward provenance explorer."""
+        from coin_behavior_engine.product.research_lineage_explorer import (
+            ResearchLineageExplorer,
+        )
+        result_id = params.get("result_id", [None])[0]
+        if not result_id:
+            return {
+                "status": "success",
+                "catalog": ResearchLineageExplorer.get_catalog(),
+            }
+        return ResearchLineageExplorer.trace_research_result(result_id)
 
     @classmethod
     def get_dataset_provenance_api(cls) -> Dict[str, Any]:

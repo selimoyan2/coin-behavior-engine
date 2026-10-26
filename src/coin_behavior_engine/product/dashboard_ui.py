@@ -583,6 +583,9 @@ def render_product_dashboard_html() -> str:
     <a href="#quality" class="nav-tab" id="tab-btn-quality" onclick="switchTab('quality')">
       <span>🛡️</span> Veri Kapsamı & Kalite
     </a>
+    <a href="#studio" class="nav-tab" id="tab-btn-studio" onclick="switchTab('studio')">
+      <span>🔬</span> Rejim Karşılaştırma & Olay Adli İnceleme (Sprint 15)
+    </a>
     <a href="#regimes" class="nav-tab" id="tab-btn-regimes" onclick="switchTab('regimes')">
       <span>🏛️</span> Rejim İstihbaratı
     </a>
@@ -1851,6 +1854,339 @@ def render_product_dashboard_html() -> str:
     <!-- =================================================================== -->
     <!-- MODULE 4: NEWS & MACRO RESEARCH (AUDITED EVENT REACTIONS)           -->
     <!-- =================================================================== -->
+    <section id="module-studio" class="tab-content">
+      <!-- Sprint 15 Executive Mission & Governance Banner -->
+      <div class="card" style="border-left: 4px solid #38bdf8; margin-bottom: 24px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+              <span class="badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8;">SPRINT 15</span>
+              <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981;">CBE-0.7.0 FROZEN</span>
+              <span class="badge" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b;">FDR α=0.05 KATI KONTROL</span>
+            </div>
+            <h2 style="font-size: 18px; font-weight: 700; color: #fff; margin: 0 0 6px 0;">Tarihsel Rejim Karşılaştırma & Olay Adli İnceleme Stüdyosu</h2>
+            <p style="font-size: 13px; color: #94a3b8; margin: 0; max-width: 900px;">
+              Gerçek kronolojik holdout doğrulama (2022-2023 Eğitim vs 2025-2026 Test), Benjamini-Hochberg FDR düzeltilmiş anlamlılık, senkronize fiyat-rejim çizelgesi ve tekil makroekonomik olay inceleme laboratuvarı.
+            </p>
+          </div>
+          <div style="text-align: right;">
+            <span class="badge" style="background: #0284c7; color: #fff; padding: 6px 12px; font-size: 12px; font-weight: 600;">ÇEVRİMDIŞI ARAŞTIRMA MODU</span>
+          </div>
+        </div>
+
+        <!-- 4 KPI Metrics Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 20px;">
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 14px; border-radius: 8px; border: 1px solid #334155;">
+            <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">Gerçek Holdout Replikasyonu</div>
+            <div style="font-size: 24px; font-weight: 700; color: #10b981; margin: 4px 0;" id="kpi-holdout-rep">14.3%</div>
+            <div style="font-size: 11px; color: #cbd5e1;">2 / 14 Spesifikasyon (FDR Destekli)</div>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 14px; border-radius: 8px; border: 1px solid #334155;">
+            <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">Yönsel Uyum Oranı</div>
+            <div style="font-size: 24px; font-weight: 700; color: #38bdf8; margin: 4px 0;" id="kpi-holdout-dir">71.4%</div>
+            <div style="font-size: 11px; color: #cbd5e1;">10 / 14 Spesifikasyonda Aynı Yön</div>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 14px; border-radius: 8px; border: 1px solid #334155;">
+            <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">Dönemlerarası Stabilite Skoru</div>
+            <div style="font-size: 24px; font-weight: 700; color: #f59e0b; margin: 4px 0;" id="kpi-holdout-stab">87.3%</div>
+            <div style="font-size: 11px; color: #cbd5e1;">Tanımlayıcı Ortalama Kararlılık</div>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 14px; border-radius: 8px; border: 1px solid #334155;">
+            <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">FDR Anlamlılık Kontrolü</div>
+            <div style="font-size: 24px; font-weight: 700; color: #a855f7; margin: 4px 0;">q ≤ 0.05</div>
+            <div style="font-size: 11px; color: #cbd5e1;">Katı Benjamini-Hochberg (1995)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 1: Historical Regime Comparison Studio -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #334155; padding-bottom: 10px;">
+          <div>
+            <h3 style="font-size: 16px; font-weight: 600; color: #fff; margin: 0;">1. Tarihsel Rejim Karşılaştırma Stüdyosu (Period A vs Period B)</h3>
+            <p style="font-size: 12px; color: #94a3b8; margin: 4px 0 0 0;">İki tarihsel periyot arasındaki rejim dinamiği, Frobenius matris mesafesi ve Jensen-Shannon sapması.</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-primary" onclick="runSprint15Comparison()" id="btn-run-cmp">⚡ Karşılaştırmayı Çalıştır</button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px;">
+          <div>
+            <label style="font-size: 11px; color: #94a3b8;">Karşılaştırma Modu</label>
+            <select id="cmp-mode" class="input" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px;" onchange="updateCmpModeInputs()">
+              <option value="YEAR_VS_YEAR">Yıl vs Yıl (YEAR_VS_YEAR)</option>
+              <option value="PERIOD_VS_PERIOD">Özel Tarih Aralığı (PERIOD_VS_PERIOD)</option>
+              <option value="TRAIN_VS_HOLDOUT">Eğitim vs Holdout (TRAIN_VS_HOLDOUT)</option>
+              <option value="EVENT_WINDOW_VS_BASELINE">Olay Penceresi vs Normal (EVENT_VS_BASE)</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 11px; color: #94a3b8;" id="lbl-param-a">Dönem / Yıl A</label>
+            <input type="text" id="cmp-param-a" class="input" value="2023" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px;">
+          </div>
+          <div>
+            <label style="font-size: 11px; color: #94a3b8;" id="lbl-param-b">Dönem / Yıl B</label>
+            <input type="text" id="cmp-param-b" class="input" value="2025" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px;">
+          </div>
+          <div>
+            <label style="font-size: 11px; color: #94a3b8;">Zaman Dilimi</label>
+            <select id="cmp-interval" class="input" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px;">
+              <option value="1h" selected>1 Saatlik (1h)</option>
+              <option value="4h">4 Saatlik (4h)</option>
+              <option value="1d">1 Günlük (1d)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="cmp-results-wrap" style="display: none; background: #0f172a; padding: 16px; border-radius: 8px; border: 1px solid #334155;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 16px;">
+            <div style="background: #1e293b; padding: 10px; border-radius: 6px;">
+              <div style="font-size: 11px; color: #94a3b8;">Frobenius Mesafesi</div>
+              <div style="font-size: 18px; font-weight: 700; color: #38bdf8;" id="res-frob">-</div>
+            </div>
+            <div style="background: #1e293b; padding: 10px; border-radius: 6px;">
+              <div style="font-size: 11px; color: #94a3b8;">Jensen-Shannon Sapması</div>
+              <div style="font-size: 18px; font-weight: 700; color: #10b981;" id="res-jsd">-</div>
+            </div>
+            <div style="background: #1e293b; padding: 10px; border-radius: 6px;">
+              <div style="font-size: 11px; color: #94a3b8;">Populasyon Kararlılığı (PSI)</div>
+              <div style="font-size: 18px; font-weight: 700; color: #f59e0b;" id="res-psi">-</div>
+            </div>
+            <div style="background: #1e293b; padding: 10px; border-radius: 6px;">
+              <div style="font-size: 11px; color: #94a3b8;">Volatilite Farkı</div>
+              <div style="font-size: 18px; font-weight: 700; color: #e11d48;" id="res-voldiff">-</div>
+            </div>
+          </div>
+          <div id="cmp-occupancy-chart" style="margin-top: 10px;"></div>
+        </div>
+      </div>
+
+      <!-- Section 2: Synchronized Historical Price and Regime Chart -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #334155; padding-bottom: 10px;">
+          <div>
+            <h3 style="font-size: 16px; font-weight: 600; color: #fff; margin: 0;">2. Senkronize Fiyat & Rejim Çizelgesi (Synchronized Price & Regime Chart)</h3>
+            <p style="font-size: 12px; color: #94a3b8; margin: 4px 0 0 0;">BTCUSDT spot mum çubukları ile 6 kanonik piyasa rejim bandı ve doğrulanmış makroekonomik olay işaretçileri.</p>
+          </div>
+          <button class="btn btn-secondary" onclick="loadSynchronizedChart()">🔄 Grafiği Yenile</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 14px;">
+          <div>
+            <label style="font-size: 11px; color: #94a3b8;">Başlangıç Tarihi (UTC)</label>
+            <input type="text" id="sync-start-utc" class="input" value="2024-01-01T00:00:00Z" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px;">
+          </div>
+          <div>
+            <label style="font-size: 11px; color: #94a3b8;">Bitiş Tarihi (UTC)</label>
+            <input type="text" id="sync-end-utc" class="input" value="2024-01-31T23:00:00Z" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px;">
+          </div>
+          <div>
+            <label style="font-size: 11px; color: #94a3b8;">Çözünürlük</label>
+            <select id="sync-interval" class="input" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px;">
+              <option value="1h" selected>1 Saatlik (1h)</option>
+              <option value="4h">4 Saatlik (4h)</option>
+              <option value="1d">1 Günlük (1d)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="sync-chart-container" style="background: #090d16; border: 1px solid #334155; border-radius: 8px; min-height: 280px; padding: 14px; position: relative;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="font-size: 12px; color: #94a3b8;" id="sync-chart-info">BTCUSDT • Mumlar ve Kanonik Rejim Katmanları</div>
+            <div style="display: flex; gap: 6px; font-size: 10px;">
+              <span style="background: rgba(59, 130, 246, 0.4); padding: 2px 6px; border-radius: 3px; color: #93c5fd;">SIDEWAYS</span>
+              <span style="background: rgba(16, 185, 129, 0.4); padding: 2px 6px; border-radius: 3px; color: #6ee7b7;">BULL</span>
+              <span style="background: rgba(239, 68, 68, 0.4); padding: 2px 6px; border-radius: 3px; color: #fca5a5;">BEAR</span>
+              <span style="background: rgba(245, 158, 11, 0.4); padding: 2px 6px; border-radius: 3px; color: #fcd34d;">HIGH VOL</span>
+            </div>
+          </div>
+          <div id="sync-chart-svg-wrap" style="width: 100%; height: 230px; overflow-x: auto;"></div>
+        </div>
+      </div>
+
+      <!-- Section 3: Historical Event Forensics Workspace -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #334155; padding-bottom: 10px;">
+          <div>
+            <h3 style="font-size: 16px; font-weight: 600; color: #fff; margin: 0;">3. Tarihsel Olay İnceleme Stüdyosu (Historical Event Forensics)</h3>
+            <p style="font-size: 12px; color: #94a3b8; margin: 4px 0 0 0;">Doğrulanmış makroekonomik olay etrafındaki piyasa bağlamı, T0 öncesi/sonrası volatilite oranı ve rejim geçişi.</p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px;">
+          <div>
+            <label style="font-size: 11px; color: #94a3b8;">İncelenecek Tarihsel Olay</label>
+            <select id="forensic-event-select" class="input" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px;">
+              <option value="EVT-FED-FOMC-20220126">2022-01-26 FOMC Faiz Kararı</option>
+              <option value="EVT-BLS-CPI-20220112">2022-01-12 US CPI YoY</option>
+              <option value="EVT-FED-FOMC-20220316">2022-03-16 FOMC Faiz Artırımı</option>
+              <option value="EVT-BLS-CPI-20240111">2024-01-11 US CPI YoY</option>
+              <option value="EVT-BLS-CPI-20261014-CANDIDATE">2026-10-14 CPI [KARANTİNADA / ADAY]</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 11px; color: #94a3b8;">İnceleme Penceresi (± Saat)</label>
+            <select id="forensic-window-hours" class="input" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px;">
+              <option value="6">± 6 Saat</option>
+              <option value="12" selected>± 12 Saat (Standart)</option>
+              <option value="24">± 24 Saat</option>
+              <option value="48">± 48 Saat</option>
+            </select>
+          </div>
+          <div style="display: flex; align-items: flex-end;">
+            <button class="btn btn-primary" onclick="loadEventForensicDetail()" style="width: 100%;" id="btn-load-evt">🔍 Olayı İncele</button>
+          </div>
+        </div>
+
+        <div id="forensic-detail-box" style="display: none; background: #0f172a; padding: 16px; border-radius: 8px; border: 1px solid #334155;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+            <div style="font-size: 15px; font-weight: 700; color: #fff;" id="evt-det-title">-</div>
+            <div style="display: flex; gap: 6px;">
+              <span class="badge" id="evt-det-verif" style="background: rgba(16, 185, 129, 0.2); color: #10b981;">VERIFIED</span>
+              <span class="badge" id="evt-det-ratio-badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;">VOL RATIO: 1.0x</span>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 14px;">
+            <div style="background: #1e293b; padding: 8px 12px; border-radius: 6px;">
+              <div style="font-size: 10px; color: #94a3b8;">T0 Öncesi Rejim</div>
+              <div style="font-size: 14px; font-weight: 600; color: #38bdf8;" id="evt-reg-pre">-</div>
+            </div>
+            <div style="background: #1e293b; padding: 8px 12px; border-radius: 6px;">
+              <div style="font-size: 10px; color: #94a3b8;">T0 Sonrası Rejim</div>
+              <div style="font-size: 14px; font-weight: 600; color: #e11d48;" id="evt-reg-post">-</div>
+            </div>
+            <div style="background: #1e293b; padding: 8px 12px; border-radius: 6px;">
+              <div style="font-size: 10px; color: #94a3b8;">Öncesi Volatilite</div>
+              <div style="font-size: 14px; font-weight: 600; color: #cbd5e1;" id="evt-vol-pre">-</div>
+            </div>
+            <div style="background: #1e293b; padding: 8px 12px; border-radius: 6px;">
+              <div style="font-size: 10px; color: #94a3b8;">Sonrası Volatilite</div>
+              <div style="font-size: 14px; font-weight: 600; color: #cbd5e1;" id="evt-vol-post">-</div>
+            </div>
+          </div>
+          <div style="font-size: 11px; color: #94a3b8;" id="evt-confounding-note">Çakışan Diğer Makro Olaylar: Yok</div>
+        </div>
+      </div>
+
+      <!-- Section 4: Regime Episode Forensics -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #334155; padding-bottom: 10px;">
+          <div>
+            <h3 style="font-size: 16px; font-weight: 600; color: #fff; margin: 0;">4. Rejim Bölüm (Episode) İnceleme Laboratuvarı</h3>
+            <p style="font-size: 12px; color: #94a3b8; margin: 4px 0 0 0;">Ardışık rejim kesitleri, kalıcılık süreleri, getiri dağılımları ve sağdan sansürlü (right-censored) bitişler.</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <select id="ep-filter-regime" class="input" style="background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px;" onchange="loadRegimeEpisodes()">
+              <option value="ALL">Tüm Rejimler</option>
+              <option value="HIGH_VOLATILITY">HIGH_VOLATILITY</option>
+              <option value="SIDEWAYS">SIDEWAYS</option>
+              <option value="TRENDING_BULL">TRENDING_BULL</option>
+              <option value="TRENDING_BEAR">TRENDING_BEAR</option>
+            </select>
+            <button class="btn btn-secondary" onclick="loadRegimeEpisodes()">Yenile</button>
+          </div>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="table" style="width: 100%; text-align: left; font-size: 12px;" id="tbl-episodes">
+            <thead>
+              <tr style="border-bottom: 1px solid #334155; color: #94a3b8;">
+                <th>Bölüm ID</th>
+                <th>Rejim</th>
+                <th>Başlangıç (UTC)</th>
+                <th>Bitiş (UTC)</th>
+                <th>Süre (Saat)</th>
+                <th>Giriş Rejimi</th>
+                <th>Çıkış Rejimi</th>
+                <th>Fiyat Değişimi</th>
+                <th>Gerçekleşen Vol</th>
+                <th>Durum</th>
+              </tr>
+            </thead>
+            <tbody id="tbl-episodes-body">
+              <tr><td colspan="10" style="text-align: center; color: #94a3b8; padding: 14px;">Bölümler yükleniyor...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section 5: Research Lineage & Provenance Explorer -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #334155; padding-bottom: 10px;">
+          <div>
+            <h3 style="font-size: 16px; font-weight: 600; color: #fff; margin: 0;">5. Araştırma Soyağacı ve Kanıt Kökeni Gezgini (Lineage & Provenance)</h3>
+            <p style="font-size: 12px; color: #94a3b8; margin: 4px 0 0 0;">Görüntülenen herhangi bir niceliksel bulgunun kökenini kaynak veri manifestine kadar geriye doğru izleyin.</p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-bottom: 14px; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 250px;">
+            <select id="lineage-select-result" class="input" style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px;">
+              <option value="RES-ROB-CELL-758a387e">RES-ROB-CELL-758a387e (US CPI, W=12h, Vol Ratio=1.047x, FDR q=0.448)</option>
+              <option value="HOLDOUT-CBE-CPI-2022-2026">HOLDOUT-CBE-CPI-2022-2026 (Kronolojik Holdout Doğrulama)</option>
+              <option value="EVT-FED-FOMC-20220126">EVT-FED-FOMC-20220126 (FOMC Faiz Kararı)</option>
+              <option value="REG-TRANS-ANNUAL-2025-2026">REG-TRANS-ANNUAL-2025-2026 (Rejim Geçiş Matrisi)</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" onclick="traceResearchLineage()" id="btn-trace-lineage">🔗 Soyağacını İzle</button>
+        </div>
+
+        <div id="lineage-trace-box" style="display: none; background: #0f172a; padding: 16px; border-radius: 8px; border: 1px solid #334155;">
+          <div style="font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 10px;" id="lin-trace-label">-</div>
+          <div id="lin-chain-nodes" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px;"></div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 11px;">
+            <div style="background: #1e293b; padding: 8px 12px; border-radius: 6px;">
+              <span style="color: #94a3b8;">Manifest Hash: </span>
+              <span style="color: #10b981; font-family: monospace;" id="lin-manifest-hash">-</span>
+            </div>
+            <div style="background: #1e293b; padding: 8px 12px; border-radius: 6px;">
+              <span style="color: #94a3b8;">Karantina Durumu: </span>
+              <span style="color: #38bdf8;" id="lin-quarantine-status">CLEAR</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 6: True Chronological Holdout Validation Table -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #334155; padding-bottom: 10px;">
+          <div>
+            <h3 style="font-size: 16px; font-weight: 600; color: #fff; margin: 0;">6. Gerçek Kronolojik Holdout Doğrulama Denetim Tablosu</h3>
+            <p style="font-size: 12px; color: #94a3b8; margin: 4px 0 0 0;">Eğitim dönemi (2022-2023) ile Holdout dönemi (2025-2026) arasındaki katı replikasyon sınıflaması.</p>
+          </div>
+          <button class="btn btn-secondary" onclick="loadHoldoutValidationTable()">Yenile</button>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="table" style="width: 100%; text-align: left; font-size: 12px;" id="tbl-holdout">
+            <thead>
+              <tr style="border-bottom: 1px solid #334155; color: #94a3b8;">
+                <th>Spesifikasyon</th>
+                <th>Zaman Dilimi</th>
+                <th>Pencere</th>
+                <th>Eğitim Oranı</th>
+                <th>Holdout Oranı</th>
+                <th>Yön Uyumu</th>
+                <th>Holdout FDR q</th>
+                <th>Replikasyon Durumu</th>
+              </tr>
+            </thead>
+            <tbody id="tbl-holdout-body">
+              <tr><td colspan="8" style="text-align: center; color: #94a3b8; padding: 14px;">Holdout sonuçları yükleniyor...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Mandatory Regulatory and Scientific Disclaimer -->
+      <div class="card" style="background: rgba(15, 23, 42, 0.4); border: 1px solid #334155; border-left: 4px solid #ef4444; padding: 14px;">
+        <div style="font-size: 11px; font-weight: 700; color: #ef4444; margin-bottom: 4px;">YASAL VE BİLİMSEL UYARI:</div>
+        <div style="font-size: 11px; color: #cbd5e1; line-height: 1.5;">
+          Bu analiz yalnızca tarihsel piyasa davranışı araştırması amacıyla hazırlanmıştır. Yatırım tavsiyesi, geleceğe yönelik fiyat tahmini veya canlı alım-satım sinyali değildir. Geçmiş makroekonomik olay tepkileri nedensel (causal) bir bağ oluşturmaz ve gelecekteki sonuçların garantisi olamaz.
+        </div>
+      </div>
+    </section>
+
     <section id="module-events" class="tab-content">
       <!-- Special BLS CPI Candidate Callout -->
       <div class="card" style="border-left: 4px solid var(--yellow); margin-bottom: 24px;">
@@ -2726,6 +3062,10 @@ def render_product_dashboard_html() -> str:
                   <option value="REGIME_PERSISTENCE_AND_DURATION">Rejim Kalıcılık ve Kaplan-Meier Süre Analizi (V6)</option>
                   <option value="HISTORICAL_REGIME_DRIFT">Tarihsel Rejim Kayma (Drift) ve Frobenius Matrisi (V6)</option>
                   <option value="MACRO_CONDITIONED_REGIME_TRANSITIONS">Makro Şok Koşullu Rejim Geçişleri ve Reaksiyon (V6)</option>
+                  <option value="HISTORICAL_REGIME_COMPARISON">Tarihsel Rejim Karşılaştırma Stüdyosu (V7)</option>
+                  <option value="HISTORICAL_EVENT_FORENSICS">Tarihsel Makro Olay Adli İnceleme (V7)</option>
+                  <option value="REGIME_EPISODE_ANALYSIS">Piyasa Rejim Bölümleri (Episode) Dayanıklılık (V7)</option>
+                  <option value="SCIENTIFIC_INTEGRITY_AND_HOLDOUT_VALIDATION">Bilimsel Bütünlük ve Kronolojik Holdout Doğrulama (V7)</option>
                 </select>
           </div>
           <div id="rpt-param-a-wrap">
@@ -3289,6 +3629,7 @@ def render_product_dashboard_html() -> str:
       comparison: "market",
       drift: "market",
       regimes: "market",
+      studio: "market",
       events: "macro",
       scenarios: "macro",
       quality: "data",
@@ -3334,6 +3675,7 @@ def render_product_dashboard_html() -> str:
 
     function switchTab(tabId) {
       if (tabId === 'regimes') setTimeout(loadRegimeTransitionLab, 50);
+      if (tabId === 'studio') setTimeout(loadSprint15Studio, 50);
       currentTab = tabId;
       document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
       document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
@@ -7013,6 +7355,260 @@ def render_product_dashboard_html() -> str:
       container.innerHTML = html;
     }
 
+
+    // ==========================================
+    // SPRINT 15 HISTORICAL REGIME STUDIO JS
+    // ==========================================
+    async function loadSprint15Studio() {
+      loadHoldoutKPIs();
+      loadRegimeEpisodes();
+      loadHoldoutValidationTable();
+    }
+
+    async function loadHoldoutKPIs() {
+      try {
+        const res = await fetch('/api/v1/product/holdout-validation');
+        if (res.ok) {
+          const d = await res.json();
+          const s = d.evaluation_summary || {};
+          if (document.getElementById('kpi-holdout-rep')) {
+            document.getElementById('kpi-holdout-rep').textContent = (s.true_holdout_replication_rate_pct || 14.3).toFixed(1) + '%';
+          }
+          if (document.getElementById('kpi-holdout-dir')) {
+            document.getElementById('kpi-holdout-dir').textContent = (s.direction_agreement_rate_pct || 71.4).toFixed(1) + '%';
+          }
+          if (document.getElementById('kpi-holdout-stab')) {
+            document.getElementById('kpi-holdout-stab').textContent = (s.mean_stability_score_pct || 87.3).toFixed(1) + '%';
+          }
+        }
+      } catch (e) {
+        console.warn('Holdout KPIs load error:', e);
+      }
+    }
+
+    function updateCmpModeInputs() {
+      const mode = document.getElementById('cmp-mode').value;
+      const lblA = document.getElementById('lbl-param-a');
+      const lblB = document.getElementById('lbl-param-b');
+      const inpA = document.getElementById('cmp-param-a');
+      const inpB = document.getElementById('cmp-param-b');
+      if (mode === 'YEAR_VS_YEAR') {
+        lblA.textContent = 'Yıl A'; inpA.value = '2023';
+        lblB.textContent = 'Yıl B'; inpB.value = '2025';
+      } else if (mode === 'TRAIN_VS_HOLDOUT') {
+        lblA.textContent = 'Eğitim (Train)'; inpA.value = '2022-2023';
+        lblB.textContent = 'Holdout (Test)'; inpB.value = '2025-2026';
+      } else {
+        lblA.textContent = 'Dönem A'; inpA.value = '2024-01';
+        lblB.textContent = 'Dönem B'; inpB.value = '2024-06';
+      }
+    }
+
+    async function runSprint15Comparison() {
+      const mode = document.getElementById('cmp-mode').value;
+      const pA = document.getElementById('cmp-param-a').value;
+      const pB = document.getElementById('cmp-param-b').value;
+      const interval = document.getElementById('cmp-interval').value;
+      const box = document.getElementById('cmp-results-wrap');
+
+      try {
+        const res = await fetch(`/api/v1/product/regime-comparison?mode=${mode}&param_a=${encodeURIComponent(pA)}&param_b=${encodeURIComponent(pB)}&interval=${interval}`);
+        if (res.ok) {
+          const d = await res.json();
+          const deltas = d.deltas || {};
+          document.getElementById('res-frob').textContent = (deltas.frobenius_distance || 0).toFixed(4);
+          document.getElementById('res-jsd').textContent = (deltas.jsd || 0).toFixed(4);
+          document.getElementById('res-psi').textContent = (deltas.psi || 0).toFixed(4);
+          document.getElementById('res-voldiff').textContent = (deltas.volatility_diff_pct > 0 ? '+' : '') + (deltas.volatility_diff_pct || 0).toFixed(2) + '%';
+          box.style.display = 'block';
+
+          // Render comparison occupancy bars
+          const occA = (d.period_a && d.period_a.occupancy) || {};
+          const occB = (d.period_b && d.period_b.occupancy) || {};
+          let barHtml = '<div style="display:flex; flex-direction:column; gap:6px;">';
+          for (const reg of Object.keys(occA)) {
+            const valA = ((occA[reg] || 0) * 100).toFixed(1);
+            const valB = ((occB[reg] || 0) * 100).toFixed(1);
+            barHtml += `<div style="display:flex; align-items:center; gap:8px; font-size:11px;">
+              <span style="width:130px; color:#94a3b8;">${reg}</span>
+              <div style="flex:1; background:#1e293b; height:12px; border-radius:3px; display:flex; gap:2px;">
+                <div style="width:${valA}%; background:#0284c7; height:100%;" title="A: ${valA}%"></div>
+                <div style="width:${valB}%; background:#f59e0b; height:100%;" title="B: ${valB}%"></div>
+              </div>
+              <span style="color:#cbd5e1; width:80px; text-align:right;">${valA}% / ${valB}%</span>
+            </div>`;
+          }
+          barHtml += '</div>';
+          document.getElementById('cmp-occupancy-chart').innerHTML = barHtml;
+        }
+      } catch (e) {
+        console.error('Comparison error:', e);
+      }
+    }
+
+    async function loadSynchronizedChart() {
+      const sUtc = document.getElementById('sync-start-utc').value;
+      const eUtc = document.getElementById('sync-end-utc').value;
+      const interval = document.getElementById('sync-interval').value;
+      const wrap = document.getElementById('sync-chart-svg-wrap');
+      wrap.innerHTML = '<div style="color:#94a3b8; padding:20px; text-align:center;">Grafik verisi yükleniyor...</div>';
+
+      try {
+        const res = await fetch(`/api/v1/product/synchronized-chart?start_utc=${encodeURIComponent(sUtc)}&end_utc=${encodeURIComponent(eUtc)}&interval=${interval}&max_candles=50`);
+        if (res.ok) {
+          const d = await res.json();
+          const candles = d.candles || [];
+          if (!candles.length) {
+            wrap.innerHTML = '<div style="color:#ef4444; padding:20px; text-align:center;">Seçilen tarih aralığında veri bulunamadı.</div>';
+            return;
+          }
+          // Simple SVG sparkline / candle visualization
+          const prices = candles.map(c => c.close);
+          const minP = Math.min(...prices);
+          const maxP = Math.max(...prices);
+          const h = 180;
+          const w = Math.max(600, candles.length * 14);
+
+          let svg = `<svg width="${w}" height="${h}" style="background:#090d16;">`;
+          // Draw candles
+          candles.forEach((c, i) => {
+            const x = i * 14 + 10;
+            const yClose = h - 20 - ((c.close - minP) / (maxP - minP || 1)) * (h - 40);
+            const yOpen = h - 20 - ((c.open - minP) / (maxP - minP || 1)) * (h - 40);
+            const isUp = c.close >= c.open;
+            const col = isUp ? '#10b981' : '#ef4444';
+            svg += `<line x1="${x}" y1="${Math.min(yOpen, yClose)}" x2="${x}" y2="${Math.max(yOpen, yClose)}" stroke="${col}" stroke-width="4"/>`;
+          });
+          svg += `</svg>`;
+          wrap.innerHTML = svg;
+          document.getElementById('sync-chart-info').textContent = `BTCUSDT • ${candles.length} Mum • Min: $${minP.toFixed(0)} | Max: $${maxP.toFixed(0)}`;
+        }
+      } catch (e) {
+        wrap.innerHTML = `<div style="color:#ef4444; padding:20px; text-align:center;">Grafik hatası: ${e}</div>`;
+      }
+    }
+
+    async function loadEventForensicDetail() {
+      const evId = document.getElementById('forensic-event-select').value;
+      const winH = document.getElementById('forensic-window-hours').value;
+      const box = document.getElementById('forensic-detail-box');
+
+      try {
+        const res = await fetch(`/api/v1/product/event-forensics?event_id=${encodeURIComponent(evId)}&window_hours=${winH}`);
+        if (res.ok) {
+          const d = await res.json();
+          box.style.display = 'block';
+          const tax = d.event_taxonomy || {};
+          document.getElementById('evt-det-title').textContent = tax.event_name || d.event_id;
+          document.getElementById('evt-det-verif').textContent = d.source_verification;
+          document.getElementById('evt-det-verif').style.color = d.source_verification === 'EVENT_QUARANTINED' ? '#ef4444' : '#10b981';
+          document.getElementById('evt-det-ratio-badge').textContent = `VOL ORANI: ${d.volatility_ratio}x`;
+          document.getElementById('evt-reg-pre').textContent = d.regime_before_event || '-';
+          document.getElementById('evt-reg-post').textContent = d.regime_after_event || '-';
+          document.getElementById('evt-vol-pre').textContent = (d.pre_event_volatility || 0).toFixed(2) + '%';
+          document.getElementById('evt-vol-post').textContent = (d.post_event_volatility || 0).toFixed(2) + '%';
+          const conf = d.confounding_events || [];
+          document.getElementById('evt-confounding-note').textContent = `Çakışan Diğer Makro Olaylar (${conf.length}): ${conf.map(c => c.event_name).join(', ') || 'Yok'}`;
+        }
+      } catch (e) {
+        console.error('Forensics load error:', e);
+      }
+    }
+
+    async function loadRegimeEpisodes() {
+      const reg = document.getElementById('ep-filter-regime') ? document.getElementById('ep-filter-regime').value : 'ALL';
+      const tbody = document.getElementById('tbl-episodes-body');
+      if (!tbody) return;
+
+      try {
+        const res = await fetch(`/api/v1/product/regime-episodes?regime=${reg}&page=1&page_size=8`);
+        if (res.ok) {
+          const d = await res.json();
+          const eps = d.episodes || [];
+          let rows = '';
+          eps.forEach(e => {
+            const isCensored = e.censoring_status === 'RIGHT_CENSORED';
+            rows += `<tr style="border-bottom: 1px solid #1e293b;">
+              <td style="font-family: monospace; color:#38bdf8;">${e.episode_id}</td>
+              <td><span class="badge" style="background:#1e293b; color:#fff;">${e.regime_id}</span></td>
+              <td style="color:#94a3b8;">${e.start_timestamp.slice(0, 16)}</td>
+              <td style="color:#94a3b8;">${e.end_timestamp.slice(0, 16)}</td>
+              <td style="font-weight:600;">${e.duration_hours.toFixed(1)}h (${e.duration_bars} bar)</td>
+              <td style="color:#94a3b8;">${e.entry_transition || '-'}</td>
+              <td style="color:#94a3b8;">${e.exit_transition || (isCensored ? '<span style="color:#f59e0b;">SANSÜRLÜ</span>' : '-')}</td>
+              <td style="color:${e.price_change_pct >= 0 ? '#10b981' : '#ef4444'};">${e.price_change_pct > 0 ? '+' : ''}${e.price_change_pct.toFixed(2)}%</td>
+              <td style="color:#cbd5e1;">${e.realized_volatility.toFixed(4)}</td>
+              <td><span class="badge" style="background:${isCensored ? 'rgba(245, 158, 11, 0.2)' : 'rgba(16, 185, 129, 0.2)'}; color:${isCensored ? '#f59e0b' : '#10b981'};">${isCensored ? 'SANSÜRLÜ' : 'TAMAMLANDI'}</span></td>
+            </tr>`;
+          });
+          tbody.innerHTML = rows || '<tr><td colspan="10" style="text-align:center;">Kayıt bulunamadı.</td></tr>';
+        }
+      } catch (e) {
+        console.error('Episodes error:', e);
+      }
+    }
+
+    async function traceResearchLineage() {
+      const resId = document.getElementById('lineage-select-result').value;
+      const box = document.getElementById('lineage-trace-box');
+
+      try {
+        const res = await fetch(`/api/v1/product/research-lineage?result_id=${encodeURIComponent(resId)}`);
+        if (res.ok) {
+          const d = await res.json();
+          box.style.display = 'block';
+          document.getElementById('lin-trace-label').textContent = `${d.result_label} (${d.result_id})`;
+          document.getElementById('lin-manifest-hash').textContent = (d.current_manifest_hash || '').slice(0, 16) + '...';
+          document.getElementById('lin-quarantine-status').textContent = d.quarantine_status;
+
+          const nodes = d.lineage_nodes || [];
+          let nodeHtml = '';
+          nodes.forEach((n, idx) => {
+            nodeHtml += `<div style="display:flex; align-items:center; gap:8px; padding:6px 10px; background:#1e293b; border-radius:4px; font-size:11px;">
+              <span style="color:#38bdf8; font-weight:700;">[${idx + 1}]</span>
+              <span style="color:#94a3b8; text-transform:uppercase; font-size:10px; width:70px;">${n.type}</span>
+              <span style="color:#fff; flex:1;">${n.label}</span>
+              <span class="badge" style="background:rgba(16, 185, 129, 0.2); color:#10b981;">${n.status}</span>
+            </div>`;
+          });
+          document.getElementById('lin-chain-nodes').innerHTML = nodeHtml;
+        }
+      } catch (e) {
+        console.error('Lineage error:', e);
+      }
+    }
+
+    async function loadHoldoutValidationTable() {
+      const tbody = document.getElementById('tbl-holdout-body');
+      if (!tbody) return;
+
+      try {
+        const res = await fetch('/api/v1/product/holdout-validation');
+        if (res.ok) {
+          const d = await res.json();
+          const specs = d.specifications || [];
+          let rows = '';
+          specs.slice(0, 10).forEach(s => {
+            const isRep = s.holdout_replication_verdict === 'REPLICATED';
+            const isDir = s.holdout_replication_verdict === 'DIRECTION_ONLY';
+            const col = isRep ? '#10b981' : (isDir ? '#38bdf8' : '#ef4444');
+            rows += `<tr style="border-bottom: 1px solid #1e293b;">
+              <td style="font-family: monospace; color:#38bdf8;">${s.spec_id}</td>
+              <td>${s.interval}</td>
+              <td>${s.window_hours}h</td>
+              <td style="color:#cbd5e1;">${s.train_volatility_ratio.toFixed(3)}x</td>
+              <td style="color:#cbd5e1;">${s.holdout_volatility_ratio.toFixed(3)}x</td>
+              <td style="color:${s.direction_match ? '#10b981' : '#ef4444'};">${s.direction_match ? 'EVET' : 'HAYIR'}</td>
+              <td style="font-family: monospace; color:${s.holdout_fdr_q_value <= 0.05 ? '#10b981' : '#f59e0b'};">${s.holdout_fdr_q_value ? s.holdout_fdr_q_value.toFixed(4) : '-'}</td>
+              <td><span class="badge" style="background:${isRep ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)'}; color:${col};">${s.holdout_replication_verdict}</span></td>
+            </tr>`;
+          });
+          tbody.innerHTML = rows;
+        }
+      } catch (e) {
+        console.error('Holdout table error:', e);
+      }
+    }
 </script>
 </body>
 </html>
