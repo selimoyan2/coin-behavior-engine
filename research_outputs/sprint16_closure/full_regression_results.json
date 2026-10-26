@@ -1,6 +1,6 @@
 {
   "audit_id": "AUDIT-FULL-REGRESSION-SP16",
-  "executed_at_utc": "2026-10-26T12:47:12.470921+00:00",
+  "executed_at_utc": "2026-10-26T13:06:53.447553+00:00",
   "framework": "pytest-9.1.1",
   "python_version": "3.11.16",
   "test_suites_audited": [

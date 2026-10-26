@@ -62,8 +62,8 @@ Ancestry is strictly linear without divergence or orphan branches.
 
 | Epistemic Dimension | Value | Scientific Finding |
 | :--- | :--- | :--- |
-| **Holdout Criteria Satisfied** | **2 / 14 (14.29%)** | `1h-6h-PARK` (1.16x, p=0.000004) and `1h-12h-PARK` (1.17x, p=0.000010) satisfy predeclared out-of-sample volatility expansion thresholds. |
-| **Statistically Supported Training Discovery** | **0 / 14 (0.00%)** | For both cells, training p-values are p=0.295419 and p=0.094252 (> 0.05). Neither cell was a statistically significant discovery in the training partition. |
+| **Holdout Criteria Satisfied** | **2 / 14 (14.29%)** | `1h-6h-PARK` (1.58x, p=0.000086) and `1h-12h-PARK` (1.45x, p=0.000090) satisfy predeclared out-of-sample volatility expansion thresholds. |
+| **Statistically Supported Training Discovery** | **0 / 2 among holdout-satisfied (0.00%)** | For both replicated cells, training p-values are p=0.295419 and p=0.094252 (> 0.05). Across the full family of 14, exactly 2 cells had training support (4h-12h and 4h-24h CLOSE_TO_CLOSE, p=0.043 and p=0.038) but both attenuated in holdout (p=0.080 and p=0.118). |
 | **Independent Confirmatory Replication** | **0 / 14 (0.00%)** | An independent confirmation requires BOTH an initial discovery in training AND an untouched holdout dataset. |
 | **Holdout Exposure Status** | `HOLDOUT_PREVIOUSLY_EXPOSED` | The 2025-2026 dataset was evaluated during Sprint 14-15. Prior exposure expends researcher degrees of freedom. |
 

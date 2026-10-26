@@ -1,6 +1,6 @@
 {
-  "audit_id": "AUDIT-HOLDOUT-202610261247",
-  "generated_at_utc": "2026-10-26T12:47:15.031891+00:00",
+  "audit_id": "AUDIT-HOLDOUT-202610261306",
+  "generated_at_utc": "2026-10-26T13:06:55.377668+00:00",
   "canonical_model_version": "CBE-0.7.0 (FROZEN)",
   "dataset_manifest_sha256": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
   "train_partition": {

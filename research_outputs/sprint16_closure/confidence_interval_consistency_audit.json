@@ -1,6 +1,6 @@
 {
   "audit_id": "AUDIT-CI-CONSISTENCY-SP16",
-  "generated_at_utc": "2026-10-26T12:47:12.470921+00:00",
+  "generated_at_utc": "2026-10-26T13:06:53.447553+00:00",
   "critical_issue": "Discrepancy where 1h-6h-CLOSE_TO_CLOSE had point estimate 1.593 falling outside reported CI [0.775, 1.450].",
   "root_cause_analysis": {
     "root_cause": "Estimand and transformation mismatch between reported point estimate and confidence interval.",

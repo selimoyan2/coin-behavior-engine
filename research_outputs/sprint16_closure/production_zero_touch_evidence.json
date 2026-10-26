@@ -1,6 +1,6 @@
 {
   "audit_id": "AUDIT-PROD-ZERO-TOUCH-SP16",
-  "audit_timestamp_utc": "2026-10-26T12:47:12.470921+00:00",
+  "audit_timestamp_utc": "2026-10-26T13:06:53.447553+00:00",
   "production_vps": "srv1114257 (168.231.125.238)",
   "production_application_uuid": "6t63aehpaw0cw1bbt4zcm09g",
   "production_domain": "coin.ozelweb.com.tr",
