@@ -1,11 +1,12 @@
 {
   "audit_id": "CBE_S17_PRODUCTION_ACCEPTANCE",
-  "evaluated_at_utc": "2026-10-26T13:40:02.246547+00:00",
+  "evaluated_at_utc": "2026-10-26T14:00:15.300484+00:00",
   "target_release": "Sprint 17",
   "production_target": "https://coin.ozelweb.com.tr",
   "container_id": "eb1941ac5372",
   "app_uuid": "6t63aehpaw0cw1bbt4zcm09g",
-  "deployed_commit": "bc874d811e549114d59bc01a3cf1fc3aa701e669",
+  "deployed_commit": "bc874d8ec1bd2a1df772ad0c4677b4e74ffc8c23",
+  "deployed_image": "6t63aehpaw0cw1bbt4zcm09g:bc874d8ec1bd2a1df772ad0c4677b4e74ffc8c23",
   "health_check": {
     "endpoint": "/health",
     "http_status": 200,

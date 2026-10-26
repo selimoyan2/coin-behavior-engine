@@ -1,14 +1,18 @@
 {
   "repository": "selimoyan2/coin-behavior-engine",
   "branch": "main",
-  "sprint_17_base_commit": "bc874d811e549114d59bc01a3cf1fc3aa701e669",
-  "sprint_16_closure_commit": "bc874d811e549114d59bc01a3cf1fc3aa701e669",
+  "sprint_17_base_commit": "bc874d8ec1bd2a1df772ad0c4677b4e74ffc8c23",
+  "sprint_16_closure_commit": "bc874d8ec1bd2a1df772ad0c4677b4e74ffc8c23",
+  "sprint_17_implementation_commit": "2a6e88a9ed767d6c1e6900b7803eed348d1494b9",
   "sprint_16_feature_commit": "22a5559508b18d3f360964a08db8d2da39442e20",
   "sprint_15_delivery_commit": "60958114a2382100d8c7503be7a76002c9cd8204",
   "ancestry_verified": true,
-  "production_container_commit": "bc874d811e549114d59bc01a3cf1fc3aa701e669",
+  "production_container_commit": "bc874d8ec1bd2a1df772ad0c4677b4e74ffc8c23",
   "production_container_id": "eb1941ac5372",
+  "production_image_id": "6t63aehpaw0cw1bbt4zcm09g:bc874d8ec1bd2a1df772ad0c4677b4e74ffc8c23",
   "production_zero_touch_maintained": true,
   "staging_container_id": "86881ba01b3e",
-  "timestamp_utc": "2026-10-26T13:40:02.246547+00:00"
+  "staging_image_id": "sha256:df870b4ef58bbf6d71ab48a575b1cf196d6618f6fc5ec6f1498de8ce3856dc27",
+  "staging_runtime_provenance": "In-container synchronized runtime (commit 2a6e88a9ed767d6c1e6900b7803eed348d1494b9) on top of Coolify staging base image sha256:df870b4ef58bbf6d71ab48a575b1cf196d6618f6fc5ec6f1498de8ce3856dc27",
+  "timestamp_utc": "2026-10-26T14:00:15.300484+00:00"
 }

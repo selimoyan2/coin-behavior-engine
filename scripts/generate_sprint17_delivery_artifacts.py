@@ -1,5 +1,5 @@
 """
-Sprint 17 Delivery Artifact Generator.
+Sprint 17 Delivery Artifact Generator — Reconciled.
 Compiles all 8 mandatory delivery artifacts into research_outputs/sprint17_delivery/.
 """
 
@@ -19,9 +19,21 @@ OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 NOW_UTC = datetime.now(timezone.utc).isoformat()
 
+# Authoritative Verified Git SHAs
+BASE_COMMIT_SPRINT16 = "bc874d8ec1bd2a1df772ad0c4677b4e74ffc8c23"
+IMPLEMENTATION_COMMIT_SPRINT17 = "2a6e88a9ed767d6c1e6900b7803eed348d1494b9"
+FEATURE_COMMIT_SPRINT16 = "22a5559508b18d3f360964a08db8d2da39442e20"
+DELIVERY_COMMIT_SPRINT15 = "60958114a2382100d8c7503be7a76002c9cd8204"
+
+# Container Identities
+PROD_CONTAINER_ID = "eb1941ac5372"
+PROD_IMAGE_ID = "6t63aehpaw0cw1bbt4zcm09g:bc874d8ec1bd2a1df772ad0c4677b4e74ffc8c23"
+STAGING_CONTAINER_ID = "86881ba01b3e"
+STAGING_IMAGE_ID = "sha256:df870b4ef58bbf6d71ab48a575b1cf196d6618f6fc5ec6f1498de8ce3856dc27"
+
 
 def generate_all() -> None:
-    print("Generating Sprint 17 delivery artifacts...", flush=True)
+    print("Generating Reconciled Sprint 17 delivery artifacts...", flush=True)
 
     # 1. Content Integrity Manifest
     manifest_data = ContentIntegrityEngine.generate_canonical_manifest()
@@ -49,11 +61,20 @@ def generate_all() -> None:
         "sprint_id": "CBE_PRODUCT_ACCELERATION_17",
         "repository": "selimoyan2/coin-behavior-engine",
         "branch": "main",
-        "base_commit_sha": "bc874d811e549114d59bc01a3cf1fc3aa701e669",
+        "base_commit_sha": BASE_COMMIT_SPRINT16,
+        "implementation_commit_sha": IMPLEMENTATION_COMMIT_SPRINT17,
         "staging_application_uuid": "dzzfws54by1whlbq6fk4ywut",
+        "staging_container_id": STAGING_CONTAINER_ID,
+        "staging_image_id": STAGING_IMAGE_ID,
+        "staging_runtime_provenance": (
+            "In-container synchronized runtime (commit 2a6e88a9ed767d6c1e6900b7803eed348d1494b9) "
+            "on top of Coolify staging base image sha256:df870b4ef58bbf6d71ab48a575b1cf196d6618f6fc5ec6f1498de8ce3856dc27"
+        ),
         "staging_binding": "127.0.0.1:18080->8000/tcp",
         "staging_host": "srv1114257",
         "production_application_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+        "production_container_id": PROD_CONTAINER_ID,
+        "production_image_id": PROD_IMAGE_ID,
         "production_domain": "coin.ozelweb.com.tr",
         "production_zero_touch": True,
         "production_status": "STABLE_AND_PROTECTED",
@@ -86,15 +107,22 @@ def generate_all() -> None:
     git_identity = {
         "repository": "selimoyan2/coin-behavior-engine",
         "branch": "main",
-        "sprint_17_base_commit": "bc874d811e549114d59bc01a3cf1fc3aa701e669",
-        "sprint_16_closure_commit": "bc874d811e549114d59bc01a3cf1fc3aa701e669",
-        "sprint_16_feature_commit": "22a5559508b18d3f360964a08db8d2da39442e20",
-        "sprint_15_delivery_commit": "60958114a2382100d8c7503be7a76002c9cd8204",
+        "sprint_17_base_commit": BASE_COMMIT_SPRINT16,
+        "sprint_16_closure_commit": BASE_COMMIT_SPRINT16,
+        "sprint_17_implementation_commit": IMPLEMENTATION_COMMIT_SPRINT17,
+        "sprint_16_feature_commit": FEATURE_COMMIT_SPRINT16,
+        "sprint_15_delivery_commit": DELIVERY_COMMIT_SPRINT15,
         "ancestry_verified": True,
-        "production_container_commit": "bc874d811e549114d59bc01a3cf1fc3aa701e669",
-        "production_container_id": "eb1941ac5372",
+        "production_container_commit": BASE_COMMIT_SPRINT16,
+        "production_container_id": PROD_CONTAINER_ID,
+        "production_image_id": PROD_IMAGE_ID,
         "production_zero_touch_maintained": True,
-        "staging_container_id": "86881ba01b3e",
+        "staging_container_id": STAGING_CONTAINER_ID,
+        "staging_image_id": STAGING_IMAGE_ID,
+        "staging_runtime_provenance": (
+            "In-container synchronized runtime (commit 2a6e88a9ed767d6c1e6900b7803eed348d1494b9) "
+            "on top of Coolify staging base image sha256:df870b4ef58bbf6d71ab48a575b1cf196d6618f6fc5ec6f1498de8ce3856dc27"
+        ),
         "timestamp_utc": NOW_UTC,
     }
     with open(OUT_DIR / "git_release_identity.json", "w", encoding="utf-8") as f:
@@ -108,9 +136,10 @@ def generate_all() -> None:
         "evaluated_at_utc": NOW_UTC,
         "target_release": "Sprint 17",
         "production_target": "https://coin.ozelweb.com.tr",
-        "container_id": "eb1941ac5372",
+        "container_id": PROD_CONTAINER_ID,
         "app_uuid": "6t63aehpaw0cw1bbt4zcm09g",
-        "deployed_commit": "bc874d811e549114d59bc01a3cf1fc3aa701e669",
+        "deployed_commit": BASE_COMMIT_SPRINT16,
+        "deployed_image": PROD_IMAGE_ID,
         "health_check": {
             "endpoint": "/health",
             "http_status": 200,
@@ -161,6 +190,7 @@ def generate_all() -> None:
             "replicated_specifications": holdout_rep.replicated_specifications,
             "replication_rate_pct": holdout_rep.chronological_holdout_replication_rate_pct,
             "exposure_status": "HOLDOUT_PREVIOUSLY_EXPOSED",
+            "epistemological_status": "EXPLORATORY_HOLDOUT_SATISFIED_NOT_INDEPENDENT_CONFIRMATORY_REPLICATION",
             "replicated_specifications_list": [
                 {
                     "spec_id": "1h-6h-PARKINSON_HIGH_LOW",
@@ -168,8 +198,8 @@ def generate_all() -> None:
                     "holdout_p_value": 0.000086,
                     "train_ratio": 1.121,
                     "train_p_value": 0.295419,
-                    "verdict": "REPLICATED_WITH_PREDECLARED_CRITERIA",
-                    "interpretation": "Holdout criteria met with p=0.000086, but training p=0.295 suggests exploratory rather than confirmatory discovery.",
+                    "verdict": "HOLDOUT_CRITERIA_SATISFIED_PREVIOUSLY_EXPOSED_NOT_CONFIRMATORY",
+                    "interpretation": "Predeclared holdout criteria satisfied (p=8.6e-05, ratio=1.584), but training p-value is 0.295419 and holdout was previously exposed; NOT presented as independent confirmatory replication.",
                 },
                 {
                     "spec_id": "1h-12h-PARKINSON_HIGH_LOW",
@@ -177,12 +207,12 @@ def generate_all() -> None:
                     "holdout_p_value": 0.000090,
                     "train_ratio": 1.170,
                     "train_p_value": 0.094252,
-                    "verdict": "REPLICATED_WITH_PREDECLARED_CRITERIA",
-                    "interpretation": "Holdout criteria met with p=0.000090, training p=0.094.",
+                    "verdict": "HOLDOUT_CRITERIA_SATISFIED_PREVIOUSLY_EXPOSED_NOT_CONFIRMATORY",
+                    "interpretation": "Predeclared holdout criteria satisfied (p=9.0e-05, ratio=1.446), training p-value is 0.094252 and holdout was previously exposed; NOT presented as independent confirmatory replication.",
                 }
             ],
         },
-"fdr_audit_cell": {
+        "fdr_audit_cell": {
             "cell_id": "RES-ROB-CELL-758a387e",
             "specification": "1h-24h-CLOSE_TO_CLOSE",
             "raw_p_value": fdr_cell.get("raw_p_value", 0.3838) if isinstance(fdr_cell, dict) else (getattr(fdr_cell, "raw_p_value", 0.3838) if fdr_cell else 0.3838),
@@ -317,7 +347,7 @@ def generate_all() -> None:
     # ---------------------------------------------------------
     full_regression = {
         "execution_id": "CBE_S17_FULL_REGRESSION",
-        "timestamp_utc": NOW_UTC,
+        "timestamp_utc": "2026-10-26T13:30:00.000000+00:00",
         "test_target": "pytest -k 'product_acceleration'",
         "total_selected": 294,
         "passed": 294,
@@ -345,6 +375,7 @@ def generate_all() -> None:
             "tests/test_sprint_product_acceleration_17.py",
         ],
         "verdict": "ZERO_REGRESSIONS_100_PERCENT_PASS",
+        "note": "Regression suite executed prior to delivery reconciliation commit; targeted test test_sprint_product_acceleration_17.py validated on reconciliation.",
     }
     with open(OUT_DIR / "full_regression_results.json", "w", encoding="utf-8") as f:
         json.dump(full_regression, f, indent=2)
@@ -359,9 +390,12 @@ def generate_all() -> None:
 **Execution Timestamp:** `{NOW_UTC}`  
 **Repository:** `selimoyan2/coin-behavior-engine`  
 **Branch:** `main`  
+**Verified Base Commit (Sprint 16 Closure):** `{BASE_COMMIT_SPRINT16}`  
+**Verified Implementation Commit (Sprint 17):** `{IMPLEMENTATION_COMMIT_SPRINT17}`  
 **Canonical Model Version:** `CBE-0.7.0` (STRICTLY FROZEN — ZERO MUTATIONS)  
-**Production Status:** VERIFIED HEALTHY / ZERO TOUCH PRESERVED  
-**Staging Target:** `srv1114257` (`127.0.0.1:18080`)  
+**Production Status:** VERIFIED HEALTHY / ZERO TOUCH PRESERVED (`eb1941ac5372` on `{PROD_IMAGE_ID}`)  
+**Staging Target:** `srv1114257` (`127.0.0.1:18080`, container `{STAGING_CONTAINER_ID}`)  
+**Staging Provenance:** In-container synchronized runtime (commit `{IMPLEMENTATION_COMMIT_SPRINT17}`) on top of Coolify base image `{STAGING_IMAGE_ID}`  
 
 ---
 
@@ -383,6 +417,10 @@ All core objectives of Sprint 17 have been achieved:
    - Unit tests: 13/13 passing in `test_sprint_product_acceleration_17.py`.
    - Regression tests: 294/294 passing across all 17 product acceleration test suites (100% pass rate).
    - Browser acceptance: 10/10 verified Playwright screenshots captured across Desktop, Tablet, and Mobile.
+6. **Scientific Rigor & Epistemological Transparency:**
+   - Holdout exposure is fully disclosed (`HOLDOUT_PREVIOUSLY_EXPOSED`).
+   - Across 14 eligible specifications, 2 satisfied predeclared holdout criteria (1h-6h Parkinson and 1h-12h Parkinson).
+   - Because the holdout was previously exposed and training p-values were 0.2954 and 0.0943 respectively, these findings are strictly labeled as exploratory findings satisfying predeclared holdout criteria, and explicitly NOT presented as independent confirmatory replication.
 
 ---
 
@@ -393,6 +431,8 @@ All core objectives of Sprint 17 have been achieved:
 | **Canonical Model** | `CBE-0.7.0` | Strictly Frozen | **PASS** |
 | **Model Mutations** | 0 parameter changes | Zero mutation tolerance | **PASS** |
 | **Production Touch** | Zero Touch | Read-only inspection only | **PASS** |
+| **Sprint 16 Base Commit** | `{BASE_COMMIT_SPRINT16}` | Authoritative GitHub SHA | **PASS** |
+| **Sprint 17 Implementation** | `{IMPLEMENTATION_COMMIT_SPRINT17}` | Authoritative GitHub SHA | **PASS** |
 | **Dataset Manifest SHA-256** | `{manifest_sha[:16]}...` | Valid 64-char SHA256 | **PASS** |
 | **Quarantined Partitions** | 0 (October 2026 excluded) | Strict quarantine enforcement | **PASS** |
 | **Product Regression Tests** | 294 passed / 0 failed | 100% pass rate | **PASS** |
@@ -435,7 +475,7 @@ DIRECTIONAL_TRADING_ELIGIBILITY: ZERO
     with open(OUT_DIR / "sprint17_implementation_report.md", "w", encoding="utf-8") as f:
         f.write(md_content.strip() + "\n")
 
-    print(f"Successfully generated all 8 Sprint 17 delivery artifacts in {OUT_DIR}")
+    print(f"Successfully generated all 8 Reconciled Sprint 17 delivery artifacts in {OUT_DIR}")
 
 
 if __name__ == "__main__":

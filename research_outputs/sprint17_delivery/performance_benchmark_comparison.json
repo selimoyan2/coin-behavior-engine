@@ -1,6 +1,6 @@
 {
   "benchmark_id": "CBE_S17_PERFORMANCE_BENCHMARK",
-  "timestamp_utc": "2026-10-26T13:40:02.246547+00:00",
+  "timestamp_utc": "2026-10-26T14:00:15.300484+00:00",
   "dataset_total_candles_1h": 41615,
   "metrics": {
     "candle_cache_load_time_seconds": 1.25,
