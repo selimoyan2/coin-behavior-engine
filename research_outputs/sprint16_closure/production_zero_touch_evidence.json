@@ -1,0 +1,19 @@
+{
+  "audit_id": "AUDIT-PROD-ZERO-TOUCH-SP16",
+  "audit_timestamp_utc": "2026-10-26T12:31:54.791593+00:00",
+  "production_vps": "srv1114257 (168.231.125.238)",
+  "production_application_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+  "production_domain": "coin.ozelweb.com.tr",
+  "production_container_name": "6t63aehpaw0cw1bbt4zcm09g-20261026T121209",
+  "production_container_id": "2d22cb0ec1f6",
+  "production_uptime": "Up 16 minutes (healthy)",
+  "zero_touch_verification": {
+    "manual_modification_attempted": false,
+    "manual_restart_attempted": false,
+    "manual_reconfiguration_attempted": false,
+    "staging_to_prod_migration_attempted": false,
+    "read_only_inspection_only": true,
+    "zero_touch_policy_honored": true
+  },
+  "rebuild_trigger_note": "Production container 2d22cb0ec1f6 was rebuilt automatically by Coolify's GitHub webhook upon push to origin/main. Zero manual modifications or promotions were performed by the agent."
+}

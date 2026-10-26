@@ -1,0 +1,80 @@
+{
+  "audit_id": "AUDIT-SIMILARITY-REPRO-SP16",
+  "generated_at_utc": "2026-10-26T12:31:54.791593+00:00",
+  "reference_window": {
+    "start_utc": "2022-06-01T00:00:00+00:00",
+    "end_utc": "2022-06-15T00:00:00+00:00",
+    "duration_hours": 336.0,
+    "realized_volatility_pct": 81.59,
+    "regime_composition": {
+      "SIDEWAYS": 0.2077,
+      "MOMENTUM_EXPANSION": 0.0,
+      "HIGH_VOLATILITY": 0.2878,
+      "CAPITULATION": 0.0682,
+      "RECOVERY_ACCUMULATION": 0.4095,
+      "DISTRIBUTION": 0.0267
+    }
+  },
+  "target_candidate_verification": {
+    "expected_candidate_window": "2022-01-13T00:00:00+00:00 to 2022-01-27T00:00:00+00:00",
+    "candidate_found": true,
+    "candidate_id": "PAT-CAND-2022011300",
+    "rank": 2,
+    "composite_distance": 0.0734,
+    "similarity_score_pct": 92.66,
+    "expected_distance": 0.0734,
+    "expected_similarity_pct": 92.66,
+    "distance_match": true,
+    "similarity_match": true,
+    "components": {
+      "REGIME_COMPOSITION": {
+        "dimension_name_tr": "Rejim Kompozisyonu Ayr\u0131\u015f\u0131m\u0131 (JSD)",
+        "distance_value": 0.1309,
+        "weight": 0.3,
+        "weighted_contribution": 0.0393,
+        "contribution_pct": 53.51,
+        "metric_method": "JENSEN_SHANNON_DIVERGENCE"
+      },
+      "REALIZED_VOLATILITY": {
+        "dimension_name_tr": "Ger\u00e7ekle\u015fen Volatilite Fark\u0131",
+        "distance_value": 0.0204,
+        "weight": 0.25,
+        "weighted_contribution": 0.0051,
+        "contribution_pct": 6.97,
+        "metric_method": "NORMALIZED_L1_VOLATILITY"
+      },
+      "RETURN_DISTRIBUTION": {
+        "dimension_name_tr": "Getiri Da\u011f\u0131l\u0131m\u0131 Uzakl\u0131\u011f\u0131 (Wasserstein)",
+        "distance_value": 0.0168,
+        "weight": 0.2,
+        "weighted_contribution": 0.0034,
+        "contribution_pct": 4.57,
+        "metric_method": "WASSERSTEIN_1D"
+      },
+      "TRANSITION_STRUCTURE": {
+        "dimension_name_tr": "Rejim Ge\u00e7i\u015f Matrisi Fark\u0131 (Frobenius)",
+        "distance_value": 0.1392,
+        "weight": 0.15,
+        "weighted_contribution": 0.0209,
+        "contribution_pct": 28.47,
+        "metric_method": "NORMALIZED_FROBENIUS_NORM"
+      },
+      "REGIME_PERSISTENCE": {
+        "dimension_name_tr": "Rejim Kal\u0131c\u0131l\u0131\u011f\u0131 S\u00fcre Uyumsuzlu\u011fu",
+        "distance_value": 0.0476,
+        "weight": 0.1,
+        "weighted_contribution": 0.0048,
+        "contribution_pct": 6.49,
+        "metric_method": "RELATIVE_EPISODE_DURATION_GAP"
+      }
+    }
+  },
+  "weights_used": {
+    "REGIME_COMPOSITION": 0.3,
+    "REALIZED_VOLATILITY": 0.25,
+    "RETURN_DISTRIBUTION": 0.2,
+    "TRANSITION_STRUCTURE": 0.15,
+    "REGIME_PERSISTENCE": 0.1
+  },
+  "weights_sum_to_one": true
+}

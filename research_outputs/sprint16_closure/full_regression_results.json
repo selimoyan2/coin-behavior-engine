@@ -1,0 +1,33 @@
+{
+  "audit_id": "AUDIT-FULL-REGRESSION-SP16",
+  "executed_at_utc": "2026-10-26T12:31:54.791593+00:00",
+  "framework": "pytest-9.1.1",
+  "python_version": "3.11.16",
+  "test_suites_audited": [
+    "tests/test_sprint_product_acceleration_01_api.py",
+    "tests/test_sprint_product_acceleration_01_integration.py",
+    "tests/test_sprint_product_acceleration_02_api.py",
+    "tests/test_sprint_product_acceleration_03.py",
+    "tests/test_sprint_product_acceleration_04.py",
+    "tests/test_sprint_product_acceleration_05.py",
+    "tests/test_sprint_product_acceleration_06.py",
+    "tests/test_sprint_product_acceleration_07.py",
+    "tests/test_sprint_product_acceleration_08.py",
+    "tests/test_sprint_product_acceleration_09.py",
+    "tests/test_sprint_product_acceleration_10.py",
+    "tests/test_sprint_product_acceleration_11.py",
+    "tests/test_sprint_product_acceleration_12.py",
+    "tests/test_sprint_product_acceleration_13.py",
+    "tests/test_sprint_product_acceleration_14.py",
+    "tests/test_sprint_product_acceleration_15.py",
+    "tests/test_sprint_product_acceleration_16.py"
+  ],
+  "total_test_files": 17,
+  "total_tests_collected": 281,
+  "total_tests_passed": 281,
+  "total_tests_failed": 0,
+  "total_tests_skipped": 0,
+  "pass_rate_pct": 100.0,
+  "execution_duration_sec": 193.7,
+  "verdict": "FULL_PASS"
+}

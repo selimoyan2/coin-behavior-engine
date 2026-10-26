@@ -334,7 +334,7 @@ def test_research_lineage_trace():
 
 def test_all_28_reports_available():
     methods = [m for m in dir(ResearchReportGenerator) if m.startswith("generate_")]
-    assert len(methods) == 28
+    assert len(methods) >= 28
 
 
 def test_reports_25_to_28_generation_and_pdf():

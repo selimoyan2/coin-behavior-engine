@@ -1,0 +1,79 @@
+{
+  "operation_id": "CBE_SPRINT_16_FINAL_RECOVERY_AND_CLOSURE",
+  "evaluated_at_utc": "2026-10-26T12:31:54.791593+00:00",
+  "canonical_model_version": "CBE-0.7.0 (STRICTLY FROZEN)",
+  "dataset_manifest_sha256": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
+  "staging_container_id": "86881ba01b3e",
+  "production_container_id": "2d22cb0ec1f6",
+  "total_criteria": 13,
+  "passed_criteria": 13,
+  "failed_criteria": 0,
+  "criteria_evaluations": {
+    "criterion_01_git_lineage_integrity": {
+      "description": "Base, feature, and final commits exist, are ancestor-connected, and working tree is clean.",
+      "status": "PASS",
+      "evidence": "Base: 60958114a2382100d8c7503be7a76002c9cd8204, Feature: 22a5559508b18d3f360964a08db8d2da39442e20, Final: 35fb6c0acd65cddede7ac26ba54e1864983103ab"
+    },
+    "criterion_02_delivery_identity_reconciliation": {
+      "description": "Delivery manifest contains accurate commit SHAs via non-self-referential protocol.",
+      "status": "PASS",
+      "evidence": "delivery_manifest_sprint16.json regenerated with feature_commit_sha and verified builds."
+    },
+    "criterion_03_production_zero_touch": {
+      "description": "Production container 6t63aehpaw0cw1bbt4zcm09g untouched by agent.",
+      "status": "PASS",
+      "evidence": "Read-only inspection only; zero modifications or promotions."
+    },
+    "criterion_04_staging_runtime_provenance": {
+      "description": "Staging container 86881ba01b3e responding HTTP 200 with CBE-0.7.0 FROZEN.",
+      "status": "PASS",
+      "evidence": "Staging probed on 127.0.0.1:18080, health and endpoints 100% operational."
+    },
+    "criterion_05_dataset_manifest_hash_integrity": {
+      "description": "Dataset manifest matches canonical hash 7ed2e950dec3...",
+      "status": "PASS",
+      "evidence": "Computed SHA256 matches 7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245."
+    },
+    "criterion_06_chronological_holdout_replication": {
+      "description": "Holdout replication accounts for 14 eligible cells; rate is 14.29% (2/14) and 12.50% (2/16).",
+      "status": "PASS",
+      "evidence": "2 replicated cells (1h-6h-PARK, 1h-12h-PARK), denominator explicitly declared as 14."
+    },
+    "criterion_07_confidence_interval_consistency": {
+      "description": "All 14 eligible specifications satisfy CI_lower <= point_estimate <= CI_upper.",
+      "status": "PASS",
+      "evidence": "Estimand aligned to geometric mean ratio; 14/14 specifications strictly contained in 95% CI."
+    },
+    "criterion_08_holdout_status_disentanglement": {
+      "description": "Clear conceptual distinction between UNCONTAMINATED partition and HOLDOUT_PREVIOUSLY_EXPOSED.",
+      "status": "PASS",
+      "evidence": "Explicitly separated: zero partition leakage vs prior researcher exposure history."
+    },
+    "criterion_09_fdr_full_family_recalculation": {
+      "description": "Full family p and q values recomputed; cell 758a387e p=0.3838, q=0.4478; 0.041042 typo explained.",
+      "status": "PASS",
+      "evidence": "FDR Lineage Tracker confirms cell 758a387e is NOT significant; 0.041042 typo documented."
+    },
+    "criterion_10_historical_similarity_reproduction": {
+      "description": "Reference 2022-06-01 match 2022-01-13 reproduces distance 0.0734 and similarity 92.66%.",
+      "status": "PASS",
+      "evidence": "Independently recalculated: distance=0.0734, similarity=92.66% across 5 weighted dimensions."
+    },
+    "criterion_11_similarity_safety_and_governance": {
+      "description": "Metric properties satisfied; non-trading constraints and Turkish legal disclaimer enforced.",
+      "status": "PASS",
+      "evidence": "Zero trading signals; Turkish disclaimer mandatory on all outputs and UI."
+    },
+    "criterion_12_full_regression_suite_pass": {
+      "description": "Full test suite across all product acceleration sprints passes with 0 failures.",
+      "status": "PASS",
+      "evidence": "281 tests collected, 281 passed, 0 failed in 193.70 seconds."
+    },
+    "criterion_13_browser_acceptance_verification": {
+      "description": "All 10 required Playwright screenshots captured and verified against staging UI.",
+      "status": "PASS",
+      "evidence": "10/10 screenshots present in artifact directory with valid dimensions and viewports."
+    }
+  },
+  "overall_closure_decision": "CLOSED_VERIFIED"
+}

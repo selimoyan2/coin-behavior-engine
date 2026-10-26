@@ -1,0 +1,76 @@
+{
+  "audit_id": "AUDIT-PLAYWRIGHT-ACCEPTANCE-SP16",
+  "executed_at_utc": "2026-10-26T12:31:54.791593+00:00",
+  "staging_target_url": "http://127.0.0.1:18080/intelligence",
+  "browser_engine": "Playwright Chromium headless",
+  "viewports_tested": [
+    "Desktop (1600x1000)",
+    "Tablet (1024x768)",
+    "Mobile (375x812)"
+  ],
+  "total_screenshots_captured": 10,
+  "screenshots": [
+    {
+      "name": "sprint16_screenshot_01_research_workbench_v5_tab.png",
+      "exists": true,
+      "bytes": 187388,
+      "path": "C:\\Users\\selim\\.gemini\\antigravity\\brain\\f8db9a11-51a2-4f52-b048-d18a5254ed97\\sprint16_screenshot_01_research_workbench_v5_tab.png"
+    },
+    {
+      "name": "sprint16_screenshot_02_common_evidence_panel.png",
+      "exists": true,
+      "bytes": 187329,
+      "path": "C:\\Users\\selim\\.gemini\\antigravity\\brain\\f8db9a11-51a2-4f52-b048-d18a5254ed97\\sprint16_screenshot_02_common_evidence_panel.png"
+    },
+    {
+      "name": "sprint16_screenshot_03_ranked_candidate_matches_table.png",
+      "exists": true,
+      "bytes": 182087,
+      "path": "C:\\Users\\selim\\.gemini\\antigravity\\brain\\f8db9a11-51a2-4f52-b048-d18a5254ed97\\sprint16_screenshot_03_ranked_candidate_matches_table.png"
+    },
+    {
+      "name": "sprint16_screenshot_04_side_by_side_synchronized_comparison.png",
+      "exists": true,
+      "bytes": 60215,
+      "path": "C:\\Users\\selim\\.gemini\\antigravity\\brain\\f8db9a11-51a2-4f52-b048-d18a5254ed97\\sprint16_screenshot_04_side_by_side_synchronized_comparison.png"
+    },
+    {
+      "name": "sprint16_screenshot_05_ranking_sensitivity_subpanel.png",
+      "exists": true,
+      "bytes": 61208,
+      "path": "C:\\Users\\selim\\.gemini\\antigravity\\brain\\f8db9a11-51a2-4f52-b048-d18a5254ed97\\sprint16_screenshot_05_ranking_sensitivity_subpanel.png"
+    },
+    {
+      "name": "sprint16_screenshot_06_quarantined_event_safety_rejection.png",
+      "exists": true,
+      "bytes": 61208,
+      "path": "C:\\Users\\selim\\.gemini\\antigravity\\brain\\f8db9a11-51a2-4f52-b048-d18a5254ed97\\sprint16_screenshot_06_quarantined_event_safety_rejection.png"
+    },
+    {
+      "name": "sprint16_screenshot_07_fdr_lineage_cell_758a387e_audit.png",
+      "exists": true,
+      "bytes": 86711,
+      "path": "C:\\Users\\selim\\.gemini\\antigravity\\brain\\f8db9a11-51a2-4f52-b048-d18a5254ed97\\sprint16_screenshot_07_fdr_lineage_cell_758a387e_audit.png"
+    },
+    {
+      "name": "sprint16_screenshot_08_reports_dropdown_all_32_types.png",
+      "exists": true,
+      "bytes": 85038,
+      "path": "C:\\Users\\selim\\.gemini\\antigravity\\brain\\f8db9a11-51a2-4f52-b048-d18a5254ed97\\sprint16_screenshot_08_reports_dropdown_all_32_types.png"
+    },
+    {
+      "name": "sprint16_screenshot_09_tablet_viewport_responsive.png",
+      "exists": true,
+      "bytes": 157538,
+      "path": "C:\\Users\\selim\\.gemini\\antigravity\\brain\\f8db9a11-51a2-4f52-b048-d18a5254ed97\\sprint16_screenshot_09_tablet_viewport_responsive.png"
+    },
+    {
+      "name": "sprint16_screenshot_10_mobile_viewport_responsive.png",
+      "exists": true,
+      "bytes": 109979,
+      "path": "C:\\Users\\selim\\.gemini\\antigravity\\brain\\f8db9a11-51a2-4f52-b048-d18a5254ed97\\sprint16_screenshot_10_mobile_viewport_responsive.png"
+    }
+  ],
+  "all_screens_verified": true,
+  "verdict": "ACCEPTED_VERIFIED"
+}

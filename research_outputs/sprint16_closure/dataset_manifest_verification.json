@@ -1,0 +1,15 @@
+{
+  "audit_id": "AUDIT-MANIFEST-INTEGRITY-SP16",
+  "generated_at_utc": "2026-10-26T12:31:54.791593+00:00",
+  "canonical_manifest_sha256": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
+  "computed_manifest_sha256": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
+  "hash_match": true,
+  "total_partitions": 342,
+  "total_files": null,
+  "total_bytes": null,
+  "quarantine_enforcement": {
+    "quarantined_files_excluded": true,
+    "policy": "DYNAMIC_EMBARGO_AND_PURGE",
+    "all_quarantined_paths_rejected": true
+  }
+}

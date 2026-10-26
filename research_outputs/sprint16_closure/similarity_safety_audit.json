@@ -1,0 +1,29 @@
+{
+  "audit_id": "AUDIT-SIMILARITY-SAFETY-SP16",
+  "generated_at_utc": "2026-10-26T12:31:54.791593+00:00",
+  "non_trading_compliance": {
+    "descriptive_only": true,
+    "directional_trading_signals_generated": false,
+    "future_price_forecasts_generated": false,
+    "execution_recommendations_generated": false,
+    "profitability_claims_made": false
+  },
+  "metric_properties_verification": {
+    "non_negativity": true,
+    "identity_of_indiscernibles": true,
+    "symmetry": true,
+    "bounded_composite_distance": "0.0 <= d <= 1.0"
+  },
+  "leakage_and_boundary_guarantees": {
+    "reference_window_excluded_from_candidates": true,
+    "zero_forward_leakage": true,
+    "minimum_candidate_spacing_hours": 48,
+    "quarantined_events_excluded": true
+  },
+  "mandatory_legal_disclaimer": {
+    "present": true,
+    "language": "tr",
+    "text": "Bu rapor ve benzerlik e\u015fle\u015ftirmeleri yaln\u0131zca tarihsel piyasa davran\u0131\u015f\u0131 ara\u015ft\u0131rmas\u0131 amac\u0131yla \u00fcretilmi\u015ftir. Yat\u0131r\u0131m tavsiyesi, gelece\u011fe y\u00f6nelik fiyat tahmini veya canl\u0131 al\u0131m-sat\u0131m sinyali de\u011fildir. Ge\u00e7mi\u015f d\u00f6nem benzerlikleri gelecekte benzer sonu\u00e7lar do\u011furaca\u011f\u0131n\u0131 garanti etmez.",
+    "verbatim_verified": false
+  }
+}
