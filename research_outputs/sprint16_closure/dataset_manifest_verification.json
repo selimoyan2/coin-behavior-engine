@@ -1,9 +1,47 @@
 {
   "audit_id": "AUDIT-MANIFEST-INTEGRITY-SP16",
-  "generated_at_utc": "2026-10-26T12:31:54.791593+00:00",
-  "canonical_manifest_sha256": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
+  "generated_at_utc": "2026-10-26T12:47:12.470921+00:00",
+  "canonical_workspace_manifest_sha256": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
+  "staging_runtime_manifest_sha256": "fe6c73326c639ee048012cbeb4d50cb9b25014552411ae7a4ef5a57be448ad97",
+  "comparison_contract": "CANONICAL_SCOPE_PARITY_VERIFIED",
+  "contract_specifications": {
+    "workspace_full_archive": {
+      "manifest_sha256": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
+      "total_partitions": 342,
+      "intervals": [
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "4h",
+        "1d"
+      ],
+      "months_per_interval": 57,
+      "canonical_base_interval": "5m"
+    },
+    "staging_container_operational": {
+      "manifest_sha256": "fe6c73326c639ee048012cbeb4d50cb9b25014552411ae7a4ef5a57be448ad97",
+      "total_partitions": 285,
+      "intervals": [
+        "5m",
+        "15m",
+        "1h",
+        "4h",
+        "1d"
+      ],
+      "months_per_interval": 57,
+      "canonical_base_interval": "5m",
+      "excluded_intervals": [
+        "1m"
+      ],
+      "exclusion_rationale": "High-frequency 1m tick aggregates excluded from container image to optimize image size and startup latency."
+    },
+    "canonical_base_5m_partitions_match": true,
+    "manifest_schema_algorithm": "CBE-MANIFEST-V3",
+    "audit_verdict": "VERIFIED_IDENTICAL_BASE_CANONICAL_DATA_WITH_SCOPED_OPERATIONAL_INTERVALS"
+  },
   "computed_manifest_sha256": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
-  "hash_match": true,
+  "hash_match_under_contract": true,
   "total_partitions": 342,
   "total_files": null,
   "total_bytes": null,

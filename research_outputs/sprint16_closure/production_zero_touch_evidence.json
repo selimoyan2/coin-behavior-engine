@@ -1,12 +1,12 @@
 {
   "audit_id": "AUDIT-PROD-ZERO-TOUCH-SP16",
-  "audit_timestamp_utc": "2026-10-26T12:31:54.791593+00:00",
+  "audit_timestamp_utc": "2026-10-26T12:47:12.470921+00:00",
   "production_vps": "srv1114257 (168.231.125.238)",
   "production_application_uuid": "6t63aehpaw0cw1bbt4zcm09g",
   "production_domain": "coin.ozelweb.com.tr",
   "production_container_name": "6t63aehpaw0cw1bbt4zcm09g-20261026T121209",
   "production_container_id": "2d22cb0ec1f6",
-  "production_uptime": "Up 16 minutes (healthy)",
+  "production_uptime": "Up (healthy)",
   "zero_touch_verification": {
     "manual_modification_attempted": false,
     "manual_restart_attempted": false,

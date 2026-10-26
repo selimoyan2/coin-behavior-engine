@@ -1,18 +1,21 @@
 {
   "audit_id": "AUDIT-GIT-RECOVERY-SP16",
-  "generated_at_utc": "2026-10-26T12:31:54.791593+00:00",
+  "generated_at_utc": "2026-10-26T12:47:12.470921+00:00",
   "repository": "selimoyan2/coin-behavior-engine",
   "branch": "main",
   "verified_base_commit_sha": "60958114a2382100d8c7503be7a76002c9cd8204",
   "sprint16_feature_commit_sha": "22a5559508b18d3f360964a08db8d2da39442e20",
   "sprint16_final_commit_sha": "35fb6c0acd65cddede7ac26ba54e1864983103ab",
+  "sprint16_recovery_commit_sha": "3694792031e9276619b875762f9693141b088b61",
   "ancestry_verification": {
     "is_feature_descendant_of_base": true,
     "is_final_descendant_of_feature": true,
+    "is_recovery_descendant_of_final": true,
     "commit_path": [
       "60958114a2382100d8c7503be7a76002c9cd8204",
       "22a5559508b18d3f360964a08db8d2da39442e20",
-      "35fb6c0acd65cddede7ac26ba54e1864983103ab"
+      "35fb6c0acd65cddede7ac26ba54e1864983103ab",
+      "3694792031e9276619b875762f9693141b088b61"
     ],
     "divergence_detected": false
   },

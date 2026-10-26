@@ -1,6 +1,6 @@
 {
-  "audit_id": "AUDIT-HOLDOUT-202610261231",
-  "generated_at_utc": "2026-10-26T12:31:57.684857+00:00",
+  "audit_id": "AUDIT-HOLDOUT-202610261247",
+  "generated_at_utc": "2026-10-26T12:47:15.031891+00:00",
   "canonical_model_version": "CBE-0.7.0 (FROZEN)",
   "dataset_manifest_sha256": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
   "train_partition": {
@@ -99,7 +99,11 @@
       "justification_tr": "Y\u00f6n pozitif korundu (1.29x) ancak holdout istatistiki destek s\u0131n\u0131rda kald\u0131.",
       "train_arithmetic_mean_ratio": 1.593,
       "holdout_arithmetic_mean_ratio": 1.899,
-      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO"
+      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO",
+      "holdout_criteria_satisfied": false,
+      "training_discovery_statistically_supported": false,
+      "is_independent_confirmatory_replication": false,
+      "epistemic_qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
     },
     {
       "cell_id": "1h-6h-PARKINSON_HIGH_LOW",
@@ -136,7 +140,11 @@
       "justification_tr": "Holdout verisinde etki y\u00f6n\u00fc, pratik b\u00fcy\u00fckl\u00fck (1.58x) ve istatistiki destek korundu.",
       "train_arithmetic_mean_ratio": 1.276,
       "holdout_arithmetic_mean_ratio": 1.734,
-      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO"
+      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO",
+      "holdout_criteria_satisfied": true,
+      "training_discovery_statistically_supported": false,
+      "is_independent_confirmatory_replication": false,
+      "epistemic_qualification_tr": "Holdout matematiksel kriterleri sa\u011fland\u0131 (1.58x, p=0.000086). Ancak Train p=0.295419 > 0.05 oldu\u011fundan e\u011fitim a\u015famas\u0131nda istatistiksel ke\u015fif deste\u011fi bulunmamaktad\u0131r ve test verisi daha \u00f6nce incelendi\u011fi i\u00e7in (HOLDOUT_PREVIOUSLY_EXPOSED) ba\u011f\u0131ms\u0131z teyit te\u015fkil etmez."
     },
     {
       "cell_id": "1h-12h-CLOSE_TO_CLOSE",
@@ -173,7 +181,11 @@
       "justification_tr": "Y\u00f6n pozitif korundu (1.20x) ancak holdout istatistiki destek s\u0131n\u0131rda kald\u0131.",
       "train_arithmetic_mean_ratio": 1.281,
       "holdout_arithmetic_mean_ratio": 1.376,
-      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO"
+      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO",
+      "holdout_criteria_satisfied": false,
+      "training_discovery_statistically_supported": false,
+      "is_independent_confirmatory_replication": false,
+      "epistemic_qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
     },
     {
       "cell_id": "1h-12h-PARKINSON_HIGH_LOW",
@@ -210,7 +222,11 @@
       "justification_tr": "Holdout verisinde etki y\u00f6n\u00fc, pratik b\u00fcy\u00fckl\u00fck (1.45x) ve istatistiki destek korundu.",
       "train_arithmetic_mean_ratio": 1.286,
       "holdout_arithmetic_mean_ratio": 1.532,
-      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO"
+      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO",
+      "holdout_criteria_satisfied": true,
+      "training_discovery_statistically_supported": false,
+      "is_independent_confirmatory_replication": false,
+      "epistemic_qualification_tr": "Holdout matematiksel kriterleri sa\u011fland\u0131 (1.45x, p=0.000090). Ancak Train p=0.094252 > 0.05 oldu\u011fundan e\u011fitim a\u015famas\u0131nda istatistiksel ke\u015fif deste\u011fi bulunmamaktad\u0131r ve test verisi daha \u00f6nce incelendi\u011fi i\u00e7in (HOLDOUT_PREVIOUSLY_EXPOSED) ba\u011f\u0131ms\u0131z teyit te\u015fkil etmez."
     },
     {
       "cell_id": "1h-24h-CLOSE_TO_CLOSE",
@@ -247,7 +263,11 @@
       "justification_tr": "Y\u00f6n pozitif korundu (0.81x) ancak holdout istatistiki destek s\u0131n\u0131rda kald\u0131.",
       "train_arithmetic_mean_ratio": 0.999,
       "holdout_arithmetic_mean_ratio": 0.899,
-      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO"
+      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO",
+      "holdout_criteria_satisfied": false,
+      "training_discovery_statistically_supported": false,
+      "is_independent_confirmatory_replication": false,
+      "epistemic_qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
     },
     {
       "cell_id": "1h-24h-PARKINSON_HIGH_LOW",
@@ -284,7 +304,11 @@
       "justification_tr": "Y\u00f6n pozitif korundu (0.99x) ancak holdout istatistiki destek s\u0131n\u0131rda kald\u0131.",
       "train_arithmetic_mean_ratio": 1.022,
       "holdout_arithmetic_mean_ratio": 1.031,
-      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO"
+      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO",
+      "holdout_criteria_satisfied": false,
+      "training_discovery_statistically_supported": false,
+      "is_independent_confirmatory_replication": false,
+      "epistemic_qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
     },
     {
       "cell_id": "1h-48h-CLOSE_TO_CLOSE",
@@ -321,7 +345,11 @@
       "justification_tr": "Y\u00f6n pozitif korundu (0.90x) ancak holdout istatistiki destek s\u0131n\u0131rda kald\u0131.",
       "train_arithmetic_mean_ratio": 1.11,
       "holdout_arithmetic_mean_ratio": 0.957,
-      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO"
+      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO",
+      "holdout_criteria_satisfied": false,
+      "training_discovery_statistically_supported": false,
+      "is_independent_confirmatory_replication": false,
+      "epistemic_qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
     },
     {
       "cell_id": "1h-48h-PARKINSON_HIGH_LOW",
@@ -358,7 +386,11 @@
       "justification_tr": "Y\u00f6n uyumsuzlu\u011fu: Train=1.01x, Holdout=0.99x.",
       "train_arithmetic_mean_ratio": 1.085,
       "holdout_arithmetic_mean_ratio": 1.027,
-      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO"
+      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO",
+      "holdout_criteria_satisfied": false,
+      "training_discovery_statistically_supported": false,
+      "is_independent_confirmatory_replication": false,
+      "epistemic_qualification_tr": "Holdout kriterleri kar\u015f\u0131lanmad\u0131: Y\u00f6n uyumsuzlu\u011fu."
     },
     {
       "cell_id": "4h-6h-CLOSE_TO_CLOSE",
@@ -395,7 +427,11 @@
       "justification_tr": "Zamansal \u00e7\u00f6z\u00fcn\u00fcrl\u00fck k\u0131s\u0131t\u0131 nedeniyle analize dahil edilmemi\u015ftir.",
       "train_arithmetic_mean_ratio": null,
       "holdout_arithmetic_mean_ratio": null,
-      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO"
+      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO",
+      "holdout_criteria_satisfied": false,
+      "training_discovery_statistically_supported": false,
+      "is_independent_confirmatory_replication": false,
+      "epistemic_qualification_tr": null
     },
     {
       "cell_id": "4h-6h-PARKINSON_HIGH_LOW",
@@ -432,7 +468,11 @@
       "justification_tr": "Zamansal \u00e7\u00f6z\u00fcn\u00fcrl\u00fck k\u0131s\u0131t\u0131 nedeniyle analize dahil edilmemi\u015ftir.",
       "train_arithmetic_mean_ratio": null,
       "holdout_arithmetic_mean_ratio": null,
-      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO"
+      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO",
+      "holdout_criteria_satisfied": false,
+      "training_discovery_statistically_supported": false,
+      "is_independent_confirmatory_replication": false,
+      "epistemic_qualification_tr": null
     },
     {
       "cell_id": "4h-12h-CLOSE_TO_CLOSE",
@@ -469,7 +509,11 @@
       "justification_tr": "Y\u00f6n pozitif korundu (0.43x) ancak holdout istatistiki destek s\u0131n\u0131rda kald\u0131.",
       "train_arithmetic_mean_ratio": 1.262,
       "holdout_arithmetic_mean_ratio": 0.811,
-      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO"
+      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO",
+      "holdout_criteria_satisfied": false,
+      "training_discovery_statistically_supported": true,
+      "is_independent_confirmatory_replication": false,
+      "epistemic_qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
     },
     {
       "cell_id": "4h-12h-PARKINSON_HIGH_LOW",
@@ -506,7 +550,11 @@
       "justification_tr": "Y\u00f6n pozitif korundu (0.79x) ancak holdout istatistiki destek s\u0131n\u0131rda kald\u0131.",
       "train_arithmetic_mean_ratio": 0.926,
       "holdout_arithmetic_mean_ratio": 0.869,
-      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO"
+      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO",
+      "holdout_criteria_satisfied": false,
+      "training_discovery_statistically_supported": false,
+      "is_independent_confirmatory_replication": false,
+      "epistemic_qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
     },
     {
       "cell_id": "4h-24h-CLOSE_TO_CLOSE",
@@ -543,7 +591,11 @@
       "justification_tr": "Y\u00f6n pozitif korundu (0.83x) ancak holdout istatistiki destek s\u0131n\u0131rda kald\u0131.",
       "train_arithmetic_mean_ratio": 0.894,
       "holdout_arithmetic_mean_ratio": 0.976,
-      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO"
+      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO",
+      "holdout_criteria_satisfied": false,
+      "training_discovery_statistically_supported": true,
+      "is_independent_confirmatory_replication": false,
+      "epistemic_qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
     },
     {
       "cell_id": "4h-24h-PARKINSON_HIGH_LOW",
@@ -580,7 +632,11 @@
       "justification_tr": "Y\u00f6n pozitif korundu (0.85x) ancak holdout istatistiki destek s\u0131n\u0131rda kald\u0131.",
       "train_arithmetic_mean_ratio": 0.956,
       "holdout_arithmetic_mean_ratio": 0.892,
-      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO"
+      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO",
+      "holdout_criteria_satisfied": false,
+      "training_discovery_statistically_supported": false,
+      "is_independent_confirmatory_replication": false,
+      "epistemic_qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
     },
     {
       "cell_id": "4h-48h-CLOSE_TO_CLOSE",
@@ -617,7 +673,11 @@
       "justification_tr": "Y\u00f6n pozitif korundu (0.77x) ancak holdout istatistiki destek s\u0131n\u0131rda kald\u0131.",
       "train_arithmetic_mean_ratio": 1.048,
       "holdout_arithmetic_mean_ratio": 0.853,
-      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO"
+      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO",
+      "holdout_criteria_satisfied": false,
+      "training_discovery_statistically_supported": false,
+      "is_independent_confirmatory_replication": false,
+      "epistemic_qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
     },
     {
       "cell_id": "4h-48h-PARKINSON_HIGH_LOW",
@@ -654,9 +714,18 @@
       "justification_tr": "Y\u00f6n pozitif korundu (0.90x) ancak holdout istatistiki destek s\u0131n\u0131rda kald\u0131.",
       "train_arithmetic_mean_ratio": 1.012,
       "holdout_arithmetic_mean_ratio": 0.936,
-      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO"
+      "estimand_type": "GEOMETRIC_MEAN_RATIO_EXP_MEAN_LOG_RATIO",
+      "holdout_criteria_satisfied": false,
+      "training_discovery_statistically_supported": false,
+      "is_independent_confirmatory_replication": false,
+      "epistemic_qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
     }
   ],
   "methodological_disclaimer_tr": "Ba\u011f\u0131ms\u0131z holdout do\u011frulama, model ve metodoloji parametrelerinin geli\u015ftirme (Train) a\u015famas\u0131nda donduruldu\u011funu ve kesinlikle dokunulmam\u0131\u015f holdout d\u00f6neminde test edildi\u011fini varsayar. Daha \u00f6nce ke\u015fif ama\u00e7l\u0131 incelenmi\u015f d\u00f6nemler 'HOLDOUT_PREVIOUSLY_EXPOSED' olarak i\u015faretlenmeli ve nihai teyit kan\u0131t\u0131 olarak sunulmamal\u0131d\u0131r.",
-  "legal_disclaimer_tr": "Bu rapor yaln\u0131zca tarihsel piyasa davran\u0131\u015f\u0131 ara\u015ft\u0131rmas\u0131 amac\u0131yla haz\u0131rlanm\u0131\u015ft\u0131r. Yat\u0131r\u0131m tavsiyesi, gelece\u011fe y\u00f6nelik fiyat tahmini veya canl\u0131 al\u0131m-sat\u0131m sinyali de\u011fildir."
+  "legal_disclaimer_tr": "Bu rapor yaln\u0131zca tarihsel piyasa davran\u0131\u015f\u0131 ara\u015ft\u0131rmas\u0131 amac\u0131yla haz\u0131rlanm\u0131\u015ft\u0131r. Yat\u0131r\u0131m tavsiyesi, gelece\u011fe y\u00f6nelik fiyat tahmini veya canl\u0131 al\u0131m-sat\u0131m sinyali de\u011fildir.",
+  "holdout_criteria_satisfied_count": 2,
+  "statistically_supported_training_discoveries_count": 2,
+  "training_discoveries_among_holdout_satisfied_count": 0,
+  "independent_confirmatory_replications_count": 0,
+  "epistemic_replication_summary_tr": "Holdout kriterlerini kar\u015f\u0131layan 2 spesifikasyon bulunmakla birlikte (1h-6h-PARK ve 1h-12h-PARK), e\u011fitim a\u015famas\u0131ndaki p de\u011ferleri (0.295 ve 0.094) istatistiksel ke\u015fif s\u0131n\u0131r\u0131n\u0131 (p < 0.05) kar\u015f\u0131lamad\u0131\u011f\u0131ndan ve 2025-2026 d\u00f6nemi \u00f6nceden incelendi\u011finden (HOLDOUT_PREVIOUSLY_EXPOSED), bu bulgular ba\u011f\u0131ms\u0131z teyit edici replikasyon (independent confirmatory replication) de\u011fil, holdout oynakl\u0131k geni\u015fleme kriterini kar\u015f\u0131layan tarihsel g\u00f6zlemlerdir."
 }

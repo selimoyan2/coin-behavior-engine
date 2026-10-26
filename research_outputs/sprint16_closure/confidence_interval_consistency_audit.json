@@ -1,6 +1,6 @@
 {
   "audit_id": "AUDIT-CI-CONSISTENCY-SP16",
-  "generated_at_utc": "2026-10-26T12:31:54.791593+00:00",
+  "generated_at_utc": "2026-10-26T12:47:12.470921+00:00",
   "critical_issue": "Discrepancy where 1h-6h-CLOSE_TO_CLOSE had point estimate 1.593 falling outside reported CI [0.775, 1.450].",
   "root_cause_analysis": {
     "root_cause": "Estimand and transformation mismatch between reported point estimate and confidence interval.",
@@ -23,7 +23,9 @@
           1.45
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 1.593
+        "arithmetic_mean_reference": 1.593,
+        "train_p_value": 0.716779,
+        "train_statistically_supported": false
       },
       "holdout": {
         "geometric_mean_point_estimate": 1.287,
@@ -32,9 +34,17 @@
           1.925
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 1.899
+        "arithmetic_mean_reference": 1.899,
+        "holdout_p_value": 0.232647,
+        "holdout_statistically_supported": false
       },
-      "replication_classification": "DIRECTION_ONLY_REPLICATED"
+      "replication_classification": "DIRECTION_ONLY_REPLICATED",
+      "epistemic_qualification": {
+        "holdout_criteria_satisfied": false,
+        "training_discovery_statistically_supported": false,
+        "is_independent_confirmatory_replication": false,
+        "qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
+      }
     },
     {
       "cell_id": "1h-6h-PARKINSON_HIGH_LOW",
@@ -49,7 +59,9 @@
           1.38
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 1.276
+        "arithmetic_mean_reference": 1.276,
+        "train_p_value": 0.295419,
+        "train_statistically_supported": false
       },
       "holdout": {
         "geometric_mean_point_estimate": 1.584,
@@ -58,9 +70,17 @@
           1.903
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 1.734
+        "arithmetic_mean_reference": 1.734,
+        "holdout_p_value": 8.6e-05,
+        "holdout_statistically_supported": true
       },
-      "replication_classification": "REPLICATED_WITH_PREDECLARED_CRITERIA"
+      "replication_classification": "REPLICATED_WITH_PREDECLARED_CRITERIA",
+      "epistemic_qualification": {
+        "holdout_criteria_satisfied": true,
+        "training_discovery_statistically_supported": false,
+        "is_independent_confirmatory_replication": false,
+        "qualification_tr": "Holdout matematiksel kriterleri sa\u011fland\u0131 (1.58x, p=0.000086). Ancak Train p=0.295419 > 0.05 oldu\u011fundan e\u011fitim a\u015famas\u0131nda istatistiksel ke\u015fif deste\u011fi bulunmamaktad\u0131r ve test verisi daha \u00f6nce incelendi\u011fi i\u00e7in (HOLDOUT_PREVIOUSLY_EXPOSED) ba\u011f\u0131ms\u0131z teyit te\u015fkil etmez."
+      }
     },
     {
       "cell_id": "1h-12h-CLOSE_TO_CLOSE",
@@ -75,7 +95,9 @@
           1.365
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 1.281
+        "arithmetic_mean_reference": 1.281,
+        "train_p_value": 0.460992,
+        "train_statistically_supported": false
       },
       "holdout": {
         "geometric_mean_point_estimate": 1.199,
@@ -84,9 +106,17 @@
           1.524
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 1.376
+        "arithmetic_mean_reference": 1.376,
+        "holdout_p_value": 0.152618,
+        "holdout_statistically_supported": false
       },
-      "replication_classification": "DIRECTION_ONLY_REPLICATED"
+      "replication_classification": "DIRECTION_ONLY_REPLICATED",
+      "epistemic_qualification": {
+        "holdout_criteria_satisfied": false,
+        "training_discovery_statistically_supported": false,
+        "is_independent_confirmatory_replication": false,
+        "qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
+      }
     },
     {
       "cell_id": "1h-12h-PARKINSON_HIGH_LOW",
@@ -101,7 +131,9 @@
           1.394
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 1.286
+        "arithmetic_mean_reference": 1.286,
+        "train_p_value": 0.094252,
+        "train_statistically_supported": false
       },
       "holdout": {
         "geometric_mean_point_estimate": 1.446,
@@ -110,9 +142,17 @@
           1.676
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 1.532
+        "arithmetic_mean_reference": 1.532,
+        "holdout_p_value": 9e-05,
+        "holdout_statistically_supported": true
       },
-      "replication_classification": "REPLICATED_WITH_PREDECLARED_CRITERIA"
+      "replication_classification": "REPLICATED_WITH_PREDECLARED_CRITERIA",
+      "epistemic_qualification": {
+        "holdout_criteria_satisfied": true,
+        "training_discovery_statistically_supported": false,
+        "is_independent_confirmatory_replication": false,
+        "qualification_tr": "Holdout matematiksel kriterleri sa\u011fland\u0131 (1.45x, p=0.000090). Ancak Train p=0.094252 > 0.05 oldu\u011fundan e\u011fitim a\u015famas\u0131nda istatistiksel ke\u015fif deste\u011fi bulunmamaktad\u0131r ve test verisi daha \u00f6nce incelendi\u011fi i\u00e7in (HOLDOUT_PREVIOUSLY_EXPOSED) ba\u011f\u0131ms\u0131z teyit te\u015fkil etmez."
+      }
     },
     {
       "cell_id": "1h-24h-CLOSE_TO_CLOSE",
@@ -127,7 +167,9 @@
           1.089
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 0.999
+        "arithmetic_mean_reference": 0.999,
+        "train_p_value": 0.365599,
+        "train_statistically_supported": false
       },
       "holdout": {
         "geometric_mean_point_estimate": 0.812,
@@ -136,9 +178,17 @@
           0.985
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 0.899
+        "arithmetic_mean_reference": 0.899,
+        "holdout_p_value": 0.047836,
+        "holdout_statistically_supported": true
       },
-      "replication_classification": "DIRECTION_ONLY_REPLICATED"
+      "replication_classification": "DIRECTION_ONLY_REPLICATED",
+      "epistemic_qualification": {
+        "holdout_criteria_satisfied": false,
+        "training_discovery_statistically_supported": false,
+        "is_independent_confirmatory_replication": false,
+        "qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
+      }
     },
     {
       "cell_id": "1h-24h-PARKINSON_HIGH_LOW",
@@ -153,7 +203,9 @@
           1.104
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 1.022
+        "arithmetic_mean_reference": 1.022,
+        "train_p_value": 0.619453,
+        "train_statistically_supported": false
       },
       "holdout": {
         "geometric_mean_point_estimate": 0.988,
@@ -162,9 +214,17 @@
           1.12
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 1.031
+        "arithmetic_mean_reference": 1.031,
+        "holdout_p_value": 0.848182,
+        "holdout_statistically_supported": false
       },
-      "replication_classification": "DIRECTION_ONLY_REPLICATED"
+      "replication_classification": "DIRECTION_ONLY_REPLICATED",
+      "epistemic_qualification": {
+        "holdout_criteria_satisfied": false,
+        "training_discovery_statistically_supported": false,
+        "is_independent_confirmatory_replication": false,
+        "qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
+      }
     },
     {
       "cell_id": "1h-48h-CLOSE_TO_CLOSE",
@@ -179,7 +239,9 @@
           1.197
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 1.11
+        "arithmetic_mean_reference": 1.11,
+        "train_p_value": 0.921908,
+        "train_statistically_supported": false
       },
       "holdout": {
         "geometric_mean_point_estimate": 0.9,
@@ -188,9 +250,17 @@
           1.052
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 0.957
+        "arithmetic_mean_reference": 0.957,
+        "holdout_p_value": 0.199874,
+        "holdout_statistically_supported": false
       },
-      "replication_classification": "DIRECTION_ONLY_REPLICATED"
+      "replication_classification": "DIRECTION_ONLY_REPLICATED",
+      "epistemic_qualification": {
+        "holdout_criteria_satisfied": false,
+        "training_discovery_statistically_supported": false,
+        "is_independent_confirmatory_replication": false,
+        "qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
+      }
     },
     {
       "cell_id": "1h-48h-PARKINSON_HIGH_LOW",
@@ -205,7 +275,9 @@
           1.176
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 1.085
+        "arithmetic_mean_reference": 1.085,
+        "train_p_value": 0.86959,
+        "train_statistically_supported": false
       },
       "holdout": {
         "geometric_mean_point_estimate": 0.991,
@@ -214,9 +286,17 @@
           1.118
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 1.027
+        "arithmetic_mean_reference": 1.027,
+        "holdout_p_value": 0.882574,
+        "holdout_statistically_supported": false
       },
-      "replication_classification": "NOT_REPLICATED"
+      "replication_classification": "NOT_REPLICATED",
+      "epistemic_qualification": {
+        "holdout_criteria_satisfied": false,
+        "training_discovery_statistically_supported": false,
+        "is_independent_confirmatory_replication": false,
+        "qualification_tr": "Holdout kriterleri kar\u015f\u0131lanmad\u0131: Y\u00f6n uyumsuzlu\u011fu."
+      }
     },
     {
       "cell_id": "4h-12h-CLOSE_TO_CLOSE",
@@ -231,7 +311,9 @@
           0.951
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 1.262
+        "arithmetic_mean_reference": 1.262,
+        "train_p_value": 0.042709,
+        "train_statistically_supported": true
       },
       "holdout": {
         "geometric_mean_point_estimate": 0.429,
@@ -240,9 +322,17 @@
           0.769
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 0.811
+        "arithmetic_mean_reference": 0.811,
+        "holdout_p_value": 0.010072,
+        "holdout_statistically_supported": true
       },
-      "replication_classification": "DIRECTION_ONLY_REPLICATED"
+      "replication_classification": "DIRECTION_ONLY_REPLICATED",
+      "epistemic_qualification": {
+        "holdout_criteria_satisfied": false,
+        "training_discovery_statistically_supported": true,
+        "is_independent_confirmatory_replication": false,
+        "qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
+      }
     },
     {
       "cell_id": "4h-12h-PARKINSON_HIGH_LOW",
@@ -257,7 +347,9 @@
           0.998
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 0.926
+        "arithmetic_mean_reference": 0.926,
+        "train_p_value": 0.05967,
+        "train_statistically_supported": true
       },
       "holdout": {
         "geometric_mean_point_estimate": 0.793,
@@ -266,9 +358,17 @@
           0.947
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 0.869
+        "arithmetic_mean_reference": 0.869,
+        "holdout_p_value": 0.018486,
+        "holdout_statistically_supported": true
       },
-      "replication_classification": "DIRECTION_ONLY_REPLICATED"
+      "replication_classification": "DIRECTION_ONLY_REPLICATED",
+      "epistemic_qualification": {
+        "holdout_criteria_satisfied": false,
+        "training_discovery_statistically_supported": false,
+        "is_independent_confirmatory_replication": false,
+        "qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
+      }
     },
     {
       "cell_id": "4h-24h-CLOSE_TO_CLOSE",
@@ -283,7 +383,9 @@
           0.967
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 0.894
+        "arithmetic_mean_reference": 0.894,
+        "train_p_value": 0.037742,
+        "train_statistically_supported": true
       },
       "holdout": {
         "geometric_mean_point_estimate": 0.835,
@@ -292,9 +394,17 @@
           1.069
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 0.976
+        "arithmetic_mean_reference": 0.976,
+        "holdout_p_value": 0.168035,
+        "holdout_statistically_supported": false
       },
-      "replication_classification": "DIRECTION_ONLY_REPLICATED"
+      "replication_classification": "DIRECTION_ONLY_REPLICATED",
+      "epistemic_qualification": {
+        "holdout_criteria_satisfied": false,
+        "training_discovery_statistically_supported": true,
+        "is_independent_confirmatory_replication": false,
+        "qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
+      }
     },
     {
       "cell_id": "4h-24h-PARKINSON_HIGH_LOW",
@@ -309,7 +419,9 @@
           1.035
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 0.956
+        "arithmetic_mean_reference": 0.956,
+        "train_p_value": 0.155067,
+        "train_statistically_supported": false
       },
       "holdout": {
         "geometric_mean_point_estimate": 0.852,
@@ -318,9 +430,17 @@
           0.973
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 0.892
+        "arithmetic_mean_reference": 0.892,
+        "holdout_p_value": 0.027876,
+        "holdout_statistically_supported": true
       },
-      "replication_classification": "DIRECTION_ONLY_REPLICATED"
+      "replication_classification": "DIRECTION_ONLY_REPLICATED",
+      "epistemic_qualification": {
+        "holdout_criteria_satisfied": false,
+        "training_discovery_statistically_supported": false,
+        "is_independent_confirmatory_replication": false,
+        "qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
+      }
     },
     {
       "cell_id": "4h-48h-CLOSE_TO_CLOSE",
@@ -335,7 +455,9 @@
           1.124
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 1.048
+        "arithmetic_mean_reference": 1.048,
+        "train_p_value": 0.27823,
+        "train_statistically_supported": false
       },
       "holdout": {
         "geometric_mean_point_estimate": 0.768,
@@ -344,9 +466,17 @@
           0.939
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 0.853
+        "arithmetic_mean_reference": 0.853,
+        "holdout_p_value": 0.018147,
+        "holdout_statistically_supported": true
       },
-      "replication_classification": "DIRECTION_ONLY_REPLICATED"
+      "replication_classification": "DIRECTION_ONLY_REPLICATED",
+      "epistemic_qualification": {
+        "holdout_criteria_satisfied": false,
+        "training_discovery_statistically_supported": false,
+        "is_independent_confirmatory_replication": false,
+        "qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
+      }
     },
     {
       "cell_id": "4h-48h-PARKINSON_HIGH_LOW",
@@ -361,7 +491,9 @@
           1.101
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 1.012
+        "arithmetic_mean_reference": 1.012,
+        "train_p_value": 0.406599,
+        "train_statistically_supported": false
       },
       "holdout": {
         "geometric_mean_point_estimate": 0.898,
@@ -370,11 +502,37 @@
           1.022
         ],
         "contained_in_ci": true,
-        "arithmetic_mean_reference": 0.936
+        "arithmetic_mean_reference": 0.936,
+        "holdout_p_value": 0.117973,
+        "holdout_statistically_supported": false
       },
-      "replication_classification": "DIRECTION_ONLY_REPLICATED"
+      "replication_classification": "DIRECTION_ONLY_REPLICATED",
+      "epistemic_qualification": {
+        "holdout_criteria_satisfied": false,
+        "training_discovery_statistically_supported": false,
+        "is_independent_confirmatory_replication": false,
+        "qualification_tr": "Holdout kriterleri k\u0131smen sa\u011fland\u0131: Y\u00f6n uyumu var ancak istatistiksel veya pratik b\u00fcy\u00fckl\u00fck yetersiz."
+      }
     }
   ],
+  "holdout_epistemic_qualification_summary": {
+    "eligible_specifications_count": 14,
+    "statistically_supported_training_discoveries_all": 2,
+    "statistically_supported_training_specifications": [
+      "4h-12h-CLOSE_TO_CLOSE",
+      "4h-24h-CLOSE_TO_CLOSE"
+    ],
+    "holdout_criteria_satisfied_count": 2,
+    "holdout_criteria_satisfied_specifications": [
+      "1h-6h-PARKINSON_HIGH_LOW",
+      "1h-12h-PARKINSON_HIGH_LOW"
+    ],
+    "training_discoveries_among_holdout_satisfied": 0,
+    "independent_confirmatory_replications_count": 0,
+    "historical_replicated_count_preserved": 2,
+    "historical_rate_preserved_pct": 14.29,
+    "scientific_rationale": "The 2 Parkinson specifications (1h-6h-PARK and 1h-12h-PARK) satisfy mathematical holdout criteria on this partition (ratio >= 1.10, p < 0.001). However, training p-values are 0.295419 and 0.094252 (not statistically supported training discoveries) and the holdout period was previously exposed (HOLDOUT_PREVIOUSLY_EXPOSED). Conversely, the 2 specifications with statistically significant training discoveries (4h-12h and 4h-24h CLOSE_TO_CLOSE, p=0.043 and p=0.038) attenuated in holdout (p=0.080 and p=0.118). Therefore, the intersection of training discovery AND holdout confirmation is exactly 0. These findings are explicitly qualified as out-of-sample criteria satisfied on an exposed partition, NOT as independent confirmatory replications."
+  },
   "holdout_exposure_vs_contamination_disentanglement": {
     "holdout_contamination_status": "UNCONTAMINATED",
     "contamination_definition": "Refers strictly to Temporal Partition Leakage. Zero overlapping observations exist between training (2022-2023) and holdout (2025-2026). Purge and dynamic embargo policies prevent lookahead.",

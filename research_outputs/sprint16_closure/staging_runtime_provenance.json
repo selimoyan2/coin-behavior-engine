@@ -1,6 +1,6 @@
 {
   "audit_id": "AUDIT-STAGING-PROVENANCE-SP16",
-  "probe_timestamp_utc": "2026-10-26T12:31:54.791593+00:00",
+  "probe_timestamp_utc": "2026-10-26T12:47:12.470921+00:00",
   "vps_host": "srv1114257",
   "vps_ip": "168.231.125.238",
   "staging_application_uuid": "dzzfws54by1whlbq6fk4ywut",
@@ -22,7 +22,16 @@
     "build_commit": "22a5559508b18d3f360964a08db8d2da39442e20",
     "build_commit_short": "22a55595",
     "dataset_manifest_sha256": "fe6c73326c639ee048012cbeb4d50cb9b25014552411ae7a4ef5a57be448ad97",
+    "dataset_scope": "OPERATIONAL_STAGING_5_INTERVALS_285_PARTITIONS",
+    "manifest_comparison_contract": "CANONICAL_SCOPE_PARITY_VERIFIED",
     "runtime_identity_verified": true
+  },
+  "build_revision_delineation": {
+    "staging_built_from": "22a5559508b18d3f360964a08db8d2da39442e20",
+    "build_time_utc": "2026-10-26T09:17:00Z",
+    "image_digest": "sha256:df870b4ef58bbf6d71ab48a575b1cf196d6618f6fc5ec6f1498de8ce3856dc27",
+    "redeploy_needed": false,
+    "redeploy_rationale": "Runtime contains full Sprint 16 code. Subsequent commits are chore/documentation only."
   },
   "probed_endpoints_summary": [
     {
