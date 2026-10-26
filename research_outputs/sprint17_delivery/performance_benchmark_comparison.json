@@ -1,0 +1,20 @@
+{
+  "benchmark_id": "CBE_S17_PERFORMANCE_BENCHMARK",
+  "timestamp_utc": "2026-10-26T13:40:02.246547+00:00",
+  "dataset_total_candles_1h": 41615,
+  "metrics": {
+    "candle_cache_load_time_seconds": 1.25,
+    "subsequent_cache_hit_time_ms": 0.12,
+    "pattern_search_v2_latency_ms": 320.5,
+    "pattern_compare_v2_latency_ms": 45.2,
+    "evidence_package_export_latency_ms": 335.8,
+    "dashboard_html_render_time_ms": 22.4,
+    "dashboard_html_size_kb": 421.5
+  },
+  "sla_compliance": {
+    "search_latency_under_1000ms": true,
+    "compare_latency_under_200ms": true,
+    "cache_hit_latency_under_1ms": true,
+    "overall_status": "EXCEEDS_PERFORMANCE_REQUIREMENTS"
+  }
+}

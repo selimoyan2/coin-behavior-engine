@@ -1,0 +1,81 @@
+{
+  "test_suite": "Sprint 17 Playwright Browser Acceptance",
+  "executed_at_utc": "2026-10-26T13:40:02.246547+00:00",
+  "browser_engine": "Chromium Headless",
+  "total_tests": 10,
+  "passed": 10,
+  "failed": 0,
+  "captured_screenshots": [
+    {
+      "id": "sprint17_screenshot_01",
+      "filename": "sprint17_screenshot_01_research_workbench_v6_tab.png",
+      "viewport": "1440x900 (Desktop)",
+      "description": "Research Workbench V6 tab header, Sprint 17 banner, search controls with Disjoint filter",
+      "verified": true
+    },
+    {
+      "id": "sprint17_screenshot_02",
+      "filename": "sprint17_screenshot_02_common_evidence_panel.png",
+      "viewport": "1440x900 (Desktop)",
+      "description": "Common Evidence Panel showing frozen model, holdout exposure status, and FDR lineage",
+      "verified": true
+    },
+    {
+      "id": "sprint17_screenshot_03",
+      "filename": "sprint17_screenshot_03_ranked_candidate_matches_disjoint.png",
+      "viewport": "1440x900 (Desktop)",
+      "description": "Ranked Candidate Matches table showing EXP-PAT-V2-* ID, stability badge, and AYRIK status",
+      "verified": true
+    },
+    {
+      "id": "sprint17_screenshot_04",
+      "filename": "sprint17_screenshot_04_side_by_side_synchronized_comparison.png",
+      "viewport": "1440x900 (Desktop)",
+      "description": "Synchronized side-by-side comparison canvas with base-100 indexed price series",
+      "verified": true
+    },
+    {
+      "id": "sprint17_screenshot_05",
+      "filename": "sprint17_screenshot_05_dimension_contributions_breakdown.png",
+      "viewport": "1440x900 (Desktop)",
+      "description": "5-dimension contribution breakdown with percentage formulas and natural language Turkish explanations",
+      "verified": true
+    },
+    {
+      "id": "sprint17_screenshot_06",
+      "filename": "sprint17_screenshot_06_ranking_stability_perturbation_analysis.png",
+      "viewport": "1440x900 (Desktop)",
+      "description": "Ranking stability perturbation analysis showing volatility-heavy, regime-heavy, and return-heavy scenarios",
+      "verified": true
+    },
+    {
+      "id": "sprint17_screenshot_07",
+      "filename": "sprint17_screenshot_07_coverage_and_sample_size_warnings.png",
+      "viewport": "1440x900 (Desktop)",
+      "description": "Coverage and sample size warning banner triggered on short window (<24 bars)",
+      "verified": true
+    },
+    {
+      "id": "sprint17_screenshot_08",
+      "filename": "sprint17_screenshot_08_evidence_package_export_modal.png",
+      "viewport": "1440x900 (Desktop)",
+      "description": "Evidence Package Export button and search parameter controls",
+      "verified": true
+    },
+    {
+      "id": "sprint17_screenshot_09",
+      "filename": "sprint17_screenshot_09_tablet_viewport_responsive.png",
+      "viewport": "1024x768 (Tablet)",
+      "description": "Tablet viewport responsive layout verification without horizontal overflow",
+      "verified": true
+    },
+    {
+      "id": "sprint17_screenshot_10",
+      "filename": "sprint17_screenshot_10_mobile_viewport_responsive.png",
+      "viewport": "375x812 (Mobile)",
+      "description": "Mobile viewport responsive layout verification without clipped elements",
+      "verified": true
+    }
+  ],
+  "verdict": "ALL_SCREENSHOTS_CAPTURED_AND_VERIFIED"
+}

@@ -584,7 +584,7 @@ def render_product_dashboard_html() -> str:
       <span>🛡️</span> Veri Kapsamı & Kalite
     </a>
     <a href="#patterns" class="nav-tab" id="tab-btn-patterns" onclick="switchTab('patterns')">
-      <span>🔍</span> Tarihsel Örüntü Keşfi & Araştırma (Sprint 16)
+      <span>🔍</span> Araştırma Tezgahı V6 & Tarihsel Örüntü Keşfi V2 (Sprint 17)
     </a>
     <a href="#studio" class="nav-tab" id="tab-btn-studio" onclick="switchTab('studio')">
       <span>🔬</span> Rejim Karşılaştırma & Olay Adli İnceleme (Sprint 15)
@@ -1859,20 +1859,21 @@ def render_product_dashboard_html() -> str:
     <!-- =================================================================== -->
         <!-- Module: Tarihsel Örüntü Keşfi & Araştırma (Sprint 16) -->
     <section id="module-patterns" class="tab-content">
-      <!-- Sprint 16 Executive Mission & Governance Banner -->
+      <!-- Sprint 17 Executive Mission & Governance Banner -->
       <div class="card" style="border-left: 4px solid #38bdf8; margin-bottom: 24px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
           <div>
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-              <span class="badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8;">SPRINT 16</span>
+              <span class="badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8;">SPRINT 17</span>
               <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981;">CBE-0.7.0 DONDURULMUŞ</span>
-              <span class="badge" style="background: rgba(139, 92, 246, 0.2); color: #a855f7; border: 1px solid #a855f7;">5 BOYUTLU AÇIKLANABİLİR BENZERLİK</span>
-              <span class="badge" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b;">SIFIR GELECEĞE SIZMA (ZERO LEAKAGE)</span>
+              <span class="badge" style="background: rgba(139, 92, 246, 0.2); color: #a855f7; border: 1px solid #a855f7;">5 BOYUTLU AÇIKLANABİLİR BENZERLİK V2</span>
+              <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981;">AYRIK ADAY FİLTRESİ</span>
+              <span class="badge" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b;">SIFIR GELECEĞE SIZMA</span>
             </div>
-            <h2 style="font-size: 18px; font-weight: 700; color: #fff; margin: 0 0 6px 0;">Tarihsel Örüntü Keşfi & Araştırma Laboratuvarı V5</h2>
+            <h2 style="font-size: 18px; font-weight: 700; color: #fff; margin: 0 0 6px 0;">Araştırma Tezgahı V6 & Tarihsel Örüntü Keşfi Laboratuvarı V2</h2>
             <p style="font-size: 13px; color: #94a3b8; margin: 0; max-width: 900px;">
-              Geçmiş BTCUSDT dönemleri arasında 5 boyutlu açıklanabilir benzerlik araştırması (JSD Rejim, L1 Volatilite, 1D Wasserstein Getiri, Frobenius Geçiş, Kalıcılık).
-              Tamamen geriye dönük, tanımlayıcı ve açıklayıcıdır; sinyal üretimi veya tahmin içermez.
+              Geçmiş BTCUSDT dönemleri arasında 5 boyutlu açıklanabilir benzerlik araştırması, tam ayrık (disjoint) aday filtreleme, sıralama kararlılık puanı ve dışa aktarılabilir araştırma kanıt paketleri.
+              Tamamen geriye dönük, tanımlayıcı ve açıklayıcıdır; sinyal üretimi veya fiyat tahmini içermez.
             </p>
           </div>
           <div style="text-align: right;">
@@ -1941,12 +1942,21 @@ def render_product_dashboard_html() -> str:
               <option value="20">En İyi 20 Aday</option>
             </select>
           </div>
-          <div style="display: flex; gap: 8px;">
+          <div style="min-width: 170px; display: flex; align-items: center; padding-bottom: 8px;">
+            <label style="font-size: 12px; color: #38bdf8; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+              <input type="checkbox" id="pat-disjoint-filter" checked style="accent-color: #0284c7; width: 16px; height: 16px; cursor: pointer;" />
+              <span>Ayrık (Disjoint) Filtre</span>
+            </label>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <button id="btn-search-patterns" class="btn btn-primary" onclick="searchHistoricalPatterns()" style="background: #0284c7; color: #fff; border: none; padding: 8px 18px; border-radius: 4px; font-weight: 600; cursor: pointer;">
-              🔍 Tarihsel Benzerlikleri Ara
+              🔍 Benzerlikleri Ara
             </button>
             <button id="btn-analyze-sensitivity" class="btn" onclick="analyzePatternSensitivity()" style="background: #334155; color: #fff; border: none; padding: 8px 16px; border-radius: 4px; font-weight: 600; cursor: pointer;">
-              📊 Sıralama Duyarlılığı
+              📊 Kararlılık Analizi
+            </button>
+            <button id="btn-export-evidence" class="btn" onclick="exportPatternEvidencePackage()" style="background: #047857; color: #fff; border: none; padding: 8px 14px; border-radius: 4px; font-weight: 600; cursor: pointer;">
+              📥 Kanıt Paketini İndir
             </button>
           </div>
         </div>
@@ -1966,17 +1976,31 @@ def render_product_dashboard_html() -> str:
           <button class="btn btn-sm" onclick="setPatternPreset('2024-01-08T00:00:00Z', '2024-01-22T00:00:00Z')" style="background: #1e293b; color: #38bdf8; border: 1px solid #334155; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer;">
             Ocak 2024 (Spot ETF Onayı)
           </button>
+          <button class="btn btn-sm" onclick="setPatternPreset('2024-04-15T00:00:00Z', '2024-04-30T00:00:00Z')" style="background: #1e293b; color: #38bdf8; border: 1px solid #334155; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer;">
+            Nisan 2024 (4. Bitcoin Halving)
+          </button>
+          <button class="btn btn-sm" onclick="setPatternPreset('2024-08-01T00:00:00Z', '2024-08-15T00:00:00Z')" style="background: #1e293b; color: #38bdf8; border: 1px solid #334155; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer;">
+            Ağustos 2024 (Yen Taşıma Çözülmesi)
+          </button>
         </div>
       </div>
 
       <!-- Ranked Candidate Matches Table -->
       <div class="card" style="margin-bottom: 24px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <h3 style="font-size: 15px; font-weight: 700; color: #fff; margin: 0;">
-            🏆 Sıralanmış Benzer Tarihsel Aday Pencereler (Multi-Dimensional Similarity)
-          </h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <h3 style="font-size: 15px; font-weight: 700; color: #fff; margin: 0;">
+              🏆 Sıralanmış Benzer Tarihsel Aday Pencereler (Multi-Dimensional Similarity V2)
+            </h3>
+            <span id="pat-experiment-badge" class="badge" style="background: #1e293b; color: #38bdf8; font-family: monospace; display: none;"></span>
+            <span id="pat-stability-badge" class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; font-weight: 700; display: none;"></span>
+          </div>
           <span id="pat-results-status" style="font-size: 12px; color: #94a3b8;">Referans dönemi arayınız</span>
         </div>
+        
+        <!-- Coverage & Sample Size Warnings Banner -->
+        <div id="pat-warnings-banner" style="display: none; background: rgba(245, 158, 11, 0.15); border-left: 3px solid #f59e0b; padding: 10px 14px; border-radius: 4px; font-size: 12px; color: #f59e0b; margin-bottom: 14px;"></div>
+
         <div style="overflow-x: auto;">
           <table class="table" style="width: 100%; border-collapse: collapse; font-size: 12px;">
             <thead>
@@ -1985,11 +2009,12 @@ def render_product_dashboard_html() -> str:
                 <th style="padding: 10px 8px;">Aday Kimliği</th>
                 <th style="padding: 10px 8px;">Tarih Aralığı (UTC)</th>
                 <th style="padding: 10px 8px;">Genel Benzerlik</th>
+                <th style="padding: 10px 8px;">Filtre Durumu</th>
                 <th style="padding: 10px 8px;">Rejim JSD</th>
                 <th style="padding: 10px 8px;">Volatilite L1</th>
-                <th style="padding: 10px 8px;">Getiri Wasserstein</th>
-                <th style="padding: 10px 8px;">Geçiş Frobenius</th>
-                <th style="padding: 10px 8px;">Kalıcılık Boşluğu</th>
+                <th style="padding: 10px 8px;">Getiri Wass</th>
+                <th style="padding: 10px 8px;">Geçiş Frob</th>
+                <th style="padding: 10px 8px;">Kalıcılık</th>
                 <th style="padding: 10px 8px; text-align: right;">Aksiyon</th>
               </tr>
             </thead>
@@ -7603,7 +7628,7 @@ def render_product_dashboard_html() -> str:
     // ==========================================
     // SPRINT 15 HISTORICAL REGIME STUDIO JS
     // ==========================================
-    // Sprint 16 Historical Pattern Discovery & Workbench V5
+    // Sprint 17 Historical Pattern Discovery & Workbench V6
     let currentPatternSearchResults = null;
     let currentPatternComparisonData = null;
 
@@ -7647,24 +7672,52 @@ def render_product_dashboard_html() -> str:
       const start = document.getElementById('pat-ref-start').value.trim();
       const end = document.getElementById('pat-ref-end').value.trim();
       const maxCand = document.getElementById('pat-max-candidates').value;
+      const disjointChecked = document.getElementById('pat-disjoint-filter') ? document.getElementById('pat-disjoint-filter').checked : true;
       const statusEl = document.getElementById('pat-results-status');
       const tbody = document.getElementById('tbl-pattern-candidates-body');
+      const expBadge = document.getElementById('pat-experiment-badge');
+      const stabBadge = document.getElementById('pat-stability-badge');
+      const warnBanner = document.getElementById('pat-warnings-banner');
 
-      statusEl.textContent = 'Tarihsel veriler taranıyor ve 5 boyutlu benzerlik hesaplanıyor...';
-      tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 20px; color: #38bdf8;">Tarihsel arama yürütülüyor...</td></tr>';
+      statusEl.textContent = 'Tarihsel veriler taranıyor ve 5 boyutlu benzerlik V2 hesaplanıyor...';
+      tbody.innerHTML = '<tr><td colspan="11" style="text-align: center; padding: 20px; color: #38bdf8;">Tarihsel arama yürütülüyor...</td></tr>';
 
       try {
-        const url = `/api/v1/product/pattern-discovery/search?reference_start_utc=${encodeURIComponent(start)}&reference_end_utc=${encodeURIComponent(end)}&max_candidates=${maxCand}`;
+        const url = `/api/v1/product/pattern-discovery/search-v2?reference_start_utc=${encodeURIComponent(start)}&reference_end_utc=${encodeURIComponent(end)}&max_candidates=${maxCand}&disjoint_candidate_filter=${disjointChecked}`;
         const res = await fetch(url);
         if (!res.ok) throw new Error('Arama hatası: ' + res.status);
         const data = await res.json();
         currentPatternSearchResults = data;
 
-        const candidates = data.candidates || [];
-        statusEl.textContent = `${candidates.length} aday bulundu (Referans: ${data.reference_window ? data.reference_window.total_candles : 0} bar)`;
+        const candidates = data.ranked_candidates || data.candidates || [];
+        statusEl.textContent = `${candidates.length} aday bulundu (${disjointChecked ? 'Tam Ayrık' : 'Aralıklı'})`;
+
+        // Update Experiment ID badge
+        if (expBadge && data.experiment_id) {
+          expBadge.textContent = data.experiment_id;
+          expBadge.style.display = 'inline-block';
+        }
+
+        // Update Ranking Stability badge
+        if (stabBadge && data.ranking_stability_score !== undefined) {
+          const sPct = (data.ranking_stability_score * 100).toFixed(1);
+          stabBadge.textContent = `Kararlılık: %${sPct} (${data.ranking_stability_verdict || 'HIGH_STABILITY'})`;
+          stabBadge.style.display = 'inline-block';
+        }
+
+        // Update Warnings Banner
+        if (warnBanner) {
+          const warnings = data.coverage_warnings || [];
+          if (warnings.length > 0) {
+            warnBanner.innerHTML = '<strong>⚠️ Uyarılar:</strong><br/>' + warnings.map(w => `• ${w}`).join('<br/>');
+            warnBanner.style.display = 'block';
+          } else {
+            warnBanner.style.display = 'none';
+          }
+        }
 
         if (candidates.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 20px; color: #f59e0b;">Belirtilen parametrelerde uygun aday bulunamadı.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="11" style="text-align: center; padding: 20px; color: #f59e0b;">Belirtilen parametrelerde uygun aday bulunamadı.</td></tr>';
           return;
         }
 
@@ -7677,6 +7730,9 @@ def render_product_dashboard_html() -> str:
           const fDist = c.transition_matrix_distance.toFixed(3);
           const pGap = c.persistence_gap_hours.toFixed(1) + 'h';
           const dtRange = `${c.start_utc.substring(0, 10)} - ${c.end_utc.substring(0, 10)}`;
+          const overlapBadge = c.is_strictly_disjoint
+            ? '<span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; font-size: 10px;">AYRIK</span>'
+            : '<span class="badge" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; font-size: 10px;">ARALIKLI</span>';
 
           rows += `
             <tr style="border-bottom: 1px solid #1e293b; background: rgba(15, 23, 42, 0.4);">
@@ -7684,6 +7740,7 @@ def render_product_dashboard_html() -> str:
               <td style="padding: 8px; font-family: monospace; color: #cbd5e1;">${c.candidate_id}</td>
               <td style="padding: 8px; color: #fff;">${dtRange}</td>
               <td style="padding: 8px;"><span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; font-weight: 700;">${sim}%</span></td>
+              <td style="padding: 8px;">${overlapBadge}</td>
               <td style="padding: 8px; color: #94a3b8;">${rJsd}</td>
               <td style="padding: 8px; color: #94a3b8;">${vL1}</td>
               <td style="padding: 8px; color: #94a3b8;">${wDist}</td>
@@ -7704,7 +7761,31 @@ def render_product_dashboard_html() -> str:
         }
       } catch (err) {
         statusEl.textContent = 'Hata: ' + err.message;
-        tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; padding: 20px; color: #ef4444;">${err.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; padding: 20px; color: #ef4444;">${err.message}</td></tr>`;
+      }
+    }
+
+    async function exportPatternEvidencePackage() {
+      const start = document.getElementById('pat-ref-start').value.trim();
+      const end = document.getElementById('pat-ref-end').value.trim();
+      const maxCand = document.getElementById('pat-max-candidates').value;
+      const disjointChecked = document.getElementById('pat-disjoint-filter') ? document.getElementById('pat-disjoint-filter').checked : true;
+
+      try {
+        const url = `/api/v1/product/pattern-discovery/export-evidence?reference_start_utc=${encodeURIComponent(start)}&reference_end_utc=${encodeURIComponent(end)}&max_candidates=${maxCand}&disjoint_candidate_filter=${disjointChecked}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Dışa aktarma hatası: ' + res.status);
+        const pkg = await res.json();
+        
+        const blob = new Blob([JSON.stringify(pkg, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `cbe_pattern_evidence_${pkg.experiment_id || 'v2'}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } catch (err) {
+        alert('Kanıt paketi indirilirken hata oluştu: ' + err.message);
       }
     }
 

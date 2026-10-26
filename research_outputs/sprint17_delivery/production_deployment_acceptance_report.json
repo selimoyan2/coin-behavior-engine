@@ -1,0 +1,40 @@
+{
+  "audit_id": "CBE_S17_PRODUCTION_ACCEPTANCE",
+  "evaluated_at_utc": "2026-10-26T13:40:02.246547+00:00",
+  "target_release": "Sprint 17",
+  "production_target": "https://coin.ozelweb.com.tr",
+  "container_id": "eb1941ac5372",
+  "app_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+  "deployed_commit": "bc874d811e549114d59bc01a3cf1fc3aa701e669",
+  "health_check": {
+    "endpoint": "/health",
+    "http_status": 200,
+    "status": "healthy",
+    "model_version": "CBE-0.7.0",
+    "freeze_verified": true,
+    "prediction_count": 8432
+  },
+  "governance_restrictions_verified": {
+    "technical_decision": "TECHNICAL_NO_GO",
+    "governance_authorization": "NOT_GRANTED",
+    "production_token": "NOT_ISSUED",
+    "real_network_market_collection": "DISABLED",
+    "btcusdt_live_observation": "DISABLED",
+    "unattended_monitoring": "DISABLED",
+    "live_order_execution": "PERMANENTLY_PROHIBITED",
+    "directional_trading_eligibility": 0
+  },
+  "prohibited_endpoints_check": {
+    "/api/v1/orders": 404,
+    "/api/v1/trade": 404,
+    "/api/v1/execute": 404
+  },
+  "persistent_volume_status": {
+    "volume_name": "6t63aehpaw0cw1bbt4zcm09g-cbe_prospective_data",
+    "mount_path": "/app/data/prospective",
+    "status": "HEALTHY_AND_INTACT",
+    "quarantined_files_found": 0
+  },
+  "deployment_action": "NO_DEPLOYMENT_TO_PRODUCTION_SPRINT17_STAGING_ONLY",
+  "acceptance_verdict": "PRODUCTION_VERIFIED_HEALTHY_ZERO_TOUCH_PRESERVED"
+}

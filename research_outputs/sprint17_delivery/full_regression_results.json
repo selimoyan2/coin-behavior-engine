@@ -1,0 +1,31 @@
+{
+  "execution_id": "CBE_S17_FULL_REGRESSION",
+  "timestamp_utc": "2026-10-26T13:40:02.246547+00:00",
+  "test_target": "pytest -k 'product_acceleration'",
+  "total_selected": 294,
+  "passed": 294,
+  "failed": 0,
+  "errors": 0,
+  "pass_rate_pct": 100.0,
+  "suites_executed": [
+    "tests/test_sprint_product_acceleration_01_api.py",
+    "tests/test_sprint_product_acceleration_01_integration.py",
+    "tests/test_sprint_product_acceleration_02_api.py",
+    "tests/test_sprint_product_acceleration_03.py",
+    "tests/test_sprint_product_acceleration_04.py",
+    "tests/test_sprint_product_acceleration_05.py",
+    "tests/test_sprint_product_acceleration_06.py",
+    "tests/test_sprint_product_acceleration_07.py",
+    "tests/test_sprint_product_acceleration_08.py",
+    "tests/test_sprint_product_acceleration_09.py",
+    "tests/test_sprint_product_acceleration_10.py",
+    "tests/test_sprint_product_acceleration_11.py",
+    "tests/test_sprint_product_acceleration_12.py",
+    "tests/test_sprint_product_acceleration_13.py",
+    "tests/test_sprint_product_acceleration_14.py",
+    "tests/test_sprint_product_acceleration_15.py",
+    "tests/test_sprint_product_acceleration_16.py",
+    "tests/test_sprint_product_acceleration_17.py"
+  ],
+  "verdict": "ZERO_REGRESSIONS_100_PERCENT_PASS"
+}

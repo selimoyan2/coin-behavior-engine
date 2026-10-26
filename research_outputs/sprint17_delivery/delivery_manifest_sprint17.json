@@ -1,0 +1,32 @@
+{
+  "sprint_id": "CBE_PRODUCT_ACCELERATION_17",
+  "repository": "selimoyan2/coin-behavior-engine",
+  "branch": "main",
+  "base_commit_sha": "bc874d811e549114d59bc01a3cf1fc3aa701e669",
+  "staging_application_uuid": "dzzfws54by1whlbq6fk4ywut",
+  "staging_binding": "127.0.0.1:18080->8000/tcp",
+  "staging_host": "srv1114257",
+  "production_application_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+  "production_domain": "coin.ozelweb.com.tr",
+  "production_zero_touch": true,
+  "production_status": "STABLE_AND_PROTECTED",
+  "canonical_model_version": "CBE-0.7.0 (FROZEN)",
+  "dataset_manifest_sha256": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
+  "generation_timestamp_utc": "2026-10-26T13:40:02.246547+00:00",
+  "features_delivered": [
+    "Research Workbench V6 navigation, responsive layout, and Turkish scientific explanations",
+    "Historical Pattern Discovery V2 with strictly disjoint candidate filtering",
+    "Multi-scenario ranking stability evaluation (volatility, regime, return perturbations)",
+    "Explainable 5-dimension contribution breakdown (w_i * d_i / D) with exact formulas",
+    "Data coverage and sample-size warnings (<24 bars, gaps)",
+    "Deterministic reproducible experiment IDs (EXP-PAT-V2-*)",
+    "Self-contained scientific evidence package export API (/export-evidence)",
+    "New API endpoints: /search-v2, /compare-v2, /export-evidence"
+  ],
+  "governance_invariants": {
+    "model_status": "STRICTLY_FROZEN",
+    "real_network_market_collection": "DISABLED",
+    "live_order_execution": "PERMANENTLY_PROHIBITED",
+    "directional_trading_eligibility": 0
+  }
+}

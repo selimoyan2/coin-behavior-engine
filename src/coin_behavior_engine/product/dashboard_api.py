@@ -357,10 +357,16 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.get_research_lineage(query_params)
             elif sub_path in ("pattern-discovery/search", "patterns/search"):
                 return HTTPStatus.OK, cls.get_pattern_discovery_search(query_params)
+            elif sub_path in ("pattern-discovery/search-v2", "patterns/search-v2"):
+                return HTTPStatus.OK, cls.get_pattern_discovery_search_v2(query_params)
             elif sub_path in ("pattern-discovery/compare", "patterns/compare"):
                 return HTTPStatus.OK, cls.get_pattern_discovery_compare(query_params)
+            elif sub_path in ("pattern-discovery/compare-v2", "patterns/compare-v2"):
+                return HTTPStatus.OK, cls.get_pattern_discovery_compare_v2(query_params)
             elif sub_path in ("pattern-discovery/sensitivity", "patterns/sensitivity"):
                 return HTTPStatus.OK, cls.get_pattern_discovery_sensitivity(query_params)
+            elif sub_path in ("pattern-discovery/export-evidence", "patterns/export-evidence"):
+                return HTTPStatus.OK, cls.get_pattern_discovery_export_evidence(query_params)
             elif sub_path in ("evidence-panel", "evidence/panel"):
                 return HTTPStatus.OK, cls.get_evidence_panel(query_params)
             elif sub_path in ("session-state", "session"):
@@ -448,12 +454,21 @@ class ProductDashboardApiService:
             elif sub_path in ("pattern-discovery/search", "patterns/search"):
                 params = {k: [str(v)] for k, v in body.items()} if body else query_params
                 return HTTPStatus.OK, cls.get_pattern_discovery_search(params)
+            elif sub_path in ("pattern-discovery/search-v2", "patterns/search-v2"):
+                params = {k: [str(v)] for k, v in body.items()} if body else query_params
+                return HTTPStatus.OK, cls.get_pattern_discovery_search_v2(params)
             elif sub_path in ("pattern-discovery/compare", "patterns/compare"):
                 params = {k: [str(v)] for k, v in body.items()} if body else query_params
                 return HTTPStatus.OK, cls.get_pattern_discovery_compare(params)
+            elif sub_path in ("pattern-discovery/compare-v2", "patterns/compare-v2"):
+                params = {k: [str(v)] for k, v in body.items()} if body else query_params
+                return HTTPStatus.OK, cls.get_pattern_discovery_compare_v2(params)
             elif sub_path in ("pattern-discovery/sensitivity", "patterns/sensitivity"):
                 params = {k: [str(v)] for k, v in body.items()} if body else query_params
                 return HTTPStatus.OK, cls.get_pattern_discovery_sensitivity(params)
+            elif sub_path in ("pattern-discovery/export-evidence", "patterns/export-evidence"):
+                params = {k: [str(v)] for k, v in body.items()} if body else query_params
+                return HTTPStatus.OK, cls.get_pattern_discovery_export_evidence(params)
             elif sub_path in ("session-state", "session"):
                 return HTTPStatus.OK, cls.post_session_state_api(body)
 
@@ -3398,16 +3413,54 @@ class ProductDashboardApiService:
             top_n = int(params.get("max_candidates", params.get("top_n", ["10"]))[0])
         except Exception:
             top_n = 10
+        disjoint_val = params.get("disjoint_candidate_filter", params.get("disjoint", params.get("disjoint_filter", ["true"])))[0]
+        disjoint_bool = str(disjoint_val).lower() in ("true", "1", "yes")
         engine = HistoricalPatternDiscoveryEngine()
         res = engine.search_similar_patterns(
             reference_start_utc=ref_start,
             reference_end_utc=ref_end,
             interval=interval,
             max_candidates=top_n,
+            disjoint_candidate_filter=disjoint_bool,
         )
         out = asdict(res)
         out["status"] = "SUCCESS"
         return out
+
+    @classmethod
+    def get_pattern_discovery_search_v2(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for V2 historical pattern discovery search with strictly disjoint candidates."""
+        return cls.get_pattern_discovery_search(params)
+
+    @classmethod
+    def get_pattern_discovery_compare_v2(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for V2 synchronized side-by-side historical window comparison."""
+        return cls.get_pattern_discovery_compare(params)
+
+    @classmethod
+    def get_pattern_discovery_export_evidence(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """API handler for exporting complete reproducible research evidence package."""
+        from coin_behavior_engine.product.historical_pattern_discovery import HistoricalPatternDiscoveryEngine
+        ref_start = params.get("reference_start_utc", params.get("reference_start", ["2022-06-01T00:00:00Z"]))[0]
+        ref_end = params.get("reference_end_utc", params.get("reference_end", ["2022-06-15T00:00:00Z"]))[0]
+        interval = params.get("interval", ["1h"])[0]
+        try:
+            top_n = int(params.get("max_candidates", params.get("top_n", ["10"]))[0])
+        except Exception:
+            top_n = 10
+        disjoint_val = params.get("disjoint_candidate_filter", params.get("disjoint", params.get("disjoint_filter", ["true"])))[0]
+        disjoint_bool = str(disjoint_val).lower() in ("true", "1", "yes")
+        engine = HistoricalPatternDiscoveryEngine()
+        res = engine.search_similar_patterns(
+            reference_start_utc=ref_start,
+            reference_end_utc=ref_end,
+            interval=interval,
+            max_candidates=top_n,
+            disjoint_candidate_filter=disjoint_bool,
+        )
+        pkg = engine.export_evidence_package(res)
+        pkg["status"] = "SUCCESS"
+        return pkg
 
     @classmethod
     def get_pattern_discovery_compare(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:

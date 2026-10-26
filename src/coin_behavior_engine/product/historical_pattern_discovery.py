@@ -1,16 +1,21 @@
 """
-Historical Pattern Discovery Laboratory Engine.
-Sprint 16 Major Research Advancement (Sections 9, 10, 11, 12, 13).
+Historical Pattern Discovery Laboratory Engine V2.
+Sprint 17 Major Research Advancement & Workbench V6.
 
 Provides explainable, multi-dimensional historical market behavior discovery
 across verified BTCUSDT partitions. Strictly descriptive and non-predictive.
 Zero forward outcome leakage, zero synthetic price generation, and explicit overlap guards.
+Includes strictly disjoint candidate filtering, ranking stability score,
+sample-size / data coverage warnings, dimension contribution breakdown,
+reproducible experiment IDs (EXP-PAT-V2-*), and exportable research evidence packages.
 """
 
 from __future__ import annotations
 
+import hashlib
+import json
 import math
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -47,6 +52,7 @@ class SimilarityComponentScore:
     metric_method: str
     reference_value_summary: str
     candidate_value_summary: str
+    explanation_tr: str = ""
 
 
 @dataclass
@@ -67,6 +73,11 @@ class PatternCandidateMatch:
     regime_composition: Dict[str, float]
     realized_volatility_pct: float
     mean_return_pct: float
+    sample_size_bars: int = 0
+    coverage_warnings: List[str] = field(default_factory=list)
+    dimension_contributions: Dict[str, Dict[str, Any]] = field(default_factory=dict)
+    explanation_tr: str = ""
+    is_strictly_disjoint: bool = True
 
     @property
     def overall_similarity_pct(self) -> float:
@@ -112,6 +123,13 @@ class PatternDiscoverySearchResult:
     dataset_manifest_sha256: str
     canonical_model_version: str
     legal_disclaimer_tr: str
+    experiment_id: str = ""
+    disjoint_filtering_applied: bool = True
+    ranking_stability_score: float = 1.0
+    ranking_stability_verdict: str = "HIGH_STABILITY"
+    ranking_stability_details: Dict[str, Any] = field(default_factory=dict)
+    coverage_warnings: List[str] = field(default_factory=list)
+    overall_explanation_tr: str = ""
 
     @property
     def candidates(self) -> List[PatternCandidateMatch]:
@@ -120,7 +138,7 @@ class PatternDiscoverySearchResult:
 
 class HistoricalPatternDiscoveryEngine:
     """
-    Core engine for explainable historical pattern discovery.
+    Core engine for explainable historical pattern discovery V2.
     """
     LEGAL_DISCLAIMER_TR = (
         "Bu rapor ve benzerlik eşleştirmeleri yalnızca tarihsel piyasa davranışı araştırması amacıyla "
@@ -258,9 +276,10 @@ class HistoricalPatternDiscoveryEngine:
         max_candidates: int = 10,
         step_hours: int = 48,
         min_spacing_hours: int = 48,
+        disjoint_candidate_filter: bool = True,
     ) -> PatternDiscoverySearchResult:
         """
-        Executes bounded, deterministic historical pattern similarity search.
+        Executes bounded, deterministic historical pattern similarity search V2.
         Fails closed if asset is not BTCUSDT.
         """
         # Asset safety invariant
@@ -296,6 +315,13 @@ class HistoricalPatternDiscoveryEngine:
         ref_trans_mat = cls._compute_transition_matrix(ref_df)
         ref_persist = cls._compute_regime_persistence(ref_df)
 
+        # Reference level coverage warnings
+        coverage_warnings: List[str] = []
+        if ref_candles_count < 24:
+            coverage_warnings.append(
+                f"DÜŞÜK_ÖRNEKLEM_UYARISI: Referans penceresi 24 barın altındadır (N={ref_candles_count}). İstatistiksel güvenilirlik sınırlıdır."
+            )
+
         # Candidate scan over historical dataset
         total_bars = len(df)
         window_size_bars = ref_candles_count
@@ -304,10 +330,6 @@ class HistoricalPatternDiscoveryEngine:
         candidates_pool: List[Dict[str, Any]] = []
         excluded_overlapping = 0
         scanned_count = 0
-
-        # Precompute search range
-        min_timestamp = df["timestamp"].min()
-        max_timestamp = df["timestamp"].max()
 
         for start_idx in range(0, total_bars - window_size_bars + 1, step_bars):
             scanned_count += 1
@@ -378,25 +400,106 @@ class HistoricalPatternDiscoveryEngine:
         # Sort all by composite distance ascending (best matches first)
         candidates_pool.sort(key=lambda x: x["composite_distance"])
 
-        # Deduplicate near-neighbor candidates using spacing policy
+        # Deduplicate candidates using disjoint or spacing policy
         filtered_candidates: List[Dict[str, Any]] = []
         for cand in candidates_pool:
-            is_near = False
-            for accepted in filtered_candidates:
-                diff_hours = abs((cand["start_ts"] - accepted["start_ts"]).total_seconds()) / 3600.0
-                if diff_hours < min_spacing_hours:
-                    is_near = True
-                    break
-            if not is_near:
-                filtered_candidates.append(cand)
+            if disjoint_candidate_filter:
+                # Strictly disjoint: window [cand_start, cand_end] must not overlap any accepted window
+                overlaps = False
+                for accepted in filtered_candidates:
+                    if not (cand["end_ts"] < accepted["start_ts"] or cand["start_ts"] > accepted["end_ts"]):
+                        overlaps = True
+                        break
+                if not overlaps:
+                    filtered_candidates.append(cand)
+            else:
+                is_near = False
+                for accepted in filtered_candidates:
+                    diff_hours = abs((cand["start_ts"] - accepted["start_ts"]).total_seconds()) / 3600.0
+                    if diff_hours < min_spacing_hours:
+                        is_near = True
+                        break
+                if not is_near:
+                    filtered_candidates.append(cand)
             if len(filtered_candidates) >= max_candidates:
                 break
+
+        # Calculate Ranking Stability across perturbations
+        stability_score = 1.0
+        stability_verdict = "HIGH_STABILITY"
+        stability_details: Dict[str, Any] = {}
+        if len(candidates_pool) >= 5:
+            default_top5 = [c["start_utc"] for c in candidates_pool[:5]]
+            
+            # Scenario 1: Volatility heavy
+            w_vol = {"REGIME_COMPOSITION": 0.15, "REALIZED_VOLATILITY": 0.50, "RETURN_DISTRIBUTION": 0.15, "TRANSITION_STRUCTURE": 0.10, "REGIME_PERSISTENCE": 0.10}
+            def score_cand_dict(c: Dict[str, Any], w: Dict[str, float]) -> float:
+                return (
+                    w["REGIME_COMPOSITION"] * c["d_regime"]
+                    + w["REALIZED_VOLATILITY"] * c["d_vol"]
+                    + w["RETURN_DISTRIBUTION"] * c["d_return"]
+                    + w["TRANSITION_STRUCTURE"] * c["d_trans"]
+                    + w["REGIME_PERSISTENCE"] * c["d_persist"]
+                )
+            
+            vol_sorted = sorted(candidates_pool, key=lambda c: score_cand_dict(c, w_vol))
+            vol_top5 = [c["start_utc"] for c in vol_sorted[:5]]
+            
+            # Scenario 2: Regime heavy
+            w_reg = {"REGIME_COMPOSITION": 0.55, "REALIZED_VOLATILITY": 0.15, "RETURN_DISTRIBUTION": 0.10, "TRANSITION_STRUCTURE": 0.10, "REGIME_PERSISTENCE": 0.10}
+            reg_sorted = sorted(candidates_pool, key=lambda c: score_cand_dict(c, w_reg))
+            reg_top5 = [c["start_utc"] for c in reg_sorted[:5]]
+
+            # Scenario 3: Return distribution heavy
+            w_ret = {"REGIME_COMPOSITION": 0.15, "REALIZED_VOLATILITY": 0.15, "RETURN_DISTRIBUTION": 0.50, "TRANSITION_STRUCTURE": 0.10, "REGIME_PERSISTENCE": 0.10}
+            ret_sorted = sorted(candidates_pool, key=lambda c: score_cand_dict(c, w_ret))
+            ret_top5 = [c["start_utc"] for c in ret_sorted[:5]]
+
+            overlap_vol = len(set(default_top5).intersection(set(vol_top5)))
+            overlap_reg = len(set(default_top5).intersection(set(reg_top5)))
+            overlap_ret = len(set(default_top5).intersection(set(ret_top5)))
+            
+            mean_retention = float(((overlap_vol + overlap_reg + overlap_ret) / 15.0) * 100.0)
+            stability_score = round(mean_retention / 100.0, 3)
+
+            if stability_score >= 0.70:
+                stability_verdict = "HIGH_STABILITY"
+            elif stability_score >= 0.40:
+                stability_verdict = "MODERATE_STABILITY"
+            else:
+                stability_verdict = "SENSITIVE"
+
+            stability_details = {
+                "stability_score": stability_score,
+                "stability_verdict": stability_verdict,
+                "mean_top5_retention_pct": mean_retention,
+                "scenarios": {
+                    "volatility_heavy": {"overlap": overlap_vol, "retention_pct": round((overlap_vol / 5.0) * 100.0, 1)},
+                    "regime_heavy": {"overlap": overlap_reg, "retention_pct": round((overlap_reg / 5.0) * 100.0, 1)},
+                    "return_heavy": {"overlap": overlap_ret, "retention_pct": round((overlap_ret / 5.0) * 100.0, 1)},
+                }
+            }
 
         # Assemble final ranked objects
         ranked_matches: List[PatternCandidateMatch] = []
         for rank_idx, c in enumerate(filtered_candidates, 1):
             comp_d = c["composite_distance"]
             tot_w = sum(norm_weights.values()) or 1.0
+
+            cand_bar_count = len(c["cand_df"])
+            cand_warnings: List[str] = []
+            if cand_bar_count < 24:
+                cand_warnings.append(f"DÜŞÜK_ÖRNEKLEM_UYARISI: Aday pencere bar sayısı 24'ün altındadır (N={cand_bar_count}).")
+
+            # Dimension contributions breakdown
+            dim_reg_pct = round((norm_weights.get("REGIME_COMPOSITION", 0.3) * c["d_regime"] / max(comp_d, 1e-6)) * 100.0, 2)
+            dim_vol_pct = round((norm_weights.get("REALIZED_VOLATILITY", 0.25) * c["d_vol"] / max(comp_d, 1e-6)) * 100.0, 2)
+            dim_ret_pct = round((norm_weights.get("RETURN_DISTRIBUTION", 0.2) * c["d_return"] / max(comp_d, 1e-6)) * 100.0, 2)
+            dim_trans_pct = round((norm_weights.get("TRANSITION_STRUCTURE", 0.15) * c["d_trans"] / max(comp_d, 1e-6)) * 100.0, 2)
+            dim_pers_pct = round((norm_weights.get("REGIME_PERSISTENCE", 0.1) * c["d_persist"] / max(comp_d, 1e-6)) * 100.0, 2)
+
+            ref_dominant_regime = max(ref_regime_comp, key=ref_regime_comp.get)
+            cand_dominant_regime = max(c["regime_comp"], key=c["regime_comp"].get)
 
             components = {
                 "REGIME_COMPOSITION": SimilarityComponentScore(
@@ -405,10 +508,11 @@ class HistoricalPatternDiscoveryEngine:
                     distance_value=round(c["d_regime"], 4),
                     weight=norm_weights.get("REGIME_COMPOSITION", 0.3),
                     weighted_contribution=round(norm_weights.get("REGIME_COMPOSITION", 0.3) * c["d_regime"], 4),
-                    contribution_pct=round((norm_weights.get("REGIME_COMPOSITION", 0.3) * c["d_regime"] / max(comp_d, 1e-6)) * 100.0, 2),
+                    contribution_pct=dim_reg_pct,
                     metric_method="JENSEN_SHANNON_DIVERGENCE",
-                    reference_value_summary=f"En baskın: {max(ref_regime_comp, key=ref_regime_comp.get)} (%{max(ref_regime_comp.values())*100:.1f})",
-                    candidate_value_summary=f"En baskın: {max(c['regime_comp'], key=c['regime_comp'].get)} (%{max(c['regime_comp'].values())*100:.1f})",
+                    reference_value_summary=f"En baskın: {ref_dominant_regime} (%{ref_regime_comp[ref_dominant_regime]*100:.1f})",
+                    candidate_value_summary=f"En baskın: {cand_dominant_regime} (%{c['regime_comp'][cand_dominant_regime]*100:.1f})",
+                    explanation_tr=f"Rejim kompozisyonu benzerliği %{(1.0 - c['d_regime'])*100.0:.1f} seviyesindedir.",
                 ),
                 "REALIZED_VOLATILITY": SimilarityComponentScore(
                     dimension_id="REALIZED_VOLATILITY",
@@ -416,10 +520,11 @@ class HistoricalPatternDiscoveryEngine:
                     distance_value=round(c["d_vol"], 4),
                     weight=norm_weights.get("REALIZED_VOLATILITY", 0.25),
                     weighted_contribution=round(norm_weights.get("REALIZED_VOLATILITY", 0.25) * c["d_vol"], 4),
-                    contribution_pct=round((norm_weights.get("REALIZED_VOLATILITY", 0.25) * c["d_vol"] / max(comp_d, 1e-6)) * 100.0, 2),
+                    contribution_pct=dim_vol_pct,
                     metric_method="NORMALIZED_L1_VOLATILITY",
                     reference_value_summary=f"%{ref_vol*100.0:.1f} Yıllık",
                     candidate_value_summary=f"%{c['vol']*100.0:.1f} Yıllık",
+                    explanation_tr=f"Yıllık volatilite adayda %{c['vol']*100.0:.1f} (Referans: %{ref_vol*100.0:.1f}).",
                 ),
                 "RETURN_DISTRIBUTION": SimilarityComponentScore(
                     dimension_id="RETURN_DISTRIBUTION",
@@ -427,10 +532,11 @@ class HistoricalPatternDiscoveryEngine:
                     distance_value=round(c["d_return"], 4),
                     weight=norm_weights.get("RETURN_DISTRIBUTION", 0.2),
                     weighted_contribution=round(norm_weights.get("RETURN_DISTRIBUTION", 0.2) * c["d_return"], 4),
-                    contribution_pct=round((norm_weights.get("RETURN_DISTRIBUTION", 0.2) * c["d_return"] / max(comp_d, 1e-6)) * 100.0, 2),
+                    contribution_pct=dim_ret_pct,
                     metric_method="WASSERSTEIN_1D",
                     reference_value_summary=f"Ort Getiri: %{float(np.mean(ref_returns))*100:.2f}",
                     candidate_value_summary=f"Ort Getiri: %{c['mean_ret']:.2f}",
+                    explanation_tr=f"Getiri dağılımı Wasserstein mesafesi {c['d_return']:.4f} olarak saptanmıştır.",
                 ),
                 "TRANSITION_STRUCTURE": SimilarityComponentScore(
                     dimension_id="TRANSITION_STRUCTURE",
@@ -438,10 +544,11 @@ class HistoricalPatternDiscoveryEngine:
                     distance_value=round(c["d_trans"], 4),
                     weight=norm_weights.get("TRANSITION_STRUCTURE", 0.15),
                     weighted_contribution=round(norm_weights.get("TRANSITION_STRUCTURE", 0.15) * c["d_trans"], 4),
-                    contribution_pct=round((norm_weights.get("TRANSITION_STRUCTURE", 0.15) * c["d_trans"] / max(comp_d, 1e-6)) * 100.0, 2),
+                    contribution_pct=dim_trans_pct,
                     metric_method="NORMALIZED_FROBENIUS_NORM",
                     reference_value_summary="6x6 Stokastik Geçiş Matrisi",
                     candidate_value_summary="6x6 Stokastik Geçiş Matrisi",
+                    explanation_tr=f"Geçiş matrisi ayrışımı {c['d_trans']:.4f} ile dinamik akış benzerliği sunar.",
                 ),
                 "REGIME_PERSISTENCE": SimilarityComponentScore(
                     dimension_id="REGIME_PERSISTENCE",
@@ -449,14 +556,39 @@ class HistoricalPatternDiscoveryEngine:
                     distance_value=round(c["d_persist"], 4),
                     weight=norm_weights.get("REGIME_PERSISTENCE", 0.1),
                     weighted_contribution=round(norm_weights.get("REGIME_PERSISTENCE", 0.1) * c["d_persist"], 4),
-                    contribution_pct=round((norm_weights.get("REGIME_PERSISTENCE", 0.1) * c["d_persist"] / max(comp_d, 1e-6)) * 100.0, 2),
+                    contribution_pct=dim_pers_pct,
                     metric_method="RELATIVE_EPISODE_DURATION_GAP",
                     reference_value_summary=f"{ref_persist:.1f} Bar",
                     candidate_value_summary=f"{cls._compute_regime_persistence(c['cand_df']):.1f} Bar",
+                    explanation_tr=f"Rejim kalıcılığı: Aday {cls._compute_regime_persistence(c['cand_df']):.1f} bar, Referans {ref_persist:.1f} bar.",
                 ),
             }
 
+            dim_contributions = {
+                k: {
+                    "dimension_id": comp.dimension_id,
+                    "dimension_name_tr": comp.dimension_name_tr,
+                    "weight": comp.weight,
+                    "distance_value": comp.distance_value,
+                    "weighted_contribution": comp.weighted_contribution,
+                    "contribution_pct": comp.contribution_pct,
+                    "metric_method": comp.metric_method,
+                    "reference_value": comp.reference_value_summary,
+                    "candidate_value": comp.candidate_value_summary,
+                    "explanation_tr": comp.explanation_tr,
+                }
+                for k, comp in components.items()
+            }
+
             sim_score = round(max(0.0, min(100.0, (1.0 - comp_d) * 100.0)), 2)
+            
+            # Find largest distance contributor to explain divergence
+            max_contributor = max(components.values(), key=lambda comp: comp.weighted_contribution)
+            explanation_tr = (
+                f"{c['start_ts'].strftime('%Y-%m-%d')} - {c['end_ts'].strftime('%Y-%m-%d')} aralığı, referans dönemiyle %{sim_score:.1f} "
+                f"genel benzerlik taşımaktadır. En belirleyici ayrışma etmeni %{max_contributor.contribution_pct:.1f} pay ile "
+                f"{max_contributor.dimension_name_tr} boyutudur."
+            )
 
             ranked_matches.append(
                 PatternCandidateMatch(
@@ -468,18 +600,35 @@ class HistoricalPatternDiscoveryEngine:
                     candle_count=ref_candles_count,
                     composite_distance=round(comp_d, 4),
                     similarity_score_pct=sim_score,
-                    overlap_status="DISJOINT",
+                    overlap_status="DISJOINT" if disjoint_candidate_filter else "SPACED",
                     data_coverage_pct=100.0,
                     source_verification="VERIFIED_CANONICAL_HISTORICAL",
                     components=components,
                     regime_composition=c["regime_comp"],
                     realized_volatility_pct=round(c["vol"] * 100.0, 2),
                     mean_return_pct=round(c["mean_ret"], 3),
+                    sample_size_bars=cand_bar_count,
+                    coverage_warnings=cand_warnings,
+                    dimension_contributions=dim_contributions,
+                    explanation_tr=explanation_tr,
+                    is_strictly_disjoint=disjoint_candidate_filter,
                 )
             )
 
         manifest_data = ContentIntegrityEngine.generate_canonical_manifest()
         manifest_sha = manifest_data.get("manifest_sha256", "")
+
+        # Generate deterministic reproducible Experiment ID
+        sig_str = f"{asset}_{interval}_{ref_start.isoformat()}_{ref_end.isoformat()}_{disjoint_candidate_filter}_{json.dumps(norm_weights, sort_keys=True)}"
+        exp_hash = hashlib.sha256(sig_str.encode("utf-8")).hexdigest()[:12]
+        experiment_id = f"EXP-PAT-V2-{exp_hash}"
+
+        overall_explanation_tr = (
+            f"BTCUSDT {ref_start.strftime('%Y-%m-%d')} - {ref_end.strftime('%Y-%m-%d')} referans dönemi için taranan {scanned_count} "
+            f"tarihsel pencereden en yüksek 5 boyutlu benzerliğe sahip {len(ranked_matches)} aday sıralanmıştır. "
+            f"Sıralama kararlılık puanı: %{stability_score * 100:.1f} ({stability_verdict}). "
+            f"Aday pencereler ayrık (disjoint) filtreleme ile karşılıklı örtüşmelerden arındırılmıştır."
+        )
 
         return PatternDiscoverySearchResult(
             search_id=f"SEARCH-PAT-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}",
@@ -498,7 +647,90 @@ class HistoricalPatternDiscoveryEngine:
             dataset_manifest_sha256=manifest_sha,
             canonical_model_version=f"{FROZEN_MODEL_VERSION} (FROZEN)",
             legal_disclaimer_tr=cls.LEGAL_DISCLAIMER_TR,
+            experiment_id=experiment_id,
+            disjoint_filtering_applied=disjoint_candidate_filter,
+            ranking_stability_score=stability_score,
+            ranking_stability_verdict=stability_verdict,
+            ranking_stability_details=stability_details,
+            coverage_warnings=coverage_warnings,
+            overall_explanation_tr=overall_explanation_tr,
         )
+
+    @classmethod
+    def search_similar_patterns_v2(
+        cls,
+        reference_start_utc: str,
+        reference_end_utc: str,
+        asset: str = "BTCUSDT",
+        interval: str = "1h",
+        weights: Optional[Dict[str, float]] = None,
+        max_candidates: int = 10,
+        step_hours: int = 48,
+        disjoint_candidate_filter: bool = True,
+    ) -> PatternDiscoverySearchResult:
+        """Convenience alias for V2 pattern discovery search."""
+        return cls.search_similar_patterns(
+            reference_start_utc=reference_start_utc,
+            reference_end_utc=reference_end_utc,
+            asset=asset,
+            interval=interval,
+            weights=weights,
+            max_candidates=max_candidates,
+            step_hours=step_hours,
+            disjoint_candidate_filter=disjoint_candidate_filter,
+        )
+
+    @classmethod
+    def export_evidence_package(
+        cls,
+        search_result: PatternDiscoverySearchResult,
+    ) -> Dict[str, Any]:
+        """
+        Packages an explainable pattern discovery search into a self-contained, reproducible evidence dictionary.
+        """
+        result_dict = asdict(search_result)
+        return {
+            "package_type": "HISTORICAL_PATTERN_DISCOVERY_V2_EVIDENCE",
+            "schema_version": "2.0.0",
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "experiment_id": search_result.experiment_id,
+            "canonical_model": search_result.canonical_model_version,
+            "dataset_manifest_sha256": search_result.dataset_manifest_sha256,
+            "parameters": {
+                "asset": search_result.asset,
+                "interval": search_result.interval,
+                "reference_start_utc": search_result.reference_start_utc,
+                "reference_end_utc": search_result.reference_end_utc,
+                "reference_duration_hours": search_result.reference_duration_hours,
+                "weights_used": search_result.weights_used,
+                "disjoint_filtering_applied": search_result.disjoint_filtering_applied,
+            },
+            "reference_profile": {
+                "regime_composition": search_result.reference_regime_composition,
+                "realized_volatility_pct": search_result.reference_realized_volatility_pct,
+            },
+            "search_statistics": {
+                "total_historical_windows_scanned": search_result.total_historical_windows_scanned,
+                "eligible_windows_evaluated": search_result.eligible_windows_evaluated,
+                "excluded_overlapping_windows": search_result.excluded_overlapping_windows,
+                "candidates_count": len(search_result.ranked_candidates),
+            },
+            "ranking_stability": {
+                "stability_score": search_result.ranking_stability_score,
+                "stability_verdict": search_result.ranking_stability_verdict,
+                "stability_details": search_result.ranking_stability_details,
+            },
+            "coverage_warnings": search_result.coverage_warnings,
+            "overall_explanation_tr": search_result.overall_explanation_tr,
+            "ranked_candidates": result_dict.get("ranked_candidates", []),
+            "governance_invariants": {
+                "model_status": "STRICTLY_FROZEN",
+                "real_network_market_collection": "DISABLED",
+                "live_order_execution": "PERMANENTLY_PROHIBITED",
+                "directional_trading_eligibility": 0,
+            },
+            "legal_disclaimer_tr": search_result.legal_disclaimer_tr,
+        }
 
     @classmethod
     def analyze_ranking_sensitivity(
@@ -516,11 +748,13 @@ class HistoricalPatternDiscoveryEngine:
             interval=interval,
             max_candidates=10,
             step_hours=72,
+            disjoint_candidate_filter=True,
         )
         if not base_res.ranked_candidates:
             return {
                 "status": "SUCCESS",
                 "ranking_stability_verdict": "HIGH_STABILITY",
+                "stability_score": 1.0,
                 "weight_scenarios": {"default": [], "volatility_heavy": [], "regime_heavy": []},
                 "legal_disclaimer_tr": cls.LEGAL_DISCLAIMER_TR,
             }
@@ -560,9 +794,11 @@ class HistoricalPatternDiscoveryEngine:
         return {
             "status": "SUCCESS",
             "search_id": base_res.search_id,
+            "experiment_id": base_res.experiment_id,
             "reference_start_utc": reference_start_utc,
             "reference_end_utc": reference_end_utc,
             "ranking_stability_verdict": verdict,
+            "stability_score": round(mean_retention / 100.0, 3),
             "mean_top5_retention_pct": mean_retention,
             "weight_scenarios": {
                 "default": default_ids,
@@ -679,6 +915,44 @@ class HistoricalPatternDiscoveryEngine:
         )
         sim_score = round(max(0.0, min(100.0, (1.0 - comp_d) * 100.0)), 2)
 
+        dimension_breakdown = {
+            "REGIME_COMPOSITION": {
+                "dimension_name_tr": "Rejim Kompozisyonu Ayrışımı (JSD)",
+                "distance": round(d_regime, 4),
+                "similarity_pct": round((1.0 - d_regime) * 100.0, 1),
+                "weight": w["REGIME_COMPOSITION"],
+                "contribution_pct": round((w["REGIME_COMPOSITION"] * d_regime / max(comp_d, 1e-6)) * 100.0, 1),
+            },
+            "REALIZED_VOLATILITY": {
+                "dimension_name_tr": "Gerçekleşen Volatilite Farkı",
+                "distance": round(d_vol, 4),
+                "similarity_pct": round((1.0 - d_vol) * 100.0, 1),
+                "weight": w["REALIZED_VOLATILITY"],
+                "contribution_pct": round((w["REALIZED_VOLATILITY"] * d_vol / max(comp_d, 1e-6)) * 100.0, 1),
+            },
+            "RETURN_DISTRIBUTION": {
+                "dimension_name_tr": "Getiri Dağılımı Uzaklığı (Wasserstein)",
+                "distance": round(d_return, 4),
+                "similarity_pct": round((1.0 - d_return) * 100.0, 1),
+                "weight": w["RETURN_DISTRIBUTION"],
+                "contribution_pct": round((w["RETURN_DISTRIBUTION"] * d_return / max(comp_d, 1e-6)) * 100.0, 1),
+            },
+            "TRANSITION_STRUCTURE": {
+                "dimension_name_tr": "Rejim Geçiş Matrisi Farkı (Frobenius)",
+                "distance": round(d_trans, 4),
+                "similarity_pct": round((1.0 - d_trans) * 100.0, 1),
+                "weight": w["TRANSITION_STRUCTURE"],
+                "contribution_pct": round((w["TRANSITION_STRUCTURE"] * d_trans / max(comp_d, 1e-6)) * 100.0, 1),
+            },
+            "REGIME_PERSISTENCE": {
+                "dimension_name_tr": "Rejim Kalıcılığı Süre Uyumsuzluğu",
+                "distance": round(d_persist, 4),
+                "similarity_pct": round((1.0 - d_persist) * 100.0, 1),
+                "weight": w["REGIME_PERSISTENCE"],
+                "contribution_pct": round((w["REGIME_PERSISTENCE"] * d_persist / max(comp_d, 1e-6)) * 100.0, 1),
+            },
+        }
+
         similarity_analysis = {
             "overall_similarity_pct": sim_score,
             "composite_distance": round(comp_d, 4),
@@ -687,7 +961,14 @@ class HistoricalPatternDiscoveryEngine:
             "return_distribution_distance": round(d_return, 4),
             "transition_matrix_distance": round(d_trans, 4),
             "persistence_gap_hours": round(d_persist, 2),
+            "dimension_breakdown": dimension_breakdown,
         }
+
+        scientific_commentary_tr = (
+            f"İki dönem arasında genel benzerlik %{sim_score:.1f} düzeyindedir. "
+            f"Referans döneminde yıllık volatilite %{ref_vol * 100.0:.1f} iken aday döneminde %{cand_vol * 100.0:.1f} olarak hesaplanmıştır. "
+            f"Rejim kompozisyonu uyumu %{(1.0 - d_regime) * 100.0:.1f} seviyesindedir."
+        )
 
         return {
             "status": "SUCCESS",
@@ -704,6 +985,7 @@ class HistoricalPatternDiscoveryEngine:
             "reference_macro_events": ref_events,
             "candidate_macro_events": cand_events,
             "similarity_analysis": similarity_analysis,
+            "scientific_commentary_tr": scientific_commentary_tr,
             "reference_window": {
                 "start_utc": reference_start_utc,
                 "end_utc": reference_end_utc,
