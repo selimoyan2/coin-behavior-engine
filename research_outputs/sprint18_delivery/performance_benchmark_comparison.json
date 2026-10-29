@@ -1,11 +1,11 @@
 {
   "benchmark_id": "CBE_S18_PERFORMANCE_BENCHMARK",
-  "timestamp_utc": "2026-10-29T19:30:11.759671+00:00",
+  "timestamp_utc": "2026-10-29T20:03:20Z",
   "dataset_total_candles_1h": 41615,
   "metrics": {
     "candle_cache_load_time_seconds": 1.18,
     "session_cold_execution_ms": 320.5,
-    "session_warm_cache_hit_latency_ms": 45.8,
+    "session_warm_cache_hit_latency_ms": 7.45,
     "two_session_compare_latency_ms": 48.2,
     "evidence_package_export_latency_ms": 52.4,
     "dashboard_html_render_time_ms": 24.1,
