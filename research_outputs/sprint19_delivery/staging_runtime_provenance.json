@@ -1,0 +1,57 @@
+{
+  "provenance_metadata": {
+    "sprint_id": "CBE_PRODUCT_ACCELERATION_19",
+    "timestamp_utc": "2026-10-29T20:59:05Z",
+    "host_ip": "168.231.125.238",
+    "hostname": "srv1114257",
+    "coolify_app_uuid": "dzzfws54by1whlbq6fk4ywut",
+    "local_bind_port": "127.0.0.1:18080->8000/tcp"
+  },
+  "runtime_identity": {
+    "container_id": "c8cb0b56adc4",
+    "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+    "docker_image_tag": "cbe-market-intelligence:sprint19-ffb3015",
+    "docker_image_id": "sha256:edb2b000bb97f543b8be638f4c3dbfd088558686bec0f6ab99fcb9e1f471f88d",
+    "build_source_commit": "ffb301519e49b2ba5ba37138cc34befe38796b95",
+    "build_source_branch": "main",
+    "build_reproducible": true
+  },
+  "healthcheck_attestation": {
+    "endpoint": "http://127.0.0.1:18080/health",
+    "http_status": 200,
+    "service": "coin-behavior-engine",
+    "model_version": "CBE-0.7.0",
+    "model_status": "FROZEN",
+    "freeze_verified": true,
+    "worker_status": "RUNNING",
+    "hash_chain_valid": true,
+    "last_processed_bar": "2026-09-24T13:15:00Z"
+  },
+  "endpoints_verified": [
+    {
+      "route": "/health",
+      "method": "GET",
+      "status": 200,
+      "verdict": "HEALTHY"
+    },
+    {
+      "route": "/api/v1/product/research-explorer/capabilities",
+      "method": "GET",
+      "status": 200,
+      "verdict": "OPERATIONAL"
+    },
+    {
+      "route": "/api/v1/product/research-explorer/historical-series?start_utc=2022-06-01T00:00:00Z&end_utc=2022-06-15T00:00:00Z",
+      "method": "GET",
+      "status": 200,
+      "verdict": "CANDLES_RETURNED"
+    },
+    {
+      "route": "/api/v1/product/research-library",
+      "method": "GET",
+      "status": 200,
+      "verdict": "CATALOG_AVAILABLE"
+    }
+  ],
+  "governance_status": "STAGING_VERIFIED_AND_ATTENDING"
+}

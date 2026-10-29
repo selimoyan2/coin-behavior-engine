@@ -1,0 +1,26 @@
+{
+  "verification_id": "CBE_S19_SCIENTIFIC_INTEGRITY",
+  "timestamp_utc": "2026-10-29T20:45:00Z",
+  "canonical_model_version": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "model_mutations": 0,
+  "holdout_exposure_status": "HOLDOUT_PREVIOUSLY_EXPOSED",
+  "epistemological_status": "EXPLORATORY_DESCRIPTIVE_NOT_INDEPENDENT_CONFIRMATORY_REPLICATION",
+  "quarantined_partitions": [
+    "2026-10"
+  ],
+  "quarantine_enforcement_verified": true,
+  "canonical_dataset_manifest_sha256": "fe6c73326c639ee048012cbeb4d50cb9b25014552411ae7a4ef5a57be448ad97",
+  "macro_event_catalog_total_verified": 238,
+  "governance_invariants": {
+    "technical_decision": "TECHNICAL_NO_GO",
+    "governance_authorization": "NOT_GRANTED",
+    "production_token": "NOT_ISSUED",
+    "real_network_market_collection": "DISABLED",
+    "btcusdt_live_observation": "DISABLED",
+    "unattended_monitoring": "DISABLED",
+    "live_order_execution": "PERMANENTLY_PROHIBITED",
+    "directional_trading_eligibility": 0
+  },
+  "verdict": "SCIENTIFIC_INTEGRITY_VERIFIED_AND_CANONICAL_MODEL_FROZEN"
+}

@@ -1,0 +1,28 @@
+{
+  "release_metadata": {
+    "sprint_id": "CBE_PRODUCT_ACCELERATION_19",
+    "release_tag": "sprint-19-rc1",
+    "branch": "main",
+    "repository": "selimoyan2/coin-behavior-engine",
+    "canonical_model": "CBE-0.7.0 (STRICTLY FROZEN)",
+    "timestamp_utc": "2026-10-29T20:56:50Z"
+  },
+  "git_ancestry": {
+    "base_closure_commit_sprint18": "948222a380327b07ffd3b865d4fd224b61a2a6f4",
+    "sprint19_implementation_commit": "ffb301519e49b2ba5ba37138cc34befe38796b95",
+    "git_diff_summary": "9 files changed, 3309 insertions(+), 1 deletion(-)",
+    "git_remote_status": "pushed to origin/main"
+  },
+  "components_added_or_modified": [
+    "src/coin_behavior_engine/product/research_intelligence_explorer.py",
+    "src/coin_behavior_engine/product/research_explorer_ui.py",
+    "src/coin_behavior_engine/product/dashboard_api.py",
+    "src/coin_behavior_engine/product/dashboard_ui.py",
+    "src/coin_behavior_engine/web/server.py",
+    "tests/test_sprint_product_acceleration_19.py",
+    "scripts/build_and_deploy_staging_sprint19.py",
+    "scripts/run_playwright_sprint19.py",
+    "research_outputs/operations_audit_log.jsonl"
+  ],
+  "governance_decision": "SPRINT_19_RELEASE_APPROVED"
+}

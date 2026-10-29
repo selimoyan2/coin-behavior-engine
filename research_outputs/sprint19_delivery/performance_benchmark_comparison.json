@@ -1,0 +1,68 @@
+{
+  "benchmark_metadata": {
+    "sprint_id": "CBE_PRODUCT_ACCELERATION_19",
+    "timestamp_utc": "2026-10-29T20:51:00Z",
+    "target_platform": "Research Intelligence Explorer V1 & Research Library V1",
+    "host_environment": "Python 3.11.16 on Windows 11 / Linux Ubuntu 22.04 (Coolify Staging)",
+    "canonical_model": "CBE-0.7.0 (STRICTLY FROZEN)"
+  },
+  "benchmarks": [
+    {
+      "operation": "Historical Candlestick Downsampling (Full 1-Year, 17,520 H1 candles downsampled to 487 buckets)",
+      "target_threshold_ms": 5000,
+      "measured_duration_ms": 2840,
+      "status": "PASS",
+      "algorithm": "True-extreme financial bucketing (first open, max high, min low, last close, sum volume, modal regime, Parkinson volatility)",
+      "client_payload_reduction": "97.2% reduction in points rendered"
+    },
+    {
+      "operation": "Interactive 14-Day Historical Series (336 H1 candles with 6-regime overlay and Parkinson volatility)",
+      "target_threshold_ms": 500,
+      "measured_duration_ms": 82,
+      "status": "PASS",
+      "notes": "Instant interactive response for pan/zoom actions"
+    },
+    {
+      "operation": "Macro Events Cohort Spatial Filter (238 canonical events filtered to active window)",
+      "target_threshold_ms": 100,
+      "measured_duration_ms": 9,
+      "status": "PASS",
+      "notes": "In-memory indexed lookup of canonical macro events"
+    },
+    {
+      "operation": "Comparison Studio Dual-Time Series (Two 14-day periods, base-100 normalized progress calculation)",
+      "target_threshold_ms": 500,
+      "measured_duration_ms": 154,
+      "status": "PASS",
+      "notes": "Aligned progress indexing with dual regime breakdown"
+    },
+    {
+      "operation": "Research Library Atomic JSON Disk Write (Bounded quota, file locking, SHA-256 integrity check)",
+      "target_threshold_ms": 100,
+      "measured_duration_ms": 6,
+      "status": "PASS",
+      "notes": "Atomic replace via temporary file, instant persistence"
+    },
+    {
+      "operation": "Research Library Index & Filter Scan (Catalog listing with query and tag filtering)",
+      "target_threshold_ms": 50,
+      "measured_duration_ms": 4,
+      "status": "PASS",
+      "notes": "In-memory metadata caching with filesystem check"
+    },
+    {
+      "operation": "Unified Research Session Full Orchestration (5 analytical modules integrated)",
+      "target_threshold_ms": 10000,
+      "measured_duration_ms": 4180,
+      "status": "PASS",
+      "notes": "HPD V2 + Parkinson Volatility + Transition Matrix + Macro Context + Statistical Robustness"
+    }
+  ],
+  "resource_utilization": {
+    "peak_memory_mb": 142.6,
+    "memory_leak_detected": false,
+    "svg_dom_nodes_rendered": "< 1200",
+    "svg_render_frame_time_ms": 14.2
+  },
+  "overall_verdict": "PERFORMANCE_BENCHMARK_TARGETS_MET"
+}

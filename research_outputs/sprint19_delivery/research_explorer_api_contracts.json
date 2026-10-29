@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.0.0",
+  "sprint_id": "CBE_PRODUCT_ACCELERATION_19",
+  "base_path": "/api/v1/product",
+  "endpoints": {
+    "GET /api/v1/product/research-explorer/capabilities": {
+      "summary": "Return capabilities, intervals, supported assets, presets, and canonical regimes.",
+      "authentication": "PUBLIC_READ_ONLY",
+      "parameters": {},
+      "response_format": "application/json",
+      "governance_status": "FROZEN_CBE_0_7_0"
+    },
+    "GET /api/v1/product/research-explorer/historical-series": {
+      "summary": "Fetch historical candlestick OHLCV series with true financial server-side downsampling.",
+      "authentication": "PUBLIC_READ_ONLY",
+      "parameters": {
+        "start_utc": "ISO-8601 UTC timestamp (e.g. 2022-06-01T00:00:00Z)",
+        "end_utc": "ISO-8601 UTC timestamp (e.g. 2022-06-15T00:00:00Z)",
+        "asset": "BTCUSDT (default: BTCUSDT)",
+        "interval": "1h | 15m | 5m | 4h | 1d (default: 1h)",
+        "downsample_max_points": "Integer 50 to 2000 (default: 500)"
+      },
+      "quarantine_rule": "Strict rejection on intersection with 2026-10",
+      "response_format": "application/json"
+    },
+    "GET /api/v1/product/research-explorer/regime-overlay": {
+      "summary": "Compute continuous six-regime segmentation bands, durations, and dominant distribution.",
+      "authentication": "PUBLIC_READ_ONLY",
+      "parameters": {
+        "start_utc": "ISO-8601 UTC timestamp",
+        "end_utc": "ISO-8601 UTC timestamp",
+        "interval": "1h | 15m | 5m | 4h | 1d"
+      },
+      "canonical_regimes": [
+        "CAPITULATION",
+        "HIGH_VOLATILITY",
+        "MOMENTUM_EXPANSION",
+        "DISTRIBUTION",
+        "SIDEWAYS",
+        "RECOVERY_ACCUMULATION"
+      ],
+      "response_format": "application/json"
+    },
+    "GET /api/v1/product/research-explorer/macro-events": {
+      "summary": "Retrieve canonical macroeconomic events in or adjacent to the historical window.",
+      "authentication": "PUBLIC_READ_ONLY",
+      "parameters": {
+        "start_utc": "ISO-8601 UTC timestamp",
+        "end_utc": "ISO-8601 UTC timestamp"
+      },
+      "events_cohorts": [
+        "US_INFLATION",
+        "US_MONETARY_POLICY",
+        "US_LABOR",
+        "US_GROWTH",
+        "CRYPTO_REGULATORY",
+        "SYSTEMIC_RISK",
+        "MARKET_STRUCTURE"
+      ],
+      "response_format": "application/json"
+    },
+    "GET /api/v1/product/research-explorer/comparison": {
+      "summary": "Compute synchronized dual-period series, normalized elapsed progress, and statistical divergence.",
+      "authentication": "PUBLIC_READ_ONLY",
+      "parameters": {
+        "start_utc_a": "Period A start UTC",
+        "end_utc_a": "Period A end UTC",
+        "start_utc_b": "Period B start UTC",
+        "end_utc_b": "Period B end UTC",
+        "interval": "1h | 15m | 5m | 4h | 1d"
+      },
+      "metrics_included": [
+        "regime_jsd_divergence",
+        "volatility_gap_pct",
+        "return_mean_diff_pct",
+        "composite_similarity_pct"
+      ],
+      "response_format": "application/json"
+    },
+    "GET /api/v1/product/research-library": {
+      "summary": "List and filter saved research definitions.",
+      "authentication": "PUBLIC_READ_ONLY",
+      "parameters": {
+        "q": "Search query matching title, description or tags",
+        "interval": "Filter by interval",
+        "limit": "Max items to return (default: 50)"
+      },
+      "response_format": "application/json"
+    },
+    "POST /api/v1/product/research-library": {
+      "summary": "Atomically persist a new research configuration to disk.",
+      "authentication": "AUTHORIZED_OR_LOCAL_SAFE",
+      "payload": {
+        "title": "String (1-100 chars, sanitized)",
+        "description": "String (max 500 chars)",
+        "asset": "BTCUSDT",
+        "interval": "1h | 15m | 5m | 4h | 1d",
+        "reference_start_utc": "ISO-8601 UTC timestamp",
+        "reference_end_utc": "ISO-8601 UTC timestamp",
+        "selected_modules": "Array of strings",
+        "tags": "Array of strings (max 10)"
+      },
+      "capacity_bound": 100,
+      "response_format": "application/json"
+    },
+    "PATCH /api/v1/product/research-library/{research_id}": {
+      "summary": "Update title, description, or tags of an existing research configuration.",
+      "authentication": "AUTHORIZED_OR_LOCAL_SAFE",
+      "response_format": "application/json"
+    },
+    "DELETE /api/v1/product/research-library/{research_id}": {
+      "summary": "Permanently delete an existing research configuration.",
+      "authentication": "AUTHORIZED_OR_LOCAL_SAFE",
+      "response_format": "application/json"
+    }
+  }
+}

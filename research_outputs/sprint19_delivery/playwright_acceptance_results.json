@@ -1,0 +1,99 @@
+{
+  "acceptance_suite_id": "CBE_S19_PLAYWRIGHT_ACCEPTANCE",
+  "timestamp_utc": "2026-10-29T20:49:04Z",
+  "browser": "Chromium (Headless)",
+  "total_screens_verified": 14,
+  "viewports_tested": [
+    {
+      "name": "Desktop",
+      "width": 1440,
+      "height": 900,
+      "orientation": "Landscape"
+    },
+    {
+      "name": "Tablet",
+      "width": 1024,
+      "height": 768,
+      "orientation": "Landscape"
+    },
+    {
+      "name": "Mobile",
+      "width": 375,
+      "height": 812,
+      "orientation": "Portrait"
+    }
+  ],
+  "screenshots": [
+    {
+      "filename": "sprint19_screenshot_01_explorer_overview.png",
+      "caption": "Explorer V1 master overview, navigation tabs, model freeze badge, and presets toolbar",
+      "status": "VERIFIED"
+    },
+    {
+      "filename": "sprint19_screenshot_02_historical_candlestick_chart.png",
+      "caption": "Interactive SVG candlestick chart displaying verified historical BTCUSDT OHLCV and volume bars",
+      "status": "VERIFIED"
+    },
+    {
+      "filename": "sprint19_screenshot_03_six_regime_overlays.png",
+      "caption": "Six canonical regime continuous background bands, legend pills, and persistence metrics",
+      "status": "VERIFIED"
+    },
+    {
+      "filename": "sprint19_screenshot_04_parkinson_volatility_curve.png",
+      "caption": "Parkinson volatility overlay curve across the historical price series",
+      "status": "VERIFIED"
+    },
+    {
+      "filename": "sprint19_screenshot_05_macro_event_markers.png",
+      "caption": "Macroeconomic event vertical flag pins linked to 238 verified canonical events",
+      "status": "VERIFIED"
+    },
+    {
+      "filename": "sprint19_screenshot_06_chart_based_period_selection.png",
+      "caption": "Direct chart drag/brush range selection and Selected Range HUD",
+      "status": "VERIFIED"
+    },
+    {
+      "filename": "sprint19_screenshot_07_unified_research_session_launch.png",
+      "caption": "Unified Research Session (URS) orchestration launch action button and integration",
+      "status": "VERIFIED"
+    },
+    {
+      "filename": "sprint19_screenshot_08_side_by_side_comparison_studio.png",
+      "caption": "Comparison Studio V2 dual side-by-side charts with independent UTC date axes",
+      "status": "VERIFIED"
+    },
+    {
+      "filename": "sprint19_screenshot_09_normalized_progress_comparison.png",
+      "caption": "Normalized elapsed-time comparison view (T=0 to T=100%, Base 100 return rebased)",
+      "status": "VERIFIED"
+    },
+    {
+      "filename": "sprint19_screenshot_10_explainable_similarity_breakdown.png",
+      "caption": "Jensen-Shannon divergence, volatility gap, and 5-dimensional similarity breakdown table",
+      "status": "VERIFIED"
+    },
+    {
+      "filename": "sprint19_screenshot_11_save_research_configuration_modal.png",
+      "caption": "Research configuration save modal with title, description, and atomic write notice",
+      "status": "VERIFIED"
+    },
+    {
+      "filename": "sprint19_screenshot_12_research_library_catalog_and_filters.png",
+      "caption": "Research Library V1 cards, title search, interval filter, and lifecycle actions (Open, Duplicate, Rename, Export, Delete)",
+      "status": "VERIFIED"
+    },
+    {
+      "filename": "sprint19_screenshot_13_tablet_viewport_responsive.png",
+      "caption": "Responsive layout on tablet viewport (1024x768) without overflow or clipping",
+      "status": "VERIFIED"
+    },
+    {
+      "filename": "sprint19_screenshot_14_mobile_viewport_responsive.png",
+      "caption": "Responsive stacked cards and touch-accessible controls on mobile viewport (375x812)",
+      "status": "VERIFIED"
+    }
+  ],
+  "verdict": "PLAYWRIGHT_MULTI_VIEWPORT_ACCEPTANCE_PASSED"
+}
