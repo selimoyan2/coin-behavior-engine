@@ -1,0 +1,81 @@
+{
+  "test_suite": "Sprint 18 Playwright Browser Acceptance",
+  "executed_at_utc": "2026-10-29T19:30:11.759671+00:00",
+  "browser_engine": "Chromium Headless",
+  "total_tests": 10,
+  "passed": 10,
+  "failed": 0,
+  "captured_screenshots": [
+    {
+      "id": "sprint18_screenshot_01",
+      "filename": "sprint18_screenshot_01_unified_research_workspace_overview.png",
+      "viewport": "1440x900 (Desktop)",
+      "description": "Unified Research Workspace V1 tab, header banner, model frozen badges, period presets, input controls",
+      "verified": true
+    },
+    {
+      "id": "sprint18_screenshot_02",
+      "filename": "sprint18_screenshot_02_research_session_orchestration_hud.png",
+      "viewport": "1440x900 (Desktop)",
+      "description": "Session Orchestration HUD showing URS session ID, observation count, execution duration, status badge",
+      "verified": true
+    },
+    {
+      "id": "sprint18_screenshot_03",
+      "filename": "sprint18_screenshot_03_market_regime_distribution_persistence.png",
+      "viewport": "1440x900 (Desktop)",
+      "description": "Market Regime Distribution & Persistence card with 6-regime horizontal bars and dominant regime",
+      "verified": true
+    },
+    {
+      "id": "sprint18_screenshot_04",
+      "filename": "sprint18_screenshot_04_volatility_higher_moments_analytics.png",
+      "viewport": "1440x900 (Desktop)",
+      "description": "Volatility & Higher Moments Analytics card showing realized vol, Parkinson vol, kurtosis, skewness",
+      "verified": true
+    },
+    {
+      "id": "sprint18_screenshot_05",
+      "filename": "sprint18_screenshot_05_pattern_discovery_v2_disjoint_matches.png",
+      "viewport": "1440x900 (Desktop)",
+      "description": "Pattern Discovery V2 card showing EXP-PAT-V2-* ID, stability score badge, and ranked disjoint matches table",
+      "verified": true
+    },
+    {
+      "id": "sprint18_screenshot_06",
+      "filename": "sprint18_screenshot_06_macro_event_taxonomy_context.png",
+      "viewport": "1440x900 (Desktop)",
+      "description": "Macro Event Taxonomy Context card showing in-period events and dominant macro cohort",
+      "verified": true
+    },
+    {
+      "id": "sprint18_screenshot_07",
+      "filename": "sprint18_screenshot_07_statistical_evidence_epistemology_panel.png",
+      "viewport": "1440x900 (Desktop)",
+      "description": "Statistical Evidence card showing 95% return CI, holdout exposure warning, and exploratory epistemological disclosure",
+      "verified": true
+    },
+    {
+      "id": "sprint18_screenshot_08",
+      "filename": "sprint18_screenshot_08_side_by_side_session_comparison_studio.png",
+      "viewport": "1440x900 (Desktop)",
+      "description": "Side-by-Side Session Comparison Studio showing Period A vs Period B dimensional table and composite similarity %",
+      "verified": true
+    },
+    {
+      "id": "sprint18_screenshot_09",
+      "filename": "sprint18_screenshot_09_tablet_viewport_responsive.png",
+      "viewport": "1024x768 (Tablet)",
+      "description": "Tablet viewport responsive layout without clipping or horizontal overflow",
+      "verified": true
+    },
+    {
+      "id": "sprint18_screenshot_10",
+      "filename": "sprint18_screenshot_10_mobile_viewport_responsive.png",
+      "viewport": "375x812 (Mobile)",
+      "description": "Mobile viewport responsive layout with clean stacked cards and touch-accessible controls",
+      "verified": true
+    }
+  ],
+  "verdict": "ALL_SCREENSHOTS_CAPTURED_AND_VERIFIED"
+}

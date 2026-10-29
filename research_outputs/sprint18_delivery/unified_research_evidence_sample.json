@@ -1,0 +1,474 @@
+{
+  "package_format": "CBE-UNIFIED-RESEARCH-EVIDENCE-1.0.0",
+  "package_id": "PKG-URS-7ea9897ed85a",
+  "generated_at_utc": "2026-10-29T19:31:18.512199+00:00",
+  "integrity_checksum_sha256": "52c2b68d622216c041af5c91061a2be8c2ae6262996fb746425a27f9857c1042",
+  "canonical_model": "CBE-0.7.0 (FROZEN)",
+  "scientific_integrity_attestation": {
+    "model_parameters_mutated": false,
+    "forward_leakage_risk": 0,
+    "holdout_exposure_status": "HOLDOUT_PREVIOUSLY_EXPOSED",
+    "replicated_specifications_epistemology": "2 out of 14 eligible specifications met predeclared holdout criteria. Because holdout was previously exposed and training p-values are exploratory (0.295, 0.094), these are NOT presented as independent confirmatory replication.",
+    "quarantined_partition_excluded": true,
+    "quarantined_period": "2026-10",
+    "trading_prohibited": true,
+    "directional_trading_eligibility": 0
+  },
+  "session_data": {
+    "schema_version": "1.0.0",
+    "session_id": "URS-7ea9897ed85a",
+    "asset": "BTCUSDT",
+    "interval": "1h",
+    "reference_start_utc": "2022-06-01T00:00:00Z",
+    "reference_end_utc": "2022-06-15T00:00:00Z",
+    "duration_hours": 336.0,
+    "candle_count": 337,
+    "dataset_manifest_sha256": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
+    "canonical_model_version": "CBE-0.7.0 (FROZEN)",
+    "selected_modules": [
+      "regime_analysis",
+      "volatility_analysis",
+      "historical_pattern_discovery",
+      "macro_comparison",
+      "statistical_evidence"
+    ],
+    "execution_status": "COMPLETED",
+    "total_execution_time_ms": 14221.73,
+    "module_results": {
+      "regime_analysis": {
+        "status": "SUCCESS",
+        "execution_time_ms": 2.54,
+        "regime_distribution": {
+          "CAPITULATION": 0.0682,
+          "HIGH_VOLATILITY": 0.2878,
+          "MOMENTUM_EXPANSION": 0.0,
+          "DISTRIBUTION": 0.0267,
+          "SIDEWAYS": 0.2077,
+          "RECOVERY_ACCUMULATION": 0.4095
+        },
+        "dominant_regime": "RECOVERY_ACCUMULATION",
+        "dominant_share_pct": 40.9,
+        "transition_matrix": {
+          "CAPITULATION": {
+            "CAPITULATION": 0.913,
+            "HIGH_VOLATILITY": 0.087,
+            "MOMENTUM_EXPANSION": 0.0,
+            "DISTRIBUTION": 0.0,
+            "SIDEWAYS": 0.0,
+            "RECOVERY_ACCUMULATION": 0.0
+          },
+          "HIGH_VOLATILITY": {
+            "CAPITULATION": 0.0208,
+            "HIGH_VOLATILITY": 0.9583,
+            "MOMENTUM_EXPANSION": 0.0,
+            "DISTRIBUTION": 0.0,
+            "SIDEWAYS": 0.0,
+            "RECOVERY_ACCUMULATION": 0.0208
+          },
+          "MOMENTUM_EXPANSION": {
+            "CAPITULATION": 0.0,
+            "HIGH_VOLATILITY": 0.0,
+            "MOMENTUM_EXPANSION": 1.0,
+            "DISTRIBUTION": 0.0,
+            "SIDEWAYS": 0.0,
+            "RECOVERY_ACCUMULATION": 0.0
+          },
+          "DISTRIBUTION": {
+            "CAPITULATION": 0.0,
+            "HIGH_VOLATILITY": 0.0,
+            "MOMENTUM_EXPANSION": 0.0,
+            "DISTRIBUTION": 0.7778,
+            "SIDEWAYS": 0.0,
+            "RECOVERY_ACCUMULATION": 0.2222
+          },
+          "SIDEWAYS": {
+            "CAPITULATION": 0.0,
+            "HIGH_VOLATILITY": 0.0,
+            "MOMENTUM_EXPANSION": 0.0,
+            "DISTRIBUTION": 0.0,
+            "SIDEWAYS": 0.9429,
+            "RECOVERY_ACCUMULATION": 0.0571
+          },
+          "RECOVERY_ACCUMULATION": {
+            "CAPITULATION": 0.0,
+            "HIGH_VOLATILITY": 0.0217,
+            "MOMENTUM_EXPANSION": 0.0,
+            "DISTRIBUTION": 0.0145,
+            "SIDEWAYS": 0.029,
+            "RECOVERY_ACCUMULATION": 0.9348
+          }
+        },
+        "mean_episode_duration_bars": 15.3,
+        "episode_count": 22,
+        "explanation_tr": "\u0130ncelenen d\u00f6nemde en bask\u0131n piyasa rejimi %40.9 pay ile 'RECOVERY_ACCUMULATION' olarak ger\u00e7ekle\u015fmi\u015ftir. Ortalama rejim kal\u0131c\u0131l\u0131\u011f\u0131 15.3 bard\u0131r."
+      },
+      "volatility_analysis": {
+        "status": "SUCCESS",
+        "execution_time_ms": 0.0,
+        "realized_volatility_annual_pct": 81.62,
+        "parkinson_volatility_annual_pct": 66.49,
+        "mean_return_pct": -0.1081,
+        "std_return_pct": 0.8717,
+        "min_return_pct": -4.16,
+        "max_return_pct": 3.5,
+        "skewness": -0.521,
+        "excess_kurtosis": 5.502,
+        "sample_size_bars": 337,
+        "warnings": [],
+        "explanation_tr": "D\u00f6nem ger\u00e7ekle\u015fen y\u0131ll\u0131k volatilite %81.6 (Parkinson: %66.5), ortalama bar getirisi %-0.108 ve bas\u0131kl\u0131k 5.5 olarak \u00f6l\u00e7\u00fclm\u00fc\u015ft\u00fcr."
+      },
+      "historical_pattern_discovery": {
+        "status": "SUCCESS",
+        "execution_time_ms": 12700.49,
+        "experiment_id": "EXP-PAT-V2-87b043fbb63b",
+        "disjoint_filtering_applied": true,
+        "ranking_stability_score": 0.933,
+        "ranking_stability_verdict": "HIGH_STABILITY",
+        "ranked_candidates_count": 3,
+        "ranked_candidates": [
+          {
+            "rank": 1,
+            "candidate_id": "PAT-CAND-2024072701",
+            "start_utc": "2024-07-27T01:00:00+00:00",
+            "end_utc": "2024-08-10T01:00:00+00:00",
+            "similarity_score_pct": 93.08,
+            "composite_distance": 0.0692,
+            "overlap_status": "DISJOINT",
+            "realized_volatility_pct": 80.88,
+            "dimension_contributions": {
+              "REGIME_COMPOSITION": {
+                "dimension_id": "REGIME_COMPOSITION",
+                "dimension_name_tr": "Rejim Kompozisyonu Ayr\u0131\u015f\u0131m\u0131 (JSD)",
+                "weight": 0.3,
+                "distance_value": 0.1382,
+                "weighted_contribution": 0.0415,
+                "contribution_pct": 59.91,
+                "metric_method": "JENSEN_SHANNON_DIVERGENCE",
+                "reference_value": "En bask\u0131n: RECOVERY_ACCUMULATION (%40.9)",
+                "candidate_value": "En bask\u0131n: RECOVERY_ACCUMULATION (%47.2)",
+                "explanation_tr": "Rejim kompozisyonu benzerli\u011fi %86.2 seviyesindedir."
+              },
+              "REALIZED_VOLATILITY": {
+                "dimension_id": "REALIZED_VOLATILITY",
+                "dimension_name_tr": "Ger\u00e7ekle\u015fen Volatilite Fark\u0131",
+                "weight": 0.25,
+                "distance_value": 0.0044,
+                "weighted_contribution": 0.0011,
+                "contribution_pct": 1.57,
+                "metric_method": "NORMALIZED_L1_VOLATILITY",
+                "reference_value": "%81.6 Y\u0131ll\u0131k",
+                "candidate_value": "%80.9 Y\u0131ll\u0131k",
+                "explanation_tr": "Y\u0131ll\u0131k volatilite adayda %80.9 (Referans: %81.6)."
+              },
+              "RETURN_DISTRIBUTION": {
+                "dimension_id": "RETURN_DISTRIBUTION",
+                "dimension_name_tr": "Getiri Da\u011f\u0131l\u0131m\u0131 Uzakl\u0131\u011f\u0131 (Wasserstein)",
+                "weight": 0.2,
+                "distance_value": 0.0158,
+                "weighted_contribution": 0.0032,
+                "contribution_pct": 4.57,
+                "metric_method": "WASSERSTEIN_1D",
+                "reference_value": "Ort Getiri: %-0.11",
+                "candidate_value": "Ort Getiri: %-0.03",
+                "explanation_tr": "Getiri da\u011f\u0131l\u0131m\u0131 Wasserstein mesafesi 0.0158 olarak saptanm\u0131\u015ft\u0131r."
+              },
+              "TRANSITION_STRUCTURE": {
+                "dimension_id": "TRANSITION_STRUCTURE",
+                "dimension_name_tr": "Rejim Ge\u00e7i\u015f Matrisi Fark\u0131 (Frobenius)",
+                "weight": 0.15,
+                "distance_value": 0.1249,
+                "weighted_contribution": 0.0187,
+                "contribution_pct": 27.07,
+                "metric_method": "NORMALIZED_FROBENIUS_NORM",
+                "reference_value": "6x6 Stokastik Ge\u00e7i\u015f Matrisi",
+                "candidate_value": "6x6 Stokastik Ge\u00e7i\u015f Matrisi",
+                "explanation_tr": "Ge\u00e7i\u015f matrisi ayr\u0131\u015f\u0131m\u0131 0.1249 ile dinamik ak\u0131\u015f benzerli\u011fi sunar."
+              },
+              "REGIME_PERSISTENCE": {
+                "dimension_id": "REGIME_PERSISTENCE",
+                "dimension_name_tr": "Rejim Kal\u0131c\u0131l\u0131\u011f\u0131 S\u00fcre Uyumsuzlu\u011fu",
+                "weight": 0.1,
+                "distance_value": 0.0476,
+                "weighted_contribution": 0.0048,
+                "contribution_pct": 6.88,
+                "metric_method": "RELATIVE_EPISODE_DURATION_GAP",
+                "reference_value": "15.3 Bar",
+                "candidate_value": "16.9 Bar",
+                "explanation_tr": "Rejim kal\u0131c\u0131l\u0131\u011f\u0131: Aday 16.9 bar, Referans 15.3 bar."
+              }
+            },
+            "explanation_tr": "2024-07-27 - 2024-08-10 aral\u0131\u011f\u0131, referans d\u00f6nemiyle %93.1 genel benzerlik ta\u015f\u0131maktad\u0131r. En belirleyici ayr\u0131\u015fma etmeni %59.9 pay ile Rejim Kompozisyonu Ayr\u0131\u015f\u0131m\u0131 (JSD) boyutudur."
+          },
+          {
+            "rank": 2,
+            "candidate_id": "PAT-CAND-2022011300",
+            "start_utc": "2022-01-13T00:00:00+00:00",
+            "end_utc": "2022-01-27T00:00:00+00:00",
+            "similarity_score_pct": 92.66,
+            "composite_distance": 0.0734,
+            "overlap_status": "DISJOINT",
+            "realized_volatility_pct": 78.32,
+            "dimension_contributions": {
+              "REGIME_COMPOSITION": {
+                "dimension_id": "REGIME_COMPOSITION",
+                "dimension_name_tr": "Rejim Kompozisyonu Ayr\u0131\u015f\u0131m\u0131 (JSD)",
+                "weight": 0.3,
+                "distance_value": 0.1309,
+                "weighted_contribution": 0.0393,
+                "contribution_pct": 53.51,
+                "metric_method": "JENSEN_SHANNON_DIVERGENCE",
+                "reference_value": "En bask\u0131n: RECOVERY_ACCUMULATION (%40.9)",
+                "candidate_value": "En bask\u0131n: RECOVERY_ACCUMULATION (%38.9)",
+                "explanation_tr": "Rejim kompozisyonu benzerli\u011fi %86.9 seviyesindedir."
+              },
+              "REALIZED_VOLATILITY": {
+                "dimension_id": "REALIZED_VOLATILITY",
+                "dimension_name_tr": "Ger\u00e7ekle\u015fen Volatilite Fark\u0131",
+                "weight": 0.25,
+                "distance_value": 0.0204,
+                "weighted_contribution": 0.0051,
+                "contribution_pct": 6.97,
+                "metric_method": "NORMALIZED_L1_VOLATILITY",
+                "reference_value": "%81.6 Y\u0131ll\u0131k",
+                "candidate_value": "%78.3 Y\u0131ll\u0131k",
+                "explanation_tr": "Y\u0131ll\u0131k volatilite adayda %78.3 (Referans: %81.6)."
+              },
+              "RETURN_DISTRIBUTION": {
+                "dimension_id": "RETURN_DISTRIBUTION",
+                "dimension_name_tr": "Getiri Da\u011f\u0131l\u0131m\u0131 Uzakl\u0131\u011f\u0131 (Wasserstein)",
+                "weight": 0.2,
+                "distance_value": 0.0168,
+                "weighted_contribution": 0.0034,
+                "contribution_pct": 4.57,
+                "metric_method": "WASSERSTEIN_1D",
+                "reference_value": "Ort Getiri: %-0.11",
+                "candidate_value": "Ort Getiri: %-0.05",
+                "explanation_tr": "Getiri da\u011f\u0131l\u0131m\u0131 Wasserstein mesafesi 0.0168 olarak saptanm\u0131\u015ft\u0131r."
+              },
+              "TRANSITION_STRUCTURE": {
+                "dimension_id": "TRANSITION_STRUCTURE",
+                "dimension_name_tr": "Rejim Ge\u00e7i\u015f Matrisi Fark\u0131 (Frobenius)",
+                "weight": 0.15,
+                "distance_value": 0.1392,
+                "weighted_contribution": 0.0209,
+                "contribution_pct": 28.47,
+                "metric_method": "NORMALIZED_FROBENIUS_NORM",
+                "reference_value": "6x6 Stokastik Ge\u00e7i\u015f Matrisi",
+                "candidate_value": "6x6 Stokastik Ge\u00e7i\u015f Matrisi",
+                "explanation_tr": "Ge\u00e7i\u015f matrisi ayr\u0131\u015f\u0131m\u0131 0.1392 ile dinamik ak\u0131\u015f benzerli\u011fi sunar."
+              },
+              "REGIME_PERSISTENCE": {
+                "dimension_id": "REGIME_PERSISTENCE",
+                "dimension_name_tr": "Rejim Kal\u0131c\u0131l\u0131\u011f\u0131 S\u00fcre Uyumsuzlu\u011fu",
+                "weight": 0.1,
+                "distance_value": 0.0476,
+                "weighted_contribution": 0.0048,
+                "contribution_pct": 6.49,
+                "metric_method": "RELATIVE_EPISODE_DURATION_GAP",
+                "reference_value": "15.3 Bar",
+                "candidate_value": "16.9 Bar",
+                "explanation_tr": "Rejim kal\u0131c\u0131l\u0131\u011f\u0131: Aday 16.9 bar, Referans 15.3 bar."
+              }
+            },
+            "explanation_tr": "2022-01-13 - 2022-01-27 aral\u0131\u011f\u0131, referans d\u00f6nemiyle %92.7 genel benzerlik ta\u015f\u0131maktad\u0131r. En belirleyici ayr\u0131\u015fma etmeni %53.5 pay ile Rejim Kompozisyonu Ayr\u0131\u015f\u0131m\u0131 (JSD) boyutudur."
+          },
+          {
+            "rank": 3,
+            "candidate_id": "PAT-CAND-2026012601",
+            "start_utc": "2026-01-26T01:00:00+00:00",
+            "end_utc": "2026-02-09T01:00:00+00:00",
+            "similarity_score_pct": 91.7,
+            "composite_distance": 0.083,
+            "overlap_status": "DISJOINT",
+            "realized_volatility_pct": 73.78,
+            "dimension_contributions": {
+              "REGIME_COMPOSITION": {
+                "dimension_id": "REGIME_COMPOSITION",
+                "dimension_name_tr": "Rejim Kompozisyonu Ayr\u0131\u015f\u0131m\u0131 (JSD)",
+                "weight": 0.3,
+                "distance_value": 0.151,
+                "weighted_contribution": 0.0453,
+                "contribution_pct": 54.58,
+                "metric_method": "JENSEN_SHANNON_DIVERGENCE",
+                "reference_value": "En bask\u0131n: RECOVERY_ACCUMULATION (%40.9)",
+                "candidate_value": "En bask\u0131n: RECOVERY_ACCUMULATION (%39.8)",
+                "explanation_tr": "Rejim kompozisyonu benzerli\u011fi %84.9 seviyesindedir."
+              },
+              "REALIZED_VOLATILITY": {
+                "dimension_id": "REALIZED_VOLATILITY",
+                "dimension_name_tr": "Ger\u00e7ekle\u015fen Volatilite Fark\u0131",
+                "weight": 0.25,
+                "distance_value": 0.0503,
+                "weighted_contribution": 0.0126,
+                "contribution_pct": 15.14,
+                "metric_method": "NORMALIZED_L1_VOLATILITY",
+                "reference_value": "%81.6 Y\u0131ll\u0131k",
+                "candidate_value": "%73.8 Y\u0131ll\u0131k",
+                "explanation_tr": "Y\u0131ll\u0131k volatilite adayda %73.8 (Referans: %81.6)."
+              },
+              "RETURN_DISTRIBUTION": {
+                "dimension_id": "RETURN_DISTRIBUTION",
+                "dimension_name_tr": "Getiri Da\u011f\u0131l\u0131m\u0131 Uzakl\u0131\u011f\u0131 (Wasserstein)",
+                "weight": 0.2,
+                "distance_value": 0.0194,
+                "weighted_contribution": 0.0039,
+                "contribution_pct": 4.68,
+                "metric_method": "WASSERSTEIN_1D",
+                "reference_value": "Ort Getiri: %-0.11",
+                "candidate_value": "Ort Getiri: %-0.06",
+                "explanation_tr": "Getiri da\u011f\u0131l\u0131m\u0131 Wasserstein mesafesi 0.0194 olarak saptanm\u0131\u015ft\u0131r."
+              },
+              "TRANSITION_STRUCTURE": {
+                "dimension_id": "TRANSITION_STRUCTURE",
+                "dimension_name_tr": "Rejim Ge\u00e7i\u015f Matrisi Fark\u0131 (Frobenius)",
+                "weight": 0.15,
+                "distance_value": 0.1262,
+                "weighted_contribution": 0.0189,
+                "contribution_pct": 22.8,
+                "metric_method": "NORMALIZED_FROBENIUS_NORM",
+                "reference_value": "6x6 Stokastik Ge\u00e7i\u015f Matrisi",
+                "candidate_value": "6x6 Stokastik Ge\u00e7i\u015f Matrisi",
+                "explanation_tr": "Ge\u00e7i\u015f matrisi ayr\u0131\u015f\u0131m\u0131 0.1262 ile dinamik ak\u0131\u015f benzerli\u011fi sunar."
+              },
+              "REGIME_PERSISTENCE": {
+                "dimension_id": "REGIME_PERSISTENCE",
+                "dimension_name_tr": "Rejim Kal\u0131c\u0131l\u0131\u011f\u0131 S\u00fcre Uyumsuzlu\u011fu",
+                "weight": 0.1,
+                "distance_value": 0.0233,
+                "weighted_contribution": 0.0023,
+                "contribution_pct": 2.8,
+                "metric_method": "RELATIVE_EPISODE_DURATION_GAP",
+                "reference_value": "15.3 Bar",
+                "candidate_value": "16.0 Bar",
+                "explanation_tr": "Rejim kal\u0131c\u0131l\u0131\u011f\u0131: Aday 16.0 bar, Referans 15.3 bar."
+              }
+            },
+            "explanation_tr": "2026-01-26 - 2026-02-09 aral\u0131\u011f\u0131, referans d\u00f6nemiyle %91.7 genel benzerlik ta\u015f\u0131maktad\u0131r. En belirleyici ayr\u0131\u015fma etmeni %54.6 pay ile Rejim Kompozisyonu Ayr\u0131\u015f\u0131m\u0131 (JSD) boyutudur."
+          }
+        ],
+        "explanation_tr": "BTCUSDT 2022-06-01 - 2022-06-15 referans d\u00f6nemi i\u00e7in taranan 860 tarihsel pencereden en y\u00fcksek 5 boyutlu benzerli\u011fe sahip 3 aday s\u0131ralanm\u0131\u015ft\u0131r. S\u0131ralama kararl\u0131l\u0131k puan\u0131: %93.3 (HIGH_STABILITY). Aday pencereler ayr\u0131k (disjoint) filtreleme ile kar\u015f\u0131l\u0131kl\u0131 \u00f6rt\u00fc\u015fmelerden ar\u0131nd\u0131r\u0131lm\u0131\u015ft\u0131r."
+      },
+      "macro_comparison": {
+        "status": "SUCCESS",
+        "execution_time_ms": 4.04,
+        "in_period_events_count": 0,
+        "in_period_events": [],
+        "adjacent_events_count": 0,
+        "adjacent_events": [],
+        "dominant_macro_theme": "GENEL_P\u0130YASA_D\u0130NAM\u0130\u011e\u0130",
+        "explanation_tr": "Se\u00e7ili d\u00f6nem i\u00e7erisinde 0 adet do\u011frulanm\u0131\u015f makroekonomik olay ger\u00e7ekle\u015fmi\u015ftir (Bask\u0131n tema: GENEL_P\u0130YASA_D\u0130NAM\u0130\u011e\u0130)."
+      },
+      "statistical_evidence": {
+        "status": "SUCCESS",
+        "execution_time_ms": 0.54,
+        "sample_size_bars": 337,
+        "sample_size_hours": 336.0,
+        "data_coverage_pct": 100.0,
+        "confidence_interval_95_mean_return_pct": [
+          -0.2011,
+          -0.015
+        ],
+        "holdout_exposure_status": "HOLDOUT_PREVIOUSLY_EXPOSED",
+        "epistemological_status": "EXPLORATORY_HOLDOUT_SATISFIED_NOT_INDEPENDENT_CONFIRMATORY_REPLICATION",
+        "eligible_specifications_count": 14,
+        "replicated_specifications_count": 2,
+        "replicated_specifications_details": [
+          {
+            "spec_id": "1h-6h-PARKINSON_HIGH_LOW",
+            "holdout_ratio": 1.584,
+            "holdout_p_value": 8.6e-05,
+            "train_p_value": 0.295419,
+            "verdict": "HOLDOUT_CRITERIA_SATISFIED_PREVIOUSLY_EXPOSED_NOT_CONFIRMATORY"
+          },
+          {
+            "spec_id": "1h-12h-PARKINSON_HIGH_LOW",
+            "holdout_ratio": 1.446,
+            "holdout_p_value": 9e-05,
+            "train_p_value": 0.094252,
+            "verdict": "HOLDOUT_CRITERIA_SATISFIED_PREVIOUSLY_EXPOSED_NOT_CONFIRMATORY"
+          }
+        ],
+        "fdr_audit_cell": {
+          "cell_id": "RES-ROB-CELL-758a387e",
+          "specification": "1h-24h-CLOSE_TO_CLOSE",
+          "raw_p_value": 0.3838,
+          "fdr_q_value": 0.4478
+        },
+        "explanation_tr": "337 barl\u0131k g\u00f6zlem seti \u00fczerinde %95 getiri g\u00fcven aral\u0131\u011f\u0131 [%-0.2011, %-0.015] olarak belirlenmi\u015ftir. Holdout seti ge\u00e7mi\u015fte g\u00f6zlendi\u011finden (2/14 \u015fartname kriterleri sa\u011flamaktad\u0131r), bulgular ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 de\u011fil ke\u015fifsel mahiyettedir."
+      }
+    },
+    "governance_invariants": {
+      "model_status": "STRICTLY_FROZEN",
+      "real_network_market_collection": "DISABLED",
+      "live_order_execution": "PERMANENTLY_PROHIBITED",
+      "directional_trading_eligibility": 0
+    },
+    "legal_disclaimer_tr": "Bu birle\u015fik ara\u015ft\u0131rma \u00e7al\u0131\u015fma alan\u0131 ve \u00fcretilen t\u00fcm analiz paketleri yaln\u0131zca tarihsel piyasa davran\u0131\u015f\u0131 ara\u015ft\u0131rmas\u0131, model dayan\u0131kl\u0131l\u0131k denetimi ve bilimsel hipotez de\u011ferlendirmesi amac\u0131yla sunulmaktad\u0131r. Canl\u0131 al\u0131m-sat\u0131m sinyali, fiyat tahmini veya yat\u0131r\u0131m tavsiyesi niteli\u011fi ta\u015f\u0131maz. Ge\u00e7mi\u015f benzerlikler gelecekte benzer sonu\u00e7lar al\u0131naca\u011f\u0131n\u0131 garanti etmez.",
+    "research_only": true
+  },
+  "comparison_data": {
+    "comparison_id": "CMP-URS-7ea9897ed85a-URS-c4d60d753ce6",
+    "schema_version": "1.0.0",
+    "generated_at_utc": "2026-10-29T19:31:18.512199+00:00",
+    "session_a": {
+      "session_id": "URS-7ea9897ed85a",
+      "start_utc": "2022-06-01T00:00:00Z",
+      "end_utc": "2022-06-15T00:00:00Z",
+      "duration_hours": 336.0,
+      "candle_count": 337,
+      "dominant_regime": "RECOVERY_ACCUMULATION",
+      "realized_volatility_annual_pct": 81.62,
+      "mean_return_pct": -0.1081,
+      "macro_events_count": 0
+    },
+    "session_b": {
+      "session_id": "URS-c4d60d753ce6",
+      "start_utc": "2024-07-27T01:00:00Z",
+      "end_utc": "2024-08-10T01:00:00Z",
+      "duration_hours": 336.0,
+      "candle_count": 337,
+      "dominant_regime": "RECOVERY_ACCUMULATION",
+      "realized_volatility_annual_pct": 80.91,
+      "mean_return_pct": -0.0306,
+      "macro_events_count": 0
+    },
+    "dimension_comparisons": {
+      "regime_composition": {
+        "jsd_divergence": 0.1151,
+        "similarity_pct": 88.5,
+        "explanation_tr": "Rejim kompozisyonu benzerli\u011fi %88.5 (JSD: 0.1151)."
+      },
+      "volatility": {
+        "realized_vol_gap_pct": 0.71,
+        "similarity_pct": 99.1,
+        "explanation_tr": "Y\u0131ll\u0131k volatilite fark\u0131 %0.71 puan olarak g\u00f6zlenmi\u015ftir."
+      },
+      "return_mean": {
+        "mean_return_gap_pct": 0.0775,
+        "explanation_tr": "Ortalama bar getirisi fark\u0131 %0.0775 seviyesindedir."
+      },
+      "macro_context": {
+        "events_a_count": 0,
+        "events_b_count": 0,
+        "explanation_tr": "A D\u00f6nemi 0 makro olay bar\u0131nd\u0131r\u0131rken B D\u00f6nemi 0 olay bar\u0131nd\u0131rmaktad\u0131r."
+      }
+    },
+    "composite_distance": 0.0878,
+    "composite_similarity_pct": 91.2,
+    "scientific_summary_tr": "D\u00f6nem A (2022-06-01T00:00:00Z - 2022-06-15T00:00:00Z) ile D\u00f6nem B (2024-07-27T01:00:00Z - 2024-08-10T01:00:00Z) kar\u015f\u0131la\u015ft\u0131r\u0131ld\u0131\u011f\u0131nda, toplam \u00e7ok boyutlu davran\u0131\u015f benzerli\u011fi %91.2 olarak \u00f6l\u00e7\u00fclm\u00fc\u015ft\u00fcr. Rejim kompozisyon uyumu %88.5, volatilite yak\u0131nl\u0131\u011f\u0131 %99.1'dir.",
+    "canonical_model_version": "CBE-0.7.0 (FROZEN)",
+    "legal_disclaimer_tr": "Bu birle\u015fik ara\u015ft\u0131rma \u00e7al\u0131\u015fma alan\u0131 ve \u00fcretilen t\u00fcm analiz paketleri yaln\u0131zca tarihsel piyasa davran\u0131\u015f\u0131 ara\u015ft\u0131rmas\u0131, model dayan\u0131kl\u0131l\u0131k denetimi ve bilimsel hipotez de\u011ferlendirmesi amac\u0131yla sunulmaktad\u0131r. Canl\u0131 al\u0131m-sat\u0131m sinyali, fiyat tahmini veya yat\u0131r\u0131m tavsiyesi niteli\u011fi ta\u015f\u0131maz. Ge\u00e7mi\u015f benzerlikler gelecekte benzer sonu\u00e7lar al\u0131naca\u011f\u0131n\u0131 garanti etmez."
+  },
+  "governance_invariants": {
+    "technical_decision": "TECHNICAL_NO_GO",
+    "governance_authorization": "NOT_GRANTED",
+    "production_token": "NOT_ISSUED",
+    "real_network_market_collection": "DISABLED",
+    "btcusdt_live_observation": "DISABLED",
+    "unattended_monitoring": "DISABLED",
+    "live_order_execution": "PERMANENTLY_PROHIBITED",
+    "directional_trading_eligibility": 0
+  },
+  "legal_disclaimer_tr": "Bu birle\u015fik ara\u015ft\u0131rma \u00e7al\u0131\u015fma alan\u0131 ve \u00fcretilen t\u00fcm analiz paketleri yaln\u0131zca tarihsel piyasa davran\u0131\u015f\u0131 ara\u015ft\u0131rmas\u0131, model dayan\u0131kl\u0131l\u0131k denetimi ve bilimsel hipotez de\u011ferlendirmesi amac\u0131yla sunulmaktad\u0131r. Canl\u0131 al\u0131m-sat\u0131m sinyali, fiyat tahmini veya yat\u0131r\u0131m tavsiyesi niteli\u011fi ta\u015f\u0131maz. Ge\u00e7mi\u015f benzerlikler gelecekte benzer sonu\u00e7lar al\u0131naca\u011f\u0131n\u0131 garanti etmez.",
+  "status": "SUCCESS"
+}

@@ -1,0 +1,47 @@
+{
+  "verification_id": "CBE_S18_SCIENTIFIC_INTEGRITY",
+  "timestamp_utc": "2026-10-29T19:30:11.759671+00:00",
+  "canonical_model": "CBE-0.7.0 (FROZEN)",
+  "freeze_verified": true,
+  "parameter_mutations_count": 0,
+  "holdout_replication_audit": {
+    "total_specifications": 16,
+    "eligible_specifications": 14,
+    "replicated_specifications": 2,
+    "replication_rate_pct": 14.29,
+    "exposure_status": "HOLDOUT_PREVIOUSLY_EXPOSED",
+    "epistemological_status": "EXPLORATORY_HOLDOUT_SATISFIED_NOT_INDEPENDENT_CONFIRMATORY_REPLICATION",
+    "replicated_specifications_list": [
+      {
+        "spec_id": "1h-6h-PARKINSON_HIGH_LOW",
+        "holdout_ratio": 1.584,
+        "holdout_p_value": 8.6e-05,
+        "train_ratio": 1.121,
+        "train_p_value": 0.295419,
+        "verdict": "HOLDOUT_CRITERIA_SATISFIED_PREVIOUSLY_EXPOSED_NOT_CONFIRMATORY",
+        "interpretation": "Predeclared holdout criteria satisfied (p=8.6e-05, ratio=1.584), but training p-value is 0.295419 and holdout was previously exposed; NOT presented as independent confirmatory replication."
+      },
+      {
+        "spec_id": "1h-12h-PARKINSON_HIGH_LOW",
+        "holdout_ratio": 1.446,
+        "holdout_p_value": 9e-05,
+        "train_ratio": 1.17,
+        "train_p_value": 0.094252,
+        "verdict": "HOLDOUT_CRITERIA_SATISFIED_PREVIOUSLY_EXPOSED_NOT_CONFIRMATORY",
+        "interpretation": "Predeclared holdout criteria satisfied (p=9.0e-05, ratio=1.446), training p-value is 0.094252 and holdout was previously exposed; NOT presented as independent confirmatory replication."
+      }
+    ]
+  },
+  "fdr_audit_cell": {
+    "cell_id": "RES-ROB-CELL-758a387e",
+    "specification": "1h-24h-CLOSE_TO_CLOSE",
+    "raw_p_value": 0.3838,
+    "fdr_q_value": 0.4478
+  },
+  "disjoint_candidate_filtering_guarantee": {
+    "algorithm": "STRICT_INTERVAL_DISJOINTNESS",
+    "overlap_tolerance_seconds": 0,
+    "forward_leakage_risk": 0
+  },
+  "scientific_integrity_verdict": "PASS_FULLY_VERIFIED"
+}
