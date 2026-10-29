@@ -1,18 +1,18 @@
 {
   "provenance_metadata": {
     "sprint_id": "CBE_PRODUCT_ACCELERATION_19",
-    "timestamp_utc": "2026-10-29T20:59:05Z",
+    "timestamp_utc": "2026-10-29T22:15:00Z",
     "host_ip": "168.231.125.238",
     "hostname": "srv1114257",
     "coolify_app_uuid": "dzzfws54by1whlbq6fk4ywut",
     "local_bind_port": "127.0.0.1:18080->8000/tcp"
   },
   "runtime_identity": {
-    "container_id": "c8cb0b56adc4",
+    "container_id": "6c2923385c32",
     "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
-    "docker_image_tag": "cbe-market-intelligence:sprint19-ffb3015",
-    "docker_image_id": "sha256:edb2b000bb97f543b8be638f4c3dbfd088558686bec0f6ab99fcb9e1f471f88d",
-    "build_source_commit": "ffb301519e49b2ba5ba37138cc34befe38796b95",
+    "docker_image_tag": "cbe-market-intelligence:sprint19-ca3a1cb",
+    "docker_image_id": "sha256:dd554c90e37c88e29f1f854b84d37212d06ae385e7ca09179d59d283945b8f4f",
+    "build_source_commit": "ca3a1cb28eb3ae0467e6e685c857ed1d9cefc5ba",
     "build_source_branch": "main",
     "build_reproducible": true
   },
@@ -27,6 +27,43 @@
     "hash_chain_valid": true,
     "last_processed_bar": "2026-09-24T13:15:00Z"
   },
+  "security_probes_verified": [
+    {
+      "probe": "Anonymous POST write rejection",
+      "method": "POST",
+      "route": "/api/v1/product/research-library",
+      "headers": { "Content-Type": "application/json" },
+      "expected_status": 401,
+      "actual_status": 401,
+      "verdict": "ANONYMOUS_WRITE_PROHIBITED"
+    },
+    {
+      "probe": "CSRF cross-site request rejection",
+      "method": "POST",
+      "route": "/api/v1/product/research-library",
+      "headers": { "Sec-Fetch-Site": "cross-site", "X-Research-Token": "cbe-research-authorized-token" },
+      "expected_status": 403,
+      "actual_status": 403,
+      "verdict": "CSRF_CROSS_SITE_REQUEST_REJECTED"
+    },
+    {
+      "probe": "Authorized authenticated CRUD lifecycle",
+      "method": "POST/GET/DELETE",
+      "route": "/api/v1/product/research-library",
+      "headers": { "X-Operator-Token": "cbe-staging-operator-key-sprint09-xyz987" },
+      "expected_status": 201,
+      "actual_status": 201,
+      "verdict": "AUTHORIZED_MUTATION_SUCCESSFUL"
+    },
+    {
+      "probe": "Path traversal defense",
+      "method": "GET",
+      "route": "/api/v1/product/research-library/../../etc/passwd",
+      "expected_status": 404,
+      "actual_status": 404,
+      "verdict": "PATH_TRAVERSAL_REJECTED"
+    }
+  ],
   "endpoints_verified": [
     {
       "route": "/health",
