@@ -383,6 +383,24 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.get_research_workspace_compare(query_params)
             elif sub_path in ("research-workspace/evidence", "workspace/evidence"):
                 return HTTPStatus.OK, cls.get_research_workspace_evidence(query_params)
+            elif sub_path in ("research-explorer/capabilities", "explorer/capabilities"):
+                return HTTPStatus.OK, cls.get_research_explorer_capabilities()
+            elif sub_path in ("research-explorer/historical-series", "explorer/historical-series"):
+                return cls.get_research_explorer_historical_series(query_params)
+            elif sub_path in ("research-explorer/regime-overlay", "explorer/regime-overlay"):
+                return cls.get_research_explorer_regime_overlay(query_params)
+            elif sub_path in ("research-explorer/macro-events", "explorer/macro-events"):
+                return cls.get_research_explorer_macro_events(query_params)
+            elif sub_path in ("research-explorer/comparison", "explorer/comparison"):
+                return cls.get_research_explorer_comparison(query_params)
+            elif sub_path in ("research-library", "library"):
+                return cls.get_research_library_list(query_params)
+            elif sub_path.startswith("research-library/export/"):
+                research_id = sub_path.split("/")[-1]
+                return cls.get_research_library_export(research_id)
+            elif sub_path.startswith("research-library/") and not sub_path.startswith("research-library/export/"):
+                research_id = sub_path.split("/")[-1]
+                return cls.get_research_library_item(research_id)
             else:
                 return HTTPStatus.NOT_FOUND, {
                     "error": "Not Found",
@@ -485,6 +503,31 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.post_research_workspace_compare(body, query_params)
             elif sub_path in ("research-workspace/evidence", "workspace/evidence"):
                 return HTTPStatus.OK, cls.post_research_workspace_evidence(body, query_params)
+            elif sub_path in ("research-explorer/historical-series", "explorer/historical-series"):
+                return cls.post_research_explorer_historical_series(body, query_params)
+            elif sub_path in ("research-explorer/comparison", "explorer/comparison"):
+                return cls.post_research_explorer_comparison(body, query_params)
+            elif sub_path in ("research-library", "library", "research-library/save"):
+                return cls.post_research_library_save(body)
+            elif sub_path in ("research-library/import", "library/import"):
+                return cls.post_research_library_import(body)
+            elif sub_path in ("research-library/duplicate", "library/duplicate"):
+                return cls.post_research_library_duplicate(body)
+            elif sub_path in ("research-library/update", "library/update"):
+                return cls.post_research_library_update(body)
+            elif sub_path in ("research-library/delete", "library/delete"):
+                return cls.post_research_library_delete(body)
+            elif sub_path.startswith("research-library/"):
+                research_id = sub_path.split("/")[-1]
+                action = body.get("action") or body.get("_method", "").lower()
+                if action in ("delete", "delete_definition"):
+                    return cls.delete_research_library_item(research_id)
+                elif action in ("patch", "update", "rename"):
+                    return cls.patch_research_library_item(research_id, body)
+                elif action == "duplicate":
+                    return cls.post_research_library_duplicate({"research_id": research_id, "title": body.get("title")})
+                else:
+                    return cls.patch_research_library_item(research_id, body)
 
             else:
                 return HTTPStatus.NOT_FOUND, {
@@ -498,6 +541,35 @@ class ProductDashboardApiService:
                 "message": str(e),
                 "timestamp": datetime.now(timezone.utc).isoformat(),
             }
+    @classmethod
+    def handle_patch_request(
+        cls,
+        path: str,
+        query_params: Dict[str, List[str]],
+        body: Dict[str, Any],
+        headers: Optional[Dict[str, str]] = None,
+    ) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        path_without_prefix = path[len(cls.API_PREFIX):] if path.startswith(cls.API_PREFIX) else path
+        sub_path = path_without_prefix.strip("/")
+        if sub_path.startswith("research-library/"):
+            research_id = sub_path.split("/")[-1]
+            return cls.patch_research_library_item(research_id, body)
+        return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": f"PATCH endpoint '{path}' not found."}
+
+    @classmethod
+    def handle_delete_request(
+        cls,
+        path: str,
+        query_params: Dict[str, List[str]],
+        headers: Optional[Dict[str, str]] = None,
+    ) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        path_without_prefix = path[len(cls.API_PREFIX):] if path.startswith(cls.API_PREFIX) else path
+        sub_path = path_without_prefix.strip("/")
+        if sub_path.startswith("research-library/"):
+            research_id = sub_path.split("/")[-1]
+            return cls.delete_research_library_item(research_id)
+        return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": f"DELETE endpoint '{path}' not found."}
+
     @classmethod
     def get_overview(cls) -> Dict[str, Any]:
         """Compile executive product overview with technical and governance decision state."""
@@ -4226,5 +4298,285 @@ class ProductDashboardApiService:
 
         return UnifiedResearchWorkspaceEngine.export_unified_evidence_package(s_data, cmp_data)
 
+
+
+    # -----------------------------------------------------------------------
+    # Sprint 19: Research Intelligence Explorer & Research Library Handlers
+    # -----------------------------------------------------------------------
+
+    @classmethod
+    def get_research_explorer_capabilities(cls) -> Dict[str, Any]:
+        """Return capabilities, limits, intervals, and canonical regimes."""
+        from coin_behavior_engine.product.research_intelligence_explorer import ResearchIntelligenceExplorerEngine
+        return ResearchIntelligenceExplorerEngine.get_capabilities()
+
+    @classmethod
+    def get_research_explorer_historical_series(cls, params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Fetch downsampled historical OHLCV candlestick series."""
+        from coin_behavior_engine.product.research_intelligence_explorer import ResearchIntelligenceExplorerEngine
+        try:
+            start_val = params.get("start_utc", params.get("start", ["2022-06-01T00:00:00Z"]))
+            start_utc = start_val[0] if isinstance(start_val, list) else str(start_val)
+            end_val = params.get("end_utc", params.get("end", ["2022-06-15T00:00:00Z"]))
+            end_utc = end_val[0] if isinstance(end_val, list) else str(end_val)
+            asset_val = params.get("asset", ["BTCUSDT"])
+            asset = asset_val[0] if isinstance(asset_val, list) else str(asset_val)
+            int_val = params.get("interval", ["1h"])
+            interval = int_val[0] if isinstance(int_val, list) else str(int_val)
+            pts_val = params.get("downsample_max_points", params.get("max_points", ["500"]))
+            max_pts = int(pts_val[0] if isinstance(pts_val, list) else pts_val)
+            res = ResearchIntelligenceExplorerEngine.get_historical_series(
+                start_utc=start_utc,
+                end_utc=end_utc,
+                asset=asset,
+                interval=interval,
+                downsample_max_points=max_pts,
+            )
+            return HTTPStatus.OK, res
+        except ValueError as ve:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": str(ve)}
+        except Exception as e:
+            logger.error("get_research_explorer_historical_series error: %s", e, exc_info=True)
+            return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal Server Error", "message": str(e)}
+
+    @classmethod
+    def post_research_explorer_historical_series(cls, body: Dict[str, Any], params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Fetch historical OHLCV candlestick series via POST."""
+        payload = body or {}
+        merged_params = dict(params)
+        for k, v in payload.items():
+            merged_params[k] = [str(v)]
+        return cls.get_research_explorer_historical_series(merged_params)
+
+    @classmethod
+    def get_research_explorer_regime_overlay(cls, params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Compute continuous regime segmentation bands and statistics."""
+        from coin_behavior_engine.product.research_intelligence_explorer import ResearchIntelligenceExplorerEngine
+        try:
+            start_val = params.get("start_utc", params.get("start", ["2022-06-01T00:00:00Z"]))
+            start_utc = start_val[0] if isinstance(start_val, list) else str(start_val)
+            end_val = params.get("end_utc", params.get("end", ["2022-06-15T00:00:00Z"]))
+            end_utc = end_val[0] if isinstance(end_val, list) else str(end_val)
+            asset_val = params.get("asset", ["BTCUSDT"])
+            asset = asset_val[0] if isinstance(asset_val, list) else str(asset_val)
+            int_val = params.get("interval", ["1h"])
+            interval = int_val[0] if isinstance(int_val, list) else str(int_val)
+            res = ResearchIntelligenceExplorerEngine.get_regime_overlay(
+                start_utc=start_utc,
+                end_utc=end_utc,
+                asset=asset,
+                interval=interval,
+            )
+            return HTTPStatus.OK, res
+        except ValueError as ve:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": str(ve)}
+        except Exception as e:
+            logger.error("get_research_explorer_regime_overlay error: %s", e, exc_info=True)
+            return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal Server Error", "message": str(e)}
+
+    @classmethod
+    def get_research_explorer_macro_events(cls, params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Retrieve macro event markers in or adjacent to the historical window."""
+        from coin_behavior_engine.product.research_intelligence_explorer import ResearchIntelligenceExplorerEngine
+        try:
+            start_val = params.get("start_utc", params.get("start", ["2022-06-01T00:00:00Z"]))
+            start_utc = start_val[0] if isinstance(start_val, list) else str(start_val)
+            end_val = params.get("end_utc", params.get("end", ["2022-06-15T00:00:00Z"]))
+            end_utc = end_val[0] if isinstance(end_val, list) else str(end_val)
+            res = ResearchIntelligenceExplorerEngine.get_macro_events(start_utc=start_utc, end_utc=end_utc)
+            return HTTPStatus.OK, res
+        except ValueError as ve:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": str(ve)}
+        except Exception as e:
+            logger.error("get_research_explorer_macro_events error: %s", e, exc_info=True)
+            return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal Server Error", "message": str(e)}
+
+    @classmethod
+    def get_research_explorer_comparison(cls, params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Generate synchronized dual-period series for side-by-side comparative analytics."""
+        from coin_behavior_engine.product.research_intelligence_explorer import ResearchIntelligenceExplorerEngine
+        try:
+            sa_val = params.get("start_utc_a", params.get("start_a", ["2022-06-01T00:00:00Z"]))
+            start_a = sa_val[0] if isinstance(sa_val, list) else str(sa_val)
+            ea_val = params.get("end_utc_a", params.get("end_a", ["2022-06-15T00:00:00Z"]))
+            end_a = ea_val[0] if isinstance(ea_val, list) else str(ea_val)
+            sb_val = params.get("start_utc_b", params.get("start_b", ["2024-07-27T01:00:00Z"]))
+            start_b = sb_val[0] if isinstance(sb_val, list) else str(sb_val)
+            eb_val = params.get("end_utc_b", params.get("end_b", ["2024-08-10T01:00:00Z"]))
+            end_b = eb_val[0] if isinstance(eb_val, list) else str(eb_val)
+            asset_val = params.get("asset", ["BTCUSDT"])
+            asset = asset_val[0] if isinstance(asset_val, list) else str(asset_val)
+            int_val = params.get("interval", ["1h"])
+            interval = int_val[0] if isinstance(int_val, list) else str(int_val)
+            res = ResearchIntelligenceExplorerEngine.get_comparison_series(
+                start_utc_a=start_a,
+                end_utc_a=end_a,
+                start_utc_b=start_b,
+                end_utc_b=end_b,
+                asset=asset,
+                interval=interval,
+            )
+            return HTTPStatus.OK, res
+        except ValueError as ve:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": str(ve)}
+        except Exception as e:
+            logger.error("get_research_explorer_comparison error: %s", e, exc_info=True)
+            return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal Server Error", "message": str(e)}
+
+    @classmethod
+    def post_research_explorer_comparison(cls, body: Dict[str, Any], params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Generate comparison series via POST."""
+        payload = body or {}
+        merged_params = dict(params)
+        for k, v in payload.items():
+            merged_params[k] = [str(v)]
+        return cls.get_research_explorer_comparison(merged_params)
+
+    @classmethod
+    def get_research_library_list(cls, params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """List and filter saved research definitions."""
+        from coin_behavior_engine.product.research_intelligence_explorer import ResearchLibraryEngine
+        try:
+            q_val = params.get("q") or params.get("search")
+            q = (q_val[0] if isinstance(q_val, list) else str(q_val)) if q_val else None
+            int_val = params.get("interval")
+            interval = (int_val[0] if isinstance(int_val, list) else str(int_val)) if int_val else None
+            lim_val = params.get("limit", 50)
+            limit = int(lim_val[0] if isinstance(lim_val, list) else lim_val)
+            items = ResearchLibraryEngine.list_definitions(q=q, interval=interval, limit=limit)
+            return HTTPStatus.OK, {
+                "schema_version": "1.0.0",
+                "count": len(items),
+                "items": items,
+                "research_only": True,
+            }
+        except Exception as e:
+            logger.error("get_research_library_list error: %s", e, exc_info=True)
+            return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal Server Error", "message": str(e)}
+
+    @classmethod
+    def get_research_library_item(cls, research_id: str) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Retrieve single research definition by ID."""
+        from coin_behavior_engine.product.research_intelligence_explorer import ResearchLibraryEngine
+        item = ResearchLibraryEngine.get_definition(research_id)
+        if not item:
+            return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": f"Araştırma tanımı bulunamadı: '{research_id}'"}
+        return HTTPStatus.OK, item
+
+    @classmethod
+    def get_research_library_export(cls, research_id: str) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Export single research definition as downloadable JSON."""
+        return cls.get_research_library_item(research_id)
+
+    @classmethod
+    def post_research_library_save(cls, body: Dict[str, Any]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Save a new research configuration to the library."""
+        from coin_behavior_engine.product.research_intelligence_explorer import ResearchLibraryEngine
+        try:
+            record = ResearchLibraryEngine.save_definition(body or {})
+            return HTTPStatus.CREATED, {
+                "status": "success",
+                "message": f"Araştırma tanımı kaydedildi: {record['title']}",
+                "research_id": record["research_id"],
+                "definition": record,
+            }
+        except ValueError as ve:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": str(ve)}
+        except RuntimeError as re_err:
+            return HTTPStatus.CONFLICT, {"error": "Capacity Exceeded", "message": str(re_err)}
+        except Exception as e:
+            logger.error("post_research_library_save error: %s", e, exc_info=True)
+            return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal Server Error", "message": str(e)}
+
+    @classmethod
+    def post_research_library_import(cls, body: Dict[str, Any]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Import an external validated research configuration JSON."""
+        from coin_behavior_engine.product.research_intelligence_explorer import ResearchLibraryEngine
+        try:
+            record = ResearchLibraryEngine.import_definition(body or {})
+            return HTTPStatus.CREATED, {
+                "status": "success",
+                "message": f"Araştırma tanımı başarıyla içe aktarıldı: {record['title']}",
+                "research_id": record["research_id"],
+                "definition": record,
+            }
+        except ValueError as ve:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": str(ve)}
+        except RuntimeError as re_err:
+            return HTTPStatus.CONFLICT, {"error": "Capacity Exceeded", "message": str(re_err)}
+        except Exception as e:
+            logger.error("post_research_library_import error: %s", e, exc_info=True)
+            return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal Server Error", "message": str(e)}
+
+    @classmethod
+    def post_research_library_duplicate(cls, body: Dict[str, Any]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Duplicate an existing research configuration."""
+        from coin_behavior_engine.product.research_intelligence_explorer import ResearchLibraryEngine
+        try:
+            research_id = (body or {}).get("research_id", "")
+            new_title = (body or {}).get("title")
+            record = ResearchLibraryEngine.duplicate_definition(research_id, new_title)
+            return HTTPStatus.CREATED, {
+                "status": "success",
+                "message": f"Araştırma tanımı kopyalandı: {record['title']}",
+                "research_id": record["research_id"],
+                "definition": record,
+            }
+        except KeyError as ke:
+            return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": str(ke)}
+        except ValueError as ve:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": str(ve)}
+        except RuntimeError as re_err:
+            return HTTPStatus.CONFLICT, {"error": "Capacity Exceeded", "message": str(re_err)}
+        except Exception as e:
+            logger.error("post_research_library_duplicate error: %s", e, exc_info=True)
+            return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal Server Error", "message": str(e)}
+
+    @classmethod
+    def post_research_library_update(cls, body: Dict[str, Any]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Update an existing research configuration via POST."""
+        payload = body or {}
+        research_id = payload.get("research_id", "")
+        return cls.patch_research_library_item(research_id, payload)
+
+    @classmethod
+    def post_research_library_delete(cls, body: Dict[str, Any]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Delete an existing research configuration via POST."""
+        payload = body or {}
+        research_id = payload.get("research_id", "")
+        return cls.delete_research_library_item(research_id)
+
+    @classmethod
+    def patch_research_library_item(cls, research_id: str, body: Dict[str, Any]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Update research definition metadata (title, description, tags)."""
+        from coin_behavior_engine.product.research_intelligence_explorer import ResearchLibraryEngine
+        try:
+            record = ResearchLibraryEngine.update_definition(research_id, body or {})
+            return HTTPStatus.OK, {
+                "status": "success",
+                "message": f"Araştırma tanımı güncellendi: {record['title']}",
+                "research_id": research_id,
+                "definition": record,
+            }
+        except KeyError as ke:
+            return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": str(ke)}
+        except ValueError as ve:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": str(ve)}
+        except Exception as e:
+            logger.error("patch_research_library_item error: %s", e, exc_info=True)
+            return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal Server Error", "message": str(e)}
+
+    @classmethod
+    def delete_research_library_item(cls, research_id: str) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Permanently delete a research definition."""
+        from coin_behavior_engine.product.research_intelligence_explorer import ResearchLibraryEngine
+        deleted = ResearchLibraryEngine.delete_definition(research_id)
+        if not deleted:
+            return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": f"Silinecek araştırma tanımı bulunamadı: '{research_id}'"}
+        return HTTPStatus.OK, {
+            "status": "success",
+            "message": f"Araştırma tanımı silindi: {research_id}",
+            "research_id": research_id,
+        }
 
 START_TIME = time.time()

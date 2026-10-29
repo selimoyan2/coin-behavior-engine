@@ -17,7 +17,7 @@ from __future__ import annotations
 
 def render_product_dashboard_html() -> str:
     """Render the master CBE Product Dashboard HTML."""
-    return """<!DOCTYPE html>
+    html = """<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
@@ -568,6 +568,9 @@ def render_product_dashboard_html() -> str:
 
   <!-- Top Navigation Tabs (Grouped Sub-Navigation) -->
   <nav class="nav-tabs" role="navigation" aria-label="Ürün Modülleri" style="overflow-x: auto; white-space: nowrap; scrollbar-width: thin;">
+    <a href="#research-explorer" class="nav-tab" id="tab-btn-research-explorer" onclick="switchTab('research-explorer')">
+      <span>🔭</span> Araştırma İstihbarat Gezgini V1 & Kütüphane (Sprint 19)
+    </a>
     <a href="#unified-workspace" class="nav-tab" id="tab-btn-unified-workspace" onclick="switchTab('unified-workspace')">
       <span>🔬</span> Birleşik Araştırma Alanı V1 (Sprint 18)
     </a>
@@ -4183,6 +4186,7 @@ def render_product_dashboard_html() -> str:
     }
 
     function switchTab(tabId) {
+      if (tabId === 'research-explorer') setTimeout(loadResearchExplorer, 50);
       if (tabId === 'unified-workspace') setTimeout(loadUnifiedWorkspace, 50);
       if (tabId === 'regimes') setTimeout(loadRegimeTransitionLab, 50);
       if (tabId === 'patterns') setTimeout(loadSprint16Patterns, 50);
@@ -8711,4 +8715,21 @@ def render_product_dashboard_html() -> str:
 </body>
 </html>
 """
+    from coin_behavior_engine.product.research_explorer_ui import (
+        render_research_explorer_html,
+        render_research_explorer_scripts,
+        render_research_explorer_styles,
+    )
+    # Inject Sprint 19 Explorer styles into <style> block
+    html = html.replace("</style>", render_research_explorer_styles() + "\n  </style>", 1)
+
+    # Inject Sprint 19 Explorer section before module-unified-workspace
+    section_hook = '<section id="module-unified-workspace"'
+    html = html.replace(section_hook, render_research_explorer_html() + "\n\n    " + section_hook, 1)
+
+    # Inject Sprint 19 Explorer scripts before </script>
+    html = html.replace("</script>\n</body>", render_research_explorer_scripts() + "\n</script>\n</body>", 1)
+
+    return html
+
 
