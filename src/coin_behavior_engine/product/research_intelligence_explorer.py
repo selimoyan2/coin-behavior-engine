@@ -22,12 +22,14 @@ Safety and Governance Invariants:
 from __future__ import annotations
 
 import copy
+import contextlib
 import hashlib
 import json
 import logging
 import math
 import os
 import re
+import sys
 import threading
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
@@ -645,6 +647,54 @@ class ResearchLibraryEngine:
     _LOCK = threading.Lock()
 
     @classmethod
+    @contextlib.contextmanager
+    def _cross_process_lock(cls):
+        """
+        Cross-thread and cross-process file lock context manager.
+        Acquires threading.Lock within process and OS-level file lock across processes.
+        Guarantees concurrency safety even under multi-worker or multi-process deployments.
+        """
+        storage_dir = cls.get_storage_dir()
+        lock_file_path = storage_dir / ".library.lock"
+        with cls._LOCK:
+            lock_fd = None
+            try:
+                lock_fd = os.open(str(lock_file_path), os.O_CREAT | os.O_RDWR)
+                if sys.platform == "win32":
+                    import msvcrt
+                    msvcrt.locking(lock_fd, msvcrt.LK_LOCK, 1)
+                else:
+                    import fcntl
+                    fcntl.flock(lock_fd, fcntl.LOCK_EX)
+                yield
+            finally:
+                if lock_fd is not None:
+                    try:
+                        if sys.platform == "win32":
+                            import msvcrt
+                            msvcrt.locking(lock_fd, msvcrt.LK_UNLCK, 1)
+                        else:
+                            import fcntl
+                            fcntl.flock(lock_fd, fcntl.LOCK_UN)
+                    except Exception:
+                        pass
+                    try:
+                        os.close(lock_fd)
+                    except Exception:
+                        pass
+
+    @classmethod
+    def _resolve_safe_file_path(cls, research_id: str) -> Optional[Path]:
+        """Validate research ID format and verify path does not escape storage directory."""
+        if not SAFE_ID_REGEX.match(research_id):
+            return None
+        storage_dir = cls.get_storage_dir().resolve()
+        candidate = (storage_dir / f"{research_id}.json").resolve()
+        if candidate.parent != storage_dir:
+            return None
+        return candidate
+
+    @classmethod
     def get_storage_dir(cls) -> Path:
         """Resolve and initialize persistent research library storage directory."""
         env_path = os.environ.get("CBE_RESEARCH_LIBRARY_PATH")
@@ -720,8 +770,8 @@ class ResearchLibraryEngine:
         cleaned = cls.validate_definition_payload(payload)
         storage_dir = cls.get_storage_dir()
 
-        with cls._LOCK:
-            existing_files = list(storage_dir.glob("RLIB-*.json"))
+        with cls._cross_process_lock():
+            existing_files = [f for f in storage_dir.glob("RLIB-*.json") if not f.name.startswith(".")]
             if len(existing_files) >= cls.MAX_DEFINITIONS_CAPACITY:
                 raise RuntimeError(
                     f"Araştırma kütüphanesi kapasitesi dolmuştur ({cls.MAX_DEFINITIONS_CAPACITY} kayıt). "
@@ -768,15 +818,17 @@ class ResearchLibraryEngine:
         interval: Optional[str] = None,
         limit: int = 50,
     ) -> List[Dict[str, Any]]:
-        """List and filter saved research definitions."""
+        """List and filter saved research definitions with corruption resilience."""
         storage_dir = cls.get_storage_dir()
         definitions: List[Dict[str, Any]] = []
 
         query = q.lower().strip() if q else None
         filter_interval = interval.lower().strip() if interval else None
 
-        with cls._LOCK:
+        with cls._cross_process_lock():
             for f in sorted(storage_dir.glob("RLIB-*.json"), reverse=True):
+                if f.name.startswith("."):
+                    continue
                 try:
                     with open(f, "r", encoding="utf-8") as fp:
                         data = json.load(fp)
@@ -796,7 +848,8 @@ class ResearchLibraryEngine:
                         if len(definitions) >= limit:
                             break
                 except Exception as e:
-                    logger.warning("Error reading research definition file %s: %s", f.name, e)
+                    logger.warning("Corrupted or unreadable research definition file %s: %s", f.name, e)
+                    continue
 
         # Sort by updated_at_utc descending
         definitions.sort(key=lambda d: d.get("updated_at_utc", ""), reverse=True)
@@ -804,15 +857,12 @@ class ResearchLibraryEngine:
 
     @classmethod
     def get_definition(cls, research_id: str) -> Optional[Dict[str, Any]]:
-        """Retrieve a single research definition by ID."""
-        if not SAFE_ID_REGEX.match(research_id):
+        """Retrieve a single research definition by ID with path traversal validation."""
+        file_path = cls._resolve_safe_file_path(research_id)
+        if not file_path or not file_path.exists():
             return None
 
-        file_path = cls.get_storage_dir() / f"{research_id}.json"
-        if not file_path.exists():
-            return None
-
-        with cls._LOCK:
+        with cls._cross_process_lock():
             try:
                 with open(file_path, "r", encoding="utf-8") as f:
                     return json.load(f)
@@ -848,7 +898,7 @@ class ResearchLibraryEngine:
         file_path = storage_dir / f"{research_id}.json"
         tmp_path = storage_dir / f"{research_id}.tmp"
 
-        with cls._LOCK:
+        with cls._cross_process_lock():
             with open(tmp_path, "w", encoding="utf-8") as f:
                 json.dump(record, f, indent=2, ensure_ascii=False)
             os.replace(tmp_path, file_path)
@@ -863,18 +913,19 @@ class ResearchLibraryEngine:
         if not record:
             raise KeyError(f"Kopyalanacak araştırma tanımı bulunamadı: {research_id}")
 
+        import copy
         clone_data = copy.deepcopy(record)
         clone_data["title"] = new_title or f"{record['title']} (Kopya)"
         return cls.save_definition(clone_data)
 
     @classmethod
     def delete_definition(cls, research_id: str) -> bool:
-        """Permanently delete a research definition file."""
-        if not SAFE_ID_REGEX.match(research_id):
+        """Permanently delete a research definition file with path traversal guard."""
+        file_path = cls._resolve_safe_file_path(research_id)
+        if not file_path:
             return False
 
-        file_path = cls.get_storage_dir() / f"{research_id}.json"
-        with cls._LOCK:
+        with cls._cross_process_lock():
             if file_path.exists():
                 file_path.unlink()
                 logger.info("Deleted research definition: %s", research_id)

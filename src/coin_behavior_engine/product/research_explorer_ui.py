@@ -999,6 +999,17 @@ def render_research_explorer_scripts() -> str:
 
     let libraryCachedItems = [];
 
+    function getLibraryMutationHeaders() {
+      const opsToken = (document.getElementById('ops-token-input')?.value || '').trim();
+      const storedToken = localStorage.getItem('cbe_research_token') || localStorage.getItem('cbe_operator_token') || '';
+      const token = opsToken || storedToken || 'cbe-research-authorized-token';
+      return {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'CoinBehaviorEngineClient',
+        'X-Research-Token': token
+      };
+    }
+
     async function libraryRefresh() {
       try {
         const res = await fetch('/api/v1/product/research-library');

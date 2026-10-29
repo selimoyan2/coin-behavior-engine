@@ -339,6 +339,15 @@ class TestSprint19ResearchLibraryV1:
         all_defs = ResearchLibraryEngine.list_definitions(limit=100)
         assert len(all_defs) == 20
 
+        # Corrupted file resilience test: corrupted json files do not crash list_definitions
+        storage_dir = ResearchLibraryEngine.get_storage_dir()
+        corrupted_file = storage_dir / "RLIB-CORRUPTED-TEST.json"
+        corrupted_file.write_text("{{corrupted_json_content...", encoding="utf-8")
+        survived_defs = ResearchLibraryEngine.list_definitions(limit=100)
+        assert len(survived_defs) == 20
+        if corrupted_file.exists():
+            corrupted_file.unlink()
+
 
 class TestSprint19DashboardApiIntegration:
     """Tests for HTTP endpoint routing and status codes via ProductDashboardApiService."""
@@ -393,7 +402,6 @@ class TestSprint19DashboardApiIntegration:
         test_lib_dir.mkdir(parents=True, exist_ok=True)
         monkeypatch.setenv("CBE_RESEARCH_LIBRARY_PATH", str(test_lib_dir))
 
-        # 1. CREATE via POST
         create_payload = {
             "title": "API Döngü Testi",
             "description": "CRUD testi",
@@ -402,41 +410,93 @@ class TestSprint19DashboardApiIntegration:
             "reference_start_utc": "2022-06-01T00:00:00Z",
             "reference_end_utc": "2022-06-15T00:00:00Z",
         }
+
+        # 0. Security Verification: Anonymous POST rejected (401)
+        status, _ = ProductDashboardApiService.handle_post_request(
+            "/api/v1/product/research-library", {}, create_payload, headers={}
+        )
+        assert status == HTTPStatus.UNAUTHORIZED
+
+        # 0.1 Security Verification: CSRF cross-site rejected (403)
+        status, _ = ProductDashboardApiService.handle_post_request(
+            "/api/v1/product/research-library", {}, create_payload,
+            headers={"X-Research-Token": "cbe-research-authorized-token", "Sec-Fetch-Site": "cross-site"}
+        )
+        assert status == HTTPStatus.FORBIDDEN
+
+        # 0.2 Security Verification: Revoked token rejected (403)
+        status, _ = ProductDashboardApiService.handle_post_request(
+            "/api/v1/product/research-library", {}, create_payload,
+            headers={"X-Research-Token": "revoked_token_test_123"}
+        )
+        assert status == HTTPStatus.FORBIDDEN
+
+        auth_headers = {
+            "X-Research-Token": "cbe-research-authorized-token",
+            "Sec-Fetch-Site": "same-origin",
+        }
+
+        # 1. CREATE via POST with authorized token
         status, created = ProductDashboardApiService.handle_post_request(
-            "/api/v1/product/research-library", {}, create_payload
+            "/api/v1/product/research-library", {}, create_payload, headers=auth_headers
         )
         assert status == HTTPStatus.CREATED
         rid = created["research_id"]
 
-        # 2. READ via GET
+        # 2. READ via GET (Read-only catalog open)
         status, item = ProductDashboardApiService.handle_request(f"/api/v1/product/research-library/{rid}", {})
         assert status == HTTPStatus.OK
         assert item["title"] == "API Döngü Testi"
 
-        # 3. UPDATE via PATCH
+        # 3. Security Verification: Anonymous PATCH rejected (401)
+        status, _ = ProductDashboardApiService.handle_patch_request(
+            f"/api/v1/product/research-library/{rid}", {}, {"title": "Güncellenmiş Başlık"}, headers={}
+        )
+        assert status == HTTPStatus.UNAUTHORIZED
+
+        # 3.1 UPDATE via PATCH with authorized token
         status, updated = ProductDashboardApiService.handle_patch_request(
-            f"/api/v1/product/research-library/{rid}", {}, {"title": "Güncellenmiş Başlık"}
+            f"/api/v1/product/research-library/{rid}", {}, {"title": "Güncellenmiş Başlık"}, headers=auth_headers
         )
         assert status == HTTPStatus.OK
         assert updated["definition"]["title"] == "Güncellenmiş Başlık"
 
-        # 4. DUPLICATE via POST
+        # 4. DUPLICATE via POST with authorized token
         status, dup = ProductDashboardApiService.handle_post_request(
-            "/api/v1/product/research-library/duplicate", {}, {"research_id": rid, "title": "Kopya Başlık"}
+            "/api/v1/product/research-library/duplicate", {}, {"research_id": rid, "title": "Kopya Başlık"}, headers=auth_headers
         )
         assert status == HTTPStatus.CREATED
         assert dup["definition"]["title"] == "Kopya Başlık"
 
-        # 5. DELETE via DELETE
+        # 5. Security Verification: Anonymous DELETE rejected (401)
+        status, _ = ProductDashboardApiService.handle_delete_request(
+            f"/api/v1/product/research-library/{rid}", {}, headers={}
+        )
+        assert status == HTTPStatus.UNAUTHORIZED
+
+        # 5.1 DELETE via DELETE with authorized token
         status, del_res = ProductDashboardApiService.handle_delete_request(
-            f"/api/v1/product/research-library/{rid}", {}
+            f"/api/v1/product/research-library/{rid}", {}, headers=auth_headers
         )
         assert status == HTTPStatus.OK
         assert del_res["status"] == "success"
 
-        # 6. Verify 404
+        # 6. Verify 404 after deletion
         status, _ = ProductDashboardApiService.handle_request(f"/api/v1/product/research-library/{rid}", {})
         assert status == HTTPStatus.NOT_FOUND
+
+        # 7. Security Verification: Path traversal attempt rejected (404)
+        status, _ = ProductDashboardApiService.handle_request("/api/v1/product/research-library/../../etc/passwd", {})
+        assert status == HTTPStatus.NOT_FOUND
+
+        # 8. Security Verification: Production environment blocks all mutations (403)
+        monkeypatch.setenv("CBE_ENV", "production")
+        status, prod_res = ProductDashboardApiService.handle_post_request(
+            "/api/v1/product/research-library", {}, create_payload, headers=auth_headers
+        )
+        assert status == HTTPStatus.FORBIDDEN
+        assert prod_res["error"] == "Forbidden"
+        assert "MUTATIONS_PERMANENTLY_BLOCKED_IN_PRODUCTION" in prod_res["message"]
 
     def test_prohibited_live_trading_isolation(self):
         # Any attempt to call trading or order execution routes must be rejected
