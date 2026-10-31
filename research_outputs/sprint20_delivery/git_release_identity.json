@@ -1,0 +1,25 @@
+{
+  "release_metadata": {
+    "sprint_id": "CBE_PRODUCT_ACCELERATION_20",
+    "release_tag": "sprint-20-final",
+    "branch": "main",
+    "repository": "selimoyan2/coin-behavior-engine",
+    "canonical_model": "CBE-0.7.0 (STRICTLY FROZEN)",
+    "timestamp_utc": "2026-10-31T23:40:00Z"
+  },
+  "git_ancestry": {
+    "sprint19_final_commit": "ba15325642c14815d91b0a73dd7d69d2b8b503b5",
+    "sprint20_implementation_commit": "33ef57367ea18b6287e076615b81f185efce5f77",
+    "git_remote_status": "pushed to origin/main"
+  },
+  "components_added_or_modified": [
+    "src/coin_behavior_engine/product/research_workflow.py",
+    "src/coin_behavior_engine/product/dashboard_api.py",
+    "src/coin_behavior_engine/product/research_explorer_ui.py",
+    "src/coin_behavior_engine/product/operations_console.py",
+    "tests/test_sprint_product_acceleration_20.py",
+    "scripts/run_playwright_sprint20.py",
+    "research_outputs/sprint20_delivery/*"
+  ],
+  "governance_decision": "SPRINT_20_RELEASE_APPROVED"
+}

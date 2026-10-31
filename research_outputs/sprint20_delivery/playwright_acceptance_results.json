@@ -1,0 +1,67 @@
+{
+  "acceptance_metadata": {
+    "sprint_id": "CBE_PRODUCT_ACCELERATION_20",
+    "test_suite": "scripts/run_playwright_sprint20.py",
+    "engine": "Playwright / Chromium (headless)",
+    "timestamp_utc": "2026-10-31T23:36:00Z",
+    "overall_status": "ALL_PASSED"
+  },
+  "verified_screenshots": [
+    {
+      "step": 1,
+      "name": "sprint20_screenshot_01_workflow_stepper_and_explorer.png",
+      "viewport": "1440x900 (Desktop)",
+      "target": "Research Explorer Tab & Guided Research Journey 5-Step Stepper Bar",
+      "status": "VERIFIED"
+    },
+    {
+      "step": 2,
+      "name": "sprint20_screenshot_02_period_selection_and_candles.png",
+      "viewport": "1440x900 (Desktop)",
+      "target": "Interactive Candlestick Chart, Regime Bands & Macro Event Pins",
+      "status": "VERIFIED"
+    },
+    {
+      "step": 3,
+      "name": "sprint20_screenshot_03_unified_research_session_view.png",
+      "viewport": "1440x900 (Desktop)",
+      "target": "Unified Research Workspace V1 (URS) 5-Module Session Dashboard",
+      "status": "VERIFIED"
+    },
+    {
+      "step": 4,
+      "name": "sprint20_screenshot_04_pattern_discovery_candidates.png",
+      "viewport": "1440x900 (Desktop)",
+      "target": "Historical Pattern Discovery V2 Search Results & Disjoint Candidates",
+      "status": "VERIFIED"
+    },
+    {
+      "step": 5,
+      "name": "sprint20_screenshot_05_comparison_studio_studio.png",
+      "viewport": "1440x900 (Desktop)",
+      "target": "Comparison Studio V2 Dual-Period & Normalized Progress (Base 100)",
+      "status": "VERIFIED"
+    },
+    {
+      "step": 6,
+      "name": "sprint20_screenshot_06_research_library_v2_catalog.png",
+      "viewport": "1440x900 (Desktop)",
+      "target": "Research Library V2 Catalog, Search Filters & Save Definition Modal",
+      "status": "VERIFIED"
+    },
+    {
+      "step": 7,
+      "name": "sprint20_screenshot_07_tablet_viewport_responsive.png",
+      "viewport": "768x1024 (Tablet)",
+      "target": "Responsive Fluid Grid & Stepper on iPad / Tablet Screen",
+      "status": "VERIFIED"
+    },
+    {
+      "step": 8,
+      "name": "sprint20_screenshot_08_mobile_viewport_responsive.png",
+      "viewport": "375x812 (Mobile)",
+      "target": "Responsive Compact Stepper, Touch Navigation & Mobile Viewport",
+      "status": "VERIFIED"
+    }
+  ]
+}

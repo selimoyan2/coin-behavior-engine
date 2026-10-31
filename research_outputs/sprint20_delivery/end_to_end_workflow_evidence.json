@@ -1,0 +1,45 @@
+{
+  "export_schema_version": "CBE-WORKFLOW-EVIDENCE-1.0.0",
+  "workflow_id": "RWF-11695566f1eebf18",
+  "research_session_id": "URS-a01124326dc3",
+  "created_at_utc": "2026-10-31T23:42:00Z",
+  "canonical_model": {
+    "version": "CBE-0.7.0",
+    "status": "STRICTLY_FROZEN",
+    "parameter_mutations": 0
+  },
+  "dataset_provenance": {
+    "manifest_sha256": "fe6c73326c639ee048012cbeb4d50cb9b25014552411ae7a4ef5a57be448ad97",
+    "quarantine_status": "OCTOBER_2026_EXCLUDED"
+  },
+  "research_specification": {
+    "asset": "BTCUSDT",
+    "interval": "1h",
+    "reference_start_utc": "2022-06-01T00:00:00Z",
+    "reference_end_utc": "2022-06-15T00:00:00Z",
+    "selected_modules": [
+      "regime_analysis",
+      "volatility_analysis",
+      "historical_pattern_discovery",
+      "macro_comparison",
+      "statistical_evidence"
+    ]
+  },
+  "comparison_metadata": {
+    "candidate_start_utc": "2024-07-27T01:00:00Z",
+    "candidate_end_utc": "2024-08-10T01:00:00Z",
+    "candidate_label": "FOMC Shock 2024 Analogy",
+    "similarity_score": 0.895
+  },
+  "scientific_disclosures": {
+    "predeclared_holdout_criteria_satisfied": 2,
+    "independent_confirmatory_replications": 0,
+    "holdout_status": "Eksploratif holdout kriterleri karşılanmış olup, geçmişte açığa çıkarılmış veri nedeniyle bağımsız doğrulayıcı replikasyon (confirmatory replication) olarak KABUL EDİLEMEZ.",
+    "epistemological_limitations": [
+      "Analizler 100% geriye dönük ve betimseldir.",
+      "Tarihsel benzerlik gelecekteki fiyat hareketlerini garanti etmez.",
+      "Sıfır canlı emir iletimi, sıfır yönlü işlem sinyali, sıfır getiri taahhüdü."
+    ]
+  },
+  "package_checksum_sha256": "d86325387466b7d4d3fa4eb4e1b81804f3747cb9e4776106095033486c905b76"
+}

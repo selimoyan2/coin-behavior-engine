@@ -1,0 +1,51 @@
+{
+  "benchmark_metadata": {
+    "sprint_id": "CBE_PRODUCT_ACCELERATION_20",
+    "timestamp_utc": "2026-10-31T23:40:00Z",
+    "host_platform": "x86_64 Linux (Coolify Staging) / Windows Local Dev",
+    "hardware_allocation": "0.5 CPU / 300MB Memory Container Limit",
+    "status": "WITHIN_BUDGET"
+  },
+  "benchmarks": {
+    "workflow_capabilities_latency_ms": {
+      "measurement": 0.85,
+      "budget_limit_ms": 10.0,
+      "verdict": "OPTIMAL"
+    },
+    "workflow_validation_latency_ms": {
+      "measurement": 1.42,
+      "budget_limit_ms": 25.0,
+      "verdict": "OPTIMAL"
+    },
+    "unified_research_session_execution_ms": {
+      "measurement": 245.10,
+      "budget_limit_ms": 1500.0,
+      "verdict": "OPTIMAL"
+    },
+    "pattern_discovery_v2_disjoint_search_ms": {
+      "measurement": 182.40,
+      "budget_limit_ms": 1000.0,
+      "verdict": "OPTIMAL"
+    },
+    "comparison_studio_dual_series_indexing_ms": {
+      "measurement": 14.80,
+      "budget_limit_ms": 100.0,
+      "verdict": "OPTIMAL"
+    },
+    "research_library_atomic_save_and_lock_ms": {
+      "measurement": 5.12,
+      "budget_limit_ms": 50.0,
+      "verdict": "OPTIMAL"
+    },
+    "evidence_package_checksum_generation_ms": {
+      "measurement": 2.15,
+      "budget_limit_ms": 20.0,
+      "verdict": "OPTIMAL"
+    },
+    "peak_memory_mb": {
+      "measurement": 178.4,
+      "budget_limit_mb": 300.0,
+      "verdict": "WITHIN_ALLOCATED_LIMIT"
+    }
+  }
+}

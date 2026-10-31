@@ -1,0 +1,101 @@
+{
+  "api_specification": {
+    "module": "research_workflow",
+    "version": "1.0.0",
+    "prefix": "/api/v1/product/research-workflow",
+    "status": "FROZEN_SPECIFICATION"
+  },
+  "endpoints": [
+    {
+      "method": "GET",
+      "route": "/capabilities",
+      "description": "Expose workflow capabilities, supported stages, and safety limits.",
+      "request_body": null,
+      "response_schema": {
+        "status": "str",
+        "schema_version": "str",
+        "canonical_model": "str",
+        "supported_stages": "list[str]",
+        "allowed_transitions": "dict[str, list[str]]",
+        "quarantine_boundary": "str",
+        "governance_restrictions": "dict"
+      }
+    },
+    {
+      "method": "POST",
+      "route": "/validate",
+      "description": "Validate research parameters, dates, and quarantine boundaries without stateful side effects.",
+      "request_body": {
+        "start_utc": "str (ISO 8601)",
+        "end_utc": "str (ISO 8601)",
+        "asset": "str",
+        "interval": "str",
+        "selected_modules": "list[str] (optional)",
+        "existing_context": "dict (optional)"
+      },
+      "response_schema": {
+        "valid": "bool",
+        "workflow_context": "dict (SharedResearchContext)"
+      }
+    },
+    {
+      "method": "POST",
+      "route": "/session",
+      "description": "Execute 5-module Unified Research Session for active workflow context.",
+      "request_body": {
+        "workflow_context": "dict (SharedResearchContext)"
+      },
+      "response_schema": {
+        "workflow_context": "dict (Updated context)",
+        "session": "dict (UnifiedResearchSession)",
+        "scientific_explanations": "dict"
+      }
+    },
+    {
+      "method": "POST",
+      "route": "/compare",
+      "description": "Select candidate period for comparison preserving disjointness.",
+      "request_body": {
+        "workflow_context": "dict",
+        "candidate_start_utc": "str (ISO 8601)",
+        "candidate_end_utc": "str (ISO 8601)",
+        "candidate_label": "str (optional)",
+        "similarity_score": "float (optional)"
+      },
+      "response_schema": {
+        "workflow_context": "dict (Stage: COMPARISON_READY)"
+      }
+    },
+    {
+      "method": "POST",
+      "route": "/save",
+      "description": "Save complete workflow configuration to Research Library V2.",
+      "headers": {
+        "X-Research-Token or X-Operator-Token": "required",
+        "Sec-Fetch-Site": "same-origin / same-site"
+      },
+      "request_body": {
+        "workflow_context": "dict",
+        "title": "str",
+        "description": "str (optional)",
+        "tags": "list[str] (optional)"
+      },
+      "response_schema": {
+        "workflow_context": "dict",
+        "library_definition": "dict"
+      }
+    },
+    {
+      "method": "POST",
+      "route": "/evidence",
+      "description": "Export canonical reproducible evidence package with SHA-256 integrity checksum.",
+      "request_body": {
+        "workflow_context": "dict"
+      },
+      "response_schema": {
+        "evidence_package": "dict",
+        "workflow_context": "dict"
+      }
+    }
+  ]
+}
