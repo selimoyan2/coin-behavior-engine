@@ -132,6 +132,82 @@ def render_research_explorer_html() -> str:
         </div>
       </div>
 
+      <!-- Sprint 20: Guided Research Journey Workflow Navigation Header -->
+      <div class="card" id="workflow-journey-card" style="margin-bottom: 20px; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); border: 1px solid #4338ca; border-radius: 12px; padding: 18px 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 14px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 20px;">🧭</span>
+            <div>
+              <div style="font-size: 14px; font-weight: 700; color: #e0e7ff; letter-spacing: 0.5px;">BİRLEŞİK ARAŞTIRMA YOLCULUĞU (RESEARCH WORKFLOW V1)</div>
+              <div style="font-size: 12px; color: #a5b4fc;" id="workflow-id-badge">İş Akışı Kimliği: Hazırlanıyor...</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span id="workflow-stage-pill" class="badge" style="background: rgba(99, 102, 241, 0.25); color: #c7d2fe; border: 1px solid #6366f1; font-weight: 700; padding: 6px 12px; font-size: 12px;">
+              Aşama: BAŞLANGIÇ
+            </span>
+            <button class="btn btn-sm btn-secondary" onclick="workflowResetJourney()" title="İş akışını sıfırla">🔄 Sıfırla</button>
+          </div>
+        </div>
+
+        <!-- 5-Step Visual Stepper Bar -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-top: 10px;">
+          <!-- Step 1: Historical Period -->
+          <div id="step-node-1" class="workflow-step-node active" onclick="workflowNavigateStep(1)" style="background: #1e293b; border: 1px solid #475569; border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: all 0.2s;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="step-num-1" style="background: #6366f1; color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">1</span>
+              <span style="font-size: 13px; font-weight: 600; color: #f8fafc;">Tarihsel Dönem</span>
+            </div>
+            <div id="step-desc-1" style="font-size: 11px; color: #94a3b8; margin-top: 4px; margin-left: 30px;">Dönem Seçimi & Gezinti</div>
+          </div>
+
+          <!-- Step 2: Research Analysis -->
+          <div id="step-node-2" class="workflow-step-node" onclick="workflowNavigateStep(2)" style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: all 0.2s;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="step-num-2" style="background: #334155; color: #94a3b8; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">2</span>
+              <span style="font-size: 13px; font-weight: 600; color: #cbd5e1;">Araştırma Analizi</span>
+            </div>
+            <div id="step-desc-2" style="font-size: 11px; color: #64748b; margin-top: 4px; margin-left: 30px;">5 Modüllü URS Oturumu</div>
+          </div>
+
+          <!-- Step 3: Similar Patterns -->
+          <div id="step-node-3" class="workflow-step-node" onclick="workflowNavigateStep(3)" style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: all 0.2s;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="step-num-3" style="background: #334155; color: #94a3b8; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">3</span>
+              <span style="font-size: 13px; font-weight: 600; color: #cbd5e1;">Benzer Örüntüler</span>
+            </div>
+            <div id="step-desc-3" style="font-size: 11px; color: #64748b; margin-top: 4px; margin-left: 30px;">Pattern Discovery V2</div>
+          </div>
+
+          <!-- Step 4: Comparison Studio -->
+          <div id="step-node-4" class="workflow-step-node" onclick="workflowNavigateStep(4)" style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: all 0.2s;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="step-num-4" style="background: #334155; color: #94a3b8; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">4</span>
+              <span style="font-size: 13px; font-weight: 600; color: #cbd5e1;">Karşılaştırma</span>
+            </div>
+            <div id="step-desc-4" style="font-size: 11px; color: #64748b; margin-top: 4px; margin-left: 30px;">Base-100 & 5D Benzerlik</div>
+          </div>
+
+          <!-- Step 5: Save & Evidence -->
+          <div id="step-node-5" class="workflow-step-node" onclick="workflowNavigateStep(5)" style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: all 0.2s;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="step-num-5" style="background: #334155; color: #94a3b8; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">5</span>
+              <span style="font-size: 13px; font-weight: 600; color: #cbd5e1;">Kayıt & Kanıt</span>
+            </div>
+            <div id="step-desc-5" style="font-size: 11px; color: #64748b; margin-top: 4px; margin-left: 30px;">Kütüphane & Kanıt Paketi</div>
+          </div>
+        </div>
+
+        <!-- Stale Results Warning Banner (Hidden by default) -->
+        <div id="workflow-stale-warning" style="display: none; margin-top: 14px; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 8px; padding: 10px 16px; color: #f59e0b; font-size: 12px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 16px;">⚠️</span>
+            <span>Tarih aralığı değiştirildi! Mevcut analiz sonuçları geçersiz kılındı. Lütfen yeni oturumu çalıştırın.</span>
+          </div>
+          <button class="btn btn-sm btn-primary" onclick="workflowExecuteActiveSession()">Yeni Oturumu Başlat</button>
+        </div>
+      </div>
+
       <!-- Presets & Range Navigation Toolbar -->
       <div class="card" style="margin-bottom: 20px; background: #0c1220; border: 1px solid #1e293b;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 14px;">
@@ -1233,4 +1309,154 @@ def render_research_explorer_scripts() -> str:
     function explorerLaunchPatternDiscovery() {
       switchTab('patterns');
     }
+// ---------------------------------------------------------------------------
+    // Sprint 20: Unified Research Journey Orchestrator & Context Synchronization
+    // ---------------------------------------------------------------------------
+
+    window.cbeWorkflowContext = {
+      workflow_id: '',
+      stage: 'INITIAL',
+      asset: 'BTCUSDT',
+      interval: '1h',
+      reference_start_utc: '2022-06-01T00:00:00Z',
+      reference_end_utc: '2022-06-15T00:00:00Z',
+      selected_modules: ['regime_analysis', 'volatility_analysis', 'historical_pattern_discovery', 'macro_event_context', 'statistical_evidence'],
+      research_session_id: null,
+      pattern_experiment_id: null,
+      comparison_reference: null,
+      research_library_id: null,
+      context_version: 1
+    };
+
+    function workflowSyncInputs(startUtc, endUtc, asset, interval) {
+      if (startUtc) {
+        const inp = document.getElementById('exp-start-utc');
+        if (inp) inp.value = startUtc;
+        cbeWorkflowContext.reference_start_utc = startUtc;
+      }
+      if (endUtc) {
+        const inp = document.getElementById('exp-end-utc');
+        if (inp) inp.value = endUtc;
+        cbeWorkflowContext.reference_end_utc = endUtc;
+      }
+      if (asset) cbeWorkflowContext.asset = asset;
+      if (interval) cbeWorkflowContext.interval = interval;
+
+      // Update backend workflow context and validate
+      fetch('/api/v1/product/research-workflow/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          start_utc: cbeWorkflowContext.reference_start_utc,
+          end_utc: cbeWorkflowContext.reference_end_utc,
+          asset: cbeWorkflowContext.asset,
+          interval: cbeWorkflowContext.interval,
+          existing_context: cbeWorkflowContext
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.workflow_context) {
+          cbeWorkflowContext = data.workflow_context;
+          workflowUpdateUiStepper();
+        }
+      })
+      .catch(err => console.error('Workflow validation error:', err));
+    }
+
+    function workflowUpdateUiStepper() {
+      const badge = document.getElementById('workflow-id-badge');
+      if (badge && cbeWorkflowContext.workflow_id) {
+        badge.innerText = 'İş Akışı Kimliği: ' + cbeWorkflowContext.workflow_id;
+      }
+
+      const stagePill = document.getElementById('workflow-stage-pill');
+      if (stagePill && cbeWorkflowContext.stage) {
+        stagePill.innerText = 'Aşama: ' + cbeWorkflowContext.stage;
+      }
+
+      // Step states
+      const stage = cbeWorkflowContext.stage;
+      const stageOrder = {
+        'INITIAL': 1,
+        'PERIOD_SELECTED': 1,
+        'SESSION_READY': 2,
+        'ANALYSIS_COMPLETED': 2,
+        'PATTERNS_REVIEWED': 3,
+        'COMPARISON_READY': 4,
+        'RESEARCH_SAVED': 5,
+        'EVIDENCE_EXPORTED': 5
+      };
+
+      const currentStep = stageOrder[stage] || 1;
+
+      for (let i = 1; i <= 5; i++) {
+        const node = document.getElementById('step-node-' + i);
+        const num = document.getElementById('step-num-' + i);
+        if (!node || !num) continue;
+
+        if (i < currentStep) {
+          // Completed
+          node.style.background = 'rgba(16, 185, 129, 0.1)';
+          node.style.borderColor = '#10b981';
+          num.style.background = '#10b981';
+          num.innerHTML = '✓';
+        } else if (i === currentStep) {
+          // Active
+          node.style.background = '#1e293b';
+          node.style.borderColor = '#6366f1';
+          num.style.background = '#6366f1';
+          num.innerHTML = i;
+        } else {
+          // Inactive
+          node.style.background = '#0f172a';
+          node.style.borderColor = '#334155';
+          num.style.background = '#334155';
+          num.innerHTML = i;
+        }
+      }
+    }
+
+    function workflowNavigateStep(stepNum) {
+      if (stepNum === 1) {
+        switchTab('research-explorer');
+        const c = document.getElementById('historical-candlestick-chart');
+        if (c) c.scrollIntoView({ behavior: 'smooth' });
+      } else if (stepNum === 2) {
+        switchTab('unified-workspace');
+      } else if (stepNum === 3) {
+        switchTab('patterns');
+      } else if (stepNum === 4) {
+        switchTab('research-explorer');
+        const comp = document.getElementById('comparison-studio-container');
+        if (comp) comp.scrollIntoView({ behavior: 'smooth' });
+      } else if (stepNum === 5) {
+        switchTab('research-explorer');
+        const lib = document.getElementById('research-library-catalog-container');
+        if (lib) lib.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function workflowResetJourney() {
+      cbeWorkflowContext = {
+        workflow_id: '',
+        stage: 'INITIAL',
+        asset: 'BTCUSDT',
+        interval: '1h',
+        reference_start_utc: '2022-06-01T00:00:00Z',
+        reference_end_utc: '2022-06-15T00:00:00Z',
+        selected_modules: ['regime_analysis', 'volatility_analysis', 'historical_pattern_discovery', 'macro_event_context', 'statistical_evidence'],
+        research_session_id: null,
+        pattern_experiment_id: null,
+        comparison_reference: null,
+        research_library_id: null,
+        context_version: 1
+      };
+      workflowSyncInputs('2022-06-01T00:00:00Z', '2022-06-15T00:00:00Z', 'BTCUSDT', '1h');
+    }
+
+    // Auto-initialize workflow sync on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      workflowSyncInputs('2022-06-01T00:00:00Z', '2022-06-15T00:00:00Z', 'BTCUSDT', '1h');
+    });
     """

@@ -32,11 +32,38 @@ ALLOWED_EXTENSIONS = (".parquet", ".csv", ".gz")
 # Revoked tokens blacklist - any attempt to use these will be explicitly rejected as security violations
 REVOKED_OPERATOR_TOKENS = {
     "cbe-staging-operator-key-2026",
+    "cbe-staging-operator-key-sprint09-xyz987",
     "default-insecure-key",
     "admin",
     "operator",
     "secret",
 }
+
+
+def sanitize_headers_for_logging(headers: Optional[Dict[str, Any]]) -> Dict[str, str]:
+    """
+    Sanitize HTTP request/response headers for safe diagnostic logging, audit trails, and artifact storage.
+    Automatically redacts sensitive authentication credentials, tokens, cookies, and api keys.
+    """
+    if not headers:
+        return {}
+    sensitive_keys = {
+        "authorization",
+        "proxy-authorization",
+        "x-operator-token",
+        "x-research-token",
+        "x-api-key",
+        "cookie",
+        "set-cookie",
+    }
+    sanitized = {}
+    for k, v in headers.items():
+        k_str = str(k)
+        if k_str.lower() in sensitive_keys or "token" in k_str.lower() or "secret" in k_str.lower() or "password" in k_str.lower():
+            sanitized[k_str] = "[REDACTED]"
+        else:
+            sanitized[k_str] = str(v)
+    return sanitized
 
 
 @dataclass
@@ -92,6 +119,16 @@ class OperationsConsoleEngine:
         if env == "production":
             return False, "MUTATIONS_PERMANENTLY_BLOCKED_IN_PRODUCTION"
 
+        if not token or not token.strip():
+            now = time.time()
+            with cls._lock:
+                cls._failed_attempts.setdefault(client_ip, []).append(now)
+            return False, "INVALID_OR_MISSING_OPERATOR_TOKEN"
+
+        clean_token = token.strip()
+        if clean_token in REVOKED_OPERATOR_TOKENS:
+            return False, "OPERATOR_TOKEN_REVOKED"
+
         now = time.time()
         with cls._lock:
             attempts = cls._failed_attempts.get(client_ip, [])
@@ -99,17 +136,6 @@ class OperationsConsoleEngine:
             cls._failed_attempts[client_ip] = attempts
             if len(attempts) >= cls.MAX_FAILED_ATTEMPTS:
                 return False, "OPERATOR_AUTH_RATE_LIMITED_LOCKOUT"
-
-        if not token or not token.strip():
-            with cls._lock:
-                cls._failed_attempts.setdefault(client_ip, []).append(now)
-            return False, "INVALID_OR_MISSING_OPERATOR_TOKEN"
-
-        clean_token = token.strip()
-        if clean_token in REVOKED_OPERATOR_TOKENS:
-            with cls._lock:
-                cls._failed_attempts.setdefault(client_ip, []).append(now)
-            return False, "OPERATOR_TOKEN_REVOKED"
 
         expected_token = os.environ.get("CBE_OPERATOR_TOKEN") or os.environ.get("OPERATOR_TOKEN")
         if not expected_token or not expected_token.strip():

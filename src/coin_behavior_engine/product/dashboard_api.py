@@ -384,6 +384,10 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.get_research_workspace_compare(query_params)
             elif sub_path in ("research-workspace/evidence", "workspace/evidence"):
                 return HTTPStatus.OK, cls.get_research_workspace_evidence(query_params)
+            elif sub_path in ("research-workflow/capabilities", "workflow/capabilities"):
+                return HTTPStatus.OK, cls.get_research_workflow_capabilities()
+            elif sub_path in ("research-workflow/context", "workflow/context"):
+                return cls.get_research_workflow_context(query_params)
             elif sub_path in ("research-explorer/capabilities", "explorer/capabilities"):
                 return HTTPStatus.OK, cls.get_research_explorer_capabilities()
             elif sub_path in ("research-explorer/historical-series", "explorer/historical-series"):
@@ -576,6 +580,21 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.post_research_workspace_compare(body, query_params)
             elif sub_path in ("research-workspace/evidence", "workspace/evidence"):
                 return HTTPStatus.OK, cls.post_research_workspace_evidence(body, query_params)
+            elif sub_path in ("research-workflow/validate", "workflow/validate"):
+                return cls.post_research_workflow_validate(body, query_params)
+            elif sub_path in ("research-workflow/session", "workflow/session"):
+                return cls.post_research_workflow_session(body, query_params)
+            elif sub_path in ("research-workflow/compare", "workflow/compare"):
+                return cls.post_research_workflow_compare(body, query_params)
+            elif sub_path in ("research-workflow/save", "workflow/save"):
+                is_auth, a_status, a_msg = cls._authorize_research_library_mutation(headers, body)
+                if not is_auth:
+                    return a_status, {"error": "Unauthorized" if a_status == HTTPStatus.UNAUTHORIZED else "Forbidden", "message": a_msg}
+                return cls.post_research_workflow_save(body, query_params)
+            elif sub_path in ("research-workflow/restore", "workflow/restore"):
+                return cls.post_research_workflow_restore(body, query_params)
+            elif sub_path in ("research-workflow/evidence", "workflow/evidence"):
+                return cls.post_research_workflow_evidence(body, query_params)
             elif sub_path in ("research-explorer/historical-series", "explorer/historical-series"):
                 return cls.post_research_explorer_historical_series(body, query_params)
             elif sub_path in ("research-explorer/comparison", "explorer/comparison"):
@@ -4675,5 +4694,151 @@ class ProductDashboardApiService:
             "message": f"Araştırma tanımı silindi: {research_id}",
             "research_id": research_id,
         }
+
+# Sprint 20: Unified Research Workflow Endpoints
+    # ---------------------------------------------------------------------------
+
+    @classmethod
+    def get_research_workflow_capabilities(cls) -> Dict[str, Any]:
+        """Return workflow capabilities, supported stages, and safety invariants."""
+        from coin_behavior_engine.product.research_workflow import (
+            WorkflowStage,
+            ALLOWED_STAGE_TRANSITIONS,
+            OCTOBER_2026_QUARANTINE_START,
+        )
+        return {
+            "status": "OPERATIONAL",
+            "schema_version": "1.0.0",
+            "canonical_model": "CBE-0.7.0 (FROZEN)",
+            "supported_stages": [s.value for s in WorkflowStage],
+            "allowed_transitions": {k.value: [v.value for v in vals] for k, vals in ALLOWED_STAGE_TRANSITIONS.items()},
+            "quarantine_boundary": OCTOBER_2026_QUARANTINE_START,
+            "max_cache_entries": 50,
+            "governance_restrictions": {
+                "live_trading": "STRICTLY_PROHIBITED",
+                "real_market_collection": "DISABLED",
+                "directional_trading_eligibility": 0,
+            },
+        }
+
+    @classmethod
+    def get_research_workflow_context(cls, params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Retrieve existing workflow context by workflow_id or initialize if params supplied."""
+        from coin_behavior_engine.product.research_workflow import ResearchWorkflowEngine
+        wf_id = params.get("workflow_id", [""])[0] if isinstance(params.get("workflow_id"), list) else str(params.get("workflow_id", ""))
+        if wf_id and wf_id in ResearchWorkflowEngine._WORKFLOW_CACHE:
+            return HTTPStatus.OK, {"workflow_context": ResearchWorkflowEngine._WORKFLOW_CACHE[wf_id]}
+
+        # If parameters provided, create/update
+        start_utc = params.get("start_utc", [""])[0] if isinstance(params.get("start_utc"), list) else str(params.get("start_utc", ""))
+        end_utc = params.get("end_utc", [""])[0] if isinstance(params.get("end_utc"), list) else str(params.get("end_utc", ""))
+        asset = params.get("asset", ["BTCUSDT"])[0] if isinstance(params.get("asset"), list) else "BTCUSDT"
+        interval = params.get("interval", ["1h"])[0] if isinstance(params.get("interval"), list) else "1h"
+
+        success, ctx, err = ResearchWorkflowEngine.create_or_update_workflow(
+            asset=asset,
+            interval=interval,
+            start_utc=start_utc,
+            end_utc=end_utc,
+        )
+        if not success:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": err}
+        return HTTPStatus.OK, {"workflow_context": ctx}
+
+    @classmethod
+    def post_research_workflow_validate(cls, body: Dict[str, Any], params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Validate research parameters, dates, and quarantine boundaries without side effects."""
+        from coin_behavior_engine.product.research_workflow import ResearchWorkflowEngine
+        start_utc = body.get("start_utc") or body.get("reference_start_utc") or (params.get("start_utc", [""])[0] if params else "")
+        end_utc = body.get("end_utc") or body.get("reference_end_utc") or (params.get("end_utc", [""])[0] if params else "")
+        asset = body.get("asset") or (params.get("asset", ["BTCUSDT"])[0] if params else "BTCUSDT")
+        interval = body.get("interval") or (params.get("interval", ["1h"])[0] if params else "1h")
+        modules = body.get("selected_modules")
+
+        success, ctx, err = ResearchWorkflowEngine.create_or_update_workflow(
+            asset=asset,
+            interval=interval,
+            start_utc=start_utc,
+            end_utc=end_utc,
+            selected_modules=modules,
+            existing_context=body.get("existing_context"),
+        )
+        if not success:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": err}
+        return HTTPStatus.OK, {"valid": True, "workflow_context": ctx}
+
+    @classmethod
+    def post_research_workflow_session(cls, body: Dict[str, Any], params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Execute Unified Research Session for the active research workflow context."""
+        from coin_behavior_engine.product.research_workflow import ResearchWorkflowEngine
+        context = body.get("workflow_context") or body
+        success, res, err = ResearchWorkflowEngine.execute_workflow_session(context)
+        if not success:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": err}
+        return HTTPStatus.OK, res
+
+    @classmethod
+    def post_research_workflow_compare(cls, body: Dict[str, Any], params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Select a candidate period for comparison and update workflow context."""
+        from coin_behavior_engine.product.research_workflow import ResearchWorkflowEngine
+        context = body.get("workflow_context") or body.get("context") or {}
+        cand_start = body.get("candidate_start_utc", "")
+        cand_end = body.get("candidate_end_utc", "")
+        cand_label = body.get("candidate_label")
+        sim_score = body.get("similarity_score")
+
+        success, updated_ctx, err = ResearchWorkflowEngine.select_comparison_candidate(
+            context=context,
+            candidate_start_utc=cand_start,
+            candidate_end_utc=cand_end,
+            candidate_label=cand_label,
+            similarity_score=sim_score,
+        )
+        if not success:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": err}
+        return HTTPStatus.OK, {"workflow_context": updated_ctx}
+
+    @classmethod
+    def post_research_workflow_save(cls, body: Dict[str, Any], params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Save workflow context to Research Library V2."""
+        from coin_behavior_engine.product.research_workflow import ResearchWorkflowEngine
+        context = body.get("workflow_context") or body.get("context") or {}
+        title = body.get("title", "")
+        desc = body.get("description", "")
+        tags = body.get("tags")
+
+        success, res, err = ResearchWorkflowEngine.save_workflow_to_library(
+            context=context,
+            title=title,
+            description=desc,
+            tags=tags,
+        )
+        if not success:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": err}
+        return HTTPStatus.CREATED, res
+
+    @classmethod
+    def post_research_workflow_restore(cls, body: Dict[str, Any], params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Restore workflow context from Research Library definition with provenance checking."""
+        from coin_behavior_engine.product.research_workflow import ResearchWorkflowEngine
+        rid = body.get("research_id") or (params.get("research_id", [""])[0] if params else "")
+        if not rid:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": "research_id is required"}
+
+        success, res, err = ResearchWorkflowEngine.restore_workflow_from_library(rid)
+        if not success:
+            return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": err}
+        return HTTPStatus.OK, res
+
+    @classmethod
+    def post_research_workflow_evidence(cls, body: Dict[str, Any], params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Generate and export canonical evidence package for active workflow context."""
+        from coin_behavior_engine.product.research_workflow import ResearchWorkflowEngine
+        context = body.get("workflow_context") or body.get("context") or {}
+        success, res, err = ResearchWorkflowEngine.export_workflow_evidence(context)
+        if not success:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": err}
+        return HTTPStatus.OK, res
+
 
 START_TIME = time.time()
