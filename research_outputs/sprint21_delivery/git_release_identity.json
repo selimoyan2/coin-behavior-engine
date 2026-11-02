@@ -20,8 +20,9 @@
     "staging_container_id": "65b440a8ab5e200f2932ee07e0ba48189dcdc606ccc8a871e82bd854f03703d1"
   },
   "delivery_evidence_commit": {
-    "status": "PENDING_DELIVERY_COMMIT",
-    "notes": "Will be recorded in the final chore commit containing delivery evidence artifacts"
+    "commit_sha": "80829e4e716b3141bf43c89d58d8670fc032c71c",
+    "commit_title": "chore(sprint21): delivery manifest, quality scorecard, and staging provenance",
+    "status": "DELIVERED_AND_VERIFIED"
   },
   "production_isolation": {
     "container_name": "6t63aehpaw0cw1bbt4zcm09g-20261102T225721",
