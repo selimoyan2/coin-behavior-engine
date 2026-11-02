@@ -29,9 +29,9 @@ All mutation endpoints (`POST`, `PATCH`, `DELETE`) are protected by a centralize
 2. **CSRF Cross-Site Request Defense (HTTP 403 Forbidden):**
    - The server inspects the standard browser security header `Sec-Fetch-Site`. If a request originates from `cross-site`, it is rejected with `403 Forbidden`.
    - Frontend UI requests automatically supply custom `X-Requested-With: CoinBehaviorEngineClient` and credentials.
-3. **Token Authorization & Revocation:**
+3. **Token Authorization & Non-Reversible Revocation:**
    - Authenticated operations verify `X-Research-Token`, `X-Operator-Token`, or standard `Bearer` tokens against configured tokens (`CBE_RESEARCH_TOKEN` / `CBE_OPERATOR_TOKEN`) using timing-safe comparison (`hmac.compare_digest`).
-   - Revoked tokens in `REVOKED_OPERATOR_TOKENS` are immediately rejected with `403 Forbidden`.
+   - Revoked tokens are verified via non-reversible SHA-256 fingerprint matching (`is_token_revoked` against `REVOKED_TOKEN_SHA256_FINGERPRINTS`) using constant-time comparison, ensuring zero plaintext credential exposure in source code.
 4. **Production Mutation Immunity (HTTP 403 Forbidden):**
    - When running in production (`CBE_ENV == 'production'`), ALL mutation routes unconditionally return `403 Forbidden` (`MUTATIONS_PERMANENTLY_BLOCKED_IN_PRODUCTION`).
    - Production instances are strictly read-only, preventing any accidental or malicious state changes.
@@ -44,7 +44,7 @@ All mutation endpoints (`POST`, `PATCH`, `DELETE`) are protected by a centralize
 
 ### 3. Persistent Volume Survival Verification
 
-The staging container `bd7b03f5f896` mounts the persistent Docker volume:
+The staging container `5e6fdc229a2b` mounts the persistent Docker volume:
 - **Host Source:** `/var/lib/docker/volumes/dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f/_data`
 - **Container Destination:** `/app/data/prospective` (`RW: true`)
 - **Library Subdirectory:** `/app/data/prospective/research_library`

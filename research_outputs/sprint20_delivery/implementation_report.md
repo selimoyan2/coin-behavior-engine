@@ -4,7 +4,9 @@
 **Sprint ID:** `CBE_PRODUCT_ACCELERATION_20`  
 **Repository:** `selimoyan2/coin-behavior-engine`  
 **Verified Base Closure Commit (S19):** `ba15325642c14815d91b0a73dd7d69d2b8b503b5`  
-**Implementation Commit:** `33ef57367ea18b6287e076615b81f185efce5f77`  
+**Sprint 20 Implementation Commit:** `33ef573ae23875442b308d68b73c479eb26ac870`  
+**Sprint 20 Initial Delivery Commit:** `ec4bb1088f86f4f43e0eb48f97091da69843ec6c`  
+**Sprint 20 Hardening / Staging Build Commit:** `57cd7cc18922080617e708cd050370dc8cb7e9f2`  
 **Canonical Scientific Model:** `CBE-0.7.0` (STRICTLY FROZEN — ZERO PARAMETER MUTATIONS)  
 **Governance Invariants:**
 ```yaml
@@ -37,7 +39,8 @@ A researcher can now navigate from historical exploration, to 5-module unified s
 - Stale-result invalidation upon date-range modifications.
 
 ### 2.2 Security & Secret Exposure Remediation
-- Critical Phase 0 remediation: Disclosed staging operator token revoked and permanently blacklisted in `REVOKED_OPERATOR_TOKENS`.
+- Critical Phase 0 remediation: Disclosed staging operator token revoked and permanently blacklisted via SHA-256 cryptographic fingerprints (`REVOKED_TOKEN_SHA256_FINGERPRINTS`).
+- Eliminated all plaintext credentials from source code.
 - Generated and rotated cryptographically strong token on staging host (`srv1114257`).
 - Implemented automated header sanitization (`sanitize_headers_for_logging`) to redact secrets in logs and artifacts.
 - Zero replacement secrets committed to repository.
@@ -65,7 +68,7 @@ A researcher can now navigate from historical exploration, to 5-module unified s
 ## 3. Test & Acceptance Summary
 
 - **Total Regression Suite Tests:** 340 tests (S01-16: 281, S17: 13, S18: 10, S19: 22, S20: 14).
-- **Pass Rate:** 100% (340 passed, 0 failed, 2,107 deselected).
-- **Playwright E2E Tests:** 8/8 viewports verified across desktop, tablet, and mobile.
-- **Staging Deployment:** Container `bd7b03f5f896` running image `cbe-market-intelligence:sprint20-33ef573` (Healthy).
-- **Production Status:** Zero-Touch (Strictly untouched).
+- **Pass Rate:** 100% (340 passed, 0 failed, 2,107 deselected in 458s).
+- **Playwright E2E Tests:** 20/20 interactive browser gates passed cleanly (`playwright_acceptance_results.json`).
+- **Staging Deployment:** Container `5e6fdc229a2b` running image `cbe-market-intelligence:sprint20-57cd7cc` (Healthy).
+- **Production Status:** Zero-Touch (Container `c2d07df3c505` strictly untouched).

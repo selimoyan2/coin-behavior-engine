@@ -1,13 +1,13 @@
 {
   "manifest_metadata": {
     "sprint_id": "CBE_PRODUCT_ACCELERATION_20",
-    "timestamp_utc": "2026-10-31T23:45:00Z",
+    "timestamp_utc": "2026-11-03T01:55:00Z",
     "canonical_model": "CBE-0.7.0 (STRICTLY FROZEN)",
-    "staging_container_id": "bd7b03f5f896",
-    "staging_image_tag": "cbe-market-intelligence:sprint20-33ef573",
-    "staging_image_id": "sha256:3465cdec99eaa6b3e5996e3f55072d74aa29f51bd90b1dc21d83aee416a975f7",
-    "git_delivery_commit": "33ef57367ea18b6287e076615b81f185efce5f77",
-    "governance_closure_decision": "SPRINT_20_COMPLETION_VERIFIED"
+    "staging_container_id": "5e6fdc229a2b",
+    "staging_image_tag": "cbe-market-intelligence:sprint20-57cd7cc",
+    "staging_image_id": "sha256:8eef1fda8da2abc550f3e07d3ce67254dccb4ce7b3835f38f98dc19b78480188",
+    "git_staging_build_commit": "57cd7cc18922080617e708cd050370dc8cb7e9f2",
+    "governance_closure_decision": "SPRINT_20_FINAL_ACCEPTANCE_VERIFIED"
   },
   "artifacts": {
     "architecture_review.md": {
@@ -19,28 +19,28 @@
       "size_bytes": 1769
     },
     "full_regression_results.json": {
-      "sha256": "4e8037d0f2fe57268c43858fd3d9efe8ee1b7c14c3afb20839b539185f7595e3",
+      "sha256": "a8a22525cb398c13f88b7f663140799d41c28a452e8563a0277257828349ca94",
       "size_bytes": 1806
     },
     "git_release_identity.json": {
-      "sha256": "0b3655386e69224c04c30d90648d9148cf2c7a8e30de266a74be4a3caa873eae",
-      "size_bytes": 997
+      "sha256": "c1068cc91ab2d47e06fb04df55bb3dc7631f625c7632b3cb0cbf1a05c29b0b52",
+      "size_bytes": 1173
     },
     "implementation_report.md": {
-      "sha256": "45dec834520198840cae8101cdd0e33e633c50fa879f5550626e77e92ec7bc06",
-      "size_bytes": 3802
+      "sha256": "e4992d80131e3413df5be96b5bb0a372536d89b05ac4a9b2f7a1904ff00f5f9c",
+      "size_bytes": 4155
     },
     "performance_benchmark_comparison.json": {
       "sha256": "c627694f96cda978e38f1a00a7827f5cda05bb7c8faa605d64f593c0e18a1e2f",
       "size_bytes": 1438
     },
     "playwright_acceptance_results.json": {
-      "sha256": "91c266f683d53858ee1d6f588b264960c091b1d1fbd25db4ec8c04d689d49353",
-      "size_bytes": 2318
+      "sha256": "9fbc20d7ab8cb89d170b9d1127f68c8706e7931fdf1076d79b3dd74edc2b3f77",
+      "size_bytes": 1689
     },
     "research_library_security_review.md": {
-      "sha256": "7b0824e62b912fbbb66704e5bdeb550a31bd0e69f68b2fec6306c95330e01ca8",
-      "size_bytes": 3982
+      "sha256": "429111108876007990c17253684f1c8b2d423ef1bc30d917388e1c9f012447ec",
+      "size_bytes": 4139
     },
     "research_workflow_api_contracts.json": {
       "sha256": "e22811236abf2d763eaf625d7175973fdad919b7edd65977d47a846297cbadf6",
@@ -51,12 +51,12 @@
       "size_bytes": 785
     },
     "secret_exposure_remediation_report.md": {
-      "sha256": "d5db4a1fd93b3510bbabcdd3a73fd7c7409cc62877ea0217ac6ecb22e1a2d204",
-      "size_bytes": 3283
+      "sha256": "794e92dc7b500a150cecea2376c9d8dc5f05fe73cb8a594ac842fa3b5481d5b8",
+      "size_bytes": 3623
     },
     "staging_runtime_provenance.json": {
-      "sha256": "430ead3b555e36006485587eede6b905cd822a9f0cd470b32a7349955dc5501d",
-      "size_bytes": 2128
+      "sha256": "d1520b4f6d1599c22ddb60405bea514a47796904871cd7c269344c2f23e8df62",
+      "size_bytes": 3228
     }
   }
 }

@@ -1,18 +1,18 @@
 {
   "provenance_metadata": {
     "sprint_id": "CBE_PRODUCT_ACCELERATION_20",
-    "timestamp_utc": "2026-10-31T23:42:00Z",
+    "timestamp_utc": "2026-11-03T01:55:00Z",
     "host_ip": "168.231.125.238",
     "hostname": "srv1114257",
     "coolify_app_uuid": "dzzfws54by1whlbq6fk4ywut",
     "local_bind_port": "127.0.0.1:18080->8000/tcp"
   },
   "runtime_identity": {
-    "container_id": "bd7b03f5f896",
+    "container_id": "5e6fdc229a2b",
     "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
-    "docker_image_tag": "cbe-market-intelligence:sprint20-33ef573",
-    "docker_image_id": "sha256:3465cdec99eaa6b3e5996e3f55072d74aa29f51bd90b1dc21d83aee416a975f7",
-    "build_source_commit": "33ef57367ea18b6287e076615b81f185efce5f77",
+    "docker_image_tag": "cbe-market-intelligence:sprint20-57cd7cc",
+    "docker_image_id": "sha256:8eef1fda8da2abc550f3e07d3ce67254dccb4ce7b3835f38f98dc19b78480188",
+    "build_source_commit": "57cd7cc18922080617e708cd050370dc8cb7e9f2",
     "build_source_branch": "main",
     "build_reproducible": true
   },
@@ -29,13 +29,31 @@
   },
   "security_probes_verified": [
     {
-      "probe": "Revoked token rejection",
+      "probe": "Revoked token rejection via SHA-256 fingerprint matching",
       "method": "POST",
       "route": "/api/v1/product/research-workflow/save",
-      "headers": { "Content-Type": "application/json", "X-Operator-Token": "[REDACTED]" },
+      "headers": { "Content-Type": "application/json", "X-Operator-Token": "[REVOKED_OPERATOR_TOKEN_REDACTED]" },
       "expected_status": 403,
       "actual_status": 403,
-      "verdict": "REVOKED_TOKEN_PERMANENTLY_BLOCKED"
+      "verdict": "AUTH_TOKEN_REVOKED_CONFIRMED"
+    },
+    {
+      "probe": "Anonymous write rejection",
+      "method": "POST",
+      "route": "/api/v1/product/research-workflow/save",
+      "headers": { "Content-Type": "application/json" },
+      "expected_status": 401,
+      "actual_status": 401,
+      "verdict": "ANONYMOUS_WRITE_PROHIBITED_CONFIRMED"
+    },
+    {
+      "probe": "CSRF cross-site mutation rejection",
+      "method": "POST",
+      "route": "/api/v1/product/research-workflow/save",
+      "headers": { "Content-Type": "application/json", "X-Operator-Token": "cbe-research-staging-token", "Sec-Fetch-Site": "cross-site" },
+      "expected_status": 403,
+      "actual_status": 403,
+      "verdict": "CSRF_CROSS_SITE_REQUEST_REJECTED_CONFIRMED"
     },
     {
       "probe": "Workflow capabilities check",
@@ -55,5 +73,13 @@
       "verdict": "SHARED_CONTEXT_SYNCHRONIZED"
     }
   ],
+  "production_zero_touch_attestation": {
+    "container_id": "c2d07df3c505",
+    "container_name": "6t63aehpaw0cw1bbt4zcm09g-20261029T223020",
+    "image": "6t63aehpaw0cw1bbt4zcm09g:ba15325642c14815d91b0a73dd7d69d2b8b503b5",
+    "status": "Up 4 days (healthy)",
+    "touched": false,
+    "verdict": "STRICT_ZERO_TOUCH_PRESERVED"
+  },
   "governance_status": "STAGING_VERIFIED_AND_ATTENDING"
 }
