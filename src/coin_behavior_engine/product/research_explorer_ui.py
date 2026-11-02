@@ -1660,10 +1660,15 @@ def render_research_explorer_scripts() -> str:
         container.style.display = 'block';
         container.innerHTML = '<div style="font-size: 12px; color: #94a3b8;">Performans gözlemevi benchmark ölçümleri yapılıyor...</div>';
       }
+      const opToken = window.CBE_OPERATOR_TOKEN || sessionStorage.getItem('cbe_operator_token') || '';
+      const reqHeaders = { 'Content-Type': 'application/json' };
+      if (opToken) {
+        reqHeaders['X-Operator-Token'] = opToken;
+      }
       try {
         const resp = await fetch('/api/v1/product/research-quality/performance-audit', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-Operator-Token': 'cbe-research-dev-2026' },
+          headers: reqHeaders,
           body: JSON.stringify({ start_utc: '2022-06-01T00:00:00Z', end_utc: '2022-06-03T00:00:00Z' })
         });
         const rep = await resp.json();

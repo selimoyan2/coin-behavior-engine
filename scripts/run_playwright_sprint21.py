@@ -43,7 +43,20 @@ RESULTS_JSON.parent.mkdir(parents=True, exist_ok=True)
 
 PORT = 18098
 BASE_URL = f"http://127.0.0.1:{PORT}"
-AUTH_TOKEN = "cbe-research-dev-2026"
+
+# Task 3: Dedicated test operator credential environment variable. Fail closed if absent.
+AUTH_TOKEN = (
+    os.environ.get("CBE_TEST_OPERATOR_TOKEN")
+    or os.environ.get("CBE_OPERATOR_TOKEN")
+    or os.environ.get("OPERATOR_TOKEN")
+)
+if not AUTH_TOKEN or not AUTH_TOKEN.strip():
+    raise RuntimeError(
+        "FAIL_CLOSED: Dedicated test operator credential environment variable "
+        "(CBE_TEST_OPERATOR_TOKEN or CBE_OPERATOR_TOKEN) is mandatory for running "
+        "the authenticated Playwright acceptance suite. Hardcoded credential fallback is strictly forbidden."
+    )
+AUTH_TOKEN = AUTH_TOKEN.strip()
 
 
 async def main():
@@ -51,13 +64,20 @@ async def main():
     log_file = Path("research_outputs/sprint21_delivery/test_server.log")
     log_file.parent.mkdir(parents=True, exist_ok=True)
     server_log_fp = open(log_file, "w", encoding="utf-8")
+    server_env = os.environ.copy()
+    server_env["PORT"] = str(PORT)
+    server_env["CBE_ENV"] = "staging"
+    server_env["CBE_OPERATOR_TOKEN"] = AUTH_TOKEN
+    server_env["CBE_TEST_OPERATOR_TOKEN"] = AUTH_TOKEN
+    server_env["CBE_TRADING_DISABLED"] = "true"
+
     server_proc = subprocess.Popen([
         ".venv\\Scripts\\python.exe",
         "-m", "coin_behavior_engine.web.server",
         "--host", "127.0.0.1",
         "--port", str(PORT),
         "--no-worker"
-    ], stdout=server_log_fp, stderr=server_log_fp)
+    ], stdout=server_log_fp, stderr=server_log_fp, env=server_env)
 
     # Healthcheck polling
     for _ in range(40):
@@ -71,6 +91,11 @@ async def main():
     else:
         server_proc.terminate()
         server_log_fp.close()
+        try:
+            if log_file.exists():
+                log_file.unlink()
+        except Exception:
+            pass
         raise RuntimeError("Test server failed to start")
 
     test_results = {}
@@ -114,6 +139,7 @@ async def main():
             print("Scenario 3: Opening Research Quality Assurance Panel (Step 6)...")
             await page.click("#step-node-6")
             await page.wait_for_timeout(1000)
+            await page.evaluate(f"sessionStorage.setItem('cbe_operator_token', '{AUTH_TOKEN}')")
             quality_panel = await page.query_selector("#research-quality-assurance-panel")
             assert quality_panel is not None, "Quality Assurance Panel must be visible."
             test_results["scenario_03_quality_panel_opened"] = True
@@ -293,6 +319,11 @@ async def main():
                 pass
         server_proc.terminate()
         server_log_fp.close()
+        try:
+            if log_file.exists():
+                log_file.unlink()
+        except Exception:
+            pass
 
     # Save structured results
     final_output = {

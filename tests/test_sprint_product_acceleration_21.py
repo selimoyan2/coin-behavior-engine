@@ -437,3 +437,151 @@ class TestSprint21QualityApiIntegration:
         assert status == HTTPStatus.OK
         assert "status" in data
         assert "tampering_detected" in data
+
+
+class TestSprint21ProvenanceIntegrityHardening:
+    """Tests for Task 1: Reproducibility Provenance Integrity and Validation."""
+
+    def test_valid_40_hex_commit_sha(self):
+        """Valid 40-char hex commit SHAs are accepted."""
+        valid_sha = "f788c6e66b6865f39a906e69241a5661ac1fa5a1"
+        assert ResearchReproducibilityEngine.is_valid_commit_sha(valid_sha) is True
+        assert ResearchReproducibilityEngine.is_valid_commit_sha(valid_sha.upper()) is True
+
+    def test_malformed_commit_sha_rejected(self):
+        """Malformed commit SHAs (short, containing non-hex characters, None, empty) are rejected."""
+        assert ResearchReproducibilityEngine.is_valid_commit_sha(None) is False
+        assert ResearchReproducibilityEngine.is_valid_commit_sha("") is False
+        assert ResearchReproducibilityEngine.is_valid_commit_sha("f788c6e") is False  # 7-char short
+        assert ResearchReproducibilityEngine.is_valid_commit_sha("f788c6e66b6865f39a906e69241a5661ac1fa5zz") is False  # 'zz' non-hex
+        assert ResearchReproducibilityEngine.is_valid_commit_sha("   ") is False
+
+    def test_missing_source_commit_returns_unavailable(self, tmp_path):
+        """When source identity cannot be established from env, metadata, or git, return UNAVAILABLE."""
+        empty_dir = tmp_path / "empty_repo"
+        empty_dir.mkdir()
+        with patch.dict(os.environ, {}, clear=True):
+            sha = ResearchReproducibilityEngine.get_source_commit_sha(repo_root=empty_dir)
+            assert sha == "UNAVAILABLE"
+
+    def test_reproducibility_verdict_fails_closed_when_provenance_unavailable(self, tmp_path):
+        """verify_reproducibility fails closed if source commit is UNAVAILABLE."""
+        empty_dir = tmp_path / "empty_repo"
+        empty_dir.mkdir()
+        with patch.object(ResearchReproducibilityEngine, "get_source_commit_sha", return_value="UNAVAILABLE"):
+            res = ResearchReproducibilityEngine.verify_reproducibility({
+                "start_utc": "2022-06-01T00:00:00Z",
+                "end_utc": "2022-06-03T00:00:00Z",
+            })
+            assert res["reproducible"] is False
+            assert res["verdict"] == ReproducibilityVerdict.VERIFICATION_UNAVAILABLE.value
+            assert res["provenance_diagnostic"]["source_commit_verified"] is False
+
+    def test_expected_commit_mismatch_fails_reproducibility(self):
+        """verify_reproducibility fails if expected_source_commit_sha does not match runtime commit."""
+        real_commit = "f788c6e66b6865f39a906e69241a5661ac1fa5a1"
+        mismatched_commit = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        with patch.object(ResearchReproducibilityEngine, "get_source_commit_sha", return_value=real_commit):
+            res = ResearchReproducibilityEngine.verify_reproducibility({
+                "start_utc": "2022-06-01T00:00:00Z",
+                "end_utc": "2022-06-03T00:00:00Z",
+                "expected_source_commit_sha": mismatched_commit,
+            })
+            assert res["reproducible"] is False
+            assert res["verdict"] == ReproducibilityVerdict.DATASET_PROVENANCE_MISMATCH.value
+            assert "SOURCE_COMMIT_MISMATCH" in res["explanation"]
+
+
+class TestSprint21ScientificNumericalCorrectness:
+    """Tests for Task 2: Scientific Numerical Correctness & Gating."""
+
+    def test_nan_rejected_never_matches(self):
+        """NaN is never considered a successful scientific numerical match."""
+        ok, delta, exact = ResearchReproducibilityEngine.compare_numerical_values(float("nan"), float("nan"), 0.1)
+        assert ok is False
+        assert exact is False
+        assert delta == float("inf")
+
+    def test_positive_and_negative_infinity_rejected(self):
+        """Infinities (+inf, -inf) are rejected and never match."""
+        ok1, delta1, exact1 = ResearchReproducibilityEngine.compare_numerical_values(float("inf"), float("inf"), 0.1)
+        assert ok1 is False
+        assert exact1 is False
+
+        ok2, delta2, exact2 = ResearchReproducibilityEngine.compare_numerical_values(float("-inf"), float("-inf"), 0.1)
+        assert ok2 is False
+        assert exact2 is False
+
+    def test_missing_and_none_values_rejected_no_zero_default(self):
+        """None or missing values return False and inf delta, never defaulting to 0."""
+        ok1, delta1, exact1 = ResearchReproducibilityEngine.compare_numerical_values(None, 0.0, 0.1)
+        assert ok1 is False
+        assert exact1 is False
+        assert delta1 == float("inf")
+
+        ok2, delta2, exact2 = ResearchReproducibilityEngine.compare_numerical_values(None, None, 0.1)
+        assert ok2 is False
+        assert exact2 is False
+
+    def test_malformed_numeric_strings_and_booleans_rejected(self):
+        """Malformed strings and booleans are rejected as scientific numbers."""
+        ok1, _, exact1 = ResearchReproducibilityEngine.compare_numerical_values("invalid_num", 1.0, 0.1)
+        assert ok1 is False
+        assert exact1 is False
+
+        ok2, _, exact2 = ResearchReproducibilityEngine.compare_numerical_values(True, 1.0, 0.1)
+        assert ok2 is False
+        assert exact2 is False
+
+    def test_nested_invalid_outputs_cannot_produce_reproducible_exact(self):
+        """Module outputs containing NaN, inf, or missing fields cannot produce REPRODUCIBLE_EXACT."""
+        run1 = {
+            "regime_analysis": {"dominant_regime": "BEAR_VOLATILE", "regime_distribution": {"BEAR_VOLATILE": float("nan")}},
+            "volatility_analysis": {"realized_volatility": 0.05, "parkinson_volatility": 0.04, "volatility_ratio": 1.2, "jump_ratio": 0.1},
+            "pattern_discovery": {"candidates": []},
+            "statistical_evidence": {"predeclared_holdout_criteria_satisfied": 2, "independent_confirmatory_replications": 0},
+        }
+        run2 = copy.deepcopy(run1)
+
+        comp = ResearchReproducibilityEngine.compare_module_outputs(run1, run2)
+        assert comp["all_exact_match"] is False
+        assert comp["within_tolerances"] is False
+        assert comp["has_invalid_numerical_values"] is True
+
+
+class TestSprint21CredentialAndSecurityControls:
+    """Tests for Task 3: Credential Absence, Redaction, and Governance Invariants."""
+
+    def test_credential_absence_fails_closed_in_production(self):
+        """In production environment, mutating without configured operator credentials fails closed."""
+        with patch.dict(os.environ, {"CBE_ENV": "production"}, clear=True):
+            status, rep = ProductDashboardApiService.handle_post_request(
+                "research-quality/performance-audit",
+                query_params={},
+                body={},
+                headers={"X-Operator-Token": "some-token"},
+            )
+            assert status == HTTPStatus.FORBIDDEN
+            assert "PERFORMANS DENETİMİ ENGELİ" in rep.get("message", "")
+
+    def test_revoked_token_fingerprint_rejected(self):
+        """Tokens matching revoked SHA-256 fingerprints are rejected with 403 Forbidden."""
+        revoked_token = "cbe-staging-operator-key-2026"
+        assert is_token_revoked(revoked_token) is True
+        status, rep = ProductDashboardApiService.handle_post_request(
+            "research-quality/performance-audit",
+            query_params={},
+            body={},
+            headers={"X-Operator-Token": revoked_token},
+        )
+        assert status == HTTPStatus.FORBIDDEN
+        assert "AUTH_TOKEN_REVOKED" in rep.get("message", "")
+
+    def test_governance_invariants_strictly_enforced(self):
+        """Model CBE-0.7.0 is frozen and live trading is permanently disabled."""
+        assert FROZEN_MODEL_VERSION == "CBE-0.7.0"
+        status, caps = ProductDashboardApiService.handle_request("research-quality/capabilities", {})
+        assert status == HTTPStatus.OK
+        assert caps["governance_invariants"]["technical_decision"] == "TECHNICAL_NO_GO"
+        assert caps["governance_invariants"]["directional_trading"] == "STRICTLY_PROHIBITED"
+        assert caps["governance_invariants"]["live_order_execution"] == "PERMANENTLY_PROHIBITED"

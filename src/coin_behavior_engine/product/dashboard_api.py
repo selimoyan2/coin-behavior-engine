@@ -510,7 +510,6 @@ class ProductDashboardApiService:
         # accept authorized research token conventions:
         ALLOWED_TOKENS = {
             "cbe-research-authorized-token",
-            "cbe-research-dev-2026",
             "cbe-research-staging-token",
             "test-token",
             "test-operator-token",
