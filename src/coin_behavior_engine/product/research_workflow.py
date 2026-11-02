@@ -311,8 +311,8 @@ class ResearchWorkflowEngine:
         Orchestrate Unified Research Session for the shared context via UnifiedResearchWorkspaceEngine.
         Does not duplicate scientific calculations; delegates directly to Sprint 18 engine.
         """
-        start_utc = context.get("reference_start_utc")
-        end_utc = context.get("reference_end_utc")
+        start_utc = context.get("reference_start_utc") or context.get("start_utc")
+        end_utc = context.get("reference_end_utc") or context.get("end_utc")
         asset = context.get("asset", "BTCUSDT")
         interval = context.get("interval", "1h")
         modules = context.get("selected_modules")
@@ -342,6 +342,14 @@ class ResearchWorkflowEngine:
 
             # Update context
             updated_ctx = copy.deepcopy(context)
+            if "workflow_id" not in updated_ctx:
+                updated_ctx["workflow_id"] = cls.generate_workflow_id(
+                    asset=asset,
+                    interval=interval,
+                    start_utc=start_utc,
+                    end_utc=end_utc,
+                    selected_modules=modules or ["regime_analysis", "volatility_analysis", "historical_pattern_discovery", "macro_comparison", "statistical_evidence"],
+                )
             updated_ctx["research_session_id"] = session_id
             updated_ctx["pattern_experiment_id"] = exp_id
             updated_ctx["stage"] = WorkflowStage.ANALYSIS_COMPLETED.value
@@ -547,8 +555,8 @@ class ResearchWorkflowEngine:
         """
         workflow_id = context.get("workflow_id")
         session_id = context.get("research_session_id")
-        start_utc = context.get("reference_start_utc")
-        end_utc = context.get("reference_end_utc")
+        start_utc = context.get("reference_start_utc") or context.get("start_utc")
+        end_utc = context.get("reference_end_utc") or context.get("end_utc")
 
         if not start_utc or not end_utc:
             return False, {}, "Araştırma periyodu belirlenmemiş."

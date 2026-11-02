@@ -137,9 +137,13 @@ class TestSprint20SecurityAndSecretExposureRemediation:
     """Tests for token revocation, header sanitization, secret-redaction filters, and CSRF defense."""
 
     def test_revoked_tokens_blacklist(self):
-        # Disclosed credential must be in revoked tokens set
-        assert "cbe-staging-operator-key-sprint09-xyz987" in REVOKED_OPERATOR_TOKENS
-        assert "cbe-staging-operator-key-2026" in REVOKED_OPERATOR_TOKENS
+        from coin_behavior_engine.product.operations_console import is_token_revoked, REVOKED_TOKEN_SHA256_FINGERPRINTS
+        # Disclosed credentials must be matched and revoked via SHA-256 fingerprints
+        disclosed_s09_hash = hashlib.sha256("cbe-staging-operator-key-sprint09-xyz987".encode("utf-8")).hexdigest()
+        assert disclosed_s09_hash in REVOKED_TOKEN_SHA256_FINGERPRINTS
+        assert is_token_revoked("cbe-staging-operator-key-sprint09-xyz987") is True
+        assert is_token_revoked("cbe-staging-operator-key-2026") is True
+        assert is_token_revoked("legitimate_new_unrevoked_token") is False
 
         # Mutation with revoked token must return 403 Forbidden
         status, res = ProductDashboardApiService.handle_post_request(

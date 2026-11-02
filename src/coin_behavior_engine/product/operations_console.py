@@ -29,15 +29,38 @@ AUDIT_LOG_FILE = REPO_ROOT / "research_outputs" / "operations_audit_log.jsonl"
 SAFE_FILENAME_REGEX = re.compile(r"^[A-Za-z0-9_\-\.]+$")
 ALLOWED_EXTENSIONS = (".parquet", ".csv", ".gz")
 
-# Revoked tokens blacklist - any attempt to use these will be explicitly rejected as security violations
-REVOKED_OPERATOR_TOKENS = {
-    "cbe-staging-operator-key-2026",
-    "cbe-staging-operator-key-sprint09-xyz987",
-    "default-insecure-key",
-    "admin",
-    "operator",
-    "secret",
+# Non-reversible SHA-256 credential fingerprints of revoked tokens
+# Guarantees zero plaintext secrets in source code while permanently enforcing revocation
+REVOKED_TOKEN_SHA256_FINGERPRINTS = {
+    "8ab5c1312b07408e5e8bfb68db9cadbbdb446f85ee5f611ddcbf51c165e47ad5",  # Revoked staging key 2026
+    "f6c08277401c6dd1c387b11456916c245219339386863cc76e15c909e51fe835",  # Revoked staging key sprint09
+    "8e362e2f0e21b580d6a991677269368de8c5d94c38ac52d654bb55130bb2dd8d",  # Revoked default-insecure-key
+    "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",  # Revoked admin token
+    "06e55b633481f7bb072957eabcf110c972e86691c3cfedabe088024bffe42f23",  # Revoked operator token
+    "2bb80d537b1da3e38bd30361aa855686bde0eacd7162fef6a25fe97bf527a25b",  # Revoked secret token
 }
+
+
+def is_token_revoked(token: Optional[str]) -> bool:
+    """
+    Check if a candidate token has been revoked using non-reversible SHA-256 fingerprint matching.
+    Never exposes or stores plaintext credential strings in memory or source.
+    Supports raw token strings as well as direct fingerprint comparisons.
+    """
+    if not token or not isinstance(token, str):
+        return False
+    clean = token.strip()
+    if not clean:
+        return False
+    digest = hashlib.sha256(clean.encode("utf-8")).hexdigest()
+    # Constant-time comparison across revoked fingerprints set
+    for revoked_hash in REVOKED_TOKEN_SHA256_FINGERPRINTS:
+        if hmac.compare_digest(digest, revoked_hash) or hmac.compare_digest(clean, revoked_hash):
+            return True
+    return False
+
+# Backward compatibility alias
+REVOKED_OPERATOR_TOKENS = REVOKED_TOKEN_SHA256_FINGERPRINTS
 
 
 def sanitize_headers_for_logging(headers: Optional[Dict[str, Any]]) -> Dict[str, str]:
@@ -126,7 +149,7 @@ class OperationsConsoleEngine:
             return False, "INVALID_OR_MISSING_OPERATOR_TOKEN"
 
         clean_token = token.strip()
-        if clean_token in REVOKED_OPERATOR_TOKENS:
+        if is_token_revoked(clean_token):
             return False, "OPERATOR_TOKEN_REVOKED"
 
         now = time.time()

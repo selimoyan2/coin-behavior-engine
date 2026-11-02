@@ -3,65 +3,42 @@
     "sprint_id": "CBE_PRODUCT_ACCELERATION_20",
     "test_suite": "scripts/run_playwright_sprint20.py",
     "engine": "Playwright / Chromium (headless)",
-    "timestamp_utc": "2026-10-31T23:36:00Z",
-    "overall_status": "ALL_PASSED"
+    "timestamp_utc": "2026-11-02T22:37:33.246323+00:00",
+    "total_gates_evaluated": 20,
+    "total_gates_passed": 20,
+    "overall_status": "ALL_20_GATES_PASSED"
   },
-  "verified_screenshots": [
-    {
-      "step": 1,
-      "name": "sprint20_screenshot_01_workflow_stepper_and_explorer.png",
-      "viewport": "1440x900 (Desktop)",
-      "target": "Research Explorer Tab & Guided Research Journey 5-Step Stepper Bar",
-      "status": "VERIFIED"
+  "gate_evaluations": {
+    "gate_01_period_selected": true,
+    "gate_02_utc_range_confirmed": {
+      "start_utc": "2022-06-01T00:00",
+      "end_utc": "2022-06-15T00:00"
     },
-    {
-      "step": 2,
-      "name": "sprint20_screenshot_02_period_selection_and_candles.png",
-      "viewport": "1440x900 (Desktop)",
-      "target": "Interactive Candlestick Chart, Regime Bands & Macro Event Pins",
-      "status": "VERIFIED"
+    "gate_03_urs_launched": true,
+    "gate_04_session_id_verified": "URS-8eb5a1026381",
+    "gate_05_pattern_discovery_opened": true,
+    "gate_06_candidate_selected": {
+      "candidate_start_utc": "2024-07-27T01:00:00+00:00",
+      "candidate_end_utc": "2024-08-10T01:00:00+00:00",
+      "similarity_score": 93.08
     },
-    {
-      "step": 3,
-      "name": "sprint20_screenshot_03_unified_research_session_view.png",
-      "viewport": "1440x900 (Desktop)",
-      "target": "Unified Research Workspace V1 (URS) 5-Module Session Dashboard",
-      "status": "VERIFIED"
+    "gate_07_comparison_launched": true,
+    "gate_08_dual_period_referenced": true,
+    "gate_09_workflow_saved_authorized": true,
+    "gate_10_persistence_verified": "RLIB-2e705f2b4dfa",
+    "gate_11_workflow_reopened": true,
+    "gate_12_parameters_parity_verified": true,
+    "gate_13_evidence_exported": true,
+    "gate_14_checksum_validated": {
+      "sha256": "f8cc35e6cd9f040a8e4d353c1640d6f519914b2342dd605f33ddff5368028c9e",
+      "holdout_criteria_satisfied": 2,
+      "confirmatory_replications": 0
     },
-    {
-      "step": 4,
-      "name": "sprint20_screenshot_04_pattern_discovery_candidates.png",
-      "viewport": "1440x900 (Desktop)",
-      "target": "Historical Pattern Discovery V2 Search Results & Disjoint Candidates",
-      "status": "VERIFIED"
-    },
-    {
-      "step": 5,
-      "name": "sprint20_screenshot_05_comparison_studio_studio.png",
-      "viewport": "1440x900 (Desktop)",
-      "target": "Comparison Studio V2 Dual-Period & Normalized Progress (Base 100)",
-      "status": "VERIFIED"
-    },
-    {
-      "step": 6,
-      "name": "sprint20_screenshot_06_research_library_v2_catalog.png",
-      "viewport": "1440x900 (Desktop)",
-      "target": "Research Library V2 Catalog, Search Filters & Save Definition Modal",
-      "status": "VERIFIED"
-    },
-    {
-      "step": 7,
-      "name": "sprint20_screenshot_07_tablet_viewport_responsive.png",
-      "viewport": "768x1024 (Tablet)",
-      "target": "Responsive Fluid Grid & Stepper on iPad / Tablet Screen",
-      "status": "VERIFIED"
-    },
-    {
-      "step": 8,
-      "name": "sprint20_screenshot_08_mobile_viewport_responsive.png",
-      "viewport": "375x812 (Mobile)",
-      "target": "Responsive Compact Stepper, Touch Navigation & Mobile Viewport",
-      "status": "VERIFIED"
-    }
-  ]
+    "gate_15_date_range_modified": true,
+    "gate_16_stale_results_invalidated": true,
+    "gate_17_anonymous_write_rejected": true,
+    "gate_18_csrf_rejected": true,
+    "gate_19_responsive_interactions_verified": true,
+    "gate_20_test_records_cleaned_up": true
+  }
 }

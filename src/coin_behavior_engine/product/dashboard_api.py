@@ -488,8 +488,8 @@ class ProductDashboardApiService:
         clean_token = str(token).strip()
 
         # 4. Check Revoked Tokens
-        from coin_behavior_engine.product.operations_console import REVOKED_OPERATOR_TOKENS
-        if clean_token in REVOKED_OPERATOR_TOKENS:
+        from coin_behavior_engine.product.operations_console import is_token_revoked
+        if is_token_revoked(clean_token):
             return False, HTTPStatus.FORBIDDEN, "AUTH_TOKEN_REVOKED: Belirtilen yetki tokeni güvenlik nedeniyle iptal edilmiştir."
 
         # 5. Validate Against Configured / Expected Token
