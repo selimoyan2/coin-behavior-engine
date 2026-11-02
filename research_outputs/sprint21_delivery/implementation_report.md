@@ -4,7 +4,8 @@
 **Sprint ID:** `CBE_PRODUCT_ACCELERATION_21`  
 **Repository:** `selimoyan2/coin-behavior-engine`  
 **Branch:** `main`  
-**Implementation Commit:** `f788c6e66b6865f39a906e69241a5661ac1fa5a1`  
+**Implementation Commit:** `3c49506d8ea56dbe3ac4b6c8ba2221e551fc7fff`  
+**Staging Build Image:** `cbe-market-intelligence:sprint21-3c49506`  
 **Base Commit:** `dae157a127c14ea9487a3833db619efbc0161a0c`  
 **Canonical Scientific Model:** `CBE-0.7.0` (STRICTLY FROZEN, 0 parameter mutations)  
 **Execution Environment:** Local development & Staging (`srv1114257`)  
@@ -89,25 +90,51 @@ In accordance with core CBE governance principles, this layer evaluates existing
 
 ---
 
-## 3. Verification & Acceptance Summary
+## 3. Final Acceptance Hardening Tasks (Review Reconciliation)
 
-1. **Unit & Integration Test Suite:**
-   - Test File: `tests/test_sprint_product_acceleration_21.py`
-   - Total Tests: 21
-   - Result: 21 Passed (0 Failed, 0 Skipped)
+During independent review of Sprint 21 baseline `b20aebda43ca095b07d84aa8b7616b09f72a700f`, four specific hardening defects were addressed and verified under implementation commit `3c49506d8ea56dbe3ac4b6c8ba2221e551fc7fff`:
+
+### 3.1 Task 1 — Reproducibility Provenance Integrity
+- **Defect:** `get_source_commit_sha()` contained a hardcoded fallback to Sprint 20 commit (`dae157a...`), masking unresolved build identity.
+- **Remediation:** Removed the hardcoded fallback. Implemented strict 40-character hexadecimal validation (`HEX_40_REGEX`). If Git HEAD, build metadata, or environment variables cannot supply a valid 40-char SHA, the function returns `"UNAVAILABLE"` and fails closed. Downstream reproducibility verifications strictly disallow `REPRODUCIBLE_EXACT` when provenance cannot be established.
+
+### 3.2 Task 2 — Scientific Numerical Correctness
+- **Defect:** Non-finite values (`NaN`, `+inf`, `-inf`), booleans, and malformed strings could cause undefined comparison states or raise JSON parsing exceptions in browser clients. Missing fields also risked defaulting to zero.
+- **Remediation:**
+  - `compare_numerical_values()` explicitly rejects non-finite floats, booleans, and malformed data, returning `(False, float('inf'), False)`.
+  - Discrepancy dictionaries replace non-finite deltas with `None` (`null` in JSON) complying strictly with RFC 8259 standard JSON parsers in Chromium/WebKit.
+  - Zero-equivalent defaults were eliminated; missing module fields trigger explicit comparison errors.
+  - Added 5 dedicated test cases in `TestSprint21ScientificNumericalCorrectness`.
+
+### 3.3 Task 3 — Remove Hardcoded Test Credentials
+- **Defect:** A placeholder test token (`cbe-research-dev-2026`) was present in `scripts/run_playwright_sprint21.py`, `dashboard_api.py`, and `research_explorer_ui.py`.
+- **Remediation:**
+  - Removed `cbe-research-dev-2026` from `dashboard_api.py` and UI code.
+  - `scripts/run_playwright_sprint21.py` now retrieves the token dynamically from environment variables (`CBE_TEST_OPERATOR_TOKEN` / `CBE_OPERATOR_TOKEN`) and immediately fails closed if absent.
+  - UI benchmark invocation retrieves token dynamically from `sessionStorage` or `window.CBE_OPERATOR_TOKEN`.
+  - Added test cases verifying that absent or revoked credentials fail closed.
+
+### 3.4 Task 4 — Release Identity Reconciliation
+- Unambiguously distinguished implementation commit (`3c49506`), staging build image (`cbe-market-intelligence:sprint21-3c49506`), delivery evidence, and acceptance identity without rewriting Git history.
+
+---
+
+## 4. Verification & Acceptance Summary
+
+1. **Unit & Integration Test Suite (`tests/test_sprint_product_acceleration_21.py`):**
+   - Initial tests: 21
+   - Hardening tests added: 13 (Provenance, Numerical Correctness, Security)
+   - Total Tests: 34
+   - Result: 34 Passed (0 Failed, 0 Skipped)
 2. **Product Acceleration Full Regression Suite:**
-   - Total Tests: 361 (across Sprints 01 to 21)
-   - Result: 361 Passed in 401.69 seconds
-3. **Playwright End-to-End Acceptance:**
-   - Script: `scripts/run_playwright_sprint21.py`
+   - Total Tests: 374 (across Sprints 01 to 21)
+   - Result: 374 Passed in 115.88 seconds
+3. **Playwright End-to-End Acceptance Suite (`scripts/run_playwright_sprint21.py`):**
    - Total Scenarios: 16
-   - Result: 16 Passed (All 16 scenarios verified, desktop, tablet, and mobile screenshots captured, 0 secret leakage).
+   - Result: 16 Passed (100% green across Desktop, Tablet, Mobile viewports)
 4. **Staging Runtime Deployment:**
-   - Server: `srv1114257` (`168.231.125.238`)
-   - Container ID: `65b440a8ab5e200f2932ee07e0ba48189dcdc606ccc8a871e82bd854f03703d1`
-   - Image ID: `sha256:8c2de03ab8c51137eed65cf9b079982c90f771f5f79d07827c6ea3eade864698`
-   - Status: Healthy (port `18080`)
-   - Smoke Tests: Successfully verified capabilities, session verification, and audit endpoints.
-5. **Production Zero-Touch:**
-   - Container: `1a867269c8433cd67c744ea87ec9e9a84ae3d5a55c64156a33ce361c9a45ed08`
-   - Status: Continuously healthy and untouched.
+   - Container ID: `90ce1571a8e4ec3d8cca29744ce40d244c9d18f84d6ed5de95afe1685e151413`
+   - Image: `cbe-market-intelligence:sprint21-3c49506`
+   - Health Status: `healthy` on `127.0.0.1:18080->8000`
+5. **Production Zero-Touch Invariant:**
+   - Production container `1a867269c843` untouched, continuous uptime verified.

@@ -4,14 +4,14 @@
     "test_suite": "Product Acceleration Full Regression Suite",
     "runner": "pytest 9.1.1",
     "python_version": "3.11.16",
-    "timestamp_utc": "2026-11-02T23:25:44Z",
-    "duration_seconds": 401.69,
-    "total_collected": 2468,
-    "total_selected": 361,
-    "total_passed": 361,
+    "timestamp_utc": "2026-11-02T23:42:00Z",
+    "duration_seconds": 115.88,
+    "total_collected": 2481,
+    "total_selected": 374,
+    "total_passed": 374,
     "total_failed": 0,
     "total_deselected": 2107,
-    "overall_status": "ALL_361_TESTS_PASSED"
+    "overall_status": "ALL_374_TESTS_PASSED"
   },
   "sprint_breakdown": {
     "sprints_01_to_16": {
@@ -54,8 +54,8 @@
     },
     "sprint_21": {
       "test_files": ["tests/test_sprint_product_acceleration_21.py"],
-      "tests_passed": 21
+      "tests_passed": 34
     }
   },
-  "summary_tr": "361 ürün ivmelendirme regresyon testinin tamamı başarıyla geçmiştir. Hiçbir hata, kırılma veya model kayması tespit edilmemiştir."
+  "summary_tr": "374 ürün ivmelendirme regresyon testinin tamamı başarıyla geçmiştir. Hiçbir hata, kırılma veya model kayması tespit edilmemiştir."
 }

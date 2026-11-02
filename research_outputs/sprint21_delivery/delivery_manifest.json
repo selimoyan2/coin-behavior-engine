@@ -3,13 +3,13 @@
     "sprint_id": "CBE_PRODUCT_ACCELERATION_21",
     "title": "Research Quality Assurance & Reproducibility V1",
     "base_commit": "dae157a127c14ea9487a3833db619efbc0161a0c",
-    "implementation_commit": "f788c6e66b6865f39a906e69241a5661ac1fa5a1",
-    "staging_image": "cbe-market-intelligence:sprint21-f788c6e",
-    "staging_image_id": "sha256:8c2de03ab8c51137eed65cf9b079982c90f771f5f79d07827c6ea3eade864698",
-    "staging_container_id": "65b440a8ab5e200f2932ee07e0ba48189dcdc606ccc8a871e82bd854f03703d1",
+    "implementation_commit": "3c49506d8ea56dbe3ac4b6c8ba2221e551fc7fff",
+    "staging_image": "cbe-market-intelligence:sprint21-3c49506",
+    "staging_image_id": "sha256:fc88dba2aac82533cdc580a4858e4e48ca165a1699219de1c9d87b8005794339",
+    "staging_container_id": "90ce1571a8e4ec3d8cca29744ce40d244c9d18f84d6ed5de95afe1685e151413",
     "production_container_id": "1a867269c8433cd67c744ea87ec9e9a84ae3d5a55c64156a33ce361c9a45ed08",
     "canonical_model": "CBE-0.7.0 (STRICTLY FROZEN)",
-    "generated_at_utc": "2026-11-02T23:32:00Z",
+    "generated_at_utc": "2026-11-02T23:56:00Z",
     "total_artifacts": 13
   },
   "artifacts": {
@@ -22,23 +22,23 @@
       "size_bytes": 1854
     },
     "full_regression_results.json": {
-      "sha256": "01f9a9028d11b3a6891dd1035e8d2bb9020bb13e91a190ed2c82453399330dbf",
-      "size_bytes": 2319
+      "sha256": "ec068c73b0fb5d06ee4b724d63f22d76221ebb22597e165307f90804b9286327",
+      "size_bytes": 2318
     },
     "git_release_identity.json": {
-      "sha256": "aa214458eb594ae2a252bb164e9fa4b792c2cd90352259f78eec2326e40c9a1a",
-      "size_bytes": 1603
+      "sha256": "3703d6528eb9509602ebae9986abb39c94c6096076295894ae14c924273d7cad",
+      "size_bytes": 1809
     },
     "implementation_report.md": {
-      "sha256": "0cb9577152ec11763ada9373d0ee09f48238ba1e911c5b70fb765391b6ca7b91",
-      "size_bytes": 7032
+      "sha256": "4c68e782d4a8a79a5cab642ba176ed22b65ef65d2125b893eea499f4b6b247ac",
+      "size_bytes": 9567
     },
     "performance_regression_results.json": {
       "sha256": "f56ba3f1c6d24a995207b7bfbf7964177be639c4e0e28848a73769f973c65e75",
       "size_bytes": 2451
     },
     "playwright_acceptance_results.json": {
-      "sha256": "5993678eb52fc6a917126eee5f30acfebe2a861f6c5f98ab0944470149eedbfa",
+      "sha256": "a63da94b411c0bfe72d26a3bb5cf44cefbcfba5945afd75adb8691411411d2b0",
       "size_bytes": 1341
     },
     "reproducibility_verification_results.json": {
@@ -58,12 +58,12 @@
       "size_bytes": 1414
     },
     "security_hardening_report.md": {
-      "sha256": "5c3b3417b2db6f6f7a0ae8d6686c3a38c94a8593abb89264ef2397f343fe55ad",
-      "size_bytes": 4135
+      "sha256": "85f5a3972246cabb651d54b7d023d4f8cc7d1ecd1c0553d4f43d32ae874937e3",
+      "size_bytes": 5639
     },
     "staging_runtime_provenance.json": {
-      "sha256": "8cb7ef404d07533242bb9cfdaa200c71f89da69d46763f3346867deea332bbce",
-      "size_bytes": 1727
+      "sha256": "b3d1ccb5ad91e81272f987966ebb536588ac9583c53206b18001f2fde18851ad",
+      "size_bytes": 1896
     }
   }
 }

@@ -3,16 +3,16 @@
     "sprint_id": "CBE_PRODUCT_ACCELERATION_21",
     "deployment_target": "Coolify Staging / srv1114257",
     "host_ip": "168.231.125.238",
-    "verified_at_utc": "2026-11-02T23:31:00Z",
+    "verified_at_utc": "2026-11-02T23:50:00Z",
     "status": "HEALTHY_AND_OPERATIONAL"
   },
   "staging_container": {
     "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
-    "container_id": "65b440a8ab5e200f2932ee07e0ba48189dcdc606ccc8a871e82bd854f03703d1",
-    "image_tag": "cbe-market-intelligence:sprint21-f788c6e",
-    "image_id": "sha256:8c2de03ab8c51137eed65cf9b079982c90f771f5f79d07827c6ea3eade864698",
-    "source_commit_sha": "f788c6e66b6865f39a906e69241a5661ac1fa5a1",
-    "git_revision_short": "f788c6e",
+    "container_id": "90ce1571a8e4ec3d8cca29744ce40d244c9d18f84d6ed5de95afe1685e151413",
+    "image_tag": "cbe-market-intelligence:sprint21-3c49506",
+    "image_id": "sha256:fc88dba2aac82533cdc580a4858e4e48ca165a1699219de1c9d87b8005794339",
+    "source_commit_sha": "3c49506d8ea56dbe3ac4b6c8ba2221e551fc7fff",
+    "git_revision_short": "3c49506",
     "ports": "127.0.0.1:18080->8000/tcp",
     "health_status": "healthy",
     "read_only_rootfs": true,
@@ -36,9 +36,10 @@
     "runtime_isolation_confirmed": true
   },
   "smoke_tests": {
-    "capabilities_endpoint": "HTTP 200 OK",
-    "health_endpoint": "HTTP 200 OK",
-    "quality_verify_endpoint": "HTTP 200 OK (REPRODUCIBLE_EXACT)",
-    "scientific_audit_endpoint": "HTTP 200 OK"
+    "capabilities_endpoint": "HTTP 200 OK (CBE-0.7.0 STRICTLY_FROZEN)",
+    "health_endpoint": "HTTP 200 OK (freeze_verified: true)",
+    "quality_verify_endpoint": "HTTP 200 OK (REPRODUCIBLE_EXACT / 3c49506d8ea56dbe3ac4b6c8ba2221e551fc7fff)",
+    "tampering_detection": "HTTP 200 OK (tampering_detected: true)",
+    "revoked_token_rejection": "HTTP 403 Forbidden"
   }
 }
