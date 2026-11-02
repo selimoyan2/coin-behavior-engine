@@ -1,0 +1,32 @@
+{
+  "acceptance_metadata": {
+    "sprint_id": "CBE_PRODUCT_ACCELERATION_21",
+    "test_suite": "scripts/run_playwright_sprint21.py",
+    "engine": "Playwright / Chromium (headless)",
+    "timestamp_utc": "2026-11-02T23:18:45.669386+00:00",
+    "total_scenarios_evaluated": 16,
+    "total_scenarios_passed": 16,
+    "overall_status": "ALL_16_SCENARIOS_PASSED"
+  },
+  "scenario_evaluations": {
+    "scenario_01_workflow_opened": true,
+    "scenario_02_period_selected": {
+      "start_utc": "2022-06-01T00:00",
+      "end_utc": "2022-06-15T00:00"
+    },
+    "scenario_03_quality_panel_opened": true,
+    "scenario_04_reproducibility_launched": true,
+    "scenario_05_reproducibility_result_verified": "REPRODUCIBLE_EXACT",
+    "scenario_06_dataset_provenance_inspected": true,
+    "scenario_07_holdout_disclosures_inspected": true,
+    "scenario_08_evidence_checksum_verified": true,
+    "scenario_09_tampered_evidence_rejected": true,
+    "scenario_10_library_reconstruction_verified": "RLIB-f4e0c436d23c",
+    "scenario_11_performance_diagnostics_inspected": true,
+    "scenario_12_unauthorized_performance_audit_rejected": true,
+    "scenario_13_desktop_viewport": true,
+    "scenario_14_tablet_viewport": true,
+    "scenario_15_mobile_viewport": true,
+    "scenario_16_no_secret_leakage_verified": true
+  }
+}

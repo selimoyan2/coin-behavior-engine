@@ -1,0 +1,87 @@
+{
+  "scorecard_metadata": {
+    "sprint_id": "CBE_PRODUCT_ACCELERATION_21",
+    "engine": "ScientificIntegrityAuditEngine",
+    "generated_at_utc": "2026-11-02T23:31:00Z",
+    "overall_gate": "PASS",
+    "overall_score": 100.0,
+    "strict_gating_applied": true
+  },
+  "evaluated_period": {
+    "start_utc": "2022-06-01T00:00:00Z",
+    "end_utc": "2022-06-15T00:00:00Z",
+    "asset": "BTCUSDT"
+  },
+  "dimensions": {
+    "dataset_integrity": {
+      "dimension_name": "Veri Seti Bütünlüğü ve Orijinallik",
+      "status": "PASS",
+      "score": 100.0,
+      "details": {
+        "provenance": "binance_spot_multiyear_canonical",
+        "dataset_manifest_version": "cbe-manifest-v3-7ed2e950dec3",
+        "quarantine_violations": 0,
+        "authentic_exchange_candles": true
+      }
+    },
+    "canonical_model_integrity": {
+      "dimension_name": "Kanonik Model Dondurma ve Bütünlük",
+      "status": "PASS",
+      "score": 100.0,
+      "details": {
+        "model_version": "CBE-0.7.0",
+        "is_frozen": true,
+        "parameter_mutations": 0,
+        "drift_detected": false
+      }
+    },
+    "reproducibility": {
+      "dimension_name": "Çift Çalıştırma Tekrarlanabilirliği",
+      "status": "PASS",
+      "score": 100.0,
+      "details": {
+        "verdict": "REPRODUCIBLE_EXACT",
+        "dual_run_match": true,
+        "numerical_discrepancies_count": 0
+      }
+    },
+    "evidence_completeness": {
+      "dimension_name": "Kanıt Paketi ve Modül Bütünlüğü",
+      "status": "PASS",
+      "score": 100.0,
+      "details": {
+        "package_checksum_verified": true,
+        "modules_evaluated_count": 5,
+        "missing_modules": []
+      }
+    },
+    "historical_comparison_integrity": {
+      "dimension_name": "Tarihsel Karşılaştırma ve Ayrıklık",
+      "status": "PASS",
+      "score": 100.0,
+      "details": {
+        "candidate_disjointness_verified": true,
+        "quarantine_compliance": true,
+        "overlapping_windows": 0
+      }
+    },
+    "scientific_disclosure_completeness": {
+      "dimension_name": "Bilimsel İfşaat ve Holdout Sınırları",
+      "status": "PASS",
+      "score": 100.0,
+      "details": {
+        "predeclared_holdout_criteria_satisfied": 2,
+        "independent_confirmatory_replications": 0,
+        "exploratory_warning_disclosed": true,
+        "predictive_claims_abstention": true
+      }
+    }
+  },
+  "governance_invariants": {
+    "technical_decision": "TECHNICAL_NO_GO",
+    "directional_trading": "STRICTLY_PROHIBITED",
+    "live_order_execution": "PERMANENTLY_PROHIBITED",
+    "zero_touch_production": "ENFORCED"
+  },
+  "summary_tr": "ARAŞTIRMA KALİTE KARNESİ ONAYLANDI: 6 kalite boyutunun tümü (Veri Bütünlüğü, Model Dondurma, Tekrarlanabilirlik, Kanıt Eksiksizliği, Karşılaştırma Ayrıklığı, Bilimsel İfşaat) %100 başarı ile PASS aldı."
+}

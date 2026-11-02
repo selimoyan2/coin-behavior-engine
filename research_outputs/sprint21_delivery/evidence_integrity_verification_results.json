@@ -1,0 +1,50 @@
+{
+  "evidence_verification_metadata": {
+    "sprint_id": "CBE_PRODUCT_ACCELERATION_21",
+    "engine": "ResearchEvidenceVerifier",
+    "schema_version": "CBE-WORKFLOW-EVIDENCE-1.0.0",
+    "evaluated_at_utc": "2026-11-02T23:31:00Z",
+    "status": "VERIFIED_VALID"
+  },
+  "canonical_checksum_verification": {
+    "algorithm": "SHA-256",
+    "package_checksum": "a827cf49e29f0bb3b3701389e02377b21ec4f7e2a4a7bfd3e51a662e73f4e912",
+    "computed_checksum": "a827cf49e29f0bb3b3701389e02377b21ec4f7e2a4a7bfd3e51a662e73f4e912",
+    "checksum_match": true,
+    "tampering_detected": false
+  },
+  "tampering_stress_tests": [
+    {
+      "test_case": "regime_drift_injection",
+      "field_modified": "session.regimes[0].regime_label",
+      "expected_outcome": "REJECTED_CHECKSUM_MISMATCH",
+      "actual_outcome": "REJECTED_CHECKSUM_MISMATCH",
+      "pass": true
+    },
+    {
+      "test_case": "model_version_mutation",
+      "field_modified": "metadata.canonical_model_version",
+      "expected_outcome": "REJECTED_MODEL_TAMPERED",
+      "actual_outcome": "REJECTED_MODEL_TAMPERED",
+      "pass": true
+    },
+    {
+      "test_case": "holdout_count_inflation",
+      "field_modified": "evidence.holdout_disclosures.independent_confirmatory_replications",
+      "expected_outcome": "REJECTED_EPISTEMOLOGICAL_BOUNDARY_BREACH",
+      "actual_outcome": "REJECTED_EPISTEMOLOGICAL_BOUNDARY_BREACH",
+      "pass": true
+    }
+  ],
+  "epistemological_disclosures": {
+    "predeclared_holdout_criteria_satisfied": 2,
+    "independent_confirmatory_replications": 0,
+    "boundary_verified": true,
+    "exploratory_warning_present": true
+  },
+  "hash_chain_integrity": {
+    "verified": true,
+    "broken_links": 0
+  },
+  "summary_tr": "KANIT PAKETİ BÜTÜNLÜĞÜ DOĞRULANDI: SHA-256 sağlama toplamı eşleşti, tahrifat testlerinin tamamı tespit edilip engellendi."
+}

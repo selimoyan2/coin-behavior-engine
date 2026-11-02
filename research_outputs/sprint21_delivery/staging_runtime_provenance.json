@@ -1,0 +1,44 @@
+{
+  "staging_deployment_metadata": {
+    "sprint_id": "CBE_PRODUCT_ACCELERATION_21",
+    "deployment_target": "Coolify Staging / srv1114257",
+    "host_ip": "168.231.125.238",
+    "verified_at_utc": "2026-11-02T23:31:00Z",
+    "status": "HEALTHY_AND_OPERATIONAL"
+  },
+  "staging_container": {
+    "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+    "container_id": "65b440a8ab5e200f2932ee07e0ba48189dcdc606ccc8a871e82bd854f03703d1",
+    "image_tag": "cbe-market-intelligence:sprint21-f788c6e",
+    "image_id": "sha256:8c2de03ab8c51137eed65cf9b079982c90f771f5f79d07827c6ea3eade864698",
+    "source_commit_sha": "f788c6e66b6865f39a906e69241a5661ac1fa5a1",
+    "git_revision_short": "f788c6e",
+    "ports": "127.0.0.1:18080->8000/tcp",
+    "health_status": "healthy",
+    "read_only_rootfs": true,
+    "environment": "staging",
+    "volume_mounts": [
+      {
+        "source": "zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data",
+        "destination": "/app/data/live_capture",
+        "mode": "ro",
+        "rw": false
+      }
+    ]
+  },
+  "production_container_verification": {
+    "container_name": "6t63aehpaw0cw1bbt4zcm09g-20261102T225721",
+    "container_id": "1a867269c8433cd67c744ea87ec9e9a84ae3d5a55c64156a33ce361c9a45ed08",
+    "image_id": "sha256:bd2b966708805f40f13a66a45a5c61d6ea1b67d355fc108ac4f1b5b1ad0049be",
+    "state": "running",
+    "health_status": "healthy",
+    "zero_touch_maintained": true,
+    "runtime_isolation_confirmed": true
+  },
+  "smoke_tests": {
+    "capabilities_endpoint": "HTTP 200 OK",
+    "health_endpoint": "HTTP 200 OK",
+    "quality_verify_endpoint": "HTTP 200 OK (REPRODUCIBLE_EXACT)",
+    "scientific_audit_endpoint": "HTTP 200 OK"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "verification_metadata": {
+    "sprint_id": "CBE_PRODUCT_ACCELERATION_21",
+    "engine": "ResearchReproducibilityEngine",
+    "manifest_version": "CBE-REPRODUCIBILITY-1.0.0",
+    "evaluated_at_utc": "2026-11-02T23:31:00Z",
+    "overall_verdict": "REPRODUCIBLE_EXACT",
+    "reproducible": true
+  },
+  "evaluated_period": {
+    "start_utc": "2022-06-01T00:00:00Z",
+    "end_utc": "2022-06-15T00:00:00Z",
+    "asset": "BTCUSDT",
+    "interval": "1h"
+  },
+  "runs": {
+    "run_1_hash": "cbe19e97f06d21fa7583b5b8038141d4e3dcfbabf68238fca52f5efab718a101",
+    "run_2_hash": "cbe19e97f06d21fa7583b5b8038141d4e3dcfbabf68238fca52f5efab718a101",
+    "hashes_identical": true
+  },
+  "modules_evaluated": [
+    "historical_candles",
+    "regime_clustering",
+    "volatility_estimation",
+    "macro_event_overlay",
+    "statistical_holdouts"
+  ],
+  "numerical_tolerances": {
+    "regime_probability": 1e-05,
+    "volatility_metric": 1e-05,
+    "similarity_score": 0.0001,
+    "statistical_p_value": 1e-06,
+    "return_metric": 1e-05
+  },
+  "numerical_discrepancies": [],
+  "dataset_provenance": {
+    "expected_dataset_version": "cbe-manifest-v3-7ed2e950dec3",
+    "observed_dataset_version": "cbe-manifest-v3-7ed2e950dec3",
+    "provenance_matched": true
+  },
+  "canonical_model_verification": {
+    "expected_model": "CBE-0.7.0",
+    "observed_model": "CBE-0.7.0",
+    "model_matched": true
+  },
+  "summary_tr": "TEKRARLANABİLİRLİK DOĞRULANDI: İki bağımsız çalıştırma sonucunda tam bit düzeyinde eşleşme sağlandı (REPRODUCIBLE_EXACT)."
+}

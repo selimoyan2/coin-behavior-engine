@@ -1,0 +1,118 @@
+{
+  "contract_metadata": {
+    "sprint_id": "CBE_PRODUCT_ACCELERATION_21",
+    "version": "1.0.0",
+    "base_path": "/api/v1/product",
+    "status": "APPROVED_FROZEN"
+  },
+  "endpoints": {
+    "get_capabilities": {
+      "method": "GET",
+      "path": "/api/v1/product/research-quality/capabilities",
+      "description": "Returns quality assurance engine capabilities, schemas, numerical tolerances, and governance invariants.",
+      "auth_required": false,
+      "response_schema": {
+        "service": "string",
+        "module": "string",
+        "canonical_model_version": "string (CBE-0.7.0)",
+        "canonical_model_status": "string (STRICTLY_FROZEN)",
+        "reproducibility_schema_version": "string (CBE-REPRODUCIBILITY-1.0.0)",
+        "evidence_schema_version": "string (CBE-WORKFLOW-EVIDENCE-1.0.0)",
+        "numerical_tolerances": "object",
+        "supported_verdicts": "array[string]",
+        "quality_dimensions": "array[string]",
+        "performance_thresholds_ms": "object",
+        "governance_invariants": "object"
+      }
+    },
+    "post_quality_verify": {
+      "method": "POST",
+      "path": "/api/v1/product/research-quality/verify",
+      "description": "Executes dual deterministic replay verification across the 5 core modules and generates quality scorecard.",
+      "auth_required": false,
+      "request_schema": {
+        "start_utc": "string (ISO8601)",
+        "end_utc": "string (ISO8601)",
+        "asset": "string (optional, default: BTCUSDT)",
+        "interval": "string (optional, default: 1h)"
+      },
+      "response_schema": {
+        "reproducibility": "object (CBE-REPRODUCIBILITY-1.0.0)",
+        "scorecard": "object (Scientific Quality Scorecard)",
+        "timestamp_utc": "string (ISO8601)"
+      }
+    },
+    "post_evidence_verify": {
+      "method": "POST",
+      "path": "/api/v1/product/research-quality/evidence/verify",
+      "description": "Cryptographically verifies an exported research evidence package against tampering, model drift, and epistemological disclosures.",
+      "auth_required": false,
+      "request_schema": {
+        "evidence_package": "object"
+      },
+      "response_schema": {
+        "verified": "boolean",
+        "package_checksum": "string (SHA256)",
+        "canonical_model_version": "string",
+        "holdout_disclosures_verified": "boolean",
+        "tampering_detected": "boolean",
+        "violations": "array[string]"
+      }
+    },
+    "post_scientific_audit": {
+      "method": "POST",
+      "path": "/api/v1/product/research-quality/scientific-audit",
+      "description": "Performs comprehensive 6-dimension scientific audit on historical boundaries, disjointness, model freeze, and disclosures.",
+      "auth_required": false,
+      "request_schema": {
+        "start_utc": "string (ISO8601)",
+        "end_utc": "string (ISO8601)",
+        "asset": "string (optional, default: BTCUSDT)"
+      },
+      "response_schema": {
+        "scorecard": "object",
+        "governance_decision": "string (TECHNICAL_NO_GO)",
+        "historical_boundary_check": "string (PASS)",
+        "disjointness_check": "string (PASS)"
+      }
+    },
+    "post_performance_audit": {
+      "method": "POST",
+      "path": "/api/v1/product/research-quality/performance-audit",
+      "description": "Executes 8-operation latency and memory regression benchmark suite under explicit operator authorization. Permanently disabled in production.",
+      "auth_required": true,
+      "headers": {
+        "X-Operator-Token": "string (required in staging/dev)"
+      },
+      "request_schema": {
+        "start_utc": "string (optional)",
+        "end_utc": "string (optional)",
+        "thresholds": "object (optional overrides)"
+      },
+      "response_schema": {
+        "overall_status": "string (PASS/WARNING/REGRESSION_DETECTED)",
+        "detected_regressions": "integer",
+        "metrics": "object",
+        "aggregate_summary": "object",
+        "summary_tr": "string"
+      }
+    },
+    "post_library_verify": {
+      "method": "POST",
+      "path": "/api/v1/product/research-library/verify",
+      "description": "Verifies saved research definition for dataset drift, canonical model compliance, and replay reproducibility.",
+      "auth_required": false,
+      "request_schema": {
+        "research_id": "string (RLIB-xxxx)"
+      },
+      "response_schema": {
+        "research_id": "string",
+        "title": "string",
+        "canonical_model_version": "string (CBE-0.7.0)",
+        "dataset_manifest_matched": "boolean",
+        "reproducibility": "object",
+        "verification_status": "string"
+      }
+    }
+  }
+}
