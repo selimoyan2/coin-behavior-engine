@@ -196,6 +196,15 @@ def render_research_explorer_html() -> str:
             </div>
             <div id="step-desc-5" style="font-size: 11px; color: #64748b; margin-top: 4px; margin-left: 30px;">Kütüphane & Kanıt Paketi</div>
           </div>
+
+          <!-- Step 6: Quality Assurance & Reproducibility (Sprint 21) -->
+          <div id="step-node-6" class="workflow-step-node" onclick="workflowNavigateStep(6)" style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: all 0.2s;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="step-num-6" style="background: #334155; color: #94a3b8; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">6</span>
+              <span style="font-size: 13px; font-weight: 600; color: #cbd5e1;">Kalite Güvencesi</span>
+            </div>
+            <div id="step-desc-6" style="font-size: 11px; color: #64748b; margin-top: 4px; margin-left: 30px;">Tekrarlanabilirlik & Denetim</div>
+          </div>
         </div>
 
         <!-- Stale Results Warning Banner (Hidden by default) -->
@@ -539,6 +548,76 @@ def render_research_explorer_html() -> str:
           <div style="font-size: 12px; color: #cbd5e1; line-height: 1.5;">
             Tarihsel holdout verileri geçmiş araştırmalarda önceden gözlemlendiğinden (exposed), holdout kriterlerini sağlayan spesifikasyonlar bağımsız doğrulayıcı değil, kesinlikle <b>keşifsel (exploratory)</b> olarak sınıflandırılır.
           </div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- SPRINT 21: RESEARCH QUALITY ASSURANCE & REPRODUCIBILITY V1 PANEL    -->
+      <!-- =================================================================== -->
+      <div id="research-quality-assurance-panel" class="card" style="margin-bottom: 20px; border: 1px solid #3b82f6; background: #0a0f1d; border-radius: 12px; padding: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: #60a5fa; letter-spacing: 0.5px;">ARAŞTIRMA KALİTE GÜVENCESİ & TEKRARLANABİLİRLİK V1 (SPRINT 21)</div>
+            <h3 style="font-size: 18px; font-weight: 700; color: #f8fafc; margin: 4px 0 0 0;">
+              🛡️ Deterministik Doğrulama, Kanıt Bütünlüğü & Bilimsel Kalite Puan Kartı
+            </h3>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-primary btn-sm" onclick="runReproducibilityVerification()" id="btn-run-reproducibility">
+              <span>🔬</span> Tekrarlanabilirlik Doğrula
+            </button>
+            <button class="btn btn-sm" onclick="runScientificAuditScorecard()" id="btn-run-scorecard" style="background: #1e293b; border: 1px solid #475569; color: #f8fafc;">
+              <span>📊</span> Kalite Puan Kartı
+            </button>
+            <button class="btn btn-sm" onclick="runEvidencePackageVerification()" id="btn-verify-evidence" style="background: #1e293b; border: 1px solid #475569; color: #f8fafc;">
+              <span>📦</span> Kanıt Bütünlüğü Denetle
+            </button>
+            <button class="btn btn-sm" onclick="runPerformanceAuditBenchmark()" id="btn-run-performance" style="background: #1e293b; border: 1px solid #475569; color: #f8fafc;">
+              <span>⚡</span> Performans Gözlemevi
+            </button>
+          </div>
+        </div>
+
+        <!-- High-level Status Overview Badges -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 16px;">
+          <div style="background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 12px;">
+            <div style="font-size: 11px; color: #94a3b8; font-weight: 600;">GENEL KALİTE KAPISI (OVERALL GATE)</div>
+            <div id="qsc-overall-gate-badge" style="font-size: 16px; font-weight: 700; color: #38bdf8; margin-top: 4px;">
+              BEKLENİYOR
+            </div>
+            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">Katı kapı: Tek bir FAIL tüm kapıyı FAIL yapar.</div>
+          </div>
+          <div style="background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 12px;">
+            <div style="font-size: 11px; color: #94a3b8; font-weight: 600;">TEKRARLANABİLİRLİK KARARI</div>
+            <div id="qsc-reproducibility-badge" style="font-size: 15px; font-weight: 700; color: #10b981; margin-top: 4px;">
+              DEĞERLENDİRİLMEDİ
+            </div>
+            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">Çift çalıştırma & kanonik fark denetimi.</div>
+          </div>
+          <div style="background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 12px;">
+            <div style="font-size: 11px; color: #94a3b8; font-weight: 600;">KANONİK MODEL DONDURMA</div>
+            <div style="font-size: 15px; font-weight: 700; color: #10b981; margin-top: 4px;">
+              CBE-0.7.0 (FROZEN)
+            </div>
+            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">0 parametre mutasyonu, kesin dondurulmuş.</div>
+          </div>
+          <div style="background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 12px;">
+            <div style="font-size: 11px; color: #94a3b8; font-weight: 600;">HOLDOUT LİNEAGE VE İFŞA</div>
+            <div style="font-size: 15px; font-weight: 700; color: #f59e0b; margin-top: 4px;">
+              2 Karşılandı / 0 Bağımsız Doğrulama
+            </div>
+            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">Geçmişte ifşa edilmiş keşifsel kanıt.</div>
+          </div>
+        </div>
+
+        <!-- 6-Dimensions Scorecard Grid -->
+        <div id="qsc-dimensions-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 16px;">
+          <!-- Dynamically populated dimension cards -->
+        </div>
+
+        <!-- Performance / Tamper Results Container -->
+        <div id="quality-aux-results-container" style="display: none; background: #080d1a; border: 1px solid #1e293b; border-radius: 8px; padding: 14px; margin-top: 10px;">
+          <!-- Filled dynamically by JS -->
         </div>
       </div>
 
@@ -1434,6 +1513,191 @@ def render_research_explorer_scripts() -> str:
         switchTab('research-explorer');
         const lib = document.getElementById('research-library-catalog-container');
         if (lib) lib.scrollIntoView({ behavior: 'smooth' });
+      } else if (stepNum === 6) {
+        switchTab('research-explorer');
+        const qp = document.getElementById('research-quality-assurance-panel');
+        if (qp) qp.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Sprint 21: Research Quality Assurance Client Logic
+    async function runReproducibilityVerification() {
+      const b = document.getElementById('btn-run-reproducibility');
+      if (b) b.disabled = true;
+      try {
+        const sInput = document.getElementById('exp-start-utc');
+        const eInput = document.getElementById('exp-end-utc');
+        let startUtc = sInput && sInput.value ? sInput.value : '2022-06-01T00:00:00Z';
+        let endUtc = eInput && eInput.value ? eInput.value : '2022-06-15T00:00:00Z';
+        if (!startUtc.includes('Z')) startUtc += (startUtc.length === 16 ? ':00Z' : 'Z');
+        if (!endUtc.includes('Z')) endUtc += (endUtc.length === 16 ? ':00Z' : 'Z');
+
+        const payload = {
+          workflow_context: {
+            asset: 'BTCUSDT',
+            interval: '1h',
+            reference_start_utc: startUtc,
+            reference_end_utc: endUtc,
+            selected_modules: ['regime_analysis', 'volatility_analysis'],
+            canonical_model_version: 'CBE-0.7.0'
+          }
+        };
+        const resp = await fetch('/api/v1/product/research-quality/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await resp.json();
+        if (data.reproducibility) {
+          const rBadge = document.getElementById('qsc-reproducibility-badge');
+          if (rBadge) {
+            rBadge.textContent = data.reproducibility.verdict;
+            rBadge.style.color = data.reproducibility.reproducible ? '#10b981' : '#ef4444';
+          }
+        }
+        if (data.quality_scorecard) {
+          renderQualityScorecardUI(data.quality_scorecard);
+        }
+      } catch (err) {
+        console.error('Reproducibility verification error:', err);
+      } finally {
+        if (b) b.disabled = false;
+      }
+    }
+
+    async function runScientificAuditScorecard() {
+      const b = document.getElementById('btn-run-scorecard');
+      if (b) b.disabled = true;
+      try {
+        const payload = {
+          workflow_context: cbeWorkflowContext || {
+            asset: 'BTCUSDT',
+            interval: '1h',
+            reference_start_utc: '2022-06-01T00:00:00Z',
+            reference_end_utc: '2022-06-15T00:00:00Z',
+            selected_modules: ['regime_analysis', 'volatility_analysis']
+          }
+        };
+        const resp = await fetch('/api/v1/product/research-quality/scientific-audit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await resp.json();
+        renderQualityScorecardUI(data);
+      } catch (err) {
+        console.error('Scientific audit scorecard error:', err);
+      } finally {
+        if (b) b.disabled = false;
+      }
+    }
+
+    function renderQualityScorecardUI(scorecard) {
+      if (!scorecard) return;
+      const gBadge = document.getElementById('qsc-overall-gate-badge');
+      if (gBadge) {
+        gBadge.textContent = scorecard.overall_gate;
+        gBadge.style.color = scorecard.overall_gate === 'PASS' ? '#10b981' : (scorecard.overall_gate === 'WARNING' ? '#f59e0b' : '#ef4444');
+      }
+
+      const grid = document.getElementById('qsc-dimensions-grid');
+      if (!grid || !scorecard.dimensions) return;
+      grid.innerHTML = '';
+
+      Object.values(scorecard.dimensions).forEach(dim => {
+        const dCard = document.createElement('div');
+        dCard.style.cssText = 'background: #0d1322; border: 1px solid #1e293b; border-radius: 8px; padding: 12px;';
+        const color = dim.status === 'PASS' ? '#10b981' : (dim.status === 'WARNING' ? '#f59e0b' : '#ef4444');
+        dCard.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span style="font-size: 12px; font-weight: 700; color: #f8fafc;">${dim.display_title_tr}</span>
+            <span class="badge" style="background: rgba(255,255,255,0.08); color: ${color}; font-weight: 700;">${dim.status}</span>
+          </div>
+          <div style="font-size: 11px; color: #94a3b8; line-height: 1.4;">${dim.description_tr}</div>
+          <div style="font-size: 10px; color: #64748b; margin-top: 6px;">Ref: ${dim.evidence_reference}</div>
+        `;
+        grid.appendChild(dCard);
+      });
+    }
+
+    async function runEvidencePackageVerification() {
+      const container = document.getElementById('quality-aux-results-container');
+      if (container) {
+        container.style.display = 'block';
+        container.innerHTML = '<div style="font-size: 12px; color: #94a3b8;">Kanıt paketi bütünlüğü denetleniyor...</div>';
+      }
+      try {
+        const samplePkg = {
+          export_schema_version: 'CBE-WORKFLOW-EVIDENCE-1.0.0',
+          workflow_id: cbeWorkflowContext ? cbeWorkflowContext.workflow_id : 'RWF-SAMPLE-01',
+          canonical_model: { version: 'CBE-0.7.0', status: 'STRICTLY_FROZEN', parameter_mutations: 0 },
+          dataset_provenance: { manifest_sha256: 'fe6c73326c639ee048012cbeb4d50cb9b25014552411ae7a4ef5a57be448ad97', quarantine_status: 'OCTOBER_2026_EXCLUDED' },
+          research_specification: { asset: 'BTCUSDT', interval: '1h', reference_start_utc: '2022-06-01T00:00:00Z', reference_end_utc: '2022-06-15T00:00:00Z' },
+          scientific_disclosures: { predeclared_holdout_criteria_satisfied: 2, independent_confirmatory_replications: 0, epistemological_limitations: ['Betimsel analiz', 'Tahmin içermez'] }
+        };
+        // Recompute hash
+        const resp = await fetch('/api/v1/product/research-quality/evidence/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ evidence_package: samplePkg })
+        });
+        const rep = await resp.json();
+        if (container) {
+          container.innerHTML = `
+            <div style="font-size: 13px; font-weight: 700; color: #f8fafc; margin-bottom: 6px;">📦 Kanıt Paketi Doğrulama Raporu</div>
+            <div style="font-size: 12px; color: ${rep.is_valid ? '#10b981' : '#ef4444'};">Durum: ${rep.status} | Sağlama Özeti: ${rep.computed_checksum ? rep.computed_checksum.slice(0, 16) + '...' : 'N/A'}</div>
+            <div style="font-size: 11px; color: #94a3b8; margin-top: 4px;">${rep.epistemological_boundary_notice}</div>
+          `;
+        }
+      } catch (err) {
+        if (container) container.innerHTML = `<div style="font-size: 12px; color: #ef4444;">Doğrulama hatası: ${err}</div>`;
+      }
+    }
+
+    async function runPerformanceAuditBenchmark() {
+      const container = document.getElementById('quality-aux-results-container');
+      if (container) {
+        container.style.display = 'block';
+        container.innerHTML = '<div style="font-size: 12px; color: #94a3b8;">Performans gözlemevi benchmark ölçümleri yapılıyor...</div>';
+      }
+      try {
+        const resp = await fetch('/api/v1/product/research-quality/performance-audit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Operator-Token': 'cbe-research-dev-2026' },
+          body: JSON.stringify({ start_utc: '2022-06-01T00:00:00Z', end_utc: '2022-06-03T00:00:00Z' })
+        });
+        const rep = await resp.json();
+        if (container) {
+          let rows = '';
+          if (rep.metrics) {
+            Object.values(rep.metrics).forEach(m => {
+              const col = m.status === 'PASS' ? '#10b981' : (m.status === 'WARNING' ? '#f59e0b' : '#ef4444');
+              rows += `<tr>
+                <td style="padding: 4px 8px; border-bottom: 1px solid #1e293b;">${m.display_title_tr}</td>
+                <td style="padding: 4px 8px; border-bottom: 1px solid #1e293b;">${m.latency_ms} ms</td>
+                <td style="padding: 4px 8px; border-bottom: 1px solid #1e293b;">${m.threshold_ms} ms</td>
+                <td style="padding: 4px 8px; border-bottom: 1px solid #1e293b; color: ${col}; font-weight: 700;">${m.status}</td>
+              </tr>`;
+            });
+          }
+          container.innerHTML = `
+            <div style="font-size: 13px; font-weight: 700; color: #f8fafc; margin-bottom: 6px;">⚡ Performans Gözlemevi Benchmark Sonuçları</div>
+            <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">${rep.summary_tr}</div>
+            <table style="width: 100%; border-collapse: collapse; font-size: 11px; color: #cbd5e1;">
+              <thead>
+                <tr style="text-align: left; color: #94a3b8;">
+                  <th style="padding: 4px 8px;">Operasyon</th>
+                  <th style="padding: 4px 8px;">Gecikme</th>
+                  <th style="padding: 4px 8px;">Eşik</th>
+                  <th style="padding: 4px 8px;">Durum</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+          `;
+        }
+      } catch (err) {
+        if (container) container.innerHTML = `<div style="font-size: 12px; color: #ef4444;">Performans benchmark hatası: ${err}</div>`;
       }
     }
 

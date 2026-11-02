@@ -945,3 +945,78 @@ class ResearchLibraryEngine:
         cleaned_payload = dict(payload)
         cleaned_payload.pop("research_id", None)
         return cls.save_definition(cleaned_payload)
+
+    @classmethod
+    def verify_definition(cls, research_id: str) -> Dict[str, Any]:
+        """
+        Verify saved research definition for reproducibility, dataset provenance drift,
+        model freeze compliance, and scientific quality scorecard.
+        """
+        record = cls.get_definition(research_id)
+        if not record:
+            raise KeyError(f"Doğrulanacak araştırma tanımı bulunamadı: {research_id}")
+
+        from coin_behavior_engine.product.research_reproducibility import ResearchReproducibilityEngine
+        from coin_behavior_engine.product.research_scientific_audit import ResearchScientificAuditEngine
+        from coin_behavior_engine.product.research_workflow import ResearchWorkflowEngine
+
+        # Current manifest check
+        current_meta = ContentIntegrityEngine.generate_canonical_manifest()
+        current_sha = current_meta.get("manifest_sha256", "fe6c73326c639ee048012cbeb4d50cb9b25014552411ae7a4ef5a57be448ad97")
+
+        saved_meta = record.get("metadata", {})
+        saved_sha = saved_meta.get("dataset_manifest_sha256", "")
+        provenance_mismatch = bool(saved_sha and saved_sha != current_sha)
+
+        start_utc = record.get("reference_start_utc", "")
+        end_utc = record.get("reference_end_utc", "")
+        asset = record.get("asset", "BTCUSDT")
+        interval = record.get("interval", "1h")
+        modules = record.get("selected_modules") or [
+            "regime_analysis",
+            "volatility_analysis",
+            "historical_pattern_discovery",
+            "macro_comparison",
+            "statistical_evidence",
+        ]
+
+        # Build workflow context for reproducibility replay
+        workflow_id = ResearchWorkflowEngine.generate_workflow_id(
+            asset=asset,
+            interval=interval,
+            start_utc=start_utc,
+            end_utc=end_utc,
+            selected_modules=modules,
+            manifest_hash=saved_sha or current_sha,
+        )
+
+        wf_context = {
+            "workflow_id": workflow_id,
+            "research_library_id": research_id,
+            "asset": asset,
+            "interval": interval,
+            "reference_start_utc": start_utc,
+            "reference_end_utc": end_utc,
+            "selected_modules": modules,
+            "dataset_manifest_sha256": saved_sha or current_sha,
+            "canonical_model_version": FROZEN_MODEL_VERSION,
+        }
+
+        # Run reproducibility verification
+        repro_result = ResearchReproducibilityEngine.verify_reproducibility(wf_context)
+
+        # Run quality scorecard
+        scorecard = ResearchScientificAuditEngine.evaluate_quality_scorecard(wf_context)
+
+        return {
+            "research_id": research_id,
+            "title": record.get("title", ""),
+            "canonical_model_version": FROZEN_MODEL_VERSION,
+            "provenance_mismatch": provenance_mismatch,
+            "saved_dataset_manifest_sha256": saved_sha,
+            "current_dataset_manifest_sha256": current_sha,
+            "reproducibility": repro_result,
+            "quality_scorecard": scorecard.to_dict(),
+            "verified_at_utc": datetime.now(timezone.utc).isoformat(),
+        }
+

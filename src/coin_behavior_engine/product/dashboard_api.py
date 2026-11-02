@@ -388,6 +388,8 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.get_research_workflow_capabilities()
             elif sub_path in ("research-workflow/context", "workflow/context"):
                 return cls.get_research_workflow_context(query_params)
+            elif sub_path in ("research-quality/capabilities", "quality/capabilities"):
+                return HTTPStatus.OK, cls.get_research_quality_capabilities()
             elif sub_path in ("research-explorer/capabilities", "explorer/capabilities"):
                 return HTTPStatus.OK, cls.get_research_explorer_capabilities()
             elif sub_path in ("research-explorer/historical-series", "explorer/historical-series"):
@@ -595,6 +597,16 @@ class ProductDashboardApiService:
                 return cls.post_research_workflow_restore(body, query_params)
             elif sub_path in ("research-workflow/evidence", "workflow/evidence"):
                 return cls.post_research_workflow_evidence(body, query_params)
+            elif sub_path in ("research-quality/verify", "quality/verify"):
+                return cls.post_research_quality_verify(body, query_params)
+            elif sub_path in ("research-quality/evidence/verify", "quality/evidence/verify"):
+                return cls.post_research_quality_evidence_verify(body, query_params)
+            elif sub_path in ("research-quality/scientific-audit", "quality/scientific-audit"):
+                return cls.post_research_quality_scientific_audit(body, query_params)
+            elif sub_path in ("research-quality/performance-audit", "quality/performance-audit"):
+                return cls.post_research_quality_performance_audit(body, query_params, headers)
+            elif sub_path in ("research-library/verify", "library/verify"):
+                return cls.post_research_library_verify(body, query_params)
             elif sub_path in ("research-explorer/historical-series", "explorer/historical-series"):
                 return cls.post_research_explorer_historical_series(body, query_params)
             elif sub_path in ("research-explorer/comparison", "explorer/comparison"):
@@ -4839,6 +4851,181 @@ class ProductDashboardApiService:
         if not success:
             return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": err}
         return HTTPStatus.OK, res
+
+
+    @classmethod
+    def get_research_quality_capabilities(cls) -> Dict[str, Any]:
+        """Return schema versions, scientific tolerances, and capability dimensions for quality assurance."""
+        from coin_behavior_engine.prospective.freeze import FROZEN_MODEL_VERSION
+        from coin_behavior_engine.product.research_reproducibility import (
+            REPRODUCIBILITY_SCHEMA_VERSION,
+            REGIME_PROBABILITY_TOLERANCE,
+            VOLATILITY_METRIC_TOLERANCE,
+            SIMILARITY_SCORE_TOLERANCE,
+            STATISTICAL_P_VALUE_TOLERANCE,
+            RETURN_METRIC_TOLERANCE,
+            ReproducibilityVerdict,
+        )
+        from coin_behavior_engine.product.research_performance_audit import DEFAULT_LATENCY_THRESHOLDS_MS
+
+        return {
+            "service": "coin-behavior-engine",
+            "module": "research-quality-assurance",
+            "version": "1.0.0",
+            "canonical_model_version": FROZEN_MODEL_VERSION,
+            "canonical_model_status": "STRICTLY_FROZEN",
+            "reproducibility_schema_version": REPRODUCIBILITY_SCHEMA_VERSION,
+            "evidence_schema_version": "CBE-WORKFLOW-EVIDENCE-1.0.0",
+            "numerical_tolerances": {
+                "regime_probability": REGIME_PROBABILITY_TOLERANCE,
+                "volatility_metric": VOLATILITY_METRIC_TOLERANCE,
+                "similarity_score": SIMILARITY_SCORE_TOLERANCE,
+                "statistical_p_value": STATISTICAL_P_VALUE_TOLERANCE,
+                "return_metric": RETURN_METRIC_TOLERANCE,
+            },
+            "supported_verdicts": [v.value for v in ReproducibilityVerdict],
+            "quality_dimensions": [
+                "dataset_integrity",
+                "canonical_model_integrity",
+                "reproducibility",
+                "evidence_completeness",
+                "historical_comparison_integrity",
+                "scientific_disclosure_completeness",
+            ],
+            "performance_thresholds_ms": DEFAULT_LATENCY_THRESHOLDS_MS,
+            "governance_invariants": {
+                "technical_decision": "TECHNICAL_NO_GO",
+                "directional_trading": "STRICTLY_PROHIBITED",
+                "live_order_execution": "PERMANENTLY_PROHIBITED",
+                "quarantine_boundary": "2026-10-01T00:00:00Z",
+                "predeclared_holdout_criteria_satisfied": 2,
+                "independent_confirmatory_replications": 0,
+            },
+        }
+
+    @classmethod
+    def post_research_quality_verify(cls, body: Dict[str, Any], params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Verify deterministic reproducibility and generate quality scorecard for research context."""
+        from coin_behavior_engine.product.research_reproducibility import ResearchReproducibilityEngine
+        from coin_behavior_engine.product.research_scientific_audit import ResearchScientificAuditEngine
+
+        context = body.get("workflow_context") or body.get("context") or {}
+        if not context:
+            # Fallback to direct parameters if supplied
+            start_utc = body.get("reference_start_utc") or body.get("start_utc", "")
+            end_utc = body.get("reference_end_utc") or body.get("end_utc", "")
+            if start_utc and end_utc:
+                context = {
+                    "reference_start_utc": start_utc,
+                    "reference_end_utc": end_utc,
+                    "asset": body.get("asset", "BTCUSDT"),
+                    "interval": body.get("interval", "1h"),
+                    "selected_modules": body.get("selected_modules") or ["regime_analysis", "volatility_analysis"],
+                }
+
+        if not context:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": "workflow_context veya geçerli tarih parametreleri zorunludur."}
+
+        session_data = body.get("session_data")
+        evidence_pkg = body.get("evidence_package")
+
+        repro_eval = ResearchReproducibilityEngine.verify_reproducibility(context, session_data)
+        scorecard = ResearchScientificAuditEngine.evaluate_quality_scorecard(context, session_data, evidence_pkg, repro_eval=repro_eval)
+
+        return HTTPStatus.OK, {
+            "status": "success",
+            "workflow_id": context.get("workflow_id", ""),
+            "reproducibility": repro_eval,
+            "quality_scorecard": scorecard.to_dict(),
+        }
+
+    @classmethod
+    def post_research_quality_evidence_verify(cls, body: Dict[str, Any], params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Verify an exported evidence package independently for tampering, model freeze, and checksum."""
+        from coin_behavior_engine.product.research_evidence_verifier import ResearchEvidenceVerifier
+
+        evidence_pkg = body.get("evidence_package") or body
+        if not isinstance(evidence_pkg, dict) or not evidence_pkg:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": "Geçerli bir evidence_package JSON nesnesi zorunludur."}
+
+        report = ResearchEvidenceVerifier.verify_package(evidence_pkg)
+        return HTTPStatus.OK, report.to_dict()
+
+    @classmethod
+    def post_research_quality_scientific_audit(cls, body: Dict[str, Any], params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Run standalone scientific integrity audit engine over declared research context and session."""
+        from coin_behavior_engine.product.research_scientific_audit import ResearchScientificAuditEngine
+
+        context = body.get("workflow_context") or body.get("context") or {}
+        session_data = body.get("session_data")
+        evidence_pkg = body.get("evidence_package")
+
+        scorecard = ResearchScientificAuditEngine.evaluate_quality_scorecard(context, session_data, evidence_pkg)
+        return HTTPStatus.OK, scorecard.to_dict()
+
+    @classmethod
+    def post_research_quality_performance_audit(
+        cls,
+        body: Dict[str, Any],
+        params: Dict[str, List[str]],
+        headers: Optional[Dict[str, str]] = None,
+    ) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """
+        Run performance regression observatory suite under explicit authorization.
+        Disabled or strictly restricted in production environments.
+        """
+        from coin_behavior_engine.product.research_performance_audit import ResearchPerformanceAuditEngine
+
+        env = os.environ.get("CBE_ENV", "staging").lower()
+        if env == "production":
+            return HTTPStatus.FORBIDDEN, {
+                "error": "Forbidden",
+                "message": "PERFORMANS DENETİMİ ENGELİ: Üretim ortamında sunucu yükü oluşturacak performans denetimleri yasaktır.",
+            }
+
+        # Check revocation and authorization
+        hdr_map = {k.lower(): v for k, v in (headers or {}).items()}
+        tok = hdr_map.get("x-operator-token") or hdr_map.get("authorization", "").replace("Bearer ", "").strip()
+        from coin_behavior_engine.product.operations_console import is_token_revoked
+        if is_token_revoked(tok):
+            return HTTPStatus.FORBIDDEN, {"error": "Forbidden", "message": "AUTH_TOKEN_REVOKED: Yetki tokeni iptal edilmiştir."}
+
+        # Check authorization if operator token configured
+        expected_token = os.environ.get("CBE_OPERATOR_TOKEN") or os.environ.get("OPERATOR_TOKEN")
+        if expected_token and expected_token.strip():
+            hdr_map = {k.lower(): v for k, v in (headers or {}).items()}
+            tok = hdr_map.get("x-operator-token") or hdr_map.get("authorization", "").replace("Bearer ", "").strip()
+            if not tok or not hmac.compare_digest(tok.encode(), expected_token.strip().encode()):
+                return HTTPStatus.UNAUTHORIZED, {"error": "Unauthorized", "message": "Geçersiz veya eksik operatör yetki tokeni."}
+
+        start_utc = body.get("start_utc", "2022-06-01T00:00:00Z")
+        end_utc = body.get("end_utc", "2022-06-15T00:00:00Z")
+        thresholds = body.get("thresholds")
+
+        report = ResearchPerformanceAuditEngine.run_benchmark_suite(
+            sample_start_utc=start_utc,
+            sample_end_utc=end_utc,
+            threshold_overrides=thresholds,
+        )
+        return HTTPStatus.OK, report.to_dict()
+
+    @classmethod
+    def post_research_library_verify(cls, body: Dict[str, Any], params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Verify saved Research Library definition for reproducibility, provenance drift, and model freeze."""
+        from coin_behavior_engine.product.research_intelligence_explorer import ResearchLibraryEngine
+
+        rid = body.get("research_id") or (params.get("research_id", [""])[0] if params else "")
+        if not rid:
+            return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": "'research_id' parametresi zorunludur."}
+
+        try:
+            report = ResearchLibraryEngine.verify_definition(rid)
+            return HTTPStatus.OK, report
+        except KeyError as e:
+            return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": str(e)}
+        except Exception as e:
+            logger.error(f"Error verifying research library definition {rid}: {e}", exc_info=True)
+            return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal Server Error", "message": str(e)}
 
 
 START_TIME = time.time()

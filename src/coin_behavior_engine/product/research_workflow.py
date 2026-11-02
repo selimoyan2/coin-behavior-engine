@@ -701,3 +701,28 @@ class ResearchWorkflowEngine:
         }
 
         return explanations
+
+    @classmethod
+    def verify_workflow_quality(
+        cls,
+        workflow_id: str,
+    ) -> Tuple[bool, Dict[str, Any], Optional[str]]:
+        """
+        Conduct comprehensive research quality assurance and reproducibility audit for a workflow.
+        Returns reproducibility verdict, scientific scorecard, and integrity validations.
+        """
+        context = cls._WORKFLOW_CACHE.get(workflow_id)
+        if not context:
+            return False, {}, f"İş akışı oturumu önbellekte bulunamadı: {workflow_id}"
+
+        from coin_behavior_engine.product.research_reproducibility import ResearchReproducibilityEngine
+        from coin_behavior_engine.product.research_scientific_audit import ResearchScientificAuditEngine
+
+        repro_eval = ResearchReproducibilityEngine.verify_reproducibility(context)
+        scorecard = ResearchScientificAuditEngine.evaluate_quality_scorecard(context)
+
+        return True, {
+            "workflow_id": workflow_id,
+            "reproducibility": repro_eval,
+            "quality_scorecard": scorecard.to_dict(),
+        }, None
