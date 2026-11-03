@@ -1,0 +1,38 @@
+{
+  "sprint_id": "CBE_PRODUCT_ACCELERATION_22",
+  "repository": "selimoyan2/coin-behavior-engine",
+  "target_branch": "main",
+  "ancestry_verification": {
+    "sprint_21_final_closure_commit": "3b06ca3ee578b36675e9ad6260f37e6b2f057af8",
+    "sprint_22_implementation_commit": "406b2d4341be082ed11d8dd83e57c118ee4170fc",
+    "history_rewritten": false
+  },
+  "release_identities": {
+    "implementation_commit": {
+      "commit_sha": "406b2d4341be082ed11d8dd83e57c118ee4170fc",
+      "commit_title": "feat(sprint22): research intelligence reporting, scientific narratives, and verifiable evidence bundles",
+      "git_revision_short": "406b2d4"
+    },
+    "staging_build": {
+      "build_source_commit_sha": "406b2d4341be082ed11d8dd83e57c118ee4170fc",
+      "image_tag": "cbe-market-intelligence:sprint22-406b2d4",
+      "image_id": "sha256:0de720d68ecdfcce7e61a3ae7e6bfc6967c9a4ec940a65367a6d266145c84959",
+      "container_id": "ba58d65226d5c6b45a6c3886b86214bf3ef3e3d2adca9df9ca6520b99166f27b",
+      "container_id_short": "ba58d65226d5",
+      "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+      "status": "HEALTHY_AND_OPERATIONAL"
+    },
+    "production_container": {
+      "container_id": "1a867269c8433cd67c744ea87ec9e9a84ae3d5a55c64156a33ce361c9a45ed08",
+      "container_id_short": "1a867269c843",
+      "container_name": "6t63aehpaw0cw1bbt4zcm09g-20261102T225721",
+      "status": "STRICT_ZERO_TOUCH_PRESERVED",
+      "health": "healthy"
+    }
+  },
+  "canonical_scientific_model": {
+    "version": "CBE-0.7.0",
+    "status": "STRICTLY_FROZEN",
+    "parameter_mutations": 0
+  }
+}

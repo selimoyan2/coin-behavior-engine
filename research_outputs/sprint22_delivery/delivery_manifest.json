@@ -1,0 +1,86 @@
+{
+  "manifest_metadata": {
+    "sprint_id": "CBE_PRODUCT_ACCELERATION_22",
+    "title": "Research Intelligence Reporting & Evidence Presentation V1 Delivery Manifest",
+    "generated_at_utc": "2026-11-03T05:31:41.924007+00:00",
+    "target_branch": "main",
+    "implementation_commit": "406b2d4341be082ed11d8dd83e57c118ee4170fc",
+    "staging_image_tag": "cbe-market-intelligence:sprint22-406b2d4",
+    "staging_image_id": "sha256:0de720d68ecdfcce7e61a3ae7e6bfc6967c9a4ec940a65367a6d266145c84959",
+    "canonical_model_version": "CBE-0.7.0",
+    "canonical_model_status": "STRICTLY_FROZEN",
+    "parameter_mutations": 0,
+    "governance_verdict": "TECHNICAL_NO_GO",
+    "total_delivery_files": 18
+  },
+  "files": {
+    "architecture_review.md": {
+      "sha256": "9ae364809d6808c173a07b0c31863dc21bd15974282bdefcd38a2cfb33535cb9",
+      "size_bytes": 16912
+    },
+    "full_regression_results.json": {
+      "sha256": "131c9b481681a4fb89283660d80c5ffc46546edcb4bdf2648412ab6dbb4f8014",
+      "size_bytes": 919
+    },
+    "git_release_identity.json": {
+      "sha256": "f67d5963431a8369edc3846e51cf3729d2fce83d16aaa5869d78e169295f248c",
+      "size_bytes": 1636
+    },
+    "historical_comparison_report_results.json": {
+      "sha256": "5882de0e4125b54313b54d244eecd1d21d3d24be1a7e0cf32c497365692aee0f",
+      "size_bytes": 2762
+    },
+    "html_export_verification.json": {
+      "sha256": "f6eb7337cf219eb57d0cdc11bae031bbe68730da44874e91c29f931ee6cc0dfe",
+      "size_bytes": 237
+    },
+    "implementation_report.md": {
+      "sha256": "9b4af64d386d4891b53a68f0a6d61c1236e92609ab25ef75269185d65feafde5",
+      "size_bytes": 8881
+    },
+    "pdf_export_verification.json": {
+      "sha256": "1c7ddf9c20a29312fb32b587f45f16e323276e053b96f8b45decfb43b7e76062",
+      "size_bytes": 333
+    },
+    "performance_benchmark_results.json": {
+      "sha256": "4f680436b1899bf7b80b81ae7ff42ba0ca2f216468cb45401a750b27bdd21681",
+      "size_bytes": 670
+    },
+    "playwright_acceptance_results.json": {
+      "sha256": "0f3a6b17ff1fabac36af78321a211f350ecca1c920634b2606b10a69928856bd",
+      "size_bytes": 1827
+    },
+    "report_evidence_integrity_results.json": {
+      "sha256": "8795aae7122cbb724b1ac26805aaa94942cad9e5b6d68bad5ab2bd58e443ca42",
+      "size_bytes": 1406
+    },
+    "report_generation_results.json": {
+      "sha256": "e50c6226e3b8762356ececd9e2dfa11d91d9419cfe4dbe31a52efc66894f75e6",
+      "size_bytes": 1292
+    },
+    "research_library_report_integration.json": {
+      "sha256": "a67b77ef2baec7a7674bddb489da18bb711d65079e2af673b1f871964f70bdc8",
+      "size_bytes": 643
+    },
+    "research_report_schema.json": {
+      "sha256": "bd516892a94fed441565715970f7b55f46bc23f71b3da2dd1f64bd8297d90c20",
+      "size_bytes": 3646
+    },
+    "scientific_integrity_verification.json": {
+      "sha256": "cb047bfcd768372b1873b39cdf85a0938a8c2c7f090cf9a119def173f6dee66c",
+      "size_bytes": 489
+    },
+    "scientific_narrative_verification.json": {
+      "sha256": "e3127b6bd622a58fbb8a8619ffc4f040221cf327f0af700561e84aaed2de75f3",
+      "size_bytes": 421
+    },
+    "security_review.md": {
+      "sha256": "4416eb16a3a46a2915bd960f566329f8ccde853801860e19f769fb5f2b437333",
+      "size_bytes": 4915
+    },
+    "staging_runtime_provenance.json": {
+      "sha256": "efd2a5357d8114bceaad81bf631e241a790b89ee4590c145a5a1c06da540442c",
+      "size_bytes": 2270
+    }
+  }
+}

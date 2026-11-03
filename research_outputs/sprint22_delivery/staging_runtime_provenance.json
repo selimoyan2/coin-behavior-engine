@@ -1,0 +1,49 @@
+{
+  "staging_deployment_metadata": {
+    "sprint_id": "CBE_PRODUCT_ACCELERATION_22",
+    "deployment_target": "Coolify Staging / srv1114257",
+    "host_ip": "168.231.125.238",
+    "verified_at_utc": "2026-11-03T05:31:00Z",
+    "status": "HEALTHY_AND_OPERATIONAL"
+  },
+  "staging_container": {
+    "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+    "container_id": "ba58d65226d5c6b45a6c3886b86214bf3ef3e3d2adca9df9ca6520b99166f27b",
+    "container_id_short": "ba58d65226d5",
+    "image_tag": "cbe-market-intelligence:sprint22-406b2d4",
+    "image_id": "sha256:0de720d68ecdfcce7e61a3ae7e6bfc6967c9a4ec940a65367a6d266145c84959",
+    "source_commit_sha": "406b2d4341be082ed11d8dd83e57c118ee4170fc",
+    "git_revision_short": "406b2d4",
+    "ports": "127.0.0.1:18080->8000/tcp",
+    "health_status": "healthy",
+    "read_only_rootfs": true,
+    "environment": "staging",
+    "volume_mounts": [
+      {
+        "source": "zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data",
+        "destination": "/app/data/live_capture",
+        "mode": "ro",
+        "rw": false
+      }
+    ]
+  },
+  "production_container_verification": {
+    "container_name": "6t63aehpaw0cw1bbt4zcm09g-20261102T225721",
+    "container_id": "1a867269c8433cd67c744ea87ec9e9a84ae3d5a55c64156a33ce361c9a45ed08",
+    "container_id_short": "1a867269c843",
+    "image_id": "6t63aehpaw0cw1bbt4zcm09g:dae157a127c14ea9487a3833db619efbc0161a0c",
+    "state": "running",
+    "health_status": "healthy",
+    "zero_touch_maintained": true,
+    "runtime_isolation_confirmed": true
+  },
+  "smoke_tests": {
+    "capabilities_endpoint": "HTTP 200 OK (CBE-0.7.0 STRICTLY_FROZEN, 15 sections)",
+    "health_endpoint": "HTTP 200 OK (freeze_verified: true, healthy)",
+    "report_generate_endpoint": "HTTP 200 OK (Report ID: RPT-ec542efd4c53495a, State: COMPLETED)",
+    "html_export_endpoint": "HTTP 200 OK (HTML bytes: 13900, zero external scripts)",
+    "pdf_export_endpoint": "HTTP 200 OK (PDF bytes: 82999, valid %PDF- signature, 4 pages)",
+    "evidence_bundle_endpoint": "HTTP 200 OK (Checksum: 42a788428047e9b51347f2056c3338d1cf867a513b7b5f3c61bcd3a88ab0657a)",
+    "evidence_verify_endpoint": "HTTP 200 OK (Verdict: VERIFIED_AUTHENTIC, Tampering Detected: False)"
+  }
+}
