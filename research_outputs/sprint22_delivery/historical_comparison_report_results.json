@@ -1,0 +1,87 @@
+{
+  "status": "SUCCESS",
+  "comparison_id": "CMP-112834",
+  "dimensions_evaluated_count": 8,
+  "dimensions_evaluated": [
+    {
+      "dimension": "historical_date_range",
+      "reference": {
+        "start_utc": "N/A",
+        "end_utc": "N/A",
+        "bars_count": 0
+      },
+      "candidate": {
+        "start_utc": "2024-07-27T01:00:00Z",
+        "end_utc": "2024-08-10T01:00:00Z",
+        "bars_count": 0
+      },
+      "disjointness_verified": true
+    },
+    {
+      "dimension": "base_100_normalized_price_trajectory",
+      "base_index": 100.0,
+      "steps_count": 0,
+      "reference_trajectory": [],
+      "candidate_trajectory": []
+    },
+    {
+      "dimension": "regime_distribution",
+      "reference_dominant": "N/A",
+      "reference_distribution": {},
+      "candidate_dominant": "CHOPPY_ACCUMULATION",
+      "candidate_distribution": {
+        "BULLISH_EXPANSION": 0.6,
+        "CHOPPY_ACCUMULATION": 0.4
+      }
+    },
+    {
+      "dimension": "volatility_metrics",
+      "reference": {
+        "parkinson_volatility": null,
+        "realized_volatility": null
+      },
+      "candidate": {
+        "parkinson_volatility": 0.038,
+        "realized_volatility": 0.042
+      },
+      "divergence": "N/A"
+    },
+    {
+      "dimension": "five_dimensional_pattern_similarity",
+      "overall_similarity_score": 0.82,
+      "dimensions": {
+        "dtw_similarity": 0.84,
+        "return_similarity": 0.79,
+        "volatility_similarity": 0.85,
+        "regime_similarity": 0.81,
+        "volume_similarity": 0.75
+      }
+    },
+    {
+      "dimension": "macro_events_context",
+      "reference_events_count": 0,
+      "reference_events": [],
+      "candidate_events_count": 0,
+      "candidate_events": [
+        "Historical Fed Rate Cycle 2021"
+      ],
+      "causality_disclaimer": "Zamansal örtüşmeler nedensellik ilişkisi teşkil etmez."
+    },
+    {
+      "dimension": "statistical_evidence_comparison",
+      "reference_holdouts_satisfied": 2,
+      "reference_p_value": 0.041,
+      "candidate_holdout_status": "HISTORICAL_CANDIDATE_EXPLORATORY",
+      "independent_confirmatory_replications": 0
+    },
+    {
+      "dimension": "research_quality_verification",
+      "reference_quality_gate": "PASS",
+      "reproducibility_verdict": "REPRODUCIBLE_EXACT",
+      "canonical_model": "CBE-0.7.0 (STRICTLY FROZEN)"
+    }
+  ],
+  "overall_similarity_score": 0.82,
+  "disjointness_verified": true,
+  "governance_note": "Karşılaştırma sonuçları kesinlikle betimleyici ve araştırma amaçlıdır. İki tarihsel periyot arasındaki şekilsel veya istatistiksel benzerlik, fiyatların gelecekte aynı yönde ilerleyeceği şeklinde yorumlanamaz."
+}

@@ -1307,6 +1307,9 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(pdf_bytes)
                 return
+            elif isinstance(response_data, dict) and response_data.get("_html"):
+                self._send_response_html(status_code, response_data["_html"])
+                return
             self._send_response_json(status_code, response_data)
             return
 

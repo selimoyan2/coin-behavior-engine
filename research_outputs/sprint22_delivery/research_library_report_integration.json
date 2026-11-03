@@ -1,0 +1,15 @@
+{
+  "research_id": "RLIB-f9ddf66ba096",
+  "report_generated_for_definition": "RPT-99b0f57e52bd48ef",
+  "associated_reports_count": 1,
+  "verify_saved_report_result": {
+    "report_id": "RPT-ec542efd4c53495a",
+    "verification_status": "VERIFIED_AUTHENTIC",
+    "tampering_detected": false,
+    "dataset_drift_detected": false,
+    "current_dataset_manifest_sha256": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
+    "report_dataset_manifest_sha256": "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245",
+    "discrepancies": [],
+    "verified_at_utc": "2026-11-03T05:23:41.863654+00:00"
+  }
+}

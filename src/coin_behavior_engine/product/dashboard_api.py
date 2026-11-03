@@ -33,6 +33,7 @@ import sys
 import threading
 import time
 from typing import Any, Dict, List, Optional, Tuple, Union
+from coin_behavior_engine.prospective.freeze import FROZEN_MODEL_VERSION
 from urllib.parse import parse_qs, urlparse
 
 logger = logging.getLogger("cbe_dashboard_api")
@@ -402,6 +403,29 @@ class ProductDashboardApiService:
                 return cls.get_research_explorer_comparison(query_params)
             elif sub_path in ("research-library", "library"):
                 return cls.get_research_library_list(query_params)
+            elif sub_path in ("research-reports/capabilities", "reports/capabilities"):
+                return HTTPStatus.OK, cls.get_research_reports_capabilities()
+            elif sub_path in ("research-reports", "reports"):
+                return cls.get_research_reports_list(query_params)
+            elif sub_path.startswith("research-reports/") and sub_path.endswith("/html"):
+                parts = sub_path.split("/")
+                report_id = parts[1]
+                return cls.get_research_report_html(report_id, headers)
+            elif sub_path.startswith("research-reports/") and sub_path.endswith("/pdf"):
+                parts = sub_path.split("/")
+                report_id = parts[1]
+                return cls.get_research_report_pdf(report_id, headers)
+            elif sub_path.startswith("research-reports/") and sub_path.endswith("/evidence"):
+                parts = sub_path.split("/")
+                report_id = parts[1]
+                return cls.get_research_report_evidence(report_id, headers)
+            elif sub_path.startswith("research-reports/"):
+                report_id = sub_path.split("/")[1]
+                return cls.get_research_report_item(report_id, headers)
+            elif sub_path.startswith("research-library/") and sub_path.endswith("/reports"):
+                parts = sub_path.split("/")
+                research_id = parts[1]
+                return cls.get_research_library_reports(research_id)
             elif sub_path.startswith("research-library/export/"):
                 research_id = sub_path.split("/")[-1]
                 return cls.get_research_library_export(research_id)
@@ -606,6 +630,14 @@ class ProductDashboardApiService:
                 return cls.post_research_quality_performance_audit(body, query_params, headers)
             elif sub_path in ("research-library/verify", "library/verify"):
                 return cls.post_research_library_verify(body, query_params)
+            elif sub_path in ("research-reports/generate", "reports/generate"):
+                return cls.post_research_reports_generate(body, headers)
+            elif sub_path in ("research-reports/verify", "reports/verify"):
+                return cls.post_research_reports_verify(body, headers)
+            elif sub_path.startswith("research-library/") and sub_path.endswith("/report"):
+                parts = sub_path.split("/")
+                research_id = parts[1]
+                return cls.post_research_library_generate_report(research_id, body, headers)
             elif sub_path in ("research-explorer/historical-series", "explorer/historical-series"):
                 return cls.post_research_explorer_historical_series(body, query_params)
             elif sub_path in ("research-explorer/comparison", "explorer/comparison"):
@@ -4871,7 +4903,7 @@ class ProductDashboardApiService:
             "service": "coin-behavior-engine",
             "module": "research-quality-assurance",
             "version": "1.0.0",
-            "canonical_model_version": FROZEN_MODEL_VERSION,
+            "canonical_model_version": "CBE-0.7.0",
             "canonical_model_status": "STRICTLY_FROZEN",
             "reproducibility_schema_version": REPRODUCIBILITY_SCHEMA_VERSION,
             "evidence_schema_version": "CBE-WORKFLOW-EVIDENCE-1.0.0",
@@ -5024,6 +5056,323 @@ class ProductDashboardApiService:
             return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": str(e)}
         except Exception as e:
             logger.error(f"Error verifying research library definition {rid}: {e}", exc_info=True)
+            return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal Server Error", "message": str(e)}
+
+
+    # =========================================================================
+    # SPRINT 22: RESEARCH INTELLIGENCE REPORTING & EVIDENCE PRESENTATION V1
+    # =========================================================================
+
+    @classmethod
+    def _authorize_report_access(
+        cls,
+        headers: Optional[Dict[str, str]],
+        is_mutation: bool = False,
+    ) -> Tuple[bool, HTTPStatus, str]:
+        """Verify token revocation, production mutation gating, and optional token auth."""
+        env = os.environ.get("CBE_ENV", "staging").lower()
+        if is_mutation and env == "production":
+            return False, HTTPStatus.FORBIDDEN, "MUTATIONS_PERMANENTLY_BLOCKED_IN_PRODUCTION: Üretim ortamında rapor oluşturma engellenmiştir."
+
+        hdr_map = {k.lower(): v for k, v in (headers or {}).items()}
+        tok = hdr_map.get("x-operator-token") or hdr_map.get("authorization", "").replace("Bearer ", "").strip()
+
+        from coin_behavior_engine.product.operations_console import is_token_revoked
+        if tok and is_token_revoked(tok):
+            return False, HTTPStatus.FORBIDDEN, "AUTH_TOKEN_REVOKED: Yetkili operatör belirteci iptal edilmiştir."
+
+        expected_token = os.environ.get("CBE_OPERATOR_TOKEN") or os.environ.get("OPERATOR_TOKEN")
+        if expected_token and expected_token.strip():
+            if not tok or not hmac.compare_digest(tok.encode(), expected_token.strip().encode()):
+                return False, HTTPStatus.UNAUTHORIZED, "Geçersiz veya eksik X-Operator-Token belirteci."
+
+        return True, HTTPStatus.OK, "Authorized"
+
+    @classmethod
+    def get_research_reports_capabilities(cls) -> Dict[str, Any]:
+        """Return capabilities and schema info for Research Intelligence Reporting V1."""
+        return {
+            "service": "coin-behavior-engine",
+            "module": "research-reports",
+            "version": "1.0.0",
+            "canonical_model_version": FROZEN_MODEL_VERSION,
+            "canonical_model_status": "STRICTLY_FROZEN",
+            "report_schema_version": "CBE-RESEARCH-REPORT-1.0.0",
+            "narrative_schema_version": "CBE-NARRATIVE-1.0.0",
+            "bundle_schema_version": "CBE-REPORT-BUNDLE-1.0.0",
+            "supported_export_formats": ["HTML", "PDF", "JSON", "EVIDENCE_BUNDLE"],
+            "supported_states": ["READY", "GENERATING", "COMPLETED", "PARTIAL", "BLOCKED", "FAILED"],
+            "report_sections_count": 15,
+            "governance_invariants": {
+                "technical_decision": "TECHNICAL_NO_GO",
+                "directional_trading": "STRICTLY_PROHIBITED",
+                "live_order_execution": "PERMANENTLY_PROHIBITED",
+                "quarantine_boundary": "2026-10-01T00:00:00Z",
+                "offline_rendering_guaranteed": True,
+            },
+        }
+
+    @classmethod
+    def get_research_reports_list(cls, params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """List generated research reports."""
+        from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
+        limit = 50
+        if params and "limit" in params:
+            try:
+                limit = int(params["limit"][0])
+            except ValueError:
+                limit = 50
+        builder = ResearchReportBuilderEngine()
+        reports = builder.list_reports(limit=limit)
+        return HTTPStatus.OK, {"reports": reports, "count": len(reports)}
+
+    @classmethod
+    def get_research_report_item(
+        cls,
+        report_id: str,
+        headers: Optional[Dict[str, str]] = None,
+    ) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Get canonical JSON representation of a report."""
+        is_auth, status, msg = cls._authorize_report_access(headers, is_mutation=False)
+        if not is_auth:
+            return status, {"error": "Unauthorized" if status == HTTPStatus.UNAUTHORIZED else "Forbidden", "message": msg}
+
+        from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
+        builder = ResearchReportBuilderEngine()
+        report = builder.get_report(report_id)
+        if not report:
+            return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": f"Rapor bulunamadı: '{report_id}'"}
+        return HTTPStatus.OK, report
+
+    @classmethod
+    def get_research_report_html(
+        cls,
+        report_id: str,
+        headers: Optional[Dict[str, str]] = None,
+    ) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Render and return standalone HTML for report."""
+        is_auth, status, msg = cls._authorize_report_access(headers, is_mutation=False)
+        if not is_auth:
+            return status, {"error": "Unauthorized" if status == HTTPStatus.UNAUTHORIZED else "Forbidden", "message": msg}
+
+        from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
+        from coin_behavior_engine.product.research_report_html import ResearchReportHtmlRenderer
+
+        builder = ResearchReportBuilderEngine()
+        report = builder.get_report(report_id)
+        if not report:
+            return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": f"Rapor bulunamadı: '{report_id}'"}
+
+        renderer = ResearchReportHtmlRenderer()
+        html_content = renderer.render_report_to_html(report)
+        return HTTPStatus.OK, {"_html": html_content, "html": html_content, "report_id": report_id}
+
+    @classmethod
+    def get_research_report_pdf(
+        cls,
+        report_id: str,
+        headers: Optional[Dict[str, str]] = None,
+    ) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Render and return publication-quality A4 PDF for report."""
+        is_auth, status, msg = cls._authorize_report_access(headers, is_mutation=False)
+        if not is_auth:
+            return status, {"error": "Unauthorized" if status == HTTPStatus.UNAUTHORIZED else "Forbidden", "message": msg}
+
+        from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
+        from coin_behavior_engine.product.research_report_pdf import ResearchReportPdfRenderer
+        import tempfile
+
+        builder = ResearchReportBuilderEngine()
+        report = builder.get_report(report_id)
+        if not report:
+            return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": f"Rapor bulunamadı: '{report_id}'"}
+
+        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
+            tmp_pdf_path = tmp.name
+
+        try:
+            renderer = ResearchReportPdfRenderer()
+            renderer.render_report_to_pdf(report, tmp_pdf_path)
+            with open(tmp_pdf_path, "rb") as f:
+                pdf_bytes = f.read()
+        finally:
+            if os.path.exists(tmp_pdf_path):
+                try:
+                    os.remove(tmp_pdf_path)
+                except Exception:
+                    pass
+
+        return HTTPStatus.OK, {
+            "_binary_pdf": pdf_bytes,
+            "_filename": f"research-report-{report_id}.pdf",
+            "report_id": report_id,
+            "size_bytes": len(pdf_bytes),
+        }
+
+    @classmethod
+    def get_research_report_evidence(
+        cls,
+        report_id: str,
+        headers: Optional[Dict[str, str]] = None,
+    ) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Generate and return verifiable evidence bundle for report."""
+        is_auth, status, msg = cls._authorize_report_access(headers, is_mutation=False)
+        if not is_auth:
+            return status, {"error": "Unauthorized" if status == HTTPStatus.UNAUTHORIZED else "Forbidden", "message": msg}
+
+        from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
+        from coin_behavior_engine.product.research_report_evidence import ResearchReportEvidenceBundleEngine
+
+        builder = ResearchReportBuilderEngine()
+        report = builder.get_report(report_id)
+        if not report:
+            return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": f"Rapor bulunamadı: '{report_id}'"}
+
+        evidence_engine = ResearchReportEvidenceBundleEngine()
+        bundle = evidence_engine.create_evidence_bundle(report)
+        return HTTPStatus.OK, bundle
+
+    @classmethod
+    def post_research_reports_generate(
+        cls,
+        body: Dict[str, Any],
+        headers: Optional[Dict[str, str]] = None,
+    ) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Generate a new research report from session or workflow data."""
+        is_auth, status, msg = cls._authorize_report_access(headers, is_mutation=True)
+        if not is_auth:
+            return status, {"error": "Unauthorized" if status == HTTPStatus.UNAUTHORIZED else "Forbidden", "message": msg}
+
+        from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
+        from coin_behavior_engine.product.unified_research_workspace import UnifiedResearchWorkspaceEngine
+        from coin_behavior_engine.product.research_scientific_audit import ResearchScientificAuditEngine
+        from coin_behavior_engine.product.research_reproducibility import ResearchReproducibilityEngine
+
+        session_data = body.get("session_data")
+        start_utc = body.get("start_utc")
+        end_utc = body.get("end_utc")
+        asset = body.get("asset", "BTCUSDT")
+        interval = body.get("interval", "1h")
+        title = body.get("title")
+
+        if not session_data:
+            if not start_utc or not end_utc:
+                return HTTPStatus.BAD_REQUEST, {
+                    "error": "Bad Request",
+                    "message": "Rapor oluşturmak için 'session_data' veya 'start_utc' / 'end_utc' parametreleri zorunludur.",
+                }
+            session_data = UnifiedResearchWorkspaceEngine.execute_session(
+                asset=asset, interval=interval, reference_start_utc=start_utc, reference_end_utc=end_utc
+            )
+
+        scorecard = body.get("scorecard")
+        repro = body.get("reproducibility")
+
+        wf_context = {
+            "workflow_id": body.get("workflow_id", "WF-AUTO"),
+            "asset": asset,
+            "interval": interval,
+            "reference_start_utc": start_utc or session_data.get("period", {}).get("start_utc"),
+            "reference_end_utc": end_utc or session_data.get("period", {}).get("end_utc"),
+        }
+
+        if not scorecard:
+            sc_obj = ResearchScientificAuditEngine.evaluate_quality_scorecard(wf_context, session_data)
+            scorecard = sc_obj.to_dict() if hasattr(sc_obj, "to_dict") else sc_obj
+
+        if not repro:
+            repro = ResearchReproducibilityEngine.verify_reproducibility(wf_context)
+
+        builder = ResearchReportBuilderEngine()
+        report = builder.generate_report(
+            session_data=session_data,
+            workflow_id=body.get("workflow_id"),
+            library_id=body.get("library_id"),
+            scorecard=scorecard,
+            reproducibility=repro,
+            comparison_candidate=body.get("comparison_candidate"),
+            similarity_data=body.get("similarity_data"),
+            operator_title=title,
+        )
+
+        return HTTPStatus.OK, report
+
+    @classmethod
+    def post_research_reports_verify(
+        cls,
+        body: Dict[str, Any],
+        headers: Optional[Dict[str, str]] = None,
+    ) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Verify an evidence bundle or saved report."""
+        from coin_behavior_engine.product.research_report_evidence import ResearchReportEvidenceBundleEngine
+        from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
+
+        bundle = body.get("bundle")
+        report_id = body.get("report_id")
+
+        evidence_engine = ResearchReportEvidenceBundleEngine()
+
+        if not bundle:
+            if not report_id:
+                return HTTPStatus.BAD_REQUEST, {
+                    "error": "Bad Request",
+                    "message": "Doğrulama için 'bundle' veya 'report_id' parametresi zorunludur.",
+                }
+            builder = ResearchReportBuilderEngine()
+            report = builder.get_report(report_id)
+            if not report:
+                return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": f"Rapor bulunamadı: '{report_id}'"}
+            bundle = evidence_engine.create_evidence_bundle(report)
+
+        trusted_checksum = body.get("trusted_checksum")
+        expected_dataset = body.get("expected_dataset_version")
+        expected_model = body.get("expected_model_version")
+
+        ver_res = evidence_engine.verify_evidence_bundle(
+            bundle=bundle,
+            trusted_checksum=trusted_checksum,
+            expected_dataset_version=expected_dataset,
+            expected_model_version=expected_model,
+        )
+
+        return HTTPStatus.OK, ver_res
+
+    @classmethod
+    def post_research_library_generate_report(
+        cls,
+        research_id: str,
+        body: Dict[str, Any],
+        headers: Optional[Dict[str, str]] = None,
+    ) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Generate and link a report for a saved research definition."""
+        is_auth, status, msg = cls._authorize_report_access(headers, is_mutation=True)
+        if not is_auth:
+            return status, {"error": "Unauthorized" if status == HTTPStatus.UNAUTHORIZED else "Forbidden", "message": msg}
+
+        from coin_behavior_engine.product.research_intelligence_explorer import ResearchLibraryEngine
+        try:
+            report = ResearchLibraryEngine.generate_report_for_definition(
+                research_id=research_id,
+                operator_title=body.get("title"),
+            )
+            return HTTPStatus.OK, report
+        except KeyError as e:
+            return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": str(e)}
+        except Exception as e:
+            logger.error(f"Error generating report for definition {research_id}: {e}", exc_info=True)
+            return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal Server Error", "message": str(e)}
+
+    @classmethod
+    def get_research_library_reports(cls, research_id: str) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Get report summaries linked to a saved research definition."""
+        from coin_behavior_engine.product.research_intelligence_explorer import ResearchLibraryEngine
+        try:
+            reports = ResearchLibraryEngine.get_reports_for_definition(research_id)
+            return HTTPStatus.OK, {"research_id": research_id, "reports": reports, "count": len(reports)}
+        except KeyError as e:
+            return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": str(e)}
+        except Exception as e:
+            logger.error(f"Error listing reports for definition {research_id}: {e}", exc_info=True)
             return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal Server Error", "message": str(e)}
 
 

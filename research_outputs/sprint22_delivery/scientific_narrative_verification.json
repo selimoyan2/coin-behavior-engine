@@ -1,0 +1,14 @@
+{
+  "deterministic_tr_synthesis": true,
+  "zero_external_llm_calls": true,
+  "sections_verified": {
+    "executive_summary": true,
+    "regime_interpretation": true,
+    "volatility_interpretation": true,
+    "pattern_interpretation": true,
+    "holdout_disclosures": true,
+    "epistemological_limitations": true
+  },
+  "traceability_count": 5,
+  "compliance": "STRICT_DETERMINISTIC_SCIENTIFIC_DISCLOSURE"
+}

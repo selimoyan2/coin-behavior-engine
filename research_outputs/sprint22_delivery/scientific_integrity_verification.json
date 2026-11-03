@@ -1,0 +1,14 @@
+{
+  "canonical_model_version": "CBE-0.7.0",
+  "status": "STRICTLY_FROZEN",
+  "parameter_mutations": 0,
+  "technical_decision": "TECHNICAL_NO_GO",
+  "holdout_disclosures": {
+    "predeclared_holdout_criteria_satisfied": 2,
+    "independent_confirmatory_replications": 0,
+    "scientific_characterization": "EXPLORATORY_RETROSPECTIVE_OBSERVATION"
+  },
+  "production_touch_count": 0,
+  "prediction_and_trade_execution_capability": "COMPLETELY_ABSENT",
+  "certification": "PASS"
+}

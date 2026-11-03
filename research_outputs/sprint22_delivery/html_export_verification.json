@@ -1,0 +1,9 @@
+{
+  "html_bytes": 12244,
+  "render_latency_ms": 0.03,
+  "self_contained_css": true,
+  "embedded_vector_svg": false,
+  "zero_cdn_or_external_scripts": true,
+  "print_stylesheet_present": true,
+  "turkish_character_support": true
+}

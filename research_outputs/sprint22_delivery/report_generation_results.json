@@ -1,0 +1,43 @@
+{
+  "report_id": "RPT-ec542efd4c53495a",
+  "title": "Fed 75bps Şoku Tarihsel Araştırma Raporu",
+  "schema_version": "CBE-RESEARCH-REPORT-1.0.0",
+  "status": "COMPLETED",
+  "generation_latency_ms": 0.94,
+  "sections_present": [
+    "schema_version",
+    "report_metadata",
+    "executive_summary",
+    "historical_scope",
+    "canonical_model_identity",
+    "regime_analysis",
+    "volatility_analysis",
+    "historical_pattern_discovery",
+    "historical_comparison",
+    "macro_context",
+    "statistical_evidence",
+    "research_quality_scorecard",
+    "reproducibility_verification",
+    "evidence_provenance",
+    "scientific_limitations",
+    "technical_verification_metadata"
+  ],
+  "historical_scope": {
+    "asset": "BTCUSDT",
+    "start_utc": "2022-06-01T00:00:00Z",
+    "end_utc": "2022-06-15T00:00:00Z",
+    "interval": "1h",
+    "bars_count": 337,
+    "dataset_manifest_version": "cbe-manifest-v3-7ed2e950dec3",
+    "quarantine_boundary": "2026-10-01T00:00:00Z",
+    "quarantined_bars_included": false
+  },
+  "canonical_model": {
+    "version": "CBE-0.7.0",
+    "status": "STRICTLY_FROZEN",
+    "parameter_mutations": 0,
+    "drift_detected": false
+  },
+  "quality_gate": "NOT_EVALUATED",
+  "reproducibility_verdict": "NOT_EVALUATED"
+}

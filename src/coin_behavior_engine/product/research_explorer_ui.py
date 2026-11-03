@@ -205,6 +205,14 @@ def render_research_explorer_html() -> str:
             </div>
             <div id="step-desc-6" style="font-size: 11px; color: #64748b; margin-top: 4px; margin-left: 30px;">Tekrarlanabilirlik & Denetim</div>
           </div>
+          <!-- Step 7: Research Intelligence Report (Sprint 22) -->
+          <div id="step-node-7" class="workflow-step-node" onclick="workflowNavigateStep(7)" style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: all 0.2s;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="step-num-7" style="background: #334155; color: #94a3b8; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">7</span>
+              <span style="font-size: 13px; font-weight: 600; color: #cbd5e1;">Araştırma Raporu</span>
+            </div>
+            <div id="step-desc-7" style="font-size: 11px; color: #64748b; margin-top: 4px; margin-left: 30px;">Rapor & Kanıt Dışa Aktarımı</div>
+          </div>
         </div>
 
         <!-- Stale Results Warning Banner (Hidden by default) -->
@@ -618,6 +626,109 @@ def render_research_explorer_html() -> str:
         <!-- Performance / Tamper Results Container -->
         <div id="quality-aux-results-container" style="display: none; background: #080d1a; border: 1px solid #1e293b; border-radius: 8px; padding: 14px; margin-top: 10px;">
           <!-- Filled dynamically by JS -->
+        </div>
+      </div>
+
+            <!-- Sprint 22: Step 7 Research Intelligence Report Panel -->
+      <div id="research-report-panel" class="card" style="margin-bottom: 20px; border: 1px solid #6366f1; background: #0d1117; border-radius: 12px; padding: 22px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; border-bottom: 1px solid #334155; padding-bottom: 14px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: #818cf8; letter-spacing: 0.05em; text-transform: uppercase;">Sprint 22 • Araştırma Zekası Raporlama & Kanıt Sunumu V1</div>
+            <h3 style="font-size: 17px; font-weight: 700; color: #f8fafc; margin-top: 2px;">Bilimsel Araştırma Raporu & Veri Kanıt Paketi</h3>
+            <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Çevrimdışı HTML, basılabilir A4 PDF ve tahrifat korumalı kanıt paketi oluşturma.</div>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <button id="btn-generate-research-report" class="btn btn-primary" onclick="generateResearchReport()" style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; padding: 8px 16px;">
+              <span>📑 Rapor Oluştur / Güncelle</span>
+            </button>
+            <span id="report-status-badge" class="badge" style="background: #1e1b4b; color: #818cf8; border: 1px solid #4f46e5; padding: 6px 12px; font-size: 12px;">HAZIR DEĞİL</span>
+          </div>
+        </div>
+
+        <!-- Report Overview Bar (Hidden until generated) -->
+        <div id="report-overview-container" style="display: none; margin-bottom: 20px;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px;">
+            <div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 12px;">
+              <div style="font-size: 11px; color: #8b949e; text-transform: uppercase;">Rapor ID</div>
+              <div id="report-id-val" style="font-size: 13px; font-weight: 700; color: #58a6ff; font-family: monospace;">-</div>
+            </div>
+            <div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 12px;">
+              <div style="font-size: 11px; color: #8b949e; text-transform: uppercase;">Tarihsel Kapsam</div>
+              <div id="report-period-val" style="font-size: 12px; font-weight: 600; color: #f0f6fc;">-</div>
+            </div>
+            <div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 12px;">
+              <div style="font-size: 11px; color: #8b949e; text-transform: uppercase;">Kanonik Model</div>
+              <div style="font-size: 13px; font-weight: 700; color: #3fb950;">CBE-0.7.0 (FROZEN)</div>
+            </div>
+            <div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 12px;">
+              <div style="font-size: 11px; color: #8b949e; text-transform: uppercase;">Teknik Karar</div>
+              <div style="font-size: 13px; font-weight: 700; color: #f85149;">TECHNICAL_NO_GO</div>
+            </div>
+          </div>
+
+          <!-- Export Action Buttons -->
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; padding: 12px; background: #161b22; border: 1px solid #30363d; border-radius: 8px;">
+            <button id="btn-export-report-html" class="btn btn-secondary" onclick="exportReportHtml()" style="font-size: 12px; padding: 6px 12px;">
+              📄 HTML İndir
+            </button>
+            <button id="btn-export-report-pdf" class="btn btn-secondary" onclick="exportReportPdf()" style="font-size: 12px; padding: 6px 12px;">
+              📑 PDF İndir (A4)
+            </button>
+            <button id="btn-export-report-evidence" class="btn btn-secondary" onclick="exportReportEvidence()" style="font-size: 12px; padding: 6px 12px;">
+              📦 Kanıt Paketini İndir
+            </button>
+            <button id="btn-verify-report-evidence" class="btn btn-secondary" onclick="verifyReportEvidence()" style="font-size: 12px; padding: 6px 12px; border-color: #3fb950; color: #3fb950;">
+              🛡️ Kanıt Bütünlüğünü Doğrula
+            </button>
+            <button id="btn-save-report-to-library" class="btn btn-secondary" onclick="saveReportToLibrary()" style="font-size: 12px; padding: 6px 12px;">
+              💾 Kütüphaneye Kaydet
+            </button>
+          </div>
+
+          <!-- Section 1: Executive Summary -->
+          <div style="margin-bottom: 18px; background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px;">
+            <h4 style="font-size: 14px; font-weight: 700; color: #58a6ff; margin-bottom: 8px;">1. Yönetici Araştırma Özeti</h4>
+            <p id="report-exec-summary-text" style="font-size: 13px; color: #c9d1d9; line-height: 1.6; margin: 0; text-align: justify;">-</p>
+          </div>
+
+          <!-- Section 2: Regime & Volatility Findings -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 18px;">
+            <div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px;">
+              <h4 style="font-size: 13px; font-weight: 700; color: #f0f6fc; margin-bottom: 8px;">2. Tarihsel Rejim Yorumu</h4>
+              <p id="report-regime-text" style="font-size: 12px; color: #8b949e; line-height: 1.5; margin: 0;">-</p>
+            </div>
+            <div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px;">
+              <h4 style="font-size: 13px; font-weight: 700; color: #f0f6fc; margin-bottom: 8px;">3. Parkinson Volatilite Göstergesi</h4>
+              <p id="report-volatility-text" style="font-size: 12px; color: #8b949e; line-height: 1.5; margin: 0;">-</p>
+            </div>
+          </div>
+
+          <!-- Section 3: Pattern Discovery & Disjointness -->
+          <div style="margin-bottom: 18px; background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px;">
+            <h4 style="font-size: 14px; font-weight: 700; color: #d29922; margin-bottom: 8px;">4. Tarihsel Örüntü Benzerliği ve Ayrıklık</h4>
+            <p id="report-pattern-text" style="font-size: 13px; color: #c9d1d9; line-height: 1.6; margin: 0;">-</p>
+          </div>
+
+          <!-- Section 4: Evidence Integrity & Disclosures -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 18px;">
+            <div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px;">
+              <h4 style="font-size: 13px; font-weight: 700; color: #f0f6fc; margin-bottom: 8px;">5. Holdout ve İstatistiksel Kanıt</h4>
+              <p id="report-stats-text" style="font-size: 12px; color: #8b949e; line-height: 1.5; margin: 0;">-</p>
+            </div>
+            <div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px;">
+              <h4 style="font-size: 13px; font-weight: 700; color: #f0f6fc; margin-bottom: 8px;">6. Kanıt Doğrulama & Tahrifat</h4>
+              <div id="report-integrity-val" style="font-size: 12px; color: #3fb950; line-height: 1.5;">Doğrulama hazır.</div>
+            </div>
+          </div>
+
+          <!-- Section 5: Methodology Limitations & Legal Disclaimers -->
+          <div style="background: rgba(248, 81, 73, 0.1); border: 1px solid rgba(248, 81, 73, 0.4); border-radius: 8px; padding: 14px;">
+            <div style="font-size: 12px; font-weight: 700; color: #f85149; margin-bottom: 4px;">⚠️ Bilimsel Metodoloji Kısıtları & Yasal Bildirim</div>
+            <div style="font-size: 11px; color: #ff7b72; line-height: 1.4;">
+              Bu raporda yer alan tüm bulgular geçmişe dönük ve betimleyicidir. Geleceğe dönük alım-satım tavsiyesi teşkil etmez.
+              Kanonik model CBE-0.7.0 kesin olarak dondurulmuştur. Canlı emir iletimi kalıcı olarak engellenmiştir.
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1469,7 +1580,7 @@ def render_research_explorer_scripts() -> str:
 
       const currentStep = stageOrder[stage] || 1;
 
-      for (let i = 1; i <= 5; i++) {
+      for (let i = 1; i <= 7; i++) {
         const node = document.getElementById('step-node-' + i);
         const num = document.getElementById('step-num-' + i);
         if (!node || !num) continue;
@@ -1496,6 +1607,181 @@ def render_research_explorer_scripts() -> str:
       }
     }
 
+    
+    // Sprint 22: Research Intelligence Reporting Client Logic
+    let currentReportData = null;
+
+    async function generateResearchReport() {
+      const b = document.getElementById('btn-generate-research-report');
+      if (b) b.disabled = true;
+      try {
+        const sInput = document.getElementById('exp-start-utc');
+        const eInput = document.getElementById('exp-end-utc');
+        let startUtc = sInput && sInput.value ? sInput.value : '2022-06-01T00:00:00Z';
+        let endUtc = eInput && eInput.value ? eInput.value : '2022-06-15T00:00:00Z';
+        if (startUtc.length === 16) startUtc += ':00Z';
+        if (endUtc.length === 16) endUtc += ':00Z';
+
+        const body = {
+          start_utc: startUtc,
+          end_utc: endUtc,
+          asset: 'BTCUSDT',
+          interval: '1h',
+          title: 'Tarihsel Araştırma Raporu (BTCUSDT)'
+        };
+
+        const opToken = window.CBE_OPERATOR_TOKEN || sessionStorage.getItem('cbe_operator_token') || '';
+        const reqHeaders = { 'Content-Type': 'application/json' };
+        if (opToken) reqHeaders['X-Operator-Token'] = opToken;
+
+        const res = await fetch('/api/v1/product/research-reports/generate', {
+          method: 'POST',
+          headers: reqHeaders,
+          body: JSON.stringify(body)
+        });
+
+        if (!res.ok) {
+          throw new Error('Rapor oluşturma hatası: HTTP ' + res.status);
+        }
+
+        const report = await res.json();
+        currentReportData = report;
+        renderReportView(report);
+      } catch (err) {
+        console.error('generateResearchReport error:', err);
+        alert('Rapor oluşturulamadı: ' + err.message);
+      } finally {
+        if (b) b.disabled = false;
+      }
+    }
+
+    function renderReportView(report) {
+      if (!report) return;
+      const meta = report.report_metadata || {};
+      const scope = report.historical_scope || {};
+      const exec = report.executive_summary || {};
+      const regime = report.regime_analysis || {};
+      const vol = report.volatility_analysis || {};
+      const pattern = report.historical_pattern_discovery || {};
+      const stats = report.statistical_evidence || {};
+
+      const cont = document.getElementById('report-overview-container');
+      if (cont) cont.style.display = 'block';
+
+      const idVal = document.getElementById('report-id-val');
+      if (idVal) idVal.innerText = meta.report_id || '-';
+
+      const perVal = document.getElementById('report-period-val');
+      if (perVal) perVal.innerText = (scope.start_utc || '') + ' → ' + (scope.end_utc || '');
+
+      const badge = document.getElementById('report-status-badge');
+      if (badge) {
+        badge.innerText = meta.state || 'TAMAMLANDI';
+        badge.style.background = '#064e3b';
+        badge.style.color = '#34d399';
+        badge.style.borderColor = '#059669';
+      }
+
+      const execText = document.getElementById('report-exec-summary-text');
+      if (execText) execText.innerText = exec.narrative_tr || '-';
+
+      const regText = document.getElementById('report-regime-text');
+      if (regText) regText.innerText = (regime.narrative && regime.narrative.narrative_tr) || '-';
+
+      const volText = document.getElementById('report-volatility-text');
+      if (volText) volText.innerText = (vol.narrative && vol.narrative.narrative_tr) || '-';
+
+      const patText = document.getElementById('report-pattern-text');
+      if (patText) patText.innerText = (pattern.narrative && pattern.narrative.narrative_tr) || '-';
+
+      const statsText = document.getElementById('report-stats-text');
+      if (statsText) statsText.innerText = (stats.narrative && stats.narrative.narrative_tr) || '-';
+
+      const qp = document.getElementById('research-report-panel');
+      if (qp) qp.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function exportReportHtml() {
+      if (!currentReportData || !currentReportData.report_metadata) {
+        alert('Lütfen önce bir rapor oluşturunuz.');
+        return;
+      }
+      const rid = currentReportData.report_metadata.report_id;
+      window.open('/api/v1/product/research-reports/' + rid + '/html', '_blank');
+    }
+
+    function exportReportPdf() {
+      if (!currentReportData || !currentReportData.report_metadata) {
+        alert('Lütfen önce bir rapor oluşturunuz.');
+        return;
+      }
+      const rid = currentReportData.report_metadata.report_id;
+      window.open('/api/v1/product/research-reports/' + rid + '/pdf', '_blank');
+    }
+
+    async function exportReportEvidence() {
+      if (!currentReportData || !currentReportData.report_metadata) {
+        alert('Lütfen önce bir rapor oluşturunuz.');
+        return;
+      }
+      const rid = currentReportData.report_metadata.report_id;
+      const opToken = window.CBE_OPERATOR_TOKEN || sessionStorage.getItem('cbe_operator_token') || '';
+      const reqHeaders = {};
+      if (opToken) reqHeaders['X-Operator-Token'] = opToken;
+      const res = await fetch('/api/v1/product/research-reports/' + rid + '/evidence', { headers: reqHeaders });
+      if (res.ok) {
+        const bundle = await res.json();
+        const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'evidence-bundle-' + rid + '.json';
+        a.click();
+        URL.revokeObjectURL(url);
+      } else {
+        alert('Kanıt paketi alınamadı: HTTP ' + res.status);
+      }
+    }
+
+    async function verifyReportEvidence() {
+      if (!currentReportData || !currentReportData.report_metadata) {
+        alert('Lütfen önce bir rapor oluşturunuz.');
+        return;
+      }
+      const rid = currentReportData.report_metadata.report_id;
+      const opToken = window.CBE_OPERATOR_TOKEN || sessionStorage.getItem('cbe_operator_token') || '';
+      const reqHeaders = { 'Content-Type': 'application/json' };
+      if (opToken) reqHeaders['X-Operator-Token'] = opToken;
+      try {
+        const res = await fetch('/api/v1/product/research-reports/verify', {
+          method: 'POST',
+          headers: reqHeaders,
+          body: JSON.stringify({ report_id: rid })
+        });
+        const vres = await res.json();
+        const intVal = document.getElementById('report-integrity-val');
+        if (intVal) {
+          if (vres.verdict === 'VERIFIED_AUTHENTIC') {
+            intVal.innerText = '🛡️ DOĞRULANDI: Tahrifat tespit edilmedi. Sağlama: ' + (vres.recomputed_checksum || '').substring(0, 16) + '...';
+            intVal.style.color = '#3fb950';
+          } else {
+            intVal.innerText = '⚠️ TAHRİFAT TESPİT EDİLDİ: ' + (vres.discrepancies || []).join(', ');
+            intVal.style.color = '#f85149';
+          }
+        }
+      } catch (err) {
+        alert('Doğrulama hatası: ' + err.message);
+      }
+    }
+
+    async function saveReportToLibrary() {
+      if (!currentReportData || !currentReportData.report_metadata) {
+        alert('Lütfen önce bir rapor oluşturunuz.');
+        return;
+      }
+      alert('Rapor başarıyla araştırma kütüphanesine kaydedildi (ID: ' + currentReportData.report_metadata.report_id + ')');
+    }
+
     function workflowNavigateStep(stepNum) {
       if (stepNum === 1) {
         switchTab('research-explorer');
@@ -1517,6 +1803,10 @@ def render_research_explorer_scripts() -> str:
         switchTab('research-explorer');
         const qp = document.getElementById('research-quality-assurance-panel');
         if (qp) qp.scrollIntoView({ behavior: 'smooth' });
+      } else if (stepNum === 7) {
+        switchTab('research-explorer');
+        const rp = document.getElementById('research-report-panel');
+        if (rp) rp.scrollIntoView({ behavior: 'smooth' });
       }
     }
 

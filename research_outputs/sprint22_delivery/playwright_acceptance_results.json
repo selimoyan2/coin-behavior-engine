@@ -1,0 +1,42 @@
+{
+  "acceptance_metadata": {
+    "sprint_id": "CBE_PRODUCT_ACCELERATION_22",
+    "test_suite": "scripts/run_playwright_sprint22.py",
+    "engine": "Playwright / Chromium (headless)",
+    "timestamp_utc": "2026-11-03T05:20:42.136971+00:00",
+    "total_scenarios_evaluated": 26,
+    "total_scenarios_passed": 26,
+    "overall_status": "ALL_26_SCENARIOS_PASSED"
+  },
+  "scenario_evaluations": {
+    "scenario_01_workflow_opened": true,
+    "scenario_02_period_selected": {
+      "start_utc": "2022-06-01T00:00",
+      "end_utc": "2022-06-15T00:00"
+    },
+    "scenario_03_research_analysis_executed": true,
+    "scenario_04_quality_panel_opened": true,
+    "scenario_05_scientific_quality_status_verified": "DEĞERLENDİRİLMEDİ",
+    "scenario_06_report_generation_step_opened": true,
+    "scenario_07_report_generated": "RPT-ec542efd4c53495a",
+    "scenario_08_executive_summary_inspected": true,
+    "scenario_09_historical_findings_inspected": true,
+    "scenario_10_comparison_inspected": true,
+    "scenario_11_scientific_disclosures_inspected": true,
+    "scenario_12_html_exported": true,
+    "scenario_13_offline_html_validated": true,
+    "scenario_14_pdf_exported": true,
+    "scenario_15_pdf_validated": true,
+    "scenario_16_evidence_bundle_exported": true,
+    "scenario_17_evidence_checksum_verified": true,
+    "scenario_18_modified_evidence_rejected": true,
+    "scenario_19_saved_to_research_library": true,
+    "scenario_20_saved_report_reopened": true,
+    "scenario_21_unauthorized_access_rejected": true,
+    "scenario_22_desktop_responsiveness": true,
+    "scenario_23_tablet_responsiveness": true,
+    "scenario_24_mobile_responsiveness": true,
+    "scenario_25_no_credential_leakage_verified": true,
+    "scenario_26_temporary_test_artifacts_cleaned": true
+  }
+}

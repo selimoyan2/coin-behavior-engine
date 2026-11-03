@@ -1020,3 +1020,133 @@ class ResearchLibraryEngine:
             "verified_at_utc": datetime.now(timezone.utc).isoformat(),
         }
 
+    @classmethod
+    def generate_report_for_definition(cls, research_id: str, operator_title: Optional[str] = None) -> Dict[str, Any]:
+        """Generate a scientific research report from a saved research definition."""
+        record = cls.get_definition(research_id)
+        if not record:
+            raise KeyError(f"Araştırma tanımı bulunamadı: {research_id}")
+
+        from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
+        from coin_behavior_engine.product.unified_research_workspace import UnifiedResearchWorkspaceEngine
+        from coin_behavior_engine.product.research_scientific_audit import ResearchScientificAuditEngine
+        from coin_behavior_engine.product.research_reproducibility import ResearchReproducibilityEngine
+
+        start_utc = record.get("reference_start_utc", "")
+        end_utc = record.get("reference_end_utc", "")
+        asset = record.get("asset", "BTCUSDT")
+        interval = record.get("interval", "1h")
+
+        # Execute session
+        session_res = UnifiedResearchWorkspaceEngine.execute_session(
+            asset=asset,
+            interval=interval,
+            reference_start_utc=start_utc,
+            reference_end_utc=end_utc,
+        )
+
+        wf_context = {
+            "research_library_id": research_id,
+            "asset": asset,
+            "interval": interval,
+            "reference_start_utc": start_utc,
+            "reference_end_utc": end_utc,
+        }
+        scorecard = ResearchScientificAuditEngine.evaluate_quality_scorecard(wf_context, session_res)
+        repro = ResearchReproducibilityEngine.verify_reproducibility(wf_context)
+
+        builder = ResearchReportBuilderEngine()
+        report = builder.generate_report(
+            session_data=session_res,
+            library_id=research_id,
+            scorecard=scorecard.to_dict() if hasattr(scorecard, "to_dict") else scorecard,
+            reproducibility=repro,
+            operator_title=operator_title or f"Rapor — {record.get('title')}",
+        )
+
+        # Associate report_id in record
+        report_id = report["report_metadata"]["report_id"]
+        cls.associate_report_to_definition(research_id, report_id)
+        return report
+
+    @classmethod
+    def associate_report_to_definition(cls, research_id: str, report_id: str) -> Dict[str, Any]:
+        """Link a generated report ID to a saved research definition."""
+        record = cls.get_definition(research_id)
+        if not record:
+            raise KeyError(f"Araştırma tanımı bulunamadı: {research_id}")
+
+        reports = record.get("associated_reports", [])
+        if report_id not in reports:
+            reports.append(report_id)
+            record["associated_reports"] = reports
+            record["updated_at_utc"] = datetime.now(timezone.utc).isoformat()
+
+            storage_dir = cls.get_storage_dir()
+            file_path = storage_dir / f"{research_id}.json"
+            tmp_path = storage_dir / f"{research_id}.tmp"
+
+            with cls._cross_process_lock():
+                with open(tmp_path, "w", encoding="utf-8") as f:
+                    json.dump(record, f, indent=2, ensure_ascii=False)
+                os.replace(tmp_path, file_path)
+
+        return record
+
+    @classmethod
+    def get_reports_for_definition(cls, research_id: str) -> List[Dict[str, Any]]:
+        """List all report summaries associated with a research definition."""
+        record = cls.get_definition(research_id)
+        if not record:
+            raise KeyError(f"Araştırma tanımı bulunamadı: {research_id}")
+
+        from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
+        builder = ResearchReportBuilderEngine()
+
+        report_ids = record.get("associated_reports", [])
+        results = []
+        for rid in report_ids:
+            rpt = builder.get_report(rid)
+            if rpt:
+                meta = rpt.get("report_metadata", {})
+                scope = rpt.get("historical_scope", {})
+                results.append({
+                    "report_id": meta.get("report_id", rid),
+                    "title": meta.get("title", ""),
+                    "state": meta.get("state", "COMPLETED"),
+                    "period": f"{scope.get('start_utc')} - {scope.get('end_utc')}",
+                    "generated_at_utc": meta.get("generated_at_utc"),
+                })
+        return results
+
+    @classmethod
+    def verify_saved_report(cls, report_id: str) -> Dict[str, Any]:
+        """Verify the integrity, provenance, and dataset alignment of a saved report."""
+        from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
+        from coin_behavior_engine.product.research_report_evidence import ResearchReportEvidenceBundleEngine
+
+        builder = ResearchReportBuilderEngine()
+        report = builder.get_report(report_id)
+        if not report:
+            raise KeyError(f"Rapor bulunamadı: {report_id}")
+
+        evidence_engine = ResearchReportEvidenceBundleEngine()
+        bundle = evidence_engine.create_evidence_bundle(report)
+        ver_res = evidence_engine.verify_evidence_bundle(bundle)
+
+        current_meta = ContentIntegrityEngine.generate_canonical_manifest()
+        current_sha = current_meta.get("manifest_sha256", "fe6c73326c639ee048012cbeb4d50cb9b25014552411ae7a4ef5a57be448ad97")
+        report_sha = report.get("evidence_provenance", {}).get("dataset_manifest_sha256", "")
+        dataset_drift = bool(report_sha and report_sha != current_sha)
+
+        return {
+            "report_id": report_id,
+            "verification_status": ver_res.get("verdict", "UNKNOWN"),
+            "tampering_detected": ver_res.get("tampering_detected", False),
+            "dataset_drift_detected": dataset_drift,
+            "current_dataset_manifest_sha256": current_sha,
+            "report_dataset_manifest_sha256": report_sha,
+            "discrepancies": ver_res.get("discrepancies", []),
+            "verified_at_utc": datetime.now(timezone.utc).isoformat(),
+        }
+

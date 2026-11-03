@@ -1,0 +1,24 @@
+{
+  "summary": {
+    "sprint_id": "CBE_PRODUCT_ACCELERATION_22",
+    "target_suite": "pytest -k 'product_acceleration' -q",
+    "total_tests_run": 404,
+    "total_tests_passed": 404,
+    "total_tests_failed": 0,
+    "total_tests_deselected": 2107,
+    "execution_duration_seconds": 119.02,
+    "canonical_model_version": "CBE-0.7.0",
+    "canonical_model_status": "STRICTLY_FROZEN",
+    "production_touch_count": 0,
+    "overall_status": "ALL_PRODUCT_ACCELERATION_TESTS_PASSED"
+  },
+  "distribution_by_sprint": {
+    "sprint_17": { "count": 13, "status": "PASSED" },
+    "sprint_18": { "count": 10, "status": "PASSED" },
+    "sprint_19": { "count": 27, "status": "PASSED" },
+    "sprint_20": { "count": 31, "status": "PASSED" },
+    "sprint_21": { "count": 30, "status": "PASSED" },
+    "sprint_22": { "count": 30, "status": "PASSED" },
+    "core_and_preceding_acceleration": { "count": 263, "status": "PASSED" }
+  }
+}

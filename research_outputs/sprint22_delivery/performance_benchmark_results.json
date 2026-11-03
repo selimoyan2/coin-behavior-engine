@@ -1,0 +1,30 @@
+{
+  "benchmarks": {
+    "report_generation_ms": {
+      "measured": 0.94,
+      "threshold": 5000.0,
+      "status": "PASS"
+    },
+    "html_rendering_ms": {
+      "measured": 0.03,
+      "threshold": 200.0,
+      "status": "PASS"
+    },
+    "pdf_rendering_ms": {
+      "measured": 306.63,
+      "threshold": 3000.0,
+      "status": "PASS"
+    },
+    "evidence_bundle_creation_ms": {
+      "measured": 0.27,
+      "threshold": 100.0,
+      "status": "PASS"
+    },
+    "evidence_bundle_verification_ms": {
+      "measured": 0.16,
+      "threshold": 100.0,
+      "status": "PASS"
+    }
+  },
+  "overall_status": "ALL_BENCHMARKS_WITHIN_BUDGET"
+}

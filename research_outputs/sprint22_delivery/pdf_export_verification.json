@@ -1,0 +1,11 @@
+{
+  "pdf_path": "research_outputs\\sprint22_delivery\\test_export_report.pdf",
+  "file_size_bytes": 83101,
+  "file_size_under_5mb": true,
+  "render_latency_ms": 306.63,
+  "total_pages": 4,
+  "format": "A4",
+  "engine": "matplotlib.backends.backend_pdf",
+  "zero_external_dependencies": true,
+  "valid_pdf_signature": true
+}

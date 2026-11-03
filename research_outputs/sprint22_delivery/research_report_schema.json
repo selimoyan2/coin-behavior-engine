@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CBE Research Intelligence Report Schema",
+  "description": "Canonical schema definition for Coin Behavior Engine scientific research reports (CBE-RESEARCH-REPORT-1.0.0).",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "report_metadata",
+    "historical_scope",
+    "canonical_model_identity",
+    "executive_summary",
+    "regime_analysis",
+    "volatility_analysis",
+    "macro_context",
+    "statistical_evidence",
+    "scientific_limitations",
+    "quality_assurance",
+    "reproducibility_verdict",
+    "evidence_integrity",
+    "traceability",
+    "disclaimers"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "CBE-RESEARCH-REPORT-1.0.0"
+    },
+    "report_metadata": {
+      "type": "object",
+      "required": ["report_id", "title", "asset", "interval", "created_at_utc", "state", "generation_latency_ms"],
+      "properties": {
+        "report_id": { "type": "string", "pattern": "^RPT-[a-f0-9]{16}$" },
+        "title": { "type": "string" },
+        "asset": { "type": "string" },
+        "interval": { "type": "string" },
+        "created_at_utc": { "type": "string" },
+        "state": { "type": "string", "enum": ["READY", "GENERATING", "COMPLETED", "PARTIAL", "BLOCKED", "FAILED"] },
+        "generation_latency_ms": { "type": "number", "minimum": 0 }
+      }
+    },
+    "historical_scope": {
+      "type": "object",
+      "required": ["start_utc", "end_utc", "candle_count", "source_dataset"],
+      "properties": {
+        "start_utc": { "type": "string" },
+        "end_utc": { "type": "string" },
+        "candle_count": { "type": "integer", "minimum": 0 },
+        "source_dataset": { "type": "string" }
+      }
+    },
+    "canonical_model_identity": {
+      "type": "object",
+      "required": ["model_version", "status", "parameter_mutations", "verification_hash", "technical_decision"],
+      "properties": {
+        "model_version": { "type": "string", "const": "CBE-0.7.0" },
+        "status": { "type": "string", "const": "STRICTLY_FROZEN" },
+        "parameter_mutations": { "type": "integer", "const": 0 },
+        "verification_hash": { "type": "string" },
+        "technical_decision": { "type": "string", "const": "TECHNICAL_NO_GO" }
+      }
+    },
+    "executive_summary": {
+      "type": "object",
+      "required": ["key_findings", "dominant_regime", "parkinson_volatility_summary", "narrative_tr"],
+      "properties": {
+        "key_findings": { "type": "array", "items": { "type": "string" } },
+        "dominant_regime": { "type": "string" },
+        "parkinson_volatility_summary": { "type": "string" },
+        "narrative_tr": { "type": "string" }
+      }
+    },
+    "regime_analysis": { "type": "object" },
+    "volatility_analysis": { "type": "object" },
+    "macro_context": { "type": "object" },
+    "statistical_evidence": {
+      "type": "object",
+      "required": ["predeclared_holdout_criteria_satisfied", "independent_confirmatory_replications", "exposure_status", "narrative"],
+      "properties": {
+        "predeclared_holdout_criteria_satisfied": { "type": "integer", "const": 2 },
+        "independent_confirmatory_replications": { "type": "integer", "const": 0 },
+        "exposure_status": { "type": "string", "const": "PREVIOUSLY_OBSERVED_HISTORICAL_DATA" }
+      }
+    },
+    "scientific_limitations": { "type": "object" },
+    "quality_assurance": { "type": "object" },
+    "reproducibility_verdict": { "type": "object" },
+    "evidence_integrity": { "type": "object" },
+    "traceability": { "type": "object" },
+    "disclaimers": { "type": "object" }
+  }
+}
