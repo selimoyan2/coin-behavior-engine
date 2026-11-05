@@ -1,10 +1,10 @@
 {
   "sprint_id": "CBE_PRODUCT_ACCELERATION_22",
   "sprint_title": "Research Intelligence Reporting & Evidence Presentation V1",
-  "verified_commit": "317ae96825dd2c180eafa551d25ac20fee1a2bda",
+  "verified_commit": "be170a00ee2e24fc4a317bc3658a8cb092fdeca9",
   "canonical_model": "CBE-0.7.0 (STRICTLY FROZEN)",
   "production_status": "STRICT_ZERO_TOUCH",
-  "files_count": 18,
+  "files_count": 17,
   "artifacts": [
     {
       "file_name": "architecture_review.md",
@@ -18,8 +18,8 @@
     },
     {
       "file_name": "git_release_identity.json",
-      "sha256": "32cecc258173a1f105825ef99eee072142a2dae7433a07804ba4a5694966d12a",
-      "size_bytes": 1707
+      "sha256": "27aca36949138273645d04c27d2cac3bafdfc78923dbaf0b21bce96d1b62e12c",
+      "size_bytes": 1817
     },
     {
       "file_name": "historical_comparison_report_results.json",
@@ -33,8 +33,8 @@
     },
     {
       "file_name": "implementation_report.md",
-      "sha256": "02a0dfab31d3eb38b45f1901f857969a998494386f087393b1544d3c9c6c09be",
-      "size_bytes": 9351
+      "sha256": "59b5f60e1d5cb4fcad8e5054fb0c1322ed0c9a0adfa7afd92ad210d660425841",
+      "size_bytes": 8650
     },
     {
       "file_name": "pdf_export_verification.json",
@@ -48,7 +48,7 @@
     },
     {
       "file_name": "playwright_acceptance_results.json",
-      "sha256": "c7627c489b0bd864708b274b262fab7c7d758f01a35d5c8d2371290f95e56316",
+      "sha256": "033bc948b38dd071d3c1619bd720a2eb157720c1bf6d25e7f5442cafa54c4ae8",
       "size_bytes": 1827
     },
     {
@@ -88,13 +88,8 @@
     },
     {
       "file_name": "staging_runtime_provenance.json",
-      "sha256": "cbbf8f6ed85046930978fb17d46610d35263c5f3ebacb39f1a52c91225b038d3",
-      "size_bytes": 2571
-    },
-    {
-      "file_name": "test_server_sprint22.log",
-      "sha256": "469fb28275fdf02f79d00d4ec671f8c555880fac075303660ca92b1fd42b996b",
-      "size_bytes": 5531
+      "sha256": "7d9df50abf674a16131142e0927d35cd9bbe5d7939b4a8411ba999e0ae5d3f22",
+      "size_bytes": 2634
     }
   ]
 }

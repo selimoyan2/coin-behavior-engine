@@ -3,17 +3,17 @@
     "sprint_id": "CBE_PRODUCT_ACCELERATION_22",
     "deployment_target": "Coolify Staging / srv1114257",
     "host_ip": "168.231.125.238",
-    "verified_at_utc": "2026-11-05T01:16:00Z",
+    "verified_at_utc": "2026-11-05T12:12:00Z",
     "status": "HEALTHY_AND_OPERATIONAL"
   },
   "staging_container": {
     "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
-    "container_id": "6a4566f7c40312342a09ccaa1257af75143e9a2811f47355c42ade1237907f79",
-    "container_id_short": "6a4566f7c403",
-    "image_tag": "cbe-market-intelligence:sprint22-hardening-317ae96",
-    "image_id": "sha256:b3ef57692a967b0340432316f96b99cc6f4edb88ab93ed75e2ac77c7973d71d9",
-    "source_commit_sha": "317ae96825dd2c180eafa551d25ac20fee1a2bda",
-    "git_revision_short": "317ae968",
+    "container_id": "0cb24696b385e18ab7fcb4de2c46b8ceb6aea8281f3d2a73ecf2d7d51158ac05",
+    "container_id_short": "0cb24696b385",
+    "image_tag": "cbe-market-intelligence:sprint22-hardening-be170a0",
+    "image_id": "sha256:9082b07bf836e83e05b476cc00211dad9dcb94f01555daef1cc3a031185ad7d6",
+    "source_commit_sha": "be170a00ee2e24fc4a317bc3658a8cb092fdeca9",
+    "git_revision_short": "be170a0",
     "ports": "127.0.0.1:18080->8000/tcp",
     "health_status": "healthy",
     "read_only_rootfs": true,
@@ -46,10 +46,10 @@
   "smoke_tests": {
     "capabilities_endpoint": "HTTP 200 OK (CBE-0.7.0 STRICTLY_FROZEN, 15 sections)",
     "health_endpoint": "HTTP 200 OK (freeze_verified: true, healthy)",
-    "report_generate_endpoint": "HTTP 200 OK (Report ID: RPT-2859fd4332e49f03, State: COMPLETED, p_value: None / UNAVAILABLE, holdouts: None / NOT_MEASURED)",
-    "html_export_endpoint": "HTTP 200 OK (HTML bytes: 13529, zero external scripts, explicit UNAVAILABLE/NOT_MEASURED labels)",
-    "pdf_export_endpoint": "HTTP 200 OK (PDF bytes: 83682, valid %PDF- signature, no truncated/clipped text)",
-    "evidence_bundle_endpoint": "HTTP 200 OK (Canonical Manifest & Runtime Source Commit Linked)",
-    "evidence_verify_endpoint": "HTTP 200 OK (Verdict: AUTHENTICITY_VERIFIED, Tampering Detected: False)"
+    "report_generate_endpoint": "HTTP 200 OK (Report ID: RPT-8fe6b58d550f584e, State: COMPLETED, p_value: None / UNAVAILABLE, holdouts: None / NOT_MEASURED)",
+    "html_export_endpoint": "HTTP 200 OK (HTML bytes: 13577, zero external scripts, explicit UNAVAILABLE/NOT_MEASURED labels)",
+    "pdf_export_endpoint": "HTTP 200 OK (PDF bytes: 74856, valid %PDF- header, no non-finite metrics, UTF-8 TrueType fonts)",
+    "evidence_bundle_endpoint": "HTTP 200 OK (Canonical Manifest & Runtime Source Commit Linked, SHA: d13c112c1b7d2c32...)",
+    "evidence_verify_endpoint": "HTTP 200 OK (Verdict: AUTHENTICITY_VERIFIED, Tampering Detected: False, Store Anchor Verified)"
   }
 }
