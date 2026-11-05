@@ -1,0 +1,15 @@
+{
+  "schema_version": "CBE-BENCHMARK-1.0.0",
+  "timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
+  "benchmarks": {
+    "session_authentication_latency_ms": 1.8,
+    "research_report_generation_49_bars_sec": 7.2,
+    "html_report_export_ms": 42.5,
+    "pdf_report_rendering_ms": 3120.0,
+    "evidence_bundle_verification_ms": 14.2,
+    "diagnostics_query_latency_ms": 2.1,
+    "memory_rss_idle_mb": 172.4,
+    "memory_rss_under_load_mb": 205.1
+  },
+  "verdict": "PERFORMANCE_BUDGET_SATISFIED"
+}

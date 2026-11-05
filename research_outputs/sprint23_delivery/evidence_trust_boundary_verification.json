@@ -1,0 +1,36 @@
+{
+  "schema_version": "CBE-EVIDENCE-TRUST-1.0.0",
+  "timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
+  "tests": [
+    {
+      "test": "untrusted_source_self_consistent",
+      "expected_verdict": "INTEGRITY_VERIFIED_UNTRUSTED_SOURCE",
+      "observed_verdict": "INTEGRITY_VERIFIED_UNTRUSTED_SOURCE",
+      "passed": true
+    },
+    {
+      "test": "client_supplied_checksum_as_trust_anchor",
+      "expected_rejection": true,
+      "observed_rejection": true,
+      "passed": true
+    },
+    {
+      "test": "fake_operator_signature_rejection",
+      "expected_verdict": "TAMPERED_OPERATOR_SIGNATURE_MISMATCH",
+      "observed_verdict": "TAMPERED_OPERATOR_SIGNATURE_MISMATCH",
+      "passed": true
+    },
+    {
+      "test": "server_storage_full_content_comparison",
+      "expected_verdict": "AUTHENTICITY_VERIFIED",
+      "observed_verdict": "AUTHENTICITY_VERIFIED",
+      "passed": true
+    },
+    {
+      "test": "rfc_8785_canonical_number_normalization",
+      "python_js_roundtrip_match": true,
+      "passed": true
+    }
+  ],
+  "verdict": "ALL_BOUNDARIES_VERIFIED"
+}

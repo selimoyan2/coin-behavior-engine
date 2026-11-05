@@ -1,0 +1,20 @@
+{
+  "schema_version": "CBE-ATOMIC-STORAGE-1.0.0",
+  "timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
+  "tests": [
+    {
+      "scenario": "Simulated crash during write",
+      "mechanism": "Write to .tmp file then atomic os.replace",
+      "original_file_intact": true,
+      "corrupted_files_found": 0,
+      "passed": true
+    },
+    {
+      "scenario": "Non-writable destination directory",
+      "expected_error": "DURABLE_STORAGE_UNAVAILABLE",
+      "observed_error": "DURABLE_STORAGE_UNAVAILABLE",
+      "passed": true
+    }
+  ],
+  "verdict": "ATOMIC_PERSISTENCE_VERIFIED"
+}

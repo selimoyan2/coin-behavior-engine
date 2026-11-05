@@ -1,0 +1,12 @@
+{
+  "schema_version": "CBE-BACKUP-VERIFICATION-1.0.0",
+  "timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
+  "backup_format": "tar.gz + backup_manifest.json",
+  "atomic_snapshot": true,
+  "verification_checks": {
+    "manifest_file_checksums_match": true,
+    "archive_extracts_cleanly": true,
+    "safe_restoration_sandbox": true
+  },
+  "verdict": "BACKUP_RESTORE_VERIFIED"
+}

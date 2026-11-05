@@ -1,0 +1,10 @@
+{
+  "schema_version": "CBE-ZERO-TOUCH-ATTESTATION-1.0.0",
+  "timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
+  "host": "srv1114257 (168.231.125.238)",
+  "production_container_id": "1a867269c843",
+  "production_container_name": "6t63aehpaw0cw1bbt4zcm09g-20261102T225721",
+  "production_container_status": "Up 3 days (healthy)",
+  "attestation_statement": "The production container 1a867269c843 was strictly ZERO-TOUCH during all Sprint 23 execution. No inspections for secrets, no restarts, no configuration changes, and no mutations occurred.",
+  "verified_untouched": true
+}

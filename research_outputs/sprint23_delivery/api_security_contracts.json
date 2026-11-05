@@ -1,0 +1,59 @@
+{
+  "schema_version": "CBE-API-SECURITY-CONTRACTS-1.0.0",
+  "timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
+  "endpoints": {
+    "/api/v1/product/session/login": {
+      "method": "POST",
+      "auth_required": false,
+      "csrf_required": false,
+      "rate_limited": true
+    },
+    "/api/v1/product/session/logout": {
+      "method": "POST",
+      "auth_required": true,
+      "csrf_required": true
+    },
+    "/api/v1/product/session/status": {
+      "method": "GET",
+      "auth_required": false
+    },
+    "/api/v1/product/research-reports/generate": {
+      "method": "POST",
+      "auth_required": true,
+      "csrf_required": true,
+      "semaphore": "research_slot",
+      "max_payload_bytes": 2097152
+    },
+    "/api/v1/product/research-reports/{report_id}/pdf": {
+      "method": "GET",
+      "auth_required": true,
+      "semaphore": "pdf_slot"
+    },
+    "/api/v1/product/research-reports/verify": {
+      "method": "POST",
+      "auth_required": true,
+      "csrf_required": true,
+      "semaphore": "evidence_slot"
+    },
+    "/api/v1/product/diagnostics": {
+      "method": "GET",
+      "privileged_role": "ADMIN_DIAGNOSTICS"
+    },
+    "/ready": {
+      "method": "GET",
+      "unauthenticated_probe": true
+    }
+  },
+  "error_contract": {
+    "standard_fields": [
+      "status",
+      "error_code",
+      "message",
+      "correlation_id",
+      "retryable",
+      "remediation_hint"
+    ],
+    "bilingual_support": true
+  },
+  "verdict": "CONTRACTS_VERIFIED"
+}

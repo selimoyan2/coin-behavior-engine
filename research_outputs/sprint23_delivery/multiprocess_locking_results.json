@@ -1,0 +1,17 @@
+{
+  "schema_version": "CBE-PROCESS-LOCKING-1.0.0",
+  "timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
+  "lock_mechanism": {
+    "posix": "fcntl.flock (LOCK_EX | LOCK_NB)",
+    "windows": "msvcrt.locking (LK_NBLCK)",
+    "in_process": "threading.RLock",
+    "lock_directory": "/tmp/cbe_locks"
+  },
+  "concurrency_tests": {
+    "mutual_exclusion_verified": true,
+    "timeout_handling_verified": true,
+    "reentrant_in_same_thread": true,
+    "stale_lock_cleanup_verified": true
+  },
+  "verdict": "LOCKING_VERIFIED"
+}

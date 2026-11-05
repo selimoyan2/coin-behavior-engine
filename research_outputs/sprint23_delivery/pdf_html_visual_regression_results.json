@@ -1,0 +1,23 @@
+{
+  "schema_version": "CBE-VISUAL-REGRESSION-1.0.0",
+  "timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
+  "pdf_export_verification": {
+    "header_signature": "%PDF-",
+    "typography": "TrueType DejaVu Sans",
+    "page_layout": "A4 publication standard",
+    "page_count_min": 2,
+    "offline_rendering": true
+  },
+  "html_export_verification": {
+    "doctype": "<!DOCTYPE html>",
+    "external_resources_found": 0,
+    "offline_standalone_capable": true,
+    "inline_styles": true
+  },
+  "responsive_screenshots": {
+    "desktop_1920x1080": "sprint23_screenshot_01_desktop_operational_panel.png",
+    "tablet_768x1024": "sprint23_screenshot_02_tablet_research_reports.png",
+    "mobile_375x667": "sprint23_screenshot_03_mobile_evidence_verification.png"
+  },
+  "verdict": "VISUAL_AND_EXPORT_INTEGRITY_VERIFIED"
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "CBE-SESSION-SECURITY-1.0.0",
+  "timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
+  "cookie_configuration": {
+    "cookie_name": "cbe_session_id",
+    "http_only": true,
+    "same_site": "Strict",
+    "path": "/",
+    "max_age_seconds": 3600
+  },
+  "csrf_protection": {
+    "enforced_methods": [
+      "POST",
+      "PUT",
+      "DELETE",
+      "PATCH"
+    ],
+    "token_entropy_bytes": 32,
+    "header_name": "X-CSRF-Token",
+    "cross_origin_blocked": true
+  },
+  "browser_storage_leak_audit": {
+    "window_cbe_operator_token": null,
+    "local_storage_cbe_operator_token": null,
+    "session_storage_cbe_operator_token": null,
+    "raw_credentials_in_dom": false
+  },
+  "verdict": "VERIFIED_SECURE"
+}

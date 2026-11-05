@@ -1,0 +1,15 @@
+{
+  "schema_version": "CBE-STAGING-PROVENANCE-1.0.0",
+  "timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
+  "host": "srv1114257 (168.231.125.238)",
+  "container_id": "46114ef5fca7",
+  "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+  "image": "cbe-market-intelligence:sprint23-hardening-abbc0a1d",
+  "image_digest": "sha256:1300a5cd964b52987a7dc53c5d45d8a086304eb5d34df45a0401207c1a4c30a4",
+  "build_source_commit": "abbc0a1d25cf42b37129574921e1a05420a300e4",
+  "exposed_port": 18080,
+  "volume_mount": "/var/lib/docker/volumes/dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f/_data -> /app/data/prospective",
+  "underlying_filesystem": "ext4 on /dev/sda1",
+  "container_recreation_verified": true,
+  "verdict": "STAGING_RUNTIME_VERIFIED"
+}

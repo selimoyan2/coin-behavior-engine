@@ -1,0 +1,21 @@
+{
+  "schema_version": "CBE-HEALTH-READINESS-1.0.0",
+  "timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
+  "health_endpoint": {
+    "url": "/health",
+    "status": "healthy",
+    "http_code": 200
+  },
+  "ready_endpoint": {
+    "url": "/ready",
+    "status": "READY",
+    "http_code": 200,
+    "model_version": "CBE-0.7.0",
+    "model_status": "STRICTLY_FROZEN",
+    "governance_decision": "TECHNICAL_NO_GO",
+    "storage_durability": "PERSISTENT_VERIFIED",
+    "storage_writable": true,
+    "directional_trading": "STRICTLY_PROHIBITED"
+  },
+  "verdict": "PROBES_HEALTHY"
+}

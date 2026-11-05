@@ -1,0 +1,21 @@
+{
+  "schema_version": "CBE-RESOURCE-CONFIG-1.0.0",
+  "timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
+  "concurrency_semaphores": {
+    "max_concurrent_research_jobs": 2,
+    "max_concurrent_pdf_jobs": 2,
+    "max_concurrent_evidence_jobs": 4
+  },
+  "payload_and_data_budgets": {
+    "max_payload_bytes": 2097152,
+    "max_candles_per_request": 5000,
+    "max_cache_entries": 100
+  },
+  "container_resource_limits": {
+    "memory_limit": "300m",
+    "memory_reservation": "150m",
+    "cpus": 0.5,
+    "pids_limit": 64
+  },
+  "verdict": "CONFIGURATION_VERIFIED"
+}
