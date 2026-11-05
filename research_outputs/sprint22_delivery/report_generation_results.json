@@ -1,5 +1,5 @@
 {
-  "report_id": "RPT-ec542efd4c53495a",
+  "report_id": "RPT-2859fd4332e49f03",
   "title": "Fed 75bps Şoku Tarihsel Araştırma Raporu",
   "schema_version": "CBE-RESEARCH-REPORT-1.0.0",
   "status": "COMPLETED",
@@ -28,7 +28,8 @@
     "end_utc": "2022-06-15T00:00:00Z",
     "interval": "1h",
     "bars_count": 337,
-    "dataset_manifest_version": "cbe-manifest-v3-7ed2e950dec3",
+    "dataset_manifest_version": "cbe-manifest-v2-73a6212acca3",
+    "dataset_manifest_sha256": "fe6c73326c639ee048012cbeb4d50cb9b25014552411ae7a4ef5a57be448ad97",
     "quarantine_boundary": "2026-10-01T00:00:00Z",
     "quarantined_bars_included": false
   },
@@ -38,6 +39,12 @@
     "parameter_mutations": 0,
     "drift_detected": false
   },
-  "quality_gate": "NOT_EVALUATED",
-  "reproducibility_verdict": "NOT_EVALUATED"
+  "quality_gate": "WARNING",
+  "reproducibility_verdict": "REPRODUCIBLE_EXACT",
+  "statistical_evidence": {
+    "p_value": null,
+    "p_value_status": "UNAVAILABLE",
+    "predeclared_holdout_criteria_satisfied": null,
+    "holdout_criteria_status": "NOT_MEASURED"
+  }
 }
