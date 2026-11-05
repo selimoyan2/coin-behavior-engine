@@ -132,6 +132,49 @@ def render_research_explorer_html() -> str:
         </div>
       </div>
 
+      <!-- Sprint 23: Operational Status & Session Security Panel -->
+      <div class="card" id="operational-status-panel" style="margin-bottom: 20px; background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 14px 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 14px;">🟢</span>
+              <span style="font-size: 12px; font-weight: 700; color: #10b981;" id="op-platform-health">PLATFORM: HEALTHY</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 14px;">💾</span>
+              <span style="font-size: 12px; font-weight: 700; color: #38bdf8;" id="op-storage-durability">PERSISTENT_VERIFIED</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 14px;">🧊</span>
+              <span style="font-size: 12px; font-weight: 700; color: #a78bfa;" id="op-model-freeze">CBE-0.7.0 [STRICTLY_FROZEN]</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 14px;">⚖️</span>
+              <span style="font-size: 12px; font-weight: 700; color: #f59e0b;" id="op-governance-decision">TECHNICAL_NO_GO</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 14px;">⛔</span>
+              <span style="font-size: 12px; font-weight: 700; color: #ef4444;" id="op-trading-eligibility">ALIM-SATIM: PERMANENTLY_PROHIBITED</span>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div id="session-active-controls" style="display: none; align-items: center; gap: 8px;">
+              <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981; font-size: 11px;">
+                🔐 Oturum Aktif (<span id="session-id-display">...</span>)
+              </span>
+              <span id="session-csrf-badge" class="badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8; font-size: 11px;">
+                🛡️ CSRF Korumalı
+              </span>
+              <button class="btn btn-sm btn-secondary" onclick="sessionLogout()" style="padding: 3px 8px; font-size: 11px;">Çıkış</button>
+            </div>
+            <div id="session-login-controls" style="display: flex; align-items: center; gap: 8px;">
+              <input type="password" id="session-operator-token-input" placeholder="Operatör Belirteci..." style="background: #1e293b; border: 1px solid #475569; border-radius: 4px; padding: 4px 8px; color: #f8fafc; font-size: 11px; width: 160px;" />
+              <button class="btn btn-sm btn-primary" onclick="sessionLogin()" style="padding: 4px 10px; font-size: 11px; background: #6366f1;">Oturum Aç</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Sprint 20: Guided Research Journey Workflow Navigation Header -->
       <div class="card" id="workflow-journey-card" style="margin-bottom: 20px; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); border: 1px solid #4338ca; border-radius: 12px; padding: 18px 24px;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 14px;">
@@ -1265,20 +1308,135 @@ def render_research_explorer_scripts() -> str:
     }
 
     // -------------------------------------------------------------------------
+    // Session Security & Authentication (Sprint 23)
+    // -------------------------------------------------------------------------
+    window.cbeSessionId = '';
+    window.cbeCsrfToken = '';
+
+    function getAuthHeaders(contentType = 'application/json') {
+      const headers = {};
+      if (contentType) headers['Content-Type'] = contentType;
+      if (window.cbeCsrfToken) headers['X-CSRF-Token'] = window.cbeCsrfToken;
+      if (window.cbeSessionId) headers['X-Session-ID'] = window.cbeSessionId;
+      const opToken = (document.getElementById('session-operator-token-input')?.value || document.getElementById('ops-token-input')?.value || '').trim();
+      if (opToken) headers['X-Operator-Token'] = opToken;
+      return headers;
+    }
+
+    async function sessionLogin() {
+      const tokInput = document.getElementById('session-operator-token-input');
+      const token = (tokInput ? tokInput.value : '').trim();
+      if (!token) {
+        alert('Lütfen geçerli bir operatör belirteci giriniz.');
+        return;
+      }
+      try {
+        const res = await fetch('/api/v1/product/session/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ operator_token: token })
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          alert('Oturum açma başarısız: ' + (err.message || res.statusText));
+          return;
+        }
+        const data = await res.json();
+        window.cbeSessionId = data.session_id || '';
+        window.cbeCsrfToken = data.csrf_token || '';
+        if (tokInput) tokInput.value = '';
+        updateSessionUI(true, data.session_id);
+      } catch (e) {
+        alert('Oturum açma hatası: ' + e.message);
+      }
+    }
+
+    async function sessionLogout() {
+      try {
+        await fetch('/api/v1/product/session/logout', {
+          method: 'POST',
+          headers: getAuthHeaders()
+        });
+        window.cbeSessionId = '';
+        window.cbeCsrfToken = '';
+        updateSessionUI(false, null);
+      } catch (e) {
+        console.error('Logout error:', e);
+      }
+    }
+
+    async function checkSessionStatus() {
+      try {
+        const res = await fetch('/api/v1/product/session/status');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.authenticated) {
+            window.cbeSessionId = data.session_id || '';
+            window.cbeCsrfToken = data.csrf_token || '';
+            updateSessionUI(true, data.session_id);
+            return;
+          }
+        }
+        updateSessionUI(false, null);
+      } catch (e) {
+        updateSessionUI(false, null);
+      }
+    }
+
+    function updateSessionUI(isAuthed, sessionId) {
+      const loginBox = document.getElementById('session-login-controls');
+      const activeBox = document.getElementById('session-active-controls');
+      const sidSpan = document.getElementById('session-id-display');
+      const csrfBadge = document.getElementById('session-csrf-badge');
+      if (isAuthed) {
+        if (loginBox) loginBox.style.display = 'none';
+        if (activeBox) activeBox.style.display = 'flex';
+        if (sidSpan) sidSpan.textContent = sessionId ? sessionId.substring(0, 10) + '...' : 'Aktif';
+        if (csrfBadge) csrfBadge.style.display = 'inline-block';
+      } else {
+        if (loginBox) loginBox.style.display = 'flex';
+        if (activeBox) activeBox.style.display = 'none';
+        if (csrfBadge) csrfBadge.style.display = 'none';
+      }
+    }
+
+    async function checkOperationalStatus() {
+      try {
+        const res = await fetch('/ready');
+        if (res.ok) {
+          const data = await res.json();
+          const pHealth = document.getElementById('op-platform-health');
+          const sDur = document.getElementById('op-storage-durability');
+          if (pHealth) pHealth.textContent = 'PLATFORM: ' + data.status;
+          if (sDur && data.storage_durability) sDur.textContent = data.storage_durability;
+        }
+      } catch (e) {}
+    }
+
+    // Initialize session and status checks
+    setTimeout(() => {
+      checkSessionStatus();
+      checkOperationalStatus();
+    }, 200);
+
+    // -------------------------------------------------------------------------
     // Research Library V1 Client Methods
     // -------------------------------------------------------------------------
 
     let libraryCachedItems = [];
 
     function getLibraryMutationHeaders() {
-      const opsToken = (document.getElementById('ops-token-input')?.value || '').trim();
-      const storedToken = localStorage.getItem('cbe_research_token') || localStorage.getItem('cbe_operator_token') || '';
-      const token = opsToken || storedToken || 'cbe-research-authorized-token';
-      return {
+      const headers = {
         'Content-Type': 'application/json',
-        'X-Requested-With': 'CoinBehaviorEngineClient',
-        'X-Research-Token': token
+        'X-Requested-With': 'CoinBehaviorEngineClient'
       };
+      if (window.cbeCsrfToken) headers['X-CSRF-Token'] = window.cbeCsrfToken;
+      const opsToken = (document.getElementById('session-operator-token-input')?.value || document.getElementById('ops-token-input')?.value || '').trim();
+      if (opsToken) {
+        headers['X-Research-Token'] = opsToken;
+        headers['X-Operator-Token'] = opsToken;
+      }
+      return headers;
     }
 
     async function libraryRefresh() {
@@ -1412,9 +1570,8 @@ def render_research_explorer_scripts() -> str:
         explorerLoadData();
 
         try {
-          const opToken = window.CBE_OPERATOR_TOKEN || sessionStorage.getItem('cbe_operator_token') || 'cbe-staging-token-37c523d4ca890a354b2ce70025877381f4b41dffd3c88bf0';
           const repRes = await fetch(`/api/v1/product/research-library/${encodeURIComponent(researchId)}/reports`, {
-            headers: { 'X-Operator-Token': opToken }
+            headers: getAuthHeaders()
           });
           if (repRes.ok) {
             const repData = await repRes.json();
@@ -1661,9 +1818,7 @@ def render_research_explorer_scripts() -> str:
           title: 'Tarihsel Araştırma Raporu (BTCUSDT)'
         };
 
-        const opToken = window.CBE_OPERATOR_TOKEN || sessionStorage.getItem('cbe_operator_token') || '';
-        const reqHeaders = { 'Content-Type': 'application/json' };
-        if (opToken) reqHeaders['X-Operator-Token'] = opToken;
+        const reqHeaders = getAuthHeaders('application/json');
 
         const res = await fetch('/api/v1/product/research-reports/generate', {
           method: 'POST',
@@ -1756,10 +1911,7 @@ def render_research_explorer_scripts() -> str:
         return;
       }
       const rid = currentReportData.report_metadata.report_id;
-      const opToken = window.CBE_OPERATOR_TOKEN || sessionStorage.getItem('cbe_operator_token') || '';
-      const reqHeaders = {};
-      if (opToken) reqHeaders['X-Operator-Token'] = opToken;
-      const res = await fetch('/api/v1/product/research-reports/' + rid + '/evidence', { headers: reqHeaders });
+      const res = await fetch('/api/v1/product/research-reports/' + rid + '/evidence', { headers: getAuthHeaders() });
       if (res.ok) {
         const bundle = await res.json();
         const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: 'application/json' });
@@ -1780,9 +1932,7 @@ def render_research_explorer_scripts() -> str:
         return;
       }
       const rid = currentReportData.report_metadata.report_id;
-      const opToken = window.CBE_OPERATOR_TOKEN || sessionStorage.getItem('cbe_operator_token') || '';
-      const reqHeaders = { 'Content-Type': 'application/json' };
-      if (opToken) reqHeaders['X-Operator-Token'] = opToken;
+      const reqHeaders = getAuthHeaders('application/json');
       try {
         const res = await fetch('/api/v1/product/research-reports/verify', {
           method: 'POST',
@@ -1792,11 +1942,11 @@ def render_research_explorer_scripts() -> str:
         const vres = await res.json();
         const intVal = document.getElementById('report-integrity-val');
         if (intVal) {
-          if (vres.verdict === 'VERIFIED_AUTHENTIC') {
+          if (vres.verdict === 'VERIFIED_AUTHENTIC' || vres.verdict === 'AUTHENTICITY_VERIFIED') {
             intVal.innerText = '🛡️ DOĞRULANDI: Tahrifat tespit edilmedi. Sağlama: ' + (vres.recomputed_checksum || '').substring(0, 16) + '...';
             intVal.style.color = '#3fb950';
           } else {
-            intVal.innerText = '⚠️ TAHRİFAT TESPİT EDİLDİ: ' + (vres.discrepancies || []).join(', ');
+            intVal.innerText = '⚠️ TAHRİFAT TESPİT EDİLDİ: ' + (vres.discrepancies || [vres.verdict]).join(', ');
             intVal.style.color = '#f85149';
           }
         }
@@ -1807,10 +1957,7 @@ def render_research_explorer_scripts() -> str:
 
     async function openSavedReport(reportId) {
       try {
-        const opToken = window.CBE_OPERATOR_TOKEN || sessionStorage.getItem('cbe_operator_token') || 'cbe-staging-token-37c523d4ca890a354b2ce70025877381f4b41dffd3c88bf0';
-        const headers = {};
-        if (opToken) headers['X-Operator-Token'] = opToken;
-        const res = await fetch(`/api/v1/product/research-reports/${encodeURIComponent(reportId)}`, { headers });
+        const res = await fetch(`/api/v1/product/research-reports/${encodeURIComponent(reportId)}`, { headers: getAuthHeaders() });
         if (res.ok) {
           const report = await res.json();
           currentReportData = report;
@@ -1839,11 +1986,7 @@ def render_research_explorer_scripts() -> str:
         return;
       }
 
-      const opToken = window.CBE_OPERATOR_TOKEN || sessionStorage.getItem('cbe_operator_token') || 'cbe-staging-token-37c523d4ca890a354b2ce70025877381f4b41dffd3c88bf0';
-      const headers = {
-        'Content-Type': 'application/json',
-        'X-Operator-Token': opToken
-      };
+      const headers = getAuthHeaders('application/json');
 
       try {
         const res = await fetch(`/api/v1/product/research-library/${encodeURIComponent(researchId)}/report`, {
@@ -2032,11 +2175,7 @@ def render_research_explorer_scripts() -> str:
         container.style.display = 'block';
         container.innerHTML = '<div style="font-size: 12px; color: #94a3b8;">Performans gözlemevi benchmark ölçümleri yapılıyor...</div>';
       }
-      const opToken = window.CBE_OPERATOR_TOKEN || sessionStorage.getItem('cbe_operator_token') || '';
-      const reqHeaders = { 'Content-Type': 'application/json' };
-      if (opToken) {
-        reqHeaders['X-Operator-Token'] = opToken;
-      }
+      const reqHeaders = getAuthHeaders('application/json');
       try {
         const resp = await fetch('/api/v1/product/research-quality/performance-audit', {
           method: 'POST',

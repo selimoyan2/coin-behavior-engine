@@ -649,39 +649,13 @@ class ResearchLibraryEngine:
     @classmethod
     @contextlib.contextmanager
     def _cross_process_lock(cls):
-        """
-        Cross-thread and cross-process file lock context manager.
-        Acquires threading.Lock within process and OS-level file lock across processes.
-        Guarantees concurrency safety even under multi-worker or multi-process deployments.
-        """
+        """Cross-thread and cross-process file lock context manager."""
+        from coin_behavior_engine.product.process_locking import MultiProcessLock
         storage_dir = cls.get_storage_dir()
         lock_file_path = storage_dir / ".library.lock"
-        with cls._LOCK:
-            lock_fd = None
-            try:
-                lock_fd = os.open(str(lock_file_path), os.O_CREAT | os.O_RDWR)
-                if sys.platform == "win32":
-                    import msvcrt
-                    msvcrt.locking(lock_fd, msvcrt.LK_LOCK, 1)
-                else:
-                    import fcntl
-                    fcntl.flock(lock_fd, fcntl.LOCK_EX)
-                yield
-            finally:
-                if lock_fd is not None:
-                    try:
-                        if sys.platform == "win32":
-                            import msvcrt
-                            msvcrt.locking(lock_fd, msvcrt.LK_UNLCK, 1)
-                        else:
-                            import fcntl
-                            fcntl.flock(lock_fd, fcntl.LOCK_UN)
-                    except Exception:
-                        pass
-                    try:
-                        os.close(lock_fd)
-                    except Exception:
-                        pass
+        mp_lock = MultiProcessLock(lock_file_path, timeout=10.0)
+        with mp_lock:
+            yield
 
     @classmethod
     def _resolve_safe_file_path(cls, research_id: str) -> Optional[Path]:

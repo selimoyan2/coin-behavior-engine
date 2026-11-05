@@ -207,6 +207,14 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.get_interval_integrity(query_params)
             elif sub_path in ("research-readiness", "readiness"):
                 return HTTPStatus.OK, cls.get_research_readiness(query_params)
+            elif sub_path in ("ready", "product/ready", "health/ready"):
+                return cls.get_ready_api()
+            elif sub_path in ("diagnostics", "product/diagnostics", "operational-diagnostics"):
+                return cls.get_diagnostics_api(headers=headers)
+            elif sub_path in ("session/status", "session-status"):
+                return cls.get_session_status_api(headers=headers)
+            elif sub_path in ("storage/status", "storage-status"):
+                return cls.get_storage_status_api()
             elif sub_path in ("import-history", "imports"):
                 return HTTPStatus.OK, cls.get_import_history(query_params)
             elif sub_path in ("dataset-catalog", "datasets"):
@@ -487,13 +495,34 @@ class ProductDashboardApiService:
         if env == "production":
             return False, HTTPStatus.FORBIDDEN, "MUTATIONS_PERMANENTLY_BLOCKED_IN_PRODUCTION: Araştırma kütüphanesi üretim ortamında kesinlikle salt-okunurdur (read-only)."
 
-        # 1. CSRF Protection
+        # Validate credential separation
+        from coin_behavior_engine.product.credential_manager import CredentialManager, CredentialSeparationViolationError
+        try:
+            CredentialManager.validate_credential_separation()
+        except CredentialSeparationViolationError as e:
+            return False, HTTPStatus.FORBIDDEN, f"CREDENTIAL_SEPARATION_VIOLATION: {e}"
+
         hdr_map = {k.lower(): v for k, v in (headers or {}).items()}
+
+        # 1. CSRF Protection for browser cross-site calls
         sec_fetch_site = hdr_map.get("sec-fetch-site", "").strip().lower()
         if sec_fetch_site == "cross-site":
             return False, HTTPStatus.FORBIDDEN, "CSRF_CROSS_SITE_REQUEST_REJECTED: Çapraz site istekleri engellenmiştir."
 
-        # 2. Extract Token from headers or body
+        # 2. Check Session & CSRF
+        from coin_behavior_engine.product.session_manager import session_manager, SessionManager
+        session_id = SessionManager.extract_session_id(headers)
+        if session_id:
+            csrf_tok = SessionManager.extract_csrf_token(headers) or (body.get("csrf_token") if isinstance(body, dict) else None)
+            s_valid, s_reason, s_rec = session_manager.validate_session(session_id, csrf_token=csrf_tok, check_csrf=True)
+            if s_valid:
+                return True, HTTPStatus.OK, "AUTHORIZED"
+            if s_reason in ("CSRF_TOKEN_MISMATCH", "CSRF_TOKEN_MISSING"):
+                return False, HTTPStatus.FORBIDDEN, f"CSRF_VERIFICATION_FAILED: {s_reason}"
+            if s_reason in ("SESSION_EXPIRED", "SESSION_REVOKED"):
+                return False, HTTPStatus.UNAUTHORIZED, f"AUTH_SESSION_INVALID: {s_reason}"
+
+        # 3. Extract Token from headers or body
         token = (
             hdr_map.get("x-research-token")
             or hdr_map.get("x-operator-token")
@@ -507,18 +536,18 @@ class ProductDashboardApiService:
             else:
                 token = auth_val
 
-        # 3. Reject Anonymous Writes
+        # 4. Reject Anonymous Writes
         if not token or not str(token).strip():
             return False, HTTPStatus.UNAUTHORIZED, "ANONYMOUS_WRITE_PROHIBITED: Araştırma kütüphanesinde değişiklik yapmak için yetki tokeni zorunludur."
 
         clean_token = str(token).strip()
 
-        # 4. Check Revoked Tokens
+        # 5. Check Revoked Tokens
         from coin_behavior_engine.product.operations_console import is_token_revoked
         if is_token_revoked(clean_token):
             return False, HTTPStatus.FORBIDDEN, "AUTH_TOKEN_REVOKED: Belirtilen yetki tokeni güvenlik nedeniyle iptal edilmiştir."
 
-        # 5. Validate Against Configured / Expected Token
+        # 6. Validate Against Configured / Expected Token
         expected_token = (
             os.environ.get("CBE_OPERATOR_TOKEN")
             or os.environ.get("CBE_RESEARCH_TOKEN")
@@ -528,6 +557,11 @@ class ProductDashboardApiService:
         if expected_token and expected_token.strip():
             if not hmac.compare_digest(clean_token.encode("utf-8"), expected_token.strip().encode("utf-8")):
                 return False, HTTPStatus.FORBIDDEN, "INVALID_AUTH_TOKEN: Yetki tokeni geçersiz."
+            return True, HTTPStatus.OK, "AUTHORIZED"
+
+        # Check Staging Test Operator Token (non-production)
+        test_tok = CredentialManager.get_test_operator_token()
+        if test_tok and hmac.compare_digest(clean_token.encode("utf-8"), test_tok.strip().encode("utf-8")):
             return True, HTTPStatus.OK, "AUTHORIZED"
 
         # If no explicit token configured in non-production environments (dev/test/staging),
@@ -565,7 +599,11 @@ class ProductDashboardApiService:
             sub_path = path.strip("/")
 
         try:
-            if sub_path in ("scenarios/evaluate", "scenarios"):
+            if sub_path in ("session/login", "auth/login"):
+                return cls.post_session_login_api(body, headers)
+            elif sub_path in ("session/logout", "auth/logout"):
+                return cls.post_session_logout_api(headers)
+            elif sub_path in ("scenarios/evaluate", "scenarios"):
                 return cls.evaluate_scenario(query_params, body)
             elif sub_path in ("import-preview", "operations/import-preview"):
                 return cls.post_import_preview(body)
@@ -5068,14 +5106,44 @@ class ProductDashboardApiService:
         cls,
         headers: Optional[Dict[str, str]],
         is_mutation: bool = False,
+        body: Optional[Dict[str, Any]] = None,
     ) -> Tuple[bool, HTTPStatus, str]:
-        """Verify token revocation, production mutation gating, and optional token auth."""
+        """Verify token revocation, session authentication, CSRF, production mutation gating, and optional token auth."""
         env = os.environ.get("CBE_ENV", "staging").lower()
         if is_mutation and env == "production":
             return False, HTTPStatus.FORBIDDEN, "MUTATIONS_PERMANENTLY_BLOCKED_IN_PRODUCTION: Üretim ortamında rapor oluşturma engellenmiştir."
 
+        from coin_behavior_engine.product.credential_manager import CredentialManager, CredentialSeparationViolationError
+        try:
+            CredentialManager.validate_credential_separation()
+        except CredentialSeparationViolationError as e:
+            return False, HTTPStatus.FORBIDDEN, f"CREDENTIAL_SEPARATION_VIOLATION: {e}"
+
         hdr_map = {k.lower(): v for k, v in (headers or {}).items()}
+
+        # 1. CSRF check for mutations if cross-site
+        sec_fetch_site = hdr_map.get("sec-fetch-site", "").strip().lower()
+        if is_mutation and sec_fetch_site == "cross-site":
+            return False, HTTPStatus.FORBIDDEN, "CSRF_CROSS_SITE_REQUEST_REJECTED: Çapraz site istekleri engellenmiştir."
+
+        # 2. Check Session
+        from coin_behavior_engine.product.session_manager import session_manager, SessionManager
+        session_id = SessionManager.extract_session_id(headers)
+        if session_id:
+            csrf_tok = SessionManager.extract_csrf_token(headers) or (body.get("csrf_token") if isinstance(body, dict) else None)
+            s_valid, s_reason, s_rec = session_manager.validate_session(
+                session_id, csrf_token=csrf_tok, check_csrf=is_mutation
+            )
+            if s_valid:
+                return True, HTTPStatus.OK, "Authorized (Session)"
+            if is_mutation and s_reason in ("CSRF_TOKEN_MISMATCH", "CSRF_TOKEN_MISSING"):
+                return False, HTTPStatus.FORBIDDEN, f"CSRF_VERIFICATION_FAILED: {s_reason}"
+            if s_reason in ("SESSION_EXPIRED", "SESSION_REVOKED"):
+                return False, HTTPStatus.UNAUTHORIZED, f"AUTH_SESSION_INVALID: {s_reason}"
+
         tok = hdr_map.get("x-operator-token") or hdr_map.get("authorization", "").replace("Bearer ", "").strip()
+        if not tok and isinstance(body, dict):
+            tok = body.get("operator_token")
 
         from coin_behavior_engine.product.operations_console import is_token_revoked
         if tok and is_token_revoked(tok):
@@ -5084,7 +5152,10 @@ class ProductDashboardApiService:
         expected_token = os.environ.get("CBE_OPERATOR_TOKEN") or os.environ.get("OPERATOR_TOKEN")
         if expected_token and expected_token.strip():
             if not tok or not hmac.compare_digest(tok.encode(), expected_token.strip().encode()):
-                return False, HTTPStatus.UNAUTHORIZED, "Geçersiz veya eksik X-Operator-Token belirteci."
+                # Also check staging test operator token in non-production
+                test_tok = CredentialManager.get_test_operator_token()
+                if not (test_tok and tok and hmac.compare_digest(tok.encode(), test_tok.strip().encode())):
+                    return False, HTTPStatus.UNAUTHORIZED, "Geçersiz veya eksik X-Operator-Token belirteci."
 
         return True, HTTPStatus.OK, "Authorized"
 
@@ -5178,36 +5249,46 @@ class ProductDashboardApiService:
         if not is_auth:
             return status, {"error": "Unauthorized" if status == HTTPStatus.UNAUTHORIZED else "Forbidden", "message": msg}
 
-        from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
-        from coin_behavior_engine.product.research_report_pdf import ResearchReportPdfRenderer
-        import tempfile
-
-        builder = ResearchReportBuilderEngine()
-        report = builder.get_report(report_id)
-        if not report:
-            return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": f"Rapor bulunamadı: '{report_id}'"}
-
-        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
-            tmp_pdf_path = tmp.name
-
+        from coin_behavior_engine.product.resource_governor import resource_governor, ResourceLimitExceededError
         try:
-            renderer = ResearchReportPdfRenderer()
-            renderer.render_report_to_pdf(report, tmp_pdf_path)
-            with open(tmp_pdf_path, "rb") as f:
-                pdf_bytes = f.read()
-        finally:
-            if os.path.exists(tmp_pdf_path):
-                try:
-                    os.remove(tmp_pdf_path)
-                except Exception:
-                    pass
+            with resource_governor.acquire_pdf_slot(timeout=5.0):
+                from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
+                from coin_behavior_engine.product.research_report_pdf import ResearchReportPdfRenderer
+                import tempfile
 
-        return HTTPStatus.OK, {
-            "_binary_pdf": pdf_bytes,
-            "_filename": f"research-report-{report_id}.pdf",
-            "report_id": report_id,
-            "size_bytes": len(pdf_bytes),
-        }
+                builder = ResearchReportBuilderEngine()
+                report = builder.get_report(report_id)
+                if not report:
+                    return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": f"Rapor bulunamadı: '{report_id}'"}
+
+                with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
+                    tmp_pdf_path = tmp.name
+
+                try:
+                    renderer = ResearchReportPdfRenderer()
+                    renderer.render_report_to_pdf(report, tmp_pdf_path)
+                    with open(tmp_pdf_path, "rb") as f:
+                        pdf_bytes = f.read()
+                finally:
+                    if os.path.exists(tmp_pdf_path):
+                        try:
+                            os.remove(tmp_pdf_path)
+                        except Exception:
+                            pass
+
+                return HTTPStatus.OK, {
+                    "_binary_pdf": pdf_bytes,
+                    "_filename": f"research-report-{report_id}.pdf",
+                    "report_id": report_id,
+                    "size_bytes": len(pdf_bytes),
+                }
+        except ResourceLimitExceededError as rle:
+            return HTTPStatus.TOO_MANY_REQUESTS, {
+                "error": "Too Many Requests",
+                "error_code": "RESOURCE_LIMIT_EXCEEDED",
+                "message": str(rle),
+                "_headers": {"Retry-After": str(rle.retry_after_sec)},
+            }
 
     @classmethod
     def get_research_report_evidence(
@@ -5239,63 +5320,83 @@ class ProductDashboardApiService:
         headers: Optional[Dict[str, str]] = None,
     ) -> Tuple[HTTPStatus, Dict[str, Any]]:
         """Generate a new research report from session or workflow data."""
-        is_auth, status, msg = cls._authorize_report_access(headers, is_mutation=True)
+        is_auth, status, msg = cls._authorize_report_access(headers, is_mutation=True, body=body)
         if not is_auth:
             return status, {"error": "Unauthorized" if status == HTTPStatus.UNAUTHORIZED else "Forbidden", "message": msg}
 
-        from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
-        from coin_behavior_engine.product.unified_research_workspace import UnifiedResearchWorkspaceEngine
-        from coin_behavior_engine.product.research_scientific_audit import ResearchScientificAuditEngine
-        from coin_behavior_engine.product.research_reproducibility import ResearchReproducibilityEngine
+        from coin_behavior_engine.product.resource_governor import resource_governor, ResourceLimitExceededError
+        try:
+            raw_body = json.dumps(body).encode("utf-8")
+            resource_governor.validate_payload_size(raw_body)
+        except ValueError as ve:
+            return HTTPStatus.BAD_REQUEST, {
+                "error": "Bad Request",
+                "error_code": "PAYLOAD_TOO_LARGE",
+                "message": str(ve),
+            }
 
-        session_data = body.get("session_data")
-        start_utc = body.get("start_utc")
-        end_utc = body.get("end_utc")
-        asset = body.get("asset", "BTCUSDT")
-        interval = body.get("interval", "1h")
-        title = body.get("title")
+        try:
+            with resource_governor.acquire_research_slot(timeout=5.0):
+                from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
+                from coin_behavior_engine.product.unified_research_workspace import UnifiedResearchWorkspaceEngine
+                from coin_behavior_engine.product.research_scientific_audit import ResearchScientificAuditEngine
+                from coin_behavior_engine.product.research_reproducibility import ResearchReproducibilityEngine
 
-        if not session_data:
-            if not start_utc or not end_utc:
-                return HTTPStatus.BAD_REQUEST, {
-                    "error": "Bad Request",
-                    "message": "Rapor oluşturmak için 'session_data' veya 'start_utc' / 'end_utc' parametreleri zorunludur.",
+                session_data = body.get("session_data")
+                start_utc = body.get("start_utc")
+                end_utc = body.get("end_utc")
+                asset = body.get("asset", "BTCUSDT")
+                interval = body.get("interval", "1h")
+                title = body.get("title")
+
+                if not session_data:
+                    if not start_utc or not end_utc:
+                        return HTTPStatus.BAD_REQUEST, {
+                            "error": "Bad Request",
+                            "message": "Rapor oluşturmak için 'session_data' veya 'start_utc' / 'end_utc' parametreleri zorunludur.",
+                        }
+                    session_data = UnifiedResearchWorkspaceEngine.execute_session(
+                        asset=asset, interval=interval, reference_start_utc=start_utc, reference_end_utc=end_utc
+                    )
+
+                scorecard = body.get("scorecard")
+                repro = body.get("reproducibility")
+
+                wf_context = {
+                    "workflow_id": body.get("workflow_id", "WF-AUTO"),
+                    "asset": asset,
+                    "interval": interval,
+                    "reference_start_utc": start_utc or session_data.get("period", {}).get("start_utc"),
+                    "reference_end_utc": end_utc or session_data.get("period", {}).get("end_utc"),
                 }
-            session_data = UnifiedResearchWorkspaceEngine.execute_session(
-                asset=asset, interval=interval, reference_start_utc=start_utc, reference_end_utc=end_utc
-            )
 
-        scorecard = body.get("scorecard")
-        repro = body.get("reproducibility")
+                if not scorecard:
+                    sc_obj = ResearchScientificAuditEngine.evaluate_quality_scorecard(wf_context, session_data)
+                    scorecard = sc_obj.to_dict() if hasattr(sc_obj, "to_dict") else sc_obj
 
-        wf_context = {
-            "workflow_id": body.get("workflow_id", "WF-AUTO"),
-            "asset": asset,
-            "interval": interval,
-            "reference_start_utc": start_utc or session_data.get("period", {}).get("start_utc"),
-            "reference_end_utc": end_utc or session_data.get("period", {}).get("end_utc"),
-        }
+                if not repro:
+                    repro = ResearchReproducibilityEngine.verify_reproducibility(wf_context)
 
-        if not scorecard:
-            sc_obj = ResearchScientificAuditEngine.evaluate_quality_scorecard(wf_context, session_data)
-            scorecard = sc_obj.to_dict() if hasattr(sc_obj, "to_dict") else sc_obj
+                builder = ResearchReportBuilderEngine()
+                report = builder.generate_report(
+                    session_data=session_data,
+                    workflow_id=body.get("workflow_id"),
+                    library_id=body.get("library_id"),
+                    scorecard=scorecard,
+                    reproducibility=repro,
+                    comparison_candidate=body.get("comparison_candidate"),
+                    similarity_data=body.get("similarity_data"),
+                    operator_title=title,
+                )
 
-        if not repro:
-            repro = ResearchReproducibilityEngine.verify_reproducibility(wf_context)
-
-        builder = ResearchReportBuilderEngine()
-        report = builder.generate_report(
-            session_data=session_data,
-            workflow_id=body.get("workflow_id"),
-            library_id=body.get("library_id"),
-            scorecard=scorecard,
-            reproducibility=repro,
-            comparison_candidate=body.get("comparison_candidate"),
-            similarity_data=body.get("similarity_data"),
-            operator_title=title,
-        )
-
-        return HTTPStatus.OK, report
+                return HTTPStatus.OK, report
+        except ResourceLimitExceededError as rle:
+            return HTTPStatus.TOO_MANY_REQUESTS, {
+                "error": "Too Many Requests",
+                "error_code": "RESOURCE_LIMIT_EXCEEDED",
+                "message": str(rle),
+                "_headers": {"Retry-After": str(rle.retry_after_sec)},
+            }
 
     @classmethod
     def post_research_reports_verify(
@@ -5306,6 +5407,7 @@ class ProductDashboardApiService:
         """Verify an evidence bundle or saved report against independent server trust anchors."""
         from coin_behavior_engine.product.research_report_evidence import ResearchReportEvidenceBundleEngine
         from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
+        from coin_behavior_engine.product.resource_governor import resource_governor, ResourceLimitExceededError
 
         bundle = body.get("bundle")
         report_id = body.get("report_id")
@@ -5342,16 +5444,24 @@ class ProductDashboardApiService:
         expected_dataset = body.get("expected_dataset_version")
         expected_model = body.get("expected_model_version")
 
-        ver_res = evidence_engine.verify_evidence_bundle(
-            bundle=bundle,
-            trusted_checksum=trusted_checksum,
-            expected_dataset_version=expected_dataset,
-            expected_model_version=expected_model,
-            trusted_report=trusted_report,
-            allow_client_checksum_as_trust_anchor=False,
-        )
-
-        return HTTPStatus.OK, ver_res
+        try:
+            with resource_governor.acquire_evidence_slot(timeout=5.0):
+                ver_res = evidence_engine.verify_evidence_bundle(
+                    bundle=bundle,
+                    trusted_checksum=trusted_checksum,
+                    expected_dataset_version=expected_dataset,
+                    expected_model_version=expected_model,
+                    trusted_report=trusted_report,
+                    allow_client_checksum_as_trust_anchor=False,
+                )
+                return HTTPStatus.OK, ver_res
+        except ResourceLimitExceededError as rle:
+            return HTTPStatus.TOO_MANY_REQUESTS, {
+                "error": "Too Many Requests",
+                "error_code": "RESOURCE_LIMIT_EXCEEDED",
+                "message": str(rle),
+                "_headers": {"Retry-After": str(rle.retry_after_sec)},
+            }
 
     @classmethod
     def post_research_library_generate_report(
@@ -5397,6 +5507,171 @@ class ProductDashboardApiService:
         except Exception as e:
             logger.error(f"Error listing reports for definition {research_id}: {e}", exc_info=True)
             return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal Server Error", "message": str(e)}
+
+
+    @classmethod
+    def post_session_login_api(
+        cls, body: Dict[str, Any], headers: Optional[Dict[str, str]] = None
+    ) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Authenticates operator token and creates server-managed session."""
+        tok = body.get("operator_token") or body.get("token")
+        if not tok:
+            return HTTPStatus.UNAUTHORIZED, {
+                "error": "Unauthorized",
+                "error_code": "AUTH_FAILURE",
+                "message": "Operator token is required for session login.",
+            }
+
+        from coin_behavior_engine.product.session_manager import session_manager, SessionManager
+        client_ip = (headers or {}).get("x-forwarded-for", "127.0.0.1").split(",")[0].strip()
+        user_agent = (headers or {}).get("user-agent", "Unknown")
+
+        try:
+            record = session_manager.create_session(
+                operator_token=tok,
+                client_ip=client_ip,
+                user_agent=user_agent,
+            )
+            cookie_hdr = SessionManager.build_set_cookie_header(record.session_id)
+            return HTTPStatus.OK, {
+                "status": "AUTHENTICATED",
+                "session_id": record.session_id,
+                "csrf_token": record.csrf_token,
+                "expires_at_utc": record.expires_at_utc,
+                "_set_cookie": cookie_hdr,
+            }
+        except PermissionError as e:
+            return HTTPStatus.UNAUTHORIZED, {
+                "error": "Unauthorized",
+                "error_code": "AUTH_FAILURE",
+                "message": str(e),
+            }
+
+    @classmethod
+    def post_session_logout_api(
+        cls, headers: Optional[Dict[str, str]] = None
+    ) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Revokes active session and returns clear-cookie header."""
+        from coin_behavior_engine.product.session_manager import session_manager, SessionManager
+        session_id = SessionManager.extract_session_id(headers)
+        if session_id:
+            session_manager.revoke_session(session_id)
+        clear_cookie = SessionManager.build_clear_cookie_header()
+        return HTTPStatus.OK, {
+            "status": "LOGGED_OUT",
+            "message": "Session invalidated successfully.",
+            "_set_cookie": clear_cookie,
+        }
+
+    @classmethod
+    def get_session_status_api(
+        cls, headers: Optional[Dict[str, str]] = None
+    ) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Returns active session status and CSRF token."""
+        from coin_behavior_engine.product.session_manager import session_manager, SessionManager
+        session_id = SessionManager.extract_session_id(headers)
+        if not session_id:
+            return HTTPStatus.OK, {"authenticated": False, "session_id": None}
+
+        is_valid, reason, record = session_manager.validate_session(session_id, check_csrf=False)
+        if is_valid and record:
+            return HTTPStatus.OK, {
+                "authenticated": True,
+                "session_id": record.session_id,
+                "csrf_token": record.csrf_token,
+                "expires_at_utc": record.expires_at_utc,
+            }
+        return HTTPStatus.OK, {"authenticated": False, "reason": reason}
+
+    @classmethod
+    def get_ready_api(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Readiness probe checking model freeze and persistent storage."""
+        from coin_behavior_engine.product.storage_durability import StorageDurabilityEngine
+        from coin_behavior_engine.prospective.freeze import FROZEN_MODEL_VERSION
+
+        builder_dir = os.environ.get("CBE_REPORTS_STORAGE_PATH", "research_outputs/reports")
+        storage_info = StorageDurabilityEngine.inspect_storage_path(builder_dir)
+
+        is_ready = storage_info["is_writable"] and not (
+            storage_info["environment"] in ("staging", "production") and storage_info["is_ephemeral"]
+        )
+
+        resp = {
+            "status": "READY" if is_ready else "NOT_READY",
+            "service": "coin-behavior-engine",
+            "canonical_model_version": FROZEN_MODEL_VERSION,
+            "canonical_model_status": "STRICTLY_FROZEN",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "parameter_mutations": 0,
+            "directional_trading": "STRICTLY_PROHIBITED",
+            "live_order_execution": "PERMANENTLY_PROHIBITED",
+            "storage_durability": storage_info["classification"],
+            "storage_writable": storage_info["is_writable"],
+            "environment": storage_info["environment"],
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
+        return (HTTPStatus.OK if is_ready else HTTPStatus.SERVICE_UNAVAILABLE), resp
+
+    @classmethod
+    def get_diagnostics_api(cls, headers: Optional[Dict[str, str]] = None) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Privileged operational diagnostics inspection."""
+        hdr_map = {k.lower(): v for k, v in (headers or {}).items()}
+        admin_tok = (
+            hdr_map.get("x-diagnostics-token")
+            or hdr_map.get("x-admin-token")
+            or hdr_map.get("x-operator-token")
+            or hdr_map.get("authorization", "").replace("Bearer ", "").strip()
+        )
+
+        from coin_behavior_engine.product.credential_manager import CredentialManager
+        from coin_behavior_engine.product.session_manager import session_manager, SessionManager
+
+        # Check session first
+        session_id = SessionManager.extract_session_id(headers)
+        session_authed = False
+        if session_id:
+            s_valid, _, _ = session_manager.validate_session(session_id, check_csrf=False)
+            if s_valid:
+                session_authed = True
+
+        if not session_authed:
+            auth_ok, auth_reason = CredentialManager.verify_admin_diagnostics_token(admin_tok)
+            if not auth_ok:
+                return HTTPStatus.UNAUTHORIZED, {
+                    "error": "Unauthorized",
+                    "error_code": "AUTH_FAILURE",
+                    "message": f"Privileged diagnostics access required: {auth_reason}",
+                }
+
+        from coin_behavior_engine.product.resource_governor import resource_governor
+        from coin_behavior_engine.product.storage_durability import StorageDurabilityEngine
+        from coin_behavior_engine.product.structured_logging import structured_audit_logger
+        from coin_behavior_engine.prospective.freeze import FROZEN_MODEL_VERSION
+
+        reports_dir = os.environ.get("CBE_REPORTS_STORAGE_PATH", "research_outputs/reports")
+        storage_diag = StorageDurabilityEngine.inspect_storage_path(reports_dir)
+        resource_diag = resource_governor.get_resource_status()
+        recent_audit = structured_audit_logger.get_recent_events(limit=50)
+
+        return HTTPStatus.OK, {
+            "status": "DIAGNOSTICS_AVAILABLE",
+            "service": "coin-behavior-engine",
+            "model_version": FROZEN_MODEL_VERSION,
+            "governance_decision": "TECHNICAL_NO_GO",
+            "resources": resource_diag,
+            "storage": storage_diag,
+            "recent_audit_events": recent_audit,
+            "active_sessions_count": len(session_manager._sessions),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
+
+    @classmethod
+    def get_storage_status_api(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Returns storage durability classification and inspection."""
+        from coin_behavior_engine.product.storage_durability import StorageDurabilityEngine
+        reports_dir = os.environ.get("CBE_REPORTS_STORAGE_PATH", "research_outputs/reports")
+        info = StorageDurabilityEngine.inspect_storage_path(reports_dir)
+        return HTTPStatus.OK, info
 
 
 START_TIME = time.time()

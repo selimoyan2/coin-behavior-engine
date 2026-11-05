@@ -59,6 +59,16 @@ def is_token_revoked(token: Optional[str]) -> bool:
             return True
     return False
 
+def revoke_operator_token(token: str) -> str:
+    """Adds a token's SHA-256 fingerprint to the in-memory revoked set."""
+    if token and isinstance(token, str):
+        clean = token.strip()
+        digest = hashlib.sha256(clean.encode("utf-8")).hexdigest()
+        REVOKED_TOKEN_SHA256_FINGERPRINTS.add(digest)
+        return digest
+    return ""
+
+
 # Backward compatibility alias
 REVOKED_OPERATOR_TOKENS = REVOKED_TOKEN_SHA256_FINGERPRINTS
 

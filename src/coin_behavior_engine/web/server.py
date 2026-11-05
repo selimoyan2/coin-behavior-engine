@@ -48,6 +48,8 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
 logger = logging.getLogger("cbe_server")
+from coin_behavior_engine.product.structured_logging import SecretRedactingFilter
+logger.addFilter(SecretRedactingFilter())
 
 START_TIME = time.time()
 ACTIVE_WORKER: Optional[ProspectiveWorker] = None
@@ -1242,16 +1244,39 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
     """HTTP request handler for Coolify / Docker health and monitoring."""
 
     def _send_response_json(self, status: int, data: Dict[str, Any]) -> None:
+        custom_headers = {}
+        if isinstance(data, dict):
+            # Extract internal metadata keys if present
+            set_cookie = data.pop("_set_cookie", None)
+            if set_cookie:
+                custom_headers["Set-Cookie"] = set_cookie
+            extra_h = data.pop("_headers", None)
+            if extra_h and isinstance(extra_h, dict):
+                custom_headers.update(extra_h)
+
         payload = json.dumps(data, indent=2).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(payload)))
-        self.send_header("Access-Control-Allow-Origin", "*")
+        origin = self.headers.get("Origin") if hasattr(self, "headers") and self.headers else "*"
+        self.send_header("Access-Control-Allow-Origin", origin or "*")
+        self.send_header("Access-Control-Allow-Credentials", "true")
         self.send_header("X-Content-Type-Options", "nosniff")
         self.send_header("X-Frame-Options", "DENY")
         self.send_header("Referrer-Policy", "strict-origin-when-cross-origin")
+        for hk, hv in custom_headers.items():
+            self.send_header(hk, hv)
         self.end_headers()
         self.wfile.write(payload)
+
+    def do_OPTIONS(self) -> None:  # noqa: N802
+        self.send_response(HTTPStatus.NO_CONTENT)
+        origin = self.headers.get("Origin") if hasattr(self, "headers") and self.headers else "*"
+        self.send_header("Access-Control-Allow-Origin", origin or "*")
+        self.send_header("Access-Control-Allow-Credentials", "true")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Operator-Token, X-Research-Token, X-CSRF-Token, X-Session-ID, Sec-Fetch-Site, X-Admin-Token, X-Diagnostics-Token")
+        self.end_headers()
 
     def _send_response_html(self, status: int, html: str) -> None:
         payload = html.encode("utf-8")
@@ -1357,6 +1382,12 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
                     "uptime_seconds": state["uptime_seconds"],
                 },
             )
+        elif url_path in ("/ready", "/readyz"):
+            status_code, response_data = ProductDashboardApiService.get_ready_api()
+            self._send_response_json(status_code, response_data)
+        elif url_path in ("/diagnostics", "/operational-diagnostics"):
+            status_code, response_data = ProductDashboardApiService.get_diagnostics_api(headers=dict(self.headers))
+            self._send_response_json(status_code, response_data)
         elif url_path == "/api/status":
             state = get_engine_state()
             self._send_response_json(HTTPStatus.OK, state)

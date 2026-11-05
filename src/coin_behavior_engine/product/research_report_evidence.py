@@ -50,6 +50,20 @@ def _check_finite_numbers(obj: Any, path: str = "") -> Optional[str]:
     return None
 
 
+def _canonicalize_payload(obj: Any) -> Any:
+    """Recursively normalizes numbers according to RFC 8785 JSON Canonicalization Scheme.
+    Specifically ensures integer-valued floats (e.g. 0.0, 1.0) are normalized so that
+    serialization across Python, JavaScript and JSON implementations remains 100% deterministic.
+    """
+    if isinstance(obj, dict):
+        return {k: _canonicalize_payload(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [_canonicalize_payload(v) for v in obj]
+    elif isinstance(obj, float) and obj.is_integer():
+        return int(obj)
+    return obj
+
+
 def _parse_iso_utc(ts: Any) -> Optional[datetime]:
     """Validates and parses ISO-8601 UTC timestamp."""
     if not ts or not isinstance(ts, str):
@@ -88,30 +102,28 @@ class ResearchReportEvidenceBundleEngine:
         if not signature_str or not isinstance(signature_str, str):
             return False, "SIGNATURE_EMPTY_OR_INVALID"
 
+        from coin_behavior_engine.product.credential_manager import signing_key_registry, CredentialManager
+
+        # Validate that credentials separation is not violated
+        try:
+            CredentialManager.validate_credential_separation()
+        except Exception as e:
+            return False, f"CREDENTIAL_SEPARATION_VIOLATION: {e}"
+
         keys = list(trusted_keys or [])
-        env_token = os.environ.get("CBE_OPERATOR_TOKEN")
-        if env_token and env_token not in keys:
-            keys.append(env_token)
-        env_sig_key = os.environ.get("CBE_OPERATOR_SIGNATURE_KEY")
+        env_sig_key = os.environ.get("CBE_EVIDENCE_SIGNING_KEY") or os.environ.get("CBE_OPERATOR_SIGNATURE_KEY")
         if env_sig_key and env_sig_key not in keys:
             keys.append(env_sig_key)
 
-        if not keys:
-            return False, "NO_TRUSTED_KEYS_CONFIGURED_FOR_SIGNATURE_VERIFICATION"
+        sig_valid, sig_msg, key_id = signing_key_registry.verify_signature(
+            canonical_bytes, signature_str, trusted_keys_override=keys
+        )
+        if not sig_valid:
+            if sig_msg == "REVOKED_SIGNING_KEY":
+                return False, f"REVOKED_SIGNING_KEY: Signing key '{key_id}' has been revoked"
+            return False, sig_msg
 
-        if signature_str.startswith("hmac-sha256:"):
-            sig_hex = signature_str[len("hmac-sha256:"):]
-            for k in keys:
-                expected_hex = hmac.new(k.encode("utf-8"), canonical_bytes, hashlib.sha256).hexdigest()
-                if hmac.compare_digest(sig_hex, expected_hex):
-                    return True, "HMAC_SHA256_VERIFIED"
-            return False, "HMAC_SIGNATURE_MISMATCH"
-        else:
-            for k in keys:
-                expected_hex = hmac.new(k.encode("utf-8"), canonical_bytes, hashlib.sha256).hexdigest()
-                if hmac.compare_digest(signature_str, expected_hex):
-                    return True, "HMAC_SHA256_VERIFIED"
-            return False, "UNSUPPORTED_OR_INVALID_SIGNATURE_FORMAT"
+        return True, sig_msg
 
     def create_evidence_bundle(
         self,
@@ -165,12 +177,20 @@ class ResearchReportEvidenceBundleEngine:
         }
 
         # Compute deterministic checksum over the canonical JSON representation
-        canonical_bytes = json.dumps(payload, sort_keys=True, ensure_ascii=False).encode("utf-8")
+        canonical_bytes = json.dumps(_canonicalize_payload(payload), sort_keys=True, ensure_ascii=False).encode("utf-8")
         package_checksum = hashlib.sha256(canonical_bytes).hexdigest()
 
         final_sig = operator_signature
         if sign_with_key and not final_sig:
             final_sig = self.sign_payload(canonical_bytes, sign_with_key)
+        elif not final_sig:
+            try:
+                from coin_behavior_engine.product.credential_manager import signing_key_registry
+                k_id, k_sec = signing_key_registry.get_active_key()
+                if k_sec and not signing_key_registry.is_key_revoked(k_id):
+                    final_sig = signing_key_registry.sign_canonical_payload(canonical_bytes)
+            except Exception:
+                pass
 
         return {
             "bundle_metadata": {
@@ -212,7 +232,7 @@ class ResearchReportEvidenceBundleEngine:
             }
 
         recorded_checksum = meta.get("package_checksum_sha256")
-        canonical_bytes = json.dumps(payload, sort_keys=True, ensure_ascii=False).encode("utf-8")
+        canonical_bytes = json.dumps(_canonicalize_payload(payload), sort_keys=True, ensure_ascii=False).encode("utf-8")
         recomputed_checksum = hashlib.sha256(canonical_bytes).hexdigest()
 
         discrepancies: List[str] = []
@@ -314,8 +334,8 @@ class ResearchReportEvidenceBundleEngine:
 
         if server_rpt:
             # Must compare the ENTIRE canonical report content against the server authoritative record
-            rpt_json = json.dumps(report, sort_keys=True, ensure_ascii=False)
-            srv_json = json.dumps(server_rpt, sort_keys=True, ensure_ascii=False)
+            rpt_json = json.dumps(_canonicalize_payload(report), sort_keys=True, ensure_ascii=False)
+            srv_json = json.dumps(_canonicalize_payload(server_rpt), sort_keys=True, ensure_ascii=False)
             if rpt_json == srv_json:
                 is_trusted = True
                 trust_anchor_info = "SERVER_PERSISTENT_STORE"
@@ -344,7 +364,9 @@ class ResearchReportEvidenceBundleEngine:
         if discrepancies:
             valid = False
             tampering = True
-            if any("non-finite" in d.lower() for d in discrepancies):
+            if any("revoked" in d.lower() for d in discrepancies):
+                verdict = "REVOKED_SIGNING_KEY"
+            elif any("non-finite" in d.lower() for d in discrepancies):
                 verdict = "NON_FINITE_NUMERIC_VALUE_DETECTED"
             elif any("invalid timestamp" in d.lower() for d in discrepancies):
                 verdict = "INVALID_TIMESTAMP_FORMAT"

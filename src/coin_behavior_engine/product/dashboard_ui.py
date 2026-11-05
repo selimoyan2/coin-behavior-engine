@@ -6367,7 +6367,7 @@ def render_product_dashboard_html() -> str:
       populateDayDropdowns();
       populateYearDropdowns();
       const hash = window.location.hash.replace("#", "");
-      if (hash && ["overview", "research", "behavior", "comparison", "drift", "quality", "regimes", "events", "scenarios", "governance", "artifacts", "operations"].includes(hash)) {
+      if (hash && ["overview", "research", "behavior", "comparison", "drift", "quality", "regimes", "events", "scenarios", "governance", "artifacts", "operations", "research-explorer", "unified-workspace", "reports"].includes(hash)) {
         switchTab(hash);
       } else {
         switchTab("overview");

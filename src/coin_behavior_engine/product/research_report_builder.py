@@ -27,6 +27,8 @@ import time
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
+from coin_behavior_engine.product.process_locking import MultiProcessLock
+from coin_behavior_engine.product.storage_durability import StorageDurabilityEngine
 from coin_behavior_engine.product.research_narratives import ScientificNarrativeEngine
 from coin_behavior_engine.product.research_comparison_reporting import HistoricalComparisonReportingEngine
 from coin_behavior_engine.product.research_reproducibility import ResearchReproducibilityEngine
@@ -97,6 +99,7 @@ class ResearchReportBuilderEngine:
             )
 
         self.storage_dir = chosen
+        self._mp_lock = MultiProcessLock(os.path.join(self.storage_dir, ".reports_builder.lock"))
         self.narrative_engine = ScientificNarrativeEngine()
         self.comparison_engine = HistoricalComparisonReportingEngine()
 
@@ -492,7 +495,7 @@ class ResearchReportBuilderEngine:
         Flushes and fsyncs data before replacement.
         Synchronizes directory where supported.
         """
-        with self._lock:
+        with self._mp_lock:
             filepath = os.path.join(self.storage_dir, f"{report_id}.json")
             pid = os.getpid()
             tid = threading.get_ident()
