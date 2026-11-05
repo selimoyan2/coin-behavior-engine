@@ -1,7 +1,7 @@
 """
 Verifiable Research Report Bundle Engine V1
 Sprint 22 — Research Intelligence Reporting & Evidence Presentation V1
-Hardened for Strict Scientific Data Integrity & Evidence Trust Boundaries
+Hardened for Strict Scientific Data Integrity, Evidence Trust Boundaries & Cryptographic Provenance
 
 Packages canonical research reports and associated scientific evidence into sealed,
 tamper-evident verifiable evidence bundles, and provides an independent verifier.
@@ -9,17 +9,21 @@ tamper-evident verifiable evidence bundles, and provides an independent verifier
 Design Invariants:
 - Canonical JSON serialization with sorted keys and UTF-8 encoding.
 - Deterministic SHA-256 package checksum across canonical payload.
-- Cryptographic boundary note: An internal checksum proves self-consistency, not
-  independent root-of-trust authenticity. Supports comparison with trusted external checksums.
-- Explicit trust boundary:
-  * AUTHENTICITY_VERIFIED: Matches a trusted local report/store or certified signature.
-  * INTEGRITY_VERIFIED_UNTRUSTED_SOURCE: Internally consistent, but source is unverified/untrusted.
-- Rejects non-finite values (NaN, Infinity), malformed timestamps, contradictory disclosures,
-  mutated parameters, and October 2026 quarantine breaches.
+- Independent trust anchors:
+  * Server-controlled persistent storage comparison of the ENTIRE canonical report.
+  * Cryptographic signature verification against configured trusted keys/secrets.
+- Client-supplied checksums are NEVER treated as an independent trust anchor.
+- Mere presence of a signature string NEVER establishes authenticity.
+- Trust boundary separation:
+  * AUTHENTICITY_VERIFIED: Established strictly through server-stored record or verified cryptographic signature.
+  * INTEGRITY_VERIFIED_UNTRUSTED_SOURCE: Internally consistent and uncorrupted, but without independent trust provenance.
+- Strict rejection of non-finite numbers (NaN, Infinity), invalid timestamps, reversed periods,
+  contradictory metadata, model drift, and October 2026 quarantine breaches.
 """
 
 import copy
 import hashlib
+import hmac
 import json
 import math
 import os
@@ -66,11 +70,55 @@ class ResearchReportEvidenceBundleEngine:
     BUNDLE_SCHEMA_VERSION = "CBE-REPORT-BUNDLE-1.0.0"
     CANONICAL_MODEL = "CBE-0.7.0"
 
+    @classmethod
+    def sign_payload(cls, canonical_bytes: bytes, secret_or_key: str) -> str:
+        """Generates a cryptographic HMAC-SHA256 signature for canonical bundle bytes."""
+        h = hmac.new(secret_or_key.encode("utf-8"), canonical_bytes, hashlib.sha256)
+        return f"hmac-sha256:{h.hexdigest()}"
+
+    def _verify_operator_signature(
+        self,
+        canonical_bytes: bytes,
+        signature_str: str,
+        trusted_keys: Optional[List[str]] = None,
+    ) -> Tuple[bool, str]:
+        """Cryptographically verifies operator signature against trusted public keys/secrets.
+        The mere presence of a signature string NEVER establishes authenticity.
+        """
+        if not signature_str or not isinstance(signature_str, str):
+            return False, "SIGNATURE_EMPTY_OR_INVALID"
+
+        keys = list(trusted_keys or [])
+        env_token = os.environ.get("CBE_OPERATOR_TOKEN")
+        if env_token and env_token not in keys:
+            keys.append(env_token)
+        env_sig_key = os.environ.get("CBE_OPERATOR_SIGNATURE_KEY")
+        if env_sig_key and env_sig_key not in keys:
+            keys.append(env_sig_key)
+
+        if not keys:
+            return False, "NO_TRUSTED_KEYS_CONFIGURED_FOR_SIGNATURE_VERIFICATION"
+
+        if signature_str.startswith("hmac-sha256:"):
+            sig_hex = signature_str[len("hmac-sha256:"):]
+            for k in keys:
+                expected_hex = hmac.new(k.encode("utf-8"), canonical_bytes, hashlib.sha256).hexdigest()
+                if hmac.compare_digest(sig_hex, expected_hex):
+                    return True, "HMAC_SHA256_VERIFIED"
+            return False, "HMAC_SIGNATURE_MISMATCH"
+        else:
+            for k in keys:
+                expected_hex = hmac.new(k.encode("utf-8"), canonical_bytes, hashlib.sha256).hexdigest()
+                if hmac.compare_digest(signature_str, expected_hex):
+                    return True, "HMAC_SHA256_VERIFIED"
+            return False, "UNSUPPORTED_OR_INVALID_SIGNATURE_FORMAT"
+
     def create_evidence_bundle(
         self,
         report_data: Dict[str, Any],
         research_config: Optional[Dict[str, Any]] = None,
         operator_signature: Optional[str] = None,
+        sign_with_key: Optional[str] = None,
     ) -> Dict[str, Any]:
         """Creates a sealed verifiable evidence bundle from a canonical report."""
         meta = report_data.get("report_metadata", {})
@@ -120,16 +168,20 @@ class ResearchReportEvidenceBundleEngine:
         canonical_bytes = json.dumps(payload, sort_keys=True, ensure_ascii=False).encode("utf-8")
         package_checksum = hashlib.sha256(canonical_bytes).hexdigest()
 
+        final_sig = operator_signature
+        if sign_with_key and not final_sig:
+            final_sig = self.sign_payload(canonical_bytes, sign_with_key)
+
         return {
             "bundle_metadata": {
                 "bundle_id": f"BND-{package_checksum[:16]}",
                 "bundle_schema_version": self.BUNDLE_SCHEMA_VERSION,
                 "report_id": report_id,
                 "package_checksum_sha256": package_checksum,
-                "operator_signature": operator_signature,
+                "operator_signature": final_sig,
                 "cryptographic_boundary_note": (
                     "Bu sağlama paketin içsel bütünlüğünü ve kendiyle tutarlılığını kanıtlar. "
-                    "Kötü niyetli tahrifata karşı bağımsız doğrulama için bağımsız kayıt defteriyle karşılaştırılmalıdır."
+                    "Kötü niyetli tahrifata karşı bağımsız doğrulama için sunucu kayıt defteriyle karşılaştırılmalıdır."
                 ),
             },
             "payload": payload,
@@ -142,8 +194,12 @@ class ResearchReportEvidenceBundleEngine:
         expected_dataset_version: Optional[str] = None,
         expected_model_version: Optional[str] = None,
         trusted_report: Optional[Dict[str, Any]] = None,
+        trusted_public_keys: Optional[List[str]] = None,
+        allow_client_checksum_as_trust_anchor: bool = False,
     ) -> Dict[str, Any]:
-        """Independently verifies the integrity, schema, and provenance of a report bundle."""
+        """Independently verifies the integrity, schema, and provenance of a report bundle.
+        Never treats client-provided checksums or the mere presence of a signature as trust anchors.
+        """
         meta = bundle.get("bundle_metadata", {})
         payload = bundle.get("payload")
 
@@ -166,7 +222,7 @@ class ResearchReportEvidenceBundleEngine:
         if non_finite_err:
             discrepancies.append(non_finite_err)
 
-        # 2. Strict ISO Timestamp Parsing
+        # 2. Strict ISO Timestamp Parsing & Period Validation
         pkg_time = _parse_iso_utc(payload.get("packaged_at_utc"))
         if not pkg_time:
             discrepancies.append(f"Invalid timestamp format for packaged_at_utc: {payload.get('packaged_at_utc')}")
@@ -189,6 +245,8 @@ class ResearchReportEvidenceBundleEngine:
 
         if not dt_start or not dt_end:
             discrepancies.append(f"Report historical scope start ({start_utc}) or end ({end_utc}) timestamp missing or unparseable")
+        elif dt_start >= dt_end:
+            discrepancies.append(f"Invalid historical period: start ({start_utc}) must precede end ({end_utc})")
         else:
             q_boundary = datetime(2026, 10, 1, 0, 0, 0, tzinfo=timezone.utc)
             if dt_start >= q_boundary or dt_end > q_boundary:
@@ -228,19 +286,61 @@ class ResearchReportEvidenceBundleEngine:
                 f"Dataset version mismatch: expected={expected_dataset_version}, observed={ds_info.get('manifest_version')}"
             )
 
-        # 5. Checksum Verification
+        # 5. Internal Checksum Verification
         if recorded_checksum != recomputed_checksum:
             discrepancies.append(
                 f"Checksum mismatch: recorded={recorded_checksum}, recomputed={recomputed_checksum}"
             )
 
-        # 6. Trusted External Checksum Comparison (if supplied)
+        # 6. Client-provided Checksum Match Constraint (Consistency check only, NOT a trust anchor)
         if trusted_checksum and trusted_checksum != recomputed_checksum:
             discrepancies.append(
                 f"Trusted checksum mismatch: trusted={trusted_checksum}, actual={recomputed_checksum}"
             )
 
-        # 7. Trust Boundary Resolution & Verdict Calculation
+        # 7. Independent Trust Anchors Resolution
+        is_trusted = False
+        trust_anchor_info = "NONE"
+
+        # Trust Anchor A: Authoritative Server Storage Match (Full Canonical Content Comparison)
+        report_id = payload.get("report_id") or rep_meta.get("report_id")
+        server_rpt = trusted_report
+        if not server_rpt and report_id:
+            try:
+                from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
+                server_rpt = ResearchReportBuilderEngine().get_report(report_id)
+            except Exception:
+                server_rpt = None
+
+        if server_rpt:
+            # Must compare the ENTIRE canonical report content against the server authoritative record
+            rpt_json = json.dumps(report, sort_keys=True, ensure_ascii=False)
+            srv_json = json.dumps(server_rpt, sort_keys=True, ensure_ascii=False)
+            if rpt_json == srv_json:
+                is_trusted = True
+                trust_anchor_info = "SERVER_PERSISTENT_STORE"
+            else:
+                discrepancies.append("Canonical report content does not match server authoritative persistent record")
+
+        # Trust Anchor B: Cryptographic Signature Verification against configured trusted keys
+        operator_sig = meta.get("operator_signature")
+        if operator_sig:
+            sig_valid, sig_msg = self._verify_operator_signature(
+                canonical_bytes, operator_sig, trusted_keys=trusted_public_keys
+            )
+            if sig_valid:
+                if not is_trusted:
+                    is_trusted = True
+                    trust_anchor_info = f"CRYPTOGRAPHIC_SIGNATURE ({sig_msg})"
+            else:
+                discrepancies.append(f"Operator signature failed cryptographic verification: {sig_msg}")
+
+        # Trust Anchor C: Explicitly Allowed Caller Trust Anchor (internal test harness only)
+        if allow_client_checksum_as_trust_anchor and trusted_checksum and trusted_checksum == recomputed_checksum:
+            is_trusted = True
+            trust_anchor_info = "CALLER_EXPLICIT_TRUST_ANCHOR"
+
+        # 8. Verdict Assignment
         if discrepancies:
             valid = False
             tampering = True
@@ -254,31 +354,16 @@ class ResearchReportEvidenceBundleEngine:
                 verdict = "TAMPERED_CHECKSUM_MISMATCH"
             elif any("trusted checksum mismatch" in d.lower() for d in discrepancies):
                 verdict = "TRUSTED_CHECKSUM_MISMATCH"
+            elif any("does not match server" in d.lower() for d in discrepancies):
+                verdict = "AUTHORITATIVE_CONTENT_MISMATCH"
+            elif any("signature failed" in d.lower() for d in discrepancies):
+                verdict = "INVALID_OPERATOR_SIGNATURE"
             else:
                 verdict = "TAMPERING_OR_CORRUPTION_DETECTED"
             is_trusted = False
         else:
             valid = True
             tampering = False
-
-            # Resolve whether the source is trusted
-            is_trusted = False
-            if trusted_checksum and trusted_checksum == recomputed_checksum:
-                is_trusted = True
-            elif trusted_report and trusted_report == report:
-                is_trusted = True
-            elif meta.get("operator_signature"):
-                is_trusted = True
-            else:
-                # Check if report exists in local persistent storage and matches
-                try:
-                    from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
-                    local_rpt = ResearchReportBuilderEngine().get_report(payload.get("report_id"))
-                    if local_rpt and local_rpt.get("report_metadata", {}).get("content_hash") == rep_meta.get("content_hash"):
-                        is_trusted = True
-                except Exception:
-                    pass
-
             if is_trusted:
                 verdict = "AUTHENTICITY_VERIFIED"
             else:
@@ -288,12 +373,12 @@ class ResearchReportEvidenceBundleEngine:
             "valid": valid,
             "tampering_detected": tampering,
             "verdict": verdict,
-            "verification_status": verdict,
-            "report_id": payload.get("report_id"),
+            "report_id": report_id,
             "recorded_checksum": recorded_checksum,
             "recomputed_checksum": recomputed_checksum,
             "discrepancies": discrepancies,
-            "model_version_verified": model_info.get("version") == exp_model,
-            "provenance_verified": len(discrepancies) == 0,
+            "model_version_verified": (payload.get("canonical_model_identity", {}).get("version") == exp_model),
+            "provenance_verified": bool(ds_info.get("manifest_sha256") and ds_info.get("manifest_sha256") != "UNAVAILABLE"),
             "is_trusted_source": is_trusted,
+            "trust_anchor": trust_anchor_info,
         }

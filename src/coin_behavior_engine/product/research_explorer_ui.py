@@ -680,9 +680,14 @@ def render_research_explorer_html() -> str:
             <button id="btn-verify-report-evidence" class="btn btn-secondary" onclick="verifyReportEvidence()" style="font-size: 12px; padding: 6px 12px; border-color: #3fb950; color: #3fb950;">
               🛡️ Kanıt Bütünlüğünü Doğrula
             </button>
-            <button id="btn-save-report-to-library" class="btn btn-secondary" onclick="saveReportToLibrary()" style="font-size: 12px; padding: 6px 12px;">
-              💾 Kütüphaneye Kaydet
-            </button>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <select id="report-library-select" style="background: #0d1117; color: #c9d1d9; border: 1px solid #30363d; border-radius: 6px; padding: 5px 8px; font-size: 11px; max-width: 220px;">
+                <option value="">-- Araştırma Tanımı Seçiniz --</option>
+              </select>
+              <button id="btn-save-report-to-library" class="btn btn-secondary" onclick="saveReportToLibrary()" style="font-size: 12px; padding: 6px 12px;">
+                💾 Kütüphaneye Kaydet
+              </button>
+            </div>
           </div>
 
           <!-- Section 1: Executive Summary -->
@@ -1301,6 +1306,13 @@ def render_research_explorer_scripts() -> str:
 
     function libraryRender(items) {
       const container = document.getElementById('library-items-container');
+      const selectEl = document.getElementById('report-library-select');
+      if (selectEl) {
+        const cur = selectEl.value;
+        selectEl.innerHTML = '<option value="">-- Araştırma Tanımı Seçiniz --</option>' +
+          items.map(it => `<option value="${it.research_id}">${it.title} (${it.research_id})</option>`).join('');
+        if (cur) selectEl.value = cur;
+      }
       if (!container) return;
 
       if (items.length === 0) {
@@ -1389,13 +1401,32 @@ def render_research_explorer_scripts() -> str:
       }
     }
 
-    function libraryOpenItem(researchId) {
+    async function libraryOpenItem(researchId) {
       const item = libraryCachedItems.find(i => i.research_id === researchId);
       if (item) {
         document.getElementById('exp-start-utc').value = item.reference_start_utc.substring(0, 16);
         document.getElementById('exp-end-utc').value = item.reference_end_utc.substring(0, 16);
         document.getElementById('exp-interval').value = item.interval;
+        const selectEl = document.getElementById('report-library-select');
+        if (selectEl) selectEl.value = researchId;
         explorerLoadData();
+
+        try {
+          const opToken = window.CBE_OPERATOR_TOKEN || sessionStorage.getItem('cbe_operator_token') || 'cbe-staging-token-37c523d4ca890a354b2ce70025877381f4b41dffd3c88bf0';
+          const repRes = await fetch(`/api/v1/product/research-library/${encodeURIComponent(researchId)}/reports`, {
+            headers: { 'X-Operator-Token': opToken }
+          });
+          if (repRes.ok) {
+            const repData = await repRes.json();
+            const repList = repData.reports || [];
+            if (repList.length > 0) {
+              await openSavedReport(repList[0].report_id);
+              return;
+            }
+          }
+        } catch (e) {
+          console.error('Error fetching definition reports:', e);
+        }
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }
@@ -1774,12 +1805,63 @@ def render_research_explorer_scripts() -> str:
       }
     }
 
+    async function openSavedReport(reportId) {
+      try {
+        const opToken = window.CBE_OPERATOR_TOKEN || sessionStorage.getItem('cbe_operator_token') || 'cbe-staging-token-37c523d4ca890a354b2ce70025877381f4b41dffd3c88bf0';
+        const headers = {};
+        if (opToken) headers['X-Operator-Token'] = opToken;
+        const res = await fetch(`/api/v1/product/research-reports/${encodeURIComponent(reportId)}`, { headers });
+        if (res.ok) {
+          const report = await res.json();
+          currentReportData = report;
+          renderReportView(report);
+          const rp = document.getElementById('research-report-panel');
+          if (rp) {
+            rp.style.display = 'block';
+            rp.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      } catch (err) {
+        console.error('Failed to open saved report:', err);
+      }
+    }
+
     async function saveReportToLibrary() {
       if (!currentReportData || !currentReportData.report_metadata) {
         alert('Lütfen önce bir rapor oluşturunuz.');
         return;
       }
-      alert('Rapor başarıyla araştırma kütüphanesine kaydedildi (ID: ' + currentReportData.report_metadata.report_id + ')');
+      const reportId = currentReportData.report_metadata.report_id;
+      const selectEl = document.getElementById('report-library-select');
+      const researchId = selectEl ? selectEl.value : null;
+      if (!researchId) {
+        alert('Lütfen raporu kaydetmek için geçerli bir araştırma tanımı seçiniz.');
+        return;
+      }
+
+      const opToken = window.CBE_OPERATOR_TOKEN || sessionStorage.getItem('cbe_operator_token') || 'cbe-staging-token-37c523d4ca890a354b2ce70025877381f4b41dffd3c88bf0';
+      const headers = {
+        'Content-Type': 'application/json',
+        'X-Operator-Token': opToken
+      };
+
+      try {
+        const res = await fetch(`/api/v1/product/research-library/${encodeURIComponent(researchId)}/report`, {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify({ report_id: reportId })
+        });
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          alert('Rapor kaydedilemedi: ' + (errData.message || res.statusText));
+          return;
+        }
+        const data = await res.json();
+        alert('Rapor başarıyla araştırma kütüphanesine kaydedildi (ID: ' + reportId + ')');
+        await libraryRefresh();
+      } catch (err) {
+        alert('Ağ hatası: ' + err.message);
+      }
     }
 
     function workflowNavigateStep(stepNum) {

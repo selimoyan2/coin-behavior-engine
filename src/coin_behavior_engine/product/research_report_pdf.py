@@ -23,6 +23,8 @@ from typing import Any, Dict, List, Optional
 
 import matplotlib
 matplotlib.use("Agg")
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
@@ -159,15 +161,21 @@ class ResearchReportPdfRenderer:
         ax.text(0.08, 0.83, wrapped_reg, fontsize=9.5, color="#334155", va="top", linespacing=1.35)
 
         # Mini Bar Chart for Regime Distribution
-        metrics = regime.get("metrics", {})
+        metrics = regime.get("metrics", {}) or {}
         dist = metrics.get("regime_distribution")
         bar_y = 0.58
         ax.text(0.08, bar_y + 0.12, "Rejim Dağılım Oranları:", fontsize=9.5, color="#475569", weight="bold")
 
-        if dist and isinstance(dist, dict) and len(dist) > 0:
-            labels = list(dist.keys())
-            values = [float(v) * 100.0 for v in dist.values() if isinstance(v, (int, float))]
-            bar_colors = ["#38bdf8", "#f43f5e", "#fbbf24", "#a855f7"]
+        valid_items = []
+        if dist and isinstance(dist, dict):
+            for lbl, v in dist.items():
+                if isinstance(v, (int, float)) and math.isfinite(v) and v >= 0:
+                    valid_items.append((str(lbl), float(v) * 100.0))
+
+        if valid_items:
+            labels = [item[0] for item in valid_items]
+            values = [item[1] for item in valid_items]
+            bar_colors = ["#38bdf8", "#f43f5e", "#fbbf24", "#a855f7", "#34d399", "#818cf8"]
 
             x_start = 0.08
             chart_w = 0.84
@@ -189,11 +197,11 @@ class ResearchReportPdfRenderer:
         ax.text(0.08, 0.46, wrapped_vol, fontsize=9.5, color="#334155", va="top", linespacing=1.35)
 
         # Volatility metrics table
-        vol_m = vol.get("metrics", {})
+        vol_m = vol.get("metrics", {}) or {}
         p_vol = vol_m.get("parkinson_volatility")
         r_vol = vol_m.get("realized_volatility")
-        p_vol_str = f"{p_vol:.4f}" if isinstance(p_vol, (int, float)) and not math.isnan(p_vol) else "UNAVAILABLE"
-        r_vol_str = f"{r_vol:.4f}" if isinstance(r_vol, (int, float)) and not math.isnan(r_vol) else "UNAVAILABLE"
+        p_vol_str = f"{p_vol:.4f}" if isinstance(p_vol, (int, float)) and math.isfinite(p_vol) else "UNAVAILABLE"
+        r_vol_str = f"{r_vol:.4f}" if isinstance(r_vol, (int, float)) and math.isfinite(r_vol) else "UNAVAILABLE"
 
         t_y = 0.26
         ax.fill([0.08, 0.92, 0.92, 0.08], [t_y, t_y, t_y + 0.09, t_y + 0.09], color="#f8fafc", ec="#cbd5e1")
@@ -225,23 +233,27 @@ class ResearchReportPdfRenderer:
         ax.text(0.08, 0.825, "Referans periyot (mavi düz çizgi) ile aday periyot (kesikli turuncu çizgi) normalize fiyat hareketi:", fontsize=9, color="#475569")
 
         # Embed mini line chart directly on the figure using axes coordinates
-        chart_data = comp.get("chart_data", {})
-        norm = chart_data.get("normalized_trajectories", {})
-        ref_pts = norm.get("reference_trajectory", [])
-        cand_pts = norm.get("candidate_trajectory", [])
+        chart_data = comp.get("chart_data", {}) or {}
+        norm = chart_data.get("normalized_trajectories", {}) or {}
+        raw_ref = norm.get("reference_trajectory", []) or []
+        raw_cand = norm.get("candidate_trajectory", []) or []
+
+        # Filter non-finite numbers from trajectories
+        ref_pts = [float(p) for p in raw_ref if isinstance(p, (int, float)) and math.isfinite(p)]
+        cand_pts = [float(p) for p in raw_cand if isinstance(p, (int, float)) and math.isfinite(p)]
 
         c_box_y = 0.54
         c_h = 0.25
         ax.fill([0.08, 0.92, 0.92, 0.08], [c_box_y, c_box_y, c_box_y + c_h, c_box_y + c_h], color="#f8fafc", ec="#cbd5e1")
 
         if ref_pts:
-            all_pts = ref_pts + (cand_pts or [])
-            min_v = min(all_pts) if all_pts else 90.0
-            max_v = max(all_pts) if all_pts else 110.0
+            all_pts = ref_pts + cand_pts
+            min_v = min(all_pts)
+            max_v = max(all_pts)
             v_range = max(max_v - min_v, 2.0)
 
             # Map point to figure coords
-            def map_pt(i: int, val: float, length: int) -> (float, float):
+            def map_pt(i: int, val: float, length: int) -> Tuple[float, float]:
                 x = 0.12 + (i / max(length - 1, 1)) * 0.76
                 y = c_box_y + 0.04 + ((val - min_v) / v_range) * (c_h - 0.08)
                 return x, y
@@ -268,7 +280,7 @@ class ResearchReportPdfRenderer:
 
             ax.text(0.12, c_box_y + c_h - 0.025, "— Referans (BTCUSDT)", fontsize=8, color="#0284c7", weight="bold")
         else:
-            ax.text(0.5, c_box_y + c_h / 2, "Fiyat Yolu Verisi Mevcut Değil (NOT_AVAILABLE)", ha="center", va="center", fontsize=9, color="#94a3b8")
+            ax.text(0.5, c_box_y + c_h / 2, "Fiyat Yolu Verisi: ÖLÇÜLMEDİ (NOT_MEASURED)", ha="center", va="center", fontsize=9, color="#94a3b8", style="italic")
 
         # Pattern Discovery narrative
         ax.text(0.08, 0.48, "3.2 5 Boyutlu Benzerlik Analizi ve Ayrışım", fontsize=12, color="#0f172a", weight="bold")

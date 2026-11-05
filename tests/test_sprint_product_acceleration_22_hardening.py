@@ -1,19 +1,32 @@
 """
 Sprint 22 Final Acceptance Hardening Test Suite
 CBE_PRODUCT_ACCELERATION_22 — Scientific Data Integrity, Evidence Trust Boundaries,
-Functional E2E & PDF Verification.
+Atomic Persistence, Period Validation & Cryptographic Provenance.
 
 Verifies:
 1. Elimination of fabricated scientific fallback values (p_value, holdouts, volatility, regimes).
-2. Missing mandatory provenance strictly blocks report generation.
-3. Contradictory scientific disclosures and parameter mutations detected.
-4. Trust boundary separation: AUTHENTICITY_VERIFIED vs INTEGRITY_VERIFIED_UNTRUSTED_SOURCE.
-5. Non-finite values (NaN, Infinity) and invalid timestamp formats strictly rejected.
-6. No synthetic candidate price paths or fabricated similarity dimensions.
-7. Durable storage path enforcement (fail-closed behavior).
-8. PDF content and extractable text verification.
+2. Timezone-aware timestamp validation, reversed period rejection, October 2026 quarantine rejection.
+3. Dataset manifest/source-commit identity consistency enforcement.
+4. Independent trust anchors:
+   - Server-stored full canonical report content comparison.
+   - Cryptographic HMAC signature verification against configured keys.
+   - Attacker-supplied checksum NEVER grants AUTHENTICITY_VERIFIED.
+   - Mere presence of a signature never establishes authenticity.
+5. Strict rejection of non-finite numbers (NaN, Infinity), malformed timestamps, contradictory disclosures.
+6. Atomic persistence:
+   - Same-directory temporary files.
+   - Flush and fsync before replacement.
+   - Direct-write fallback eliminated.
+   - Previous valid file preserved intact on write/replace failure.
+   - Ephemeral storage rejection.
+7. No synthetic candidate price paths or fabricated similarity dimensions.
+8. PDF edge cases: aligned regime labels/values, missing-data labels, TrueType Unicode font config.
 """
 
+import copy
+import hashlib
+import hmac
+import json
 import math
 import os
 import tempfile
@@ -60,10 +73,9 @@ def minimal_valid_session() -> Dict[str, Any]:
 
 
 class TestScientificDataIntegrityHardening:
-    """Task 1: Eliminate fabricated scientific fallback values."""
+    """Task 1: Eliminate fabricated scientific fallback values & period validation."""
 
     def test_missing_p_value_and_holdouts_explicit_unavailable(self, minimal_valid_session):
-        # Session without statistical_evidence module
         builder = ResearchReportBuilderEngine()
         rpt = builder.generate_report(minimal_valid_session)
 
@@ -73,29 +85,25 @@ class TestScientificDataIntegrityHardening:
         assert stats["predeclared_holdout_criteria_satisfied"] is None
         assert stats["holdout_criteria_status"] == "NOT_MEASURED"
         assert stats["independent_confirmatory_replications"] == 0
-        assert stats["fdr_alpha"] == 0.05  # fixed governance constant
+        assert stats["fdr_alpha"] == 0.05
 
-        # Check narrative contains explicit missing labels
         narrative = stats["narrative"]["narrative_tr"]
         assert "p-değeri: HESAPLANAMADI (UNAVAILABLE)" in narrative
         assert "Önceden beyan edilmiş holdout kriterleri: ÖLÇÜLMEDİ (NOT_MEASURED)" in narrative
 
     def test_missing_regime_and_volatility_no_fabricated_defaults(self, minimal_valid_session):
-        # Empty out regime and volatility metrics
         minimal_valid_session["module_results"] = {}
         builder = ResearchReportBuilderEngine()
         rpt = builder.generate_report(minimal_valid_session)
 
         assert rpt["report_metadata"]["state"] == "PARTIAL"
         regime_metrics = rpt["regime_analysis"]["metrics"]
-        assert regime_metrics.get("regime_distribution") is None
+        assert regime_metrics is None
 
         vol_metrics = rpt["volatility_analysis"]["metrics"]
-        assert vol_metrics.get("parkinson_volatility") is None
-        assert vol_metrics.get("realized_volatility") is None
+        assert vol_metrics is None
 
     def test_missing_mandatory_provenance_blocks_report(self, minimal_valid_session):
-        # Remove source commit and dataset manifest
         invalid_session = dict(minimal_valid_session)
         invalid_session["source_commit_sha"] = "INVALID_COMMIT"
         invalid_session["dataset_manifest_sha256"] = "INVALID_MANIFEST"
@@ -103,23 +111,44 @@ class TestScientificDataIntegrityHardening:
         builder = ResearchReportBuilderEngine()
         rpt = builder.generate_report(invalid_session)
         assert rpt["report_metadata"]["state"] == "BLOCKED"
-        assert rpt["report_metadata"]["block_reason"] in (
-            "MISSING_MANDATORY_SOURCE_PROVENANCE",
-            "MISSING_MANDATORY_DATASET_MANIFEST",
-        )
+        assert "MISSING_MANDATORY" in rpt["report_metadata"]["block_reason"]
+
+    def test_reversed_or_invalid_period_blocks_report(self, minimal_valid_session):
+        # Start time is after end time
+        rev_session = dict(minimal_valid_session)
+        rev_session["reference_start_utc"] = "2023-01-15T00:00:00Z"
+        rev_session["reference_end_utc"] = "2023-01-01T00:00:00Z"
+
+        builder = ResearchReportBuilderEngine()
+        rpt = builder.generate_report(rev_session)
+        assert rpt["report_metadata"]["state"] == "BLOCKED"
+        assert rpt["report_metadata"]["block_reason"] == "REVERSED_OR_EMPTY_HISTORICAL_PERIOD"
+
+    def test_quarantine_boundary_breach_blocks_report(self, minimal_valid_session):
+        # Dates reaching into quarantined October 2026
+        q_session = dict(minimal_valid_session)
+        q_session["reference_start_utc"] = "2026-10-02T00:00:00Z"
+        q_session["reference_end_utc"] = "2026-10-15T00:00:00Z"
+
+        builder = ResearchReportBuilderEngine()
+        rpt = builder.generate_report(q_session)
+        assert rpt["report_metadata"]["state"] == "BLOCKED"
+        assert rpt["report_metadata"]["block_reason"] == "QUARANTINE_BOUNDARY_BREACH_OCTOBER_2026"
 
 
 class TestEvidenceTrustBoundariesHardening:
-    """Task 2: Evidence integrity vs authenticity & validation checks."""
+    """P0: Evidence authenticity verification and trust boundary resolution."""
 
     def test_trust_boundary_untrusted_source(self, minimal_valid_session):
-        # Create evidence bundle with unknown report_id not stored locally
         builder = ResearchReportBuilderEngine()
         rpt = builder.generate_report(minimal_valid_session)
-        rpt["report_metadata"]["report_id"] = "RPT-EXTERNAL-UNTRUSTED-999"
+
+        # External package not saved in server storage
+        rpt_copy = copy.deepcopy(rpt)
+        rpt_copy["report_metadata"]["report_id"] = "RPT-EXTERNAL-UNTRUSTED-999"
 
         evidence_engine = ResearchReportEvidenceBundleEngine()
-        bundle = evidence_engine.create_evidence_bundle(rpt)
+        bundle = evidence_engine.create_evidence_bundle(rpt_copy)
 
         res = evidence_engine.verify_evidence_bundle(bundle)
         assert res["valid"] is True
@@ -127,19 +156,95 @@ class TestEvidenceTrustBoundariesHardening:
         assert res["verdict"] == "INTEGRITY_VERIFIED_UNTRUSTED_SOURCE"
         assert res["is_trusted_source"] is False
 
-    def test_trust_boundary_trusted_source_with_checksum(self, minimal_valid_session):
+    def test_attacker_supplied_checksum_never_authenticity_verified(self, minimal_valid_session):
+        """Attacker modifies payload, recomputes checksum, and sends it as claimed trusted_checksum.
+        The result must NEVER be AUTHENTICITY_VERIFIED!
+        """
         builder = ResearchReportBuilderEngine()
         rpt = builder.generate_report(minimal_valid_session)
 
         evidence_engine = ResearchReportEvidenceBundleEngine()
         bundle = evidence_engine.create_evidence_bundle(rpt)
-        checksum = bundle["bundle_metadata"]["package_checksum_sha256"]
 
-        res = evidence_engine.verify_evidence_bundle(bundle, trusted_checksum=checksum)
+        # Attacker modifies report content and recomputes checksum
+        bundle["payload"]["canonical_report"]["statistical_evidence"]["fdr_alpha"] = 0.99
+        canonical_bytes = json.dumps(bundle["payload"], sort_keys=True, ensure_ascii=False).encode("utf-8")
+        attacker_checksum = hashlib.sha256(canonical_bytes).hexdigest()
+        bundle["bundle_metadata"]["package_checksum_sha256"] = attacker_checksum
+
+        # Attacker claims attacker_checksum as trusted reference without server storage match
+        # Must fail or remain UNTRUSTED_SOURCE, NEVER AUTHENTICITY_VERIFIED
+        res = evidence_engine.verify_evidence_bundle(
+            bundle=bundle,
+            trusted_checksum=attacker_checksum,
+            trusted_report=None,  # No server authoritative match for tampered content
+        )
+        assert res["verdict"] != "AUTHENTICITY_VERIFIED"
+        assert res["is_trusted_source"] is False
+
+    def test_fake_operator_signature_rejected(self, minimal_valid_session):
+        """Mere presence of an operator_signature string must NEVER grant authenticity."""
+        builder = ResearchReportBuilderEngine()
+        rpt = builder.generate_report(minimal_valid_session)
+
+        evidence_engine = ResearchReportEvidenceBundleEngine()
+        bundle = evidence_engine.create_evidence_bundle(rpt, operator_signature="fake_unverified_sig_12345")
+
+        res = evidence_engine.verify_evidence_bundle(bundle, trusted_public_keys=["valid_secret_key_123"])
+        assert res["valid"] is False
+        assert res["tampering_detected"] is True
+        assert res["verdict"] == "INVALID_OPERATOR_SIGNATURE"
+        assert res["verdict"] != "AUTHENTICITY_VERIFIED"
+
+    def test_valid_cryptographic_signature_verified(self, minimal_valid_session):
+        """Cryptographically valid signature against configured secret establishes authenticity."""
+        builder = ResearchReportBuilderEngine()
+        rpt = builder.generate_report(minimal_valid_session)
+
+        secret = "cbe-test-operator-key-secret-999"
+        evidence_engine = ResearchReportEvidenceBundleEngine()
+        bundle = evidence_engine.create_evidence_bundle(rpt, sign_with_key=secret)
+
+        res = evidence_engine.verify_evidence_bundle(bundle, trusted_public_keys=[secret])
         assert res["valid"] is True
         assert res["tampering_detected"] is False
         assert res["verdict"] == "AUTHENTICITY_VERIFIED"
         assert res["is_trusted_source"] is True
+
+    def test_server_storage_full_content_comparison_authenticity(self, minimal_valid_session):
+        """Full canonical report content matching server authoritative record establishes authenticity."""
+        builder = ResearchReportBuilderEngine()
+        rpt = builder.generate_report(minimal_valid_session)
+        report_id = rpt["report_metadata"]["report_id"]
+
+        evidence_engine = ResearchReportEvidenceBundleEngine()
+        bundle = evidence_engine.create_evidence_bundle(rpt)
+
+        # Report was saved to builder.storage_dir by generate_report, so server record matches exactly
+        res = evidence_engine.verify_evidence_bundle(bundle, trusted_report=rpt)
+        assert res["valid"] is True
+        assert res["tampering_detected"] is False
+        assert res["verdict"] == "AUTHENTICITY_VERIFIED"
+        assert res["is_trusted_source"] is True
+
+    def test_authoritative_content_mismatch_detected(self, minimal_valid_session):
+        """If bundle content differs from server storage for the same report_id, detect mismatch."""
+        builder = ResearchReportBuilderEngine()
+        rpt = builder.generate_report(minimal_valid_session)
+
+        server_copy = copy.deepcopy(rpt)
+
+        # Alter bundle report content
+        tampered_rpt = copy.deepcopy(rpt)
+        tampered_rpt["executive_summary"]["title"] = "Hacked Executive Summary"
+
+        evidence_engine = ResearchReportEvidenceBundleEngine()
+        bundle = evidence_engine.create_evidence_bundle(tampered_rpt)
+
+        res = evidence_engine.verify_evidence_bundle(bundle, trusted_report=server_copy)
+        assert res["valid"] is False
+        assert res["tampering_detected"] is True
+        assert res["verdict"] == "AUTHORITATIVE_CONTENT_MISMATCH"
 
     def test_non_finite_numeric_values_rejected(self, minimal_valid_session):
         builder = ResearchReportBuilderEngine()
@@ -163,7 +268,6 @@ class TestEvidenceTrustBoundariesHardening:
         evidence_engine = ResearchReportEvidenceBundleEngine()
         bundle = evidence_engine.create_evidence_bundle(rpt)
 
-        # Inject invalid timestamp format
         bundle["payload"]["packaged_at_utc"] = "NOT_A_VALID_ISO_TIMESTAMP"
 
         res = evidence_engine.verify_evidence_bundle(bundle)
@@ -178,7 +282,6 @@ class TestEvidenceTrustBoundariesHardening:
         evidence_engine = ResearchReportEvidenceBundleEngine()
         bundle = evidence_engine.create_evidence_bundle(rpt)
 
-        # Contradictory holdout count between report and bundle payload
         bundle["payload"]["scientific_disclosures"]["predeclared_holdout_criteria_satisfied"] = 999
 
         res = evidence_engine.verify_evidence_bundle(bundle)
@@ -187,8 +290,41 @@ class TestEvidenceTrustBoundariesHardening:
         assert res["verdict"] in ("CONTRADICTORY_METADATA_DETECTED", "TAMPERED_CHECKSUM_MISMATCH")
 
 
-class TestComparisonAndPdfHardening:
-    """Tasks 1, 4 & 5: Comparison reporting, PDF rendering, and durable persistence."""
+class TestAtomicPersistenceAndPdfHardening:
+    """P1: Atomic persistence safety, comparison reporting, and PDF rendering."""
+
+    def test_atomic_persistence_preserves_original_on_failure(self, minimal_valid_session, monkeypatch):
+        """Verify that atomic replace failure preserves original file intact without direct-write fallback."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            builder = ResearchReportBuilderEngine(storage_dir=temp_dir)
+            rpt1 = builder.generate_report(minimal_valid_session)
+            report_id = rpt1["report_metadata"]["report_id"]
+
+            filepath = os.path.join(temp_dir, f"{report_id}.json")
+            assert os.path.exists(filepath)
+            with open(filepath, "r", encoding="utf-8") as f:
+                original_content = json.load(f)
+
+            # Mock os.replace to fail (simulating write collision or lock failure)
+            def mock_replace(src, dst):
+                raise OSError("Simulated replacement failure")
+
+            monkeypatch.setattr(os, "replace", mock_replace)
+
+            # Attempting another save should fail closed with IOError and LEAVE original content untouched
+            rpt2 = copy.deepcopy(rpt1)
+            rpt2["report_metadata"]["title"] = "Mutated Title"
+
+            with pytest.raises(IOError) as exc:
+                builder._save_report(report_id, rpt2)
+
+            assert "Failed atomic write" in str(exc.value)
+
+            # Verify original content is 100% preserved and untouched
+            with open(filepath, "r", encoding="utf-8") as f:
+                persisted_content = json.load(f)
+            assert persisted_content == original_content
+            assert persisted_content["report_metadata"]["title"] != "Mutated Title"
 
     def test_no_synthetic_candidate_paths_when_candles_missing(self, minimal_valid_session):
         engine = HistoricalComparisonReportingEngine()
@@ -203,7 +339,6 @@ class TestComparisonAndPdfHardening:
         assert norm["candidate_trajectory_status"] == "UNAVAILABLE"
 
     def test_pdf_rendering_with_missing_regimes_and_volatilities(self, minimal_valid_session):
-        # Empty out metrics to trigger missing-value rendering paths
         minimal_valid_session["module_results"] = {}
         builder = ResearchReportBuilderEngine()
         rpt = builder.generate_report(minimal_valid_session)
@@ -220,13 +355,11 @@ class TestComparisonAndPdfHardening:
                 os.remove(tmp_path)
 
     def test_durable_storage_safety(self, monkeypatch):
-        # Verify that builder uses durable storage paths and raises if none available
         builder = ResearchReportBuilderEngine()
         assert builder.storage_dir is not None
-        assert not builder.storage_dir.startswith("/tmp")
 
-        # Mock un-writable paths to verify fail-closed RuntimeError
-        monkeypatch.setattr(os, "makedirs", lambda *args, **kwargs: (_ for _ in ()).throw(PermissionError("Read-only")))
+        # Ephemeral storage rejected in staging/production
+        monkeypatch.setenv("CBE_ENV", "staging")
         with pytest.raises(RuntimeError) as exc:
-            ResearchReportBuilderEngine()
-        assert "DURABLE_STORAGE_UNAVAILABLE" in str(exc.value)
+            ResearchReportBuilderEngine(storage_dir="/tmp/ephemeral_reports", require_durable=True)
+        assert "EPHEMERAL_STORAGE_REJECTED" in str(exc.value)

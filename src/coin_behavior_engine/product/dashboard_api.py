@@ -5303,7 +5303,7 @@ class ProductDashboardApiService:
         body: Dict[str, Any],
         headers: Optional[Dict[str, str]] = None,
     ) -> Tuple[HTTPStatus, Dict[str, Any]]:
-        """Verify an evidence bundle or saved report."""
+        """Verify an evidence bundle or saved report against independent server trust anchors."""
         from coin_behavior_engine.product.research_report_evidence import ResearchReportEvidenceBundleEngine
         from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
 
@@ -5311,6 +5311,7 @@ class ProductDashboardApiService:
         report_id = body.get("report_id")
 
         evidence_engine = ResearchReportEvidenceBundleEngine()
+        builder = ResearchReportBuilderEngine()
 
         if not bundle:
             if not report_id:
@@ -5318,12 +5319,25 @@ class ProductDashboardApiService:
                     "error": "Bad Request",
                     "message": "Doğrulama için 'bundle' veya 'report_id' parametresi zorunludur.",
                 }
-            builder = ResearchReportBuilderEngine()
             report = builder.get_report(report_id)
             if not report:
                 return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": f"Rapor bulunamadı: '{report_id}'"}
             bundle = evidence_engine.create_evidence_bundle(report)
 
+        # Resolve trusted report strictly through server-controlled storage
+        if not report_id and isinstance(bundle, dict):
+            report_id = (
+                bundle.get("payload", {}).get("report_id")
+                or bundle.get("bundle_metadata", {}).get("report_id")
+                or bundle.get("payload", {}).get("canonical_report", {}).get("report_metadata", {}).get("report_id")
+            )
+
+        trusted_report = None
+        if report_id:
+            trusted_report = builder.get_report(report_id)
+
+        # Client-provided trusted_checksum is used ONLY as a caller consistency constraint,
+        # and NEVER as an independent authenticity trust anchor.
         trusted_checksum = body.get("trusted_checksum")
         expected_dataset = body.get("expected_dataset_version")
         expected_model = body.get("expected_model_version")
@@ -5333,6 +5347,8 @@ class ProductDashboardApiService:
             trusted_checksum=trusted_checksum,
             expected_dataset_version=expected_dataset,
             expected_model_version=expected_model,
+            trusted_report=trusted_report,
+            allow_client_checksum_as_trust_anchor=False,
         )
 
         return HTTPStatus.OK, ver_res

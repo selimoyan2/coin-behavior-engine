@@ -312,7 +312,7 @@ async def run_playwright_suite() -> Dict[str, Any]:
             assert t_res["tampering_detected"] is True
             scenarios["scenario_18_modified_evidence_rejected"] = True
 
-        # Scenario 19: Save report to Research Library (Real persistence, UI click, authorization)
+        # Scenario 19: Save report to Research Library (Genuine browser-driven UI verification)
         print("Scenario 19: Save report to Research Library...")
         # 1. Create a genuine, isolated test library definition
         lib_payload = {
@@ -332,7 +332,7 @@ async def run_playwright_suite() -> Dict[str, Any]:
             lib_rec = json.loads(resp.read().decode("utf-8"))
             test_lib_id = lib_rec["research_id"]
 
-        # 2. Confirm unauthorized mutation is rejected (no unauthorized overwrite)
+        # 2. Negative test: Confirm unauthorized mutation is rejected (no unauthorized overwrite)
         unauth_link_req = urllib.request.Request(
             f"{BASE_URL}/api/v1/product/research-library/{test_lib_id}/report",
             data=json.dumps({"report_id": report_id}).encode("utf-8"),
@@ -346,23 +346,33 @@ async def run_playwright_suite() -> Dict[str, Any]:
             unauth_status = err.code
         assert unauth_status in (401, 403), f"Expected 401/403 for unauthorized library mutation, got {unauth_status}"
 
-        # 3. Click actual save-report control on page
+        # 3. Refresh library catalog in browser page so the new definition appears in dropdown
+        await page.evaluate(f"window.CBE_OPERATOR_TOKEN = '{AUTH_TOKEN}'")
+        await page.evaluate("libraryRefresh()")
+        await page.wait_for_timeout(400)
+
+        # 4. Select the valid Research Library definition in the UI selector
+        select_el = await page.query_selector("#report-library-select")
+        assert select_el is not None, "#report-library-select must exist in the UI"
+        await page.select_option("#report-library-select", test_lib_id)
+
+        # 5. Click Save to Library and CAPTURE the browser's actual network request and response
         btn_lib = await page.query_selector("#btn-save-report-to-library")
         assert btn_lib is not None
-        await btn_lib.click()
-        await page.wait_for_timeout(300)
+        await btn_lib.scroll_into_view_if_needed()
 
-        # 4. Associate report with test definition via authorized endpoint
-        link_req = urllib.request.Request(
-            f"{BASE_URL}/api/v1/product/research-library/{test_lib_id}/report",
-            data=json.dumps({"report_id": report_id}).encode("utf-8"),
-            headers={"x-operator-token": AUTH_TOKEN, "Content-Type": "application/json"},
-        )
-        with urllib.request.urlopen(link_req) as resp:
-            linked_rec = json.loads(resp.read().decode("utf-8"))
-            assert report_id in linked_rec.get("associated_reports", [])
+        async with page.expect_response(
+            lambda r: f"/api/v1/product/research-library/{test_lib_id}/report" in r.url and r.request.method == "POST",
+            timeout=5000,
+        ) as response_info:
+            await btn_lib.click()
 
-        # 5. Verify persistent storage association
+        ui_resp = await response_info.value
+        assert ui_resp.status == 200, f"Expected 200 OK from browser-initiated save request, got {ui_resp.status}"
+        ui_resp_data = await ui_resp.json()
+        assert report_id in ui_resp_data.get("associated_reports", []), "Report ID must be in associated_reports returned by UI save operation"
+
+        # 6. Verify persistent storage association
         get_lib_reports_req = urllib.request.Request(
             f"{BASE_URL}/api/v1/product/research-library/{test_lib_id}/reports",
             headers={"x-operator-token": AUTH_TOKEN},
@@ -375,17 +385,29 @@ async def run_playwright_suite() -> Dict[str, Any]:
 
         # Scenario 20: Reopen saved report through user workflow
         print("Scenario 20: Reopen saved report through user workflow...")
-        # 1. Reopen saved definition from library
-        get_def_req = urllib.request.Request(
-            f"{BASE_URL}/api/v1/product/research-library/{test_lib_id}",
-            headers={"x-operator-token": AUTH_TOKEN},
-        )
-        with urllib.request.urlopen(get_def_req) as resp:
-            reopened_def = json.loads(resp.read().decode("utf-8"))
-            assert reopened_def["research_id"] == test_lib_id
-            assert report_id in reopened_def.get("associated_reports", [])
+        # 1. Navigate away to another section
+        await page.evaluate("switchTab('unified-workspace')")
+        await page.wait_for_timeout(300)
+        assert await page.is_visible("#module-unified-workspace")
 
-        # 2. Retrieve report through user workflow
+        # 2. Navigate back to library interface
+        await page.evaluate("switchTab('research-explorer')")
+        await page.evaluate("workflowNavigateStep(5)")
+        await page.wait_for_timeout(300)
+
+        # 3. Reopen the saved definition through the library interface
+        await page.evaluate(f"libraryOpenItem('{test_lib_id}')")
+        await page.wait_for_timeout(500)
+
+        # 4. Confirm report ID, dataset provenance, and canonical model identity in UI
+        rep_panel = await page.query_selector("#research-report-panel")
+        assert rep_panel is not None
+        rep_id_el = await page.query_selector("#report-id-val")
+        assert rep_id_el is not None
+        displayed_id = await rep_id_el.inner_text()
+        assert displayed_id.strip() == report_id, f"Expected UI to display report_id '{report_id}', got '{displayed_id}'"
+
+        # Verify dataset provenance & model identity via API
         get_rep_req = urllib.request.Request(
             f"{BASE_URL}/api/v1/product/research-reports/{report_id}",
             headers={"x-operator-token": AUTH_TOKEN},
@@ -396,7 +418,7 @@ async def run_playwright_suite() -> Dict[str, Any]:
             assert rep_check.get("canonical_model_identity", {}).get("version") == "CBE-0.7.0"
             assert rep_check.get("canonical_model_identity", {}).get("parameter_mutations") == 0
 
-        # 3. Clean up temporary test definition
+        # Clean up temporary test definition
         del_req = urllib.request.Request(
             f"{BASE_URL}/api/v1/product/research-library/delete",
             data=json.dumps({"research_id": test_lib_id}).encode("utf-8"),
