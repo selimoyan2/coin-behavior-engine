@@ -5351,6 +5351,13 @@ class ProductDashboardApiService:
 
         from coin_behavior_engine.product.research_intelligence_explorer import ResearchLibraryEngine
         try:
+            report_id = body.get("report_id")
+            if report_id:
+                record = ResearchLibraryEngine.associate_report_to_definition(
+                    research_id=research_id,
+                    report_id=report_id,
+                )
+                return HTTPStatus.OK, record
             report = ResearchLibraryEngine.generate_report_for_definition(
                 research_id=research_id,
                 operator_title=body.get("title"),

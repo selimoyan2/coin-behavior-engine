@@ -63,17 +63,20 @@ class HistoricalComparisonReportingEngine:
 
         # 3. Regime Distribution Comparison
         ref_regimes = reference_session.get("module_results", {}).get("regime_analysis", {})
+        cand_dominant = candidate_period.get("dominant_regime") or "NOT_AVAILABLE"
+        cand_distribution = candidate_period.get("regime_distribution") or {}
         dim3_regime_comparison = {
             "dimension": "regime_distribution",
             "reference_dominant": ref_regimes.get("dominant_regime", "N/A"),
             "reference_distribution": ref_regimes.get("regime_distribution", {}),
-            "candidate_dominant": candidate_period.get("dominant_regime", "BULLISH_EXPANSION" if "2021" in cand_start else "CHOPPY_ACCUMULATION"),
-            "candidate_distribution": candidate_period.get("regime_distribution", {"BULLISH_EXPANSION": 0.6, "CHOPPY_ACCUMULATION": 0.4}),
+            "candidate_dominant": cand_dominant,
+            "candidate_distribution": cand_distribution,
         }
 
         # 4. Parkinson & Realized Volatility Comparison
         ref_vol = reference_session.get("module_results", {}).get("volatility_analysis", {})
-        cand_parkinson = candidate_period.get("parkinson_volatility", 0.038)
+        cand_parkinson = candidate_period.get("parkinson_volatility")
+        cand_realized = candidate_period.get("realized_volatility")
         dim4_volatility_comparison = {
             "dimension": "volatility_metrics",
             "reference": {
@@ -82,34 +85,35 @@ class HistoricalComparisonReportingEngine:
             },
             "candidate": {
                 "parkinson_volatility": cand_parkinson,
-                "realized_volatility": candidate_period.get("realized_volatility", 0.042),
+                "realized_volatility": cand_realized,
             },
             "divergence": self._compute_volatility_divergence(ref_vol.get("parkinson_volatility"), cand_parkinson),
         }
 
         # 5. 5-Dimensional Pattern Similarity Breakdown
-        dims = similarity_data.get("dimensions", {}) if similarity_data else {}
-        total_sim = similarity_data.get("similarity_score", candidate_period.get("similarity_score", 0.82)) if similarity_data else candidate_period.get("similarity_score", 0.82)
+        dims = similarity_data.get("dimensions", {}) if similarity_data else (candidate_period.get("dimensions") or {})
+        total_sim = similarity_data.get("similarity_score") if similarity_data else candidate_period.get("similarity_score")
         dim5_similarity_breakdown = {
             "dimension": "five_dimensional_pattern_similarity",
             "overall_similarity_score": total_sim,
             "dimensions": {
-                "dtw_similarity": dims.get("dtw_similarity", 0.84),
-                "return_similarity": dims.get("return_similarity", 0.79),
-                "volatility_similarity": dims.get("volatility_similarity", 0.85),
-                "regime_similarity": dims.get("regime_similarity", 0.81),
-                "volume_similarity": dims.get("volume_similarity", 0.75),
+                "dtw_similarity": dims.get("dtw_similarity"),
+                "return_similarity": dims.get("return_similarity"),
+                "volatility_similarity": dims.get("volatility_similarity"),
+                "regime_similarity": dims.get("regime_similarity"),
+                "volume_similarity": dims.get("volume_similarity"),
             },
         }
 
         # 6. Macro-Event Context Comparison
         ref_macro = reference_session.get("module_results", {}).get("macro_context", {})
+        cand_events = candidate_period.get("macro_events") or []
         dim6_macro_comparison = {
             "dimension": "macro_events_context",
             "reference_events_count": len(ref_macro.get("events", [])),
             "reference_events": [e.get("name") for e in ref_macro.get("events", [])[:3]],
-            "candidate_events_count": len(candidate_period.get("macro_events", [])),
-            "candidate_events": candidate_period.get("macro_events", ["Historical Fed Rate Cycle 2021"]),
+            "candidate_events_count": len(cand_events),
+            "candidate_events": cand_events,
             "causality_disclaimer": "Zamansal örtüşmeler nedensellik ilişkisi teşkil etmez.",
         }
 
@@ -117,8 +121,8 @@ class HistoricalComparisonReportingEngine:
         ref_stats = reference_session.get("module_results", {}).get("statistical_evidence", {})
         dim7_statistical_comparison = {
             "dimension": "statistical_evidence_comparison",
-            "reference_holdouts_satisfied": ref_stats.get("holdout_periods_count", 2),
-            "reference_p_value": ref_stats.get("p_value", 0.041),
+            "reference_holdouts_satisfied": ref_stats.get("holdout_periods_count"),
+            "reference_p_value": ref_stats.get("p_value"),
             "candidate_holdout_status": "HISTORICAL_CANDIDATE_EXPLORATORY",
             "independent_confirmatory_replications": 0,
         }
@@ -181,10 +185,6 @@ class HistoricalComparisonReportingEngine:
             base_c = float(cand_candles[0].get("close", 1.0))
             if base_c > 0:
                 cand_norm = [round((float(c.get("close", base_c)) / base_c) * 100.0, 2) for c in cand_candles]
-        elif ref_norm:
-            # If candidate raw candles not provided, generate a deterministic synthetic-historical path
-            # offset from similarity score for visual comparison without breaking historical integrity
-            cand_norm = [round(100.0 + (val - 100.0) * 0.88 - (idx * 0.05), 2) for idx, val in enumerate(ref_norm)]
 
         return {
             "dimension": "base_100_normalized_price_trajectory",
@@ -192,6 +192,7 @@ class HistoricalComparisonReportingEngine:
             "steps_count": max(len(ref_norm), len(cand_norm)),
             "reference_trajectory": ref_norm[:100],  # bounded size
             "candidate_trajectory": cand_norm[:100],
+            "candidate_trajectory_status": "AVAILABLE" if cand_norm else "UNAVAILABLE",
         }
 
     def _compute_volatility_divergence(self, ref_vol: Optional[float], cand_vol: Optional[float]) -> str:

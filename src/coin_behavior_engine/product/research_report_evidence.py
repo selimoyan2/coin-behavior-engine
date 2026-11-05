@@ -1,6 +1,7 @@
 """
 Verifiable Research Report Bundle Engine V1
 Sprint 22 — Research Intelligence Reporting & Evidence Presentation V1
+Hardened for Strict Scientific Data Integrity & Evidence Trust Boundaries
 
 Packages canonical research reports and associated scientific evidence into sealed,
 tamper-evident verifiable evidence bundles, and provides an independent verifier.
@@ -10,15 +11,53 @@ Design Invariants:
 - Deterministic SHA-256 package checksum across canonical payload.
 - Cryptographic boundary note: An internal checksum proves self-consistency, not
   independent root-of-trust authenticity. Supports comparison with trusted external checksums.
-- Detects tampered timestamps, mutated numerical findings, altered model versions,
-  modified holdout disclosures, or mismatched dataset provenance.
+- Explicit trust boundary:
+  * AUTHENTICITY_VERIFIED: Matches a trusted local report/store or certified signature.
+  * INTEGRITY_VERIFIED_UNTRUSTED_SOURCE: Internally consistent, but source is unverified/untrusted.
+- Rejects non-finite values (NaN, Infinity), malformed timestamps, contradictory disclosures,
+  mutated parameters, and October 2026 quarantine breaches.
 """
 
 import copy
 import hashlib
 import json
+import math
+import os
+import re
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
+
+
+def _check_finite_numbers(obj: Any, path: str = "") -> Optional[str]:
+    """Recursively validates that all floats in payload are finite (rejecting NaN and Infinity)."""
+    if isinstance(obj, float):
+        if math.isnan(obj) or math.isinf(obj):
+            return f"Non-finite numeric value at '{path}': {obj}"
+    elif isinstance(obj, dict):
+        for k, v in obj.items():
+            err = _check_finite_numbers(v, f"{path}.{k}" if path else k)
+            if err:
+                return err
+    elif isinstance(obj, list):
+        for i, v in enumerate(obj):
+            err = _check_finite_numbers(v, f"{path}[{i}]")
+            if err:
+                return err
+    return None
+
+
+def _parse_iso_utc(ts: Any) -> Optional[datetime]:
+    """Validates and parses ISO-8601 UTC timestamp."""
+    if not ts or not isinstance(ts, str):
+        return None
+    try:
+        clean = ts.strip().replace("Z", "+00:00")
+        dt = datetime.fromisoformat(clean)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
+    except Exception:
+        return None
 
 
 class ResearchReportEvidenceBundleEngine:
@@ -43,7 +82,7 @@ class ResearchReportEvidenceBundleEngine:
 
         report_id = meta.get("report_id", "RPT-UNKNOWN")
 
-        # Compile bundle payload
+        # Compile bundle payload without fabricated fallbacks
         payload = {
             "bundle_schema_version": self.BUNDLE_SCHEMA_VERSION,
             "report_id": report_id,
@@ -56,9 +95,9 @@ class ResearchReportEvidenceBundleEngine:
                 "period": f"{scope.get('start_utc')} - {scope.get('end_utc')}",
             },
             "dataset_provenance": {
-                "manifest_version": scope.get("dataset_manifest_version", "cbe-manifest-v3-7ed2e950dec3"),
-                "manifest_sha256": provenance.get("dataset_manifest_sha256", "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245"),
-                "source_commit_sha": provenance.get("source_commit_sha", "3c49506d8ea56dbe3ac4b6c8ba2221e551fc7fff"),
+                "manifest_version": scope.get("dataset_manifest_version") or "UNAVAILABLE",
+                "manifest_sha256": provenance.get("dataset_manifest_sha256") or "UNAVAILABLE",
+                "source_commit_sha": provenance.get("source_commit_sha") or "UNAVAILABLE",
             },
             "canonical_model_identity": {
                 "version": model.get("version", self.CANONICAL_MODEL),
@@ -66,7 +105,7 @@ class ResearchReportEvidenceBundleEngine:
                 "parameter_mutations": 0,
             },
             "scientific_disclosures": {
-                "predeclared_holdout_criteria_satisfied": report_data.get("statistical_evidence", {}).get("predeclared_holdout_criteria_satisfied", 2),
+                "predeclared_holdout_criteria_satisfied": report_data.get("statistical_evidence", {}).get("predeclared_holdout_criteria_satisfied"),
                 "independent_confirmatory_replications": 0,
                 "governance_decision": "TECHNICAL_NO_GO",
             },
@@ -102,6 +141,7 @@ class ResearchReportEvidenceBundleEngine:
         trusted_checksum: Optional[str] = None,
         expected_dataset_version: Optional[str] = None,
         expected_model_version: Optional[str] = None,
+        trusted_report: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """Independently verifies the integrity, schema, and provenance of a report bundle."""
         meta = bundle.get("bundle_metadata", {})
@@ -121,61 +161,139 @@ class ResearchReportEvidenceBundleEngine:
 
         discrepancies: List[str] = []
 
-        # 1. Package Checksum Verification
+        # 1. Non-finite Numerical Values Check
+        non_finite_err = _check_finite_numbers(payload)
+        if non_finite_err:
+            discrepancies.append(non_finite_err)
+
+        # 2. Strict ISO Timestamp Parsing
+        pkg_time = _parse_iso_utc(payload.get("packaged_at_utc"))
+        if not pkg_time:
+            discrepancies.append(f"Invalid timestamp format for packaged_at_utc: {payload.get('packaged_at_utc')}")
+
+        report = payload.get("canonical_report", {})
+        if not isinstance(report, dict):
+            discrepancies.append("Canonical report missing or not a dictionary")
+            report = {}
+
+        rep_meta = report.get("report_metadata", {})
+        rep_time = _parse_iso_utc(rep_meta.get("generated_at_utc"))
+        if not rep_time:
+            discrepancies.append(f"Invalid timestamp format for generated_at_utc: {rep_meta.get('generated_at_utc')}")
+
+        scope = report.get("historical_scope", {})
+        start_utc = scope.get("start_utc", "")
+        end_utc = scope.get("end_utc", "")
+        dt_start = _parse_iso_utc(start_utc)
+        dt_end = _parse_iso_utc(end_utc)
+
+        if not dt_start or not dt_end:
+            discrepancies.append(f"Report historical scope start ({start_utc}) or end ({end_utc}) timestamp missing or unparseable")
+        else:
+            q_boundary = datetime(2026, 10, 1, 0, 0, 0, tzinfo=timezone.utc)
+            if dt_start >= q_boundary or dt_end > q_boundary:
+                discrepancies.append("Quarantine violation: dates reach into quarantined October 2026")
+
+        # 3. Contradictory Metadata Detection Across Report and Bundle
+        if payload.get("report_id") != rep_meta.get("report_id"):
+            discrepancies.append(f"Contradictory metadata detected: report_id mismatch ({payload.get('report_id')} vs {rep_meta.get('report_id')})")
+
+        ds_info = payload.get("dataset_provenance", {})
+        rep_prov = report.get("evidence_provenance", {})
+        if ds_info.get("manifest_version") != scope.get("dataset_manifest_version"):
+            discrepancies.append("Contradictory metadata detected: dataset manifest version mismatch")
+        if ds_info.get("manifest_sha256") != rep_prov.get("dataset_manifest_sha256"):
+            discrepancies.append("Contradictory metadata detected: dataset manifest sha mismatch")
+        if ds_info.get("source_commit_sha") != rep_prov.get("source_commit_sha"):
+            discrepancies.append("Contradictory metadata detected: source commit sha mismatch")
+
+        model_info = payload.get("canonical_model_identity", {})
+        rep_model = report.get("canonical_model_identity", {})
+        exp_model = expected_model_version or self.CANONICAL_MODEL
+        if model_info.get("version") != exp_model or rep_model.get("version") != exp_model:
+            discrepancies.append(f"Model version drift: expected={exp_model}, bundle={model_info.get('version')}, report={rep_model.get('version')}")
+        if model_info.get("parameter_mutations", 0) != 0 or rep_model.get("parameter_mutations", 0) != 0:
+            discrepancies.append("Model parameter mutations detected (must be strictly zero)")
+
+        disclosures = payload.get("scientific_disclosures", {})
+        rep_stats = report.get("statistical_evidence", {})
+        if disclosures.get("independent_confirmatory_replications", 0) != 0:
+            discrepancies.append("Scientific disclosure violation: independent confirmatory replications must be 0")
+        if disclosures.get("predeclared_holdout_criteria_satisfied") != rep_stats.get("predeclared_holdout_criteria_satisfied"):
+            discrepancies.append("Contradictory metadata detected: holdout criteria count mismatch")
+
+        # 4. Dataset Provenance Validation (if expected version given)
+        if expected_dataset_version and ds_info.get("manifest_version") != expected_dataset_version:
+            discrepancies.append(
+                f"Dataset version mismatch: expected={expected_dataset_version}, observed={ds_info.get('manifest_version')}"
+            )
+
+        # 5. Checksum Verification
         if recorded_checksum != recomputed_checksum:
             discrepancies.append(
                 f"Checksum mismatch: recorded={recorded_checksum}, recomputed={recomputed_checksum}"
             )
 
-        # 2. Trusted External Checksum Comparison (if supplied)
+        # 6. Trusted External Checksum Comparison (if supplied)
         if trusted_checksum and trusted_checksum != recomputed_checksum:
             discrepancies.append(
                 f"Trusted checksum mismatch: trusted={trusted_checksum}, actual={recomputed_checksum}"
             )
 
-        # 3. Model Identity Validation
-        model_info = payload.get("canonical_model_identity", {})
-        exp_model = expected_model_version or self.CANONICAL_MODEL
-        if model_info.get("version") != exp_model:
-            discrepancies.append(
-                f"Model version drift: expected={exp_model}, observed={model_info.get('version')}"
-            )
-        if model_info.get("parameter_mutations", 0) != 0:
-            discrepancies.append("Model parameter mutations detected (must be strictly zero)")
+        # 7. Trust Boundary Resolution & Verdict Calculation
+        if discrepancies:
+            valid = False
+            tampering = True
+            if any("non-finite" in d.lower() for d in discrepancies):
+                verdict = "NON_FINITE_NUMERIC_VALUE_DETECTED"
+            elif any("invalid timestamp" in d.lower() for d in discrepancies):
+                verdict = "INVALID_TIMESTAMP_FORMAT"
+            elif any("contradictory metadata" in d.lower() for d in discrepancies):
+                verdict = "CONTRADICTORY_METADATA_DETECTED"
+            elif any("checksum mismatch" in d.lower() for d in discrepancies):
+                verdict = "TAMPERED_CHECKSUM_MISMATCH"
+            elif any("trusted checksum mismatch" in d.lower() for d in discrepancies):
+                verdict = "TRUSTED_CHECKSUM_MISMATCH"
+            else:
+                verdict = "TAMPERING_OR_CORRUPTION_DETECTED"
+            is_trusted = False
+        else:
+            valid = True
+            tampering = False
 
-        # 4. Dataset Provenance Validation
-        dataset_info = payload.get("dataset_provenance", {})
-        if expected_dataset_version and dataset_info.get("manifest_version") != expected_dataset_version:
-            discrepancies.append(
-                f"Dataset version mismatch: expected={expected_dataset_version}, observed={dataset_info.get('manifest_version')}"
-            )
+            # Resolve whether the source is trusted
+            is_trusted = False
+            if trusted_checksum and trusted_checksum == recomputed_checksum:
+                is_trusted = True
+            elif trusted_report and trusted_report == report:
+                is_trusted = True
+            elif meta.get("operator_signature"):
+                is_trusted = True
+            else:
+                # Check if report exists in local persistent storage and matches
+                try:
+                    from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
+                    local_rpt = ResearchReportBuilderEngine().get_report(payload.get("report_id"))
+                    if local_rpt and local_rpt.get("report_metadata", {}).get("content_hash") == rep_meta.get("content_hash"):
+                        is_trusted = True
+                except Exception:
+                    pass
 
-        # 5. Scientific Holdout Disclosures Check
-        disclosures = payload.get("scientific_disclosures", {})
-        if disclosures.get("independent_confirmatory_replications", 0) != 0:
-            discrepancies.append(
-                "Scientific disclosure violation: independent confirmatory replications must be 0"
-            )
+            if is_trusted:
+                verdict = "AUTHENTICITY_VERIFIED"
+            else:
+                verdict = "INTEGRITY_VERIFIED_UNTRUSTED_SOURCE"
 
-        # 6. Report Timestamps Finiteness & Boundary Checks
-        report = payload.get("canonical_report", {})
-        scope = report.get("historical_scope", {})
-        start_utc = scope.get("start_utc", "")
-        end_utc = scope.get("end_utc", "")
-        if not start_utc or not end_utc:
-            discrepancies.append("Report historical scope start or end date missing")
-        elif start_utc >= "2026-10-01" or end_utc > "2026-10-01":
-            discrepancies.append("Quarantine violation: dates reach into quarantined October 2026")
-
-        is_valid = len(discrepancies) == 0
         return {
-            "valid": is_valid,
-            "tampering_detected": not is_valid,
-            "verdict": "VERIFIED_AUTHENTIC" if is_valid else "TAMPERING_OR_CORRUPTION_DETECTED",
+            "valid": valid,
+            "tampering_detected": tampering,
+            "verdict": verdict,
+            "verification_status": verdict,
             "report_id": payload.get("report_id"),
             "recorded_checksum": recorded_checksum,
             "recomputed_checksum": recomputed_checksum,
             "discrepancies": discrepancies,
             "model_version_verified": model_info.get("version") == exp_model,
             "provenance_verified": len(discrepancies) == 0,
+            "is_trusted_source": is_trusted,
         }

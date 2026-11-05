@@ -309,24 +309,36 @@ class ScientificNarrativeEngine:
             },
         }
 
-    def _build_statistical_evidence(self, stats_data: Dict[str, Any], session_id: str) -> Dict[str, Any]:
-        p_val = stats_data.get("p_value", 0.05) if stats_data else 0.05
-        holdout_count = stats_data.get("holdout_periods_count", 2) if stats_data else 2
+    def _build_statistical_evidence(self, stats_data: Optional[Dict[str, Any]], session_id: str) -> Dict[str, Any]:
+        p_val = stats_data.get("p_value") if stats_data else None
+        holdout_count = stats_data.get("holdout_periods_count") if stats_data else None
+
+        if p_val is not None:
+            p_val_text = f"Hesaplanan p-değeri ({p_val:.5f}), keşifsel hipotez oluşturma aşamasına aittir."
+        else:
+            p_val_text = "p-değeri: HESAPLANAMADI (UNAVAILABLE). Bu oturum için gözlemlenmiş bir p-değeri bulunmamaktadır."
+
+        if holdout_count is not None:
+            holdout_text = f"Önceden beyan edilmiş holdout kriterleri tatmini: PREDECLARED_HOLDOUT_CRITERIA_SATISFIED = {holdout_count}."
+        else:
+            holdout_text = "Önceden beyan edilmiş holdout kriterleri: ÖLÇÜLMEDİ (NOT_MEASURED)."
 
         text = (
             f"Araştırma oturumunda değerlendirilen istatistiksel kanıtlar katı epistemolojik ayrım kurallarına tabidir. "
-            f"Önceden beyan edilmiş holdout kriterleri tatmini: PREDECLARED_HOLDOUT_CRITERIA_SATISFIED = {holdout_count}. "
+            f"{holdout_text} "
             f"Bağımsız doğrulayıcı replikasyon sayısı: INDEPENDENT_CONFIRMATORY_REPLICATIONS = 0. "
-            f"Hesaplanan p-değeri ({p_val:.5f}), keşifsel hipotez oluşturma aşamasına aittir. "
+            f"{p_val_text} "
             f"Doğrulayıcı bağımsız testler tamamlanmadan bu istatistiksel sonuçlar nihai bilimsel kanıt sayılamaz."
         )
 
         return {
             "title": "İstatistiksel Kanıtlar ve Holdout İfşaatı",
-            "status": "AVAILABLE",
+            "status": "AVAILABLE" if (p_val is not None or holdout_count is not None) else "NOT_MEASURED",
             "predeclared_holdout_criteria_satisfied": holdout_count,
+            "holdout_criteria_status": "AVAILABLE" if holdout_count is not None else "NOT_MEASURED",
             "independent_confirmatory_replications": 0,
             "p_value": p_val,
+            "p_value_status": "AVAILABLE" if p_val is not None else "UNAVAILABLE",
             "narrative_tr": text,
             "traceability": {
                 "source_module": "statistical_evidence",
@@ -393,7 +405,7 @@ class ScientificNarrativeEngine:
             {
                 "narrative_section": "executive_summary",
                 "source_file": "unified_research_workspace.py",
-                "dataset_version": session_data.get("dataset_manifest_version", "cbe-manifest-v3-7ed2e950dec3"),
+                "dataset_version": session_data.get("dataset_manifest_version") or "UNAVAILABLE",
                 "session_id": session_data.get("session_id", "UNKNOWN"),
             },
             {

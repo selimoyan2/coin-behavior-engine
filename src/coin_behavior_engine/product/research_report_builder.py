@@ -25,6 +25,8 @@ from typing import Any, Dict, List, Optional
 
 from coin_behavior_engine.product.research_narratives import ScientificNarrativeEngine
 from coin_behavior_engine.product.research_comparison_reporting import HistoricalComparisonReportingEngine
+from coin_behavior_engine.product.research_reproducibility import ResearchReproducibilityEngine
+from coin_behavior_engine.product.content_integrity import ContentIntegrityEngine
 
 
 class ResearchReportBuilderEngine:
@@ -33,6 +35,7 @@ class ResearchReportBuilderEngine:
     SCHEMA_VERSION = "CBE-RESEARCH-REPORT-1.0.0"
     CANONICAL_MODEL = "CBE-0.7.0"
     HEX_40_REGEX = re.compile(r"^[0-9a-f]{40}$", re.IGNORECASE)
+    HEX_64_REGEX = re.compile(r"^[0-9a-f]{64}$", re.IGNORECASE)
 
     def __init__(self, storage_dir: Optional[str] = None):
         env_dir = os.environ.get("CBE_REPORTS_STORAGE_PATH")
@@ -41,19 +44,27 @@ class ResearchReportBuilderEngine:
         elif env_dir:
             self.storage_dir = env_dir
         else:
-            default_dir = os.path.join("research_outputs", "reports")
-            try:
-                os.makedirs(default_dir, exist_ok=True)
-                test_file = os.path.join(default_dir, ".write_test")
-                with open(test_file, "w") as f:
-                    f.write("ok")
-                if os.path.exists(test_file):
-                    os.remove(test_file)
-                self.storage_dir = default_dir
-            except Exception:
-                fallback = os.path.join("/tmp", "cbe_reports")
-                os.makedirs(fallback, exist_ok=True)
-                self.storage_dir = fallback
+            candidates = [
+                "/app/data/prospective/reports",
+                os.path.join("research_outputs", "reports"),
+                os.path.join("data", "reports"),
+            ]
+            chosen = None
+            for cand in candidates:
+                try:
+                    os.makedirs(cand, exist_ok=True)
+                    test_file = os.path.join(cand, ".write_test")
+                    with open(test_file, "w") as f:
+                        f.write("ok")
+                    if os.path.exists(test_file):
+                        os.remove(test_file)
+                    chosen = cand
+                    break
+                except Exception:
+                    continue
+            if not chosen:
+                raise RuntimeError("DURABLE_STORAGE_UNAVAILABLE: No authorized persistent reports storage path is writable.")
+            self.storage_dir = chosen
         self.narrative_engine = ScientificNarrativeEngine()
         self.comparison_engine = HistoricalComparisonReportingEngine()
 
@@ -72,11 +83,17 @@ class ResearchReportBuilderEngine:
         # 1. Validate Mandatory Scientific Provenance
         provenance_check = self._validate_mandatory_provenance(session_data)
         if not provenance_check["valid"]:
-            return self._build_blocked_report(
+            blocked_report = self._build_blocked_report(
                 session_data=session_data,
                 reason=provenance_check["reason"],
                 operator_title=operator_title,
             )
+            self._save_report(blocked_report["report_metadata"]["report_id"], blocked_report)
+            return blocked_report
+
+        resolved_commit_sha = provenance_check["source_commit_sha"]
+        resolved_manifest_sha = provenance_check["dataset_manifest_sha256"]
+        resolved_manifest_ver = provenance_check["dataset_manifest_version"]
 
         # 2. Derive Deterministic Report Identifier
         canonical_seed = self._derive_canonical_seed(session_data, workflow_id, library_id)
@@ -139,7 +156,7 @@ class ResearchReportBuilderEngine:
                 "end_utc": period.get("end_utc", "N/A"),
                 "interval": period.get("interval", "1h"),
                 "bars_count": period.get("bars_count", 0),
-                "dataset_manifest_version": session_data.get("dataset_manifest_version", "cbe-manifest-v3-7ed2e950dec3"),
+                "dataset_manifest_version": resolved_manifest_ver,
                 "quarantine_boundary": "2026-10-01T00:00:00Z",
                 "quarantined_bars_included": False,
             },
@@ -179,8 +196,10 @@ class ResearchReportBuilderEngine:
             # Section 10: Statistical Evidence & Holdout Disclosures
             "statistical_evidence": {
                 "narrative": narratives["sections"]["statistical_evidence"],
-                "p_value": stats_data.get("p_value", 0.05),
-                "predeclared_holdout_criteria_satisfied": stats_data.get("holdout_periods_count", 2),
+                "p_value": stats_data.get("p_value") if stats_data else None,
+                "p_value_status": "AVAILABLE" if (stats_data and stats_data.get("p_value") is not None) else "UNAVAILABLE",
+                "predeclared_holdout_criteria_satisfied": stats_data.get("holdout_periods_count") if stats_data else None,
+                "holdout_criteria_status": "AVAILABLE" if (stats_data and stats_data.get("holdout_periods_count") is not None) else "NOT_MEASURED",
                 "independent_confirmatory_replications": 0,
                 "fdr_alpha": 0.05,
             },
@@ -198,8 +217,8 @@ class ResearchReportBuilderEngine:
             },
             # Section 13: Evidence Provenance
             "evidence_provenance": {
-                "source_commit_sha": session_data.get("source_commit_sha", "3c49506d8ea56dbe3ac4b6c8ba2221e551fc7fff"),
-                "dataset_manifest_sha256": session_data.get("dataset_manifest_sha256", "7ed2e950dec317c54aef7f67f1799aa9ef5b9162a55b55aaee9f352ba2de1245"),
+                "source_commit_sha": resolved_commit_sha,
+                "dataset_manifest_sha256": resolved_manifest_sha,
                 "evidence_package_checksum": session_data.get("evidence_checksum", report_hash),
             },
             # Section 14: Scientific Limitations & Disclaimers
@@ -283,7 +302,33 @@ class ResearchReportBuilderEngine:
         if start >= "2026-10-01" or end > "2026-10-01":
             return {"valid": False, "reason": "QUARANTINE_BOUNDARY_BREACH_OCTOBER_2026"}
 
-        return {"valid": True, "reason": None}
+        # 1. Source Commit SHA verification
+        commit_sha = session_data.get("source_commit_sha")
+        if not commit_sha or commit_sha == "UNAVAILABLE":
+            commit_sha = ResearchReproducibilityEngine.get_source_commit_sha()
+        if not commit_sha or commit_sha == "UNAVAILABLE" or not self.HEX_40_REGEX.match(str(commit_sha)):
+            return {"valid": False, "reason": "MISSING_MANDATORY_SOURCE_PROVENANCE"}
+
+        # 2. Dataset Manifest verification
+        manifest_sha = session_data.get("dataset_manifest_sha256")
+        manifest_ver = session_data.get("dataset_manifest_version")
+        if not manifest_sha or manifest_sha == "UNAVAILABLE" or not self.HEX_64_REGEX.match(str(manifest_sha)):
+            try:
+                canon_manifest = ContentIntegrityEngine.generate_canonical_manifest()
+                manifest_sha = canon_manifest.get("manifest_sha256")
+                manifest_ver = manifest_ver or canon_manifest.get("manifest_version")
+            except Exception:
+                manifest_sha = None
+        if not manifest_sha or manifest_sha == "UNAVAILABLE" or not self.HEX_64_REGEX.match(str(manifest_sha)):
+            return {"valid": False, "reason": "MISSING_MANDATORY_DATASET_MANIFEST"}
+
+        return {
+            "valid": True,
+            "reason": None,
+            "source_commit_sha": commit_sha,
+            "dataset_manifest_sha256": manifest_sha,
+            "dataset_manifest_version": manifest_ver or "cbe-manifest-canonical",
+        }
 
     def _build_blocked_report(
         self,

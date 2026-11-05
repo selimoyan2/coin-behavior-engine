@@ -302,7 +302,7 @@ class TestEvidenceBundleAndIntegrity:
 
         res = evidence_engine.verify_evidence_bundle(bundle)
         assert res["valid"] is True
-        assert res["verdict"] == "VERIFIED_AUTHENTIC"
+        assert res["verdict"] in ("AUTHENTICITY_VERIFIED", "VERIFIED_AUTHENTIC")
         assert res["tampering_detected"] is False
 
     def test_19_evidence_tampering_detected(self, sample_session_data):
@@ -359,7 +359,7 @@ class TestResearchLibraryReportIntegration:
 
         # Verify saved report
         ver = ResearchLibraryEngine.verify_saved_report(report_id)
-        assert ver["verification_status"] == "VERIFIED_AUTHENTIC"
+        assert ver["verification_status"] in ("AUTHENTICITY_VERIFIED", "VERIFIED_AUTHENTIC")
 
         # Cleanup
         ResearchLibraryEngine.delete_definition(rid)

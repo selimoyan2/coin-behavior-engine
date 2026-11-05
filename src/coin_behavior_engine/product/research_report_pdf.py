@@ -15,6 +15,7 @@ Design Invariants:
 - Zero credential or environment secret leakage.
 """
 
+import math
 import os
 import textwrap
 from datetime import datetime, timezone
@@ -159,24 +160,27 @@ class ResearchReportPdfRenderer:
 
         # Mini Bar Chart for Regime Distribution
         metrics = regime.get("metrics", {})
-        dist = metrics.get("regime_distribution", {"BULLISH": 0.35, "BEARISH": 0.45, "CHOPPY": 0.20})
+        dist = metrics.get("regime_distribution")
         bar_y = 0.58
         ax.text(0.08, bar_y + 0.12, "Rejim Dağılım Oranları:", fontsize=9.5, color="#475569", weight="bold")
 
-        labels = list(dist.keys())
-        values = [float(v) * 100.0 for v in dist.values()]
-        bar_colors = ["#38bdf8", "#f43f5e", "#fbbf24", "#a855f7"]
+        if dist and isinstance(dist, dict) and len(dist) > 0:
+            labels = list(dist.keys())
+            values = [float(v) * 100.0 for v in dist.values() if isinstance(v, (int, float))]
+            bar_colors = ["#38bdf8", "#f43f5e", "#fbbf24", "#a855f7"]
 
-        x_start = 0.08
-        chart_w = 0.84
-        tot_val = sum(values) if sum(values) > 0 else 100.0
-        cur_x = x_start
-        for i, (lbl, val) in enumerate(zip(labels, values)):
-            seg_w = (val / tot_val) * chart_w
-            ax.fill([cur_x, cur_x + seg_w, cur_x + seg_w, cur_x], [bar_y, bar_y, bar_y + 0.04, bar_y + 0.04], color=bar_colors[i % len(bar_colors)])
-            if seg_w > 0.12:
-                ax.text(cur_x + seg_w / 2, bar_y + 0.015, f"{lbl[:10]}: %{val:.0f}", ha="center", fontsize=8, color="#0f172a", weight="bold")
-            cur_x += seg_w
+            x_start = 0.08
+            chart_w = 0.84
+            tot_val = sum(values) if sum(values) > 0 else 100.0
+            cur_x = x_start
+            for i, (lbl, val) in enumerate(zip(labels, values)):
+                seg_w = (val / tot_val) * chart_w
+                ax.fill([cur_x, cur_x + seg_w, cur_x + seg_w, cur_x], [bar_y, bar_y, bar_y + 0.04, bar_y + 0.04], color=bar_colors[i % len(bar_colors)])
+                if seg_w > 0.12:
+                    ax.text(cur_x + seg_w / 2, bar_y + 0.015, f"{lbl[:10]}: %{val:.0f}", ha="center", fontsize=8, color="#0f172a", weight="bold")
+                cur_x += seg_w
+        else:
+            ax.text(0.08, bar_y + 0.03, "Rejim Dağılımı: ÖLÇÜLMEDİ (NOT_MEASURED)", fontsize=9, color="#64748b", style="italic")
 
         # Volatility Section
         ax.text(0.08, 0.48, "2.2 Parkinson ve Gerçekleşen Volatilite Analizi", fontsize=12, color="#0f172a", weight="bold")
@@ -186,16 +190,19 @@ class ResearchReportPdfRenderer:
 
         # Volatility metrics table
         vol_m = vol.get("metrics", {})
-        p_vol = vol_m.get("parkinson_volatility", 0.038)
-        r_vol = vol_m.get("realized_volatility", 0.042)
+        p_vol = vol_m.get("parkinson_volatility")
+        r_vol = vol_m.get("realized_volatility")
+        p_vol_str = f"{p_vol:.4f}" if isinstance(p_vol, (int, float)) and not math.isnan(p_vol) else "UNAVAILABLE"
+        r_vol_str = f"{r_vol:.4f}" if isinstance(r_vol, (int, float)) and not math.isnan(r_vol) else "UNAVAILABLE"
+
         t_y = 0.26
         ax.fill([0.08, 0.92, 0.92, 0.08], [t_y, t_y, t_y + 0.09, t_y + 0.09], color="#f8fafc", ec="#cbd5e1")
         ax.text(0.12, t_y + 0.055, "GÖSTERGE", fontsize=9, color="#64748b", weight="bold")
         ax.text(0.42, t_y + 0.055, "HESAPLANAN DEĞER", fontsize=9, color="#64748b", weight="bold")
         ax.text(0.72, t_y + 0.055, "YORUM", fontsize=9, color="#64748b", weight="bold")
 
-        ax.text(0.12, t_y + 0.025, f"Parkinson Volatilite: {p_vol:.4f}", fontsize=9, color="#0f172a")
-        ax.text(0.42, t_y + 0.025, f"Gerçekleşen Volatilite: {r_vol:.4f}", fontsize=9, color="#0f172a")
+        ax.text(0.12, t_y + 0.025, f"Parkinson Volatilite: {p_vol_str}", fontsize=9, color="#0f172a")
+        ax.text(0.42, t_y + 0.025, f"Gerçekleşen Volatilite: {r_vol_str}", fontsize=9, color="#0f172a")
         ax.text(0.72, t_y + 0.025, "Yüksek-düşük aralığı varyansı", fontsize=8.5, color="#16a34a")
 
         return fig
@@ -255,9 +262,13 @@ class ResearchReportPdfRenderer:
                 c_coords = [map_pt(i, v, len(cand_pts)) for i, v in enumerate(cand_pts)]
                 cx, cy = zip(*c_coords)
                 ax.plot(cx, cy, color="#d97706", ls=":", lw=1.8, label="Aday Periyot")
+                ax.text(0.40, c_box_y + c_h - 0.025, ":·· Aday Periyot", fontsize=8, color="#d97706", weight="bold")
+            else:
+                ax.text(0.40, c_box_y + c_h - 0.025, "Aday Periyot Fiyat Yolu: SEÇİLMEDİ (NOT_AVAILABLE)", fontsize=8, color="#64748b", style="italic")
 
             ax.text(0.12, c_box_y + c_h - 0.025, "— Referans (BTCUSDT)", fontsize=8, color="#0284c7", weight="bold")
-            ax.text(0.40, c_box_y + c_h - 0.025, ":·· Aday Periyot", fontsize=8, color="#d97706", weight="bold")
+        else:
+            ax.text(0.5, c_box_y + c_h / 2, "Fiyat Yolu Verisi Mevcut Değil (NOT_AVAILABLE)", ha="center", va="center", fontsize=9, color="#94a3b8")
 
         # Pattern Discovery narrative
         ax.text(0.08, 0.48, "3.2 5 Boyutlu Benzerlik Analizi ve Ayrışım", fontsize=12, color="#0f172a", weight="bold")
