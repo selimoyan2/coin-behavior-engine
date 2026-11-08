@@ -1,6 +1,14 @@
 {
   "schema_version": "CBE-SESSION-SECURITY-1.0.0",
-  "timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
+  "timestamp_utc": "2026-11-09T00:05:00Z",
+  "session_store": {
+    "backend": "SQLite WAL",
+    "database_path": "/app/data/prospective/sessions.db",
+    "journal_mode": "WAL",
+    "busy_timeout_ms": 5000,
+    "token_storage": "SHA-256 hash (never raw token)",
+    "constant_time_validation": true
+  },
   "cookie_configuration": {
     "cookie_name": "cbe_session_id",
     "http_only": true,
@@ -19,11 +27,19 @@
     "header_name": "X-CSRF-Token",
     "cross_origin_blocked": true
   },
+  "multi_worker_lifecycle_tests": {
+    "worker_a_login": "PASSED",
+    "worker_b_validate": "PASSED",
+    "worker_c_logout": "PASSED",
+    "worker_d_reject_revoked": "PASSED",
+    "expiration_cleanup": "PASSED",
+    "restart_durability": "PASSED"
+  },
   "browser_storage_leak_audit": {
     "window_cbe_operator_token": null,
     "local_storage_cbe_operator_token": null,
     "session_storage_cbe_operator_token": null,
     "raw_credentials_in_dom": false
   },
-  "verdict": "VERIFIED_SECURE"
+  "verdict": "VERIFIED_SECURE_MULTI_WORKER"
 }

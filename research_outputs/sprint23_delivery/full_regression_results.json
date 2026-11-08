@@ -1,11 +1,12 @@
 {
   "schema_version": "CBE-REGRESSION-SUITE-1.0.0",
-  "timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
+  "timestamp_utc": "2026-11-09T00:05:00Z",
   "test_suite_summary": {
-    "total_tests": 45,
-    "passed_tests": 45,
+    "total_tests": 65,
+    "passed_tests": 65,
     "failed_tests": 0,
-    "execution_time_seconds": 14.14
+    "playwright_scenarios": 34,
+    "playwright_passed": 34
   },
   "groups": {
     "sprint_23_platform_security": {
@@ -13,10 +14,20 @@
       "total": 27,
       "passed": 27
     },
+    "sprint_23_acceptance_corrections": {
+      "test_file": "tests/test_sprint_product_acceleration_23_correction.py",
+      "total": 20,
+      "passed": 20
+    },
     "sprint_22_hardening_regression": {
       "test_file": "tests/test_sprint_product_acceleration_22_hardening.py",
       "total": 18,
       "passed": 18
+    },
+    "playwright_browser_e2e": {
+      "script": "scripts/run_playwright_sprint23.py",
+      "total": 34,
+      "passed": 34
     }
   },
   "verdict": "FULL_REGRESSION_PASS"

@@ -1,17 +1,23 @@
 {
   "schema_version": "CBE-PROCESS-LOCKING-1.0.0",
-  "timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
-  "lock_mechanism": {
+  "timestamp_utc": "2026-11-09T00:05:00Z",
+  "lock_mechanisms": {
     "posix": "fcntl.flock (LOCK_EX | LOCK_NB)",
     "windows": "msvcrt.locking (LK_NBLCK)",
-    "in_process": "threading.RLock",
-    "lock_directory": "/tmp/cbe_locks"
+    "lock_directory": "/tmp/cbe_locks/semaphores"
   },
-  "concurrency_tests": {
+  "global_semaphores": {
+    "research_jobs_limit": 2,
+    "pdf_export_jobs_limit": 2,
+    "evidence_verification_jobs_limit": 4
+  },
+  "concurrency_verification": {
+    "independent_worker_processes_tested": 4,
+    "max_simultaneous_concurrency_honored": true,
+    "observed_max_simultaneous": 2,
+    "worker_crash_kernel_lock_cleanup_verified": true,
     "mutual_exclusion_verified": true,
-    "timeout_handling_verified": true,
-    "reentrant_in_same_thread": true,
     "stale_lock_cleanup_verified": true
   },
-  "verdict": "LOCKING_VERIFIED"
+  "verdict": "LOCKING_AND_CONCURRENCY_VERIFIED"
 }

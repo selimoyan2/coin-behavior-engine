@@ -1,16 +1,35 @@
 {
   "schema_version": "CBE-VOLUME-VERIFICATION-1.0.0",
-  "timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
+  "timestamp_utc": "2026-11-09T00:05:00Z",
   "host": "srv1114257",
-  "container_id": "46114ef5fca7",
+  "container_id": "744ab8c5df8eb768cdcd634b6d69bdd8b7d12e8375c0b36dd612604de2755f02",
+  "authorized_volume_id": "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f",
   "mount_details": {
     "source": "/var/lib/docker/volumes/dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f/_data",
     "destination": "/app/data/prospective",
     "filesystem": "ext4",
     "underlying_device": "/dev/sda1",
     "is_tmpfs": false,
+    "is_overlay": false,
     "is_writable": true,
     "classification": "PERSISTENT_VERIFIED"
   },
+  "negative_tests_summary": {
+    "total_negative_tests": 10,
+    "passed": 10,
+    "tested_rejections": [
+      "writable_docker_overlay_rootfs",
+      "ephemeral_tmpfs",
+      "ephemeral_ramfs",
+      "read_only_filesystem",
+      "symlink_escape_outside_root",
+      "prefix_collision_fake_path",
+      "unauthorized_bind_mount",
+      "missing_provenance_fail_closed",
+      "unwritable_unavailable_path",
+      "unauthorized_volume_id_identity"
+    ]
+  },
+  "container_recreation_persistence_verified": true,
   "durability_verdict": "VERIFIED_DURABLE"
 }

@@ -1,9 +1,9 @@
 {
   "schema_version": "CBE-DELIVERY-MANIFEST-1.0.0",
   "sprint_identifier": "CBE_PRODUCT_ACCELERATION_23",
-  "generation_timestamp_utc": "2026-11-05T23:26:56.286386+00:00",
-  "implementation_commit_sha": "abbc0a1d25cf42b37129574921e1a05420a300e4",
-  "staging_image_digest": "sha256:1300a5cd964b52987a7dc53c5d45d8a086304eb5d34df45a0401207c1a4c30a4",
+  "generation_timestamp_utc": "2026-11-08T21:06:37.371024+00:00",
+  "implementation_commit_sha": "de2d1e3f549d48a70909258e7c6f190f47d083aa",
+  "staging_image_digest": "sha256:72bd7ba02d0429d88de01713927478e97c56f0a8da1ec6d4f2fe869a18fd2158",
   "canonical_model": "CBE-0.7.0",
   "canonical_model_status": "STRICTLY_FROZEN",
   "governance_decision": "TECHNICAL_NO_GO",
@@ -11,12 +11,12 @@
   "manifested_artifacts_count": 25,
   "artifacts": {
     "architecture_security_audit.md": {
-      "file_size_bytes": 12560,
-      "sha256": "2cb2a5d92cc0f05d9ecc39ea272cf15ff012e3ed331cabd8d3f8e9d3af61c278"
+      "file_size_bytes": 15110,
+      "sha256": "7138c9caefdfe0ddc04d27a940f0127f86229ebf99bf403e48267267e4126634"
     },
     "implementation_report.md": {
-      "file_size_bytes": 3723,
-      "sha256": "96bcc3c69ba8be942903fa931e02ab8246e67369e1cfa171d97aba1dc07411b7"
+      "file_size_bytes": 5765,
+      "sha256": "476a0b36b8b5d6d4cf0b0ca2a1328440fb84304ddd7f1a62a5e91829502f5320"
     },
     "security_threat_model.md": {
       "file_size_bytes": 2253,
@@ -31,24 +31,24 @@
       "sha256": "e419f59fed5aa1dc8311980b13a7fd9432528602200eaa2cfc04cd9fa176aca8"
     },
     "session_security_verification.json": {
-      "file_size_bytes": 757,
-      "sha256": "c7d4f66d939730c711357155e3737eda67ca334ebadc480a433f9f95ec3fe552"
+      "file_size_bytes": 1245,
+      "sha256": "b7a16259aed8f706e97ade2193affc61b17119308f111cfb09251822a0d2b915"
     },
     "evidence_trust_boundary_verification.json": {
       "file_size_bytes": 1112,
       "sha256": "f293984135c98354d16bd2c11f539879b03d84e33cba8cacd1f0d2c484ac4fe9"
     },
     "multiprocess_locking_results.json": {
-      "file_size_bytes": 536,
-      "sha256": "424f5d4bbdcf292dc865965b6705ec716051e14aeba9c344865509c027c2dcea"
+      "file_size_bytes": 751,
+      "sha256": "288ebd8026be89d5af721de0fba45f31563e11d6c883a0c5ced9db220890fb20"
     },
     "atomic_storage_failure_injection.json": {
       "file_size_bytes": 603,
       "sha256": "48575c703ec1e0bb207411f1d4834bda67a6d273be02eb8389bf898efb868f81"
     },
     "persistent_volume_verification.json": {
-      "file_size_bytes": 565,
-      "sha256": "b119ddacf26262428eb8ce04ad0b9cf8a3178c4077a617a0730bb1121575612c"
+      "file_size_bytes": 1224,
+      "sha256": "f5892ba2aad4ad90b06cc2861665672404237759fb5bbb9a02db8b29c0bb088c"
     },
     "backup_restore_verification.json": {
       "file_size_bytes": 390,
@@ -87,28 +87,28 @@
       "sha256": "db0f7fcf823bd7ff8bdd0aa26aa8f88bc7a1977ff2403560ebbf35ade49e2d3d"
     },
     "full_regression_results.json": {
-      "file_size_bytes": 632,
-      "sha256": "7f3aacbcbc393580d1171ea2cb3661d1c8f697f666d43cdc9e67bcbf32ae4235"
+      "file_size_bytes": 919,
+      "sha256": "367c27ceb05ff65731053c31145a72dfcd842dca48e0b235d508f0a2fc1c177b"
     },
     "playwright_acceptance_results.json": {
       "file_size_bytes": 5702,
-      "sha256": "d175546f3d34c84848ddd3ab4dd844dd0ddfd71b945aa373154a97ab75348654"
+      "sha256": "093f3b4b577ffaf279dff77b73326284d32b391821ab8bb03d22eb3b8314b74a"
     },
     "staging_runtime_provenance.json": {
-      "file_size_bytes": 819,
-      "sha256": "929fdde58d9ad183605c52c4d20e199b4e00ba82032120cd5a49b59007219d73"
+      "file_size_bytes": 1032,
+      "sha256": "1fe69efbfdcb011fb37a70a2ac1b4c62aee59449baf7fda08f9f5cb62032d962"
     },
     "production_zero_touch_attestation.json": {
       "file_size_bytes": 588,
       "sha256": "5bcf38bedb882a9f73744295a1d9f8e36b325fb7b6dc67a1a9219e3b2281f965"
     },
     "git_release_identity.json": {
-      "file_size_bytes": 599,
-      "sha256": "a8a2516e6404b5775e8080bb549ffc433f3f5132cb521718d0737808a786a576"
+      "file_size_bytes": 576,
+      "sha256": "d3921055f1a5be156c977ab6aea6e9142a1a30dd104efff3b26ac2b023e3f937"
     },
     "final_acceptance_report.md": {
-      "file_size_bytes": 2739,
-      "sha256": "c23542d751e18c35c94c1a69fe9d8cbdd59fd41cf4e3c6f705268fa43b7c2967"
+      "file_size_bytes": 6101,
+      "sha256": "54ab85bc52c499e7425112f7b16c7540bbf64d90b2ec761d125b7475b35abcc7"
     }
   }
 }

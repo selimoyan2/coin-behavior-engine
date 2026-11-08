@@ -175,3 +175,32 @@ While Sprint 22 successfully eliminated fabricated values, enforced timezone-awa
 - `LIVE_ORDER_EXECUTION`: `PERMANENTLY_PROHIBITED`
 - `QUARANTINE_BOUNDARY`: `2026-10-01T00:00:00Z`
 - `PRODUCTION_CONTAINER`: `1a867269c843` (Strict Zero-Touch)
+
+---
+
+### 8. Final Acceptance Correction Audit (P0 Security & Reliability)
+
+Following independent security and reliability review of Sprint 23, four critical architectural enhancements were implemented and validated:
+
+1. **P0 Genuine Persistent Volume Verification (`storage_durability.py`):**
+   - Path verification utilizes `os.path.realpath` to resolve symlinks and prevent symlink escape attacks targeting unauthorized filesystems.
+   - Replaced substring path checks with path-component boundary matching against `/proc/mounts`.
+   - Explicitly rejects container overlay root filesystems (`CONTAINER_OVERLAY_REJECTED`) and ephemeral mounts (`tmpfs`, `ramfs`).
+   - Verifies the authorized volume identity (`AUTHORIZED_STAGING_VOLUME_IDS`, specifically `dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f` mounted at `/app/data/prospective`).
+   - Validated against 10 comprehensive negative storage tests ensuring fail-closed security.
+
+2. **P0 Cross-Process Concurrency Governance (`resource_governor.py`):**
+   - Replaced in-process threading semaphores with `FileBackedSemaphore` backed by OS-level file locks (`fcntl.flock` on POSIX, `msvcrt.locking` on Windows) in `/tmp/cbe_locks/semaphores/`.
+   - File descriptors are automatically closed and locks released by the OS kernel upon process exit or abrupt crash, preventing semaphore permit starvation across worker processes.
+   - Enforced cross-worker limits: research=2, pdf=2, evidence=4.
+   - Validated with 4 concurrent worker processes and failure injection testing.
+
+3. **P1 Multi-Worker Persistent Session Store (`session_manager.py`):**
+   - Replaced single-process in-memory dictionary with `SqliteSessionStore` using SQLite WAL mode and a 5000ms busy timeout on durable storage (`/app/data/prospective/sessions.db`).
+   - Session tokens are protected at rest by storing cryptographic SHA-256 hashes (`session_id_hash`) rather than plaintext tokens.
+   - Verified across 4 independent worker processes performing concurrent logins, validations, logouts, revocation rejections, and container recreation durability.
+
+4. **P1 RFC 8785 JSON Canonicalization (`research_report_evidence.py`):**
+   - Implemented strict RFC 8785 JSON Canonicalization Scheme (JCS) compliance, including ECMAScript 6.1.6.1 number serialization (integers formatted without decimal points, `-0.0` normalized to `0`, numbers $\ge 10^{21}$ formatted in canonical exponential notation).
+   - Preserved backward-compatible verification for historical evidence bundles (`CBE-CANONICAL-JSON-v1`).
+
