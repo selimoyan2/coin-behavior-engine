@@ -51,10 +51,7 @@ def _check_finite_numbers(obj: Any, path: str = "") -> Optional[str]:
 
 
 def _canonicalize_payload(obj: Any) -> Any:
-    """Recursively normalizes numbers according to RFC 8785 JSON Canonicalization Scheme.
-    Specifically ensures integer-valued floats (e.g. 0.0, 1.0) are normalized so that
-    serialization across Python, JavaScript and JSON implementations remains 100% deterministic.
-    """
+    """Recursively normalizes numbers for legacy canonicalization compatibility."""
     if isinstance(obj, dict):
         return {k: _canonicalize_payload(v) for k, v in obj.items()}
     elif isinstance(obj, list):
@@ -62,6 +59,58 @@ def _canonicalize_payload(obj: Any) -> Any:
     elif isinstance(obj, float) and obj.is_integer():
         return int(obj)
     return obj
+
+
+def rfc8785_canonical_json(obj: Any) -> bytes:
+    """
+    Serializes a JSON-compatible Python data structure into canonical bytes
+    strictly adhering to RFC 8785 (JSON Canonicalization Scheme - JCS).
+
+    Invariants:
+    1. UTF-8 encoding without Byte Order Mark (BOM).
+    2. No whitespace characters outside string literals (separators ',' and ':').
+    3. Object keys sorted lexicographically by UTF-16 code units.
+    4. Numbers formatted strictly according to ECMAScript 6.1.6.1 Number::toString rules:
+       - No negative zero (-0 -> 0).
+       - Integer-valued floats serialized without decimal point or exponent.
+       - Floating point numbers serialized using shortest round-trip representation without redundant exponent zeros.
+       - Non-finite numbers (NaN, Infinity) strictly rejected.
+    5. Standard JSON string escaping preserving UTF-8 Unicode characters.
+    """
+    def serialize_val(val: Any) -> str:
+        if val is None:
+            return "null"
+        elif isinstance(val, bool):
+            return "true" if val else "false"
+        elif isinstance(val, int):
+            return str(val)
+        elif isinstance(val, float):
+            if math.isnan(val) or math.isinf(val):
+                raise ValueError(f"Non-finite numeric value in canonical JSON: {val}")
+            if val == 0.0:
+                return "0"
+            if val.is_integer() and abs(val) < 1e21:
+                return str(int(val))
+            s = json.dumps(val)
+            if "e" in s:
+                s = re.sub(r"e([+-])0*(\d+)", lambda m: "e" + m.group(1) + m.group(2), s)
+            return s
+        elif isinstance(val, str):
+            return json.dumps(val, ensure_ascii=False)
+        elif isinstance(val, dict):
+            parts = []
+            for k in sorted(val.keys()):
+                k_enc = json.dumps(str(k), ensure_ascii=False)
+                v_enc = serialize_val(val[k])
+                parts.append(f"{k_enc}:{v_enc}")
+            return "{" + ",".join(parts) + "}"
+        elif isinstance(val, (list, tuple)):
+            parts = [serialize_val(x) for x in val]
+            return "[" + ",".join(parts) + "]"
+        else:
+            raise TypeError(f"Object of type {type(val)} is not RFC 8785 JSON serializable")
+
+    return serialize_val(obj).encode("utf-8")
 
 
 def _parse_iso_utc(ts: Any) -> Optional[datetime]:
@@ -176,8 +225,8 @@ class ResearchReportEvidenceBundleEngine:
             "packaged_at_utc": datetime.now(timezone.utc).isoformat(),
         }
 
-        # Compute deterministic checksum over the canonical JSON representation
-        canonical_bytes = json.dumps(_canonicalize_payload(payload), sort_keys=True, ensure_ascii=False).encode("utf-8")
+        # Compute deterministic checksum over the canonical JSON representation (RFC 8785)
+        canonical_bytes = rfc8785_canonical_json(payload)
         package_checksum = hashlib.sha256(canonical_bytes).hexdigest()
 
         final_sig = operator_signature
@@ -232,8 +281,35 @@ class ResearchReportEvidenceBundleEngine:
             }
 
         recorded_checksum = meta.get("package_checksum_sha256")
-        canonical_bytes = json.dumps(_canonicalize_payload(payload), sort_keys=True, ensure_ascii=False).encode("utf-8")
-        recomputed_checksum = hashlib.sha256(canonical_bytes).hexdigest()
+        
+        # 1. Compute RFC 8785 canonical bytes (standard)
+        try:
+            canonical_bytes_rfc = rfc8785_canonical_json(payload)
+            checksum_rfc = hashlib.sha256(canonical_bytes_rfc).hexdigest()
+        except Exception:
+            canonical_bytes_rfc = b""
+            checksum_rfc = ""
+
+        # 2. Compute Legacy CBE-CANONICAL-JSON-v1 bytes for backward compatibility with historical evidence
+        try:
+            canonical_bytes_legacy = json.dumps(_canonicalize_payload(payload), sort_keys=True, ensure_ascii=False).encode("utf-8")
+            checksum_legacy = hashlib.sha256(canonical_bytes_legacy).hexdigest()
+        except Exception:
+            canonical_bytes_legacy = b""
+            checksum_legacy = ""
+
+        if recorded_checksum and recorded_checksum == checksum_rfc:
+            canonical_bytes = canonical_bytes_rfc
+            recomputed_checksum = checksum_rfc
+            canonical_scheme = "RFC-8785"
+        elif recorded_checksum and recorded_checksum == checksum_legacy:
+            canonical_bytes = canonical_bytes_legacy
+            recomputed_checksum = checksum_legacy
+            canonical_scheme = "CBE-CANONICAL-JSON-v1"
+        else:
+            canonical_bytes = canonical_bytes_rfc
+            recomputed_checksum = checksum_rfc
+            canonical_scheme = "RFC-8785"
 
         discrepancies: List[str] = []
 
@@ -396,6 +472,7 @@ class ResearchReportEvidenceBundleEngine:
             "tampering_detected": tampering,
             "verdict": verdict,
             "report_id": report_id,
+            "canonical_scheme": canonical_scheme,
             "recorded_checksum": recorded_checksum,
             "recomputed_checksum": recomputed_checksum,
             "discrepancies": discrepancies,

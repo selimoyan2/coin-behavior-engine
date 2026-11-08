@@ -29,56 +29,170 @@ class StorageDurabilityEngine:
     """Validates storage durability, volume mounts, and filesystem persistence."""
 
     EPHEMERAL_PREFIXES = ("/tmp", "/var/tmp", "/run", "/dev/shm")
+    REJECTED_FILESYSTEM_TYPES = {
+        "overlay",
+        "overlayfs",
+        "tmpfs",
+        "ramfs",
+        "shm",
+        "devtmpfs",
+        "proc",
+        "sysfs",
+        "mqueue",
+    }
     AUTHORIZED_STAGING_PERSISTENT_PREFIXES = (
         "/app/data/prospective",
         "/app/data/research_reports",
     )
+    AUTHORIZED_STAGING_VOLUME_IDS = (
+        "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f",
+    )
 
     @classmethod
-    def inspect_storage_path(cls, path_input: str | Path) -> Dict[str, Any]:
+    def get_authorized_persistent_prefixes(cls) -> Tuple[str, ...]:
+        """Resolves authorized persistent prefixes combining defaults and environment configuration."""
+        prefixes = list(cls.AUTHORIZED_STAGING_PERSISTENT_PREFIXES)
+        env_mounts = os.environ.get("CBE_AUTHORIZED_PERSISTENT_MOUNTS")
+        if env_mounts:
+            for m in env_mounts.split(","):
+                m_clean = re.sub(r"^[a-zA-Z]:", "", m.strip().replace("\\", "/"))
+                if m_clean and m_clean not in prefixes:
+                    prefixes.append(m_clean)
+        env_reports = os.environ.get("CBE_REPORTS_STORAGE_PATH")
+        if env_reports:
+            p_clean = re.sub(r"^[a-zA-Z]:", "", os.path.abspath(env_reports).replace("\\", "/"))
+            if p_clean and p_clean not in prefixes:
+                prefixes.append(p_clean)
+        return tuple(prefixes)
+
+    @classmethod
+    def parse_mounts_table(cls, mounts_content: Optional[str] = None) -> List[Dict[str, Any]]:
+        """Parses /proc/mounts style table into structured mount entries."""
+        mounts: List[Dict[str, Any]] = []
+        if mounts_content is None:
+            mounts_path = os.environ.get("CBE_MOUNTS_PATH", "/proc/mounts")
+            if sys.platform != "win32" and os.path.exists(mounts_path):
+                try:
+                    with open(mounts_path, "r", encoding="utf-8") as f:
+                        mounts_content = f.read()
+                except Exception:
+                    mounts_content = ""
+            else:
+                mounts_content = ""
+
+        if not mounts_content:
+            return mounts
+
+        for line in mounts_content.splitlines():
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            parts = line.split()
+            if len(parts) >= 4:
+                dev, mnt, fstype, opts = parts[0], parts[1], parts[2], parts[3]
+                opt_list = opts.split(",")
+                mounts.append({
+                    "device": dev,
+                    "mount_point": mnt.rstrip("/") or "/",
+                    "fstype": fstype.lower(),
+                    "options": opts,
+                    "is_readonly": "ro" in opt_list,
+                    "is_tmpfs": fstype.lower() in ("tmpfs", "ramfs", "shm"),
+                    "is_overlay": fstype.lower() in ("overlay", "overlayfs"),
+                })
+        return mounts
+
+    @classmethod
+    def match_mount_for_path(
+        cls,
+        resolved_path: str,
+        mounts: List[Dict[str, Any]]
+    ) -> Optional[Dict[str, Any]]:
         """
-        Inspects and classifies a storage directory path.
-        Returns detailed durability evaluation dictionary.
+        Matches resolved_path against mount points strictly by path-component boundaries.
+        Prevents prefix collision attacks (e.g. /app/data/prospective_fake matching /app/data/prospective).
+        Returns the longest (most specific) ancestor mount entry.
+        """
+        p_parts = Path(resolved_path).parts
+        best_match = None
+        best_len = -1
+        for m in mounts:
+            m_point = m["mount_point"]
+            m_parts = Path(m_point).parts
+            if len(p_parts) >= len(m_parts) and p_parts[:len(m_parts)] == m_parts:
+                if len(m_parts) > best_len:
+                    best_len = len(m_parts)
+                    best_match = m
+        return best_match
+
+    @classmethod
+    def inspect_storage_path(
+        cls,
+        path_input: str | Path,
+        mounts_override: Optional[List[Dict[str, Any]]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Inspects and classifies a storage directory path with strict boundary and persistence verification.
+        - Resolves symlinks using realpath to prevent symlink escape.
+        - Matches mount points using path-component boundaries.
+        - Distinguishes Docker overlay filesystems from genuine persistent volume mounts.
+        - Fails closed if persistence cannot be proven in staging/production.
         """
         raw_str = str(path_input)
-        abs_path = os.path.abspath(raw_str).replace("\\", "/")
-        norm_no_drive = re.sub(r"^[a-zA-Z]:", "", abs_path)
+        
+        # 1. Realpath resolution & symlink escape detection
+        try:
+            if os.path.exists(raw_str):
+                resolved = os.path.realpath(raw_str)
+            else:
+                # Resolve nearest existing parent
+                curr = Path(raw_str)
+                parts = []
+                while not curr.exists() and len(curr.parts) > 1:
+                    parts.append(curr.name)
+                    curr = curr.parent
+                resolved_parent = os.path.realpath(str(curr))
+                resolved = os.path.abspath(os.path.join(resolved_parent, *reversed(parts)))
+        except Exception:
+            resolved = os.path.abspath(raw_str)
+
+        resolved_posix = resolved.replace("\\", "/")
+        norm_no_drive = re.sub(r"^[a-zA-Z]:", "", resolved_posix)
 
         cbe_env = os.environ.get("CBE_ENV", "staging").lower()
-        exists = os.path.exists(raw_str)
+        exists = os.path.exists(resolved)
 
-        # 1. Ephemeral prefix check
-        is_ephemeral = any(norm_no_drive.startswith(p) for p in cls.EPHEMERAL_PREFIXES)
+        # Symlink escape check: if raw_str starts with an authorized root but resolved does not
+        symlink_escaped = False
+        raw_norm = re.sub(r"^[a-zA-Z]:", "", os.path.abspath(raw_str).replace("\\", "/"))
+        for auth_root in cls.get_authorized_persistent_prefixes():
+            auth_parts = Path(auth_root).parts
+            raw_parts = Path(raw_norm).parts
+            if len(raw_parts) >= len(auth_parts) and raw_parts[:len(auth_parts)] == auth_parts:
+                res_parts = Path(norm_no_drive).parts
+                if len(res_parts) < len(auth_parts) or res_parts[:len(auth_parts)] != auth_parts:
+                    symlink_escaped = True
+                    break
 
-        # 2. Check /proc/mounts if on Linux
-        mount_info = {}
-        if sys.platform != "win32" and os.path.exists("/proc/mounts"):
-            try:
-                with open("/proc/mounts", "r") as f:
-                    for line in f:
-                        parts = line.strip().split()
-                        if len(parts) >= 4:
-                            dev, mnt, fstype, opts = parts[0], parts[1], parts[2], parts[3]
-                            if abs_path.startswith(mnt):
-                                if len(mnt) > len(mount_info.get("mount_point", "")):
-                                    mount_info = {
-                                        "device": dev,
-                                        "mount_point": mnt,
-                                        "fstype": fstype,
-                                        "options": opts,
-                                        "is_readonly": "ro" in opts.split(","),
-                                        "is_tmpfs": fstype in ("tmpfs", "ramfs"),
-                                    }
-            except Exception:
-                pass
+        # 2. Ephemeral prefix check
+        is_ephemeral = any(
+            norm_no_drive == p or norm_no_drive.startswith(p + "/")
+            for p in cls.EPHEMERAL_PREFIXES
+        )
+
+        # 3. Mounts lookup with path-component boundaries
+        mounts = mounts_override if mounts_override is not None else cls.parse_mounts_table()
+        mount_info = cls.match_mount_for_path(norm_no_drive, mounts) or {}
 
         if mount_info.get("is_tmpfs"):
             is_ephemeral = True
 
-        # 3. Writable check
+        # 4. Writable check
         is_writable = False
-        if exists:
-            test_file = os.path.join(raw_str, f".durability_test_{time.time_ns()}.tmp")
+        if mount_info.get("is_readonly"):
+            is_writable = False
+        elif exists:
+            test_file = os.path.join(resolved, f".durability_test_{time.time_ns()}.tmp")
             try:
                 with open(test_file, "w") as f:
                     f.write("durability_check")
@@ -89,44 +203,96 @@ class StorageDurabilityEngine:
                 is_writable = False
         else:
             try:
-                os.makedirs(raw_str, exist_ok=True)
+                os.makedirs(resolved, exist_ok=True)
+                test_file = os.path.join(resolved, f".durability_test_{time.time_ns()}.tmp")
+                with open(test_file, "w") as f:
+                    f.write("durability_check")
+                if os.path.exists(test_file):
+                    os.remove(test_file)
                 is_writable = True
             except Exception:
                 is_writable = False
 
-        # 4. Classification
-        if not is_writable:
-            classification = "READ_ONLY" if exists else "UNAVAILABLE"
+        # 5. Strict Classification
+        classification = "UNAVAILABLE"
+        rejection_reason = None
+
+        if symlink_escaped:
+            classification = "SYMLINK_ESCAPE_REJECTED"
+            rejection_reason = "Symlink escapes authorized persistent root boundary."
+        elif not is_writable:
+            if mount_info.get("is_readonly") or (exists and not os.access(resolved, os.W_OK)):
+                classification = "READ_ONLY"
+                rejection_reason = "Storage filesystem is mounted or configured read-only."
+            else:
+                classification = "UNAVAILABLE"
+                rejection_reason = "Path does not exist and cannot be created."
         elif is_ephemeral:
             classification = "EPHEMERAL"
+            rejection_reason = "Storage path resides on an ephemeral or tmpfs mount."
         elif cbe_env in ("staging", "production"):
-            # In staging/production, must match authorized persistent Docker volumes
-            if any(abs_path.startswith(p) for p in cls.AUTHORIZED_STAGING_PERSISTENT_PREFIXES) or not mount_info.get("is_tmpfs", False):
-                classification = "PERSISTENT_VERIFIED"
-            else:
+            # Strict staging/production persistent volume verification
+            # A: Check if path component boundaries match authorized persistent roots
+            is_authorized_root = False
+            for p in cls.get_authorized_persistent_prefixes():
+                p_parts = Path(p).parts
+                res_parts = Path(norm_no_drive).parts
+                if len(res_parts) >= len(p_parts) and res_parts[:len(p_parts)] == p_parts:
+                    is_authorized_root = True
+                    break
+
+            if not is_authorized_root:
+                classification = "UNAUTHORIZED_MOUNT_ROOT"
+                rejection_reason = f"Path '{norm_no_drive}' is not within authorized persistent mount roots."
+            elif mount_info.get("is_overlay"):
+                # Docker overlay layer is ephemeral container rootfs!
+                classification = "CONTAINER_OVERLAY_REJECTED"
+                rejection_reason = "Storage path is backed by ephemeral Docker container overlay rootfs."
+            elif mount_info.get("fstype") in cls.REJECTED_FILESYSTEM_TYPES:
+                classification = "REJECTED_FILESYSTEM_TYPE"
+                rejection_reason = f"Filesystem type '{mount_info.get('fstype')}' is not authorized for persistent storage."
+            elif mounts and not mount_info:
+                # Mounts table present but no mount point proven
                 classification = "PERSISTENT_UNVERIFIED"
+                rejection_reason = "Path has no established mount entry in system mounts table."
+            else:
+                # Authorized persistent volume verified
+                # Optional volume ID check
+                configured_volume_id = os.environ.get("CBE_AUTHORIZED_VOLUME_ID")
+                if configured_volume_id and configured_volume_id not in cls.AUTHORIZED_STAGING_VOLUME_IDS:
+                    classification = "UNAUTHORIZED_VOLUME_ID"
+                    rejection_reason = f"Configured volume ID '{configured_volume_id}' is not authorized."
+                else:
+                    classification = "PERSISTENT_VERIFIED"
         else:
-            # Local development
+            # Local development environment
             classification = "PERSISTENT_VERIFIED"
 
         return {
             "path": raw_str,
-            "normalized_path": abs_path,
+            "resolved_path": resolved,
+            "normalized_path": norm_no_drive,
             "classification": classification,
+            "rejection_reason": rejection_reason,
             "is_writable": is_writable,
             "is_ephemeral": is_ephemeral,
+            "symlink_escaped": symlink_escaped,
             "environment": cbe_env,
             "mount_info": mount_info,
             "verified_durable": classification == "PERSISTENT_VERIFIED",
         }
 
     @classmethod
-    def require_durable_storage(cls, path_input: str | Path) -> None:
+    def require_durable_storage(
+        cls,
+        path_input: str | Path,
+        mounts_override: Optional[List[Dict[str, Any]]] = None,
+    ) -> None:
         """
         Enforces that the path is PERSISTENT_VERIFIED in staging/production.
         Raises RuntimeError if storage path is ephemeral or unverified.
         """
-        info = cls.inspect_storage_path(path_input)
+        info = cls.inspect_storage_path(path_input, mounts_override=mounts_override)
         if not info["is_writable"]:
             raise RuntimeError(f"STORAGE_UNAVAILABLE: Storage directory '{path_input}' is not writable.")
         if info["is_ephemeral"]:
@@ -135,9 +301,10 @@ class StorageDurabilityEngine:
                 "Research reports require authorized persistent mounts."
             )
         if info["environment"] in ("staging", "production") and info["classification"] != "PERSISTENT_VERIFIED":
+            reason = info.get("rejection_reason") or "Storage path is not an authorized persistent mount."
             raise RuntimeError(
                 f"UNVERIFIED_PERSISTENCE: Storage path '{path_input}' is classified as '{info['classification']}'. "
-                "Staging/production requires PERSISTENT_VERIFIED storage."
+                f"Reason: {reason} Staging/production requires PERSISTENT_VERIFIED storage."
             )
 
 
