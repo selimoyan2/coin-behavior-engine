@@ -1,9 +1,9 @@
 {
   "schema_version": "CBE-DELIVERY-MANIFEST-1.0.0",
   "sprint_identifier": "CBE_PRODUCT_ACCELERATION_23",
-  "generation_timestamp_utc": "2026-11-08T21:06:37.371024+00:00",
-  "implementation_commit_sha": "de2d1e3f549d48a70909258e7c6f190f47d083aa",
-  "staging_image_digest": "sha256:72bd7ba02d0429d88de01713927478e97c56f0a8da1ec6d4f2fe869a18fd2158",
+  "generation_timestamp_utc": "2026-11-08T21:36:01.903535+00:00",
+  "implementation_commit_sha": "c092791444983083db9f0eb11dbd6621fb705007",
+  "staging_image_digest": "sha256:10cf9c6843dd074b0bd0aed5736fed57821a0fc741bfe0b1c614b7762c391b2e",
   "canonical_model": "CBE-0.7.0",
   "canonical_model_status": "STRICTLY_FROZEN",
   "governance_decision": "TECHNICAL_NO_GO",
@@ -15,8 +15,8 @@
       "sha256": "7138c9caefdfe0ddc04d27a940f0127f86229ebf99bf403e48267267e4126634"
     },
     "implementation_report.md": {
-      "file_size_bytes": 5765,
-      "sha256": "476a0b36b8b5d6d4cf0b0ca2a1328440fb84304ddd7f1a62a5e91829502f5320"
+      "file_size_bytes": 3944,
+      "sha256": "00738efd1568b697eb3519b3e8f6f2c37a6589fa64340407538ae633bd1c0e94"
     },
     "security_threat_model.md": {
       "file_size_bytes": 2253,
@@ -47,8 +47,8 @@
       "sha256": "48575c703ec1e0bb207411f1d4834bda67a6d273be02eb8389bf898efb868f81"
     },
     "persistent_volume_verification.json": {
-      "file_size_bytes": 1224,
-      "sha256": "f5892ba2aad4ad90b06cc2861665672404237759fb5bbb9a02db8b29c0bb088c"
+      "file_size_bytes": 1629,
+      "sha256": "35973fd3e751e774d4ad880b7416e3ac29b784dd0f0863712a4430f7826cec80"
     },
     "backup_restore_verification.json": {
       "file_size_bytes": 390,
@@ -87,28 +87,28 @@
       "sha256": "db0f7fcf823bd7ff8bdd0aa26aa8f88bc7a1977ff2403560ebbf35ade49e2d3d"
     },
     "full_regression_results.json": {
-      "file_size_bytes": 919,
-      "sha256": "367c27ceb05ff65731053c31145a72dfcd842dca48e0b235d508f0a2fc1c177b"
+      "file_size_bytes": 634,
+      "sha256": "b8e99e2d8b05df306e61c0c2508f7b70e838d1cb6ceaee37b5106d6033dd2986"
     },
     "playwright_acceptance_results.json": {
       "file_size_bytes": 5702,
-      "sha256": "093f3b4b577ffaf279dff77b73326284d32b391821ab8bb03d22eb3b8314b74a"
+      "sha256": "0b3f3c44f7b61df1a357b3457125d234daf9dcf2d1a916f908985d4c27b31a0b"
     },
     "staging_runtime_provenance.json": {
-      "file_size_bytes": 1032,
-      "sha256": "1fe69efbfdcb011fb37a70a2ac1b4c62aee59449baf7fda08f9f5cb62032d962"
+      "file_size_bytes": 1093,
+      "sha256": "f78d6f03b701593a3fea7ad3ab58f730a397576ccba1755faa9e274ddc46717b"
     },
     "production_zero_touch_attestation.json": {
       "file_size_bytes": 588,
       "sha256": "5bcf38bedb882a9f73744295a1d9f8e36b325fb7b6dc67a1a9219e3b2281f965"
     },
     "git_release_identity.json": {
-      "file_size_bytes": 576,
-      "sha256": "d3921055f1a5be156c977ab6aea6e9142a1a30dd104efff3b26ac2b023e3f937"
+      "file_size_bytes": 893,
+      "sha256": "9edfa989b7e63b3bf03f5bcc1ebd97a868ba9c2e9b168fee465245eb3a1a2d6b"
     },
     "final_acceptance_report.md": {
-      "file_size_bytes": 6101,
-      "sha256": "54ab85bc52c499e7425112f7b16c7540bbf64d90b2ec761d125b7475b35abcc7"
+      "file_size_bytes": 4456,
+      "sha256": "614ffaa09b6c6ce7ea6732a52aa1bfc564b9b4d12d6d79c9a1c98c522fa92192"
     }
   }
 }

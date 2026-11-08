@@ -1,8 +1,8 @@
 {
   "schema_version": "CBE-VOLUME-VERIFICATION-1.0.0",
-  "timestamp_utc": "2026-11-09T00:05:00Z",
+  "timestamp_utc": "2026-11-08T21:35:00Z",
   "host": "srv1114257",
-  "container_id": "744ab8c5df8eb768cdcd634b6d69bdd8b7d12e8375c0b36dd612604de2755f02",
+  "container_id": "757708aebe8179aa3bf7d8a73ac04d215590d6ee139deecbe0cfb50953f24a2d",
   "authorized_volume_id": "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f",
   "mount_details": {
     "source": "/var/lib/docker/volumes/dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f/_data",
@@ -12,11 +12,13 @@
     "is_tmpfs": false,
     "is_overlay": false,
     "is_writable": true,
-    "classification": "PERSISTENT_VERIFIED"
+    "classification": "PERSISTENT_VERIFIED",
+    "runtime_mountinfo_verified": true,
+    "deployment_contract_verified": true
   },
   "negative_tests_summary": {
-    "total_negative_tests": 10,
-    "passed": 10,
+    "total_negative_tests": 16,
+    "passed": 16,
     "tested_rejections": [
       "writable_docker_overlay_rootfs",
       "ephemeral_tmpfs",
@@ -27,7 +29,13 @@
       "unauthorized_bind_mount",
       "missing_provenance_fail_closed",
       "unwritable_unavailable_path",
-      "unauthorized_volume_id_identity"
+      "unauthorized_volume_id_identity",
+      "forged_environment_without_runtime_metadata_rejected",
+      "contradictory_environment_volume_id_rejected",
+      "contradictory_runtime_vs_contract_volume_id_rejected",
+      "contract_destination_mismatch_rejected",
+      "contract_filesystem_mismatch_rejected",
+      "unauthorized_contract_volume_id_rejected"
     ]
   },
   "container_recreation_persistence_verified": true,

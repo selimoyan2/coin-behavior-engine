@@ -1,34 +1,28 @@
 {
-  "schema_version": "CBE-REGRESSION-SUITE-1.0.0",
-  "timestamp_utc": "2026-11-09T00:05:00Z",
-  "test_suite_summary": {
-    "total_tests": 65,
-    "passed_tests": 65,
-    "failed_tests": 0,
-    "playwright_scenarios": 34,
-    "playwright_passed": 34
-  },
-  "groups": {
-    "sprint_23_platform_security": {
-      "test_file": "tests/test_sprint_product_acceleration_23.py",
+  "schema_version": "CBE-REGRESSION-RESULTS-1.0.0",
+  "timestamp_utc": "2026-11-08T21:35:00Z",
+  "test_suites": {
+    "test_sprint_product_acceleration_23.py": {
       "total": 27,
-      "passed": 27
+      "passed": 27,
+      "failed": 0
     },
-    "sprint_23_acceptance_corrections": {
-      "test_file": "tests/test_sprint_product_acceleration_23_correction.py",
-      "total": 20,
-      "passed": 20
+    "test_sprint_product_acceleration_23_correction.py": {
+      "total": 29,
+      "passed": 29,
+      "failed": 0
     },
-    "sprint_22_hardening_regression": {
-      "test_file": "tests/test_sprint_product_acceleration_22_hardening.py",
+    "test_sprint_product_acceleration_22_hardening.py": {
       "total": 18,
-      "passed": 18
-    },
-    "playwright_browser_e2e": {
-      "script": "scripts/run_playwright_sprint23.py",
-      "total": 34,
-      "passed": 34
+      "passed": 18,
+      "failed": 0
     }
   },
-  "verdict": "FULL_REGRESSION_PASS"
+  "overall_summary": {
+    "total_tests": 74,
+    "passed": 74,
+    "failed": 0,
+    "pass_rate_percent": 100.0
+  },
+  "verdict": "FULL_REGRESSION_PASSED"
 }

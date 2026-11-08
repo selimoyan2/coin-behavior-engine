@@ -2,57 +2,51 @@
 ## Research Platform Security, Reliability & Operational Readiness V1
 
 - **Sprint Identifier:** `CBE_PRODUCT_ACCELERATION_23`
-- **Canonical Model:** `CBE-0.7.0` (STRICTLY_FROZEN, 0 Parameter Mutations)
+- **Canonical Model:** `CBE-0.7.0` (STRICTLY FROZEN, 0 Parameter Mutations)
 - **Technical Decision:** `TECHNICAL_NO_GO`
-- **Implementation Commit:** `de2d1e3f549d48a70909258e7c6f190f47d083aa`
-- **Timestamp:** `2026-11-09T00:05:00+00:00`
+- **Final Certification Implementation Commit:** `c092791444983083db9f0eb11dbd6621fb705007`
+- **Timestamp:** `2026-11-08T21:35:00+00:00`
 - **Target Branch:** `main`
 
 ---
 
 ## 1. Executive Summary
 
-Sprint 23 established an enterprise-grade security and reliability perimeter around the historical research platform, complemented by a rigorous final acceptance correction addressing persistent volume identity, cross-worker resource governance, multi-worker session concurrency, and RFC 8785 JSON canonicalization. All phases were completed without touching the frozen analytical model (`CBE-0.7.0`) or violating operational boundaries.
-
-Key capabilities delivered and hardened:
-1. **Separation of Credentials:** Segregated operator auth tokens from HMAC evidence signing keys, admin diagnostic credentials, and ephemeral test tokens.
-2. **Session Authentication & CSRF Protection:** Introduced server-managed sessions with `HttpOnly; SameSite=Strict` cookies, 1-hour expiration, and mandatory CSRF token verification for all state mutations.
-3. **Multi-Worker Persistent Session Store:** Migrated from in-memory dictionary to `SqliteSessionStore` backed by SQLite WAL mode and a 5000ms busy timeout on durable storage (`/app/data/prospective/sessions.db`). Session tokens are stored exclusively as SHA-256 hashes (`session_id_hash`).
-4. **Cross-Process Advisory Locking & Semaphores:** Implemented `MultiProcessLock` and `FileBackedSemaphore` utilizing kernel-enforced file locks (`fcntl.flock` on POSIX, `msvcrt.locking` on Windows) in `/tmp/cbe_locks/semaphores/`. Locks are automatically released upon process exit or crash, preventing permit leakage across independent worker processes.
-5. **Mount-Boundary-Aware Storage Durability:** Strict parsing of `/proc/mounts` using path-component boundaries (`match_mount_for_path`), preventing symlink escape attacks via `realpath`, rejecting container overlay rootfs (`CONTAINER_OVERLAY_REJECTED`), and verifying authorized volume ID `dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f` on `/app/data/prospective`.
-6. **RFC 8785 Canonical JSON:** Implemented strict ECMAScript 6.1.6.1 number formatting for JSON Canonicalization Scheme (JCS) with dual-format verification supporting historical evidence bundles (`CBE-CANONICAL-JSON-v1`).
-7. **Resource Governor:** Strict concurrency semaphores (research=2, pdf=2, evidence=4), 2MB request payload ceilings, 5,000 candle limits, and cgroup v2/v1 CPU, memory, and PID telemetry.
-8. **Structured Logging & Error Contracts:** Universal secret redaction via regex pattern matching, in-memory diagnostic ring buffer, and standardized bilingual error payloads.
-9. **Operational Status Panel:** Real-time visibility into platform health, storage persistence, model freeze, governance decisions, and trading prohibitions.
+Sprint 23 established an enterprise-grade security and reliability perimeter around the historical research platform, concluding with the authoritative resolution of all certification closure requirements:
+1. **Authoritative Docker Volume Identity:** Storage durability classification strictly verifies kernel runtime metadata (`/proc/self/mountinfo`) or a trusted deployment-side verification contract (`.cbe_volume_attestation.json`). Environment variables alone are never accepted as proof of actual mount identity. Missing, contradictory, or spoofed identities are strictly rejected.
+2. **Audited RFC 8785 Standards Compliance:** Migrated to the official `rfc8785>=0.1.4` package for RFC 8785 (JSON Canonicalization Scheme - JCS). Fully verified against ECMAScript 6.1.6.1 number serialization (`1e-6`, `1e-7`, `1e20`, `1e21`, `-0.0`), UTF-16 code unit ordering, supplementary characters (`\U0001F600`), and safe IEEE-754 range enforcement. Historical `CBE-CANONICAL-JSON-v1` evidence bundles remain verifiable without altering historical signatures.
+3. **Cross-Process Concurrency Governance:** `FileBackedSemaphore` backed by OS kernel file locks (`fcntl.flock` / `msvcrt.locking`) in `/tmp/cbe_locks/semaphores/`, automatically released upon process crash.
+4. **Multi-Worker Persistent Session Store:** `SqliteSessionStore` backed by SQLite WAL mode and 5000ms busy timeout at `/app/data/prospective/sessions.db`, storing SHA-256 token hashes.
+5. **Operational Observability & UI:** Status panel displaying health, durability, model freeze, governance decisions, and trading prohibitions in real time.
 
 ---
 
 ## 2. Component Deliveries & Hardening
 
-### 2.1 Credential & Session Architecture
-- `src/coin_behavior_engine/product/credential_manager.py`: Manages key rotation, fingerprinting, and cryptographic validation.
-- `src/coin_behavior_engine/product/session_manager.py`: `SqliteSessionStore` with WAL mode, constant-time token comparison, SHA-256 token hashing, thread-safe and multi-process transactional guarantees, automatic expired session cleanup.
+### 2.1 Storage Durability & Volume Identity (`storage_durability.py`)
+- Kernel mountinfo parser extracting Docker volume roots (`/var/lib/docker/volumes/<id>/_data`).
+- Deployment verification contract loader (`.cbe_volume_attestation.json`).
+- Path-component boundary matching preventing prefix collisions.
+- Detection of container overlay filesystems (`CONTAINER_OVERLAY_REJECTED`).
+- Anti-spoofing logic rejecting unverified or contradictory environment variables.
 
-### 2.2 Concurrency, Storage Durability & Governance
-- `src/coin_behavior_engine/product/process_locking.py`: Cross-process advisory locking (`MultiProcessLock`) with timeout support and stale lock cleanup.
-- `src/coin_behavior_engine/product/storage_durability.py`: Mount table parser, path-component boundary matcher, symlink escape detector, Docker overlay rejection, authorized volume identifier verification, atomic snapshot backup and restoration.
-- `src/coin_behavior_engine/product/resource_governor.py`: `FileBackedSemaphore` for cross-process concurrency limiting, cgroup limit inspection (`get_cgroup_limits`), payload validation, memory RSS telemetry.
-- `src/coin_behavior_engine/product/research_report_evidence.py`: `rfc8785_canonical_json` implementation with ECMAScript number serialization, dual verification of evidence bundles.
+### 2.2 Evidence Bundle & Canonicalization (`research_report_evidence.py`)
+- Official `rfc8785` dependency adhering to RFC 8785 and ECMAScript number serialization.
+- Preservation of historical `CBE-CANONICAL-JSON-v1` verification logic for backward compatibility.
+- Multi-dimensional evidence verification with explicit verdicts.
 
-### 2.3 Operational Observability & UI
-- `src/coin_behavior_engine/product/structured_logging.py`: Redacts tokens, keys, passwords from log pipelines.
-- `src/coin_behavior_engine/product/error_contract.py`: Bilingual error payloads with unique correlation IDs.
-- `src/coin_behavior_engine/product/research_explorer_ui.py`: Operational Status Panel and Session Security UI with real-time durability classification and model freeze guarantees.
+### 2.3 Concurrency & Session Security
+- `resource_governor.py`: File-backed bounded semaphores (research=2, pdf=2, evidence=4).
+- `session_manager.py`: SQLite WAL session store with token hashing and automatic expiry cleanup.
+- `credential_manager.py`: Role segregation (operator auth vs evidence signing vs diagnostics).
 
 ---
 
 ## 3. Verification Summary
 
-- **Automated Tests:** 65/65 Passed (27 original Sprint 23 tests + 20 correction tests + 18 Sprint 22 regression tests).
+- **Automated Pytest Suite:** 74/74 Passed (27 Sprint 23 + 29 Correction + 18 Sprint 22).
 - **Playwright Scenarios:** 34/34 Passed across Desktop, Tablet, and Mobile viewports.
-- **Persistent Volume Verification:** Tested on authorized ext4 volume `dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f`.
-- **Negative Storage Tests:** 10/10 Negative tests passed (overlay, tmpfs, symlinks, unauthorized roots, read-only mounts).
-- **Multi-Process Concurrency:** 4 independent worker processes verified under load, with kernel-enforced release on worker crash.
-- **Staging Deployment:** Verified on `srv1114257:18080` with persistent Docker volume.
-- **Container Recreation Test:** Verified report and session persistence across container destruction and restart.
+- **Authoritative Volume Verification:** Tested on ext4 volume `dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f`.
+- **Negative Storage Tests:** 16/16 Passed (including forged env and contradictory identities).
+- **Remote Staging Deployment:** Deployed to `srv1114257:18080`, image digest `sha256:10cf9c6843dd074b0bd0aed5736fed57821a0fc741bfe0b1c614b7762c391b2e`.
 - **Production Container `1a867269c843`:** Strict ZERO-TOUCH maintained (`Up 5 days (healthy)`).
