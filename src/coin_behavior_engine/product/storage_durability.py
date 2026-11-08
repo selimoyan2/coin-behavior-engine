@@ -66,8 +66,79 @@ class StorageDurabilityEngine:
         return tuple(prefixes)
 
     @classmethod
+    def parse_mountinfo_table(cls, mountinfo_content: Optional[str] = None) -> List[Dict[str, Any]]:
+        """Parses /proc/self/mountinfo into structured mount entries with volume identity extraction."""
+        mounts: List[Dict[str, Any]] = []
+        if mountinfo_content is None:
+            mountinfo_path = os.environ.get("CBE_MOUNTINFO_PATH", "/proc/self/mountinfo")
+            if sys.platform != "win32" and os.path.exists(mountinfo_path):
+                try:
+                    with open(mountinfo_path, "r", encoding="utf-8") as f:
+                        mountinfo_content = f.read()
+                except Exception:
+                    mountinfo_content = ""
+            else:
+                mountinfo_content = ""
+
+        if not mountinfo_content:
+            return mounts
+
+        for line in mountinfo_content.splitlines():
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            parts = line.split()
+            if "-" not in parts:
+                continue
+            sep_idx = parts.index("-")
+            if len(parts) < sep_idx + 3 or len(parts) < 5:
+                continue
+
+            root = parts[3]
+            mount_point = parts[4].rstrip("/") or "/"
+            mount_opts = parts[5].split(",")
+            fstype = parts[sep_idx + 1].lower()
+            mount_source = parts[sep_idx + 2]
+            super_opts = parts[sep_idx + 3].split(",") if len(parts) > sep_idx + 3 else []
+
+            # Extract Docker volume ID from kernel mount root path
+            vol_id = None
+            vm = re.search(r"/(?:var/lib/)?(?:docker|containers)/volumes/([^/]+)/_data", root)
+            if not vm:
+                vm = re.search(r"/volumes/([a-zA-Z0-9_\.-]+)/_data", root)
+            if not vm:
+                vm = re.search(r"/volumes/([a-zA-Z0-9_\.-]+)", root)
+            if vm:
+                vol_id = vm.group(1)
+
+            opt_all = set(mount_opts + super_opts)
+
+            mounts.append({
+                "device": mount_source,
+                "mount_point": mount_point,
+                "root": root,
+                "volume_id": vol_id,
+                "fstype": fstype,
+                "options": ",".join(mount_opts),
+                "is_readonly": "ro" in opt_all,
+                "is_tmpfs": fstype in ("tmpfs", "ramfs", "shm"),
+                "is_overlay": fstype in ("overlay", "overlayfs"),
+            })
+        return mounts
+
+    @classmethod
     def parse_mounts_table(cls, mounts_content: Optional[str] = None) -> List[Dict[str, Any]]:
-        """Parses /proc/mounts style table into structured mount entries."""
+        """Parses /proc/self/mountinfo or /proc/mounts style table into structured mount entries."""
+        if mounts_content is None:
+            mountinfo_path = os.environ.get("CBE_MOUNTINFO_PATH", "/proc/self/mountinfo")
+            if sys.platform != "win32" and os.path.exists(mountinfo_path):
+                m_info = cls.parse_mountinfo_table()
+                if m_info:
+                    return m_info
+
+        if mounts_content is not None and any(" - " in line for line in mounts_content.splitlines()):
+            return cls.parse_mountinfo_table(mountinfo_content=mounts_content)
+
         mounts: List[Dict[str, Any]] = []
         if mounts_content is None:
             mounts_path = os.environ.get("CBE_MOUNTS_PATH", "/proc/mounts")
@@ -103,6 +174,36 @@ class StorageDurabilityEngine:
         return mounts
 
     @classmethod
+    def load_deployment_volume_contract(
+        cls,
+        resolved_path: str,
+        contract_override: Optional[Dict[str, Any]] = None,
+    ) -> Optional[Dict[str, Any]]:
+        """Loads trusted deployment-provided Docker volume verification contract."""
+        if contract_override is not None:
+            return contract_override
+
+        candidate_paths = [
+            os.path.join(resolved_path, ".cbe_volume_attestation.json"),
+            os.path.join(resolved_path, ".cbe_volume_contract.json"),
+            "/etc/cbe/volume_contract.json",
+        ]
+        env_contract = os.environ.get("CBE_VOLUME_CONTRACT_PATH")
+        if env_contract:
+            candidate_paths.insert(0, env_contract)
+
+        for c_path in candidate_paths:
+            if os.path.exists(c_path):
+                try:
+                    with open(c_path, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                    if isinstance(data, dict) and "authorized_volume_id" in data:
+                        return data
+                except Exception:
+                    continue
+        return None
+
+    @classmethod
     def match_mount_for_path(
         cls,
         resolved_path: str,
@@ -130,12 +231,15 @@ class StorageDurabilityEngine:
         cls,
         path_input: str | Path,
         mounts_override: Optional[List[Dict[str, Any]]] = None,
+        contract_override: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """
         Inspects and classifies a storage directory path with strict boundary and persistence verification.
         - Resolves symlinks using realpath to prevent symlink escape.
         - Matches mount points using path-component boundaries.
         - Distinguishes Docker overlay filesystems from genuine persistent volume mounts.
+        - Requires authoritative runtime Docker volume identity or verified deployment contract.
+        - Never trusts an environment variable as proof of actual mount identity.
         - Fails closed if persistence cannot be proven in staging/production.
         """
         raw_str = str(path_input)
@@ -256,18 +360,81 @@ class StorageDurabilityEngine:
                 classification = "PERSISTENT_UNVERIFIED"
                 rejection_reason = "Path has no established mount entry in system mounts table."
             else:
-                # Authorized persistent volume verified
-                # Optional volume ID check
-                configured_volume_id = os.environ.get("CBE_AUTHORIZED_VOLUME_ID")
-                if configured_volume_id and configured_volume_id not in cls.AUTHORIZED_STAGING_VOLUME_IDS:
-                    classification = "UNAUTHORIZED_VOLUME_ID"
-                    rejection_reason = f"Configured volume ID '{configured_volume_id}' is not authorized."
-                else:
-                    classification = "PERSISTENT_VERIFIED"
+                # 6. Authoritative Docker volume identity verification
+                # A: Independently obtained runtime volume ID from kernel mountinfo
+                runtime_volume_id = mount_info.get("volume_id")
+                if not runtime_volume_id and mount_info.get("root"):
+                    root_val = mount_info.get("root", "")
+                    vm = re.search(r"/(?:var/lib/)?(?:docker|containers)/volumes/([^/]+)/_data", root_val)
+                    if not vm:
+                        vm = re.search(r"/volumes/([a-zA-Z0-9_\.-]+)/_data", root_val)
+                    if not vm:
+                        vm = re.search(r"/volumes/([a-zA-Z0-9_\.-]+)", root_val)
+                    if vm:
+                        runtime_volume_id = vm.group(1)
+
+                # B: Deployment-provided verification contract
+                contract = cls.load_deployment_volume_contract(resolved, contract_override=contract_override)
+                contract_volume_id = None
+                if contract:
+                    c_dest = contract.get("expected_destination")
+                    c_fs = contract.get("expected_filesystem")
+                    c_vol = contract.get("authorized_volume_id")
+
+                    dest_match = False
+                    if c_dest:
+                        c_dest_clean = re.sub(r"^[a-zA-Z]:", "", c_dest.strip().replace("\\", "/"))
+                        cd_parts = Path(c_dest_clean).parts
+                        res_parts = Path(norm_no_drive).parts
+                        if len(res_parts) >= len(cd_parts):
+                            if res_parts[:len(cd_parts)] == cd_parts or res_parts[-len(cd_parts):] == cd_parts:
+                                dest_match = True
+
+                    if mount_info.get("fstype"):
+                        fs_match = (not c_fs) or (c_fs.lower() == mount_info.get("fstype", "").lower())
+                    else:
+                        fs_match = (not c_fs) or (sys.platform == "win32")
+
+                    if not dest_match:
+                        classification = "UNAUTHORIZED_MOUNT_ROOT"
+                        rejection_reason = f"Deployment contract destination '{c_dest}' does not match path '{norm_no_drive}'."
+                    elif not fs_match:
+                        classification = "REJECTED_FILESYSTEM_TYPE"
+                        rejection_reason = f"Deployment contract filesystem '{c_fs}' contradicts runtime filesystem '{mount_info.get('fstype')}'."
+                    else:
+                        contract_volume_id = c_vol
+
+                # Check if an environment variable was provided (potential spoofing or contradiction)
+                env_vol_id = os.environ.get("CBE_AUTHORIZED_VOLUME_ID") or os.environ.get("CBE_DOCKER_VOLUME_ID")
+
+                # Reconcile identities with strict fail-closed security
+                if classification not in ("UNAUTHORIZED_MOUNT_ROOT", "REJECTED_FILESYSTEM_TYPE"):
+                    if runtime_volume_id and contract_volume_id and runtime_volume_id != contract_volume_id:
+                        classification = "CONTRADICTORY_VOLUME_IDENTITY"
+                        rejection_reason = f"Runtime volume ID '{runtime_volume_id}' contradicts deployment contract volume ID '{contract_volume_id}'."
+                    else:
+                        established_vol_id = runtime_volume_id or contract_volume_id
+
+                        # Anti-spoofing rule: Environment variable ALONE is never accepted as proof
+                        if env_vol_id and not established_vol_id:
+                            classification = "UNVERIFIABLE_VOLUME_IDENTITY"
+                            rejection_reason = "Environment variable alone cannot establish volume identity without independently obtained runtime metadata or deployment contract."
+                        elif env_vol_id and established_vol_id and env_vol_id != established_vol_id:
+                            classification = "CONTRADICTORY_VOLUME_IDENTITY"
+                            rejection_reason = f"Configured environment volume ID '{env_vol_id}' contradicts verified runtime volume identity '{established_vol_id}'."
+                        elif not established_vol_id:
+                            classification = "UNVERIFIABLE_VOLUME_IDENTITY"
+                            rejection_reason = "No authoritative Docker volume identity could be established from kernel runtime metadata or deployment contract."
+                        elif established_vol_id not in cls.AUTHORIZED_STAGING_VOLUME_IDS:
+                            classification = "UNAUTHORIZED_VOLUME_ID"
+                            rejection_reason = f"Verified volume ID '{established_vol_id}' is not in authorized staging volume list."
+                        else:
+                            classification = "PERSISTENT_VERIFIED"
         else:
             # Local development environment
             classification = "PERSISTENT_VERIFIED"
 
+        established_vol = locals().get("established_vol_id")
         return {
             "path": raw_str,
             "resolved_path": resolved,
@@ -280,6 +447,12 @@ class StorageDurabilityEngine:
             "environment": cbe_env,
             "mount_info": mount_info,
             "verified_durable": classification == "PERSISTENT_VERIFIED",
+            "volume_id": established_vol if classification == "PERSISTENT_VERIFIED" else None,
+            "volume_provenance": (
+                "KERNEL_MOUNTINFO"
+                if locals().get("runtime_volume_id")
+                else ("DEPLOYMENT_CONTRACT" if locals().get("contract_volume_id") else "NONE")
+            ),
         }
 
     @classmethod
@@ -287,12 +460,17 @@ class StorageDurabilityEngine:
         cls,
         path_input: str | Path,
         mounts_override: Optional[List[Dict[str, Any]]] = None,
+        contract_override: Optional[Dict[str, Any]] = None,
     ) -> None:
         """
         Enforces that the path is PERSISTENT_VERIFIED in staging/production.
         Raises RuntimeError if storage path is ephemeral or unverified.
         """
-        info = cls.inspect_storage_path(path_input, mounts_override=mounts_override)
+        info = cls.inspect_storage_path(
+            path_input,
+            mounts_override=mounts_override,
+            contract_override=contract_override,
+        )
         if not info["is_writable"]:
             raise RuntimeError(f"STORAGE_UNAVAILABLE: Storage directory '{path_input}' is not writable.")
         if info["is_ephemeral"]:

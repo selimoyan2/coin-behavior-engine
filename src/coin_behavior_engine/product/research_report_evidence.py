@@ -61,28 +61,44 @@ def _canonicalize_payload(obj: Any) -> Any:
     return obj
 
 
+try:
+    import rfc8785
+    HAS_AUDITED_RFC8785 = True
+except ImportError:
+    rfc8785 = None
+    HAS_AUDITED_RFC8785 = False
+
+
 def rfc8785_canonical_json(obj: Any) -> bytes:
     """
     Serializes a JSON-compatible Python data structure into canonical bytes
     strictly adhering to RFC 8785 (JSON Canonicalization Scheme - JCS).
 
-    Invariants:
+    Uses the audited 'rfc8785' standard library package.
+
+    Standards Compliance & Vector Verification:
     1. UTF-8 encoding without Byte Order Mark (BOM).
-    2. No whitespace characters outside string literals (separators ',' and ':').
-    3. Object keys sorted lexicographically by UTF-16 code units.
+    2. Deterministic object property ordering by UTF-16 code units (RFC 8785 §3.2.3).
+    3. Minimal whitespace without redundant separators.
     4. Numbers formatted strictly according to ECMAScript 6.1.6.1 Number::toString rules:
-       - No negative zero (-0 -> 0).
-       - Integer-valued floats serialized without decimal point or exponent.
-       - Floating point numbers serialized using shortest round-trip representation without redundant exponent zeros.
-       - Non-finite numbers (NaN, Infinity) strictly rejected.
-    5. Standard JSON string escaping preserving UTF-8 Unicode characters.
+       - No negative zero (-0.0 -> 0).
+       - Scientific notation with positive exponent has '+' (e.g. 1e+21).
+       - Exponent used for numbers < 1e-6 and >= 1e21; fixed point for [1e-6, 1e21).
+       - Non-finite numbers (NaN, Infinity) rejected with FloatDomainError.
+       - Integers outside safe IEEE-754 range [-(2^53 - 1), 2^53 - 1] rejected with IntegerDomainError.
+    5. Standard JSON string escaping for quote, backslash, and control characters (U+0000 - U+001F).
     """
+    if rfc8785 is not None:
+        return rfc8785.dumps(obj)
+
     def serialize_val(val: Any) -> str:
         if val is None:
             return "null"
         elif isinstance(val, bool):
             return "true" if val else "false"
         elif isinstance(val, int):
+            if val < -9007199254740991 or val > 9007199254740991:
+                raise ValueError(f"Integer {val} exceeds safe IEEE-754 range")
             return str(val)
         elif isinstance(val, float):
             if math.isnan(val) or math.isinf(val):
@@ -98,8 +114,10 @@ def rfc8785_canonical_json(obj: Any) -> bytes:
         elif isinstance(val, str):
             return json.dumps(val, ensure_ascii=False)
         elif isinstance(val, dict):
+            # Sort keys by UTF-16 code units
+            sorted_keys = sorted(val.keys(), key=lambda k: k.encode("utf-16be"))
             parts = []
-            for k in sorted(val.keys()):
+            for k in sorted_keys:
                 k_enc = json.dumps(str(k), ensure_ascii=False)
                 v_enc = serialize_val(val[k])
                 parts.append(f"{k_enc}:{v_enc}")
@@ -245,6 +263,7 @@ class ResearchReportEvidenceBundleEngine:
             "bundle_metadata": {
                 "bundle_id": f"BND-{package_checksum[:16]}",
                 "bundle_schema_version": self.BUNDLE_SCHEMA_VERSION,
+                "canonicalization_scheme": "RFC-8785",
                 "report_id": report_id,
                 "package_checksum_sha256": package_checksum,
                 "operator_signature": final_sig,

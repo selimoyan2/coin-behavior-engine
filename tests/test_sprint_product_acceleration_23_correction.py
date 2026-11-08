@@ -256,11 +256,12 @@ class TestGroup1StorageDurability10Negative:
     def test_neg10_unauthorized_volume_id_rejected(self, monkeypatch):
         """10. Storage volume with an unapproved volume identity is rejected."""
         monkeypatch.setenv("CBE_ENV", "staging")
-        monkeypatch.setenv("CBE_AUTHORIZED_VOLUME_ID", "unauthorized-volume-id-attacker")
         mock_mounts = [
             {
                 "device": "/dev/sda1",
                 "mount_point": "/app/data/prospective",
+                "root": "/var/lib/docker/volumes/unauthorized-volume-id-attacker/_data",
+                "volume_id": "unauthorized-volume-id-attacker",
                 "fstype": "ext4",
                 "options": "rw",
                 "is_readonly": False,
@@ -276,13 +277,14 @@ class TestGroup1StorageDurability10Negative:
         assert not info["verified_durable"]
 
     def test_pos1_authorized_staging_volume_accepted(self, monkeypatch):
-        """Positive test: Staging volume with verified mount and volume ID is PERSISTENT_VERIFIED."""
+        """Positive test: Staging volume with verified kernel mountinfo root is PERSISTENT_VERIFIED."""
         monkeypatch.setenv("CBE_ENV", "staging")
-        monkeypatch.setenv("CBE_AUTHORIZED_VOLUME_ID", "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f")
         mock_mounts = [
             {
                 "device": "/dev/sda1",
                 "mount_point": "/app/data/prospective",
+                "root": "/var/lib/docker/volumes/dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f/_data",
+                "volume_id": "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f",
                 "fstype": "ext4",
                 "options": "rw",
                 "is_readonly": False,
@@ -296,6 +298,137 @@ class TestGroup1StorageDurability10Negative:
         )
         assert info["classification"] == "PERSISTENT_VERIFIED"
         assert info["verified_durable"]
+        assert info["volume_id"] == "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f"
+        assert info["volume_provenance"] == "KERNEL_MOUNTINFO"
+
+    def test_pos2_authorized_deployment_contract_accepted(self, monkeypatch):
+        """Positive test: Authorized deployment contract validated against runtime metadata is PERSISTENT_VERIFIED."""
+        monkeypatch.setenv("CBE_ENV", "staging")
+        mock_mounts = [
+            {
+                "device": "/dev/sda1",
+                "mount_point": "/app/data/prospective",
+                "fstype": "ext4",
+                "options": "rw",
+                "is_readonly": False,
+                "is_tmpfs": False,
+                "is_overlay": False,
+            }
+        ]
+        contract = {
+            "authorized_volume_id": "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f",
+            "expected_destination": "/app/data/prospective",
+            "expected_filesystem": "ext4",
+        }
+        info = StorageDurabilityEngine.inspect_storage_path(
+            "/app/data/prospective/reports",
+            mounts_override=mock_mounts,
+            contract_override=contract,
+        )
+        assert info["classification"] == "PERSISTENT_VERIFIED"
+        assert info["verified_durable"]
+        assert info["volume_id"] == "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f"
+        assert info["volume_provenance"] == "DEPLOYMENT_CONTRACT"
+
+    def test_forged_environment_without_runtime_metadata_rejected(self, monkeypatch):
+        """Environment variable alone without kernel mountinfo or contract MUST be rejected."""
+        monkeypatch.setenv("CBE_ENV", "staging")
+        monkeypatch.setenv("CBE_AUTHORIZED_VOLUME_ID", "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f")
+        mock_mounts = [
+            {
+                "device": "/dev/sda1",
+                "mount_point": "/app/data/prospective",
+                "fstype": "ext4",
+                "options": "rw",
+                "is_readonly": False,
+                "is_tmpfs": False,
+                "is_overlay": False,
+            }
+        ]
+        # No volume_id/root in mount, and no contract override provided
+        info = StorageDurabilityEngine.inspect_storage_path(
+            "/app/data/prospective/reports",
+            mounts_override=mock_mounts,
+        )
+        assert info["classification"] == "UNVERIFIABLE_VOLUME_IDENTITY"
+        assert not info["verified_durable"]
+
+    def test_contradictory_environment_volume_id_rejected(self, monkeypatch):
+        """Environment variable contradicting runtime mountinfo is rejected."""
+        monkeypatch.setenv("CBE_ENV", "staging")
+        monkeypatch.setenv("CBE_AUTHORIZED_VOLUME_ID", "forged-contradictory-id-999")
+        mock_mounts = [
+            {
+                "device": "/dev/sda1",
+                "mount_point": "/app/data/prospective",
+                "volume_id": "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f",
+                "fstype": "ext4",
+                "options": "rw",
+                "is_readonly": False,
+                "is_tmpfs": False,
+                "is_overlay": False,
+            }
+        ]
+        info = StorageDurabilityEngine.inspect_storage_path(
+            "/app/data/prospective/reports",
+            mounts_override=mock_mounts,
+        )
+        assert info["classification"] == "CONTRADICTORY_VOLUME_IDENTITY"
+        assert not info["verified_durable"]
+
+    def test_contract_destination_mismatch_rejected(self, monkeypatch):
+        """Contract destination mismatching inspected path is rejected."""
+        monkeypatch.setenv("CBE_ENV", "staging")
+        mock_mounts = [
+            {
+                "device": "/dev/sda1",
+                "mount_point": "/app/data/prospective",
+                "fstype": "ext4",
+                "options": "rw",
+                "is_readonly": False,
+                "is_tmpfs": False,
+                "is_overlay": False,
+            }
+        ]
+        contract = {
+            "authorized_volume_id": "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f",
+            "expected_destination": "/app/data/different_destination",
+            "expected_filesystem": "ext4",
+        }
+        info = StorageDurabilityEngine.inspect_storage_path(
+            "/app/data/prospective/reports",
+            mounts_override=mock_mounts,
+            contract_override=contract,
+        )
+        assert info["classification"] == "UNAUTHORIZED_MOUNT_ROOT"
+        assert not info["verified_durable"]
+
+    def test_contract_filesystem_mismatch_rejected(self, monkeypatch):
+        """Contract specifying ext4 when runtime mount is xfs is rejected."""
+        monkeypatch.setenv("CBE_ENV", "staging")
+        mock_mounts = [
+            {
+                "device": "/dev/sda1",
+                "mount_point": "/app/data/prospective",
+                "fstype": "xfs",
+                "options": "rw",
+                "is_readonly": False,
+                "is_tmpfs": False,
+                "is_overlay": False,
+            }
+        ]
+        contract = {
+            "authorized_volume_id": "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f",
+            "expected_destination": "/app/data/prospective",
+            "expected_filesystem": "ext4",
+        }
+        info = StorageDurabilityEngine.inspect_storage_path(
+            "/app/data/prospective/reports",
+            mounts_override=mock_mounts,
+            contract_override=contract,
+        )
+        assert info["classification"] == "REJECTED_FILESYSTEM_TYPE"
+        assert not info["verified_durable"]
 
 
 # =============================================================================
@@ -546,20 +679,75 @@ class TestGroup4RFC8785CanonicalizationAndCompatibility:
     """RFC 8785 compliance and historical backward compatibility verification."""
 
     def test_rfc8785_number_formatting(self):
-        """RFC 8785 requires ECMAScript number formatting without negative zero or superfluous decimals."""
+        """RFC 8785 and ECMAScript number serialization vectors."""
         test_cases = [
             ({"val": 0.0}, b'{"val":0}'),
             ({"val": -0.0}, b'{"val":0}'),
             ({"val": 1.0}, b'{"val":1}'),
             ({"val": 42}, b'{"val":42}'),
             ({"val": 0.05}, b'{"val":0.05}'),
-            ({"val": 1e-5}, b'{"val":1e-5}'),
+            ({"val": 1e-5}, b'{"val":0.00001}'),
+            ({"val": 1e-6}, b'{"val":0.000001}'),
             ({"val": 1e-7}, b'{"val":1e-7}'),
+            ({"val": 1e20}, b'{"val":100000000000000000000}'),
             ({"val": 1e21}, b'{"val":1e+21}'),
+            ({"val": -1e21}, b'{"val":-1e+21}'),
         ]
         for obj, expected in test_cases:
             res = rfc8785_canonical_json(obj)
             assert res == expected, f"Failed for {obj}: expected {expected}, got {res}"
+
+    def test_rfc8785_unicode_supplementary_characters_and_utf16_ordering(self):
+        """RFC 8785 requires UTF-16 code unit ordering and valid Unicode supplementary characters."""
+        # \U0001F600 (surrogate pair D83D DE00 in UTF-16) comes before \uFFFF in UTF-16 code unit order
+        # whereas in UTF-8 \xF0 > \xEF
+        obj = {
+            "\uffff": 1,
+            "\U0001F600": 2,
+            "a": 3,
+            "\u00e9": 4,
+        }
+        res = rfc8785_canonical_json(obj)
+        # Expected UTF-16 code unit order: "a" (0x0061) < "\u00e9" (0x00e9) < "\U0001F600" (0xd83d...) < "\uffff" (0xffff)
+        expected = b'{"a":3,"\xc3\xa9":4,"\xf0\x9f\x98\x80":2,"\xef\xbf\xbf":1}'
+        assert res == expected
+
+    def test_rfc8785_string_escaping(self):
+        """RFC 8785 requires standard escaping for quotes, backslashes, and control characters."""
+        obj = {
+            "quote": '"',
+            "backslash": "\\",
+            "newline": "\n",
+            "carriage_return": "\r",
+            "tab": "\t",
+            "ctrl": "\x00\x1f",
+        }
+        res = rfc8785_canonical_json(obj)
+        expected = b'{"backslash":"\\\\","carriage_return":"\\r","ctrl":"\\u0000\\u001f","newline":"\\n","quote":"\\"","tab":"\\t"}'
+        assert res == expected
+
+    def test_rfc8785_non_finite_numbers_rejected(self):
+        """Non-finite numbers (NaN, Infinity, -Infinity) must be rejected."""
+        import math
+        for bad_val in [float("nan"), float("inf"), float("-inf")]:
+            with pytest.raises(Exception):
+                rfc8785_canonical_json({"val": bad_val})
+
+    def test_rfc8785_large_integers_outside_ieee754_rejected(self):
+        """Integers outside safe IEEE-754 range [-(2^53 - 1), 2^53 - 1] must be rejected."""
+        safe_max = 9007199254740991  # 2^53 - 1
+        safe_min = -9007199254740991
+        # Safe should pass
+        assert rfc8785_canonical_json({"v": safe_max}) == b'{"v":9007199254740991}'
+        assert rfc8785_canonical_json({"v": safe_min}) == b'{"v":-9007199254740991}'
+
+        # Outside safe range should raise error
+        with pytest.raises(Exception):
+            rfc8785_canonical_json({"v": 2**53})
+        with pytest.raises(Exception):
+            rfc8785_canonical_json({"v": -(2**53)})
+        with pytest.raises(Exception):
+            rfc8785_canonical_json({"v": 2**64})
 
     def test_rfc8785_sorted_keys_and_no_whitespace(self):
         """Keys must be sorted lexicographically and all spaces stripped."""
@@ -604,6 +792,7 @@ class TestGroup4RFC8785CanonicalizationAndCompatibility:
             },
         }
         bundle = engine.create_evidence_bundle(sample_report)
+        assert bundle["bundle_metadata"]["canonicalization_scheme"] == "RFC-8785"
         ver = engine.verify_evidence_bundle(bundle)
 
         assert ver["valid"]
@@ -642,10 +831,15 @@ class TestGroup4RFC8785CanonicalizationAndCompatibility:
         }
         bundle = engine.create_evidence_bundle(sample_report)
 
-        # Force recorded checksum to legacy checksum
+        # Force recorded checksum to legacy checksum and specify legacy scheme
         legacy_bytes = json.dumps(_canonicalize_payload(bundle["payload"]), sort_keys=True, ensure_ascii=False).encode("utf-8")
         legacy_chk = hashlib.sha256(legacy_bytes).hexdigest()
         bundle["bundle_metadata"]["package_checksum_sha256"] = legacy_chk
+        bundle["bundle_metadata"]["canonicalization_scheme"] = "CBE-CANONICAL-JSON-v1"
+
+        ver = engine.verify_evidence_bundle(bundle)
+        assert ver["valid"]
+        assert ver["canonical_scheme"] == "CBE-CANONICAL-JSON-v1"
 
         ver = engine.verify_evidence_bundle(bundle)
         assert ver["valid"]
