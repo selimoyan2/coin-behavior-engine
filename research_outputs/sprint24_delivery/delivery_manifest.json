@@ -1,0 +1,122 @@
+{
+  "sprint_id": "CBE_PRODUCT_ACCELERATION_24",
+  "canonical_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "governance_decision": "TECHNICAL_NO_GO",
+  "implementation_commit": "061a9e72386542ca895b01b3da75b4cc9d0e734f",
+  "timestamp_utc": "2026-11-09T21:02:30Z",
+  "artifacts": {
+    "accessibility_audit.md": {
+      "sha256": "6dfbf5ccbadd03569659bb1c6dc4ec86977697101d9ed4294e8a41c67d412aa5",
+      "size_bytes": 1962
+    },
+    "api_security_review.md": {
+      "sha256": "1da38ce8675408a62b3418f02d48b48a46e705f8a4c33a4d71082d1f4b3dd7d5",
+      "size_bytes": 2449
+    },
+    "architecture_audit.md": {
+      "sha256": "81cda4f8c66189998f8acdb70ec39590e443d28071a94156f2f354bbf9722203",
+      "size_bytes": 4055
+    },
+    "comparison_compatibility_rules.md": {
+      "sha256": "eeaa5c859628338bd8f14ac943dada80c6a345bf045c64e187f54aefc03e512b",
+      "size_bytes": 2475
+    },
+    "comparison_test_results.md": {
+      "sha256": "ff8173f9657fc9fd78d105c158565856b3be22f518f4e4e2e22ce7a27f52d454",
+      "size_bytes": 2217
+    },
+    "evidence_center_verification.md": {
+      "sha256": "ed09872a3dad3d7f35e367bb931fab9f8596fbb5925baea61604b4b09d9aa4af",
+      "size_bytes": 2382
+    },
+    "existing_feature_inventory.md": {
+      "sha256": "7b59ef5b8072cab2e17734376cd3043f3013b9a66c55389115c701941bcca965",
+      "size_bytes": 2700
+    },
+    "git_release_identity.md": {
+      "sha256": "e5b4ece10de6e6c47129798feda04ed4c64214d70241c3f0830ede272452a257",
+      "size_bytes": 1115
+    },
+    "implemented_feature_matrix.md": {
+      "sha256": "d834704c889611c9de166ea224cdae1becd82ac350bf8dda6a32e0ed55f42443",
+      "size_bytes": 4738
+    },
+    "integration_test_results.md": {
+      "sha256": "6390de3e13c52ac2c0f0ee69a296a393a588157b5c1bb38d52c2e882af9e4538",
+      "size_bytes": 2132
+    },
+    "performance_baseline.md": {
+      "sha256": "124e31a05282b18fadcfe18d5a9e8a37e7f85b40a31037cd036e806f4d74616b",
+      "size_bytes": 1487
+    },
+    "performance_comparison.md": {
+      "sha256": "27c87d5344c4801e926cd153f1f13402ac854493770bc77c1f3e7d1377d78fa5",
+      "size_bytes": 1382
+    },
+    "playwright_acceptance_results.json": {
+      "sha256": "3b62645aaec0b34d9fb05eedc72b662523b796ccaa9b2562a0763b956df4e774",
+      "size_bytes": 10658
+    },
+    "production_zero_touch_attestation.md": {
+      "sha256": "34251fca92f45d361bef08d2f02685461422ef958f72888bf32f676422bc900b",
+      "size_bytes": 1533
+    },
+    "regression_test_results.md": {
+      "sha256": "f116c9af9416f671735cca25b506074740cf09d44873eff1504b09f118b0bc76",
+      "size_bytes": 1719
+    },
+    "report_builder_verification.md": {
+      "sha256": "5fbf26b707c89adde1bc697c0fdc5897a113246dc91ff1f27cb9c1e43177c6b5",
+      "size_bytes": 1874
+    },
+    "research_explorer_verification.md": {
+      "sha256": "004a4b725bf9406e430198c4255c69e54a4ac0b5bd9eda11cb3795cbc8ca2664",
+      "size_bytes": 3210
+    },
+    "research_library_persistence_report.md": {
+      "sha256": "e385ac8b21d9db62170962e29f4b97c1e718e55ec198184c4353610d66098b76",
+      "size_bytes": 2037
+    },
+    "resource_governance_verification.md": {
+      "sha256": "525863c31fc06f6523c8eae4fe2078f2b52c2c42eb09447ebec90e5d343939a1",
+      "size_bytes": 1495
+    },
+    "scientific_governance_verification.md": {
+      "sha256": "3877c4d73d841df11e562de903538ef00d4d44bc7ab1d59932a0c93e1b8da236",
+      "size_bytes": 1696
+    },
+    "search_and_navigation_tests.md": {
+      "sha256": "3bb46c48c569dbee3d466236383431674df1745dc38579c6dcc46605437945e0",
+      "size_bytes": 1562
+    },
+    "sprint24_screenshot_01_desktop_overview.png": {
+      "sha256": "ebe8b7d3c83f8c40773e22e5d18790d415ea280a36fe78dc4841eece0ac8f960",
+      "size_bytes": 176234
+    },
+    "sprint24_screenshot_02_tablet_comparison_lab.png": {
+      "sha256": "cb61d602ac445f194f7c8f05fd8a6f491d42c7c380312ead4ec82188d765ab1e",
+      "size_bytes": 107805
+    },
+    "sprint24_screenshot_03_mobile_evidence_center.png": {
+      "sha256": "180c478bcc1757e457669e7d72b6f216e0c735de5d13dcee91e8437c58bcdc0b",
+      "size_bytes": 47580
+    },
+    "staging_runtime_provenance.md": {
+      "sha256": "be508ac89a0408423c811365d0936188e0ea7f0c41c178ddc65eda643ac63c45",
+      "size_bytes": 2156
+    },
+    "unit_test_results.md": {
+      "sha256": "68db58371b43e207ac218607b8df3d39ebe05f3bcae11554a5dcf09d58de2d7b",
+      "size_bytes": 3340
+    },
+    "ux_information_architecture.md": {
+      "sha256": "ed48068ebe8a77c8738677e6818bb6601af3611fa11e4b49b8343916e38eb9ec",
+      "size_bytes": 5643
+    },
+    "visualization_integrity_report.md": {
+      "sha256": "afb58d226e62fe625f2c477e07924900c818e9551b37c1533d6308301f2164d3",
+      "size_bytes": 1944
+    }
+  }
+}
