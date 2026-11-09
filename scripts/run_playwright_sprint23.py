@@ -46,12 +46,13 @@ import copy
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 import time
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from playwright.async_api import async_playwright
 
@@ -88,6 +89,26 @@ def start_test_server() -> subprocess.Popen:
     env["CBE_TRADING_DISABLED"] = "true"
     env["CBE_REPORTS_STORAGE_PATH"] = str(Path("research_outputs/reports").resolve())
     env["PYTHONPATH"] = "src"
+
+    rep_dir = Path("research_outputs/reports").resolve()
+    rep_dir.mkdir(parents=True, exist_ok=True)
+    norm_rep = re.sub(r"^[a-zA-Z]:", "", str(rep_dir).replace("\\", "/"))
+
+    vol_signing_key = "cbe-test-volume-attestation-key-sprint23"
+    env["CBE_VOLUME_ATTESTATION_KEY"] = vol_signing_key
+    env["CBE_AUTHORIZED_PERSISTENT_MOUNTS"] = norm_rep
+
+    from coin_behavior_engine.product.storage_durability import StorageDurabilityEngine
+    now = datetime.now(timezone.utc)
+    att_claims = {
+        "authorized_volume_id": "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f",
+        "expected_destination": norm_rep,
+        "issued_at_utc": (now - timedelta(minutes=5)).isoformat(),
+        "expires_at_utc": (now + timedelta(hours=24)).isoformat(),
+    }
+    signed_att = StorageDurabilityEngine.create_signed_volume_attestation(att_claims, vol_signing_key)
+    with open(rep_dir / ".cbe_volume_attestation.json", "w", encoding="utf-8") as f:
+        json.dump(signed_att, f, indent=2)
 
     log_file = open(TEMP_LOG_PATH, "w", encoding="utf-8")
     proc = subprocess.Popen(

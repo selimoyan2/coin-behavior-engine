@@ -11,6 +11,7 @@ Ensures research persistence integrity:
 from __future__ import annotations
 
 import hashlib
+import hmac
 import io
 import json
 import os
@@ -18,7 +19,7 @@ import re
 import sys
 import tarfile
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -174,21 +175,278 @@ class StorageDurabilityEngine:
         return mounts
 
     @classmethod
+    def get_current_container_id(cls) -> Optional[str]:
+        """Retrieves current container ID from CBE_CONTAINER_ID, /etc/hostname, or /proc/self/cgroup."""
+        env_cid = os.environ.get("CBE_CONTAINER_ID")
+        if env_cid:
+            return env_cid.strip()
+        if sys.platform != "win32" and os.path.exists("/etc/hostname"):
+            try:
+                with open("/etc/hostname", "r", encoding="utf-8") as f:
+                    host = f.read().strip()
+                if re.match(r"^[0-9a-fA-F]{12,64}$", host):
+                    return host
+            except Exception:
+                pass
+        if sys.platform != "win32" and os.path.exists("/proc/self/cgroup"):
+            try:
+                with open("/proc/self/cgroup", "r", encoding="utf-8") as f:
+                    content = f.read()
+                m = re.search(r"(?:docker/|containers/|docker-)([0-9a-fA-F]{12,64})", content)
+                if m:
+                    return m.group(1)
+            except Exception:
+                pass
+        return None
+
+    @classmethod
+    def get_current_image_id(cls) -> Optional[str]:
+        """Retrieves current container image ID from CBE_IMAGE_ID or CBE_IMAGE_DIGEST."""
+        return os.environ.get("CBE_IMAGE_ID") or os.environ.get("CBE_IMAGE_DIGEST")
+
+    @classmethod
+    def get_deployment_attestation_key(cls, resolved_path: Optional[str] = None) -> Optional[str]:
+        """
+        Retrieves deployment signing key from a secure location outside application-writable storage.
+        Prevents using signing keys stored inside application-writable directories.
+        """
+        key_env = os.environ.get("CBE_VOLUME_ATTESTATION_KEY")
+        if key_env:
+            return key_env.strip()
+
+        key_path = os.environ.get("CBE_VOLUME_ATTESTATION_KEY_PATH", "/etc/cbe/keys/volume_attestation_key")
+        if resolved_path and os.path.isabs(key_path):
+            try:
+                rp = Path(os.path.realpath(resolved_path))
+                kp = Path(os.path.realpath(key_path))
+                if rp == kp or rp in kp.parents:
+                    # Key stored inside application-writable storage is rejected
+                    return None
+            except Exception:
+                pass
+
+        if os.path.exists(key_path):
+            try:
+                with open(key_path, "r", encoding="utf-8") as f:
+                    return f.read().strip()
+            except Exception:
+                pass
+        return None
+
+    @classmethod
+    def create_signed_volume_attestation(
+        cls,
+        claims: Dict[str, Any],
+        signing_key: str | bytes,
+    ) -> Dict[str, Any]:
+        """
+        Creates a tamper-evident signed volume attestation for deployment control plane.
+        Serializes claims using RFC 8785 canonical JSON and signs with HMAC-SHA256.
+        """
+        from coin_behavior_engine.product.research_report_evidence import rfc8785_canonical_json
+
+        canonical_bytes = rfc8785_canonical_json(claims)
+        key_bytes = signing_key.encode("utf-8") if isinstance(signing_key, str) else signing_key
+        sig = hmac.new(key_bytes, canonical_bytes, hashlib.sha256).hexdigest()
+
+        return {
+            "claims": claims,
+            "signature": sig,
+            "signature_algorithm": "HMAC-SHA256",
+        }
+
+    @classmethod
+    def load_and_verify_volume_attestation(
+        cls,
+        resolved_path: str,
+        norm_no_drive: str,
+        mount_info: Dict[str, Any],
+        attestation_override: Optional[Dict[str, Any]] = None,
+        contract_override: Optional[Dict[str, Any]] = None,
+    ) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+        """
+        Loads and cryptographically verifies the deployment volume attestation.
+        Returns: (verified_volume_id, rejection_code, rejection_reason)
+        """
+        # 1. Compatibility check for in-memory contract_override without signature
+        if contract_override is not None and not contract_override.get("signature") and not contract_override.get("_require_signature"):
+            c_dest = contract_override.get("expected_destination")
+            c_fs = contract_override.get("expected_filesystem")
+            c_vol = contract_override.get("authorized_volume_id")
+
+            dest_match = False
+            if c_dest:
+                c_dest_clean = re.sub(r"^[a-zA-Z]:", "", c_dest.strip().replace("\\", "/"))
+                cd_parts = Path(c_dest_clean).parts
+                res_parts = Path(norm_no_drive).parts
+                if len(res_parts) >= len(cd_parts):
+                    if res_parts[:len(cd_parts)] == cd_parts or res_parts[-len(cd_parts):] == cd_parts:
+                        dest_match = True
+            else:
+                dest_match = True
+
+            if not dest_match:
+                return None, "UNAUTHORIZED_MOUNT_ROOT", f"Deployment contract destination '{c_dest}' does not match path '{norm_no_drive}'."
+
+            if mount_info.get("fstype") and c_fs:
+                if c_fs.lower() != mount_info.get("fstype", "").lower():
+                    return None, "REJECTED_FILESYSTEM_TYPE", f"Deployment contract filesystem '{c_fs}' contradicts runtime filesystem '{mount_info.get('fstype')}'."
+
+            return c_vol, None, None
+
+        # 2. Locate candidate attestation source
+        data = None
+        source_path = None
+
+        if attestation_override is not None:
+            data = attestation_override
+            source_path = None
+        elif contract_override is not None and (contract_override.get("signature") or contract_override.get("_require_signature")):
+            data = contract_override
+            source_path = None
+        else:
+            candidate_paths: List[str] = []
+            env_att = os.environ.get("CBE_VOLUME_ATTESTATION_PATH")
+            if env_att:
+                candidate_paths.append(env_att)
+            env_contract = os.environ.get("CBE_VOLUME_CONTRACT_PATH")
+            if env_contract:
+                candidate_paths.append(env_contract)
+
+            curr_d = Path(resolved_path)
+            candidate_dirs = [curr_d, *curr_d.parents]
+            for d in candidate_dirs[:4]:
+                candidate_paths.append(str(d / ".cbe_volume_attestation.json"))
+                candidate_paths.append(str(d / ".cbe_volume_contract.json"))
+
+            candidate_paths.extend([
+                "/etc/cbe/volume_attestation.json",
+                "/etc/cbe/volume_contract.json",
+            ])
+
+            for cp in candidate_paths:
+                if os.path.exists(cp):
+                    try:
+                        with open(cp, "r", encoding="utf-8") as f:
+                            parsed = json.load(f)
+                        if isinstance(parsed, dict):
+                            data = parsed
+                            source_path = cp
+                            break
+                    except Exception:
+                        continue
+
+        if data is None:
+            return None, None, None
+
+        # 3. Check trust boundary: attestation file inside application-writable storage requires external key
+        is_in_writable_storage = False
+        if source_path:
+            try:
+                sp_real = os.path.realpath(source_path)
+                rp_real = os.path.realpath(resolved_path)
+                if sp_real == rp_real or sp_real.startswith(rp_real + os.sep) or sp_real.startswith(rp_real + "/"):
+                    is_in_writable_storage = True
+            except Exception:
+                is_in_writable_storage = False
+
+        signing_key = cls.get_deployment_attestation_key(resolved_path=resolved_path)
+        if is_in_writable_storage and not signing_key:
+            return None, "UNVERIFIABLE_VOLUME_IDENTITY", "Attestation document resides in application-writable storage without external signing key."
+
+        # 4. Check signature presence (unauthenticated / plain JSON files rejected)
+        signature = data.get("signature")
+        if not signature:
+            return None, "UNAUTHENTICATED_ATTESTATION_REJECTED", "Attestation is missing cryptographic signature (plain unauthenticated JSON document rejected)."
+
+        if not signing_key:
+            return None, "UNVERIFIABLE_VOLUME_IDENTITY", "No deployment signing key configured to verify signed attestation."
+
+        # 5. Extract claims
+        if isinstance(data.get("claims"), dict):
+            claims = data["claims"]
+        else:
+            claims = {k: v for k, v in data.items() if k not in ("signature", "signature_algorithm", "signature_hex")}
+
+        # 6. Cryptographic verification via HMAC-SHA256 over RFC 8785 canonical claims
+        try:
+            from coin_behavior_engine.product.research_report_evidence import rfc8785_canonical_json
+            canonical_bytes = rfc8785_canonical_json(claims)
+        except Exception as e:
+            return None, "UNAUTHENTICATED_ATTESTATION_REJECTED", f"RFC 8785 canonicalization failed: {e}"
+
+        key_bytes = signing_key.encode("utf-8") if isinstance(signing_key, str) else signing_key
+        expected_sig = hmac.new(key_bytes, canonical_bytes, hashlib.sha256).hexdigest()
+        if not hmac.compare_digest(str(signature).lower(), expected_sig.lower()):
+            return None, "UNAUTHENTICATED_ATTESTATION_REJECTED", "Cryptographic signature verification failed (invalid HMAC)."
+
+        # 7. Freshness / Expiration check
+        expires_at_utc = claims.get("expires_at_utc")
+        if expires_at_utc:
+            try:
+                exp_dt = datetime.fromisoformat(expires_at_utc.replace("Z", "+00:00"))
+                if exp_dt < datetime.now(timezone.utc):
+                    return None, "UNVERIFIABLE_VOLUME_IDENTITY", f"Attestation expired at {expires_at_utc}."
+            except Exception as e:
+                return None, "UNVERIFIABLE_VOLUME_IDENTITY", f"Invalid expiration timestamp '{expires_at_utc}': {e}"
+
+        # 8. Container binding check
+        bound_cid = claims.get("bound_container_id")
+        if bound_cid:
+            curr_cid = cls.get_current_container_id()
+            if curr_cid:
+                if not (curr_cid.startswith(bound_cid) or bound_cid.startswith(curr_cid)):
+                    return None, "CONTRADICTORY_VOLUME_IDENTITY", f"Attestation bound to container '{bound_cid}' contradicts current container '{curr_cid}'."
+
+        # 9. Destination binding check
+        c_dest = claims.get("expected_destination")
+        if c_dest:
+            c_dest_clean = re.sub(r"^[a-zA-Z]:", "", c_dest.strip().replace("\\", "/"))
+            cd_parts = Path(c_dest_clean).parts
+            res_parts = Path(norm_no_drive).parts
+            dest_match = False
+            if len(res_parts) >= len(cd_parts):
+                if res_parts[:len(cd_parts)] == cd_parts or res_parts[-len(cd_parts):] == cd_parts:
+                    dest_match = True
+            if not dest_match:
+                return None, "UNAUTHORIZED_MOUNT_ROOT", f"Attestation destination '{c_dest}' does not match path '{norm_no_drive}'."
+
+        # 10. Image binding check
+        bound_img = claims.get("bound_image_id")
+        if bound_img:
+            curr_img = cls.get_current_image_id()
+            if curr_img and curr_img != bound_img:
+                return None, "CONTRADICTORY_VOLUME_IDENTITY", f"Attestation bound to image '{bound_img}' contradicts current image '{curr_img}'."
+
+        # 11. Filesystem check
+        c_fs = claims.get("expected_filesystem")
+        if c_fs and mount_info.get("fstype"):
+            if c_fs.lower() != mount_info["fstype"].lower():
+                return None, "REJECTED_FILESYSTEM_TYPE", f"Attestation filesystem '{c_fs}' contradicts runtime '{mount_info['fstype']}'."
+
+        auth_vol = claims.get("authorized_volume_id")
+        if not auth_vol:
+            return None, "UNVERIFIABLE_VOLUME_IDENTITY", "Attestation contains no authorized_volume_id."
+
+        return auth_vol, None, None
+
+    @classmethod
     def load_deployment_volume_contract(
         cls,
         resolved_path: str,
         contract_override: Optional[Dict[str, Any]] = None,
     ) -> Optional[Dict[str, Any]]:
-        """Loads trusted deployment-provided Docker volume verification contract."""
+        """Loads deployment-provided volume verification contract or attestation for inspection."""
         if contract_override is not None:
             return contract_override
 
         candidate_paths = [
             os.path.join(resolved_path, ".cbe_volume_attestation.json"),
             os.path.join(resolved_path, ".cbe_volume_contract.json"),
+            "/etc/cbe/volume_attestation.json",
             "/etc/cbe/volume_contract.json",
         ]
-        env_contract = os.environ.get("CBE_VOLUME_CONTRACT_PATH")
+        env_contract = os.environ.get("CBE_VOLUME_ATTESTATION_PATH") or os.environ.get("CBE_VOLUME_CONTRACT_PATH")
         if env_contract:
             candidate_paths.insert(0, env_contract)
 
@@ -197,7 +455,7 @@ class StorageDurabilityEngine:
                 try:
                     with open(c_path, "r", encoding="utf-8") as f:
                         data = json.load(f)
-                    if isinstance(data, dict) and "authorized_volume_id" in data:
+                    if isinstance(data, dict):
                         return data
                 except Exception:
                     continue
@@ -232,24 +490,24 @@ class StorageDurabilityEngine:
         path_input: str | Path,
         mounts_override: Optional[List[Dict[str, Any]]] = None,
         contract_override: Optional[Dict[str, Any]] = None,
+        attestation_override: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """
         Inspects and classifies a storage directory path with strict boundary and persistence verification.
         - Resolves symlinks using realpath to prevent symlink escape.
         - Matches mount points using path-component boundaries.
         - Distinguishes Docker overlay filesystems from genuine persistent volume mounts.
-        - Requires authoritative runtime Docker volume identity or verified deployment contract.
+        - Requires authoritative runtime Docker volume identity or verified cryptographic deployment attestation.
         - Never trusts an environment variable as proof of actual mount identity.
         - Fails closed if persistence cannot be proven in staging/production.
         """
         raw_str = str(path_input)
-        
+
         # 1. Realpath resolution & symlink escape detection
         try:
             if os.path.exists(raw_str):
                 resolved = os.path.realpath(raw_str)
             else:
-                # Resolve nearest existing parent
                 curr = Path(raw_str)
                 parts = []
                 while not curr.exists() and len(curr.parts) > 1:
@@ -320,6 +578,8 @@ class StorageDurabilityEngine:
         # 5. Strict Classification
         classification = "UNAVAILABLE"
         rejection_reason = None
+        established_vol_id: Optional[str] = None
+        volume_provenance: str = "NONE"
 
         if symlink_escaped:
             classification = "SYMLINK_ESCAPE_REJECTED"
@@ -333,7 +593,7 @@ class StorageDurabilityEngine:
                 rejection_reason = "Path does not exist and cannot be created."
         elif is_ephemeral:
             classification = "EPHEMERAL"
-            rejection_reason = "Storage path resides on an ephemeral or tmpfs mount."
+            rejection_reason = "Storage path resides on an ephemeral or tmpfs mount (EPHEMERAL_STORAGE_REJECTED)."
         elif cbe_env in ("staging", "production"):
             # Strict staging/production persistent volume verification
             # A: Check if path component boundaries match authorized persistent roots
@@ -349,14 +609,12 @@ class StorageDurabilityEngine:
                 classification = "UNAUTHORIZED_MOUNT_ROOT"
                 rejection_reason = f"Path '{norm_no_drive}' is not within authorized persistent mount roots."
             elif mount_info.get("is_overlay"):
-                # Docker overlay layer is ephemeral container rootfs!
                 classification = "CONTAINER_OVERLAY_REJECTED"
                 rejection_reason = "Storage path is backed by ephemeral Docker container overlay rootfs."
             elif mount_info.get("fstype") in cls.REJECTED_FILESYSTEM_TYPES:
                 classification = "REJECTED_FILESYSTEM_TYPE"
                 rejection_reason = f"Filesystem type '{mount_info.get('fstype')}' is not authorized for persistent storage."
             elif mounts and not mount_info:
-                # Mounts table present but no mount point proven
                 classification = "PERSISTENT_UNVERIFIED"
                 rejection_reason = "Path has no established mount entry in system mounts table."
             else:
@@ -373,47 +631,36 @@ class StorageDurabilityEngine:
                     if vm:
                         runtime_volume_id = vm.group(1)
 
-                # B: Deployment-provided verification contract
-                contract = cls.load_deployment_volume_contract(resolved, contract_override=contract_override)
-                contract_volume_id = None
-                if contract:
-                    c_dest = contract.get("expected_destination")
-                    c_fs = contract.get("expected_filesystem")
-                    c_vol = contract.get("authorized_volume_id")
+                # B: Deployment-provided cryptographically verified attestation
+                att_vol_id, att_rej_code, att_rej_reason = cls.load_and_verify_volume_attestation(
+                    resolved,
+                    norm_no_drive,
+                    mount_info,
+                    attestation_override=attestation_override,
+                    contract_override=contract_override,
+                )
 
-                    dest_match = False
-                    if c_dest:
-                        c_dest_clean = re.sub(r"^[a-zA-Z]:", "", c_dest.strip().replace("\\", "/"))
-                        cd_parts = Path(c_dest_clean).parts
-                        res_parts = Path(norm_no_drive).parts
-                        if len(res_parts) >= len(cd_parts):
-                            if res_parts[:len(cd_parts)] == cd_parts or res_parts[-len(cd_parts):] == cd_parts:
-                                dest_match = True
+                if att_rej_code:
+                    classification = att_rej_code
+                    rejection_reason = att_rej_reason
+                else:
+                    attestation_volume_id = att_vol_id
 
-                    if mount_info.get("fstype"):
-                        fs_match = (not c_fs) or (c_fs.lower() == mount_info.get("fstype", "").lower())
-                    else:
-                        fs_match = (not c_fs) or (sys.platform == "win32")
+                    # Check if an environment variable was provided (potential spoofing or contradiction)
+                    env_vol_id = os.environ.get("CBE_AUTHORIZED_VOLUME_ID") or os.environ.get("CBE_DOCKER_VOLUME_ID")
 
-                    if not dest_match:
-                        classification = "UNAUTHORIZED_MOUNT_ROOT"
-                        rejection_reason = f"Deployment contract destination '{c_dest}' does not match path '{norm_no_drive}'."
-                    elif not fs_match:
-                        classification = "REJECTED_FILESYSTEM_TYPE"
-                        rejection_reason = f"Deployment contract filesystem '{c_fs}' contradicts runtime filesystem '{mount_info.get('fstype')}'."
-                    else:
-                        contract_volume_id = c_vol
-
-                # Check if an environment variable was provided (potential spoofing or contradiction)
-                env_vol_id = os.environ.get("CBE_AUTHORIZED_VOLUME_ID") or os.environ.get("CBE_DOCKER_VOLUME_ID")
-
-                # Reconcile identities with strict fail-closed security
-                if classification not in ("UNAUTHORIZED_MOUNT_ROOT", "REJECTED_FILESYSTEM_TYPE"):
-                    if runtime_volume_id and contract_volume_id and runtime_volume_id != contract_volume_id:
+                    if runtime_volume_id and attestation_volume_id and runtime_volume_id != attestation_volume_id:
                         classification = "CONTRADICTORY_VOLUME_IDENTITY"
-                        rejection_reason = f"Runtime volume ID '{runtime_volume_id}' contradicts deployment contract volume ID '{contract_volume_id}'."
+                        rejection_reason = f"Runtime volume ID '{runtime_volume_id}' contradicts deployment attestation volume ID '{attestation_volume_id}'."
                     else:
-                        established_vol_id = runtime_volume_id or contract_volume_id
+                        established_vol_id = runtime_volume_id or attestation_volume_id
+
+                        if runtime_volume_id and attestation_volume_id:
+                            volume_provenance = "KERNEL_AND_ATTESTATION"
+                        elif runtime_volume_id:
+                            volume_provenance = "KERNEL_MOUNTINFO"
+                        elif attestation_volume_id:
+                            volume_provenance = "DEPLOYMENT_CONTRACT"
 
                         # Anti-spoofing rule: Environment variable ALONE is never accepted as proof
                         if env_vol_id and not established_vol_id:
@@ -434,7 +681,6 @@ class StorageDurabilityEngine:
             # Local development environment
             classification = "PERSISTENT_VERIFIED"
 
-        established_vol = locals().get("established_vol_id")
         return {
             "path": raw_str,
             "resolved_path": resolved,
@@ -447,12 +693,8 @@ class StorageDurabilityEngine:
             "environment": cbe_env,
             "mount_info": mount_info,
             "verified_durable": classification == "PERSISTENT_VERIFIED",
-            "volume_id": established_vol if classification == "PERSISTENT_VERIFIED" else None,
-            "volume_provenance": (
-                "KERNEL_MOUNTINFO"
-                if locals().get("runtime_volume_id")
-                else ("DEPLOYMENT_CONTRACT" if locals().get("contract_volume_id") else "NONE")
-            ),
+            "volume_id": established_vol_id if classification == "PERSISTENT_VERIFIED" else None,
+            "volume_provenance": volume_provenance,
         }
 
     @classmethod
@@ -461,6 +703,7 @@ class StorageDurabilityEngine:
         path_input: str | Path,
         mounts_override: Optional[List[Dict[str, Any]]] = None,
         contract_override: Optional[Dict[str, Any]] = None,
+        attestation_override: Optional[Dict[str, Any]] = None,
     ) -> None:
         """
         Enforces that the path is PERSISTENT_VERIFIED in staging/production.
@@ -470,6 +713,7 @@ class StorageDurabilityEngine:
             path_input,
             mounts_override=mounts_override,
             contract_override=contract_override,
+            attestation_override=attestation_override,
         )
         if not info["is_writable"]:
             raise RuntimeError(f"STORAGE_UNAVAILABLE: Storage directory '{path_input}' is not writable.")

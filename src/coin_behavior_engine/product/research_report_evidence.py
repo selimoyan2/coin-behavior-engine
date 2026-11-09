@@ -69,12 +69,22 @@ except ImportError:
     HAS_AUDITED_RFC8785 = False
 
 
+def legacy_canonical_json_v1(payload: Any) -> bytes:
+    """
+    Explicitly versioned historical CBE-CANONICAL-JSON-v1 canonicalization path.
+    Preserves exact byte representation for historical evidence verification
+    without silently reinterpreting historical signatures.
+    """
+    return json.dumps(_canonicalize_payload(payload), sort_keys=True, ensure_ascii=False).encode("utf-8")
+
+
 def rfc8785_canonical_json(obj: Any) -> bytes:
     """
     Serializes a JSON-compatible Python data structure into canonical bytes
     strictly adhering to RFC 8785 (JSON Canonicalization Scheme - JCS).
 
     Uses the audited 'rfc8785' standard library package.
+    Fails closed if the audited package is unavailable.
 
     Standards Compliance & Vector Verification:
     1. UTF-8 encoding without Byte Order Mark (BOM).
@@ -88,47 +98,12 @@ def rfc8785_canonical_json(obj: Any) -> bytes:
        - Integers outside safe IEEE-754 range [-(2^53 - 1), 2^53 - 1] rejected with IntegerDomainError.
     5. Standard JSON string escaping for quote, backslash, and control characters (U+0000 - U+001F).
     """
-    if rfc8785 is not None:
-        return rfc8785.dumps(obj)
-
-    def serialize_val(val: Any) -> str:
-        if val is None:
-            return "null"
-        elif isinstance(val, bool):
-            return "true" if val else "false"
-        elif isinstance(val, int):
-            if val < -9007199254740991 or val > 9007199254740991:
-                raise ValueError(f"Integer {val} exceeds safe IEEE-754 range")
-            return str(val)
-        elif isinstance(val, float):
-            if math.isnan(val) or math.isinf(val):
-                raise ValueError(f"Non-finite numeric value in canonical JSON: {val}")
-            if val == 0.0:
-                return "0"
-            if val.is_integer() and abs(val) < 1e21:
-                return str(int(val))
-            s = json.dumps(val)
-            if "e" in s:
-                s = re.sub(r"e([+-])0*(\d+)", lambda m: "e" + m.group(1) + m.group(2), s)
-            return s
-        elif isinstance(val, str):
-            return json.dumps(val, ensure_ascii=False)
-        elif isinstance(val, dict):
-            # Sort keys by UTF-16 code units
-            sorted_keys = sorted(val.keys(), key=lambda k: k.encode("utf-16be"))
-            parts = []
-            for k in sorted_keys:
-                k_enc = json.dumps(str(k), ensure_ascii=False)
-                v_enc = serialize_val(val[k])
-                parts.append(f"{k_enc}:{v_enc}")
-            return "{" + ",".join(parts) + "}"
-        elif isinstance(val, (list, tuple)):
-            parts = [serialize_val(x) for x in val]
-            return "[" + ",".join(parts) + "]"
-        else:
-            raise TypeError(f"Object of type {type(val)} is not RFC 8785 JSON serializable")
-
-    return serialize_val(obj).encode("utf-8")
+    if rfc8785 is None:
+        raise RuntimeError(
+            "RFC_8785_DEPENDENCY_UNAVAILABLE: Audited 'rfc8785' package is required for RFC 8785 canonicalization. "
+            "Silent fallback to unverified custom serializer is strictly prohibited."
+        )
+    return rfc8785.dumps(obj)
 
 
 def _parse_iso_utc(ts: Any) -> Optional[datetime]:
@@ -311,7 +286,7 @@ class ResearchReportEvidenceBundleEngine:
 
         # 2. Compute Legacy CBE-CANONICAL-JSON-v1 bytes for backward compatibility with historical evidence
         try:
-            canonical_bytes_legacy = json.dumps(_canonicalize_payload(payload), sort_keys=True, ensure_ascii=False).encode("utf-8")
+            canonical_bytes_legacy = legacy_canonical_json_v1(payload)
             checksum_legacy = hashlib.sha256(canonical_bytes_legacy).hexdigest()
         except Exception:
             canonical_bytes_legacy = b""
