@@ -1483,6 +1483,16 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
 
         if url_path.startswith("/api/v1/product") or url_path.startswith("/api/v1/operator"):
             status_code, response_data = ProductDashboardApiService.handle_post_request(url_path, query_params, body_json, headers=dict(self.headers))
+            if isinstance(response_data, dict) and response_data.get("_binary_pdf"):
+                pdf_bytes = response_data["_binary_pdf"]
+                fname = response_data.get("_filename", "cbe_research_report.pdf")
+                self.send_response(status_code)
+                self.send_header("Content-Type", "application/pdf")
+                self.send_header("Content-Length", str(len(pdf_bytes)))
+                self.send_header("Content-Disposition", f'attachment; filename="{fname}"')
+                self.end_headers()
+                self.wfile.write(pdf_bytes)
+                return
             self._send_response_json(status_code, response_data)
             return
 

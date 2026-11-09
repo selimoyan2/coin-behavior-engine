@@ -440,6 +440,62 @@ class ProductDashboardApiService:
             elif sub_path.startswith("research-library/") and not sub_path.startswith("research-library/export/"):
                 research_id = sub_path.split("/")[-1]
                 return cls.get_research_library_item(research_id)
+            elif sub_path in ("workspace/overview", "research-workspace/overview-v2"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                return HTTPStatus.OK, ResearchWorkspaceV2Engine.get_workspace_overview()
+            elif sub_path in ("workspace/research", "research-workspace/catalog"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                q = query_params.get("q", [""])[0] or query_params.get("search", [""])[0]
+                ds = query_params.get("dataset", ["ALL"])[0]
+                tf = query_params.get("timeframe", ["ALL"])[0]
+                sp = query_params.get("spec", ["ALL"])[0]
+                el = query_params.get("eligibility", ["ALL"])[0]
+                val = query_params.get("validation", ["ALL"])[0]
+                ev = query_params.get("evidence", ["ALL"])[0]
+                sort_b = query_params.get("sort_by", ["created_at"])[0]
+                sort_d = query_params.get("sort_dir", ["desc"])[0]
+                page_n = int(query_params.get("page", ["1"])[0]) if query_params.get("page", ["1"])[0].isdigit() else 1
+                lim_n = int(query_params.get("limit", ["10"])[0]) if query_params.get("limit", ["10"])[0].isdigit() else 10
+                res = ResearchWorkspaceV2Engine.query_research(
+                    search_query=q,
+                    dataset_filter=ds,
+                    timeframe_filter=tf,
+                    spec_filter=sp,
+                    eligibility_filter=el,
+                    validation_filter=val,
+                    evidence_filter=ev,
+                    sort_by=sort_b,
+                    sort_dir=sort_d,
+                    page=page_n,
+                    limit=lim_n,
+                )
+                return HTTPStatus.OK, res
+            elif sub_path.startswith("workspace/research/") or sub_path.startswith("research-workspace/catalog/"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                res_id = sub_path.split("/")[-1]
+                detail = ResearchWorkspaceV2Engine.get_research_detail(res_id)
+                if not detail:
+                    return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": f"Research ID '{res_id}' not found."}
+                return HTTPStatus.OK, {"status": "success", "research": detail}
+            elif sub_path in ("workspace/saved-comparisons", "saved-comparisons"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                q = query_params.get("q", [""])[0]
+                tag = query_params.get("tag", ["ALL"])[0]
+                lim = int(query_params.get("limit", ["50"])[0]) if query_params.get("limit", ["50"])[0].isdigit() else 50
+                comps = ResearchWorkspaceV2Engine.list_saved_comparisons(search_query=q, tag_filter=tag, limit=lim)
+                return HTTPStatus.OK, {"status": "success", "saved_comparisons": comps, "count": len(comps)}
+            elif sub_path.startswith("workspace/saved-comparisons/") or sub_path.startswith("saved-comparisons/"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                cid = sub_path.split("/")[-1]
+                saved_comp = ResearchWorkspaceV2Engine.get_saved_comparison(cid)
+                if not saved_comp:
+                    return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": f"Comparison ID '{cid}' not found."}
+                return HTTPStatus.OK, {"status": "success", "comparison": saved_comp}
+            elif sub_path in ("workspace/search", "global-search"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                q = query_params.get("q", [""])[0]
+                lim = int(query_params.get("limit", ["20"])[0]) if query_params.get("limit", ["20"])[0].isdigit() else 20
+                return HTTPStatus.OK, ResearchWorkspaceV2Engine.search_workspace_metadata(q, limit=lim)
             else:
                 return HTTPStatus.NOT_FOUND, {
                     "error": "Not Found",
@@ -720,6 +776,44 @@ class ProductDashboardApiService:
                 else:
                     return cls.patch_research_library_item(research_id, body)
 
+            elif sub_path in ("workspace/comparison/evaluate", "research-workspace/comparison/evaluate"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                c_ids = body.get("candidate_ids", []) if isinstance(body, dict) else []
+                if not c_ids and query_params.get("candidate_ids"):
+                    c_ids = query_params.get("candidate_ids")[0].split(",")
+                eval_res = ResearchWorkspaceV2Engine.evaluate_comparison_compatibility(c_ids)
+                return HTTPStatus.OK, eval_res
+
+            elif sub_path in ("export-pdf", "research-reports/export-pdf"):
+                report_id = (body.get("report_id") if isinstance(body, dict) else None)
+                if not report_id:
+                    from coin_behavior_engine.product.research_report_builder import ResearchReportBuilderEngine
+                    reports = ResearchReportBuilderEngine().list_reports()
+                    if reports:
+                        report_id = reports[0].get("report_id")
+                    else:
+                        report_id = "RPT-2026-09-01-EXP"
+                return cls.get_research_report_pdf(report_id, headers)
+
+            elif sub_path in ("workspace/saved-comparisons", "saved-comparisons"):
+                is_auth, a_status, a_msg = cls._authorize_research_library_mutation(headers, body)
+                if not is_auth:
+                    return a_status, {"error": "Unauthorized" if a_status == HTTPStatus.UNAUTHORIZED else "Forbidden", "message": a_msg}
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                title = body.get("title", "")
+                c_ids = body.get("candidate_ids", [])
+                tags = body.get("tags", [])
+                notes = body.get("notes_tr", "")
+                res = ResearchWorkspaceV2Engine.save_comparison(
+                    title=title,
+                    candidate_ids=c_ids,
+                    tags=tags,
+                    notes_tr=notes,
+                )
+                if res.get("status") == "error":
+                    return HTTPStatus.BAD_REQUEST, res
+                return HTTPStatus.CREATED, res
+
             else:
                 return HTTPStatus.NOT_FOUND, {
                     "error": "Not Found",
@@ -765,6 +859,16 @@ class ProductDashboardApiService:
             if not is_auth:
                 return a_status, {"error": "Unauthorized" if a_status == HTTPStatus.UNAUTHORIZED else "Forbidden", "message": a_msg}
             return cls.delete_research_library_item(research_id)
+        elif sub_path.startswith("workspace/saved-comparisons/") or sub_path.startswith("saved-comparisons/"):
+            cid = sub_path.split("/")[-1]
+            is_auth, a_status, a_msg = cls._authorize_research_library_mutation(headers, None)
+            if not is_auth:
+                return a_status, {"error": "Unauthorized" if a_status == HTTPStatus.UNAUTHORIZED else "Forbidden", "message": a_msg}
+            from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+            del_res = ResearchWorkspaceV2Engine.delete_saved_comparison(cid)
+            if del_res.get("status") == "error":
+                return HTTPStatus.NOT_FOUND, del_res
+            return HTTPStatus.OK, del_res
         return HTTPStatus.NOT_FOUND, {"error": "Not Found", "message": f"DELETE endpoint '{path}' not found."}
 
     @classmethod

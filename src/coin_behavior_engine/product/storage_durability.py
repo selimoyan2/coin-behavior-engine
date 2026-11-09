@@ -397,6 +397,8 @@ class StorageDurabilityEngine:
             if curr_cid:
                 if not (curr_cid.startswith(bound_cid) or bound_cid.startswith(curr_cid)):
                     return None, "CONTRADICTORY_VOLUME_IDENTITY", f"Attestation bound to container '{bound_cid}' contradicts current container '{curr_cid}'."
+            else:
+                return None, "UNVERIFIABLE_VOLUME_IDENTITY", f"Attestation requires container binding '{bound_cid}' but current container ID cannot be established."
 
         # 9. Destination binding check
         c_dest = claims.get("expected_destination")
@@ -415,8 +417,11 @@ class StorageDurabilityEngine:
         bound_img = claims.get("bound_image_id")
         if bound_img:
             curr_img = cls.get_current_image_id()
-            if curr_img and curr_img != bound_img:
-                return None, "CONTRADICTORY_VOLUME_IDENTITY", f"Attestation bound to image '{bound_img}' contradicts current image '{curr_img}'."
+            if curr_img:
+                if curr_img != bound_img:
+                    return None, "CONTRADICTORY_VOLUME_IDENTITY", f"Attestation bound to image '{bound_img}' contradicts current image '{curr_img}'."
+            else:
+                return None, "UNVERIFIABLE_VOLUME_IDENTITY", f"Attestation requires image binding '{bound_img}' but current image ID cannot be established."
 
         # 11. Filesystem check
         c_fs = claims.get("expected_filesystem")
