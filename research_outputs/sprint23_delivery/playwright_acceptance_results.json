@@ -1,6 +1,6 @@
 {
   "sprint": "CBE_PRODUCT_ACCELERATION_23",
-  "timestamp_utc": "2026-11-08T21:31:06.344472+00:00",
+  "timestamp_utc": "2026-11-09T17:54:43.966004+00:00",
   "total_scenarios": 34,
   "passed_scenarios": 34,
   "failed_scenarios": 0,
@@ -28,7 +28,7 @@
     "SCENARIO_05": {
       "title": "Select saved research definition",
       "status": "PASS",
-      "details": "Definition RLIB-669a3bc52ddf available"
+      "details": "Definition RLIB-f93d9176002d available"
     },
     "SCENARIO_06": {
       "title": "Generate report via session + CSRF",
@@ -53,7 +53,7 @@
     "SCENARIO_10": {
       "title": "Export publication-quality A4 PDF report",
       "status": "PASS",
-      "details": "PDF size: 74861 bytes"
+      "details": "PDF size: 74860 bytes"
     },
     "SCENARIO_11": {
       "title": "Validate PDF binary format (%PDF-)",
@@ -63,7 +63,7 @@
     "SCENARIO_12": {
       "title": "Export sealed evidence bundle JSON",
       "status": "PASS",
-      "details": "Bundle ID: BND-1850d10e1d460bc5"
+      "details": "Bundle ID: BND-45519867420e2988"
     },
     "SCENARIO_13": {
       "title": "Verify evidence bundle authenticity",
@@ -78,7 +78,7 @@
     "SCENARIO_15": {
       "title": "Save report to Research Library",
       "status": "PASS",
-      "details": "Report linked to RLIB-669a3bc52ddf"
+      "details": "Report linked to RLIB-f93d9176002d"
     },
     "SCENARIO_16": {
       "title": "Reopen saved report verifying persistence",

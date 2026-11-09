@@ -1,6 +1,6 @@
 {
   "schema_version": "CBE-REGRESSION-RESULTS-1.0.0",
-  "timestamp_utc": "2026-11-08T21:35:00Z",
+  "timestamp_utc": "2026-11-09T18:05:00Z",
   "test_suites": {
     "test_sprint_product_acceleration_23.py": {
       "total": 27,
@@ -12,6 +12,11 @@
       "passed": 29,
       "failed": 0
     },
+    "test_sprint_product_acceleration_23_closure.py": {
+      "total": 25,
+      "passed": 25,
+      "failed": 0
+    },
     "test_sprint_product_acceleration_22_hardening.py": {
       "total": 18,
       "passed": 18,
@@ -19,8 +24,8 @@
     }
   },
   "overall_summary": {
-    "total_tests": 74,
-    "passed": 74,
+    "total_tests": 99,
+    "passed": 99,
     "failed": 0,
     "pass_rate_percent": 100.0
   },
