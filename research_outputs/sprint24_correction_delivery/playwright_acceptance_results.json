@@ -1,0 +1,324 @@
+{
+  "sprint_id": "CBE_PRODUCT_ACCELERATION_24_CORRECTION",
+  "timestamp_utc": "2026-11-10T06:25:35.667435+00:00",
+  "total_scenarios": 45,
+  "passed_scenarios": 45,
+  "failed_scenarios": 0,
+  "scenarios": [
+    {
+      "scenario_number": 1,
+      "name": "Open Research Workspace & verify title",
+      "status": "PASS",
+      "details": "Title: Coin Behavior Engine | Ara\u015ft\u0131rma Portal\u0131 & Piyasa \u0130stihbarat\u0131",
+      "timestamp": "2026-11-10T06:25:36.782807+00:00"
+    },
+    {
+      "scenario_number": 2,
+      "name": "Model Freeze invariant banner",
+      "status": "PASS",
+      "details": "CBE-0.7.0 DONDURULDU",
+      "timestamp": "2026-11-10T06:25:36.799613+00:00"
+    },
+    {
+      "scenario_number": 3,
+      "name": "Governance decision TECHNICAL_NO_GO",
+      "status": "PASS",
+      "details": "TECHNICAL NO-GO",
+      "timestamp": "2026-11-10T06:25:36.808944+00:00"
+    },
+    {
+      "scenario_number": 4,
+      "name": "Trading Prohibition badge",
+      "status": "PASS",
+      "details": "CANLI \u0130\u015eLEM: YASAK",
+      "timestamp": "2026-11-10T06:25:36.815456+00:00"
+    },
+    {
+      "scenario_number": 5,
+      "name": "Authenticate operator session via form",
+      "status": "PASS",
+      "details": "Session authenticated",
+      "timestamp": "2026-11-10T06:25:36.902089+00:00"
+    },
+    {
+      "scenario_number": 6,
+      "name": "Session pill and CSRF protection badge",
+      "status": "PASS",
+      "details": "Session: azZhw9R5...",
+      "timestamp": "2026-11-10T06:25:36.916512+00:00"
+    },
+    {
+      "scenario_number": 7,
+      "name": "Zero raw tokens in client storage",
+      "status": "PASS",
+      "details": "All storage clean",
+      "timestamp": "2026-11-10T06:25:36.919601+00:00"
+    },
+    {
+      "scenario_number": 8,
+      "name": "Overview KPI Cards rendering",
+      "status": "PASS",
+      "details": "Specs: 16 / 17, Reports: 8",
+      "timestamp": "2026-11-10T06:25:37.241013+00:00"
+    },
+    {
+      "scenario_number": 9,
+      "name": "Overview 3-Pillar visual partitioning",
+      "status": "PASS",
+      "details": "Scientific vs Health vs Trading clear",
+      "timestamp": "2026-11-10T06:25:37.252049+00:00"
+    },
+    {
+      "scenario_number": 10,
+      "name": "Global search dropdown execution",
+      "status": "PASS",
+      "details": "Found RES-FUND-01 in results",
+      "timestamp": "2026-11-10T06:25:37.833719+00:00"
+    },
+    {
+      "scenario_number": 11,
+      "name": "Global search result navigation",
+      "status": "PASS",
+      "details": "Navigated to RES-FUND-01",
+      "timestamp": "2026-11-10T06:25:37.877268+00:00"
+    },
+    {
+      "scenario_number": 12,
+      "name": "Research Catalog Table rendering",
+      "status": "PASS",
+      "details": "10 research records rendered",
+      "timestamp": "2026-11-10T06:25:38.238180+00:00"
+    },
+    {
+      "scenario_number": 13,
+      "name": "Catalog filter by dataset",
+      "status": "PASS",
+      "details": "Filtered to Spot 1h dataset",
+      "timestamp": "2026-11-10T06:25:38.655874+00:00"
+    },
+    {
+      "scenario_number": 14,
+      "name": "Catalog filter by scientific eligibility",
+      "status": "PASS",
+      "details": "Isolated ineligible records",
+      "timestamp": "2026-11-10T06:25:39.075884+00:00"
+    },
+    {
+      "scenario_number": 15,
+      "name": "Catalog sorting by Parkinson volatility",
+      "status": "PASS",
+      "details": "Top volatility record verified",
+      "timestamp": "2026-11-10T06:25:39.496550+00:00"
+    },
+    {
+      "scenario_number": 16,
+      "name": "Catalog pagination controls verified",
+      "status": "PASS",
+      "details": "Sayfa 1 / 2",
+      "timestamp": "2026-11-10T06:25:39.499105+00:00"
+    },
+    {
+      "scenario_number": 17,
+      "name": "Research detail modal inspection",
+      "status": "PASS",
+      "details": "CPI ve FOMC duyurular\u0131n\u0131 takip eden 12 s...",
+      "timestamp": "2026-11-10T06:25:39.561502+00:00"
+    },
+    {
+      "scenario_number": 18,
+      "name": "Detail modal to Comparison Lab transition",
+      "status": "PASS",
+      "details": "Jumped to Comparison Lab",
+      "timestamp": "2026-11-10T06:25:39.913106+00:00"
+    },
+    {
+      "scenario_number": 19,
+      "name": "Comparison candidate selector chips",
+      "status": "PASS",
+      "details": "6 candidates available",
+      "timestamp": "2026-11-10T06:25:39.915035+00:00"
+    },
+    {
+      "scenario_number": 20,
+      "name": "Compatibility Gate positive approval",
+      "status": "PASS",
+      "details": "\u2713 B\u0130L\u0130MSEL UYUMLULUK ONAYLANDI: Se\u00e7ili 2 ara\u015ft\u0131rma kayd\u0131 CBE...",
+      "timestamp": "2026-11-10T06:25:40.081485+00:00"
+    },
+    {
+      "scenario_number": 21,
+      "name": "Side-by-side comparison matrix table",
+      "status": "PASS",
+      "details": "All comparison dimensions present",
+      "timestamp": "2026-11-10T06:25:40.089168+00:00"
+    },
+    {
+      "scenario_number": 22,
+      "name": "Difference analysis calculation table",
+      "status": "PASS",
+      "details": "Absolute/relative differences verified",
+      "timestamp": "2026-11-10T06:25:40.102586+00:00"
+    },
+    {
+      "scenario_number": 23,
+      "name": "Difference analysis scientific disclaimer",
+      "status": "PASS",
+      "details": "Zero profitability speculation enforced",
+      "timestamp": "2026-11-10T06:25:40.107776+00:00"
+    },
+    {
+      "scenario_number": 24,
+      "name": "Compatibility Gate quarantine rejection",
+      "status": "PASS",
+      "details": "\u2715 B\u0130L\u0130MSEL UYUMSUZLUK: [QUARANTINED_RECORD] Karantinaya al\u0131n...",
+      "timestamp": "2026-11-10T06:25:40.840287+00:00"
+    },
+    {
+      "scenario_number": 25,
+      "name": "Comparison persistence to Research Library",
+      "status": "PASS",
+      "details": "Saved successfully to disk",
+      "timestamp": "2026-11-10T06:25:42.057321+00:00"
+    },
+    {
+      "scenario_number": 26,
+      "name": "Reopen saved comparison configuration",
+      "status": "PASS",
+      "details": "Reopened and live re-evaluated",
+      "timestamp": "2026-11-10T06:25:42.717011+00:00"
+    },
+    {
+      "scenario_number": 27,
+      "name": "Interactive chart date preset application",
+      "status": "PASS",
+      "details": "Start: 2022-06-01T00:00",
+      "timestamp": "2026-11-10T06:25:43.085639+00:00"
+    },
+    {
+      "scenario_number": 28,
+      "name": "Interactive chart zoom control",
+      "status": "PASS",
+      "details": "Zoom triggered",
+      "timestamp": "2026-11-10T06:25:43.123170+00:00"
+    },
+    {
+      "scenario_number": 29,
+      "name": "Interactive chart pan control",
+      "status": "PASS",
+      "details": "Pan triggered",
+      "timestamp": "2026-11-10T06:25:43.175161+00:00"
+    },
+    {
+      "scenario_number": 30,
+      "name": "Interactive chart hover tooltip",
+      "status": "PASS",
+      "details": "Hover inspection active",
+      "timestamp": "2026-11-10T06:25:43.404022+00:00"
+    },
+    {
+      "scenario_number": 31,
+      "name": "Visual layer toggle without mutating data",
+      "status": "PASS",
+      "details": "Layer toggles verified",
+      "timestamp": "2026-11-10T06:25:43.555787+00:00"
+    },
+    {
+      "scenario_number": 32,
+      "name": "Evidence Center 4-Pillar visual architecture",
+      "status": "PASS",
+      "details": "All 4 pillars rendered",
+      "timestamp": "2026-11-10T06:25:43.587278+00:00"
+    },
+    {
+      "scenario_number": 33,
+      "name": "Evidence verification workflow execution",
+      "status": "PASS",
+      "details": "RFC 8785 + HMAC verified",
+      "timestamp": "2026-11-10T06:25:44.473201+00:00"
+    },
+    {
+      "scenario_number": 34,
+      "name": "Research Library V2 catalog access",
+      "status": "PASS",
+      "details": "Library container active",
+      "timestamp": "2026-11-10T06:25:44.481925+00:00"
+    },
+    {
+      "scenario_number": 35,
+      "name": "Reporting Experience V2 builder access",
+      "status": "PASS",
+      "details": "Report overview active",
+      "timestamp": "2026-11-10T06:25:44.502680+00:00"
+    },
+    {
+      "scenario_number": 36,
+      "name": "Standalone HTML report export capability",
+      "status": "PASS",
+      "details": "HTML report endpoint ready",
+      "timestamp": "2026-11-10T06:25:44.508361+00:00"
+    },
+    {
+      "scenario_number": 37,
+      "name": "Publication A4 PDF export endpoint",
+      "status": "PASS",
+      "details": "PDF exporter active",
+      "timestamp": "2026-11-10T06:25:45.622568+00:00"
+    },
+    {
+      "scenario_number": 38,
+      "name": "Operational diagnostics real-time metrics",
+      "status": "PASS",
+      "details": "RSS: 54.2 MB",
+      "timestamp": "2026-11-10T06:25:45.638171+00:00"
+    },
+    {
+      "scenario_number": 39,
+      "name": "Unauthenticated mutation rejection",
+      "status": "PASS",
+      "details": "Status: 403",
+      "timestamp": "2026-11-10T06:25:45.644106+00:00"
+    },
+    {
+      "scenario_number": 40,
+      "name": "Desktop viewport (1920x1080) screenshot",
+      "status": "PASS",
+      "details": "Saved to sprint24_screenshot_01_desktop_overview.png",
+      "timestamp": "2026-11-10T06:25:46.178092+00:00"
+    },
+    {
+      "scenario_number": 41,
+      "name": "Tablet viewport (768x1024) screenshot",
+      "status": "PASS",
+      "details": "Saved to sprint24_screenshot_02_tablet_comparison_lab.png",
+      "timestamp": "2026-11-10T06:25:46.669162+00:00"
+    },
+    {
+      "scenario_number": 42,
+      "name": "Mobile viewport (375x667) screenshot",
+      "status": "PASS",
+      "details": "Saved to sprint24_screenshot_03_mobile_evidence_center.png",
+      "timestamp": "2026-11-10T06:25:47.138323+00:00"
+    },
+    {
+      "scenario_number": 43,
+      "name": "Zero secret leakage in browser console traces",
+      "status": "PASS",
+      "details": "No secrets logged",
+      "timestamp": "2026-11-10T06:25:47.138323+00:00"
+    },
+    {
+      "scenario_number": 44,
+      "name": "Zero external network requests",
+      "status": "PASS",
+      "details": "All 52 requests were local",
+      "timestamp": "2026-11-10T06:25:47.138323+00:00"
+    },
+    {
+      "scenario_number": 45,
+      "name": "Safe test cleanup without data loss",
+      "status": "PASS",
+      "details": "Clean shutdown verified",
+      "timestamp": "2026-11-10T06:25:47.988314+00:00"
+    }
+  ]
+}

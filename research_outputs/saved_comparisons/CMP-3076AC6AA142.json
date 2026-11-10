@@ -1,0 +1,28 @@
+{
+  "comparison_id": "CMP-3076AC6AA142",
+  "title": "Playwright Kabul Testi Karşılaştırması",
+  "candidate_ids": [
+    "RES-REGIME-01",
+    "RES-ANALOG-01"
+  ],
+  "created_at_utc": "2026-11-10T06:25:41.049481+00:00",
+  "created_by": "operator-session",
+  "tags": [
+    "fonlama",
+    "rejim",
+    "sprint24"
+  ],
+  "notes_tr": "Sprint 24 Playwright kabul testi doğrulaması",
+  "is_compatible": true,
+  "validation_status": "VALIDATED",
+  "summary_metrics": {
+    "candidates_count": 2,
+    "model_version": "CBE-0.7.0",
+    "first_candidate": "RES-REGIME-01",
+    "second_candidate": "RES-ANALOG-01"
+  },
+  "canonical_model": "CBE-0.7.0",
+  "governance_decision": "TECHNICAL_NO_GO",
+  "trading_prohibition": "LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED",
+  "storage_checksum": "cf0309fef4237343e984cb01f27ed053815cae662a497a561a0093cc37f33b11"
+}

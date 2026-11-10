@@ -1,0 +1,128 @@
+{
+  "sprint_id": "CBE_PRODUCT_ACCELERATION_24_CORRECTION",
+  "repository": "selimoyan2/coin-behavior-engine",
+  "target_branch": "main",
+  "implementation_commit": "54c43cdceedf22214bb0f01cb908b8ba6fabe48e",
+  "canonical_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "governance_decision": "TECHNICAL_NO_GO",
+  "timestamp_utc": "2026-11-10T06:33:31.429342+00:00",
+  "artifacts_count": 23,
+  "artifacts": [
+    {
+      "filename": "root_cause_analysis.md",
+      "sha256": "3db79252a00002329118175fc0ab4b46b30f76cf12b1605aac05534da0d615f2",
+      "size_bytes": 8248
+    },
+    {
+      "filename": "research_catalog_source_inventory.md",
+      "sha256": "9bbbb29a216ff47cc59e287029057e61472b1876810c415a7288b732226f7fee",
+      "size_bytes": 5235
+    },
+    {
+      "filename": "hardcoded_record_reconciliation_matrix.md",
+      "sha256": "86224846e100b4ac8c12b60f91c0065992565b2a128344cec1622093162d3ceb",
+      "size_bytes": 4707
+    },
+    {
+      "filename": "evidence_backed_catalog_architecture.md",
+      "sha256": "abd6efc8d9382da2e8741a9ac7fcdb80407bab605468a563b7e1781a698146ba",
+      "size_bytes": 4353
+    },
+    {
+      "filename": "scientific_provenance_verification_results.md",
+      "sha256": "da4f1a0c34444b6f76a9e2a316aea17edb2f66b9524777e6593d6d4ad44d41da",
+      "size_bytes": 3975
+    },
+    {
+      "filename": "comparison_methodology_contract.md",
+      "sha256": "0941b03298f323af53f4532da72ef7574658d219da1d30361a8a95a5877d3df6",
+      "size_bytes": 3962
+    },
+    {
+      "filename": "comparison_negative_test_matrix.md",
+      "sha256": "567a7ac6b7c65ed592aedacd2d52017a907c4c3f049e633436c429e1219439d7",
+      "size_bytes": 3724
+    },
+    {
+      "filename": "operational_fail_closed_verification.md",
+      "sha256": "8b6fc4c2d6bcdd029b41c083a1b11dc856e5589591d06afb65409938ca558c62",
+      "size_bytes": 3029
+    },
+    {
+      "filename": "search_xss_security_test_results.md",
+      "sha256": "561ab7252d6f0ef36924e1aa822a2043f4a43a12cf827ecc4533427e2f78d7f8",
+      "size_bytes": 4414
+    },
+    {
+      "filename": "visualization_provenance_audit.md",
+      "sha256": "d7bb119605b47bd1104d2912142de8c53ec7bcd3b4f9418a8439929f9d0322e4",
+      "size_bytes": 3625
+    },
+    {
+      "filename": "api_authorization_audit.md",
+      "sha256": "8846c2984963527f894391fe5ed33733279c16023859eb8209c7f2fff25403d0",
+      "size_bytes": 3454
+    },
+    {
+      "filename": "performance_benchmarks.md",
+      "sha256": "6ce40bb7020be4830da204a1415173088268830380878dc80ce41f0575cafbb6",
+      "size_bytes": 2512
+    },
+    {
+      "filename": "unit_test_results.md",
+      "sha256": "ad6d4f56cdc69267603cc2b7d45a1bb75b9fd24e5dc72894ccfb66a1ebe3a5e3",
+      "size_bytes": 4587
+    },
+    {
+      "filename": "regression_test_results.md",
+      "sha256": "bb4303f4528fd8dce44d8dd0ca703e64861bc984c4df2e615fec153a42599e15",
+      "size_bytes": 2578
+    },
+    {
+      "filename": "playwright_acceptance_results.json",
+      "sha256": "47e2fe4d068b532eb92fbe76827d640afff322f5aaa2e5efc394fdd96a32d8ba",
+      "size_bytes": 10677
+    },
+    {
+      "filename": "staging_runtime_provenance.md",
+      "sha256": "30140390baf2a4a5d7d44ffb5d20fd06468514ee131490f17cf315082d754bc4",
+      "size_bytes": 3663
+    },
+    {
+      "filename": "production_zero_touch_attestation.md",
+      "sha256": "f4de59fd38faa0cb50ad5d1c6dbcd77b588fd8d84e8d09606f887307d08587cd",
+      "size_bytes": 2389
+    },
+    {
+      "filename": "scientific_governance_verification.md",
+      "sha256": "45a8946b12addfaa194fc9a691f80fb7b86772a135554f50be23867f8c7c0b95",
+      "size_bytes": 2951
+    },
+    {
+      "filename": "git_release_identity.md",
+      "sha256": "11118670b5a59b382a7230b2736f59fe86eb6f848b8447dbd71c9de3e19ca240",
+      "size_bytes": 1830
+    },
+    {
+      "filename": "final_acceptance_report.md",
+      "sha256": "93cebf3074cc84034cd69de6cc23cdb4f131e3e8a918192ef2f3bde991359b0f",
+      "size_bytes": 6328
+    },
+    {
+      "filename": "sprint24_screenshot_01_desktop_overview.png",
+      "sha256": "7fc06e3e8aef2f5a1b0d06e0b99a5b4701d459979f4e9603e5df94cc3e875e4d",
+      "size_bytes": 176297
+    },
+    {
+      "filename": "sprint24_screenshot_02_tablet_comparison_lab.png",
+      "sha256": "96b930a27f553245fcdbe06c4b2f3344f5bdfae7b39b15a4d83a99163fd2a887",
+      "size_bytes": 108044
+    },
+    {
+      "filename": "sprint24_screenshot_03_mobile_evidence_center.png",
+      "sha256": "180c478bcc1757e457669e7d72b6f216e0c735de5d13dcee91e8437c58bcdc0b",
+      "size_bytes": 47580
+    }
+  ]
+}
