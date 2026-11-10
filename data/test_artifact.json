@@ -1,0 +1,6 @@
+{
+  "artifact_type": "TEST_RESEARCH_SPECIFICATION",
+  "dataset_id": "BTCUSDT-1H",
+  "description": "Authoritative canonical test research artifact for Sprint 24 cryptographic integrity verification.",
+  "model_version": "CBE-0.7.0"
+}

@@ -1,23 +1,24 @@
 """
 Observation Completeness Attestation Verifier & Cache Engine.
-Sprint 24 Final Trust Boundary Closure.
+Sprint 24 Final Cryptographic Hardening.
 
 Provides fail-closed, cryptographic, RFC-8785-canonical verification for
 observation series completeness attestations, binding:
-- Dataset ID
-- Source artifact SHA-256
-- Research record ID
-- Observation window start and end (UTC)
-- Cadence
-- Observation count & grid geometry
+- Dataset ID & Research Record ID (replay mitigation)
+- Authenticated security claims: missing_observations, has_missing_data, expires_at_utc, is_superseded
+- Source artifact disk file integrity, permissions, path confinement, and SHA-256 verification
+- Observation window start and end (UTC), cadence, and geometry
 - Trusted signing authority and key registry
-- Dynamic cache bound to digests, key IDs, policy version, and revocation state.
+- Thread-safe, signature-bound verification cache preventing signature cross-talk.
 """
+
+from __future__ import annotations
 
 import hashlib
 import hmac
 import json
 import os
+import threading
 import time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -38,10 +39,26 @@ CADENCE_SECONDS_MAP = {
 }
 
 SUPPORTED_SCHEMA_VERSIONS = {
+    "CBE-ATTESTATION-2.0.0",
     "CBE-ATTESTATION-1.0.0",
     "CBE-OBSERVATION-ATTESTATION-1.0.0",
     "1.0.0",
 }
+
+MANDATORY_CLAIMS = (
+    "completeness_assertion",
+    "dataset_id",
+    "issuer",
+    "key_id",
+    "observation_count",
+    "observation_end_utc",
+    "observation_start_utc",
+    "record_id",
+    "schema_version",
+    "source_artifact_sha256",
+    "verification_method",
+    "window_cadence",
+)
 
 TRUSTED_ISSUERS = {
     "CBE_AUTHORITATIVE_RESEARCH_AUTHORITY",
@@ -51,100 +68,178 @@ TRUSTED_ISSUERS = {
     "CBE_CANONICAL_RESEARCH_AUTHORITY",
 }
 
-UNTRUSTED_KEY_PATHS = {
-    "tmp",
-    "temp",
-    "/tmp",
-    "/var/tmp",
-    "data",
-    "/app/data",
-}
+DISALLOWED_SYSTEM_DIRECTORIES = (
+    "/etc",
+    "/bin",
+    "/sbin",
+    "/usr",
+    "/var/run",
+    "/dev",
+    "/proc",
+    "/sys",
+    "c:/windows",
+    "c:\\windows",
+)
+
+MAX_SOURCE_ARTIFACT_SIZE_BYTES = 50 * 1024 * 1024  # 50 MB bound
 
 
 class AttestationVerificationCache:
     """
-    Thread-safe, digest-bound verification result cache.
+    Thread-safe, signature-bound verification result cache.
     Cache entries are strictly bound to:
-    (artifact_digest, attestation_digest, key_id, trust_policy_version, is_revoked)
+    (artifact_digest, claims_sha256, signature_digest, key_id, trust_policy_version, is_revoked)
+    
+    Guarantees:
+    1. A valid signature never authorizes another signature.
+    2. A modified signature causes an immediate cache miss.
+    3. Failed verifications never contaminate successful cache entries.
+    4. Source artifact modifications on disk invalidate cached verification.
     """
 
     def __init__(self, max_size: int = 1000):
         self._max_size = max_size
-        self._cache: Dict[Tuple[str, str, str, str, bool], Dict[str, Any]] = {}
+        self._cache: Dict[Tuple[str, str, str, str, str, bool], Dict[str, Any]] = {}
+        self._lock = threading.Lock()
         self._hit_count = 0
         self._miss_count = 0
 
     def get(
         self,
         artifact_digest: str,
-        attestation_digest: str,
+        claims_sha256: str,
+        signature_digest: str,
         key_id: str,
         trust_policy_version: str,
         is_revoked: bool,
+        source_path: Optional[str] = None,
     ) -> Optional[Dict[str, Any]]:
-        key = (artifact_digest, attestation_digest, key_id, trust_policy_version, is_revoked)
-        res = self._cache.get(key)
-        if res is not None:
-            self._hit_count += 1
-            return dict(res)
-        self._miss_count += 1
-        return None
+        with self._lock:
+            key = (
+                artifact_digest,
+                claims_sha256,
+                signature_digest,
+                key_id,
+                trust_policy_version,
+                is_revoked,
+            )
+            entry = self._cache.get(key)
+            if entry is not None:
+                # Source file continuous integrity check: verify file still exists and unchanged
+                if source_path:
+                    p = Path(source_path)
+                    try:
+                        if not p.exists() or not p.is_file():
+                            self._cache.pop(key, None)
+                            self._miss_count += 1
+                            return None
+                        stat = p.stat()
+                        cached_mtime = entry.get("_source_mtime_ns")
+                        cached_size = entry.get("_source_size")
+                        if cached_mtime is not None and stat.st_mtime_ns != cached_mtime:
+                            self._cache.pop(key, None)
+                            self._miss_count += 1
+                            return None
+                        if cached_size is not None and stat.st_size != cached_size:
+                            self._cache.pop(key, None)
+                            self._miss_count += 1
+                            return None
+                    except Exception:
+                        self._cache.pop(key, None)
+                        self._miss_count += 1
+                        return None
+
+                self._hit_count += 1
+                res = dict(entry["result"])
+                return res
+
+            self._miss_count += 1
+            return None
 
     def put(
         self,
         artifact_digest: str,
-        attestation_digest: str,
+        claims_sha256: str,
+        signature_digest: str,
         key_id: str,
         trust_policy_version: str,
         is_revoked: bool,
         result: Dict[str, Any],
+        source_mtime_ns: Optional[int] = None,
+        source_size: Optional[int] = None,
     ) -> None:
-        if len(self._cache) >= self._max_size:
-            # Evict oldest 20%
-            keys_to_remove = list(self._cache.keys())[: self._max_size // 5]
-            for k in keys_to_remove:
-                self._cache.pop(k, None)
-        key = (artifact_digest, attestation_digest, key_id, trust_policy_version, is_revoked)
-        self._cache[key] = dict(result)
+        with self._lock:
+            if len(self._cache) >= self._max_size:
+                # Evict oldest 20%
+                keys_to_remove = list(self._cache.keys())[: self._max_size // 5]
+                for k in keys_to_remove:
+                    self._cache.pop(k, None)
+
+            key = (
+                artifact_digest,
+                claims_sha256,
+                signature_digest,
+                key_id,
+                trust_policy_version,
+                is_revoked,
+            )
+            self._cache[key] = {
+                "result": dict(result),
+                "_source_mtime_ns": source_mtime_ns,
+                "_source_size": source_size,
+            }
 
     def clear(self) -> None:
-        self._cache.clear()
-        self._hit_count = 0
-        self._miss_count = 0
+        with self._lock:
+            self._cache.clear()
+            self._hit_count = 0
+            self._miss_count = 0
 
     @property
     def stats(self) -> Dict[str, Any]:
-        return {
-            "size": len(self._cache),
-            "hit_count": self._hit_count,
-            "miss_count": self._miss_count,
-            "max_size": self._max_size,
-        }
+        with self._lock:
+            return {
+                "size": len(self._cache),
+                "hit_count": self._hit_count,
+                "miss_count": self._miss_count,
+                "max_size": self._max_size,
+            }
 
 
-# Global cache instance
+# Global thread-safe cache instance
 attestation_cache = AttestationVerificationCache()
 
 
 class ObservationCompletenessAttestationVerifier:
     """
-    Fail-closed verifier for research observation completeness attestations.
-    Rejects self-declared fields unless independently backed by a trusted cryptographic signature.
+    Fail-closed cryptographic verifier for research observation completeness attestations.
+    Authenticates all security-relevant claims, verifies physical source file integrity,
+    and binds verification results to the exact cryptographic signature.
     """
 
-    TRUST_POLICY_VERSION = "2026.1"
+    TRUST_POLICY_VERSION = "2026.2"
 
     @classmethod
     def extract_canonical_claims(cls, attestation: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Extracts bound fields into canonical claims dictionary.
-        Excludes signature, dynamic runtime status, and non-claim annotations.
+        Extracts all security-relevant bound claims into the canonical dictionary.
+        Strictly includes missing_observations, has_missing_data, expires_at_utc, and is_superseded
+        so that any mutation invalidates the cryptographic signature.
         """
+        expires_val = attestation.get("expires_at_utc")
+        expires_str = str(expires_val) if expires_val else ""
+
         return {
-            "completeness_assertion": attestation.get("completeness_assertion", attestation.get("verified_continuous_series", False)),
+            "completeness_assertion": bool(
+                attestation.get("completeness_assertion", attestation.get("verified_continuous_series", False))
+            ),
             "dataset_id": str(attestation.get("dataset_id") or ""),
+            "expires_at_utc": expires_str,
+            "has_missing_data": bool(attestation.get("has_missing_data", False)),
+            "is_superseded": bool(attestation.get("is_superseded", False)),
             "issuer": str(attestation.get("issuer") or ""),
             "key_id": str(attestation.get("key_id") or ""),
+            "missing_observations": int(attestation.get("missing_observations", 0)),
             "observation_count": int(attestation.get("observation_count") or 0),
             "observation_end_utc": str(attestation.get("observation_end_utc") or ""),
             "observation_start_utc": str(attestation.get("observation_start_utc") or ""),
@@ -163,13 +258,171 @@ class ObservationCompletenessAttestationVerifier:
         return canonical_bytes, digest
 
     @classmethod
+    def verify_source_artifact_integrity(
+        cls,
+        record: Any,
+        attestation: Dict[str, Any],
+    ) -> Tuple[bool, Optional[str], Optional[str], Optional[str], Optional[int], Optional[int]]:
+        """
+        Performs fail-closed verification of the source artifact file on disk.
+        Returns: (is_valid, rejection_code, rejection_reason_tr, verified_sha256, mtime_ns, file_size)
+        """
+        source_path_str = getattr(record, "source_artifact", None)
+        if not source_path_str or not isinstance(source_path_str, str) or not source_path_str.strip():
+            return (
+                False,
+                "SOURCE_ARTIFACT_MISSING",
+                "Kaynak araştırma belgesi yolu belirtilmemiş.",
+                None,
+                None,
+                None,
+            )
+
+        clean_path = source_path_str.strip().replace("\\", "/")
+
+        # 1. Path Traversal Check
+        raw_parts = Path(clean_path).parts
+        if ".." in raw_parts:
+            return (
+                False,
+                "SOURCE_ARTIFACT_PATH_UNTRUSTED",
+                "Güvenilmeyen kaynak dosya yolu (dizin geçişi tespit edildi).",
+                None,
+                None,
+                None,
+            )
+
+        # 2. Check for Disallowed System Directories
+        norm_lower = clean_path.lower()
+        for dis in DISALLOWED_SYSTEM_DIRECTORIES:
+            if norm_lower.startswith(dis):
+                return (
+                    False,
+                    "SOURCE_ARTIFACT_PATH_UNTRUSTED",
+                    "Güvenilmeyen sistem dizin yolu.",
+                    None,
+                    None,
+                    None,
+                )
+
+        p = Path(clean_path)
+        resolved_p = p.resolve() if p.is_absolute() else (Path.cwd() / p).resolve()
+
+        # 3. Symlink Escape Check
+        if p.is_symlink():
+            sym_target = p.resolve()
+            sym_lower = str(sym_target).lower().replace("\\", "/")
+            for dis in DISALLOWED_SYSTEM_DIRECTORIES:
+                if sym_lower.startswith(dis):
+                    return (
+                        False,
+                        "SOURCE_ARTIFACT_PATH_UNTRUSTED",
+                        "Güvenilmeyen symlink hedefi tespit edildi.",
+                        None,
+                        None,
+                        None,
+                    )
+
+        # 4. Existence Check
+        if not resolved_p.exists():
+            return (
+                False,
+                "SOURCE_ARTIFACT_MISSING",
+                "Kaynak araştırma dosyası disk üzerinde bulunamadı.",
+                None,
+                None,
+                None,
+            )
+
+        # 5. Directory Check
+        if not resolved_p.is_file():
+            return (
+                False,
+                "SOURCE_ARTIFACT_UNREADABLE",
+                "Belirtilen kaynak yolu bir dosya değil (dizin veya özel aygıt).",
+                None,
+                None,
+                None,
+            )
+
+        # 6. Readability & Resource Boundedness
+        try:
+            stat = resolved_p.stat()
+            if stat.st_size > MAX_SOURCE_ARTIFACT_SIZE_BYTES:
+                return (
+                    False,
+                    "SOURCE_ARTIFACT_VERIFICATION_FAILED",
+                    "Kaynak dosya boyutu izin verilen sınırı aşıyor.",
+                    None,
+                    None,
+                    None,
+                )
+            file_bytes = resolved_p.read_bytes()
+            mtime_ns = stat.st_mtime_ns
+            file_size = stat.st_size
+        except PermissionError:
+            return (
+                False,
+                "SOURCE_ARTIFACT_UNREADABLE",
+                "Kaynak dosya okuma izin hatası.",
+                None,
+                None,
+                None,
+            )
+        except (OSError, IOError) as e:
+            return (
+                False,
+                "SOURCE_ARTIFACT_UNREADABLE",
+                f"Kaynak dosya erişilemedi: {type(e).__name__}",
+                None,
+                None,
+                None,
+            )
+        except Exception:
+            return (
+                False,
+                "SOURCE_ARTIFACT_VERIFICATION_FAILED",
+                "Beklenmeyen dosya sistemi hatası.",
+                None,
+                None,
+                None,
+            )
+
+        # 7. Exact SHA-256 Hash Verification
+        actual_sha = hashlib.sha256(file_bytes).hexdigest()
+        expected_sha = getattr(record, "source_artifact_sha256", None) or ""
+        attestation_sha = attestation.get("source_artifact_sha256") or ""
+
+        if not expected_sha or actual_sha != expected_sha:
+            return (
+                False,
+                "SOURCE_ARTIFACT_HASH_MISMATCH",
+                "Disk üzerindeki kaynak dosyanın özeti araştırma kaydı ile uyuşmuyor.",
+                None,
+                None,
+                None,
+            )
+
+        if not attestation_sha or actual_sha != attestation_sha:
+            return (
+                False,
+                "SOURCE_ARTIFACT_HASH_MISMATCH",
+                "Disk üzerindeki kaynak dosyanın özeti tasdik özeti ile uyuşmuyor.",
+                None,
+                None,
+                None,
+            )
+
+        return True, None, None, actual_sha, mtime_ns, file_size
+
+    @classmethod
     def create_signed_attestation(
         cls,
         record: Any,
         key_id: str,
         secret: str,
         issuer: str = "CBE_AUTHORITATIVE_RESEARCH_AUTHORITY",
-        schema_version: str = "CBE-ATTESTATION-1.0.0",
+        schema_version: str = "CBE-ATTESTATION-2.0.0",
         completeness_assertion: bool = True,
         observation_count: Optional[int] = None,
         override_dataset_id: Optional[str] = None,
@@ -180,11 +433,13 @@ class ObservationCompletenessAttestationVerifier:
         override_cadence: Optional[str] = None,
         forged_signature: Optional[str] = None,
         missing_observations: int = 0,
+        has_missing_data: bool = False,
+        is_superseded: bool = False,
         expires_at_utc: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Creates an authenticated, cryptographically signed observation completeness attestation.
-        Used by authoritative ingest pipelines and verification tests.
+        All security-relevant fields are signed into the RFC-8785 canonical claim payload.
         """
         cadence = (override_cadence or record.window_cadence or "1h").lower()
         step_sec = CADENCE_SECONDS_MAP.get(cadence, 3600)
@@ -204,8 +459,12 @@ class ObservationCompletenessAttestationVerifier:
         claims = {
             "completeness_assertion": completeness_assertion,
             "dataset_id": override_dataset_id or record.dataset_id,
+            "expires_at_utc": expires_at_utc or "",
+            "has_missing_data": has_missing_data,
+            "is_superseded": is_superseded,
             "issuer": issuer,
             "key_id": key_id,
+            "missing_observations": missing_observations,
             "observation_count": count,
             "observation_end_utc": e_str,
             "observation_start_utc": s_str,
@@ -226,9 +485,6 @@ class ObservationCompletenessAttestationVerifier:
         attestation = dict(claims)
         attestation["signature"] = signature
         attestation["claims_sha256"] = digest
-        attestation["missing_observations"] = missing_observations
-        if expires_at_utc:
-            attestation["expires_at_utc"] = expires_at_utc
         attestation["status"] = "AUTHENTICATED"
         attestation["verified_continuous_series"] = True
         return attestation
@@ -239,17 +495,12 @@ class ObservationCompletenessAttestationVerifier:
         record: Any,
         attestation: Optional[Dict[str, Any]],
         use_cache: bool = True,
+        enforce_source_file_integrity: bool = True,
     ) -> Dict[str, Any]:
         """
         Cryptographically verifies observation completeness attestation against record context.
-        Returns:
-            {
-                "is_valid": bool,
-                "rejection_code": Optional[str],
-                "rejection_reason_tr": Optional[str],
-                "verified_claims": Optional[Dict[str, Any]],
-                "verification_latency_ms": float,
-            }
+        Enforces physical source file integrity, verifies all security claims, and utilizes
+        a signature-bound thread-safe cache.
         """
         t0 = time.perf_counter()
 
@@ -265,7 +516,6 @@ class ObservationCompletenessAttestationVerifier:
             }
 
         # 2. Check for Embedded / Untrusted Keys (FAIL CLOSED)
-        # Never trust a key supplied inside the attestation itself
         if "secret" in attestation or "key_secret" in attestation or "signing_key" in attestation:
             elapsed = (time.perf_counter() - t0) * 1000
             return {
@@ -278,7 +528,7 @@ class ObservationCompletenessAttestationVerifier:
 
         key_location = attestation.get("key_location") or attestation.get("key_path")
         if key_location and isinstance(key_location, str):
-            for untrusted in UNTRUSTED_KEY_PATHS:
+            for untrusted in ("tmp", "temp", "/tmp", "/var/tmp", "data", "/app/data"):
                 if untrusted in key_location.lower():
                     elapsed = (time.perf_counter() - t0) * 1000
                     return {
@@ -300,6 +550,9 @@ class ObservationCompletenessAttestationVerifier:
                 "verified_claims": None,
                 "verification_latency_ms": elapsed,
             }
+
+        # Compute digest of signature for signature-bound cache identity
+        signature_digest = hashlib.sha256(signature_str.encode("utf-8")).hexdigest()
 
         # 4. Schema Version Check
         schema_version = attestation.get("schema_version")
@@ -325,7 +578,19 @@ class ObservationCompletenessAttestationVerifier:
                 "verification_latency_ms": elapsed,
             }
 
-        # 5. Completeness Assertion Check
+        # 6. Mandatory Claims Presence Check
+        for mc in MANDATORY_CLAIMS:
+            if mc not in attestation or attestation.get(mc) is None:
+                elapsed = (time.perf_counter() - t0) * 1000
+                return {
+                    "is_valid": False,
+                    "rejection_code": "MANDATORY_CLAIM_MISSING",
+                    "rejection_reason_tr": f"Tasdik zorunlu güvenlik iddiasını içermiyor: '{mc}'.",
+                    "verified_claims": None,
+                    "verification_latency_ms": elapsed,
+                }
+
+        # 7. Completeness Assertion & Conflicting Metadata Checks
         assertion = attestation.get("completeness_assertion", attestation.get("verified_continuous_series"))
         if assertion is not True:
             elapsed = (time.perf_counter() - t0) * 1000
@@ -337,8 +602,20 @@ class ObservationCompletenessAttestationVerifier:
                 "verification_latency_ms": elapsed,
             }
 
-        # Missing observations in claimed complete series
-        if attestation.get("missing_observations", 0) > 0 or attestation.get("has_missing_data") is True:
+        missing_obs = attestation.get("missing_observations", 0)
+        has_missing = attestation.get("has_missing_data", False)
+
+        if missing_obs < 0 or (assertion is True and (missing_obs > 0 or has_missing is True)):
+            elapsed = (time.perf_counter() - t0) * 1000
+            return {
+                "is_valid": False,
+                "rejection_code": "INCONSISTENT_COMPLETENESS_METADATA",
+                "rejection_reason_tr": "Eksiksizlik tasdiki çelişkili veya geçersiz kayıp gözlem metadatası içeriyor.",
+                "verified_claims": None,
+                "verification_latency_ms": elapsed,
+            }
+
+        if missing_obs > 0 or has_missing is True:
             elapsed = (time.perf_counter() - t0) * 1000
             return {
                 "is_valid": False,
@@ -348,11 +625,11 @@ class ObservationCompletenessAttestationVerifier:
                 "verification_latency_ms": elapsed,
             }
 
-        # 6. Expiration / Superseded Check
+        # 8. Expiration & Supersession Checks
         exp_utc = attestation.get("expires_at_utc")
         if exp_utc:
             try:
-                exp_dt = datetime.fromisoformat(exp_utc.replace("Z", "+00:00"))
+                exp_dt = datetime.fromisoformat(str(exp_utc).replace("Z", "+00:00"))
                 if datetime.now(timezone.utc) > exp_dt:
                     elapsed = (time.perf_counter() - t0) * 1000
                     return {
@@ -375,7 +652,7 @@ class ObservationCompletenessAttestationVerifier:
                 "verification_latency_ms": elapsed,
             }
 
-        # 7. Key ID Check
+        # 9. Key ID & Revocation Checks
         key_id = attestation.get("key_id") or ""
         if ":" in signature_str and signature_str.startswith("hmac-sha256:"):
             parts = signature_str.split(":")
@@ -392,7 +669,6 @@ class ObservationCompletenessAttestationVerifier:
                 "verification_latency_ms": elapsed,
             }
 
-        # Check key revocation
         is_revoked = signing_key_registry.is_key_revoked(key_id)
         if is_revoked:
             elapsed = (time.perf_counter() - t0) * 1000
@@ -404,8 +680,8 @@ class ObservationCompletenessAttestationVerifier:
                 "verification_latency_ms": elapsed,
             }
 
-        # 8. Record Context Binding Checks (FAIL CLOSED)
-        # 8a. Replay / Record ID Binding
+        # 10. Record Context Binding Checks (FAIL CLOSED)
+        # 10a. Replay / Record ID Binding
         if attestation.get("record_id") != getattr(record, "id", None):
             elapsed = (time.perf_counter() - t0) * 1000
             return {
@@ -416,7 +692,7 @@ class ObservationCompletenessAttestationVerifier:
                 "verification_latency_ms": elapsed,
             }
 
-        # 8b. Dataset ID Binding
+        # 10b. Dataset ID Binding
         if attestation.get("dataset_id") != getattr(record, "dataset_id", None):
             elapsed = (time.perf_counter() - t0) * 1000
             return {
@@ -427,38 +703,7 @@ class ObservationCompletenessAttestationVerifier:
                 "verification_latency_ms": elapsed,
             }
 
-        # 8c. Source Artifact SHA-256 Binding
-        expected_sha = getattr(record, "source_artifact_sha256", None) or ""
-        if attestation.get("source_artifact_sha256") != expected_sha:
-            elapsed = (time.perf_counter() - t0) * 1000
-            return {
-                "is_valid": False,
-                "rejection_code": "ARTIFACT_HASH_MISMATCH",
-                "rejection_reason_tr": f"Tasdik kaynak özeti ('{attestation.get('source_artifact_sha256')}') kayıt özeti ('{expected_sha}') ile uyuşmuyor.",
-                "verified_claims": None,
-                "verification_latency_ms": elapsed,
-            }
-
-        # 8d. Source Disk File Integrity Check (if present on disk)
-        source_artifact_path = getattr(record, "source_artifact", None)
-        if source_artifact_path:
-            p = Path(source_artifact_path)
-            if p.exists() and p.is_file():
-                try:
-                    file_sha = hashlib.sha256(p.read_bytes()).hexdigest()
-                    if file_sha != expected_sha or file_sha != attestation.get("source_artifact_sha256"):
-                        elapsed = (time.perf_counter() - t0) * 1000
-                        return {
-                            "is_valid": False,
-                            "rejection_code": "ARTIFACT_TAMPERED",
-                            "rejection_reason_tr": "Kaynak disk dosyası içeriği değiştirilmiş; dosya özeti tasdik ile uyuşmuyor.",
-                            "verified_claims": None,
-                            "verification_latency_ms": elapsed,
-                        }
-                except Exception:
-                    pass
-
-        # 8e. Observation Window Start & End Binding
+        # 10c. Observation Window Start & End Binding
         if (
             attestation.get("observation_start_utc") != getattr(record, "observation_start_utc", None)
             or attestation.get("observation_end_utc") != getattr(record, "observation_end_utc", None)
@@ -472,7 +717,7 @@ class ObservationCompletenessAttestationVerifier:
                 "verification_latency_ms": elapsed,
             }
 
-        # 8f. Cadence Binding
+        # 10d. Cadence Binding
         rec_cadence = (getattr(record, "window_cadence", None) or "1h").lower()
         att_cadence = str(attestation.get("window_cadence") or "").lower()
         if att_cadence != rec_cadence:
@@ -485,7 +730,7 @@ class ObservationCompletenessAttestationVerifier:
                 "verification_latency_ms": elapsed,
             }
 
-        # 8g. Observation Count & Grid Geometry Check
+        # 10e. Observation Count & Grid Geometry Check
         step_sec = CADENCE_SECONDS_MAP.get(rec_cadence, 3600)
         try:
             s_dt = datetime.fromisoformat(record.observation_start_utc.replace("Z", "+00:00"))
@@ -512,7 +757,7 @@ class ObservationCompletenessAttestationVerifier:
             }
 
         claimed_count = attestation.get("observation_count")
-        if claimed_count is None or claimed_count != expected_intervals:
+        if claimed_count is None or claimed_count != expected_intervals or claimed_count <= 0:
             elapsed = (time.perf_counter() - t0) * 1000
             return {
                 "is_valid": False,
@@ -522,27 +767,66 @@ class ObservationCompletenessAttestationVerifier:
                 "verification_latency_ms": elapsed,
             }
 
-        # 9. Cryptographic RFC-8785 Canonical Signature Verification (with Caching)
+        # 10f. Source Artifact SHA-256 Claim vs Record Check
+        expected_sha = getattr(record, "source_artifact_sha256", None)
+        claimed_sha = attestation.get("source_artifact_sha256")
+        if claimed_sha != expected_sha:
+            elapsed = (time.perf_counter() - t0) * 1000
+            return {
+                "is_valid": False,
+                "rejection_code": "ARTIFACT_HASH_MISMATCH",
+                "rejection_reason_tr": "Tasdik paketi içerisindeki kaynak dosya özeti araştırma kaydı ile uyuşmuyor.",
+                "verified_claims": None,
+                "verification_latency_ms": elapsed,
+            }
+
+        # 11. Fail-Closed Physical Source Artifact Integrity Verification
+        verified_source_sha = getattr(record, "source_artifact_sha256", None) or ""
+        source_mtime_ns = None
+        source_size = None
+
+        if enforce_source_file_integrity:
+            src_valid, src_code, src_msg, disk_sha, mtime, sz = cls.verify_source_artifact_integrity(
+                record, attestation
+            )
+            if not src_valid:
+                elapsed = (time.perf_counter() - t0) * 1000
+                return {
+                    "is_valid": False,
+                    "rejection_code": src_code,
+                    "rejection_reason_tr": src_msg,
+                    "verified_claims": None,
+                    "verification_latency_ms": elapsed,
+                }
+            verified_source_sha = disk_sha
+            source_mtime_ns = mtime
+            source_size = sz
+
+        # 12. Cryptographic Canonical Claims Hashing
         claims = cls.extract_canonical_claims(attestation)
         canonical_bytes, claims_sha256 = cls.compute_claims_digest(claims)
 
-        artifact_digest = expected_sha
+        artifact_digest = verified_source_sha
         policy_ver = cls.TRUST_POLICY_VERSION
+        source_path = getattr(record, "source_artifact", None)
 
+        # 13. Signature-Bound Cache Evaluation
         if use_cache:
             cached_res = attestation_cache.get(
                 artifact_digest=artifact_digest,
-                attestation_digest=claims_sha256,
+                claims_sha256=claims_sha256,
+                signature_digest=signature_digest,
                 key_id=key_id,
                 trust_policy_version=policy_ver,
                 is_revoked=is_revoked,
+                source_path=source_path,
             )
             if cached_res is not None:
                 elapsed = (time.perf_counter() - t0) * 1000
                 cached_res["verification_latency_ms"] = elapsed
                 return cached_res
 
-        # Call underlying trusted signing key registry
+        # 14. Signature Verification against Trusted Registry
         is_sig_valid, sig_msg, verified_key_id = signing_key_registry.verify_signature(
             canonical_bytes=canonical_bytes,
             signature_str=signature_str,
@@ -559,25 +843,16 @@ class ObservationCompletenessAttestationVerifier:
             elif sig_msg in ("SIGNATURE_EMPTY_OR_INVALID", "HMAC_SIGNATURE_MISMATCH"):
                 code = "SIGNATURE_VERIFICATION_FAILED"
 
-            fail_res = {
+            # NEVER populate successful cache with failure results
+            return {
                 "is_valid": False,
                 "rejection_code": code,
                 "rejection_reason_tr": f"Kriptografik imza doğrulaması başarısız oldu: {sig_msg}",
                 "verified_claims": None,
                 "verification_latency_ms": elapsed,
             }
-            if use_cache:
-                attestation_cache.put(
-                    artifact_digest=artifact_digest,
-                    attestation_digest=claims_sha256,
-                    key_id=key_id,
-                    trust_policy_version=policy_ver,
-                    is_revoked=is_revoked,
-                    result=fail_res,
-                )
-            return fail_res
 
-        # Success!
+        # 15. Success: Store in Signature-Bound Cache
         success_res = {
             "is_valid": True,
             "rejection_code": None,
@@ -586,16 +861,21 @@ class ObservationCompletenessAttestationVerifier:
             "verification_latency_ms": elapsed,
             "verified_key_id": verified_key_id,
             "claims_sha256": claims_sha256,
+            "signature_digest": signature_digest,
+            "artifact_digest": artifact_digest,
         }
 
         if use_cache:
             attestation_cache.put(
                 artifact_digest=artifact_digest,
-                attestation_digest=claims_sha256,
+                claims_sha256=claims_sha256,
+                signature_digest=signature_digest,
                 key_id=key_id,
                 trust_policy_version=policy_ver,
                 is_revoked=is_revoked,
                 result=success_res,
+                source_mtime_ns=source_mtime_ns,
+                source_size=source_size,
             )
 
         return success_res
