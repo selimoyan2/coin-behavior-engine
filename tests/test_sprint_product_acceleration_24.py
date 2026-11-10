@@ -219,8 +219,51 @@ class TestGroup3ScientificComparisonLab:
         assert res["rejection_code"] in ("QUARANTINED_RECORD", "QUARANTINED_RESEARCH_INELIGIBLE")
         assert "RES-CRYPTO-01" in res["quarantined_ids"]
 
-    def test_compatible_candidates_pass_gate(self):
-        res = ResearchWorkspaceV2Engine.evaluate_comparison_compatibility(["RES-REGIME-01", "RES-ANALOG-01"])
+    def test_compatible_candidates_pass_gate(self, monkeypatch):
+        # 1. First verify RES-REGIME-01 vs RES-ANALOG-01 fails closed under strict temporal overlap and metric rules
+        res_fail = ResearchWorkspaceV2Engine.evaluate_comparison_compatibility(["RES-REGIME-01", "RES-ANALOG-01"])
+        assert res_fail["is_compatible"] is False
+        assert res_fail["rejection_code"] in ("INSUFFICIENT_OVERLAP_EVIDENCE", "METRIC_DEFINITION_MISMATCH")
+        assert res_fail["difference_analysis"] == []
+
+        # 2. Verify genuinely compatible pair sharing 1h cadence, >=100 overlapping intervals, and verified metric contract
+        r1 = ResearchRecord(
+            id="RES-COMPAT-01",
+            title="Walk-Forward Baseline 2024",
+            title_en="Walk-Forward Baseline 2024",
+            category="Rejim Dinamikleri",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024-01-01 to 2024-06-01",
+            window_cadence="1h",
+            specification_id="SPEC-002-WF",
+            observation_start_utc="2024-01-01T00:00:00Z",
+            observation_end_utc="2024-06-01T00:00:00Z",
+            sample_size=3624,
+            volatility_ratio=1.240,
+            raw_p_value=0.0450,
+            evidence_status="SIGNED_VALID",
+            signature_verification_status="SIGNED_VALID",
+        )
+        r2 = ResearchRecord(
+            id="RES-COMPAT-02",
+            title="Analog Matched Window 2024",
+            title_en="Analog Matched Window 2024",
+            category="Rejim Dinamikleri",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024-02-01 to 2024-06-01",
+            window_cadence="1h",
+            specification_id="SPEC-003-AM",
+            observation_start_utc="2024-02-01T00:00:00Z",
+            observation_end_utc="2024-06-01T00:00:00Z",
+            sample_size=2880,
+            volatility_ratio=1.310,
+            raw_p_value=0.0320,
+            evidence_status="SIGNED_VALID",
+            signature_verification_status="SIGNED_VALID",
+        )
+        monkeypatch.setattr(ResearchWorkspaceV2Engine, "get_canonical_catalog", classmethod(lambda cls: [r1, r2]))
+
+        res = ResearchWorkspaceV2Engine.evaluate_comparison_compatibility(["RES-COMPAT-01", "RES-COMPAT-02"])
         assert res["is_compatible"] is True
         assert res["rejection_code"] is None
         assert len(res["comparison_table"]) == 2
@@ -242,10 +285,46 @@ class TestGroup3ScientificComparisonLab:
     def test_saved_comparison_persistence_lifecycle(self, tmp_path, monkeypatch):
         monkeypatch.setenv("CBE_SAVED_COMPARISONS_PATH", str(tmp_path))
 
+        r1 = ResearchRecord(
+            id="RES-COMPAT-01",
+            title="Walk-Forward Baseline 2024",
+            title_en="Walk-Forward Baseline 2024",
+            category="Rejim Dinamikleri",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024-01-01 to 2024-06-01",
+            window_cadence="1h",
+            specification_id="SPEC-002-WF",
+            observation_start_utc="2024-01-01T00:00:00Z",
+            observation_end_utc="2024-06-01T00:00:00Z",
+            sample_size=3624,
+            volatility_ratio=1.240,
+            raw_p_value=0.0450,
+            evidence_status="SIGNED_VALID",
+            signature_verification_status="SIGNED_VALID",
+        )
+        r2 = ResearchRecord(
+            id="RES-COMPAT-02",
+            title="Analog Matched Window 2024",
+            title_en="Analog Matched Window 2024",
+            category="Rejim Dinamikleri",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024-02-01 to 2024-06-01",
+            window_cadence="1h",
+            specification_id="SPEC-003-AM",
+            observation_start_utc="2024-02-01T00:00:00Z",
+            observation_end_utc="2024-06-01T00:00:00Z",
+            sample_size=2880,
+            volatility_ratio=1.310,
+            raw_p_value=0.0320,
+            evidence_status="SIGNED_VALID",
+            signature_verification_status="SIGNED_VALID",
+        )
+        monkeypatch.setattr(ResearchWorkspaceV2Engine, "get_canonical_catalog", classmethod(lambda cls: [r1, r2]))
+
         # 1. Save comparison
         save_res = ResearchWorkspaceV2Engine.save_comparison(
             title="Rejim ve Analog Karşılaştırması",
-            candidate_ids=["RES-REGIME-01", "RES-ANALOG-01"],
+            candidate_ids=["RES-COMPAT-01", "RES-COMPAT-02"],
             tags=["regimes", "analogs"],
             notes_tr="Test karşılaştırma notu",
         )
@@ -266,7 +345,7 @@ class TestGroup3ScientificComparisonLab:
         loaded = ResearchWorkspaceV2Engine.get_saved_comparison(cid)
         assert loaded is not None
         assert loaded["comparison_id"] == cid
-        assert loaded["candidate_ids"] == ["RES-REGIME-01", "RES-ANALOG-01"]
+        assert loaded["candidate_ids"] == ["RES-COMPAT-01", "RES-COMPAT-02"]
         assert "live_evaluation" in loaded
         assert loaded["live_evaluation"]["is_compatible"] is True
 
@@ -360,22 +439,68 @@ class TestGroup5ApiContractsAndSecurity:
         status, data = ProductDashboardApiService.handle_request("/api/v1/product/workspace/research/UNKNOWN-999", {})
         assert status == 404
 
-    def test_post_workspace_comparison_evaluate_api(self):
+    def test_post_workspace_comparison_evaluate_api(self, monkeypatch):
+        # 1. Test fail-closed rejection of records without genuine temporal overlap / metric contract
         status, data = ProductDashboardApiService.handle_post_request(
             "/api/v1/product/workspace/comparison/evaluate",
             body={"candidate_ids": ["RES-REGIME-01", "RES-ANALOG-01"]}
         )
         assert status == 200
-        assert data["is_compatible"] is True
+        assert data["is_compatible"] is False
+        assert data["rejection_code"] in ("INSUFFICIENT_OVERLAP_EVIDENCE", "METRIC_DEFINITION_MISMATCH")
 
-        # Test fail-closed cadence mismatch
+        # 2. Test fail-closed cadence mismatch
         c_status, c_data = ProductDashboardApiService.handle_post_request(
             "/api/v1/product/workspace/comparison/evaluate",
             body={"candidate_ids": ["RES-FUND-01", "RES-REGIME-01"]}
         )
         assert c_status == 200
         assert c_data["is_compatible"] is False
-        assert c_data["rejection_code"] == "SAMPLING_CADENCE_MISMATCH" 
+        assert c_data["rejection_code"] == "SAMPLING_CADENCE_MISMATCH"
+
+        # 3. Test genuine compatible candidate pair passing gate
+        r1 = ResearchRecord(
+            id="RES-COMPAT-01",
+            title="Walk-Forward Baseline 2024",
+            title_en="Walk-Forward Baseline 2024",
+            category="Rejim Dinamikleri",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024-01-01 to 2024-06-01",
+            window_cadence="1h",
+            specification_id="SPEC-002-WF",
+            observation_start_utc="2024-01-01T00:00:00Z",
+            observation_end_utc="2024-06-01T00:00:00Z",
+            sample_size=3624,
+            volatility_ratio=1.240,
+            raw_p_value=0.0450,
+            evidence_status="SIGNED_VALID",
+            signature_verification_status="SIGNED_VALID",
+        )
+        r2 = ResearchRecord(
+            id="RES-COMPAT-02",
+            title="Analog Matched Window 2024",
+            title_en="Analog Matched Window 2024",
+            category="Rejim Dinamikleri",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024-02-01 to 2024-06-01",
+            window_cadence="1h",
+            specification_id="SPEC-003-AM",
+            observation_start_utc="2024-02-01T00:00:00Z",
+            observation_end_utc="2024-06-01T00:00:00Z",
+            sample_size=2880,
+            volatility_ratio=1.310,
+            raw_p_value=0.0320,
+            evidence_status="SIGNED_VALID",
+            signature_verification_status="SIGNED_VALID",
+        )
+        monkeypatch.setattr(ResearchWorkspaceV2Engine, "get_canonical_catalog", classmethod(lambda cls: [r1, r2]))
+
+        ok_status, ok_data = ProductDashboardApiService.handle_post_request(
+            "/api/v1/product/workspace/comparison/evaluate",
+            body={"candidate_ids": ["RES-COMPAT-01", "RES-COMPAT-02"]}
+        )
+        assert ok_status == 200
+        assert ok_data["is_compatible"] is True
 
     def test_post_saved_comparison_mutation_unauthorized_rejected(self):
         """Anonymous POST to saved-comparisons without session or auth header must be rejected."""
@@ -386,7 +511,7 @@ class TestGroup5ApiContractsAndSecurity:
         )
         assert status in (401, 403)
 
-    def test_post_saved_comparison_with_valid_session_accepted(self):
+    def test_post_saved_comparison_with_valid_session_accepted(self, monkeypatch):
         """POST with active session and CSRF token succeeds."""
         # 1. Login to establish session
         l_status, l_data = ProductDashboardApiService.handle_post_request(
@@ -402,10 +527,43 @@ class TestGroup5ApiContractsAndSecurity:
             "x-csrf-token": csrf_token,
         }
 
+        # Mock compatible candidates for save
+        r1 = ResearchRecord(
+            id="RES-COMPAT-01",
+            title="Walk-Forward Baseline 2024",
+            title_en="Walk-Forward Baseline 2024",
+            category="Rejim Dinamikleri",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024-01-01 to 2024-06-01",
+            window_cadence="1h",
+            specification_id="SPEC-002-WF",
+            observation_start_utc="2024-01-01T00:00:00Z",
+            observation_end_utc="2024-06-01T00:00:00Z",
+            sample_size=3624,
+            volatility_ratio=1.240,
+            evidence_status="SIGNED_VALID",
+        )
+        r2 = ResearchRecord(
+            id="RES-COMPAT-02",
+            title="Analog Matched Window 2024",
+            title_en="Analog Matched Window 2024",
+            category="Rejim Dinamikleri",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024-02-01 to 2024-06-01",
+            window_cadence="1h",
+            specification_id="SPEC-003-AM",
+            observation_start_utc="2024-02-01T00:00:00Z",
+            observation_end_utc="2024-06-01T00:00:00Z",
+            sample_size=2880,
+            volatility_ratio=1.310,
+            evidence_status="SIGNED_VALID",
+        )
+        monkeypatch.setattr(ResearchWorkspaceV2Engine, "get_canonical_catalog", classmethod(lambda cls: [r1, r2]))
+
         # 2. Save comparison
         s_status, s_data = ProductDashboardApiService.handle_post_request(
             "/api/v1/product/workspace/saved-comparisons",
-            body={"title": "Session Auth Comp", "candidate_ids": ["RES-REGIME-01", "RES-ANALOG-01"]},
+            body={"title": "Session Auth Comp", "candidate_ids": ["RES-COMPAT-01", "RES-COMPAT-02"]},
             headers=headers,
         )
         assert s_status == 201

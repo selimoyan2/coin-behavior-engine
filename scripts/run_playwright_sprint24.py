@@ -27,7 +27,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 ARTIFACT_DIR = Path("C:/Users/selim/.gemini/antigravity/brain/f8db9a11-51a2-4f52-b048-d18a5254ed97")
-DELIVERY_DIR = Path("research_outputs/sprint24_correction_delivery")
+DELIVERY_DIR = Path(os.environ.get("CBE_PLAYWRIGHT_DELIVERY_DIR", "research_outputs/sprint24_final_closure"))
 DELIVERY_DIR.mkdir(parents=True, exist_ok=True)
 RESULTS_JSON = DELIVERY_DIR / "playwright_acceptance_results.json"
 
@@ -408,7 +408,7 @@ async def run_all_scenarios():
                 record_scenario(19, "Comparison candidate selector chips", "FAIL", str(e))
 
             # -----------------------------------------------------------------
-            # Scenario 20: Scientific Compatibility Gate (Positive)
+            # Scenario 20: Scientific Compatibility Gate Fail-Closed Rejection
             # -----------------------------------------------------------------
             try:
                 await page.evaluate("""() => {
@@ -420,35 +420,35 @@ async def run_all_scenarios():
                 await page.click("#btn-run-scientific-comparison")
                 await page.wait_for_selector("#ws-compat-gate-banner", state="visible", timeout=5000)
                 banner_text = await page.inner_text("#ws-compat-gate-banner")
-                assert "BİLİMSEL UYUMLULUK ONAYLANDI" in banner_text
-                record_scenario(20, "Compatibility Gate positive approval", "PASS", banner_text[:60] + "...")
+                assert "BİLİMSEL UYUMSUZLUK" in banner_text
+                assert "INSUFFICIENT_OVERLAP_EVIDENCE" in banner_text or "zaman" in banner_text.lower() or "uyumsuz" in banner_text.lower()
+                record_scenario(20, "Compatibility Gate fail-closed rejection", "PASS", banner_text[:60] + "...")
             except Exception as e:
-                record_scenario(20, "Compatibility Gate positive approval", "FAIL", str(e))
+                record_scenario(20, "Compatibility Gate fail-closed rejection", "FAIL", str(e))
 
             # -----------------------------------------------------------------
-            # Scenario 21: Comparison Matrix Table rendering
+            # Scenario 21: Descriptive Side-by-side Matrix Rendering
             # -----------------------------------------------------------------
             try:
                 matrix = await page.wait_for_selector("#ws-comparison-matrix-table", timeout=5000)
                 m_text = await matrix.inner_text()
-                assert "Parkinson Volatilitesi" in m_text
-                assert "Holdout FDR q-değeri" in m_text
-                record_scenario(21, "Side-by-side comparison matrix table", "PASS", "All comparison dimensions present")
+                assert "RES-REGIME-01" in m_text
+                assert "RES-ANALOG-01" in m_text
+                assert "Veri Seti" in m_text or "Parkinson Volatilitesi" in m_text
+                record_scenario(21, "Side-by-side descriptive matrix table", "PASS", "All comparison dimensions present")
             except Exception as e:
-                record_scenario(21, "Side-by-side comparison matrix table", "FAIL", str(e))
+                record_scenario(21, "Side-by-side descriptive matrix table", "FAIL", str(e))
 
             # -----------------------------------------------------------------
-            # Scenario 22: Difference Analysis Table rendering
+            # Scenario 22: Difference Analysis Suppression on Incompatible Candidates
             # -----------------------------------------------------------------
             try:
                 diff_table = await page.wait_for_selector("#ws-difference-analysis-table", timeout=5000)
-                await page.wait_for_selector("#ws-difference-analysis-table tbody tr", timeout=5000)
                 d_text = await diff_table.inner_text()
-                assert "mutlak fark" in d_text.lower(), f"Mutlak Fark missing in {d_text[:100]}"
-                assert ("volatility" in d_text.lower() or "volatilit" in d_text.lower()), f"Volatility missing in {d_text[:100]}"
-                record_scenario(22, "Difference analysis calculation table", "PASS", "Absolute/relative differences verified")
+                assert ("devre dışı" in d_text.lower() or "uyumsuzluk" in d_text.lower() or "fail-closed" in d_text.lower()), f"Suppression notice missing in {d_text[:100]}"
+                record_scenario(22, "Difference analysis suppression on failed gate", "PASS", "Calculations strictly suppressed")
             except Exception as e:
-                record_scenario(22, "Difference analysis calculation table", "FAIL", str(e))
+                record_scenario(22, "Difference analysis suppression on failed gate", "FAIL", str(e))
 
             # -----------------------------------------------------------------
             # Scenario 23: Red scientific disclaimer on difference analysis

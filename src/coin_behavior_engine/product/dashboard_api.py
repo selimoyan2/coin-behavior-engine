@@ -804,11 +804,13 @@ class ProductDashboardApiService:
                 c_ids = body.get("candidate_ids", [])
                 tags = body.get("tags", [])
                 notes = body.get("notes_tr", "")
+                allow_desc = bool(body.get("allow_descriptive", True))
                 res = ResearchWorkspaceV2Engine.save_comparison(
                     title=title,
                     candidate_ids=c_ids,
                     tags=tags,
                     notes_tr=notes,
+                    allow_descriptive=allow_desc,
                 )
                 if res.get("status") == "error":
                     return HTTPStatus.BAD_REQUEST, res

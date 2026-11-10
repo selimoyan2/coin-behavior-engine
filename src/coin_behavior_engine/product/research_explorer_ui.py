@@ -3342,8 +3342,35 @@ def render_research_explorer_scripts() -> str:
           banner.style.display = 'block';
           banner.innerHTML = `
             <strong>✕ BİLİMSEL UYUMSUZLUK:</strong> [${data.rejection_code}] ${data.rejection_reason_tr}
+            <div style="font-size:11px; margin-top:4px; color:#cbd5e1;">Adaylar bilimsel uyumluluk kapısından geçemediğinden doğrudan fark analizi engellenmiştir. Aşağıda salt betimsel yan yana matris sunulmaktadır.</div>
           `;
-          resultsArea.style.display = 'none';
+
+          // Populate Matrix Table (descriptive side-by-side view)
+          const mTable = document.getElementById('ws-comparison-matrix-table');
+          if (mTable && data.comparison_table && data.comparison_table.length > 0) {
+            let header = '<thead><tr><th>Metrik / Alan</th>' + data.comparison_table.map(c => `<th>${c.research_id}</th>`).join('') + '</tr></thead>';
+            let rows = `
+              <tbody>
+                <tr><td><strong>Araştırma Başlığı</strong></td>${data.comparison_table.map(c => `<td>${c.title}</td>`).join('')}</tr>
+                <tr><td><strong>Veri Seti</strong></td>${data.comparison_table.map(c => `<td><code>${c.dataset_id}</code></td>`).join('')}</tr>
+                <tr><td><strong>Zaman Kadansı</strong></td>${data.comparison_table.map(c => `<td>${c.window_cadence}</td>`).join('')}</tr>
+                <tr><td><strong>Örneklem Boyutu</strong></td>${data.comparison_table.map(c => `<td>${c.sample_size}</td>`).join('')}</tr>
+                <tr><td><strong>Parkinson Volatilitesi</strong></td>${data.comparison_table.map(c => `<td style="font-family:monospace;">${c.volatility_ratio != null ? c.volatility_ratio.toFixed(3) + 'x' : 'N/A'}</td>`).join('')}</tr>
+                <tr><td><strong>Holdout FDR q-değeri</strong></td>${data.comparison_table.map(c => `<td style="font-family:monospace; color:#10b981;">${c.holdout_fdr_q != null ? c.holdout_fdr_q.toFixed(4) : (c.raw_p_value != null ? 'p=' + c.raw_p_value.toFixed(4) : 'N/A')}</td>`).join('')}</tr>
+                <tr><td><strong>Doğrulama Hükmü</strong></td>${data.comparison_table.map(c => `<td><span class="badge" style="background:rgba(16,185,129,0.2); color:#10b981;">${c.replication_verdict}</span></td>`).join('')}</tr>
+                <tr><td><strong>Kanıt Durumu</strong></td>${data.comparison_table.map(c => `<td><span class="badge" style="background:#1e293b; color:#38bdf8;">${c.evidence_status}</span></td>`).join('')}</tr>
+              </tbody>
+            `;
+            mTable.innerHTML = header + rows;
+          }
+
+          // Suppress difference analysis table on failed gate
+          const dTable = document.getElementById('ws-difference-analysis-table');
+          if (dTable) {
+            dTable.innerHTML = '<thead><tr><th>Fark & Ayrışım Durumu</th><th>Açıklama</th></tr></thead><tbody><tr><td colspan="2" style="color:#ef4444; font-weight:600; padding:12px;">⚠️ Bilimsel uyumsuzluk nedeniyle fark analizi devre dışı bırakılmıştır. (Fail-Closed Gate İlkesi)</td></tr></tbody>';
+          }
+
+          resultsArea.style.display = 'block';
         }
       } catch (e) {
         console.error('Comparison error:', e);
@@ -3363,11 +3390,12 @@ def render_research_explorer_scripts() -> str:
             title: title,
             candidate_ids: window.wsCompSelected || [],
             tags: tags,
-            notes_tr: notes
+            notes_tr: notes,
+            allow_descriptive: true
           })
         });
         const data = await res.json();
-        if (res.status === 201 || (data && data.status === 'success')) {
+        if (res.status === 201 || (data && (data.status === 'success' || data.comparison_id))) {
           alert('✓ Karşılaştırma Araştırma Kütüphanesine kalıcı olarak kaydedildi.');
           loadSavedComparisonsList();
         } else {

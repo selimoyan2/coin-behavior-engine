@@ -138,16 +138,60 @@ class TestGroup2ScientificComparisonGateFailClosed:
         assert res_five["is_compatible"] is False
         assert res_five["rejection_code"] == "SELECTION_LIMIT_EXCEEDED"
 
-    def test_gate_accepts_valid_compatible_pair(self):
-        """RES-REGIME-01 and RES-ANALOG-01 share BTCUSDT-SPOT-1H-2022-2026, 1h cadence, model CBE-0.7.0."""
-        res = ResearchWorkspaceV2Engine.evaluate_comparison_compatibility(["RES-REGIME-01", "RES-ANALOG-01"])
+    def test_gate_accepts_valid_compatible_pair(self, monkeypatch):
+        """Reconciles comparison gate with genuine temporal overlap and metric contracts."""
+        # 1. Without proven temporal overlap and metric equivalence, RES-REGIME-01 vs RES-ANALOG-01 fails closed
+        res_fail = ResearchWorkspaceV2Engine.evaluate_comparison_compatibility(["RES-REGIME-01", "RES-ANALOG-01"])
+        assert res_fail["is_compatible"] is False
+        assert res_fail["rejection_code"] in ("INSUFFICIENT_OVERLAP_EVIDENCE", "METRIC_DEFINITION_MISMATCH")
+        assert res_fail["difference_analysis"] == []
+
+        # 2. Truly compatible candidates with verified overlap and metric contract pass
+        from coin_behavior_engine.product.research_catalog_provider import ResearchRecord
+        r1 = ResearchRecord(
+            id="RES-COMPAT-01",
+            title="Walk-Forward Baseline 2024",
+            title_en="Walk-Forward Baseline 2024",
+            category="Rejim Dinamikleri",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024-01-01 to 2024-06-01",
+            window_cadence="1h",
+            specification_id="SPEC-002-WF",
+            observation_start_utc="2024-01-01T00:00:00Z",
+            observation_end_utc="2024-06-01T00:00:00Z",
+            sample_size=3624,
+            volatility_ratio=1.240,
+            raw_p_value=0.0450,
+            evidence_status="SIGNED_VALID",
+            signature_verification_status="SIGNED_VALID",
+        )
+        r2 = ResearchRecord(
+            id="RES-COMPAT-02",
+            title="Analog Matched Window 2024",
+            title_en="Analog Matched Window 2024",
+            category="Rejim Dinamikleri",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024-02-01 to 2024-06-01",
+            window_cadence="1h",
+            specification_id="SPEC-003-AM",
+            observation_start_utc="2024-02-01T00:00:00Z",
+            observation_end_utc="2024-06-01T00:00:00Z",
+            sample_size=2880,
+            volatility_ratio=1.310,
+            raw_p_value=0.0320,
+            evidence_status="SIGNED_VALID",
+            signature_verification_status="SIGNED_VALID",
+        )
+        monkeypatch.setattr(ResearchWorkspaceV2Engine, "get_canonical_catalog", classmethod(lambda cls: [r1, r2]))
+
+        res = ResearchWorkspaceV2Engine.evaluate_comparison_compatibility(["RES-COMPAT-01", "RES-COMPAT-02"])
         assert res["is_compatible"] is True
         assert res["rejection_code"] is None
         assert len(res["comparison_table"]) == 2
         assert len(res["difference_analysis"]) == 1
 
         diff = res["difference_analysis"][0]
-        assert diff["pair"] == "RES-REGIME-01 vs RES-ANALOG-01"
+        assert diff["pair"] == "RES-COMPAT-01 vs RES-COMPAT-02"
         assert "volatility_ratio" in diff["metrics"]
         assert "sample_size" in diff["metrics"]
         assert "disclaimer" in diff

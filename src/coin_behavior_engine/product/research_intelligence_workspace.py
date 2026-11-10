@@ -1,10 +1,12 @@
 """
 Research Intelligence Workspace V2 Engine.
 
-Coin Behavior Engine (CBE) - Product Acceleration Sprint 24 Integrity & Security Correction.
+Coin Behavior Engine (CBE) - Product Acceleration Sprint 24 Final Scientific Certification.
 Unified Research Discovery, Scientific Comparison Lab, Interactive Visualization,
 Research Library V2, and Global Metadata Search.
 Strictly eliminates fabricated metrics and enforces fail-closed scientific compatibility.
+Introduces Metric Definition Contracts, Genuine Temporal Overlap calculation,
+and honest multi-domain operational health monitoring.
 """
 
 from __future__ import annotations
@@ -13,6 +15,7 @@ import copy
 import hashlib
 import json
 import logging
+import math
 import os
 import re
 import sys
@@ -20,15 +23,17 @@ import time
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from coin_behavior_engine.product.research_catalog_provider import (
     EvidencePrecedenceTier,
+    FieldProvenance,
     HistoricalRecordReconciliation,
     RecordStatus,
     ResearchCatalogProvider,
     ResearchRecord,
     SignatureStatus,
+    ValidationResult,
 )
 
 logger = logging.getLogger("cbe.research_workspace")
@@ -54,6 +59,206 @@ class SavedComparisonRecord:
     validation_status: str = "VALIDATED"
     rejection_code: Optional[str] = None
     rejection_reason_tr: Optional[str] = None
+
+
+# =============================================================================
+# COMPARISON METRIC REGISTRY & CONTRACTS
+# =============================================================================
+
+@dataclass
+class MetricDefinitionContract:
+    """Verified comparison metric contract."""
+    metric_id: str
+    mathematical_definition: str
+    estimator: str
+    unit: str
+    sampling_cadence: str
+    source_field: str
+    aggregation_method: str
+    applicable_research_domain: str
+    normalization_procedure: Optional[str] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+COMPARISON_METRIC_REGISTRY: Dict[str, MetricDefinitionContract] = {
+    "volatility_expansion_ratio": MetricDefinitionContract(
+        metric_id="volatility_expansion_ratio",
+        mathematical_definition="Ratio of post-event Parkinson realized volatility to pre-event Parkinson realized volatility over symmetric windows: sigma_post / sigma_pre",
+        estimator="PARKINSON_HIGH_LOW_RATIO",
+        unit="ratio",
+        sampling_cadence="1h",
+        source_field="volatility_expansion_ratio",
+        aggregation_method="MEAN",
+        applicable_research_domain="MACRO_EVENT_STUDY",
+        normalization_procedure="SYMMETRIC_LOG_RATIO",
+    ),
+    "volatility_ratio": MetricDefinitionContract(
+        metric_id="volatility_ratio",
+        mathematical_definition="Standardized Parkinson realized volatility ratio relative to unconditional baseline: sigma_window / sigma_baseline",
+        estimator="PARKINSON_HIGH_LOW_STANDARDIZED",
+        unit="ratio",
+        sampling_cadence="1h",
+        source_field="volatility_ratio",
+        aggregation_method="MEAN",
+        applicable_research_domain="VOLATILITY_RESEARCH",
+        normalization_procedure="BASE_STANDARDIZED",
+    ),
+    "reference_realized_volatility_pct": MetricDefinitionContract(
+        metric_id="reference_realized_volatility_pct",
+        mathematical_definition="Annualized realized volatility computed from log returns: sigma * sqrt(8760) * 100",
+        estimator="CLOSE_TO_CLOSE_ANNUALIZED",
+        unit="percent",
+        sampling_cadence="1h",
+        source_field="reference_realized_volatility_pct",
+        aggregation_method="NONE",
+        applicable_research_domain="HISTORICAL_ANALOG",
+        normalization_procedure="ANNUALIZED_SQRT_8760",
+    ),
+    "observed_mean_funding_bps": MetricDefinitionContract(
+        metric_id="observed_mean_funding_bps",
+        mathematical_definition="Observed sample mean of perpetual funding settlement rates in basis points: (1/N) * sum(F_t) * 10000",
+        estimator="SAMPLE_MEAN_BPS",
+        unit="basis_points",
+        sampling_cadence="8h",
+        source_field="observed_mean_funding_bps",
+        aggregation_method="MEAN",
+        applicable_research_domain="PERPETUAL_FUTURES",
+        normalization_procedure=None,
+    ),
+    "raw_p_value": MetricDefinitionContract(
+        metric_id="raw_p_value",
+        mathematical_definition="Two-sided parametric or bootstrap p-value under null hypothesis H0",
+        estimator="BOOTSTRAP_OR_DIEBOLD_MARIANO",
+        unit="probability",
+        sampling_cadence="VARIABLE",
+        source_field="raw_p_value",
+        aggregation_method="NONE",
+        applicable_research_domain="STATISTICAL_INFERENCE",
+        normalization_procedure=None,
+    ),
+    "holdout_fdr_q": MetricDefinitionContract(
+        metric_id="holdout_fdr_q",
+        mathematical_definition="Benjamini-Hochberg (1995) step-up adjusted false discovery rate q-value",
+        estimator="BENJAMINI_HOCHBERG",
+        unit="probability",
+        sampling_cadence="VARIABLE",
+        source_field="holdout_fdr_q",
+        aggregation_method="NONE",
+        applicable_research_domain="MULTIPLE_TESTING",
+        normalization_procedure=None,
+    ),
+    "sample_size": MetricDefinitionContract(
+        metric_id="sample_size",
+        mathematical_definition="Total count of discrete valid empirical observation intervals evaluated",
+        estimator="DISCRETE_OBSERVATION_COUNT",
+        unit="observations",
+        sampling_cadence="VARIABLE",
+        source_field="sample_size",
+        aggregation_method="SUM",
+        applicable_research_domain="GENERAL_RESEARCH",
+        normalization_procedure=None,
+    ),
+}
+
+
+# =============================================================================
+# TEMPORAL OVERLAP CALCULATOR
+# =============================================================================
+
+def calculate_temporal_observation_overlap(records: List[ResearchRecord]) -> Dict[str, Any]:
+    """
+    Computes real temporal observation overlap from verified ISO timestamps and cadence intervals.
+    Requires >= 100 shared intervals.
+    Fails closed with:
+    - INSUFFICIENT_OVERLAP_EVIDENCE: if observation boundaries are missing in any candidate.
+    - DISJOINT_OBSERVATION_WINDOWS: if observation windows do not overlap (t_start >= t_end).
+    - INSUFFICIENT_TEMPORAL_OVERLAP: if shared interval count < 100.
+    - DUPLICATED_OBSERVATIONS_DETECTED: if repeated timestamps are found.
+    """
+    for r in records:
+        if not r.observation_start_utc or not r.observation_end_utc:
+            return {
+                "overlap_valid": False,
+                "rejection_code": "INSUFFICIENT_OVERLAP_EVIDENCE",
+                "rejection_reason_tr": f"Kayıt {r.id} için doğrulanabilir gözlem zaman sınırları (start/end UTC) bulunamadı; örtüşme kanıtı yetersiz.",
+                "shared_interval_count": 0,
+            }
+
+    starts = []
+    ends = []
+    for r in records:
+        try:
+            s_dt = datetime.fromisoformat(r.observation_start_utc.replace("Z", "+00:00"))
+            e_dt = datetime.fromisoformat(r.observation_end_utc.replace("Z", "+00:00"))
+            if s_dt >= e_dt:
+                return {
+                    "overlap_valid": False,
+                    "rejection_code": "INVALID_OBSERVATION_WINDOW",
+                    "rejection_reason_tr": f"Kayıt {r.id} gözlem başlangıç zamanı bitiş zamanından önce değil.",
+                    "shared_interval_count": 0,
+                }
+            starts.append(s_dt)
+            ends.append(e_dt)
+        except Exception as e:
+            return {
+                "overlap_valid": False,
+                "rejection_code": "INSUFFICIENT_OVERLAP_EVIDENCE",
+                "rejection_reason_tr": f"Kayıt {r.id} zaman damgası ayrıştırma hatası: {e}",
+                "shared_interval_count": 0,
+            }
+
+    # Check duplicated observations if explicit timestamps list is provided
+    for r in records:
+        if r.observed_timestamps:
+            if len(r.observed_timestamps) != len(set(r.observed_timestamps)):
+                return {
+                    "overlap_valid": False,
+                    "rejection_code": "DUPLICATED_OBSERVATIONS_DETECTED",
+                    "rejection_reason_tr": f"Kayıt {r.id} serisinde mükerrer gözlem zaman damgaları tespit edildi.",
+                    "shared_interval_count": 0,
+                }
+
+    t_start = max(starts)
+    t_end = min(ends)
+
+    if t_start >= t_end:
+        return {
+            "overlap_valid": False,
+            "rejection_code": "DISJOINT_OBSERVATION_WINDOWS",
+            "rejection_reason_tr": "Gözlem pencereleri tamamen ayrıktır; ortak zaman aralığı bulunmuyor.",
+            "shared_interval_count": 0,
+            "overlap_start_utc": None,
+            "overlap_end_utc": None,
+        }
+
+    cadence = records[0].window_cadence.lower()
+    cadence_map = {
+        "1m": 60, "5m": 300, "15m": 900, "1h": 3600, "4h": 14400, "8h": 28800, "1d": 86400,
+    }
+    interval_seconds = cadence_map.get(cadence, 3600)
+    overlap_duration_seconds = (t_end - t_start).total_seconds()
+    shared_interval_count = int(overlap_duration_seconds // interval_seconds)
+
+    if shared_interval_count < 100:
+        return {
+            "overlap_valid": False,
+            "rejection_code": "INSUFFICIENT_TEMPORAL_OVERLAP",
+            "rejection_reason_tr": f"Ortak gözlem penceresinde yalnızca {shared_interval_count} periyot bulunmaktadır; asgari 100 periyotluk örtüşme kuralı sağlanamadı.",
+            "shared_interval_count": shared_interval_count,
+            "overlap_start_utc": t_start.isoformat(),
+            "overlap_end_utc": t_end.isoformat(),
+        }
+
+    return {
+        "overlap_valid": True,
+        "rejection_code": None,
+        "rejection_reason_tr": None,
+        "shared_interval_count": shared_interval_count,
+        "overlap_start_utc": t_start.isoformat(),
+        "overlap_end_utc": t_end.isoformat(),
+    }
 
 
 # =============================================================================
@@ -101,96 +306,85 @@ class ResearchWorkspaceV2Engine:
         """
         records = cls.get_canonical_catalog()
 
-        # 1. Composable Filtering
         filtered: List[ResearchRecord] = []
         q = (search_query or "").strip().lower()
 
         for r in records:
-            # Text search (id, title, category, dataset, findings)
             if q:
                 searchable = f"{r.id} {r.title} {r.title_en} {r.category} {r.dataset_id} {r.specification_id} {r.key_findings_tr}".lower()
                 if q not in searchable:
                     continue
 
-            # Dataset filter
             if dataset_filter and dataset_filter.upper() != "ALL":
                 if dataset_filter.lower() not in r.dataset_id.lower():
                     continue
 
-            # Timeframe / window cadence filter
             if timeframe_filter and timeframe_filter.upper() != "ALL":
                 if timeframe_filter.lower() not in r.window_cadence.lower():
                     continue
 
-            # Specification filter
             if spec_filter and spec_filter.upper() != "ALL":
                 if spec_filter.lower() not in r.specification_id.lower():
                     continue
 
-            # Scientific Eligibility filter
             if eligibility_filter and eligibility_filter.upper() != "ALL":
                 if r.scientific_eligibility.upper() != eligibility_filter.upper():
                     continue
 
-            # Validation Status filter
             if validation_filter and validation_filter.upper() != "ALL":
                 if r.validation_status.upper() != validation_filter.upper():
                     continue
 
-            # Evidence Status filter
             if evidence_filter and evidence_filter.upper() != "ALL":
-                if r.evidence_status.upper() != evidence_filter.upper():
+                if r.evidence_status.upper() != evidence_filter.upper() and r.signature_verification_status.upper() != evidence_filter.upper():
                     continue
 
             filtered.append(r)
 
-        # 2. Sorting (Robust against None values)
-        reverse = sort_dir.lower() != "asc"
+        # 2. Deterministic Sorting
+        reverse = (sort_dir.lower() == "desc")
         if sort_by == "volatility_ratio":
-            filtered.sort(
-                key=lambda x: (x.volatility_ratio is not None, x.volatility_ratio if x.volatility_ratio is not None else -999.0),
-                reverse=reverse,
-            )
-        elif sort_by == "fdr_q_value":
-            filtered.sort(
-                key=lambda x: (x.holdout_fdr_q is not None, x.holdout_fdr_q if x.holdout_fdr_q is not None else 999.0),
-                reverse=reverse,
-            )
+            if reverse:
+                filtered.sort(key=lambda x: (x.volatility_ratio is not None, x.volatility_ratio or 0.0), reverse=True)
+            else:
+                filtered.sort(key=lambda x: (x.volatility_ratio is None, x.volatility_ratio or 0.0), reverse=False)
         elif sort_by == "sample_size":
-            filtered.sort(
-                key=lambda x: (x.sample_size is not None, x.sample_size if x.sample_size is not None else -1),
-                reverse=reverse,
-            )
+            if reverse:
+                filtered.sort(key=lambda x: (x.sample_size is not None, x.sample_size or 0), reverse=True)
+            else:
+                filtered.sort(key=lambda x: (x.sample_size is None, x.sample_size or 0), reverse=False)
+        elif sort_by == "title":
+            filtered.sort(key=lambda x: x.title.lower(), reverse=reverse)
         elif sort_by == "id":
             filtered.sort(key=lambda x: x.id, reverse=reverse)
-        else:  # default created_at
-            filtered.sort(key=lambda x: x.created_at_utc or "", reverse=reverse)
+        else:
+            filtered.sort(key=lambda x: x.created_at_utc, reverse=reverse)
 
         # 3. Bounded Pagination
         total_count = len(filtered)
-        limit = max(1, min(limit, 100))  # Bound between 1 and 100
+        limit = max(1, min(limit, 100))
         total_pages = max(1, (total_count + limit - 1) // limit)
         page = max(1, min(page, total_pages))
 
         start_idx = (page - 1) * limit
         end_idx = start_idx + limit
-        paged_items = [asdict(r) for r in filtered[start_idx:end_idx]]
+        paginated_items = filtered[start_idx:end_idx]
 
         return {
             "status": "success",
-            "items": paged_items,
+            "items": [r.to_dict() for r in paginated_items],
             "total_count": total_count,
             "page": page,
             "limit": limit,
             "total_pages": total_pages,
-            "filters_applied": {
-                "search": search_query,
-                "dataset": dataset_filter,
-                "timeframe": timeframe_filter,
-                "specification": spec_filter,
-                "eligibility": eligibility_filter,
-                "validation": validation_filter,
-                "evidence": evidence_filter,
+            "has_next": page < total_pages,
+            "has_prev": page > 1,
+            "query_summary": {
+                "search_query": search_query,
+                "dataset_filter": dataset_filter,
+                "timeframe_filter": timeframe_filter,
+                "spec_filter": spec_filter,
+                "eligibility_filter": eligibility_filter,
                 "sort_by": sort_by,
                 "sort_dir": sort_dir,
             },
@@ -198,12 +392,12 @@ class ResearchWorkspaceV2Engine:
 
     @classmethod
     def get_research_detail(cls, research_id: str) -> Optional[Dict[str, Any]]:
-        """Retrieves detailed research record by ID with verification provenance."""
+        """Returns full evidence-backed details for a single research item."""
+        clean_id = (research_id or "").strip()
         catalog = cls.get_canonical_catalog()
         for r in catalog:
-            if r.id == research_id:
-                data = asdict(r)
-                # Attach related report pointers
+            if r.id == clean_id:
+                data = r.to_dict()
                 data["related_reports"] = [
                     f"RPT-{r.id.lower()}-sprint22-v1",
                     f"RPT-{r.id.lower()}-sprint23-durable",
@@ -215,10 +409,9 @@ class ResearchWorkspaceV2Engine:
                     "technical_decision": cls.GOVERNANCE_DECISION,
                     "trading_prohibition": cls.TRADING_PROHIBITION,
                 }
-                # Check reconciliation matrix
                 for recon in ResearchCatalogProvider.get_reconciliation_matrix():
                     if recon.record_id == r.id:
-                        data["reconciliation_audit"] = asdict(recon)
+                        data["reconciliation_audit"] = recon.to_dict()
                         break
                 return data
         return None
@@ -231,9 +424,10 @@ class ResearchWorkspaceV2Engine:
     def evaluate_comparison_compatibility(
         cls,
         candidate_ids: List[str],
+        metric_id: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
-        Strict 12-Point Scientific Compatibility Gate (Fail-Closed).
+        Strict Scientific Compatibility Gate (Fail-Closed).
         Evaluates 2 to 4 candidate research records against rigorous scientific rules:
         1. Selection Count [2..4]
         2. Record Existence
@@ -242,16 +436,16 @@ class ResearchWorkspaceV2Engine:
         5. Source Conflict & Provenance
         6. Methodology Category Compatibility
         7. Sampling Cadence Compatibility (Mismatches fail closed)
-        8. Observation Window Overlap Floor (>= 100 intervals)
-        9. Metric Definition Equivalency
-        10. Unit Compatibility
-        11. Statistical Evidence Sufficiency
-        12. Explicit Missing Value Handling
+        8. Observation Window Overlap Floor (>= 100 shared intervals)
+        9. Metric Definition & Unit Contracts
+        10. Evidence Sufficiency Per Candidate
+        11. Explicit Missing Value Handling
         """
         # 1. Selection Bounds Check
         if not candidate_ids or len(candidate_ids) < 2:
             return {
                 "is_compatible": False,
+                "comparison_mode": "DESCRIPTIVE_ONLY",
                 "rejection_code": "INSUFFICIENT_SELECTION",
                 "rejection_reason_tr": "Karşılaştırma için en az 2 araştırma kaydı seçilmelidir.",
                 "candidate_ids": candidate_ids or [],
@@ -262,6 +456,7 @@ class ResearchWorkspaceV2Engine:
         if len(candidate_ids) > 4:
             return {
                 "is_compatible": False,
+                "comparison_mode": "DESCRIPTIVE_ONLY",
                 "rejection_code": "SELECTION_LIMIT_EXCEEDED",
                 "rejection_reason_tr": "CPU ve bellek güvenliği için en fazla 4 araştırma kaydı karşılaştırılabilir.",
                 "candidate_ids": candidate_ids,
@@ -278,6 +473,7 @@ class ResearchWorkspaceV2Engine:
             if not rec:
                 return {
                     "is_compatible": False,
+                    "comparison_mode": "DESCRIPTIVE_ONLY",
                     "rejection_code": "RESEARCH_NOT_FOUND",
                     "rejection_reason_tr": f"Belirtilen araştırma kaydı bulunamadı: '{cid}'.",
                     "candidate_ids": candidate_ids,
@@ -286,112 +482,10 @@ class ResearchWorkspaceV2Engine:
                 }
             selected_records.append(rec)
 
-        # 3. Quarantined / Contaminated Data Check
-        quarantined = [
-            r for r in selected_records
-            if r.quarantine_status == "QUARANTINED" or r.scientific_eligibility == "INELIGIBLE" or r.validation_status == "FAILED_QUARANTINE"
-        ]
-        if quarantined:
-            q_ids = ", ".join(r.id for r in quarantined)
-            return {
-                "is_compatible": False,
-                "rejection_code": "QUARANTINED_RECORD",
-                "rejection_reason_tr": f"Karantinaya alınmış veya uygun olmayan kayıtlar ({q_ids}) bilimsel karşılaştırmaya dahil edilemez.",
-                "candidate_ids": candidate_ids,
-                "quarantined_ids": [r.id for r in quarantined],
-                "comparison_table": [],
-                "difference_analysis": [],
-            }
-
-        # 4. Model Version Compatibility Check
+        # Build descriptive comparison table upfront for reference
+        descriptive_comparison_table = []
         for r in selected_records:
-            if r.model_version != cls.CANONICAL_MODEL_VERSION:
-                return {
-                    "is_compatible": False,
-                    "rejection_code": "MODEL_VERSION_MISMATCH",
-                    "rejection_reason_tr": f"Kayıt {r.id} model sürümü '{r.model_version}' kanonik '{cls.CANONICAL_MODEL_VERSION}' ile uyuşmuyor.",
-                    "candidate_ids": candidate_ids,
-                    "comparison_table": [],
-                    "difference_analysis": [],
-                }
-
-        # 5. Source Conflict Check
-        conflicted = [r for r in selected_records if r.record_status == RecordStatus.SOURCE_CONFLICT]
-        if conflicted:
-            c_ids = ", ".join(r.id for r in conflicted)
-            return {
-                "is_compatible": False,
-                "rejection_code": "SOURCE_CONFLICT",
-                "rejection_reason_tr": f"Kaynak çelişkisi saptanan kayıtlar ({c_ids}) çözülmeden karşılaştırılamaz.",
-                "candidate_ids": candidate_ids,
-                "comparison_table": [],
-                "difference_analysis": [],
-            }
-
-        # 6. Methodology Category Compatibility Check
-        # System reliability / operational engineering cannot be compared with market behavioral models
-        categories = set(r.category for r in selected_records)
-        if "Sistem Güvenilirliği" in categories and len(categories) > 1:
-            return {
-                "is_compatible": False,
-                "rejection_code": "METHODOLOGY_MISMATCH",
-                "rejection_reason_tr": "Sistem güvenilirliği denetimi ile finansal piyasa davranış analizi metodolojik olarak karşılaştırılamaz.",
-                "candidate_ids": candidate_ids,
-                "comparison_table": [],
-                "difference_analysis": [],
-            }
-
-        # 7. Sampling Cadence Compatibility Check (FAIL-CLOSED)
-        # Differing cadences (e.g. 8h vs 1h or 5m vs 1h) without documented valid normalization are rejected
-        cadences = set(r.window_cadence for r in selected_records)
-        if len(cadences) > 1:
-            cad_list = ", ".join(sorted(cadences))
-            return {
-                "is_compatible": False,
-                "rejection_code": "SAMPLING_CADENCE_MISMATCH",
-                "rejection_reason_tr": f"Farklı zaman kadansları saptandı ({cad_list}). Bilimsel olarak onaylanmış bir kadans normalizasyonu bulunmadığından karşılaştırma fail-closed kuralı gereği engellenmiştir.",
-                "candidate_ids": candidate_ids,
-                "cadences": list(cadences),
-                "comparison_table": [],
-                "difference_analysis": [],
-            }
-
-        # 8. Observation Window Overlap Floor
-        # For historical market records, verify overlapping observations
-        sample_sizes = [r.sample_size for r in selected_records if r.sample_size is not None]
-        if sample_sizes and min(sample_sizes) < 100:
-            return {
-                "is_compatible": False,
-                "rejection_code": "INSUFFICIENT_OVERLAP",
-                "rejection_reason_tr": "Asgari 100 periyotluk istatistiksel gözlem örtüşmesi sağlanamadı.",
-                "candidate_ids": candidate_ids,
-                "comparison_table": [],
-                "difference_analysis": [],
-            }
-
-        # 9. Statistical Evidence Sufficiency
-        # At least one candidate must have measurable quantitative observations
-        has_metrics = any(
-            (r.volatility_ratio is not None or r.raw_p_value is not None or r.holdout_fdr_q is not None or bool(r.observed_metrics))
-            for r in selected_records
-        )
-        if not has_metrics:
-            return {
-                "is_compatible": False,
-                "rejection_code": "STATISTICAL_VALIDATION_MISSING",
-                "rejection_reason_tr": "Karşılaştırılacak adaylar için doğrulanmış istatistiksel metrik bulunamadı.",
-                "candidate_ids": candidate_ids,
-                "comparison_table": [],
-                "difference_analysis": [],
-            }
-
-        # ---------------------------------------------------------------------
-        # ALL CHECKS PASSED: Build Side-by-Side Comparison Table & Deltas
-        # ---------------------------------------------------------------------
-        base_rec = selected_records[0]
-        comparison_table = []
-        for r in selected_records:
-            row = {
+            descriptive_comparison_table.append({
                 "research_id": r.id,
                 "title": r.title,
                 "dataset_id": r.dataset_id,
@@ -407,16 +501,174 @@ class ResearchWorkspaceV2Engine:
                 "record_status": r.record_status,
                 "source_artifact_sha256": r.source_artifact_sha256,
                 "caveats": r.methodological_limitations,
-            }
-            comparison_table.append(row)
+            })
 
-        # Difference Analysis relative to Base Record (selected_records[0])
+        # 3. Quarantined / Contaminated Data Check
+        quarantined = [
+            r for r in selected_records
+            if r.quarantine_status == "QUARANTINED" or r.scientific_eligibility == "INELIGIBLE" or r.validation_status == "FAILED_QUARANTINE"
+        ]
+        if quarantined:
+            q_ids = ", ".join(r.id for r in quarantined)
+            return {
+                "is_compatible": False,
+                "comparison_mode": "DESCRIPTIVE_ONLY",
+                "rejection_code": "QUARANTINED_RECORD",
+                "rejection_reason_tr": f"Karantinaya alınmış veya uygun olmayan kayıtlar ({q_ids}) bilimsel karşılaştırmaya dahil edilemez.",
+                "candidate_ids": candidate_ids,
+                "quarantined_ids": [r.id for r in quarantined],
+                "comparison_table": descriptive_comparison_table,
+                "difference_analysis": [],
+            }
+
+        # 4. Model Version Compatibility Check
+        for r in selected_records:
+            if r.model_version != cls.CANONICAL_MODEL_VERSION:
+                return {
+                    "is_compatible": False,
+                    "comparison_mode": "DESCRIPTIVE_ONLY",
+                    "rejection_code": "MODEL_VERSION_MISMATCH",
+                    "rejection_reason_tr": f"Kayıt {r.id} model sürümü '{r.model_version}' kanonik '{cls.CANONICAL_MODEL_VERSION}' ile uyuşmuyor.",
+                    "candidate_ids": candidate_ids,
+                    "comparison_table": descriptive_comparison_table,
+                    "difference_analysis": [],
+                }
+
+        # 5. Source Conflict Check
+        conflicted = [r for r in selected_records if r.record_status == RecordStatus.SOURCE_CONFLICT]
+        if conflicted:
+            c_ids = ", ".join(r.id for r in conflicted)
+            return {
+                "is_compatible": False,
+                "comparison_mode": "DESCRIPTIVE_ONLY",
+                "rejection_code": "SOURCE_CONFLICT",
+                "rejection_reason_tr": f"Kaynak çelişkisi saptanan kayıtlar ({c_ids}) çözülmeden karşılaştırılamaz.",
+                "candidate_ids": candidate_ids,
+                "comparison_table": descriptive_comparison_table,
+                "difference_analysis": [],
+            }
+
+        # 6. Methodology Category Compatibility Check
+        categories = set(r.category for r in selected_records)
+        if "Sistem Güvenilirliği" in categories and len(categories) > 1:
+            return {
+                "is_compatible": False,
+                "comparison_mode": "DESCRIPTIVE_ONLY",
+                "rejection_code": "METHODOLOGY_MISMATCH",
+                "rejection_reason_tr": "Sistem güvenilirliği denetimi ile finansal piyasa davranış analizi metodolojik olarak karşılaştırılamaz.",
+                "candidate_ids": candidate_ids,
+                "comparison_table": descriptive_comparison_table,
+                "difference_analysis": [],
+            }
+
+        # 7. Sampling Cadence Compatibility Check (FAIL-CLOSED)
+        cadences = set(r.window_cadence for r in selected_records)
+        if len(cadences) > 1:
+            cad_list = ", ".join(sorted(cadences))
+            return {
+                "is_compatible": False,
+                "comparison_mode": "DESCRIPTIVE_ONLY",
+                "rejection_code": "SAMPLING_CADENCE_MISMATCH",
+                "rejection_reason_tr": f"Farklı zaman kadansları saptandı ({cad_list}). Bilimsel olarak onaylanmış bir kadans normalizasyonu bulunmadığından karşılaştırma fail-closed kuralı gereği engellenmiştir.",
+                "candidate_ids": candidate_ids,
+                "cadences": list(cadences),
+                "comparison_table": descriptive_comparison_table,
+                "difference_analysis": [],
+            }
+
+        # 8. Genuine Temporal Observation Overlap Floor (>= 100 intervals)
+        overlap_res = calculate_temporal_observation_overlap(selected_records)
+        if not overlap_res["overlap_valid"]:
+            return {
+                "is_compatible": False,
+                "comparison_mode": "DESCRIPTIVE_ONLY",
+                "rejection_code": overlap_res["rejection_code"],
+                "rejection_reason_tr": overlap_res["rejection_reason_tr"],
+                "candidate_ids": candidate_ids,
+                "shared_interval_count": overlap_res.get("shared_interval_count", 0),
+                "comparison_table": descriptive_comparison_table,
+                "difference_analysis": [],
+            }
+
+        # 9. Metric Definition and Unit Contracts
+        # Enforce registered metric contracts across compared candidates
+        if metric_id:
+            if metric_id not in COMPARISON_METRIC_REGISTRY:
+                return {
+                    "is_compatible": False,
+                    "comparison_mode": "DESCRIPTIVE_ONLY",
+                    "rejection_code": "UNKNOWN_METRIC",
+                    "rejection_reason_tr": f"Talep edilen metrik ('{metric_id}') karşılaştırma kayıt defterinde bulunamadı.",
+                    "candidate_ids": candidate_ids,
+                    "comparison_table": descriptive_comparison_table,
+                    "difference_analysis": [],
+                }
+            active_contract = COMPARISON_METRIC_REGISTRY[metric_id]
+            for r in selected_records:
+                val = getattr(r, active_contract.source_field, None)
+                if val is None and active_contract.source_field in r.observed_metrics:
+                    val = r.observed_metrics[active_contract.source_field]
+                if val is None:
+                    return {
+                        "is_compatible": False,
+                        "comparison_mode": "DESCRIPTIVE_ONLY",
+                        "rejection_code": "METRIC_DEFINITION_MISMATCH",
+                        "rejection_reason_tr": f"Kayıt {r.id} talep edilen '{metric_id}' metriğini sağlamıyor.",
+                        "candidate_ids": candidate_ids,
+                        "comparison_table": descriptive_comparison_table,
+                        "difference_analysis": [],
+                    }
+        else:
+            # Check if candidates share an equivalent comparable scientific metric
+            shared_metrics = []
+            for m_key, contract in COMPARISON_METRIC_REGISTRY.items():
+                if m_key in ("sample_size",):
+                    continue  # sample size alone is not a scientific hypothesis finding
+                has_all = True
+                for r in selected_records:
+                    val = getattr(r, contract.source_field, None)
+                    if val is None and contract.source_field in r.observed_metrics:
+                        val = r.observed_metrics[contract.source_field]
+                    if val is None:
+                        has_all = False
+                        break
+                if has_all:
+                    shared_metrics.append(contract)
+
+            if not shared_metrics:
+                return {
+                    "is_compatible": False,
+                    "comparison_mode": "DESCRIPTIVE_ONLY",
+                    "rejection_code": "METRIC_DEFINITION_MISMATCH",
+                    "rejection_reason_tr": "Aday araştırmalar arasında metodolojik ve birimsel olarak eşdeğer karşılaştırılabilir bir bilimsel metrik bulunamadı.",
+                    "candidate_ids": candidate_ids,
+                    "comparison_table": descriptive_comparison_table,
+                    "difference_analysis": [],
+                }
+
+        # 10. Evidence Sufficiency Per Candidate
+        for r in selected_records:
+            if r.evidence_status == "EVIDENCE_MISSING":
+                return {
+                    "is_compatible": False,
+                    "comparison_mode": "DESCRIPTIVE_ONLY",
+                    "rejection_code": "EVIDENCE_INSUFFICIENT",
+                    "rejection_reason_tr": f"Kayıt {r.id} için doğrulanmış kanıt paketi bulunmuyor; bilimsel karşılaştırma fail-closed kuralı gereği engellenmiştir.",
+                    "candidate_ids": candidate_ids,
+                    "comparison_table": descriptive_comparison_table,
+                    "difference_analysis": [],
+                }
+
+        # ---------------------------------------------------------------------
+        # ALL GATES PASSED: Build Scientific Comparison Table & Difference Analysis
+        # ---------------------------------------------------------------------
+        base_rec = selected_records[0]
         difference_analysis = []
         for i in range(1, len(selected_records)):
             cand = selected_records[i]
             metrics_diff: Dict[str, Any] = {}
 
-            # Volatility Ratio Diff (only if both observed)
+            # Volatility Ratio Diff
             if base_rec.volatility_ratio is not None and cand.volatility_ratio is not None:
                 vol_abs = round(cand.volatility_ratio - base_rec.volatility_ratio, 4)
                 vol_rel = (
@@ -429,11 +681,11 @@ class ResearchWorkspaceV2Engine:
                     "target_value": cand.volatility_ratio,
                     "absolute_diff": vol_abs,
                     "relative_diff_pct": vol_rel,
-                    "unit": "x (çarpan)",
+                    "unit": "ratio",
                     "caveat": "Parkinson volatilite farkı istatistiksel dağılım genişliğidir; alım-satım kârı değildir.",
                 }
 
-            # Sample Size Diff (only if both observed)
+            # Sample Size Diff
             if base_rec.sample_size is not None and cand.sample_size is not None:
                 sample_abs = cand.sample_size - base_rec.sample_size
                 sample_rel = (
@@ -446,29 +698,29 @@ class ResearchWorkspaceV2Engine:
                     "target_value": cand.sample_size,
                     "absolute_diff": sample_abs,
                     "relative_diff_pct": sample_rel,
-                    "unit": "gözlem (bar)",
+                    "unit": "observations",
                     "caveat": "Farklı örneklem boyutları p-değeri istatistiksel gücünü etkiler.",
                 }
 
-            # FDR q-value Diff (only if both observed)
+            # FDR q-value Diff
             if base_rec.holdout_fdr_q is not None and cand.holdout_fdr_q is not None:
                 fdr_abs = round(cand.holdout_fdr_q - base_rec.holdout_fdr_q, 4)
                 metrics_diff["fdr_q_value"] = {
                     "base_value": base_rec.holdout_fdr_q,
                     "target_value": cand.holdout_fdr_q,
                     "absolute_diff": fdr_abs,
-                    "unit": "q-değeri",
+                    "unit": "probability",
                     "caveat": "Benjamini-Hochberg düzeltmeli q-değeri sahte keşif oranını sınırlandırır.",
                 }
 
-            # Raw p-value Diff (only if both observed)
+            # Raw p-value Diff
             if base_rec.raw_p_value is not None and cand.raw_p_value is not None:
                 p_abs = round(cand.raw_p_value - base_rec.raw_p_value, 6)
                 metrics_diff["raw_p_value"] = {
                     "base_value": base_rec.raw_p_value,
                     "target_value": cand.raw_p_value,
                     "absolute_diff": p_abs,
-                    "unit": "p-değeri",
+                    "unit": "probability",
                     "caveat": "Ham p-değerleri çoklu test düzeltmesi içermez; doğrudan performans üstünlüğü kanıtı değildir.",
                 }
 
@@ -483,13 +735,15 @@ class ResearchWorkspaceV2Engine:
 
         return {
             "is_compatible": True,
+            "comparison_mode": "SCIENTIFIC_VERIFIED",
             "rejection_code": None,
             "rejection_reason_tr": None,
             "candidate_ids": candidate_ids,
             "selected_count": len(selected_records),
             "model_version": cls.CANONICAL_MODEL_VERSION,
+            "temporal_overlap": overlap_res,
             "methodological_warning": None,
-            "comparison_table": comparison_table,
+            "comparison_table": descriptive_comparison_table,
             "difference_analysis": difference_analysis,
             "governance_notice": {
                 "decision": cls.GOVERNANCE_DECISION,
@@ -522,21 +776,20 @@ class ResearchWorkspaceV2Engine:
         tags: Optional[List[str]] = None,
         notes_tr: str = "",
         operator_identity: str = "operator-session",
+        allow_descriptive: bool = False,
     ) -> Dict[str, Any]:
         """
         Saves a comparison configuration to persistent storage.
-        Strictly enforces compatibility gate before writing.
+        Strictly enforces compatibility gate before writing unless allow_descriptive is requested.
         """
-        # Validate compatibility first (Fail-Closed)
         comp_res = cls.evaluate_comparison_compatibility(candidate_ids)
-        if not comp_res["is_compatible"]:
+        if not comp_res["is_compatible"] and not allow_descriptive:
             return {
                 "status": "error",
                 "error_code": comp_res["rejection_code"],
                 "message": comp_res["rejection_reason_tr"],
             }
 
-        # Generate comparison ID
         raw_key = f"{title}_{'_'.join(sorted(candidate_ids))}_{time.time_ns()}"
         cid = f"CMP-{hashlib.sha256(raw_key.encode('utf-8')).hexdigest()[:12].upper()}"
 
@@ -545,6 +798,7 @@ class ResearchWorkspaceV2Engine:
         target_file = storage_dir / f"{cid}.json"
         tmp_file = storage_dir / f"{cid}.json.tmp_{time.time_ns()}"
 
+        is_compat = bool(comp_res["is_compatible"])
         record_data = {
             "comparison_id": cid,
             "title": title.strip() or f"Karşılaştırma {cid}",
@@ -553,20 +807,22 @@ class ResearchWorkspaceV2Engine:
             "created_by": operator_identity,
             "tags": tags or ["sprint24", "scientific-comparison"],
             "notes_tr": notes_tr.strip(),
-            "is_compatible": True,
-            "validation_status": "VALIDATED",
+            "is_compatible": is_compat,
+            "validation_status": "VALIDATED" if is_compat else "REVALIDATION_FAILED",
             "summary_metrics": {
                 "candidates_count": len(candidate_ids),
                 "model_version": cls.CANONICAL_MODEL_VERSION,
-                "first_candidate": candidate_ids[0],
-                "second_candidate": candidate_ids[1],
+                "first_candidate": candidate_ids[0] if candidate_ids else "",
+                "second_candidate": candidate_ids[1] if len(candidate_ids) > 1 else "",
             },
             "canonical_model": cls.CANONICAL_MODEL_VERSION,
             "governance_decision": cls.GOVERNANCE_DECISION,
             "trading_prohibition": cls.TRADING_PROHIBITION,
         }
+        if not is_compat:
+            record_data["rejection_code"] = comp_res.get("rejection_code")
+            record_data["rejection_reason_tr"] = comp_res.get("rejection_reason_tr")
 
-        # Compute payload checksum
         canonical_bytes = json.dumps(record_data, sort_keys=True).encode("utf-8")
         checksum = hashlib.sha256(canonical_bytes).hexdigest()
         record_data["storage_checksum"] = checksum
@@ -613,7 +869,6 @@ class ResearchWorkspaceV2Engine:
                 with open(fpath, "r", encoding="utf-8") as f:
                     data = json.load(f)
                 if isinstance(data, dict) and data.get("comparison_id"):
-                    # Dynamic revalidation check
                     c_ids = data.get("candidate_ids", [])
                     reval = cls.evaluate_comparison_compatibility(c_ids)
                     data["is_compatible"] = reval["is_compatible"]
@@ -621,7 +876,6 @@ class ResearchWorkspaceV2Engine:
                     data["rejection_reason_tr"] = reval.get("rejection_reason_tr")
                     data["validation_status"] = "VALIDATED" if reval["is_compatible"] else "REVALIDATION_FAILED"
 
-                    # Filtering
                     if q:
                         text = f"{data.get('title', '')} {data.get('comparison_id', '')} {' '.join(c_ids)}".lower()
                         if q not in text:
@@ -635,7 +889,6 @@ class ResearchWorkspaceV2Engine:
             except Exception as e:
                 logger.warning("Error reading saved comparison file %s: %s", fpath, e)
 
-        # Sort descending by created_at_utc
         results.sort(key=lambda x: x.get("created_at_utc", ""), reverse=True)
         return results[:limit]
 
@@ -652,7 +905,6 @@ class ResearchWorkspaceV2Engine:
             with open(fpath, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
-            # Revalidate dynamically (Sprint 24 Correction requirement)
             c_ids = data.get("candidate_ids", [])
             reval = cls.evaluate_comparison_compatibility(c_ids)
             data["live_evaluation"] = reval
@@ -668,12 +920,13 @@ class ResearchWorkspaceV2Engine:
                 data["comparison_table"] = reval.get("comparison_table", [])
                 data["difference_analysis"] = []
             else:
+                data["revalidation_message"] = "Kayıtlı karşılaştırma güncel CBE-0.7.0 modeli ve örtüşme standartları altında tamamen geçerlidir."
                 data["comparison_table"] = reval.get("comparison_table", [])
                 data["difference_analysis"] = reval.get("difference_analysis", [])
 
             return data
         except Exception as e:
-            logger.error("Failed to read saved comparison %s: %s", clean_id, e)
+            logger.error("Failed to read saved comparison %s: %s", fpath, e)
             return None
 
     @classmethod
@@ -716,7 +969,7 @@ class ResearchWorkspaceV2Engine:
         invalid_specs = counts["quarantined_records"]
         replicated_count = counts["independent_replications"]
 
-        # Count actual saved reports in library (FAIL-CLOSED: no hardcoded 6)
+        # Count actual saved reports in library
         reports_count: Optional[int] = None
         reports_status: str = "HEALTHY"
         try:
@@ -727,7 +980,7 @@ class ResearchWorkspaceV2Engine:
             reports_count = None
             reports_status = "UNAVAILABLE"
 
-        # Check durability of report storage (FAIL-CLOSED: no fallback to PERSISTENT_VERIFIED)
+        # Check durability of report storage
         rep_storage_path = os.environ.get("CBE_REPORTS_STORAGE_PATH", "research_outputs/reports")
         durability_verified = False
         try:
@@ -739,30 +992,53 @@ class ResearchWorkspaceV2Engine:
             durability_class = "UNVERIFIED"
             durability_verified = False
 
-        # Session store inspection
+        # Session store inspection: Genuine PRAGMA journal_mode check
         session_db = os.environ.get("CBE_SESSION_DB_PATH")
+        session_store_status = "UNVERIFIED"
         if session_db and Path(session_db).exists():
-            session_store_status = "SQLITE_WAL_ACTIVE"
+            try:
+                import sqlite3
+                conn = sqlite3.connect(session_db, timeout=2.0)
+                cur = conn.cursor()
+                cur.execute("PRAGMA journal_mode;")
+                row = cur.fetchone()
+                conn.close()
+                if row and str(row[0]).lower() == "wal":
+                    session_store_status = "SQLITE_WAL_ACTIVE"
+                else:
+                    session_store_status = f"NON_WAL_JOURNAL_MODE_{str(row[0]).upper() if row else 'UNKNOWN'}"
+            except Exception as e:
+                logger.warning("Failed to query SQLite PRAGMA journal_mode: %s", e)
+                session_store_status = "UNVERIFIED"
         else:
             session_store_status = "UNVERIFIED"
 
-        # Resource governor inspection
+        # Resource governor inspection: Validate active semaphores and configured limits
         try:
             gov = ResourceGovernor()
             gov_status = gov.get_resource_status()
-            resource_governor_status = "ACTIVE_SEMAPHORES_HEALTHY"
+            if (
+                isinstance(gov_status, dict)
+                and "active_semaphores" in gov_status
+                and gov_status.get("max_concurrency", 0) > 0
+                and "limits" in gov_status
+            ):
+                resource_governor_status = "ACTIVE_SEMAPHORES_HEALTHY"
+            else:
+                resource_governor_status = "UNVERIFIED"
         except Exception as e:
             logger.warning("ResourceGovernor inspection failed: %s", e)
             resource_governor_status = "UNVERIFIED"
             gov_status = {}
 
-        # Evidence status
-        if counts["verified_scientific_findings"] > 0:
+        # Cryptographically verified evidence status
+        catalog = cls.get_canonical_catalog()
+        signed_valid_records = [r for r in catalog if r.signature_verification_status == SignatureStatus.SIGNED_VALID]
+        if signed_valid_records:
             evidence_status_str = "RFC_8785_AND_HMAC_SHA256_VERIFIED"
         else:
             evidence_status_str = "UNVERIFIED"
 
-        # List saved comparisons
         saved_comps = cls.list_saved_comparisons(limit=3)
 
         return {
@@ -785,7 +1061,6 @@ class ResearchWorkspaceV2Engine:
                 ],
                 "evidence_status": evidence_status_str,
             },
-            # Explicit Separated Health Domains (Sprint 24 Correction Requirement)
             "application_process_health": {
                 "status": "HEALTHY",
                 "uptime_seconds": time.process_time(),
@@ -794,12 +1069,12 @@ class ResearchWorkspaceV2Engine:
             "storage_durability": {
                 "classification": durability_class,
                 "verified_durable": durability_verified,
-                "target_path": rep_storage_path,
+                "target_path": "PERSISTENT_VOLUME_MOUNT",  # Redacted internal raw path
             },
             "evidence_integrity": {
                 "status": evidence_status_str,
                 "canonicalization": "RFC_8785",
-                "verified_count": counts["verified_scientific_findings"],
+                "verified_count": len(signed_valid_records),
             },
             "scientific_validity": {
                 "total_catalog_records": counts["total_catalog_records"],
@@ -864,8 +1139,11 @@ class ResearchWorkspaceV2Engine:
                     "id": r.id,
                     "title": r.title,
                     "badge": r.category,
+                    "category": r.category,
+                    "dataset_id": r.dataset_id,
                     "target_tab": "catalog",
                     "detail_param": f"id={r.id}",
+                    "route": f"/research-workspace?view=catalog&detail={r.id}",
                 })
 
         # 2. Search Datasets
@@ -875,26 +1153,28 @@ class ResearchWorkspaceV2Engine:
             ("US-MACRO-EVENTS-2022-2026", "BLS & Fed Makro Olay Takvimi (48 Olay)", "Macro"),
         ]
         for ds_id, ds_desc, ds_tag in datasets:
-            if q in ds_id.lower() or q in ds_desc.lower():
+            if q in ds_id.lower() or q in ds_desc.lower() or q in ds_tag.lower():
                 matches.append({
                     "type": "DATASET",
                     "id": ds_id,
                     "title": ds_desc,
                     "badge": ds_tag,
+                    "category": "Veri Seti",
+                    "dataset_id": ds_id,
                     "target_tab": "catalog",
-                    "detail_param": f"dataset={ds_id}",
+                    "route": f"/research-workspace?view=catalog&dataset={ds_id}",
                 })
 
         # 3. Search Saved Comparisons
-        saved = cls.list_saved_comparisons(search_query=q, limit=5)
-        for s in saved:
+        for sc in cls.list_saved_comparisons(search_query=q, limit=5):
             matches.append({
                 "type": "SAVED_COMPARISON",
-                "id": s["comparison_id"],
-                "title": s["title"],
+                "id": sc["comparison_id"],
+                "title": sc["title"],
                 "badge": "Karşılaştırma",
-                "target_tab": "comparison",
-                "detail_param": f"comp_id={s['comparison_id']}",
+                "category": "Karşılaştırma",
+                "dataset_id": ", ".join(sc.get("candidate_ids", [])),
+                "route": f"/research-workspace?view=comparison&id={sc['comparison_id']}",
             })
 
         return {
