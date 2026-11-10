@@ -1,0 +1,3594 @@
+{
+  "status": "success",
+  "scorecards": [
+    {
+      "record_id": "RES-FUND-01",
+      "title_tr": "Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi",
+      "title_en": "Perpetual Funding Rate Predictability & Pure Compute Latency",
+      "overall_verdict": "INSUFFICIENT_EVIDENCE",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 4,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Authentic provenance: BTCUSDT-PERP-FUNDING-2022-2026 (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-PERP-FUNDING-2022-2026' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-PERP-FUNDING-2022-2026' verified via authentic intake repository and lineage attestation.",
+          "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
+          "required_action_en": "No additional dataset action required.",
+          "metrics": {
+            "dataset_id": "BTCUSDT-PERP-FUNDING-2022-2026",
+            "has_attested_lineage": false,
+            "has_physical_data": true
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "data/reports/sprint09_38_funding_predictability_report.json",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (5d579e165aade2e3...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (5d579e165aade2e3...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-001-PERP-FUNDING, Cadence: 8h",
+          "explanation_tr": "Spesifikasyon 'SPEC-001-PERP-FUNDING' ve \u00f6rnekleme kadans\u0131 '8h' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-001-PERP-FUNDING' and sampling cadence '8h' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-001-PERP-FUNDING",
+            "cadence": "8h"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "N = 1185",
+          "explanation_tr": "\u00d6rneklem boyutu (1185) asgari bilimsel s\u0131n\u0131r olan 100 g\u00f6zlemi kar\u015f\u0131l\u0131yor.",
+          "explanation_en": "Sample size (1185) meets scientific threshold of N >= 100.",
+          "required_action_tr": "\u00d6rneklem yeterli.",
+          "required_action_en": "Sample sufficient.",
+          "metrics": {
+            "sample_size": 1185
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "p=1.0, vol_ratio=None",
+          "explanation_tr": "Say\u0131sal metrikler sonlu, p-de\u011feri ge\u00e7erli aral\u0131kta ve NaN i\u00e7ermiyor.",
+          "explanation_en": "Numerical metrics finite, valid p-value range, zero NaNs.",
+          "required_action_tr": "\u0130statistiksel format ge\u00e7erli.",
+          "required_action_en": "Statistical format valid.",
+          "metrics": {
+            "raw_p_value": 1.0,
+            "volatility_ratio": null
+          }
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "DATASET_PROVENANCE",
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "SAMPLE_SUFFICIENCY",
+        "STATISTICAL_VALIDITY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [],
+      "unverified_dimensions": [
+        "OBSERVATION_COMPLETENESS",
+        "REPRODUCIBILITY",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
+      ],
+      "blocking_reasons_en": [
+        "Observation completeness evidence insufficient.",
+        "No allowlisted reproduction procedure."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "data/reports/sprint09_38_funding_predictability_report.json",
+          "sha256": "5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a"
+        }
+      ],
+      "required_next_actions_tr": [
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Provide observed timestamps or signed attestation.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 70.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.298275+00:00"
+    },
+    {
+      "record_id": "RES-REGIME-01",
+      "title_tr": "2022\u20132026 Kronolojik \u0130leriye Y\u00f6nelik Rejim Kararl\u0131l\u0131\u011f\u0131 Do\u011frulamas\u0131",
+      "title_en": "2022\u20132026 Chronological Walk-Forward Regime Stability Validation",
+      "overall_verdict": "INSUFFICIENT_EVIDENCE",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 5,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Authentic provenance: BTCUSDT-SPOT-1H-2022-2026 (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-SPOT-1H-2022-2026' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-SPOT-1H-2022-2026' verified via authentic intake repository and lineage attestation.",
+          "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
+          "required_action_en": "No additional dataset action required.",
+          "metrics": {
+            "dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
+            "has_attested_lineage": false,
+            "has_physical_data": true
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "data/reports/sprint09_27_validation_and_holdout_report.json",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (14ae2c3a0ebcbbf8...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (14ae2c3a0ebcbbf8...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "14ae2c3a0ebcbbf8e96a50ad5ada06a5ce2b0fc22082f3a225d9becfcee4cebf"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-002-WALK-FORWARD, Cadence: 1h",
+          "explanation_tr": "Spesifikasyon 'SPEC-002-WALK-FORWARD' ve \u00f6rnekleme kadans\u0131 '1h' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-002-WALK-FORWARD' and sampling cadence '1h' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-002-WALK-FORWARD",
+            "cadence": "1h"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "N = 8736",
+          "explanation_tr": "\u00d6rneklem boyutu (8736) asgari bilimsel s\u0131n\u0131r olan 100 g\u00f6zlemi kar\u015f\u0131l\u0131yor.",
+          "explanation_en": "Sample size (8736) meets scientific threshold of N >= 100.",
+          "required_action_tr": "\u00d6rneklem yeterli.",
+          "required_action_en": "Sample sufficient.",
+          "metrics": {
+            "sample_size": 8736
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "p=0.1738, vol_ratio=None",
+          "explanation_tr": "Say\u0131sal metrikler sonlu, p-de\u011feri ge\u00e7erli aral\u0131kta ve NaN i\u00e7ermiyor.",
+          "explanation_en": "Numerical metrics finite, valid p-value range, zero NaNs.",
+          "required_action_tr": "\u0130statistiksel format ge\u00e7erli.",
+          "required_action_en": "Statistical format valid.",
+          "metrics": {
+            "raw_p_value": 0.1738,
+            "volatility_ratio": null
+          }
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Proc: PROC_REGIME_STABILITY_EVAL, Artifact: data/reports/sprint09_27_validation_and_holdout_report.json",
+          "explanation_tr": "Onayl\u0131 prosed\u00fcr 'PROC_REGIME_STABILITY_EVAL' ve \u00e7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
+          "explanation_en": "Allowlisted procedure 'PROC_REGIME_STABILITY_EVAL' and offline data are verifiable on disk.",
+          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
+          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "metrics": {
+            "procedure_name": "PROC_REGIME_STABILITY_EVAL"
+          }
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "DATASET_PROVENANCE",
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "SAMPLE_SUFFICIENCY",
+        "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [],
+      "unverified_dimensions": [
+        "OBSERVATION_COMPLETENESS",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz."
+      ],
+      "blocking_reasons_en": [
+        "Observation completeness evidence insufficient."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "data/reports/sprint09_27_validation_and_holdout_report.json",
+          "sha256": "14ae2c3a0ebcbbf8e96a50ad5ada06a5ce2b0fc22082f3a225d9becfcee4cebf"
+        }
+      ],
+      "required_next_actions_tr": [
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Provide observed timestamps or signed attestation.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 80.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.299912+00:00"
+    },
+    {
+      "record_id": "RES-ANALOG-01",
+      "title_tr": "Dinamik Zaman B\u00fckmesi (DTW) Tarihsel \u00d6r\u00fcnt\u00fc Benzerli\u011fi V2",
+      "title_en": "Dynamic Time Warping Historical Pattern Analogs V2",
+      "overall_verdict": "INSUFFICIENT_EVIDENCE",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 5,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Authentic provenance: BTCUSDT-SPOT-1H-2022-2026 (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-SPOT-1H-2022-2026' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-SPOT-1H-2022-2026' verified via authentic intake repository and lineage attestation.",
+          "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
+          "required_action_en": "No additional dataset action required.",
+          "metrics": {
+            "dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
+            "has_attested_lineage": false,
+            "has_physical_data": true
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "research_outputs/research_report_29_pattern_similarity.json",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (337b19b98c381d0c...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (337b19b98c381d0c...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "337b19b98c381d0cac508161efa9bb776826cd8708bd2d64d1b9e8779f8b6847"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-003-DTW-ANALOGS, Cadence: 1h",
+          "explanation_tr": "Spesifikasyon 'SPEC-003-DTW-ANALOGS' ve \u00f6rnekleme kadans\u0131 '1h' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-003-DTW-ANALOGS' and sampling cadence '1h' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-003-DTW-ANALOGS",
+            "cadence": "1h"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "N = 860",
+          "explanation_tr": "\u00d6rneklem boyutu (860) asgari bilimsel s\u0131n\u0131r olan 100 g\u00f6zlemi kar\u015f\u0131l\u0131yor.",
+          "explanation_en": "Sample size (860) meets scientific threshold of N >= 100.",
+          "required_action_tr": "\u00d6rneklem yeterli.",
+          "required_action_en": "Sample sufficient.",
+          "metrics": {
+            "sample_size": 860
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "MISSING_METRICS",
+          "explanation_tr": "Ge\u00e7erli sonlu istatistiksel test metrikleri bulunamad\u0131.",
+          "explanation_en": "No valid finite statistical test metrics found.",
+          "required_action_tr": "\u0130statistiksel testleri \u00e7al\u0131\u015ft\u0131r\u0131n ve sonu\u00e7lar\u0131 kaydedin.",
+          "required_action_en": "Execute statistical tests and record outputs.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Proc: PROC_DTW_PATTERN_DISTANCE, Artifact: research_outputs/research_report_29_pattern_similarity.json",
+          "explanation_tr": "Onayl\u0131 prosed\u00fcr 'PROC_DTW_PATTERN_DISTANCE' ve \u00e7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
+          "explanation_en": "Allowlisted procedure 'PROC_DTW_PATTERN_DISTANCE' and offline data are verifiable on disk.",
+          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
+          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "metrics": {
+            "procedure_name": "PROC_DTW_PATTERN_DISTANCE"
+          }
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "DATASET_PROVENANCE",
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "SAMPLE_SUFFICIENCY",
+        "REPRODUCIBILITY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [],
+      "unverified_dimensions": [
+        "OBSERVATION_COMPLETENESS",
+        "STATISTICAL_VALIDITY",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz."
+      ],
+      "blocking_reasons_en": [
+        "Observation completeness evidence insufficient."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "research_outputs/research_report_29_pattern_similarity.json",
+          "sha256": "337b19b98c381d0cac508161efa9bb776826cd8708bd2d64d1b9e8779f8b6847"
+        }
+      ],
+      "required_next_actions_tr": [
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Provide observed timestamps or signed attestation.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 70.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.300421+00:00"
+    },
+    {
+      "record_id": "RES-MACRO-01",
+      "title_tr": "Makroekonomik Duyurular (CPI & FOMC) T0 Rejim D\u00f6n\u00fc\u015f\u00fcmleri",
+      "title_en": "Macro Announcements (CPI & FOMC) T0 Regime Transitions",
+      "overall_verdict": "INSUFFICIENT_EVIDENCE",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 2,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "UNVERIFIED",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "US-MACRO-EVENTS-2022-2026",
+          "explanation_tr": "Do\u011frulanabilir birincil veri seti soyk\u00fct\u00fc\u011f\u00fc bulunamad\u0131.",
+          "explanation_en": "No verifiable primary dataset lineage found.",
+          "required_action_tr": "Resmi veri kayna\u011f\u0131 soyk\u00fct\u00fc\u011f\u00fcn\u00fc kaydedin.",
+          "required_action_en": "Register authoritative dataset provenance.",
+          "metrics": {
+            "dataset_id": "US-MACRO-EVENTS-2022-2026"
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "research_outputs/experiment_cpi_volatility.cbe-hyp.json",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (3cda89064b6837ef...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (3cda89064b6837ef...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "3cda89064b6837ef23d76c6d220d3998ebfc5a3f7261d3afc6ea68c29a4bf7ac"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-004-MACRO-SHIFTS, Cadence: 1h / \u00b112h pencere",
+          "explanation_tr": "Spesifikasyon 'SPEC-004-MACRO-SHIFTS' ve \u00f6rnekleme kadans\u0131 '1h / \u00b112h pencere' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-004-MACRO-SHIFTS' and sampling cadence '1h / \u00b112h pencere' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-004-MACRO-SHIFTS",
+            "cadence": "1h / \u00b112h pencere"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "N = 0",
+          "explanation_tr": "\u00d6rneklem boyutu (0) asgari bilimsel s\u0131n\u0131r\u0131n (100) alt\u0131ndad\u0131r.",
+          "explanation_en": "Sample size (0) is below scientific threshold of N >= 100.",
+          "required_action_tr": "G\u00f6zlem penceresini en az 100 g\u00f6zlem i\u00e7erecek \u015fekilde geni\u015fletin.",
+          "required_action_en": "Extend observation window to cover at least 100 intervals.",
+          "metrics": {
+            "sample_size": 0
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "p=1.2e-05, vol_ratio=1.913",
+          "explanation_tr": "Say\u0131sal metrikler sonlu, p-de\u011feri ge\u00e7erli aral\u0131kta ve NaN i\u00e7ermiyor.",
+          "explanation_en": "Numerical metrics finite, valid p-value range, zero NaNs.",
+          "required_action_tr": "\u0130statistiksel format ge\u00e7erli.",
+          "required_action_en": "Statistical format valid.",
+          "metrics": {
+            "raw_p_value": 1.2e-05,
+            "volatility_ratio": 1.913
+          }
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "STATISTICAL_VALIDITY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [],
+      "unverified_dimensions": [
+        "DATASET_PROVENANCE",
+        "OBSERVATION_COMPLETENESS",
+        "SAMPLE_SUFFICIENCY",
+        "REPRODUCIBILITY",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "Veri seti soyk\u00fct\u00fc\u011f\u00fc do\u011frulanmam\u0131\u015f.",
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
+      ],
+      "blocking_reasons_en": [
+        "Dataset provenance unverified.",
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "research_outputs/experiment_cpi_volatility.cbe-hyp.json",
+          "sha256": "3cda89064b6837ef23d76c6d220d3998ebfc5a3f7261d3afc6ea68c29a4bf7ac"
+        }
+      ],
+      "required_next_actions_tr": [
+        "Veri seti soyk\u00fct\u00fc\u011f\u00fcn\u00fc belgelendirin.",
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Veri penceresini geni\u015fleterek \u00f6rneklem say\u0131s\u0131n\u0131 art\u0131r\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Document dataset lineage.",
+        "Provide observed timestamps or signed attestation.",
+        "Expand data window to increase sample count.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 50.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.300421+00:00"
+    },
+    {
+      "record_id": "RES-DURABILITY-01",
+      "title_tr": "Dayan\u0131kl\u0131 Depolama Do\u011frulamas\u0131 & Kan\u0131t Soyk\u00fct\u00fc\u011f\u00fc Sertifikasyonu",
+      "title_en": "Durable Storage Verification & Evidence Provenance Certification",
+      "overall_verdict": "INSUFFICIENT_EVIDENCE",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 4,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Authentic provenance: CBE-SYSTEM-AUDIT-LOGS (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'CBE-SYSTEM-AUDIT-LOGS' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'CBE-SYSTEM-AUDIT-LOGS' verified via authentic intake repository and lineage attestation.",
+          "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
+          "required_action_en": "No additional dataset action required.",
+          "metrics": {
+            "dataset_id": "CBE-SYSTEM-AUDIT-LOGS",
+            "has_attested_lineage": false,
+            "has_physical_data": true
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "research_outputs/sprint23_delivery/persistent_volume_verification.json",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (cbf65eb5ed14a781...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (cbf65eb5ed14a781...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-005-STORAGE-DURABILITY, Cadence: Denetim Olay\u0131",
+          "explanation_tr": "Spesifikasyon 'SPEC-005-STORAGE-DURABILITY' ve \u00f6rnekleme kadans\u0131 'Denetim Olay\u0131' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-005-STORAGE-DURABILITY' and sampling cadence 'Denetim Olay\u0131' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-005-STORAGE-DURABILITY",
+            "cadence": "Denetim Olay\u0131"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "N = 20",
+          "explanation_tr": "\u00d6rneklem boyutu (20) asgari bilimsel s\u0131n\u0131r\u0131n (100) alt\u0131ndad\u0131r.",
+          "explanation_en": "Sample size (20) is below scientific threshold of N >= 100.",
+          "required_action_tr": "G\u00f6zlem penceresini en az 100 g\u00f6zlem i\u00e7erecek \u015fekilde geni\u015fletin.",
+          "required_action_en": "Extend observation window to cover at least 100 intervals.",
+          "metrics": {
+            "sample_size": 20
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "MISSING_METRICS",
+          "explanation_tr": "Ge\u00e7erli sonlu istatistiksel test metrikleri bulunamad\u0131.",
+          "explanation_en": "No valid finite statistical test metrics found.",
+          "required_action_tr": "\u0130statistiksel testleri \u00e7al\u0131\u015ft\u0131r\u0131n ve sonu\u00e7lar\u0131 kaydedin.",
+          "required_action_en": "Execute statistical tests and record outputs.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Proc: PROC_STORAGE_VERIFICATION, Artifact: research_outputs/sprint23_delivery/persistent_volume_verification.json",
+          "explanation_tr": "Onayl\u0131 prosed\u00fcr 'PROC_STORAGE_VERIFICATION' ve \u00e7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
+          "explanation_en": "Allowlisted procedure 'PROC_STORAGE_VERIFICATION' and offline data are verifiable on disk.",
+          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
+          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "metrics": {
+            "procedure_name": "PROC_STORAGE_VERIFICATION"
+          }
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "DATASET_PROVENANCE",
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "REPRODUCIBILITY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [],
+      "unverified_dimensions": [
+        "OBSERVATION_COMPLETENESS",
+        "SAMPLE_SUFFICIENCY",
+        "STATISTICAL_VALIDITY",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Yetersiz \u00f6rneklem boyutu (20 < 100)."
+      ],
+      "blocking_reasons_en": [
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (20 < 100)."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "research_outputs/sprint23_delivery/persistent_volume_verification.json",
+          "sha256": "cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c"
+        }
+      ],
+      "required_next_actions_tr": [
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Veri penceresini geni\u015fleterek \u00f6rneklem say\u0131s\u0131n\u0131 art\u0131r\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Provide observed timestamps or signed attestation.",
+        "Expand data window to increase sample count.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 60.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.301431+00:00"
+    },
+    {
+      "record_id": "RES-CRYPTO-01",
+      "title_tr": "Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim \u0130ncelemesi",
+      "title_en": "October 2026 Intake Quarantine & Synthetic Volume Forensics",
+      "overall_verdict": "METHODOLOGICALLY_BLOCKED",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 3,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "BLOCKED",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "BTCUSDT-OCTOBER-2026-INTAKE",
+          "explanation_tr": "Veri seti 'BTCUSDT-OCTOBER-2026-INTAKE' sentetik anomaliler veya karantina nedeniyle bloke edilmi\u015ftir.",
+          "explanation_en": "Dataset 'BTCUSDT-OCTOBER-2026-INTAKE' is blocked due to synthetic anomalies or intake quarantine.",
+          "required_action_tr": "Karantina adli incelemesi tamamlanmadan veri seti kullan\u0131lamaz.",
+          "required_action_en": "Dataset cannot be used until quarantine forensics are resolved.",
+          "metrics": {
+            "quarantine_status": "QUARANTINED",
+            "dataset_id": "BTCUSDT-OCTOBER-2026-INTAKE"
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (05874e97d06db21f...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (05874e97d06db21f...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "05874e97d06db21fad8e7583b5b8038141d4e3dcfbabf68238fca52f5efab718"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-006-DATA-INTAKE, Cadence: 5m",
+          "explanation_tr": "Spesifikasyon 'SPEC-006-DATA-INTAKE' ve \u00f6rnekleme kadans\u0131 '5m' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-006-DATA-INTAKE' and sampling cadence '5m' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-006-DATA-INTAKE",
+            "cadence": "5m"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "N = 288",
+          "explanation_tr": "\u00d6rneklem boyutu (288) asgari bilimsel s\u0131n\u0131r olan 100 g\u00f6zlemi kar\u015f\u0131l\u0131yor.",
+          "explanation_en": "Sample size (288) meets scientific threshold of N >= 100.",
+          "required_action_tr": "\u00d6rneklem yeterli.",
+          "required_action_en": "Sample sufficient.",
+          "metrics": {
+            "sample_size": 288
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "MISSING_METRICS",
+          "explanation_tr": "Ge\u00e7erli sonlu istatistiksel test metrikleri bulunamad\u0131.",
+          "explanation_en": "No valid finite statistical test metrics found.",
+          "required_action_tr": "\u0130statistiksel testleri \u00e7al\u0131\u015ft\u0131r\u0131n ve sonu\u00e7lar\u0131 kaydedin.",
+          "required_action_en": "Execute statistical tests and record outputs.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "SAMPLE_SUFFICIENCY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [
+        "DATASET_PROVENANCE"
+      ],
+      "unverified_dimensions": [
+        "OBSERVATION_COMPLETENESS",
+        "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "Veri seti karantinada (BTCUSDT-OCTOBER-2026-INTAKE).",
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
+      ],
+      "blocking_reasons_en": [
+        "Dataset quarantined (BTCUSDT-OCTOBER-2026-INTAKE).",
+        "Observation completeness evidence insufficient.",
+        "No allowlisted reproduction procedure."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet",
+          "sha256": "05874e97d06db21fad8e7583b5b8038141d4e3dcfbabf68238fca52f5efab718"
+        }
+      ],
+      "required_next_actions_tr": [
+        "Karantina adli raporunu tamamlay\u0131n.",
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Resolve intake quarantine forensics.",
+        "Provide observed timestamps or signed attestation.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 50.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.301942+00:00"
+    },
+    {
+      "record_id": "RLIB-c5730b081950",
+      "title_tr": "Playwright Sprint 21 Verified Library Item",
+      "title_en": "E2E automated verification item",
+      "overall_verdict": "INSUFFICIENT_EVIDENCE",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 3,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
+          "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
+          "required_action_en": "No additional dataset action required.",
+          "metrics": {
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "data/research_library/RLIB-c5730b081950.json",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (7d3a39550d5fa875...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (7d3a39550d5fa875...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "7d3a39550d5fa8754dd3d580855da42bb0c2871e261d5891ea2ba11be0994af5"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-LIB-RLIB-c5730b081950, Cadence: 1h",
+          "explanation_tr": "Spesifikasyon 'SPEC-LIB-RLIB-c5730b081950' ve \u00f6rnekleme kadans\u0131 '1h' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-LIB-RLIB-c5730b081950' and sampling cadence '1h' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-LIB-RLIB-c5730b081950",
+            "cadence": "1h"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "N = 0",
+          "explanation_tr": "\u00d6rneklem boyutu (0) asgari bilimsel s\u0131n\u0131r\u0131n (100) alt\u0131ndad\u0131r.",
+          "explanation_en": "Sample size (0) is below scientific threshold of N >= 100.",
+          "required_action_tr": "G\u00f6zlem penceresini en az 100 g\u00f6zlem i\u00e7erecek \u015fekilde geni\u015fletin.",
+          "required_action_en": "Extend observation window to cover at least 100 intervals.",
+          "metrics": {
+            "sample_size": 0
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "MISSING_METRICS",
+          "explanation_tr": "Ge\u00e7erli sonlu istatistiksel test metrikleri bulunamad\u0131.",
+          "explanation_en": "No valid finite statistical test metrics found.",
+          "required_action_tr": "\u0130statistiksel testleri \u00e7al\u0131\u015ft\u0131r\u0131n ve sonu\u00e7lar\u0131 kaydedin.",
+          "required_action_en": "Execute statistical tests and record outputs.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "DATASET_PROVENANCE",
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [],
+      "unverified_dimensions": [
+        "OBSERVATION_COMPLETENESS",
+        "SAMPLE_SUFFICIENCY",
+        "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
+      ],
+      "blocking_reasons_en": [
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "data/research_library/RLIB-c5730b081950.json",
+          "sha256": "7d3a39550d5fa8754dd3d580855da42bb0c2871e261d5891ea2ba11be0994af5"
+        }
+      ],
+      "required_next_actions_tr": [
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Veri penceresini geni\u015fleterek \u00f6rneklem say\u0131s\u0131n\u0131 art\u0131r\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Provide observed timestamps or signed attestation.",
+        "Expand data window to increase sample count.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 50.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.302453+00:00"
+    },
+    {
+      "record_id": "RLIB-ee060f623584",
+      "title_tr": "Playwright Sprint 21 Verified Library Item",
+      "title_en": "E2E automated verification item",
+      "overall_verdict": "INSUFFICIENT_EVIDENCE",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 3,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
+          "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
+          "required_action_en": "No additional dataset action required.",
+          "metrics": {
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "data/research_library/RLIB-ee060f623584.json",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (1af6c92f6e2f0b3c...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (1af6c92f6e2f0b3c...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "1af6c92f6e2f0b3c01ab7f7227fe88826f4986940e49074b2015716541b7be01"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-LIB-RLIB-ee060f623584, Cadence: 1h",
+          "explanation_tr": "Spesifikasyon 'SPEC-LIB-RLIB-ee060f623584' ve \u00f6rnekleme kadans\u0131 '1h' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-LIB-RLIB-ee060f623584' and sampling cadence '1h' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-LIB-RLIB-ee060f623584",
+            "cadence": "1h"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "N = 0",
+          "explanation_tr": "\u00d6rneklem boyutu (0) asgari bilimsel s\u0131n\u0131r\u0131n (100) alt\u0131ndad\u0131r.",
+          "explanation_en": "Sample size (0) is below scientific threshold of N >= 100.",
+          "required_action_tr": "G\u00f6zlem penceresini en az 100 g\u00f6zlem i\u00e7erecek \u015fekilde geni\u015fletin.",
+          "required_action_en": "Extend observation window to cover at least 100 intervals.",
+          "metrics": {
+            "sample_size": 0
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "MISSING_METRICS",
+          "explanation_tr": "Ge\u00e7erli sonlu istatistiksel test metrikleri bulunamad\u0131.",
+          "explanation_en": "No valid finite statistical test metrics found.",
+          "required_action_tr": "\u0130statistiksel testleri \u00e7al\u0131\u015ft\u0131r\u0131n ve sonu\u00e7lar\u0131 kaydedin.",
+          "required_action_en": "Execute statistical tests and record outputs.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "DATASET_PROVENANCE",
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [],
+      "unverified_dimensions": [
+        "OBSERVATION_COMPLETENESS",
+        "SAMPLE_SUFFICIENCY",
+        "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
+      ],
+      "blocking_reasons_en": [
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "data/research_library/RLIB-ee060f623584.json",
+          "sha256": "1af6c92f6e2f0b3c01ab7f7227fe88826f4986940e49074b2015716541b7be01"
+        }
+      ],
+      "required_next_actions_tr": [
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Veri penceresini geni\u015fleterek \u00f6rneklem say\u0131s\u0131n\u0131 art\u0131r\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Provide observed timestamps or signed attestation.",
+        "Expand data window to increase sample count.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 50.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.303467+00:00"
+    },
+    {
+      "record_id": "RLIB-f9ddf66ba096",
+      "title_tr": "Sprint 22 Library Report Test",
+      "title_en": "",
+      "overall_verdict": "INSUFFICIENT_EVIDENCE",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 3,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
+          "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
+          "required_action_en": "No additional dataset action required.",
+          "metrics": {
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "data/research_library/RLIB-f9ddf66ba096.json",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (8b9c1018b20224a8...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (8b9c1018b20224a8...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "8b9c1018b20224a85c136e5c68cd759b05c7fdceea7b0ace549891a5163f4e22"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-LIB-RLIB-f9ddf66ba096, Cadence: 1h",
+          "explanation_tr": "Spesifikasyon 'SPEC-LIB-RLIB-f9ddf66ba096' ve \u00f6rnekleme kadans\u0131 '1h' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-LIB-RLIB-f9ddf66ba096' and sampling cadence '1h' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-LIB-RLIB-f9ddf66ba096",
+            "cadence": "1h"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "N = 0",
+          "explanation_tr": "\u00d6rneklem boyutu (0) asgari bilimsel s\u0131n\u0131r\u0131n (100) alt\u0131ndad\u0131r.",
+          "explanation_en": "Sample size (0) is below scientific threshold of N >= 100.",
+          "required_action_tr": "G\u00f6zlem penceresini en az 100 g\u00f6zlem i\u00e7erecek \u015fekilde geni\u015fletin.",
+          "required_action_en": "Extend observation window to cover at least 100 intervals.",
+          "metrics": {
+            "sample_size": 0
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "MISSING_METRICS",
+          "explanation_tr": "Ge\u00e7erli sonlu istatistiksel test metrikleri bulunamad\u0131.",
+          "explanation_en": "No valid finite statistical test metrics found.",
+          "required_action_tr": "\u0130statistiksel testleri \u00e7al\u0131\u015ft\u0131r\u0131n ve sonu\u00e7lar\u0131 kaydedin.",
+          "required_action_en": "Execute statistical tests and record outputs.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "DATASET_PROVENANCE",
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [],
+      "unverified_dimensions": [
+        "OBSERVATION_COMPLETENESS",
+        "SAMPLE_SUFFICIENCY",
+        "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
+      ],
+      "blocking_reasons_en": [
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "data/research_library/RLIB-f9ddf66ba096.json",
+          "sha256": "8b9c1018b20224a85c136e5c68cd759b05c7fdceea7b0ace549891a5163f4e22"
+        }
+      ],
+      "required_next_actions_tr": [
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Veri penceresini geni\u015fleterek \u00f6rneklem say\u0131s\u0131n\u0131 art\u0131r\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Provide observed timestamps or signed attestation.",
+        "Expand data window to increase sample count.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 50.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.303467+00:00"
+    },
+    {
+      "record_id": "RLIB-03c6ea53cf3d",
+      "title_tr": "Acceptance Test Definition",
+      "title_en": "Definition for Playwright E2E verification",
+      "overall_verdict": "INSUFFICIENT_EVIDENCE",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 3,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
+          "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
+          "required_action_en": "No additional dataset action required.",
+          "metrics": {
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "/app/data/prospective/research_library/RLIB-03c6ea53cf3d.json",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (de76c8e29242081e...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (de76c8e29242081e...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "de76c8e29242081eaa85f41fa800ce144fcb91e41107d7289ab4cbeb04244274"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-LIB-RLIB-03c6ea53cf3d, Cadence: 1h",
+          "explanation_tr": "Spesifikasyon 'SPEC-LIB-RLIB-03c6ea53cf3d' ve \u00f6rnekleme kadans\u0131 '1h' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-LIB-RLIB-03c6ea53cf3d' and sampling cadence '1h' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-LIB-RLIB-03c6ea53cf3d",
+            "cadence": "1h"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "N = 0",
+          "explanation_tr": "\u00d6rneklem boyutu (0) asgari bilimsel s\u0131n\u0131r\u0131n (100) alt\u0131ndad\u0131r.",
+          "explanation_en": "Sample size (0) is below scientific threshold of N >= 100.",
+          "required_action_tr": "G\u00f6zlem penceresini en az 100 g\u00f6zlem i\u00e7erecek \u015fekilde geni\u015fletin.",
+          "required_action_en": "Extend observation window to cover at least 100 intervals.",
+          "metrics": {
+            "sample_size": 0
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "MISSING_METRICS",
+          "explanation_tr": "Ge\u00e7erli sonlu istatistiksel test metrikleri bulunamad\u0131.",
+          "explanation_en": "No valid finite statistical test metrics found.",
+          "required_action_tr": "\u0130statistiksel testleri \u00e7al\u0131\u015ft\u0131r\u0131n ve sonu\u00e7lar\u0131 kaydedin.",
+          "required_action_en": "Execute statistical tests and record outputs.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "DATASET_PROVENANCE",
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [],
+      "unverified_dimensions": [
+        "OBSERVATION_COMPLETENESS",
+        "SAMPLE_SUFFICIENCY",
+        "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
+      ],
+      "blocking_reasons_en": [
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "/app/data/prospective/research_library/RLIB-03c6ea53cf3d.json",
+          "sha256": "de76c8e29242081eaa85f41fa800ce144fcb91e41107d7289ab4cbeb04244274"
+        }
+      ],
+      "required_next_actions_tr": [
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Veri penceresini geni\u015fleterek \u00f6rneklem say\u0131s\u0131n\u0131 art\u0131r\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Provide observed timestamps or signed attestation.",
+        "Expand data window to increase sample count.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 50.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.303467+00:00"
+    },
+    {
+      "record_id": "RLIB-07c7c65c7e91",
+      "title_tr": "Acceptance Test Definition",
+      "title_en": "Definition for Playwright E2E verification",
+      "overall_verdict": "INSUFFICIENT_EVIDENCE",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 3,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
+          "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
+          "required_action_en": "No additional dataset action required.",
+          "metrics": {
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "/app/data/prospective/research_library/RLIB-07c7c65c7e91.json",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (3ca1b02a8b185fcd...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (3ca1b02a8b185fcd...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "3ca1b02a8b185fcd12554fead907099da6bf6c54dee6bd5e58f1b18f038dcd2e"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-LIB-RLIB-07c7c65c7e91, Cadence: 1h",
+          "explanation_tr": "Spesifikasyon 'SPEC-LIB-RLIB-07c7c65c7e91' ve \u00f6rnekleme kadans\u0131 '1h' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-LIB-RLIB-07c7c65c7e91' and sampling cadence '1h' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-LIB-RLIB-07c7c65c7e91",
+            "cadence": "1h"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "N = 0",
+          "explanation_tr": "\u00d6rneklem boyutu (0) asgari bilimsel s\u0131n\u0131r\u0131n (100) alt\u0131ndad\u0131r.",
+          "explanation_en": "Sample size (0) is below scientific threshold of N >= 100.",
+          "required_action_tr": "G\u00f6zlem penceresini en az 100 g\u00f6zlem i\u00e7erecek \u015fekilde geni\u015fletin.",
+          "required_action_en": "Extend observation window to cover at least 100 intervals.",
+          "metrics": {
+            "sample_size": 0
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "MISSING_METRICS",
+          "explanation_tr": "Ge\u00e7erli sonlu istatistiksel test metrikleri bulunamad\u0131.",
+          "explanation_en": "No valid finite statistical test metrics found.",
+          "required_action_tr": "\u0130statistiksel testleri \u00e7al\u0131\u015ft\u0131r\u0131n ve sonu\u00e7lar\u0131 kaydedin.",
+          "required_action_en": "Execute statistical tests and record outputs.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "DATASET_PROVENANCE",
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [],
+      "unverified_dimensions": [
+        "OBSERVATION_COMPLETENESS",
+        "SAMPLE_SUFFICIENCY",
+        "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
+      ],
+      "blocking_reasons_en": [
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "/app/data/prospective/research_library/RLIB-07c7c65c7e91.json",
+          "sha256": "3ca1b02a8b185fcd12554fead907099da6bf6c54dee6bd5e58f1b18f038dcd2e"
+        }
+      ],
+      "required_next_actions_tr": [
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Veri penceresini geni\u015fleterek \u00f6rneklem say\u0131s\u0131n\u0131 art\u0131r\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Provide observed timestamps or signed attestation.",
+        "Expand data window to increase sample count.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 50.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.305027+00:00"
+    },
+    {
+      "record_id": "RLIB-2f30980866e9",
+      "title_tr": "Acceptance Test Definition",
+      "title_en": "Definition for Playwright E2E verification",
+      "overall_verdict": "INSUFFICIENT_EVIDENCE",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 3,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
+          "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
+          "required_action_en": "No additional dataset action required.",
+          "metrics": {
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "/app/data/prospective/research_library/RLIB-2f30980866e9.json",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (dd211e7f6b3e01fb...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (dd211e7f6b3e01fb...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "dd211e7f6b3e01fba967f9f26e3b377aec84fccafadf6721ed3c590830d63ff8"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-LIB-RLIB-2f30980866e9, Cadence: 1h",
+          "explanation_tr": "Spesifikasyon 'SPEC-LIB-RLIB-2f30980866e9' ve \u00f6rnekleme kadans\u0131 '1h' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-LIB-RLIB-2f30980866e9' and sampling cadence '1h' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-LIB-RLIB-2f30980866e9",
+            "cadence": "1h"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "N = 0",
+          "explanation_tr": "\u00d6rneklem boyutu (0) asgari bilimsel s\u0131n\u0131r\u0131n (100) alt\u0131ndad\u0131r.",
+          "explanation_en": "Sample size (0) is below scientific threshold of N >= 100.",
+          "required_action_tr": "G\u00f6zlem penceresini en az 100 g\u00f6zlem i\u00e7erecek \u015fekilde geni\u015fletin.",
+          "required_action_en": "Extend observation window to cover at least 100 intervals.",
+          "metrics": {
+            "sample_size": 0
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "MISSING_METRICS",
+          "explanation_tr": "Ge\u00e7erli sonlu istatistiksel test metrikleri bulunamad\u0131.",
+          "explanation_en": "No valid finite statistical test metrics found.",
+          "required_action_tr": "\u0130statistiksel testleri \u00e7al\u0131\u015ft\u0131r\u0131n ve sonu\u00e7lar\u0131 kaydedin.",
+          "required_action_en": "Execute statistical tests and record outputs.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "DATASET_PROVENANCE",
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [],
+      "unverified_dimensions": [
+        "OBSERVATION_COMPLETENESS",
+        "SAMPLE_SUFFICIENCY",
+        "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
+      ],
+      "blocking_reasons_en": [
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "/app/data/prospective/research_library/RLIB-2f30980866e9.json",
+          "sha256": "dd211e7f6b3e01fba967f9f26e3b377aec84fccafadf6721ed3c590830d63ff8"
+        }
+      ],
+      "required_next_actions_tr": [
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Veri penceresini geni\u015fleterek \u00f6rneklem say\u0131s\u0131n\u0131 art\u0131r\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Provide observed timestamps or signed attestation.",
+        "Expand data window to increase sample count.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 50.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.305027+00:00"
+    },
+    {
+      "record_id": "RLIB-3c104ed0c333",
+      "title_tr": "E2E Kabul K\u00fct\u00fcphane Tan\u0131m\u0131",
+      "title_en": "Playwright Ger\u00e7ek K\u00fct\u00fcphane Rapor Entegrasyonu",
+      "overall_verdict": "INSUFFICIENT_EVIDENCE",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 3,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
+          "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
+          "required_action_en": "No additional dataset action required.",
+          "metrics": {
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "/app/data/prospective/research_library/RLIB-3c104ed0c333.json",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (65667ba31904815d...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (65667ba31904815d...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "65667ba31904815d77513d51184cafb99503686c57d3e5bfa39752f4d24e0c6c"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-LIB-RLIB-3c104ed0c333, Cadence: 1h",
+          "explanation_tr": "Spesifikasyon 'SPEC-LIB-RLIB-3c104ed0c333' ve \u00f6rnekleme kadans\u0131 '1h' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-LIB-RLIB-3c104ed0c333' and sampling cadence '1h' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-LIB-RLIB-3c104ed0c333",
+            "cadence": "1h"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "N = 0",
+          "explanation_tr": "\u00d6rneklem boyutu (0) asgari bilimsel s\u0131n\u0131r\u0131n (100) alt\u0131ndad\u0131r.",
+          "explanation_en": "Sample size (0) is below scientific threshold of N >= 100.",
+          "required_action_tr": "G\u00f6zlem penceresini en az 100 g\u00f6zlem i\u00e7erecek \u015fekilde geni\u015fletin.",
+          "required_action_en": "Extend observation window to cover at least 100 intervals.",
+          "metrics": {
+            "sample_size": 0
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "MISSING_METRICS",
+          "explanation_tr": "Ge\u00e7erli sonlu istatistiksel test metrikleri bulunamad\u0131.",
+          "explanation_en": "No valid finite statistical test metrics found.",
+          "required_action_tr": "\u0130statistiksel testleri \u00e7al\u0131\u015ft\u0131r\u0131n ve sonu\u00e7lar\u0131 kaydedin.",
+          "required_action_en": "Execute statistical tests and record outputs.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "DATASET_PROVENANCE",
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [],
+      "unverified_dimensions": [
+        "OBSERVATION_COMPLETENESS",
+        "SAMPLE_SUFFICIENCY",
+        "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
+      ],
+      "blocking_reasons_en": [
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "/app/data/prospective/research_library/RLIB-3c104ed0c333.json",
+          "sha256": "65667ba31904815d77513d51184cafb99503686c57d3e5bfa39752f4d24e0c6c"
+        }
+      ],
+      "required_next_actions_tr": [
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Veri penceresini geni\u015fleterek \u00f6rneklem say\u0131s\u0131n\u0131 art\u0131r\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Provide observed timestamps or signed attestation.",
+        "Expand data window to increase sample count.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 50.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.306032+00:00"
+    },
+    {
+      "record_id": "RLIB-669a3bc52ddf",
+      "title_tr": "Acceptance Test Definition",
+      "title_en": "Definition for Playwright E2E verification",
+      "overall_verdict": "INSUFFICIENT_EVIDENCE",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 3,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
+          "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
+          "required_action_en": "No additional dataset action required.",
+          "metrics": {
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "/app/data/prospective/research_library/RLIB-669a3bc52ddf.json",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (413ebd1e48dcfe8d...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (413ebd1e48dcfe8d...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "413ebd1e48dcfe8ddc963376dcb3bef47782cb6283a2c7a1b976139cad45e1c1"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-LIB-RLIB-669a3bc52ddf, Cadence: 1h",
+          "explanation_tr": "Spesifikasyon 'SPEC-LIB-RLIB-669a3bc52ddf' ve \u00f6rnekleme kadans\u0131 '1h' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-LIB-RLIB-669a3bc52ddf' and sampling cadence '1h' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-LIB-RLIB-669a3bc52ddf",
+            "cadence": "1h"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "N = 0",
+          "explanation_tr": "\u00d6rneklem boyutu (0) asgari bilimsel s\u0131n\u0131r\u0131n (100) alt\u0131ndad\u0131r.",
+          "explanation_en": "Sample size (0) is below scientific threshold of N >= 100.",
+          "required_action_tr": "G\u00f6zlem penceresini en az 100 g\u00f6zlem i\u00e7erecek \u015fekilde geni\u015fletin.",
+          "required_action_en": "Extend observation window to cover at least 100 intervals.",
+          "metrics": {
+            "sample_size": 0
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "MISSING_METRICS",
+          "explanation_tr": "Ge\u00e7erli sonlu istatistiksel test metrikleri bulunamad\u0131.",
+          "explanation_en": "No valid finite statistical test metrics found.",
+          "required_action_tr": "\u0130statistiksel testleri \u00e7al\u0131\u015ft\u0131r\u0131n ve sonu\u00e7lar\u0131 kaydedin.",
+          "required_action_en": "Execute statistical tests and record outputs.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "DATASET_PROVENANCE",
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [],
+      "unverified_dimensions": [
+        "OBSERVATION_COMPLETENESS",
+        "SAMPLE_SUFFICIENCY",
+        "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
+      ],
+      "blocking_reasons_en": [
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "/app/data/prospective/research_library/RLIB-669a3bc52ddf.json",
+          "sha256": "413ebd1e48dcfe8ddc963376dcb3bef47782cb6283a2c7a1b976139cad45e1c1"
+        }
+      ],
+      "required_next_actions_tr": [
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Veri penceresini geni\u015fleterek \u00f6rneklem say\u0131s\u0131n\u0131 art\u0131r\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Provide observed timestamps or signed attestation.",
+        "Expand data window to increase sample count.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 50.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.306032+00:00"
+    },
+    {
+      "record_id": "RLIB-7b0cb4781b20",
+      "title_tr": "Acceptance Test Definition",
+      "title_en": "Definition for Playwright E2E verification",
+      "overall_verdict": "INSUFFICIENT_EVIDENCE",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 3,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
+          "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
+          "required_action_en": "No additional dataset action required.",
+          "metrics": {
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "/app/data/prospective/research_library/RLIB-7b0cb4781b20.json",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (3fc10ff1eadb8880...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (3fc10ff1eadb8880...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "3fc10ff1eadb88801187df560c4dc29956142d532e636f6d53e28480828e4d15"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-LIB-RLIB-7b0cb4781b20, Cadence: 1h",
+          "explanation_tr": "Spesifikasyon 'SPEC-LIB-RLIB-7b0cb4781b20' ve \u00f6rnekleme kadans\u0131 '1h' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-LIB-RLIB-7b0cb4781b20' and sampling cadence '1h' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-LIB-RLIB-7b0cb4781b20",
+            "cadence": "1h"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "N = 0",
+          "explanation_tr": "\u00d6rneklem boyutu (0) asgari bilimsel s\u0131n\u0131r\u0131n (100) alt\u0131ndad\u0131r.",
+          "explanation_en": "Sample size (0) is below scientific threshold of N >= 100.",
+          "required_action_tr": "G\u00f6zlem penceresini en az 100 g\u00f6zlem i\u00e7erecek \u015fekilde geni\u015fletin.",
+          "required_action_en": "Extend observation window to cover at least 100 intervals.",
+          "metrics": {
+            "sample_size": 0
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "MISSING_METRICS",
+          "explanation_tr": "Ge\u00e7erli sonlu istatistiksel test metrikleri bulunamad\u0131.",
+          "explanation_en": "No valid finite statistical test metrics found.",
+          "required_action_tr": "\u0130statistiksel testleri \u00e7al\u0131\u015ft\u0131r\u0131n ve sonu\u00e7lar\u0131 kaydedin.",
+          "required_action_en": "Execute statistical tests and record outputs.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "DATASET_PROVENANCE",
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [],
+      "unverified_dimensions": [
+        "OBSERVATION_COMPLETENESS",
+        "SAMPLE_SUFFICIENCY",
+        "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
+      ],
+      "blocking_reasons_en": [
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "/app/data/prospective/research_library/RLIB-7b0cb4781b20.json",
+          "sha256": "3fc10ff1eadb88801187df560c4dc29956142d532e636f6d53e28480828e4d15"
+        }
+      ],
+      "required_next_actions_tr": [
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Veri penceresini geni\u015fleterek \u00f6rneklem say\u0131s\u0131n\u0131 art\u0131r\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Provide observed timestamps or signed attestation.",
+        "Expand data window to increase sample count.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 50.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.307624+00:00"
+    },
+    {
+      "record_id": "RLIB-dbb10adc0f69",
+      "title_tr": "Sprint 22 Rapor Tan\u0131m\u0131",
+      "title_en": "Raporlama testi",
+      "overall_verdict": "INSUFFICIENT_EVIDENCE",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 3,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
+          "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
+          "required_action_en": "No additional dataset action required.",
+          "metrics": {
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "/app/data/prospective/research_library/RLIB-dbb10adc0f69.json",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (4f017576070ac3cd...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (4f017576070ac3cd...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "4f017576070ac3cd1e710ee1abec853eb547020ee6eb3a4acabd87fa65f80815"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-LIB-RLIB-dbb10adc0f69, Cadence: 1h",
+          "explanation_tr": "Spesifikasyon 'SPEC-LIB-RLIB-dbb10adc0f69' ve \u00f6rnekleme kadans\u0131 '1h' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-LIB-RLIB-dbb10adc0f69' and sampling cadence '1h' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-LIB-RLIB-dbb10adc0f69",
+            "cadence": "1h"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "N = 0",
+          "explanation_tr": "\u00d6rneklem boyutu (0) asgari bilimsel s\u0131n\u0131r\u0131n (100) alt\u0131ndad\u0131r.",
+          "explanation_en": "Sample size (0) is below scientific threshold of N >= 100.",
+          "required_action_tr": "G\u00f6zlem penceresini en az 100 g\u00f6zlem i\u00e7erecek \u015fekilde geni\u015fletin.",
+          "required_action_en": "Extend observation window to cover at least 100 intervals.",
+          "metrics": {
+            "sample_size": 0
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "MISSING_METRICS",
+          "explanation_tr": "Ge\u00e7erli sonlu istatistiksel test metrikleri bulunamad\u0131.",
+          "explanation_en": "No valid finite statistical test metrics found.",
+          "required_action_tr": "\u0130statistiksel testleri \u00e7al\u0131\u015ft\u0131r\u0131n ve sonu\u00e7lar\u0131 kaydedin.",
+          "required_action_en": "Execute statistical tests and record outputs.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "DATASET_PROVENANCE",
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [],
+      "unverified_dimensions": [
+        "OBSERVATION_COMPLETENESS",
+        "SAMPLE_SUFFICIENCY",
+        "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
+      ],
+      "blocking_reasons_en": [
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "/app/data/prospective/research_library/RLIB-dbb10adc0f69.json",
+          "sha256": "4f017576070ac3cd1e710ee1abec853eb547020ee6eb3a4acabd87fa65f80815"
+        }
+      ],
+      "required_next_actions_tr": [
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Veri penceresini geni\u015fleterek \u00f6rneklem say\u0131s\u0131n\u0131 art\u0131r\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Provide observed timestamps or signed attestation.",
+        "Expand data window to increase sample count.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 50.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.307624+00:00"
+    },
+    {
+      "record_id": "RLIB-f93d9176002d",
+      "title_tr": "Acceptance Test Definition",
+      "title_en": "Definition for Playwright E2E verification",
+      "overall_verdict": "INSUFFICIENT_EVIDENCE",
+      "is_ready_for_review": false,
+      "critical_gates_passed": 3,
+      "total_critical_gates": 6,
+      "dimensions": [
+        {
+          "dimension_key": "DATASET_PROVENANCE",
+          "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+          "dimension_name_en": "Dataset Provenance & Lineage",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
+          "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
+          "required_action_en": "No additional dataset action required.",
+          "metrics": {
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
+          }
+        },
+        {
+          "dimension_key": "SOURCE_ARTIFACT_INTEGRITY",
+          "dimension_name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+          "dimension_name_en": "Source Artifact Integrity (SHA-256)",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "/app/data/prospective/research_library/RLIB-f93d9176002d.json",
+          "explanation_tr": "Disk \u00fczerindeki dosya \u00f6zeti (9ca88e77b131a981...) kay\u0131tla tam olarak e\u015fle\u015fiyor.",
+          "explanation_en": "Disk artifact digest (9ca88e77b131a981...) matches record exactly.",
+          "required_action_tr": "B\u00fct\u00fcnl\u00fck do\u011fruland\u0131.",
+          "required_action_en": "Integrity verified.",
+          "metrics": {
+            "sha256": "9ca88e77b131a981d0237b105caff21f7a3976311bbe7e98472280ab3e28bcb9"
+          }
+        },
+        {
+          "dimension_key": "OBSERVATION_COMPLETENESS",
+          "dimension_name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+          "dimension_name_en": "Observation Completeness & Attestation",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NONE",
+          "explanation_tr": "Do\u011frulanm\u0131\u015f a\u00e7\u0131k zaman damgalar\u0131 veya imzal\u0131 tasdik paketi bulunamad\u0131.",
+          "explanation_en": "No verified explicit timestamps or signed attestation envelope found.",
+          "required_action_tr": "A\u00e7\u0131k g\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik belgesini ekleyin.",
+          "required_action_en": "Attach explicit timestamps or authenticated completeness attestation.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "METHODOLOGY_COMPATIBILITY",
+          "dimension_name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+          "dimension_name_en": "Methodology & Cadence Compatibility",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Spec: SPEC-LIB-RLIB-f93d9176002d, Cadence: 1h",
+          "explanation_tr": "Spesifikasyon 'SPEC-LIB-RLIB-f93d9176002d' ve \u00f6rnekleme kadans\u0131 '1h' bilimsel olarak tan\u0131ml\u0131d\u0131r.",
+          "explanation_en": "Specification 'SPEC-LIB-RLIB-f93d9176002d' and sampling cadence '1h' are scientifically defined.",
+          "required_action_tr": "Metodoloji uyumlu.",
+          "required_action_en": "Methodology compatible.",
+          "metrics": {
+            "specification_id": "SPEC-LIB-RLIB-f93d9176002d",
+            "cadence": "1h"
+          }
+        },
+        {
+          "dimension_key": "SAMPLE_SUFFICIENCY",
+          "dimension_name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+          "dimension_name_en": "Sample Sufficiency (N >= 100)",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "N = 0",
+          "explanation_tr": "\u00d6rneklem boyutu (0) asgari bilimsel s\u0131n\u0131r\u0131n (100) alt\u0131ndad\u0131r.",
+          "explanation_en": "Sample size (0) is below scientific threshold of N >= 100.",
+          "required_action_tr": "G\u00f6zlem penceresini en az 100 g\u00f6zlem i\u00e7erecek \u015fekilde geni\u015fletin.",
+          "required_action_en": "Extend observation window to cover at least 100 intervals.",
+          "metrics": {
+            "sample_size": 0
+          }
+        },
+        {
+          "dimension_key": "STATISTICAL_VALIDITY",
+          "dimension_name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+          "dimension_name_en": "Statistical Validity & Outlier Control",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "MISSING_METRICS",
+          "explanation_tr": "Ge\u00e7erli sonlu istatistiksel test metrikleri bulunamad\u0131.",
+          "explanation_en": "No valid finite statistical test metrics found.",
+          "required_action_tr": "\u0130statistiksel testleri \u00e7al\u0131\u015ft\u0131r\u0131n ve sonu\u00e7lar\u0131 kaydedin.",
+          "required_action_en": "Execute statistical tests and record outputs.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "REPRODUCIBILITY",
+          "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+          "dimension_name_en": "Offline Reproducibility Instructions",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "is_critical_gate": true,
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "INDEPENDENT_REPLICATION",
+          "dimension_name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+          "dimension_name_en": "Independent Replication Verification",
+          "status": "UNVERIFIED",
+          "is_critical_gate": false,
+          "is_passed": false,
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
+          "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
+          "required_action_en": "Schedule independent replication on an out-of-sample window.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "EVIDENCE_FRESHNESS",
+          "dimension_name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+          "dimension_name_en": "Evidence Freshness & Revocation Status",
+          "status": "VERIFIED",
+          "is_critical_gate": false,
+          "is_passed": true,
+          "evidence_reference": "Trust Policy 2026.2",
+          "explanation_tr": "Kan\u0131t paketi aktif ve y\u00fcr\u00fcrl\u00fcktedir.",
+          "explanation_en": "Evidence package active and current.",
+          "required_action_tr": "G\u00fcncel.",
+          "required_action_en": "Current.",
+          "metrics": {}
+        },
+        {
+          "dimension_key": "GOVERNANCE_COMPLIANCE",
+          "dimension_name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+          "dimension_name_en": "Scientific Governance & Trading Prohibition",
+          "status": "VERIFIED",
+          "is_critical_gate": true,
+          "is_passed": true,
+          "evidence_reference": "CBE-0.7.0 TECHNICAL_NO_GO",
+          "explanation_tr": "CBE-0.7.0 modeli kesin olarak dondurulmu\u015ftur; y\u00f6nsel canl\u0131 i\u015flem yasaklanm\u0131\u015ft\u0131r.",
+          "explanation_en": "CBE-0.7.0 strictly frozen; directional live trading permanently prohibited.",
+          "required_action_tr": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131na uyun.",
+          "required_action_en": "Adhere to scientific governance constraints.",
+          "metrics": {
+            "canonical_model": "CBE-0.7.0",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_prohibited": true
+          }
+        }
+      ],
+      "passed_dimensions": [
+        "DATASET_PROVENANCE",
+        "SOURCE_ARTIFACT_INTEGRITY",
+        "METHODOLOGY_COMPATIBILITY",
+        "EVIDENCE_FRESHNESS",
+        "GOVERNANCE_COMPLIANCE"
+      ],
+      "failed_dimensions": [],
+      "unverified_dimensions": [
+        "OBSERVATION_COMPLETENESS",
+        "SAMPLE_SUFFICIENCY",
+        "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
+        "INDEPENDENT_REPLICATION"
+      ],
+      "blocking_reasons_tr": [
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
+      ],
+      "blocking_reasons_en": [
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "supporting_evidence_links": [
+        {
+          "type": "SOURCE_ARTIFACT",
+          "path": "/app/data/prospective/research_library/RLIB-f93d9176002d.json",
+          "sha256": "9ca88e77b131a981d0237b105caff21f7a3976311bbe7e98472280ab3e28bcb9"
+        }
+      ],
+      "required_next_actions_tr": [
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Veri penceresini geni\u015fleterek \u00f6rneklem say\u0131s\u0131n\u0131 art\u0131r\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "required_next_actions_en": [
+        "Provide observed timestamps or signed attestation.",
+        "Expand data window to increase sample count.",
+        "Plan independent replication experiment."
+      ],
+      "heuristic_readiness_index": 50.0,
+      "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
+      "evaluated_at_utc": "2026-11-10T23:57:49.307624+00:00"
+    }
+  ],
+  "total_count": 17,
+  "ready_for_review_count": 0,
+  "blocked_count": 17
+}

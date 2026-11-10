@@ -1,0 +1,46 @@
+{
+  "suite": "SPRINT_25_PLAYWRIGHT_ACCEPTANCE",
+  "timestamp_utc": "2026-11-10T12:09:07.639441+00:00",
+  "base_url": "http://127.0.0.1:18099",
+  "tests": [
+    {
+      "name": "desktop_page_title",
+      "status": "PASSED"
+    },
+    {
+      "name": "desktop_overview_kpis",
+      "status": "PASSED"
+    },
+    {
+      "name": "desktop_evidence_graph_nodes",
+      "count": 97,
+      "status": "PASSED"
+    },
+    {
+      "name": "tablet_readiness_scorecards",
+      "count": 17,
+      "status": "PASSED"
+    },
+    {
+      "name": "mobile_evidence_gaps_table",
+      "count": 53,
+      "status": "PASSED"
+    },
+    {
+      "name": "reproducibility_lab_execution",
+      "status": "PASSED"
+    },
+    {
+      "name": "research_priorities_table",
+      "count": 17,
+      "status": "PASSED"
+    }
+  ],
+  "screenshots": {
+    "desktop_evidence_graph": "C:\\Users\\selim\\.gemini\\antigravity\\brain\\f8db9a11-51a2-4f52-b048-d18a5254ed97\\sprint25_screenshot_01_desktop_evidence_graph.png",
+    "tablet_readiness": "C:\\Users\\selim\\.gemini\\antigravity\\brain\\f8db9a11-51a2-4f52-b048-d18a5254ed97\\sprint25_screenshot_02_tablet_readiness_scorecards.png",
+    "mobile_gaps": "C:\\Users\\selim\\.gemini\\antigravity\\brain\\f8db9a11-51a2-4f52-b048-d18a5254ed97\\sprint25_screenshot_03_mobile_gap_analysis.png"
+  },
+  "status": "ALL_PASSED",
+  "total_passed": 7
+}

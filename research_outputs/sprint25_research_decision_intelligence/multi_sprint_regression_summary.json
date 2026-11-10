@@ -1,42 +1,96 @@
 {
-  "timestamp_utc": "2026-11-10T12:08:00Z",
+  "timestamp_utc": "2026-11-10T23:56:48Z",
   "test_environment": "Python 3.11.16 on Windows 10 & Linux Container",
   "regression_suites": [
     {
-      "suite": "Sprint 21 (Data Integrity)",
+      "suite": "Sprint 20",
+      "file": "tests/test_sprint_product_acceleration_20.py",
+      "passed": 14,
+      "failed": 0
+    },
+    {
+      "suite": "Sprint 21",
       "file": "tests/test_sprint_product_acceleration_21.py",
+      "passed": 34,
+      "failed": 0
+    },
+    {
+      "suite": "Sprint 22",
+      "file": "tests/test_sprint_product_acceleration_22.py",
+      "passed": 30,
+      "failed": 0
+    },
+    {
+      "suite": "Sprint 22 Hardening",
+      "file": "tests/test_sprint_product_acceleration_22_hardening.py",
       "passed": 18,
       "failed": 0
     },
     {
-      "suite": "Sprint 22 (Evidence & Resilience)",
-      "file": "tests/test_sprint_product_acceleration_22.py",
-      "passed": 44,
-      "failed": 0
-    },
-    {
-      "suite": "Sprint 23 (Operational & Reports)",
+      "suite": "Sprint 23",
       "file": "tests/test_sprint_product_acceleration_23.py",
-      "passed": 38,
+      "passed": 27,
       "failed": 0
     },
     {
-      "suite": "Sprint 24 (Cryptographic Hardening)",
+      "suite": "Sprint 23 Closure",
+      "file": "tests/test_sprint_product_acceleration_23_closure.py",
+      "passed": 25,
+      "failed": 0
+    },
+    {
+      "suite": "Sprint 23 Correction",
+      "file": "tests/test_sprint_product_acceleration_23_correction.py",
+      "passed": 29,
+      "failed": 0
+    },
+    {
+      "suite": "Sprint 24",
+      "file": "tests/test_sprint_product_acceleration_24.py",
+      "passed": 28,
+      "failed": 0
+    },
+    {
+      "suite": "Sprint 24 Correction",
+      "file": "tests/test_sprint_product_acceleration_24_correction.py",
+      "passed": 19,
+      "failed": 0
+    },
+    {
+      "suite": "Sprint 24 Cryptographic Hardening",
       "file": "tests/test_sprint_product_acceleration_24_cryptographic_hardening.py",
-      "passed": 15,
+      "passed": 24,
       "failed": 0
     },
     {
-      "suite": "Sprint 25 (Decision Intelligence)",
-      "file": "tests/test_sprint_product_acceleration_25.py",
+      "suite": "Sprint 24 Final Closure",
+      "file": "tests/test_sprint_product_acceleration_24_final_closure.py",
+      "passed": 20,
+      "failed": 0
+    },
+    {
+      "suite": "Sprint 24 Trust Boundary Closure",
+      "file": "tests/test_sprint_product_acceleration_24_trust_boundary_closure.py",
       "passed": 31,
+      "failed": 0
+    },
+    {
+      "suite": "Sprint 24 Two Blocker Closure",
+      "file": "tests/test_sprint_product_acceleration_24_two_blocker_closure.py",
+      "passed": 18,
+      "failed": 0
+    },
+    {
+      "suite": "Sprint 25 Decision Intelligence & Scientific Trust Closure",
+      "file": "tests/test_sprint_product_acceleration_25.py",
+      "passed": 40,
       "failed": 0
     }
   ],
-  "total_regression_passed": 146,
+  "total_regression_passed": 357,
   "total_regression_failed": 0,
-  "all_sprint24_and_sprint25_tests": 171,
-  "browser_acceptance_tests": 7,
-  "browser_acceptance_passed": 7,
-  "governance_status": "PASS"
+  "total_suites_evaluated": 14,
+  "execution_time_seconds": 170.88,
+  "governance_status": "PASS",
+  "scientific_integrity_status": "VERIFIED"
 }

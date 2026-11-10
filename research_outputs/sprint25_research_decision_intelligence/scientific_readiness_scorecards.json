@@ -7,7 +7,7 @@
       "title_en": "Perpetual Funding Rate Predictability & Pure Compute Latency",
       "overall_verdict": "INSUFFICIENT_EVIDENCE",
       "is_ready_for_review": false,
-      "critical_gates_passed": 5,
+      "critical_gates_passed": 4,
       "total_critical_gates": 6,
       "dimensions": [
         {
@@ -17,13 +17,15 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "Registered dataset: BTCUSDT-PERP-FUNDING-2022-2026",
-          "explanation_tr": "Veri seti 'BTCUSDT-PERP-FUNDING-2022-2026' kay\u0131tl\u0131 ve kan\u0131t soyk\u00fct\u00fc\u011f\u00fc ile do\u011frulanabilir.",
-          "explanation_en": "Dataset 'BTCUSDT-PERP-FUNDING-2022-2026' is registered and verifiable in canonical provenance.",
+          "evidence_reference": "Authentic provenance: BTCUSDT-PERP-FUNDING-2022-2026 (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-PERP-FUNDING-2022-2026' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-PERP-FUNDING-2022-2026' verified via authentic intake repository and lineage attestation.",
           "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
           "required_action_en": "No additional dataset action required.",
           "metrics": {
-            "dataset_id": "BTCUSDT-PERP-FUNDING-2022-2026"
+            "dataset_id": "BTCUSDT-PERP-FUNDING-2022-2026",
+            "has_attested_lineage": false,
+            "has_physical_data": true
           }
         },
         {
@@ -110,14 +112,14 @@
           "dimension_key": "REPRODUCIBILITY",
           "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
           "dimension_name_en": "Offline Reproducibility Instructions",
-          "status": "VERIFIED",
+          "status": "INSUFFICIENT_EVIDENCE",
           "is_critical_gate": true,
-          "is_passed": true,
-          "evidence_reference": "data/reports/sprint09_38_funding_predictability_report.json",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
-          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
-          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
           "metrics": {}
         },
         {
@@ -127,9 +129,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "REPLICATION_NOT_ESTABLISHED",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -173,20 +175,22 @@
         "METHODOLOGY_COMPATIBILITY",
         "SAMPLE_SUFFICIENCY",
         "STATISTICAL_VALIDITY",
-        "REPRODUCIBILITY",
         "EVIDENCE_FRESHNESS",
         "GOVERNANCE_COMPLIANCE"
       ],
       "failed_dimensions": [],
       "unverified_dimensions": [
         "OBSERVATION_COMPLETENESS",
+        "REPRODUCIBILITY",
         "INDEPENDENT_REPLICATION"
       ],
       "blocking_reasons_tr": [
-        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz."
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
       ],
       "blocking_reasons_en": [
-        "Observation completeness evidence insufficient."
+        "Observation completeness evidence insufficient.",
+        "No allowlisted reproduction procedure."
       ],
       "supporting_evidence_links": [
         {
@@ -203,9 +207,9 @@
         "Provide observed timestamps or signed attestation.",
         "Plan independent replication experiment."
       ],
-      "heuristic_readiness_index": 80.0,
+      "heuristic_readiness_index": 70.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.299421+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.298275+00:00"
     },
     {
       "record_id": "RES-REGIME-01",
@@ -223,13 +227,15 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "Registered dataset: BTCUSDT-SPOT-1H-2022-2026",
-          "explanation_tr": "Veri seti 'BTCUSDT-SPOT-1H-2022-2026' kay\u0131tl\u0131 ve kan\u0131t soyk\u00fct\u00fc\u011f\u00fc ile do\u011frulanabilir.",
-          "explanation_en": "Dataset 'BTCUSDT-SPOT-1H-2022-2026' is registered and verifiable in canonical provenance.",
+          "evidence_reference": "Authentic provenance: BTCUSDT-SPOT-1H-2022-2026 (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-SPOT-1H-2022-2026' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-SPOT-1H-2022-2026' verified via authentic intake repository and lineage attestation.",
           "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
           "required_action_en": "No additional dataset action required.",
           "metrics": {
-            "dataset_id": "BTCUSDT-SPOT-1H-2022-2026"
+            "dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
+            "has_attested_lineage": false,
+            "has_physical_data": true
           }
         },
         {
@@ -319,12 +325,14 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "data/reports/sprint09_27_validation_and_holdout_report.json",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
+          "evidence_reference": "Proc: PROC_REGIME_STABILITY_EVAL, Artifact: data/reports/sprint09_27_validation_and_holdout_report.json",
+          "explanation_tr": "Onayl\u0131 prosed\u00fcr 'PROC_REGIME_STABILITY_EVAL' ve \u00e7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
+          "explanation_en": "Allowlisted procedure 'PROC_REGIME_STABILITY_EVAL' and offline data are verifiable on disk.",
           "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
           "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
-          "metrics": {}
+          "metrics": {
+            "procedure_name": "PROC_REGIME_STABILITY_EVAL"
+          }
         },
         {
           "dimension_key": "INDEPENDENT_REPLICATION",
@@ -333,9 +341,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "REPLICATION_NOT_ESTABLISHED",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -411,7 +419,7 @@
       ],
       "heuristic_readiness_index": 80.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.299421+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.299912+00:00"
     },
     {
       "record_id": "RES-ANALOG-01",
@@ -429,13 +437,15 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "Registered dataset: BTCUSDT-SPOT-1H-2022-2026",
-          "explanation_tr": "Veri seti 'BTCUSDT-SPOT-1H-2022-2026' kay\u0131tl\u0131 ve kan\u0131t soyk\u00fct\u00fc\u011f\u00fc ile do\u011frulanabilir.",
-          "explanation_en": "Dataset 'BTCUSDT-SPOT-1H-2022-2026' is registered and verifiable in canonical provenance.",
+          "evidence_reference": "Authentic provenance: BTCUSDT-SPOT-1H-2022-2026 (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-SPOT-1H-2022-2026' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-SPOT-1H-2022-2026' verified via authentic intake repository and lineage attestation.",
           "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
           "required_action_en": "No additional dataset action required.",
           "metrics": {
-            "dataset_id": "BTCUSDT-SPOT-1H-2022-2026"
+            "dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
+            "has_attested_lineage": false,
+            "has_physical_data": true
           }
         },
         {
@@ -522,12 +532,14 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "research_outputs/research_report_29_pattern_similarity.json",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
+          "evidence_reference": "Proc: PROC_DTW_PATTERN_DISTANCE, Artifact: research_outputs/research_report_29_pattern_similarity.json",
+          "explanation_tr": "Onayl\u0131 prosed\u00fcr 'PROC_DTW_PATTERN_DISTANCE' ve \u00e7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
+          "explanation_en": "Allowlisted procedure 'PROC_DTW_PATTERN_DISTANCE' and offline data are verifiable on disk.",
           "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
           "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
-          "metrics": {}
+          "metrics": {
+            "procedure_name": "PROC_DTW_PATTERN_DISTANCE"
+          }
         },
         {
           "dimension_key": "INDEPENDENT_REPLICATION",
@@ -536,9 +548,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "REPLICATION_NOT_ESTABLISHED",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -614,7 +626,7 @@
       ],
       "heuristic_readiness_index": 70.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.299421+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.300421+00:00"
     },
     {
       "record_id": "RES-MACRO-01",
@@ -622,21 +634,21 @@
       "title_en": "Macro Announcements (CPI & FOMC) T0 Regime Transitions",
       "overall_verdict": "INSUFFICIENT_EVIDENCE",
       "is_ready_for_review": false,
-      "critical_gates_passed": 4,
+      "critical_gates_passed": 2,
       "total_critical_gates": 6,
       "dimensions": [
         {
           "dimension_key": "DATASET_PROVENANCE",
           "dimension_name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
           "dimension_name_en": "Dataset Provenance & Lineage",
-          "status": "VERIFIED",
+          "status": "UNVERIFIED",
           "is_critical_gate": true,
-          "is_passed": true,
-          "evidence_reference": "Registered dataset: US-MACRO-EVENTS-2022-2026",
-          "explanation_tr": "Veri seti 'US-MACRO-EVENTS-2022-2026' kay\u0131tl\u0131 ve kan\u0131t soyk\u00fct\u00fc\u011f\u00fc ile do\u011frulanabilir.",
-          "explanation_en": "Dataset 'US-MACRO-EVENTS-2022-2026' is registered and verifiable in canonical provenance.",
-          "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
-          "required_action_en": "No additional dataset action required.",
+          "is_passed": false,
+          "evidence_reference": "US-MACRO-EVENTS-2022-2026",
+          "explanation_tr": "Do\u011frulanabilir birincil veri seti soyk\u00fct\u00fc\u011f\u00fc bulunamad\u0131.",
+          "explanation_en": "No verifiable primary dataset lineage found.",
+          "required_action_tr": "Resmi veri kayna\u011f\u0131 soyk\u00fct\u00fc\u011f\u00fcn\u00fc kaydedin.",
+          "required_action_en": "Register authoritative dataset provenance.",
           "metrics": {
             "dataset_id": "US-MACRO-EVENTS-2022-2026"
           }
@@ -725,14 +737,14 @@
           "dimension_key": "REPRODUCIBILITY",
           "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
           "dimension_name_en": "Offline Reproducibility Instructions",
-          "status": "VERIFIED",
+          "status": "INSUFFICIENT_EVIDENCE",
           "is_critical_gate": true,
-          "is_passed": true,
-          "evidence_reference": "research_outputs/experiment_cpi_volatility.cbe-hyp.json",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
-          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
-          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
           "metrics": {}
         },
         {
@@ -742,9 +754,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "REPLICATION_NOT_ESTABLISHED",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -783,27 +795,31 @@
         }
       ],
       "passed_dimensions": [
-        "DATASET_PROVENANCE",
         "SOURCE_ARTIFACT_INTEGRITY",
         "METHODOLOGY_COMPATIBILITY",
         "STATISTICAL_VALIDITY",
-        "REPRODUCIBILITY",
         "EVIDENCE_FRESHNESS",
         "GOVERNANCE_COMPLIANCE"
       ],
       "failed_dimensions": [],
       "unverified_dimensions": [
+        "DATASET_PROVENANCE",
         "OBSERVATION_COMPLETENESS",
         "SAMPLE_SUFFICIENCY",
+        "REPRODUCIBILITY",
         "INDEPENDENT_REPLICATION"
       ],
       "blocking_reasons_tr": [
+        "Veri seti soyk\u00fct\u00fc\u011f\u00fc do\u011frulanmam\u0131\u015f.",
         "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
-        "Yetersiz \u00f6rneklem boyutu (0 < 100)."
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
       ],
       "blocking_reasons_en": [
+        "Dataset provenance unverified.",
         "Observation completeness evidence insufficient.",
-        "Insufficient sample size (0 < 100)."
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
       ],
       "supporting_evidence_links": [
         {
@@ -813,18 +829,20 @@
         }
       ],
       "required_next_actions_tr": [
+        "Veri seti soyk\u00fct\u00fc\u011f\u00fcn\u00fc belgelendirin.",
         "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
         "Veri penceresini geni\u015fleterek \u00f6rneklem say\u0131s\u0131n\u0131 art\u0131r\u0131n.",
         "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
       ],
       "required_next_actions_en": [
+        "Document dataset lineage.",
         "Provide observed timestamps or signed attestation.",
         "Expand data window to increase sample count.",
         "Plan independent replication experiment."
       ],
-      "heuristic_readiness_index": 70.0,
+      "heuristic_readiness_index": 50.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.300936+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.300421+00:00"
     },
     {
       "record_id": "RES-DURABILITY-01",
@@ -842,13 +860,15 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "Registered dataset: CBE-SYSTEM-AUDIT-LOGS",
-          "explanation_tr": "Veri seti 'CBE-SYSTEM-AUDIT-LOGS' kay\u0131tl\u0131 ve kan\u0131t soyk\u00fct\u00fc\u011f\u00fc ile do\u011frulanabilir.",
-          "explanation_en": "Dataset 'CBE-SYSTEM-AUDIT-LOGS' is registered and verifiable in canonical provenance.",
+          "evidence_reference": "Authentic provenance: CBE-SYSTEM-AUDIT-LOGS (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'CBE-SYSTEM-AUDIT-LOGS' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'CBE-SYSTEM-AUDIT-LOGS' verified via authentic intake repository and lineage attestation.",
           "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
           "required_action_en": "No additional dataset action required.",
           "metrics": {
-            "dataset_id": "CBE-SYSTEM-AUDIT-LOGS"
+            "dataset_id": "CBE-SYSTEM-AUDIT-LOGS",
+            "has_attested_lineage": false,
+            "has_physical_data": true
           }
         },
         {
@@ -935,12 +955,14 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "research_outputs/sprint23_delivery/persistent_volume_verification.json",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
+          "evidence_reference": "Proc: PROC_STORAGE_VERIFICATION, Artifact: research_outputs/sprint23_delivery/persistent_volume_verification.json",
+          "explanation_tr": "Onayl\u0131 prosed\u00fcr 'PROC_STORAGE_VERIFICATION' ve \u00e7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
+          "explanation_en": "Allowlisted procedure 'PROC_STORAGE_VERIFICATION' and offline data are verifiable on disk.",
           "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
           "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
-          "metrics": {}
+          "metrics": {
+            "procedure_name": "PROC_STORAGE_VERIFICATION"
+          }
         },
         {
           "dimension_key": "INDEPENDENT_REPLICATION",
@@ -949,9 +971,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "NOT_APPLICABLE",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -1031,7 +1053,7 @@
       ],
       "heuristic_readiness_index": 60.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.300936+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.301431+00:00"
     },
     {
       "record_id": "RES-CRYPTO-01",
@@ -1039,7 +1061,7 @@
       "title_en": "October 2026 Intake Quarantine & Synthetic Volume Forensics",
       "overall_verdict": "METHODOLOGICALLY_BLOCKED",
       "is_ready_for_review": false,
-      "critical_gates_passed": 4,
+      "critical_gates_passed": 3,
       "total_critical_gates": 6,
       "dimensions": [
         {
@@ -1055,7 +1077,8 @@
           "required_action_tr": "Karantina adli incelemesi tamamlanmadan veri seti kullan\u0131lamaz.",
           "required_action_en": "Dataset cannot be used until quarantine forensics are resolved.",
           "metrics": {
-            "quarantine_status": "QUARANTINED"
+            "quarantine_status": "QUARANTINED",
+            "dataset_id": "BTCUSDT-OCTOBER-2026-INTAKE"
           }
         },
         {
@@ -1139,14 +1162,14 @@
           "dimension_key": "REPRODUCIBILITY",
           "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
           "dimension_name_en": "Offline Reproducibility Instructions",
-          "status": "VERIFIED",
+          "status": "INSUFFICIENT_EVIDENCE",
           "is_critical_gate": true,
-          "is_passed": true,
-          "evidence_reference": "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
-          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
-          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
           "metrics": {}
         },
         {
@@ -1156,9 +1179,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "QUARANTINED",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -1200,7 +1223,6 @@
         "SOURCE_ARTIFACT_INTEGRITY",
         "METHODOLOGY_COMPATIBILITY",
         "SAMPLE_SUFFICIENCY",
-        "REPRODUCIBILITY",
         "EVIDENCE_FRESHNESS",
         "GOVERNANCE_COMPLIANCE"
       ],
@@ -1210,15 +1232,18 @@
       "unverified_dimensions": [
         "OBSERVATION_COMPLETENESS",
         "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
         "INDEPENDENT_REPLICATION"
       ],
       "blocking_reasons_tr": [
         "Veri seti karantinada (BTCUSDT-OCTOBER-2026-INTAKE).",
-        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz."
+        "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
       ],
       "blocking_reasons_en": [
         "Dataset quarantined (BTCUSDT-OCTOBER-2026-INTAKE).",
-        "Observation completeness evidence insufficient."
+        "Observation completeness evidence insufficient.",
+        "No allowlisted reproduction procedure."
       ],
       "supporting_evidence_links": [
         {
@@ -1237,9 +1262,9 @@
         "Provide observed timestamps or signed attestation.",
         "Plan independent replication experiment."
       ],
-      "heuristic_readiness_index": 60.0,
+      "heuristic_readiness_index": 50.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.301962+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.301942+00:00"
     },
     {
       "record_id": "RLIB-c5730b081950",
@@ -1247,7 +1272,7 @@
       "title_en": "E2E automated verification item",
       "overall_verdict": "INSUFFICIENT_EVIDENCE",
       "is_ready_for_review": false,
-      "critical_gates_passed": 4,
+      "critical_gates_passed": 3,
       "total_critical_gates": 6,
       "dimensions": [
         {
@@ -1257,13 +1282,15 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "Registered dataset: BTCUSDT-1h",
-          "explanation_tr": "Veri seti 'BTCUSDT-1h' kay\u0131tl\u0131 ve kan\u0131t soyk\u00fct\u00fc\u011f\u00fc ile do\u011frulanabilir.",
-          "explanation_en": "Dataset 'BTCUSDT-1h' is registered and verifiable in canonical provenance.",
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
           "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
           "required_action_en": "No additional dataset action required.",
           "metrics": {
-            "dataset_id": "BTCUSDT-1h"
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
           }
         },
         {
@@ -1347,14 +1374,14 @@
           "dimension_key": "REPRODUCIBILITY",
           "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
           "dimension_name_en": "Offline Reproducibility Instructions",
-          "status": "VERIFIED",
+          "status": "INSUFFICIENT_EVIDENCE",
           "is_critical_gate": true,
-          "is_passed": true,
-          "evidence_reference": "data/research_library/RLIB-c5730b081950.json",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
-          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
-          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
           "metrics": {}
         },
         {
@@ -1364,9 +1391,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "NOT_EVALUATED",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -1408,7 +1435,6 @@
         "DATASET_PROVENANCE",
         "SOURCE_ARTIFACT_INTEGRITY",
         "METHODOLOGY_COMPATIBILITY",
-        "REPRODUCIBILITY",
         "EVIDENCE_FRESHNESS",
         "GOVERNANCE_COMPLIANCE"
       ],
@@ -1417,15 +1443,18 @@
         "OBSERVATION_COMPLETENESS",
         "SAMPLE_SUFFICIENCY",
         "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
         "INDEPENDENT_REPLICATION"
       ],
       "blocking_reasons_tr": [
         "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
-        "Yetersiz \u00f6rneklem boyutu (0 < 100)."
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
       ],
       "blocking_reasons_en": [
         "Observation completeness evidence insufficient.",
-        "Insufficient sample size (0 < 100)."
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
       ],
       "supporting_evidence_links": [
         {
@@ -1444,9 +1473,9 @@
         "Expand data window to increase sample count.",
         "Plan independent replication experiment."
       ],
-      "heuristic_readiness_index": 60.0,
+      "heuristic_readiness_index": 50.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.302484+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.302453+00:00"
     },
     {
       "record_id": "RLIB-ee060f623584",
@@ -1454,7 +1483,7 @@
       "title_en": "E2E automated verification item",
       "overall_verdict": "INSUFFICIENT_EVIDENCE",
       "is_ready_for_review": false,
-      "critical_gates_passed": 4,
+      "critical_gates_passed": 3,
       "total_critical_gates": 6,
       "dimensions": [
         {
@@ -1464,13 +1493,15 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "Registered dataset: BTCUSDT-1h",
-          "explanation_tr": "Veri seti 'BTCUSDT-1h' kay\u0131tl\u0131 ve kan\u0131t soyk\u00fct\u00fc\u011f\u00fc ile do\u011frulanabilir.",
-          "explanation_en": "Dataset 'BTCUSDT-1h' is registered and verifiable in canonical provenance.",
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
           "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
           "required_action_en": "No additional dataset action required.",
           "metrics": {
-            "dataset_id": "BTCUSDT-1h"
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
           }
         },
         {
@@ -1554,14 +1585,14 @@
           "dimension_key": "REPRODUCIBILITY",
           "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
           "dimension_name_en": "Offline Reproducibility Instructions",
-          "status": "VERIFIED",
+          "status": "INSUFFICIENT_EVIDENCE",
           "is_critical_gate": true,
-          "is_passed": true,
-          "evidence_reference": "data/research_library/RLIB-ee060f623584.json",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
-          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
-          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
           "metrics": {}
         },
         {
@@ -1571,9 +1602,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "NOT_EVALUATED",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -1615,7 +1646,6 @@
         "DATASET_PROVENANCE",
         "SOURCE_ARTIFACT_INTEGRITY",
         "METHODOLOGY_COMPATIBILITY",
-        "REPRODUCIBILITY",
         "EVIDENCE_FRESHNESS",
         "GOVERNANCE_COMPLIANCE"
       ],
@@ -1624,15 +1654,18 @@
         "OBSERVATION_COMPLETENESS",
         "SAMPLE_SUFFICIENCY",
         "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
         "INDEPENDENT_REPLICATION"
       ],
       "blocking_reasons_tr": [
         "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
-        "Yetersiz \u00f6rneklem boyutu (0 < 100)."
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
       ],
       "blocking_reasons_en": [
         "Observation completeness evidence insufficient.",
-        "Insufficient sample size (0 < 100)."
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
       ],
       "supporting_evidence_links": [
         {
@@ -1651,9 +1684,9 @@
         "Expand data window to increase sample count.",
         "Plan independent replication experiment."
       ],
-      "heuristic_readiness_index": 60.0,
+      "heuristic_readiness_index": 50.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.302484+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.303467+00:00"
     },
     {
       "record_id": "RLIB-f9ddf66ba096",
@@ -1661,7 +1694,7 @@
       "title_en": "",
       "overall_verdict": "INSUFFICIENT_EVIDENCE",
       "is_ready_for_review": false,
-      "critical_gates_passed": 4,
+      "critical_gates_passed": 3,
       "total_critical_gates": 6,
       "dimensions": [
         {
@@ -1671,13 +1704,15 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "Registered dataset: BTCUSDT-1h",
-          "explanation_tr": "Veri seti 'BTCUSDT-1h' kay\u0131tl\u0131 ve kan\u0131t soyk\u00fct\u00fc\u011f\u00fc ile do\u011frulanabilir.",
-          "explanation_en": "Dataset 'BTCUSDT-1h' is registered and verifiable in canonical provenance.",
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
           "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
           "required_action_en": "No additional dataset action required.",
           "metrics": {
-            "dataset_id": "BTCUSDT-1h"
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
           }
         },
         {
@@ -1761,14 +1796,14 @@
           "dimension_key": "REPRODUCIBILITY",
           "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
           "dimension_name_en": "Offline Reproducibility Instructions",
-          "status": "VERIFIED",
+          "status": "INSUFFICIENT_EVIDENCE",
           "is_critical_gate": true,
-          "is_passed": true,
-          "evidence_reference": "data/research_library/RLIB-f9ddf66ba096.json",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
-          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
-          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
           "metrics": {}
         },
         {
@@ -1778,9 +1813,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "NOT_EVALUATED",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -1822,7 +1857,6 @@
         "DATASET_PROVENANCE",
         "SOURCE_ARTIFACT_INTEGRITY",
         "METHODOLOGY_COMPATIBILITY",
-        "REPRODUCIBILITY",
         "EVIDENCE_FRESHNESS",
         "GOVERNANCE_COMPLIANCE"
       ],
@@ -1831,15 +1865,18 @@
         "OBSERVATION_COMPLETENESS",
         "SAMPLE_SUFFICIENCY",
         "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
         "INDEPENDENT_REPLICATION"
       ],
       "blocking_reasons_tr": [
         "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
-        "Yetersiz \u00f6rneklem boyutu (0 < 100)."
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
       ],
       "blocking_reasons_en": [
         "Observation completeness evidence insufficient.",
-        "Insufficient sample size (0 < 100)."
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
       ],
       "supporting_evidence_links": [
         {
@@ -1858,9 +1895,9 @@
         "Expand data window to increase sample count.",
         "Plan independent replication experiment."
       ],
-      "heuristic_readiness_index": 60.0,
+      "heuristic_readiness_index": 50.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.302484+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.303467+00:00"
     },
     {
       "record_id": "RLIB-03c6ea53cf3d",
@@ -1868,7 +1905,7 @@
       "title_en": "Definition for Playwright E2E verification",
       "overall_verdict": "INSUFFICIENT_EVIDENCE",
       "is_ready_for_review": false,
-      "critical_gates_passed": 4,
+      "critical_gates_passed": 3,
       "total_critical_gates": 6,
       "dimensions": [
         {
@@ -1878,13 +1915,15 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "Registered dataset: BTCUSDT-1h",
-          "explanation_tr": "Veri seti 'BTCUSDT-1h' kay\u0131tl\u0131 ve kan\u0131t soyk\u00fct\u00fc\u011f\u00fc ile do\u011frulanabilir.",
-          "explanation_en": "Dataset 'BTCUSDT-1h' is registered and verifiable in canonical provenance.",
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
           "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
           "required_action_en": "No additional dataset action required.",
           "metrics": {
-            "dataset_id": "BTCUSDT-1h"
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
           }
         },
         {
@@ -1968,14 +2007,14 @@
           "dimension_key": "REPRODUCIBILITY",
           "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
           "dimension_name_en": "Offline Reproducibility Instructions",
-          "status": "VERIFIED",
+          "status": "INSUFFICIENT_EVIDENCE",
           "is_critical_gate": true,
-          "is_passed": true,
-          "evidence_reference": "/app/data/prospective/research_library/RLIB-03c6ea53cf3d.json",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
-          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
-          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
           "metrics": {}
         },
         {
@@ -1985,9 +2024,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "NOT_EVALUATED",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -2029,7 +2068,6 @@
         "DATASET_PROVENANCE",
         "SOURCE_ARTIFACT_INTEGRITY",
         "METHODOLOGY_COMPATIBILITY",
-        "REPRODUCIBILITY",
         "EVIDENCE_FRESHNESS",
         "GOVERNANCE_COMPLIANCE"
       ],
@@ -2038,15 +2076,18 @@
         "OBSERVATION_COMPLETENESS",
         "SAMPLE_SUFFICIENCY",
         "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
         "INDEPENDENT_REPLICATION"
       ],
       "blocking_reasons_tr": [
         "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
-        "Yetersiz \u00f6rneklem boyutu (0 < 100)."
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
       ],
       "blocking_reasons_en": [
         "Observation completeness evidence insufficient.",
-        "Insufficient sample size (0 < 100)."
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
       ],
       "supporting_evidence_links": [
         {
@@ -2065,9 +2106,9 @@
         "Expand data window to increase sample count.",
         "Plan independent replication experiment."
       ],
-      "heuristic_readiness_index": 60.0,
+      "heuristic_readiness_index": 50.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.302484+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.303467+00:00"
     },
     {
       "record_id": "RLIB-07c7c65c7e91",
@@ -2075,7 +2116,7 @@
       "title_en": "Definition for Playwright E2E verification",
       "overall_verdict": "INSUFFICIENT_EVIDENCE",
       "is_ready_for_review": false,
-      "critical_gates_passed": 4,
+      "critical_gates_passed": 3,
       "total_critical_gates": 6,
       "dimensions": [
         {
@@ -2085,13 +2126,15 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "Registered dataset: BTCUSDT-1h",
-          "explanation_tr": "Veri seti 'BTCUSDT-1h' kay\u0131tl\u0131 ve kan\u0131t soyk\u00fct\u00fc\u011f\u00fc ile do\u011frulanabilir.",
-          "explanation_en": "Dataset 'BTCUSDT-1h' is registered and verifiable in canonical provenance.",
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
           "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
           "required_action_en": "No additional dataset action required.",
           "metrics": {
-            "dataset_id": "BTCUSDT-1h"
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
           }
         },
         {
@@ -2175,14 +2218,14 @@
           "dimension_key": "REPRODUCIBILITY",
           "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
           "dimension_name_en": "Offline Reproducibility Instructions",
-          "status": "VERIFIED",
+          "status": "INSUFFICIENT_EVIDENCE",
           "is_critical_gate": true,
-          "is_passed": true,
-          "evidence_reference": "/app/data/prospective/research_library/RLIB-07c7c65c7e91.json",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
-          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
-          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
           "metrics": {}
         },
         {
@@ -2192,9 +2235,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "NOT_EVALUATED",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -2236,7 +2279,6 @@
         "DATASET_PROVENANCE",
         "SOURCE_ARTIFACT_INTEGRITY",
         "METHODOLOGY_COMPATIBILITY",
-        "REPRODUCIBILITY",
         "EVIDENCE_FRESHNESS",
         "GOVERNANCE_COMPLIANCE"
       ],
@@ -2245,15 +2287,18 @@
         "OBSERVATION_COMPLETENESS",
         "SAMPLE_SUFFICIENCY",
         "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
         "INDEPENDENT_REPLICATION"
       ],
       "blocking_reasons_tr": [
         "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
-        "Yetersiz \u00f6rneklem boyutu (0 < 100)."
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
       ],
       "blocking_reasons_en": [
         "Observation completeness evidence insufficient.",
-        "Insufficient sample size (0 < 100)."
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
       ],
       "supporting_evidence_links": [
         {
@@ -2272,9 +2317,9 @@
         "Expand data window to increase sample count.",
         "Plan independent replication experiment."
       ],
-      "heuristic_readiness_index": 60.0,
+      "heuristic_readiness_index": 50.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.303501+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.305027+00:00"
     },
     {
       "record_id": "RLIB-2f30980866e9",
@@ -2282,7 +2327,7 @@
       "title_en": "Definition for Playwright E2E verification",
       "overall_verdict": "INSUFFICIENT_EVIDENCE",
       "is_ready_for_review": false,
-      "critical_gates_passed": 4,
+      "critical_gates_passed": 3,
       "total_critical_gates": 6,
       "dimensions": [
         {
@@ -2292,13 +2337,15 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "Registered dataset: BTCUSDT-1h",
-          "explanation_tr": "Veri seti 'BTCUSDT-1h' kay\u0131tl\u0131 ve kan\u0131t soyk\u00fct\u00fc\u011f\u00fc ile do\u011frulanabilir.",
-          "explanation_en": "Dataset 'BTCUSDT-1h' is registered and verifiable in canonical provenance.",
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
           "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
           "required_action_en": "No additional dataset action required.",
           "metrics": {
-            "dataset_id": "BTCUSDT-1h"
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
           }
         },
         {
@@ -2382,14 +2429,14 @@
           "dimension_key": "REPRODUCIBILITY",
           "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
           "dimension_name_en": "Offline Reproducibility Instructions",
-          "status": "VERIFIED",
+          "status": "INSUFFICIENT_EVIDENCE",
           "is_critical_gate": true,
-          "is_passed": true,
-          "evidence_reference": "/app/data/prospective/research_library/RLIB-2f30980866e9.json",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
-          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
-          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
           "metrics": {}
         },
         {
@@ -2399,9 +2446,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "NOT_EVALUATED",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -2443,7 +2490,6 @@
         "DATASET_PROVENANCE",
         "SOURCE_ARTIFACT_INTEGRITY",
         "METHODOLOGY_COMPATIBILITY",
-        "REPRODUCIBILITY",
         "EVIDENCE_FRESHNESS",
         "GOVERNANCE_COMPLIANCE"
       ],
@@ -2452,15 +2498,18 @@
         "OBSERVATION_COMPLETENESS",
         "SAMPLE_SUFFICIENCY",
         "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
         "INDEPENDENT_REPLICATION"
       ],
       "blocking_reasons_tr": [
         "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
-        "Yetersiz \u00f6rneklem boyutu (0 < 100)."
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
       ],
       "blocking_reasons_en": [
         "Observation completeness evidence insufficient.",
-        "Insufficient sample size (0 < 100)."
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
       ],
       "supporting_evidence_links": [
         {
@@ -2479,9 +2528,9 @@
         "Expand data window to increase sample count.",
         "Plan independent replication experiment."
       ],
-      "heuristic_readiness_index": 60.0,
+      "heuristic_readiness_index": 50.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.303501+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.305027+00:00"
     },
     {
       "record_id": "RLIB-3c104ed0c333",
@@ -2489,7 +2538,7 @@
       "title_en": "Playwright Ger\u00e7ek K\u00fct\u00fcphane Rapor Entegrasyonu",
       "overall_verdict": "INSUFFICIENT_EVIDENCE",
       "is_ready_for_review": false,
-      "critical_gates_passed": 4,
+      "critical_gates_passed": 3,
       "total_critical_gates": 6,
       "dimensions": [
         {
@@ -2499,13 +2548,15 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "Registered dataset: BTCUSDT-1h",
-          "explanation_tr": "Veri seti 'BTCUSDT-1h' kay\u0131tl\u0131 ve kan\u0131t soyk\u00fct\u00fc\u011f\u00fc ile do\u011frulanabilir.",
-          "explanation_en": "Dataset 'BTCUSDT-1h' is registered and verifiable in canonical provenance.",
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
           "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
           "required_action_en": "No additional dataset action required.",
           "metrics": {
-            "dataset_id": "BTCUSDT-1h"
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
           }
         },
         {
@@ -2589,14 +2640,14 @@
           "dimension_key": "REPRODUCIBILITY",
           "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
           "dimension_name_en": "Offline Reproducibility Instructions",
-          "status": "VERIFIED",
+          "status": "INSUFFICIENT_EVIDENCE",
           "is_critical_gate": true,
-          "is_passed": true,
-          "evidence_reference": "/app/data/prospective/research_library/RLIB-3c104ed0c333.json",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
-          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
-          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
           "metrics": {}
         },
         {
@@ -2606,9 +2657,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "NOT_EVALUATED",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -2650,7 +2701,6 @@
         "DATASET_PROVENANCE",
         "SOURCE_ARTIFACT_INTEGRITY",
         "METHODOLOGY_COMPATIBILITY",
-        "REPRODUCIBILITY",
         "EVIDENCE_FRESHNESS",
         "GOVERNANCE_COMPLIANCE"
       ],
@@ -2659,15 +2709,18 @@
         "OBSERVATION_COMPLETENESS",
         "SAMPLE_SUFFICIENCY",
         "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
         "INDEPENDENT_REPLICATION"
       ],
       "blocking_reasons_tr": [
         "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
-        "Yetersiz \u00f6rneklem boyutu (0 < 100)."
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
       ],
       "blocking_reasons_en": [
         "Observation completeness evidence insufficient.",
-        "Insufficient sample size (0 < 100)."
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
       ],
       "supporting_evidence_links": [
         {
@@ -2686,9 +2739,9 @@
         "Expand data window to increase sample count.",
         "Plan independent replication experiment."
       ],
-      "heuristic_readiness_index": 60.0,
+      "heuristic_readiness_index": 50.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.304022+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.306032+00:00"
     },
     {
       "record_id": "RLIB-669a3bc52ddf",
@@ -2696,7 +2749,7 @@
       "title_en": "Definition for Playwright E2E verification",
       "overall_verdict": "INSUFFICIENT_EVIDENCE",
       "is_ready_for_review": false,
-      "critical_gates_passed": 4,
+      "critical_gates_passed": 3,
       "total_critical_gates": 6,
       "dimensions": [
         {
@@ -2706,13 +2759,15 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "Registered dataset: BTCUSDT-1h",
-          "explanation_tr": "Veri seti 'BTCUSDT-1h' kay\u0131tl\u0131 ve kan\u0131t soyk\u00fct\u00fc\u011f\u00fc ile do\u011frulanabilir.",
-          "explanation_en": "Dataset 'BTCUSDT-1h' is registered and verifiable in canonical provenance.",
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
           "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
           "required_action_en": "No additional dataset action required.",
           "metrics": {
-            "dataset_id": "BTCUSDT-1h"
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
           }
         },
         {
@@ -2796,14 +2851,14 @@
           "dimension_key": "REPRODUCIBILITY",
           "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
           "dimension_name_en": "Offline Reproducibility Instructions",
-          "status": "VERIFIED",
+          "status": "INSUFFICIENT_EVIDENCE",
           "is_critical_gate": true,
-          "is_passed": true,
-          "evidence_reference": "/app/data/prospective/research_library/RLIB-669a3bc52ddf.json",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
-          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
-          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
           "metrics": {}
         },
         {
@@ -2813,9 +2868,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "NOT_EVALUATED",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -2857,7 +2912,6 @@
         "DATASET_PROVENANCE",
         "SOURCE_ARTIFACT_INTEGRITY",
         "METHODOLOGY_COMPATIBILITY",
-        "REPRODUCIBILITY",
         "EVIDENCE_FRESHNESS",
         "GOVERNANCE_COMPLIANCE"
       ],
@@ -2866,15 +2920,18 @@
         "OBSERVATION_COMPLETENESS",
         "SAMPLE_SUFFICIENCY",
         "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
         "INDEPENDENT_REPLICATION"
       ],
       "blocking_reasons_tr": [
         "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
-        "Yetersiz \u00f6rneklem boyutu (0 < 100)."
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
       ],
       "blocking_reasons_en": [
         "Observation completeness evidence insufficient.",
-        "Insufficient sample size (0 < 100)."
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
       ],
       "supporting_evidence_links": [
         {
@@ -2893,9 +2950,9 @@
         "Expand data window to increase sample count.",
         "Plan independent replication experiment."
       ],
-      "heuristic_readiness_index": 60.0,
+      "heuristic_readiness_index": 50.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.304022+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.306032+00:00"
     },
     {
       "record_id": "RLIB-7b0cb4781b20",
@@ -2903,7 +2960,7 @@
       "title_en": "Definition for Playwright E2E verification",
       "overall_verdict": "INSUFFICIENT_EVIDENCE",
       "is_ready_for_review": false,
-      "critical_gates_passed": 4,
+      "critical_gates_passed": 3,
       "total_critical_gates": 6,
       "dimensions": [
         {
@@ -2913,13 +2970,15 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "Registered dataset: BTCUSDT-1h",
-          "explanation_tr": "Veri seti 'BTCUSDT-1h' kay\u0131tl\u0131 ve kan\u0131t soyk\u00fct\u00fc\u011f\u00fc ile do\u011frulanabilir.",
-          "explanation_en": "Dataset 'BTCUSDT-1h' is registered and verifiable in canonical provenance.",
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
           "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
           "required_action_en": "No additional dataset action required.",
           "metrics": {
-            "dataset_id": "BTCUSDT-1h"
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
           }
         },
         {
@@ -3003,14 +3062,14 @@
           "dimension_key": "REPRODUCIBILITY",
           "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
           "dimension_name_en": "Offline Reproducibility Instructions",
-          "status": "VERIFIED",
+          "status": "INSUFFICIENT_EVIDENCE",
           "is_critical_gate": true,
-          "is_passed": true,
-          "evidence_reference": "/app/data/prospective/research_library/RLIB-7b0cb4781b20.json",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
-          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
-          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
           "metrics": {}
         },
         {
@@ -3020,9 +3079,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "NOT_EVALUATED",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -3064,7 +3123,6 @@
         "DATASET_PROVENANCE",
         "SOURCE_ARTIFACT_INTEGRITY",
         "METHODOLOGY_COMPATIBILITY",
-        "REPRODUCIBILITY",
         "EVIDENCE_FRESHNESS",
         "GOVERNANCE_COMPLIANCE"
       ],
@@ -3073,15 +3131,18 @@
         "OBSERVATION_COMPLETENESS",
         "SAMPLE_SUFFICIENCY",
         "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
         "INDEPENDENT_REPLICATION"
       ],
       "blocking_reasons_tr": [
         "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
-        "Yetersiz \u00f6rneklem boyutu (0 < 100)."
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
       ],
       "blocking_reasons_en": [
         "Observation completeness evidence insufficient.",
-        "Insufficient sample size (0 < 100)."
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
       ],
       "supporting_evidence_links": [
         {
@@ -3100,9 +3161,9 @@
         "Expand data window to increase sample count.",
         "Plan independent replication experiment."
       ],
-      "heuristic_readiness_index": 60.0,
+      "heuristic_readiness_index": 50.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.304022+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.307624+00:00"
     },
     {
       "record_id": "RLIB-dbb10adc0f69",
@@ -3110,7 +3171,7 @@
       "title_en": "Raporlama testi",
       "overall_verdict": "INSUFFICIENT_EVIDENCE",
       "is_ready_for_review": false,
-      "critical_gates_passed": 4,
+      "critical_gates_passed": 3,
       "total_critical_gates": 6,
       "dimensions": [
         {
@@ -3120,13 +3181,15 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "Registered dataset: BTCUSDT-1h",
-          "explanation_tr": "Veri seti 'BTCUSDT-1h' kay\u0131tl\u0131 ve kan\u0131t soyk\u00fct\u00fc\u011f\u00fc ile do\u011frulanabilir.",
-          "explanation_en": "Dataset 'BTCUSDT-1h' is registered and verifiable in canonical provenance.",
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
           "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
           "required_action_en": "No additional dataset action required.",
           "metrics": {
-            "dataset_id": "BTCUSDT-1h"
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
           }
         },
         {
@@ -3210,14 +3273,14 @@
           "dimension_key": "REPRODUCIBILITY",
           "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
           "dimension_name_en": "Offline Reproducibility Instructions",
-          "status": "VERIFIED",
+          "status": "INSUFFICIENT_EVIDENCE",
           "is_critical_gate": true,
-          "is_passed": true,
-          "evidence_reference": "/app/data/prospective/research_library/RLIB-dbb10adc0f69.json",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
-          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
-          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
           "metrics": {}
         },
         {
@@ -3227,9 +3290,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "NOT_EVALUATED",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -3271,7 +3334,6 @@
         "DATASET_PROVENANCE",
         "SOURCE_ARTIFACT_INTEGRITY",
         "METHODOLOGY_COMPATIBILITY",
-        "REPRODUCIBILITY",
         "EVIDENCE_FRESHNESS",
         "GOVERNANCE_COMPLIANCE"
       ],
@@ -3280,15 +3342,18 @@
         "OBSERVATION_COMPLETENESS",
         "SAMPLE_SUFFICIENCY",
         "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
         "INDEPENDENT_REPLICATION"
       ],
       "blocking_reasons_tr": [
         "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
-        "Yetersiz \u00f6rneklem boyutu (0 < 100)."
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
       ],
       "blocking_reasons_en": [
         "Observation completeness evidence insufficient.",
-        "Insufficient sample size (0 < 100)."
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
       ],
       "supporting_evidence_links": [
         {
@@ -3307,9 +3372,9 @@
         "Expand data window to increase sample count.",
         "Plan independent replication experiment."
       ],
-      "heuristic_readiness_index": 60.0,
+      "heuristic_readiness_index": 50.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.305039+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.307624+00:00"
     },
     {
       "record_id": "RLIB-f93d9176002d",
@@ -3317,7 +3382,7 @@
       "title_en": "Definition for Playwright E2E verification",
       "overall_verdict": "INSUFFICIENT_EVIDENCE",
       "is_ready_for_review": false,
-      "critical_gates_passed": 4,
+      "critical_gates_passed": 3,
       "total_critical_gates": 6,
       "dimensions": [
         {
@@ -3327,13 +3392,15 @@
           "status": "VERIFIED",
           "is_critical_gate": true,
           "is_passed": true,
-          "evidence_reference": "Registered dataset: BTCUSDT-1h",
-          "explanation_tr": "Veri seti 'BTCUSDT-1h' kay\u0131tl\u0131 ve kan\u0131t soyk\u00fct\u00fc\u011f\u00fc ile do\u011frulanabilir.",
-          "explanation_en": "Dataset 'BTCUSDT-1h' is registered and verifiable in canonical provenance.",
+          "evidence_reference": "Authentic provenance: BTCUSDT-1h (attested=False, storage=True)",
+          "explanation_tr": "Veri seti 'BTCUSDT-1h' do\u011frulanabilir birincil ambar ve tasdik soyk\u00fct\u00fc\u011f\u00fc ile teyit edildi.",
+          "explanation_en": "Dataset 'BTCUSDT-1h' verified via authentic intake repository and lineage attestation.",
           "required_action_tr": "Ek bir veri seti i\u015flemi gerekmemektedir.",
           "required_action_en": "No additional dataset action required.",
           "metrics": {
-            "dataset_id": "BTCUSDT-1h"
+            "dataset_id": "BTCUSDT-1h",
+            "has_attested_lineage": false,
+            "has_physical_data": true
           }
         },
         {
@@ -3417,14 +3484,14 @@
           "dimension_key": "REPRODUCIBILITY",
           "dimension_name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
           "dimension_name_en": "Offline Reproducibility Instructions",
-          "status": "VERIFIED",
+          "status": "INSUFFICIENT_EVIDENCE",
           "is_critical_gate": true,
-          "is_passed": true,
-          "evidence_reference": "/app/data/prospective/research_library/RLIB-f93d9176002d.json",
-          "explanation_tr": "\u00c7evrimd\u0131\u015f\u0131 ara\u015ft\u0131rma verisi ve algoritma girdileri disk \u00fczerinde do\u011frulanabilir durumdad\u0131r.",
-          "explanation_en": "Offline research data and procedure inputs are verifiable on disk.",
-          "required_action_tr": "Reproducibility Lab ile prosed\u00fcr\u00fc yeniden \u00e7al\u0131\u015ft\u0131rabilirsiniz.",
-          "required_action_en": "Procedure can be re-executed in Reproducibility Lab.",
+          "is_passed": false,
+          "evidence_reference": "NO_PROCEDURE_MAPPING",
+          "explanation_tr": "Ara\u015ft\u0131rma kayd\u0131 i\u00e7in onayl\u0131 bir \u00e7evrimd\u0131\u015f\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi.",
+          "explanation_en": "No allowlisted offline reproduction procedure mapped to this record.",
+          "required_action_tr": "Onayl\u0131 bir prosed\u00fcr protokol\u00fc tan\u0131mlay\u0131n.",
+          "required_action_en": "Define an approved procedure protocol.",
           "metrics": {}
         },
         {
@@ -3434,9 +3501,9 @@
           "status": "UNVERIFIED",
           "is_critical_gate": false,
           "is_passed": false,
-          "evidence_reference": "NOT_EVALUATED",
-          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir (yaln\u0131zca yerel \u00f6n bulgu).",
-          "explanation_en": "No independent replication recorded yet (preliminary single-source finding).",
+          "evidence_reference": "NO_EXTERNAL_ATTESTATION",
+          "explanation_tr": "Hen\u00fcz ba\u011f\u0131ms\u0131z bir harici replikasyon tasdiki bulunmamaktad\u0131r (CBE-0.7.0 yerel tek-kaynak bulgusudur).",
+          "explanation_en": "No authenticated independent external replication attestation (CBE-0.7.0 single-source finding).",
           "required_action_tr": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon denemesi planlay\u0131n.",
           "required_action_en": "Schedule independent replication on an out-of-sample window.",
           "metrics": {}
@@ -3478,7 +3545,6 @@
         "DATASET_PROVENANCE",
         "SOURCE_ARTIFACT_INTEGRITY",
         "METHODOLOGY_COMPATIBILITY",
-        "REPRODUCIBILITY",
         "EVIDENCE_FRESHNESS",
         "GOVERNANCE_COMPLIANCE"
       ],
@@ -3487,15 +3553,18 @@
         "OBSERVATION_COMPLETENESS",
         "SAMPLE_SUFFICIENCY",
         "STATISTICAL_VALIDITY",
+        "REPRODUCIBILITY",
         "INDEPENDENT_REPLICATION"
       ],
       "blocking_reasons_tr": [
         "G\u00f6zlem eksiksizli\u011fi kan\u0131t\u0131 yetersiz.",
-        "Yetersiz \u00f6rneklem boyutu (0 < 100)."
+        "Yetersiz \u00f6rneklem boyutu (0 < 100).",
+        "Onayl\u0131 tekrarlama prosed\u00fcr\u00fc e\u015fle\u015fmedi."
       ],
       "blocking_reasons_en": [
         "Observation completeness evidence insufficient.",
-        "Insufficient sample size (0 < 100)."
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
       ],
       "supporting_evidence_links": [
         {
@@ -3514,9 +3583,9 @@
         "Expand data window to increase sample count.",
         "Plan independent replication experiment."
       ],
-      "heuristic_readiness_index": 60.0,
+      "heuristic_readiness_index": 50.0,
       "heuristic_disclaimer_tr": "Haz\u0131rl\u0131k endeksi yaln\u0131zca bir \u00fcr\u00fcn-d\u00fczeyi s\u0131ralama heuristi\u011fidir. Y\u00fcksek puan hi\u00e7bir ko\u015fulda ba\u015far\u0131s\u0131z kritik kap\u0131lar\u0131 veya bilimsel dondurma kararlar\u0131n\u0131 ge\u00e7ersiz k\u0131lamaz.",
-      "evaluated_at_utc": "2026-11-10T12:17:44.305039+00:00"
+      "evaluated_at_utc": "2026-11-10T23:57:49.307624+00:00"
     }
   ],
   "total_count": 17,

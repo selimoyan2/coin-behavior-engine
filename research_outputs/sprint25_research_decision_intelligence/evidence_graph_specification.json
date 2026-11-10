@@ -27,6 +27,10 @@
     "SUPERSEDES"
   ],
   "link_statuses": [
+    "REGISTERED",
+    "PRESENT",
+    "INTEGRITY_VERIFIED",
+    "SCIENTIFICALLY_VERIFIED",
     "VERIFIED",
     "UNVERIFIED",
     "INSUFFICIENT_EVIDENCE",

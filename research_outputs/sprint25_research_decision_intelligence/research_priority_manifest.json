@@ -26,7 +26,7 @@
       "recommended_next_step_tr": "Veri seti i\u00e7in tam borsa API intakelog ve SHA-256 soyk\u00fct\u00fc\u011f\u00fc kaydedin.",
       "recommended_next_step_en": "Record complete exchange API intake log and SHA-256 lineage.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.345697+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.349837+00:00"
     },
     {
       "task_id": "TASK-PRIO-RES-DURABILITY-01",
@@ -53,7 +53,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.345697+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.349837+00:00"
     },
     {
       "task_id": "TASK-PRIO-RES-FUND-01",
@@ -80,7 +80,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.344509+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.347277+00:00"
     },
     {
       "task_id": "TASK-PRIO-RES-MACRO-01",
@@ -107,7 +107,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.345026+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.348833+00:00"
     },
     {
       "task_id": "TASK-PRIO-RES-REGIME-01",
@@ -134,7 +134,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.344509+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.347277+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-03c6ea53cf3d",
@@ -161,7 +161,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.346773+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.352540+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-07c7c65c7e91",
@@ -188,7 +188,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.346773+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.353836+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-2f30980866e9",
@@ -215,7 +215,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.347500+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.353836+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-3c104ed0c333",
@@ -242,7 +242,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.347500+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.353836+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-669a3bc52ddf",
@@ -269,7 +269,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.347500+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.355594+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-7b0cb4781b20",
@@ -296,7 +296,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.347500+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.355594+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-c5730b081950",
@@ -323,7 +323,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.346241+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.349837+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-dbb10adc0f69",
@@ -350,7 +350,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.348514+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.355594+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-ee060f623584",
@@ -377,7 +377,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.346241+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.351535+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-f93d9176002d",
@@ -404,7 +404,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.348514+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.357219+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-f9ddf66ba096",
@@ -431,7 +431,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.346773+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.352540+00:00"
     },
     {
       "task_id": "TASK-PRIO-RES-ANALOG-01",
@@ -458,7 +458,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.345026+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.347277+00:00"
     }
   ],
   "priorities": [
@@ -487,7 +487,7 @@
       "recommended_next_step_tr": "Veri seti i\u00e7in tam borsa API intakelog ve SHA-256 soyk\u00fct\u00fc\u011f\u00fc kaydedin.",
       "recommended_next_step_en": "Record complete exchange API intake log and SHA-256 lineage.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.345697+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.349837+00:00"
     },
     {
       "task_id": "TASK-PRIO-RES-DURABILITY-01",
@@ -514,7 +514,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.345697+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.349837+00:00"
     },
     {
       "task_id": "TASK-PRIO-RES-FUND-01",
@@ -541,7 +541,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.344509+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.347277+00:00"
     },
     {
       "task_id": "TASK-PRIO-RES-MACRO-01",
@@ -568,7 +568,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.345026+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.348833+00:00"
     },
     {
       "task_id": "TASK-PRIO-RES-REGIME-01",
@@ -595,7 +595,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.344509+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.347277+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-03c6ea53cf3d",
@@ -622,7 +622,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.346773+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.352540+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-07c7c65c7e91",
@@ -649,7 +649,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.346773+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.353836+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-2f30980866e9",
@@ -676,7 +676,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.347500+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.353836+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-3c104ed0c333",
@@ -703,7 +703,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.347500+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.353836+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-669a3bc52ddf",
@@ -730,7 +730,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.347500+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.355594+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-7b0cb4781b20",
@@ -757,7 +757,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.347500+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.355594+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-c5730b081950",
@@ -784,7 +784,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.346241+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.349837+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-dbb10adc0f69",
@@ -811,7 +811,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.348514+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.355594+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-ee060f623584",
@@ -838,7 +838,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.346241+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.351535+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-f93d9176002d",
@@ -865,7 +865,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.348514+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.357219+00:00"
     },
     {
       "task_id": "TASK-PRIO-RLIB-f9ddf66ba096",
@@ -892,7 +892,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.346773+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.352540+00:00"
     },
     {
       "task_id": "TASK-PRIO-RES-ANALOG-01",
@@ -919,7 +919,7 @@
       "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
       "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
-      "created_at_utc": "2026-11-10T12:17:44.345026+00:00"
+      "created_at_utc": "2026-11-10T23:57:49.347277+00:00"
     }
   ],
   "total_tasks": 17,

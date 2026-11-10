@@ -1,17 +1,13 @@
 {
   "status": "success",
   "graph": {
-    "total_nodes": 97,
-    "returned_nodes": 97,
-    "limit": 500,
-    "offset": 0,
     "nodes": [
       {
         "id": "GOV-CBE-070",
         "node_type": "GOVERNANCE_DECISION",
         "label": "Y\u00f6neti\u015fim Karar\u0131: TECHNICAL_NO_GO (CBE-0.7.0 Donduruldu)",
         "label_en": "Governance Decision: TECHNICAL_NO_GO (CBE-0.7.0 Strictly Frozen)",
-        "status": "VERIFIED",
+        "status": "SCIENTIFICALLY_VERIFIED",
         "provenance_source": "src/coin_behavior_engine/core/config.py",
         "source_artifact_sha256": null,
         "properties": {
@@ -20,69 +16,69 @@
           "governance_decision": "TECHNICAL_NO_GO",
           "trading_prohibition": "LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "METH-PARKINSON",
         "node_type": "METHODOLOGY",
         "label": "Parkinson Ekstremum Volatilite Tahmincisi",
         "label_en": "Parkinson Extreme-Value Volatility Estimator",
-        "status": "VERIFIED",
+        "status": "REGISTERED",
         "provenance_source": "CBE-SPEC-METHOD-01",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "METH-WALK-FORWARD",
         "node_type": "METHODOLOGY",
         "label": "Kronolojik \u0130leriye Y\u00fcr\u00fcy\u00fc\u015f Rejim Kararl\u0131l\u0131\u011f\u0131",
         "label_en": "Chronological Walk-Forward Regime Stability",
-        "status": "VERIFIED",
+        "status": "REGISTERED",
         "provenance_source": "CBE-SPEC-METHOD-02",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "METH-DTW",
         "node_type": "METHODOLOGY",
         "label": "Dinamik Zaman B\u00fckmesi (DTW) \u00d6r\u00fcnt\u00fc Benzerli\u011fi",
         "label_en": "Dynamic Time Warping Pattern Analogs",
-        "status": "VERIFIED",
+        "status": "REGISTERED",
         "provenance_source": "CBE-SPEC-METHOD-03",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "METH-EVENT-STUDY",
         "node_type": "METHODOLOGY",
         "label": "Makro Olay \u0130ncelemesi (Event-Study T0)",
         "label_en": "Macroeconomic Event Study (T0 Window)",
-        "status": "VERIFIED",
+        "status": "REGISTERED",
         "provenance_source": "CBE-SPEC-METHOD-04",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "METH-DURABILITY",
         "node_type": "METHODOLOGY",
         "label": "Docker \u00c7ift \u00c7ekirdek Mountinfo Do\u011frulamas\u0131",
         "label_en": "Docker Dual-Kernel Mountinfo Storage Verification",
-        "status": "VERIFIED",
+        "status": "REGISTERED",
         "provenance_source": "CBE-SPEC-METHOD-05",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "RES-FUND-01",
         "node_type": "RESEARCH_RECORD",
         "label": "Ara\u015ft\u0131rma Kayd\u0131: Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi",
         "label_en": "Research Record: Perpetual Funding Rate Predictability & Pure Compute Latency",
-        "status": "UNVERIFIED",
+        "status": "FAILED",
         "provenance_source": "data/reports/sprint09_38_funding_predictability_report.json",
         "source_artifact_sha256": "5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a",
         "properties": {
@@ -90,36 +86,40 @@
           "dataset_id": "BTCUSDT-PERP-FUNDING-2022-2026",
           "window_cadence": "8h",
           "sample_size": 1185,
-          "volatility_ratio": null
+          "volatility_ratio": null,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "DS-BTCUSDT-PERP-FUNDING-2022-2026",
         "node_type": "DATASET",
         "label": "Veri Seti: BTCUSDT-PERP-FUNDING-2022-2026",
         "label_en": "Dataset: BTCUSDT-PERP-FUNDING-2022-2026",
-        "status": "VERIFIED",
-        "provenance_source": "Binance / US BLS Macro Archive",
+        "status": "REGISTERED",
+        "provenance_source": "Intake / Provenance for BTCUSDT-PERP-FUNDING-2022-2026",
         "source_artifact_sha256": null,
         "properties": {
-          "dataset_id": "BTCUSDT-PERP-FUNDING-2022-2026"
+          "dataset_id": "BTCUSDT-PERP-FUNDING-2022-2026",
+          "quarantine_status": "CLEAR"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "ART-7ee37022ed8a",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: sprint09_38_funding_predictability_report.json",
         "label_en": "Source Artifact: sprint09_38_funding_predictability_report.json",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "data/reports/sprint09_38_funding_predictability_report.json",
         "source_artifact_sha256": "5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a",
         "properties": {
           "path": "data/reports/sprint09_38_funding_predictability_report.json",
-          "sha256": "5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a"
+          "sha256": "5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "HYP-RES-FUND-01",
@@ -130,14 +130,14 @@
         "provenance_source": "SPEC-001-PERP-FUNDING",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "STAT-RES-FUND-01",
         "node_type": "STATISTICAL_RESULT",
         "label": "\u0130statistiksel G\u00f6zlem (N=1185)",
         "label_en": "Statistical Observation (N=1185)",
-        "status": "VERIFIED",
+        "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
@@ -145,7 +145,7 @@
           "volatility_ratio": null,
           "p_value": 1.0
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "CLAIM-RES-FUND-01",
@@ -158,14 +158,14 @@
         "properties": {
           "key_findings_tr": "Fonlama serisinde otoregresif modeller rastgele y\u00fcr\u00fcy\u00fc\u015fe k\u0131yasla anlaml\u0131 \u00fcst\u00fcnl\u00fck g\u00f6sterememi\u015ftir (p = 1.000)."
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "RES-REGIME-01",
         "node_type": "RESEARCH_RECORD",
         "label": "Ara\u015ft\u0131rma Kayd\u0131: 2022\u20132026 Kronolojik \u0130leriye Y\u00f6nelik Rejim Kararl\u0131l\u0131\u011f\u0131 Do\u011frulamas\u0131",
         "label_en": "Research Record: 2022\u20132026 Chronological Walk-Forward Regime Stability Validation",
-        "status": "UNVERIFIED",
+        "status": "FAILED",
         "provenance_source": "data/reports/sprint09_27_validation_and_holdout_report.json",
         "source_artifact_sha256": "14ae2c3a0ebcbbf8e96a50ad5ada06a5ce2b0fc22082f3a225d9becfcee4cebf",
         "properties": {
@@ -173,36 +173,40 @@
           "dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
           "window_cadence": "1h",
           "sample_size": 8736,
-          "volatility_ratio": null
+          "volatility_ratio": null,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "DS-BTCUSDT-SPOT-1H-2022-2026",
         "node_type": "DATASET",
         "label": "Veri Seti: BTCUSDT-SPOT-1H-2022-2026",
         "label_en": "Dataset: BTCUSDT-SPOT-1H-2022-2026",
-        "status": "VERIFIED",
-        "provenance_source": "Binance / US BLS Macro Archive",
+        "status": "REGISTERED",
+        "provenance_source": "Intake / Provenance for BTCUSDT-SPOT-1H-2022-2026",
         "source_artifact_sha256": null,
         "properties": {
-          "dataset_id": "BTCUSDT-SPOT-1H-2022-2026"
+          "dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
+          "quarantine_status": "CLEAR"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "ART-301c0a79a475",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: sprint09_27_validation_and_holdout_report.json",
         "label_en": "Source Artifact: sprint09_27_validation_and_holdout_report.json",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "data/reports/sprint09_27_validation_and_holdout_report.json",
         "source_artifact_sha256": "14ae2c3a0ebcbbf8e96a50ad5ada06a5ce2b0fc22082f3a225d9becfcee4cebf",
         "properties": {
           "path": "data/reports/sprint09_27_validation_and_holdout_report.json",
-          "sha256": "14ae2c3a0ebcbbf8e96a50ad5ada06a5ce2b0fc22082f3a225d9becfcee4cebf"
+          "sha256": "14ae2c3a0ebcbbf8e96a50ad5ada06a5ce2b0fc22082f3a225d9becfcee4cebf",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "HYP-RES-REGIME-01",
@@ -213,14 +217,14 @@
         "provenance_source": "SPEC-002-WALK-FORWARD",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "STAT-RES-REGIME-01",
         "node_type": "STATISTICAL_RESULT",
         "label": "\u0130statistiksel G\u00f6zlem (N=8736)",
         "label_en": "Statistical Observation (N=8736)",
-        "status": "VERIFIED",
+        "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
@@ -228,7 +232,7 @@
           "volatility_ratio": null,
           "p_value": 0.1738
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "CLAIM-RES-REGIME-01",
@@ -241,14 +245,14 @@
         "properties": {
           "key_findings_tr": "\u00c7oklu test kontrollerinde (Bonferroni ve FDR) hipotez ailesi anlaml\u0131l\u0131k e\u015fi\u011fini a\u015famam\u0131\u015ft\u0131r (min p = 0.1738)."
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "RES-ANALOG-01",
         "node_type": "RESEARCH_RECORD",
         "label": "Ara\u015ft\u0131rma Kayd\u0131: Dinamik Zaman B\u00fckmesi (DTW) Tarihsel \u00d6r\u00fcnt\u00fc Benzerli\u011fi V2",
         "label_en": "Research Record: Dynamic Time Warping Historical Pattern Analogs V2",
-        "status": "UNVERIFIED",
+        "status": "FAILED",
         "provenance_source": "research_outputs/research_report_29_pattern_similarity.json",
         "source_artifact_sha256": "337b19b98c381d0cac508161efa9bb776826cd8708bd2d64d1b9e8779f8b6847",
         "properties": {
@@ -256,23 +260,26 @@
           "dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
           "window_cadence": "1h",
           "sample_size": 860,
-          "volatility_ratio": null
+          "volatility_ratio": null,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "ART-bd1c753bbdf8",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: research_report_29_pattern_similarity.json",
         "label_en": "Source Artifact: research_report_29_pattern_similarity.json",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "research_outputs/research_report_29_pattern_similarity.json",
         "source_artifact_sha256": "337b19b98c381d0cac508161efa9bb776826cd8708bd2d64d1b9e8779f8b6847",
         "properties": {
           "path": "research_outputs/research_report_29_pattern_similarity.json",
-          "sha256": "337b19b98c381d0cac508161efa9bb776826cd8708bd2d64d1b9e8779f8b6847"
+          "sha256": "337b19b98c381d0cac508161efa9bb776826cd8708bd2d64d1b9e8779f8b6847",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "HYP-RES-ANALOG-01",
@@ -283,14 +290,14 @@
         "provenance_source": "SPEC-003-DTW-ANALOGS",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "STAT-RES-ANALOG-01",
         "node_type": "STATISTICAL_RESULT",
         "label": "\u0130statistiksel G\u00f6zlem (N=860)",
         "label_en": "Statistical Observation (N=860)",
-        "status": "VERIFIED",
+        "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
@@ -298,7 +305,7 @@
           "volatility_ratio": null,
           "p_value": null
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "CLAIM-RES-ANALOG-01",
@@ -311,14 +318,14 @@
         "properties": {
           "key_findings_tr": "Zaman ekseninde normalize edilmi\u015f DTW mesafesi en d\u00fc\u015f\u00fck analoglarda rejim tutarl\u0131l\u0131\u011f\u0131 %76.4 olarak saptanm\u0131\u015ft\u0131r."
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "RES-MACRO-01",
         "node_type": "RESEARCH_RECORD",
         "label": "Ara\u015ft\u0131rma Kayd\u0131: Makroekonomik Duyurular (CPI & FOMC) T0 Rejim D\u00f6n\u00fc\u015f\u00fcmleri",
         "label_en": "Research Record: Macro Announcements (CPI & FOMC) T0 Regime Transitions",
-        "status": "UNVERIFIED",
+        "status": "FAILED",
         "provenance_source": "research_outputs/experiment_cpi_volatility.cbe-hyp.json",
         "source_artifact_sha256": "3cda89064b6837ef23d76c6d220d3998ebfc5a3f7261d3afc6ea68c29a4bf7ac",
         "properties": {
@@ -326,36 +333,40 @@
           "dataset_id": "US-MACRO-EVENTS-2022-2026",
           "window_cadence": "1h / \u00b112h pencere",
           "sample_size": null,
-          "volatility_ratio": 1.913
+          "volatility_ratio": 1.913,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "DS-US-MACRO-EVENTS-2022-2026",
         "node_type": "DATASET",
         "label": "Veri Seti: US-MACRO-EVENTS-2022-2026",
         "label_en": "Dataset: US-MACRO-EVENTS-2022-2026",
-        "status": "VERIFIED",
-        "provenance_source": "Binance / US BLS Macro Archive",
+        "status": "REGISTERED",
+        "provenance_source": "Intake / Provenance for US-MACRO-EVENTS-2022-2026",
         "source_artifact_sha256": null,
         "properties": {
-          "dataset_id": "US-MACRO-EVENTS-2022-2026"
+          "dataset_id": "US-MACRO-EVENTS-2022-2026",
+          "quarantine_status": "CLEAR"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "ART-f1f8fdd28b3a",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: experiment_cpi_volatility.cbe-hyp.json",
         "label_en": "Source Artifact: experiment_cpi_volatility.cbe-hyp.json",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "research_outputs/experiment_cpi_volatility.cbe-hyp.json",
         "source_artifact_sha256": "3cda89064b6837ef23d76c6d220d3998ebfc5a3f7261d3afc6ea68c29a4bf7ac",
         "properties": {
           "path": "research_outputs/experiment_cpi_volatility.cbe-hyp.json",
-          "sha256": "3cda89064b6837ef23d76c6d220d3998ebfc5a3f7261d3afc6ea68c29a4bf7ac"
+          "sha256": "3cda89064b6837ef23d76c6d220d3998ebfc5a3f7261d3afc6ea68c29a4bf7ac",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "HYP-RES-MACRO-01",
@@ -366,22 +377,22 @@
         "provenance_source": "SPEC-004-MACRO-SHIFTS",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "STAT-RES-MACRO-01",
         "node_type": "STATISTICAL_RESULT",
-        "label": "\u0130statistiksel G\u00f6zlem (N=None)",
-        "label_en": "Statistical Observation (N=None)",
+        "label": "\u0130statistiksel G\u00f6zlem (N=0)",
+        "label_en": "Statistical Observation (N=0)",
         "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
-          "sample_size": null,
+          "sample_size": 0,
           "volatility_ratio": 1.913,
           "p_value": 1.2e-05
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "CLAIM-RES-MACRO-01",
@@ -394,14 +405,14 @@
         "properties": {
           "key_findings_tr": "CPI ve FOMC duyurular\u0131n\u0131 takip eden 12 saatte volatilite geni\u015fleme oran\u0131 1.913x seviyesine \u00e7\u0131kmakta ve anlaml\u0131l\u0131k g\u00f6stermektedir (p = 1.2e-05)."
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "RES-DURABILITY-01",
         "node_type": "RESEARCH_RECORD",
         "label": "Ara\u015ft\u0131rma Kayd\u0131: Dayan\u0131kl\u0131 Depolama Do\u011frulamas\u0131 & Kan\u0131t Soyk\u00fct\u00fc\u011f\u00fc Sertifikasyonu",
         "label_en": "Research Record: Durable Storage Verification & Evidence Provenance Certification",
-        "status": "UNVERIFIED",
+        "status": "FAILED",
         "provenance_source": "research_outputs/sprint23_delivery/persistent_volume_verification.json",
         "source_artifact_sha256": "cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c",
         "properties": {
@@ -409,36 +420,40 @@
           "dataset_id": "CBE-SYSTEM-AUDIT-LOGS",
           "window_cadence": "Denetim Olay\u0131",
           "sample_size": 20,
-          "volatility_ratio": null
+          "volatility_ratio": null,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "DS-CBE-SYSTEM-AUDIT-LOGS",
         "node_type": "DATASET",
         "label": "Veri Seti: CBE-SYSTEM-AUDIT-LOGS",
         "label_en": "Dataset: CBE-SYSTEM-AUDIT-LOGS",
-        "status": "VERIFIED",
-        "provenance_source": "Binance / US BLS Macro Archive",
+        "status": "REGISTERED",
+        "provenance_source": "Intake / Provenance for CBE-SYSTEM-AUDIT-LOGS",
         "source_artifact_sha256": null,
         "properties": {
-          "dataset_id": "CBE-SYSTEM-AUDIT-LOGS"
+          "dataset_id": "CBE-SYSTEM-AUDIT-LOGS",
+          "quarantine_status": "CLEAR"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "ART-0d749ebc9317",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: persistent_volume_verification.json",
         "label_en": "Source Artifact: persistent_volume_verification.json",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "research_outputs/sprint23_delivery/persistent_volume_verification.json",
         "source_artifact_sha256": "cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c",
         "properties": {
           "path": "research_outputs/sprint23_delivery/persistent_volume_verification.json",
-          "sha256": "cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c"
+          "sha256": "cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "HYP-RES-DURABILITY-01",
@@ -449,14 +464,14 @@
         "provenance_source": "SPEC-005-STORAGE-DURABILITY",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "STAT-RES-DURABILITY-01",
         "node_type": "STATISTICAL_RESULT",
         "label": "\u0130statistiksel G\u00f6zlem (N=20)",
         "label_en": "Statistical Observation (N=20)",
-        "status": "VERIFIED",
+        "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
@@ -464,7 +479,7 @@
           "volatility_ratio": null,
           "p_value": null
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "CLAIM-RES-DURABILITY-01",
@@ -477,7 +492,7 @@
         "properties": {
           "key_findings_tr": "\u00c7ift \u00e7ekirdek mountinfo mutabakat\u0131 ve HMAC-SHA256 imzal\u0131 tasdik ile yetkili kal\u0131c\u0131 birim kimli\u011fi do\u011frulanm\u0131\u015ft\u0131r."
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "RES-CRYPTO-01",
@@ -492,36 +507,40 @@
           "dataset_id": "BTCUSDT-OCTOBER-2026-INTAKE",
           "window_cadence": "5m",
           "sample_size": 288,
-          "volatility_ratio": null
+          "volatility_ratio": null,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "DS-BTCUSDT-OCTOBER-2026-INTAKE",
         "node_type": "DATASET",
         "label": "Veri Seti: BTCUSDT-OCTOBER-2026-INTAKE",
         "label_en": "Dataset: BTCUSDT-OCTOBER-2026-INTAKE",
-        "status": "VERIFIED",
-        "provenance_source": "Binance / US BLS Macro Archive",
+        "status": "BLOCKED",
+        "provenance_source": "Intake / Provenance for BTCUSDT-OCTOBER-2026-INTAKE",
         "source_artifact_sha256": null,
         "properties": {
-          "dataset_id": "BTCUSDT-OCTOBER-2026-INTAKE"
+          "dataset_id": "BTCUSDT-OCTOBER-2026-INTAKE",
+          "quarantine_status": "QUARANTINED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "ART-4f528df23cca",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: BTCUSDT-5m-2026-10-intake.parquet",
         "label_en": "Source Artifact: BTCUSDT-5m-2026-10-intake.parquet",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet",
         "source_artifact_sha256": "05874e97d06db21fad8e7583b5b8038141d4e3dcfbabf68238fca52f5efab718",
         "properties": {
           "path": "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet",
-          "sha256": "05874e97d06db21fad8e7583b5b8038141d4e3dcfbabf68238fca52f5efab718"
+          "sha256": "05874e97d06db21fad8e7583b5b8038141d4e3dcfbabf68238fca52f5efab718",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "HYP-RES-CRYPTO-01",
@@ -532,14 +551,14 @@
         "provenance_source": "SPEC-006-DATA-INTAKE",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "STAT-RES-CRYPTO-01",
         "node_type": "STATISTICAL_RESULT",
         "label": "\u0130statistiksel G\u00f6zlem (N=288)",
         "label_en": "Statistical Observation (N=288)",
-        "status": "VERIFIED",
+        "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
@@ -547,7 +566,7 @@
           "volatility_ratio": null,
           "p_value": null
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "CLAIM-RES-CRYPTO-01",
@@ -560,14 +579,14 @@
         "properties": {
           "key_findings_tr": "Sabit 15.2 hacim ve yapay fiyat basamaklar\u0131 saptanm\u0131\u015f; kanonik depoya aktar\u0131m\u0131 kal\u0131c\u0131 olarak engellenmi\u015ftir."
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "RLIB-c5730b081950",
         "node_type": "RESEARCH_RECORD",
         "label": "Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item",
         "label_en": "Research Record: E2E automated verification item",
-        "status": "UNVERIFIED",
+        "status": "FAILED",
         "provenance_source": "data/research_library/RLIB-c5730b081950.json",
         "source_artifact_sha256": "7d3a39550d5fa8754dd3d580855da42bb0c2871e261d5891ea2ba11be0994af5",
         "properties": {
@@ -575,36 +594,40 @@
           "dataset_id": "BTCUSDT-1h",
           "window_cadence": "1h",
           "sample_size": null,
-          "volatility_ratio": null
+          "volatility_ratio": null,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "DS-BTCUSDT-1h",
         "node_type": "DATASET",
         "label": "Veri Seti: BTCUSDT-1h",
         "label_en": "Dataset: BTCUSDT-1h",
-        "status": "VERIFIED",
-        "provenance_source": "Binance / US BLS Macro Archive",
+        "status": "REGISTERED",
+        "provenance_source": "Intake / Provenance for BTCUSDT-1h",
         "source_artifact_sha256": null,
         "properties": {
-          "dataset_id": "BTCUSDT-1h"
+          "dataset_id": "BTCUSDT-1h",
+          "quarantine_status": "CLEAR"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "ART-5c050babf750",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: RLIB-c5730b081950.json",
         "label_en": "Source Artifact: RLIB-c5730b081950.json",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "data/research_library/RLIB-c5730b081950.json",
         "source_artifact_sha256": "7d3a39550d5fa8754dd3d580855da42bb0c2871e261d5891ea2ba11be0994af5",
         "properties": {
           "path": "data/research_library/RLIB-c5730b081950.json",
-          "sha256": "7d3a39550d5fa8754dd3d580855da42bb0c2871e261d5891ea2ba11be0994af5"
+          "sha256": "7d3a39550d5fa8754dd3d580855da42bb0c2871e261d5891ea2ba11be0994af5",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "HYP-RLIB-c5730b081950",
@@ -615,22 +638,22 @@
         "provenance_source": "SPEC-LIB-RLIB-c5730b081950",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "STAT-RLIB-c5730b081950",
         "node_type": "STATISTICAL_RESULT",
-        "label": "\u0130statistiksel G\u00f6zlem (N=None)",
-        "label_en": "Statistical Observation (N=None)",
+        "label": "\u0130statistiksel G\u00f6zlem (N=0)",
+        "label_en": "Statistical Observation (N=0)",
         "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
-          "sample_size": null,
+          "sample_size": 0,
           "volatility_ratio": null,
           "p_value": null
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "CLAIM-RLIB-c5730b081950",
@@ -643,14 +666,14 @@
         "properties": {
           "key_findings_tr": ""
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "RLIB-ee060f623584",
         "node_type": "RESEARCH_RECORD",
         "label": "Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item",
         "label_en": "Research Record: E2E automated verification item",
-        "status": "UNVERIFIED",
+        "status": "FAILED",
         "provenance_source": "data/research_library/RLIB-ee060f623584.json",
         "source_artifact_sha256": "1af6c92f6e2f0b3c01ab7f7227fe88826f4986940e49074b2015716541b7be01",
         "properties": {
@@ -658,23 +681,26 @@
           "dataset_id": "BTCUSDT-1h",
           "window_cadence": "1h",
           "sample_size": null,
-          "volatility_ratio": null
+          "volatility_ratio": null,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "ART-2d64feebd8d5",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: RLIB-ee060f623584.json",
         "label_en": "Source Artifact: RLIB-ee060f623584.json",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "data/research_library/RLIB-ee060f623584.json",
         "source_artifact_sha256": "1af6c92f6e2f0b3c01ab7f7227fe88826f4986940e49074b2015716541b7be01",
         "properties": {
           "path": "data/research_library/RLIB-ee060f623584.json",
-          "sha256": "1af6c92f6e2f0b3c01ab7f7227fe88826f4986940e49074b2015716541b7be01"
+          "sha256": "1af6c92f6e2f0b3c01ab7f7227fe88826f4986940e49074b2015716541b7be01",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "HYP-RLIB-ee060f623584",
@@ -685,22 +711,22 @@
         "provenance_source": "SPEC-LIB-RLIB-ee060f623584",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "STAT-RLIB-ee060f623584",
         "node_type": "STATISTICAL_RESULT",
-        "label": "\u0130statistiksel G\u00f6zlem (N=None)",
-        "label_en": "Statistical Observation (N=None)",
+        "label": "\u0130statistiksel G\u00f6zlem (N=0)",
+        "label_en": "Statistical Observation (N=0)",
         "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
-          "sample_size": null,
+          "sample_size": 0,
           "volatility_ratio": null,
           "p_value": null
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "CLAIM-RLIB-ee060f623584",
@@ -713,14 +739,14 @@
         "properties": {
           "key_findings_tr": ""
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "RLIB-f9ddf66ba096",
         "node_type": "RESEARCH_RECORD",
         "label": "Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Library Report Test",
         "label_en": "Research Record: ",
-        "status": "UNVERIFIED",
+        "status": "FAILED",
         "provenance_source": "data/research_library/RLIB-f9ddf66ba096.json",
         "source_artifact_sha256": "8b9c1018b20224a85c136e5c68cd759b05c7fdceea7b0ace549891a5163f4e22",
         "properties": {
@@ -728,23 +754,26 @@
           "dataset_id": "BTCUSDT-1h",
           "window_cadence": "1h",
           "sample_size": null,
-          "volatility_ratio": null
+          "volatility_ratio": null,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "ART-de908d514c40",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: RLIB-f9ddf66ba096.json",
         "label_en": "Source Artifact: RLIB-f9ddf66ba096.json",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "data/research_library/RLIB-f9ddf66ba096.json",
         "source_artifact_sha256": "8b9c1018b20224a85c136e5c68cd759b05c7fdceea7b0ace549891a5163f4e22",
         "properties": {
           "path": "data/research_library/RLIB-f9ddf66ba096.json",
-          "sha256": "8b9c1018b20224a85c136e5c68cd759b05c7fdceea7b0ace549891a5163f4e22"
+          "sha256": "8b9c1018b20224a85c136e5c68cd759b05c7fdceea7b0ace549891a5163f4e22",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "HYP-RLIB-f9ddf66ba096",
@@ -755,22 +784,22 @@
         "provenance_source": "SPEC-LIB-RLIB-f9ddf66ba096",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "STAT-RLIB-f9ddf66ba096",
         "node_type": "STATISTICAL_RESULT",
-        "label": "\u0130statistiksel G\u00f6zlem (N=None)",
-        "label_en": "Statistical Observation (N=None)",
+        "label": "\u0130statistiksel G\u00f6zlem (N=0)",
+        "label_en": "Statistical Observation (N=0)",
         "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
-          "sample_size": null,
+          "sample_size": 0,
           "volatility_ratio": null,
           "p_value": null
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "CLAIM-RLIB-f9ddf66ba096",
@@ -783,14 +812,14 @@
         "properties": {
           "key_findings_tr": ""
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "RLIB-03c6ea53cf3d",
         "node_type": "RESEARCH_RECORD",
         "label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
         "label_en": "Research Record: Definition for Playwright E2E verification",
-        "status": "UNVERIFIED",
+        "status": "FAILED",
         "provenance_source": "/app/data/prospective/research_library/RLIB-03c6ea53cf3d.json",
         "source_artifact_sha256": "de76c8e29242081eaa85f41fa800ce144fcb91e41107d7289ab4cbeb04244274",
         "properties": {
@@ -798,23 +827,26 @@
           "dataset_id": "BTCUSDT-1h",
           "window_cadence": "1h",
           "sample_size": null,
-          "volatility_ratio": null
+          "volatility_ratio": null,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "ART-923c8cb4ab5d",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: RLIB-03c6ea53cf3d.json",
         "label_en": "Source Artifact: RLIB-03c6ea53cf3d.json",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "/app/data/prospective/research_library/RLIB-03c6ea53cf3d.json",
         "source_artifact_sha256": "de76c8e29242081eaa85f41fa800ce144fcb91e41107d7289ab4cbeb04244274",
         "properties": {
           "path": "/app/data/prospective/research_library/RLIB-03c6ea53cf3d.json",
-          "sha256": "de76c8e29242081eaa85f41fa800ce144fcb91e41107d7289ab4cbeb04244274"
+          "sha256": "de76c8e29242081eaa85f41fa800ce144fcb91e41107d7289ab4cbeb04244274",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "HYP-RLIB-03c6ea53cf3d",
@@ -825,22 +857,22 @@
         "provenance_source": "SPEC-LIB-RLIB-03c6ea53cf3d",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "STAT-RLIB-03c6ea53cf3d",
         "node_type": "STATISTICAL_RESULT",
-        "label": "\u0130statistiksel G\u00f6zlem (N=None)",
-        "label_en": "Statistical Observation (N=None)",
+        "label": "\u0130statistiksel G\u00f6zlem (N=0)",
+        "label_en": "Statistical Observation (N=0)",
         "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
-          "sample_size": null,
+          "sample_size": 0,
           "volatility_ratio": null,
           "p_value": null
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "CLAIM-RLIB-03c6ea53cf3d",
@@ -853,14 +885,14 @@
         "properties": {
           "key_findings_tr": ""
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "RLIB-07c7c65c7e91",
         "node_type": "RESEARCH_RECORD",
         "label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
         "label_en": "Research Record: Definition for Playwright E2E verification",
-        "status": "UNVERIFIED",
+        "status": "FAILED",
         "provenance_source": "/app/data/prospective/research_library/RLIB-07c7c65c7e91.json",
         "source_artifact_sha256": "3ca1b02a8b185fcd12554fead907099da6bf6c54dee6bd5e58f1b18f038dcd2e",
         "properties": {
@@ -868,23 +900,26 @@
           "dataset_id": "BTCUSDT-1h",
           "window_cadence": "1h",
           "sample_size": null,
-          "volatility_ratio": null
+          "volatility_ratio": null,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "ART-f7cc523dd85c",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: RLIB-07c7c65c7e91.json",
         "label_en": "Source Artifact: RLIB-07c7c65c7e91.json",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "/app/data/prospective/research_library/RLIB-07c7c65c7e91.json",
         "source_artifact_sha256": "3ca1b02a8b185fcd12554fead907099da6bf6c54dee6bd5e58f1b18f038dcd2e",
         "properties": {
           "path": "/app/data/prospective/research_library/RLIB-07c7c65c7e91.json",
-          "sha256": "3ca1b02a8b185fcd12554fead907099da6bf6c54dee6bd5e58f1b18f038dcd2e"
+          "sha256": "3ca1b02a8b185fcd12554fead907099da6bf6c54dee6bd5e58f1b18f038dcd2e",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "HYP-RLIB-07c7c65c7e91",
@@ -895,22 +930,22 @@
         "provenance_source": "SPEC-LIB-RLIB-07c7c65c7e91",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "STAT-RLIB-07c7c65c7e91",
         "node_type": "STATISTICAL_RESULT",
-        "label": "\u0130statistiksel G\u00f6zlem (N=None)",
-        "label_en": "Statistical Observation (N=None)",
+        "label": "\u0130statistiksel G\u00f6zlem (N=0)",
+        "label_en": "Statistical Observation (N=0)",
         "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
-          "sample_size": null,
+          "sample_size": 0,
           "volatility_ratio": null,
           "p_value": null
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "CLAIM-RLIB-07c7c65c7e91",
@@ -923,14 +958,14 @@
         "properties": {
           "key_findings_tr": ""
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "RLIB-2f30980866e9",
         "node_type": "RESEARCH_RECORD",
         "label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
         "label_en": "Research Record: Definition for Playwright E2E verification",
-        "status": "UNVERIFIED",
+        "status": "FAILED",
         "provenance_source": "/app/data/prospective/research_library/RLIB-2f30980866e9.json",
         "source_artifact_sha256": "dd211e7f6b3e01fba967f9f26e3b377aec84fccafadf6721ed3c590830d63ff8",
         "properties": {
@@ -938,23 +973,26 @@
           "dataset_id": "BTCUSDT-1h",
           "window_cadence": "1h",
           "sample_size": null,
-          "volatility_ratio": null
+          "volatility_ratio": null,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "ART-94ec65fa0ec7",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: RLIB-2f30980866e9.json",
         "label_en": "Source Artifact: RLIB-2f30980866e9.json",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "/app/data/prospective/research_library/RLIB-2f30980866e9.json",
         "source_artifact_sha256": "dd211e7f6b3e01fba967f9f26e3b377aec84fccafadf6721ed3c590830d63ff8",
         "properties": {
           "path": "/app/data/prospective/research_library/RLIB-2f30980866e9.json",
-          "sha256": "dd211e7f6b3e01fba967f9f26e3b377aec84fccafadf6721ed3c590830d63ff8"
+          "sha256": "dd211e7f6b3e01fba967f9f26e3b377aec84fccafadf6721ed3c590830d63ff8",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "HYP-RLIB-2f30980866e9",
@@ -965,22 +1003,22 @@
         "provenance_source": "SPEC-LIB-RLIB-2f30980866e9",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "STAT-RLIB-2f30980866e9",
         "node_type": "STATISTICAL_RESULT",
-        "label": "\u0130statistiksel G\u00f6zlem (N=None)",
-        "label_en": "Statistical Observation (N=None)",
+        "label": "\u0130statistiksel G\u00f6zlem (N=0)",
+        "label_en": "Statistical Observation (N=0)",
         "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
-          "sample_size": null,
+          "sample_size": 0,
           "volatility_ratio": null,
           "p_value": null
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "CLAIM-RLIB-2f30980866e9",
@@ -993,14 +1031,14 @@
         "properties": {
           "key_findings_tr": ""
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "RLIB-3c104ed0c333",
         "node_type": "RESEARCH_RECORD",
         "label": "Ara\u015ft\u0131rma Kayd\u0131: E2E Kabul K\u00fct\u00fcphane Tan\u0131m\u0131",
         "label_en": "Research Record: Playwright Ger\u00e7ek K\u00fct\u00fcphane Rapor Entegrasyonu",
-        "status": "UNVERIFIED",
+        "status": "FAILED",
         "provenance_source": "/app/data/prospective/research_library/RLIB-3c104ed0c333.json",
         "source_artifact_sha256": "65667ba31904815d77513d51184cafb99503686c57d3e5bfa39752f4d24e0c6c",
         "properties": {
@@ -1008,23 +1046,26 @@
           "dataset_id": "BTCUSDT-1h",
           "window_cadence": "1h",
           "sample_size": null,
-          "volatility_ratio": null
+          "volatility_ratio": null,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "ART-243e052d977f",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: RLIB-3c104ed0c333.json",
         "label_en": "Source Artifact: RLIB-3c104ed0c333.json",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "/app/data/prospective/research_library/RLIB-3c104ed0c333.json",
         "source_artifact_sha256": "65667ba31904815d77513d51184cafb99503686c57d3e5bfa39752f4d24e0c6c",
         "properties": {
           "path": "/app/data/prospective/research_library/RLIB-3c104ed0c333.json",
-          "sha256": "65667ba31904815d77513d51184cafb99503686c57d3e5bfa39752f4d24e0c6c"
+          "sha256": "65667ba31904815d77513d51184cafb99503686c57d3e5bfa39752f4d24e0c6c",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "HYP-RLIB-3c104ed0c333",
@@ -1035,22 +1076,22 @@
         "provenance_source": "SPEC-LIB-RLIB-3c104ed0c333",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "STAT-RLIB-3c104ed0c333",
         "node_type": "STATISTICAL_RESULT",
-        "label": "\u0130statistiksel G\u00f6zlem (N=None)",
-        "label_en": "Statistical Observation (N=None)",
+        "label": "\u0130statistiksel G\u00f6zlem (N=0)",
+        "label_en": "Statistical Observation (N=0)",
         "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
-          "sample_size": null,
+          "sample_size": 0,
           "volatility_ratio": null,
           "p_value": null
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "CLAIM-RLIB-3c104ed0c333",
@@ -1063,14 +1104,14 @@
         "properties": {
           "key_findings_tr": ""
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "RLIB-669a3bc52ddf",
         "node_type": "RESEARCH_RECORD",
         "label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
         "label_en": "Research Record: Definition for Playwright E2E verification",
-        "status": "UNVERIFIED",
+        "status": "FAILED",
         "provenance_source": "/app/data/prospective/research_library/RLIB-669a3bc52ddf.json",
         "source_artifact_sha256": "413ebd1e48dcfe8ddc963376dcb3bef47782cb6283a2c7a1b976139cad45e1c1",
         "properties": {
@@ -1078,23 +1119,26 @@
           "dataset_id": "BTCUSDT-1h",
           "window_cadence": "1h",
           "sample_size": null,
-          "volatility_ratio": null
+          "volatility_ratio": null,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "ART-e5bc53cccc87",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: RLIB-669a3bc52ddf.json",
         "label_en": "Source Artifact: RLIB-669a3bc52ddf.json",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "/app/data/prospective/research_library/RLIB-669a3bc52ddf.json",
         "source_artifact_sha256": "413ebd1e48dcfe8ddc963376dcb3bef47782cb6283a2c7a1b976139cad45e1c1",
         "properties": {
           "path": "/app/data/prospective/research_library/RLIB-669a3bc52ddf.json",
-          "sha256": "413ebd1e48dcfe8ddc963376dcb3bef47782cb6283a2c7a1b976139cad45e1c1"
+          "sha256": "413ebd1e48dcfe8ddc963376dcb3bef47782cb6283a2c7a1b976139cad45e1c1",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "HYP-RLIB-669a3bc52ddf",
@@ -1105,22 +1149,22 @@
         "provenance_source": "SPEC-LIB-RLIB-669a3bc52ddf",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "STAT-RLIB-669a3bc52ddf",
         "node_type": "STATISTICAL_RESULT",
-        "label": "\u0130statistiksel G\u00f6zlem (N=None)",
-        "label_en": "Statistical Observation (N=None)",
+        "label": "\u0130statistiksel G\u00f6zlem (N=0)",
+        "label_en": "Statistical Observation (N=0)",
         "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
-          "sample_size": null,
+          "sample_size": 0,
           "volatility_ratio": null,
           "p_value": null
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "CLAIM-RLIB-669a3bc52ddf",
@@ -1133,14 +1177,14 @@
         "properties": {
           "key_findings_tr": ""
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "RLIB-7b0cb4781b20",
         "node_type": "RESEARCH_RECORD",
         "label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
         "label_en": "Research Record: Definition for Playwright E2E verification",
-        "status": "UNVERIFIED",
+        "status": "FAILED",
         "provenance_source": "/app/data/prospective/research_library/RLIB-7b0cb4781b20.json",
         "source_artifact_sha256": "3fc10ff1eadb88801187df560c4dc29956142d532e636f6d53e28480828e4d15",
         "properties": {
@@ -1148,23 +1192,26 @@
           "dataset_id": "BTCUSDT-1h",
           "window_cadence": "1h",
           "sample_size": null,
-          "volatility_ratio": null
+          "volatility_ratio": null,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "ART-b88afdf478a0",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: RLIB-7b0cb4781b20.json",
         "label_en": "Source Artifact: RLIB-7b0cb4781b20.json",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "/app/data/prospective/research_library/RLIB-7b0cb4781b20.json",
         "source_artifact_sha256": "3fc10ff1eadb88801187df560c4dc29956142d532e636f6d53e28480828e4d15",
         "properties": {
           "path": "/app/data/prospective/research_library/RLIB-7b0cb4781b20.json",
-          "sha256": "3fc10ff1eadb88801187df560c4dc29956142d532e636f6d53e28480828e4d15"
+          "sha256": "3fc10ff1eadb88801187df560c4dc29956142d532e636f6d53e28480828e4d15",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "HYP-RLIB-7b0cb4781b20",
@@ -1175,22 +1222,22 @@
         "provenance_source": "SPEC-LIB-RLIB-7b0cb4781b20",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "STAT-RLIB-7b0cb4781b20",
         "node_type": "STATISTICAL_RESULT",
-        "label": "\u0130statistiksel G\u00f6zlem (N=None)",
-        "label_en": "Statistical Observation (N=None)",
+        "label": "\u0130statistiksel G\u00f6zlem (N=0)",
+        "label_en": "Statistical Observation (N=0)",
         "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
-          "sample_size": null,
+          "sample_size": 0,
           "volatility_ratio": null,
           "p_value": null
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "CLAIM-RLIB-7b0cb4781b20",
@@ -1203,14 +1250,14 @@
         "properties": {
           "key_findings_tr": ""
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "RLIB-dbb10adc0f69",
         "node_type": "RESEARCH_RECORD",
         "label": "Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Rapor Tan\u0131m\u0131",
         "label_en": "Research Record: Raporlama testi",
-        "status": "UNVERIFIED",
+        "status": "FAILED",
         "provenance_source": "/app/data/prospective/research_library/RLIB-dbb10adc0f69.json",
         "source_artifact_sha256": "4f017576070ac3cd1e710ee1abec853eb547020ee6eb3a4acabd87fa65f80815",
         "properties": {
@@ -1218,23 +1265,26 @@
           "dataset_id": "BTCUSDT-1h",
           "window_cadence": "1h",
           "sample_size": null,
-          "volatility_ratio": null
+          "volatility_ratio": null,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "ART-ba575bc14402",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: RLIB-dbb10adc0f69.json",
         "label_en": "Source Artifact: RLIB-dbb10adc0f69.json",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "/app/data/prospective/research_library/RLIB-dbb10adc0f69.json",
         "source_artifact_sha256": "4f017576070ac3cd1e710ee1abec853eb547020ee6eb3a4acabd87fa65f80815",
         "properties": {
           "path": "/app/data/prospective/research_library/RLIB-dbb10adc0f69.json",
-          "sha256": "4f017576070ac3cd1e710ee1abec853eb547020ee6eb3a4acabd87fa65f80815"
+          "sha256": "4f017576070ac3cd1e710ee1abec853eb547020ee6eb3a4acabd87fa65f80815",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "HYP-RLIB-dbb10adc0f69",
@@ -1245,22 +1295,22 @@
         "provenance_source": "SPEC-LIB-RLIB-dbb10adc0f69",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "STAT-RLIB-dbb10adc0f69",
         "node_type": "STATISTICAL_RESULT",
-        "label": "\u0130statistiksel G\u00f6zlem (N=None)",
-        "label_en": "Statistical Observation (N=None)",
+        "label": "\u0130statistiksel G\u00f6zlem (N=0)",
+        "label_en": "Statistical Observation (N=0)",
         "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
-          "sample_size": null,
+          "sample_size": 0,
           "volatility_ratio": null,
           "p_value": null
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "CLAIM-RLIB-dbb10adc0f69",
@@ -1273,14 +1323,14 @@
         "properties": {
           "key_findings_tr": ""
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "RLIB-f93d9176002d",
         "node_type": "RESEARCH_RECORD",
         "label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
         "label_en": "Research Record: Definition for Playwright E2E verification",
-        "status": "UNVERIFIED",
+        "status": "FAILED",
         "provenance_source": "/app/data/prospective/research_library/RLIB-f93d9176002d.json",
         "source_artifact_sha256": "9ca88e77b131a981d0237b105caff21f7a3976311bbe7e98472280ab3e28bcb9",
         "properties": {
@@ -1288,23 +1338,26 @@
           "dataset_id": "BTCUSDT-1h",
           "window_cadence": "1h",
           "sample_size": null,
-          "volatility_ratio": null
+          "volatility_ratio": null,
+          "artifact_status": "FAILED",
+          "attestation_status": "UNVERIFIED"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "ART-2462cd267796",
         "node_type": "SOURCE_ARTIFACT",
         "label": "Kaynak Belge: RLIB-f93d9176002d.json",
         "label_en": "Source Artifact: RLIB-f93d9176002d.json",
-        "status": "VERIFIED",
+        "status": "FAILED",
         "provenance_source": "/app/data/prospective/research_library/RLIB-f93d9176002d.json",
         "source_artifact_sha256": "9ca88e77b131a981d0237b105caff21f7a3976311bbe7e98472280ab3e28bcb9",
         "properties": {
           "path": "/app/data/prospective/research_library/RLIB-f93d9176002d.json",
-          "sha256": "9ca88e77b131a981d0237b105caff21f7a3976311bbe7e98472280ab3e28bcb9"
+          "sha256": "9ca88e77b131a981d0237b105caff21f7a3976311bbe7e98472280ab3e28bcb9",
+          "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "HYP-RLIB-f93d9176002d",
@@ -1315,22 +1368,22 @@
         "provenance_source": "SPEC-LIB-RLIB-f93d9176002d",
         "source_artifact_sha256": null,
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "STAT-RLIB-f93d9176002d",
         "node_type": "STATISTICAL_RESULT",
-        "label": "\u0130statistiksel G\u00f6zlem (N=None)",
-        "label_en": "Statistical Observation (N=None)",
+        "label": "\u0130statistiksel G\u00f6zlem (N=0)",
+        "label_en": "Statistical Observation (N=0)",
         "status": "UNVERIFIED",
         "provenance_source": "",
         "source_artifact_sha256": null,
         "properties": {
-          "sample_size": null,
+          "sample_size": 0,
           "volatility_ratio": null,
           "p_value": null
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "CLAIM-RLIB-f93d9176002d",
@@ -1343,7 +1396,7 @@
         "properties": {
           "key_findings_tr": ""
         },
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       }
     ],
     "edges": [
@@ -1357,7 +1410,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "EDGE-DS-RES-FUND-01",
@@ -1366,10 +1419,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "data/reports/sprint09_38_funding_predictability_report.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "EDGE-ART-RES-FUND-01",
@@ -1378,10 +1431,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "data/reports/sprint09_38_funding_predictability_report.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "EDGE-HYP-RES-FUND-01",
@@ -1393,7 +1446,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "EDGE-STAT-RES-FUND-01",
@@ -1402,10 +1455,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "EDGE-CLAIM-RES-FUND-01",
@@ -1417,7 +1470,7 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288023+00:00"
       },
       {
         "id": "EDGE-GOV-RES-REGIME-01",
@@ -1429,7 +1482,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "EDGE-DS-RES-REGIME-01",
@@ -1438,10 +1491,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "data/reports/sprint09_27_validation_and_holdout_report.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "EDGE-ART-RES-REGIME-01",
@@ -1450,10 +1503,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "data/reports/sprint09_27_validation_and_holdout_report.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "EDGE-METH-RES-REGIME-01",
@@ -1465,7 +1518,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-SPEC-METHOD-02",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "EDGE-HYP-RES-REGIME-01",
@@ -1477,7 +1530,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "EDGE-STAT-RES-REGIME-01",
@@ -1486,10 +1539,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "EDGE-CLAIM-RES-REGIME-01",
@@ -1501,7 +1554,7 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "EDGE-GOV-RES-ANALOG-01",
@@ -1513,7 +1566,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "EDGE-DS-RES-ANALOG-01",
@@ -1522,10 +1575,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "research_outputs/research_report_29_pattern_similarity.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "EDGE-ART-RES-ANALOG-01",
@@ -1534,10 +1587,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "research_outputs/research_report_29_pattern_similarity.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "EDGE-METH-RES-ANALOG-01",
@@ -1549,7 +1602,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-SPEC-METHOD-03",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "EDGE-HYP-RES-ANALOG-01",
@@ -1561,7 +1614,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "EDGE-STAT-RES-ANALOG-01",
@@ -1570,10 +1623,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "EDGE-CLAIM-RES-ANALOG-01",
@@ -1585,7 +1638,7 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.288532+00:00"
       },
       {
         "id": "EDGE-GOV-RES-MACRO-01",
@@ -1597,7 +1650,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "EDGE-DS-RES-MACRO-01",
@@ -1606,10 +1659,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "research_outputs/experiment_cpi_volatility.cbe-hyp.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "EDGE-ART-RES-MACRO-01",
@@ -1618,10 +1671,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "research_outputs/experiment_cpi_volatility.cbe-hyp.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "EDGE-METH-RES-MACRO-01",
@@ -1633,7 +1686,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-SPEC-METHOD-04",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "EDGE-HYP-RES-MACRO-01",
@@ -1645,7 +1698,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "EDGE-STAT-RES-MACRO-01",
@@ -1654,10 +1707,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "EDGE-CLAIM-RES-MACRO-01",
@@ -1669,7 +1722,7 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "EDGE-GOV-RES-DURABILITY-01",
@@ -1681,7 +1734,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "EDGE-DS-RES-DURABILITY-01",
@@ -1690,10 +1743,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "research_outputs/sprint23_delivery/persistent_volume_verification.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "EDGE-ART-RES-DURABILITY-01",
@@ -1702,10 +1755,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "research_outputs/sprint23_delivery/persistent_volume_verification.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "EDGE-METH-RES-DURABILITY-01",
@@ -1717,7 +1770,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-SPEC-METHOD-05",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "EDGE-HYP-RES-DURABILITY-01",
@@ -1729,7 +1782,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "EDGE-STAT-RES-DURABILITY-01",
@@ -1738,10 +1791,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "EDGE-CLAIM-RES-DURABILITY-01",
@@ -1753,7 +1806,7 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289162+00:00"
       },
       {
         "id": "EDGE-GOV-RES-CRYPTO-01",
@@ -1765,7 +1818,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-DS-RES-CRYPTO-01",
@@ -1774,10 +1827,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-ART-RES-CRYPTO-01",
@@ -1786,10 +1839,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-HYP-RES-CRYPTO-01",
@@ -1801,7 +1854,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-STAT-RES-CRYPTO-01",
@@ -1810,10 +1863,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-CLAIM-RES-CRYPTO-01",
@@ -1825,7 +1878,7 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-GOV-RLIB-c5730b081950",
@@ -1837,7 +1890,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-DS-RLIB-c5730b081950",
@@ -1846,10 +1899,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "data/research_library/RLIB-c5730b081950.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-ART-RLIB-c5730b081950",
@@ -1858,10 +1911,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "data/research_library/RLIB-c5730b081950.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-HYP-RLIB-c5730b081950",
@@ -1873,7 +1926,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-STAT-RLIB-c5730b081950",
@@ -1882,10 +1935,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-CLAIM-RLIB-c5730b081950",
@@ -1897,7 +1950,7 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-GOV-RLIB-ee060f623584",
@@ -1909,7 +1962,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-DS-RLIB-ee060f623584",
@@ -1918,10 +1971,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "data/research_library/RLIB-ee060f623584.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-ART-RLIB-ee060f623584",
@@ -1930,10 +1983,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "data/research_library/RLIB-ee060f623584.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-HYP-RLIB-ee060f623584",
@@ -1945,7 +1998,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-STAT-RLIB-ee060f623584",
@@ -1954,10 +2007,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-CLAIM-RLIB-ee060f623584",
@@ -1969,7 +2022,7 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-GOV-RLIB-f9ddf66ba096",
@@ -1981,7 +2034,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-DS-RLIB-f9ddf66ba096",
@@ -1990,10 +2043,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "data/research_library/RLIB-f9ddf66ba096.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-ART-RLIB-f9ddf66ba096",
@@ -2002,10 +2055,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "data/research_library/RLIB-f9ddf66ba096.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-HYP-RLIB-f9ddf66ba096",
@@ -2017,7 +2070,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-STAT-RLIB-f9ddf66ba096",
@@ -2026,10 +2079,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-CLAIM-RLIB-f9ddf66ba096",
@@ -2041,7 +2094,7 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-GOV-RLIB-03c6ea53cf3d",
@@ -2053,7 +2106,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-DS-RLIB-03c6ea53cf3d",
@@ -2062,10 +2115,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "/app/data/prospective/research_library/RLIB-03c6ea53cf3d.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-ART-RLIB-03c6ea53cf3d",
@@ -2074,10 +2127,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "/app/data/prospective/research_library/RLIB-03c6ea53cf3d.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-HYP-RLIB-03c6ea53cf3d",
@@ -2089,7 +2142,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-STAT-RLIB-03c6ea53cf3d",
@@ -2098,10 +2151,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-CLAIM-RLIB-03c6ea53cf3d",
@@ -2113,7 +2166,7 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-GOV-RLIB-07c7c65c7e91",
@@ -2125,7 +2178,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-DS-RLIB-07c7c65c7e91",
@@ -2134,10 +2187,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "/app/data/prospective/research_library/RLIB-07c7c65c7e91.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-ART-RLIB-07c7c65c7e91",
@@ -2146,10 +2199,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "/app/data/prospective/research_library/RLIB-07c7c65c7e91.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-HYP-RLIB-07c7c65c7e91",
@@ -2161,7 +2214,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-STAT-RLIB-07c7c65c7e91",
@@ -2170,10 +2223,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-CLAIM-RLIB-07c7c65c7e91",
@@ -2185,7 +2238,7 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.289671+00:00"
       },
       {
         "id": "EDGE-GOV-RLIB-2f30980866e9",
@@ -2197,7 +2250,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "EDGE-DS-RLIB-2f30980866e9",
@@ -2206,10 +2259,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "/app/data/prospective/research_library/RLIB-2f30980866e9.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "EDGE-ART-RLIB-2f30980866e9",
@@ -2218,10 +2271,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "/app/data/prospective/research_library/RLIB-2f30980866e9.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "EDGE-HYP-RLIB-2f30980866e9",
@@ -2233,7 +2286,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "EDGE-STAT-RLIB-2f30980866e9",
@@ -2242,10 +2295,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "EDGE-CLAIM-RLIB-2f30980866e9",
@@ -2257,7 +2310,7 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "EDGE-GOV-RLIB-3c104ed0c333",
@@ -2269,7 +2322,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "EDGE-DS-RLIB-3c104ed0c333",
@@ -2278,10 +2331,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "/app/data/prospective/research_library/RLIB-3c104ed0c333.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "EDGE-ART-RLIB-3c104ed0c333",
@@ -2290,10 +2343,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "/app/data/prospective/research_library/RLIB-3c104ed0c333.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "EDGE-HYP-RLIB-3c104ed0c333",
@@ -2305,7 +2358,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "EDGE-STAT-RLIB-3c104ed0c333",
@@ -2314,10 +2367,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "EDGE-CLAIM-RLIB-3c104ed0c333",
@@ -2329,7 +2382,7 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291004+00:00"
       },
       {
         "id": "EDGE-GOV-RLIB-669a3bc52ddf",
@@ -2341,7 +2394,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-DS-RLIB-669a3bc52ddf",
@@ -2350,10 +2403,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "/app/data/prospective/research_library/RLIB-669a3bc52ddf.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-ART-RLIB-669a3bc52ddf",
@@ -2362,10 +2415,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "/app/data/prospective/research_library/RLIB-669a3bc52ddf.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-HYP-RLIB-669a3bc52ddf",
@@ -2377,7 +2430,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-STAT-RLIB-669a3bc52ddf",
@@ -2386,10 +2439,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-CLAIM-RLIB-669a3bc52ddf",
@@ -2401,7 +2454,7 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-GOV-RLIB-7b0cb4781b20",
@@ -2413,7 +2466,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-DS-RLIB-7b0cb4781b20",
@@ -2422,10 +2475,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "/app/data/prospective/research_library/RLIB-7b0cb4781b20.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-ART-RLIB-7b0cb4781b20",
@@ -2434,10 +2487,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "/app/data/prospective/research_library/RLIB-7b0cb4781b20.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-HYP-RLIB-7b0cb4781b20",
@@ -2449,7 +2502,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-STAT-RLIB-7b0cb4781b20",
@@ -2458,10 +2511,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-CLAIM-RLIB-7b0cb4781b20",
@@ -2473,7 +2526,7 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-GOV-RLIB-dbb10adc0f69",
@@ -2485,7 +2538,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-DS-RLIB-dbb10adc0f69",
@@ -2494,10 +2547,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "/app/data/prospective/research_library/RLIB-dbb10adc0f69.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-ART-RLIB-dbb10adc0f69",
@@ -2506,10 +2559,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "/app/data/prospective/research_library/RLIB-dbb10adc0f69.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-HYP-RLIB-dbb10adc0f69",
@@ -2521,7 +2574,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-STAT-RLIB-dbb10adc0f69",
@@ -2530,10 +2583,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-CLAIM-RLIB-dbb10adc0f69",
@@ -2545,7 +2598,7 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-GOV-RLIB-f93d9176002d",
@@ -2557,7 +2610,7 @@
         "is_verified": true,
         "provenance_reference": "CBE-0.7.0 Governance Policy",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-DS-RLIB-f93d9176002d",
@@ -2566,10 +2619,10 @@
         "edge_type": "USES_DATASET",
         "label": "Veri Setini Kullan\u0131r",
         "label_en": "Uses Dataset",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "/app/data/prospective/research_library/RLIB-f93d9176002d.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-ART-RLIB-f93d9176002d",
@@ -2578,10 +2631,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "Kaynak Belgeden T\u00fcretilmi\u015ftir",
         "label_en": "Derived From Source Artifact",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "/app/data/prospective/research_library/RLIB-f93d9176002d.json",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-HYP-RLIB-f93d9176002d",
@@ -2593,7 +2646,7 @@
         "is_verified": true,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-STAT-RLIB-f93d9176002d",
@@ -2602,10 +2655,10 @@
         "edge_type": "DERIVED_FROM",
         "label": "G\u00f6zlem Sonucu",
         "label_en": "Observation Result",
-        "is_verified": true,
+        "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       },
       {
         "id": "EDGE-CLAIM-RLIB-f93d9176002d",
@@ -2617,319 +2670,484 @@
         "is_verified": false,
         "provenance_reference": "",
         "properties": {},
-        "created_at_utc": "2026-11-10T12:17:44.292732+00:00"
+        "created_at_utc": "2026-11-10T23:57:49.291508+00:00"
       }
-    ]
+    ],
+    "node_count": 97,
+    "edge_count": 106,
+    "total_nodes": 97
   },
   "total_nodes_in_system": 97,
   "total_edges_in_system": 106,
   "missing_links": [
     {
       "node_id": "RES-FUND-01",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RES-FUND-01",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "CLAIM-RES-FUND-01",
+      "record_label": "Bilimsel \u0130ddia: Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     },
     {
       "node_id": "RES-REGIME-01",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: 2022\u20132026 Kronolojik \u0130leriye Y\u00f6nelik Rejim Kararl\u0131l\u0131\u011f\u0131 Do\u011frulamas\u0131",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: 2022\u20132026 Kronolojik \u0130leriye Y\u00f6nelik Rejim Kararl\u0131l\u0131\u011f\u0131 Do\u011frulamas\u0131' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: 2022\u20132026 Kronolojik \u0130leriye Y\u00f6nelik Rejim Kararl\u0131l\u0131\u011f\u0131 Do\u011frulamas\u0131' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: 2022\u20132026 Kronolojik \u0130leriye Y\u00f6nelik Rejim Kararl\u0131l\u0131\u011f\u0131 Do\u011frulamas\u0131",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RES-REGIME-01",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: 2022\u20132026 Kronolojik \u0130leriye Y\u00f6nelik Rejim Kararl\u0131l\u0131\u011f\u0131 Do\u011frulamas\u0131",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: 2022\u20132026 Kronolojik \u0130leriye Y\u00f6nelik Rejim Kararl\u0131l\u0131\u011f\u0131 Do\u011frulamas\u0131",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: 2022\u20132026 Kronolojik \u0130leriye Y\u00f6nelik Rejim Kararl\u0131l\u0131\u011f\u0131 Do\u011frulamas\u0131' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: 2022\u20132026 Kronolojik \u0130leriye Y\u00f6nelik Rejim Kararl\u0131l\u0131\u011f\u0131 Do\u011frulamas\u0131'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "CLAIM-RES-REGIME-01",
+      "record_label": "Bilimsel \u0130ddia: 2022\u20132026 Kronolojik \u0130leriye Y\u00f6nelik Rejim Kararl\u0131l\u0131\u011f\u0131 Do\u011frulamas\u0131",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     },
     {
       "node_id": "RES-ANALOG-01",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Dinamik Zaman B\u00fckmesi (DTW) Tarihsel \u00d6r\u00fcnt\u00fc Benzerli\u011fi V2",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Dinamik Zaman B\u00fckmesi (DTW) Tarihsel \u00d6r\u00fcnt\u00fc Benzerli\u011fi V2' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: Dinamik Zaman B\u00fckmesi (DTW) Tarihsel \u00d6r\u00fcnt\u00fc Benzerli\u011fi V2' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Dinamik Zaman B\u00fckmesi (DTW) Tarihsel \u00d6r\u00fcnt\u00fc Benzerli\u011fi V2",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RES-ANALOG-01",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Dinamik Zaman B\u00fckmesi (DTW) Tarihsel \u00d6r\u00fcnt\u00fc Benzerli\u011fi V2",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Dinamik Zaman B\u00fckmesi (DTW) Tarihsel \u00d6r\u00fcnt\u00fc Benzerli\u011fi V2",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Dinamik Zaman B\u00fckmesi (DTW) Tarihsel \u00d6r\u00fcnt\u00fc Benzerli\u011fi V2' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: Dinamik Zaman B\u00fckmesi (DTW) Tarihsel \u00d6r\u00fcnt\u00fc Benzerli\u011fi V2'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "CLAIM-RES-ANALOG-01",
+      "record_label": "Bilimsel \u0130ddia: Dinamik Zaman B\u00fckmesi (DTW) Tarihsel \u00d6r\u00fcnt\u00fc Benzerli\u011fi V2",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     },
     {
       "node_id": "RES-MACRO-01",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Makroekonomik Duyurular (CPI & FOMC) T0 Rejim D\u00f6n\u00fc\u015f\u00fcmleri",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Makroekonomik Duyurular (CPI & FOMC) T0 Rejim D\u00f6n\u00fc\u015f\u00fcmleri' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: Makroekonomik Duyurular (CPI & FOMC) T0 Rejim D\u00f6n\u00fc\u015f\u00fcmleri' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Makroekonomik Duyurular (CPI & FOMC) T0 Rejim D\u00f6n\u00fc\u015f\u00fcmleri",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RES-MACRO-01",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Makroekonomik Duyurular (CPI & FOMC) T0 Rejim D\u00f6n\u00fc\u015f\u00fcmleri",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Makroekonomik Duyurular (CPI & FOMC) T0 Rejim D\u00f6n\u00fc\u015f\u00fcmleri",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Makroekonomik Duyurular (CPI & FOMC) T0 Rejim D\u00f6n\u00fc\u015f\u00fcmleri' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: Makroekonomik Duyurular (CPI & FOMC) T0 Rejim D\u00f6n\u00fc\u015f\u00fcmleri'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "CLAIM-RES-MACRO-01",
+      "record_label": "Bilimsel \u0130ddia: Makroekonomik Duyurular (CPI & FOMC) T0 Rejim D\u00f6n\u00fc\u015f\u00fcmleri",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     },
     {
       "node_id": "RES-DURABILITY-01",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Dayan\u0131kl\u0131 Depolama Do\u011frulamas\u0131 & Kan\u0131t Soyk\u00fct\u00fc\u011f\u00fc Sertifikasyonu",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Dayan\u0131kl\u0131 Depolama Do\u011frulamas\u0131 & Kan\u0131t Soyk\u00fct\u00fc\u011f\u00fc Sertifikasyonu' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: Dayan\u0131kl\u0131 Depolama Do\u011frulamas\u0131 & Kan\u0131t Soyk\u00fct\u00fc\u011f\u00fc Sertifikasyonu' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Dayan\u0131kl\u0131 Depolama Do\u011frulamas\u0131 & Kan\u0131t Soyk\u00fct\u00fc\u011f\u00fc Sertifikasyonu",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RES-DURABILITY-01",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Dayan\u0131kl\u0131 Depolama Do\u011frulamas\u0131 & Kan\u0131t Soyk\u00fct\u00fc\u011f\u00fc Sertifikasyonu",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Dayan\u0131kl\u0131 Depolama Do\u011frulamas\u0131 & Kan\u0131t Soyk\u00fct\u00fc\u011f\u00fc Sertifikasyonu",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Dayan\u0131kl\u0131 Depolama Do\u011frulamas\u0131 & Kan\u0131t Soyk\u00fct\u00fc\u011f\u00fc Sertifikasyonu' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: Dayan\u0131kl\u0131 Depolama Do\u011frulamas\u0131 & Kan\u0131t Soyk\u00fct\u00fc\u011f\u00fc Sertifikasyonu'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "CLAIM-RES-DURABILITY-01",
+      "record_label": "Bilimsel \u0130ddia: Dayan\u0131kl\u0131 Depolama Do\u011frulamas\u0131 & Kan\u0131t Soyk\u00fct\u00fc\u011f\u00fc Sertifikasyonu",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     },
     {
       "node_id": "RES-CRYPTO-01",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim \u0130ncelemesi",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim \u0130ncelemesi' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim \u0130ncelemesi' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim \u0130ncelemesi",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RES-CRYPTO-01",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim \u0130ncelemesi",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim \u0130ncelemesi",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim \u0130ncelemesi' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim \u0130ncelemesi'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "RES-CRYPTO-01",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim \u0130ncelemesi",
+      "missing_type": "DATASET_QUARANTINED",
+      "severity": "CRITICAL",
+      "description_tr": "Ba\u011fl\u0131 veri seti (Veri Seti: BTCUSDT-OCTOBER-2026-INTAKE) karantina alt\u0131nda bloke edilmi\u015ftir.",
+      "description_en": "Linked dataset (Dataset: BTCUSDT-OCTOBER-2026-INTAKE) is quarantined and blocked.",
+      "recommended_action": "Karantina adli incelemesi tamamlanmadan bu kayd\u0131 incelemeye almay\u0131n."
+    },
+    {
+      "node_id": "CLAIM-RES-CRYPTO-01",
+      "record_label": "Bilimsel \u0130ddia: Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim \u0130ncelemesi",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     },
     {
       "node_id": "RLIB-c5730b081950",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RLIB-c5730b081950",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "CLAIM-RLIB-c5730b081950",
+      "record_label": "Bilimsel \u0130ddia: Playwright Sprint 21 Verified Library Item",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     },
     {
       "node_id": "RLIB-ee060f623584",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RLIB-ee060f623584",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: Playwright Sprint 21 Verified Library Item'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "CLAIM-RLIB-ee060f623584",
+      "record_label": "Bilimsel \u0130ddia: Playwright Sprint 21 Verified Library Item",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     },
     {
       "node_id": "RLIB-f9ddf66ba096",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Library Report Test",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Library Report Test' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Library Report Test' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Library Report Test",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RLIB-f9ddf66ba096",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Library Report Test",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Library Report Test",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Library Report Test' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Library Report Test'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "CLAIM-RLIB-f9ddf66ba096",
+      "record_label": "Bilimsel \u0130ddia: Sprint 22 Library Report Test",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     },
     {
       "node_id": "RLIB-03c6ea53cf3d",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RLIB-03c6ea53cf3d",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "CLAIM-RLIB-03c6ea53cf3d",
+      "record_label": "Bilimsel \u0130ddia: Acceptance Test Definition",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     },
     {
       "node_id": "RLIB-07c7c65c7e91",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RLIB-07c7c65c7e91",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "CLAIM-RLIB-07c7c65c7e91",
+      "record_label": "Bilimsel \u0130ddia: Acceptance Test Definition",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     },
     {
       "node_id": "RLIB-2f30980866e9",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RLIB-2f30980866e9",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "CLAIM-RLIB-2f30980866e9",
+      "record_label": "Bilimsel \u0130ddia: Acceptance Test Definition",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     },
     {
       "node_id": "RLIB-3c104ed0c333",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: E2E Kabul K\u00fct\u00fcphane Tan\u0131m\u0131",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: E2E Kabul K\u00fct\u00fcphane Tan\u0131m\u0131' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: E2E Kabul K\u00fct\u00fcphane Tan\u0131m\u0131' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: E2E Kabul K\u00fct\u00fcphane Tan\u0131m\u0131",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RLIB-3c104ed0c333",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: E2E Kabul K\u00fct\u00fcphane Tan\u0131m\u0131",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: E2E Kabul K\u00fct\u00fcphane Tan\u0131m\u0131",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: E2E Kabul K\u00fct\u00fcphane Tan\u0131m\u0131' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: E2E Kabul K\u00fct\u00fcphane Tan\u0131m\u0131'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "CLAIM-RLIB-3c104ed0c333",
+      "record_label": "Bilimsel \u0130ddia: E2E Kabul K\u00fct\u00fcphane Tan\u0131m\u0131",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     },
     {
       "node_id": "RLIB-669a3bc52ddf",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RLIB-669a3bc52ddf",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "CLAIM-RLIB-669a3bc52ddf",
+      "record_label": "Bilimsel \u0130ddia: Acceptance Test Definition",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     },
     {
       "node_id": "RLIB-7b0cb4781b20",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RLIB-7b0cb4781b20",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "CLAIM-RLIB-7b0cb4781b20",
+      "record_label": "Bilimsel \u0130ddia: Acceptance Test Definition",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     },
     {
       "node_id": "RLIB-dbb10adc0f69",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Rapor Tan\u0131m\u0131",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Rapor Tan\u0131m\u0131' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Rapor Tan\u0131m\u0131' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Rapor Tan\u0131m\u0131",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RLIB-dbb10adc0f69",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Rapor Tan\u0131m\u0131",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Rapor Tan\u0131m\u0131",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Rapor Tan\u0131m\u0131' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: Sprint 22 Rapor Tan\u0131m\u0131'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "CLAIM-RLIB-dbb10adc0f69",
+      "record_label": "Bilimsel \u0130ddia: Sprint 22 Rapor Tan\u0131m\u0131",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     },
     {
       "node_id": "RLIB-f93d9176002d",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
-      "missing_relation": "VERIFIED_BY",
-      "target_type": "ATTESTATION",
-      "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' ba\u011f\u0131ms\u0131z kriptografik eksiksizlik tasdi\u011fine sahip de\u011fil.",
-      "description_en": "Research record 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' has no independent cryptographic completeness attestation."
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
+      "missing_type": "SOURCE_ARTIFACT_INTEGRITY",
+      "severity": "CRITICAL",
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n fiziksel disk \u00fczerindeki kaynak belgesi do\u011frulanmam\u0131\u015ft\u0131r.",
+      "description_en": "Research record lacks physical source artifact integrity verification.",
+      "recommended_action": "Kaynak dosya varl\u0131\u011f\u0131n\u0131 ve SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fcn\u00fc do\u011frulay\u0131n."
     },
     {
       "node_id": "RLIB-f93d9176002d",
-      "node_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
-      "missing_relation": "REPLICATED_BY",
-      "target_type": "REPLICATION_ATTEMPT",
+      "record_label": "Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition",
+      "missing_type": "CRYPTOGRAPHIC_ATTESTATION",
       "severity": "HIGH",
-      "description_tr": "Ara\u015ft\u0131rma kayd\u0131 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition' i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulama/replikasyon kan\u0131t\u0131 kaydedilmemi\u015ftir.",
-      "description_en": "No independent replication evidence recorded for research record 'Ara\u015ft\u0131rma Kayd\u0131: Acceptance Test Definition'."
+      "description_tr": "Ara\u015ft\u0131rma kayd\u0131n\u0131n RFC-8785 g\u00f6zlem eksiksizli\u011fi tasdiki eksik veya ge\u00e7ersizdir.",
+      "description_en": "Missing or invalid RFC-8785 observation completeness attestation envelope.",
+      "recommended_action": "Yetkili veri otoritesinden imzal\u0131 tasdik temin edin."
+    },
+    {
+      "node_id": "CLAIM-RLIB-f93d9176002d",
+      "record_label": "Bilimsel \u0130ddia: Acceptance Test Definition",
+      "missing_type": "INDEPENDENT_REPLICATION",
+      "severity": "MEDIUM",
+      "description_tr": "Bilimsel iddia i\u00e7in hen\u00fcz ba\u011f\u0131ms\u0131z do\u011frulay\u0131c\u0131 replikasyon bulunmamaktad\u0131r.",
+      "description_en": "Scientific claim lacks confirmatory independent replication.",
+      "recommended_action": "Ayr\u0131 bir veri penceresinde ba\u011f\u0131ms\u0131z replikasyon prosed\u00fcr\u00fc y\u00fcr\u00fct\u00fcn."
     }
   ],
-  "missing_links_count": 34
+  "missing_links_count": 52
 }

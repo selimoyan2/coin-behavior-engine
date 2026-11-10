@@ -5,7 +5,7 @@
 **Governance Decision:** `TECHNICAL_NO_GO`  
 **Execution Mode:** `STRICTLY_OFFLINE_RESEARCH`  
 **Production Status:** `STRICT ZERO-TOUCH (Container 19004adaea21 Untouched)`  
-**Staging Status:** `DEPLOYED & VERIFIED (Container 90534f6b12fe on srv1114257:18080)`  
+**Staging Status:** `DEPLOYED & VERIFIED (Container ce770e16189c on srv1114257:18080)`  
 
 ---
 

@@ -1,0 +1,107 @@
+{
+  "manifest_version": "1.0.0",
+  "sprint_id": "CBE_SPRINT25_RESEARCH_DECISION_INTELLIGENCE",
+  "generated_timestamp_utc": "2026-11-10T23:58:00Z",
+  "artifacts": {
+    "canonical_evidence_graph.json": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/canonical_evidence_graph.json",
+      "sha256": "8c78c09b0b2e22356583a64c04c69f7034fe6712d4d7e49e878b3a3141799efd",
+      "size_bytes": 144163
+    },
+    "dashboard_v3_api_contract.json": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/dashboard_v3_api_contract.json",
+      "sha256": "0c9be703b227415ddb301d221c9fc741c3c5904c8c8c0f1b4e09f1277e4a713a",
+      "size_bytes": 2003
+    },
+    "evidence_gap_catalog.json": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/evidence_gap_catalog.json",
+      "sha256": "eb3764a91ad8c5037398c2fcd229af5287dfd51229e27f9834b0547f62675c35",
+      "size_bytes": 64670
+    },
+    "evidence_graph_specification.json": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/evidence_graph_specification.json",
+      "sha256": "140f3c1b3324b8432604fed7d83704ae44676d112fdd630dc5d013cd0c456260",
+      "size_bytes": 1189
+    },
+    "multi_sprint_regression_summary.json": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/multi_sprint_regression_summary.json",
+      "sha256": "f2f2cab58519d6cc56c8d183c0f71f669b114b9d02aef831e02f4ff484208d44",
+      "size_bytes": 2716
+    },
+    "playwright_acceptance_results.json": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/playwright_acceptance_results.json",
+      "sha256": "674923f943bcd90608afc844a98ea28992bfc32b49635b3fdbbc3fcb464f2a1d",
+      "size_bytes": 1406
+    },
+    "production_zero_touch_audit.json": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/production_zero_touch_audit.json",
+      "sha256": "e641e2efe558e552fff6ca997c3aeac2e1509ccf7083b95e7a1affc936917b4d",
+      "size_bytes": 459
+    },
+    "README.md": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/README.md",
+      "sha256": "5bb10312d6f6396518e9c27638e6dab90e50561461e27ee499a32211dcd06959",
+      "size_bytes": 3935
+    },
+    "reproducibility_execution_logs.json": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/reproducibility_execution_logs.json",
+      "sha256": "cf4a6add9eb77f7dbb8f619ae16c369139e61f0ecd2ed12a1b3fc5cd6d505001",
+      "size_bytes": 6521
+    },
+    "reproducibility_lab_protocol.json": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/reproducibility_lab_protocol.json",
+      "sha256": "7ddca4d84d9c26291407ab81b9e5f2ced9464e1aeff7d6f1f1f4e7523505ebf8",
+      "size_bytes": 2655
+    },
+    "research_decision_report_sample.html": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/research_decision_report_sample.html",
+      "sha256": "9a86767e5102e2eef73fefb4a1bd161e361813d3e6d16ca5a5e7c58cd6ade3c7",
+      "size_bytes": 5794
+    },
+    "research_decision_report_sample.json": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/research_decision_report_sample.json",
+      "sha256": "66fe81fc8fc65301cdcb2f40537fecb506912fca9a1814703d7eab5afa5adf6a",
+      "size_bytes": 3475
+    },
+    "research_priority_manifest.json": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/research_priority_manifest.json",
+      "sha256": "80e1e3f5c4109752748d37e7e370a690d792aa5208acbfae741e9959c3ef4034",
+      "size_bytes": 52431
+    },
+    "scientific_readiness_scorecards.json": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/scientific_readiness_scorecards.json",
+      "sha256": "2c5cbd3b6eed253f166739eef652ad676b04c38603a6509ad98fdc10890360e6",
+      "size_bytes": 196463
+    },
+    "scientific_readiness_specification.json": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/scientific_readiness_specification.json",
+      "sha256": "78f54ce1694ff748c470be293c6a411003b6e51a3ef89d6a58d58f05d6f12776",
+      "size_bytes": 2911
+    },
+    "screenshots/sprint25_screenshot_01_desktop_evidence_graph.png": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/screenshots/sprint25_screenshot_01_desktop_evidence_graph.png",
+      "sha256": "caf707b8ab3af93345ac3f010b792caded4e4bbe91829542061a190d1f75eabd",
+      "size_bytes": 1001959
+    },
+    "screenshots/sprint25_screenshot_02_tablet_readiness_scorecards.png": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/screenshots/sprint25_screenshot_02_tablet_readiness_scorecards.png",
+      "sha256": "633cd595e40e2393078186a19af4ff5d4a79e8927abfe375797d1deacfe07a99",
+      "size_bytes": 631285
+    },
+    "screenshots/sprint25_screenshot_03_mobile_gap_analysis.png": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/screenshots/sprint25_screenshot_03_mobile_gap_analysis.png",
+      "sha256": "63388d74d901e61ef037dfd4846e65caecf492996f26f5ab6eb3022175e98ee4",
+      "size_bytes": 739241
+    },
+    "sprint25_final_acceptance_certification.md": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/sprint25_final_acceptance_certification.md",
+      "sha256": "32b474dabb18c37138fb85cc52f9ac1fe6193a1f7dd276ef648f3b84cec6991a",
+      "size_bytes": 6886
+    },
+    "staging_verification_report.json": {
+      "path": "research_outputs/sprint25_final_scientific_trust_closure/staging_verification_report.json",
+      "sha256": "8d0cae54730bf894c657d82f044d9aa612a758aafbebb10d109b630061f13edc",
+      "size_bytes": 1421
+    }
+  }
+}

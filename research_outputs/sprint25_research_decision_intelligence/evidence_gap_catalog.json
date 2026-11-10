@@ -30,7 +30,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.310474+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.312869+00:00"
     },
     {
       "gap_id": "GAP-RES-FUND-01-08",
@@ -47,7 +47,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.310474+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.312869+00:00"
     },
     {
       "gap_id": "GAP-RES-FUND-01-09",
@@ -64,7 +64,7 @@
       "suggested_research_action_en": "Re-evaluate holdout partition and inspect regime drift.",
       "resolution_criteria_tr": "Y\u00f6nsel istatistiklerin uzla\u015ft\u0131r\u0131lmas\u0131 ve gerek\u00e7elendirilmesi.",
       "resolution_criteria_en": "Reconciliation and justification of directional metrics.",
-      "detected_at_utc": "2026-11-10T12:17:44.310474+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.312869+00:00"
     },
     {
       "gap_id": "GAP-RES-FUND-01-10",
@@ -81,7 +81,7 @@
       "suggested_research_action_en": "Report failure to reject null hypothesis; avoid predictive claims.",
       "resolution_criteria_tr": "\u00c7al\u0131\u015fman\u0131n tan\u0131mlay\u0131c\u0131 (descriptive) olarak etiketlenmesi.",
       "resolution_criteria_en": "Classification of the finding as descriptive-only.",
-      "detected_at_utc": "2026-11-10T12:17:44.310474+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.312869+00:00"
     },
     {
       "gap_id": "GAP-RES-REGIME-01-04",
@@ -98,7 +98,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.310474+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RES-REGIME-01-08",
@@ -115,7 +115,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.310474+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RES-REGIME-01-09",
@@ -132,7 +132,7 @@
       "suggested_research_action_en": "Re-evaluate holdout partition and inspect regime drift.",
       "resolution_criteria_tr": "Y\u00f6nsel istatistiklerin uzla\u015ft\u0131r\u0131lmas\u0131 ve gerek\u00e7elendirilmesi.",
       "resolution_criteria_en": "Reconciliation and justification of directional metrics.",
-      "detected_at_utc": "2026-11-10T12:17:44.310474+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RES-REGIME-01-10",
@@ -149,7 +149,7 @@
       "suggested_research_action_en": "Report failure to reject null hypothesis; avoid predictive claims.",
       "resolution_criteria_tr": "\u00c7al\u0131\u015fman\u0131n tan\u0131mlay\u0131c\u0131 (descriptive) olarak etiketlenmesi.",
       "resolution_criteria_en": "Classification of the finding as descriptive-only.",
-      "detected_at_utc": "2026-11-10T12:17:44.310474+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RES-ANALOG-01-04",
@@ -166,7 +166,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.310474+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RES-ANALOG-01-08",
@@ -183,7 +183,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.310474+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RES-MACRO-01-04",
@@ -200,7 +200,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RES-MACRO-01-05",
@@ -217,7 +217,7 @@
       "suggested_research_action_en": "Broaden observation window to cover at least 100 intervals.",
       "resolution_criteria_tr": "\u00d6rneklem say\u0131s\u0131n\u0131n N >= 100 seviyesine ula\u015fmas\u0131.",
       "resolution_criteria_en": "Sample size reaching N >= 100.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RES-MACRO-01-08",
@@ -234,7 +234,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RES-DURABILITY-01-04",
@@ -251,7 +251,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RES-DURABILITY-01-05",
@@ -268,7 +268,7 @@
       "suggested_research_action_en": "Broaden observation window to cover at least 100 intervals.",
       "resolution_criteria_tr": "\u00d6rneklem say\u0131s\u0131n\u0131n N >= 100 seviyesine ula\u015fmas\u0131.",
       "resolution_criteria_en": "Sample size reaching N >= 100.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RES-DURABILITY-01-08",
@@ -285,7 +285,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RES-CRYPTO-01-03",
@@ -302,7 +302,7 @@
       "suggested_research_action_en": "Record complete exchange API intake log and SHA-256 lineage.",
       "resolution_criteria_tr": "Karantinan\u0131n kald\u0131r\u0131lmas\u0131 ve veri soyk\u00fct\u00fc\u011f\u00fcn\u00fcn do\u011frulanmas\u0131.",
       "resolution_criteria_en": "Quarantine resolution and provenance verification.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RES-CRYPTO-01-04",
@@ -319,7 +319,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RES-CRYPTO-01-08",
@@ -336,7 +336,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RES-CRYPTO-01-09",
@@ -353,7 +353,7 @@
       "suggested_research_action_en": "Re-evaluate holdout partition and inspect regime drift.",
       "resolution_criteria_tr": "Y\u00f6nsel istatistiklerin uzla\u015ft\u0131r\u0131lmas\u0131 ve gerek\u00e7elendirilmesi.",
       "resolution_criteria_en": "Reconciliation and justification of directional metrics.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-c5730b081950-04",
@@ -370,7 +370,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-c5730b081950-05",
@@ -387,7 +387,7 @@
       "suggested_research_action_en": "Broaden observation window to cover at least 100 intervals.",
       "resolution_criteria_tr": "\u00d6rneklem say\u0131s\u0131n\u0131n N >= 100 seviyesine ula\u015fmas\u0131.",
       "resolution_criteria_en": "Sample size reaching N >= 100.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-c5730b081950-08",
@@ -404,7 +404,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-ee060f623584-04",
@@ -421,7 +421,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-ee060f623584-05",
@@ -438,7 +438,7 @@
       "suggested_research_action_en": "Broaden observation window to cover at least 100 intervals.",
       "resolution_criteria_tr": "\u00d6rneklem say\u0131s\u0131n\u0131n N >= 100 seviyesine ula\u015fmas\u0131.",
       "resolution_criteria_en": "Sample size reaching N >= 100.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-ee060f623584-08",
@@ -455,7 +455,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-f9ddf66ba096-04",
@@ -472,7 +472,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.310994+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-f9ddf66ba096-05",
@@ -489,7 +489,7 @@
       "suggested_research_action_en": "Broaden observation window to cover at least 100 intervals.",
       "resolution_criteria_tr": "\u00d6rneklem say\u0131s\u0131n\u0131n N >= 100 seviyesine ula\u015fmas\u0131.",
       "resolution_criteria_en": "Sample size reaching N >= 100.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-f9ddf66ba096-08",
@@ -506,7 +506,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-03c6ea53cf3d-04",
@@ -523,7 +523,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-03c6ea53cf3d-05",
@@ -540,7 +540,7 @@
       "suggested_research_action_en": "Broaden observation window to cover at least 100 intervals.",
       "resolution_criteria_tr": "\u00d6rneklem say\u0131s\u0131n\u0131n N >= 100 seviyesine ula\u015fmas\u0131.",
       "resolution_criteria_en": "Sample size reaching N >= 100.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-03c6ea53cf3d-08",
@@ -557,7 +557,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-07c7c65c7e91-04",
@@ -574,7 +574,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-07c7c65c7e91-05",
@@ -591,7 +591,7 @@
       "suggested_research_action_en": "Broaden observation window to cover at least 100 intervals.",
       "resolution_criteria_tr": "\u00d6rneklem say\u0131s\u0131n\u0131n N >= 100 seviyesine ula\u015fmas\u0131.",
       "resolution_criteria_en": "Sample size reaching N >= 100.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-07c7c65c7e91-08",
@@ -608,7 +608,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-2f30980866e9-04",
@@ -625,7 +625,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-2f30980866e9-05",
@@ -642,7 +642,7 @@
       "suggested_research_action_en": "Broaden observation window to cover at least 100 intervals.",
       "resolution_criteria_tr": "\u00d6rneklem say\u0131s\u0131n\u0131n N >= 100 seviyesine ula\u015fmas\u0131.",
       "resolution_criteria_en": "Sample size reaching N >= 100.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-2f30980866e9-08",
@@ -659,7 +659,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-3c104ed0c333-04",
@@ -676,7 +676,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-3c104ed0c333-05",
@@ -693,7 +693,7 @@
       "suggested_research_action_en": "Broaden observation window to cover at least 100 intervals.",
       "resolution_criteria_tr": "\u00d6rneklem say\u0131s\u0131n\u0131n N >= 100 seviyesine ula\u015fmas\u0131.",
       "resolution_criteria_en": "Sample size reaching N >= 100.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-3c104ed0c333-08",
@@ -710,7 +710,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-669a3bc52ddf-04",
@@ -727,7 +727,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-669a3bc52ddf-05",
@@ -744,7 +744,7 @@
       "suggested_research_action_en": "Broaden observation window to cover at least 100 intervals.",
       "resolution_criteria_tr": "\u00d6rneklem say\u0131s\u0131n\u0131n N >= 100 seviyesine ula\u015fmas\u0131.",
       "resolution_criteria_en": "Sample size reaching N >= 100.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-669a3bc52ddf-08",
@@ -761,7 +761,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.312012+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-7b0cb4781b20-04",
@@ -778,7 +778,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.312523+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-7b0cb4781b20-05",
@@ -795,7 +795,7 @@
       "suggested_research_action_en": "Broaden observation window to cover at least 100 intervals.",
       "resolution_criteria_tr": "\u00d6rneklem say\u0131s\u0131n\u0131n N >= 100 seviyesine ula\u015fmas\u0131.",
       "resolution_criteria_en": "Sample size reaching N >= 100.",
-      "detected_at_utc": "2026-11-10T12:17:44.312523+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-7b0cb4781b20-08",
@@ -812,7 +812,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.312523+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-dbb10adc0f69-04",
@@ -829,7 +829,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.312523+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-dbb10adc0f69-05",
@@ -846,7 +846,7 @@
       "suggested_research_action_en": "Broaden observation window to cover at least 100 intervals.",
       "resolution_criteria_tr": "\u00d6rneklem say\u0131s\u0131n\u0131n N >= 100 seviyesine ula\u015fmas\u0131.",
       "resolution_criteria_en": "Sample size reaching N >= 100.",
-      "detected_at_utc": "2026-11-10T12:17:44.312523+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-dbb10adc0f69-08",
@@ -863,7 +863,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.312523+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-f93d9176002d-04",
@@ -880,7 +880,7 @@
       "suggested_research_action_en": "Obtain an RFC-8785 signed attestation package from authority.",
       "resolution_criteria_tr": "Ge\u00e7erli bir HMAC-SHA256 tasdikinin veya a\u00e7\u0131k damgalar\u0131n eklenmesi.",
       "resolution_criteria_en": "Valid HMAC-SHA256 attestation or complete timestamp grid attached.",
-      "detected_at_utc": "2026-11-10T12:17:44.312523+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-f93d9176002d-05",
@@ -897,7 +897,7 @@
       "suggested_research_action_en": "Broaden observation window to cover at least 100 intervals.",
       "resolution_criteria_tr": "\u00d6rneklem say\u0131s\u0131n\u0131n N >= 100 seviyesine ula\u015fmas\u0131.",
       "resolution_criteria_en": "Sample size reaching N >= 100.",
-      "detected_at_utc": "2026-11-10T12:17:44.312523+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     },
     {
       "gap_id": "GAP-RLIB-f93d9176002d-08",
@@ -914,7 +914,7 @@
       "suggested_research_action_en": "Conduct out-of-sample replication with independent methodology.",
       "resolution_criteria_tr": "Ba\u011f\u0131ms\u0131z replikasyon raporunun kan\u0131t k\u00fct\u00fcphanesine kaydedilmesi.",
       "resolution_criteria_en": "Independent replication report recorded in evidence library.",
-      "detected_at_utc": "2026-11-10T12:17:44.312523+00:00"
+      "detected_at_utc": "2026-11-10T23:57:49.313878+00:00"
     }
   ],
   "total_gaps_count": 53

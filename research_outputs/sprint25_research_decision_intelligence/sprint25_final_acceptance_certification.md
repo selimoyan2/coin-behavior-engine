@@ -5,21 +5,20 @@
 **Sprint ID:** `CBE_SPRINT25_RESEARCH_DECISION_INTELLIGENCE`  
 **Repository:** `selimoyan2/coin-behavior-engine`  
 **Target Branch:** `main`  
-**Implementation Commit:** `bc932fe`  
-**Test Suite Commit:** `a874d14`  
-**Current Git HEAD:** `a874d144605e9fba8f8327390768d9a1f92ee66c`  
+**Implementation Commit:** `9043d078595076fcc57ce534d94103223d46065e`  
+**Current Git HEAD:** `9043d078595076fcc57ce534d94103223d46065e`  
 **Canonical Scientific Model:** `CBE-0.7.0`  
 **Model Status:** `STRICTLY_FROZEN`  
 **Governance Decision:** `TECHNICAL_NO_GO`  
 **Execution Mode:** `STRICTLY_OFFLINE_RESEARCH`  
 **Trading Status:** `LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED`  
 **Production Status:** `STRICT ZERO-TOUCH (Container 19004adaea21 Untouched, 0 Restarts)`  
-**Staging Status:** `DEPLOYED & OPERATIONAL (Container 90534f6b12fe on srv1114257:18080)`  
+**Staging Status:** `DEPLOYED & OPERATIONAL (Container ce770e16189c on srv1114257:18080)`  
 
 ---
 
 ### 1. Executive Summary & Delivery Scope
-Sprint 25 has successfully transformed the Research Intelligence Workspace V2 into an authoritative scientific decision-support system. In strict adherence to scientific integrity principles:
+Sprint 25 has successfully delivered the Research Evidence Graph, Scientific Readiness, and Decision Intelligence Platform. The final scientific trust closure resolved all independently identified trust-boundary, reproduction, and evidence-semantics defects:
 - **No Directional Trading:** Directional order execution, portfolio allocation, and signal-driven execution remain permanently forbidden (`CBE_TRADING_DISABLED=true`, `TECHNICAL_NO_GO`).
 - **Canonical Model Frozen:** The canonical mathematical parameters of CBE-0.7.0 remain completely unmodified and strictly frozen.
 - **Fail-Closed Evidence Accounting:** No unverified scientific finding is presented as proven fact; all catalog claims are bound to cryptographically verifiable source artifacts and RFC-8785 attestations.
@@ -32,6 +31,7 @@ Sprint 25 has successfully transformed the Research Intelligence Workspace V2 in
 #### Module 25.1 — Scientific Evidence Graph (`evidence_graph.py`)
 - **Topology:** Directed acyclic graph mapping 11 distinct node types and 10 edge types.
 - **Cycle Safety & Traversal Limits:** Strict cycle detection and bounded traversal depths prevent graph recursion denial-of-service.
+- **Four-Tier Verification:** Nodes strictly classified into `REGISTERED`, `PRESENT`, `INTEGRITY_VERIFIED`, and `SCIENTIFICALLY_VERIFIED`.
 - **Proactive Missing Link Detection:** System automatically flags unsupported claims, missing artifacts, and unverified attestations.
 
 #### Module 25.2 — Scientific Readiness Scorecards (`scientific_readiness.py`)
@@ -46,6 +46,7 @@ Sprint 25 has successfully transformed the Research Intelligence Workspace V2 in
 
 #### Module 25.4 — Scientific Reproducibility Lab (`reproducibility_lab.py`)
 - **Allowlisted Offline Procedures:** 5 verified procedures (`PROC_PARKINSON_VOLATILITY`, `PROC_FUNDING_RATE_SUMMARY`, `PROC_REGIME_STABILITY_EVAL`, `PROC_DTW_PATTERN_DISTANCE`, `PROC_STORAGE_VERIFICATION`).
+- **Real Computational Methods:** Recomputes metrics from authentic observations (Parkinson extreme-value high/low, Binance Vision funding rate archives, regime transitions, DTW, storage verification) rather than static fallback constants.
 - **Cryptographic Provenance:** Records exact Python runtime, dependencies, input hashes, output hashes, and numerical discrepancy tolerance checks.
 - **Non-Replication Guarantee:** Invariant `is_independent_replication=False` strictly enforced in code and UI disclaimers.
 
@@ -67,9 +68,8 @@ Sprint 25 has successfully transformed the Research Intelligence Workspace V2 in
 
 | Test Domain | Target Suite | Scenarios / Tests | Result | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| **Backend Unit & Integration** | `test_sprint_product_acceleration_25.py` | 31 test methods | 31 Passed (1.77s) | **100% PASS** |
-| **Multi-Sprint Regression** | Sprints 21, 22, 23, 24, 25 | 146 test methods | 146 Passed (63.3s) | **100% PASS** |
-| **Total S24 & S25 Tests** | All S24 & S25 test suites | 171 test methods | 171 Passed (3.60s) | **100% PASS** |
+| **Backend Unit & Negative Tests** | `test_sprint_product_acceleration_25.py` | 40 test methods | 40 Passed (1.85s) | **100% PASS** |
+| **Multi-Sprint Regression** | Sprints 20–25 (14 test suites) | 357 test methods | 357 Passed (170.88s) | **100% PASS** |
 | **Browser Acceptance (Playwright)** | `run_playwright_sprint25.py` | 7 browser scenarios | 7 Passed (Desktop, Tablet, Mobile) | **100% PASS** |
 | **Remote Staging Verification** | `staging_probe_sprint25.py` (Port 18080) | 10 API & security probes | 10 Passed | **100% PASS** |
 | **Production Zero-Touch Audit** | Container `19004adaea21` | State & Restarts | Running, 0 Restarts | **ZERO TOUCH** |
@@ -80,7 +80,7 @@ Sprint 25 has successfully transformed the Research Intelligence Workspace V2 in
 - **Canonical Model:** `CBE-0.7.0` (STRICTLY_FROZEN, 0 mutations).
 - **Governance Verdict:** `TECHNICAL_NO_GO`.
 - **Directional Trading:** `LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED`.
-- **Staging Deployment:** Container `90534f6b12fe`, Image `cbe-market-intelligence:sprint25-decision-intel-a874d14` (Digest `sha256:36440b6ccc3962f97c8674523bcfdcf0f15942a46de98793263bc8ef153072cd`).
+- **Staging Deployment:** Container `ce770e16189c`, Image `cbe-market-intelligence:sprint25-decision-intel-9043d07` (Digest `sha256:5c22c68524457fc4f889f06aef41cfcefc4be3ae294cb6e0e2e940a7eb1d90be`).
 - **Production Safety:** Container `19004adaea21` on `coin.ozelweb.com.tr` has remained 100% untouched and active throughout all operations.
 
-**Sprint 25 is fully certified, verified, and complete.**
+**Sprint 25 Final Scientific Trust Closure is fully certified, verified, and complete.**

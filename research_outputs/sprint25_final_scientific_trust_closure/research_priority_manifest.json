@@ -1,0 +1,929 @@
+{
+  "status": "success",
+  "prioritized_tasks": [
+    {
+      "task_id": "TASK-PRIO-RES-CRYPTO-01",
+      "record_id": "RES-CRYPTO-01",
+      "record_title_tr": "Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim \u0130ncelemesi",
+      "record_title_en": "October 2026 Intake Quarantine & Synthetic Volume Forensics",
+      "priority_tier": "P0_CRITICAL_BLOCKED",
+      "priority_score": 92.5,
+      "rank": 1,
+      "title_tr": "Kritik G\u00fcvenilirlik & B\u00fct\u00fcnl\u00fck Engellerini Gider: Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim \u0130ncelemesi",
+      "title_en": "Resolve Critical Integrity & Trust Blockers: October 2026 Intake Quarantine & Synthetic Volume Forensics",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: METHODOLOGICALLY_BLOCKED",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 1",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 2"
+      ],
+      "rationales_en": [
+        "Readiness verdict: METHODOLOGICALLY_BLOCKED",
+        "Critical gaps detected: 1",
+        "High-priority gaps detected: 2"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Veri seti i\u00e7in tam borsa API intakelog ve SHA-256 soyk\u00fct\u00fc\u011f\u00fc kaydedin.",
+      "recommended_next_step_en": "Record complete exchange API intake log and SHA-256 lineage.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.349837+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RES-DURABILITY-01",
+      "record_id": "RES-DURABILITY-01",
+      "record_title_tr": "Dayan\u0131kl\u0131 Depolama Do\u011frulamas\u0131 & Kan\u0131t Soyk\u00fct\u00fc\u011f\u00fc Sertifikasyonu",
+      "record_title_en": "Durable Storage Verification & Evidence Provenance Certification",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 2,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Dayan\u0131kl\u0131 Depolama Do\u011frulamas\u0131 & Kan\u0131t Soyk\u00fct\u00fc\u011f\u00fc Sertifikasyonu",
+      "title_en": "Complete Scientific Readiness Gaps: Durable Storage Verification & Evidence Provenance Certification",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.349837+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RES-FUND-01",
+      "record_id": "RES-FUND-01",
+      "record_title_tr": "Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi",
+      "record_title_en": "Perpetual Funding Rate Predictability & Pure Compute Latency",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 3,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi",
+      "title_en": "Complete Scientific Readiness Gaps: Perpetual Funding Rate Predictability & Pure Compute Latency",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.347277+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RES-MACRO-01",
+      "record_id": "RES-MACRO-01",
+      "record_title_tr": "Makroekonomik Duyurular (CPI & FOMC) T0 Rejim D\u00f6n\u00fc\u015f\u00fcmleri",
+      "record_title_en": "Macro Announcements (CPI & FOMC) T0 Regime Transitions",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 4,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Makroekonomik Duyurular (CPI & FOMC) T0 Rejim D\u00f6n\u00fc\u015f\u00fcmleri",
+      "title_en": "Complete Scientific Readiness Gaps: Macro Announcements (CPI & FOMC) T0 Regime Transitions",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.348833+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RES-REGIME-01",
+      "record_id": "RES-REGIME-01",
+      "record_title_tr": "2022\u20132026 Kronolojik \u0130leriye Y\u00f6nelik Rejim Kararl\u0131l\u0131\u011f\u0131 Do\u011frulamas\u0131",
+      "record_title_en": "2022\u20132026 Chronological Walk-Forward Regime Stability Validation",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 5,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: 2022\u20132026 Kronolojik \u0130leriye Y\u00f6nelik Rejim Kararl\u0131l\u0131\u011f\u0131 Do\u011frulamas\u0131",
+      "title_en": "Complete Scientific Readiness Gaps: 2022\u20132026 Chronological Walk-Forward Regime Stability Validation",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.347277+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-03c6ea53cf3d",
+      "record_id": "RLIB-03c6ea53cf3d",
+      "record_title_tr": "Acceptance Test Definition",
+      "record_title_en": "Definition for Playwright E2E verification",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 6,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Acceptance Test Definition",
+      "title_en": "Complete Scientific Readiness Gaps: Definition for Playwright E2E verification",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.352540+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-07c7c65c7e91",
+      "record_id": "RLIB-07c7c65c7e91",
+      "record_title_tr": "Acceptance Test Definition",
+      "record_title_en": "Definition for Playwright E2E verification",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 7,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Acceptance Test Definition",
+      "title_en": "Complete Scientific Readiness Gaps: Definition for Playwright E2E verification",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.353836+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-2f30980866e9",
+      "record_id": "RLIB-2f30980866e9",
+      "record_title_tr": "Acceptance Test Definition",
+      "record_title_en": "Definition for Playwright E2E verification",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 8,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Acceptance Test Definition",
+      "title_en": "Complete Scientific Readiness Gaps: Definition for Playwright E2E verification",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.353836+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-3c104ed0c333",
+      "record_id": "RLIB-3c104ed0c333",
+      "record_title_tr": "E2E Kabul K\u00fct\u00fcphane Tan\u0131m\u0131",
+      "record_title_en": "Playwright Ger\u00e7ek K\u00fct\u00fcphane Rapor Entegrasyonu",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 9,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: E2E Kabul K\u00fct\u00fcphane Tan\u0131m\u0131",
+      "title_en": "Complete Scientific Readiness Gaps: Playwright Ger\u00e7ek K\u00fct\u00fcphane Rapor Entegrasyonu",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.353836+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-669a3bc52ddf",
+      "record_id": "RLIB-669a3bc52ddf",
+      "record_title_tr": "Acceptance Test Definition",
+      "record_title_en": "Definition for Playwright E2E verification",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 10,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Acceptance Test Definition",
+      "title_en": "Complete Scientific Readiness Gaps: Definition for Playwright E2E verification",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.355594+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-7b0cb4781b20",
+      "record_id": "RLIB-7b0cb4781b20",
+      "record_title_tr": "Acceptance Test Definition",
+      "record_title_en": "Definition for Playwright E2E verification",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 11,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Acceptance Test Definition",
+      "title_en": "Complete Scientific Readiness Gaps: Definition for Playwright E2E verification",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.355594+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-c5730b081950",
+      "record_id": "RLIB-c5730b081950",
+      "record_title_tr": "Playwright Sprint 21 Verified Library Item",
+      "record_title_en": "E2E automated verification item",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 12,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Playwright Sprint 21 Verified Library Item",
+      "title_en": "Complete Scientific Readiness Gaps: E2E automated verification item",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.349837+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-dbb10adc0f69",
+      "record_id": "RLIB-dbb10adc0f69",
+      "record_title_tr": "Sprint 22 Rapor Tan\u0131m\u0131",
+      "record_title_en": "Raporlama testi",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 13,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Sprint 22 Rapor Tan\u0131m\u0131",
+      "title_en": "Complete Scientific Readiness Gaps: Raporlama testi",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.355594+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-ee060f623584",
+      "record_id": "RLIB-ee060f623584",
+      "record_title_tr": "Playwright Sprint 21 Verified Library Item",
+      "record_title_en": "E2E automated verification item",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 14,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Playwright Sprint 21 Verified Library Item",
+      "title_en": "Complete Scientific Readiness Gaps: E2E automated verification item",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.351535+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-f93d9176002d",
+      "record_id": "RLIB-f93d9176002d",
+      "record_title_tr": "Acceptance Test Definition",
+      "record_title_en": "Definition for Playwright E2E verification",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 15,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Acceptance Test Definition",
+      "title_en": "Complete Scientific Readiness Gaps: Definition for Playwright E2E verification",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.357219+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-f9ddf66ba096",
+      "record_id": "RLIB-f9ddf66ba096",
+      "record_title_tr": "Sprint 22 Library Report Test",
+      "record_title_en": "",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 16,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Sprint 22 Library Report Test",
+      "title_en": "Complete Scientific Readiness Gaps: ",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.352540+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RES-ANALOG-01",
+      "record_id": "RES-ANALOG-01",
+      "record_title_tr": "Dinamik Zaman B\u00fckmesi (DTW) Tarihsel \u00d6r\u00fcnt\u00fc Benzerli\u011fi V2",
+      "record_title_en": "Dynamic Time Warping Historical Pattern Analogs V2",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 76.0,
+      "rank": 17,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Dinamik Zaman B\u00fckmesi (DTW) Tarihsel \u00d6r\u00fcnt\u00fc Benzerli\u011fi V2",
+      "title_en": "Complete Scientific Readiness Gaps: Dynamic Time Warping Historical Pattern Analogs V2",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 2"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 2"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.347277+00:00"
+    }
+  ],
+  "priorities": [
+    {
+      "task_id": "TASK-PRIO-RES-CRYPTO-01",
+      "record_id": "RES-CRYPTO-01",
+      "record_title_tr": "Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim \u0130ncelemesi",
+      "record_title_en": "October 2026 Intake Quarantine & Synthetic Volume Forensics",
+      "priority_tier": "P0_CRITICAL_BLOCKED",
+      "priority_score": 92.5,
+      "rank": 1,
+      "title_tr": "Kritik G\u00fcvenilirlik & B\u00fct\u00fcnl\u00fck Engellerini Gider: Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim \u0130ncelemesi",
+      "title_en": "Resolve Critical Integrity & Trust Blockers: October 2026 Intake Quarantine & Synthetic Volume Forensics",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: METHODOLOGICALLY_BLOCKED",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 1",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 2"
+      ],
+      "rationales_en": [
+        "Readiness verdict: METHODOLOGICALLY_BLOCKED",
+        "Critical gaps detected: 1",
+        "High-priority gaps detected: 2"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Veri seti i\u00e7in tam borsa API intakelog ve SHA-256 soyk\u00fct\u00fc\u011f\u00fc kaydedin.",
+      "recommended_next_step_en": "Record complete exchange API intake log and SHA-256 lineage.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.349837+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RES-DURABILITY-01",
+      "record_id": "RES-DURABILITY-01",
+      "record_title_tr": "Dayan\u0131kl\u0131 Depolama Do\u011frulamas\u0131 & Kan\u0131t Soyk\u00fct\u00fc\u011f\u00fc Sertifikasyonu",
+      "record_title_en": "Durable Storage Verification & Evidence Provenance Certification",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 2,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Dayan\u0131kl\u0131 Depolama Do\u011frulamas\u0131 & Kan\u0131t Soyk\u00fct\u00fc\u011f\u00fc Sertifikasyonu",
+      "title_en": "Complete Scientific Readiness Gaps: Durable Storage Verification & Evidence Provenance Certification",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.349837+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RES-FUND-01",
+      "record_id": "RES-FUND-01",
+      "record_title_tr": "Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi",
+      "record_title_en": "Perpetual Funding Rate Predictability & Pure Compute Latency",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 3,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi",
+      "title_en": "Complete Scientific Readiness Gaps: Perpetual Funding Rate Predictability & Pure Compute Latency",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.347277+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RES-MACRO-01",
+      "record_id": "RES-MACRO-01",
+      "record_title_tr": "Makroekonomik Duyurular (CPI & FOMC) T0 Rejim D\u00f6n\u00fc\u015f\u00fcmleri",
+      "record_title_en": "Macro Announcements (CPI & FOMC) T0 Regime Transitions",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 4,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Makroekonomik Duyurular (CPI & FOMC) T0 Rejim D\u00f6n\u00fc\u015f\u00fcmleri",
+      "title_en": "Complete Scientific Readiness Gaps: Macro Announcements (CPI & FOMC) T0 Regime Transitions",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.348833+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RES-REGIME-01",
+      "record_id": "RES-REGIME-01",
+      "record_title_tr": "2022\u20132026 Kronolojik \u0130leriye Y\u00f6nelik Rejim Kararl\u0131l\u0131\u011f\u0131 Do\u011frulamas\u0131",
+      "record_title_en": "2022\u20132026 Chronological Walk-Forward Regime Stability Validation",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 5,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: 2022\u20132026 Kronolojik \u0130leriye Y\u00f6nelik Rejim Kararl\u0131l\u0131\u011f\u0131 Do\u011frulamas\u0131",
+      "title_en": "Complete Scientific Readiness Gaps: 2022\u20132026 Chronological Walk-Forward Regime Stability Validation",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.347277+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-03c6ea53cf3d",
+      "record_id": "RLIB-03c6ea53cf3d",
+      "record_title_tr": "Acceptance Test Definition",
+      "record_title_en": "Definition for Playwright E2E verification",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 6,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Acceptance Test Definition",
+      "title_en": "Complete Scientific Readiness Gaps: Definition for Playwright E2E verification",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.352540+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-07c7c65c7e91",
+      "record_id": "RLIB-07c7c65c7e91",
+      "record_title_tr": "Acceptance Test Definition",
+      "record_title_en": "Definition for Playwright E2E verification",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 7,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Acceptance Test Definition",
+      "title_en": "Complete Scientific Readiness Gaps: Definition for Playwright E2E verification",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.353836+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-2f30980866e9",
+      "record_id": "RLIB-2f30980866e9",
+      "record_title_tr": "Acceptance Test Definition",
+      "record_title_en": "Definition for Playwright E2E verification",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 8,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Acceptance Test Definition",
+      "title_en": "Complete Scientific Readiness Gaps: Definition for Playwright E2E verification",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.353836+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-3c104ed0c333",
+      "record_id": "RLIB-3c104ed0c333",
+      "record_title_tr": "E2E Kabul K\u00fct\u00fcphane Tan\u0131m\u0131",
+      "record_title_en": "Playwright Ger\u00e7ek K\u00fct\u00fcphane Rapor Entegrasyonu",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 9,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: E2E Kabul K\u00fct\u00fcphane Tan\u0131m\u0131",
+      "title_en": "Complete Scientific Readiness Gaps: Playwright Ger\u00e7ek K\u00fct\u00fcphane Rapor Entegrasyonu",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.353836+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-669a3bc52ddf",
+      "record_id": "RLIB-669a3bc52ddf",
+      "record_title_tr": "Acceptance Test Definition",
+      "record_title_en": "Definition for Playwright E2E verification",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 10,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Acceptance Test Definition",
+      "title_en": "Complete Scientific Readiness Gaps: Definition for Playwright E2E verification",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.355594+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-7b0cb4781b20",
+      "record_id": "RLIB-7b0cb4781b20",
+      "record_title_tr": "Acceptance Test Definition",
+      "record_title_en": "Definition for Playwright E2E verification",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 11,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Acceptance Test Definition",
+      "title_en": "Complete Scientific Readiness Gaps: Definition for Playwright E2E verification",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.355594+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-c5730b081950",
+      "record_id": "RLIB-c5730b081950",
+      "record_title_tr": "Playwright Sprint 21 Verified Library Item",
+      "record_title_en": "E2E automated verification item",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 12,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Playwright Sprint 21 Verified Library Item",
+      "title_en": "Complete Scientific Readiness Gaps: E2E automated verification item",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.349837+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-dbb10adc0f69",
+      "record_id": "RLIB-dbb10adc0f69",
+      "record_title_tr": "Sprint 22 Rapor Tan\u0131m\u0131",
+      "record_title_en": "Raporlama testi",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 13,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Sprint 22 Rapor Tan\u0131m\u0131",
+      "title_en": "Complete Scientific Readiness Gaps: Raporlama testi",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.355594+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-ee060f623584",
+      "record_id": "RLIB-ee060f623584",
+      "record_title_tr": "Playwright Sprint 21 Verified Library Item",
+      "record_title_en": "E2E automated verification item",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 14,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Playwright Sprint 21 Verified Library Item",
+      "title_en": "Complete Scientific Readiness Gaps: E2E automated verification item",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.351535+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-f93d9176002d",
+      "record_id": "RLIB-f93d9176002d",
+      "record_title_tr": "Acceptance Test Definition",
+      "record_title_en": "Definition for Playwright E2E verification",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 15,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Acceptance Test Definition",
+      "title_en": "Complete Scientific Readiness Gaps: Definition for Playwright E2E verification",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.357219+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RLIB-f9ddf66ba096",
+      "record_id": "RLIB-f9ddf66ba096",
+      "record_title_tr": "Sprint 22 Library Report Test",
+      "record_title_en": "",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 79.0,
+      "rank": 16,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Sprint 22 Library Report Test",
+      "title_en": "Complete Scientific Readiness Gaps: ",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 3"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 3"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.352540+00:00"
+    },
+    {
+      "task_id": "TASK-PRIO-RES-ANALOG-01",
+      "record_id": "RES-ANALOG-01",
+      "record_title_tr": "Dinamik Zaman B\u00fckmesi (DTW) Tarihsel \u00d6r\u00fcnt\u00fc Benzerli\u011fi V2",
+      "record_title_en": "Dynamic Time Warping Historical Pattern Analogs V2",
+      "priority_tier": "P1_HIGH_IMPACT",
+      "priority_score": 76.0,
+      "rank": 17,
+      "title_tr": "Bilimsel Haz\u0131rl\u0131k Bo\u015fluklar\u0131n\u0131 Tamamla: Dinamik Zaman B\u00fckmesi (DTW) Tarihsel \u00d6r\u00fcnt\u00fc Benzerli\u011fi V2",
+      "title_en": "Complete Scientific Readiness Gaps: Dynamic Time Warping Historical Pattern Analogs V2",
+      "rationales_tr": [
+        "Haz\u0131rl\u0131k durumu: INSUFFICIENT_EVIDENCE",
+        "Tespit edilen kritik bo\u015fluk say\u0131s\u0131: 0",
+        "Tespit edilen y\u00fcksek \u00f6ncelikli bo\u015fluk say\u0131s\u0131: 2"
+      ],
+      "rationales_en": [
+        "Readiness verdict: INSUFFICIENT_EVIDENCE",
+        "Critical gaps detected: 0",
+        "High-priority gaps detected: 2"
+      ],
+      "estimated_effort": "MEDIUM",
+      "data_readiness": "AVAILABLE_LOCAL",
+      "recommended_next_step_tr": "Yetkili veri otoritesinden RFC-8785 tasdik paketi temin edin.",
+      "recommended_next_step_en": "Obtain an RFC-8785 signed attestation package from authority.",
+      "governance_constraint_tr": "Yaln\u0131zca \u00e7evrimd\u0131\u015f\u0131 bilimsel analiz i\u00e7indir; canl\u0131 i\u015flem veya sinyal \u00fcretimi kesinlikle yasakt\u0131r.",
+      "created_at_utc": "2026-11-10T23:57:49.347277+00:00"
+    }
+  ],
+  "total_tasks": 17,
+  "p0_count": 1,
+  "p1_count": 16,
+  "p2_count": 0
+}

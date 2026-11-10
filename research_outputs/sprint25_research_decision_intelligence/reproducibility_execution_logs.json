@@ -1,6 +1,6 @@
 [
   {
-    "run_id": "REP-RUN-D12EF20B0B7F",
+    "run_id": "REP-RUN-4EA413F63DBC",
     "record_id": "RES-FUND-01",
     "procedure_name": "PROC_FUNDING_RATE_SUMMARY",
     "procedure_version": "1.1.0",
@@ -9,14 +9,14 @@
     "source_dataset_id": "BTCUSDT-PERP-FUNDING-2022-2026",
     "source_artifact_path": "data/reports/sprint09_38_funding_predictability_report.json",
     "source_artifact_sha256": "5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a",
-    "start_time_utc": "2026-11-10T12:17:44.315654+00:00",
-    "end_time_utc": "2026-11-10T12:17:44.338186+00:00",
-    "execution_duration_ms": 23.10800000122981,
+    "start_time_utc": "2026-11-10T23:57:49.317039+00:00",
+    "end_time_utc": "2026-11-10T23:57:49.340583+00:00",
+    "execution_duration_ms": 22.71889999974519,
     "execution_environment": {
       "python_version": "3.11.16",
       "platform": "Windows-10-10.0.26300-SP0",
       "cpu_architecture": "AMD64",
-      "process_id": 17180,
+      "process_id": 4360,
       "canonical_model": "CBE-0.7.0"
     },
     "dependency_versions": {
@@ -27,14 +27,22 @@
     },
     "reference_outputs": {
       "mean_funding_bps": 1.0103,
-      "p_value": 1.0
+      "negative_funding_count": 103,
+      "observed_median_funding_bps": 1.0,
+      "observed_min_funding_bps": -1.1235,
+      "observed_max_funding_bps": 8.8148,
+      "sample_size": 1185
     },
     "reproduced_outputs": {
       "mean_funding_bps": 1.0103,
-      "p_value": 1.0
+      "negative_funding_count": 103,
+      "observed_median_funding_bps": 1.0,
+      "observed_min_funding_bps": -1.1235,
+      "observed_max_funding_bps": 8.8148,
+      "sample_size": 1185
     },
-    "reference_output_sha256": "477f057dd1749c112478be1c1aad7d5ac1ceadb4c67a364bc29163bb903c72d3",
-    "reproduced_output_sha256": "477f057dd1749c112478be1c1aad7d5ac1ceadb4c67a364bc29163bb903c72d3",
+    "reference_output_sha256": "a2ca2a8dc0c448fe6e80d175f92597f51ef6b94606d6694529de5393b16e8654",
+    "reproduced_output_sha256": "a2ca2a8dc0c448fe6e80d175f92597f51ef6b94606d6694529de5393b16e8654",
     "comparison_details": {
       "matched": true,
       "numerical_tolerance": 0.0001,
@@ -46,7 +54,7 @@
     "error_message_en": null
   },
   {
-    "run_id": "REP-RUN-6AB220540E52",
+    "run_id": "REP-RUN-CBC5978D7286",
     "record_id": "RES-REGIME-01",
     "procedure_name": "PROC_REGIME_STABILITY_EVAL",
     "procedure_version": "1.0.0",
@@ -55,14 +63,14 @@
     "source_dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
     "source_artifact_path": "data/reports/sprint09_27_validation_and_holdout_report.json",
     "source_artifact_sha256": "14ae2c3a0ebcbbf8e96a50ad5ada06a5ce2b0fc22082f3a225d9becfcee4cebf",
-    "start_time_utc": "2026-11-10T12:17:44.340724+00:00",
-    "end_time_utc": "2026-11-10T12:17:44.340724+00:00",
-    "execution_duration_ms": 0.4014999994979007,
+    "start_time_utc": "2026-11-10T23:57:49.343126+00:00",
+    "end_time_utc": "2026-11-10T23:57:49.343634+00:00",
+    "execution_duration_ms": 0.34299999970244244,
     "execution_environment": {
       "python_version": "3.11.16",
       "platform": "Windows-10-10.0.26300-SP0",
       "cpu_architecture": "AMD64",
-      "process_id": 17180,
+      "process_id": 4360,
       "canonical_model": "CBE-0.7.0"
     },
     "dependency_versions": {
@@ -72,15 +80,19 @@
       "math": "builtin"
     },
     "reference_outputs": {
-      "direction_match": true,
+      "direct_transitions_observed_count": 5,
+      "direct_transitions_total_evaluated": 822,
+      "direct_transition_rate_pct": 0.61,
       "model_version": "CBE-0.7.0"
     },
     "reproduced_outputs": {
-      "direction_match": true,
+      "direct_transitions_observed_count": 5,
+      "direct_transitions_total_evaluated": 822,
+      "direct_transition_rate_pct": 0.61,
       "model_version": "CBE-0.7.0"
     },
-    "reference_output_sha256": "3d7ecc2900497cd0324235860c4a1e1b3770a11cec77351da8c089c4efbce2e0",
-    "reproduced_output_sha256": "3d7ecc2900497cd0324235860c4a1e1b3770a11cec77351da8c089c4efbce2e0",
+    "reference_output_sha256": "f2201e943c3675fe0f8c4d867f93abb0fb2cdd656981255ffbce126a591a9b62",
+    "reproduced_output_sha256": "f2201e943c3675fe0f8c4d867f93abb0fb2cdd656981255ffbce126a591a9b62",
     "comparison_details": {
       "matched": true,
       "numerical_tolerance": 0.0001,
@@ -92,7 +104,7 @@
     "error_message_en": null
   },
   {
-    "run_id": "REP-RUN-AD1DE310458A",
+    "run_id": "REP-RUN-FA2508873EF8",
     "record_id": "RES-DURABILITY-01",
     "procedure_name": "PROC_STORAGE_VERIFICATION",
     "procedure_version": "1.0.0",
@@ -101,14 +113,14 @@
     "source_dataset_id": "CBE-SYSTEM-AUDIT-LOGS",
     "source_artifact_path": "research_outputs/sprint23_delivery/persistent_volume_verification.json",
     "source_artifact_sha256": "cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c",
-    "start_time_utc": "2026-11-10T12:17:44.342434+00:00",
-    "end_time_utc": "2026-11-10T12:17:44.342953+00:00",
-    "execution_duration_ms": 0.3308000013930723,
+    "start_time_utc": "2026-11-10T23:57:49.344645+00:00",
+    "end_time_utc": "2026-11-10T23:57:49.344645+00:00",
+    "execution_duration_ms": 0.24680000205989927,
     "execution_environment": {
       "python_version": "3.11.16",
       "platform": "Windows-10-10.0.26300-SP0",
       "cpu_architecture": "AMD64",
-      "process_id": 17180,
+      "process_id": 4360,
       "canonical_model": "CBE-0.7.0"
     },
     "dependency_versions": {
@@ -118,15 +130,17 @@
       "math": "builtin"
     },
     "reference_outputs": {
+      "audit_mode": "HISTORICAL_REPORT_INSPECTION",
       "total_negative_tests": 20,
-      "storage_mode": "DOCKER_PERSISTENT_VOLUME"
+      "durability_verdict": "VERIFIED_DURABLE"
     },
     "reproduced_outputs": {
+      "audit_mode": "HISTORICAL_REPORT_INSPECTION",
       "total_negative_tests": 20,
-      "storage_mode": "DOCKER_PERSISTENT_VOLUME"
+      "durability_verdict": "VERIFIED_DURABLE"
     },
-    "reference_output_sha256": "511b2f378cdda06c722f3c046a834f9d9144136d5bfbe16dadb043a0d0ce51df",
-    "reproduced_output_sha256": "511b2f378cdda06c722f3c046a834f9d9144136d5bfbe16dadb043a0d0ce51df",
+    "reference_output_sha256": "14ea27c9ffa36fa540526985854bcd54388e0b60e949de24df0a059334149521",
+    "reproduced_output_sha256": "14ea27c9ffa36fa540526985854bcd54388e0b60e949de24df0a059334149521",
     "comparison_details": {
       "matched": true,
       "numerical_tolerance": 0.0001,

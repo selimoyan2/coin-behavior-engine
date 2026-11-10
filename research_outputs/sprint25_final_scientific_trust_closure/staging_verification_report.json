@@ -1,0 +1,32 @@
+{
+  "timestamp_utc": "2026-11-10T23:45:00Z",
+  "staging_host": "srv1114257 (168.231.125.238:18080)",
+  "staging_container_id": "ce770e16189c",
+  "image_tag": "cbe-market-intelligence:sprint25-decision-intel-9043d07",
+  "image_digest": "sha256:5c22c68524457fc4f889f06aef41cfcefc4be3ae294cb6e0e2e940a7eb1d90be",
+  "commit_sha": "9043d078595076fcc57ce534d94103223d46065e",
+  "verification_suites_passed": 10,
+  "verification_suites_failed": 0,
+  "endpoints_verified": [
+    "/health",
+    "/ready",
+    "/api/v1/product/workspace/overview",
+    "/api/v1/product/workspace/evidence-graph",
+    "/api/v1/product/workspace/readiness",
+    "/api/v1/product/workspace/evidence-gaps",
+    "/api/v1/product/workspace/priorities",
+    "/api/v1/product/workspace/reproducibility/procedures",
+    "POST /api/v1/product/workspace/reproducibility/execute",
+    "/api/v1/product/workspace/decision-reports"
+  ],
+  "evidence_graph_nodes": 41,
+  "evidence_graph_edges": 40,
+  "evidence_graph_missing_links": 19,
+  "evidence_gaps_count": 20,
+  "priority_tasks_count": 6,
+  "top_priority_task": "Resolve Critical Integrity & Trust Blockers: October 2026 Intake Quarantine & Synthetic Volume Forensics",
+  "reproducibility_execution_status": "OUTPUTS_MATCHED",
+  "reproducibility_non_replication_invariant": true,
+  "negative_security_check": "REPRODUCTION_BLOCKED",
+  "overall_status": "VERIFIED_OPERATIONAL"
+}

@@ -1,17 +1,17 @@
 {
   "status": "success",
   "report": {
-    "report_id": "RPT-DECISION-RES-FUND-01-C56F38B5",
+    "report_id": "RPT-DECISION-RES-FUND-01-FE5A1729",
     "record_id": "RES-FUND-01",
     "title_tr": "Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi",
     "title_en": "Perpetual Funding Rate Predictability & Pure Compute Latency",
     "canonical_model": "CBE-0.7.0",
     "governance_decision": "TECHNICAL_NO_GO",
     "trading_prohibition": "LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED",
-    "generated_at_utc": "2026-11-10T12:17:44.351380+00:00",
-    "report_sha256": "c56f38b589fcea7218237bf2d821453c801eeb61bf745ca80eecf2d872456fac",
+    "generated_at_utc": "2026-11-10T23:57:49.358953+00:00",
+    "report_sha256": "fe5a1729945de7f4ad82eb28a2dd830b580f09618087a6943aed0f9c69265f01",
     "sections": {
-      "sec_1_summary": "Kay\u0131t RES-FUND-01 (Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi), 2022-01-01 to 2026-09-01 (4.6 y\u0131l) d\u00f6nemi \u00fczerinde incelenmi\u015f olup genel haz\u0131rl\u0131k durumu 'INSUFFICIENT_EVIDENCE' olarak belirlenmi\u015ftir. Kritik bilimsel kap\u0131lar\u0131n 5/6 adedi do\u011frulanm\u0131\u015ft\u0131r.",
+      "sec_1_summary": "Kay\u0131t RES-FUND-01 (Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi), 2022-01-01 to 2026-09-01 (4.6 y\u0131l) d\u00f6nemi \u00fczerinde incelenmi\u015f olup genel haz\u0131rl\u0131k durumu 'INSUFFICIENT_EVIDENCE' olarak belirlenmi\u015ftir. Kritik bilimsel kap\u0131lar\u0131n 4/6 adedi do\u011frulanm\u0131\u015ft\u0131r.",
       "sec_2_objective": "Bu ara\u015ft\u0131rman\u0131n amac\u0131, piyasa mikroyap\u0131s\u0131 ve ekstremum volatilite davran\u0131\u015flar\u0131n\u0131n istatistiksel \u00f6zelliklerini geriye d\u00f6n\u00fck ampirik veri \u00fczerinde incelemektir.",
       "sec_3_dataset_id": "BTCUSDT-PERP-FUNDING-2022-2026",
       "sec_3_cadence": "8h",
@@ -23,7 +23,7 @@
       "sec_8_replication": "Ba\u011f\u0131ms\u0131z replikasyon durumu: REPLICATION_NOT_ESTABLISHED. Yerel \u00e7al\u0131\u015ft\u0131rma ba\u011f\u0131ms\u0131z replikasyon say\u0131lmaz.",
       "sec_9_gaps_summary": "Kay\u0131t \u00fczerinde toplam 4 adet kan\u0131t bo\u015flu\u011fu tespit edilmi\u015ftir. 1 adedi kritik ilerleme engelidir.",
       "sec_10_readiness_status": "INSUFFICIENT_EVIDENCE",
-      "sec_10_gates_passed": 5,
+      "sec_10_gates_passed": 4,
       "sec_10_gates_total": 6,
       "sec_11_next_tasks": [
         "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",

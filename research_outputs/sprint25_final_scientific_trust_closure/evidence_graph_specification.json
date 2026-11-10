@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "description": "Scientific Evidence Graph Schema and Topological Specification",
+  "node_types": [
+    "RESEARCH_HYPOTHESIS",
+    "DATASET",
+    "RESEARCH_RECORD",
+    "EXPERIMENT",
+    "STATISTICAL_RESULT",
+    "SOURCE_ARTIFACT",
+    "ATTESTATION",
+    "REPLICATION_ATTEMPT",
+    "SCIENTIFIC_CLAIM",
+    "METHODOLOGY",
+    "GOVERNANCE_DECISION"
+  ],
+  "edge_types": [
+    "USES_DATASET",
+    "DERIVED_FROM",
+    "SUPPORTED_BY",
+    "CONTRADICTED_BY",
+    "VERIFIED_BY",
+    "REPLICATED_BY",
+    "TESTS_HYPOTHESIS",
+    "USES_METHODOLOGY",
+    "BLOCKED_BY",
+    "SUPERSEDES"
+  ],
+  "link_statuses": [
+    "REGISTERED",
+    "PRESENT",
+    "INTEGRITY_VERIFIED",
+    "SCIENTIFICALLY_VERIFIED",
+    "VERIFIED",
+    "UNVERIFIED",
+    "INSUFFICIENT_EVIDENCE",
+    "NOT_APPLICABLE",
+    "BLOCKED",
+    "FAILED"
+  ],
+  "graph_invariants": [
+    "Acyclic directed dependency topology for primary evidence lineage",
+    "Bounded traversal depth (max 10 hops) to prevent resource exhaustion",
+    "Fail-closed missing link generation for unverified claims",
+    "Node and edge immutability during traversal queries"
+  ]
+}

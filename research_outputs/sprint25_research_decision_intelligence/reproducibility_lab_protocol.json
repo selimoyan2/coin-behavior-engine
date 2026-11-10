@@ -10,6 +10,10 @@
       "supported_categories": [
         "Volatilite",
         "Volatility"
+      ],
+      "required_inputs": [
+        "high_prices",
+        "low_prices"
       ]
     },
     "PROC_FUNDING_RATE_SUMMARY": {
@@ -19,6 +23,9 @@
       "supported_categories": [
         "Fonlama",
         "Funding"
+      ],
+      "required_inputs": [
+        "funding_rate_settlements"
       ]
     },
     "PROC_REGIME_STABILITY_EVAL": {
@@ -28,6 +35,9 @@
       "supported_categories": [
         "Rejim",
         "Regime"
+      ],
+      "required_inputs": [
+        "regime_transition_counts_or_predictions"
       ]
     },
     "PROC_DTW_PATTERN_DISTANCE": {
@@ -38,6 +48,9 @@
         "\u00d6r\u00fcnt\u00fc",
         "Pattern",
         "Analog"
+      ],
+      "required_inputs": [
+        "dimension_distance_vectors_or_candle_series"
       ]
     },
     "PROC_STORAGE_VERIFICATION": {
@@ -47,6 +60,9 @@
       "supported_categories": [
         "Sistem G\u00fcvenilirli\u011fi",
         "Durability"
+      ],
+      "required_inputs": [
+        "volume_verification_report"
       ]
     }
   },
