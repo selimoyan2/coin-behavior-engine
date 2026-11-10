@@ -1,0 +1,47 @@
+{
+  "server": "srv1114257",
+  "ip_address": "168.231.125.238",
+  "port": 18080,
+  "container_id": "67868f522bb4",
+  "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+  "image_tag": "cbe-market-intelligence:sprint24-two-blocker-c446ba0",
+  "image_digest": "sha256:1731f1c21f69d4ab25c916e06ae9c9b6dc33cac610a2cb0e1d2faba8629e7ab4",
+  "source_git_commit": "c446ba0547987aa393020003c3361e21991e4b1d",
+  "branch": "main",
+  "verified_endpoints": {
+    "/health": {
+      "status": "healthy",
+      "model_version": "CBE-0.7.0",
+      "model_status": "FROZEN",
+      "freeze_verified": true
+    },
+    "/ready": {
+      "status": "READY",
+      "canonical_model_version": "CBE-0.7.0",
+      "canonical_model_status": "STRICTLY_FROZEN",
+      "governance_decision": "TECHNICAL_NO_GO",
+      "storage_durability": "PERSISTENT_VERIFIED",
+      "directional_trading": "STRICTLY_PROHIBITED",
+      "live_order_execution": "PERMANENTLY_PROHIBITED"
+    },
+    "/api/v1/product/workspace/overview": {
+      "status": "success",
+      "scientific_findings": {
+        "total_specifications": 6,
+        "eligible_specifications": 4,
+        "invalid_specifications": 2,
+        "confirmatory_replications": 0
+      },
+      "platform_health": {
+        "storage_durability": "PERSISTENT_VERIFIED",
+        "session_store": "SQLITE_WAL_ACTIVE"
+      }
+    },
+    "/api/v1/product/workspace/comparison/evaluate": {
+      "['RES-REGIME-01', 'RES-ANALOG-01']": "is_compatible=False, rejection_code=INSUFFICIENT_OVERLAP_EVIDENCE",
+      "['RES-REGIME-01', 'RES-DURABILITY-01']": "is_compatible=False, rejection_code=METHODOLOGY_MISMATCH",
+      "['RES-REGIME-01', 'RES-CRYPTO-01']": "is_compatible=False, rejection_code=QUARANTINED_RECORD"
+    }
+  },
+  "runtime_verification_status": "STAGING_VERIFIED_SUCCESSFUL"
+}

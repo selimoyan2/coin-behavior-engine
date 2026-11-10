@@ -1,0 +1,56 @@
+[
+  {
+    "record_id": "RES-FUND-01",
+    "claimed_status": "REPLICATED_CONFIRMED, SIGNED_VALID",
+    "actual_evidence": "Artifact observed: sample_size=1185, dm_p_value_vs_rw=1.0, observed_mean_funding_bps=1.0103. volatility_ratio=None, holdout_fdr_q=None. No Ed25519 or HMAC signature.",
+    "downgraded_status": "UNVERIFIED",
+    "replication_verdict": "REPLICATION_NOT_ESTABLISHED",
+    "scientific_eligibility": "ELIGIBLE",
+    "comparison_eligibility": "Fails temporal overlap and metric matching when compared with spot series."
+  },
+  {
+    "record_id": "RES-REGIME-01",
+    "claimed_status": "REPLICATED_CONFIRMED, SIGNED_VALID",
+    "actual_evidence": "Artifact observed: total_bars=8736 (null model), min_raw_p=0.1738 (B3_REVERSION). volatility_ratio=None, holdout_fdr_q=None. Multiple testing control recorded all failed Bonferroni and FDR.",
+    "downgraded_status": "UNVERIFIED",
+    "replication_verdict": "REPLICATION_NOT_ESTABLISHED",
+    "scientific_eligibility": "ELIGIBLE",
+    "comparison_eligibility": "Requires explicit observation timestamp series for comparison compatibility."
+  },
+  {
+    "record_id": "RES-ANALOG-01",
+    "claimed_status": "REPLICATED_CONFIRMED, SIGNED_VALID",
+    "actual_evidence": "Artifact observed: total_historical_windows_scanned=860, reference_realized_volatility_pct=81.59. volatility_ratio=None, holdout_fdr_q=None.",
+    "downgraded_status": "UNVERIFIED",
+    "replication_verdict": "REPLICATION_NOT_ESTABLISHED",
+    "scientific_eligibility": "ELIGIBLE",
+    "comparison_eligibility": "Reference window 2022-06-01 to 2022-06-15 requires explicit timestamps to pass overlap gate."
+  },
+  {
+    "record_id": "RES-MACRO-01",
+    "claimed_status": "REPLICATED_CONFIRMED, SIGNED_VALID",
+    "actual_evidence": "Artifact observed: volatility_expansion_ratio=1.913, p_value=1.2e-05, cohens_d=0.724. Internal reproduction only; no independent replication. signature_mode=UNSIGNED_INTEGRITY_ONLY.",
+    "downgraded_status": "UNVERIFIED",
+    "replication_verdict": "REPLICATION_NOT_ESTABLISHED",
+    "scientific_eligibility": "ELIGIBLE",
+    "comparison_eligibility": "Exploratory macro event analysis; eligible for catalog discovery but unsigned."
+  },
+  {
+    "record_id": "RES-DURABILITY-01",
+    "claimed_status": "VERIFIED, CONFIRMED, SIGNED_VALID",
+    "actual_evidence": "Artifact observed: operational durability verification, volume dbc52dc547a4... verified by mountinfo. total_negative_tests=20. No financial price prediction metrics exist.",
+    "downgraded_status": "UNVERIFIED",
+    "replication_verdict": "NOT_APPLICABLE",
+    "scientific_eligibility": "INELIGIBLE",
+    "comparison_eligibility": "Permanently ineligible for scientific comparison (fails with METHODOLOGY_MISMATCH)."
+  },
+  {
+    "record_id": "RES-CRYPTO-01",
+    "claimed_status": "FAILED_QUARANTINE, UNSIGNED",
+    "actual_evidence": "Artifact observed: 288 rows with synthetic 15.2 volume detected in intake buffer. Permanently quarantined.",
+    "downgraded_status": "QUARANTINED",
+    "replication_verdict": "QUARANTINED",
+    "scientific_eligibility": "INELIGIBLE",
+    "comparison_eligibility": "Permanently quarantined; comparison rejected with QUARANTINED_RECORD."
+  }
+]

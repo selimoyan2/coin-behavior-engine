@@ -1,0 +1,21 @@
+{
+  "algorithm_version": "CBE-TEMPORAL-OVERLAP-2.0.0",
+  "status": "VERIFIED_ACCURATE",
+  "normalization_standard": "ISO-8601-UTC-CANONICAL",
+  "minimum_shared_observations_floor": 100,
+  "rejection_codes": {
+    "INSUFFICIENT_OVERLAP_EVIDENCE": "Observation timestamp list is missing and no verified completeness attestation exists, or timestamps are unparseable.",
+    "DISJOINT_OBSERVATION_WINDOWS": "Candidate observation windows or timestamp sets have empty intersection (N_shared == 0).",
+    "INSUFFICIENT_OVERLAP": "Candidate timestamp sets share between 1 and 99 observations (N_shared < 100).",
+    "DUPLICATED_OBSERVATIONS_DETECTED": "Candidate series contains non-unique timestamps before or after canonical UTC normalization.",
+    "SAMPLING_CADENCE_MISMATCH": "Candidates have conflicting window cadences without registered normalization."
+  },
+  "verification_rules": [
+    "Every candidate observation timestamp must parse to a valid timezone-aware datetime and normalize to YYYY-MM-DDTHH:MM:SSZ.",
+    "Candidate series must contain zero duplicates.",
+    "Intersection must be performed using mathematical set intersection across all candidates.",
+    "N_shared is strictly the cardinality of the intersection set.",
+    "Start and end of overlap are derived from min(S_shared) and max(S_shared)."
+  ],
+  "verified_commit": "c446ba0547987aa393020003c3361e21991e4b1d"
+}

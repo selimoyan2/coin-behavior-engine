@@ -1,0 +1,11 @@
+{
+  "repository": "selimoyan2/coin-behavior-engine",
+  "branch": "main",
+  "baseline_audit_head": "03326454d89570a2f16f8a332eb3118865dde161",
+  "implementation_commit_sha": "c446ba0547987aa393020003c3361e21991e4b1d",
+  "implementation_commit_short": "c446ba0",
+  "implementation_commit_subject": "fix(sprint24): genuine observation intersection and evidence-backed scientific statuses",
+  "target_scope": "Local development and authorized remote staging only (production strict zero-touch)",
+  "canonical_model_version": "CBE-0.7.0",
+  "governance_decision": "TECHNICAL_NO_GO"
+}

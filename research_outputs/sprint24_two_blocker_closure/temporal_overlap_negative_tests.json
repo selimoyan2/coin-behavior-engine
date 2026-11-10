@@ -1,0 +1,102 @@
+{
+  "test_suite": "tests/test_sprint_product_acceleration_24_two_blocker_closure.py",
+  "total_negative_and_boundary_tests": 12,
+  "tests": [
+    {
+      "test_number": 1,
+      "name": "test_01_same_nominal_window_different_real_observations",
+      "scenario": "Same nominal 14-day window (2024-01-01 to 2024-01-15), 100 odd hours vs 100 even hours.",
+      "intersection_count": 0,
+      "expected_rejection": "DISJOINT_OBSERVATION_WINDOWS",
+      "status": "PASS"
+    },
+    {
+      "test_number": 2,
+      "name": "test_02_disjoint_timestamp_sets",
+      "scenario": "Disjoint calendar months (Jan 2024 vs Feb 2024).",
+      "intersection_count": 0,
+      "expected_rejection": "DISJOINT_OBSERVATION_WINDOWS",
+      "status": "PASS"
+    },
+    {
+      "test_number": 3,
+      "name": "test_03_exactly_99_shared_observations_fails_floor",
+      "scenario": "Candidate pair sharing exactly 99 timestamps.",
+      "intersection_count": 99,
+      "expected_rejection": "INSUFFICIENT_OVERLAP",
+      "status": "PASS"
+    },
+    {
+      "test_number": 4,
+      "name": "test_04_exactly_100_shared_observations_passes",
+      "scenario": "Candidate pair sharing exactly 100 timestamps.",
+      "intersection_count": 100,
+      "expected_outcome": "overlap_valid = True",
+      "status": "PASS"
+    },
+    {
+      "test_number": 5,
+      "name": "test_05_exactly_101_shared_observations_passes",
+      "scenario": "Candidate pair sharing exactly 101 timestamps.",
+      "intersection_count": 101,
+      "expected_outcome": "overlap_valid = True",
+      "status": "PASS"
+    },
+    {
+      "test_number": 6,
+      "name": "test_06_duplicated_timestamps_rejected",
+      "scenario": "Candidate series with injected duplicate timestamp.",
+      "intersection_count": 0,
+      "expected_rejection": "DUPLICATED_OBSERVATIONS_DETECTED",
+      "status": "PASS"
+    },
+    {
+      "test_number": 7,
+      "name": "test_07_missing_hourly_observations_below_floor_fails",
+      "scenario": "Nominal 150h duration with 60 missing observations (actual N=90).",
+      "intersection_count": 90,
+      "expected_rejection": "INSUFFICIENT_OVERLAP",
+      "status": "PASS"
+    },
+    {
+      "test_number": 8,
+      "name": "test_08_differing_utc_representations_normalized_and_matched",
+      "scenario": "Candidate A in 'Z' (UTC) and Candidate B in '+03:00' representing the same 110 instants.",
+      "intersection_count": 110,
+      "expected_outcome": "overlap_valid = True",
+      "status": "PASS"
+    },
+    {
+      "test_number": 9,
+      "name": "test_09_invalid_timestamp_strings_rejected",
+      "scenario": "Candidate series containing unparseable timestamp string.",
+      "intersection_count": 0,
+      "expected_rejection": "INSUFFICIENT_OVERLAP_EVIDENCE",
+      "status": "PASS"
+    },
+    {
+      "test_number": 10,
+      "name": "test_10_start_end_metadata_only_rejected_insufficient_evidence",
+      "scenario": "Candidates provide nominal start/end but observed_timestamps=None and no attestation.",
+      "intersection_count": 0,
+      "expected_rejection": "INSUFFICIENT_OVERLAP_EVIDENCE",
+      "status": "PASS"
+    },
+    {
+      "test_number": 11,
+      "name": "test_11_one_candidate_missing_observation_list_fails_closed",
+      "scenario": "Candidate 1 has 120 timestamps, Candidate 2 has observed_timestamps=None.",
+      "intersection_count": 0,
+      "expected_rejection": "INSUFFICIENT_OVERLAP_EVIDENCE",
+      "status": "PASS"
+    },
+    {
+      "test_number": 12,
+      "name": "test_12_sufficient_overlap_but_metric_definition_mismatch",
+      "scenario": "Temporal overlap valid (N=120) but Candidate 1 is volatility_ratio and Candidate 2 lacks compatible contract.",
+      "intersection_count": 120,
+      "expected_rejection": "METRIC_DEFINITION_MISMATCH",
+      "status": "PASS"
+    }
+  ]
+}

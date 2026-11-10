@@ -1,0 +1,15 @@
+{
+  "canonical_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "parameter_mutations": 0,
+  "technical_decision": "TECHNICAL_NO_GO",
+  "governance_authorization": "NOT_GRANTED",
+  "production_token": "NOT_ISSUED",
+  "real_network_market_collection": "DISABLED",
+  "btcusdt_live_observation": "DISABLED",
+  "unattended_monitoring": "DISABLED",
+  "live_order_execution": "PERMANENTLY_PROHIBITED",
+  "directional_trading_eligibility": 0,
+  "zero_touch_production": "CONFIRMED_ZERO_TOUCH",
+  "verification_timestamp": "2026-11-10T10:10:00Z"
+}

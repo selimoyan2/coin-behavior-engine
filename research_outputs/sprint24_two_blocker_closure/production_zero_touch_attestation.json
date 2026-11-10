@@ -1,0 +1,15 @@
+{
+  "server": "srv1114257",
+  "production_host": "coin.ozelweb.com.tr",
+  "production_container_id": "5e409c596a23",
+  "production_image": "6t63aehpaw0cw1bbt4zcm09g:707e2627ed4474e711b4b03c15d4e23664f2785a",
+  "production_started_at": "2026-11-10T06:07:06.817803766Z",
+  "production_status": "running",
+  "production_health": "healthy",
+  "restart_count": 0,
+  "uptime_seconds": 14501,
+  "prediction_count": 8432,
+  "model_status": "FROZEN",
+  "freeze_verified": true,
+  "attestation_verdict": "STRICT_ZERO_TOUCH_CONFIRMED"
+}

@@ -1,0 +1,35 @@
+{
+  "audit_standard": "INDEPENDENT_REPLICATION_VERIFICATION_V1",
+  "verified_independent_replications_count": 0,
+  "verdict": "NO_INDEPENDENT_REPLICATIONS_FOUND",
+  "findings": [
+    {
+      "record_id": "RES-MACRO-01",
+      "previous_claim": "replication_verdict = CONFIRMED",
+      "actual_source_evidence": "experiment_cpi_volatility.cbe-hyp.json results.reproduced_status = 'REPRODUCED_WITH_TOLERANCE'",
+      "audit_verdict": "Internal single-script rerun across local event windows; does NOT constitute independent replication by external or separate team.",
+      "corrected_status": "REPLICATION_NOT_ESTABLISHED"
+    },
+    {
+      "record_id": "RES-DURABILITY-01",
+      "previous_claim": "replication_verdict = CONFIRMED",
+      "actual_source_evidence": "persistent_volume_verification.json mountinfo dual-kernel check",
+      "audit_verdict": "Operational system storage benchmark; financial research replication is NOT APPLICABLE.",
+      "corrected_status": "NOT_APPLICABLE"
+    },
+    {
+      "record_id": "RES-REGIME-01",
+      "previous_claim": "NOT_EVALUATED / UNVERIFIED",
+      "actual_source_evidence": "Null model single EMA total_bars=8736; all B3 models failed FDR control.",
+      "audit_verdict": "Hypothesis failed multiple testing correction; no independent replication exists.",
+      "corrected_status": "REPLICATION_NOT_ESTABLISHED"
+    },
+    {
+      "record_id": "RES-FUND-01",
+      "previous_claim": "NOT_EVALUATED / UNVERIFIED",
+      "actual_source_evidence": "dm_p_value_vs_rw = 1.0 (no predictability over random walk).",
+      "audit_verdict": "Model failed statistical significance; no replication.",
+      "corrected_status": "REPLICATION_NOT_ESTABLISHED"
+    }
+  ]
+}

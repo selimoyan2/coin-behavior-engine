@@ -1,0 +1,53 @@
+{
+  "execution_timestamp": "2026-11-10T10:03:06Z",
+  "python_version": "3.11.16",
+  "platform": "win32",
+  "suites": [
+    {
+      "suite_file": "tests/test_sprint_product_acceleration_24.py",
+      "total_tests": 28,
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 2.23
+    },
+    {
+      "suite_file": "tests/test_sprint_product_acceleration_24_correction.py",
+      "total_tests": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 1.88
+    },
+    {
+      "suite_file": "tests/test_sprint_product_acceleration_24_final_closure.py",
+      "total_tests": 20,
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 2.15
+    },
+    {
+      "suite_file": "tests/test_sprint_product_acceleration_24_two_blocker_closure.py",
+      "total_tests": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 1.69
+    },
+    {
+      "suite_file": "Multi-Sprint Regression (S21, S22, S22-hard, S23, S23-closure)",
+      "total_tests": 134,
+      "passed": 134,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 106.45
+    }
+  ],
+  "sprint_24_total_passed": 85,
+  "regression_total_passed": 134,
+  "grand_total_passed": 219,
+  "grand_total_failed": 0,
+  "grand_total_skipped": 0,
+  "verdict": "ALL_TESTS_PASSING"
+}

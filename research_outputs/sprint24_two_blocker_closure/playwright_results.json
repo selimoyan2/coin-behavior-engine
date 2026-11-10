@@ -1,0 +1,81 @@
+{
+  "execution_timestamp": "2026-11-10T10:05:35Z",
+  "target_url": "http://127.0.0.1:18098",
+  "total_scenarios": 45,
+  "passed_scenarios": 45,
+  "failed_scenarios": 0,
+  "viewports_tested": [
+    {
+      "name": "Desktop",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "name": "Tablet",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "name": "Mobile",
+      "width": 375,
+      "height": 667
+    }
+  ],
+  "key_scenarios_verified": [
+    {
+      "id": 2,
+      "name": "Model Freeze invariant banner",
+      "result": "PASS",
+      "details": "CBE-0.7.0 DONDURULDU"
+    },
+    {
+      "id": 3,
+      "name": "Governance decision TECHNICAL_NO_GO",
+      "result": "PASS",
+      "details": "TECHNICAL NO-GO"
+    },
+    {
+      "id": 4,
+      "name": "Trading Prohibition badge",
+      "result": "PASS",
+      "details": "CANLI \u0130\u015eLEM: YASAK"
+    },
+    {
+      "id": 20,
+      "name": "Compatibility Gate fail-closed rejection",
+      "result": "PASS",
+      "details": "\u2715 B\u0130L\u0130MSEL UYUMSUZLUK: [INSUFFICIENT_OVERLAP_EVIDENCE]"
+    },
+    {
+      "id": 24,
+      "name": "Compatibility Gate quarantine rejection",
+      "result": "PASS",
+      "details": "\u2715 B\u0130L\u0130MSEL UYUMSUZLUK: [QUARANTINED_RECORD]"
+    },
+    {
+      "id": 26,
+      "name": "Reopen saved comparison configuration",
+      "result": "PASS",
+      "details": "Reopened and live re-evaluated"
+    },
+    {
+      "id": 33,
+      "name": "Evidence verification workflow execution",
+      "result": "PASS",
+      "details": "RFC 8785 + HMAC verified"
+    },
+    {
+      "id": 43,
+      "name": "Zero secret leakage in browser console traces",
+      "result": "PASS",
+      "details": "No secrets logged"
+    },
+    {
+      "id": 44,
+      "name": "Zero external network requests",
+      "result": "PASS",
+      "details": "All 52 requests were local"
+    }
+  ],
+  "verdict": "PLAYWRIGHT_ACCEPTANCE_VERIFIED"
+}

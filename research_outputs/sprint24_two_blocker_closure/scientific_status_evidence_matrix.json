@@ -1,0 +1,92 @@
+{
+  "matrix_version": "CBE-GROUNDED-STATUS-2.0.0",
+  "verified_catalog_records": [
+    {
+      "id": "RES-FUND-01",
+      "title": "Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi",
+      "source_artifact": "data/reports/sprint09_38_funding_predictability_report.json",
+      "source_artifact_sha256": "5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a",
+      "evidence_tier": "CANONICAL_ARTIFACT",
+      "signature_status": "UNSIGNED",
+      "validation_status": "UNVERIFIED",
+      "replication_verdict": "REPLICATION_NOT_ESTABLISHED",
+      "scientific_eligibility": "ELIGIBLE",
+      "quarantine_status": "CLEAR",
+      "record_status": "UNVERIFIED"
+    },
+    {
+      "id": "RES-REGIME-01",
+      "title": "2022\u20132026 Kronolojik \u0130leriye Y\u00f6nelik Rejim Kararl\u0131l\u0131\u011f\u0131 Do\u011frulamas\u0131",
+      "source_artifact": "data/reports/sprint09_27_validation_and_holdout_report.json",
+      "source_artifact_sha256": "14ae2c3a0ebcbbf8e96a50ad5ada06a5ce2b0fc22082f3a225d9becfcee4cebf",
+      "evidence_tier": "CANONICAL_ARTIFACT",
+      "signature_status": "UNSIGNED",
+      "validation_status": "UNVERIFIED",
+      "replication_verdict": "REPLICATION_NOT_ESTABLISHED",
+      "scientific_eligibility": "ELIGIBLE",
+      "quarantine_status": "CLEAR",
+      "record_status": "UNVERIFIED"
+    },
+    {
+      "id": "RES-ANALOG-01",
+      "title": "Dinamik Zaman B\u00fckmesi (DTW) Tarihsel \u00d6r\u00fcnt\u00fc Benzerli\u011fi V2",
+      "source_artifact": "research_outputs/research_report_29_pattern_similarity.json",
+      "source_artifact_sha256": "337b19b98c381d0cac508161efa9bb776826cd8708bd2d64d1b9e8779f8b6847",
+      "evidence_tier": "CANONICAL_ARTIFACT",
+      "signature_status": "UNSIGNED",
+      "validation_status": "UNVERIFIED",
+      "replication_verdict": "REPLICATION_NOT_ESTABLISHED",
+      "scientific_eligibility": "ELIGIBLE",
+      "quarantine_status": "CLEAR",
+      "record_status": "UNVERIFIED"
+    },
+    {
+      "id": "RES-MACRO-01",
+      "title": "Makroekonomik Duyurular (CPI & FOMC) T0 Rejim D\u00f6n\u00fc\u015f\u00fcmleri",
+      "source_artifact": "research_outputs/experiment_cpi_volatility.cbe-hyp.json",
+      "source_artifact_sha256": "3cda89064b6837ef23d76c6d220d3998ebfc5a3f7261d3afc6ea68c29a4bf7ac",
+      "evidence_tier": "CANONICAL_ARTIFACT",
+      "signature_status": "UNSIGNED",
+      "validation_status": "UNVERIFIED",
+      "replication_verdict": "REPLICATION_NOT_ESTABLISHED",
+      "scientific_eligibility": "ELIGIBLE",
+      "quarantine_status": "CLEAR",
+      "record_status": "UNVERIFIED"
+    },
+    {
+      "id": "RES-DURABILITY-01",
+      "title": "Dayan\u0131kl\u0131 Depolama Do\u011frulamas\u0131 & Kan\u0131t Soyk\u00fct\u00fc\u011f\u00fc Sertifikasyonu",
+      "source_artifact": "research_outputs/sprint23_delivery/persistent_volume_verification.json",
+      "source_artifact_sha256": "cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c",
+      "evidence_tier": "CANONICAL_ARTIFACT",
+      "signature_status": "UNSIGNED",
+      "validation_status": "OPERATIONAL_AUDIT_LOG",
+      "replication_verdict": "NOT_APPLICABLE",
+      "scientific_eligibility": "INELIGIBLE",
+      "quarantine_status": "CLEAR",
+      "record_status": "UNVERIFIED"
+    },
+    {
+      "id": "RES-CRYPTO-01",
+      "title": "Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim \u0130ncelemesi",
+      "source_artifact": "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet",
+      "source_artifact_sha256": "05874e97d06db21fad8e7583b5b8038141d4e3dcfbabf68238fca52f5efab718",
+      "evidence_tier": "CANONICAL_ARTIFACT",
+      "signature_status": "UNSIGNED",
+      "validation_status": "FAILED_QUARANTINE",
+      "replication_verdict": "QUARANTINED",
+      "scientific_eligibility": "INELIGIBLE",
+      "quarantine_status": "QUARANTINED",
+      "record_status": "QUARANTINED"
+    }
+  ],
+  "grounded_counts": {
+    "total_catalog_records": 6,
+    "evidence_backed_records": 6,
+    "verified_scientific_findings": 0,
+    "unverified_records": 5,
+    "quarantined_records": 2,
+    "independent_replications": 0,
+    "missing_evidence_records": 0
+  }
+}
