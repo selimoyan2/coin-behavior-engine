@@ -35,6 +35,9 @@ from coin_behavior_engine.product.research_catalog_provider import (
     SignatureStatus,
     ValidationResult,
 )
+from coin_behavior_engine.product.attestation_verifier import (
+    ObservationCompletenessAttestationVerifier,
+)
 
 logger = logging.getLogger("cbe.research_workspace")
 
@@ -279,25 +282,11 @@ def calculate_temporal_observation_overlap(records: List[ResearchRecord]) -> Dic
                 }
 
     # 4. Check for Verified Completeness Attestation or Explicit Timestamps
-    normalized_timestamp_sets: List[set] = []
-    all_have_timestamps = True
+    candidate_observation_sets: List[set] = []
 
     for r in records:
         ts_list = getattr(r, "observed_timestamps", None)
         attestation = getattr(r, "observation_completeness_attestation", None)
-        has_valid_attestation = (
-            isinstance(attestation, dict)
-            and attestation.get("status") == "VERIFIED"
-            and attestation.get("verified_continuous_series") is True
-        )
-
-        if not ts_list and not has_valid_attestation:
-            return {
-                "overlap_valid": False,
-                "rejection_code": "INSUFFICIENT_OVERLAP_EVIDENCE",
-                "rejection_reason_tr": f"Kayıt {r.id} için doğrulanmış gözlem zaman damgaları listesi bulunamadı ve geçerli eksiksizlik kanıtı sunulmadı.",
-                "shared_interval_count": 0,
-            }
 
         if ts_list is not None:
             norm_list = []
@@ -319,75 +308,66 @@ def calculate_temporal_observation_overlap(records: List[ResearchRecord]) -> Dic
                     "rejection_reason_tr": f"Kayıt {r.id} serisinde normalizasyon sonrası mükerrer gözlem zaman damgaları tespit edildi.",
                     "shared_interval_count": 0,
                 }
-            normalized_timestamp_sets.append(set(norm_list))
+            candidate_observation_sets.append(set(norm_list))
+        elif attestation is not None:
+            # Path B: Cryptographically authenticate completeness attestation (Fail-Closed)
+            verify_res = ObservationCompletenessAttestationVerifier.verify_attestation(r, attestation)
+            if not verify_res["is_valid"]:
+                rej_subcode = verify_res.get("rejection_code") or "ATTESTATION_VERIFICATION_FAILED"
+                return {
+                    "overlap_valid": False,
+                    "rejection_code": "ATTESTATION_VERIFICATION_FAILED",
+                    "attestation_rejection_code": rej_subcode,
+                    "rejection_reason_tr": f"Kayıt {r.id} için gözlem eksiksizlik tasdiki doğrulaması başarısız oldu ({rej_subcode}): {verify_res.get('rejection_reason_tr')}",
+                    "shared_interval_count": 0,
+                }
+            # Generate verified discrete observation grid timestamps
+            grid = ObservationCompletenessAttestationVerifier.generate_attested_grid(r, attestation)
+            candidate_observation_sets.append(set(grid))
         else:
-            all_have_timestamps = False
-
-    # 5. True Set Intersection Across Explicit Timestamp Sets
-    if all_have_timestamps and len(normalized_timestamp_sets) == len(records):
-        shared_set = set.intersection(*normalized_timestamp_sets)
-        n_shared = len(shared_set)
-
-        if n_shared == 0:
             return {
                 "overlap_valid": False,
-                "rejection_code": "DISJOINT_OBSERVATION_WINDOWS",
-                "rejection_reason_tr": "Gözlem pencereleri ve zaman damgası kümeleri tamamen ayrıktır; ortak gözlem bulunmuyor.",
+                "rejection_code": "INSUFFICIENT_OVERLAP_EVIDENCE",
+                "rejection_reason_tr": f"Kayıt {r.id} için doğrulanmış gözlem zaman damgaları listesi bulunamadı ve geçerli kimlik doğrulamalı eksiksizlik kanıtı sunulmadı.",
                 "shared_interval_count": 0,
-                "overlap_start_utc": None,
-                "overlap_end_utc": None,
             }
 
-        sorted_shared = sorted(shared_set)
-        t_start_iso = sorted_shared[0]
-        t_end_iso = sorted_shared[-1]
+    # 5. True Set Intersection Across ALL Candidate Observation Sets (Explicit or Attested)
+    shared_set = set.intersection(*candidate_observation_sets)
+    n_shared = len(shared_set)
 
-        if n_shared < 100:
-            return {
-                "overlap_valid": False,
-                "rejection_code": "INSUFFICIENT_OVERLAP",
-                "rejection_reason_tr": f"Ortak gözlem penceresinde yalnızca {n_shared} doğrulanmış ortak gözlem bulunmaktadır; asgari 100 ortak gözlem kuralı sağlanamadı.",
-                "shared_interval_count": n_shared,
-                "overlap_start_utc": t_start_iso,
-                "overlap_end_utc": t_end_iso,
-            }
-
+    if n_shared == 0:
         return {
-            "overlap_valid": True,
-            "rejection_code": None,
-            "rejection_reason_tr": None,
-            "shared_interval_count": n_shared,
-            "overlap_start_utc": t_start_iso,
-            "overlap_end_utc": t_end_iso,
-            "shared_timestamps": sorted_shared,
+            "overlap_valid": False,
+            "rejection_code": "DISJOINT_OBSERVATION_WINDOWS",
+            "rejection_reason_tr": "Gözlem pencereleri ve zaman damgası kümeleri tamamen ayrıktır; ortak gözlem bulunmuyor.",
+            "shared_interval_count": 0,
+            "overlap_start_utc": None,
+            "overlap_end_utc": None,
         }
 
-    # 6. Fallback to Verified Completeness Attestation Cadence Math
-    cadence = records[0].window_cadence.lower() if records[0].window_cadence else "1h"
-    cadence_map = {
-        "1m": 60, "5m": 300, "15m": 900, "1h": 3600, "4h": 14400, "8h": 28800, "1d": 86400,
-    }
-    interval_seconds = cadence_map.get(cadence, 3600)
-    overlap_duration_seconds = (t_end - t_start).total_seconds()
-    shared_interval_count = int(overlap_duration_seconds // interval_seconds)
+    sorted_shared = sorted(shared_set)
+    t_start_iso = sorted_shared[0]
+    t_end_iso = sorted_shared[-1]
 
-    if shared_interval_count < 100:
+    if n_shared < 100:
         return {
             "overlap_valid": False,
             "rejection_code": "INSUFFICIENT_OVERLAP",
-            "rejection_reason_tr": f"Ortak gözlem penceresinde doğrulanmış eksiksizlik tasdiğine göre yalnızca {shared_interval_count} periyot bulunmaktadır; asgari 100 periyotluk örtüşme kuralı sağlanamadı.",
-            "shared_interval_count": shared_interval_count,
-            "overlap_start_utc": t_start.isoformat(),
-            "overlap_end_utc": t_end.isoformat(),
+            "rejection_reason_tr": f"Ortak gözlem penceresinde yalnızca {n_shared} doğrulanmış ortak gözlem bulunmaktadır; asgari 100 ortak gözlem kuralı sağlanamadı.",
+            "shared_interval_count": n_shared,
+            "overlap_start_utc": t_start_iso,
+            "overlap_end_utc": t_end_iso,
         }
 
     return {
         "overlap_valid": True,
         "rejection_code": None,
         "rejection_reason_tr": None,
-        "shared_interval_count": shared_interval_count,
-        "overlap_start_utc": t_start.isoformat(),
-        "overlap_end_utc": t_end.isoformat(),
+        "shared_interval_count": n_shared,
+        "overlap_start_utc": t_start_iso,
+        "overlap_end_utc": t_end_iso,
+        "shared_timestamps": sorted_shared,
     }
 
 
