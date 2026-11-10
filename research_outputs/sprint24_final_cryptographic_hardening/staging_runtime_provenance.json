@@ -1,0 +1,14 @@
+{
+  "host": "168.231.125.238",
+  "port": 18080,
+  "container_id": "2a68fded2156",
+  "image_name": "cbe-market-intelligence:sprint24-crypto-hardening-d44a1a5",
+  "image_digest": "sha256:349318e2d8b48e8669e49a5dbddcde350513450e4c9ea80418af9d41613b6c96",
+  "verified_endpoints": {
+    "/health": "healthy (model CBE-0.7.0 FROZEN)",
+    "/ready": "READY (PERSISTENT_VERIFIED, TECHNICAL_NO_GO)",
+    "/api/v1/product/workspace/overview": "success (canonical_model: CBE-0.7.0, status: STRICTLY_FROZEN, governance: TECHNICAL_NO_GO)",
+    "/api/v1/product/workspace/comparison/evaluate": "fail-closed verified (SAMPLING_CADENCE_MISMATCH, INSUFFICIENT_OVERLAP_EVIDENCE)",
+    "in_container_cryptographic_verification": "PASS (Signature mutation rejected, modified missing_observations rejected, missing file fail closed)"
+  }
+}

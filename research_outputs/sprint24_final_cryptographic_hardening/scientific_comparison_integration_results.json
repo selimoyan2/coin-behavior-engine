@@ -1,0 +1,17 @@
+{
+  "engine": "ResearchWorkspaceV2Engine.evaluate_comparison",
+  "gate_order": [
+    "Step 1: Selection bounds (2 <= N <= 5)",
+    "Step 2: Candidate identity resolution",
+    "Step 3: Quarantine check",
+    "Step 4: Scientific eligibility check",
+    "Step 5: Model version invariance",
+    "Step 6: Methodology category compatibility",
+    "Step 7: Sampling cadence compatibility",
+    "Step 8: Temporal observation overlap (Set intersection S1 \u2229 S2 >= 100 with hardened verifier)",
+    "Step 9: Metric definition & unit contracts",
+    "Step 10: Evidence sufficiency per candidate"
+  ],
+  "rejection_behavior": "Fail-closed. Difference analysis suppressed. Governance notice intact.",
+  "live_saved_comparison_revalidation": "Automatically re-evaluates all gates when saved comparison is accessed."
+}

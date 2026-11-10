@@ -1,0 +1,132 @@
+{
+  "manifest_version": "1.0.0",
+  "sprint_id": "CBE_SPRINT24_FINAL_CRYPTOGRAPHIC_HARDENING",
+  "generated_timestamp_utc": "2026-11-10T11:32:00Z",
+  "artifacts": {
+    "root_cause_analysis.md": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/root_cause_analysis.md",
+      "sha256": "03d9d2a4be0348eb38f85652b2f73de4da28be69a7e7e4c432886e6c65745e12",
+      "size_bytes": 3326
+    },
+    "attestation_trust_model.json": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/attestation_trust_model.json",
+      "sha256": "d3ee340a6336cd075a7a5d5518b9d052e6137169f1aa96a6f5e6563428ffb1f3",
+      "size_bytes": 1105
+    },
+    "attestation_trust_model.md": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/attestation_trust_model.md",
+      "sha256": "6314676e0763fc935116b92787f0d59a4534c8c5e1fe983d62b46809fff504c7",
+      "size_bytes": 1145
+    },
+    "cryptographic_verification_contract.json": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/cryptographic_verification_contract.json",
+      "sha256": "a2868e16fe9a8bc337a00a5aafb3ea44a5c14bd63fecbab8b54fec2b1ca9ba9f",
+      "size_bytes": 1715
+    },
+    "cryptographic_verification_contract.md": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/cryptographic_verification_contract.md",
+      "sha256": "eb675846342ba6664a7fd53fad0cfb3fff7891ef5f38495021c4d82fa4368289",
+      "size_bytes": 1767
+    },
+    "trusted_authority_inventory.json": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/trusted_authority_inventory.json",
+      "sha256": "c98364260cfd75f023b190390499c677ae75fc7657755c1980f338882f31bf61",
+      "size_bytes": 554
+    },
+    "trusted_authority_inventory.md": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/trusted_authority_inventory.md",
+      "sha256": "800b1ff03724ba947393fc1ef6ac3c1b3ec2b5719d8e756c51d20a4d709d809f",
+      "size_bytes": 598
+    },
+    "dataset_artifact_binding_verification.json": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/dataset_artifact_binding_verification.json",
+      "sha256": "f8bd8c422beff3c774d30fe972d6d2792749d59283cc3bf6273856491dc48821",
+      "size_bytes": 1657
+    },
+    "dataset_artifact_binding_verification.md": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/dataset_artifact_binding_verification.md",
+      "sha256": "64fedf9a9b351702337d225619f48785d6997aa04f7c625b274b718e4d6f7179",
+      "size_bytes": 1711
+    },
+    "genuine_observation_overlap_verification.json": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/genuine_observation_overlap_verification.json",
+      "sha256": "f56db97df68ac4aa8646e1e51b1eb685709ffa3f1826066d953fd317cfdaa2a5",
+      "size_bytes": 1010
+    },
+    "genuine_observation_overlap_verification.md": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/genuine_observation_overlap_verification.md",
+      "sha256": "ac521f4517d88e3bb2cf352fb015406b81ad25ba6eaa6e97b4be43034a89d6e8",
+      "size_bytes": 1067
+    },
+    "negative_security_test_matrix.json": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/negative_security_test_matrix.json",
+      "sha256": "10a7326244da1dc4d0b8585f073906ad3eef6dfa31169ad16b848f22ead2366f",
+      "size_bytes": 4568
+    },
+    "negative_security_test_matrix.md": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/negative_security_test_matrix.md",
+      "sha256": "2a867c33986c5c244f1c86802ef90681711dbfaf793dc539a4c97302c8c21604",
+      "size_bytes": 4614
+    },
+    "cache_invalidation_verification.json": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/cache_invalidation_verification.json",
+      "sha256": "acc7e7561c4d18c9e8ca903c36dcea62bf30dab584db3a39ab180d000323860d",
+      "size_bytes": 735
+    },
+    "cache_invalidation_verification.md": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/cache_invalidation_verification.md",
+      "sha256": "fffb536ac1b646692ac93d9ca0bea23bd393d29d755c49e6a164f56335f6daa2",
+      "size_bytes": 783
+    },
+    "scientific_comparison_integration_results.json": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/scientific_comparison_integration_results.json",
+      "sha256": "3355146f26e712b16d91f4c34dbe9d6dcc36e5828fe8604510d3125edc12eca5",
+      "size_bytes": 808
+    },
+    "scientific_comparison_integration_results.md": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/scientific_comparison_integration_results.md",
+      "sha256": "2c514a06490c765196a24abe7ffc90c64220a41831f37a438b1cd798773e8c0c",
+      "size_bytes": 866
+    },
+    "regression_test_results.json": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/regression_test_results.json",
+      "sha256": "574b86d76f650de493cd63ae5ab0a37c319544f2a2a2049e0aeb1f64f79d60a7",
+      "size_bytes": 1331
+    },
+    "playwright_results.json": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/playwright_results.json",
+      "sha256": "720b91b1e651ee2de5f3e71ea47db8b51c2549a0172cf7c4cd56c7cff5e1b013",
+      "size_bytes": 550
+    },
+    "performance_measurements.json": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/performance_measurements.json",
+      "sha256": "ca49668479ecb913ed35168095c447730692ef6d6371f7323b3414a022aef8cb",
+      "size_bytes": 245
+    },
+    "staging_runtime_provenance.json": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/staging_runtime_provenance.json",
+      "sha256": "ebbc62cf24d766dbe5dc1a922294487079c675ac2dec2fa393e142147218df2a",
+      "size_bytes": 818
+    },
+    "production_zero_touch_attestation.json": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/production_zero_touch_attestation.json",
+      "sha256": "3950a6f35dfafb122172bf796667c841b27f83edbbb2ce6b1832356d02524d9d",
+      "size_bytes": 270
+    },
+    "scientific_governance_verification.json": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/scientific_governance_verification.json",
+      "sha256": "c4422717be06cacae00fc45adfecfcfa0fbb009b3e60676bed75cfaa51bc668e",
+      "size_bytes": 352
+    },
+    "git_release_identity.json": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/git_release_identity.json",
+      "sha256": "a57e6b387a7102862c959b5ecad7c40234cfe359671cda45e5b11ad556ddac8b",
+      "size_bytes": 330
+    },
+    "final_acceptance_report.md": {
+      "path": "research_outputs/sprint24_final_cryptographic_hardening/final_acceptance_report.md",
+      "sha256": "54fcfbc8e051b40a13c6e9515e6a38747326ed0963baec98e1ddc2bfcdcb7d64",
+      "size_bytes": 2535
+    }
+  }
+}

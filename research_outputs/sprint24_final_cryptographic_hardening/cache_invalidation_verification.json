@@ -1,0 +1,23 @@
+{
+  "cache_key_binding": [
+    "artifact_digest (SHA-256)",
+    "claims_sha256 (SHA-256)",
+    "signature_digest (SHA-256)",
+    "key_id",
+    "trust_policy_version",
+    "is_revoked (boolean)"
+  ],
+  "continuous_file_integrity": {
+    "mtime_ns_tracked": true,
+    "file_size_tracked": true,
+    "action_on_disk_change": "Evict cache entry and re-verify fail closed"
+  },
+  "invalidation_triggers": [
+    "Signature modification (immediate cache miss due to signature_digest binding)",
+    "Source file modification or deletion on disk",
+    "Key revocation in SigningKeyRegistry",
+    "Trust policy version increment"
+  ],
+  "thread_safety": "threading.Lock() protecting get, put, clear and eviction",
+  "status": "VERIFIED_SECURE"
+}

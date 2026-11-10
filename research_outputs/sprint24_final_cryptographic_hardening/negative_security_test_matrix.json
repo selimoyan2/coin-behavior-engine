@@ -1,0 +1,152 @@
+{
+  "test_suite": "tests/test_sprint_product_acceleration_24_cryptographic_hardening.py",
+  "targeted_cryptographic_scenarios": [
+    {
+      "id": 1,
+      "category": "Signature-Bound Cache",
+      "scenario": "Signature mutation sequence (A -> cached, B with mutated sig -> rejected, A -> cache hit)",
+      "result": "PASS"
+    },
+    {
+      "id": 2,
+      "category": "Signature-Bound Cache",
+      "scenario": "Failed verification never contaminates successful cache",
+      "result": "PASS"
+    },
+    {
+      "id": 3,
+      "category": "Signature-Bound Cache",
+      "scenario": "Signing key revocation immediately invalidates cached access",
+      "result": "PASS"
+    },
+    {
+      "id": 4,
+      "category": "Signature-Bound Cache",
+      "scenario": "Signing key rotation lifecycle verifies cleanly with new key",
+      "result": "PASS"
+    },
+    {
+      "id": 5,
+      "category": "Signature-Bound Cache",
+      "scenario": "Thread-safe concurrent multi-threaded cache access",
+      "result": "PASS"
+    },
+    {
+      "id": 6,
+      "category": "Artifact Integrity",
+      "scenario": "Missing source artifact fails closed (SOURCE_ARTIFACT_MISSING)",
+      "result": "PASS"
+    },
+    {
+      "id": 7,
+      "category": "Artifact Integrity",
+      "scenario": "Directory target fails closed (SOURCE_ARTIFACT_UNREADABLE)",
+      "result": "PASS"
+    },
+    {
+      "id": 8,
+      "category": "Artifact Integrity",
+      "scenario": "Path traversal attempt ('..') fails closed (SOURCE_ARTIFACT_PATH_UNTRUSTED)",
+      "result": "PASS"
+    },
+    {
+      "id": 9,
+      "category": "Artifact Integrity",
+      "scenario": "Disallowed system path ('/etc', 'C:\\Windows') fails closed (SOURCE_ARTIFACT_PATH_UNTRUSTED)",
+      "result": "PASS"
+    },
+    {
+      "id": 10,
+      "category": "Artifact Integrity",
+      "scenario": "Source artifact hash mismatch fails closed (SOURCE_ARTIFACT_HASH_MISMATCH)",
+      "result": "PASS"
+    },
+    {
+      "id": 11,
+      "category": "Artifact Integrity",
+      "scenario": "File replaced after cache population invalidates cache via mtime/size check",
+      "result": "PASS"
+    },
+    {
+      "id": 12,
+      "category": "Signed Security Claims",
+      "scenario": "Modifying missing_observations after signing invalidates signature",
+      "result": "PASS"
+    },
+    {
+      "id": 13,
+      "category": "Signed Security Claims",
+      "scenario": "Modifying has_missing_data after signing invalidates signature",
+      "result": "PASS"
+    },
+    {
+      "id": 14,
+      "category": "Signed Security Claims",
+      "scenario": "Modifying expires_at_utc after signing invalidates signature",
+      "result": "PASS"
+    },
+    {
+      "id": 15,
+      "category": "Signed Security Claims",
+      "scenario": "Modifying is_superseded after signing invalidates signature",
+      "result": "PASS"
+    },
+    {
+      "id": 16,
+      "category": "Signed Security Claims",
+      "scenario": "Missing mandatory claim fails closed (MANDATORY_CLAIM_MISSING)",
+      "result": "PASS"
+    },
+    {
+      "id": 17,
+      "category": "Signed Security Claims",
+      "scenario": "Conflicting completeness metadata fails closed (INCONSISTENT_COMPLETENESS_METADATA)",
+      "result": "PASS"
+    },
+    {
+      "id": 18,
+      "category": "Signed Security Claims",
+      "scenario": "Expired attestation fails closed (ATTESTATION_EXPIRED)",
+      "result": "PASS"
+    },
+    {
+      "id": 19,
+      "category": "Signed Security Claims",
+      "scenario": "Superseded attestation fails closed (ATTESTATION_SUPERSEDED)",
+      "result": "PASS"
+    },
+    {
+      "id": 20,
+      "category": "Signed Security Claims",
+      "scenario": "Unsupported schema version fails closed (UNSUPPORTED_SCHEMA_VERSION)",
+      "result": "PASS"
+    },
+    {
+      "id": 21,
+      "category": "Comparison Lab Integration",
+      "scenario": "Comparison Lab evaluates attested candidates with hardened verifier",
+      "result": "PASS"
+    },
+    {
+      "id": 22,
+      "category": "Comparison Lab Integration",
+      "scenario": "Comparison Lab rejects candidate with missing observations",
+      "result": "PASS"
+    },
+    {
+      "id": 23,
+      "category": "Scientific Governance",
+      "scenario": "Canonical model CBE-0.7.0 is strictly frozen",
+      "result": "PASS"
+    },
+    {
+      "id": 24,
+      "category": "Scientific Governance",
+      "scenario": "Directional trading is permanently prohibited",
+      "result": "PASS"
+    }
+  ],
+  "total_scenarios": 24,
+  "scenarios_passed": 24,
+  "status": "ALL_NEGATIVE_SCENARIOS_PASSED"
+}
