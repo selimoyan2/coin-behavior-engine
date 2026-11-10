@@ -148,6 +148,9 @@ class TestGroup2ScientificComparisonGateFailClosed:
 
         # 2. Truly compatible candidates with verified overlap and metric contract pass
         from coin_behavior_engine.product.research_catalog_provider import ResearchRecord
+        sample_timestamps = [
+            f"2024-02-{(i // 24) + 1:02d}T{i % 24:02d}:00:00Z" for i in range(120)
+        ]
         r1 = ResearchRecord(
             id="RES-COMPAT-01",
             title="Walk-Forward Baseline 2024",
@@ -159,6 +162,7 @@ class TestGroup2ScientificComparisonGateFailClosed:
             specification_id="SPEC-002-WF",
             observation_start_utc="2024-01-01T00:00:00Z",
             observation_end_utc="2024-06-01T00:00:00Z",
+            observed_timestamps=sample_timestamps,
             sample_size=3624,
             volatility_ratio=1.240,
             raw_p_value=0.0450,
@@ -176,6 +180,7 @@ class TestGroup2ScientificComparisonGateFailClosed:
             specification_id="SPEC-003-AM",
             observation_start_utc="2024-02-01T00:00:00Z",
             observation_end_utc="2024-06-01T00:00:00Z",
+            observed_timestamps=sample_timestamps,
             sample_size=2880,
             volatility_ratio=1.310,
             raw_p_value=0.0320,

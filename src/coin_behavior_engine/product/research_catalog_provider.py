@@ -341,6 +341,7 @@ class ResearchRecord:
     observation_end_utc: Optional[str] = None
     observation_interval_count: Optional[int] = None
     observed_timestamps: Optional[List[str]] = None
+    observation_completeness_attestation: Optional[Dict[str, Any]] = None
 
     # 3. Observed Scientific Results (STRICTLY None if not independently observed or verified)
     sample_size: Optional[int] = None
@@ -642,9 +643,9 @@ class ResearchCatalogProvider:
                 claimed_evidence_status="SIGNED_VALID",
                 actual_source_artifact="research_outputs/experiment_cpi_volatility.cbe-hyp.json",
                 actual_source_sha256=cls._compute_sha256(base_dir / "research_outputs/experiment_cpi_volatility.cbe-hyp.json"),
-                actual_verification_outcome="Artifact observed: volatility_expansion_ratio=1.913, p_value=1.2e-05, cohens_d=0.724, reproduced_status=REPRODUCED_WITH_TOLERANCE. sample_size=None, signature_mode=UNSIGNED_INTEGRITY_ONLY.",
+                actual_verification_outcome="Artifact observed: volatility_expansion_ratio=1.913, p_value=1.2e-05, cohens_d=0.724. Internal reproduction only; no independent replication. signature_mode=UNSIGNED_INTEGRITY_ONLY.",
                 final_accepted_status=RecordStatus.UNVERIFIED,
-                downgrade_reason="Observed metric is volatility_expansion_ratio=1.913 (p=1.2e-5). Package is explicitly unsigned (UNSIGNED_INTEGRITY_ONLY). Retained as unverified research. Signature status: UNSIGNED.",
+                downgrade_reason="Observed metric is volatility_expansion_ratio=1.913 (p=1.2e-5). Package is explicitly unsigned (UNSIGNED_INTEGRITY_ONLY). Retained as unverified research without independent confirmation. replication_verdict=REPLICATION_NOT_ESTABLISHED, validation_status=UNVERIFIED. Signature status: UNSIGNED.",
             ),
             HistoricalRecordReconciliation(
                 record_id="RES-DURABILITY-01",
@@ -654,8 +655,8 @@ class ResearchCatalogProvider:
                 actual_source_artifact="research_outputs/sprint23_delivery/persistent_volume_verification.json",
                 actual_source_sha256=cls._compute_sha256(base_dir / "research_outputs/sprint23_delivery/persistent_volume_verification.json"),
                 actual_verification_outcome="Artifact observed: operational durability verification, volume dbc52dc547a4... verified. total_negative_tests=20. No financial price prediction metrics exist.",
-                final_accepted_status=RecordStatus.VERIFIED,
-                downgrade_reason="Verified for operational system durability only. Financial market metrics removed as non-applicable. Operational attestation separated from scientific research signatures. Signature status: UNSIGNED.",
+                final_accepted_status=RecordStatus.UNVERIFIED,
+                downgrade_reason="Verified for operational system durability only. Financial market metrics removed as non-applicable. Operational attestation separated from scientific research signatures. validation_status=OPERATIONAL_AUDIT_LOG, replication_verdict=NOT_APPLICABLE, scientific_eligibility=INELIGIBLE. Signature status: UNSIGNED.",
             ),
             HistoricalRecordReconciliation(
                 record_id="RES-CRYPTO-01",
@@ -783,7 +784,7 @@ class ResearchCatalogProvider:
             quarantine_status="CLEAR",
             record_status=RecordStatus.UNVERIFIED if fund_sha else RecordStatus.EVIDENCE_MISSING,
             validation_status="UNVERIFIED",
-            replication_verdict="NOT_EVALUATED",
+            replication_verdict="REPLICATION_NOT_ESTABLISHED",
             evidence_status="EVIDENCE_MISSING",
             created_at_utc="2026-10-25T10:00:00Z",
             parameters={"horizon": "8h", "instrument": "BTCUSDT_PERP"},
@@ -862,7 +863,7 @@ class ResearchCatalogProvider:
             quarantine_status="CLEAR",
             record_status=RecordStatus.UNVERIFIED if reg_sha else RecordStatus.EVIDENCE_MISSING,
             validation_status="UNVERIFIED",
-            replication_verdict="NOT_EVALUATED",
+            replication_verdict="REPLICATION_NOT_ESTABLISHED",
             evidence_status="EVIDENCE_MISSING",
             created_at_utc="2026-10-25T11:00:00Z",
             parameters={"train_split": "2022-2023", "test_split": "2025", "holdout_split": "2026"},
@@ -948,7 +949,7 @@ class ResearchCatalogProvider:
             quarantine_status="CLEAR",
             record_status=RecordStatus.UNVERIFIED if analog_sha else RecordStatus.EVIDENCE_MISSING,
             validation_status="UNVERIFIED",
-            replication_verdict="NOT_EVALUATED",
+            replication_verdict="REPLICATION_NOT_ESTABLISHED",
             evidence_status="EVIDENCE_MISSING",
             created_at_utc="2026-10-25T12:00:00Z",
             parameters={"window_bars": 72, "distance_metric": "FAST_DTW_NORMALIZED"},
@@ -1032,8 +1033,8 @@ class ResearchCatalogProvider:
             scientific_eligibility="ELIGIBLE",
             quarantine_status="CLEAR",
             record_status=RecordStatus.UNVERIFIED if macro_sha else RecordStatus.EVIDENCE_MISSING,
-            validation_status=macro_data.get("results", {}).get("reproduced_status", "REPRODUCED_WITH_TOLERANCE") if macro_data else "UNVERIFIED",
-            replication_verdict="CONFIRMED",
+            validation_status="UNVERIFIED",
+            replication_verdict="REPLICATION_NOT_ESTABLISHED",
             evidence_status="UNSIGNED",
             created_at_utc="2026-10-25T13:00:00Z",
             parameters={"categories": ["CPI", "FOMC"], "window_hours": 12},
@@ -1108,11 +1109,11 @@ class ResearchCatalogProvider:
             verification_timestamp_utc="2026-11-08T18:00:00Z",
             dataset_provenance="CBE Production Acceleration Operational Traceability",
             source_precedence_tier=EvidencePrecedenceTier.CANONICAL_ARTIFACT if dur_sha else EvidencePrecedenceTier.EVIDENCE_MISSING,
-            scientific_eligibility="ELIGIBLE",
+            scientific_eligibility="INELIGIBLE",
             quarantine_status="CLEAR",
-            record_status=RecordStatus.VERIFIED if dur_sha else RecordStatus.EVIDENCE_MISSING,
-            validation_status="VERIFIED",
-            replication_verdict="CONFIRMED",
+            record_status=RecordStatus.UNVERIFIED if dur_sha else RecordStatus.EVIDENCE_MISSING,
+            validation_status="OPERATIONAL_AUDIT_LOG",
+            replication_verdict="NOT_APPLICABLE",
             evidence_status="UNSIGNED",
             created_at_utc="2026-11-08T18:00:00Z",
             parameters={"storage_mode": "DOCKER_PERSISTENT_VOLUME", "hash_alg": "RFC8785_HMAC_SHA256"},

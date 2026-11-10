@@ -164,21 +164,69 @@ COMPARISON_METRIC_REGISTRY: Dict[str, MetricDefinitionContract] = {
 
 
 # =============================================================================
-# TEMPORAL OVERLAP CALCULATOR
+# TEMPORAL OVERLAP CALCULATOR & OBSERVATION NORMALIZER
 # =============================================================================
+
+def normalize_iso_utc_timestamp(ts: Any) -> Optional[str]:
+    """
+    Parses an ISO-8601 timestamp and normalizes to canonical UTC 'YYYY-MM-DDTHH:MM:SSZ'.
+    Returns None if format is invalid, empty, or unparseable.
+    """
+    if not isinstance(ts, str) or not ts.strip():
+        return None
+    s = ts.strip().replace("Z", "+00:00")
+    try:
+        dt = datetime.fromisoformat(s)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        else:
+            dt = dt.astimezone(timezone.utc)
+        return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+    except Exception:
+        return None
+
 
 def calculate_temporal_observation_overlap(records: List[ResearchRecord]) -> Dict[str, Any]:
     """
-    Computes real temporal observation overlap from verified ISO timestamps and cadence intervals.
-    Requires >= 100 shared intervals.
+    Computes genuine temporal observation overlap from verified ISO-8601 UTC timestamps
+    and cadence intervals. Requires N_shared >= 100 true shared observations.
     Fails closed with:
-    - INSUFFICIENT_OVERLAP_EVIDENCE: if observation boundaries are missing in any candidate.
-    - DISJOINT_OBSERVATION_WINDOWS: if observation windows do not overlap (t_start >= t_end).
-    - INSUFFICIENT_TEMPORAL_OVERLAP: if shared interval count < 100.
-    - DUPLICATED_OBSERVATIONS_DETECTED: if repeated timestamps are found.
+    - INSUFFICIENT_OVERLAP_EVIDENCE: if observation boundaries/timestamps or verified completeness attestation are missing, or invalid timestamp format.
+    - DISJOINT_OBSERVATION_WINDOWS: if observation windows or timestamp sets do not overlap (shared count == 0).
+    - INSUFFICIENT_OVERLAP: if shared observation count < 100.
+    - DUPLICATED_OBSERVATIONS_DETECTED: if repeated timestamps are found in any candidate series.
+    - SAMPLING_CADENCE_MISMATCH: if records have conflicting window cadences.
     """
+    if not records or len(records) < 2:
+        return {
+            "overlap_valid": False,
+            "rejection_code": "INSUFFICIENT_OVERLAP_EVIDENCE",
+            "rejection_reason_tr": "En az iki aday araştırma kaydı gereklidir.",
+            "shared_interval_count": 0,
+        }
+
+    # 1. Cadence Compatibility Check
+    cadences = set(r.window_cadence.lower() for r in records if getattr(r, "window_cadence", None))
+    if len(cadences) > 1:
+        return {
+            "overlap_valid": False,
+            "rejection_code": "SAMPLING_CADENCE_MISMATCH",
+            "rejection_reason_tr": f"Farklı zaman kadansları saptandı ({', '.join(sorted(cadences))}). Bilimsel olarak onaylanmış bir kadans normalizasyonu bulunmadığından karşılaştırma fail-closed kuralı gereği engellenmiştir.",
+            "shared_interval_count": 0,
+        }
+
+    # 2. Check Candidate Boundaries & Disjoint Windows
+    starts: List[datetime] = []
+    ends: List[datetime] = []
     for r in records:
         if not r.observation_start_utc or not r.observation_end_utc:
+            # If explicit timestamps exist, derive boundaries from min/max of normalized timestamps
+            if r.observed_timestamps:
+                norm_ts_temp = [normalize_iso_utc_timestamp(t) for t in r.observed_timestamps]
+                if None not in norm_ts_temp and len(norm_ts_temp) > 0:
+                    starts.append(datetime.fromisoformat(min(norm_ts_temp).replace("Z", "+00:00")))
+                    ends.append(datetime.fromisoformat(max(norm_ts_temp).replace("Z", "+00:00")))
+                    continue
             return {
                 "overlap_valid": False,
                 "rejection_code": "INSUFFICIENT_OVERLAP_EVIDENCE",
@@ -186,9 +234,6 @@ def calculate_temporal_observation_overlap(records: List[ResearchRecord]) -> Dic
                 "shared_interval_count": 0,
             }
 
-    starts = []
-    ends = []
-    for r in records:
         try:
             s_dt = datetime.fromisoformat(r.observation_start_utc.replace("Z", "+00:00"))
             e_dt = datetime.fromisoformat(r.observation_end_utc.replace("Z", "+00:00"))
@@ -209,17 +254,6 @@ def calculate_temporal_observation_overlap(records: List[ResearchRecord]) -> Dic
                 "shared_interval_count": 0,
             }
 
-    # Check duplicated observations if explicit timestamps list is provided
-    for r in records:
-        if r.observed_timestamps:
-            if len(r.observed_timestamps) != len(set(r.observed_timestamps)):
-                return {
-                    "overlap_valid": False,
-                    "rejection_code": "DUPLICATED_OBSERVATIONS_DETECTED",
-                    "rejection_reason_tr": f"Kayıt {r.id} serisinde mükerrer gözlem zaman damgaları tespit edildi.",
-                    "shared_interval_count": 0,
-                }
-
     t_start = max(starts)
     t_end = min(ends)
 
@@ -233,7 +267,103 @@ def calculate_temporal_observation_overlap(records: List[ResearchRecord]) -> Dic
             "overlap_end_utc": None,
         }
 
-    cadence = records[0].window_cadence.lower()
+    # 3. Check for Duplicated Timestamps in Raw Lists
+    for r in records:
+        if r.observed_timestamps is not None:
+            if len(r.observed_timestamps) != len(set(r.observed_timestamps)):
+                return {
+                    "overlap_valid": False,
+                    "rejection_code": "DUPLICATED_OBSERVATIONS_DETECTED",
+                    "rejection_reason_tr": f"Kayıt {r.id} serisinde mükerrer gözlem zaman damgaları tespit edildi.",
+                    "shared_interval_count": 0,
+                }
+
+    # 4. Check for Verified Completeness Attestation or Explicit Timestamps
+    normalized_timestamp_sets: List[set] = []
+    all_have_timestamps = True
+
+    for r in records:
+        ts_list = getattr(r, "observed_timestamps", None)
+        attestation = getattr(r, "observation_completeness_attestation", None)
+        has_valid_attestation = (
+            isinstance(attestation, dict)
+            and attestation.get("status") == "VERIFIED"
+            and attestation.get("verified_continuous_series") is True
+        )
+
+        if not ts_list and not has_valid_attestation:
+            return {
+                "overlap_valid": False,
+                "rejection_code": "INSUFFICIENT_OVERLAP_EVIDENCE",
+                "rejection_reason_tr": f"Kayıt {r.id} için doğrulanmış gözlem zaman damgaları listesi bulunamadı ve geçerli eksiksizlik kanıtı sunulmadı.",
+                "shared_interval_count": 0,
+            }
+
+        if ts_list is not None:
+            norm_list = []
+            for ts in ts_list:
+                norm_ts = normalize_iso_utc_timestamp(ts)
+                if norm_ts is None:
+                    return {
+                        "overlap_valid": False,
+                        "rejection_code": "INSUFFICIENT_OVERLAP_EVIDENCE",
+                        "rejection_reason_tr": f"Kayıt {r.id} geçersiz gözlem zaman damgası içeriyor: {ts}",
+                        "shared_interval_count": 0,
+                    }
+                norm_list.append(norm_ts)
+
+            if len(norm_list) != len(set(norm_list)):
+                return {
+                    "overlap_valid": False,
+                    "rejection_code": "DUPLICATED_OBSERVATIONS_DETECTED",
+                    "rejection_reason_tr": f"Kayıt {r.id} serisinde normalizasyon sonrası mükerrer gözlem zaman damgaları tespit edildi.",
+                    "shared_interval_count": 0,
+                }
+            normalized_timestamp_sets.append(set(norm_list))
+        else:
+            all_have_timestamps = False
+
+    # 5. True Set Intersection Across Explicit Timestamp Sets
+    if all_have_timestamps and len(normalized_timestamp_sets) == len(records):
+        shared_set = set.intersection(*normalized_timestamp_sets)
+        n_shared = len(shared_set)
+
+        if n_shared == 0:
+            return {
+                "overlap_valid": False,
+                "rejection_code": "DISJOINT_OBSERVATION_WINDOWS",
+                "rejection_reason_tr": "Gözlem pencereleri ve zaman damgası kümeleri tamamen ayrıktır; ortak gözlem bulunmuyor.",
+                "shared_interval_count": 0,
+                "overlap_start_utc": None,
+                "overlap_end_utc": None,
+            }
+
+        sorted_shared = sorted(shared_set)
+        t_start_iso = sorted_shared[0]
+        t_end_iso = sorted_shared[-1]
+
+        if n_shared < 100:
+            return {
+                "overlap_valid": False,
+                "rejection_code": "INSUFFICIENT_OVERLAP",
+                "rejection_reason_tr": f"Ortak gözlem penceresinde yalnızca {n_shared} doğrulanmış ortak gözlem bulunmaktadır; asgari 100 ortak gözlem kuralı sağlanamadı.",
+                "shared_interval_count": n_shared,
+                "overlap_start_utc": t_start_iso,
+                "overlap_end_utc": t_end_iso,
+            }
+
+        return {
+            "overlap_valid": True,
+            "rejection_code": None,
+            "rejection_reason_tr": None,
+            "shared_interval_count": n_shared,
+            "overlap_start_utc": t_start_iso,
+            "overlap_end_utc": t_end_iso,
+            "shared_timestamps": sorted_shared,
+        }
+
+    # 6. Fallback to Verified Completeness Attestation Cadence Math
+    cadence = records[0].window_cadence.lower() if records[0].window_cadence else "1h"
     cadence_map = {
         "1m": 60, "5m": 300, "15m": 900, "1h": 3600, "4h": 14400, "8h": 28800, "1d": 86400,
     }
@@ -244,8 +374,8 @@ def calculate_temporal_observation_overlap(records: List[ResearchRecord]) -> Dic
     if shared_interval_count < 100:
         return {
             "overlap_valid": False,
-            "rejection_code": "INSUFFICIENT_TEMPORAL_OVERLAP",
-            "rejection_reason_tr": f"Ortak gözlem penceresinde yalnızca {shared_interval_count} periyot bulunmaktadır; asgari 100 periyotluk örtüşme kuralı sağlanamadı.",
+            "rejection_code": "INSUFFICIENT_OVERLAP",
+            "rejection_reason_tr": f"Ortak gözlem penceresinde doğrulanmış eksiksizlik tasdiğine göre yalnızca {shared_interval_count} periyot bulunmaktadır; asgari 100 periyotluk örtüşme kuralı sağlanamadı.",
             "shared_interval_count": shared_interval_count,
             "overlap_start_utc": t_start.isoformat(),
             "overlap_end_utc": t_end.isoformat(),
@@ -506,7 +636,7 @@ class ResearchWorkspaceV2Engine:
         # 3. Quarantined / Contaminated Data Check
         quarantined = [
             r for r in selected_records
-            if r.quarantine_status == "QUARANTINED" or r.scientific_eligibility == "INELIGIBLE" or r.validation_status == "FAILED_QUARANTINE"
+            if r.quarantine_status == "QUARANTINED" or r.validation_status == "FAILED_QUARANTINE"
         ]
         if quarantined:
             q_ids = ", ".join(r.id for r in quarantined)
@@ -514,7 +644,7 @@ class ResearchWorkspaceV2Engine:
                 "is_compatible": False,
                 "comparison_mode": "DESCRIPTIVE_ONLY",
                 "rejection_code": "QUARANTINED_RECORD",
-                "rejection_reason_tr": f"Karantinaya alınmış veya uygun olmayan kayıtlar ({q_ids}) bilimsel karşılaştırmaya dahil edilemez.",
+                "rejection_reason_tr": f"Karantinaya alınmış veya bozulmuş kayıtlar ({q_ids}) bilimsel karşılaştırmaya dahil edilemez.",
                 "candidate_ids": candidate_ids,
                 "quarantined_ids": [r.id for r in quarantined],
                 "comparison_table": descriptive_comparison_table,
@@ -646,7 +776,7 @@ class ResearchWorkspaceV2Engine:
                     "difference_analysis": [],
                 }
 
-        # 10. Evidence Sufficiency Per Candidate
+        # 10. Evidence Sufficiency Per Candidate (FAIL-CLOSED)
         for r in selected_records:
             if r.evidence_status == "EVIDENCE_MISSING":
                 return {
