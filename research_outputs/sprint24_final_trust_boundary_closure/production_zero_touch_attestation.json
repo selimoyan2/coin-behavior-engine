@@ -1,0 +1,9 @@
+{
+  "target_domain": "coin.ozelweb.com.tr",
+  "container_id": "19004adaea21",
+  "status": "healthy",
+  "restart_count": 0,
+  "zero_touch_confirmed": true,
+  "trading_disabled": true,
+  "order_execution": "PERMANENTLY_PROHIBITED"
+}

@@ -1,0 +1,19 @@
+# Trusted Authority Inventory
+```json
+{
+  "trusted_issuers": [
+    "CBE_AUTHORITATIVE_RESEARCH_AUTHORITY",
+    "CBE_OBSERVATION_GOVERNANCE",
+    "CBE_DATA_GOVERNANCE_COUNCIL",
+    "CBE_SYSTEM",
+    "CBE_CANONICAL_RESEARCH_AUTHORITY"
+  ],
+  "signing_key_registry": {
+    "active_key_id": "test-trusted-key-1",
+    "revocation_support": true,
+    "historical_key_support": true,
+    "constant_time_comparison": true
+  },
+  "production_trust_posture": "If no authoritative signing key is configured in staging/prod, attestation-based acceptance fails closed. Explicit timestamp path remains independently valid."
+}
+```

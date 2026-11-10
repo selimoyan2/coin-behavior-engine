@@ -1,0 +1,35 @@
+# CBE Attestation Trust Model
+```json
+{
+  "trust_boundary_version": "2026.1",
+  "threat_model": {
+    "threats_mitigated": [
+      "Self-declared verification status spoofing",
+      "Untrusted caller-injected keys",
+      "Attestation replay across datasets or research records",
+      "Signed payload tampering (e.g. observation count inflation)",
+      "Stale or revoked signing key usage",
+      "Unauthenticated continuous series duration division"
+    ],
+    "fail_closed_guarantee": true
+  },
+  "key_hierarchy": {
+    "registry": "SigningKeyRegistry (singleton)",
+    "allowed_key_sources": [
+      "Environment secrets (CBE_EVIDENCE_SIGNING_KEY)",
+      "Authoritative vault"
+    ],
+    "untrusted_key_locations": [
+      "/tmp",
+      "data/",
+      "caller payload"
+    ],
+    "revocation_enforcement": "Immediate fail-closed check on key_id"
+  },
+  "supported_schemas": [
+    "CBE-ATTESTATION-1.0.0",
+    "CBE-OBSERVATION-ATTESTATION-1.0.0",
+    "1.0.0"
+  ]
+}
+```

@@ -1,0 +1,13 @@
+{
+  "host": "168.231.125.238",
+  "port": 18080,
+  "container_id": "0c7f526696fc",
+  "image_name": "cbe-market-intelligence:sprint24-trust-boundary-8b9e8f9",
+  "image_digest": "sha256:29d1f2be32852d9450041aee042fa07a44da802dba5aa2431b40fb225adde7ef",
+  "verified_endpoints": {
+    "/health": "healthy (model CBE-0.7.0 FROZEN)",
+    "/ready": "READY (PERSISTENT_VERIFIED, TECHNICAL_NO_GO)",
+    "/api/v1/product/workspace/overview": "success (confirmatory_replications: 0, eligible: 4, invalid: 2)",
+    "/api/v1/product/workspace/comparison/evaluate": "fail-closed verified (INSUFFICIENT_OVERLAP_EVIDENCE, METHODOLOGY_MISMATCH, QUARANTINED_RECORD)"
+  }
+}

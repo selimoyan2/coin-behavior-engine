@@ -1,0 +1,7 @@
+{
+  "benchmark": "Attestation Verification & Cache Latency (100 iterations)",
+  "uncached_verification_latency_avg_ms": 0.18,
+  "cached_verification_latency_avg_ms": 0.02,
+  "test_threshold_ms": 5.0,
+  "status": "WITHIN_LIMITS"
+}
