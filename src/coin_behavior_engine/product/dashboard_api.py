@@ -496,6 +496,49 @@ class ProductDashboardApiService:
                 q = query_params.get("q", [""])[0]
                 lim = int(query_params.get("limit", ["20"])[0]) if query_params.get("limit", ["20"])[0].isdigit() else 20
                 return HTTPStatus.OK, ResearchWorkspaceV2Engine.search_workspace_metadata(q, limit=lim)
+
+            elif sub_path in ("workspace/evidence-graph", "evidence-graph", "workspace/graph"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                ntype = query_params.get("node_type", [None])[0]
+                status_f = query_params.get("status", [None])[0]
+                etype = query_params.get("edge_type", [None])[0]
+                lim = int(query_params.get("limit", ["200"])[0]) if query_params.get("limit", ["200"])[0].isdigit() else 200
+                off = int(query_params.get("offset", ["0"])[0]) if query_params.get("offset", ["0"])[0].isdigit() else 0
+                return HTTPStatus.OK, ResearchWorkspaceV2Engine.get_evidence_graph_data(node_type=ntype, status=status_f, edge_type=etype, limit=lim, offset=off)
+
+            elif sub_path in ("workspace/readiness", "workspace/readiness-scorecards", "readiness"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                rid = query_params.get("record_id", [None])[0]
+                res = ResearchWorkspaceV2Engine.get_readiness_scorecards(record_id=rid)
+                if res.get("status") == "error":
+                    return HTTPStatus.NOT_FOUND, res
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("workspace/evidence-gaps", "evidence-gaps", "workspace/gaps"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                rid = query_params.get("record_id", [None])[0]
+                sev = query_params.get("severity", [None])[0]
+                res = ResearchWorkspaceV2Engine.get_evidence_gaps(record_id=rid, severity=sev)
+                if res.get("status") == "error":
+                    return HTTPStatus.NOT_FOUND, res
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("workspace/priorities", "workspace/research-priorities", "research-priorities"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                return HTTPStatus.OK, ResearchWorkspaceV2Engine.get_research_priorities()
+
+            elif sub_path in ("workspace/reproducibility/procedures", "reproducibility/procedures"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                return HTTPStatus.OK, ResearchWorkspaceV2Engine.get_reproducibility_procedures()
+
+            elif sub_path in ("workspace/decision-reports", "decision-reports"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                rid = query_params.get("record_id", ["RES-FUND-01"])[0]
+                fmt = query_params.get("format", ["json"])[0]
+                res = ResearchWorkspaceV2Engine.generate_decision_report(record_id=rid, format_type=fmt)
+                if res.get("status") == "error":
+                    return HTTPStatus.NOT_FOUND, res
+                return HTTPStatus.OK, res
             else:
                 return HTTPStatus.NOT_FOUND, {
                     "error": "Not Found",
@@ -815,6 +858,28 @@ class ProductDashboardApiService:
                 if res.get("status") == "error":
                     return HTTPStatus.BAD_REQUEST, res
                 return HTTPStatus.CREATED, res
+
+            elif sub_path in ("workspace/reproducibility/execute", "reproducibility/execute"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                rid = body.get("record_id", "")
+                pname = body.get("procedure_id") or body.get("procedure_name", None)
+                if not rid:
+                    return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": "record_id is required."}
+                res = ResearchWorkspaceV2Engine.execute_offline_reproduction(record_id=rid, procedure_name=pname)
+                if res.get("status") == "error":
+                    return HTTPStatus.NOT_FOUND, res
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("workspace/decision-reports/generate", "decision-reports/generate"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                rid = body.get("record_id", "")
+                fmt = body.get("format", "json")
+                if not rid:
+                    return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": "record_id is required."}
+                res = ResearchWorkspaceV2Engine.generate_decision_report(record_id=rid, format_type=fmt)
+                if res.get("status") == "error":
+                    return HTTPStatus.NOT_FOUND, res
+                return HTTPStatus.OK, res
 
             else:
                 return HTTPStatus.NOT_FOUND, {

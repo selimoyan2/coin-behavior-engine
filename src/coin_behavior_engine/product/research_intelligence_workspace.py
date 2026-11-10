@@ -39,6 +39,13 @@ from coin_behavior_engine.product.attestation_verifier import (
     ObservationCompletenessAttestationVerifier,
 )
 
+# Canonical Governance and Model Invariants
+CANONICAL_MODEL = "CBE-0.7.0"
+CANONICAL_MODEL_STATUS = "STRICTLY_FROZEN"
+GOVERNANCE_DECISION = "TECHNICAL_NO_GO"
+CBE_TRADING_DISABLED = True
+LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED = True
+
 logger = logging.getLogger("cbe.research_workspace")
 
 
@@ -1151,6 +1158,18 @@ class ResearchWorkspaceV2Engine:
 
         saved_comps = cls.list_saved_comparisons(limit=3)
 
+        # Sprint 25: Decision Intelligence aggregations
+        from coin_behavior_engine.product.evidence_graph import EvidenceGraphService
+        from coin_behavior_engine.product.evidence_gap_analyzer import EvidenceGapAnalyzer
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+        from coin_behavior_engine.product.reproducibility_lab import ReproducibilityLabEngine
+
+        catalog = cls.get_canonical_catalog()
+        graph = EvidenceGraphService.build_canonical_graph(catalog)
+        gap_summary = EvidenceGapAnalyzer.analyze_catalog(catalog)
+        readiness_list = [ScientificReadinessEvaluator.evaluate_record(r) for r in catalog]
+        ready_for_review_cnt = sum(1 for s in readiness_list if s.is_ready_for_review)
+
         return {
             "status": "success",
             "canonical_model": {
@@ -1194,6 +1213,15 @@ class ResearchWorkspaceV2Engine:
                 "quarantined_records": counts["quarantined_records"],
                 "independent_replications": counts["independent_replications"],
                 "missing_evidence_records": counts["missing_evidence_records"],
+            },
+            "decision_intelligence": {
+                "graph_nodes_count": len(graph._nodes),
+                "graph_edges_count": len(graph._edges),
+                "missing_links_count": len(graph.detect_missing_links()),
+                "total_gaps_count": gap_summary["total_gaps"],
+                "critical_gaps_count": gap_summary["critical_count"],
+                "ready_for_review_count": ready_for_review_cnt,
+                "reproducible_procedures_count": len(ReproducibilityLabEngine.get_supported_procedures()),
             },
             "platform_health": {
                 "overall_status": "HEALTHY" if durability_class != "UNVERIFIED" else "DEGRADED",
@@ -1293,3 +1321,121 @@ class ResearchWorkspaceV2Engine:
             "results": matches[:limit],
             "count": len(matches[:limit]),
         }
+
+    # =========================================================================
+    # SPRINT 25: RESEARCH DECISION INTELLIGENCE PLATFORM
+    # =========================================================================
+
+    @classmethod
+    def get_evidence_graph_data(
+        cls,
+        node_type: Optional[str] = None,
+        status: Optional[str] = None,
+        edge_type: Optional[str] = None,
+        limit: int = 200,
+        offset: int = 0,
+    ) -> Dict[str, Any]:
+        from coin_behavior_engine.product.evidence_graph import EvidenceGraphService
+        catalog = cls.get_canonical_catalog()
+        graph = EvidenceGraphService.build_canonical_graph(catalog)
+        subgraph = graph.query_subgraph(
+            node_type=node_type,
+            verification_status=status,
+            edge_type=edge_type,
+            limit=limit,
+            offset=offset,
+        )
+        missing_links = graph.detect_missing_links()
+        return {
+            "status": "success",
+            "graph": subgraph,
+            "total_nodes_in_system": len(graph._nodes),
+            "total_edges_in_system": len(graph._edges),
+            "missing_links": missing_links,
+            "missing_links_count": len(missing_links),
+        }
+
+    @classmethod
+    def get_readiness_scorecards(cls, record_id: Optional[str] = None) -> Dict[str, Any]:
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+        catalog = cls.get_canonical_catalog()
+        if record_id:
+            matched = [r for r in catalog if r.id == record_id]
+            if not matched:
+                return {"status": "error", "error_code": "NOT_FOUND", "message": f"Kayıt '{record_id}' bulunamadı."}
+            scorecard = ScientificReadinessEvaluator.evaluate_record(matched[0])
+            return {"status": "success", "scorecard": scorecard.to_dict()}
+
+        scorecards = [ScientificReadinessEvaluator.evaluate_record(r).to_dict() for r in catalog]
+        ready_count = sum(1 for s in scorecards if s["is_ready_for_review"])
+        return {
+            "status": "success",
+            "scorecards": scorecards,
+            "total_count": len(scorecards),
+            "ready_for_review_count": ready_count,
+            "blocked_count": len(scorecards) - ready_count,
+        }
+
+    @classmethod
+    def get_evidence_gaps(cls, record_id: Optional[str] = None, severity: Optional[str] = None) -> Dict[str, Any]:
+        from coin_behavior_engine.product.evidence_gap_analyzer import EvidenceGapAnalyzer
+        catalog = cls.get_canonical_catalog()
+        if record_id:
+            matched = [r for r in catalog if r.id == record_id]
+            if not matched:
+                return {"status": "error", "error_code": "NOT_FOUND", "message": f"Kayıt '{record_id}' bulunamadı."}
+            gaps = EvidenceGapAnalyzer.analyze_record(matched[0])
+            if severity:
+                gaps = [g for g in gaps if g.severity == severity.upper()]
+            return {"status": "success", "record_id": record_id, "gaps": [g.to_dict() for g in gaps], "count": len(gaps)}
+
+        catalog_analysis = EvidenceGapAnalyzer.analyze_catalog(catalog)
+        if severity:
+            catalog_analysis["gaps"] = [g for g in catalog_analysis["gaps"] if g["severity"] == severity.upper()]
+            catalog_analysis["total_gaps"] = len(catalog_analysis["gaps"])
+        catalog_analysis["total_gaps_count"] = catalog_analysis["total_gaps"]
+        return {"status": "success", **catalog_analysis}
+
+    @classmethod
+    def get_research_priorities(cls) -> Dict[str, Any]:
+        from coin_behavior_engine.product.research_priority_engine import ResearchPriorityEngine
+        catalog = cls.get_canonical_catalog()
+        tasks = ResearchPriorityEngine.prioritize_catalog(catalog)
+        task_dicts = [t.to_dict() for t in tasks]
+        return {
+            "status": "success",
+            "prioritized_tasks": task_dicts,
+            "priorities": task_dicts,
+            "total_tasks": len(tasks),
+            "p0_count": sum(1 for t in tasks if t.priority_tier == "P0_CRITICAL_BLOCKED"),
+            "p1_count": sum(1 for t in tasks if t.priority_tier == "P1_HIGH_IMPACT"),
+            "p2_count": sum(1 for t in tasks if t.priority_tier == "P2_EXPLORATORY"),
+        }
+
+    @classmethod
+    def get_reproducibility_procedures(cls) -> Dict[str, Any]:
+        from coin_behavior_engine.product.reproducibility_lab import ReproducibilityLabEngine
+        procs = ReproducibilityLabEngine.get_supported_procedures()
+        return {"status": "success", "procedures": procs, "count": len(procs)}
+
+    @classmethod
+    def execute_offline_reproduction(cls, record_id: str, procedure_name: Optional[str] = None) -> Dict[str, Any]:
+        from coin_behavior_engine.product.reproducibility_lab import ReproducibilityLabEngine
+        catalog = cls.get_canonical_catalog()
+        matched = [r for r in catalog if r.id == record_id]
+        if not matched:
+            return {"status": "error", "error_code": "NOT_FOUND", "message": f"Kayıt '{record_id}' bulunamadı."}
+        prov = ReproducibilityLabEngine.execute_reproduction(matched[0], procedure_name=procedure_name)
+        return {"status": "success", "provenance": prov.to_dict()}
+
+    @classmethod
+    def generate_decision_report(cls, record_id: str, format_type: str = "json") -> Dict[str, Any]:
+        from coin_behavior_engine.product.research_decision_reports import DecisionReportBuilder
+        catalog = cls.get_canonical_catalog()
+        matched = [r for r in catalog if r.id == record_id]
+        if not matched:
+            return {"status": "error", "error_code": "NOT_FOUND", "message": f"Kayıt '{record_id}' bulunamadı."}
+        report = DecisionReportBuilder.generate_report(matched[0])
+        if format_type.lower() == "html":
+            return {"status": "success", "report_id": report.report_id, "format": "html", "html_content": report.to_html()}
+        return {"status": "success", "report": report.to_dict()}

@@ -366,6 +366,21 @@ def render_research_explorer_html() -> str:
         <button class="ws-tab-btn" id="ws-tab-reports" onclick="switchWorkspaceView('reports')">
           <span>📑</span> Rapor Oluşturucu
         </button>
+        <button class="ws-tab-btn" id="ws-tab-graph" onclick="switchWorkspaceView('graph')">
+          <span>🕸️</span> Kanıt Grafiği
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-readiness" onclick="switchWorkspaceView('readiness')">
+          <span>📋</span> Bilimsel Hazırlık
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-gaps" onclick="switchWorkspaceView('gaps')">
+          <span>🔍</span> Boşluk Analizi
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-reproducibility" onclick="switchWorkspaceView('reproducibility')">
+          <span>🔬</span> Tekrarlanabilirlik
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-priorities" onclick="switchWorkspaceView('priorities')">
+          <span>🎯</span> Araştırma Öncelikleri
+        </button>
         <button class="ws-tab-btn" id="ws-tab-operations" onclick="switchWorkspaceView('operations')">
           <span>⚙️</span> Sistem Durumu & Teşhis
         </button>
@@ -856,6 +871,160 @@ def render_research_explorer_html() -> str:
               <div class="ws-kpi-value" style="color: #10b981;">0 / 4 (Sağlıklı)</div>
               <div class="ws-kpi-sub">Kaynak Yöneticisi Aktif</div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- WORKSPACE VIEW 8: KANIT GRAFİĞİ (EVIDENCE GRAPH)                    -->
+      <!-- =================================================================== -->
+      <div id="ws-view-graph" class="ws-view-container" style="display: none;">
+        <div class="card" style="margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+            <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🕸️ Bilimsel Kanıt İlişki Grafiği (Scientific Evidence Graph)</h3>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <select id="graph-filter-type" class="input input-sm" onchange="loadEvidenceGraph()" style="font-size: 12px;">
+                <option value="">Tüm Düğüm Tipleri</option>
+                <option value="RESEARCH_RECORD">Araştırma Kayıtları</option>
+                <option value="DATASET">Veri Setleri</option>
+                <option value="SOURCE_ARTIFACT">Kaynak Belgeler</option>
+                <option value="ATTESTATION">Kriptografik Tasdikler</option>
+                <option value="METHODOLOGY">Metodolojiler</option>
+                <option value="GOVERNANCE_DECISION">Yönetişim Kararları</option>
+              </select>
+              <select id="graph-filter-status" class="input input-sm" onchange="loadEvidenceGraph()" style="font-size: 12px;">
+                <option value="">Tüm Doğrulama Durumları</option>
+                <option value="VERIFIED">Doğrulanmış (VERIFIED)</option>
+                <option value="UNVERIFIED">Doğrulanmamış (UNVERIFIED)</option>
+                <option value="BLOCKED">Bloke / Karantina (BLOCKED)</option>
+              </select>
+              <button class="btn btn-sm btn-secondary" onclick="loadEvidenceGraph()">🔄 Yenile</button>
+            </div>
+          </div>
+          <p style="font-size: 13px; color: #94a3b8; margin: 0 0 14px 0;">
+            Araştırma hipotezleri, veri setleri, kaynak belgeler, kriptografik tasdikler ve metodolojiler arasındaki doğrulanabilir kanıt ilişkilerini görselleştirir.
+          </p>
+          <div id="graph-missing-links-box" style="margin-bottom: 14px; display: none; background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; border-radius: 8px; padding: 12px 16px;"></div>
+          <div id="graph-container" style="background: #090e1a; border: 1px solid #1e293b; border-radius: 8px; min-height: 480px; position: relative; overflow: hidden; padding: 16px;">
+            <div id="graph-nodes-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- WORKSPACE VIEW 9: BİLİMSEL HAZIRLIK (READINESS SCORECARD)            -->
+      <!-- =================================================================== -->
+      <div id="ws-view-readiness" class="ws-view-container" style="display: none;">
+        <div class="card" style="margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+            <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">📋 Bilimsel Hazırlık Değerlendirmesi (Scientific Readiness Scorecards)</h3>
+            <button class="btn btn-sm btn-secondary" onclick="loadReadinessScorecards()">🔄 Yenile</button>
+          </div>
+          <p style="font-size: 13px; color: #94a3b8; margin: 0 0 14px 0;">
+            Her araştırma kaydı 10 şeffaf bilimsel boyutta (veri kökeni, belge bütünlüğü, gözlem sürekliliği, örneklem büyüklüğü vb.) değerlendirilir. Kritik kapılar geçilmeden doğrulayıcı inceleme aşamasına geçilemez.
+          </p>
+          <div id="readiness-summary-cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px;"></div>
+          <div id="readiness-scorecards-list" style="display: flex; flex-direction: column; gap: 14px;"></div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- WORKSPACE VIEW 10: KANIT BOŞLUKLARI (EVIDENCE GAPS ANALYZER)         -->
+      <!-- =================================================================== -->
+      <div id="ws-view-gaps" class="ws-view-container" style="display: none;">
+        <div class="card" style="margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+            <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🔍 Kanıt Boşluğu Analizörü (Evidence Gap Analyzer)</h3>
+            <div style="display: flex; gap: 8px;">
+              <select id="gaps-filter-severity" class="input input-sm" onchange="loadEvidenceGaps()" style="font-size: 12px;">
+                <option value="">Tüm Önem Düzeyleri</option>
+                <option value="CRITICAL">Kritik (CRITICAL)</option>
+                <option value="HIGH">Yüksek (HIGH)</option>
+                <option value="MEDIUM">Orta (MEDIUM)</option>
+                <option value="LOW">Düşük (LOW)</option>
+              </select>
+              <button class="btn btn-sm btn-secondary" onclick="loadEvidenceGaps()">🔄 Yenile</button>
+            </div>
+          </div>
+          <p style="font-size: 13px; color: #94a3b8; margin: 0 0 14px 0;">
+            14 standart bilimsel boşluk kategorisi taranarak tespit edilen metodolojik, ampirik veya kriptografik eksiklikler listelenir.
+          </p>
+          <div id="gaps-kpi-summary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px;"></div>
+          <div style="overflow-x: auto;">
+            <table class="table" style="width: 100%; border-collapse: collapse; font-size: 12px;">
+              <thead>
+                <tr style="background: #1e293b; color: #94a3b8; text-align: left;">
+                  <th style="padding: 8px 12px;">Boşluk Kimliği</th>
+                  <th style="padding: 8px 12px;">Kayıt ID</th>
+                  <th style="padding: 8px 12px;">Kategori</th>
+                  <th style="padding: 8px 12px;">Önem</th>
+                  <th style="padding: 8px 12px;">Açıklama</th>
+                  <th style="padding: 8px 12px;">Önerilen Çözüm Adımı</th>
+                  <th style="padding: 8px 12px;">Çözüm Kriteri</th>
+                </tr>
+              </thead>
+              <tbody id="gaps-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- WORKSPACE VIEW 11: REPRODUCIBILITY LAB                              -->
+      <!-- =================================================================== -->
+      <div id="ws-view-reproducibility" class="ws-view-container" style="display: none;">
+        <div class="card" style="margin-bottom: 16px;">
+          <h3 style="margin: 0 0 12px 0; font-size: 16px; color: #f8fafc;">🔬 Çevrimdışı Tekrarlanabilirlik Laboratuvarı (Reproducibility Lab)</h3>
+          <div style="background: rgba(14, 165, 233, 0.1); border: 1px solid #0284c7; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: #e0f2fe;">
+            <strong>⚠️ ZORUNLU BİLİMSEL AYRIM:</strong> Yerel prosedürün aynı veri kümesi üzerinde yeniden çalıştırılması (re-execution) bir <em>bağımsız replikasyon</em> değildir. Yerel çıktılar eşleştiğinde <code>OUTPUTS_MATCHED</code> atanır; bağımsız replikasyon statüsü yalnızca harici out-of-sample çalışmalarla teyit edilir.
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-bottom: 16px;">
+            <div>
+              <label style="font-size: 12px; color: #94a3b8; display: block; margin-bottom: 4px;">Hedef Araştırma Kaydı:</label>
+              <select id="rep-record-select" class="input" style="width: 100%; font-size: 13px;" onchange="onRepRecordChanged()"></select>
+            </div>
+            <div>
+              <label style="font-size: 12px; color: #94a3b8; display: block; margin-bottom: 4px;">Onaylı Çevrimdışı Prosedür:</label>
+              <select id="rep-procedure-select" class="input" style="width: 100%; font-size: 13px;"></select>
+            </div>
+            <div style="display: flex; align-items: flex-end; gap: 8px;">
+              <button class="btn btn-primary" onclick="executeReproducibility()" style="font-size: 13px; padding: 8px 16px;">🔬 Çevrimdışı Tekrarla</button>
+              <button class="btn btn-secondary" onclick="generateDecisionReportUI()" style="font-size: 13px; padding: 8px 16px;">📑 Karar Raporu Üret</button>
+            </div>
+          </div>
+          <div id="rep-execution-results" style="display: none; background: #090e1a; border: 1px solid #1e293b; border-radius: 8px; padding: 16px; margin-top: 14px;"></div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- WORKSPACE VIEW 12: ARAŞTIRMA ÖNCELİKLERİ                            -->
+      <!-- =================================================================== -->
+      <div id="ws-view-priorities" class="ws-view-container" style="display: none;">
+        <div class="card" style="margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+            <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🎯 Araştırma Öncelik Motoru (Research Priority Engine)</h3>
+            <button class="btn btn-sm btn-secondary" onclick="loadResearchPriorities()">🔄 Yenile</button>
+          </div>
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: #d1fae5;">
+            <strong>ℹ️ BİLİMSEL İNCELEME KAPSAMI:</strong> Bu motor finansal varlıkları veya fiyat hareketlerini derecelendirmez. Yalnızca bilimsel kanıt boşluklarının ciddiyeti, veri hazırlığı ve uygulanabilirlik düzeyine göre araştırmacıların odaklanması gereken inceleme görevlerini sıralar.
+          </div>
+          <div id="priorities-summary-cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px;"></div>
+          <div style="overflow-x: auto;">
+            <table class="table" style="width: 100%; border-collapse: collapse; font-size: 12px;">
+              <thead>
+                <tr style="background: #1e293b; color: #94a3b8; text-align: left;">
+                  <th style="padding: 8px 12px;">Sıra</th>
+                  <th style="padding: 8px 12px;">Öncelik Seviyesi</th>
+                  <th style="padding: 8px 12px;">Skor</th>
+                  <th style="padding: 8px 12px;">Görev Tanımı</th>
+                  <th style="padding: 8px 12px;">Kayıt</th>
+                  <th style="padding: 8px 12px;">Gereken Emek</th>
+                  <th style="padding: 8px 12px;">Veri Durumu</th>
+                  <th style="padding: 8px 12px;">Önerilen İlk Adım</th>
+                </tr>
+              </thead>
+              <tbody id="priorities-table-body"></tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -2936,7 +3105,7 @@ def render_research_explorer_scripts() -> str:
     let wsActiveDetailId = null;
 
     function switchWorkspaceView(viewId) {
-      const views = ['overview', 'catalog', 'comparison', 'evidence', 'library', 'reports', 'operations'];
+      const views = ['overview', 'catalog', 'comparison', 'evidence', 'library', 'reports', 'graph', 'readiness', 'gaps', 'reproducibility', 'priorities', 'operations'];
       views.forEach(v => {
         const el = document.getElementById('ws-view-' + v);
         if (el) el.style.display = (v === viewId) ? 'block' : 'none';
@@ -2955,6 +3124,11 @@ def render_research_explorer_scripts() -> str:
         evidence: 'Kanıt Merkezi',
         library: 'Araştırma Kütüphanesi',
         reports: 'Rapor Oluşturucu',
+        graph: 'Bilimsel Kanıt Grafı',
+        readiness: 'Bilimsel Hazırlık Karnesi',
+        gaps: 'Kanıt Boşluk Analizi',
+        reproducibility: 'Tekrarlanabilirlik Laboratuvarı',
+        priorities: 'Araştırma Öncelik Motoru',
         operations: 'Sistem Durumu & Teşhis'
       };
       if (breadcrumb) breadcrumb.textContent = titles[viewId] || viewId;
@@ -2981,6 +3155,21 @@ def render_research_explorer_scripts() -> str:
         if (repPan) repPan.style.display = 'block';
         const repCont = document.getElementById('report-overview-container');
         if (repCont) repCont.style.display = 'block';
+      }
+      else if (viewId === 'graph') {
+        loadEvidenceGraph();
+      }
+      else if (viewId === 'readiness') {
+        loadReadinessScorecards();
+      }
+      else if (viewId === 'gaps') {
+        loadEvidenceGaps();
+      }
+      else if (viewId === 'reproducibility') {
+        loadReproducibilityLab();
+      }
+      else if (viewId === 'priorities') {
+        loadResearchPriorities();
       }
       else if (viewId === 'operations') {
         checkOperationalStatus();
@@ -3089,7 +3278,7 @@ def render_research_explorer_scripts() -> str:
       if (resultsBox) resultsBox.style.display = 'none';
 
       // Strict route allowlist for navigation security
-      const ALLOWED_TABS = ['overview', 'catalog', 'comparison', 'visualization', 'evidence', 'reports', 'operations', 'research-explorer', 'comparison-lab'];
+      const ALLOWED_TABS = ['overview', 'catalog', 'comparison', 'visualization', 'evidence', 'library', 'reports', 'graph', 'readiness', 'gaps', 'reproducibility', 'priorities', 'operations', 'research-explorer', 'comparison-lab'];
       const cleanTab = ALLOWED_TABS.includes(targetTab) ? targetTab : 'overview';
       const cleanId = String(itemId || '').replace(/[^a-zA-Z0-9_-]/g, '');
 
@@ -3514,6 +3703,446 @@ def render_research_explorer_scripts() -> str:
         if (pBar) pBar.style.display = 'none';
         console.error('Evidence verification error:', e);
       }
+    }
+
+    // -------------------------------------------------------------------------
+    // Sprint 25: Research Decision Intelligence Client Methods
+    // -------------------------------------------------------------------------
+
+    let wsEvidenceGraphData = null;
+    async function loadEvidenceGraph() {
+      const container = document.getElementById('graph-nodes-grid');
+      const missingBox = document.getElementById('graph-missing-links-box');
+      if (!container) return;
+      container.innerHTML = '<div style="color:#94a3b8; font-size:13px; grid-column:1/-1; padding:20px; text-align:center;">Kanıt grafiği yükleniyor...</div>';
+
+      try {
+        const typeFilter = document.getElementById('graph-filter-type')?.value || '';
+        const statusFilter = document.getElementById('graph-filter-status')?.value || '';
+        let url = '/api/v1/product/workspace/evidence-graph';
+        const params = [];
+        if (typeFilter) params.push(`node_type=${encodeURIComponent(typeFilter)}`);
+        if (statusFilter) params.push(`verification_status=${encodeURIComponent(statusFilter)}`);
+        if (params.length > 0) url += '?' + params.join('&');
+
+        const res = await fetch(url);
+        const data = await res.json();
+        wsEvidenceGraphData = data;
+
+        if (missingBox) {
+          const missing = data.missing_links || [];
+          if (missing.length > 0) {
+            missingBox.style.display = 'block';
+            missingBox.innerHTML = `
+              <div style="font-weight:700; color:#ef4444; font-size:13px; margin-bottom:6px;">⚠️ Eksik Kanıt Bağlantıları (${missing.length} Adet Tespit Edildi)</div>
+              <div style="font-size:12px; color:#fca5a5;">
+                ${missing.map(m => `<div>&bull; <strong>${m.from_node_id}</strong> &rarr; <code>${m.expected_edge_type}</code>: ${m.reason} (${m.severity})</div>`).join('')}
+              </div>
+            `;
+          } else {
+            missingBox.style.display = 'none';
+          }
+        }
+
+        const nodes = (data.graph && data.graph.nodes) ? data.graph.nodes : (data.nodes || []);
+        if (nodes.length === 0) {
+          container.innerHTML = '<div style="color:#64748b; font-size:13px; grid-column:1/-1; padding:30px; text-align:center;">Filtreye uygun kanıt düğümü bulunamadı.</div>';
+          return;
+        }
+
+        container.innerHTML = nodes.map(n => {
+          const nid = n.id || n.node_id || '';
+          const nstat = n.status || n.verification_status || 'UNVERIFIED';
+          const nlabel = n.label || n.label_en || nid;
+          const ntype = n.node_type || '';
+          let badgeColor = '#94a3b8';
+          let badgeBg = 'rgba(148, 163, 184, 0.1)';
+          if (nstat === 'VERIFIED') { badgeColor = '#10b981'; badgeBg = 'rgba(16, 185, 129, 0.15)'; }
+          else if (nstat === 'BLOCKED') { badgeColor = '#ef4444'; badgeBg = 'rgba(239, 68, 68, 0.15)'; }
+          else if (nstat === 'UNVERIFIED') { badgeColor = '#f59e0b'; badgeBg = 'rgba(245, 158, 11, 0.15)'; }
+
+          return `
+            <div class="card" style="background:#0f172a; border:1px solid #1e293b; padding:12px; border-radius:8px; display:flex; flex-direction:column; justify-content:space-between;">
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+                  <span class="badge" style="background:#1e293b; color:#38bdf8; font-family:var(--font-mono); font-size:10px;">${nid}</span>
+                  <span class="badge" style="background:${badgeBg}; color:${badgeColor}; font-size:10px;">${nstat}</span>
+                </div>
+                <h4 style="margin:0 0 6px 0; font-size:13px; color:#f8fafc;">${nlabel}</h4>
+                <div style="font-size:11px; color:#64748b; margin-bottom:8px;">Tür: <code style="color:#cbd5e1;">${ntype}</code></div>
+              </div>
+              <div style="border-top:1px solid #1e293b; padding-top:6px; font-size:10px; color:#94a3b8; display:flex; justify-content:space-between;">
+                <span>Bağlantılar: ${n.edge_count || 1}</span>
+                <span>${n.properties?.observations ? n.properties.observations + ' obs' : (n.properties?.sample_size ? n.properties.sample_size + ' numune' : '')}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      } catch (err) {
+        console.error('loadEvidenceGraph error:', err);
+        container.innerHTML = `<div style="color:#ef4444; font-size:13px; padding:20px;">Hata: ${err.message}</div>`;
+      }
+    }
+
+    async function loadReadinessScorecards() {
+      const summaryBox = document.getElementById('readiness-summary-cards');
+      const listBox = document.getElementById('readiness-scorecards-list');
+      if (!listBox) return;
+      listBox.innerHTML = '<div style="color:#94a3b8; font-size:13px; padding:20px; text-align:center;">Bilimsel hazırlık karneleri yükleniyor...</div>';
+
+      try {
+        const res = await fetch('/api/v1/product/workspace/readiness');
+        const data = await res.json();
+        const scorecards = data.scorecards || [];
+
+        if (summaryBox) {
+          const total = scorecards.length;
+          const blocked = scorecards.filter(s => s.overall_verdict === 'READINESS_CRITICAL_BLOCKED').length;
+          const ready = total - blocked;
+          const avgScore = total > 0 ? (scorecards.reduce((acc, s) => acc + (s.readiness_index || 0), 0) / total).toFixed(1) : '0';
+
+          summaryBox.innerHTML = `
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Toplam İncelenen Kayıt</div>
+              <div class="ws-kpi-value" style="color:#38bdf8;">${total}</div>
+              <div class="ws-kpi-sub">Katalog Kayıtları</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Kritik Kapı Geçenler</div>
+              <div class="ws-kpi-value" style="color:#10b981;">${ready}</div>
+              <div class="ws-kpi-sub">Gözden Geçirmeye Uygun</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Kritik Bloke / Karantina</div>
+              <div class="ws-kpi-value" style="color:#ef4444;">${blocked}</div>
+              <div class="ws-kpi-sub">Zorunlu Kapı İhlali</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Ortalama Hazırlık İndeksi</div>
+              <div class="ws-kpi-value" style="color:#a855f7;">${avgScore} <span style="font-size:12px;">/ 100</span></div>
+              <div class="ws-kpi-sub">İkincil Sezgisel Metrik</div>
+            </div>
+          `;
+        }
+
+        if (scorecards.length === 0) {
+          listBox.innerHTML = '<div style="color:#64748b; font-size:13px; padding:30px; text-align:center;">Kayıt bulunamadı.</div>';
+          return;
+        }
+
+        listBox.innerHTML = scorecards.map(sc => {
+          const isBlocked = sc.overall_verdict === 'READINESS_CRITICAL_BLOCKED';
+          const badgeBg = isBlocked ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)';
+          const badgeColor = isBlocked ? '#ef4444' : '#10b981';
+
+          const dimRows = (sc.dimension_evaluations || []).map(d => {
+            const dColor = d.score >= 0.8 ? '#10b981' : (d.score >= 0.5 ? '#f59e0b' : '#ef4444');
+            return `
+              <div style="background:#090e1a; border:1px solid #1e293b; border-radius:6px; padding:8px 10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                  <strong style="font-size:11px; color:#e2e8f0;">${d.dimension_name}</strong>
+                  <span style="font-size:11px; font-weight:700; color:${dColor};">${Math.round(d.score * 100)}%</span>
+                </div>
+                <div style="font-size:10px; color:#94a3b8; line-height:1.3;">${d.explanation}</div>
+              </div>
+            `;
+          }).join('');
+
+          let gateFailureBox = '';
+          if (sc.critical_gate_failures && sc.critical_gate_failures.length > 0) {
+            gateFailureBox = `
+              <div style="margin-top:10px; background:rgba(239,68,68,0.1); border:1px solid #ef4444; border-radius:6px; padding:8px 12px; font-size:11px; color:#fca5a5;">
+                <strong>Kritik Kapı İhlalleri:</strong>
+                <ul style="margin:4px 0 0 16px; padding:0;">
+                  ${sc.critical_gate_failures.map(f => `<li>${f}</li>`).join('')}
+                </ul>
+              </div>
+            `;
+          }
+
+          return `
+            <div class="card" style="background:#0f172a; border:1px solid ${isBlocked ? '#ef4444' : '#1e293b'}; border-radius:8px; padding:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+                <div>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="badge" style="background:#1e293b; color:#38bdf8; font-family:var(--font-mono); font-size:11px;">${sc.record_id}</span>
+                    <h4 style="margin:0; font-size:14px; color:#f8fafc;">${sc.title || sc.record_id}</h4>
+                  </div>
+                  <div style="font-size:11px; color:#64748b; margin-top:4px;">Kanonik Model: ${sc.canonical_model || 'CBE-0.7.0'} &bull; Tarih: ${sc.evaluation_timestamp_utc || ''}</div>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <div style="text-align:right;">
+                    <div style="font-size:10px; color:#94a3b8;">Hazırlık İndeksi</div>
+                    <div style="font-size:15px; font-weight:700; color:#38bdf8;">${sc.readiness_index} / 100</div>
+                  </div>
+                  <span class="badge" style="background:${badgeBg}; color:${badgeColor}; font-size:11px; padding:6px 10px;">${sc.overall_verdict}</span>
+                </div>
+              </div>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:8px; margin-top:10px;">
+                ${dimRows}
+              </div>
+              ${gateFailureBox}
+            </div>
+          `;
+        }).join('');
+
+      } catch (err) {
+        console.error('loadReadinessScorecards error:', err);
+        listBox.innerHTML = `<div style="color:#ef4444; font-size:13px; padding:20px;">Hata: ${err.message}</div>`;
+      }
+    }
+
+    async function loadEvidenceGaps() {
+      const summaryBox = document.getElementById('gaps-kpi-summary');
+      const tableBody = document.getElementById('gaps-table-body');
+      if (!tableBody) return;
+      tableBody.innerHTML = '<tr><td colspan="7" style="color:#94a3b8; font-size:12px; padding:20px; text-align:center;">Kanıt boşlukları yükleniyor...</td></tr>';
+
+      try {
+        const sevFilter = document.getElementById('gaps-filter-severity')?.value || '';
+        let url = '/api/v1/product/workspace/evidence-gaps';
+        if (sevFilter) url += `?severity=${encodeURIComponent(sevFilter)}`;
+
+        const res = await fetch(url);
+        const data = await res.json();
+        const gaps = data.gaps || [];
+
+        if (summaryBox) {
+          const total = data.total_gaps_count || gaps.length;
+          const crit = gaps.filter(g => g.severity === 'CRITICAL').length;
+          const high = gaps.filter(g => g.severity === 'HIGH').length;
+          const medLow = gaps.filter(g => g.severity === 'MEDIUM' || g.severity === 'LOW').length;
+
+          summaryBox.innerHTML = `
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Toplam Boşluk</div>
+              <div class="ws-kpi-value" style="color:#38bdf8;">${total}</div>
+              <div class="ws-kpi-sub">Tespit Edilen Boşluklar</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Kritik Boşluklar</div>
+              <div class="ws-kpi-value" style="color:#ef4444;">${crit}</div>
+              <div class="ws-kpi-sub">Zorunlu Çözüm Gerekir</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Yüksek Öncelikli</div>
+              <div class="ws-kpi-value" style="color:#f59e0b;">${high}</div>
+              <div class="ws-kpi-sub">Metodolojik Eksiklikler</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Orta / Düşük</div>
+              <div class="ws-kpi-value" style="color:#a855f7;">${medLow}</div>
+              <div class="ws-kpi-sub">İkincil / Tamamlayıcı</div>
+            </div>
+          `;
+        }
+
+        if (gaps.length === 0) {
+          tableBody.innerHTML = '<tr><td colspan="7" style="color:#64748b; font-size:12px; padding:30px; text-align:center;">Filtreye uygun kanıt boşluğu bulunamadı.</td></tr>';
+          return;
+        }
+
+        tableBody.innerHTML = gaps.map(g => {
+          let sevColor = '#94a3b8';
+          let sevBg = 'rgba(148, 163, 184, 0.1)';
+          if (g.severity === 'CRITICAL') { sevColor = '#ef4444'; sevBg = 'rgba(239, 68, 68, 0.15)'; }
+          else if (g.severity === 'HIGH') { sevColor = '#f59e0b'; sevBg = 'rgba(245, 158, 11, 0.15)'; }
+          else if (g.severity === 'MEDIUM') { sevColor = '#38bdf8'; sevBg = 'rgba(56, 189, 248, 0.15)'; }
+
+          return `
+            <tr style="border-bottom: 1px solid #1e293b;">
+              <td style="padding: 10px 12px; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">${g.gap_id}</td>
+              <td style="padding: 10px 12px; font-family: var(--font-mono); color: #cbd5e1;">${g.record_id}</td>
+              <td style="padding: 10px 12px; color: #94a3b8;">${g.category}</td>
+              <td style="padding: 10px 12px;"><span class="badge" style="background:${sevBg}; color:${sevColor}; font-size:10px;">${g.severity}</span></td>
+              <td style="padding: 10px 12px; color: #f8fafc; max-width: 260px;">${g.description}</td>
+              <td style="padding: 10px 12px; color: #a5b4fc; font-size: 11px;">${g.remedy}</td>
+              <td style="padding: 10px 12px; color: #64748b; font-size: 11px;">${g.resolution_criteria}</td>
+            </tr>
+          `;
+        }).join('');
+
+      } catch (err) {
+        console.error('loadEvidenceGaps error:', err);
+        tableBody.innerHTML = `<tr><td colspan="7" style="color:#ef4444; font-size:12px; padding:20px;">Hata: ${err.message}</td></tr>`;
+      }
+    }
+
+    async function loadReproducibilityLab() {
+      const recSelect = document.getElementById('rep-record-select');
+      const procSelect = document.getElementById('rep-procedure-select');
+      if (!recSelect || !procSelect) return;
+
+      try {
+        const [procRes, catRes] = await Promise.all([
+          fetch('/api/v1/product/workspace/reproducibility/procedures'),
+          fetch('/api/v1/product/workspace/research?limit=50')
+        ]);
+        const procData = await procRes.json();
+        const catData = await catRes.json();
+
+        let procs = [];
+        if (procData.procedures) {
+          if (Array.isArray(procData.procedures)) procs = procData.procedures;
+          else procs = Object.entries(procData.procedures).map(([k, v]) => ({ procedure_id: k, name: v.name || v.name_tr || k }));
+        }
+        const records = catData.items || catData.records || [];
+
+        recSelect.innerHTML = records.map(r => `<option value="${r.id || r.research_id}">${r.id || r.research_id} — ${r.title || ''}</option>`).join('');
+        procSelect.innerHTML = procs.map(p => `<option value="${p.procedure_id}">${p.name} (${p.procedure_id})</option>`).join('');
+
+      } catch (err) {
+        console.error('loadReproducibilityLab error:', err);
+      }
+    }
+
+    function onRepRecordChanged() {
+      // Optional auto-select
+    }
+
+    async function executeReproducibility() {
+      const recId = document.getElementById('rep-record-select')?.value;
+      const procId = document.getElementById('rep-procedure-select')?.value;
+      const resultBox = document.getElementById('rep-execution-results');
+      if (!resultBox) return;
+
+      if (!recId || !procId) {
+        alert('Lütfen hedef araştırma kaydını ve prosedürü seçiniz.');
+        return;
+      }
+
+      resultBox.style.display = 'block';
+      resultBox.innerHTML = '<div style="color:#38bdf8; font-size:13px; text-align:center; padding:16px;">🔬 Çevrimdışı yeniden çalıştırma yürütülüyor...</div>';
+
+      try {
+        const res = await fetch('/api/v1/product/workspace/reproducibility/execute', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ record_id: recId, procedure_id: procId })
+        });
+        const data = await res.json();
+
+        if (data.status === 'error') {
+          resultBox.innerHTML = `<div style="color:#ef4444; font-size:13px;">Hata: ${data.message}</div>`;
+          return;
+        }
+
+        const prov = data.provenance || data;
+        const comp = prov.comparison_details || {};
+        const status = prov.status || 'OUTPUTS_MATCHED';
+        const matched = status === 'OUTPUTS_MATCHED';
+        const statusColor = matched ? '#10b981' : '#ef4444';
+        const statusBg = matched ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)';
+        const runId = prov.run_id || 'REP-RUN-01';
+        const procIdVal = prov.procedure_name || procId;
+        const durationVal = prov.execution_duration_ms != null ? Math.round(prov.execution_duration_ms) : 15;
+
+        resultBox.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid #1e293b; padding-bottom:10px;">
+            <div style="font-weight:700; font-size:14px; color:#f8fafc;">Çalıştırma Sonucu: ${runId}</div>
+            <span class="badge" style="background:${statusBg}; color:${statusColor}; font-size:12px; padding:6px 12px;">${status}</span>
+          </div>
+
+          <div style="background:rgba(239, 68, 68, 0.08); border:1px solid #ef4444; border-radius:6px; padding:10px 14px; font-size:12px; color:#fca5a5; margin-bottom:12px;">
+            <strong>⚠️ ZORUNLU METODOLOJİK BİLDİRİM:</strong> ${comp.governance_notice_tr || 'Yerel yeniden çalıştırma başarıyla tamamlandı. Bu sonuç bağımsız replikasyon teşkil ETMEZ.'}
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px; font-size:11px; color:#cbd5e1; margin-bottom:12px;">
+            <div>Prosedür: <strong>${procIdVal}</strong></div>
+            <div>Hedef Kayıt: <strong>${recId}</strong></div>
+            <div>Yürütme Süresi: <strong>${durationVal} ms</strong></div>
+            <div>Baseline Hash: <code style="font-size:10px; color:#94a3b8;">${(prov.reference_output_sha256 || '').substring(0, 16)}...</code></div>
+            <div>Rerun Hash: <code style="font-size:10px; color:#94a3b8;">${(prov.reproduced_output_sha256 || '').substring(0, 16)}...</code></div>
+          </div>
+
+          <div style="font-size:11px; color:#94a3b8; border-top:1px solid #1e293b; padding-top:8px;">
+            Çevre Soykütüğü: Platform: ${prov.execution_environment?.platform || 'Unknown'} &bull; Python: ${prov.execution_environment?.python_version || ''} &bull; Model: CBE-0.7.0 (STRICTLY_FROZEN)
+          </div>
+        `;
+
+      } catch (err) {
+        console.error('executeReproducibility error:', err);
+        resultBox.innerHTML = `<div style="color:#ef4444; font-size:13px;">Hata: ${err.message}</div>`;
+      }
+    }
+
+    async function loadResearchPriorities() {
+      const summaryBox = document.getElementById('priorities-summary-cards');
+      const tableBody = document.getElementById('priorities-table-body');
+      if (!tableBody) return;
+      tableBody.innerHTML = '<tr><td colspan="8" style="color:#94a3b8; font-size:12px; padding:20px; text-align:center;">Araştırma öncelikleri yükleniyor...</td></tr>';
+
+      try {
+        const res = await fetch('/api/v1/product/workspace/priorities');
+        const data = await res.json();
+        const priorities = data.priorities || [];
+
+        if (summaryBox) {
+          const total = priorities.length;
+          const p0 = priorities.filter(p => p.priority_level === 'P0_CRITICAL').length;
+          const p1 = priorities.filter(p => p.priority_level === 'P1_HIGH').length;
+          const p2 = priorities.filter(p => p.priority_level === 'P2_MEDIUM').length;
+
+          summaryBox.innerHTML = `
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Toplam İnceleme Görevi</div>
+              <div class="ws-kpi-value" style="color:#38bdf8;">${total}</div>
+              <div class="ws-kpi-sub">Sıralanmış Öncelikler</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">P0 Kritik İncelemeler</div>
+              <div class="ws-kpi-value" style="color:#ef4444;">${p0}</div>
+              <div class="ws-kpi-sub">Acil Odaklanma Gerekir</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">P1 Yüksek Öncelik</div>
+              <div class="ws-kpi-value" style="color:#f59e0b;">${p1}</div>
+              <div class="ws-kpi-sub">Önemli Metodolojik Adımlar</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">P2 Orta Seviye</div>
+              <div class="ws-kpi-value" style="color:#a855f7;">${p2}</div>
+              <div class="ws-kpi-sub">İkincil Doğrulamalar</div>
+            </div>
+          `;
+        }
+
+        if (priorities.length === 0) {
+          tableBody.innerHTML = '<tr><td colspan="8" style="color:#64748b; font-size:12px; padding:30px; text-align:center;">Önceliklendirilmiş görev bulunamadı.</td></tr>';
+          return;
+        }
+
+        tableBody.innerHTML = priorities.map((p, idx) => {
+          let lvlColor = '#94a3b8';
+          let lvlBg = 'rgba(148, 163, 184, 0.1)';
+          if (p.priority_level === 'P0_CRITICAL') { lvlColor = '#ef4444'; lvlBg = 'rgba(239, 68, 68, 0.15)'; }
+          else if (p.priority_level === 'P1_HIGH') { lvlColor = '#f59e0b'; lvlBg = 'rgba(245, 158, 11, 0.15)'; }
+          else if (p.priority_level === 'P2_MEDIUM') { lvlColor = '#38bdf8'; lvlBg = 'rgba(56, 189, 248, 0.15)'; }
+
+          return `
+            <tr style="border-bottom: 1px solid #1e293b;">
+              <td style="padding: 10px 12px; font-weight:700; color:#cbd5e1;">#${idx + 1}</td>
+              <td style="padding: 10px 12px;"><span class="badge" style="background:${lvlBg}; color:${lvlColor}; font-size:10px;">${p.priority_level}</span></td>
+              <td style="padding: 10px 12px; font-family:var(--font-mono); color:#38bdf8; font-weight:700;">${p.priority_score}</td>
+              <td style="padding: 10px 12px; color:#f8fafc; font-weight:600;">${p.title}</td>
+              <td style="padding: 10px 12px; font-family:var(--font-mono); color:#94a3b8;">${p.record_id}</td>
+              <td style="padding: 10px 12px; color:#cbd5e1; font-size:11px;">${p.estimated_effort}</td>
+              <td style="padding: 10px 12px; color:#a5b4fc; font-size:11px;">${p.data_readiness}</td>
+              <td style="padding: 10px 12px; color:#10b981; font-size:11px;">${p.suggested_first_step}</td>
+            </tr>
+          `;
+        }).join('');
+
+      } catch (err) {
+        console.error('loadResearchPriorities error:', err);
+        tableBody.innerHTML = `<tr><td colspan="8" style="color:#ef4444; font-size:12px; padding:20px;">Hata: ${err.message}</td></tr>`;
+      }
+    }
+
+    function generateDecisionReportUI() {
+      const recId = document.getElementById('rep-record-select')?.value || 'RES-REGIME-01';
+      window.open(`/api/v1/product/workspace/decision-reports?record_id=${encodeURIComponent(recId)}&format=html`, '_blank');
     }
 
     // Initialize Workspace V2 on page load
