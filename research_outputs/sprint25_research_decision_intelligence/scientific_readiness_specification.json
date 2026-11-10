@@ -1,0 +1,79 @@
+{
+  "specification_version": "1.0.0",
+  "canonical_model": "CBE-0.7.0",
+  "governance_decision": "TECHNICAL_NO_GO",
+  "dimensions": [
+    {
+      "id": "DATASET_PROVENANCE",
+      "name_en": "Dataset Provenance & Lineage",
+      "name_tr": "Veri Seti K\u00f6keni ve Soyk\u00fct\u00fc\u011f\u00fc",
+      "is_critical_gate": true
+    },
+    {
+      "id": "SOURCE_ARTIFACT_INTEGRITY",
+      "name_en": "Source Artifact Integrity (SHA-256)",
+      "name_tr": "Kaynak Belge B\u00fct\u00fcnl\u00fc\u011f\u00fc (SHA-256)",
+      "is_critical_gate": true
+    },
+    {
+      "id": "OBSERVATION_COMPLETENESS",
+      "name_en": "Observation Completeness & Attestation",
+      "name_tr": "G\u00f6zlem S\u00fcreklili\u011fi & Eksiksizlik Tasdiki",
+      "is_critical_gate": true
+    },
+    {
+      "id": "METHODOLOGY_COMPATIBILITY",
+      "name_en": "Methodology & Cadence Compatibility",
+      "name_tr": "Metodoloji ve Kadans Uyumlulu\u011fu",
+      "is_critical_gate": false
+    },
+    {
+      "id": "SAMPLE_SUFFICIENCY",
+      "name_en": "Sample Sufficiency (N >= 100)",
+      "name_tr": "\u00d6rneklem Yeterlili\u011fi (N >= 100)",
+      "is_critical_gate": true
+    },
+    {
+      "id": "STATISTICAL_VALIDITY",
+      "name_en": "Statistical Validity & Outlier Control",
+      "name_tr": "\u0130statistiksel Ge\u00e7erlilik & U\u00e7 De\u011fer Kontrol\u00fc",
+      "is_critical_gate": false
+    },
+    {
+      "id": "REPRODUCIBILITY",
+      "name_en": "Offline Reproducibility Instructions",
+      "name_tr": "\u00c7evrimd\u0131\u015f\u0131 Tekrarlanabilirlik (Offline Reproducibility)",
+      "is_critical_gate": true
+    },
+    {
+      "id": "INDEPENDENT_REPLICATION",
+      "name_en": "Independent Replication Verification",
+      "name_tr": "Ba\u011f\u0131ms\u0131z Replikasyon Do\u011frulamas\u0131",
+      "is_critical_gate": false
+    },
+    {
+      "id": "EVIDENCE_FRESHNESS",
+      "name_en": "Evidence Freshness & Revocation Status",
+      "name_tr": "Kan\u0131t G\u00fcncelli\u011fi ve \u0130ptal Durumu",
+      "is_critical_gate": false
+    },
+    {
+      "id": "GOVERNANCE_COMPLIANCE",
+      "name_en": "Scientific Governance & Trading Prohibition",
+      "name_tr": "Bilimsel Y\u00f6neti\u015fim & Canl\u0131 \u0130\u015flem Yasa\u011f\u0131",
+      "is_critical_gate": true
+    }
+  ],
+  "verdict_types": [
+    "READY_FOR_CONFIRMATORY_REVIEW",
+    "INSUFFICIENT_EVIDENCE",
+    "METHODOLOGICALLY_BLOCKED",
+    "INTEGRITY_FAILED"
+  ],
+  "fail_closed_rules": [
+    "If any critical gate fails or remains unverified, is_ready_for_review is strictly FALSE",
+    "Quarantined records automatically receive METHODOLOGICALLY_BLOCKED verdict",
+    "Unverified records with missing attestations receive INSUFFICIENT_EVIDENCE verdict",
+    "Heuristic readiness index is strictly accompanied by non-trading scientific disclaimers"
+  ]
+}

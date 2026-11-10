@@ -1,0 +1,140 @@
+[
+  {
+    "run_id": "REP-RUN-D12EF20B0B7F",
+    "record_id": "RES-FUND-01",
+    "procedure_name": "PROC_FUNDING_RATE_SUMMARY",
+    "procedure_version": "1.1.0",
+    "status": "OUTPUTS_MATCHED",
+    "is_independent_replication": false,
+    "source_dataset_id": "BTCUSDT-PERP-FUNDING-2022-2026",
+    "source_artifact_path": "data/reports/sprint09_38_funding_predictability_report.json",
+    "source_artifact_sha256": "5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a",
+    "start_time_utc": "2026-11-10T12:17:44.315654+00:00",
+    "end_time_utc": "2026-11-10T12:17:44.338186+00:00",
+    "execution_duration_ms": 23.10800000122981,
+    "execution_environment": {
+      "python_version": "3.11.16",
+      "platform": "Windows-10-10.0.26300-SP0",
+      "cpu_architecture": "AMD64",
+      "process_id": 17180,
+      "canonical_model": "CBE-0.7.0"
+    },
+    "dependency_versions": {
+      "python": "3.11.16",
+      "hashlib": "builtin",
+      "json": "builtin",
+      "math": "builtin"
+    },
+    "reference_outputs": {
+      "mean_funding_bps": 1.0103,
+      "p_value": 1.0
+    },
+    "reproduced_outputs": {
+      "mean_funding_bps": 1.0103,
+      "p_value": 1.0
+    },
+    "reference_output_sha256": "477f057dd1749c112478be1c1aad7d5ac1ceadb4c67a364bc29163bb903c72d3",
+    "reproduced_output_sha256": "477f057dd1749c112478be1c1aad7d5ac1ceadb4c67a364bc29163bb903c72d3",
+    "comparison_details": {
+      "matched": true,
+      "numerical_tolerance": 0.0001,
+      "discrepancies": {},
+      "governance_notice_tr": "Yerel yeniden \u00e7al\u0131\u015ft\u0131rma (re-execution) ba\u015far\u0131yla tamamland\u0131. Bu sonu\u00e7 ba\u011f\u0131ms\u0131z replikasyon te\u015fkil ETMEZ.",
+      "governance_notice_en": "Local re-execution completed. This does NOT constitute independent replication."
+    },
+    "error_message_tr": null,
+    "error_message_en": null
+  },
+  {
+    "run_id": "REP-RUN-6AB220540E52",
+    "record_id": "RES-REGIME-01",
+    "procedure_name": "PROC_REGIME_STABILITY_EVAL",
+    "procedure_version": "1.0.0",
+    "status": "OUTPUTS_MATCHED",
+    "is_independent_replication": false,
+    "source_dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
+    "source_artifact_path": "data/reports/sprint09_27_validation_and_holdout_report.json",
+    "source_artifact_sha256": "14ae2c3a0ebcbbf8e96a50ad5ada06a5ce2b0fc22082f3a225d9becfcee4cebf",
+    "start_time_utc": "2026-11-10T12:17:44.340724+00:00",
+    "end_time_utc": "2026-11-10T12:17:44.340724+00:00",
+    "execution_duration_ms": 0.4014999994979007,
+    "execution_environment": {
+      "python_version": "3.11.16",
+      "platform": "Windows-10-10.0.26300-SP0",
+      "cpu_architecture": "AMD64",
+      "process_id": 17180,
+      "canonical_model": "CBE-0.7.0"
+    },
+    "dependency_versions": {
+      "python": "3.11.16",
+      "hashlib": "builtin",
+      "json": "builtin",
+      "math": "builtin"
+    },
+    "reference_outputs": {
+      "direction_match": true,
+      "model_version": "CBE-0.7.0"
+    },
+    "reproduced_outputs": {
+      "direction_match": true,
+      "model_version": "CBE-0.7.0"
+    },
+    "reference_output_sha256": "3d7ecc2900497cd0324235860c4a1e1b3770a11cec77351da8c089c4efbce2e0",
+    "reproduced_output_sha256": "3d7ecc2900497cd0324235860c4a1e1b3770a11cec77351da8c089c4efbce2e0",
+    "comparison_details": {
+      "matched": true,
+      "numerical_tolerance": 0.0001,
+      "discrepancies": {},
+      "governance_notice_tr": "Yerel yeniden \u00e7al\u0131\u015ft\u0131rma (re-execution) ba\u015far\u0131yla tamamland\u0131. Bu sonu\u00e7 ba\u011f\u0131ms\u0131z replikasyon te\u015fkil ETMEZ.",
+      "governance_notice_en": "Local re-execution completed. This does NOT constitute independent replication."
+    },
+    "error_message_tr": null,
+    "error_message_en": null
+  },
+  {
+    "run_id": "REP-RUN-AD1DE310458A",
+    "record_id": "RES-DURABILITY-01",
+    "procedure_name": "PROC_STORAGE_VERIFICATION",
+    "procedure_version": "1.0.0",
+    "status": "OUTPUTS_MATCHED",
+    "is_independent_replication": false,
+    "source_dataset_id": "CBE-SYSTEM-AUDIT-LOGS",
+    "source_artifact_path": "research_outputs/sprint23_delivery/persistent_volume_verification.json",
+    "source_artifact_sha256": "cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c",
+    "start_time_utc": "2026-11-10T12:17:44.342434+00:00",
+    "end_time_utc": "2026-11-10T12:17:44.342953+00:00",
+    "execution_duration_ms": 0.3308000013930723,
+    "execution_environment": {
+      "python_version": "3.11.16",
+      "platform": "Windows-10-10.0.26300-SP0",
+      "cpu_architecture": "AMD64",
+      "process_id": 17180,
+      "canonical_model": "CBE-0.7.0"
+    },
+    "dependency_versions": {
+      "python": "3.11.16",
+      "hashlib": "builtin",
+      "json": "builtin",
+      "math": "builtin"
+    },
+    "reference_outputs": {
+      "total_negative_tests": 20,
+      "storage_mode": "DOCKER_PERSISTENT_VOLUME"
+    },
+    "reproduced_outputs": {
+      "total_negative_tests": 20,
+      "storage_mode": "DOCKER_PERSISTENT_VOLUME"
+    },
+    "reference_output_sha256": "511b2f378cdda06c722f3c046a834f9d9144136d5bfbe16dadb043a0d0ce51df",
+    "reproduced_output_sha256": "511b2f378cdda06c722f3c046a834f9d9144136d5bfbe16dadb043a0d0ce51df",
+    "comparison_details": {
+      "matched": true,
+      "numerical_tolerance": 0.0001,
+      "discrepancies": {},
+      "governance_notice_tr": "Yerel yeniden \u00e7al\u0131\u015ft\u0131rma (re-execution) ba\u015far\u0131yla tamamland\u0131. Bu sonu\u00e7 ba\u011f\u0131ms\u0131z replikasyon te\u015fkil ETMEZ.",
+      "governance_notice_en": "Local re-execution completed. This does NOT constitute independent replication."
+    },
+    "error_message_tr": null,
+    "error_message_en": null
+  }
+]

@@ -1,0 +1,42 @@
+{
+  "timestamp_utc": "2026-11-10T12:08:00Z",
+  "test_environment": "Python 3.11.16 on Windows 10 & Linux Container",
+  "regression_suites": [
+    {
+      "suite": "Sprint 21 (Data Integrity)",
+      "file": "tests/test_sprint_product_acceleration_21.py",
+      "passed": 18,
+      "failed": 0
+    },
+    {
+      "suite": "Sprint 22 (Evidence & Resilience)",
+      "file": "tests/test_sprint_product_acceleration_22.py",
+      "passed": 44,
+      "failed": 0
+    },
+    {
+      "suite": "Sprint 23 (Operational & Reports)",
+      "file": "tests/test_sprint_product_acceleration_23.py",
+      "passed": 38,
+      "failed": 0
+    },
+    {
+      "suite": "Sprint 24 (Cryptographic Hardening)",
+      "file": "tests/test_sprint_product_acceleration_24_cryptographic_hardening.py",
+      "passed": 15,
+      "failed": 0
+    },
+    {
+      "suite": "Sprint 25 (Decision Intelligence)",
+      "file": "tests/test_sprint_product_acceleration_25.py",
+      "passed": 31,
+      "failed": 0
+    }
+  ],
+  "total_regression_passed": 146,
+  "total_regression_failed": 0,
+  "all_sprint24_and_sprint25_tests": 171,
+  "browser_acceptance_tests": 7,
+  "browser_acceptance_passed": 7,
+  "governance_status": "PASS"
+}

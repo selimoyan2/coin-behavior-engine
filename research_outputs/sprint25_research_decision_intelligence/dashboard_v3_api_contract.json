@@ -1,0 +1,71 @@
+{
+  "contract_version": "3.0.0",
+  "base_path": "/api/v1/product/workspace",
+  "endpoints": [
+    {
+      "path": "/overview",
+      "method": "GET",
+      "description": "Workspace overview with platform health, model status, and decision intelligence summary",
+      "auth_required": false
+    },
+    {
+      "path": "/evidence-graph",
+      "method": "GET",
+      "description": "Full or filtered evidence graph nodes, edges, and detected missing links",
+      "parameters": [
+        "node_type",
+        "status",
+        "edge_type",
+        "limit",
+        "offset"
+      ]
+    },
+    {
+      "path": "/readiness",
+      "method": "GET",
+      "description": "Scientific readiness scorecards across 10 dimensions with critical gate evaluations",
+      "parameters": [
+        "record_id"
+      ]
+    },
+    {
+      "path": "/evidence-gaps",
+      "method": "GET",
+      "description": "Detected evidence gaps with severity grading and deterministic remedies",
+      "parameters": [
+        "record_id",
+        "severity"
+      ]
+    },
+    {
+      "path": "/priorities",
+      "method": "GET",
+      "description": "Ranked research agenda prioritizing unverified findings and critical blockers",
+      "parameters": []
+    },
+    {
+      "path": "/reproducibility/procedures",
+      "method": "GET",
+      "description": "List of approved offline computational procedures eligible for re-execution",
+      "parameters": []
+    },
+    {
+      "path": "/reproducibility/execute",
+      "method": "POST",
+      "description": "Execute approved procedure in offline sandbox and record provenance",
+      "body": {
+        "record_id": "string",
+        "procedure_name": "string"
+      }
+    },
+    {
+      "path": "/decision-reports",
+      "method": "GET",
+      "description": "Generate comprehensive 13-section decision report in JSON or HTML",
+      "parameters": [
+        "record_id",
+        "format"
+      ]
+    }
+  ]
+}

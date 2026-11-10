@@ -1,0 +1,60 @@
+{
+  "protocol_version": "1.0.0",
+  "description": "Scientific Offline Reproducibility Lab Protocol & Execution Constraints",
+  "execution_boundary": "STRICTLY_OFFLINE_LOCAL",
+  "allowlisted_procedures": {
+    "PROC_PARKINSON_VOLATILITY": {
+      "name_tr": "Parkinson Ekstremum De\u011fer Volatilite Hesaplamas\u0131",
+      "name_en": "Parkinson Extreme-Value Volatility Estimation",
+      "version": "1.2.0",
+      "supported_categories": [
+        "Volatilite",
+        "Volatility"
+      ]
+    },
+    "PROC_FUNDING_RATE_SUMMARY": {
+      "name_tr": "S\u00fcrekli Fonlama Oran\u0131 \u0130statistiksel \u00d6zeti",
+      "name_en": "Perpetual Funding Rate Statistical Summary",
+      "version": "1.1.0",
+      "supported_categories": [
+        "Fonlama",
+        "Funding"
+      ]
+    },
+    "PROC_REGIME_STABILITY_EVAL": {
+      "name_tr": "Y\u00fcr\u00fcy\u00fc\u015f \u0130leriye Rejim Kararl\u0131l\u0131\u011f\u0131 Matrisi",
+      "name_en": "Walk-Forward Regime Stability Matrix",
+      "version": "1.0.0",
+      "supported_categories": [
+        "Rejim",
+        "Regime"
+      ]
+    },
+    "PROC_DTW_PATTERN_DISTANCE": {
+      "name_tr": "Dinamik Zaman B\u00fckmesi (DTW) \u00d6r\u00fcnt\u00fc Mesafesi",
+      "name_en": "Dynamic Time Warping Pattern Distance",
+      "version": "1.0.0",
+      "supported_categories": [
+        "\u00d6r\u00fcnt\u00fc",
+        "Pattern",
+        "Analog"
+      ]
+    },
+    "PROC_STORAGE_VERIFICATION": {
+      "name_tr": "Kal\u0131c\u0131 Depolama Birimi \u00c7ift \u00c7ekirdek Mountinfo Do\u011frulamas\u0131",
+      "name_en": "Persistent Storage Dual-Kernel Mountinfo Verification",
+      "version": "1.0.0",
+      "supported_categories": [
+        "Sistem G\u00fcvenilirli\u011fi",
+        "Durability"
+      ]
+    }
+  },
+  "execution_invariants": [
+    "Execution is restricted to approved computational procedures only",
+    "External network calls are strictly blocked during re-execution",
+    "All inputs and outputs are cryptographically hashed (SHA-256)",
+    "Deterministic numerical tolerance verification (default 1e-4)",
+    "Non-replication invariant: is_independent_replication=False is permanently enforced"
+  ]
+}

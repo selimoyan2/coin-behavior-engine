@@ -1,0 +1,37 @@
+{
+  "status": "success",
+  "report": {
+    "report_id": "RPT-DECISION-RES-FUND-01-C56F38B5",
+    "record_id": "RES-FUND-01",
+    "title_tr": "Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi",
+    "title_en": "Perpetual Funding Rate Predictability & Pure Compute Latency",
+    "canonical_model": "CBE-0.7.0",
+    "governance_decision": "TECHNICAL_NO_GO",
+    "trading_prohibition": "LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED",
+    "generated_at_utc": "2026-11-10T12:17:44.351380+00:00",
+    "report_sha256": "c56f38b589fcea7218237bf2d821453c801eeb61bf745ca80eecf2d872456fac",
+    "sections": {
+      "sec_1_summary": "Kay\u0131t RES-FUND-01 (Perpetual Fonlama Oran\u0131 \u00d6ng\u00f6r\u00fclebilirli\u011fi & Hesaplama Gecikmesi), 2022-01-01 to 2026-09-01 (4.6 y\u0131l) d\u00f6nemi \u00fczerinde incelenmi\u015f olup genel haz\u0131rl\u0131k durumu 'INSUFFICIENT_EVIDENCE' olarak belirlenmi\u015ftir. Kritik bilimsel kap\u0131lar\u0131n 5/6 adedi do\u011frulanm\u0131\u015ft\u0131r.",
+      "sec_2_objective": "Bu ara\u015ft\u0131rman\u0131n amac\u0131, piyasa mikroyap\u0131s\u0131 ve ekstremum volatilite davran\u0131\u015flar\u0131n\u0131n istatistiksel \u00f6zelliklerini geriye d\u00f6n\u00fck ampirik veri \u00fczerinde incelemektir.",
+      "sec_3_dataset_id": "BTCUSDT-PERP-FUNDING-2022-2026",
+      "sec_3_cadence": "8h",
+      "sec_3_spec": "SPEC-001-PERP-FUNDING",
+      "sec_4_provenance": "Kaynak dosya 'data/reports/sprint09_38_funding_predictability_report.json' \u00fczerinde do\u011frulanm\u0131\u015ft\u0131r. SHA-256 b\u00fct\u00fcnl\u00fc\u011f\u00fc: 5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a.",
+      "sec_5_claims": "\u00d6n bulgular: Volatilite oran\u0131 = None, \u00d6rneklem boyutu = 1185. Ba\u011f\u0131ms\u0131z replikasyon ger\u00e7ekle\u015fene kadar bu bulgular 'UNVERIFIED' \u00f6n bulgu niteli\u011findedir.",
+      "sec_6_limitations": "Tek bir veri seti penceresi kullan\u0131lm\u0131\u015ft\u0131r. \u00c7oklu hipotez s\u0131namas\u0131 (FDR) ve rejim kaymas\u0131 duyarl\u0131l\u0131klar\u0131 dikkate al\u0131nmal\u0131d\u0131r; kazan\u00e7 veya k\u00e2rl\u0131l\u0131k spek\u00fclasyonu yap\u0131lamaz.",
+      "sec_7_reproducibility": "\u00c7evrimd\u0131\u015f\u0131 tekrarlanabilirlik verisi yerel disk \u00fczerinde mevcuttur. Reproducibility Lab \u00fczerinden yerel olarak yeniden \u00e7al\u0131\u015ft\u0131r\u0131labilir.",
+      "sec_8_replication": "Ba\u011f\u0131ms\u0131z replikasyon durumu: REPLICATION_NOT_ESTABLISHED. Yerel \u00e7al\u0131\u015ft\u0131rma ba\u011f\u0131ms\u0131z replikasyon say\u0131lmaz.",
+      "sec_9_gaps_summary": "Kay\u0131t \u00fczerinde toplam 4 adet kan\u0131t bo\u015flu\u011fu tespit edilmi\u015ftir. 1 adedi kritik ilerleme engelidir.",
+      "sec_10_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "sec_10_gates_passed": 5,
+      "sec_10_gates_total": 6,
+      "sec_11_next_tasks": [
+        "G\u00f6zlem zaman damgalar\u0131n\u0131 veya imzal\u0131 tasdik sa\u011flay\u0131n.",
+        "Ba\u011f\u0131ms\u0131z replikasyon \u00e7al\u0131\u015fmas\u0131 planlay\u0131n."
+      ],
+      "sec_12_governance": "Y\u00f6neti\u015fim k\u0131s\u0131tlamalar\u0131 tam olarak devrededir.",
+      "sec_13_artifact_path": "data/reports/sprint09_38_funding_predictability_report.json",
+      "sec_13_artifact_sha256": "5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a"
+    }
+  }
+}

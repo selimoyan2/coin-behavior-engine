@@ -1,0 +1,107 @@
+{
+  "manifest_version": "1.0.0",
+  "sprint_id": "CBE_SPRINT25_RESEARCH_DECISION_INTELLIGENCE",
+  "generated_timestamp_utc": "2026-11-10T12:16:00Z",
+  "artifacts": {
+    "canonical_evidence_graph.json": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/canonical_evidence_graph.json",
+      "sha256": "22626834f2360c73e622876a01c228eb084e51a52c7e93fe0781f2793ef0c818",
+      "size_bytes": 133287
+    },
+    "dashboard_v3_api_contract.json": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/dashboard_v3_api_contract.json",
+      "sha256": "0c9be703b227415ddb301d221c9fc741c3c5904c8c8c0f1b4e09f1277e4a713a",
+      "size_bytes": 2003
+    },
+    "evidence_gap_catalog.json": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/evidence_gap_catalog.json",
+      "sha256": "191fdb3120722b608e355e5078c9f42b7f5adbd65180ba2364bdd404d07cf353",
+      "size_bytes": 64670
+    },
+    "evidence_graph_specification.json": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/evidence_graph_specification.json",
+      "sha256": "447bad9348855c8c585294b4b3dd746cefa878cc1fbd50346fe888a76ca7030e",
+      "size_bytes": 1095
+    },
+    "multi_sprint_regression_summary.json": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/multi_sprint_regression_summary.json",
+      "sha256": "c80185c649ac7c86b2693864b30ccbd2c023139b214d4228c9e0f96afc8d2af1",
+      "size_bytes": 1237
+    },
+    "playwright_acceptance_results.json": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/playwright_acceptance_results.json",
+      "sha256": "674923f943bcd90608afc844a98ea28992bfc32b49635b3fdbbc3fcb464f2a1d",
+      "size_bytes": 1406
+    },
+    "production_zero_touch_audit.json": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/production_zero_touch_audit.json",
+      "sha256": "b3d9e4efd2139d39b05cda1f3ff30e359f50c1088c6c1e982b29301323ba7ec4",
+      "size_bytes": 459
+    },
+    "README.md": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/README.md",
+      "sha256": "ab8fbb4d3683d493c77449f2776d78cc9279545b2df25a3a715e138b2427fa17",
+      "size_bytes": 3935
+    },
+    "reproducibility_execution_logs.json": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/reproducibility_execution_logs.json",
+      "sha256": "3d71e4ae1eda9e761148e0486e8e07ff6c18cca67ef6ac67e142a668c21a5e00",
+      "size_bytes": 5858
+    },
+    "reproducibility_lab_protocol.json": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/reproducibility_lab_protocol.json",
+      "sha256": "e6bd6fdffbebdbd94440c34f8eec62abafb2d6d06b340ff082703c50853de598",
+      "size_bytes": 2239
+    },
+    "research_decision_report_sample.html": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/research_decision_report_sample.html",
+      "sha256": "0a7f697ea3ca9b4e823fbe8b6484cc5b2db8c9c78d61bbda660cc2d478864f6e",
+      "size_bytes": 5794
+    },
+    "research_decision_report_sample.json": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/research_decision_report_sample.json",
+      "sha256": "eb5059512ab23f549fe574d288ae17322038b525bdcb1cd9cdeba012d6132715",
+      "size_bytes": 3475
+    },
+    "research_priority_manifest.json": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/research_priority_manifest.json",
+      "sha256": "521218b60f7cc1d890f564dddec02e21055efa4aefe0f6a3c39944d032c7a377",
+      "size_bytes": 52431
+    },
+    "scientific_readiness_scorecards.json": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/scientific_readiness_scorecards.json",
+      "sha256": "b5fe85cc9ccb198c1947de4c8456337d532f4d0961b448165807d27d8636eb47",
+      "size_bytes": 192241
+    },
+    "scientific_readiness_specification.json": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/scientific_readiness_specification.json",
+      "sha256": "78f54ce1694ff748c470be293c6a411003b6e51a3ef89d6a58d58f05d6f12776",
+      "size_bytes": 2911
+    },
+    "screenshots/sprint25_screenshot_01_desktop_evidence_graph.png": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/screenshots/sprint25_screenshot_01_desktop_evidence_graph.png",
+      "sha256": "caf707b8ab3af93345ac3f010b792caded4e4bbe91829542061a190d1f75eabd",
+      "size_bytes": 1001959
+    },
+    "screenshots/sprint25_screenshot_02_tablet_readiness_scorecards.png": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/screenshots/sprint25_screenshot_02_tablet_readiness_scorecards.png",
+      "sha256": "633cd595e40e2393078186a19af4ff5d4a79e8927abfe375797d1deacfe07a99",
+      "size_bytes": 631285
+    },
+    "screenshots/sprint25_screenshot_03_mobile_gap_analysis.png": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/screenshots/sprint25_screenshot_03_mobile_gap_analysis.png",
+      "sha256": "63388d74d901e61ef037dfd4846e65caecf492996f26f5ab6eb3022175e98ee4",
+      "size_bytes": 739241
+    },
+    "sprint25_final_acceptance_certification.md": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/sprint25_final_acceptance_certification.md",
+      "sha256": "a2cecfd53e65f85e5007e78bea43b4e7da2a188af6867be50a7c945bdb5c7d21",
+      "size_bytes": 6514
+    },
+    "staging_verification_report.json": {
+      "path": "research_outputs/sprint25_research_decision_intelligence/staging_verification_report.json",
+      "sha256": "5cd78ea6bfdd58c1bcada68836366c72f2167e81ecc9150edc41e704bbf18791",
+      "size_bytes": 1421
+    }
+  }
+}
