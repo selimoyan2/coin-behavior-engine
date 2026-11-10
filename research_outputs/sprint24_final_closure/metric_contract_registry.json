@@ -1,0 +1,83 @@
+{
+  "registry": {
+    "volatility_expansion_ratio": {
+      "metric_id": "volatility_expansion_ratio",
+      "mathematical_definition": "Ratio of post-event Parkinson realized volatility to pre-event Parkinson realized volatility over symmetric windows: sigma_post / sigma_pre",
+      "estimator": "PARKINSON_HIGH_LOW_RATIO",
+      "unit": "ratio",
+      "sampling_cadence": "1h",
+      "source_field": "volatility_expansion_ratio",
+      "aggregation_method": "MEAN",
+      "applicable_research_domain": "MACRO_EVENT_STUDY",
+      "normalization_procedure": "SYMMETRIC_LOG_RATIO"
+    },
+    "volatility_ratio": {
+      "metric_id": "volatility_ratio",
+      "mathematical_definition": "Standardized Parkinson realized volatility ratio relative to unconditional baseline: sigma_window / sigma_baseline",
+      "estimator": "PARKINSON_HIGH_LOW_STANDARDIZED",
+      "unit": "ratio",
+      "sampling_cadence": "1h",
+      "source_field": "volatility_ratio",
+      "aggregation_method": "MEAN",
+      "applicable_research_domain": "VOLATILITY_RESEARCH",
+      "normalization_procedure": "BASE_STANDARDIZED"
+    },
+    "reference_realized_volatility_pct": {
+      "metric_id": "reference_realized_volatility_pct",
+      "mathematical_definition": "Annualized realized volatility computed from log returns: sigma * sqrt(8760) * 100",
+      "estimator": "CLOSE_TO_CLOSE_ANNUALIZED",
+      "unit": "percent",
+      "sampling_cadence": "1h",
+      "source_field": "reference_realized_volatility_pct",
+      "aggregation_method": "NONE",
+      "applicable_research_domain": "HISTORICAL_ANALOG",
+      "normalization_procedure": "ANNUALIZED_SQRT_8760"
+    },
+    "observed_mean_funding_bps": {
+      "metric_id": "observed_mean_funding_bps",
+      "mathematical_definition": "Observed sample mean of perpetual funding settlement rates in basis points: (1/N) * sum(F_t) * 10000",
+      "estimator": "SAMPLE_MEAN_BPS",
+      "unit": "basis_points",
+      "sampling_cadence": "8h",
+      "source_field": "observed_mean_funding_bps",
+      "aggregation_method": "MEAN",
+      "applicable_research_domain": "PERPETUAL_FUTURES",
+      "normalization_procedure": null
+    },
+    "raw_p_value": {
+      "metric_id": "raw_p_value",
+      "mathematical_definition": "Two-sided parametric or bootstrap p-value under null hypothesis H0",
+      "estimator": "BOOTSTRAP_OR_DIEBOLD_MARIANO",
+      "unit": "probability",
+      "sampling_cadence": "VARIABLE",
+      "source_field": "raw_p_value",
+      "aggregation_method": "NONE",
+      "applicable_research_domain": "STATISTICAL_INFERENCE",
+      "normalization_procedure": null
+    },
+    "holdout_fdr_q": {
+      "metric_id": "holdout_fdr_q",
+      "mathematical_definition": "Benjamini-Hochberg (1995) step-up adjusted false discovery rate q-value",
+      "estimator": "BENJAMINI_HOCHBERG",
+      "unit": "probability",
+      "sampling_cadence": "VARIABLE",
+      "source_field": "holdout_fdr_q",
+      "aggregation_method": "NONE",
+      "applicable_research_domain": "MULTIPLE_TESTING",
+      "normalization_procedure": null
+    },
+    "sample_size": {
+      "metric_id": "sample_size",
+      "mathematical_definition": "Total count of discrete valid empirical observation intervals evaluated",
+      "estimator": "DISCRETE_OBSERVATION_COUNT",
+      "unit": "observations",
+      "sampling_cadence": "VARIABLE",
+      "source_field": "sample_size",
+      "aggregation_method": "SUM",
+      "applicable_research_domain": "GENERAL_RESEARCH",
+      "normalization_procedure": null
+    }
+  },
+  "commit_sha": "cd588ebfd06903c82ab9eaa7f30e18378adf1bdc",
+  "timestamp_utc": "2026-11-10T07:38:42.473579+00:00"
+}

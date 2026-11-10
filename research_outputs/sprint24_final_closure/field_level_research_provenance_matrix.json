@@ -1,0 +1,406 @@
+{
+  "provenance_matrix": [
+    {
+      "research_id": "RES-FUND-01",
+      "title": "Perpetual Fonlama Oranı Öngörülebilirliği & Hesaplama Gecikmesi",
+      "source_relative_path": "data/reports/sprint09_38_funding_predictability_report.json",
+      "source_file_sha256": "5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a",
+      "trusted_provenance_status": "TRUSTED_PROVENANCE_CONFIRMED",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 6,
+      "provenance_fields": [
+        {
+          "field_name": "sample_size",
+          "status": "EXTRACTED_EXACT",
+          "json_path": "$.model_evaluations[0].sample_size",
+          "raw_value": "1185",
+          "validated_value": "1185",
+          "validation_rule": "integer >= 0"
+        },
+        {
+          "field_name": "raw_p_value",
+          "status": "EXTRACTED_EXACT",
+          "json_path": "$.model_evaluations[0].dm_p_value_vs_rw",
+          "raw_value": "1.0",
+          "validated_value": "1.0",
+          "validation_rule": "p-value in [0, 1]"
+        },
+        {
+          "field_name": "observed_mean_funding_bps",
+          "status": "EXTRACTED_EXACT",
+          "json_path": "$.break_even_analysis.observed_mean_funding_bps",
+          "raw_value": "1.0103",
+          "validated_value": "1.0103",
+          "validation_rule": "finite float bps"
+        },
+        {
+          "field_name": "pure_compute_latency_ms",
+          "status": "EXTRACTED_EXACT",
+          "json_path": "$.pure_compute_latency_ms",
+          "raw_value": "32.71",
+          "validated_value": "32.71",
+          "validation_rule": "latency ms"
+        },
+        {
+          "field_name": "volatility_ratio",
+          "status": "ABSENT_IN_SOURCE",
+          "json_path": "$.volatility_ratio",
+          "raw_value": "None",
+          "validated_value": "None",
+          "validation_rule": "volatility ratio"
+        },
+        {
+          "field_name": "holdout_fdr_q",
+          "status": "ABSENT_IN_SOURCE",
+          "json_path": "$.holdout_fdr_q",
+          "raw_value": "None",
+          "validated_value": "None",
+          "validation_rule": "fdr q-value"
+        }
+      ]
+    },
+    {
+      "research_id": "RES-REGIME-01",
+      "title": "2022–2026 Kronolojik İleriye Yönelik Rejim Kararlılığı Doğrulaması",
+      "source_relative_path": "data/reports/sprint09_27_validation_and_holdout_report.json",
+      "source_file_sha256": "14ae2c3a0ebcbbf8e96a50ad5ada06a5ce2b0fc22082f3a225d9becfcee4cebf",
+      "trusted_provenance_status": "TRUSTED_PROVENANCE_CONFIRMED",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 4,
+      "provenance_fields": [
+        {
+          "field_name": "sample_size",
+          "status": "EXTRACTED_EXACT",
+          "json_path": "$.regime_classification_audit.null_model_single_ema.total_bars",
+          "raw_value": "8736",
+          "validated_value": "8736",
+          "validation_rule": "bars count"
+        },
+        {
+          "field_name": "raw_p_value",
+          "status": "EXTRACTED_EXACT",
+          "json_path": "$.multiple_testing_control.raw_p_values.B3_REVERSION",
+          "raw_value": "0.1738",
+          "validated_value": "0.1738",
+          "validation_rule": "min raw p-value"
+        },
+        {
+          "field_name": "volatility_ratio",
+          "status": "ABSENT_IN_SOURCE",
+          "json_path": "$.volatility_ratio",
+          "raw_value": "None",
+          "validated_value": "None",
+          "validation_rule": "volatility ratio"
+        },
+        {
+          "field_name": "holdout_fdr_q",
+          "status": "ABSENT_IN_SOURCE",
+          "json_path": "$.holdout_fdr_q",
+          "raw_value": "None",
+          "validated_value": "None",
+          "validation_rule": "fdr q-value"
+        }
+      ]
+    },
+    {
+      "research_id": "RES-ANALOG-01",
+      "title": "Dinamik Zaman Bükmesi (DTW) Tarihsel Örüntü Benzerliği V2",
+      "source_relative_path": "research_outputs/research_report_29_pattern_similarity.json",
+      "source_file_sha256": "337b19b98c381d0cac508161efa9bb776826cd8708bd2d64d1b9e8779f8b6847",
+      "trusted_provenance_status": "TRUSTED_PROVENANCE_CONFIRMED",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 5,
+      "provenance_fields": [
+        {
+          "field_name": "sample_size",
+          "status": "EXTRACTED_EXACT",
+          "json_path": "$.pattern_search.total_historical_windows_scanned",
+          "raw_value": "860",
+          "validated_value": "860",
+          "validation_rule": "scanned windows count"
+        },
+        {
+          "field_name": "reference_realized_volatility_pct",
+          "status": "EXTRACTED_EXACT",
+          "json_path": "$.pattern_search.reference_realized_volatility_pct",
+          "raw_value": "81.59",
+          "validated_value": "81.59",
+          "validation_rule": "annualized realized vol %"
+        },
+        {
+          "field_name": "volatility_ratio",
+          "status": "ABSENT_IN_SOURCE",
+          "json_path": "$.volatility_ratio",
+          "raw_value": "None",
+          "validated_value": "None",
+          "validation_rule": "volatility ratio"
+        },
+        {
+          "field_name": "raw_p_value",
+          "status": "ABSENT_IN_SOURCE",
+          "json_path": "$.raw_p_value",
+          "raw_value": "None",
+          "validated_value": "None",
+          "validation_rule": "p-value"
+        },
+        {
+          "field_name": "holdout_fdr_q",
+          "status": "ABSENT_IN_SOURCE",
+          "json_path": "$.holdout_fdr_q",
+          "raw_value": "None",
+          "validated_value": "None",
+          "validation_rule": "fdr q-value"
+        }
+      ]
+    },
+    {
+      "research_id": "RES-MACRO-01",
+      "title": "Makroekonomik Duyurular (CPI & FOMC) T0 Rejim Dönüşümleri",
+      "source_relative_path": "research_outputs/experiment_cpi_volatility.cbe-hyp.json",
+      "source_file_sha256": "3cda89064b6837ef23d76c6d220d3998ebfc5a3f7261d3afc6ea68c29a4bf7ac",
+      "trusted_provenance_status": "TRUSTED_PROVENANCE_CONFIRMED",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 6,
+      "provenance_fields": [
+        {
+          "field_name": "volatility_expansion_ratio",
+          "status": "EXTRACTED_EXACT",
+          "json_path": "$.results.volatility_expansion_ratio",
+          "raw_value": "1.913",
+          "validated_value": "1.913",
+          "validation_rule": "expansion ratio"
+        },
+        {
+          "field_name": "raw_p_value",
+          "status": "EXTRACTED_EXACT",
+          "json_path": "$.results.p_value",
+          "raw_value": "1.2e-05",
+          "validated_value": "1.2e-05",
+          "validation_rule": "p-value"
+        },
+        {
+          "field_name": "cohens_d",
+          "status": "EXTRACTED_EXACT",
+          "json_path": "$.results.cohens_d",
+          "raw_value": "0.724",
+          "validated_value": "0.724",
+          "validation_rule": "effect size"
+        },
+        {
+          "field_name": "is_statistically_significant",
+          "status": "EXTRACTED_EXACT",
+          "json_path": "$.results.is_statistically_significant",
+          "raw_value": "True",
+          "validated_value": "True",
+          "validation_rule": "boolean"
+        },
+        {
+          "field_name": "sample_size",
+          "status": "ABSENT_IN_SOURCE",
+          "json_path": "$.sample_size",
+          "raw_value": "None",
+          "validated_value": "None",
+          "validation_rule": "sample size"
+        },
+        {
+          "field_name": "holdout_fdr_q",
+          "status": "ABSENT_IN_SOURCE",
+          "json_path": "$.results.holdout_fdr_q",
+          "raw_value": "None",
+          "validated_value": "None",
+          "validation_rule": "fdr q-value"
+        }
+      ]
+    },
+    {
+      "research_id": "RES-DURABILITY-01",
+      "title": "Dayanıklı Depolama Doğrulaması & Kanıt Soykütüğü Sertifikasyonu",
+      "source_relative_path": "research_outputs/sprint23_delivery/persistent_volume_verification.json",
+      "source_file_sha256": "cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c",
+      "trusted_provenance_status": "TRUSTED_PROVENANCE_CONFIRMED",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 4,
+      "provenance_fields": [
+        {
+          "field_name": "total_negative_tests",
+          "status": "EXTRACTED_EXACT",
+          "json_path": "$.negative_tests_summary.total_negative_tests",
+          "raw_value": "20",
+          "validated_value": "20",
+          "validation_rule": "test count"
+        },
+        {
+          "field_name": "volatility_ratio",
+          "status": "ABSENT_IN_SOURCE",
+          "json_path": "$.volatility_ratio",
+          "raw_value": "None",
+          "validated_value": "None",
+          "validation_rule": "volatility ratio"
+        },
+        {
+          "field_name": "holdout_fdr_q",
+          "status": "ABSENT_IN_SOURCE",
+          "json_path": "$.holdout_fdr_q",
+          "raw_value": "None",
+          "validated_value": "None",
+          "validation_rule": "fdr q-value"
+        },
+        {
+          "field_name": "raw_p_value",
+          "status": "ABSENT_IN_SOURCE",
+          "json_path": "$.raw_p_value",
+          "raw_value": "None",
+          "validated_value": "None",
+          "validation_rule": "raw p-value"
+        }
+      ]
+    },
+    {
+      "research_id": "RES-CRYPTO-01",
+      "title": "Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim İncelemesi",
+      "source_relative_path": "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet",
+      "source_file_sha256": "05874e97d06db21fad8e7583b5b8038141d4e3dcfbabf68238fca52f5efab718",
+      "trusted_provenance_status": "TRUSTED_PROVENANCE_CONFIRMED",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 3,
+      "provenance_fields": [
+        {
+          "field_name": "sample_size",
+          "status": "EXTRACTED_EXACT",
+          "json_path": "parquet:row_count",
+          "raw_value": "288",
+          "validated_value": "288",
+          "validation_rule": "parquet row count"
+        },
+        {
+          "field_name": "volatility_ratio",
+          "status": "ABSENT_IN_SOURCE",
+          "json_path": "parquet:volatility_ratio",
+          "raw_value": "None",
+          "validated_value": "None",
+          "validation_rule": "volatility ratio"
+        },
+        {
+          "field_name": "raw_p_value",
+          "status": "ABSENT_IN_SOURCE",
+          "json_path": "parquet:raw_p_value",
+          "raw_value": "None",
+          "validated_value": "None",
+          "validation_rule": "p-value"
+        }
+      ]
+    },
+    {
+      "research_id": "RLIB-c5730b081950",
+      "title": "Playwright Sprint 21 Verified Library Item",
+      "source_relative_path": "data/research_library/RLIB-c5730b081950.json",
+      "source_file_sha256": "7d3a39550d5fa8754dd3d580855da42bb0c2871e261d5891ea2ba11be0994af5",
+      "trusted_provenance_status": "SELF_COMPUTED_ONLY",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 0,
+      "provenance_fields": []
+    },
+    {
+      "research_id": "RLIB-ee060f623584",
+      "title": "Playwright Sprint 21 Verified Library Item",
+      "source_relative_path": "data/research_library/RLIB-ee060f623584.json",
+      "source_file_sha256": "1af6c92f6e2f0b3c01ab7f7227fe88826f4986940e49074b2015716541b7be01",
+      "trusted_provenance_status": "SELF_COMPUTED_ONLY",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 0,
+      "provenance_fields": []
+    },
+    {
+      "research_id": "RLIB-f9ddf66ba096",
+      "title": "Sprint 22 Library Report Test",
+      "source_relative_path": "data/research_library/RLIB-f9ddf66ba096.json",
+      "source_file_sha256": "8b9c1018b20224a85c136e5c68cd759b05c7fdceea7b0ace549891a5163f4e22",
+      "trusted_provenance_status": "SELF_COMPUTED_ONLY",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 0,
+      "provenance_fields": []
+    },
+    {
+      "research_id": "RLIB-03c6ea53cf3d",
+      "title": "Acceptance Test Definition",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-03c6ea53cf3d.json",
+      "source_file_sha256": "de76c8e29242081eaa85f41fa800ce144fcb91e41107d7289ab4cbeb04244274",
+      "trusted_provenance_status": "SELF_COMPUTED_ONLY",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 0,
+      "provenance_fields": []
+    },
+    {
+      "research_id": "RLIB-07c7c65c7e91",
+      "title": "Acceptance Test Definition",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-07c7c65c7e91.json",
+      "source_file_sha256": "3ca1b02a8b185fcd12554fead907099da6bf6c54dee6bd5e58f1b18f038dcd2e",
+      "trusted_provenance_status": "SELF_COMPUTED_ONLY",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 0,
+      "provenance_fields": []
+    },
+    {
+      "research_id": "RLIB-2f30980866e9",
+      "title": "Acceptance Test Definition",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-2f30980866e9.json",
+      "source_file_sha256": "dd211e7f6b3e01fba967f9f26e3b377aec84fccafadf6721ed3c590830d63ff8",
+      "trusted_provenance_status": "SELF_COMPUTED_ONLY",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 0,
+      "provenance_fields": []
+    },
+    {
+      "research_id": "RLIB-3c104ed0c333",
+      "title": "E2E Kabul Kütüphane Tanımı",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-3c104ed0c333.json",
+      "source_file_sha256": "65667ba31904815d77513d51184cafb99503686c57d3e5bfa39752f4d24e0c6c",
+      "trusted_provenance_status": "SELF_COMPUTED_ONLY",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 0,
+      "provenance_fields": []
+    },
+    {
+      "research_id": "RLIB-669a3bc52ddf",
+      "title": "Acceptance Test Definition",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-669a3bc52ddf.json",
+      "source_file_sha256": "413ebd1e48dcfe8ddc963376dcb3bef47782cb6283a2c7a1b976139cad45e1c1",
+      "trusted_provenance_status": "SELF_COMPUTED_ONLY",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 0,
+      "provenance_fields": []
+    },
+    {
+      "research_id": "RLIB-7b0cb4781b20",
+      "title": "Acceptance Test Definition",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-7b0cb4781b20.json",
+      "source_file_sha256": "3fc10ff1eadb88801187df560c4dc29956142d532e636f6d53e28480828e4d15",
+      "trusted_provenance_status": "SELF_COMPUTED_ONLY",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 0,
+      "provenance_fields": []
+    },
+    {
+      "research_id": "RLIB-dbb10adc0f69",
+      "title": "Sprint 22 Rapor Tanımı",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-dbb10adc0f69.json",
+      "source_file_sha256": "4f017576070ac3cd1e710ee1abec853eb547020ee6eb3a4acabd87fa65f80815",
+      "trusted_provenance_status": "SELF_COMPUTED_ONLY",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 0,
+      "provenance_fields": []
+    },
+    {
+      "research_id": "RLIB-f93d9176002d",
+      "title": "Acceptance Test Definition",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-f93d9176002d.json",
+      "source_file_sha256": "9ca88e77b131a981d0237b105caff21f7a3976311bbe7e98472280ab3e28bcb9",
+      "trusted_provenance_status": "SELF_COMPUTED_ONLY",
+      "signature_verification_status": "UNSIGNED",
+      "field_count": 0,
+      "provenance_fields": []
+    }
+  ],
+  "commit_sha": "cd588ebfd06903c82ab9eaa7f30e18378adf1bdc",
+  "timestamp_utc": "2026-11-10T07:38:42.471778+00:00"
+}

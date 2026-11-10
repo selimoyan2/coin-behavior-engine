@@ -1,0 +1,24 @@
+{
+  "status": "VERIFIED_ZERO_TOUCH",
+  "timestamp_utc": "2026-11-10T07:38:42.473579+00:00",
+  "host": "coin.ozelweb.com.tr",
+  "remote_server": "srv1114257 (168.231.125.238)",
+  "production_container_id": "5e409c596a2337df3e85987e8f57540ebce2dfe589dd78729f752f56dc9ddc99",
+  "production_container_short_id": "5e409c596a23",
+  "production_container_name": "6t63aehpaw0cw1bbt4zcm09g-20261110T060443",
+  "uptime_attestation": {
+    "started_at": "2026-11-10T06:07:06.817803766Z",
+    "state_status": "running",
+    "restart_count": 0,
+    "unauthorized_mutations": 0,
+    "configuration_drift": 0,
+    "zero_touch_compliance": true
+  },
+  "governance_attestation": {
+    "model_version": "CBE-0.7.0",
+    "model_frozen": true,
+    "governance_decision": "TECHNICAL_NO_GO",
+    "trading_prohibition": "LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED",
+    "live_trading_activity": 0
+  }
+}

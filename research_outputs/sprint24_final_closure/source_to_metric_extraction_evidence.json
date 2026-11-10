@@ -1,0 +1,278 @@
+{
+  "extractions": [
+    {
+      "research_id": "RES-FUND-01",
+      "source_relative_path": "data/reports/sprint09_38_funding_predictability_report.json",
+      "source_file_sha256": "5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a",
+      "extracted_metrics": {
+        "sample_size": 1185,
+        "volatility_ratio": null,
+        "raw_p_value": 1.0,
+        "holdout_fdr_q": null,
+        "historical_period": "2022-01-01 to 2026-09-01 (4.6 yıl)",
+        "observation_start_utc": null,
+        "observation_end_utc": null
+      },
+      "scientific_eligibility": "ELIGIBLE",
+      "validation_status": "UNVERIFIED"
+    },
+    {
+      "research_id": "RES-REGIME-01",
+      "source_relative_path": "data/reports/sprint09_27_validation_and_holdout_report.json",
+      "source_file_sha256": "14ae2c3a0ebcbbf8e96a50ad5ada06a5ce2b0fc22082f3a225d9becfcee4cebf",
+      "extracted_metrics": {
+        "sample_size": 8736,
+        "volatility_ratio": null,
+        "raw_p_value": 0.1738,
+        "holdout_fdr_q": null,
+        "historical_period": "2022-01-01 to 2026-09-01 (4.6 yıl)",
+        "observation_start_utc": null,
+        "observation_end_utc": null
+      },
+      "scientific_eligibility": "ELIGIBLE",
+      "validation_status": "UNVERIFIED"
+    },
+    {
+      "research_id": "RES-ANALOG-01",
+      "source_relative_path": "research_outputs/research_report_29_pattern_similarity.json",
+      "source_file_sha256": "337b19b98c381d0cac508161efa9bb776826cd8708bd2d64d1b9e8779f8b6847",
+      "extracted_metrics": {
+        "sample_size": 860,
+        "volatility_ratio": null,
+        "raw_p_value": null,
+        "holdout_fdr_q": null,
+        "historical_period": "2022-01-01 to 2026-09-01 (4.6 yıl)",
+        "observation_start_utc": "2022-06-01T00:00:00+00:00",
+        "observation_end_utc": "2022-06-15T00:00:00+00:00"
+      },
+      "scientific_eligibility": "ELIGIBLE",
+      "validation_status": "UNVERIFIED"
+    },
+    {
+      "research_id": "RES-MACRO-01",
+      "source_relative_path": "research_outputs/experiment_cpi_volatility.cbe-hyp.json",
+      "source_file_sha256": "3cda89064b6837ef23d76c6d220d3998ebfc5a3f7261d3afc6ea68c29a4bf7ac",
+      "extracted_metrics": {
+        "sample_size": null,
+        "volatility_ratio": 1.913,
+        "raw_p_value": 1.2e-05,
+        "holdout_fdr_q": null,
+        "historical_period": "2022-01-01 to 2026-09-01",
+        "observation_start_utc": null,
+        "observation_end_utc": null
+      },
+      "scientific_eligibility": "ELIGIBLE",
+      "validation_status": "REPRODUCED_WITH_TOLERANCE"
+    },
+    {
+      "research_id": "RES-DURABILITY-01",
+      "source_relative_path": "research_outputs/sprint23_delivery/persistent_volume_verification.json",
+      "source_file_sha256": "cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c",
+      "extracted_metrics": {
+        "sample_size": 20,
+        "volatility_ratio": null,
+        "raw_p_value": null,
+        "holdout_fdr_q": null,
+        "historical_period": "2026-10-01 to 2026-11-09",
+        "observation_start_utc": null,
+        "observation_end_utc": null
+      },
+      "scientific_eligibility": "ELIGIBLE",
+      "validation_status": "VERIFIED"
+    },
+    {
+      "research_id": "RES-CRYPTO-01",
+      "source_relative_path": "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet",
+      "source_file_sha256": "05874e97d06db21fad8e7583b5b8038141d4e3dcfbabf68238fca52f5efab718",
+      "extracted_metrics": {
+        "sample_size": 288,
+        "volatility_ratio": null,
+        "raw_p_value": null,
+        "holdout_fdr_q": null,
+        "historical_period": "2026-10-01 to 2026-10-02",
+        "observation_start_utc": "2026-10-01T00:00:00Z",
+        "observation_end_utc": "2026-10-02T00:00:00Z"
+      },
+      "scientific_eligibility": "INELIGIBLE",
+      "validation_status": "FAILED_QUARANTINE"
+    },
+    {
+      "research_id": "RLIB-c5730b081950",
+      "source_relative_path": "data/research_library/RLIB-c5730b081950.json",
+      "source_file_sha256": "7d3a39550d5fa8754dd3d580855da42bb0c2871e261d5891ea2ba11be0994af5",
+      "extracted_metrics": {
+        "sample_size": null,
+        "volatility_ratio": null,
+        "raw_p_value": null,
+        "holdout_fdr_q": null,
+        "historical_period": "2022-06-01T00:00:00Z - 2022-06-15T00:00:00Z",
+        "observation_start_utc": "2022-06-01T00:00:00Z",
+        "observation_end_utc": "2022-06-15T00:00:00Z"
+      },
+      "scientific_eligibility": "ELIGIBLE",
+      "validation_status": "UNVERIFIED"
+    },
+    {
+      "research_id": "RLIB-ee060f623584",
+      "source_relative_path": "data/research_library/RLIB-ee060f623584.json",
+      "source_file_sha256": "1af6c92f6e2f0b3c01ab7f7227fe88826f4986940e49074b2015716541b7be01",
+      "extracted_metrics": {
+        "sample_size": null,
+        "volatility_ratio": null,
+        "raw_p_value": null,
+        "holdout_fdr_q": null,
+        "historical_period": "2022-06-01T00:00:00Z - 2022-06-15T00:00:00Z",
+        "observation_start_utc": "2022-06-01T00:00:00Z",
+        "observation_end_utc": "2022-06-15T00:00:00Z"
+      },
+      "scientific_eligibility": "ELIGIBLE",
+      "validation_status": "UNVERIFIED"
+    },
+    {
+      "research_id": "RLIB-f9ddf66ba096",
+      "source_relative_path": "data/research_library/RLIB-f9ddf66ba096.json",
+      "source_file_sha256": "8b9c1018b20224a85c136e5c68cd759b05c7fdceea7b0ace549891a5163f4e22",
+      "extracted_metrics": {
+        "sample_size": null,
+        "volatility_ratio": null,
+        "raw_p_value": null,
+        "holdout_fdr_q": null,
+        "historical_period": "2022-06-01T00:00:00Z - 2022-06-15T00:00:00Z",
+        "observation_start_utc": "2022-06-01T00:00:00Z",
+        "observation_end_utc": "2022-06-15T00:00:00Z"
+      },
+      "scientific_eligibility": "ELIGIBLE",
+      "validation_status": "UNVERIFIED"
+    },
+    {
+      "research_id": "RLIB-03c6ea53cf3d",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-03c6ea53cf3d.json",
+      "source_file_sha256": "de76c8e29242081eaa85f41fa800ce144fcb91e41107d7289ab4cbeb04244274",
+      "extracted_metrics": {
+        "sample_size": null,
+        "volatility_ratio": null,
+        "raw_p_value": null,
+        "holdout_fdr_q": null,
+        "historical_period": "2022-06-01T00:00:00Z - 2022-06-03T00:00:00Z",
+        "observation_start_utc": "2022-06-01T00:00:00Z",
+        "observation_end_utc": "2022-06-03T00:00:00Z"
+      },
+      "scientific_eligibility": "ELIGIBLE",
+      "validation_status": "UNVERIFIED"
+    },
+    {
+      "research_id": "RLIB-07c7c65c7e91",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-07c7c65c7e91.json",
+      "source_file_sha256": "3ca1b02a8b185fcd12554fead907099da6bf6c54dee6bd5e58f1b18f038dcd2e",
+      "extracted_metrics": {
+        "sample_size": null,
+        "volatility_ratio": null,
+        "raw_p_value": null,
+        "holdout_fdr_q": null,
+        "historical_period": "2022-06-01T00:00:00Z - 2022-06-03T00:00:00Z",
+        "observation_start_utc": "2022-06-01T00:00:00Z",
+        "observation_end_utc": "2022-06-03T00:00:00Z"
+      },
+      "scientific_eligibility": "ELIGIBLE",
+      "validation_status": "UNVERIFIED"
+    },
+    {
+      "research_id": "RLIB-2f30980866e9",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-2f30980866e9.json",
+      "source_file_sha256": "dd211e7f6b3e01fba967f9f26e3b377aec84fccafadf6721ed3c590830d63ff8",
+      "extracted_metrics": {
+        "sample_size": null,
+        "volatility_ratio": null,
+        "raw_p_value": null,
+        "holdout_fdr_q": null,
+        "historical_period": "2022-06-01T00:00:00Z - 2022-06-03T00:00:00Z",
+        "observation_start_utc": "2022-06-01T00:00:00Z",
+        "observation_end_utc": "2022-06-03T00:00:00Z"
+      },
+      "scientific_eligibility": "ELIGIBLE",
+      "validation_status": "UNVERIFIED"
+    },
+    {
+      "research_id": "RLIB-3c104ed0c333",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-3c104ed0c333.json",
+      "source_file_sha256": "65667ba31904815d77513d51184cafb99503686c57d3e5bfa39752f4d24e0c6c",
+      "extracted_metrics": {
+        "sample_size": null,
+        "volatility_ratio": null,
+        "raw_p_value": null,
+        "holdout_fdr_q": null,
+        "historical_period": "2022-06-01T00:00:00Z - 2022-06-15T00:00:00Z",
+        "observation_start_utc": "2022-06-01T00:00:00Z",
+        "observation_end_utc": "2022-06-15T00:00:00Z"
+      },
+      "scientific_eligibility": "ELIGIBLE",
+      "validation_status": "UNVERIFIED"
+    },
+    {
+      "research_id": "RLIB-669a3bc52ddf",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-669a3bc52ddf.json",
+      "source_file_sha256": "413ebd1e48dcfe8ddc963376dcb3bef47782cb6283a2c7a1b976139cad45e1c1",
+      "extracted_metrics": {
+        "sample_size": null,
+        "volatility_ratio": null,
+        "raw_p_value": null,
+        "holdout_fdr_q": null,
+        "historical_period": "2022-06-01T00:00:00Z - 2022-06-03T00:00:00Z",
+        "observation_start_utc": "2022-06-01T00:00:00Z",
+        "observation_end_utc": "2022-06-03T00:00:00Z"
+      },
+      "scientific_eligibility": "ELIGIBLE",
+      "validation_status": "UNVERIFIED"
+    },
+    {
+      "research_id": "RLIB-7b0cb4781b20",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-7b0cb4781b20.json",
+      "source_file_sha256": "3fc10ff1eadb88801187df560c4dc29956142d532e636f6d53e28480828e4d15",
+      "extracted_metrics": {
+        "sample_size": null,
+        "volatility_ratio": null,
+        "raw_p_value": null,
+        "holdout_fdr_q": null,
+        "historical_period": "2022-06-01T00:00:00Z - 2022-06-03T00:00:00Z",
+        "observation_start_utc": "2022-06-01T00:00:00Z",
+        "observation_end_utc": "2022-06-03T00:00:00Z"
+      },
+      "scientific_eligibility": "ELIGIBLE",
+      "validation_status": "UNVERIFIED"
+    },
+    {
+      "research_id": "RLIB-dbb10adc0f69",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-dbb10adc0f69.json",
+      "source_file_sha256": "4f017576070ac3cd1e710ee1abec853eb547020ee6eb3a4acabd87fa65f80815",
+      "extracted_metrics": {
+        "sample_size": null,
+        "volatility_ratio": null,
+        "raw_p_value": null,
+        "holdout_fdr_q": null,
+        "historical_period": "2022-06-01T00:00:00Z - 2022-06-03T00:00:00Z",
+        "observation_start_utc": "2022-06-01T00:00:00Z",
+        "observation_end_utc": "2022-06-03T00:00:00Z"
+      },
+      "scientific_eligibility": "ELIGIBLE",
+      "validation_status": "UNVERIFIED"
+    },
+    {
+      "research_id": "RLIB-f93d9176002d",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-f93d9176002d.json",
+      "source_file_sha256": "9ca88e77b131a981d0237b105caff21f7a3976311bbe7e98472280ab3e28bcb9",
+      "extracted_metrics": {
+        "sample_size": null,
+        "volatility_ratio": null,
+        "raw_p_value": null,
+        "holdout_fdr_q": null,
+        "historical_period": "2022-06-01T00:00:00Z - 2022-06-03T00:00:00Z",
+        "observation_start_utc": "2022-06-01T00:00:00Z",
+        "observation_end_utc": "2022-06-03T00:00:00Z"
+      },
+      "scientific_eligibility": "ELIGIBLE",
+      "validation_status": "UNVERIFIED"
+    }
+  ],
+  "commit_sha": "cd588ebfd06903c82ab9eaa7f30e18378adf1bdc",
+  "timestamp_utc": "2026-11-10T07:38:42.472447+00:00"
+}

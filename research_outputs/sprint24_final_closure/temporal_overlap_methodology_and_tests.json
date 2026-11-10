@@ -1,0 +1,38 @@
+{
+  "methodology": {
+    "interval_formula": "N_shared = floor((min(end_a, end_b) - max(start_a, start_b)) / delta_t)",
+    "minimum_required_shared_intervals": 100,
+    "strict_disjoint_rejection": true,
+    "duplicate_timestamp_rejection": true
+  },
+  "evaluated_pairs": [
+    {
+      "pair": [
+        "RES-REGIME-01",
+        "RES-ANALOG-01"
+      ],
+      "expected_verdict": "FAIL_CLOSED",
+      "rejection_code": "INSUFFICIENT_OVERLAP_EVIDENCE",
+      "reason_tr": "RES-REGIME-01 raporunda ISO UTC gözlem zaman sınırları bulunmamaktadır."
+    },
+    {
+      "pair": [
+        "RES-FUND-01",
+        "RES-REGIME-01"
+      ],
+      "expected_verdict": "FAIL_CLOSED",
+      "rejection_code": "SAMPLING_CADENCE_MISMATCH",
+      "reason_tr": "8h ve 1h zaman kadansları normalizasyon olmadan karşılaştırılamaz."
+    },
+    {
+      "pair": [
+        "RES-COMPAT-01",
+        "RES-COMPAT-02"
+      ],
+      "expected_verdict": "PASS",
+      "shared_interval_count": 3624,
+      "reason_tr": "Her iki aday da 2024-01-01 to 2024-06-01 zaman penceresinde 3624 ortak 1h gözleme sahiptir."
+    }
+  ],
+  "commit_sha": "cd588ebfd06903c82ab9eaa7f30e18378adf1bdc"
+}

@@ -1,0 +1,89 @@
+{
+  "delivery_sprint": "CBE_PRODUCT_ACCELERATION_24_FINAL_CLOSURE",
+  "canonical_model": "CBE-0.7.0",
+  "commit_sha": "cd588ebfd06903c82ab9eaa7f30e18378adf1bdc",
+  "timestamp_utc": "2026-11-10T07:38:42.705982+00:00",
+  "files_count": 20,
+  "manifest": {
+    "comparison_rejection_matrix.md": {
+      "sha256": "68914c3e47f7aa19175db740c4603b625dc492a8d546aedc56c21d9c92747f59",
+      "size_bytes": 1950
+    },
+    "cryptographic_verification_evidence.json": {
+      "sha256": "c97391c713d506a6e35a9b72fd2ce102b3f7445171227955481c7ef10d3071dc",
+      "size_bytes": 7503
+    },
+    "field_level_research_provenance_matrix.json": {
+      "sha256": "a725c34cfeaa2f37f44c0a966da03c248e6891f4c9c3a89f437665b51d786385",
+      "size_bytes": 16151
+    },
+    "field_level_research_provenance_matrix.md": {
+      "sha256": "c0d2ccfae6d83735a8001d566ed83d1033f6a465c6f9c7b21180eaab832babdd",
+      "size_bytes": 3801
+    },
+    "final_acceptance_report.md": {
+      "sha256": "9c72e2c61b049ab45dc9c5e6786fe9051c6a8acb49cc9d9df71bc9c00499b08c",
+      "size_bytes": 3541
+    },
+    "metric_contract_registry.json": {
+      "sha256": "a4f2752799cda2cd269896a09c5d607eb8d56abe11b8267bf88a52cbdea973b0",
+      "size_bytes": 3717
+    },
+    "non_duplicated_test_inventory.md": {
+      "sha256": "c63f29421576b0f33a20ee06b0ae5871e249ea59e07cde2d944221d9e2620989",
+      "size_bytes": 2585
+    },
+    "playwright_acceptance_results.json": {
+      "sha256": "e81229b457e0c1f4477e6915cc93148dc193f7ff322001ecc172261c4408357c",
+      "size_bytes": 10670
+    },
+    "production_zero_touch_attestation.json": {
+      "sha256": "3ac30c3fe2956dd908ff16c86db6bc6f3552d44d84c0a1655babe04ea24ef137",
+      "size_bytes": 903
+    },
+    "regression_and_playwright_results.json": {
+      "sha256": "bf47b38976be3fefe80037061ad0161fa6e2cddf66d48728468a2a7de5eaa933",
+      "size_bytes": 1538
+    },
+    "root_cause_analysis.md": {
+      "sha256": "84a90c730c085edee14406870a94d7b74caad1799c7027275be9d3c147ec7715",
+      "size_bytes": 4389
+    },
+    "scientific_freeze_verification.json": {
+      "sha256": "c8bb2cd955257ecbf063e1f3bca13b37c30e018232b7b4a3549d6c345e774d47",
+      "size_bytes": 690
+    },
+    "source_to_metric_extraction_evidence.json": {
+      "sha256": "a67b579524c0423fdfb049dfce3a2626a3918a9f81e4f7c7e0c077db50af5c38",
+      "size_bytes": 11666
+    },
+    "sprint24_screenshot_01_desktop_overview.png": {
+      "sha256": "1edb324b0f39afafcf49798eaf93c0179bcec91eea661e91fcc7c7eb6d1c413d",
+      "size_bytes": 176219
+    },
+    "sprint24_screenshot_02_tablet_comparison_lab.png": {
+      "sha256": "23b30ab19fa8c9fc40d0315928fc4842a9972a29f926f6a3aa6cd20ded8cd4e1",
+      "size_bytes": 107954
+    },
+    "sprint24_screenshot_03_mobile_evidence_center.png": {
+      "sha256": "180c478bcc1757e457669e7d72b6f216e0c735de5d13dcee91e8437c58bcdc0b",
+      "size_bytes": 47580
+    },
+    "staging_build_and_runtime_provenance.json": {
+      "sha256": "2f2c0a594bb4a26ba9ad765e4fbb3070ca70b73606900fdab029bbdcb434fcd8",
+      "size_bytes": 1255
+    },
+    "temporal_overlap_methodology_and_tests.json": {
+      "sha256": "804f6a47f042b1f968e00c9fa925b93cc9ecfa0394e24ee2057d98834f6423ae",
+      "size_bytes": 1204
+    },
+    "temporal_overlap_methodology_and_tests.md": {
+      "sha256": "a731f13a7e4a238810377610a5dc9045bf9ad67ecd06bde1196d0b047ffd02b6",
+      "size_bytes": 1692
+    },
+    "updated_operational_status_verification.json": {
+      "sha256": "2475e66452050492321bf1476593b0478c521cdefad1301c51e1a72acc3865b6",
+      "size_bytes": 926
+    }
+  }
+}

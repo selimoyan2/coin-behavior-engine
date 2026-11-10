@@ -1,0 +1,31 @@
+{
+  "status": "DEPLOYED_AND_VERIFIED",
+  "timestamp_utc": "2026-11-10T07:38:42.473579+00:00",
+  "host": "srv1114257:18080",
+  "remote_server": "srv1114257 (168.231.125.238)",
+  "coolify_resource_uuid": "dzzfws54by1whlbq6fk4ywut",
+  "container_id": "fcf09e4dca13",
+  "image_tag": "cbe-market-intelligence:sprint24-final-closure-cd588ebfd06903c82ab9eaa7f30e18378adf1bdc",
+  "source_commit_sha": "cd588ebfd06903c82ab9eaa7f30e18378adf1bdc",
+  "build_metadata": {
+    "application_version": "CBE-0.7.0 (FROZEN)",
+    "canonical_model_version": "CBE-0.7.0",
+    "git_commit": "cd588ebfd06903c82ab9eaa7f30e18378adf1bdc",
+    "environment": "staging",
+    "dataset_manifest_version": "cbe-manifest-v2-73a6212acca3"
+  },
+  "runtime_inspection": {
+    "health_endpoint": "http://srv1114257:18080/health",
+    "health_status": "healthy",
+    "ports_mapped": "127.0.0.1:18080:8000",
+    "read_only_rootfs": true,
+    "tmpfs_mounts": [
+      "/tmp",
+      "/run"
+    ],
+    "persistent_volume_name": "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f",
+    "sqlite_wal_status": "SQLITE_WAL_ACTIVE",
+    "governance_decision": "TECHNICAL_NO_GO",
+    "trading_prohibition": "LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED"
+  }
+}

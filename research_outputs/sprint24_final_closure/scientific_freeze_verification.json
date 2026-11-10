@@ -1,0 +1,19 @@
+{
+  "status": "STRICTLY_FROZEN",
+  "canonical_model_version": "CBE-0.7.0",
+  "is_frozen": true,
+  "model_parameter_mutations": 0,
+  "unauthorized_feature_additions": 0,
+  "directional_trading_enabled": false,
+  "governance_decision": "TECHNICAL_NO_GO",
+  "trading_prohibition": "LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED",
+  "environment_variable_verification": {
+    "CBE_ENV": "staging",
+    "CBE_TRADING_DISABLED": "true",
+    "CBE_PROSPECTIVE_OBSERVATION_ENABLED": "false",
+    "CBE_APPROVAL_4_AUTHORIZED": "false",
+    "START_WORKER": "false"
+  },
+  "commit_sha": "cd588ebfd06903c82ab9eaa7f30e18378adf1bdc",
+  "verified_at_utc": "2026-11-10T07:38:42.473579+00:00"
+}

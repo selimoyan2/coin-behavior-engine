@@ -1,0 +1,199 @@
+{
+  "crypto_evidence": [
+    {
+      "research_id": "RES-FUND-01",
+      "source_relative_path": "data/reports/sprint09_38_funding_predictability_report.json",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Artifact contains no signature envelope",
+        "cryptographic_proof": false
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": false
+    },
+    {
+      "research_id": "RES-REGIME-01",
+      "source_relative_path": "data/reports/sprint09_27_validation_and_holdout_report.json",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Artifact contains no signature envelope",
+        "cryptographic_proof": false
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": false
+    },
+    {
+      "research_id": "RES-ANALOG-01",
+      "source_relative_path": "research_outputs/research_report_29_pattern_similarity.json",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Artifact contains no signature envelope",
+        "cryptographic_proof": false
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": false
+    },
+    {
+      "research_id": "RES-MACRO-01",
+      "source_relative_path": "research_outputs/experiment_cpi_volatility.cbe-hyp.json",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Integrity block explicitly declares UNSIGNED_INTEGRITY_ONLY",
+        "cryptographic_proof": false
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": false
+    },
+    {
+      "research_id": "RES-DURABILITY-01",
+      "source_relative_path": "research_outputs/sprint23_delivery/persistent_volume_verification.json",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Operational durability benchmark verified by mountinfo; contains no scientific market research signature",
+        "cryptographic_proof": false,
+        "domain": "OPERATIONAL_DURABILITY"
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": true
+    },
+    {
+      "research_id": "RES-CRYPTO-01",
+      "source_relative_path": "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Quarantined intake buffer has no signature envelope"
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": false
+    },
+    {
+      "research_id": "RLIB-c5730b081950",
+      "source_relative_path": "data/research_library/RLIB-c5730b081950.json",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Library registry entry unsigned"
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": false
+    },
+    {
+      "research_id": "RLIB-ee060f623584",
+      "source_relative_path": "data/research_library/RLIB-ee060f623584.json",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Library registry entry unsigned"
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": false
+    },
+    {
+      "research_id": "RLIB-f9ddf66ba096",
+      "source_relative_path": "data/research_library/RLIB-f9ddf66ba096.json",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Library registry entry unsigned"
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": false
+    },
+    {
+      "research_id": "RLIB-03c6ea53cf3d",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-03c6ea53cf3d.json",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Library registry entry unsigned"
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": false
+    },
+    {
+      "research_id": "RLIB-07c7c65c7e91",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-07c7c65c7e91.json",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Library registry entry unsigned"
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": false
+    },
+    {
+      "research_id": "RLIB-2f30980866e9",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-2f30980866e9.json",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Library registry entry unsigned"
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": false
+    },
+    {
+      "research_id": "RLIB-3c104ed0c333",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-3c104ed0c333.json",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Library registry entry unsigned"
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": false
+    },
+    {
+      "research_id": "RLIB-669a3bc52ddf",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-669a3bc52ddf.json",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Library registry entry unsigned"
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": false
+    },
+    {
+      "research_id": "RLIB-7b0cb4781b20",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-7b0cb4781b20.json",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Library registry entry unsigned"
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": false
+    },
+    {
+      "research_id": "RLIB-dbb10adc0f69",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-dbb10adc0f69.json",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Library registry entry unsigned"
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": false
+    },
+    {
+      "research_id": "RLIB-f93d9176002d",
+      "source_relative_path": "/app/data/prospective/research_library/RLIB-f93d9176002d.json",
+      "verification_status": "UNSIGNED",
+      "verification_details": {
+        "status": "UNSIGNED",
+        "message": "Library registry entry unsigned"
+      },
+      "canonicalization_standard": "RFC_8785",
+      "is_operational_attestation": false
+    }
+  ],
+  "commit_sha": "cd588ebfd06903c82ab9eaa7f30e18378adf1bdc",
+  "timestamp_utc": "2026-11-10T07:38:42.472447+00:00"
+}

@@ -1,0 +1,24 @@
+{
+  "status": "success",
+  "verified_at_utc": "2026-11-10T07:38:42.473579+00:00",
+  "staging_environment": {
+    "endpoint": "http://srv1114257:18080",
+    "container_id": "fcf09e4dca13",
+    "image": "cbe-market-intelligence:sprint24-final-closure-cd588ebfd06903c82ab9eaa7f30e18378adf1bdc",
+    "health_status": "healthy"
+  },
+  "operational_checks": {
+    "sqlite_wal_status": "SQLITE_WAL_ACTIVE",
+    "sqlite_query": "PRAGMA journal_mode;",
+    "resource_governor_status": "UNVERIFIED",
+    "storage_durability_classification": "PERSISTENT_VERIFIED",
+    "storage_path_redaction": "PERSISTENT_VOLUME_MOUNT",
+    "zero_external_network_requests": true
+  },
+  "trading_invariants": {
+    "governance_decision": "TECHNICAL_NO_GO",
+    "trading_prohibition": "LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED",
+    "live_orders_allowed": false
+  },
+  "commit_sha": "cd588ebfd06903c82ab9eaa7f30e18378adf1bdc"
+}

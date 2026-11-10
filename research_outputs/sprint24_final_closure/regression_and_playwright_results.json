@@ -1,0 +1,38 @@
+{
+  "test_run_timestamp_utc": "2026-11-10T07:38:42.473579+00:00",
+  "canonical_model": "CBE-0.7.0",
+  "commit_sha": "cd588ebfd06903c82ab9eaa7f30e18378adf1bdc",
+  "playwright_browser_e2e": {
+    "total_scenarios": 45,
+    "passed_scenarios": 45,
+    "failed_scenarios": 0,
+    "status": "ALL_PASSED",
+    "scenario_20": "Compatibility Gate fail-closed rejection [PASS]",
+    "scenario_21": "Side-by-side descriptive matrix table [PASS]",
+    "scenario_22": "Difference analysis suppression on failed gate [PASS]",
+    "scenario_25": "Comparison persistence to Research Library [PASS]",
+    "scenario_44": "Zero external network requests (52 local) [PASS]"
+  },
+  "pytest_unit_and_integration": {
+    "sprint_24_suites": {
+      "test_sprint_product_acceleration_24.py": 27,
+      "test_sprint_product_acceleration_24_correction.py": 20,
+      "test_sprint_product_acceleration_24_final_closure.py": 20,
+      "subtotal": 67,
+      "status": "67_PASSED"
+    },
+    "regression_baseline_suites": {
+      "test_sprint_product_acceleration_21.py": 21,
+      "test_sprint_product_acceleration_22.py": 30,
+      "test_sprint_product_acceleration_22_hardening.py": 21,
+      "test_sprint_product_acceleration_23.py": 36,
+      "test_sprint_product_acceleration_23_closure.py": 25,
+      "test_sprint_product_acceleration_23_correction.py": 30,
+      "subtotal": 163,
+      "status": "163_PASSED"
+    },
+    "total_pytest_tests": 230,
+    "pytest_status": "230_PASSED"
+  },
+  "aggregate_verified_checks": 275
+}
