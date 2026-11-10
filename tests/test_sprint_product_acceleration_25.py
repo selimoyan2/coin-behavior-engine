@@ -15,7 +15,12 @@ Covers:
 8. Canonical Scientific & Governance Invariants (CBE-0.7.0, TECHNICAL_NO_GO, Zero Trading)
 """
 
+import hashlib
 import json
+import os
+import tempfile
+import time
+from pathlib import Path
 import pytest
 from datetime import datetime, timezone
 
@@ -63,6 +68,12 @@ from coin_behavior_engine.product.research_intelligence_workspace import (
     LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED,
 )
 from coin_behavior_engine.product.dashboard_api import ProductDashboardApiService
+from coin_behavior_engine.product.attestation_verifier import (
+    ObservationCompletenessAttestationVerifier,
+    attestation_cache,
+)
+from coin_behavior_engine.product.credential_manager import signing_key_registry
+from coin_behavior_engine.product.research_catalog_provider import ResearchRecord
 
 
 # ==============================================================================
@@ -530,3 +541,247 @@ class TestGovernanceInvariants:
         """Ensure all live order execution and directional trading are strictly disabled."""
         assert CBE_TRADING_DISABLED is True
         assert LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED is True
+
+
+# ==============================================================================
+# 10. SCIENTIFIC TRUST NEGATIVE TESTS (Sprint 25 Final Closure)
+# ==============================================================================
+
+class TestSprint25ScientificTrustNegativeCases:
+    """Explicit negative test coverage for evidence verification and genuine reproduction."""
+
+    @pytest.fixture(autouse=True)
+    def setup_keys_and_cache(self):
+        attestation_cache.clear()
+        signing_key_registry.register_key("test-key-valid", "test-secret-1234567890", is_active=True)
+        signing_key_registry.register_key("test-key-revoked", "test-secret-revoked-00", is_active=True)
+        signing_key_registry.revoke_key("test-key-revoked")
+        yield
+        attestation_cache.clear()
+
+    def test_negative_forged_attestation_rejected(self):
+        """Negative: Forged attestation with valid-looking signature string is rejected."""
+        rec = ResearchRecord(
+            id="TEST-FORGED-01",
+            title="Forged Attestation Test",
+            title_en="Forged Attestation Test",
+            category="Volatilite",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024",
+            window_cadence="1h",
+            specification_id="SP-01",
+            observation_start_utc="2024-01-01T00:00:00Z",
+            observation_end_utc="2024-01-06T00:00:00Z",
+            observation_interval_count=120,
+            source_artifact="data/test_artifact.json",
+            source_artifact_sha256="46c4cb960dd36c613bb9826cb8d54185724d6060e11b822ed82fd9213a3e9598",
+            sample_size=120,
+            volatility_ratio=1.15,
+        )
+        forged_att = ObservationCompletenessAttestationVerifier.create_signed_attestation(
+            record=rec,
+            key_id="test-key-valid",
+            secret="test-secret-1234567890",
+            forged_signature="a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90",
+        )
+        rec.observation_completeness_attestation = forged_att
+
+        res = ObservationCompletenessAttestationVerifier.verify_attestation(rec, forged_att)
+        assert res["is_valid"] is False
+        assert res["rejection_code"] in ("SIGNATURE_VERIFICATION_FAILED", "INVALID_SIGNATURE")
+
+        scorecard = ScientificReadinessEvaluator.evaluate_record(rec)
+        dim_comp = [d for d in scorecard.dimensions if d.dimension_key == "OBSERVATION_COMPLETENESS"][0]
+        assert dim_comp.status == DimensionStatus.FAILED.value
+        assert scorecard.is_ready_for_review is False
+        assert scorecard.overall_verdict == OverallReadinessVerdict.INTEGRITY_FAILED.value
+
+    def test_negative_revoked_signing_key_rejected(self):
+        """Negative: Attestation signed with a revoked key is rejected."""
+        rec = ResearchRecord(
+            id="TEST-REVOKED-01",
+            title="Revoked Key Test",
+            title_en="Revoked Key Test",
+            category="Volatilite",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024",
+            window_cadence="1h",
+            specification_id="SP-02",
+            observation_start_utc="2024-01-01T00:00:00Z",
+            observation_end_utc="2024-01-06T00:00:00Z",
+            observation_interval_count=120,
+            source_artifact="data/test_artifact.json",
+            source_artifact_sha256="46c4cb960dd36c613bb9826cb8d54185724d6060e11b822ed82fd9213a3e9598",
+            sample_size=120,
+            volatility_ratio=1.15,
+        )
+        rev_att = ObservationCompletenessAttestationVerifier.create_signed_attestation(
+            record=rec,
+            key_id="test-key-revoked",
+            secret="test-secret-revoked-00",
+        )
+        rec.observation_completeness_attestation = rev_att
+
+        res = ObservationCompletenessAttestationVerifier.verify_attestation(rec, rev_att)
+        assert res["is_valid"] is False
+        assert res["rejection_code"] == "REVOKED_SIGNING_KEY"
+
+        scorecard = ScientificReadinessEvaluator.evaluate_record(rec)
+        dim_comp = [d for d in scorecard.dimensions if d.dimension_key == "OBSERVATION_COMPLETENESS"][0]
+        assert dim_comp.status == DimensionStatus.FAILED.value
+        assert scorecard.is_ready_for_review is False
+
+    def test_negative_missing_source_artifact_fails_closed(self):
+        """Negative: Missing source artifact file fails closed immediately."""
+        rec = ResearchRecord(
+            id="TEST-MISSING-FILE",
+            title="Missing File Test",
+            title_en="Missing File Test",
+            category="Volatilite",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024",
+            window_cadence="1h",
+            specification_id="SP-03",
+            observation_start_utc="2024-01-01T00:00:00Z",
+            observation_end_utc="2024-01-06T00:00:00Z",
+            observation_interval_count=120,
+            source_artifact="data/nonexistent_missing_file_xyz.json",
+            source_artifact_sha256="46c4cb960dd36c613bb9826cb8d54185724d6060e11b822ed82fd9213a3e9598",
+            sample_size=120,
+        )
+        scorecard = ScientificReadinessEvaluator.evaluate_record(rec)
+        dim_art = [d for d in scorecard.dimensions if d.dimension_key == "SOURCE_ARTIFACT_INTEGRITY"][0]
+        assert dim_art.status == DimensionStatus.FAILED.value
+        assert scorecard.overall_verdict == OverallReadinessVerdict.INTEGRITY_FAILED.value
+        assert scorecard.is_ready_for_review is False
+
+    def test_negative_altered_source_artifact_sha256_fails_closed(self):
+        """Negative: Altered SHA-256 fails closed with integrity mismatch."""
+        rec = ResearchRecord(
+            id="TEST-CORRUPT-SHA",
+            title="Corrupt SHA Test",
+            title_en="Corrupt SHA Test",
+            category="Volatilite",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024",
+            window_cadence="1h",
+            specification_id="SP-04",
+            observation_start_utc="2024-01-01T00:00:00Z",
+            observation_end_utc="2024-01-06T00:00:00Z",
+            observation_interval_count=120,
+            source_artifact="data/test_artifact.json",
+            source_artifact_sha256="0000000000000000000000000000000000000000000000000000000000000000",
+            sample_size=120,
+        )
+        scorecard = ScientificReadinessEvaluator.evaluate_record(rec)
+        dim_art = [d for d in scorecard.dimensions if d.dimension_key == "SOURCE_ARTIFACT_INTEGRITY"][0]
+        assert dim_art.status == DimensionStatus.FAILED.value
+        assert scorecard.overall_verdict == OverallReadinessVerdict.INTEGRITY_FAILED.value
+        assert scorecard.is_ready_for_review is False
+
+    def test_negative_registered_dataset_without_verifiable_provenance(self):
+        """Negative: Registered dataset ID without authentic lineage or attestation is UNVERIFIED or BLOCKED."""
+        rec = ResearchRecord(
+            id="TEST-SYNTHETIC-DS",
+            title="Synthetic Dataset Test",
+            title_en="Synthetic Dataset Test",
+            category="Volatilite",
+            dataset_id="OCTOBER-2026-INTAKE-SYNTHETIC",
+            historical_period="2024",
+            window_cadence="1h",
+            specification_id="SP-05",
+            observation_start_utc="2024-01-01T00:00:00Z",
+            observation_end_utc="2024-01-06T00:00:00Z",
+            observation_interval_count=120,
+            source_artifact="data/test_artifact.json",
+            source_artifact_sha256="46c4cb960dd36c613bb9826cb8d54185724d6060e11b822ed82fd9213a3e9598",
+            sample_size=120,
+        )
+        scorecard = ScientificReadinessEvaluator.evaluate_record(rec)
+        dim_ds = [d for d in scorecard.dimensions if d.dimension_key == "DATASET_PROVENANCE"][0]
+        assert dim_ds.status == DimensionStatus.BLOCKED.value
+        assert scorecard.is_ready_for_review is False
+
+    def test_negative_altered_reference_output_yields_outputs_differ(self):
+        """Negative: Discrepancy between reference and reproduced outputs yields OUTPUTS_DIFFER."""
+        rec = ResearchWorkspaceV2Engine.get_canonical_catalog()[0]
+        engine = ReproducibilityLabEngine()
+        prov = engine.execute_reproduction(
+            rec,
+            procedure_name="PROC_FUNDING_RATE_SUMMARY",
+            override_reference={"mean_funding_rate_bps": 999.9999},
+        )
+        assert prov.status == ReproductionStatus.OUTPUTS_DIFFER.value
+        assert prov.comparison_details["matched"] is False
+
+    def test_negative_missing_observations_yields_reproduction_blocked(self):
+        """Negative: Missing raw observations blocks reproduction."""
+        rec = ResearchWorkspaceV2Engine.get_canonical_catalog()[0]
+        engine = ReproducibilityLabEngine()
+        prov = engine.execute_reproduction(
+            rec,
+            procedure_name="PROC_PARKINSON_VOLATILITY",
+            override_inputs={"highs": [100.0], "lows": [90.0]},
+        )
+        assert prov.status == ReproductionStatus.REPRODUCTION_BLOCKED.value
+        assert "yetersiz" in prov.error_message_tr.lower() or "missing" in prov.error_message_en.lower() or "cannot" in prov.error_message_en.lower()
+
+    def test_negative_unsupported_procedure_yields_reproduction_blocked(self):
+        """Negative: Requesting non-allowlisted procedure yields REPRODUCTION_BLOCKED."""
+        rec = ResearchWorkspaceV2Engine.get_canonical_catalog()[0]
+        engine = ReproducibilityLabEngine()
+        prov = engine.execute_reproduction(rec, procedure_name="PROC_FORBIDDEN_ALPHA_SEARCH")
+        assert prov.status == ReproductionStatus.REPRODUCTION_BLOCKED.value
+        assert "onaylı" in prov.error_message_tr.lower() or "approved" in prov.error_message_en.lower()
+
+    def test_negative_cache_invalidation_on_source_file_modification(self):
+        """Negative: Modifying the source artifact invalidates the verification cache."""
+        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".json") as tf:
+            tf.write('{"test": "content"}')
+            temp_path = tf.name
+
+        try:
+            initial_sha = hashlib.sha256(Path(temp_path).read_bytes()).hexdigest()
+            rec = ResearchRecord(
+                id="TEST-CACHE-INV",
+                title="Cache Invalidation Test",
+                title_en="Cache Invalidation Test",
+                category="Volatilite",
+                dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+                historical_period="2024",
+                window_cadence="1h",
+                specification_id="SP-07",
+                observation_start_utc="2024-01-01T00:00:00Z",
+                observation_end_utc="2024-01-06T00:00:00Z",
+                observation_interval_count=120,
+                source_artifact=temp_path,
+                source_artifact_sha256=initial_sha,
+                sample_size=120,
+            )
+            att = ObservationCompletenessAttestationVerifier.create_signed_attestation(
+                record=rec,
+                key_id="test-key-valid",
+                secret="test-secret-1234567890",
+            )
+            # Verify and populate cache
+            assert attestation_cache.stats["hit_count"] == 0
+            res1 = ObservationCompletenessAttestationVerifier.verify_attestation(rec, att, use_cache=True)
+            assert res1["is_valid"] is True
+            assert attestation_cache.stats["hit_count"] == 0
+
+            # Subsequent verification hits cache
+            res2 = ObservationCompletenessAttestationVerifier.verify_attestation(rec, att, use_cache=True)
+            assert res2["is_valid"] is True
+            assert attestation_cache.stats["hit_count"] == 1
+
+            # Mutate source file content and mtime
+            time.sleep(0.05)
+            Path(temp_path).write_text('{"test": "tampered_content"}')
+
+            # Verification must fail and purge cache
+            res3 = ObservationCompletenessAttestationVerifier.verify_attestation(rec, att, use_cache=True)
+            assert res3["is_valid"] is False
+            assert "HASH_MISMATCH" in res3["rejection_code"]
+        finally:
+            if os.path.exists(temp_path):
+                os.remove(temp_path)
