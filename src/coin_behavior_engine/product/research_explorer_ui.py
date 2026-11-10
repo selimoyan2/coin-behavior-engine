@@ -2928,7 +2928,7 @@ def render_research_explorer_scripts() -> str:
     // =========================================================================
 
     window.wsCompCandidates = ['RES-FUND-01', 'RES-REGIME-01', 'RES-ANALOG-01', 'RES-MACRO-01', 'RES-DURABILITY-01', 'RES-CRYPTO-01'];
-    window.wsCompSelected = ['RES-FUND-01', 'RES-REGIME-01'];
+    window.wsCompSelected = ['RES-REGIME-01', 'RES-ANALOG-01'];
     var wsCompCandidates = window.wsCompCandidates;
     var wsCompSelected = window.wsCompSelected;
     let wsCatalogPage = 1;
@@ -3022,23 +3022,60 @@ def render_research_explorer_scripts() -> str:
         try {
           const res = await fetch(`/api/v1/product/workspace/search?q=${encodeURIComponent(q)}&limit=10`);
           const data = await res.json();
+          resultsBox.textContent = '';
           if (data && data.results && data.results.length > 0) {
-            let html = '';
             data.results.forEach(r => {
-              html += `
-                <div class="ws-search-item" onclick="selectWorkspaceSearchResult('${r.target_tab}', '${r.id}')">
-                  <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <strong style="color:#38bdf8; font-size:12px;">${r.id}</strong>
-                    <span class="badge" style="background:#1e293b; color:#94a3b8; font-size:10px;">${r.badge}</span>
-                  </div>
-                  <div style="font-size:11px; color:#cbd5e1; margin-top:2px;">${r.title}</div>
-                </div>
-              `;
+              const itemDiv = document.createElement('div');
+              itemDiv.className = 'ws-search-item';
+              itemDiv.style.padding = '8px 12px';
+              itemDiv.style.cursor = 'pointer';
+              itemDiv.style.borderBottom = '1px solid #1e293b';
+
+              const headerDiv = document.createElement('div');
+              headerDiv.style.display = 'flex';
+              headerDiv.style.justifyContent = 'space-between';
+              headerDiv.style.alignItems = 'center';
+
+              const idStrong = document.createElement('strong');
+              idStrong.style.color = '#38bdf8';
+              idStrong.style.fontSize = '12px';
+              idStrong.textContent = String(r.id || '');
+
+              const badgeSpan = document.createElement('span');
+              badgeSpan.className = 'badge';
+              badgeSpan.style.background = '#1e293b';
+              badgeSpan.style.color = '#94a3b8';
+              badgeSpan.style.fontSize = '10px';
+              badgeSpan.textContent = String(r.badge || '');
+
+              headerDiv.appendChild(idStrong);
+              headerDiv.appendChild(badgeSpan);
+
+              const titleDiv = document.createElement('div');
+              titleDiv.style.fontSize = '11px';
+              titleDiv.style.color = '#cbd5e1';
+              titleDiv.style.marginTop = '2px';
+              titleDiv.textContent = String(r.title || '');
+
+              itemDiv.appendChild(headerDiv);
+              itemDiv.appendChild(titleDiv);
+
+              const safeTab = String(r.target_tab || '');
+              const safeId = String(r.id || '');
+              itemDiv.addEventListener('click', () => {
+                selectWorkspaceSearchResult(safeTab, safeId);
+              });
+
+              resultsBox.appendChild(itemDiv);
             });
-            resultsBox.innerHTML = html;
             resultsBox.style.display = 'block';
           } else {
-            resultsBox.innerHTML = '<div style="padding:10px 14px; font-size:11px; color:#64748b;">Sonuç bulunamadı.</div>';
+            const emptyDiv = document.createElement('div');
+            emptyDiv.style.padding = '10px 14px';
+            emptyDiv.style.fontSize = '11px';
+            emptyDiv.style.color = '#64748b';
+            emptyDiv.textContent = 'Sonuç bulunamadı.';
+            resultsBox.appendChild(emptyDiv);
             resultsBox.style.display = 'block';
           }
         } catch (e) {
@@ -3050,14 +3087,20 @@ def render_research_explorer_scripts() -> str:
     function selectWorkspaceSearchResult(targetTab, itemId) {
       const resultsBox = document.getElementById('ws-global-search-results');
       if (resultsBox) resultsBox.style.display = 'none';
-      if (targetTab === 'research-explorer') {
+
+      // Strict route allowlist for navigation security
+      const ALLOWED_TABS = ['overview', 'catalog', 'comparison', 'visualization', 'evidence', 'reports', 'operations', 'research-explorer', 'comparison-lab'];
+      const cleanTab = ALLOWED_TABS.includes(targetTab) ? targetTab : 'overview';
+      const cleanId = String(itemId || '').replace(/[^a-zA-Z0-9_-]/g, '');
+
+      if (cleanTab === 'research-explorer' || cleanTab === 'catalog') {
         switchWorkspaceView('catalog');
-        openResearchDetailModal(itemId);
-      } else if (targetTab === 'comparison-lab') {
+        openResearchDetailModal(cleanId);
+      } else if (cleanTab === 'comparison-lab' || cleanTab === 'comparison') {
         switchWorkspaceView('comparison');
-        reopenSavedComparison(itemId);
+        reopenSavedComparison(cleanId);
       } else {
-        switchWorkspaceView(targetTab);
+        switchWorkspaceView(cleanTab);
       }
     }
 
@@ -3101,9 +3144,9 @@ def render_research_explorer_scripts() -> str:
                     </td>
                     <td><span class="badge" style="background:#1e293b; color:#94a3b8;">${item.category}</span></td>
                     <td><code style="font-size:11px; color:#38bdf8;">${item.dataset_id}</code></td>
-                    <td>${item.sample_size_str || item.sample_size}</td>
-                    <td style="font-family:monospace; color:#cbd5e1;">${item.volatility_ratio.toFixed(3)}x</td>
-                    <td style="font-family:monospace; color:${item.holdout_fdr_q <= 0.05 ? '#10b981' : '#f59e0b'};">${item.holdout_fdr_q.toFixed(4)}</td>
+                    <td>${item.sample_size_str || (item.sample_size != null ? item.sample_size : '-')}</td>
+                    <td style="font-family:monospace; color:#cbd5e1;">${item.volatility_ratio != null ? item.volatility_ratio.toFixed(3) + 'x' : 'N/A'}</td>
+                    <td style="font-family:monospace; color:${item.holdout_fdr_q != null && item.holdout_fdr_q <= 0.05 ? '#10b981' : '#94a3b8'};">${item.holdout_fdr_q != null ? item.holdout_fdr_q.toFixed(4) : (item.raw_p_value != null ? 'p=' + item.raw_p_value.toFixed(4) : 'N/A')}</td>
                     <td>${eligBadge}</td>
                     <td>
                       <button class="btn btn-sm btn-secondary" onclick="openResearchDetailModal('${item.id}')" style="padding:3px 8px; font-size:11px;">
@@ -3259,8 +3302,8 @@ def render_research_explorer_scripts() -> str:
                 <tr><td><strong>Veri Seti</strong></td>${data.comparison_table.map(c => `<td><code>${c.dataset_id}</code></td>`).join('')}</tr>
                 <tr><td><strong>Zaman Kadansı</strong></td>${data.comparison_table.map(c => `<td>${c.window_cadence}</td>`).join('')}</tr>
                 <tr><td><strong>Örneklem Boyutu</strong></td>${data.comparison_table.map(c => `<td>${c.sample_size}</td>`).join('')}</tr>
-                <tr><td><strong>Parkinson Volatilitesi</strong></td>${data.comparison_table.map(c => `<td style="font-family:monospace;">${c.volatility_ratio.toFixed(3)}x</td>`).join('')}</tr>
-                <tr><td><strong>Holdout FDR q-değeri</strong></td>${data.comparison_table.map(c => `<td style="font-family:monospace; color:#10b981;">${c.holdout_fdr_q.toFixed(4)}</td>`).join('')}</tr>
+                <tr><td><strong>Parkinson Volatilitesi</strong></td>${data.comparison_table.map(c => `<td style="font-family:monospace;">${c.volatility_ratio != null ? c.volatility_ratio.toFixed(3) + 'x' : 'N/A'}</td>`).join('')}</tr>
+                <tr><td><strong>Holdout FDR q-değeri</strong></td>${data.comparison_table.map(c => `<td style="font-family:monospace; color:#10b981;">${c.holdout_fdr_q != null ? c.holdout_fdr_q.toFixed(4) : (c.raw_p_value != null ? 'p=' + c.raw_p_value.toFixed(4) : 'N/A')}</td>`).join('')}</tr>
                 <tr><td><strong>Doğrulama Hükmü</strong></td>${data.comparison_table.map(c => `<td><span class="badge" style="background:rgba(16,185,129,0.2); color:#10b981;">${c.replication_verdict}</span></td>`).join('')}</tr>
                 <tr><td><strong>Kanıt Durumu</strong></td>${data.comparison_table.map(c => `<td><span class="badge" style="background:#1e293b; color:#38bdf8;">${c.evidence_status}</span></td>`).join('')}</tr>
               </tbody>
