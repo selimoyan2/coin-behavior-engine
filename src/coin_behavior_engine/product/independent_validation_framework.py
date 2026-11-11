@@ -30,6 +30,7 @@ from datetime import datetime, timezone
 import hashlib
 import hmac
 import json
+import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
@@ -40,7 +41,13 @@ from coin_behavior_engine.product.attestation_verifier import (
     TRUSTED_ISSUERS,
     attestation_cache,
 )
-from coin_behavior_engine.product.credential_manager import signing_key_registry
+from coin_behavior_engine.product.credential_manager import (
+    CredentialManager,
+    KEY_PURPOSE_REPLICATION_ATTESTATION,
+    SigningAuthorityContext,
+    SigningAuthorityError,
+    signing_key_registry,
+)
 from coin_behavior_engine.product.research_report_evidence import rfc8785_canonical_json
 from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
 
@@ -112,8 +119,24 @@ class IndependentValidationAuditReport:
     model_status: str = CANONICAL_MODEL_STATUS
     governance_decision: str = GOVERNANCE_DECISION
 
+    @property
+    def trust_progression_state(self) -> str:
+        if self.assigned_category == "INDEPENDENT_REPLICATION" and self.independence_established:
+            return "INDEPENDENT_REPLICATION"
+        if self.assigned_category in (
+            "INDEPENDENT_DATASET_VALIDATION",
+            "CROSS_PERIOD_VALIDATION",
+            "TEMPORAL_HOLDOUT_VALIDATION",
+        ) and self.independence_established:
+            return "INDEPENDENT_DATASET_VALIDATION"
+        if self.assigned_category == "REPRODUCTION":
+            return "METHODOLOGY_VALIDATED"
+        return "INDEPENDENCE_NOT_ESTABLISHED"
+
     def to_dict(self) -> Dict[str, Any]:
-        return asdict(self)
+        d = asdict(self)
+        d["trust_progression_state"] = self.trust_progression_state
+        return d
 
 
 class IndependentValidationFramework:
@@ -146,12 +169,49 @@ class IndependentValidationFramework:
         independent_execution_lineage: str,
         replication_outcome: str = "OUT_OF_SAMPLE_REPLICATED",
         issuer: str = "CBE_AUTHORITATIVE_RESEARCH_AUTHORITY",
-        key_id: str = "cbe-attestation-2026-v1",
+        key_id: Optional[str] = None,
         issued_at_utc: str = "2026-11-11T00:00:00Z",
         expires_at_utc: str = "2027-11-11T00:00:00Z",
         is_superseded: bool = False,
+        authority_context: Optional[SigningAuthorityContext] = None,
+        runtime_mode: Optional[str] = None,
+        **forbidden_kwargs: Any,
     ) -> Dict[str, Any]:
-        """Create an RFC-8785 canonical HMAC-SHA256 signed replication attestation."""
+        """
+        Create an RFC-8785 canonical HMAC-SHA256 signed replication attestation.
+        Strictly enforces P0 signing-authority isolation:
+        - Zero hardcoded or fallback signing secrets.
+        - Rejects caller-supplied secrets, keys, and boolean authorization flags.
+        - Delegates signing exclusively to signing_key_registry.sign_with_authority().
+        """
+        for bad_sec_field in ("secret", "signing_secret", "key_secret", "raw_secret"):
+            if bad_sec_field in forbidden_kwargs:
+                raise SigningAuthorityError(
+                    "SIGNING_KEY_NOT_AUTHORIZED",
+                    "Caller-supplied signing secret is strictly prohibited; signing keys must be resolved from the authorized key registry.",
+                )
+
+        for bad_key_field in ("signing_key", "private_key", "raw_key", "custom_key"):
+            if bad_key_field in forbidden_kwargs:
+                raise SigningAuthorityError(
+                    "SIGNING_KEY_NOT_AUTHORIZED",
+                    "Caller-supplied signing key is strictly prohibited; signing keys must be resolved from the authorized key registry.",
+                )
+
+        for bad_auth_field in ("is_admin", "authorized", "is_authorized", "bypass_authority", "force_sign"):
+            if bad_auth_field in forbidden_kwargs:
+                raise SigningAuthorityError(
+                    "SIGNING_AUTHORITY_NOT_GRANTED",
+                    "Caller-supplied authorization boolean flags are rejected; a verified server-side SigningAuthorityContext is required.",
+                )
+
+        if forbidden_kwargs:
+            raise SigningAuthorityError(
+                "SIGNING_AUTHORITY_NOT_GRANTED",
+                "Unexpected or unauthorized signing parameters supplied.",
+            )
+
+        clean_key_id = str(key_id or "").strip()
         claims = {
             "schema_version": "CBE-REPLICATION-ATTESTATION-1.0.0",
             "replication_attempt_id": replication_attempt_id,
@@ -171,18 +231,20 @@ class IndependentValidationFramework:
             "independent_execution_lineage": independent_execution_lineage,
             "replication_outcome": replication_outcome,
             "issuer": issuer,
-            "key_id": key_id,
+            "key_id": clean_key_id,
             "issued_at_utc": issued_at_utc,
             "expires_at_utc": expires_at_utc,
             "is_superseded": bool(is_superseded),
         }
         canonical_bytes = rfc8785_canonical_json(claims)
         claims_sha256 = hashlib.sha256(canonical_bytes).hexdigest()
-        secret = signing_key_registry._keys.get(key_id) or "cbe-replication-attestation-authority-secret-2026-v1-9c31b7e2"
-        if isinstance(secret, dict):
-            secret = str(secret.get("secret", ""))
-        h = hmac.new(str(secret).encode("utf-8"), canonical_bytes, hashlib.sha256)
-        sig = f"hmac-sha256:{key_id}:{h.hexdigest()}"
+        sig = signing_key_registry.sign_with_authority(
+            canonical_bytes=canonical_bytes,
+            key_id=clean_key_id,
+            required_purpose=KEY_PURPOSE_REPLICATION_ATTESTATION,
+            authority_context=authority_context,
+            runtime_mode_override=runtime_mode,
+        )
         return {
             **claims,
             "claims_sha256": claims_sha256,
@@ -191,11 +253,51 @@ class IndependentValidationFramework:
 
     def verify_replication_attestation(
         self,
+        primary: Optional[Dict[str, Any]] = None,
+        candidate: Optional[Dict[str, Any]] = None,
+        replication_attestation: Optional[Dict[str, Any]] = None,
+        *,
+        attestation: Optional[Dict[str, Any]] = None,
+        primary_record_id: Optional[str] = None,
+        candidate_record_id: Optional[str] = None,
+        primary_dataset_id: Optional[str] = None,
+        candidate_dataset_id: Optional[str] = None,
+        primary_source_sha256: Optional[str] = None,
+        candidate_source_sha256: Optional[str] = None,
+        primary_procedure_id: Optional[str] = None,
+        candidate_procedure_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Cryptographically verify an independent replication attestation and its physical result artifact."""
+        if replication_attestation is None and attestation is not None:
+            replication_attestation = attestation
+        if primary is None:
+            primary = {
+                "record_id": primary_record_id or "",
+                "dataset_id": primary_dataset_id or "",
+                "source_sha256": primary_source_sha256 or "",
+                "procedure_id": primary_procedure_id or "",
+                "provenance_verified": True,
+            }
+        if candidate is None:
+            candidate = {
+                "record_id": candidate_record_id or "",
+                "dataset_id": candidate_dataset_id or "",
+                "source_sha256": candidate_source_sha256 or "",
+                "procedure_id": candidate_procedure_id or "",
+                "provenance_verified": True,
+            }
+        res = self._verify_replication_attestation_inner(primary, candidate, replication_attestation)
+        res.setdefault("is_valid", bool(res.get("is_verified", False)))
+        if res.get("is_verified") and "verified_key_id" not in res:
+            res["verified_key_id"] = res.get("key_id")
+        return res
+
+    def _verify_replication_attestation_inner(
+        self,
         primary: Dict[str, Any],
         candidate: Dict[str, Any],
         replication_attestation: Optional[Dict[str, Any]],
     ) -> Dict[str, Any]:
-        """Cryptographically verify an independent replication attestation and its physical result artifact."""
         if not replication_attestation or not isinstance(replication_attestation, dict):
             if candidate.get("caller_independent_replication_flag"):
                 return {
@@ -212,6 +314,23 @@ class IndependentValidationFramework:
                 "rejection_code": "MISSING_REPLICATION_ATTESTATION",
                 "rationale": "No cryptographic replication attestation provided.",
             }
+
+        # Reject any embedded signing secrets or caller-supplied key material in the attestation payload
+        for forbidden_embedded in ("secret", "signing_secret", "key_secret", "signing_key", "private_key"):
+            if forbidden_embedded in replication_attestation:
+                return {
+                    "is_verified": False,
+                    "rejection_code": "SIGNING_KEY_NOT_AUTHORIZED",
+                    "rationale": f"Embedded signing credential field '{forbidden_embedded}' in attestation payload is rejected.",
+                }
+
+        for forbidden_bool in ("is_admin", "authorized", "bypass_authority"):
+            if forbidden_bool in replication_attestation:
+                return {
+                    "is_verified": False,
+                    "rejection_code": "SIGNING_AUTHORITY_NOT_GRANTED",
+                    "rationale": f"Caller-supplied authorization boolean '{forbidden_bool}' in attestation payload is rejected.",
+                }
 
         required_fields = (
             "schema_version",
@@ -268,13 +387,46 @@ class IndependentValidationFramework:
                 "rationale": f"Replication attestation issuer '{issuer}' is not in TRUSTED_ISSUERS.",
             }
 
-        key_id = str(replication_attestation.get("key_id") or "")
+        key_id = str(replication_attestation.get("key_id") or "").strip()
+        if not key_id:
+            return {
+                "is_verified": False,
+                "rejection_code": "SIGNING_KEY_NOT_FOUND",
+                "rationale": "Replication attestation key_id is empty.",
+            }
+
         if signing_key_registry.is_key_revoked(key_id):
             return {
                 "is_verified": False,
                 "rejection_code": "REVOKED_SIGNING_KEY",
                 "rationale": f"Replication attestation signing key '{key_id}' is revoked.",
             }
+
+        if not signing_key_registry.has_key(key_id):
+            return {
+                "is_verified": False,
+                "rejection_code": "SIGNING_KEY_NOT_FOUND",
+                "rationale": f"Replication attestation signing key '{key_id}' is not registered in the trusted key registry.",
+            }
+
+        key_meta = signing_key_registry.get_key_metadata(key_id)
+        if key_meta:
+            if key_meta.get("is_test_key", False) and (
+                CredentialManager.is_production()
+                or os.environ.get("CBE_APP_RUNTIME_ACTIVE", "").strip().lower() in ("1", "true", "yes")
+                or os.environ.get("CBE_DISALLOW_TEST_SIGNING_AUTHORITY", "").strip().lower() in ("1", "true", "yes")
+            ):
+                return {
+                    "is_verified": False,
+                    "rejection_code": "SIGNING_OPERATION_NOT_PERMITTED",
+                    "rationale": f"Test signing key '{key_id}' is not permitted in application or production runtime.",
+                }
+            if KEY_PURPOSE_REPLICATION_ATTESTATION not in key_meta.get("allowed_purposes", []):
+                return {
+                    "is_verified": False,
+                    "rejection_code": "SIGNING_KEY_NOT_AUTHORIZED",
+                    "rationale": f"Signing key '{key_id}' is not authorized for replication attestation signing.",
+                }
 
         # Check expiry
         exp_ms = _parse_iso_to_ms(str(replication_attestation.get("expires_at_utc") or ""))
@@ -286,11 +438,17 @@ class IndependentValidationFramework:
                 "rationale": f"Replication attestation expired at '{replication_attestation.get('expires_at_utc')}'.",
             }
 
-        # Verify canonical HMAC-SHA256 signature
+        # Verify canonical HMAC-SHA256 signature and structured key_id match
         claims = {k: replication_attestation[k] for k in required_fields if k != "signature"}
         canonical_bytes = rfc8785_canonical_json(claims)
         claims_sha256 = hashlib.sha256(canonical_bytes).hexdigest()
-        sig_str = str(replication_attestation.get("signature") or "")
+        sig_str = str(replication_attestation.get("signature") or "").strip()
+        if not sig_str.startswith(f"hmac-sha256:{key_id}:"):
+            return {
+                "is_verified": False,
+                "rejection_code": "SIGNATURE_VERIFICATION_FAILED",
+                "rationale": "Signature header key_id does not match signed key_id claim.",
+            }
         sig_ok, sig_reason, _ = signing_key_registry.verify_signature(canonical_bytes, sig_str)
         if not sig_ok:
             return {

@@ -115,6 +115,14 @@ class AttestationVerificationCache:
         source_path: Optional[str] = None,
     ) -> Optional[Dict[str, Any]]:
         with self._lock:
+            if is_revoked or signing_key_registry.is_key_revoked(key_id):
+                # Never return cached positive verification for a revoked signing key
+                keys_to_purge = [k for k in self._cache if k[3] == key_id]
+                for pk in keys_to_purge:
+                    self._cache.pop(pk, None)
+                self._miss_count += 1
+                return None
+
             key = (
                 artifact_digest,
                 claims_sha256,
@@ -155,6 +163,15 @@ class AttestationVerificationCache:
 
             self._miss_count += 1
             return None
+
+    def invalidate_key(self, key_id: str) -> int:
+        """Purges all cached verification entries associated with a revoked or removed key_id."""
+        with self._lock:
+            clean_id = (key_id or "").strip()
+            keys_to_remove = [k for k in self._cache if k[3] == clean_id]
+            for k in keys_to_remove:
+                self._cache.pop(k, None)
+            return len(keys_to_remove)
 
     def put(
         self,

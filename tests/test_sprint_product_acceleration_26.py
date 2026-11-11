@@ -563,6 +563,8 @@ class TestModule265IndependentValidationFramework:
         assert audit_bool_rejected.assigned_category == "INDEPENDENCE_NOT_ESTABLISHED"
 
         # Succeeds when independent procedure lineage AND signed replication attestation + physical artifact are verified
+        from coin_behavior_engine.product.credential_manager import signing_key_registry
+
         res_artifact_rel = "research_outputs/sprint26_advanced_scientific_validation/08_independent_validation_criteria.json"
         res_artifact_sha = hashlib.sha256((Path.cwd() / res_artifact_rel).read_bytes()).hexdigest()
         prim_sha = hashlib.sha256(
@@ -571,34 +573,40 @@ class TestModule265IndependentValidationFramework:
         cand_sha = hashlib.sha256(
             (Path.cwd() / "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet").read_bytes()
         ).hexdigest()
-        signed_rep_att = IndependentValidationFramework.create_signed_replication_attestation(
-            replication_attempt_id="REP-ATTEMPT-S26-JAN2025-01",
-            primary_record_id="STUDY-Q1-2024",
-            candidate_record_id="STUDY-JAN-2025",
-            primary_dataset_id="DS-BTC-1H-Q1-2024",
-            candidate_dataset_id="DS-BTC-1H-JAN-2025",
-            primary_source_sha256=prim_sha,
-            candidate_source_sha256=cand_sha,
-            result_artifact_path=res_artifact_rel,
-            result_artifact_sha256=res_artifact_sha,
-            hypothesis_id="HYP-PAT-SIM-S26",
-            methodology_id="CBE-0.7.0-CANONICAL",
-            primary_procedure_id="SAME-PROC-01",
-            candidate_procedure_id="INDEPENDENT-REPLICATION-PROC-02",
-            procedure_version="SPRINT26-V1.0",
-            independent_execution_lineage="EXEC-LINEAGE-INDEPENDENT-2025",
-            replication_outcome="OUT_OF_SAMPLE_REPLICATED",
-        )
-        candidate_true_rep = dict(candidate_disjoint_dataset)
-        candidate_true_rep["procedure_id"] = "INDEPENDENT-REPLICATION-PROC-02"
-        candidate_true_rep["replication_attestation"] = signed_rep_att
-        audit_true_rep = fw.evaluate_validation_independence(
-            primary_study=primary,
-            candidate_study=candidate_true_rep,
-            claimed_category="INDEPENDENT_REPLICATION",
-        )
-        assert audit_true_rep.independence_established is True
-        assert audit_true_rep.assigned_category == "INDEPENDENT_REPLICATION"
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-rep-key-2026-v1",
+            secret="isolated-test-replication-secret-2026-v1-a9b8",
+        ) as auth_ctx:
+            signed_rep_att = IndependentValidationFramework.create_signed_replication_attestation(
+                replication_attempt_id="REP-ATTEMPT-S26-JAN2025-01",
+                primary_record_id="STUDY-Q1-2024",
+                candidate_record_id="STUDY-JAN-2025",
+                primary_dataset_id="DS-BTC-1H-Q1-2024",
+                candidate_dataset_id="DS-BTC-1H-JAN-2025",
+                primary_source_sha256=prim_sha,
+                candidate_source_sha256=cand_sha,
+                result_artifact_path=res_artifact_rel,
+                result_artifact_sha256=res_artifact_sha,
+                hypothesis_id="HYP-PAT-SIM-S26",
+                methodology_id="CBE-0.7.0-CANONICAL",
+                primary_procedure_id="SAME-PROC-01",
+                candidate_procedure_id="INDEPENDENT-REPLICATION-PROC-02",
+                procedure_version="SPRINT26-V1.0",
+                independent_execution_lineage="EXEC-LINEAGE-INDEPENDENT-2025",
+                replication_outcome="OUT_OF_SAMPLE_REPLICATED",
+                key_id="cbe-test-rep-key-2026-v1",
+                authority_context=auth_ctx,
+            )
+            candidate_true_rep = dict(candidate_disjoint_dataset)
+            candidate_true_rep["procedure_id"] = "INDEPENDENT-REPLICATION-PROC-02"
+            candidate_true_rep["replication_attestation"] = signed_rep_att
+            audit_true_rep = fw.evaluate_validation_independence(
+                primary_study=primary,
+                candidate_study=candidate_true_rep,
+                claimed_category="INDEPENDENT_REPLICATION",
+            )
+            assert audit_true_rep.independence_established is True
+            assert audit_true_rep.assigned_category == "INDEPENDENT_REPLICATION"
 
 
 # ===========================================================================
@@ -785,6 +793,26 @@ class TestModule266DashboardV4AndCrossModuleIntegration:
 class TestSprint26FinalScientificTrustClosure:
     """Comprehensive negative and positive test suite for Sprint 26 Final Scientific Trust Closure."""
 
+    @pytest.fixture(autouse=True)
+    def setup_isolated_trust_closure_keys(self):
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import (
+            CANONICAL_HISTORICAL_AUTHORITY_KEY_ID,
+        )
+
+        signing_key_registry.register_key(
+            CANONICAL_HISTORICAL_AUTHORITY_KEY_ID,
+            "isolated-test-intake-manifest-secret-2026-v2",
+            is_active=True,
+            allowed_purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+            is_test_key=True,
+        )
+        yield
+        signing_key_registry.remove_key(CANONICAL_HISTORICAL_AUTHORITY_KEY_ID)
+
     def test_01_existing_parquet_without_trusted_provenance_rejected(self, tmp_path):
         # Copy a real Parquet file to a new path not bound in any signed manifest
         src = Path.cwd() / "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet"
@@ -953,6 +981,7 @@ class TestSprint26FinalScientificTrustClosure:
             },
             source_lineage="BINANCE_SPOT_KLINES_BTCUSDT_1H_2024Q1",
             key_id="cbe-attestation-2025-revoked",
+            forged_signature="hmac-sha256:cbe-attestation-2025-revoked:" + ("a" * 64),
         )
         wf_lab = WalkForwardResearchLab()
         wf_res = wf_lab.run_walk_forward_evaluation(
@@ -1202,6 +1231,8 @@ class TestSprint26FinalScientificTrustClosure:
         assert audit.eight_point_checks["shared_preprocessing_artifacts"]["passed"] is False
 
     def test_16_invalid_replication_result_artifact_rejected(self, tmp_path):
+        from coin_behavior_engine.product.credential_manager import signing_key_registry
+
         fw = IndependentValidationFramework()
         prim_sha = hashlib.sha256(
             (Path.cwd() / "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet").read_bytes()
@@ -1209,39 +1240,45 @@ class TestSprint26FinalScientificTrustClosure:
         cand_sha = hashlib.sha256(
             (Path.cwd() / "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet").read_bytes()
         ).hexdigest()
-        bad_att = IndependentValidationFramework.create_signed_replication_attestation(
-            replication_attempt_id="REP-BAD-ARTIFACT",
-            primary_record_id="STUDY-Q1-2024",
-            candidate_record_id="STUDY-JAN-2025",
-            primary_dataset_id="DS-BTC-1H-Q1-2024",
-            candidate_dataset_id="DS-BTC-1H-JAN-2025",
-            primary_source_sha256=prim_sha,
-            candidate_source_sha256=cand_sha,
-            result_artifact_path="research_outputs/sprint26_advanced_scientific_validation/08_independent_validation_criteria.json",
-            result_artifact_sha256="0" * 64,  # Wrong SHA-256 for the result artifact
-            hypothesis_id="HYP-PAT-SIM-S26",
-            methodology_id="CBE-0.7.0-CANONICAL",
-            primary_procedure_id="PROC-01",
-            candidate_procedure_id="PROC-02",
-            procedure_version="V1.0",
-            independent_execution_lineage="EXEC-IND-02",
-        )
-        audit = fw.evaluate_validation_independence(
-            primary_study={
-                "record_id": "STUDY-Q1-2024",
-                "dataset_id": "DS-BTC-1H-Q1-2024",
-                "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
-                "procedure_id": "PROC-01",
-            },
-            candidate_study={
-                "record_id": "STUDY-JAN-2025",
-                "dataset_id": "DS-BTC-1H-JAN-2025",
-                "source_path": "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
-                "procedure_id": "PROC-02",
-                "replication_attestation": bad_att,
-            },
-            claimed_category="INDEPENDENT_REPLICATION",
-        )
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-rep-key-16",
+            secret="isolated-test-rep-secret-16-9911",
+        ) as auth_ctx:
+            bad_att = IndependentValidationFramework.create_signed_replication_attestation(
+                replication_attempt_id="REP-BAD-ARTIFACT",
+                primary_record_id="STUDY-Q1-2024",
+                candidate_record_id="STUDY-JAN-2025",
+                primary_dataset_id="DS-BTC-1H-Q1-2024",
+                candidate_dataset_id="DS-BTC-1H-JAN-2025",
+                primary_source_sha256=prim_sha,
+                candidate_source_sha256=cand_sha,
+                result_artifact_path="research_outputs/sprint26_advanced_scientific_validation/08_independent_validation_criteria.json",
+                result_artifact_sha256="0" * 64,  # Wrong SHA-256 for the result artifact
+                hypothesis_id="HYP-PAT-SIM-S26",
+                methodology_id="CBE-0.7.0-CANONICAL",
+                primary_procedure_id="PROC-01",
+                candidate_procedure_id="PROC-02",
+                procedure_version="V1.0",
+                independent_execution_lineage="EXEC-IND-02",
+                key_id="cbe-test-rep-key-16",
+                authority_context=auth_ctx,
+            )
+            audit = fw.evaluate_validation_independence(
+                primary_study={
+                    "record_id": "STUDY-Q1-2024",
+                    "dataset_id": "DS-BTC-1H-Q1-2024",
+                    "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+                    "procedure_id": "PROC-01",
+                },
+                candidate_study={
+                    "record_id": "STUDY-JAN-2025",
+                    "dataset_id": "DS-BTC-1H-JAN-2025",
+                    "source_path": "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
+                    "procedure_id": "PROC-02",
+                    "replication_attestation": bad_att,
+                },
+                claimed_category="INDEPENDENT_REPLICATION",
+            )
         assert audit.independence_established is False
         assert audit.assigned_category == "INDEPENDENCE_NOT_ESTABLISHED"
         assert (
@@ -1250,6 +1287,8 @@ class TestSprint26FinalScientificTrustClosure:
         )
 
     def test_17_replication_evidence_belonging_to_another_research_record_rejected(self):
+        from coin_behavior_engine.product.credential_manager import signing_key_registry
+
         fw = IndependentValidationFramework()
         res_rel = "research_outputs/sprint26_advanced_scientific_validation/08_independent_validation_criteria.json"
         res_sha = hashlib.sha256((Path.cwd() / res_rel).read_bytes()).hexdigest()
@@ -1260,39 +1299,45 @@ class TestSprint26FinalScientificTrustClosure:
             (Path.cwd() / "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet").read_bytes()
         ).hexdigest()
 
-        other_record_att = IndependentValidationFramework.create_signed_replication_attestation(
-            replication_attempt_id="REP-OTHER-RECORD",
-            primary_record_id="RES-OTHER-RECORD-999",
-            candidate_record_id="STUDY-JAN-2025",
-            primary_dataset_id="DS-BTC-1H-Q1-2024",
-            candidate_dataset_id="DS-BTC-1H-JAN-2025",
-            primary_source_sha256=prim_sha,
-            candidate_source_sha256=cand_sha,
-            result_artifact_path=res_rel,
-            result_artifact_sha256=res_sha,
-            hypothesis_id="HYP-OTHER",
-            methodology_id="CBE-0.7.0-CANONICAL",
-            primary_procedure_id="PROC-01",
-            candidate_procedure_id="PROC-02",
-            procedure_version="V1.0",
-            independent_execution_lineage="EXEC-IND-02",
-        )
-        audit = fw.evaluate_validation_independence(
-            primary_study={
-                "record_id": "STUDY-Q1-2024",
-                "dataset_id": "DS-BTC-1H-Q1-2024",
-                "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
-                "procedure_id": "PROC-01",
-            },
-            candidate_study={
-                "record_id": "STUDY-JAN-2025",
-                "dataset_id": "DS-BTC-1H-JAN-2025",
-                "source_path": "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
-                "procedure_id": "PROC-02",
-                "replication_attestation": other_record_att,
-            },
-            claimed_category="INDEPENDENT_REPLICATION",
-        )
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-rep-key-17",
+            secret="isolated-test-rep-secret-17-9922",
+        ) as auth_ctx:
+            other_record_att = IndependentValidationFramework.create_signed_replication_attestation(
+                replication_attempt_id="REP-OTHER-RECORD",
+                primary_record_id="RES-OTHER-RECORD-999",
+                candidate_record_id="STUDY-JAN-2025",
+                primary_dataset_id="DS-BTC-1H-Q1-2024",
+                candidate_dataset_id="DS-BTC-1H-JAN-2025",
+                primary_source_sha256=prim_sha,
+                candidate_source_sha256=cand_sha,
+                result_artifact_path=res_rel,
+                result_artifact_sha256=res_sha,
+                hypothesis_id="HYP-OTHER",
+                methodology_id="CBE-0.7.0-CANONICAL",
+                primary_procedure_id="PROC-01",
+                candidate_procedure_id="PROC-02",
+                procedure_version="V1.0",
+                independent_execution_lineage="EXEC-IND-02",
+                key_id="cbe-test-rep-key-17",
+                authority_context=auth_ctx,
+            )
+            audit = fw.evaluate_validation_independence(
+                primary_study={
+                    "record_id": "STUDY-Q1-2024",
+                    "dataset_id": "DS-BTC-1H-Q1-2024",
+                    "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+                    "procedure_id": "PROC-01",
+                },
+                candidate_study={
+                    "record_id": "STUDY-JAN-2025",
+                    "dataset_id": "DS-BTC-1H-JAN-2025",
+                    "source_path": "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
+                    "procedure_id": "PROC-02",
+                    "replication_attestation": other_record_att,
+                },
+                claimed_category="INDEPENDENT_REPLICATION",
+            )
         assert audit.independence_established is False
         assert audit.assigned_category == "INDEPENDENCE_NOT_ESTABLISHED"
         assert (
@@ -1381,5 +1426,898 @@ class TestSprint26FinalScientificTrustClosure:
         )
         assert ds_claim.independence_established is True
         assert ds_claim.assigned_category == "INDEPENDENT_DATASET_VALIDATION"
+
+
+# ===========================================================================
+# 8. SPRINT 26 FINAL SIGNING AUTHORITY HARDENING — 20 NEGATIVE + POSITIVE TESTS
+# ===========================================================================
+
+
+class TestSprint26FinalSigningAuthorityHardening:
+    """
+    Comprehensive negative and positive test suite for Sprint 26 Final Signing Authority Hardening:
+    - P0 Cryptographic Signing Key Isolation (zero hardcoded fallback secrets, zero _keys leakage)
+    - P0 6-condition Signing Authority Enforcement & 5 Rejection Codes
+    - P0 Verification-Only Runtime & Public API Separation
+    - Key Rotation, Revocation, Cache Invalidation & Scientific Independence Preservation
+    """
+
+    @staticmethod
+    def _base_replication_kwargs() -> dict:
+        res_rel = "research_outputs/sprint26_advanced_scientific_validation/08_independent_validation_criteria.json"
+        res_sha = hashlib.sha256((Path.cwd() / res_rel).read_bytes()).hexdigest()
+        prim_sha = hashlib.sha256(
+            (Path.cwd() / "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet").read_bytes()
+        ).hexdigest()
+        cand_sha = hashlib.sha256(
+            (Path.cwd() / "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet").read_bytes()
+        ).hexdigest()
+        return {
+            "replication_attempt_id": "REP-HARDENING-2026-01",
+            "primary_record_id": "STUDY-Q1-2024",
+            "candidate_record_id": "STUDY-JAN-2025",
+            "primary_dataset_id": "DS-BTC-1H-Q1-2024",
+            "candidate_dataset_id": "DS-BTC-1H-JAN-2025",
+            "primary_source_sha256": prim_sha,
+            "candidate_source_sha256": cand_sha,
+            "result_artifact_path": res_rel,
+            "result_artifact_sha256": res_sha,
+            "hypothesis_id": "HYP-PAT-SIM-S26",
+            "methodology_id": "CBE-0.7.0-CANONICAL",
+            "primary_procedure_id": "PROC-PRIMARY-01",
+            "candidate_procedure_id": "PROC-INDEPENDENT-02",
+            "procedure_version": "SPRINT26-V1.0",
+            "independent_execution_lineage": "EXEC-LINEAGE-INDEPENDENT-2026",
+        }
+
+    def test_00_source_code_contains_no_hardcoded_signing_secrets_or_private_keys_access(self):
+        """Verify hardcoded signing secrets and direct _keys accesses are completely removed."""
+        from coin_behavior_engine.product.credential_manager import signing_key_registry
+
+        ivf_src = (
+            Path.cwd() / "src/coin_behavior_engine/product/independent_validation_framework.py"
+        ).read_text(encoding="utf-8")
+        sr_src = (
+            Path.cwd() / "src/coin_behavior_engine/product/scientific_readiness.py"
+        ).read_text(encoding="utf-8")
+
+        forbidden_literals = (
+            "cbe-replication-attestation-authority-secret-2026-v1-9c31b7e2",
+            "cbe-canonical-historical-dataset-authority-secret-2026-v1-a8f49d21",
+            "cbe-revoked-historical-key-secret-2025-v1-00000000",
+            "signing_key_registry._keys",
+        )
+        for lit in forbidden_literals:
+            assert lit not in ivf_src, f"Forbidden literal '{lit}' found in independent_validation_framework.py"
+            assert lit not in sr_src, f"Forbidden literal '{lit}' found in scientific_readiness.py"
+
+        # Previously exposed key IDs must be revoked by default
+        assert signing_key_registry.is_key_revoked("cbe-attestation-2026-v1") is True
+        assert signing_key_registry.is_key_revoked("cbe-data-authority-2026-v1") is True
+        assert signing_key_registry.is_key_revoked("cbe-attestation-2025-revoked") is True
+
+    def test_neg_01_missing_signing_key_rejected(self):
+        """1. Missing signing key -> Rejected (SIGNING_KEY_NOT_FOUND)."""
+        from coin_behavior_engine.product.credential_manager import (
+            SigningAuthorityContext,
+            SigningAuthorityError,
+        )
+
+        auth_ctx = SigningAuthorityContext.authorize_isolated_test_signing()
+        kwargs = self._base_replication_kwargs()
+        with pytest.raises(SigningAuthorityError) as exc_info:
+            IndependentValidationFramework.create_signed_replication_attestation(
+                **kwargs,
+                key_id="",
+                authority_context=auth_ctx,
+            )
+        assert exc_info.value.rejection_code == "SIGNING_KEY_NOT_FOUND"
+
+    def test_neg_02_unknown_key_id_rejected(self):
+        """2. Unknown key ID -> Rejected (SIGNING_KEY_NOT_FOUND)."""
+        from coin_behavior_engine.product.credential_manager import (
+            SigningAuthorityContext,
+            SigningAuthorityError,
+        )
+
+        auth_ctx = SigningAuthorityContext.authorize_isolated_test_signing()
+        kwargs = self._base_replication_kwargs()
+        with pytest.raises(SigningAuthorityError) as exc_info:
+            IndependentValidationFramework.create_signed_replication_attestation(
+                **kwargs,
+                key_id="cbe-nonexistent-unknown-key-9999",
+                authority_context=auth_ctx,
+            )
+        assert exc_info.value.rejection_code == "SIGNING_KEY_NOT_FOUND"
+
+    def test_neg_03_revoked_signing_key_rejected_during_signing(self):
+        """3. Revoked signing key -> Rejected (SIGNING_KEY_REVOKED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_REPLICATION_ATTESTATION,
+            SigningAuthorityContext,
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+
+        rev_key = "cbe-test-revoked-signing-key-03"
+        signing_key_registry.register_key(
+            rev_key,
+            "isolated-test-revoked-secret-03-abcd",
+            is_active=True,
+            allowed_purposes=(KEY_PURPOSE_REPLICATION_ATTESTATION,),
+            is_test_key=True,
+        )
+        signing_key_registry.revoke_key(rev_key)
+        auth_ctx = SigningAuthorityContext.authorize_isolated_test_signing(allowed_key_ids=(rev_key,))
+        kwargs = self._base_replication_kwargs()
+        try:
+            with pytest.raises(SigningAuthorityError) as exc_info:
+                IndependentValidationFramework.create_signed_replication_attestation(
+                    **kwargs,
+                    key_id=rev_key,
+                    authority_context=auth_ctx,
+                )
+            assert exc_info.value.rejection_code == "SIGNING_KEY_REVOKED"
+        finally:
+            signing_key_registry.remove_key(rev_key)
+
+    def test_neg_04_key_without_replication_signing_permission_rejected(self):
+        """4. Key without replication-signing permission -> Rejected (SIGNING_KEY_NOT_AUTHORIZED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            SigningAuthorityContext,
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+
+        intake_only_key = "cbe-test-intake-only-key-04"
+        signing_key_registry.register_key(
+            intake_only_key,
+            "isolated-test-intake-only-secret-04-efgh",
+            is_active=True,
+            allowed_purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+            is_test_key=True,
+        )
+        auth_ctx = SigningAuthorityContext.authorize_isolated_test_signing(
+            allowed_key_ids=(intake_only_key,)
+        )
+        kwargs = self._base_replication_kwargs()
+        try:
+            with pytest.raises(SigningAuthorityError) as exc_info:
+                IndependentValidationFramework.create_signed_replication_attestation(
+                    **kwargs,
+                    key_id=intake_only_key,
+                    authority_context=auth_ctx,
+                )
+            assert exc_info.value.rejection_code == "SIGNING_KEY_NOT_AUTHORIZED"
+        finally:
+            signing_key_registry.remove_key(intake_only_key)
+
+    def test_neg_05_unauthorized_signing_caller_rejected(self):
+        """5. Unauthorized signing caller -> Rejected (SIGNING_AUTHORITY_NOT_GRANTED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_REPLICATION_ATTESTATION,
+            SigningAuthorityContext,
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+
+        test_key = "cbe-test-active-key-05"
+        signing_key_registry.register_key(
+            test_key,
+            "isolated-test-active-secret-05-1234",
+            is_active=True,
+            allowed_purposes=(KEY_PURPOSE_REPLICATION_ATTESTATION,),
+            is_test_key=True,
+        )
+        kwargs = self._base_replication_kwargs()
+        try:
+            # Missing authority_context -> SIGNING_AUTHORITY_NOT_GRANTED
+            with pytest.raises(SigningAuthorityError) as exc_missing:
+                IndependentValidationFramework.create_signed_replication_attestation(
+                    **kwargs,
+                    key_id=test_key,
+                    authority_context=None,
+                    runtime_mode="ISOLATED_TEST_SIGNING",
+                )
+            assert exc_missing.value.rejection_code == "SIGNING_AUTHORITY_NOT_GRANTED"
+
+            # Forged/unsealed authority_context -> SIGNING_AUTHORITY_NOT_GRANTED
+            forged_ctx = SigningAuthorityContext(
+                context_id="forged-session",
+                authority_principal="FORGED_CALLER",
+                allowed_purposes={KEY_PURPOSE_REPLICATION_ATTESTATION},
+                allowed_key_ids={test_key},
+                environment_scope="test_isolated",
+                is_test_authority=True,
+                capability_seal="0" * 64,
+            )
+            with pytest.raises(SigningAuthorityError) as exc_forged:
+                IndependentValidationFramework.create_signed_replication_attestation(
+                    **kwargs,
+                    key_id=test_key,
+                    authority_context=forged_ctx,
+                    runtime_mode="ISOLATED_TEST_SIGNING",
+                )
+            assert exc_forged.value.rejection_code == "SIGNING_AUTHORITY_NOT_GRANTED"
+        finally:
+            signing_key_registry.remove_key(test_key)
+
+    def test_neg_06_ordinary_research_api_attempting_attestation_creation_rejected(self):
+        """6. Ordinary research API attempting attestation creation -> Rejected (SIGNING_OPERATION_NOT_PERMITTED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            SigningAuthorityError,
+            public_api_request_guard,
+            signing_key_registry,
+        )
+
+        # A. HTTP POST to /api/v1/product/workspace/independent-validation attempting signing
+        st_sign, res_sign = ProductDashboardApiService.handle_post_request(
+            "/api/v1/product/workspace/independent-validation",
+            body={"action": "sign", "create_attestation": True},
+        )
+        assert st_sign == HTTPStatus.FORBIDDEN
+        assert res_sign["rejection_code"] == "SIGNING_OPERATION_NOT_PERMITTED"
+
+        st_ep, res_ep = ProductDashboardApiService.handle_post_request(
+            "/api/v1/product/workspace/replication-attestation/sign",
+            body=self._base_replication_kwargs(),
+        )
+        assert st_ep == HTTPStatus.FORBIDDEN
+        assert res_ep["rejection_code"] == "SIGNING_OPERATION_NOT_PERMITTED"
+
+        # B. Even if internal code inside a public_api_request_guard() tries to sign, it is blocked
+        kwargs = self._base_replication_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-api-guard-key-06",
+            secret="isolated-test-api-guard-secret-06",
+        ) as auth_ctx:
+            with public_api_request_guard():
+                with pytest.raises(SigningAuthorityError) as exc_info:
+                    IndependentValidationFramework.create_signed_replication_attestation(
+                        **kwargs,
+                        key_id="cbe-test-api-guard-key-06",
+                        authority_context=auth_ctx,
+                    )
+                assert exc_info.value.rejection_code == "SIGNING_OPERATION_NOT_PERMITTED"
+
+    def test_neg_07_caller_supplied_authorization_boolean_rejected(self):
+        """7. Caller-supplied authorization boolean (is_admin=True, authorized=True) -> Rejected."""
+        from coin_behavior_engine.product.credential_manager import (
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+
+        kwargs = self._base_replication_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-bool-key-07",
+            secret="isolated-test-bool-secret-07",
+        ) as auth_ctx:
+            with pytest.raises(SigningAuthorityError) as exc_admin:
+                IndependentValidationFramework.create_signed_replication_attestation(
+                    **kwargs,
+                    key_id="cbe-test-bool-key-07",
+                    authority_context=auth_ctx,
+                    is_admin=True,
+                )
+            assert exc_admin.value.rejection_code == "SIGNING_AUTHORITY_NOT_GRANTED"
+
+            with pytest.raises(SigningAuthorityError) as exc_auth:
+                IndependentValidationFramework.create_signed_replication_attestation(
+                    **kwargs,
+                    key_id="cbe-test-bool-key-07",
+                    authority_context=auth_ctx,
+                    authorized=True,
+                )
+            assert exc_auth.value.rejection_code == "SIGNING_AUTHORITY_NOT_GRANTED"
+
+        # Also rejected at the HTTP API layer
+        st_api, res_api = ProductDashboardApiService.handle_post_request(
+            "/api/v1/product/workspace/independent-validation",
+            body={"is_admin": True, "authorized": True},
+        )
+        assert st_api == HTTPStatus.FORBIDDEN
+        assert res_api["rejection_code"] == "SIGNING_AUTHORITY_NOT_GRANTED"
+
+    def test_neg_08_caller_supplied_signing_key_rejected(self):
+        """8. Caller-supplied signing key -> Rejected (SIGNING_KEY_NOT_AUTHORIZED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+
+        kwargs = self._base_replication_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-key-08",
+            secret="isolated-test-secret-08",
+        ) as auth_ctx:
+            with pytest.raises(SigningAuthorityError) as exc_key:
+                IndependentValidationFramework.create_signed_replication_attestation(
+                    **kwargs,
+                    key_id="cbe-test-key-08",
+                    authority_context=auth_ctx,
+                    signing_key="caller-injected-signing-key-material",
+                )
+            assert exc_key.value.rejection_code == "SIGNING_KEY_NOT_AUTHORIZED"
+
+        st_api, res_api = ProductDashboardApiService.handle_post_request(
+            "/api/v1/product/workspace/independent-validation",
+            body={"signing_key": "caller-injected-signing-key-material"},
+        )
+        assert st_api == HTTPStatus.FORBIDDEN
+        assert res_api["rejection_code"] == "SIGNING_KEY_NOT_AUTHORIZED"
+
+    def test_neg_09_caller_supplied_signing_secret_rejected(self):
+        """9. Caller-supplied signing secret -> Rejected (SIGNING_KEY_NOT_AUTHORIZED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+
+        kwargs = self._base_replication_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-key-09",
+            secret="isolated-test-secret-09",
+        ) as auth_ctx:
+            with pytest.raises(SigningAuthorityError) as exc_sec:
+                IndependentValidationFramework.create_signed_replication_attestation(
+                    **kwargs,
+                    key_id="cbe-test-key-09",
+                    authority_context=auth_ctx,
+                    secret="caller-supplied-raw-hmac-secret",
+                )
+            assert exc_sec.value.rejection_code == "SIGNING_KEY_NOT_AUTHORIZED"
+
+        st_api, res_api = ProductDashboardApiService.handle_post_request(
+            "/api/v1/product/workspace/independent-validation",
+            body={"signing_secret": "caller-supplied-raw-hmac-secret"},
+        )
+        assert st_api == HTTPStatus.FORBIDDEN
+        assert res_api["rejection_code"] == "SIGNING_KEY_NOT_AUTHORIZED"
+
+    def test_neg_10_forged_replication_attestation_rejected(self):
+        """10. Forged replication attestation -> Rejected (SIGNATURE_VERIFICATION_FAILED)."""
+        from coin_behavior_engine.product.credential_manager import signing_key_registry
+
+        fw = IndependentValidationFramework()
+        kwargs = self._base_replication_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-key-10",
+            secret="isolated-test-secret-10",
+        ) as auth_ctx:
+            att = IndependentValidationFramework.create_signed_replication_attestation(
+                **kwargs,
+                key_id="cbe-test-key-10",
+                authority_context=auth_ctx,
+            )
+            forged = dict(att)
+            forged["signature"] = "hmac-sha256:cbe-test-key-10:" + ("f" * 64)
+            ver = fw.verify_replication_attestation(
+                attestation=forged,
+                primary_record_id=kwargs["primary_record_id"],
+                candidate_record_id=kwargs["candidate_record_id"],
+                primary_dataset_id=kwargs["primary_dataset_id"],
+                candidate_dataset_id=kwargs["candidate_dataset_id"],
+                primary_source_sha256=kwargs["primary_source_sha256"],
+                candidate_source_sha256=kwargs["candidate_source_sha256"],
+                primary_procedure_id=kwargs["primary_procedure_id"],
+                candidate_procedure_id=kwargs["candidate_procedure_id"],
+            )
+            assert ver["is_valid"] is False
+            assert ver["rejection_code"] == "SIGNATURE_VERIFICATION_FAILED"
+
+    def test_neg_11_modified_signed_claims_rejected(self):
+        """11. Modified signed claims -> Rejected (SIGNATURE_VERIFICATION_FAILED)."""
+        from coin_behavior_engine.product.credential_manager import signing_key_registry
+
+        fw = IndependentValidationFramework()
+        kwargs = self._base_replication_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-key-11",
+            secret="isolated-test-secret-11",
+        ) as auth_ctx:
+            att = IndependentValidationFramework.create_signed_replication_attestation(
+                **kwargs,
+                key_id="cbe-test-key-11",
+                authority_context=auth_ctx,
+            )
+            tampered = dict(att)
+            tampered["hypothesis_id"] = "HYP-TAMPERED-AFTER-SIGNING"
+            ver = fw.verify_replication_attestation(
+                attestation=tampered,
+                primary_record_id=kwargs["primary_record_id"],
+                candidate_record_id=kwargs["candidate_record_id"],
+                primary_dataset_id=kwargs["primary_dataset_id"],
+                candidate_dataset_id=kwargs["candidate_dataset_id"],
+                primary_source_sha256=kwargs["primary_source_sha256"],
+                candidate_source_sha256=kwargs["candidate_source_sha256"],
+                primary_procedure_id=kwargs["primary_procedure_id"],
+                candidate_procedure_id=kwargs["candidate_procedure_id"],
+            )
+            assert ver["is_valid"] is False
+            assert ver["rejection_code"] == "SIGNATURE_VERIFICATION_FAILED"
+
+    def test_neg_12_expired_replication_attestation_rejected(self):
+        """12. Expired attestation -> Rejected (ATTESTATION_EXPIRED)."""
+        from coin_behavior_engine.product.credential_manager import signing_key_registry
+
+        fw = IndependentValidationFramework()
+        kwargs = self._base_replication_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-key-12",
+            secret="isolated-test-secret-12",
+        ) as auth_ctx:
+            att_exp = IndependentValidationFramework.create_signed_replication_attestation(
+                **kwargs,
+                key_id="cbe-test-key-12",
+                authority_context=auth_ctx,
+                issued_at_utc="2021-01-01T00:00:00Z",
+                expires_at_utc="2022-01-01T00:00:00Z",
+            )
+            ver = fw.verify_replication_attestation(
+                attestation=att_exp,
+                primary_record_id=kwargs["primary_record_id"],
+                candidate_record_id=kwargs["candidate_record_id"],
+                primary_dataset_id=kwargs["primary_dataset_id"],
+                candidate_dataset_id=kwargs["candidate_dataset_id"],
+                primary_source_sha256=kwargs["primary_source_sha256"],
+                candidate_source_sha256=kwargs["candidate_source_sha256"],
+                primary_procedure_id=kwargs["primary_procedure_id"],
+                candidate_procedure_id=kwargs["candidate_procedure_id"],
+            )
+            assert ver["is_valid"] is False
+            assert ver["rejection_code"] == "ATTESTATION_EXPIRED"
+
+    def test_neg_13_revoked_attestation_key_rejected_on_verification(self):
+        """13. Revoked attestation key -> Rejected (REVOKED_SIGNING_KEY)."""
+        from coin_behavior_engine.product.credential_manager import signing_key_registry
+
+        fw = IndependentValidationFramework()
+        kwargs = self._base_replication_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-key-13",
+            secret="isolated-test-secret-13",
+        ) as auth_ctx:
+            att = IndependentValidationFramework.create_signed_replication_attestation(
+                **kwargs,
+                key_id="cbe-test-key-13",
+                authority_context=auth_ctx,
+            )
+            # Revoke the key after the attestation was issued
+            signing_key_registry.revoke_key("cbe-test-key-13")
+            ver = fw.verify_replication_attestation(
+                attestation=att,
+                primary_record_id=kwargs["primary_record_id"],
+                candidate_record_id=kwargs["candidate_record_id"],
+                primary_dataset_id=kwargs["primary_dataset_id"],
+                candidate_dataset_id=kwargs["candidate_dataset_id"],
+                primary_source_sha256=kwargs["primary_source_sha256"],
+                candidate_source_sha256=kwargs["candidate_source_sha256"],
+                primary_procedure_id=kwargs["primary_procedure_id"],
+                candidate_procedure_id=kwargs["candidate_procedure_id"],
+            )
+            assert ver["is_valid"] is False
+            assert ver["rejection_code"] == "REVOKED_SIGNING_KEY"
+
+    def test_neg_14_invalid_result_artifact_hash_rejected(self):
+        """14. Invalid result artifact hash -> Rejected (INVALID_REPLICATION_RESULT_ARTIFACT_HASH)."""
+        from coin_behavior_engine.product.credential_manager import signing_key_registry
+
+        fw = IndependentValidationFramework()
+        kwargs = self._base_replication_kwargs()
+        kwargs["result_artifact_sha256"] = "e" * 64
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-key-14",
+            secret="isolated-test-secret-14",
+        ) as auth_ctx:
+            att = IndependentValidationFramework.create_signed_replication_attestation(
+                **kwargs,
+                key_id="cbe-test-key-14",
+                authority_context=auth_ctx,
+            )
+            ver = fw.verify_replication_attestation(
+                attestation=att,
+                primary_record_id=kwargs["primary_record_id"],
+                candidate_record_id=kwargs["candidate_record_id"],
+                primary_dataset_id=kwargs["primary_dataset_id"],
+                candidate_dataset_id=kwargs["candidate_dataset_id"],
+                primary_source_sha256=kwargs["primary_source_sha256"],
+                candidate_source_sha256=kwargs["candidate_source_sha256"],
+                primary_procedure_id=kwargs["primary_procedure_id"],
+                candidate_procedure_id=kwargs["candidate_procedure_id"],
+            )
+            assert ver["is_valid"] is False
+            assert ver["rejection_code"] == "INVALID_REPLICATION_RESULT_ARTIFACT_HASH"
+
+    def test_neg_15_missing_replication_result_artifact_rejected(self):
+        """15. Missing replication result artifact -> Rejected (MISSING_REPLICATION_RESULT_ARTIFACT)."""
+        from coin_behavior_engine.product.credential_manager import signing_key_registry
+
+        fw = IndependentValidationFramework()
+        kwargs = self._base_replication_kwargs()
+        kwargs["result_artifact_path"] = "research_outputs/non_existent_replication_output_999.json"
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-key-15",
+            secret="isolated-test-secret-15",
+        ) as auth_ctx:
+            att = IndependentValidationFramework.create_signed_replication_attestation(
+                **kwargs,
+                key_id="cbe-test-key-15",
+                authority_context=auth_ctx,
+            )
+            ver = fw.verify_replication_attestation(
+                attestation=att,
+                primary_record_id=kwargs["primary_record_id"],
+                candidate_record_id=kwargs["candidate_record_id"],
+                primary_dataset_id=kwargs["primary_dataset_id"],
+                candidate_dataset_id=kwargs["candidate_dataset_id"],
+                primary_source_sha256=kwargs["primary_source_sha256"],
+                candidate_source_sha256=kwargs["candidate_source_sha256"],
+                primary_procedure_id=kwargs["primary_procedure_id"],
+                candidate_procedure_id=kwargs["candidate_procedure_id"],
+            )
+            assert ver["is_valid"] is False
+            assert ver["rejection_code"] == "MISSING_REPLICATION_RESULT_ARTIFACT"
+
+    def test_neg_16_signing_key_rotation_enforces_lifecycle_policy(self):
+        """16. Signing-key rotation: old valid signatures remain verifiable (HISTORICAL_VERIFY_ONLY),
+        new signing with old key fails closed (SIGNING_KEY_NOT_AUTHORIZED), new key signs and verifies.
+        """
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_REPLICATION_ATTESTATION,
+            SigningAuthorityContext,
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+
+        fw = IndependentValidationFramework()
+        kwargs = self._base_replication_kwargs()
+        old_key = "cbe-test-rot-key-v1"
+        new_key = "cbe-test-rot-key-v2"
+
+        signing_key_registry.register_key(
+            old_key,
+            "isolated-rotation-secret-v1-1111",
+            is_active=True,
+            allowed_purposes=(KEY_PURPOSE_REPLICATION_ATTESTATION,),
+            is_test_key=True,
+        )
+        auth_ctx = SigningAuthorityContext.authorize_isolated_test_signing(
+            allowed_key_ids=(old_key, new_key)
+        )
+        try:
+            # 1. Sign with old_key while it is active
+            att_v1 = IndependentValidationFramework.create_signed_replication_attestation(
+                **kwargs,
+                key_id=old_key,
+                authority_context=auth_ctx,
+            )
+
+            # 2. Rotate old_key -> new_key (keep_old_for_verification=True)
+            signing_key_registry.rotate_key(
+                old_key_id=old_key,
+                new_key_id=new_key,
+                new_secret="isolated-rotation-secret-v2-2222",
+                allowed_purposes=(KEY_PURPOSE_REPLICATION_ATTESTATION,),
+                keep_old_for_verification=True,
+                is_test_key=True,
+            )
+
+            # 3. Historical signature created before rotation remains verifiable
+            ver_v1 = fw.verify_replication_attestation(
+                attestation=att_v1,
+                primary_record_id=kwargs["primary_record_id"],
+                candidate_record_id=kwargs["candidate_record_id"],
+                primary_dataset_id=kwargs["primary_dataset_id"],
+                candidate_dataset_id=kwargs["candidate_dataset_id"],
+                primary_source_sha256=kwargs["primary_source_sha256"],
+                candidate_source_sha256=kwargs["candidate_source_sha256"],
+                primary_procedure_id=kwargs["primary_procedure_id"],
+                candidate_procedure_id=kwargs["candidate_procedure_id"],
+            )
+            assert ver_v1["is_valid"] is True
+            assert ver_v1["verified_key_id"] == old_key
+
+            # 4. New signing attempt with rotated-out old_key fails closed!
+            with pytest.raises(SigningAuthorityError) as exc_old:
+                IndependentValidationFramework.create_signed_replication_attestation(
+                    **kwargs,
+                    key_id=old_key,
+                    authority_context=auth_ctx,
+                )
+            assert exc_old.value.rejection_code == "SIGNING_KEY_NOT_AUTHORIZED"
+
+            # 5. New active key signs and verifies cleanly
+            att_v2 = IndependentValidationFramework.create_signed_replication_attestation(
+                **kwargs,
+                key_id=new_key,
+                authority_context=auth_ctx,
+            )
+            ver_v2 = fw.verify_replication_attestation(
+                attestation=att_v2,
+                primary_record_id=kwargs["primary_record_id"],
+                candidate_record_id=kwargs["candidate_record_id"],
+                primary_dataset_id=kwargs["primary_dataset_id"],
+                candidate_dataset_id=kwargs["candidate_dataset_id"],
+                primary_source_sha256=kwargs["primary_source_sha256"],
+                candidate_source_sha256=kwargs["candidate_source_sha256"],
+                primary_procedure_id=kwargs["primary_procedure_id"],
+                candidate_procedure_id=kwargs["candidate_procedure_id"],
+            )
+            assert ver_v2["is_valid"] is True
+            assert ver_v2["verified_key_id"] == new_key
+        finally:
+            signing_key_registry.remove_key(old_key)
+            signing_key_registry.remove_key(new_key)
+
+    def test_neg_17_verification_only_runtime_attempting_signing_rejected(self):
+        """17. Verification-only runtime attempting signing -> Rejected (SIGNING_OPERATION_NOT_PERMITTED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_REPLICATION_ATTESTATION,
+            SigningAuthorityContext,
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+
+        # Default application runtime mode must be VERIFICATION_ONLY
+        assert signing_key_registry.get_runtime_signing_mode() == "VERIFICATION_ONLY"
+
+        op_key = "cbe-test-op-key-17"
+        signing_key_registry.register_key(
+            op_key,
+            "isolated-operator-secret-17-abcd",
+            is_active=True,
+            allowed_purposes=(KEY_PURPOSE_REPLICATION_ATTESTATION,),
+            is_test_key=False,
+        )
+        # 1. Attempting to authorize operator signing in default VERIFICATION_ONLY runtime -> rejected
+        with pytest.raises(SigningAuthorityError) as exc_op:
+            SigningAuthorityContext.authorize_operator_signing(
+                operator_token="test-operator-token-123456",
+                allowed_key_ids=(op_key,),
+            )
+        assert exc_op.value.rejection_code == "SIGNING_OPERATION_NOT_PERMITTED"
+
+        # 2. Attempting to sign in VERIFICATION_ONLY runtime mode -> rejected
+        auth_ctx = SigningAuthorityContext.authorize_isolated_test_signing(allowed_key_ids=(op_key,))
+        kwargs = self._base_replication_kwargs()
+        try:
+            with pytest.raises(SigningAuthorityError) as exc_info:
+                IndependentValidationFramework.create_signed_replication_attestation(
+                    **kwargs,
+                    key_id=op_key,
+                    authority_context=auth_ctx,
+                    runtime_mode="VERIFICATION_ONLY",
+                )
+            assert exc_info.value.rejection_code == "SIGNING_OPERATION_NOT_PERMITTED"
+        finally:
+            auth_ctx.close()
+            signing_key_registry.remove_key(op_key)
+
+    def test_neg_18_test_signing_authority_leaking_into_application_runtime_rejected(self):
+        """18. Test signing authority leaking into application runtime -> Rejected."""
+        from coin_behavior_engine.product.credential_manager import (
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+
+        fw = IndependentValidationFramework()
+        kwargs = self._base_replication_kwargs()
+
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-leak-key-18",
+            secret="isolated-test-leak-secret-18",
+        ) as auth_ctx:
+            # A. Attempting to use test authority_context in AUTHORIZED_OPERATOR_SIGNING mode -> rejected
+            with pytest.raises(SigningAuthorityError) as exc_mode:
+                IndependentValidationFramework.create_signed_replication_attestation(
+                    **kwargs,
+                    key_id="cbe-test-leak-key-18",
+                    authority_context=auth_ctx,
+                    runtime_mode="AUTHORIZED_OPERATOR_SIGNING",
+                )
+            assert exc_mode.value.rejection_code == "SIGNING_OPERATION_NOT_PERMITTED"
+
+            att = IndependentValidationFramework.create_signed_replication_attestation(
+                **kwargs,
+                key_id="cbe-test-leak-key-18",
+                authority_context=auth_ctx,
+            )
+
+        # B. Outside the isolated_test_signing_context block:
+        # 1) Reuse of exited test authority_context fails closed with SIGNING_OPERATION_NOT_PERMITTED
+        with pytest.raises(SigningAuthorityError) as exc_leaked:
+            IndependentValidationFramework.create_signed_replication_attestation(
+                **kwargs,
+                key_id="cbe-test-leak-key-18",
+                authority_context=auth_ctx,
+            )
+        assert exc_leaked.value.rejection_code in (
+            "SIGNING_OPERATION_NOT_PERMITTED",
+            "SIGNING_KEY_NOT_FOUND",
+            "SIGNING_AUTHORITY_NOT_GRANTED",
+        )
+
+        # 2) Test key is automatically purged from registry after context exit, so verification in app runtime rejects it
+        assert signing_key_registry.has_key("cbe-test-leak-key-18") is False
+        ver_after = fw.verify_replication_attestation(
+            attestation=att,
+            primary_record_id=kwargs["primary_record_id"],
+            candidate_record_id=kwargs["candidate_record_id"],
+            primary_dataset_id=kwargs["primary_dataset_id"],
+            candidate_dataset_id=kwargs["candidate_dataset_id"],
+            primary_source_sha256=kwargs["primary_source_sha256"],
+            candidate_source_sha256=kwargs["candidate_source_sha256"],
+            primary_procedure_id=kwargs["primary_procedure_id"],
+            candidate_procedure_id=kwargs["candidate_procedure_id"],
+        )
+        assert ver_after["is_valid"] is False
+        assert ver_after["rejection_code"] == "SIGNING_KEY_NOT_FOUND"
+
+    def test_neg_19_signature_cache_reuse_after_revocation_rejected(self):
+        """19. Signature cache reuse after revocation -> Rejected (REVOKED_SIGNING_KEY)."""
+        from coin_behavior_engine.product.credential_manager import signing_key_registry
+
+        fw = IndependentValidationFramework()
+        kwargs = self._base_replication_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-cache-rev-key-19",
+            secret="isolated-test-cache-rev-secret-19",
+        ) as auth_ctx:
+            att = IndependentValidationFramework.create_signed_replication_attestation(
+                **kwargs,
+                key_id="cbe-test-cache-rev-key-19",
+                authority_context=auth_ctx,
+            )
+            # First verification succeeds and populates attestation_cache
+            ver_1 = fw.verify_replication_attestation(
+                attestation=att,
+                primary_record_id=kwargs["primary_record_id"],
+                candidate_record_id=kwargs["candidate_record_id"],
+                primary_dataset_id=kwargs["primary_dataset_id"],
+                candidate_dataset_id=kwargs["candidate_dataset_id"],
+                primary_source_sha256=kwargs["primary_source_sha256"],
+                candidate_source_sha256=kwargs["candidate_source_sha256"],
+                primary_procedure_id=kwargs["primary_procedure_id"],
+                candidate_procedure_id=kwargs["candidate_procedure_id"],
+            )
+            assert ver_1["is_valid"] is True
+
+            # Revoke key after cache population
+            signing_key_registry.revoke_key("cbe-test-cache-rev-key-19")
+
+            # Subsequent verification must NOT serve stale cached valid result; must reject with REVOKED_SIGNING_KEY
+            ver_2 = fw.verify_replication_attestation(
+                attestation=att,
+                primary_record_id=kwargs["primary_record_id"],
+                candidate_record_id=kwargs["candidate_record_id"],
+                primary_dataset_id=kwargs["primary_dataset_id"],
+                candidate_dataset_id=kwargs["candidate_dataset_id"],
+                primary_source_sha256=kwargs["primary_source_sha256"],
+                candidate_source_sha256=kwargs["candidate_source_sha256"],
+                primary_procedure_id=kwargs["primary_procedure_id"],
+                candidate_procedure_id=kwargs["candidate_procedure_id"],
+            )
+            assert ver_2["is_valid"] is False
+            assert ver_2["rejection_code"] == "REVOKED_SIGNING_KEY"
+
+    def test_neg_20_valid_signature_with_insufficient_scientific_independence_rejected(self):
+        """20. Replication claim with valid signature but insufficient scientific independence -> Rejected."""
+        from coin_behavior_engine.product.credential_manager import signing_key_registry
+
+        fw = IndependentValidationFramework()
+        res_rel = "research_outputs/sprint26_advanced_scientific_validation/08_independent_validation_criteria.json"
+        res_sha = hashlib.sha256((Path.cwd() / res_rel).read_bytes()).hexdigest()
+        q1_1h_sha = hashlib.sha256(
+            (Path.cwd() / "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet").read_bytes()
+        ).hexdigest()
+        q1_15m_sha = hashlib.sha256(
+            (Path.cwd() / "data/historical/historical_binance_btcusdt_15m_q1_2024.parquet").read_bytes()
+        ).hexdigest()
+
+        # Both datasets cover Q1 2024 (overlapping temporal window & observations), even though signature is valid!
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-overlap-key-20",
+            secret="isolated-test-overlap-secret-20",
+        ) as auth_ctx:
+            valid_sig_overlapping_att = IndependentValidationFramework.create_signed_replication_attestation(
+                replication_attempt_id="REP-OVERLAPPING-Q1-2024",
+                primary_record_id="STUDY-Q1-1H",
+                candidate_record_id="STUDY-Q1-15M",
+                primary_dataset_id="DS-BTC-1H-Q1-2024",
+                candidate_dataset_id="DS-BTC-15M-Q1-2024",
+                primary_source_sha256=q1_1h_sha,
+                candidate_source_sha256=q1_15m_sha,
+                result_artifact_path=res_rel,
+                result_artifact_sha256=res_sha,
+                hypothesis_id="HYP-PAT-SIM-S26",
+                methodology_id="CBE-0.7.0-CANONICAL",
+                primary_procedure_id="PROC-PRIMARY-01",
+                candidate_procedure_id="PROC-INDEPENDENT-02",
+                procedure_version="SPRINT26-V1.0",
+                independent_execution_lineage="EXEC-LINEAGE-INDEPENDENT-2026",
+                key_id="cbe-test-overlap-key-20",
+                authority_context=auth_ctx,
+            )
+            audit = fw.evaluate_validation_independence(
+                primary_study={
+                    "record_id": "STUDY-Q1-1H",
+                    "dataset_id": "DS-BTC-1H-Q1-2024",
+                    "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+                    "procedure_id": "PROC-PRIMARY-01",
+                },
+                candidate_study={
+                    "record_id": "STUDY-Q1-15M",
+                    "dataset_id": "DS-BTC-15M-Q1-2024",
+                    "source_path": "data/historical/historical_binance_btcusdt_15m_q1_2024.parquet",
+                    "procedure_id": "PROC-INDEPENDENT-02",
+                    "replication_attestation": valid_sig_overlapping_att,
+                },
+                claimed_category="INDEPENDENT_REPLICATION",
+            )
+            assert audit.independence_established is False
+            assert audit.assigned_category == "INDEPENDENCE_NOT_ESTABLISHED"
+            assert audit.eight_point_checks["time_window_overlap"]["passed"] is False
+
+    def test_pos_21_authorized_signing_with_isolated_test_key_and_scientific_independence(self):
+        """Positive test: isolated test signing key + explicit SigningAuthorityContext +
+        verified non-overlapping datasets + verified replication artifact -> INDEPENDENT_REPLICATION.
+        """
+        from coin_behavior_engine.product.credential_manager import signing_key_registry
+
+        fw = IndependentValidationFramework()
+        kwargs = self._base_replication_kwargs()
+
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-pos-rep-key-21",
+            secret="isolated-test-pos-rep-secret-21-9876",
+        ) as auth_ctx:
+            signed_att = IndependentValidationFramework.create_signed_replication_attestation(
+                **kwargs,
+                key_id="cbe-test-pos-rep-key-21",
+                authority_context=auth_ctx,
+            )
+            ver = fw.verify_replication_attestation(
+                attestation=signed_att,
+                primary_record_id=kwargs["primary_record_id"],
+                candidate_record_id=kwargs["candidate_record_id"],
+                primary_dataset_id=kwargs["primary_dataset_id"],
+                candidate_dataset_id=kwargs["candidate_dataset_id"],
+                primary_source_sha256=kwargs["primary_source_sha256"],
+                candidate_source_sha256=kwargs["candidate_source_sha256"],
+                primary_procedure_id=kwargs["primary_procedure_id"],
+                candidate_procedure_id=kwargs["candidate_procedure_id"],
+            )
+            assert ver["is_valid"] is True
+            assert ver["rejection_code"] is None
+            assert ver["verified_key_id"] == "cbe-test-pos-rep-key-21"
+
+            audit = fw.evaluate_validation_independence(
+                primary_study={
+                    "record_id": kwargs["primary_record_id"],
+                    "dataset_id": kwargs["primary_dataset_id"],
+                    "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+                    "period_start_utc": "2024-01-01T00:00:00Z",
+                    "period_end_utc": "2024-03-31T23:00:00Z",
+                    "preprocessing_lineage_id": "PREP-Q1-ISOLATED",
+                    "procedure_id": kwargs["primary_procedure_id"],
+                },
+                candidate_study={
+                    "record_id": kwargs["candidate_record_id"],
+                    "dataset_id": kwargs["candidate_dataset_id"],
+                    "source_path": "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
+                    "period_start_utc": "2025-01-01T00:00:00Z",
+                    "period_end_utc": "2025-01-31T23:00:00Z",
+                    "preprocessing_lineage_id": "PREP-JAN25-ISOLATED",
+                    "procedure_id": kwargs["candidate_procedure_id"],
+                    "replication_attestation": signed_att,
+                },
+                claimed_category="INDEPENDENT_REPLICATION",
+            )
+            assert audit.independence_established is True
+            assert audit.assigned_category == "INDEPENDENT_REPLICATION"
+            assert audit.trust_progression_state == "INDEPENDENT_REPLICATION"
+            assert audit.eight_point_checks["researcher_or_procedure_independence"]["passed"] is True
+
 
 

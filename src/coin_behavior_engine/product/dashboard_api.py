@@ -1023,14 +1023,31 @@ class ProductDashboardApiService:
                 )
                 return HTTPStatus.OK, res
 
-            elif sub_path in ("workspace/independent-validation", "independent-validation"):
+            elif sub_path in (
+                "workspace/independent-validation",
+                "independent-validation",
+                "workspace/independent-validation/sign",
+                "independent-validation/sign",
+                "workspace/replication-attestation/sign",
+                "replication-attestation/sign",
+            ):
                 from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
-                payload = body or query_params or {}
+                payload = dict(body or query_params or {})
+                if sub_path.endswith("/sign"):
+                    payload["action"] = "sign"
+                extra = {
+                    k: v
+                    for k, v in payload.items()
+                    if k not in ("primary_study", "candidate_study", "claimed_category")
+                }
                 res = ResearchWorkspaceV2Engine.run_independent_validation_audit(
                     primary_study=payload.get("primary_study"),
                     candidate_study=payload.get("candidate_study"),
                     claimed_category=payload.get("claimed_category"),
+                    **extra,
                 )
+                if res.get("status") == "error":
+                    return HTTPStatus.FORBIDDEN, res
                 return HTTPStatus.OK, res
 
             elif sub_path in ("workspace/validation-reports", "validation-reports"):

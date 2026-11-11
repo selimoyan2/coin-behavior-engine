@@ -30,35 +30,16 @@ from coin_behavior_engine.product.attestation_verifier import (
     TRUSTED_ISSUERS,
     attestation_cache,
 )
-from coin_behavior_engine.product.credential_manager import signing_key_registry
+from coin_behavior_engine.product.credential_manager import (
+    KEY_PURPOSE_INTAKE_MANIFEST,
+    signing_key_registry,
+)
 from coin_behavior_engine.product.research_report_evidence import rfc8785_canonical_json
 from coin_behavior_engine.product.reproducibility_lab import (
     ReproducibilityLabEngine,
 )
 
-CANONICAL_HISTORICAL_AUTHORITY_KEY_ID = "cbe-data-authority-2026-v1"
-CANONICAL_HISTORICAL_AUTHORITY_SECRET = (
-    "cbe-canonical-historical-dataset-authority-secret-2026-v1-a8f49d21"
-)
-if CANONICAL_HISTORICAL_AUTHORITY_KEY_ID not in signing_key_registry._keys:
-    signing_key_registry.register_key(
-        CANONICAL_HISTORICAL_AUTHORITY_KEY_ID,
-        CANONICAL_HISTORICAL_AUTHORITY_SECRET,
-        is_active=False,
-    )
-if "cbe-attestation-2026-v1" not in signing_key_registry._keys:
-    signing_key_registry.register_key(
-        "cbe-attestation-2026-v1",
-        "cbe-replication-attestation-authority-secret-2026-v1-9c31b7e2",
-        is_active=False,
-    )
-if "cbe-attestation-2025-revoked" not in signing_key_registry._keys:
-    signing_key_registry.register_key(
-        "cbe-attestation-2025-revoked",
-        "cbe-revoked-historical-key-secret-2025-v1-00000000",
-        is_active=False,
-    )
-    signing_key_registry.revoke_key("cbe-attestation-2025-revoked")
+CANONICAL_HISTORICAL_AUTHORITY_KEY_ID = "cbe-data-authority-active-v2"
 
 CANONICAL_TRUST_PROGRESSION_TIERS = (
     "ARTIFACT_PRESENT",
@@ -190,15 +171,6 @@ class ScientificReadinessEvaluator:
         if artifacts is None:
             artifacts = [{"path": src_path, "sha256": src_sha}] if src_path else []
 
-        if secret is None:
-            key_entry = signing_key_registry._keys.get(key_id)
-            if isinstance(key_entry, str) and key_entry:
-                secret = key_entry
-            elif isinstance(key_entry, dict) and key_entry.get("secret"):
-                secret = str(key_entry["secret"])
-            else:
-                secret = CANONICAL_HISTORICAL_AUTHORITY_SECRET
-
         claims = {
             "artifacts": sorted(artifacts, key=lambda x: str(x.get("path", ""))),
             "dataset_id": str(ds_id),
@@ -215,9 +187,15 @@ class ScientificReadinessEvaluator:
         claims_sha256 = hashlib.sha256(canonical_bytes).hexdigest()
         if forged_signature is not None:
             signature = forged_signature
-        else:
+        elif secret is not None:
             h = hmac.new(secret.encode("utf-8"), canonical_bytes, hashlib.sha256)
             signature = f"hmac-sha256:{key_id}:{h.hexdigest()}"
+        else:
+            signature = signing_key_registry.sign_for_purpose(
+                canonical_bytes=canonical_bytes,
+                key_id=key_id,
+                required_purpose=KEY_PURPOSE_INTAKE_MANIFEST,
+            )
 
         manifest = dict(claims)
         manifest["signature"] = signature
@@ -934,8 +912,12 @@ class ScientificReadinessEvaluator:
         dataset_id: str,
         record_id: str = "SPRINT26-HISTORICAL-EVAL",
         workspace_root: Optional[Path] = None,
+        key_id: str = CANONICAL_HISTORICAL_AUTHORITY_KEY_ID,
+        secret: Optional[str] = None,
     ) -> Optional[Dict[str, Any]]:
-        """Build an authority-signed intake manifest for a pinned canonical historical dataset."""
+        """Build an authority-signed intake manifest for a pinned canonical historical dataset
+        using an active registered signing key (never a hardcoded secret).
+        """
         spec = cls.CANONICAL_HISTORICAL_DATASET_SPECIFICATIONS.get(str(dataset_id or "").strip())
         if not spec:
             return None
@@ -953,8 +935,8 @@ class ScientificReadinessEvaluator:
 
         return cls.create_signed_intake_manifest(
             record=rec,
-            key_id=CANONICAL_HISTORICAL_AUTHORITY_KEY_ID,
-            secret=CANONICAL_HISTORICAL_AUTHORITY_SECRET,
+            key_id=key_id,
+            secret=secret,
             issuer="CBE_DATA_GOVERNANCE_COUNCIL",
             source_lineage=spec["source_lineage"],
             artifacts=[{"path": bound_path, "sha256": spec["expected_sha256"]}],
@@ -1194,7 +1176,7 @@ class ScientificReadinessEvaluator:
                     "source_sha256": None,
                 }
 
-        # 7. Resolve canonical signed manifest if no explicit evidence was provided
+        # 7. Resolve canonical pinned specification if no explicit evidence was provided
         if not has_explicit_evidence:
             if require_explicit_evidence or spec is None:
                 return {
@@ -1213,11 +1195,118 @@ class ScientificReadinessEvaluator:
                     "source_path": rel_display,
                     "source_sha256": None,
                 }
-            effective_manifest_obj = cls.get_canonical_signed_intake_manifest(
-                dataset_id=ds_norm,
-                record_id=record_id,
-                workspace_root=ws,
+
+            canonical_bound_path = (ws / spec["source_artifact"]).resolve()
+            if resolved_file.resolve() != canonical_bound_path:
+                return {
+                    "is_verified": False,
+                    "status": "UNVERIFIED_HISTORICAL_INPUT",
+                    "provenance_status": "UNVERIFIED_HISTORICAL_INPUT",
+                    "trust_progression_state": "ARTIFACT_PRESENT",
+                    "rejection_code": "UNVERIFIED_HISTORICAL_INPUT",
+                    "provenance_rejection_code": "ARTIFACT_PATH_NOT_BOUND_IN_MANIFEST",
+                    "rejection_reason": (
+                        f"Source artifact path ('{resolved_file}') does not match the pinned canonical "
+                        f"path ('{canonical_bound_path}') for dataset '{ds_norm}'."
+                    ),
+                    "rationale": (
+                        f"Source artifact path ('{resolved_file}') is not bound in the pinned canonical specification."
+                    ),
+                    "dataset_id": ds_norm,
+                    "source_path": rel_display,
+                    "source_sha256": None,
+                }
+
+            expected_spec_sha = str(spec["expected_sha256"])
+
+            class _CanonicalPhysicalRecord:
+                pass
+
+            phys_rec = _CanonicalPhysicalRecord()
+            phys_rec.id = str(record_id)
+            phys_rec.dataset_id = ds_norm
+            phys_rec.source_artifact = str(resolved_file.resolve())
+            phys_rec.source_artifact_sha256 = expected_spec_sha
+
+            is_valid_art, art_rej_code, art_rej_reason, actual_sha, _, _ = (
+                ObservationCompletenessAttestationVerifier.verify_source_artifact_integrity(
+                    phys_rec, {"source_artifact_sha256": expected_spec_sha}
+                )
             )
+            if not is_valid_art:
+                rej_sub = art_rej_code or "SOURCE_ARTIFACT_HASH_MISMATCH"
+                return {
+                    "is_verified": False,
+                    "status": "UNVERIFIED_HISTORICAL_INPUT",
+                    "provenance_status": "UNVERIFIED_HISTORICAL_INPUT",
+                    "trust_progression_state": "ARTIFACT_PRESENT",
+                    "rejection_code": "UNVERIFIED_HISTORICAL_INPUT",
+                    "provenance_rejection_code": rej_sub,
+                    "rejection_reason": (
+                        f"Physical source artifact integrity verification failed ({rej_sub}): {art_rej_reason}"
+                    ),
+                    "rationale": (
+                        f"Physical source artifact integrity verification failed ({rej_sub}): {art_rej_reason}"
+                    ),
+                    "dataset_id": ds_norm,
+                    "source_path": rel_display,
+                    "source_sha256": None,
+                }
+
+            verified_sha = actual_sha or expected_spec_sha
+            spec_claims_sha = hashlib.sha256(rfc8785_canonical_json(spec)).hexdigest()
+            cached_spec_res = attestation_cache.get(
+                artifact_digest=verified_sha,
+                claims_sha256=spec_claims_sha,
+                signature_digest=expected_spec_sha,
+                key_id="PINNED_CANONICAL_DATASET_SPEC",
+                trust_policy_version="CBE-CANONICAL-DATASET-SPEC-1.0.0",
+                is_revoked=False,
+                source_path=str(resolved_file.resolve()),
+            )
+            if cached_spec_res is not None:
+                return cached_spec_res
+
+            src_stat = resolved_file.resolve().stat()
+            verified_spec_out = {
+                "is_verified": True,
+                "status": "VERIFIED_TRUSTED_PROVENANCE",
+                "provenance_status": "VERIFIED_TRUSTED_PROVENANCE",
+                "trust_progression_state": "INTEGRITY_VERIFIED",
+                "rejection_code": None,
+                "provenance_rejection_code": None,
+                "rejection_reason": None,
+                "rationale": (
+                    f"Dataset '{ds_norm}' verified via pinned canonical dataset specification, "
+                    f"source lineage, and physical SHA-256 integrity."
+                ),
+                "dataset_id": ds_norm,
+                "record_id": str(record_id),
+                "source_path": rel_display,
+                "resolved_path": str(resolved_file.resolve()),
+                "source_sha256": verified_sha,
+                "source_artifact_sha256": verified_sha,
+                "expected_sha256": expected_spec_sha,
+                "mechanism": "PINNED_CANONICAL_DATASET_SPEC",
+                "verification_method": "PINNED_CANONICAL_DATASET_SPEC",
+                "verified_key_id": "PINNED_CANONICAL_DATASET_SPEC",
+                "key_id": "PINNED_CANONICAL_DATASET_SPEC",
+                "issuer": "CBE_DATA_GOVERNANCE_COUNCIL",
+                "source_lineage": spec["source_lineage"],
+                "evidence_reference": f"Verified Canonical Dataset Spec: {ds_norm} (sha256={verified_sha[:16]}...)",
+            }
+            attestation_cache.put(
+                artifact_digest=verified_sha,
+                claims_sha256=spec_claims_sha,
+                signature_digest=expected_spec_sha,
+                key_id="PINNED_CANONICAL_DATASET_SPEC",
+                trust_policy_version="CBE-CANONICAL-DATASET-SPEC-1.0.0",
+                is_revoked=False,
+                result=verified_spec_out,
+                source_mtime_ns=src_stat.st_mtime_ns,
+                source_size=src_stat.st_size,
+            )
+            return verified_spec_out
 
         # 8. Determine expected reference SHA-256 strictly from the authenticated evidence (never self-computed)
         ref_sha = ""

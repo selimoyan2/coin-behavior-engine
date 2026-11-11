@@ -1604,22 +1604,71 @@ class ResearchWorkspaceV2Engine:
         primary_study: Optional[Dict[str, Any]] = None,
         candidate_study: Optional[Dict[str, Any]] = None,
         claimed_category: Optional[str] = None,
+        **extra_kwargs: Any,
     ) -> Dict[str, Any]:
+        from coin_behavior_engine.product.credential_manager import (
+            public_api_request_guard,
+        )
         from coin_behavior_engine.product.independent_validation_framework import (
             IndependentValidationFramework,
         )
 
-        fw = IndependentValidationFramework()
-        if primary_study and candidate_study:
-            audit = fw.evaluate_validation_independence(
-                primary_study=primary_study,
-                candidate_study=candidate_study,
-                claimed_category=claimed_category,
-            )
-            return {"status": "success", "audit": audit.to_dict()}
+        # Ordinary research workspace runtime is strictly VERIFICATION_ONLY.
+        # Reject any attempt to sign or forge replication attestations via workspace APIs.
+        combined_inputs: Dict[str, Any] = {}
+        if isinstance(primary_study, dict):
+            combined_inputs.update(primary_study)
+        if isinstance(candidate_study, dict):
+            combined_inputs.update(candidate_study)
+        combined_inputs.update(extra_kwargs)
 
-        matrix = fw.run_canonical_independence_matrix()
-        return {"status": "success", **matrix}
+        if any(
+            combined_inputs.get(k) is not None
+            for k in ("secret", "signing_secret", "raw_secret", "signing_key", "key_material")
+        ):
+            return {
+                "status": "error",
+                "error_code": "SIGNING_KEY_NOT_AUTHORIZED",
+                "rejection_code": "SIGNING_KEY_NOT_AUTHORIZED",
+                "message": "Caller-supplied signing keys or secrets are strictly prohibited on research APIs.",
+            }
+        if any(
+            k in combined_inputs
+            for k in ("is_admin", "authorized", "grant_signing_authority", "bypass_signing_authority")
+        ):
+            return {
+                "status": "error",
+                "error_code": "SIGNING_AUTHORITY_NOT_GRANTED",
+                "rejection_code": "SIGNING_AUTHORITY_NOT_GRANTED",
+                "message": "Caller-supplied authorization flags (is_admin/authorized) cannot grant signing authority.",
+            }
+        if (
+            str(combined_inputs.get("action") or "").lower() in ("sign", "create_attestation", "mint_attestation")
+            or bool(combined_inputs.get("create_attestation"))
+            or bool(combined_inputs.get("sign_replication_attestation"))
+        ):
+            return {
+                "status": "error",
+                "error_code": "SIGNING_OPERATION_NOT_PERMITTED",
+                "rejection_code": "SIGNING_OPERATION_NOT_PERMITTED",
+                "message": (
+                    "Public and research workspace APIs are strictly VERIFICATION_ONLY and "
+                    "cannot create or sign replication attestations."
+                ),
+            }
+
+        with public_api_request_guard():
+            fw = IndependentValidationFramework()
+            if primary_study and candidate_study:
+                audit = fw.evaluate_validation_independence(
+                    primary_study=primary_study,
+                    candidate_study=candidate_study,
+                    claimed_category=claimed_category,
+                )
+                return {"status": "success", "audit": audit.to_dict()}
+
+            matrix = fw.run_canonical_independence_matrix()
+            return {"status": "success", **matrix}
 
     @classmethod
     def get_scientific_validation_reports(
