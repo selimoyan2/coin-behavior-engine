@@ -49,6 +49,7 @@ from coin_behavior_engine.product.reproducibility_lab import (
     ReproducibilityLabEngine,
     ReproductionProvenance,
     ReproductionStatus,
+    ReferenceBlockedReason,
 )
 from coin_behavior_engine.product.research_priority_engine import (
     ResearchPriorityEngine,
@@ -287,20 +288,19 @@ class TestReproducibilityLab:
         """Verify offline procedure execution captures environment and outputs comparison."""
         catalog = ResearchWorkspaceV2Engine.get_canonical_catalog()
         engine = ReproducibilityLabEngine()
-        prov = engine.execute_reproduction(catalog[0], "PROC_PARKINSON_VOLATILITY")
+        prov = engine.execute_reproduction(catalog[0], "PROC_FUNDING_RATE_SUMMARY")
 
         assert isinstance(prov, ReproductionProvenance)
         assert len(prov.reproduced_output_sha256) == 64
+        assert len(prov.reference_output_sha256) == 64
         assert prov.execution_environment["canonical_model"] == "CBE-0.7.0"
-
-        # Comparison status must be in ReproductionStatus values
-        assert prov.status in [s.value for s in ReproductionStatus]
+        assert prov.status == ReproductionStatus.OUTPUTS_MATCHED.value
 
     def test_local_rerun_is_never_independent_replication(self):
         """CRITICAL: Re-execution must NEVER be claimed as independent replication."""
         catalog = ResearchWorkspaceV2Engine.get_canonical_catalog()
         engine = ReproducibilityLabEngine()
-        prov = engine.execute_reproduction(catalog[0], "PROC_PARKINSON_VOLATILITY")
+        prov = engine.execute_reproduction(catalog[0], "PROC_FUNDING_RATE_SUMMARY")
 
         assert prov.is_independent_replication is False
         notice = prov.comparison_details.get("governance_notice_tr", "")
@@ -436,9 +436,10 @@ class TestWorkspaceV2Integration:
         assert len(proc_data["procedures"]) >= 5
 
         # Reproducibility Execution
-        exec_res = engine.execute_offline_reproduction("RES-REGIME-01", "PROC_PARKINSON_VOLATILITY")
+        exec_res = engine.execute_offline_reproduction("RES-REGIME-01", "PROC_REGIME_STABILITY_EVAL")
         assert exec_res["status"] == "success"
         assert "provenance" in exec_res
+        assert exec_res["provenance"]["status"] == ReproductionStatus.OUTPUTS_MATCHED.value
 
         # Decision Report
         report_res = engine.generate_decision_report("RES-REGIME-01")
@@ -496,11 +497,12 @@ class TestDashboardApiSprint25:
         """Verify POST /api/v1/product/workspace/reproducibility/execute."""
         status_code, body = api_service.handle_post_request(
             "/api/v1/product/workspace/reproducibility/execute",
-            body={"record_id": "RES-REGIME-01", "procedure_id": "PROC_PARKINSON_VOLATILITY"},
+            body={"record_id": "RES-REGIME-01", "procedure_id": "PROC_REGIME_STABILITY_EVAL"},
         )
         assert status_code == 200
         assert body["status"] == "success"
         assert "provenance" in body
+        assert body["provenance"]["status"] == ReproductionStatus.OUTPUTS_MATCHED.value
 
     def test_api_decision_reports_endpoints(self, api_service):
         """Verify GET /api/v1/product/workspace/decision-reports JSON and HTML."""
@@ -710,6 +712,7 @@ class TestSprint25ScientificTrustNegativeCases:
             rec,
             procedure_name="PROC_FUNDING_RATE_SUMMARY",
             override_reference={"mean_funding_rate_bps": 999.9999},
+            trusted_fixture_context=True,
         )
         assert prov.status == ReproductionStatus.OUTPUTS_DIFFER.value
         assert prov.comparison_details["matched"] is False
@@ -717,11 +720,13 @@ class TestSprint25ScientificTrustNegativeCases:
     def test_negative_missing_observations_yields_reproduction_blocked(self):
         """Negative: Missing raw observations blocks reproduction."""
         rec = ResearchWorkspaceV2Engine.get_canonical_catalog()[0]
+        rec.category = "Volatilite"
         engine = ReproducibilityLabEngine()
         prov = engine.execute_reproduction(
             rec,
             procedure_name="PROC_PARKINSON_VOLATILITY",
             override_inputs={"highs": [100.0], "lows": [90.0]},
+            trusted_fixture_context=True,
         )
         assert prov.status == ReproductionStatus.REPRODUCTION_BLOCKED.value
         assert "yetersiz" in prov.error_message_tr.lower() or "missing" in prov.error_message_en.lower() or "cannot" in prov.error_message_en.lower()
@@ -785,3 +790,600 @@ class TestSprint25ScientificTrustNegativeCases:
         finally:
             if os.path.exists(temp_path):
                 os.remove(temp_path)
+
+
+# ==============================================================================
+# 11. P0-1 DATASET PROVENANCE TRUST BOUNDARY TESTS (10 NEGATIVE + POSITIVE)
+# ==============================================================================
+
+class TestSprint25DatasetProvenanceTrustBoundary:
+    """
+    Tests for P0-1 Dataset Provenance Trust Boundary across ScientificReadinessEvaluator,
+    EvidenceGraphService, EvidenceGapAnalyzer, ResearchPriorityEngine, and DecisionReportBuilder.
+    """
+
+    @pytest.fixture(autouse=True)
+    def setup_keys_and_cache(self):
+        attestation_cache.clear()
+        signing_key_registry.register_key("prov-key-active", "prov-secret-active-9999", is_active=True)
+        signing_key_registry.register_key("prov-key-revoked", "prov-secret-revoked-000", is_active=True)
+        signing_key_registry.revoke_key("prov-key-revoked")
+        yield
+        attestation_cache.clear()
+
+    def _make_record(self, tmp_file: str, sha256: str, ds_id: str = "BTCUSDT-SPOT-1H-2022-2026") -> ResearchRecord:
+        return ResearchRecord(
+            id="TEST-PROV-REC-01",
+            title="Provenance Trust Boundary Record",
+            title_en="Provenance Trust Boundary Record",
+            category="Volatilite",
+            dataset_id=ds_id,
+            historical_period="2024-01-01 to 2024-01-06",
+            window_cadence="1h",
+            specification_id="SPEC-PROV-01",
+            observation_start_utc="2024-01-01T00:00:00Z",
+            observation_end_utc="2024-01-06T00:00:00Z",
+            observation_interval_count=120,
+            source_artifact=tmp_file,
+            source_artifact_sha256=sha256,
+            sample_size=120,
+            volatility_ratio=1.18,
+            raw_p_value=0.04,
+            created_at_utc="2026-10-20T10:00:00Z",
+        )
+
+    def test_01_existing_directory_with_no_manifest_is_unverified(self, tmp_path):
+        """1. Existing directory with no manifest -> UNVERIFIED (never VERIFIED from Path.exists())."""
+        f = tmp_path / "artifact.json"
+        f.write_text('{"status": "ok"}', encoding="utf-8")
+        sha = hashlib.sha256(f.read_bytes()).hexdigest()
+
+        # Even though data/binance_spot_multiyear/1h/ exists on disk, record has no attestation or manifest
+        rec = self._make_record(str(f), sha, ds_id="BTCUSDT-SPOT-1H-2022-2026")
+        assert Path("data/binance_spot_multiyear/1h/").exists()
+
+        prov = ScientificReadinessEvaluator.verify_dataset_provenance(rec)
+        assert prov["is_verified"] is False
+        assert prov["readiness_status"] == DimensionStatus.UNVERIFIED.value
+        assert prov["graph_status"] == "REGISTERED"
+        assert prov["rejection_code"] == "MISSING_AUTHENTICATED_PROVENANCE"
+
+        scorecard = ScientificReadinessEvaluator.evaluate_record(rec)
+        d1 = next(d for d in scorecard.dimensions if d.dimension_key == "DATASET_PROVENANCE")
+        assert d1.status == DimensionStatus.UNVERIFIED.value
+        assert scorecard.is_ready_for_review is False
+
+        # Cross-module consistency: Evidence Graph, Gap Analyzer, Decision Report
+        graph = EvidenceGraphService.build_canonical_graph([rec])
+        ds_node = graph.get_node("DS-BTCUSDT-SPOT-1H-2022-2026")
+        assert ds_node is not None
+        assert ds_node.status == "REGISTERED"
+        assert any(m["missing_type"] == "DATASET_PROVENANCE_UNVERIFIED" for m in graph.detect_missing_links())
+
+        gaps = EvidenceGapAnalyzer.analyze_record(rec)
+        assert any(g.gap_category == GapCategory.MISSING_DATASET_PROVENANCE.value for g in gaps)
+
+        rpt = DecisionReportBuilder.generate_report(rec)
+        assert "UNVERIFIED" in rpt.sections["sec_4_provenance"]
+
+    def test_02_existing_raw_file_with_no_trusted_lineage_is_unverified(self, tmp_path):
+        """2. Existing raw file with no trusted lineage -> UNVERIFIED or FAILED."""
+        f = tmp_path / "raw_data.json"
+        f.write_text('{"raw": 123}', encoding="utf-8")
+        sha = hashlib.sha256(f.read_bytes()).hexdigest()
+
+        rec = self._make_record(str(f), sha, ds_id="CUSTOM-RAW-FILE-DATASET")
+        prov = ScientificReadinessEvaluator.verify_dataset_provenance(rec)
+        assert prov["is_verified"] is False
+        assert prov["readiness_status"] == DimensionStatus.UNVERIFIED.value
+
+        # Also test bare unauthenticated intake_manifest_path file without signature/lineage
+        bad_manifest = tmp_path / "bare_manifest.json"
+        bad_manifest.write_text('{"dataset_id": "CUSTOM-RAW-FILE-DATASET"}', encoding="utf-8")
+        rec.intake_manifest_path = str(bad_manifest)
+        prov2 = ScientificReadinessEvaluator.verify_dataset_provenance(rec)
+        assert prov2["is_verified"] is False
+        assert prov2["readiness_status"] == DimensionStatus.FAILED.value
+
+    def test_03_forged_attestation_fails_provenance(self, tmp_path):
+        """3. Valid-looking but forged attestation -> FAILED."""
+        f = tmp_path / "art3.json"
+        f.write_text('{"v": 3}', encoding="utf-8")
+        sha = hashlib.sha256(f.read_bytes()).hexdigest()
+        rec = self._make_record(str(f), sha)
+        rec.observation_completeness_attestation = ObservationCompletenessAttestationVerifier.create_signed_attestation(
+            record=rec,
+            key_id="prov-key-active",
+            secret="prov-secret-active-9999",
+            forged_signature="hmac-sha256:prov-key-active:" + ("f" * 64),
+        )
+
+        prov = ScientificReadinessEvaluator.verify_dataset_provenance(rec)
+        assert prov["is_verified"] is False
+        assert prov["readiness_status"] == DimensionStatus.FAILED.value
+        assert prov["rejection_code"] == "SIGNATURE_VERIFICATION_FAILED"
+
+    def test_04_expired_attestation_fails_provenance(self, tmp_path):
+        """4. Expired attestation -> FAILED."""
+        f = tmp_path / "art4.json"
+        f.write_text('{"v": 4}', encoding="utf-8")
+        sha = hashlib.sha256(f.read_bytes()).hexdigest()
+        rec = self._make_record(str(f), sha)
+        rec.observation_completeness_attestation = ObservationCompletenessAttestationVerifier.create_signed_attestation(
+            record=rec,
+            key_id="prov-key-active",
+            secret="prov-secret-active-9999",
+            expires_at_utc="2020-01-01T00:00:00Z",
+        )
+
+        prov = ScientificReadinessEvaluator.verify_dataset_provenance(rec)
+        assert prov["is_verified"] is False
+        assert prov["readiness_status"] == DimensionStatus.FAILED.value
+        assert prov["rejection_code"] == "ATTESTATION_EXPIRED"
+
+    def test_05_revoked_signing_key_fails_provenance(self, tmp_path):
+        """5. Revoked signing key -> FAILED."""
+        f = tmp_path / "art5.json"
+        f.write_text('{"v": 5}', encoding="utf-8")
+        sha = hashlib.sha256(f.read_bytes()).hexdigest()
+        rec = self._make_record(str(f), sha)
+        rec.observation_completeness_attestation = ObservationCompletenessAttestationVerifier.create_signed_attestation(
+            record=rec,
+            key_id="prov-key-revoked",
+            secret="prov-secret-revoked-000",
+        )
+
+        prov = ScientificReadinessEvaluator.verify_dataset_provenance(rec)
+        assert prov["is_verified"] is False
+        assert prov["readiness_status"] == DimensionStatus.FAILED.value
+        assert prov["rejection_code"] == "REVOKED_SIGNING_KEY"
+
+    def test_06_dataset_id_mismatch_fails_provenance(self, tmp_path):
+        """6. Dataset ID mismatch -> FAILED."""
+        f = tmp_path / "art6.json"
+        f.write_text('{"v": 6}', encoding="utf-8")
+        sha = hashlib.sha256(f.read_bytes()).hexdigest()
+        rec = self._make_record(str(f), sha, ds_id="BTCUSDT-SPOT-1H-2022-2026")
+        rec.observation_completeness_attestation = ObservationCompletenessAttestationVerifier.create_signed_attestation(
+            record=rec,
+            key_id="prov-key-active",
+            secret="prov-secret-active-9999",
+            override_dataset_id="DIFFERENT-DATASET-ID",
+        )
+
+        prov = ScientificReadinessEvaluator.verify_dataset_provenance(rec)
+        assert prov["is_verified"] is False
+        assert prov["readiness_status"] == DimensionStatus.FAILED.value
+        assert prov["rejection_code"] == "DATASET_ID_MISMATCH"
+
+    def test_07_source_sha256_mismatch_fails_provenance(self, tmp_path):
+        """7. Source SHA-256 mismatch -> FAILED."""
+        f = tmp_path / "art7.json"
+        f.write_text('{"v": 7}', encoding="utf-8")
+        wrong_sha = "1" * 64
+        rec = self._make_record(str(f), wrong_sha)
+        rec.observation_completeness_attestation = ObservationCompletenessAttestationVerifier.create_signed_attestation(
+            record=rec,
+            key_id="prov-key-active",
+            secret="prov-secret-active-9999",
+            override_sha256=wrong_sha,
+        )
+
+        prov = ScientificReadinessEvaluator.verify_dataset_provenance(rec)
+        assert prov["is_verified"] is False
+        assert prov["readiness_status"] == DimensionStatus.FAILED.value
+        assert prov["rejection_code"] == "SOURCE_ARTIFACT_HASH_MISMATCH"
+
+    def test_08_missing_physical_source_fails_provenance(self, tmp_path):
+        """8. Missing physical source -> FAILED (enforce_source_file_integrity=True)."""
+        missing_path = str(tmp_path / "nonexistent_source.json")
+        fake_sha = "2" * 64
+        rec = self._make_record(missing_path, fake_sha)
+        rec.observation_completeness_attestation = ObservationCompletenessAttestationVerifier.create_signed_attestation(
+            record=rec,
+            key_id="prov-key-active",
+            secret="prov-secret-active-9999",
+            override_sha256=fake_sha,
+        )
+
+        prov = ScientificReadinessEvaluator.verify_dataset_provenance(rec)
+        assert prov["is_verified"] is False
+        assert prov["readiness_status"] == DimensionStatus.FAILED.value
+        assert prov["rejection_code"] == "SOURCE_ARTIFACT_MISSING"
+
+    def test_09_quarantined_dataset_is_blocked(self, tmp_path):
+        """9. Quarantined dataset -> BLOCKED."""
+        f = tmp_path / "art9.json"
+        f.write_text('{"v": 9}', encoding="utf-8")
+        sha = hashlib.sha256(f.read_bytes()).hexdigest()
+        rec = self._make_record(str(f), sha, ds_id="BTCUSDT-OCTOBER-2026-INTAKE")
+        rec.quarantine_status = "QUARANTINED"
+
+        prov = ScientificReadinessEvaluator.verify_dataset_provenance(rec)
+        assert prov["is_verified"] is False
+        assert prov["readiness_status"] == DimensionStatus.BLOCKED.value
+        assert prov["graph_status"] == "BLOCKED"
+        assert prov["rejection_code"] == "DATASET_QUARANTINED"
+
+    def test_10_source_mutation_after_verification_invalidates_provenance(self, tmp_path):
+        """10. Source mutation after verification -> FAILED (cache invalidated)."""
+        f = tmp_path / "art10.json"
+        f.write_text('{"v": 10, "state": "clean"}', encoding="utf-8")
+        sha = hashlib.sha256(f.read_bytes()).hexdigest()
+        rec = self._make_record(str(f), sha)
+        rec.observation_completeness_attestation = ObservationCompletenessAttestationVerifier.create_signed_attestation(
+            record=rec,
+            key_id="prov-key-active",
+            secret="prov-secret-active-9999",
+        )
+
+        # Initial verification succeeds
+        prov1 = ScientificReadinessEvaluator.verify_dataset_provenance(rec)
+        assert prov1["is_verified"] is True
+        assert prov1["readiness_status"] == DimensionStatus.VERIFIED.value
+
+        # Mutate physical source file on disk
+        time.sleep(0.02)
+        f.write_text('{"v": 10, "state": "tampered_after_verification"}', encoding="utf-8")
+
+        # Subsequent provenance check must fail closed
+        prov2 = ScientificReadinessEvaluator.verify_dataset_provenance(rec)
+        assert prov2["is_verified"] is False
+        assert prov2["readiness_status"] == DimensionStatus.FAILED.value
+        assert prov2["rejection_code"] == "SOURCE_ARTIFACT_HASH_MISMATCH"
+
+    def test_11_positive_verified_provenance_via_attestation_and_intake_manifest(self, tmp_path):
+        """Positive: Cryptographically signed attestation OR signed intake manifest grants VERIFIED provenance across all modules."""
+        f = tmp_path / "art_pos.json"
+        f.write_text('{"highs": [105,106,107,108,109,110,111,112,113,114], "lows": [100,101,102,103,104,105,106,107,108,109]}', encoding="utf-8")
+        sha = hashlib.sha256(f.read_bytes()).hexdigest()
+
+        # Path A: Signed Attestation
+        rec_att = self._make_record(str(f), sha)
+        rec_att.observation_completeness_attestation = ObservationCompletenessAttestationVerifier.create_signed_attestation(
+            record=rec_att,
+            key_id="prov-key-active",
+            secret="prov-secret-active-9999",
+        )
+        sc_att = ScientificReadinessEvaluator.evaluate_record(rec_att)
+        d1_att = next(d for d in sc_att.dimensions if d.dimension_key == "DATASET_PROVENANCE")
+        assert d1_att.status == DimensionStatus.VERIFIED.value
+        assert sc_att.is_ready_for_review is True
+        assert sc_att.overall_verdict == OverallReadinessVerdict.READY_FOR_CONFIRMATORY_REVIEW.value
+
+        graph_att = EvidenceGraphService.build_canonical_graph([rec_att])
+        ds_node = graph_att.get_node("DS-BTCUSDT-SPOT-1H-2022-2026")
+        assert ds_node.status == "INTEGRITY_VERIFIED"
+        assert not any(m["missing_type"] == "DATASET_PROVENANCE_UNVERIFIED" for m in graph_att.detect_missing_links())
+
+        gaps_att = EvidenceGapAnalyzer.analyze_record(rec_att)
+        assert not any(g.gap_category == GapCategory.MISSING_DATASET_PROVENANCE.value for g in gaps_att)
+
+        # Path B: Signed Intake Manifest
+        rec_man = self._make_record(str(f), sha, ds_id="BTCUSDT-MANIFEST-VERIFIED-DS")
+        manifest_obj = ScientificReadinessEvaluator.create_signed_intake_manifest(
+            record=rec_man,
+            key_id="prov-key-active",
+            secret="prov-secret-active-9999",
+        )
+        manifest_path = tmp_path / "signed_intake_manifest.json"
+        manifest_path.write_text(json.dumps(manifest_obj), encoding="utf-8")
+        rec_man.intake_manifest_path = str(manifest_path)
+
+        prov_man = ScientificReadinessEvaluator.verify_dataset_provenance(rec_man)
+        assert prov_man["is_verified"] is True
+        assert prov_man["readiness_status"] == DimensionStatus.VERIFIED.value
+        assert prov_man["mechanism"] == "TRUSTED_INTAKE_MANIFEST"
+
+
+# ==============================================================================
+# 12. P0-2 INDEPENDENT REFERENCE VALIDATION TESTS (10 NEGATIVE + POSITIVE)
+# ==============================================================================
+
+class TestSprint25IndependentReferenceValidation:
+    """
+    Tests for P0-2 Independent Reference Validation in ReproducibilityLabEngine.
+    Verifies zero computed-to-reference fallback across all 5 allowlisted procedures.
+    """
+
+    @pytest.fixture(autouse=True)
+    def setup_keys(self):
+        signing_key_registry.register_key("ref-key-active", "ref-secret-active-7777", is_active=True)
+        yield
+
+    def test_neg_01_missing_reference_blocks_reproduction(self, tmp_path):
+        """1. Missing reference -> REPRODUCTION_BLOCKED (MISSING_TRUSTED_REFERENCE)."""
+        # Create artifact with valid high/low observations but NO parkinson_volatility reference field
+        f = tmp_path / "parkinson_no_ref.json"
+        highs = [105.0 + i for i in range(20)]
+        lows = [100.0 + i for i in range(20)]
+        f.write_text(json.dumps({"highs": highs, "lows": lows}), encoding="utf-8")
+        sha = hashlib.sha256(f.read_bytes()).hexdigest()
+
+        rec = ResearchRecord(
+            id="TEST-REF-MISS-01",
+            title="Missing Reference Test",
+            title_en="Missing Reference Test",
+            category="Volatilite",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024",
+            window_cadence="1h",
+            specification_id="SP-REF-01",
+            source_artifact=str(f),
+            source_artifact_sha256=sha,
+            sample_size=20,
+            created_at_utc="2026-10-20T00:00:00Z",
+        )
+        prov = ReproducibilityLabEngine.execute_reproduction(
+            rec, "PROC_PARKINSON_VOLATILITY", trusted_fixture_context=True
+        )
+        assert prov.status == ReproductionStatus.REPRODUCTION_BLOCKED.value
+        assert ReferenceBlockedReason.MISSING_TRUSTED_REFERENCE.value in prov.comparison_details["blocked_reason"]
+
+    def test_neg_02_reference_with_missing_provenance_blocks_reproduction(self, tmp_path):
+        """2. Reference with missing provenance -> REPRODUCTION_BLOCKED (UNVERIFIED_REFERENCE_PROVENANCE)."""
+        f = tmp_path / "unverified_prov_art.json"
+        highs = [105.0 + i for i in range(20)]
+        lows = [100.0 + i for i in range(20)]
+        f.write_text(json.dumps({"highs": highs, "lows": lows, "parkinson_volatility": 2.5, "sample_size": 20}), encoding="utf-8")
+        sha = hashlib.sha256(f.read_bytes()).hexdigest()
+
+        rec = ResearchRecord(
+            id="TEST-REF-UNVERIFIED-02",
+            title="Unverified Artifact Reference",
+            title_en="Unverified Artifact Reference",
+            category="Volatilite",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024",
+            window_cadence="1h",
+            specification_id="SP-REF-02",
+            source_artifact=str(f),
+            source_artifact_sha256=sha,
+            sample_size=20,
+            created_at_utc="2026-10-20T00:00:00Z",
+        )
+        # Without trusted_fixture_context, signed attestation, or TRUSTED_ARTIFACT_REGISTRY entry -> blocked
+        prov = ReproducibilityLabEngine.execute_reproduction(rec, "PROC_PARKINSON_VOLATILITY")
+        assert prov.status == ReproductionStatus.REPRODUCTION_BLOCKED.value
+        assert prov.comparison_details["blocked_reason"] == ReferenceBlockedReason.UNVERIFIED_REFERENCE_PROVENANCE.value
+
+    def test_neg_03_reference_from_another_dataset_blocks_reproduction(self):
+        """3. Reference from another dataset -> REPRODUCTION_BLOCKED (UNVERIFIED_REFERENCE_PROVENANCE)."""
+        rec = ResearchWorkspaceV2Engine.get_canonical_catalog()[0]  # RES-FUND-01
+        ref_out = {"mean_funding_bps": 1.0103, "sample_size": 1185}
+        bad_prov = ReproducibilityLabEngine.create_signed_reference_provenance(
+            record=rec,
+            procedure_name="PROC_FUNDING_RATE_SUMMARY",
+            reference_outputs=ref_out,
+            key_id="ref-key-active",
+            secret="ref-secret-active-7777",
+            override_dataset_id="WRONG-OTHER-DATASET-ID",
+        )
+        prov = ReproducibilityLabEngine.execute_reproduction(
+            rec,
+            "PROC_FUNDING_RATE_SUMMARY",
+            override_reference=ref_out,
+            reference_provenance=bad_prov,
+        )
+        assert prov.status == ReproductionStatus.REPRODUCTION_BLOCKED.value
+        assert prov.comparison_details["blocked_reason"] == ReferenceBlockedReason.UNVERIFIED_REFERENCE_PROVENANCE.value
+
+    def test_neg_04_reference_from_another_methodology_blocks_reproduction(self):
+        """4. Reference from another methodology -> REPRODUCTION_BLOCKED (UNVERIFIED_REFERENCE_PROVENANCE)."""
+        # Calling PROC_PARKINSON_VOLATILITY on RES-FUND-01 (Funding category) or RES-REGIME-01 (Regime category)
+        catalog = ResearchWorkspaceV2Engine.get_canonical_catalog()
+        fund_rec = next(r for r in catalog if r.id == "RES-FUND-01")
+        prov = ReproducibilityLabEngine.execute_reproduction(fund_rec, "PROC_PARKINSON_VOLATILITY")
+        assert prov.status == ReproductionStatus.REPRODUCTION_BLOCKED.value
+        assert prov.comparison_details["blocked_reason"] == ReferenceBlockedReason.UNVERIFIED_REFERENCE_PROVENANCE.value
+
+    def test_neg_05_reference_created_during_same_attempt_blocks_reproduction(self):
+        """5. Reference created during the same reproduction attempt -> REPRODUCTION_BLOCKED."""
+        rec = ResearchWorkspaceV2Engine.get_canonical_catalog()[0]
+        ref_out = {"mean_funding_bps": 1.0103, "sample_size": 1185}
+        same_run_prov = ReproducibilityLabEngine.create_signed_reference_provenance(
+            record=rec,
+            procedure_name="PROC_FUNDING_RATE_SUMMARY",
+            reference_outputs=ref_out,
+            key_id="ref-key-active",
+            secret="ref-secret-active-7777",
+            created_during_reproduction_attempt=True,
+        )
+        prov = ReproducibilityLabEngine.execute_reproduction(
+            rec,
+            "PROC_FUNDING_RATE_SUMMARY",
+            override_reference=ref_out,
+            reference_provenance=same_run_prov,
+        )
+        assert prov.status == ReproductionStatus.REPRODUCTION_BLOCKED.value
+        assert prov.comparison_details["blocked_reason"] == ReferenceBlockedReason.UNVERIFIED_REFERENCE_PROVENANCE.value
+
+    def test_neg_06_caller_supplied_untrusted_override_blocks_reproduction(self):
+        """6. Caller-supplied untrusted override -> REPRODUCTION_BLOCKED (UNVERIFIED_REFERENCE_PROVENANCE)."""
+        rec = ResearchWorkspaceV2Engine.get_canonical_catalog()[0]
+        # Passing override_reference without trusted_fixture_context=True or signed reference_provenance
+        prov = ReproducibilityLabEngine.execute_reproduction(
+            rec,
+            "PROC_FUNDING_RATE_SUMMARY",
+            override_reference={"mean_funding_bps": 1.0103},
+        )
+        assert prov.status == ReproductionStatus.REPRODUCTION_BLOCKED.value
+        assert prov.comparison_details["blocked_reason"] == ReferenceBlockedReason.UNVERIFIED_REFERENCE_PROVENANCE.value
+
+    def test_neg_07_tampered_reference_artifact_blocks_reproduction(self, tmp_path):
+        """7. Tampered reference artifact -> REPRODUCTION_BLOCKED."""
+        f = tmp_path / "tampered_ref.json"
+        f.write_text('{"break_even_analysis": {"observed_mean_funding_bps": 99.0}}', encoding="utf-8")
+        rec = ResearchRecord(
+            id="TEST-TAMPERED-07",
+            title="Tampered Reference Artifact",
+            title_en="Tampered Reference Artifact",
+            category="Fonlama",
+            dataset_id="BTCUSDT-PERP-FUNDING-2022-2026",
+            historical_period="2024",
+            window_cadence="8h",
+            specification_id="SP-07",
+            source_artifact=str(f),
+            source_artifact_sha256="f" * 64,  # Mismatched SHA-256
+            sample_size=1185,
+        )
+        prov = ReproducibilityLabEngine.execute_reproduction(rec, "PROC_FUNDING_RATE_SUMMARY")
+        assert prov.status == ReproductionStatus.REPRODUCTION_BLOCKED.value
+
+    def test_neg_08_changed_source_observations_yields_outputs_differ(self):
+        """8. Changed source observations -> OUTPUTS_DIFFER (never masked by fallback!)."""
+        catalog = ResearchWorkspaceV2Engine.get_canonical_catalog()
+        fund_rec = next(r for r in catalog if r.id == "RES-FUND-01")
+
+        # Provide altered funding rate observations while keeping the canonical stored reference in sprint09_38 report
+        altered_rates = [5.5 if i % 2 == 0 else -2.0 for i in range(200)]
+        prov = ReproducibilityLabEngine.execute_reproduction(
+            fund_rec,
+            "PROC_FUNDING_RATE_SUMMARY",
+            override_inputs={"rates": altered_rates},
+        )
+        assert prov.status == ReproductionStatus.OUTPUTS_DIFFER.value
+        assert prov.comparison_details["matched"] is False
+        assert prov.reference_output_sha256 != prov.reproduced_output_sha256
+
+    def test_neg_09_different_computed_output_yields_outputs_differ(self):
+        """9. Different computed output -> OUTPUTS_DIFFER across DTW and Regime procedures."""
+        catalog = ResearchWorkspaceV2Engine.get_canonical_catalog()
+        analog_rec = next(r for r in catalog if r.id == "RES-ANALOG-01")
+
+        # Mutate component distances so recomputed composite_distance differs from stored reference (0.0692)
+        mutated_components = {
+            "return_structure": {"weight": 0.5, "distance_value": 0.45},
+            "volatility_profile": {"weight": 0.5, "distance_value": 0.55},
+        }
+        prov = ReproducibilityLabEngine.execute_reproduction(
+            analog_rec,
+            "PROC_DTW_PATTERN_DISTANCE",
+            override_inputs={"components": mutated_components},
+        )
+        assert prov.status == ReproductionStatus.OUTPUTS_DIFFER.value
+        assert prov.reference_outputs["composite_distance"] == 0.0692
+        assert prov.reproduced_outputs["composite_distance"] == 0.5000
+
+    def test_neg_10_missing_essential_raw_data_blocks_reproduction(self):
+        """10. Missing essential raw data -> REPRODUCTION_BLOCKED."""
+        catalog = ResearchWorkspaceV2Engine.get_canonical_catalog()
+        reg_rec = next(r for r in catalog if r.id == "RES-REGIME-01")
+        prov = ReproducibilityLabEngine.execute_reproduction(
+            reg_rec,
+            "PROC_REGIME_STABILITY_EVAL",
+            override_inputs={"candles": []},
+        )
+        assert prov.status == ReproductionStatus.REPRODUCTION_BLOCKED.value
+        assert ReferenceBlockedReason.MISSING_RAW_OBSERVATIONS.value in prov.comparison_details["blocked_reason"]
+
+    def test_neg_11_historical_storage_report_without_mountinfo_blocks_reexecution(self):
+        """11. Historical storage report inspection without raw mountinfo -> REPRODUCTION_BLOCKED (HISTORICAL_REPORT_INSPECTION_ONLY)."""
+        catalog = ResearchWorkspaceV2Engine.get_canonical_catalog()
+        dur_rec = next(r for r in catalog if r.id == "RES-DURABILITY-01")
+        prov = ReproducibilityLabEngine.execute_reproduction(dur_rec, "PROC_STORAGE_VERIFICATION")
+        assert prov.status == ReproductionStatus.REPRODUCTION_BLOCKED.value
+        assert ReferenceBlockedReason.HISTORICAL_REPORT_INSPECTION_ONLY.value in prov.comparison_details["blocked_reason"]
+        assert prov.comparison_details["audit_mode"] == "HISTORICAL_REPORT_INSPECTION"
+        assert prov.comparison_details["storage_test_reexecuted"] is False
+
+    def test_pos_12_all_five_procedures_match_independent_verified_references(self, tmp_path):
+        """Positive: All 5 allowlisted procedures recompute from raw observations and match independent references."""
+        catalog = ResearchWorkspaceV2Engine.get_canonical_catalog()
+
+        # 1. PROC_FUNDING_RATE_SUMMARY (RES-FUND-01)
+        fund_rec = next(r for r in catalog if r.id == "RES-FUND-01")
+        p_fund = ReproducibilityLabEngine.execute_reproduction(fund_rec, "PROC_FUNDING_RATE_SUMMARY")
+        assert p_fund.status == ReproductionStatus.OUTPUTS_MATCHED.value
+        assert p_fund.is_independent_replication is False
+        assert p_fund.reproduced_outputs["mean_funding_bps"] == 1.0103
+        assert p_fund.reproduced_outputs["negative_funding_count"] == 103
+        assert p_fund.reproduced_outputs["sample_size"] == 1185
+
+        # 2. PROC_REGIME_STABILITY_EVAL (RES-REGIME-01 recomputed from 8,736 q1_2024 candles)
+        reg_rec = next(r for r in catalog if r.id == "RES-REGIME-01")
+        p_reg = ReproducibilityLabEngine.execute_reproduction(reg_rec, "PROC_REGIME_STABILITY_EVAL")
+        assert p_reg.status == ReproductionStatus.OUTPUTS_MATCHED.value
+        assert p_reg.is_independent_replication is False
+        assert p_reg.reproduced_outputs["direct_transitions_observed_count"] == 5
+        assert p_reg.reproduced_outputs["direct_transitions_total_evaluated"] == 822
+        assert p_reg.reproduced_outputs["direct_transition_rate_pct"] == 0.61
+        assert p_reg.reproduced_outputs["total_bars_evaluated"] == 8736
+
+        # 3. PROC_DTW_PATTERN_DISTANCE (RES-ANALOG-01 recomputed from component vectors)
+        analog_rec = next(r for r in catalog if r.id == "RES-ANALOG-01")
+        p_dtw = ReproducibilityLabEngine.execute_reproduction(analog_rec, "PROC_DTW_PATTERN_DISTANCE")
+        assert p_dtw.status == ReproductionStatus.OUTPUTS_MATCHED.value
+        assert p_dtw.is_independent_replication is False
+        assert p_dtw.reproduced_outputs["composite_distance"] == 0.0692
+        assert p_dtw.reproduced_outputs["similarity_score_pct"] == 93.08
+
+        # 4. PROC_PARKINSON_VOLATILITY (with signed independent reference provenance)
+        f_park = tmp_path / "parkinson_verified.json"
+        highs = [102.0] * 120
+        lows = [100.0] * 120
+        import math as _m
+        expected_park = round(_m.sqrt(1.0 / (4.0 * _m.log(2.0)) * (_m.log(102.0 / 100.0) ** 2)) * _m.sqrt(8760.0), 4)
+        f_park.write_text(
+            json.dumps({
+                "methodology": "PARKINSON_HIGH_LOW",
+                "highs": highs,
+                "lows": lows,
+                "parkinson_volatility": expected_park,
+                "sample_size": 120,
+                "timestamp_utc": "2026-10-15T00:00:00Z",
+            }),
+            encoding="utf-8",
+        )
+        park_sha = hashlib.sha256(f_park.read_bytes()).hexdigest()
+        park_rec = ResearchRecord(
+            id="TEST-PARK-POS-01",
+            title="Parkinson Verified Test",
+            title_en="Parkinson Verified Test",
+            category="Volatilite",
+            dataset_id="BTCUSDT-SPOT-1H-2022-2026",
+            historical_period="2024-01-01 to 2024-01-06",
+            window_cadence="1h",
+            specification_id="SP-PARK-01",
+            observation_start_utc="2024-01-01T00:00:00Z",
+            observation_end_utc="2024-01-06T00:00:00Z",
+            observation_interval_count=120,
+            source_artifact=str(f_park),
+            source_artifact_sha256=park_sha,
+            sample_size=120,
+            created_at_utc="2026-10-15T00:00:00Z",
+        )
+        ref_env = ReproducibilityLabEngine.create_signed_reference_provenance(
+            record=park_rec,
+            procedure_name="PROC_PARKINSON_VOLATILITY",
+            reference_outputs={
+                "methodology": "PARKINSON_HIGH_LOW",
+                "sample_size": 120,
+                "parkinson_volatility": expected_park,
+            },
+            key_id="ref-key-active",
+            secret="ref-secret-active-7777",
+            methodology="PARKINSON_HIGH_LOW",
+        )
+        p_park = ReproducibilityLabEngine.execute_reproduction(
+            park_rec, "PROC_PARKINSON_VOLATILITY", reference_provenance=ref_env
+        )
+        assert p_park.status == ReproductionStatus.OUTPUTS_MATCHED.value
+        assert p_park.reproduced_outputs["parkinson_volatility"] == expected_park
+
+        # 5. PROC_STORAGE_VERIFICATION (RES-DURABILITY-01 with raw kernel mountinfo_content)
+        dur_rec = next(r for r in catalog if r.id == "RES-DURABILITY-01")
+        mountinfo_line = (
+            "942 931 8:1 /var/lib/docker/volumes/dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f/_data "
+            "/app/data/prospective rw,relatime - ext4 /dev/sda1 rw\n"
+        )
+        p_dur = ReproducibilityLabEngine.execute_reproduction(
+            dur_rec,
+            "PROC_STORAGE_VERIFICATION",
+            override_inputs={"mountinfo_content": mountinfo_line},
+        )
+        assert p_dur.status == ReproductionStatus.OUTPUTS_MATCHED.value
+        assert p_dur.is_independent_replication is False
+        assert p_dur.reproduced_outputs["authorized_volume_id"] == "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f"
+        assert p_dur.reproduced_outputs["durability_verdict"] == "VERIFIED_DURABLE"
+

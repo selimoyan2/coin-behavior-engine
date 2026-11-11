@@ -422,16 +422,31 @@ class EvidenceGraphService:
                 else:
                     for de in ds_edges:
                         target_ds = self._nodes.get(de.target_id)
-                        if target_ds and target_ds.status == NodeVerificationStatus.BLOCKED.value:
-                            missing_links.append({
-                                "node_id": node_id,
-                                "record_label": node.label,
-                                "missing_type": "DATASET_QUARANTINED",
-                                "severity": "CRITICAL",
-                                "description_tr": f"Bağlı veri seti ({target_ds.label}) karantina altında bloke edilmiştir.",
-                                "description_en": f"Linked dataset ({target_ds.label_en}) is quarantined and blocked.",
-                                "recommended_action": "Karantina adli incelemesi tamamlanmadan bu kaydı incelemeye almayın.",
-                            })
+                        if target_ds:
+                            if target_ds.status == NodeVerificationStatus.BLOCKED.value:
+                                missing_links.append({
+                                    "node_id": node_id,
+                                    "record_label": node.label,
+                                    "missing_type": "DATASET_QUARANTINED",
+                                    "severity": "CRITICAL",
+                                    "description_tr": f"Bağlı veri seti ({target_ds.label}) karantina altında bloke edilmiştir.",
+                                    "description_en": f"Linked dataset ({target_ds.label_en}) is quarantined and blocked.",
+                                    "recommended_action": "Karantina adli incelemesi tamamlanmadan bu kaydı incelemeye almayın.",
+                                })
+                            elif target_ds.status not in (
+                                NodeVerificationStatus.INTEGRITY_VERIFIED.value,
+                                NodeVerificationStatus.SCIENTIFICALLY_VERIFIED.value,
+                                NodeVerificationStatus.VERIFIED.value,
+                            ):
+                                missing_links.append({
+                                    "node_id": node_id,
+                                    "record_label": node.label,
+                                    "missing_type": "DATASET_PROVENANCE_UNVERIFIED",
+                                    "severity": "CRITICAL",
+                                    "description_tr": f"Bağlı veri setinin ({target_ds.label}) kriptografik soykütüğü doğrulanmamıştır ({target_ds.status}).",
+                                    "description_en": f"Linked dataset ({target_ds.label_en}) lacks cryptographically verified provenance ({target_ds.status}).",
+                                    "recommended_action": "Veri seti için RFC-8785 imzalı tasdik veya imzalı kabul manifestosu ekleyin.",
+                                })
 
             elif node.node_type == EvidenceNodeType.SCIENTIFIC_CLAIM.value:
                 # Claims without independent replication
@@ -727,32 +742,38 @@ class EvidenceGraphService:
             # Dataset Node & Edge
             # ------------------------------------------------------------------
             if ds_id:
+                from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+                prov_res = ScientificReadinessEvaluator.verify_dataset_provenance(rec)
+                ds_status = prov_res["graph_status"]
+
                 node_ds_id = f"DS-{ds_id}"
                 if node_ds_id not in registered_datasets:
                     registered_datasets.add(node_ds_id)
-                    if quarantine == "QUARANTINED" or "OCTOBER-2026-INTAKE" in ds_id:
-                        ds_status = NodeVerificationStatus.BLOCKED.value
-                    elif (
-                        att_status == NodeVerificationStatus.INTEGRITY_VERIFIED.value
-                        and (att or {}).get("dataset_id") == ds_id
-                    ):
-                        ds_status = NodeVerificationStatus.INTEGRITY_VERIFIED.value
-                    else:
-                        ds_status = NodeVerificationStatus.REGISTERED.value
-
                     ds_node = EvidenceGraphNode(
                         id=node_ds_id,
                         node_type=EvidenceNodeType.DATASET.value,
                         label=f"Veri Seti: {ds_id}",
                         label_en=f"Dataset: {ds_id}",
                         status=ds_status,
-                        provenance_source=f"Intake / Provenance for {ds_id}",
+                        provenance_source=prov_res["evidence_reference"],
                         properties={
                             "dataset_id": ds_id,
                             "quarantine_status": quarantine,
+                            "provenance_verified": bool(prov_res["is_verified"]),
+                            "provenance_mechanism": prov_res["mechanism"],
+                            "rejection_code": prov_res.get("rejection_code"),
                         },
                     )
                     graph.add_node(ds_node)
+                else:
+                    # Upgrade or reflect verified status if another record provides authenticated provenance for this dataset
+                    existing_ds = graph.get_node(node_ds_id)
+                    if existing_ds and prov_res["is_verified"]:
+                        existing_ds.status = NodeVerificationStatus.INTEGRITY_VERIFIED.value
+                        existing_ds.provenance_source = prov_res["evidence_reference"]
+                        existing_ds.properties["provenance_verified"] = True
+                        existing_ds.properties["provenance_mechanism"] = prov_res["mechanism"]
+                        existing_ds.properties["rejection_code"] = None
 
                 edge_ds = EvidenceGraphEdge(
                     id=f"EDGE-DS-{rec_id}",
@@ -761,15 +782,8 @@ class EvidenceGraphService:
                     edge_type=EvidenceEdgeType.USES_DATASET.value,
                     label="Veri Setini Kullanır",
                     label_en="Uses Dataset",
-                    is_verified=(
-                        rec_status
-                        in (
-                            NodeVerificationStatus.INTEGRITY_VERIFIED.value,
-                            NodeVerificationStatus.SCIENTIFICALLY_VERIFIED.value,
-                            NodeVerificationStatus.VERIFIED.value,
-                        )
-                    ),
-                    provenance_reference=src_path,
+                    is_verified=bool(prov_res["is_verified"]),
+                    provenance_reference=prov_res["evidence_reference"],
                 )
                 graph.add_edge(edge_ds)
 

@@ -168,9 +168,14 @@ class DecisionReportBuilder:
         sec_3_cad = getattr(record, "window_cadence", "1h")
         sec_3_spec = getattr(record, "specification_id", "SP-001")
 
+        prov_res = ScientificReadinessEvaluator.verify_dataset_provenance(record)
+        dim_art = next((d for d in scorecard.dimensions if d.dimension_key == "SOURCE_ARTIFACT_INTEGRITY"), None)
+        art_status_str = dim_art.status if dim_art else "UNVERIFIED"
         sec_4 = (
-            f"Kaynak dosya '{getattr(record, 'source_artifact', '')}' üzerinde doğrulanmıştır. "
-            f"SHA-256 bütünlüğü: {getattr(record, 'source_artifact_sha256', 'BELİRTİLMEMİŞ')}."
+            f"Veri Seti Soykütüğü Durumu: {prov_res['readiness_status']} ({prov_res.get('rejection_code') or prov_res['mechanism']}). "
+            f"{prov_res['explanation_tr']} "
+            f"Kaynak dosya ('{getattr(record, 'source_artifact', '')}') bütünlük durumu: {art_status_str} "
+            f"(SHA-256: {getattr(record, 'source_artifact_sha256', 'BELİRTİLMEMİŞ')})."
         )
 
         sec_5 = (

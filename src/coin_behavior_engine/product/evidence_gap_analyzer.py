@@ -131,8 +131,11 @@ class EvidenceGapAnalyzer:
                 )
 
         # 3. MISSING_DATASET_PROVENANCE
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+        prov_res = ScientificReadinessEvaluator.verify_dataset_provenance(record)
         ds_id = getattr(record, "dataset_id", "")
-        if not ds_id or getattr(record, "quarantine_status", "") == "QUARANTINED":
+        if not prov_res["is_verified"]:
+            rej_code = prov_res.get("rejection_code") or prov_res["readiness_status"]
             gaps.append(
                 EvidenceGap(
                     gap_id=f"GAP-{rec_id}-03",
@@ -140,15 +143,15 @@ class EvidenceGapAnalyzer:
                     gap_category=GapCategory.MISSING_DATASET_PROVENANCE.value,
                     severity=GapSeverity.CRITICAL.value,
                     is_blocking=True,
-                    title_tr="Veri Seti Kökeni Eksik veya Karantinaya Alınmış",
-                    title_en="Dataset Provenance Missing or Quarantined",
-                    explanation_tr=f"Veri seti '{ds_id}' doğrulanabilir birincil kaynağa bağlı değil ya da karantinada.",
-                    explanation_en=f"Dataset '{ds_id}' has unverified origin or is under quarantine.",
-                    supporting_evidence=f"Dataset: {ds_id}, Quarantine: {getattr(record, 'quarantine_status', 'NONE')}",
-                    suggested_research_action_tr="Veri seti için tam borsa API intakelog ve SHA-256 soykütüğü kaydedin.",
-                    suggested_research_action_en="Record complete exchange API intake log and SHA-256 lineage.",
-                    resolution_criteria_tr="Karantinanın kaldırılması ve veri soykütüğünün doğrulanması.",
-                    resolution_criteria_en="Quarantine resolution and provenance verification.",
+                    title_tr="Veri Seti Kökeni Doğrulanmamış, Başarısız veya Karantinada",
+                    title_en="Dataset Provenance Unverified, Failed or Quarantined",
+                    explanation_tr=prov_res["explanation_tr"],
+                    explanation_en=prov_res["explanation_en"],
+                    supporting_evidence=f"Dataset: {ds_id}, Status: {prov_res['readiness_status']}, Rejection: {rej_code}",
+                    suggested_research_action_tr=prov_res["required_action_tr"],
+                    suggested_research_action_en=prov_res["required_action_en"],
+                    resolution_criteria_tr="Kriptografik olarak doğrulanmış veri seti tasdiki veya imzalı kabul manifestosu ile SHA-256 mutabakatı.",
+                    resolution_criteria_en="Cryptographically verified dataset attestation or signed intake manifest with SHA-256 reconciliation.",
                 )
             )
 
@@ -158,7 +161,7 @@ class EvidenceGapAnalyzer:
         has_attestation = False
         if att and isinstance(att, dict):
             att_check = ObservationCompletenessAttestationVerifier.verify_attestation(
-                record, att, use_cache=True, enforce_source_file_integrity=False
+                record, att, use_cache=True, enforce_source_file_integrity=True
             )
             has_attestation = bool(att_check.get("is_valid"))
 

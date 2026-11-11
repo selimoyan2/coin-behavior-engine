@@ -12,6 +12,8 @@ from __future__ import annotations
 
 import enum
 import hashlib
+import hmac
+import json
 import math
 from dataclasses import dataclass, field, asdict
 from datetime import datetime, timezone
@@ -25,7 +27,10 @@ CBE_TRADING_DISABLED = True
 LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED = True
 from coin_behavior_engine.product.attestation_verifier import (
     ObservationCompletenessAttestationVerifier,
+    TRUSTED_ISSUERS,
 )
+from coin_behavior_engine.product.credential_manager import signing_key_registry
+from coin_behavior_engine.product.research_report_evidence import rfc8785_canonical_json
 from coin_behavior_engine.product.reproducibility_lab import (
     ReproducibilityLabEngine,
 )
@@ -105,6 +110,570 @@ class ScientificReadinessEvaluator:
     MIN_SAMPLE_SIZE_THRESHOLD = 100
 
     @classmethod
+    def create_signed_intake_manifest(
+        cls,
+        record: Any,
+        key_id: str,
+        secret: str,
+        issuer: str = "CBE_DATA_GOVERNANCE_COUNCIL",
+        source_lineage: str = "Binance Historical Archive -> Canonical Verified Partition",
+        artifacts: Optional[List[Dict[str, str]]] = None,
+        override_dataset_id: Optional[str] = None,
+        override_record_id: Optional[str] = None,
+        expires_at_utc: Optional[str] = None,
+        is_superseded: bool = False,
+        forged_signature: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """
+        Creates a cryptographically signed dataset intake manifest bound to dataset_id,
+        record_id, source_lineage, and physical artifact SHA-256 digests.
+        """
+        ds_id = override_dataset_id if override_dataset_id is not None else getattr(record, "dataset_id", "")
+        rec_id = override_record_id if override_record_id is not None else getattr(record, "id", "")
+        src_path = getattr(record, "source_artifact", "")
+        src_sha = getattr(record, "source_artifact_sha256", "")
+
+        if artifacts is None:
+            artifacts = [{"path": src_path, "sha256": src_sha}] if src_path else []
+
+        claims = {
+            "artifacts": sorted(artifacts, key=lambda x: str(x.get("path", ""))),
+            "dataset_id": str(ds_id),
+            "expires_at_utc": str(expires_at_utc or ""),
+            "is_superseded": bool(is_superseded),
+            "issuer": str(issuer),
+            "key_id": str(key_id),
+            "record_id": str(rec_id),
+            "schema_version": "CBE-INTAKE-MANIFEST-1.0.0",
+            "source_artifact_sha256": str(src_sha),
+            "source_lineage": str(source_lineage),
+        }
+        canonical_bytes = rfc8785_canonical_json(claims)
+        claims_sha256 = hashlib.sha256(canonical_bytes).hexdigest()
+        if forged_signature is not None:
+            signature = forged_signature
+        else:
+            h = hmac.new(secret.encode("utf-8"), canonical_bytes, hashlib.sha256)
+            signature = f"hmac-sha256:{key_id}:{h.hexdigest()}"
+
+        manifest = dict(claims)
+        manifest["signature"] = signature
+        manifest["claims_sha256"] = claims_sha256
+        return manifest
+
+    @classmethod
+    def verify_dataset_provenance(cls, record: Any) -> Dict[str, Any]:
+        """
+        Fail-closed dataset provenance verification contract.
+        Never grants VERIFIED provenance from directory or bare file existence.
+        Requires either:
+        1. A cryptographically valid, dataset-bound attestation with physical source artifact integrity enforced, OR
+        2. A cryptographically signed, trusted intake manifest with physical artifact SHA-256 verification.
+        """
+        rec_id = getattr(record, "id", "UNKNOWN")
+        ds_id = getattr(record, "dataset_id", "") or ""
+        att = getattr(record, "observation_completeness_attestation", None)
+        quarantine_status = getattr(record, "quarantine_status", "") or ""
+        source_path = getattr(record, "source_artifact", "") or ""
+        expected_sha = getattr(record, "source_artifact_sha256", "") or ""
+        intake_manifest_path = getattr(record, "intake_manifest_path", None)
+        intake_manifest_obj = getattr(record, "intake_manifest", None)
+
+        # 1. Quarantine / Synthetic Gate (Critical Block)
+        if (
+            quarantine_status == "QUARANTINED"
+            or "OCTOBER-2026-INTAKE" in ds_id
+            or "SYNTHETIC" in ds_id
+            or "QUARANTINE" in ds_id
+        ):
+            return {
+                "is_verified": False,
+                "readiness_status": DimensionStatus.BLOCKED.value,
+                "graph_status": "BLOCKED",
+                "rejection_code": "DATASET_QUARANTINED",
+                "mechanism": "QUARANTINE_GATE",
+                "evidence_reference": ds_id or "QUARANTINED",
+                "explanation_tr": f"Veri seti '{ds_id}' sentetik anomaliler veya karantina nedeniyle bloke edilmiştir.",
+                "explanation_en": f"Dataset '{ds_id}' is blocked due to synthetic anomalies or intake quarantine.",
+                "required_action_tr": "Karantina adli incelemesi tamamlanmadan veri seti kullanılamaz.",
+                "required_action_en": "Dataset cannot be used until quarantine forensics are resolved.",
+                "metrics": {"quarantine_status": "QUARANTINED", "dataset_id": ds_id, "rejection_code": "DATASET_QUARANTINED"},
+            }
+
+        # 2. Missing Dataset ID Gate
+        if not ds_id.strip():
+            return {
+                "is_verified": False,
+                "readiness_status": DimensionStatus.UNVERIFIED.value,
+                "graph_status": "UNVERIFIED",
+                "rejection_code": "MISSING_DATASET_ID",
+                "mechanism": "NONE",
+                "evidence_reference": "NONE",
+                "explanation_tr": "Araştırma kaydında veri seti kimliği (dataset_id) tanımlanmamıştır.",
+                "explanation_en": "No dataset_id specified on research record.",
+                "required_action_tr": "Kayıtlı bir veri seti kimliği ve imzalı soykütüğü bağlayın.",
+                "required_action_en": "Attach a registered dataset_id and signed provenance.",
+                "metrics": {"dataset_id": "", "rejection_code": "MISSING_DATASET_ID"},
+            }
+
+        # 3. Physical Source Artifact Integrity Gate (Always Enforced)
+        if not source_path:
+            return {
+                "is_verified": False,
+                "readiness_status": DimensionStatus.FAILED.value,
+                "graph_status": "FAILED",
+                "rejection_code": "SOURCE_ARTIFACT_MISSING",
+                "mechanism": "PHYSICAL_INTEGRITY_GATE",
+                "evidence_reference": ds_id,
+                "explanation_tr": "Kaynak araştırma belgesi yolu belirtilmediğinden veri seti soykütüğü doğrulanamaz.",
+                "explanation_en": "Source artifact path is missing; dataset provenance cannot be verified.",
+                "required_action_tr": "Fiziksel kaynak belgeyi ve SHA-256 özetini ekleyin.",
+                "required_action_en": "Attach physical source artifact and SHA-256 digest.",
+                "metrics": {"dataset_id": ds_id, "rejection_code": "SOURCE_ARTIFACT_MISSING"},
+            }
+
+        att_for_art = (
+            att
+            if (att and isinstance(att, dict) and att.get("source_artifact_sha256"))
+            else {"source_artifact_sha256": expected_sha}
+        )
+        is_valid_art, art_rej_code, art_rej_reason, actual_sha, _, _ = (
+            ObservationCompletenessAttestationVerifier.verify_source_artifact_integrity(
+                record, att_for_art
+            )
+        )
+        if not is_valid_art:
+            rej = art_rej_code or "SOURCE_ARTIFACT_INTEGRITY_FAILED"
+            return {
+                "is_verified": False,
+                "readiness_status": DimensionStatus.FAILED.value,
+                "graph_status": "FAILED",
+                "rejection_code": rej,
+                "mechanism": "PHYSICAL_INTEGRITY_GATE",
+                "evidence_reference": f"{ds_id} ({source_path})",
+                "explanation_tr": f"Fiziksel kaynak dosya bütünlük doğrulaması başarısız ({rej}): {art_rej_reason}",
+                "explanation_en": f"Physical source artifact integrity verification failed ({rej}): {art_rej_reason}",
+                "required_action_tr": "Kaynak dosyayı geri yükleyin ve SHA-256 bütünlüğünü doğrulayın.",
+                "required_action_en": "Restore physical source artifact and verify SHA-256 integrity.",
+                "metrics": {"dataset_id": ds_id, "rejection_code": rej},
+            }
+
+        # 4. Path A: Cryptographic Completeness Attestation Verification
+        # Strictly enforces enforce_source_file_integrity=True
+        if att is not None:
+            if not isinstance(att, dict):
+                return {
+                    "is_verified": False,
+                    "readiness_status": DimensionStatus.FAILED.value,
+                    "graph_status": "FAILED",
+                    "rejection_code": "ATTESTATION_EMPTY_OR_INVALID",
+                    "mechanism": "CRYPTOGRAPHIC_ATTESTATION",
+                    "evidence_reference": ds_id,
+                    "explanation_tr": "Veri seti tasdik paketi geçersiz formatta.",
+                    "explanation_en": "Dataset attestation package is malformed.",
+                    "required_action_tr": "Geçerli bir RFC-8785 imzalı tasdik paketi sağlayın.",
+                    "required_action_en": "Provide a valid RFC-8785 signed attestation package.",
+                    "metrics": {"dataset_id": ds_id, "rejection_code": "ATTESTATION_EMPTY_OR_INVALID"},
+                }
+
+            att_check = ObservationCompletenessAttestationVerifier.verify_attestation(
+                record, att, use_cache=True, enforce_source_file_integrity=True
+            )
+            if not att_check.get("is_valid"):
+                rej = att_check.get("rejection_code") or "ATTESTATION_VERIFICATION_FAILED"
+                return {
+                    "is_verified": False,
+                    "readiness_status": DimensionStatus.FAILED.value,
+                    "graph_status": "FAILED",
+                    "rejection_code": rej,
+                    "mechanism": "CRYPTOGRAPHIC_ATTESTATION",
+                    "evidence_reference": f"{ds_id} (rejection={rej})",
+                    "explanation_tr": f"Veri seti tasdik doğrulaması başarısız oldu ({rej}): {att_check.get('rejection_reason_tr')}",
+                    "explanation_en": f"Dataset attestation verification failed ({rej}).",
+                    "required_action_tr": "Yetkili veri otoritesinden geçerli imzalı tasdik temin edin.",
+                    "required_action_en": "Obtain valid cryptographically signed attestation from authority.",
+                    "metrics": {"dataset_id": ds_id, "rejection_code": rej},
+                }
+
+            return {
+                "is_verified": True,
+                "readiness_status": DimensionStatus.VERIFIED.value,
+                "graph_status": "INTEGRITY_VERIFIED",
+                "rejection_code": None,
+                "mechanism": "CRYPTOGRAPHIC_ATTESTATION",
+                "evidence_reference": f"Verified Attestation: {ds_id} (key={att_check.get('verified_key_id')}, sha256={actual_sha[:16]}...)",
+                "explanation_tr": f"Veri seti '{ds_id}' RFC-8785 kriptografik tasdiki ve fiziksel SHA-256 bütünlüğü ile doğrulandı.",
+                "explanation_en": f"Dataset '{ds_id}' verified via RFC-8785 cryptographic attestation and physical SHA-256 integrity.",
+                "required_action_tr": "Ek bir veri seti işlemi gerekmemektedir.",
+                "required_action_en": "No additional dataset action required.",
+                "metrics": {
+                    "dataset_id": ds_id,
+                    "has_attested_lineage": True,
+                    "verified_key_id": att_check.get("verified_key_id"),
+                    "source_artifact_sha256": actual_sha,
+                    "mechanism": "CRYPTOGRAPHIC_ATTESTATION",
+                },
+            }
+
+        # 5. Path B: Trusted Signed Intake Manifest Verification
+        manifest_data: Optional[Dict[str, Any]] = None
+        if intake_manifest_obj is not None:
+            if not isinstance(intake_manifest_obj, dict):
+                return {
+                    "is_verified": False,
+                    "readiness_status": DimensionStatus.FAILED.value,
+                    "graph_status": "FAILED",
+                    "rejection_code": "INVALID_INTAKE_MANIFEST",
+                    "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                    "evidence_reference": ds_id,
+                    "explanation_tr": "Veri kabul manifestosu geçersiz formatta.",
+                    "explanation_en": "Intake manifest object is malformed.",
+                    "required_action_tr": "Geçerli imzalı veri kabul manifestosu sağlayın.",
+                    "required_action_en": "Provide a valid signed intake manifest.",
+                    "metrics": {"dataset_id": ds_id, "rejection_code": "INVALID_INTAKE_MANIFEST"},
+                }
+            manifest_data = intake_manifest_obj
+        elif intake_manifest_path:
+            imp = Path(str(intake_manifest_path))
+            if not imp.exists() or not imp.is_file():
+                return {
+                    "is_verified": False,
+                    "readiness_status": DimensionStatus.FAILED.value,
+                    "graph_status": "FAILED",
+                    "rejection_code": "INTAKE_MANIFEST_MISSING",
+                    "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                    "evidence_reference": str(intake_manifest_path),
+                    "explanation_tr": f"Belirtilen veri kabul manifestosu ('{intake_manifest_path}') diskte bulunamadı veya geçerli bir dosya değil.",
+                    "explanation_en": f"Specified intake manifest ('{intake_manifest_path}') is missing or not a regular file.",
+                    "required_action_tr": "İmzalı veri kabul manifestosunu geri yükleyin.",
+                    "required_action_en": "Restore signed intake manifest file.",
+                    "metrics": {"dataset_id": ds_id, "rejection_code": "INTAKE_MANIFEST_MISSING"},
+                }
+            try:
+                manifest_data = json.loads(imp.read_text(encoding="utf-8"))
+                if not isinstance(manifest_data, dict):
+                    raise ValueError("Manifest JSON root must be an object")
+            except Exception:
+                return {
+                    "is_verified": False,
+                    "readiness_status": DimensionStatus.FAILED.value,
+                    "graph_status": "FAILED",
+                    "rejection_code": "INVALID_INTAKE_MANIFEST",
+                    "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                    "evidence_reference": str(intake_manifest_path),
+                    "explanation_tr": "Veri kabul manifestosu geçerli bir JSON belgesi değil.",
+                    "explanation_en": "Intake manifest file is not valid JSON.",
+                    "required_action_tr": "Veri kabul manifestosu formatını onarın ve yeniden imzalayın.",
+                    "required_action_en": "Repair and re-sign intake manifest JSON.",
+                    "metrics": {"dataset_id": ds_id, "rejection_code": "INVALID_INTAKE_MANIFEST"},
+                }
+
+        if manifest_data is not None:
+            # Verify dataset_id binding
+            if manifest_data.get("dataset_id") != ds_id:
+                return {
+                    "is_verified": False,
+                    "readiness_status": DimensionStatus.FAILED.value,
+                    "graph_status": "FAILED",
+                    "rejection_code": "DATASET_ID_MISMATCH",
+                    "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                    "evidence_reference": ds_id,
+                    "explanation_tr": f"Manifesto veri seti kimliği ('{manifest_data.get('dataset_id')}') kayıt ile ('{ds_id}') uyuşmuyor.",
+                    "explanation_en": "Intake manifest dataset_id does not match record dataset_id.",
+                    "required_action_tr": "Veri setine ait doğru manifestoyu bağlayın.",
+                    "required_action_en": "Bind the intake manifest matching this dataset_id.",
+                    "metrics": {"dataset_id": ds_id, "rejection_code": "DATASET_ID_MISMATCH"},
+                }
+
+            # Verify record_id binding if present
+            if manifest_data.get("record_id") and manifest_data.get("record_id") != rec_id:
+                return {
+                    "is_verified": False,
+                    "readiness_status": DimensionStatus.FAILED.value,
+                    "graph_status": "FAILED",
+                    "rejection_code": "REPLAY_ATTACK_DETECTED",
+                    "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                    "evidence_reference": ds_id,
+                    "explanation_tr": "Manifesto başka bir araştırma kaydına bağlıdır (replay engellendi).",
+                    "explanation_en": "Intake manifest is bound to a different record_id.",
+                    "required_action_tr": "Bu kayıt için imzalanmış manifestoyu kullanın.",
+                    "required_action_en": "Use an intake manifest bound to this record.",
+                    "metrics": {"dataset_id": ds_id, "rejection_code": "REPLAY_ATTACK_DETECTED"},
+                }
+
+            # Verify issuer
+            issuer = manifest_data.get("issuer")
+            if issuer not in TRUSTED_ISSUERS:
+                return {
+                    "is_verified": False,
+                    "readiness_status": DimensionStatus.FAILED.value,
+                    "graph_status": "FAILED",
+                    "rejection_code": "UNKNOWN_ISSUER",
+                    "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                    "evidence_reference": ds_id,
+                    "explanation_tr": f"Manifesto yetkisiz bir sağlayıcı ('{issuer}') tarafından düzenlenmiş.",
+                    "explanation_en": f"Untrusted intake manifest issuer: '{issuer}'.",
+                    "required_action_tr": "Yetkili veri yönetişim otoritesinden manifesto alın.",
+                    "required_action_en": "Obtain intake manifest from a trusted authority.",
+                    "metrics": {"dataset_id": ds_id, "rejection_code": "UNKNOWN_ISSUER"},
+                }
+
+            # Verify source lineage & supersession/expiry
+            lineage = manifest_data.get("source_lineage")
+            if not lineage or not isinstance(lineage, str) or not lineage.strip():
+                return {
+                    "is_verified": False,
+                    "readiness_status": DimensionStatus.FAILED.value,
+                    "graph_status": "FAILED",
+                    "rejection_code": "MISSING_SOURCE_LINEAGE",
+                    "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                    "evidence_reference": ds_id,
+                    "explanation_tr": "Manifesto kaynak soykütüğü (source_lineage) bilgisi içermiyor.",
+                    "explanation_en": "Intake manifest is missing source_lineage.",
+                    "required_action_tr": "Tam kaynak soykütüğü bilgisini manifestoya ekleyin.",
+                    "required_action_en": "Include complete source_lineage in manifest.",
+                    "metrics": {"dataset_id": ds_id, "rejection_code": "MISSING_SOURCE_LINEAGE"},
+                }
+
+            if manifest_data.get("is_superseded") is True:
+                return {
+                    "is_verified": False,
+                    "readiness_status": DimensionStatus.FAILED.value,
+                    "graph_status": "FAILED",
+                    "rejection_code": "ATTESTATION_SUPERSEDED",
+                    "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                    "evidence_reference": ds_id,
+                    "explanation_tr": "Veri kabul manifestosu yürürlükten kaldırılmıştır.",
+                    "explanation_en": "Intake manifest has been superseded.",
+                    "required_action_tr": "Güncel veri kabul manifestosunu temin edin.",
+                    "required_action_en": "Obtain current active intake manifest.",
+                    "metrics": {"dataset_id": ds_id, "rejection_code": "ATTESTATION_SUPERSEDED"},
+                }
+
+            exp_utc = manifest_data.get("expires_at_utc")
+            if exp_utc:
+                try:
+                    exp_dt = datetime.fromisoformat(str(exp_utc).replace("Z", "+00:00"))
+                    if datetime.now(timezone.utc) > exp_dt:
+                        return {
+                            "is_verified": False,
+                            "readiness_status": DimensionStatus.FAILED.value,
+                            "graph_status": "FAILED",
+                            "rejection_code": "ATTESTATION_EXPIRED",
+                            "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                            "evidence_reference": ds_id,
+                            "explanation_tr": f"Veri kabul manifestosunun geçerlilik süresi dolmuştur ({exp_utc}).",
+                            "explanation_en": f"Intake manifest expired ({exp_utc}).",
+                            "required_action_tr": "Süresi geçmemiş yeni bir imzalı manifesto sağlayın.",
+                            "required_action_en": "Provide an unexpired signed intake manifest.",
+                            "metrics": {"dataset_id": ds_id, "rejection_code": "ATTESTATION_EXPIRED"},
+                        }
+                except Exception:
+                    return {
+                        "is_verified": False,
+                        "readiness_status": DimensionStatus.FAILED.value,
+                        "graph_status": "FAILED",
+                        "rejection_code": "INVALID_EXPIRY_TIMESTAMP",
+                        "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                        "evidence_reference": ds_id,
+                        "explanation_tr": "Manifesto bitiş zaman damgası geçersiz.",
+                        "explanation_en": "Invalid manifest expiration timestamp.",
+                        "required_action_tr": "ISO-8601 UTC formatında geçerlilik tarihi kullanın.",
+                        "required_action_en": "Use ISO-8601 UTC expiration timestamp.",
+                        "metrics": {"dataset_id": ds_id, "rejection_code": "INVALID_EXPIRY_TIMESTAMP"},
+                    }
+
+            # Verify artifacts list & physical SHA-256 of every listed artifact
+            artifacts_list = manifest_data.get("artifacts")
+            if not artifacts_list or not isinstance(artifacts_list, list):
+                return {
+                    "is_verified": False,
+                    "readiness_status": DimensionStatus.FAILED.value,
+                    "graph_status": "FAILED",
+                    "rejection_code": "MANIFEST_ARTIFACTS_MISSING",
+                    "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                    "evidence_reference": ds_id,
+                    "explanation_tr": "Manifesto içerisinde doğrulanabilir fiziksel dosya listesi bulunmuyor.",
+                    "explanation_en": "Intake manifest contains no artifact digest list.",
+                    "required_action_tr": "Veri seti dosyalarını ve SHA-256 özetlerini manifestoya ekleyin.",
+                    "required_action_en": "Include physical dataset files and SHA-256 digests in manifest.",
+                    "metrics": {"dataset_id": ds_id, "rejection_code": "MANIFEST_ARTIFACTS_MISSING"},
+                }
+
+            for item in artifacts_list:
+                if not isinstance(item, dict):
+                    return {
+                        "is_verified": False,
+                        "readiness_status": DimensionStatus.FAILED.value,
+                        "graph_status": "FAILED",
+                        "rejection_code": "INVALID_INTAKE_MANIFEST",
+                        "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                        "evidence_reference": ds_id,
+                        "explanation_tr": "Manifesto dosya kaydı geçersiz formatta.",
+                        "explanation_en": "Malformed artifact entry in intake manifest.",
+                        "required_action_tr": "Manifesto yapısını düzeltin.",
+                        "required_action_en": "Fix manifest artifact structure.",
+                        "metrics": {"dataset_id": ds_id, "rejection_code": "INVALID_INTAKE_MANIFEST"},
+                    }
+                art_p_str = item.get("path", "")
+                art_exp_sha = item.get("sha256", "")
+                art_p = Path(str(art_p_str))
+                if not art_p_str or not art_p.exists() or not art_p.is_file():
+                    return {
+                        "is_verified": False,
+                        "readiness_status": DimensionStatus.FAILED.value,
+                        "graph_status": "FAILED",
+                        "rejection_code": "SOURCE_ARTIFACT_MISSING",
+                        "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                        "evidence_reference": str(art_p_str),
+                        "explanation_tr": f"Manifestoda listelenen veri dosyası ('{art_p_str}') diskte bulunamadı.",
+                        "explanation_en": f"Artifact '{art_p_str}' listed in manifest is missing on disk.",
+                        "required_action_tr": "Eksik veri seti dosyasını geri yükleyin.",
+                        "required_action_en": "Restore missing dataset file on disk.",
+                        "metrics": {"dataset_id": ds_id, "rejection_code": "SOURCE_ARTIFACT_MISSING"},
+                    }
+                disk_art_sha = hashlib.sha256(art_p.read_bytes()).hexdigest()
+                if not art_exp_sha or disk_art_sha != art_exp_sha:
+                    return {
+                        "is_verified": False,
+                        "readiness_status": DimensionStatus.FAILED.value,
+                        "graph_status": "FAILED",
+                        "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH",
+                        "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                        "evidence_reference": str(art_p_str),
+                        "explanation_tr": f"Manifestoda listelenen '{art_p_str}' dosyasının SHA-256 özeti diskteki dosya ile uyuşmuyor.",
+                        "explanation_en": f"SHA-256 mismatch for manifest artifact '{art_p_str}'.",
+                        "required_action_tr": "Dosya manipülasyonunu giderin ve bütünlüğü doğrulayın.",
+                        "required_action_en": "Resolve file tampering and verify SHA-256 match.",
+                        "metrics": {"dataset_id": ds_id, "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"},
+                    }
+
+            if manifest_data.get("source_artifact_sha256") != actual_sha:
+                return {
+                    "is_verified": False,
+                    "readiness_status": DimensionStatus.FAILED.value,
+                    "graph_status": "FAILED",
+                    "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH",
+                    "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                    "evidence_reference": ds_id,
+                    "explanation_tr": "Manifesto kaynak belge özeti fiziksel kaynak dosya ile uyuşmuyor.",
+                    "explanation_en": "Manifest source_artifact_sha256 does not match physical source artifact.",
+                    "required_action_tr": "Manifesto ve kaynak dosya özetlerini mutabık hale getirin.",
+                    "required_action_en": "Reconcile manifest and source artifact SHA-256 digests.",
+                    "metrics": {"dataset_id": ds_id, "rejection_code": "SOURCE_ARTIFACT_HASH_MISMATCH"},
+                }
+
+            # Verify cryptographic signature on manifest claims
+            sig_str = manifest_data.get("signature", "")
+            key_id = manifest_data.get("key_id", "")
+            if not sig_str or not isinstance(sig_str, str) or not key_id:
+                return {
+                    "is_verified": False,
+                    "readiness_status": DimensionStatus.FAILED.value,
+                    "graph_status": "FAILED",
+                    "rejection_code": "SIGNATURE_EMPTY_OR_INVALID",
+                    "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                    "evidence_reference": ds_id,
+                    "explanation_tr": "Veri kabul manifestosu kriptografik imza veya anahtar kimliği içermiyor.",
+                    "explanation_en": "Intake manifest is missing cryptographic signature or key_id.",
+                    "required_action_tr": "Manifestoyu yetkili anahtarla imzalayın.",
+                    "required_action_en": "Sign intake manifest with an active authority key.",
+                    "metrics": {"dataset_id": ds_id, "rejection_code": "SIGNATURE_EMPTY_OR_INVALID"},
+                }
+
+            if signing_key_registry.is_key_revoked(key_id):
+                return {
+                    "is_verified": False,
+                    "readiness_status": DimensionStatus.FAILED.value,
+                    "graph_status": "FAILED",
+                    "rejection_code": "REVOKED_SIGNING_KEY",
+                    "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                    "evidence_reference": ds_id,
+                    "explanation_tr": f"Manifesto imza anahtarı ('{key_id}') iptal edilmiştir (revoked).",
+                    "explanation_en": f"Manifest signing key '{key_id}' is revoked.",
+                    "required_action_tr": "Aktif ve geçerli bir anahtarla yeniden imzalayın.",
+                    "required_action_en": "Re-sign with an active non-revoked key.",
+                    "metrics": {"dataset_id": ds_id, "rejection_code": "REVOKED_SIGNING_KEY"},
+                }
+
+            claims_payload = {
+                "artifacts": sorted(artifacts_list, key=lambda x: str(x.get("path", ""))),
+                "dataset_id": str(manifest_data.get("dataset_id", "")),
+                "expires_at_utc": str(manifest_data.get("expires_at_utc") or ""),
+                "is_superseded": bool(manifest_data.get("is_superseded", False)),
+                "issuer": str(manifest_data.get("issuer", "")),
+                "key_id": str(key_id),
+                "record_id": str(manifest_data.get("record_id") or rec_id),
+                "schema_version": str(manifest_data.get("schema_version", "CBE-INTAKE-MANIFEST-1.0.0")),
+                "source_artifact_sha256": str(manifest_data.get("source_artifact_sha256", "")),
+                "source_lineage": str(lineage),
+            }
+            canonical_bytes = rfc8785_canonical_json(claims_payload)
+            is_sig_ok, sig_msg, verified_key = signing_key_registry.verify_signature(canonical_bytes, sig_str)
+            if not is_sig_ok:
+                rej_code = "REVOKED_SIGNING_KEY" if sig_msg == "REVOKED_SIGNING_KEY" else "SIGNATURE_VERIFICATION_FAILED"
+                return {
+                    "is_verified": False,
+                    "readiness_status": DimensionStatus.FAILED.value,
+                    "graph_status": "FAILED",
+                    "rejection_code": rej_code,
+                    "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                    "evidence_reference": ds_id,
+                    "explanation_tr": f"Veri kabul manifestosu imza doğrulaması başarısız ({sig_msg}).",
+                    "explanation_en": f"Intake manifest signature verification failed ({sig_msg}).",
+                    "required_action_tr": "Geçerli kriptografik imzaya sahip manifesto sağlayın.",
+                    "required_action_en": "Provide intake manifest with valid cryptographic signature.",
+                    "metrics": {"dataset_id": ds_id, "rejection_code": rej_code},
+                }
+
+            return {
+                "is_verified": True,
+                "readiness_status": DimensionStatus.VERIFIED.value,
+                "graph_status": "INTEGRITY_VERIFIED",
+                "rejection_code": None,
+                "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                "evidence_reference": f"Verified Intake Manifest: {ds_id} (key={verified_key}, artifacts={len(artifacts_list)})",
+                "explanation_tr": f"Veri seti '{ds_id}' imzalı kabul manifestosu, kaynak soykütüğü ve SHA-256 bütünlüğü ile doğrulandı.",
+                "explanation_en": f"Dataset '{ds_id}' verified via signed intake manifest, lineage, and SHA-256 integrity.",
+                "required_action_tr": "Ek bir veri seti işlemi gerekmemektedir.",
+                "required_action_en": "No additional dataset action required.",
+                "metrics": {
+                    "dataset_id": ds_id,
+                    "has_attested_lineage": True,
+                    "verified_key_id": verified_key,
+                    "source_artifact_sha256": actual_sha,
+                    "mechanism": "TRUSTED_INTAKE_MANIFEST",
+                },
+            }
+
+        # 6. Default: Raw file or directory exists on disk, but lacks authenticated dataset provenance
+        # May be classified as REGISTERED in Evidence Graph, NEVER VERIFIED in Readiness Scorecard.
+        return {
+            "is_verified": False,
+            "readiness_status": DimensionStatus.UNVERIFIED.value,
+            "graph_status": "REGISTERED",
+            "rejection_code": "MISSING_AUTHENTICATED_PROVENANCE",
+            "mechanism": "UNAUTHENTICATED_REGISTRATION",
+            "evidence_reference": f"Registered Dataset (Unverified Provenance): {ds_id}",
+            "explanation_tr": (
+                f"Veri seti '{ds_id}' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış "
+                f"soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı "
+                f"bilimsel soykütüğü kanıtlamaz."
+            ),
+            "explanation_en": (
+                f"Dataset '{ds_id}' is registered and physical file exists, but lacks cryptographically verified "
+                f"lineage attestation or signed intake manifest; directory/file existence alone never grants VERIFIED provenance."
+            ),
+            "required_action_tr": "Veri seti için RFC-8785 imzalı tasdik veya imzalı kabul manifestosu ekleyin.",
+            "required_action_en": "Attach an RFC-8785 signed attestation or signed intake manifest for the dataset.",
+            "metrics": {
+                "dataset_id": ds_id,
+                "has_attested_lineage": False,
+                "rejection_code": "MISSING_AUTHENTICATED_PROVENANCE",
+            },
+        }
+
+    @classmethod
     def evaluate_record(cls, record: Any) -> ScientificReadinessScorecard:
         rec_id = getattr(record, "id", "UNKNOWN")
         title_tr = getattr(record, "title", rec_id)
@@ -117,88 +686,43 @@ class ScientificReadinessEvaluator:
         evidence_links: List[Dict[str, str]] = []
 
         # ----------------------------------------------------------------------
-        # 1. DATASET_PROVENANCE (Critical Gate)
+        # 1. DATASET_PROVENANCE (Critical Gate — Evidence-Bound)
         # ----------------------------------------------------------------------
         ds_id = getattr(record, "dataset_id", "")
         att = getattr(record, "observation_completeness_attestation", None)
-        quarantine_status = getattr(record, "quarantine_status", "")
+        prov_res = cls.verify_dataset_provenance(record)
 
-        # Check quarantine or synthetic first
-        if quarantine_status == "QUARANTINED" or "OCTOBER-2026-INTAKE" in ds_id or "SYNTHETIC" in ds_id:
-            d1 = DimensionEvaluation(
-                dimension_key="DATASET_PROVENANCE",
-                dimension_name_tr="Veri Seti Kökeni ve Soykütüğü",
-                dimension_name_en="Dataset Provenance & Lineage",
-                status=DimensionStatus.BLOCKED.value,
-                is_critical_gate=True,
-                is_passed=False,
-                evidence_reference=ds_id,
-                explanation_tr=f"Veri seti '{ds_id}' sentetik anomaliler veya karantina nedeniyle bloke edilmiştir.",
-                explanation_en=f"Dataset '{ds_id}' is blocked due to synthetic anomalies or intake quarantine.",
-                required_action_tr="Karantina adli incelemesi tamamlanmadan veri seti kullanılamaz.",
-                required_action_en="Dataset cannot be used until quarantine forensics are resolved.",
-                metrics={"quarantine_status": "QUARANTINED", "dataset_id": ds_id},
-            )
-            blocking_reasons_tr.append(f"Veri seti karantinada ({ds_id}).")
-            blocking_reasons_en.append(f"Dataset quarantined ({ds_id}).")
-            next_actions_tr.append("Karantina adli raporunu tamamlayın.")
-            next_actions_en.append("Resolve intake quarantine forensics.")
-        else:
-            # Require authentic intake manifest, signed attestation, or verifiable primary raw data on disk
-            has_attested_lineage = False
-            if att and isinstance(att, dict):
-                att_check = ObservationCompletenessAttestationVerifier.verify_attestation(
-                    record, att, use_cache=True, enforce_source_file_integrity=False
-                )
-                if att_check.get("is_valid") and att.get("dataset_id") == ds_id:
-                    has_attested_lineage = True
-
-            has_physical_data = False
-            if ds_id:
-                if "BTCUSDT-SPOT" in ds_id or "BTCUSDT-1h" in ds_id:
-                    has_physical_data = Path("data/binance_spot_multiyear/1h/").exists() or Path("data/normalized/binance_pilot_2022_01/").exists()
-                elif "PERP-FUNDING" in ds_id:
-                    has_physical_data = Path("data/historical/futures/raw/").exists()
-                elif "SYSTEM-AUDIT" in ds_id:
-                    has_physical_data = Path("research_outputs/sprint23_delivery/").exists()
-                elif getattr(record, "intake_manifest_path", ""):
-                    imp = Path(getattr(record, "intake_manifest_path"))
-                    has_physical_data = imp.exists() and imp.is_file()
-
-            if (has_attested_lineage or has_physical_data) and ds_id:
-                d1 = DimensionEvaluation(
-                    dimension_key="DATASET_PROVENANCE",
-                    dimension_name_tr="Veri Seti Kökeni ve Soykütüğü",
-                    dimension_name_en="Dataset Provenance & Lineage",
-                    status=DimensionStatus.VERIFIED.value,
-                    is_critical_gate=True,
-                    is_passed=True,
-                    evidence_reference=f"Authentic provenance: {ds_id} (attested={has_attested_lineage}, storage={has_physical_data})",
-                    explanation_tr=f"Veri seti '{ds_id}' doğrulanabilir birincil ambar ve tasdik soykütüğü ile teyit edildi.",
-                    explanation_en=f"Dataset '{ds_id}' verified via authentic intake repository and lineage attestation.",
-                    required_action_tr="Ek bir veri seti işlemi gerekmemektedir.",
-                    required_action_en="No additional dataset action required.",
-                    metrics={"dataset_id": ds_id, "has_attested_lineage": has_attested_lineage, "has_physical_data": has_physical_data},
-                )
+        d1 = DimensionEvaluation(
+            dimension_key="DATASET_PROVENANCE",
+            dimension_name_tr="Veri Seti Kökeni ve Soykütüğü",
+            dimension_name_en="Dataset Provenance & Lineage",
+            status=prov_res["readiness_status"],
+            is_critical_gate=True,
+            is_passed=bool(prov_res["is_verified"]),
+            evidence_reference=prov_res["evidence_reference"],
+            explanation_tr=prov_res["explanation_tr"],
+            explanation_en=prov_res["explanation_en"],
+            required_action_tr=prov_res["required_action_tr"],
+            required_action_en=prov_res["required_action_en"],
+            metrics=prov_res["metrics"],
+        )
+        if not prov_res["is_verified"]:
+            rej_code = prov_res.get("rejection_code") or prov_res["readiness_status"]
+            if prov_res["readiness_status"] == DimensionStatus.BLOCKED.value:
+                blocking_reasons_tr.append(f"Veri seti karantinada ({ds_id}).")
+                blocking_reasons_en.append(f"Dataset quarantined ({ds_id}).")
+                next_actions_tr.append("Karantina adli raporunu tamamlayın.")
+                next_actions_en.append("Resolve intake quarantine forensics.")
+            elif prov_res["readiness_status"] == DimensionStatus.FAILED.value:
+                blocking_reasons_tr.append(f"Veri seti soykütüğü doğrulaması başarısız ({rej_code}).")
+                blocking_reasons_en.append(f"Dataset provenance verification failed ({rej_code}).")
+                next_actions_tr.append(prov_res["required_action_tr"])
+                next_actions_en.append(prov_res["required_action_en"])
             else:
-                d1 = DimensionEvaluation(
-                    dimension_key="DATASET_PROVENANCE",
-                    dimension_name_tr="Veri Seti Kökeni ve Soykütüğü",
-                    dimension_name_en="Dataset Provenance & Lineage",
-                    status=DimensionStatus.UNVERIFIED.value,
-                    is_critical_gate=True,
-                    is_passed=False,
-                    evidence_reference=ds_id or "NONE",
-                    explanation_tr="Doğrulanabilir birincil veri seti soykütüğü bulunamadı.",
-                    explanation_en="No verifiable primary dataset lineage found.",
-                    required_action_tr="Resmi veri kaynağı soykütüğünü kaydedin.",
-                    required_action_en="Register authoritative dataset provenance.",
-                    metrics={"dataset_id": ds_id},
-                )
-                blocking_reasons_tr.append("Veri seti soykütüğü doğrulanmamış.")
-                blocking_reasons_en.append("Dataset provenance unverified.")
-                next_actions_tr.append("Veri seti soykütüğünü belgelendirin.")
-                next_actions_en.append("Document dataset lineage.")
+                blocking_reasons_tr.append(f"Veri seti soykütüğü doğrulanmamış ({rej_code}).")
+                blocking_reasons_en.append(f"Dataset provenance unverified ({rej_code}).")
+                next_actions_tr.append("Veri seti soykütüğünü kriptografik tasdik veya imzalı manifesto ile belgelendirin.")
+                next_actions_en.append("Authenticate dataset lineage via cryptographic attestation or signed manifest.")
         dims.append(d1)
 
         # ----------------------------------------------------------------------
@@ -558,6 +1082,9 @@ class ScientificReadinessEvaluator:
             record, att_for_art_rep
         )
         has_reproduction_data = bool(source_path and Path(source_path).exists() and is_valid_art)
+        if proc_name == "PROC_STORAGE_VERIFICATION":
+            # Historical report inspection alone does not satisfy offline re-execution without raw mountinfo input
+            has_reproduction_data = bool(has_reproduction_data and getattr(record, "mountinfo_content", None))
 
         if has_allowlisted_proc and has_reproduction_data:
             d7 = DimensionEvaluation(
@@ -574,6 +1101,23 @@ class ScientificReadinessEvaluator:
                 required_action_en="Procedure can be re-executed in Reproducibility Lab.",
                 metrics={"procedure_name": proc_name},
             )
+        elif proc_name == "PROC_STORAGE_VERIFICATION" and source_path and Path(source_path).exists() and is_valid_art:
+            d7 = DimensionEvaluation(
+                dimension_key="REPRODUCIBILITY",
+                dimension_name_tr="Çevrimdışı Tekrarlanabilirlik (Offline Reproducibility)",
+                dimension_name_en="Offline Reproducibility Instructions",
+                status=DimensionStatus.INSUFFICIENT_EVIDENCE.value,
+                is_critical_gate=True,
+                is_passed=False,
+                evidence_reference=f"Proc: {proc_name} (HISTORICAL_REPORT_INSPECTION_ONLY)",
+                explanation_tr="Yalnızca tarihsel depolama denetim raporu mevcuttur; gerçek depolama doğrulamasını yeniden çalıştırmak için ham mountinfo girdisi gereklidir.",
+                explanation_en="Only historical storage audit report is present; raw mountinfo input is required to re-execute storage durability verification.",
+                required_action_tr="Canlı konteyner mountinfo girdisini sağlayarak depolama doğrulamasını yeniden çalıştırın.",
+                required_action_en="Provide raw container mountinfo input to re-execute storage durability verification.",
+                metrics={"procedure_name": proc_name, "audit_mode": "HISTORICAL_REPORT_INSPECTION"},
+            )
+            blocking_reasons_tr.append("Depolama denetimi yalnızca tarihsel rapor incelemesidir (mountinfo girdisi yok).")
+            blocking_reasons_en.append("Storage audit is historical report inspection only (missing mountinfo input).")
         elif not has_allowlisted_proc:
             d7 = DimensionEvaluation(
                 dimension_key="REPRODUCIBILITY",
