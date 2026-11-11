@@ -984,6 +984,28 @@ class ProductDashboardApiService:
             elif sub_path in ("workspace/walk-forward", "walk-forward"):
                 from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
                 payload = body or query_params or {}
+                if isinstance(payload, dict):
+                    if any(payload.get(k) is not None for k in ("secret", "signing_secret", "raw_secret", "signing_key")):
+                        return HTTPStatus.FORBIDDEN, {
+                            "status": "error",
+                            "error_code": "SIGNING_KEY_NOT_AUTHORIZED",
+                            "rejection_code": "SIGNING_KEY_NOT_AUTHORIZED",
+                            "message": "Caller-supplied signing keys or secrets are strictly prohibited on research APIs.",
+                        }
+                    if any(k in payload for k in ("is_admin", "authorized", "forged_signature")):
+                        return HTTPStatus.FORBIDDEN, {
+                            "status": "error",
+                            "error_code": "SIGNING_AUTHORITY_NOT_GRANTED",
+                            "rejection_code": "SIGNING_AUTHORITY_NOT_GRANTED",
+                            "message": "Caller-supplied authorization flags or forged signatures cannot grant signing authority.",
+                        }
+                    if str(payload.get("action") or "").lower() in ("sign", "create_intake_manifest", "sign_intake_manifest") or bool(payload.get("create_intake_manifest")) or bool(payload.get("sign_intake_manifest")):
+                        return HTTPStatus.FORBIDDEN, {
+                            "status": "error",
+                            "error_code": "SIGNING_OPERATION_NOT_PERMITTED",
+                            "rejection_code": "SIGNING_OPERATION_NOT_PERMITTED",
+                            "message": "Public and research workspace APIs are strictly VERIFICATION_ONLY and cannot sign intake manifests.",
+                        }
                 def _val(key: str, default: Any) -> Any:
                     v = payload.get(key, default)
                     return v[0] if isinstance(v, list) and v else v
@@ -1030,10 +1052,14 @@ class ProductDashboardApiService:
                 "independent-validation/sign",
                 "workspace/replication-attestation/sign",
                 "replication-attestation/sign",
+                "workspace/intake-manifest/sign",
+                "intake-manifest/sign",
+                "workspace/readiness/sign-manifest",
+                "readiness/sign-manifest",
             ):
                 from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
                 payload = dict(body or query_params or {})
-                if sub_path.endswith("/sign"):
+                if sub_path.endswith("/sign") or sub_path.endswith("/sign-manifest"):
                     payload["action"] = "sign"
                 extra = {
                     k: v

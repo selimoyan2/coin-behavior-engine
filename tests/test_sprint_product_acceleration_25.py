@@ -1059,13 +1059,21 @@ class TestSprint25DatasetProvenanceTrustBoundary:
         gaps_att = EvidenceGapAnalyzer.analyze_record(rec_att)
         assert not any(g.gap_category == GapCategory.MISSING_DATASET_PROVENANCE.value for g in gaps_att)
 
-        # Path B: Signed Intake Manifest
+        # Path B: Signed Intake Manifest (using isolated test signing authority)
+        from coin_behavior_engine.product.credential_manager import KEY_PURPOSE_INTAKE_MANIFEST
+
         rec_man = self._make_record(str(f), sha, ds_id="BTCUSDT-MANIFEST-VERIFIED-DS")
-        manifest_obj = ScientificReadinessEvaluator.create_signed_intake_manifest(
-            record=rec_man,
+        with signing_key_registry.isolated_test_signing_context(
             key_id="prov-key-active",
             secret="prov-secret-active-9999",
-        )
+            purposes=[KEY_PURPOSE_INTAKE_MANIFEST],
+            remove_key_on_exit=False,
+        ) as intake_auth_ctx:
+            manifest_obj = ScientificReadinessEvaluator.create_signed_intake_manifest(
+                record=rec_man,
+                key_id="prov-key-active",
+                authority_context=intake_auth_ctx,
+            )
         manifest_path = tmp_path / "signed_intake_manifest.json"
         manifest_path.write_text(json.dumps(manifest_obj), encoding="utf-8")
         rec_man.intake_manifest_path = str(manifest_path)

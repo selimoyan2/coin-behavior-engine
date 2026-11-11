@@ -803,15 +803,52 @@ class TestSprint26FinalScientificTrustClosure:
             CANONICAL_HISTORICAL_AUTHORITY_KEY_ID,
         )
 
-        signing_key_registry.register_key(
-            CANONICAL_HISTORICAL_AUTHORITY_KEY_ID,
-            "isolated-test-intake-manifest-secret-2026-v2",
-            is_active=True,
-            allowed_purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
-            is_test_key=True,
-        )
-        yield
-        signing_key_registry.remove_key(CANONICAL_HISTORICAL_AUTHORITY_KEY_ID)
+        with signing_key_registry.isolated_test_signing_context(
+            key_id=CANONICAL_HISTORICAL_AUTHORITY_KEY_ID,
+            secret="isolated-test-intake-manifest-secret-2026-v2",
+            purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+        ) as auth_ctx:
+            self.intake_auth_ctx = auth_ctx
+            yield
+
+    @staticmethod
+    def _build_test_only_forged_intake_manifest(
+        *,
+        dataset_id: str,
+        artifact_hashes: Dict[str, str],
+        source_lineage: str,
+        key_id: str,
+        forged_signature: str,
+        issuer: str = "CBE_DATA_GOVERNANCE_COUNCIL",
+        record_id: str = "",
+        expires_at_utc: str = "",
+        is_superseded: bool = False,
+    ) -> Dict[str, Any]:
+        """Isolated test-only helper for constructing deliberately invalid/forged intake manifests
+        without invoking production signing APIs or exposing forged_signature in production code.
+        """
+        from coin_behavior_engine.product.research_report_evidence import rfc8785_canonical_json
+
+        artifacts = [{"path": str(k), "sha256": str(v)} for k, v in artifact_hashes.items()]
+        src_sha = artifacts[0]["sha256"] if artifacts else ""
+        claims = {
+            "artifacts": sorted(artifacts, key=lambda x: str(x.get("path", ""))),
+            "dataset_id": str(dataset_id),
+            "expires_at_utc": str(expires_at_utc or ""),
+            "is_superseded": bool(is_superseded),
+            "issuer": str(issuer),
+            "key_id": str(key_id),
+            "record_id": str(record_id),
+            "schema_version": "CBE-INTAKE-MANIFEST-1.0.0",
+            "source_artifact_sha256": str(src_sha),
+            "source_lineage": str(source_lineage),
+        }
+        canonical_bytes = rfc8785_canonical_json(claims)
+        return {
+            **claims,
+            "claims_sha256": hashlib.sha256(canonical_bytes).hexdigest(),
+            "signature": forged_signature,
+        }
 
     def test_01_existing_parquet_without_trusted_provenance_rejected(self, tmp_path):
         # Copy a real Parquet file to a new path not bound in any signed manifest
@@ -887,6 +924,7 @@ class TestSprint26FinalScientificTrustClosure:
                 "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5"
             },
             source_lineage="BINANCE_SPOT_KLINES_BTCUSDT_1H_2024Q1",
+            authority_context=self.intake_auth_ctx,
         )
         forged_manifest = dict(manifest)
         forged_manifest["signature"] = "0" * 64
@@ -920,6 +958,7 @@ class TestSprint26FinalScientificTrustClosure:
                 "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet": "f" * 64
             },
             source_lineage="BINANCE_SPOT_KLINES_BTCUSDT_1H_2024Q1",
+            authority_context=self.intake_auth_ctx,
         )
         wf_lab = WalkForwardResearchLab()
         wf_res = wf_lab.run_walk_forward_evaluation(
@@ -950,6 +989,7 @@ class TestSprint26FinalScientificTrustClosure:
                 "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5"
             },
             source_lineage="BINANCE_SPOT_KLINES_BTCUSDT_1H_2024Q1",
+            authority_context=self.intake_auth_ctx,
         )
         wf_lab = WalkForwardResearchLab()
         wf_res = wf_lab.run_walk_forward_evaluation(
@@ -972,9 +1012,7 @@ class TestSprint26FinalScientificTrustClosure:
         assert reg_res.verified_source_artifact["provenance_rejection_code"] == "DATASET_ID_MISMATCH"
 
     def test_06_revoked_attestation_signing_key_rejected(self):
-        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
-
-        revoked_manifest = ScientificReadinessEvaluator.create_signed_intake_manifest(
+        revoked_manifest = self._build_test_only_forged_intake_manifest(
             dataset_id="DS-BTC-1H-Q1-2024",
             artifact_hashes={
                 "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5"
@@ -1004,6 +1042,7 @@ class TestSprint26FinalScientificTrustClosure:
             source_lineage="BINANCE_SPOT_KLINES_BTCUSDT_1H_2024Q1",
             issued_at_utc="2020-01-01T00:00:00Z",
             expires_at_utc="2021-01-01T00:00:00Z",
+            authority_context=self.intake_auth_ctx,
         )
         wf_lab = WalkForwardResearchLab()
         wf_res = wf_lab.run_walk_forward_evaluation(
@@ -1162,11 +1201,13 @@ class TestSprint26FinalScientificTrustClosure:
             dataset_id="DS-ALPHA",
             artifact_hashes={"dataset_alpha.parquet": sha},
             source_lineage="LINEAGE-ALPHA",
+            authority_context=self.intake_auth_ctx,
         )
         man_b = ScientificReadinessEvaluator.create_signed_intake_manifest(
             dataset_id="DS-BETA",
             artifact_hashes={"dataset_beta.parquet": sha},
             source_lineage="LINEAGE-BETA",
+            authority_context=self.intake_auth_ctx,
         )
         fw = IndependentValidationFramework(workspace_root=tmp_path)
         audit = fw.evaluate_validation_independence(
@@ -1360,6 +1401,7 @@ class TestSprint26FinalScientificTrustClosure:
             dataset_id="DS-BTC-1H-Q1-2024",
             artifact_hashes={rel_p: sha},
             source_lineage="BINANCE_SPOT_KLINES_BTCUSDT_1H_2024Q1",
+            authority_context=self.intake_auth_ctx,
         )
 
         # First verification succeeds and populates cache
@@ -2318,6 +2360,711 @@ class TestSprint26FinalSigningAuthorityHardening:
             assert audit.assigned_category == "INDEPENDENT_REPLICATION"
             assert audit.trust_progression_state == "INDEPENDENT_REPLICATION"
             assert audit.eight_point_checks["researcher_or_procedure_independence"]["passed"] is True
+
+
+# ===========================================================================
+# 9. SPRINT 26 FINAL INTAKE SIGNING TRUST CLOSURE — 20 NEGATIVE + POSITIVE TESTS
+# ===========================================================================
+
+
+class TestSprint26FinalIntakeSigningTrustClosure:
+    """
+    Comprehensive negative and positive test suite for Sprint 26 Final Intake Signing Trust Closure
+    (CBE_SPRINT26_FINAL_INTAKE_SIGNING_TRUST_CLOSURE).
+    Verifies P0 Dataset Intake Manifest Signing Isolation & Unified Signing Authority.
+    """
+
+    @staticmethod
+    def _base_intake_kwargs() -> Dict[str, Any]:
+        src = Path.cwd() / "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet"
+        sha = hashlib.sha256(src.read_bytes()).hexdigest()
+        return {
+            "dataset_id": "DS-BTC-1H-Q1-2024",
+            "artifact_hashes": {
+                "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet": sha
+            },
+            "source_lineage": "BINANCE_SPOT_KLINES_BTCUSDT_1H_2024Q1",
+        }
+
+    def test_neg_01_caller_supplied_intake_signing_secret_rejected(self):
+        """1. Caller-supplied intake signing secret -> Rejected (SIGNING_KEY_NOT_AUTHORIZED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        kwargs = self._base_intake_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-intake-key-01",
+            secret="isolated-test-intake-secret-01",
+            purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+        ) as auth_ctx:
+            for bad_field in ("secret", "signing_secret", "key_secret", "raw_secret"):
+                with pytest.raises(SigningAuthorityError) as exc_info:
+                    ScientificReadinessEvaluator.create_signed_intake_manifest(
+                        **kwargs,
+                        key_id="cbe-test-intake-key-01",
+                        authority_context=auth_ctx,
+                        **{bad_field: "caller-supplied-intake-secret-bypass"},
+                    )
+                assert exc_info.value.rejection_code == "SIGNING_KEY_NOT_AUTHORIZED"
+
+    def test_neg_02_caller_supplied_forged_signature_rejected(self):
+        """2. Caller-supplied forged_signature -> Rejected (SIGNING_AUTHORITY_NOT_GRANTED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        kwargs = self._base_intake_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-intake-key-02",
+            secret="isolated-test-intake-secret-02",
+            purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+        ) as auth_ctx:
+            with pytest.raises(SigningAuthorityError) as exc_info:
+                ScientificReadinessEvaluator.create_signed_intake_manifest(
+                    **kwargs,
+                    key_id="cbe-test-intake-key-02",
+                    authority_context=auth_ctx,
+                    forged_signature="hmac-sha256:cbe-test-intake-key-02:" + ("f" * 64),
+                )
+            assert exc_info.value.rejection_code == "SIGNING_AUTHORITY_NOT_GRANTED"
+
+    def test_neg_03_missing_signing_authority_context_rejected(self):
+        """3. Missing signing authority context -> Rejected (SIGNING_AUTHORITY_NOT_GRANTED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        kwargs = self._base_intake_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-intake-key-03",
+            secret="isolated-test-intake-secret-03",
+            purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+        ):
+            with pytest.raises(SigningAuthorityError) as exc_info:
+                ScientificReadinessEvaluator.create_signed_intake_manifest(
+                    **kwargs,
+                    key_id="cbe-test-intake-key-03",
+                    authority_context=None,
+                )
+            assert exc_info.value.rejection_code == "SIGNING_AUTHORITY_NOT_GRANTED"
+
+    def test_neg_04_boolean_authorization_flag_rejected(self):
+        """4. Boolean authorization flag -> Rejected (SIGNING_AUTHORITY_NOT_GRANTED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        kwargs = self._base_intake_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-intake-key-04",
+            secret="isolated-test-intake-secret-04",
+            purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+        ) as auth_ctx:
+            for flag_kw in (
+                {"is_admin": True},
+                {"authorized": True},
+                {"is_authorized": True},
+                {"bypass_authority": True},
+            ):
+                with pytest.raises(SigningAuthorityError) as exc_info:
+                    ScientificReadinessEvaluator.create_signed_intake_manifest(
+                        **kwargs,
+                        key_id="cbe-test-intake-key-04",
+                        authority_context=auth_ctx,
+                        **flag_kw,
+                    )
+                assert exc_info.value.rejection_code == "SIGNING_AUTHORITY_NOT_GRANTED"
+
+            # Passing boolean True directly as authority_context -> rejected
+            with pytest.raises(SigningAuthorityError) as exc_bool:
+                ScientificReadinessEvaluator.create_signed_intake_manifest(
+                    **kwargs,
+                    key_id="cbe-test-intake-key-04",
+                    authority_context=True,  # type: ignore[arg-type]
+                )
+            assert exc_bool.value.rejection_code == "SIGNING_AUTHORITY_NOT_GRANTED"
+
+    def test_neg_05_forged_authority_context_rejected(self):
+        """5. Forged authority context -> Rejected (SIGNING_AUTHORITY_NOT_GRANTED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            SigningAuthorityContext,
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        kwargs = self._base_intake_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-intake-key-05",
+            secret="isolated-test-intake-secret-05",
+            purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+        ):
+            forged_ctx = SigningAuthorityContext(
+                context_id="forged-ctx-999",
+                authority_principal="FORGED_CALLER",
+                allowed_purposes={KEY_PURPOSE_INTAKE_MANIFEST},
+                allowed_key_ids={"cbe-test-intake-key-05"},
+                environment_scope="test_isolated",
+                is_test_authority=True,
+                capability_seal="f" * 64,
+            )
+            with pytest.raises(SigningAuthorityError) as exc_info:
+                ScientificReadinessEvaluator.create_signed_intake_manifest(
+                    **kwargs,
+                    key_id="cbe-test-intake-key-05",
+                    authority_context=forged_ctx,
+                )
+            assert exc_info.value.rejection_code == "SIGNING_AUTHORITY_NOT_GRANTED"
+
+    def test_neg_06_revoked_signing_key_rejected(self):
+        """6. Revoked signing key -> Rejected (SIGNING_KEY_REVOKED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        kwargs = self._base_intake_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-intake-revoked-06",
+            secret="isolated-test-intake-secret-06",
+            purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+        ) as auth_ctx:
+            signing_key_registry.revoke_key("cbe-test-intake-revoked-06")
+            with pytest.raises(SigningAuthorityError) as exc_info:
+                ScientificReadinessEvaluator.create_signed_intake_manifest(
+                    **kwargs,
+                    key_id="cbe-test-intake-revoked-06",
+                    authority_context=auth_ctx,
+                )
+            assert exc_info.value.rejection_code == "SIGNING_KEY_REVOKED"
+
+    def test_neg_07_unknown_signing_key_rejected(self):
+        """7. Unknown signing key -> Rejected (SIGNING_KEY_NOT_FOUND)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            SigningAuthorityContext,
+            SigningAuthorityError,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        kwargs = self._base_intake_kwargs()
+        auth_ctx = SigningAuthorityContext.authorize_isolated_test_signing(
+            allowed_key_ids=["cbe-nonexistent-intake-key-07"],
+            purposes=[KEY_PURPOSE_INTAKE_MANIFEST],
+        )
+        try:
+            with pytest.raises(SigningAuthorityError) as exc_info:
+                ScientificReadinessEvaluator.create_signed_intake_manifest(
+                    **kwargs,
+                    key_id="cbe-nonexistent-intake-key-07",
+                    authority_context=auth_ctx,
+                )
+            assert exc_info.value.rejection_code == "SIGNING_KEY_NOT_FOUND"
+        finally:
+            auth_ctx.close()
+
+    def test_neg_08_wrong_signing_key_purpose_rejected(self):
+        """8. Wrong signing-key purpose -> Rejected (SIGNING_KEY_NOT_AUTHORIZED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_EVIDENCE_BUNDLE,
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            SigningAuthorityContext,
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        kwargs = self._base_intake_kwargs()
+        signing_key_registry.register_key(
+            key_id="cbe-test-wrong-purpose-key-08",
+            secret="isolated-test-wrong-purpose-secret-08",
+            is_active=True,
+            allowed_purposes=[KEY_PURPOSE_EVIDENCE_BUNDLE],  # Does NOT include KEY_PURPOSE_INTAKE_MANIFEST
+            is_test_key=True,
+        )
+        auth_ctx = SigningAuthorityContext.authorize_isolated_test_signing(
+            allowed_key_ids=["cbe-test-wrong-purpose-key-08"],
+            purposes=[KEY_PURPOSE_INTAKE_MANIFEST],
+        )
+        try:
+            with pytest.raises(SigningAuthorityError) as exc_info:
+                ScientificReadinessEvaluator.create_signed_intake_manifest(
+                    **kwargs,
+                    key_id="cbe-test-wrong-purpose-key-08",
+                    authority_context=auth_ctx,
+                )
+            assert exc_info.value.rejection_code == "SIGNING_KEY_NOT_AUTHORIZED"
+        finally:
+            auth_ctx.close()
+            signing_key_registry.remove_key("cbe-test-wrong-purpose-key-08")
+
+    def test_neg_09_verification_only_runtime_attempting_intake_signing_rejected(self):
+        """9. Verification-only runtime attempting intake signing -> Rejected (SIGNING_OPERATION_NOT_PERMITTED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        kwargs = self._base_intake_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-intake-key-09",
+            secret="isolated-test-intake-secret-09",
+            purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+        ) as auth_ctx:
+            for locked_mode in ("VERIFICATION_ONLY", "VERIFICATION_ONLY_LOCKED", "DISABLED"):
+                with pytest.raises(SigningAuthorityError) as exc_info:
+                    ScientificReadinessEvaluator.create_signed_intake_manifest(
+                        **kwargs,
+                        key_id="cbe-test-intake-key-09",
+                        authority_context=auth_ctx,
+                        runtime_mode=locked_mode,
+                    )
+                assert exc_info.value.rejection_code == "SIGNING_OPERATION_NOT_PERMITTED"
+
+    def test_neg_10_public_api_attempting_intake_signing_rejected(self):
+        """10. Public API attempting intake signing -> Rejected (403 FORBIDDEN / SIGNING_OPERATION_NOT_PERMITTED)."""
+        from http import HTTPStatus
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            SigningAuthorityError,
+            public_api_request_guard,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        # A. Direct HTTP POST to /api/v1/product/workspace/intake-manifest/sign
+        status_1, resp_1 = ProductDashboardApiService.handle_post_request(
+            path="/api/v1/product/workspace/intake-manifest/sign",
+            query_params={},
+            body={"dataset_id": "DS-BTC-1H-Q1-2024", "create_intake_manifest": True},
+        )
+        assert status_1 == HTTPStatus.FORBIDDEN
+        assert resp_1["rejection_code"] == "SIGNING_OPERATION_NOT_PERMITTED"
+
+        # B. HTTP POST to /api/v1/product/workspace/walk-forward with create_intake_manifest=True
+        status_2, resp_2 = ProductDashboardApiService.handle_post_request(
+            path="/api/v1/product/workspace/walk-forward",
+            query_params={},
+            body={"dataset_id": "DS-BTC-1H-Q1-2024", "create_intake_manifest": True},
+        )
+        assert status_2 == HTTPStatus.FORBIDDEN
+        assert resp_2["rejection_code"] == "SIGNING_OPERATION_NOT_PERMITTED"
+
+        # C. Direct Python call inside public_api_request_guard()
+        kwargs = self._base_intake_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-intake-key-10",
+            secret="isolated-test-intake-secret-10",
+            purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+        ) as auth_ctx:
+            with public_api_request_guard():
+                with pytest.raises(SigningAuthorityError) as exc_info:
+                    ScientificReadinessEvaluator.create_signed_intake_manifest(
+                        **kwargs,
+                        key_id="cbe-test-intake-key-10",
+                        authority_context=auth_ctx,
+                    )
+                assert exc_info.value.rejection_code == "SIGNING_OPERATION_NOT_PERMITTED"
+
+    def test_neg_11_direct_sign_for_purpose_bypass_attempt_rejected(self):
+        """11. Direct sign_for_purpose() bypass attempt without SigningAuthorityContext -> Rejected."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-intake-key-11",
+            secret="isolated-test-intake-secret-11",
+            purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+        ):
+            # Calling sign_for_purpose() without authority_context must fail closed
+            with pytest.raises(SigningAuthorityError) as exc_info:
+                signing_key_registry.sign_for_purpose(
+                    canonical_bytes=b'{"dataset_id":"DS-BTC-1H-Q1-2024"}',
+                    key_id="cbe-test-intake-key-11",
+                    required_purpose=KEY_PURPOSE_INTAKE_MANIFEST,
+                )
+            assert exc_info.value.rejection_code == "SIGNING_AUTHORITY_NOT_GRANTED"
+
+    def test_neg_12_test_authority_leaking_into_staging_runtime_rejected(self):
+        """12. Test authority leaking into staging runtime -> Rejected (SIGNING_OPERATION_NOT_PERMITTED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        kwargs = self._base_intake_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-intake-leak-12",
+            secret="isolated-test-intake-leak-secret-12",
+            purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+        ) as auth_ctx:
+            # A. Using test authority_context in AUTHORIZED_OPERATOR_SIGNING mode -> rejected
+            with pytest.raises(SigningAuthorityError) as exc_mode:
+                ScientificReadinessEvaluator.create_signed_intake_manifest(
+                    **kwargs,
+                    key_id="cbe-test-intake-leak-12",
+                    authority_context=auth_ctx,
+                    runtime_mode="AUTHORIZED_OPERATOR_SIGNING",
+                )
+            assert exc_mode.value.rejection_code == "SIGNING_OPERATION_NOT_PERMITTED"
+
+        # B. Reusing exited test authority_context outside the with-block -> rejected
+        with pytest.raises(SigningAuthorityError) as exc_leaked:
+            ScientificReadinessEvaluator.create_signed_intake_manifest(
+                **kwargs,
+                key_id="cbe-test-intake-leak-12",
+                authority_context=auth_ctx,
+            )
+        assert exc_leaked.value.rejection_code == "SIGNING_OPERATION_NOT_PERMITTED"
+        assert signing_key_registry.has_key("cbe-test-intake-leak-12") is False
+
+    def test_neg_13_invalid_signature_verification_rejected(self):
+        """13. Invalid signature verification -> Rejected (SIGNATURE_VERIFICATION_FAILED)."""
+        forged_manifest = TestSprint26FinalScientificTrustClosure._build_test_only_forged_intake_manifest(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            artifact_hashes=self._base_intake_kwargs()["artifact_hashes"],
+            source_lineage="BINANCE_SPOT_KLINES_BTCUSDT_1H_2024Q1",
+            key_id="k2026-v1",
+            forged_signature="hmac-sha256:k2026-v1:" + ("b" * 64),
+        )
+        wf_lab = WalkForwardResearchLab()
+        wf_res = wf_lab.run_walk_forward_evaluation(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            intake_manifest=forged_manifest,
+            require_explicit_evidence=True,
+        )
+        assert wf_res.status == "EVALUATION_BLOCKED"
+        assert wf_res.dataset_provenance["provenance_rejection_code"] == "SIGNATURE_VERIFICATION_FAILED"
+
+    def test_neg_14_source_artifact_hash_mismatch_rejected(self):
+        """14. Source artifact hash mismatch -> Rejected (SOURCE_ARTIFACT_HASH_MISMATCH)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-intake-key-14",
+            secret="isolated-test-intake-secret-14",
+            purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+        ) as auth_ctx:
+            bad_hash_manifest = ScientificReadinessEvaluator.create_signed_intake_manifest(
+                dataset_id="DS-BTC-1H-Q1-2024",
+                artifact_hashes={
+                    "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet": "e" * 64
+                },
+                source_lineage="BINANCE_SPOT_KLINES_BTCUSDT_1H_2024Q1",
+                key_id="cbe-test-intake-key-14",
+                authority_context=auth_ctx,
+            )
+            wf_lab = WalkForwardResearchLab()
+            wf_res = wf_lab.run_walk_forward_evaluation(
+                dataset_id="DS-BTC-1H-Q1-2024",
+                intake_manifest=bad_hash_manifest,
+                require_explicit_evidence=True,
+            )
+            assert wf_res.status == "EVALUATION_BLOCKED"
+            assert wf_res.dataset_provenance["provenance_rejection_code"] == "SOURCE_ARTIFACT_HASH_MISMATCH"
+
+    def test_neg_15_manifest_dataset_id_mismatch_rejected(self):
+        """15. Manifest dataset ID mismatch -> Rejected (DATASET_ID_MISMATCH)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        kwargs = self._base_intake_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-intake-key-15",
+            secret="isolated-test-intake-secret-15",
+            purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+        ) as auth_ctx:
+            wrong_id_manifest = ScientificReadinessEvaluator.create_signed_intake_manifest(
+                dataset_id="DS-WRONG-DATASET-2024",
+                artifact_hashes=kwargs["artifact_hashes"],
+                source_lineage=kwargs["source_lineage"],
+                key_id="cbe-test-intake-key-15",
+                authority_context=auth_ctx,
+            )
+            wf_lab = WalkForwardResearchLab()
+            wf_res = wf_lab.run_walk_forward_evaluation(
+                dataset_id="DS-BTC-1H-Q1-2024",
+                intake_manifest=wrong_id_manifest,
+                require_explicit_evidence=True,
+            )
+            assert wf_res.status == "EVALUATION_BLOCKED"
+            assert wf_res.dataset_provenance["provenance_rejection_code"] == "DATASET_ID_MISMATCH"
+
+    def test_neg_16_previously_valid_manifest_verification_after_signing_api_changes(self):
+        """16. Previously valid manifest verification remains functional in VERIFICATION_ONLY runtime."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        kwargs = self._base_intake_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-intake-key-16",
+            secret="isolated-test-intake-secret-16",
+            purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+            remove_key_on_exit=False,
+        ) as auth_ctx:
+            valid_manifest = ScientificReadinessEvaluator.create_signed_intake_manifest(
+                **kwargs,
+                key_id="cbe-test-intake-key-16",
+                authority_context=auth_ctx,
+            )
+
+        try:
+            # Outside signing context (key is now HISTORICAL_VERIFY_ONLY and runtime is VERIFICATION_ONLY):
+            # Verification of previously signed manifest succeeds across Walk-Forward & Regime Research
+            wf_lab = WalkForwardResearchLab()
+            wf_res = wf_lab.run_walk_forward_evaluation(
+                dataset_id="DS-BTC-1H-Q1-2024",
+                intake_manifest=valid_manifest,
+                require_explicit_evidence=True,
+            )
+            assert wf_res.status == "EVALUATION_COMPLETED"
+            assert wf_res.dataset_provenance["is_verified"] is True
+
+            reg_engine = HistoricalMarketRegimeResearchEngine()
+            reg_res = reg_engine.run_regime_research(
+                dataset_id="DS-BTC-1H-Q1-2024",
+                intake_manifest=valid_manifest,
+                require_explicit_evidence=True,
+            )
+            assert reg_res.status == "RESEARCH_COMPLETED"
+            assert reg_res.verified_source_artifact["is_verified"] is True
+        finally:
+            signing_key_registry.remove_key("cbe-test-intake-key-16")
+
+    def test_neg_17_signing_key_rotation_compatibility(self):
+        """17. Signing-key rotation compatibility: old key verifies existing manifests but cannot sign new ones."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            SigningAuthorityContext,
+            SigningAuthorityError,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        kwargs = self._base_intake_kwargs()
+        signing_key_registry.register_key(
+            key_id="cbe-intake-rot-old-17",
+            secret="intake-rot-old-secret-17",
+            is_active=True,
+            allowed_purposes=[KEY_PURPOSE_INTAKE_MANIFEST],
+            is_test_key=True,
+        )
+        auth_ctx = SigningAuthorityContext.authorize_isolated_test_signing(
+            allowed_key_ids=["cbe-intake-rot-old-17", "cbe-intake-rot-new-17"],
+            purposes=[KEY_PURPOSE_INTAKE_MANIFEST],
+        )
+        try:
+            old_manifest = ScientificReadinessEvaluator.create_signed_intake_manifest(
+                **kwargs,
+                key_id="cbe-intake-rot-old-17",
+                authority_context=auth_ctx,
+            )
+            # Rotate old -> new
+            signing_key_registry.rotate_key(
+                old_key_id="cbe-intake-rot-old-17",
+                new_key_id="cbe-intake-rot-new-17",
+                new_secret="intake-rot-new-secret-17",
+                allowed_purposes=[KEY_PURPOSE_INTAKE_MANIFEST],
+                is_test_key=True,
+                keep_old_for_verification=True,
+            )
+            # Old key cannot sign new manifests after rotation
+            with pytest.raises(SigningAuthorityError) as exc_old:
+                ScientificReadinessEvaluator.create_signed_intake_manifest(
+                    **kwargs,
+                    key_id="cbe-intake-rot-old-17",
+                    authority_context=auth_ctx,
+                )
+            assert exc_old.value.rejection_code == "SIGNING_KEY_NOT_AUTHORIZED"
+
+            # Old manifest still verifies
+            wf_lab = WalkForwardResearchLab()
+            wf_old = wf_lab.run_walk_forward_evaluation(
+                dataset_id="DS-BTC-1H-Q1-2024",
+                intake_manifest=old_manifest,
+                require_explicit_evidence=True,
+            )
+            assert wf_old.status == "EVALUATION_COMPLETED"
+            assert wf_old.dataset_provenance["is_verified"] is True
+
+            # New key signs and verifies
+            new_manifest = ScientificReadinessEvaluator.create_signed_intake_manifest(
+                **kwargs,
+                key_id="cbe-intake-rot-new-17",
+                authority_context=auth_ctx,
+            )
+            wf_new = wf_lab.run_walk_forward_evaluation(
+                dataset_id="DS-BTC-1H-Q1-2024",
+                intake_manifest=new_manifest,
+                require_explicit_evidence=True,
+            )
+            assert wf_new.status == "EVALUATION_COMPLETED"
+            assert wf_new.dataset_provenance["is_verified"] is True
+        finally:
+            auth_ctx.close()
+            signing_key_registry.remove_key("cbe-intake-rot-old-17")
+            signing_key_registry.remove_key("cbe-intake-rot-new-17")
+
+    def test_neg_18_signature_cache_invalidation_after_revocation(self):
+        """18. Signature cache invalidation after revocation -> Rejected (REVOKED_SIGNING_KEY)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        kwargs = self._base_intake_kwargs()
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-intake-cache-18",
+            secret="isolated-test-intake-cache-secret-18",
+            purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+        ) as auth_ctx:
+            manifest = ScientificReadinessEvaluator.create_signed_intake_manifest(
+                **kwargs,
+                key_id="cbe-test-intake-cache-18",
+                authority_context=auth_ctx,
+            )
+            wf_lab = WalkForwardResearchLab()
+            res_1 = wf_lab.run_walk_forward_evaluation(
+                dataset_id="DS-BTC-1H-Q1-2024",
+                intake_manifest=manifest,
+                require_explicit_evidence=True,
+            )
+            assert res_1.status == "EVALUATION_COMPLETED"
+            assert res_1.dataset_provenance["is_verified"] is True
+
+            # Revoke key after cache population
+            signing_key_registry.revoke_key("cbe-test-intake-cache-18")
+
+            # Subsequent verification must NOT use stale cached valid result
+            res_2 = wf_lab.run_walk_forward_evaluation(
+                dataset_id="DS-BTC-1H-Q1-2024",
+                intake_manifest=manifest,
+                require_explicit_evidence=True,
+            )
+            assert res_2.status == "EVALUATION_BLOCKED"
+            assert res_2.dataset_provenance["provenance_rejection_code"] == "REVOKED_SIGNING_KEY"
+
+    def test_neg_19_trusted_signing_attempt_using_unregistered_secret_rejected(self):
+        """19. Trusted signing attempt using an unregistered secret -> Rejected (SIGNING_KEY_NOT_AUTHORIZED)."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            SigningAuthorityContext,
+            SigningAuthorityError,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        kwargs = self._base_intake_kwargs()
+        auth_ctx = SigningAuthorityContext.authorize_isolated_test_signing(
+            allowed_key_ids=["unregistered-key-19"],
+            purposes=[KEY_PURPOSE_INTAKE_MANIFEST],
+        )
+        try:
+            with pytest.raises(SigningAuthorityError) as exc_info:
+                ScientificReadinessEvaluator.create_signed_intake_manifest(
+                    **kwargs,
+                    key_id="unregistered-key-19",
+                    secret="unregistered-raw-secret-material-19",
+                    authority_context=auth_ctx,
+                )
+            assert exc_info.value.rejection_code == "SIGNING_KEY_NOT_AUTHORIZED"
+        finally:
+            auth_ctx.close()
+
+    def test_neg_20_unauthorized_signing_attempt_through_indirect_helper_rejected(self):
+        """20. Unauthorized signing attempt through get_canonical_signed_intake_manifest -> Rejected."""
+        from coin_behavior_engine.product.credential_manager import SigningAuthorityError
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        # A. Calling get_canonical_signed_intake_manifest without authority_context -> rejected
+        with pytest.raises(SigningAuthorityError) as exc_no_auth:
+            ScientificReadinessEvaluator.get_canonical_signed_intake_manifest(
+                dataset_id="DS-BTC-1H-Q1-2024",
+            )
+        assert exc_no_auth.value.rejection_code == "SIGNING_AUTHORITY_NOT_GRANTED"
+
+        # B. Calling get_canonical_signed_intake_manifest with caller-supplied secret -> rejected
+        with pytest.raises(SigningAuthorityError) as exc_sec:
+            ScientificReadinessEvaluator.get_canonical_signed_intake_manifest(
+                dataset_id="DS-BTC-1H-Q1-2024",
+                secret="caller-secret-bypass-attempt",
+            )
+        assert exc_sec.value.rejection_code == "SIGNING_KEY_NOT_AUTHORIZED"
+
+    def test_pos_21_authorized_intake_manifest_signing_and_cross_module_compatibility(self):
+        """Positive test: isolated test signing context + KEY_PURPOSE_INTAKE_MANIFEST signs and verifies across modules."""
+        from coin_behavior_engine.product.credential_manager import (
+            KEY_PURPOSE_INTAKE_MANIFEST,
+            signing_key_registry,
+        )
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="cbe-test-intake-pos-21",
+            secret="isolated-test-intake-pos-secret-21",
+            purposes=(KEY_PURPOSE_INTAKE_MANIFEST,),
+        ) as auth_ctx:
+            manifest = ScientificReadinessEvaluator.get_canonical_signed_intake_manifest(
+                dataset_id="DS-BTC-1H-Q1-2024",
+                key_id="cbe-test-intake-pos-21",
+                authority_context=auth_ctx,
+            )
+            assert manifest is not None
+            assert manifest["key_id"] == "cbe-test-intake-pos-21"
+            assert manifest["signature"].startswith("hmac-sha256:cbe-test-intake-pos-21:")
+
+            wf_lab = WalkForwardResearchLab()
+            wf_res = wf_lab.run_walk_forward_evaluation(
+                dataset_id="DS-BTC-1H-Q1-2024",
+                intake_manifest=manifest,
+                require_explicit_evidence=True,
+            )
+            assert wf_res.status == "EVALUATION_COMPLETED"
+            assert wf_res.dataset_provenance["is_verified"] is True
+
+    def test_pos_22_source_code_audit_no_direct_hmac_or_forged_signature_in_intake_signing(self):
+        """Source-code audit: scientific_readiness.py contains zero direct hmac.new or forged_signature branches."""
+        sr_src = (
+            Path.cwd() / "src/coin_behavior_engine/product/scientific_readiness.py"
+        ).read_text(encoding="utf-8")
+        assert "hmac.new(" not in sr_src
+        assert "elif secret is not None:" not in sr_src
+        assert "if forged_signature is not None:" not in sr_src
+        assert "signing_key_registry.sign_with_authority(" in sr_src
+
 
 
 

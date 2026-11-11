@@ -847,41 +847,23 @@ class SigningKeyRegistry:
     def sign_for_purpose(
         self,
         canonical_bytes: bytes,
-        key_id: str,
+        key_id: Optional[str],
         required_purpose: str,
+        authority_context: Any = None,
+        runtime_mode_override: Optional[str] = None,
     ) -> str:
         """
-        Signs canonical bytes using a registered, active, non-revoked key authorized for required_purpose
-        without exposing internal _keys storage to callers.
+        Purpose-bound signing interface that delegates strictly to sign_with_authority().
+        Cannot bypass SigningAuthorityContext, key lifecycle/revocation, purpose checks,
+        or runtime verification-only restrictions.
         """
-        if not key_id or not isinstance(key_id, str) or not key_id.strip():
-            raise SigningAuthorityError("SIGNING_KEY_NOT_FOUND", "Signing key ID is missing.")
-        clean_key_id = key_id.strip()
-        if self.is_key_revoked(clean_key_id):
-            raise SigningAuthorityError(
-                "SIGNING_KEY_REVOKED",
-                f"Signing key '{clean_key_id}' is revoked.",
-            )
-        secret = self._keys.get(clean_key_id)
-        if not secret:
-            raise SigningAuthorityError(
-                "SIGNING_KEY_NOT_FOUND",
-                f"Signing key '{clean_key_id}' is not registered in SigningKeyRegistry.",
-            )
-        meta = self._key_metadata.get(clean_key_id)
-        if meta:
-            if not meta.get("is_active_for_signing", False):
-                raise SigningAuthorityError(
-                    "SIGNING_KEY_NOT_AUTHORIZED",
-                    f"Signing key '{clean_key_id}' is not active for signing.",
-                )
-            if required_purpose not in meta.get("allowed_purposes", set()):
-                raise SigningAuthorityError(
-                    "SIGNING_KEY_NOT_AUTHORIZED",
-                    f"Signing key '{clean_key_id}' is not authorized for purpose '{required_purpose}'.",
-                )
-        h = hmac.new(secret.encode("utf-8"), canonical_bytes, hashlib.sha256)
-        return f"hmac-sha256:{clean_key_id}:{h.hexdigest()}"
+        return self.sign_with_authority(
+            canonical_bytes=canonical_bytes,
+            key_id=key_id,
+            required_purpose=required_purpose,
+            authority_context=authority_context,
+            runtime_mode_override=runtime_mode_override,
+        )
 
     def get_active_key(self) -> Tuple[Optional[str], Optional[str]]:
         """Returns (active_key_id, active_secret)."""

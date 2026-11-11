@@ -1634,18 +1634,33 @@ class ResearchWorkspaceV2Engine:
             }
         if any(
             k in combined_inputs
-            for k in ("is_admin", "authorized", "grant_signing_authority", "bypass_signing_authority")
+            for k in (
+                "is_admin",
+                "authorized",
+                "grant_signing_authority",
+                "bypass_signing_authority",
+                "forged_signature",
+            )
         ):
             return {
                 "status": "error",
                 "error_code": "SIGNING_AUTHORITY_NOT_GRANTED",
                 "rejection_code": "SIGNING_AUTHORITY_NOT_GRANTED",
-                "message": "Caller-supplied authorization flags (is_admin/authorized) cannot grant signing authority.",
+                "message": "Caller-supplied authorization flags (is_admin/authorized) or forged signatures cannot grant signing authority.",
             }
         if (
-            str(combined_inputs.get("action") or "").lower() in ("sign", "create_attestation", "mint_attestation")
+            str(combined_inputs.get("action") or "").lower()
+            in (
+                "sign",
+                "create_attestation",
+                "mint_attestation",
+                "create_intake_manifest",
+                "sign_intake_manifest",
+            )
             or bool(combined_inputs.get("create_attestation"))
             or bool(combined_inputs.get("sign_replication_attestation"))
+            or bool(combined_inputs.get("create_intake_manifest"))
+            or bool(combined_inputs.get("sign_intake_manifest"))
         ):
             return {
                 "status": "error",
@@ -1653,7 +1668,7 @@ class ResearchWorkspaceV2Engine:
                 "rejection_code": "SIGNING_OPERATION_NOT_PERMITTED",
                 "message": (
                     "Public and research workspace APIs are strictly VERIFICATION_ONLY and "
-                    "cannot create or sign replication attestations."
+                    "cannot create or sign replication attestations or intake manifests."
                 ),
             }
 

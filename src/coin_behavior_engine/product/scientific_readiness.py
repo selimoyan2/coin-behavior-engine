@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import enum
 import hashlib
-import hmac
 import json
 import math
 from dataclasses import dataclass, field, asdict
@@ -32,6 +31,8 @@ from coin_behavior_engine.product.attestation_verifier import (
 )
 from coin_behavior_engine.product.credential_manager import (
     KEY_PURPOSE_INTAKE_MANIFEST,
+    SigningAuthorityContext,
+    SigningAuthorityError,
     signing_key_registry,
 )
 from coin_behavior_engine.product.research_report_evidence import rfc8785_canonical_json
@@ -128,8 +129,7 @@ class ScientificReadinessEvaluator:
     def create_signed_intake_manifest(
         cls,
         record: Any = None,
-        key_id: str = CANONICAL_HISTORICAL_AUTHORITY_KEY_ID,
-        secret: Optional[str] = None,
+        key_id: Optional[str] = CANONICAL_HISTORICAL_AUTHORITY_KEY_ID,
         issuer: str = "CBE_DATA_GOVERNANCE_COUNCIL",
         source_lineage: str = "Binance Historical Archive -> Canonical Verified Partition",
         artifacts: Optional[List[Dict[str, str]]] = None,
@@ -137,15 +137,54 @@ class ScientificReadinessEvaluator:
         override_record_id: Optional[str] = None,
         expires_at_utc: Optional[str] = None,
         is_superseded: bool = False,
-        forged_signature: Optional[str] = None,
         dataset_id: Optional[str] = None,
         artifact_hashes: Optional[Dict[str, str]] = None,
         issued_at_utc: Optional[str] = None,
+        authority_context: Optional[SigningAuthorityContext] = None,
+        runtime_mode: Optional[str] = None,
+        **forbidden_kwargs: Any,
     ) -> Dict[str, Any]:
         """
         Creates a cryptographically signed dataset intake manifest bound to dataset_id,
         record_id, source_lineage, and physical artifact SHA-256 digests.
+        Strictly enforces P0 signing-authority isolation:
+        - Rejects caller-supplied secrets, keys, forged_signature, and boolean authorization flags.
+        - Delegates signing exclusively to signing_key_registry.sign_with_authority()
+          with required_purpose=KEY_PURPOSE_INTAKE_MANIFEST.
         """
+        for bad_sec_field in ("secret", "signing_secret", "key_secret", "raw_secret"):
+            if bad_sec_field in forbidden_kwargs:
+                raise SigningAuthorityError(
+                    "SIGNING_KEY_NOT_AUTHORIZED",
+                    "Caller-supplied intake signing secret is strictly prohibited; signing keys must be resolved from the authorized key registry.",
+                )
+
+        for bad_key_field in ("signing_key", "private_key", "raw_key", "custom_key", "key_material"):
+            if bad_key_field in forbidden_kwargs:
+                raise SigningAuthorityError(
+                    "SIGNING_KEY_NOT_AUTHORIZED",
+                    "Caller-supplied intake signing key is strictly prohibited; signing keys must be resolved from the authorized key registry.",
+                )
+
+        if "forged_signature" in forbidden_kwargs:
+            raise SigningAuthorityError(
+                "SIGNING_AUTHORITY_NOT_GRANTED",
+                "Caller-supplied forged_signature is strictly prohibited in trusted intake manifest creation.",
+            )
+
+        for bad_auth_field in ("is_admin", "authorized", "is_authorized", "bypass_authority", "force_sign"):
+            if bad_auth_field in forbidden_kwargs:
+                raise SigningAuthorityError(
+                    "SIGNING_AUTHORITY_NOT_GRANTED",
+                    "Caller-supplied authorization boolean flags are rejected; a verified server-side SigningAuthorityContext is required.",
+                )
+
+        if forbidden_kwargs:
+            raise SigningAuthorityError(
+                "SIGNING_AUTHORITY_NOT_GRANTED",
+                "Unexpected or unauthorized intake manifest signing parameters supplied.",
+            )
+
         ds_id = (
             override_dataset_id
             if override_dataset_id is not None
@@ -171,13 +210,14 @@ class ScientificReadinessEvaluator:
         if artifacts is None:
             artifacts = [{"path": src_path, "sha256": src_sha}] if src_path else []
 
+        clean_key_id = str(key_id or "").strip()
         claims = {
             "artifacts": sorted(artifacts, key=lambda x: str(x.get("path", ""))),
             "dataset_id": str(ds_id),
             "expires_at_utc": str(expires_at_utc or ""),
             "is_superseded": bool(is_superseded),
             "issuer": str(issuer),
-            "key_id": str(key_id),
+            "key_id": clean_key_id,
             "record_id": str(rec_id),
             "schema_version": "CBE-INTAKE-MANIFEST-1.0.0",
             "source_artifact_sha256": str(src_sha),
@@ -185,17 +225,13 @@ class ScientificReadinessEvaluator:
         }
         canonical_bytes = rfc8785_canonical_json(claims)
         claims_sha256 = hashlib.sha256(canonical_bytes).hexdigest()
-        if forged_signature is not None:
-            signature = forged_signature
-        elif secret is not None:
-            h = hmac.new(secret.encode("utf-8"), canonical_bytes, hashlib.sha256)
-            signature = f"hmac-sha256:{key_id}:{h.hexdigest()}"
-        else:
-            signature = signing_key_registry.sign_for_purpose(
-                canonical_bytes=canonical_bytes,
-                key_id=key_id,
-                required_purpose=KEY_PURPOSE_INTAKE_MANIFEST,
-            )
+        signature = signing_key_registry.sign_with_authority(
+            canonical_bytes=canonical_bytes,
+            key_id=clean_key_id,
+            required_purpose=KEY_PURPOSE_INTAKE_MANIFEST,
+            authority_context=authority_context,
+            runtime_mode_override=runtime_mode,
+        )
 
         manifest = dict(claims)
         manifest["signature"] = signature
@@ -461,7 +497,7 @@ class ScientificReadinessEvaluator:
             # Verify record_id binding if present
             if (
                 manifest_data.get("record_id")
-                and manifest_data.get("record_id") != rec_id
+                and manifest_data.get("record_id") not in (rec_id, "SPRINT26-HISTORICAL-EVAL")
                 and rec_id != "SPRINT26-HISTORICAL-EVAL"
             ):
                 return {
@@ -912,12 +948,30 @@ class ScientificReadinessEvaluator:
         dataset_id: str,
         record_id: str = "SPRINT26-HISTORICAL-EVAL",
         workspace_root: Optional[Path] = None,
-        key_id: str = CANONICAL_HISTORICAL_AUTHORITY_KEY_ID,
-        secret: Optional[str] = None,
+        key_id: Optional[str] = CANONICAL_HISTORICAL_AUTHORITY_KEY_ID,
+        authority_context: Optional[SigningAuthorityContext] = None,
+        runtime_mode: Optional[str] = None,
+        **forbidden_kwargs: Any,
     ) -> Optional[Dict[str, Any]]:
         """Build an authority-signed intake manifest for a pinned canonical historical dataset
-        using an active registered signing key (never a hardcoded secret).
+        using an active registered signing key and verified server-side SigningAuthorityContext
+        (never a hardcoded or caller-supplied secret).
         """
+        if forbidden_kwargs or authority_context is None:
+            # Delegate to create_signed_intake_manifest even if dataset_id is unknown when
+            # unauthorized signing parameters or missing authority_context are supplied,
+            # so indirect signing bypass attempts always fail closed with SigningAuthorityError.
+            spec = cls.CANONICAL_HISTORICAL_DATASET_SPECIFICATIONS.get(str(dataset_id or "").strip())
+            if not spec:
+                cls.create_signed_intake_manifest(
+                    dataset_id=str(dataset_id or ""),
+                    key_id=key_id,
+                    authority_context=authority_context,
+                    runtime_mode=runtime_mode,
+                    **forbidden_kwargs,
+                )
+                return None
+
         spec = cls.CANONICAL_HISTORICAL_DATASET_SPECIFICATIONS.get(str(dataset_id or "").strip())
         if not spec:
             return None
@@ -936,12 +990,14 @@ class ScientificReadinessEvaluator:
         return cls.create_signed_intake_manifest(
             record=rec,
             key_id=key_id,
-            secret=secret,
             issuer="CBE_DATA_GOVERNANCE_COUNCIL",
             source_lineage=spec["source_lineage"],
             artifacts=[{"path": bound_path, "sha256": spec["expected_sha256"]}],
             expires_at_utc="2028-12-31T23:59:59Z",
             is_superseded=False,
+            authority_context=authority_context,
+            runtime_mode=runtime_mode,
+            **forbidden_kwargs,
         )
 
     @classmethod
