@@ -1,0 +1,61 @@
+{
+  "artifact": "04_regime_research_provenance_verification",
+  "sprint_id": "CBE_SPRINT26_FINAL_SCIENTIFIC_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T08:49:09Z",
+  "positive_verified_research": {
+    "research_report_id": "REGIME-RES-DS-BTC-1H-Q1-2024-8b729a71",
+    "status": "RESEARCH_COMPLETED",
+    "verified_source_artifact": {
+      "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+      "source_artifact_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+      "expected_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+      "verification_status": "VERIFIED",
+      "verification_method": "TRUSTED_INTAKE_MANIFEST",
+      "issuer": "CBE_DATA_GOVERNANCE_COUNCIL",
+      "key_id": "cbe-data-authority-2026-v1",
+      "source_lineage": "BINANCE_SPOT_HISTORICAL_ARCHIVE_AGGREGATED_FROM_5M_Q1_2024",
+      "is_verified": true
+    },
+    "cross_period_consistency": {
+      "status": "COMPUTED",
+      "comparison_dataset_id": "DS-BTC-15M-Q2-2024",
+      "comparison_source_path": "data/historical/historical_binance_btcusdt_15m_q2_2024.parquet",
+      "comparison_source_sha256": "02366bf9ccd3e5a879e05b553c68847a0e7f28fc8480cc5a244b5bd51f1b4024",
+      "comparison_provenance_method": "TRUSTED_INTAKE_MANIFEST",
+      "comparison_observation_count": 8736,
+      "comparison_regime_distribution": {
+        "CONSOLIDATION_RANGING": 0.5283,
+        "RECOVERY_ACCUMULATION": 0.1965,
+        "MOMENTUM_EXPANSION": 0.0295,
+        "DISTRIBUTION": 0.0752,
+        "HIGH_VOLATILITY_EXPANSION": 0.1313,
+        "CAPITULATION": 0.0391
+      },
+      "transition_matrix_frobenius_distance": 0.1208,
+      "regime_distribution_jensen_shannon_divergence": 0.004488,
+      "cross_period_verdict": "CONSISTENT_MACRO_STRUCTURE"
+    }
+  },
+  "negative_enforcements": {
+    "quarantined_dataset": {
+      "status": "RESEARCH_BLOCKED",
+      "rejection_code": "QUARANTINED_DATASET_REJECTED",
+      "verified_source_artifact": {
+        "verification_status": "UNVERIFIED_HISTORICAL_INPUT",
+        "provenance_rejection_code": "DATASET_QUARANTINED",
+        "is_verified": false
+      }
+    },
+    "caller_supplied_fake_sha256": {
+      "status": "RESEARCH_BLOCKED",
+      "rejection_code": "UNVERIFIED_HISTORICAL_INPUT",
+      "verified_source_artifact": {
+        "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+        "verification_status": "UNVERIFIED_HISTORICAL_INPUT",
+        "provenance_rejection_code": "CALLER_SUPPLIED_SHA256_MISMATCH",
+        "is_verified": false,
+        "rationale": "Caller-supplied SHA-256 digest without an authority-signed intake manifest or cryptographic attestation is rejected."
+      }
+    }
+  }
+}

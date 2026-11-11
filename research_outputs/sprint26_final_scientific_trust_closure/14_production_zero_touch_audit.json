@@ -1,0 +1,19 @@
+{
+  "artifact": "14_production_zero_touch_audit",
+  "sprint_id": "CBE_SPRINT26_FINAL_SCIENTIFIC_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T08:49:09Z",
+  "production_domain": "https://coin.ozelweb.com.tr",
+  "production_policy": "STRICT_ZERO_TOUCH",
+  "pre_deploy_production_container": {
+    "id": "d45b209466329d250ca457dc1f10ba0c71847d312ba5bfcd215d3355ce91f5fe",
+    "name": "/6t63aehpaw0cw1bbt4zcm09g-20261111T063134",
+    "started_at": "2026-11-11T06:33:01.320161139Z"
+  },
+  "post_deploy_production_container": {
+    "id": "d45b209466329d250ca457dc1f10ba0c71847d312ba5bfcd215d3355ce91f5fe",
+    "name": "/6t63aehpaw0cw1bbt4zcm09g-20261111T063134",
+    "started_at": "2026-11-11T06:33:01.320161139Z"
+  },
+  "zero_restarts_verified": true,
+  "zero_config_changes_verified": true
+}

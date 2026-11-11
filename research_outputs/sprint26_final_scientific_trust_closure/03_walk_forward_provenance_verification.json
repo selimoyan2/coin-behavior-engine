@@ -1,0 +1,68 @@
+{
+  "artifact": "03_walk_forward_provenance_verification",
+  "sprint_id": "CBE_SPRINT26_FINAL_SCIENTIFIC_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T08:49:09Z",
+  "positive_verified_evaluation": {
+    "evaluation_id": "WF-RES-29-PAT-SIM-EXPANDING-1c021f68",
+    "status": "EVALUATION_COMPLETED",
+    "dataset_id": "DS-BTC-1H-Q1-2024",
+    "fold_count": 4,
+    "source_provenance": {
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+      "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+      "is_verified": true,
+      "verification_status": "VERIFIED_TRUSTED_PROVENANCE",
+      "provenance_status": "VERIFIED_TRUSTED_PROVENANCE",
+      "provenance_mechanism": "TRUSTED_INTAKE_MANIFEST",
+      "verified_key_id": "cbe-data-authority-2026-v1",
+      "source_lineage": "BINANCE_SPOT_HISTORICAL_ARCHIVE_AGGREGATED_FROM_5M_Q1_2024",
+      "evidence_reference": "Verified Intake Manifest: DS-BTC-1H-Q1-2024 (key=cbe-data-authority-2026-v1, artifacts=1)",
+      "trust_progression_state": "INTEGRITY_VERIFIED",
+      "row_count": 2184
+    }
+  },
+  "negative_enforcements": {
+    "caller_dataframe_without_fixture_context": {
+      "status": "EVALUATION_BLOCKED",
+      "rejection_code": "CALLER_SUPPLIED_UNVERIFIED",
+      "source_provenance": {
+        "dataset_id": "DS-BTC-1H-Q1-2024",
+        "source_path": "IN_MEMORY_DATAFRAME",
+        "source_sha256": "f396942d8ba68727c54d259682b13364bef26f6f6c293a66e130b7b31367896f",
+        "is_verified": false,
+        "verification_status": "CALLER_SUPPLIED_UNVERIFIED",
+        "provenance_status": "CALLER_SUPPLIED_UNVERIFIED",
+        "provenance_rejection_code": "CALLER_SUPPLIED_UNVERIFIED"
+      }
+    },
+    "quarantined_dataset": {
+      "status": "EVALUATION_BLOCKED",
+      "rejection_code": "UNVERIFIED_HISTORICAL_INPUT",
+      "source_provenance": {
+        "dataset_id": "DS-BTC-1H-OCT2026-QUARANTINE",
+        "source_path": null,
+        "source_sha256": null,
+        "is_verified": false,
+        "verification_status": "UNVERIFIED_HISTORICAL_INPUT",
+        "provenance_status": "DATASET_QUARANTINED",
+        "provenance_rejection_code": "DATASET_QUARANTINED",
+        "trust_progression_state": "QUARANTINED_BLOCKED"
+      }
+    },
+    "caller_supplied_fake_sha256": {
+      "status": "EVALUATION_BLOCKED",
+      "rejection_code": "UNVERIFIED_HISTORICAL_INPUT",
+      "source_provenance": {
+        "dataset_id": "DS-BTC-1H-Q1-2024",
+        "source_path": null,
+        "source_sha256": null,
+        "is_verified": false,
+        "verification_status": "UNVERIFIED_HISTORICAL_INPUT",
+        "provenance_status": "UNVERIFIED_HISTORICAL_INPUT",
+        "provenance_rejection_code": "CALLER_SUPPLIED_SHA256_MISMATCH",
+        "trust_progression_state": "ARTIFACT_PRESENT"
+      }
+    }
+  }
+}

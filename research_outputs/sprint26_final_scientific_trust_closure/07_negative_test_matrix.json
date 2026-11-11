@@ -1,0 +1,149 @@
+{
+  "artifact": "07_negative_test_matrix",
+  "sprint_id": "CBE_SPRINT26_FINAL_SCIENTIFIC_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T08:49:09Z",
+  "total_required_negative_cases": 20,
+  "all_passed": true,
+  "negative_cases": [
+    {
+      "case_id": 1,
+      "description": "Existing Parquet file without trusted provenance",
+      "test_function": "test_01_existing_parquet_without_trusted_provenance_rejected",
+      "expected_outcome": "UNVERIFIED_HISTORICAL_INPUT",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 2,
+      "description": "Valid-looking but unsigned provenance sidecar",
+      "test_function": "test_02_valid_looking_unsigned_provenance_sidecar_rejected",
+      "expected_outcome": "UNSIGNED_PROVENANCE_SIDECAR",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 3,
+      "description": "Forged signed intake manifest",
+      "test_function": "test_03_forged_signed_intake_manifest_rejected",
+      "expected_outcome": "SIGNATURE_VERIFICATION_FAILED",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 4,
+      "description": "Source SHA-256 mismatch",
+      "test_function": "test_04_source_sha256_mismatch_rejected",
+      "expected_outcome": "SOURCE_ARTIFACT_HASH_MISMATCH",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 5,
+      "description": "Dataset identity mismatch",
+      "test_function": "test_05_dataset_identity_mismatch_rejected",
+      "expected_outcome": "DATASET_ID_MISMATCH",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 6,
+      "description": "Revoked attestation signing key",
+      "test_function": "test_06_revoked_attestation_signing_key_rejected",
+      "expected_outcome": "REVOKED_SIGNING_KEY",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 7,
+      "description": "Expired attestation",
+      "test_function": "test_07_expired_attestation_rejected",
+      "expected_outcome": "ATTESTATION_EXPIRED",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 8,
+      "description": "Quarantined historical dataset",
+      "test_function": "test_08_quarantined_historical_dataset_rejected",
+      "expected_outcome": "DATASET_QUARANTINED / VALIDATION_BLOCKED",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 9,
+      "description": "Caller-supplied DataFrame without provenance",
+      "test_function": "test_09_caller_supplied_dataframe_without_provenance_rejected",
+      "expected_outcome": "CALLER_SUPPLIED_UNVERIFIED",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 10,
+      "description": "Caller-supplied fake source SHA-256",
+      "test_function": "test_10_caller_supplied_fake_source_sha256_rejected",
+      "expected_outcome": "CALLER_SUPPLIED_SHA256_MISMATCH",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 11,
+      "description": "Caller-provided independent_replication_evidence_verified=True",
+      "test_function": "test_11_caller_provided_independent_replication_boolean_flag_rejected",
+      "expected_outcome": "CALLER_BOOLEAN_REPLICATION_FLAG_REJECTED -> INDEPENDENCE_NOT_ESTABLISHED",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 12,
+      "description": "Different procedure IDs without independent execution evidence",
+      "test_function": "test_12_different_procedure_ids_without_independent_execution_evidence_rejected",
+      "expected_outcome": "MISSING_REPLICATION_ATTESTATION -> INDEPENDENCE_NOT_ESTABLISHED",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 13,
+      "description": "Different filenames pointing to identical data",
+      "test_function": "test_13_different_filenames_pointing_to_identical_data_rejected",
+      "expected_outcome": "IDENTICAL_DATASET_CONTENT_OR_LINEAGE -> INDEPENDENCE_NOT_ESTABLISHED",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 14,
+      "description": "Different dataset IDs with overlapping observations",
+      "test_function": "test_14_different_dataset_ids_with_overlapping_observations_rejected",
+      "expected_outcome": "OBSERVATION_TIMESTAMP_OVERLAP_DETECTED -> INDEPENDENCE_NOT_ESTABLISHED",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 15,
+      "description": "Shared preprocessing lineage",
+      "test_function": "test_15_shared_preprocessing_lineage_rejected",
+      "expected_outcome": "SHARED_PREPROCESSING_LINEAGE_DETECTED -> INDEPENDENCE_NOT_ESTABLISHED",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 16,
+      "description": "Invalid replication result artifact",
+      "test_function": "test_16_invalid_replication_result_artifact_rejected",
+      "expected_outcome": "INVALID_REPLICATION_RESULT_ARTIFACT_HASH -> INDEPENDENCE_NOT_ESTABLISHED",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 17,
+      "description": "Replication evidence belonging to another research record",
+      "test_function": "test_17_replication_evidence_belonging_to_another_research_record_rejected",
+      "expected_outcome": "REPLICATION_RECORD_BINDING_MISMATCH -> INDEPENDENCE_NOT_ESTABLISHED",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 18,
+      "description": "Source mutation after successful verification",
+      "test_function": "test_18_and_19_source_mutation_after_verification_invalidates_cache_and_fails_closed",
+      "expected_outcome": "SOURCE_ARTIFACT_HASH_MISMATCH",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 19,
+      "description": "Verification cache reuse after source changes",
+      "test_function": "test_18_and_19_source_mutation_after_verification_invalidates_cache_and_fails_closed",
+      "expected_outcome": "CACHE_INVALIDATED_AND_BLOCKED",
+      "status": "PASSED"
+    },
+    {
+      "case_id": 20,
+      "description": "Explicit independent replication claim without authenticated replication evidence",
+      "test_function": "test_20_explicit_independent_replication_claim_without_authenticated_evidence_rejected_while_dataset_validation_preserved",
+      "expected_outcome": "INDEPENDENCE_NOT_ESTABLISHED (while INDEPENDENT_DATASET_VALIDATION preserved)",
+      "status": "PASSED"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "artifact": "11_full_regression_results",
+  "sprint_id": "CBE_SPRINT26_FINAL_SCIENTIFIC_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T08:49:09Z",
+  "suites_executed": "Sprint 20 through Sprint 26 (15 test modules)",
+  "total_collected": 419,
+  "passed": 419,
+  "failed": 0,
+  "skipped": 0,
+  "duration_seconds": 162.15,
+  "verdict": "ZERO_REGRESSIONS_ALL_419_PASSED"
+}

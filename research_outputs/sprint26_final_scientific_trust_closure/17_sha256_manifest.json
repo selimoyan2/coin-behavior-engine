@@ -1,0 +1,27 @@
+{
+  "artifact": "17_sha256_manifest",
+  "sprint_id": "CBE_SPRINT26_FINAL_SCIENTIFIC_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T08:49:09Z",
+  "files": {
+    "01_root_cause_audit.json": "424178c2a09f95c6986f6dcbabd84e568ad0ec2e3451e7f732982e3269e03a44",
+    "02_shared_dataset_provenance_contract.json": "8dc952b11f0d855128ca1c32eaf5f8ce2c4f3938341d0f286286ba313d1fd621",
+    "03_walk_forward_provenance_verification.json": "81e1c5aa598902a152273fb44e38e7da3c1ab03007ae053e29ab72f7933624a3",
+    "04_regime_research_provenance_verification.json": "1f581e11887e4c4def95ae504dbd8f765c46406e3e15f98798eb50d4d69e96df",
+    "05_independent_replication_attestation_contract.json": "013e39e7ced8be7d0baa9785740270464d08299e58194110ac6d07761010f031",
+    "06_cross_module_trust_consistency_matrix.json": "139735cb045e3dc75d605e36e2edebc7104197976dea5f8e117ff2d7af289577",
+    "07_negative_test_matrix.json": "a2b96f8679eb8d25d43e482d3cc97eef2c3290574cdb51114b7d76573b24399f",
+    "08_sprint26_targeted_test_results.json": "4274ca825ca5bcd1b956b370b07316f02bad4a3e21172afcc616efbc503a8e86",
+    "09_sprint24_cryptographic_regression.json": "a240c067abed5d41b3d1efbfdb18f4728660d37bc891e66baf4c24eb451467b1",
+    "10_sprint25_scientific_trust_regression.json": "f3892e6887db527bf7a2a9ce138c10aecdb406064e4300d295a96edebe64458c",
+    "11_full_regression_results.json": "34f2290c0a46cbc009d355230c7444cd56facfd6ec0880a074f79a930137d483",
+    "12_playwright_verification.json": "93a133b99406b6817f237af5274b59af2e29970c33434995362c367b3aaeca67",
+    "13_staging_deployment_verification.json": "184602c005000bb3ef0b1a4b02e1d0b13eb6374fa87e01087e65a83c76aeb55d",
+    "14_production_zero_touch_audit.json": "a20a6cae3cc1d7bd25aa03fcd99b5abe3182627ac59ff1b2939778ffef70cc05",
+    "15_scientific_governance_verification.json": "077ee8c16283469963d59e5644c876e0e6987036421db2b710200ff7125814af",
+    "16_git_commit_chain_verification.json": "1d84f482b5f3ea6de0749f38ac03dd221a018ada61d7cbb7d7a32cd08194f760",
+    "18_final_acceptance_report.md": "ab8500fb7652e9055ff439392521753c6df4c51b29f13a2accaa77a68b68ab87",
+    "screenshots/sprint26_screenshot_01_desktop_statistical_validation.png": "4cf6c01c53ceb6259f185908622addd6847e6c260dc0cd80d06a9aea7d568f92",
+    "screenshots/sprint26_screenshot_02_tablet_regime_and_robustness.png": "13900636bb2ec2d6f2e71aa23d911093d8e8ba7d9d564b7ec6ea5769172789b3",
+    "screenshots/sprint26_screenshot_03_mobile_independent_validation.png": "08142e00d7b67cbb8df1d119224dda6bad09e1e200bfbe6e1148904626fb36b5"
+  }
+}

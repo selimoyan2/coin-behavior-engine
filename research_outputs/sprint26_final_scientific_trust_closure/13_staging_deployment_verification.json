@@ -1,0 +1,26 @@
+{
+  "artifact": "13_staging_deployment_verification",
+  "sprint_id": "CBE_SPRINT26_FINAL_SCIENTIFIC_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T08:49:09Z",
+  "staging_host": "srv1114257 (168.231.125.238)",
+  "staging_port": "127.0.0.1:18080->8000/tcp",
+  "previous_container_id": "cb9d2ff1e5a7",
+  "new_container_id": "4f31bf271f62872a55f4bae13bce47dc5c24db670187c6f3202661a1cb2c21b4",
+  "new_image": "cbe-market-intelligence:sprint26-trust-closure-935a178",
+  "image_sha256": "sha256:153fbc322b20095da78a47621d3f0d7eda6b3ce2cf528ed7d24816efcf8f8e55",
+  "deployed_commit_sha": "935a1786a12d1be91a71860e75209e73176a25df",
+  "persistent_volumes_preserved": [
+    "zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data:/app/data/live_capture:ro",
+    "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f:/app/data/prospective:rw"
+  ],
+  "endpoint_verification": {
+    "/health": 200,
+    "/product": 200,
+    "/api/v1/product/workspace/statistical-validation": 200,
+    "/api/v1/product/workspace/walk-forward": 200,
+    "/api/v1/product/workspace/regime-research": 200,
+    "/api/v1/product/workspace/robustness-lab": 200,
+    "/api/v1/product/workspace/independent-validation": 200,
+    "/api/v1/product/workspace/validation-reports": 200
+  }
+}

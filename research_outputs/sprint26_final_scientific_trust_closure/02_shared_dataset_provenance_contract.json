@@ -1,0 +1,124 @@
+{
+  "artifact": "02_shared_dataset_provenance_contract",
+  "sprint_id": "CBE_SPRINT26_FINAL_SCIENTIFIC_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T08:49:09Z",
+  "authority_verifier": "ScientificReadinessEvaluator.verify_historical_dataset_provenance",
+  "delegates_to": "ScientificReadinessEvaluator.verify_dataset_provenance",
+  "canonical_authority_key_id": "cbe-data-authority-2026-v1",
+  "trusted_issuers": [
+    "DS-BTC-15M-Q1-2024",
+    "DS-BTC-15M-Q2-2024",
+    "DS-BTC-15M-Q3-2024",
+    "DS-BTC-15M-Q4-2024",
+    "DS-BTC-1H-JAN-2025",
+    "DS-BTC-1H-Q1-2024",
+    "DS-BTC-1H-Q2-2024",
+    "DS-BTC-1H-Q3-2024",
+    "DS-BTC-1H-Q4-2024"
+  ],
+  "canonical_historical_datasets": {
+    "DS-BTC-1H-Q1-2024": {
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "source_artifact": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+      "expected_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+      "source_lineage": "BINANCE_SPOT_HISTORICAL_ARCHIVE_AGGREGATED_FROM_5M_Q1_2024",
+      "window_cadence": "1h",
+      "period_start_utc": "2024-01-01T00:00:00Z",
+      "period_end_utc": "2024-03-31T23:00:00Z",
+      "observation_count": 2184
+    },
+    "DS-BTC-15M-Q1-2024": {
+      "dataset_id": "DS-BTC-15M-Q1-2024",
+      "source_artifact": "data/historical/historical_binance_btcusdt_15m_q1_2024.parquet",
+      "expected_sha256": "b0a9778c8aab3cdf211ba7c6ef20ed3ab6ab1d5dc9b4a2e6b28288c16f80503b",
+      "source_lineage": "BINANCE_SPOT_HISTORICAL_ARCHIVE_15M_Q1_2024",
+      "window_cadence": "15m",
+      "period_start_utc": "2024-01-01T00:00:00Z",
+      "period_end_utc": "2024-03-31T23:45:00Z",
+      "observation_count": 8736
+    },
+    "DS-BTC-15M-Q2-2024": {
+      "dataset_id": "DS-BTC-15M-Q2-2024",
+      "source_artifact": "data/historical/historical_binance_btcusdt_15m_q2_2024.parquet",
+      "expected_sha256": "02366bf9ccd3e5a879e05b553c68847a0e7f28fc8480cc5a244b5bd51f1b4024",
+      "source_lineage": "BINANCE_SPOT_HISTORICAL_ARCHIVE_15M_Q2_2024",
+      "window_cadence": "15m",
+      "period_start_utc": "2024-04-01T00:00:00Z",
+      "period_end_utc": "2024-06-30T23:45:00Z",
+      "observation_count": 8736
+    },
+    "DS-BTC-15M-Q3-2024": {
+      "dataset_id": "DS-BTC-15M-Q3-2024",
+      "source_artifact": "data/historical/historical_binance_btcusdt_15m_q3_2024.parquet",
+      "expected_sha256": "476d78e5f7800dfd79267a7f0019b398828908e403e2d539fad03775534efa10",
+      "source_lineage": "BINANCE_SPOT_HISTORICAL_ARCHIVE_15M_Q3_2024",
+      "window_cadence": "15m",
+      "period_start_utc": "2024-07-01T00:00:00Z",
+      "period_end_utc": "2024-09-30T23:45:00Z",
+      "observation_count": 8832
+    },
+    "DS-BTC-15M-Q4-2024": {
+      "dataset_id": "DS-BTC-15M-Q4-2024",
+      "source_artifact": "data/historical/historical_binance_btcusdt_15m_q4_2024.parquet",
+      "expected_sha256": "540c5a51a0fcd0c343e1de32fb1f833fa9bef9a30b43828b6ab0eb63f8550224",
+      "source_lineage": "BINANCE_SPOT_HISTORICAL_ARCHIVE_15M_Q4_2024",
+      "window_cadence": "15m",
+      "period_start_utc": "2024-10-01T00:00:00Z",
+      "period_end_utc": "2024-12-31T23:45:00Z",
+      "observation_count": 8832
+    },
+    "DS-BTC-1H-JAN-2025": {
+      "dataset_id": "DS-BTC-1H-JAN-2025",
+      "source_artifact": "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
+      "expected_sha256": "3fc6fb4cb0dc8e5f50cf4d51f2cac889d201aed3f722e20a7bb7e74961c55550",
+      "source_lineage": "BINANCE_SPOT_HISTORICAL_ARCHIVE_1H_JAN_2025",
+      "window_cadence": "1h",
+      "period_start_utc": "2025-01-01T00:00:00Z",
+      "period_end_utc": "2025-01-31T23:00:00Z",
+      "observation_count": 744
+    },
+    "DS-BTC-1H-Q2-2024": {
+      "dataset_id": "DS-BTC-1H-Q2-2024",
+      "source_artifact": "data/historical/historical_binance_btcusdt_1h_q2_2024.parquet",
+      "expected_sha256": "e9520a8c4e32abf1e9760a703f55d1b62f66b33d03515c5dc6180e89dfacfbd9",
+      "source_lineage": "BINANCE_SPOT_HISTORICAL_ARCHIVE_1H_Q2_2024",
+      "window_cadence": "1h",
+      "period_start_utc": "2024-04-01T00:00:00Z",
+      "period_end_utc": "2024-06-30T23:00:00Z",
+      "observation_count": 2184
+    },
+    "DS-BTC-1H-Q3-2024": {
+      "dataset_id": "DS-BTC-1H-Q3-2024",
+      "source_artifact": "data/historical/historical_binance_btcusdt_1h_q3_2024.parquet",
+      "expected_sha256": "39bcd79a2262ea06c70677527bf6a810ceae2cfce1a7cf056c24a1048d07302e",
+      "source_lineage": "BINANCE_SPOT_HISTORICAL_ARCHIVE_1H_Q3_2024",
+      "window_cadence": "1h",
+      "period_start_utc": "2024-07-01T00:00:00Z",
+      "period_end_utc": "2024-09-30T23:00:00Z",
+      "observation_count": 2208
+    },
+    "DS-BTC-1H-Q4-2024": {
+      "dataset_id": "DS-BTC-1H-Q4-2024",
+      "source_artifact": "data/historical/historical_binance_btcusdt_1h_q4_2024.parquet",
+      "expected_sha256": "27f7e7ebc3bdc15b10b8992bceb2aa73152f527ec1b15522db1c10592099c67e",
+      "source_lineage": "BINANCE_SPOT_HISTORICAL_ARCHIVE_1H_Q4_2024",
+      "window_cadence": "1h",
+      "period_start_utc": "2024-10-01T00:00:00Z",
+      "period_end_utc": "2024-12-31T23:00:00Z",
+      "observation_count": 2208
+    }
+  },
+  "enforced_checks": [
+    "quarantine_and_synthetic_contamination_gate",
+    "dataset_id_exact_binding",
+    "artifact_path_bound_in_signed_manifest",
+    "physical_file_existence_and_sha256_digest_match",
+    "source_lineage_non_empty_verification",
+    "rfc8785_canonical_hmac_sha256_signature_verification",
+    "signing_key_revocation_check",
+    "attestation_or_manifest_expiration_check",
+    "unsigned_provenance_sidecar_rejection",
+    "caller_supplied_sha256_rejection_without_signed_manifest",
+    "mtime_and_size_bound_attestation_cache_invalidation"
+  ]
+}

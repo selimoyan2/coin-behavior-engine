@@ -1,0 +1,27 @@
+{
+  "artifact": "06_cross_module_trust_consistency_matrix",
+  "sprint_id": "CBE_SPRINT26_FINAL_SCIENTIFIC_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T08:49:09Z",
+  "non_interchangeable_trust_tiers": [
+    "ARTIFACT_PRESENT",
+    "INTEGRITY_VERIFIED",
+    "METHODOLOGY_VALIDATED",
+    "STATISTICALLY_SUPPORTED",
+    "INDEPENDENT_DATASET_VALIDATION",
+    "INDEPENDENT_REPLICATION"
+  ],
+  "tier_progression_verifications": {
+    "only_file_exists_unverified": "ARTIFACT_PRESENT",
+    "integrity_verified_only": "INTEGRITY_VERIFIED",
+    "methodology_validated_only": "METHODOLOGY_VALIDATED",
+    "statistically_supported_only": "STATISTICALLY_SUPPORTED",
+    "independent_dataset_validation": "INDEPENDENT_DATASET_VALIDATION",
+    "independent_replication": "INDEPENDENT_REPLICATION"
+  },
+  "sample_validation_report_v4_concept_separation": {
+    "cryptographic_integrity": "ARTIFACT_PRESENT",
+    "methodological_validity": "METHODOLOGY_VALIDATED",
+    "statistical_validity": "DESCRIPTIVE_STATISTICS",
+    "independent_validation": "INDEPENDENCE_NOT_ESTABLISHED"
+  }
+}

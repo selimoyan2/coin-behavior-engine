@@ -1,0 +1,77 @@
+{
+  "suite": "SPRINT_26_PLAYWRIGHT_ACCEPTANCE",
+  "sprint_id": "CBE_SPRINT26_FINAL_SCIENTIFIC_TRUST_CLOSURE",
+  "timestamp_utc": "2026-11-11T08:36:48.816716+00:00",
+  "base_url": "http://127.0.0.1:18098",
+  "viewports_tested": [
+    "1440x900",
+    "768x1024",
+    "390x844"
+  ],
+  "tests": [
+    {
+      "name": "desktop_statistical_validation_panel",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    },
+    {
+      "name": "desktop_walk_forward_lab",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    },
+    {
+      "name": "desktop_scientific_validation_reports_v4",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    },
+    {
+      "name": "tablet_market_regime_research",
+      "viewport": "768x1024",
+      "status": "PASSED"
+    },
+    {
+      "name": "tablet_robustness_sensitivity_lab",
+      "viewport": "768x1024",
+      "status": "PASSED"
+    },
+    {
+      "name": "mobile_independent_validation_matrix",
+      "viewport": "390x844",
+      "status": "PASSED"
+    },
+    {
+      "name": "sprint25_preserved_view_graph",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    },
+    {
+      "name": "sprint25_preserved_view_readiness",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    },
+    {
+      "name": "sprint25_preserved_view_gaps",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    },
+    {
+      "name": "sprint25_preserved_view_reproducibility",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    },
+    {
+      "name": "sprint25_preserved_view_priorities",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    }
+  ],
+  "screenshots": {
+    "desktop_statistical_validation": "C:\\Users\\selim\\.gemini\\antigravity\\brain\\f8db9a11-51a2-4f52-b048-d18a5254ed97\\sprint26_screenshot_01_desktop_statistical_validation.png",
+    "tablet_regime_research": "C:\\Users\\selim\\.gemini\\antigravity\\brain\\f8db9a11-51a2-4f52-b048-d18a5254ed97\\sprint26_screenshot_02_tablet_regime_and_robustness.png",
+    "mobile_independent_validation": "C:\\Users\\selim\\.gemini\\antigravity\\brain\\f8db9a11-51a2-4f52-b048-d18a5254ed97\\sprint26_screenshot_03_mobile_independent_validation.png"
+  },
+  "status": "ALL_PASSED",
+  "total_passed": 11,
+  "total_failed": 0,
+  "artifact": "12_playwright_verification"
+}

@@ -1,0 +1,37 @@
+{
+  "artifact": "01_root_cause_audit",
+  "sprint_id": "CBE_SPRINT26_FINAL_SCIENTIFIC_TRUST_CLOSURE",
+  "baseline_commit_sha": "def0f8e6985dd4ea680a54ec999a2cf5f2eebfff",
+  "implementation_commit_sha": "935a1786a12d1be91a71860e75209e73176a25df",
+  "generated_at_utc": "2026-11-11T08:49:09Z",
+  "confirmed_defects_closed": [
+    {
+      "defect_id": "P0-1",
+      "module": "src/coin_behavior_engine/product/walk_forward_research_lab.py",
+      "root_cause": "_resolve_verified_dataset assigned VERIFIED_AUTHORIZED_PARQUET based solely on file existence and newly computed SHA-256, and assigned VERIFIED_CALLER_DATAFRAME to arbitrary caller-supplied DataFrames.",
+      "remediation": "Integrated ScientificReadinessEvaluator.verify_historical_dataset_provenance. Removed VERIFIED_AUTHORIZED_PARQUET and VERIFIED_CALLER_DATAFRAME. Unverified historical inputs now fail closed with UNVERIFIED_HISTORICAL_INPUT. Caller-supplied DataFrames fail closed with CALLER_SUPPLIED_UNVERIFIED unless trusted_fixture_context=True (which marks TRUSTED_TEST_FIXTURE_ONLY, is_verified=False).",
+      "status": "CLOSED_AND_VERIFIED"
+    },
+    {
+      "defect_id": "P0-2",
+      "module": "src/coin_behavior_engine/product/historical_regime_research.py",
+      "root_cause": "run_regime_research and compute_cross_period_consistency accepted Parquet files by path existence, raw SHA-256 computation, and prov_sidecar.exists() without validating signed provenance.",
+      "remediation": "Integrated ScientificReadinessEvaluator.verify_historical_dataset_provenance into both run_regime_research and compute_cross_period_consistency. Unsigned sidecars (*_provenance.json), forged manifests, hash mismatches, ID mismatches, revoked keys, expired attestations, and caller-supplied DataFrames without trusted_fixture_context now fail closed.",
+      "status": "CLOSED_AND_VERIFIED"
+    },
+    {
+      "defect_id": "P0-3",
+      "module": "src/coin_behavior_engine/product/independent_validation_framework.py",
+      "root_cause": "_inspect_study_evidence accepted caller boolean flag bool(study.get('independent_replication_evidence_verified', False)) and distinct procedure_id strings as sufficient proof for INDEPENDENT_REPLICATION.",
+      "remediation": "Removed caller boolean flag as authoritative evidence. Added RFC-8785 canonical HMAC-SHA256 signed replication attestation contract (create_signed_replication_attestation and verify_replication_attestation) enforcing replication_attempt_id, record/dataset/hash binding, physical result_artifact_path & SHA-256 verification on disk, hypothesis/methodology binding, distinct procedure & execution lineage, trusted issuer, non-revoked key, expiry, and signature-bound attestation_cache.",
+      "status": "CLOSED_AND_VERIFIED"
+    },
+    {
+      "defect_id": "CROSS-MODULE-TRUST",
+      "module": "robustness_sensitivity_lab.py, advanced_statistical_validation.py, research_intelligence_workspace.py",
+      "root_cause": "robustness_sensitivity_lab loaded Parquet files without provenance verification; advanced_statistical_validation and research_intelligence_workspace used source_artifact_exists and unverified replication strings for classification.",
+      "remediation": "Enforced ScientificReadinessEvaluator.verify_historical_dataset_provenance in RobustnessSensitivityLab, verify_dataset_provenance & classify_trust_progression_state in AdvancedStatisticalValidator, and strict 6-tier progression separation in ResearchWorkspaceV2Engine.",
+      "status": "CLOSED_AND_VERIFIED"
+    }
+  ]
+}

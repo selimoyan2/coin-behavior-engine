@@ -1,0 +1,1321 @@
+{
+  "artifact": "05_independent_replication_attestation_contract",
+  "sprint_id": "CBE_SPRINT26_FINAL_SCIENTIFIC_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T08:49:09Z",
+  "schema_version": "CBE-REPLICATION-ATTESTATION-1.0.0",
+  "caller_boolean_flag_policy": "STRICTLY_REJECTED_AS_AUTHORITATIVE_EVIDENCE",
+  "sample_signed_replication_attestation": {
+    "schema_version": "CBE-REPLICATION-ATTESTATION-1.0.0",
+    "replication_attempt_id": "REP-ATTEMPT-S26-JAN2025-01",
+    "primary_record_id": "RES-29-PAT-SIM",
+    "candidate_record_id": "VAL-BTC-1H-JAN-2025",
+    "primary_dataset_id": "DS-BTC-1H-Q1-2024",
+    "candidate_dataset_id": "DS-BTC-1H-JAN-2025",
+    "primary_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+    "candidate_source_sha256": "3fc6fb4cb0dc8e5f50cf4d51f2cac889d201aed3f722e20a7bb7e74961c55550",
+    "result_artifact_path": "research_outputs/sprint26_advanced_scientific_validation/08_independent_validation_criteria.json",
+    "result_artifact_sha256": "0c7d6abbaf55e9dec4e9ea9adea81cc08692e590fa70bbd4159fd6099efc9dc5",
+    "hypothesis_id": "HYP-PAT-SIM-S26",
+    "methodology_id": "CBE-0.7.0-CANONICAL",
+    "primary_procedure_id": "PROC-DISCOVERY-SPRINT09",
+    "candidate_procedure_id": "PROC-INDEPENDENT-REPLICATION-SPRINT26",
+    "procedure_version": "SPRINT26-V1.0",
+    "independent_execution_lineage": "EXEC-LINEAGE-INDEPENDENT-2025",
+    "replication_outcome": "OUT_OF_SAMPLE_REPLICATED",
+    "issuer": "CBE_AUTHORITATIVE_RESEARCH_AUTHORITY",
+    "key_id": "cbe-attestation-2026-v1",
+    "issued_at_utc": "2026-11-11T00:00:00Z",
+    "expires_at_utc": "2027-11-11T00:00:00Z",
+    "is_superseded": false,
+    "claims_sha256": "96c8a4c34f9e2659729ca69e39bb9a6a69590186dac7ed895c3e690305b659da",
+    "signature": "hmac-sha256:cbe-attestation-2026-v1:09a3e524e54657439da4fd3477b33ecb8b12052da7afc24500a2b4be78570f9a"
+  },
+  "verified_independent_replication_audit": {
+    "audit_id": "IND-AUDIT-RES-29-PAT-SIM-VAL-BTC-1H-JAN-2025-915ba651",
+    "primary_record_id": "RES-29-PAT-SIM",
+    "candidate_record_id": "VAL-BTC-1H-JAN-2025",
+    "claimed_category": "INDEPENDENT_REPLICATION",
+    "assigned_category": "INDEPENDENT_REPLICATION",
+    "independence_established": true,
+    "rejection_or_downgrade_reasons": [],
+    "eight_point_checks": {
+      "dataset_lineage": {
+        "check_name": "dataset_lineage",
+        "passed": true,
+        "status_code": "DISTINCT_DATASET_LINEAGE_VERIFIED",
+        "details": "Primary and candidate datasets have verified provenance and distinct content digests/lineage.",
+        "evidence": {
+          "primary_dataset_id": "DS-BTC-1H-Q1-2024",
+          "candidate_dataset_id": "DS-BTC-1H-JAN-2025",
+          "primary_content_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+          "candidate_content_sha256": "9913c234e1f6cb0037d8d9cbf591d620203eb3f1af3886862246330d45448a76",
+          "primary_provenance_verified": true,
+          "candidate_provenance_verified": true
+        }
+      },
+      "source_overlap": {
+        "check_name": "source_overlap",
+        "passed": true,
+        "status_code": "DISTINCT_SOURCE_ARTIFACTS",
+        "details": "Source artifact SHA-256 digests are distinct.",
+        "evidence": {
+          "primary_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "candidate_source_sha256": "3fc6fb4cb0dc8e5f50cf4d51f2cac889d201aed3f722e20a7bb7e74961c55550"
+        }
+      },
+      "observation_overlap": {
+        "check_name": "observation_overlap",
+        "passed": true,
+        "status_code": "ZERO_OBSERVATION_OVERLAP_VERIFIED",
+        "details": "Zero shared observation timestamps between primary and candidate datasets.",
+        "evidence": {
+          "shared_observation_count": 0,
+          "jaccard_overlap": 0.0
+        }
+      },
+      "time_window_overlap": {
+        "check_name": "time_window_overlap",
+        "passed": true,
+        "status_code": "DISJOINT_TIME_WINDOWS_VERIFIED",
+        "details": "Primary and candidate time windows are strictly disjoint.",
+        "evidence": {
+          "primary_window_ms": [
+            1704067200000,
+            1711926000000
+          ],
+          "candidate_window_ms": [
+            1735689600000,
+            1738364400000
+          ]
+        }
+      },
+      "shared_preprocessing_artifacts": {
+        "check_name": "shared_preprocessing_artifacts",
+        "passed": true,
+        "status_code": "ISOLATED_PREPROCESSING_VERIFIED",
+        "details": "No shared in-sample preprocessing leakage detected.",
+        "evidence": {
+          "primary_preprocessing_lineage": null,
+          "candidate_preprocessing_lineage": null
+        }
+      },
+      "shared_labels_or_outcomes": {
+        "check_name": "shared_labels_or_outcomes",
+        "passed": true,
+        "status_code": "DISJOINT_OUTCOME_HORIZONS_VERIFIED",
+        "details": "Outcome horizons and evaluation labels are strictly separated.",
+        "evidence": {
+          "primary_horizon_end_ms": null,
+          "candidate_start_ms": 1735689600000
+        }
+      },
+      "methodology_independence": {
+        "check_name": "methodology_independence",
+        "passed": true,
+        "status_code": "METHODOLOGY_COMPATIBLE",
+        "details": "Methodology contract verified (CBE-0.7.0-CANONICAL).",
+        "evidence": {
+          "primary_methodology": "CBE-0.7.0-CANONICAL",
+          "candidate_methodology": "CBE-0.7.0-CANONICAL"
+        }
+      },
+      "researcher_or_procedure_independence": {
+        "check_name": "researcher_or_procedure_independence",
+        "passed": true,
+        "status_code": "AUTHENTICATED_REPLICATION_ATTESTATION_VERIFIED",
+        "details": "Authenticated cryptographic replication attestation, independent execution lineage, and physical result artifact verified.",
+        "evidence": {
+          "primary_procedure_lineage": "PROC-DISCOVERY-SPRINT09",
+          "candidate_procedure_lineage": "PROC-INDEPENDENT-REPLICATION-SPRINT26",
+          "caller_boolean_flag_ignored": false,
+          "replication_attestation_verified": true,
+          "replication_rejection_code": null,
+          "replication_attempt_id": "REP-ATTEMPT-S26-JAN2025-01"
+        }
+      }
+    },
+    "primary_evidence_summary": {
+      "record_id": "RES-29-PAT-SIM",
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "dataset_lineage_id": "BINANCE_SPOT_HISTORICAL_ARCHIVE_AGGREGATED_FROM_5M_Q1_2024",
+      "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+      "file_exists": true,
+      "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+      "content_fingerprint_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+      "provenance_verified": true,
+      "provenance_rejection_code": null,
+      "observation_count": 2184,
+      "start_ms": 1704067200000,
+      "end_ms": 1711926000000,
+      "period_start_utc": null,
+      "period_end_utc": null,
+      "preprocessing_lineage_id": null,
+      "shared_in_sample_scaler_or_quantiles": false,
+      "outcome_label_horizon_end_ms": null,
+      "shared_labels_or_outcomes": false,
+      "methodology_id": "CBE-0.7.0-CANONICAL",
+      "procedure_id": "PROC-DISCOVERY-SPRINT09",
+      "researcher_or_execution_lineage": null,
+      "caller_independent_replication_flag": false,
+      "replication_attestation": null,
+      "quarantined": false
+    },
+    "candidate_evidence_summary": {
+      "record_id": "VAL-BTC-1H-JAN-2025",
+      "dataset_id": "DS-BTC-1H-JAN-2025",
+      "dataset_lineage_id": "BINANCE_SPOT_HISTORICAL_ARCHIVE_1H_JAN_2025",
+      "source_path": "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
+      "file_exists": true,
+      "source_sha256": "3fc6fb4cb0dc8e5f50cf4d51f2cac889d201aed3f722e20a7bb7e74961c55550",
+      "content_fingerprint_sha256": "9913c234e1f6cb0037d8d9cbf591d620203eb3f1af3886862246330d45448a76",
+      "provenance_verified": true,
+      "provenance_rejection_code": null,
+      "observation_count": 744,
+      "start_ms": 1735689600000,
+      "end_ms": 1738364400000,
+      "period_start_utc": null,
+      "period_end_utc": null,
+      "preprocessing_lineage_id": null,
+      "shared_in_sample_scaler_or_quantiles": false,
+      "outcome_label_horizon_end_ms": null,
+      "shared_labels_or_outcomes": false,
+      "methodology_id": "CBE-0.7.0-CANONICAL",
+      "procedure_id": "PROC-INDEPENDENT-REPLICATION-SPRINT26",
+      "researcher_or_execution_lineage": null,
+      "caller_independent_replication_flag": false,
+      "replication_attestation": {
+        "schema_version": "CBE-REPLICATION-ATTESTATION-1.0.0",
+        "replication_attempt_id": "REP-ATTEMPT-S26-JAN2025-01",
+        "primary_record_id": "RES-29-PAT-SIM",
+        "candidate_record_id": "VAL-BTC-1H-JAN-2025",
+        "primary_dataset_id": "DS-BTC-1H-Q1-2024",
+        "candidate_dataset_id": "DS-BTC-1H-JAN-2025",
+        "primary_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+        "candidate_source_sha256": "3fc6fb4cb0dc8e5f50cf4d51f2cac889d201aed3f722e20a7bb7e74961c55550",
+        "result_artifact_path": "research_outputs/sprint26_advanced_scientific_validation/08_independent_validation_criteria.json",
+        "result_artifact_sha256": "0c7d6abbaf55e9dec4e9ea9adea81cc08692e590fa70bbd4159fd6099efc9dc5",
+        "hypothesis_id": "HYP-PAT-SIM-S26",
+        "methodology_id": "CBE-0.7.0-CANONICAL",
+        "primary_procedure_id": "PROC-DISCOVERY-SPRINT09",
+        "candidate_procedure_id": "PROC-INDEPENDENT-REPLICATION-SPRINT26",
+        "procedure_version": "SPRINT26-V1.0",
+        "independent_execution_lineage": "EXEC-LINEAGE-INDEPENDENT-2025",
+        "replication_outcome": "OUT_OF_SAMPLE_REPLICATED",
+        "issuer": "CBE_AUTHORITATIVE_RESEARCH_AUTHORITY",
+        "key_id": "cbe-attestation-2026-v1",
+        "issued_at_utc": "2026-11-11T00:00:00Z",
+        "expires_at_utc": "2027-11-11T00:00:00Z",
+        "is_superseded": false,
+        "claims_sha256": "96c8a4c34f9e2659729ca69e39bb9a6a69590186dac7ed895c3e690305b659da",
+        "signature": "hmac-sha256:cbe-attestation-2026-v1:09a3e524e54657439da4fd3477b33ecb8b12052da7afc24500a2b4be78570f9a"
+      },
+      "quarantined": false
+    },
+    "scientific_distinction_note": "REPRODUCTION, TEMPORAL_HOLDOUT_VALIDATION, CROSS_PERIOD_VALIDATION, INDEPENDENT_DATASET_VALIDATION, and INDEPENDENT_REPLICATION are strictly non-interchangeable scientific validation tiers. A different filename or dataset ID never suffices to establish independence.",
+    "limitations": [
+      "Independent validation confirms empirical consistency across disjoint evidence; it does not grant live trading authorization (TECHNICAL_NO_GO remains in force)."
+    ],
+    "evaluated_at_utc": "2026-11-11T08:49:09Z",
+    "framework_version": "SPRINT26-IND-VAL-V1.0",
+    "canonical_model": "CBE-0.7.0",
+    "model_status": "STRICTLY_FROZEN",
+    "governance_decision": "TECHNICAL_NO_GO"
+  },
+  "canonical_independence_matrix": {
+    "status": "SUCCESS",
+    "framework_version": "SPRINT26-IND-VAL-V1.0",
+    "canonical_model": "CBE-0.7.0",
+    "model_status": "STRICTLY_FROZEN",
+    "governance_decision": "TECHNICAL_NO_GO",
+    "total_audits": 7,
+    "audits": [
+      {
+        "audit_id": "IND-AUDIT-RES-29-PAT-SIM-VAL-BTC-1H-JAN-2025-a05b6c14",
+        "primary_record_id": "RES-29-PAT-SIM",
+        "candidate_record_id": "VAL-BTC-1H-JAN-2025",
+        "claimed_category": "INDEPENDENT_DATASET_VALIDATION",
+        "assigned_category": "INDEPENDENT_DATASET_VALIDATION",
+        "independence_established": true,
+        "rejection_or_downgrade_reasons": [],
+        "eight_point_checks": {
+          "dataset_lineage": {
+            "check_name": "dataset_lineage",
+            "passed": true,
+            "status_code": "DISTINCT_DATASET_LINEAGE_VERIFIED",
+            "details": "Primary and candidate datasets have verified provenance and distinct content digests/lineage.",
+            "evidence": {
+              "primary_dataset_id": "DS-BTC-1H-Q1-2024",
+              "candidate_dataset_id": "DS-BTC-1H-JAN-2025",
+              "primary_content_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+              "candidate_content_sha256": "9913c234e1f6cb0037d8d9cbf591d620203eb3f1af3886862246330d45448a76",
+              "primary_provenance_verified": true,
+              "candidate_provenance_verified": true
+            }
+          },
+          "source_overlap": {
+            "check_name": "source_overlap",
+            "passed": true,
+            "status_code": "DISTINCT_SOURCE_ARTIFACTS",
+            "details": "Source artifact SHA-256 digests are distinct.",
+            "evidence": {
+              "primary_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+              "candidate_source_sha256": "3fc6fb4cb0dc8e5f50cf4d51f2cac889d201aed3f722e20a7bb7e74961c55550"
+            }
+          },
+          "observation_overlap": {
+            "check_name": "observation_overlap",
+            "passed": true,
+            "status_code": "ZERO_OBSERVATION_OVERLAP_VERIFIED",
+            "details": "Zero shared observation timestamps between primary and candidate datasets.",
+            "evidence": {
+              "shared_observation_count": 0,
+              "jaccard_overlap": 0.0
+            }
+          },
+          "time_window_overlap": {
+            "check_name": "time_window_overlap",
+            "passed": true,
+            "status_code": "DISJOINT_TIME_WINDOWS_VERIFIED",
+            "details": "Primary and candidate time windows are strictly disjoint.",
+            "evidence": {
+              "primary_window_ms": [
+                1704067200000,
+                1711926000000
+              ],
+              "candidate_window_ms": [
+                1735689600000,
+                1738364400000
+              ]
+            }
+          },
+          "shared_preprocessing_artifacts": {
+            "check_name": "shared_preprocessing_artifacts",
+            "passed": true,
+            "status_code": "ISOLATED_PREPROCESSING_VERIFIED",
+            "details": "No shared in-sample preprocessing leakage detected.",
+            "evidence": {
+              "primary_preprocessing_lineage": "PREP-Q1-2024-ISOLATED",
+              "candidate_preprocessing_lineage": "PREP-JAN-2025-ISOLATED"
+            }
+          },
+          "shared_labels_or_outcomes": {
+            "check_name": "shared_labels_or_outcomes",
+            "passed": true,
+            "status_code": "DISJOINT_OUTCOME_HORIZONS_VERIFIED",
+            "details": "Outcome horizons and evaluation labels are strictly separated.",
+            "evidence": {
+              "primary_horizon_end_ms": null,
+              "candidate_start_ms": 1735689600000
+            }
+          },
+          "methodology_independence": {
+            "check_name": "methodology_independence",
+            "passed": true,
+            "status_code": "METHODOLOGY_COMPATIBLE",
+            "details": "Methodology contract verified (CBE-0.7.0-CANONICAL).",
+            "evidence": {
+              "primary_methodology": "CBE-0.7.0-CANONICAL",
+              "candidate_methodology": "CBE-0.7.0-CANONICAL"
+            }
+          },
+          "researcher_or_procedure_independence": {
+            "check_name": "researcher_or_procedure_independence",
+            "passed": false,
+            "status_code": "CALLER_BOOLEAN_REPLICATION_FLAG_REJECTED",
+            "details": "Caller-provided boolean flag independent_replication_evidence_verified=True is rejected; INDEPENDENT_REPLICATION requires an authenticated cryptographic replication attestation and verified result artifact.",
+            "evidence": {
+              "primary_procedure_lineage": "PROC-DISCOVERY-SPRINT09",
+              "candidate_procedure_lineage": "PROC-HOLDOUT-SPRINT26",
+              "caller_boolean_flag_ignored": true,
+              "replication_attestation_verified": false,
+              "replication_rejection_code": "CALLER_BOOLEAN_REPLICATION_FLAG_REJECTED",
+              "replication_attempt_id": null
+            }
+          }
+        },
+        "primary_evidence_summary": {
+          "record_id": "RES-29-PAT-SIM",
+          "dataset_id": "DS-BTC-1H-Q1-2024",
+          "dataset_lineage_id": "BINANCE_SPOT_HISTORICAL_ARCHIVE_AGGREGATED_FROM_5M_Q1_2024",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "file_exists": true,
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "content_fingerprint_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+          "provenance_verified": true,
+          "provenance_rejection_code": null,
+          "observation_count": 2184,
+          "start_ms": 1704067200000,
+          "end_ms": 1711926000000,
+          "period_start_utc": "2024-01-01T00:00:00Z",
+          "period_end_utc": "2024-03-31T23:00:00Z",
+          "preprocessing_lineage_id": "PREP-Q1-2024-ISOLATED",
+          "shared_in_sample_scaler_or_quantiles": false,
+          "outcome_label_horizon_end_ms": null,
+          "shared_labels_or_outcomes": false,
+          "methodology_id": "CBE-0.7.0-CANONICAL",
+          "procedure_id": "PROC-DISCOVERY-SPRINT09",
+          "researcher_or_execution_lineage": null,
+          "caller_independent_replication_flag": false,
+          "replication_attestation": null,
+          "quarantined": false
+        },
+        "candidate_evidence_summary": {
+          "record_id": "VAL-BTC-1H-JAN-2025",
+          "dataset_id": "DS-BTC-1H-JAN-2025",
+          "dataset_lineage_id": "BINANCE_SPOT_HISTORICAL_ARCHIVE_1H_JAN_2025",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
+          "file_exists": true,
+          "source_sha256": "3fc6fb4cb0dc8e5f50cf4d51f2cac889d201aed3f722e20a7bb7e74961c55550",
+          "content_fingerprint_sha256": "9913c234e1f6cb0037d8d9cbf591d620203eb3f1af3886862246330d45448a76",
+          "provenance_verified": true,
+          "provenance_rejection_code": null,
+          "observation_count": 744,
+          "start_ms": 1735689600000,
+          "end_ms": 1738364400000,
+          "period_start_utc": "2025-01-01T00:00:00Z",
+          "period_end_utc": "2025-01-31T23:00:00Z",
+          "preprocessing_lineage_id": "PREP-JAN-2025-ISOLATED",
+          "shared_in_sample_scaler_or_quantiles": false,
+          "outcome_label_horizon_end_ms": null,
+          "shared_labels_or_outcomes": false,
+          "methodology_id": "CBE-0.7.0-CANONICAL",
+          "procedure_id": "PROC-HOLDOUT-SPRINT26",
+          "researcher_or_execution_lineage": null,
+          "caller_independent_replication_flag": true,
+          "replication_attestation": null,
+          "quarantined": false
+        },
+        "scientific_distinction_note": "REPRODUCTION, TEMPORAL_HOLDOUT_VALIDATION, CROSS_PERIOD_VALIDATION, INDEPENDENT_DATASET_VALIDATION, and INDEPENDENT_REPLICATION are strictly non-interchangeable scientific validation tiers. A different filename or dataset ID never suffices to establish independence.",
+        "limitations": [
+          "Independent validation confirms empirical consistency across disjoint evidence; it does not grant live trading authorization (TECHNICAL_NO_GO remains in force)."
+        ],
+        "evaluated_at_utc": "2026-11-11T08:49:09Z",
+        "framework_version": "SPRINT26-IND-VAL-V1.0",
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "governance_decision": "TECHNICAL_NO_GO"
+      },
+      {
+        "audit_id": "IND-AUDIT-RES-29-PAT-SIM-VAL-BTC-1H-JAN-2025-532ce9b9",
+        "primary_record_id": "RES-29-PAT-SIM",
+        "candidate_record_id": "VAL-BTC-1H-JAN-2025",
+        "claimed_category": "INDEPENDENT_REPLICATION",
+        "assigned_category": "INDEPENDENCE_NOT_ESTABLISHED",
+        "independence_established": false,
+        "rejection_or_downgrade_reasons": [
+          "INDEPENDENT_REPLICATION claim rejected (CALLER_BOOLEAN_REPLICATION_FLAG_REJECTED): Caller-provided boolean flag independent_replication_evidence_verified=True is rejected; INDEPENDENT_REPLICATION requires an authenticated cryptographic replication attestation and verified result artifact."
+        ],
+        "eight_point_checks": {
+          "dataset_lineage": {
+            "check_name": "dataset_lineage",
+            "passed": true,
+            "status_code": "DISTINCT_DATASET_LINEAGE_VERIFIED",
+            "details": "Primary and candidate datasets have verified provenance and distinct content digests/lineage.",
+            "evidence": {
+              "primary_dataset_id": "DS-BTC-1H-Q1-2024",
+              "candidate_dataset_id": "DS-BTC-1H-JAN-2025",
+              "primary_content_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+              "candidate_content_sha256": "9913c234e1f6cb0037d8d9cbf591d620203eb3f1af3886862246330d45448a76",
+              "primary_provenance_verified": true,
+              "candidate_provenance_verified": true
+            }
+          },
+          "source_overlap": {
+            "check_name": "source_overlap",
+            "passed": true,
+            "status_code": "DISTINCT_SOURCE_ARTIFACTS",
+            "details": "Source artifact SHA-256 digests are distinct.",
+            "evidence": {
+              "primary_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+              "candidate_source_sha256": "3fc6fb4cb0dc8e5f50cf4d51f2cac889d201aed3f722e20a7bb7e74961c55550"
+            }
+          },
+          "observation_overlap": {
+            "check_name": "observation_overlap",
+            "passed": true,
+            "status_code": "ZERO_OBSERVATION_OVERLAP_VERIFIED",
+            "details": "Zero shared observation timestamps between primary and candidate datasets.",
+            "evidence": {
+              "shared_observation_count": 0,
+              "jaccard_overlap": 0.0
+            }
+          },
+          "time_window_overlap": {
+            "check_name": "time_window_overlap",
+            "passed": true,
+            "status_code": "DISJOINT_TIME_WINDOWS_VERIFIED",
+            "details": "Primary and candidate time windows are strictly disjoint.",
+            "evidence": {
+              "primary_window_ms": [
+                1704067200000,
+                1711926000000
+              ],
+              "candidate_window_ms": [
+                1735689600000,
+                1738364400000
+              ]
+            }
+          },
+          "shared_preprocessing_artifacts": {
+            "check_name": "shared_preprocessing_artifacts",
+            "passed": true,
+            "status_code": "ISOLATED_PREPROCESSING_VERIFIED",
+            "details": "No shared in-sample preprocessing leakage detected.",
+            "evidence": {
+              "primary_preprocessing_lineage": "PREP-Q1-2024-ISOLATED",
+              "candidate_preprocessing_lineage": "PREP-JAN-2025-ISOLATED"
+            }
+          },
+          "shared_labels_or_outcomes": {
+            "check_name": "shared_labels_or_outcomes",
+            "passed": true,
+            "status_code": "DISJOINT_OUTCOME_HORIZONS_VERIFIED",
+            "details": "Outcome horizons and evaluation labels are strictly separated.",
+            "evidence": {
+              "primary_horizon_end_ms": null,
+              "candidate_start_ms": 1735689600000
+            }
+          },
+          "methodology_independence": {
+            "check_name": "methodology_independence",
+            "passed": true,
+            "status_code": "METHODOLOGY_COMPATIBLE",
+            "details": "Methodology contract verified (CBE-0.7.0-CANONICAL).",
+            "evidence": {
+              "primary_methodology": "CBE-0.7.0-CANONICAL",
+              "candidate_methodology": "CBE-0.7.0-CANONICAL"
+            }
+          },
+          "researcher_or_procedure_independence": {
+            "check_name": "researcher_or_procedure_independence",
+            "passed": false,
+            "status_code": "CALLER_BOOLEAN_REPLICATION_FLAG_REJECTED",
+            "details": "Caller-provided boolean flag independent_replication_evidence_verified=True is rejected; INDEPENDENT_REPLICATION requires an authenticated cryptographic replication attestation and verified result artifact.",
+            "evidence": {
+              "primary_procedure_lineage": "PROC-DISCOVERY-SPRINT09",
+              "candidate_procedure_lineage": "PROC-HOLDOUT-SPRINT26",
+              "caller_boolean_flag_ignored": true,
+              "replication_attestation_verified": false,
+              "replication_rejection_code": "CALLER_BOOLEAN_REPLICATION_FLAG_REJECTED",
+              "replication_attempt_id": null
+            }
+          }
+        },
+        "primary_evidence_summary": {
+          "record_id": "RES-29-PAT-SIM",
+          "dataset_id": "DS-BTC-1H-Q1-2024",
+          "dataset_lineage_id": "BINANCE_SPOT_HISTORICAL_ARCHIVE_AGGREGATED_FROM_5M_Q1_2024",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "file_exists": true,
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "content_fingerprint_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+          "provenance_verified": true,
+          "provenance_rejection_code": null,
+          "observation_count": 2184,
+          "start_ms": 1704067200000,
+          "end_ms": 1711926000000,
+          "period_start_utc": "2024-01-01T00:00:00Z",
+          "period_end_utc": "2024-03-31T23:00:00Z",
+          "preprocessing_lineage_id": "PREP-Q1-2024-ISOLATED",
+          "shared_in_sample_scaler_or_quantiles": false,
+          "outcome_label_horizon_end_ms": null,
+          "shared_labels_or_outcomes": false,
+          "methodology_id": "CBE-0.7.0-CANONICAL",
+          "procedure_id": "PROC-DISCOVERY-SPRINT09",
+          "researcher_or_execution_lineage": null,
+          "caller_independent_replication_flag": false,
+          "replication_attestation": null,
+          "quarantined": false
+        },
+        "candidate_evidence_summary": {
+          "record_id": "VAL-BTC-1H-JAN-2025",
+          "dataset_id": "DS-BTC-1H-JAN-2025",
+          "dataset_lineage_id": "BINANCE_SPOT_HISTORICAL_ARCHIVE_1H_JAN_2025",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
+          "file_exists": true,
+          "source_sha256": "3fc6fb4cb0dc8e5f50cf4d51f2cac889d201aed3f722e20a7bb7e74961c55550",
+          "content_fingerprint_sha256": "9913c234e1f6cb0037d8d9cbf591d620203eb3f1af3886862246330d45448a76",
+          "provenance_verified": true,
+          "provenance_rejection_code": null,
+          "observation_count": 744,
+          "start_ms": 1735689600000,
+          "end_ms": 1738364400000,
+          "period_start_utc": "2025-01-01T00:00:00Z",
+          "period_end_utc": "2025-01-31T23:00:00Z",
+          "preprocessing_lineage_id": "PREP-JAN-2025-ISOLATED",
+          "shared_in_sample_scaler_or_quantiles": false,
+          "outcome_label_horizon_end_ms": null,
+          "shared_labels_or_outcomes": false,
+          "methodology_id": "CBE-0.7.0-CANONICAL",
+          "procedure_id": "PROC-HOLDOUT-SPRINT26",
+          "researcher_or_execution_lineage": null,
+          "caller_independent_replication_flag": true,
+          "replication_attestation": null,
+          "quarantined": false
+        },
+        "scientific_distinction_note": "REPRODUCTION, TEMPORAL_HOLDOUT_VALIDATION, CROSS_PERIOD_VALIDATION, INDEPENDENT_DATASET_VALIDATION, and INDEPENDENT_REPLICATION are strictly non-interchangeable scientific validation tiers. A different filename or dataset ID never suffices to establish independence.",
+        "limitations": [
+          "Independent validation confirms empirical consistency across disjoint evidence; it does not grant live trading authorization (TECHNICAL_NO_GO remains in force)."
+        ],
+        "evaluated_at_utc": "2026-11-11T08:49:09Z",
+        "framework_version": "SPRINT26-IND-VAL-V1.0",
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "governance_decision": "TECHNICAL_NO_GO"
+      },
+      {
+        "audit_id": "IND-AUDIT-RES-29-PAT-SIM-VAL-BTC-15M-Q2-2024-195c664f",
+        "primary_record_id": "RES-29-PAT-SIM",
+        "candidate_record_id": "VAL-BTC-15M-Q2-2024",
+        "claimed_category": "CROSS_PERIOD_VALIDATION",
+        "assigned_category": "CROSS_PERIOD_VALIDATION",
+        "independence_established": true,
+        "rejection_or_downgrade_reasons": [],
+        "eight_point_checks": {
+          "dataset_lineage": {
+            "check_name": "dataset_lineage",
+            "passed": true,
+            "status_code": "DISTINCT_DATASET_LINEAGE_VERIFIED",
+            "details": "Primary and candidate datasets have verified provenance and distinct content digests/lineage.",
+            "evidence": {
+              "primary_dataset_id": "DS-BTC-1H-Q1-2024",
+              "candidate_dataset_id": "DS-BTC-15M-Q2-2024",
+              "primary_content_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+              "candidate_content_sha256": "3809778b6fdf99dae5cffe7e76587a873132b48080fbd1f971b09d077b88aef5",
+              "primary_provenance_verified": true,
+              "candidate_provenance_verified": true
+            }
+          },
+          "source_overlap": {
+            "check_name": "source_overlap",
+            "passed": true,
+            "status_code": "DISTINCT_SOURCE_ARTIFACTS",
+            "details": "Source artifact SHA-256 digests are distinct.",
+            "evidence": {
+              "primary_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+              "candidate_source_sha256": "02366bf9ccd3e5a879e05b553c68847a0e7f28fc8480cc5a244b5bd51f1b4024"
+            }
+          },
+          "observation_overlap": {
+            "check_name": "observation_overlap",
+            "passed": true,
+            "status_code": "ZERO_OBSERVATION_OVERLAP_VERIFIED",
+            "details": "Zero shared observation timestamps between primary and candidate datasets.",
+            "evidence": {
+              "shared_observation_count": 0,
+              "jaccard_overlap": 0.0
+            }
+          },
+          "time_window_overlap": {
+            "check_name": "time_window_overlap",
+            "passed": true,
+            "status_code": "DISJOINT_TIME_WINDOWS_VERIFIED",
+            "details": "Primary and candidate time windows are strictly disjoint.",
+            "evidence": {
+              "primary_window_ms": [
+                1704067200000,
+                1711926000000
+              ],
+              "candidate_window_ms": [
+                1711929600000,
+                1719791100000
+              ]
+            }
+          },
+          "shared_preprocessing_artifacts": {
+            "check_name": "shared_preprocessing_artifacts",
+            "passed": true,
+            "status_code": "ISOLATED_PREPROCESSING_VERIFIED",
+            "details": "No shared in-sample preprocessing leakage detected.",
+            "evidence": {
+              "primary_preprocessing_lineage": "PREP-Q1-2024-ISOLATED",
+              "candidate_preprocessing_lineage": "PREP-Q2-2024-ISOLATED"
+            }
+          },
+          "shared_labels_or_outcomes": {
+            "check_name": "shared_labels_or_outcomes",
+            "passed": true,
+            "status_code": "DISJOINT_OUTCOME_HORIZONS_VERIFIED",
+            "details": "Outcome horizons and evaluation labels are strictly separated.",
+            "evidence": {
+              "primary_horizon_end_ms": null,
+              "candidate_start_ms": 1711929600000
+            }
+          },
+          "methodology_independence": {
+            "check_name": "methodology_independence",
+            "passed": true,
+            "status_code": "METHODOLOGY_COMPATIBLE",
+            "details": "Methodology contract verified (CBE-0.7.0-CANONICAL).",
+            "evidence": {
+              "primary_methodology": "CBE-0.7.0-CANONICAL",
+              "candidate_methodology": "CBE-0.7.0-CANONICAL"
+            }
+          },
+          "researcher_or_procedure_independence": {
+            "check_name": "researcher_or_procedure_independence",
+            "passed": false,
+            "status_code": "MISSING_REPLICATION_ATTESTATION",
+            "details": "No cryptographic replication attestation provided.",
+            "evidence": {
+              "primary_procedure_lineage": "PROC-DISCOVERY-SPRINT09",
+              "candidate_procedure_lineage": "PROC-DISCOVERY-SPRINT09",
+              "caller_boolean_flag_ignored": false,
+              "replication_attestation_verified": false,
+              "replication_rejection_code": "MISSING_REPLICATION_ATTESTATION",
+              "replication_attempt_id": null
+            }
+          }
+        },
+        "primary_evidence_summary": {
+          "record_id": "RES-29-PAT-SIM",
+          "dataset_id": "DS-BTC-1H-Q1-2024",
+          "dataset_lineage_id": "BINANCE_SPOT_HISTORICAL_ARCHIVE_AGGREGATED_FROM_5M_Q1_2024",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "file_exists": true,
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "content_fingerprint_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+          "provenance_verified": true,
+          "provenance_rejection_code": null,
+          "observation_count": 2184,
+          "start_ms": 1704067200000,
+          "end_ms": 1711926000000,
+          "period_start_utc": "2024-01-01T00:00:00Z",
+          "period_end_utc": "2024-03-31T23:00:00Z",
+          "preprocessing_lineage_id": "PREP-Q1-2024-ISOLATED",
+          "shared_in_sample_scaler_or_quantiles": false,
+          "outcome_label_horizon_end_ms": null,
+          "shared_labels_or_outcomes": false,
+          "methodology_id": "CBE-0.7.0-CANONICAL",
+          "procedure_id": "PROC-DISCOVERY-SPRINT09",
+          "researcher_or_execution_lineage": null,
+          "caller_independent_replication_flag": false,
+          "replication_attestation": null,
+          "quarantined": false
+        },
+        "candidate_evidence_summary": {
+          "record_id": "VAL-BTC-15M-Q2-2024",
+          "dataset_id": "DS-BTC-15M-Q2-2024",
+          "dataset_lineage_id": "BINANCE_SPOT_HISTORICAL_ARCHIVE_15M_Q2_2024",
+          "source_path": "data/historical/historical_binance_btcusdt_15m_q2_2024.parquet",
+          "file_exists": true,
+          "source_sha256": "02366bf9ccd3e5a879e05b553c68847a0e7f28fc8480cc5a244b5bd51f1b4024",
+          "content_fingerprint_sha256": "3809778b6fdf99dae5cffe7e76587a873132b48080fbd1f971b09d077b88aef5",
+          "provenance_verified": true,
+          "provenance_rejection_code": null,
+          "observation_count": 8736,
+          "start_ms": 1711929600000,
+          "end_ms": 1719791100000,
+          "period_start_utc": "2024-04-01T00:00:00Z",
+          "period_end_utc": "2024-06-30T23:45:00Z",
+          "preprocessing_lineage_id": "PREP-Q2-2024-ISOLATED",
+          "shared_in_sample_scaler_or_quantiles": false,
+          "outcome_label_horizon_end_ms": null,
+          "shared_labels_or_outcomes": false,
+          "methodology_id": "CBE-0.7.0-CANONICAL",
+          "procedure_id": "PROC-DISCOVERY-SPRINT09",
+          "researcher_or_execution_lineage": null,
+          "caller_independent_replication_flag": false,
+          "replication_attestation": null,
+          "quarantined": false
+        },
+        "scientific_distinction_note": "REPRODUCTION, TEMPORAL_HOLDOUT_VALIDATION, CROSS_PERIOD_VALIDATION, INDEPENDENT_DATASET_VALIDATION, and INDEPENDENT_REPLICATION are strictly non-interchangeable scientific validation tiers. A different filename or dataset ID never suffices to establish independence.",
+        "limitations": [
+          "Independent validation confirms empirical consistency across disjoint evidence; it does not grant live trading authorization (TECHNICAL_NO_GO remains in force)."
+        ],
+        "evaluated_at_utc": "2026-11-11T08:49:09Z",
+        "framework_version": "SPRINT26-IND-VAL-V1.0",
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "governance_decision": "TECHNICAL_NO_GO"
+      },
+      {
+        "audit_id": "IND-AUDIT-RES-29-PAT-SIM-VAL-BTC-15M-Q2-2024-13046c0a",
+        "primary_record_id": "RES-29-PAT-SIM",
+        "candidate_record_id": "VAL-BTC-15M-Q2-2024",
+        "claimed_category": "INDEPENDENT_REPLICATION",
+        "assigned_category": "INDEPENDENCE_NOT_ESTABLISHED",
+        "independence_established": false,
+        "rejection_or_downgrade_reasons": [
+          "INDEPENDENT_REPLICATION claim rejected (MISSING_REPLICATION_ATTESTATION): No cryptographic replication attestation provided."
+        ],
+        "eight_point_checks": {
+          "dataset_lineage": {
+            "check_name": "dataset_lineage",
+            "passed": true,
+            "status_code": "DISTINCT_DATASET_LINEAGE_VERIFIED",
+            "details": "Primary and candidate datasets have verified provenance and distinct content digests/lineage.",
+            "evidence": {
+              "primary_dataset_id": "DS-BTC-1H-Q1-2024",
+              "candidate_dataset_id": "DS-BTC-15M-Q2-2024",
+              "primary_content_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+              "candidate_content_sha256": "3809778b6fdf99dae5cffe7e76587a873132b48080fbd1f971b09d077b88aef5",
+              "primary_provenance_verified": true,
+              "candidate_provenance_verified": true
+            }
+          },
+          "source_overlap": {
+            "check_name": "source_overlap",
+            "passed": true,
+            "status_code": "DISTINCT_SOURCE_ARTIFACTS",
+            "details": "Source artifact SHA-256 digests are distinct.",
+            "evidence": {
+              "primary_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+              "candidate_source_sha256": "02366bf9ccd3e5a879e05b553c68847a0e7f28fc8480cc5a244b5bd51f1b4024"
+            }
+          },
+          "observation_overlap": {
+            "check_name": "observation_overlap",
+            "passed": true,
+            "status_code": "ZERO_OBSERVATION_OVERLAP_VERIFIED",
+            "details": "Zero shared observation timestamps between primary and candidate datasets.",
+            "evidence": {
+              "shared_observation_count": 0,
+              "jaccard_overlap": 0.0
+            }
+          },
+          "time_window_overlap": {
+            "check_name": "time_window_overlap",
+            "passed": true,
+            "status_code": "DISJOINT_TIME_WINDOWS_VERIFIED",
+            "details": "Primary and candidate time windows are strictly disjoint.",
+            "evidence": {
+              "primary_window_ms": [
+                1704067200000,
+                1711926000000
+              ],
+              "candidate_window_ms": [
+                1711929600000,
+                1719791100000
+              ]
+            }
+          },
+          "shared_preprocessing_artifacts": {
+            "check_name": "shared_preprocessing_artifacts",
+            "passed": true,
+            "status_code": "ISOLATED_PREPROCESSING_VERIFIED",
+            "details": "No shared in-sample preprocessing leakage detected.",
+            "evidence": {
+              "primary_preprocessing_lineage": "PREP-Q1-2024-ISOLATED",
+              "candidate_preprocessing_lineage": "PREP-Q2-2024-ISOLATED"
+            }
+          },
+          "shared_labels_or_outcomes": {
+            "check_name": "shared_labels_or_outcomes",
+            "passed": true,
+            "status_code": "DISJOINT_OUTCOME_HORIZONS_VERIFIED",
+            "details": "Outcome horizons and evaluation labels are strictly separated.",
+            "evidence": {
+              "primary_horizon_end_ms": null,
+              "candidate_start_ms": 1711929600000
+            }
+          },
+          "methodology_independence": {
+            "check_name": "methodology_independence",
+            "passed": true,
+            "status_code": "METHODOLOGY_COMPATIBLE",
+            "details": "Methodology contract verified (CBE-0.7.0-CANONICAL).",
+            "evidence": {
+              "primary_methodology": "CBE-0.7.0-CANONICAL",
+              "candidate_methodology": "CBE-0.7.0-CANONICAL"
+            }
+          },
+          "researcher_or_procedure_independence": {
+            "check_name": "researcher_or_procedure_independence",
+            "passed": false,
+            "status_code": "MISSING_REPLICATION_ATTESTATION",
+            "details": "No cryptographic replication attestation provided.",
+            "evidence": {
+              "primary_procedure_lineage": "PROC-DISCOVERY-SPRINT09",
+              "candidate_procedure_lineage": "PROC-DISCOVERY-SPRINT09",
+              "caller_boolean_flag_ignored": false,
+              "replication_attestation_verified": false,
+              "replication_rejection_code": "MISSING_REPLICATION_ATTESTATION",
+              "replication_attempt_id": null
+            }
+          }
+        },
+        "primary_evidence_summary": {
+          "record_id": "RES-29-PAT-SIM",
+          "dataset_id": "DS-BTC-1H-Q1-2024",
+          "dataset_lineage_id": "BINANCE_SPOT_HISTORICAL_ARCHIVE_AGGREGATED_FROM_5M_Q1_2024",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "file_exists": true,
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "content_fingerprint_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+          "provenance_verified": true,
+          "provenance_rejection_code": null,
+          "observation_count": 2184,
+          "start_ms": 1704067200000,
+          "end_ms": 1711926000000,
+          "period_start_utc": "2024-01-01T00:00:00Z",
+          "period_end_utc": "2024-03-31T23:00:00Z",
+          "preprocessing_lineage_id": "PREP-Q1-2024-ISOLATED",
+          "shared_in_sample_scaler_or_quantiles": false,
+          "outcome_label_horizon_end_ms": null,
+          "shared_labels_or_outcomes": false,
+          "methodology_id": "CBE-0.7.0-CANONICAL",
+          "procedure_id": "PROC-DISCOVERY-SPRINT09",
+          "researcher_or_execution_lineage": null,
+          "caller_independent_replication_flag": false,
+          "replication_attestation": null,
+          "quarantined": false
+        },
+        "candidate_evidence_summary": {
+          "record_id": "VAL-BTC-15M-Q2-2024",
+          "dataset_id": "DS-BTC-15M-Q2-2024",
+          "dataset_lineage_id": "BINANCE_SPOT_HISTORICAL_ARCHIVE_15M_Q2_2024",
+          "source_path": "data/historical/historical_binance_btcusdt_15m_q2_2024.parquet",
+          "file_exists": true,
+          "source_sha256": "02366bf9ccd3e5a879e05b553c68847a0e7f28fc8480cc5a244b5bd51f1b4024",
+          "content_fingerprint_sha256": "3809778b6fdf99dae5cffe7e76587a873132b48080fbd1f971b09d077b88aef5",
+          "provenance_verified": true,
+          "provenance_rejection_code": null,
+          "observation_count": 8736,
+          "start_ms": 1711929600000,
+          "end_ms": 1719791100000,
+          "period_start_utc": "2024-04-01T00:00:00Z",
+          "period_end_utc": "2024-06-30T23:45:00Z",
+          "preprocessing_lineage_id": "PREP-Q2-2024-ISOLATED",
+          "shared_in_sample_scaler_or_quantiles": false,
+          "outcome_label_horizon_end_ms": null,
+          "shared_labels_or_outcomes": false,
+          "methodology_id": "CBE-0.7.0-CANONICAL",
+          "procedure_id": "PROC-DISCOVERY-SPRINT09",
+          "researcher_or_execution_lineage": null,
+          "caller_independent_replication_flag": false,
+          "replication_attestation": null,
+          "quarantined": false
+        },
+        "scientific_distinction_note": "REPRODUCTION, TEMPORAL_HOLDOUT_VALIDATION, CROSS_PERIOD_VALIDATION, INDEPENDENT_DATASET_VALIDATION, and INDEPENDENT_REPLICATION are strictly non-interchangeable scientific validation tiers. A different filename or dataset ID never suffices to establish independence.",
+        "limitations": [
+          "Independent validation confirms empirical consistency across disjoint evidence; it does not grant live trading authorization (TECHNICAL_NO_GO remains in force)."
+        ],
+        "evaluated_at_utc": "2026-11-11T08:49:10Z",
+        "framework_version": "SPRINT26-IND-VAL-V1.0",
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "governance_decision": "TECHNICAL_NO_GO"
+      },
+      {
+        "audit_id": "IND-AUDIT-RES-29-PAT-SIM-ALIAS-Q1-2024-RENAMED-95891e38",
+        "primary_record_id": "RES-29-PAT-SIM",
+        "candidate_record_id": "ALIAS-Q1-2024-RENAMED",
+        "claimed_category": "REPRODUCTION",
+        "assigned_category": "REPRODUCTION",
+        "independence_established": false,
+        "rejection_or_downgrade_reasons": [
+          "Dataset provenance could not be cryptographically verified (primary_verified=True, candidate_verified=False, code=UNVERIFIED_HISTORICAL_INPUT).",
+          "Both studies share the exact same source artifact SHA-256 (c559ac59275e).",
+          "Detected 2184 overlapping observation timestamps (Jaccard=1.0000) between primary and candidate datasets.",
+          "Time windows overlap by 7858800000 ms.",
+          "Studies share an unisolated preprocessing artifact or in-sample quantile/scaler fit."
+        ],
+        "eight_point_checks": {
+          "dataset_lineage": {
+            "check_name": "dataset_lineage",
+            "passed": false,
+            "status_code": "UNVERIFIED_HISTORICAL_INPUT",
+            "details": "Dataset provenance could not be cryptographically verified (primary_verified=True, candidate_verified=False, code=UNVERIFIED_HISTORICAL_INPUT).",
+            "evidence": {
+              "primary_dataset_id": "DS-BTC-1H-Q1-2024",
+              "candidate_dataset_id": "DS-BTC-1H-Q1-2024-RENAMED-COPY",
+              "primary_content_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+              "candidate_content_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+              "primary_provenance_verified": true,
+              "candidate_provenance_verified": false
+            }
+          },
+          "source_overlap": {
+            "check_name": "source_overlap",
+            "passed": false,
+            "status_code": "SHARED_SOURCE_ARTIFACT_HASH",
+            "details": "Both studies share the exact same source artifact SHA-256 (c559ac59275e).",
+            "evidence": {
+              "primary_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+              "candidate_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5"
+            }
+          },
+          "observation_overlap": {
+            "check_name": "observation_overlap",
+            "passed": false,
+            "status_code": "OBSERVATION_TIMESTAMP_OVERLAP_DETECTED",
+            "details": "Detected 2184 overlapping observation timestamps (Jaccard=1.0000) between primary and candidate datasets.",
+            "evidence": {
+              "shared_observation_count": 2184,
+              "jaccard_overlap": 1.0
+            }
+          },
+          "time_window_overlap": {
+            "check_name": "time_window_overlap",
+            "passed": false,
+            "status_code": "TIME_WINDOW_OVERLAP_DETECTED",
+            "details": "Time windows overlap by 7858800000 ms.",
+            "evidence": {
+              "primary_window_ms": [
+                1704067200000,
+                1711926000000
+              ],
+              "candidate_window_ms": [
+                1704067200000,
+                1711926000000
+              ]
+            }
+          },
+          "shared_preprocessing_artifacts": {
+            "check_name": "shared_preprocessing_artifacts",
+            "passed": false,
+            "status_code": "SHARED_PREPROCESSING_LINEAGE_DETECTED",
+            "details": "Studies share an unisolated preprocessing artifact or in-sample quantile/scaler fit.",
+            "evidence": {
+              "primary_preprocessing_lineage": "PREP-Q1-2024-ISOLATED",
+              "candidate_preprocessing_lineage": "PREP-Q1-2024-ISOLATED"
+            }
+          },
+          "shared_labels_or_outcomes": {
+            "check_name": "shared_labels_or_outcomes",
+            "passed": true,
+            "status_code": "DISJOINT_OUTCOME_HORIZONS_VERIFIED",
+            "details": "Outcome horizons and evaluation labels are strictly separated.",
+            "evidence": {
+              "primary_horizon_end_ms": null,
+              "candidate_start_ms": 1704067200000
+            }
+          },
+          "methodology_independence": {
+            "check_name": "methodology_independence",
+            "passed": true,
+            "status_code": "METHODOLOGY_COMPATIBLE",
+            "details": "Methodology contract verified (CBE-0.7.0-CANONICAL).",
+            "evidence": {
+              "primary_methodology": "CBE-0.7.0-CANONICAL",
+              "candidate_methodology": "CBE-0.7.0-CANONICAL"
+            }
+          },
+          "researcher_or_procedure_independence": {
+            "check_name": "researcher_or_procedure_independence",
+            "passed": false,
+            "status_code": "MISSING_REPLICATION_ATTESTATION",
+            "details": "No cryptographic replication attestation provided.",
+            "evidence": {
+              "primary_procedure_lineage": "PROC-DISCOVERY-SPRINT09",
+              "candidate_procedure_lineage": "PROC-DISCOVERY-SPRINT09",
+              "caller_boolean_flag_ignored": false,
+              "replication_attestation_verified": false,
+              "replication_rejection_code": "MISSING_REPLICATION_ATTESTATION",
+              "replication_attempt_id": null
+            }
+          }
+        },
+        "primary_evidence_summary": {
+          "record_id": "RES-29-PAT-SIM",
+          "dataset_id": "DS-BTC-1H-Q1-2024",
+          "dataset_lineage_id": "BINANCE_SPOT_HISTORICAL_ARCHIVE_AGGREGATED_FROM_5M_Q1_2024",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "file_exists": true,
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "content_fingerprint_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+          "provenance_verified": true,
+          "provenance_rejection_code": null,
+          "observation_count": 2184,
+          "start_ms": 1704067200000,
+          "end_ms": 1711926000000,
+          "period_start_utc": "2024-01-01T00:00:00Z",
+          "period_end_utc": "2024-03-31T23:00:00Z",
+          "preprocessing_lineage_id": "PREP-Q1-2024-ISOLATED",
+          "shared_in_sample_scaler_or_quantiles": false,
+          "outcome_label_horizon_end_ms": null,
+          "shared_labels_or_outcomes": false,
+          "methodology_id": "CBE-0.7.0-CANONICAL",
+          "procedure_id": "PROC-DISCOVERY-SPRINT09",
+          "researcher_or_execution_lineage": null,
+          "caller_independent_replication_flag": false,
+          "replication_attestation": null,
+          "quarantined": false
+        },
+        "candidate_evidence_summary": {
+          "record_id": "ALIAS-Q1-2024-RENAMED",
+          "dataset_id": "DS-BTC-1H-Q1-2024-RENAMED-COPY",
+          "dataset_lineage_id": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "file_exists": true,
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "content_fingerprint_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+          "provenance_verified": false,
+          "provenance_rejection_code": "UNVERIFIED_HISTORICAL_INPUT",
+          "observation_count": 2184,
+          "start_ms": 1704067200000,
+          "end_ms": 1711926000000,
+          "period_start_utc": "2024-01-01T00:00:00Z",
+          "period_end_utc": "2024-03-31T23:00:00Z",
+          "preprocessing_lineage_id": "PREP-Q1-2024-ISOLATED",
+          "shared_in_sample_scaler_or_quantiles": false,
+          "outcome_label_horizon_end_ms": null,
+          "shared_labels_or_outcomes": false,
+          "methodology_id": "CBE-0.7.0-CANONICAL",
+          "procedure_id": "PROC-DISCOVERY-SPRINT09",
+          "researcher_or_execution_lineage": null,
+          "caller_independent_replication_flag": false,
+          "replication_attestation": null,
+          "quarantined": false
+        },
+        "scientific_distinction_note": "REPRODUCTION, TEMPORAL_HOLDOUT_VALIDATION, CROSS_PERIOD_VALIDATION, INDEPENDENT_DATASET_VALIDATION, and INDEPENDENT_REPLICATION are strictly non-interchangeable scientific validation tiers. A different filename or dataset ID never suffices to establish independence.",
+        "limitations": [
+          "Independent validation confirms empirical consistency across disjoint evidence; it does not grant live trading authorization (TECHNICAL_NO_GO remains in force)."
+        ],
+        "evaluated_at_utc": "2026-11-11T08:49:10Z",
+        "framework_version": "SPRINT26-IND-VAL-V1.0",
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "governance_decision": "TECHNICAL_NO_GO"
+      },
+      {
+        "audit_id": "IND-AUDIT-RES-29-PAT-SIM-ALIAS-Q1-2024-RENAMED-e75b3a91",
+        "primary_record_id": "RES-29-PAT-SIM",
+        "candidate_record_id": "ALIAS-Q1-2024-RENAMED",
+        "claimed_category": "INDEPENDENT_DATASET_VALIDATION",
+        "assigned_category": "INDEPENDENCE_NOT_ESTABLISHED",
+        "independence_established": false,
+        "rejection_or_downgrade_reasons": [
+          "Dataset provenance could not be cryptographically verified (primary_verified=True, candidate_verified=False, code=UNVERIFIED_HISTORICAL_INPUT).",
+          "Both studies share the exact same source artifact SHA-256 (c559ac59275e).",
+          "Detected 2184 overlapping observation timestamps (Jaccard=1.0000) between primary and candidate datasets.",
+          "Time windows overlap by 7858800000 ms.",
+          "Studies share an unisolated preprocessing artifact or in-sample quantile/scaler fit.",
+          "Claimed 'INDEPENDENT_DATASET_VALIDATION' rejected because candidate study reuses the same underlying dataset/source evidence."
+        ],
+        "eight_point_checks": {
+          "dataset_lineage": {
+            "check_name": "dataset_lineage",
+            "passed": false,
+            "status_code": "UNVERIFIED_HISTORICAL_INPUT",
+            "details": "Dataset provenance could not be cryptographically verified (primary_verified=True, candidate_verified=False, code=UNVERIFIED_HISTORICAL_INPUT).",
+            "evidence": {
+              "primary_dataset_id": "DS-BTC-1H-Q1-2024",
+              "candidate_dataset_id": "DS-BTC-1H-Q1-2024-RENAMED-COPY",
+              "primary_content_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+              "candidate_content_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+              "primary_provenance_verified": true,
+              "candidate_provenance_verified": false
+            }
+          },
+          "source_overlap": {
+            "check_name": "source_overlap",
+            "passed": false,
+            "status_code": "SHARED_SOURCE_ARTIFACT_HASH",
+            "details": "Both studies share the exact same source artifact SHA-256 (c559ac59275e).",
+            "evidence": {
+              "primary_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+              "candidate_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5"
+            }
+          },
+          "observation_overlap": {
+            "check_name": "observation_overlap",
+            "passed": false,
+            "status_code": "OBSERVATION_TIMESTAMP_OVERLAP_DETECTED",
+            "details": "Detected 2184 overlapping observation timestamps (Jaccard=1.0000) between primary and candidate datasets.",
+            "evidence": {
+              "shared_observation_count": 2184,
+              "jaccard_overlap": 1.0
+            }
+          },
+          "time_window_overlap": {
+            "check_name": "time_window_overlap",
+            "passed": false,
+            "status_code": "TIME_WINDOW_OVERLAP_DETECTED",
+            "details": "Time windows overlap by 7858800000 ms.",
+            "evidence": {
+              "primary_window_ms": [
+                1704067200000,
+                1711926000000
+              ],
+              "candidate_window_ms": [
+                1704067200000,
+                1711926000000
+              ]
+            }
+          },
+          "shared_preprocessing_artifacts": {
+            "check_name": "shared_preprocessing_artifacts",
+            "passed": false,
+            "status_code": "SHARED_PREPROCESSING_LINEAGE_DETECTED",
+            "details": "Studies share an unisolated preprocessing artifact or in-sample quantile/scaler fit.",
+            "evidence": {
+              "primary_preprocessing_lineage": "PREP-Q1-2024-ISOLATED",
+              "candidate_preprocessing_lineage": "PREP-Q1-2024-ISOLATED"
+            }
+          },
+          "shared_labels_or_outcomes": {
+            "check_name": "shared_labels_or_outcomes",
+            "passed": true,
+            "status_code": "DISJOINT_OUTCOME_HORIZONS_VERIFIED",
+            "details": "Outcome horizons and evaluation labels are strictly separated.",
+            "evidence": {
+              "primary_horizon_end_ms": null,
+              "candidate_start_ms": 1704067200000
+            }
+          },
+          "methodology_independence": {
+            "check_name": "methodology_independence",
+            "passed": true,
+            "status_code": "METHODOLOGY_COMPATIBLE",
+            "details": "Methodology contract verified (CBE-0.7.0-CANONICAL).",
+            "evidence": {
+              "primary_methodology": "CBE-0.7.0-CANONICAL",
+              "candidate_methodology": "CBE-0.7.0-CANONICAL"
+            }
+          },
+          "researcher_or_procedure_independence": {
+            "check_name": "researcher_or_procedure_independence",
+            "passed": false,
+            "status_code": "MISSING_REPLICATION_ATTESTATION",
+            "details": "No cryptographic replication attestation provided.",
+            "evidence": {
+              "primary_procedure_lineage": "PROC-DISCOVERY-SPRINT09",
+              "candidate_procedure_lineage": "PROC-DISCOVERY-SPRINT09",
+              "caller_boolean_flag_ignored": false,
+              "replication_attestation_verified": false,
+              "replication_rejection_code": "MISSING_REPLICATION_ATTESTATION",
+              "replication_attempt_id": null
+            }
+          }
+        },
+        "primary_evidence_summary": {
+          "record_id": "RES-29-PAT-SIM",
+          "dataset_id": "DS-BTC-1H-Q1-2024",
+          "dataset_lineage_id": "BINANCE_SPOT_HISTORICAL_ARCHIVE_AGGREGATED_FROM_5M_Q1_2024",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "file_exists": true,
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "content_fingerprint_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+          "provenance_verified": true,
+          "provenance_rejection_code": null,
+          "observation_count": 2184,
+          "start_ms": 1704067200000,
+          "end_ms": 1711926000000,
+          "period_start_utc": "2024-01-01T00:00:00Z",
+          "period_end_utc": "2024-03-31T23:00:00Z",
+          "preprocessing_lineage_id": "PREP-Q1-2024-ISOLATED",
+          "shared_in_sample_scaler_or_quantiles": false,
+          "outcome_label_horizon_end_ms": null,
+          "shared_labels_or_outcomes": false,
+          "methodology_id": "CBE-0.7.0-CANONICAL",
+          "procedure_id": "PROC-DISCOVERY-SPRINT09",
+          "researcher_or_execution_lineage": null,
+          "caller_independent_replication_flag": false,
+          "replication_attestation": null,
+          "quarantined": false
+        },
+        "candidate_evidence_summary": {
+          "record_id": "ALIAS-Q1-2024-RENAMED",
+          "dataset_id": "DS-BTC-1H-Q1-2024-RENAMED-COPY",
+          "dataset_lineage_id": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "file_exists": true,
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "content_fingerprint_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+          "provenance_verified": false,
+          "provenance_rejection_code": "UNVERIFIED_HISTORICAL_INPUT",
+          "observation_count": 2184,
+          "start_ms": 1704067200000,
+          "end_ms": 1711926000000,
+          "period_start_utc": "2024-01-01T00:00:00Z",
+          "period_end_utc": "2024-03-31T23:00:00Z",
+          "preprocessing_lineage_id": "PREP-Q1-2024-ISOLATED",
+          "shared_in_sample_scaler_or_quantiles": false,
+          "outcome_label_horizon_end_ms": null,
+          "shared_labels_or_outcomes": false,
+          "methodology_id": "CBE-0.7.0-CANONICAL",
+          "procedure_id": "PROC-DISCOVERY-SPRINT09",
+          "researcher_or_execution_lineage": null,
+          "caller_independent_replication_flag": false,
+          "replication_attestation": null,
+          "quarantined": false
+        },
+        "scientific_distinction_note": "REPRODUCTION, TEMPORAL_HOLDOUT_VALIDATION, CROSS_PERIOD_VALIDATION, INDEPENDENT_DATASET_VALIDATION, and INDEPENDENT_REPLICATION are strictly non-interchangeable scientific validation tiers. A different filename or dataset ID never suffices to establish independence.",
+        "limitations": [
+          "Independent validation confirms empirical consistency across disjoint evidence; it does not grant live trading authorization (TECHNICAL_NO_GO remains in force)."
+        ],
+        "evaluated_at_utc": "2026-11-11T08:49:10Z",
+        "framework_version": "SPRINT26-IND-VAL-V1.0",
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "governance_decision": "TECHNICAL_NO_GO"
+      },
+      {
+        "audit_id": "IND-AUDIT-RES-29-PAT-SIM-RES-CRYPTO-01-b37c8ac3",
+        "primary_record_id": "RES-29-PAT-SIM",
+        "candidate_record_id": "RES-CRYPTO-01",
+        "claimed_category": "INDEPENDENT_DATASET_VALIDATION",
+        "assigned_category": "VALIDATION_BLOCKED",
+        "independence_established": false,
+        "rejection_or_downgrade_reasons": [
+          "One or both studies reference a quarantined/contaminated dataset."
+        ],
+        "eight_point_checks": {},
+        "primary_evidence_summary": {
+          "record_id": "RES-29-PAT-SIM",
+          "dataset_id": "DS-BTC-1H-Q1-2024",
+          "dataset_lineage_id": "BINANCE_SPOT_HISTORICAL_ARCHIVE_AGGREGATED_FROM_5M_Q1_2024",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "file_exists": true,
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "content_fingerprint_sha256": "e9b6729c2576b1d87601fcb144ea4e1d1e69a83625ef4ba0e8f91303a6c950d3",
+          "provenance_verified": true,
+          "provenance_rejection_code": null,
+          "observation_count": 2184,
+          "start_ms": 1704067200000,
+          "end_ms": 1711926000000,
+          "period_start_utc": "2024-01-01T00:00:00Z",
+          "period_end_utc": "2024-03-31T23:00:00Z",
+          "preprocessing_lineage_id": "PREP-Q1-2024-ISOLATED",
+          "shared_in_sample_scaler_or_quantiles": false,
+          "outcome_label_horizon_end_ms": null,
+          "shared_labels_or_outcomes": false,
+          "methodology_id": "CBE-0.7.0-CANONICAL",
+          "procedure_id": "PROC-DISCOVERY-SPRINT09",
+          "researcher_or_execution_lineage": null,
+          "caller_independent_replication_flag": false,
+          "replication_attestation": null,
+          "quarantined": false
+        },
+        "candidate_evidence_summary": {
+          "record_id": "RES-CRYPTO-01",
+          "dataset_id": "DS-BTC-1H-OCT2026-QUARANTINE",
+          "dataset_lineage_id": "cc74f056e5424a7afd46cc1bbd0b7b0dbf11d8aa4189bb7df3bac9859b6d375e",
+          "source_path": "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet",
+          "file_exists": true,
+          "source_sha256": "05874e97d06db21fad8e7583b5b8038141d4e3dcfbabf68238fca52f5efab718",
+          "content_fingerprint_sha256": "cc74f056e5424a7afd46cc1bbd0b7b0dbf11d8aa4189bb7df3bac9859b6d375e",
+          "provenance_verified": false,
+          "provenance_rejection_code": "UNVERIFIED_HISTORICAL_INPUT",
+          "observation_count": 288,
+          "start_ms": 1790812800000,
+          "end_ms": 1790898900000,
+          "period_start_utc": null,
+          "period_end_utc": null,
+          "preprocessing_lineage_id": null,
+          "shared_in_sample_scaler_or_quantiles": false,
+          "outcome_label_horizon_end_ms": null,
+          "shared_labels_or_outcomes": false,
+          "methodology_id": "CBE-0.7.0-CANONICAL",
+          "procedure_id": null,
+          "researcher_or_execution_lineage": null,
+          "caller_independent_replication_flag": false,
+          "replication_attestation": null,
+          "quarantined": true
+        },
+        "scientific_distinction_note": "REPRODUCTION, TEMPORAL_HOLDOUT_VALIDATION, CROSS_PERIOD_VALIDATION, INDEPENDENT_DATASET_VALIDATION, and INDEPENDENT_REPLICATION are strictly non-interchangeable scientific validation tiers. A different filename or dataset ID never suffices to establish independence.",
+        "limitations": [
+          "Independent validation confirms empirical consistency across disjoint evidence; it does not grant live trading authorization (TECHNICAL_NO_GO remains in force)."
+        ],
+        "evaluated_at_utc": "2026-11-11T08:49:10Z",
+        "framework_version": "SPRINT26-IND-VAL-V1.0",
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "governance_decision": "TECHNICAL_NO_GO"
+      }
+    ],
+    "evaluated_at_utc": "2026-11-11T08:49:10Z"
+  }
+}
