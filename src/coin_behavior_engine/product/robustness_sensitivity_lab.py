@@ -30,6 +30,7 @@ import numpy as np
 import pandas as pd
 
 from coin_behavior_engine.product.resource_governor import resource_governor
+from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
 from coin_behavior_engine.product.statistical_validity import StatisticalValidityEngine
 
 
@@ -98,17 +99,40 @@ class RobustnessSensitivityLab:
         self,
         dataset_id: str,
         custom_df: Optional[pd.DataFrame] = None,
+        source_path: Optional[str] = None,
+        intake_manifest: Optional[Dict[str, Any]] = None,
+        intake_manifest_path: Optional[str] = None,
+        provenance_sidecar_path: Optional[str] = None,
+        attestation: Optional[Dict[str, Any]] = None,
+        caller_supplied_sha256: Optional[str] = None,
+        require_explicit_evidence: bool = False,
+        trusted_fixture_context: bool = False,
     ) -> Tuple[Optional[pd.DataFrame], Dict[str, Any], Optional[str], Optional[str]]:
         ds_norm = str(dataset_id or "").strip()
         if "QUARANTINE" in ds_norm.upper() or "OCT2026" in ds_norm.upper():
             return (
                 None,
-                {"dataset_id": ds_norm, "status": "QUARANTINED_CONTAMINATED"},
+                {"dataset_id": ds_norm, "status": "QUARANTINED_CONTAMINATED", "is_verified": False},
                 "QUARANTINED_DATASET_PROHIBITED",
                 f"Dataset '{ds_norm}' is quarantined due to synthetic contamination.",
             )
 
         if custom_df is not None:
+            if not trusted_fixture_context:
+                return (
+                    None,
+                    {
+                        "dataset_id": ds_norm or "CUSTOM_DATAFRAME",
+                        "source_path": "IN_MEMORY_DATAFRAME",
+                        "verification_status": "CALLER_SUPPLIED_UNVERIFIED",
+                        "is_verified": False,
+                    },
+                    "CALLER_SUPPLIED_UNVERIFIED",
+                    (
+                        "Caller-supplied DataFrames without authenticated provenance cannot "
+                        "become verified research inputs (CALLER_SUPPLIED_UNVERIFIED)."
+                    ),
+                )
             if len(custom_df) > MAX_ROWS_PER_RUN:
                 return (
                     None,
@@ -126,31 +150,43 @@ class RobustnessSensitivityLab:
                     "source_path": "IN_MEMORY_DATAFRAME",
                     "source_sha256": sha,
                     "row_count": len(custom_df),
+                    "verification_status": "TRUSTED_TEST_FIXTURE_ONLY",
+                    "is_verified": False,
+                    "trusted_fixture_context": True,
                 },
                 None,
                 None,
             )
 
-        path_map = {
-            "DS-BTC-1H-Q1-2024": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
-            "DS-BTC-1H-JAN-2025": "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
-            "DS-BTC-15M-Q1-2024": "data/historical/historical_binance_btcusdt_15m_q1_2024.parquet",
-            "DS-BTC-15M-Q2-2024": "data/historical/historical_binance_btcusdt_15m_q2_2024.parquet",
-            "DS-BTC-15M-Q3-2024": "data/historical/historical_binance_btcusdt_15m_q3_2024.parquet",
-            "DS-BTC-15M-Q4-2024": "data/historical/historical_binance_btcusdt_15m_q4_2024.parquet",
-        }
-        rel_path = path_map.get(ds_norm, "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet")
-        f_path = self.workspace_root / rel_path
-        if not f_path.exists():
+        prov_res = ScientificReadinessEvaluator.verify_historical_dataset_provenance(
+            dataset_id=ds_norm,
+            source_path=source_path,
+            workspace_root=self.workspace_root,
+            intake_manifest=intake_manifest,
+            intake_manifest_path=intake_manifest_path,
+            provenance_sidecar_path=provenance_sidecar_path,
+            attestation=attestation,
+            caller_supplied_sha256=caller_supplied_sha256,
+            require_explicit_evidence=require_explicit_evidence,
+        )
+        if not prov_res.get("is_verified"):
+            prov_code = str(prov_res.get("rejection_code") or "UNVERIFIED_HISTORICAL_INPUT")
             return (
                 None,
-                {"dataset_id": ds_norm, "source_path": rel_path},
-                "MISSING_SOURCE_DATASET",
-                f"Authorized dataset '{ds_norm}' not found at '{rel_path}'.",
+                {
+                    "dataset_id": ds_norm,
+                    "source_path": prov_res.get("source_path") or source_path,
+                    "verification_status": "UNVERIFIED_HISTORICAL_INPUT",
+                    "provenance_rejection_code": prov_code,
+                    "is_verified": False,
+                },
+                "UNVERIFIED_HISTORICAL_INPUT",
+                f"Dataset '{ds_norm}' failed trusted provenance verification ({prov_code}): {prov_res.get('rationale')}",
             )
 
-        raw = f_path.read_bytes()
-        sha = hashlib.sha256(raw).hexdigest()
+        rel_path = prov_res["source_path"]
+        f_path = self.workspace_root / rel_path
+        sha = prov_res["source_artifact_sha256"]
         df = pd.read_parquet(f_path)
         if len(df) > MAX_ROWS_PER_RUN:
             df = df.iloc[:MAX_ROWS_PER_RUN].copy()
@@ -161,6 +197,12 @@ class RobustnessSensitivityLab:
                 "dataset_id": ds_norm,
                 "source_path": rel_path,
                 "source_sha256": sha,
+                "expected_sha256": prov_res.get("expected_sha256"),
+                "verification_status": "VERIFIED",
+                "verification_method": prov_res.get("verification_method"),
+                "issuer": prov_res.get("issuer"),
+                "key_id": prov_res.get("key_id"),
+                "is_verified": True,
                 "row_count": len(df),
             },
             None,
@@ -212,6 +254,14 @@ class RobustnessSensitivityLab:
         modify_canonical_model: bool = False,
         custom_df: Optional[pd.DataFrame] = None,
         seed: int = 42,
+        source_path: Optional[str] = None,
+        intake_manifest: Optional[Dict[str, Any]] = None,
+        intake_manifest_path: Optional[str] = None,
+        provenance_sidecar_path: Optional[str] = None,
+        attestation: Optional[Dict[str, Any]] = None,
+        caller_supplied_sha256: Optional[str] = None,
+        require_explicit_evidence: bool = False,
+        trusted_fixture_context: bool = False,
     ) -> RobustnessExperimentResult:
         """Run a single reproducible sensitivity/robustness experiment."""
         with resource_governor.ComputationGuard("robustness_sensitivity_experiment"):
@@ -262,7 +312,16 @@ class RobustnessSensitivityLab:
                 )
 
             df, ds_identity, err_code, err_reason = self._load_authorized_dataset(
-                dataset_id=dataset_id, custom_df=custom_df
+                dataset_id=dataset_id,
+                custom_df=custom_df,
+                source_path=source_path,
+                intake_manifest=intake_manifest,
+                intake_manifest_path=intake_manifest_path,
+                provenance_sidecar_path=provenance_sidecar_path,
+                attestation=attestation,
+                caller_supplied_sha256=caller_supplied_sha256,
+                require_explicit_evidence=require_explicit_evidence,
+                trusted_fixture_context=trusted_fixture_context,
             )
             if df is None or err_code is not None:
                 return self._build_blocked_experiment(

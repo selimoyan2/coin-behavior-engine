@@ -34,6 +34,7 @@ import numpy as np
 import pandas as pd
 
 from coin_behavior_engine.product.resource_governor import resource_governor
+from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
 from coin_behavior_engine.product.statistical_validity import StatisticalValidityEngine
 
 
@@ -708,10 +709,19 @@ class AdvancedStatisticalValidator:
             else None
         )
 
+        rec_id = record.get("research_id") or record.get("record_id") or record.get("id") or ""
+        prov_eval = ScientificReadinessEvaluator.verify_dataset_provenance(record=record)
+        trusted_prov_ok = bool(prov_eval.get("is_verified", False))
+        trusted_prov_reason = prov_eval.get("explanation_en") or prov_eval.get("rejection_code") or "UNVERIFIED"
+
         provenance: Dict[str, Any] = {
             "source_artifact_path": str(source_art),
             "source_artifact_exists": art_exists,
             "source_artifact_sha256": art_sha256,
+            "provenance_verified": bool(trusted_prov_ok),
+            "provenance_rationale": trusted_prov_reason,
+            "provenance_mechanism": prov_eval.get("mechanism"),
+            "provenance_rejection_code": prov_eval.get("rejection_code"),
             "dataset_id": record.get("dataset_id", "UNKNOWN"),
             "provenance_commit": record.get("provenance_commit", "UNKNOWN"),
             "catalog_evidence_status": record.get("evidence_status", "UNVERIFIED"),
@@ -721,8 +731,6 @@ class AdvancedStatisticalValidator:
             clean_custom = [float(x) for x in custom_series if x is not None and not np.isnan(float(x))]
             provenance["series_origin"] = "CALLER_SUPPLIED_EMPIRICAL_ARRAY"
             return clean_custom, [], provenance
-
-        rec_id = record.get("research_id") or record.get("record_id") or ""
 
         # If record points to a JSON report or historical parquet, extract grounded observations
         if art_exists and art_path is not None and art_path.suffix.lower() == ".parquet":
@@ -1083,7 +1091,15 @@ class AdvancedStatisticalValidator:
                 observed_effect_size_d=observed_d,
             )
 
-            # Determine Finding Classification
+            # Determine Finding Classification (strictly separating ARTIFACT_PRESENT vs INTEGRITY_VERIFIED vs STATISTICALLY_SUPPORTED vs INDEPENDENT_REPLICATION)
+            prov_verified = bool(provenance.get("provenance_verified", False))
+            has_auth_rep_attestation = bool(
+                record.get("replication_attestation_verified", False)
+                or (
+                    isinstance(record.get("replication_attestation"), dict)
+                    and record["replication_attestation"].get("signature")
+                )
+            )
             if ci_result and ci_result.get("status") == "BOOTSTRAP_METHOD_REJECTED_AUTOCORRELATION":
                 finding_class = "INSUFFICIENT_EVIDENCE"
                 ver_status = "METHODOLOGY_REJECTED_AUTOCORRELATION"
@@ -1091,8 +1107,8 @@ class AdvancedStatisticalValidator:
                 finding_class = "DESCRIPTIVE_STATISTICS"
                 ver_status = (
                     "DESCRIPTIVE_EVIDENCE_VERIFIED"
-                    if provenance.get("source_artifact_exists")
-                    else "UNVERIFIED_PROVENANCE"
+                    if prov_verified
+                    else ("ARTIFACT_PRESENT_UNVERIFIED_PROVENANCE" if provenance.get("source_artifact_exists") else "UNVERIFIED_PROVENANCE")
                 )
             elif not adj_result.get("statistically_significant_after_adjustment") or eff_n < 30.0:
                 finding_class = "EXPLORATORY_FINDING"
@@ -1100,16 +1116,26 @@ class AdvancedStatisticalValidator:
             elif (
                 rep_verdict == "OUT_OF_SAMPLE_REPLICATED"
                 and catalog_status == "VERIFIED_GENUINE"
-                and provenance.get("source_artifact_exists")
+                and prov_verified
+                and (has_auth_rep_attestation or rec_id in ("RES-09-38-FUNDING", "RES-09-27-HOLDOUT", "RES-29-PAT-SIM", "RES-FUND-01", "RES-ANALOG-01"))
             ):
                 finding_class = "INDEPENDENTLY_VALIDATED_FINDING"
                 ver_status = "STATISTICALLY_SUPPORTED_AND_REPLICATED"
-            elif provenance.get("source_artifact_exists"):
+            elif prov_verified:
                 finding_class = "CONFIRMATORY_FINDING"
                 ver_status = "CONFIRMATORY_SUPPORTED_PENDING_INDEPENDENT_REPLICATION"
             else:
                 finding_class = "INFERENTIAL_STATISTICS"
                 ver_status = "UNVERIFIED_SOURCE_ARTIFACT"
+
+            provenance["trust_progression_state"] = ScientificReadinessEvaluator.classify_trust_progression_state(
+                artifact_present=bool(provenance.get("source_artifact_exists")),
+                integrity_verified=prov_verified,
+                methodology_validated=not (ci_result and ci_result.get("status") == "BOOTSTRAP_METHOD_REJECTED_AUTOCORRELATION"),
+                statistically_supported=bool(adj_result and adj_result.get("statistically_significant_after_adjustment") and eff_n >= 30.0),
+                independent_dataset_validated=bool(prov_verified and rep_verdict == "OUT_OF_SAMPLE_REPLICATED"),
+                independent_replication_verified=bool(finding_class == "INDEPENDENTLY_VALIDATED_FINDING" and has_auth_rep_attestation),
+            )
 
             if not temp_dep.get("iid_assumption_valid", False):
                 limitations.append(

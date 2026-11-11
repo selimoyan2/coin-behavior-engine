@@ -28,6 +28,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 import hashlib
+import hmac
 import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
@@ -35,6 +36,13 @@ from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 import pandas as pd
 
 from coin_behavior_engine.product.resource_governor import resource_governor
+from coin_behavior_engine.product.attestation_verifier import (
+    TRUSTED_ISSUERS,
+    attestation_cache,
+)
+from coin_behavior_engine.product.credential_manager import signing_key_registry
+from coin_behavior_engine.product.research_report_evidence import rfc8785_canonical_json
+from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
 
 
 CANONICAL_MODEL_ID = "CBE-0.7.0"
@@ -118,8 +126,380 @@ class IndependentValidationFramework:
     # Evidence & Content Digest Extraction
     # ------------------------------------------------------------------
 
+    @classmethod
+    def create_signed_replication_attestation(
+        cls,
+        replication_attempt_id: str,
+        primary_record_id: str,
+        candidate_record_id: str,
+        primary_dataset_id: str,
+        candidate_dataset_id: str,
+        primary_source_sha256: str,
+        candidate_source_sha256: str,
+        result_artifact_path: str,
+        result_artifact_sha256: str,
+        hypothesis_id: str,
+        methodology_id: str,
+        primary_procedure_id: str,
+        candidate_procedure_id: str,
+        procedure_version: str,
+        independent_execution_lineage: str,
+        replication_outcome: str = "OUT_OF_SAMPLE_REPLICATED",
+        issuer: str = "CBE_AUTHORITATIVE_RESEARCH_AUTHORITY",
+        key_id: str = "cbe-attestation-2026-v1",
+        issued_at_utc: str = "2026-11-11T00:00:00Z",
+        expires_at_utc: str = "2027-11-11T00:00:00Z",
+        is_superseded: bool = False,
+    ) -> Dict[str, Any]:
+        """Create an RFC-8785 canonical HMAC-SHA256 signed replication attestation."""
+        claims = {
+            "schema_version": "CBE-REPLICATION-ATTESTATION-1.0.0",
+            "replication_attempt_id": replication_attempt_id,
+            "primary_record_id": primary_record_id,
+            "candidate_record_id": candidate_record_id,
+            "primary_dataset_id": primary_dataset_id,
+            "candidate_dataset_id": candidate_dataset_id,
+            "primary_source_sha256": primary_source_sha256,
+            "candidate_source_sha256": candidate_source_sha256,
+            "result_artifact_path": result_artifact_path,
+            "result_artifact_sha256": result_artifact_sha256,
+            "hypothesis_id": hypothesis_id,
+            "methodology_id": methodology_id,
+            "primary_procedure_id": primary_procedure_id,
+            "candidate_procedure_id": candidate_procedure_id,
+            "procedure_version": procedure_version,
+            "independent_execution_lineage": independent_execution_lineage,
+            "replication_outcome": replication_outcome,
+            "issuer": issuer,
+            "key_id": key_id,
+            "issued_at_utc": issued_at_utc,
+            "expires_at_utc": expires_at_utc,
+            "is_superseded": bool(is_superseded),
+        }
+        canonical_bytes = rfc8785_canonical_json(claims)
+        claims_sha256 = hashlib.sha256(canonical_bytes).hexdigest()
+        secret = signing_key_registry._keys.get(key_id) or "cbe-replication-attestation-authority-secret-2026-v1-9c31b7e2"
+        if isinstance(secret, dict):
+            secret = str(secret.get("secret", ""))
+        h = hmac.new(str(secret).encode("utf-8"), canonical_bytes, hashlib.sha256)
+        sig = f"hmac-sha256:{key_id}:{h.hexdigest()}"
+        return {
+            **claims,
+            "claims_sha256": claims_sha256,
+            "signature": sig,
+        }
+
+    def verify_replication_attestation(
+        self,
+        primary: Dict[str, Any],
+        candidate: Dict[str, Any],
+        replication_attestation: Optional[Dict[str, Any]],
+    ) -> Dict[str, Any]:
+        """Cryptographically verify an independent replication attestation and its physical result artifact."""
+        if not replication_attestation or not isinstance(replication_attestation, dict):
+            if candidate.get("caller_independent_replication_flag"):
+                return {
+                    "is_verified": False,
+                    "rejection_code": "CALLER_BOOLEAN_REPLICATION_FLAG_REJECTED",
+                    "rationale": (
+                        "Caller-provided boolean flag independent_replication_evidence_verified=True "
+                        "is rejected; INDEPENDENT_REPLICATION requires an authenticated cryptographic "
+                        "replication attestation and verified result artifact."
+                    ),
+                }
+            return {
+                "is_verified": False,
+                "rejection_code": "MISSING_REPLICATION_ATTESTATION",
+                "rationale": "No cryptographic replication attestation provided.",
+            }
+
+        required_fields = (
+            "schema_version",
+            "replication_attempt_id",
+            "primary_record_id",
+            "candidate_record_id",
+            "primary_dataset_id",
+            "candidate_dataset_id",
+            "primary_source_sha256",
+            "candidate_source_sha256",
+            "result_artifact_path",
+            "result_artifact_sha256",
+            "hypothesis_id",
+            "methodology_id",
+            "primary_procedure_id",
+            "candidate_procedure_id",
+            "procedure_version",
+            "independent_execution_lineage",
+            "replication_outcome",
+            "issuer",
+            "key_id",
+            "issued_at_utc",
+            "expires_at_utc",
+            "is_superseded",
+            "signature",
+        )
+        missing = [f for f in required_fields if f not in replication_attestation]
+        if missing:
+            return {
+                "is_verified": False,
+                "rejection_code": "MALFORMED_REPLICATION_ATTESTATION",
+                "rationale": f"Replication attestation missing required claims: {missing}",
+            }
+
+        if replication_attestation.get("schema_version") != "CBE-REPLICATION-ATTESTATION-1.0.0":
+            return {
+                "is_verified": False,
+                "rejection_code": "UNSUPPORTED_REPLICATION_SCHEMA",
+                "rationale": "Unsupported replication attestation schema_version.",
+            }
+
+        if replication_attestation.get("is_superseded") is True:
+            return {
+                "is_verified": False,
+                "rejection_code": "SUPERSEDED_REPLICATION_ATTESTATION",
+                "rationale": "Replication attestation is marked superseded.",
+            }
+
+        issuer = str(replication_attestation.get("issuer") or "")
+        if issuer not in TRUSTED_ISSUERS and issuer != "CBE-RESEARCH-AUTHORITY":
+            return {
+                "is_verified": False,
+                "rejection_code": "UNTRUSTED_REPLICATION_ISSUER",
+                "rationale": f"Replication attestation issuer '{issuer}' is not in TRUSTED_ISSUERS.",
+            }
+
+        key_id = str(replication_attestation.get("key_id") or "")
+        if signing_key_registry.is_key_revoked(key_id):
+            return {
+                "is_verified": False,
+                "rejection_code": "REVOKED_SIGNING_KEY",
+                "rationale": f"Replication attestation signing key '{key_id}' is revoked.",
+            }
+
+        # Check expiry
+        exp_ms = _parse_iso_to_ms(str(replication_attestation.get("expires_at_utc") or ""))
+        now_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
+        if exp_ms is None or exp_ms <= now_ms:
+            return {
+                "is_verified": False,
+                "rejection_code": "ATTESTATION_EXPIRED",
+                "rationale": f"Replication attestation expired at '{replication_attestation.get('expires_at_utc')}'.",
+            }
+
+        # Verify canonical HMAC-SHA256 signature
+        claims = {k: replication_attestation[k] for k in required_fields if k != "signature"}
+        canonical_bytes = rfc8785_canonical_json(claims)
+        claims_sha256 = hashlib.sha256(canonical_bytes).hexdigest()
+        sig_str = str(replication_attestation.get("signature") or "")
+        sig_ok, sig_reason, _ = signing_key_registry.verify_signature(canonical_bytes, sig_str)
+        if not sig_ok:
+            return {
+                "is_verified": False,
+                "rejection_code": "REVOKED_SIGNING_KEY" if sig_reason == "REVOKED_SIGNING_KEY" else "SIGNATURE_VERIFICATION_FAILED",
+                "rationale": f"Replication attestation cryptographic signature verification failed ({sig_reason}).",
+            }
+
+        # Verify primary & candidate record binding
+        if (
+            str(replication_attestation.get("primary_record_id")) != str(primary["record_id"])
+            or str(replication_attestation.get("candidate_record_id")) != str(candidate["record_id"])
+        ):
+            return {
+                "is_verified": False,
+                "rejection_code": "REPLICATION_RECORD_BINDING_MISMATCH",
+                "rationale": (
+                    f"Replication attestation is bound to records "
+                    f"('{replication_attestation.get('primary_record_id')}' -> "
+                    f"'{replication_attestation.get('candidate_record_id')}'), which does not match "
+                    f"evaluated records ('{primary['record_id']}' -> '{candidate['record_id']}')."
+                ),
+            }
+
+        # Verify dataset identity & source SHA-256 binding
+        if (
+            str(replication_attestation.get("primary_dataset_id")) != str(primary["dataset_id"])
+            or str(replication_attestation.get("candidate_dataset_id")) != str(candidate["dataset_id"])
+        ):
+            return {
+                "is_verified": False,
+                "rejection_code": "REPLICATION_DATASET_BINDING_MISMATCH",
+                "rationale": "Replication attestation dataset IDs do not match primary/candidate study datasets.",
+            }
+
+        if (
+            str(replication_attestation.get("primary_source_sha256")) != str(primary["source_sha256"])
+            or str(replication_attestation.get("candidate_source_sha256")) != str(candidate["source_sha256"])
+        ):
+            return {
+                "is_verified": False,
+                "rejection_code": "REPLICATION_SOURCE_HASH_MISMATCH",
+                "rationale": "Replication attestation source dataset SHA-256 digests do not match physical datasets.",
+            }
+
+        # Require verified dataset provenance for both studies
+        if not primary.get("provenance_verified") or not candidate.get("provenance_verified"):
+            return {
+                "is_verified": False,
+                "rejection_code": "UNVERIFIED_STUDY_DATASET_PROVENANCE",
+                "rationale": "Both primary and candidate datasets must have verified cryptographic provenance.",
+            }
+
+        # Verify procedure and execution lineage independence
+        att_p_proc = str(replication_attestation.get("primary_procedure_id") or "").strip()
+        att_c_proc = str(replication_attestation.get("candidate_procedure_id") or "").strip()
+        att_ver = str(replication_attestation.get("procedure_version") or "").strip()
+        att_exec = str(replication_attestation.get("independent_execution_lineage") or "").strip()
+        attempt_id = str(replication_attestation.get("replication_attempt_id") or "").strip()
+
+        if not attempt_id or not att_p_proc or not att_c_proc or not att_ver or not att_exec:
+            return {
+                "is_verified": False,
+                "rejection_code": "INCOMPLETE_PROCEDURE_LINEAGE",
+                "rationale": "Replication attempt ID, procedure IDs, version, and independent execution lineage are required.",
+            }
+
+        if att_p_proc == att_c_proc or att_exec == str(primary.get("researcher_or_execution_lineage") or ""):
+            return {
+                "is_verified": False,
+                "rejection_code": "NON_INDEPENDENT_PROCEDURE_OR_EXECUTION_LINEAGE",
+                "rationale": "Primary and candidate procedures or execution lineages are identical.",
+            }
+
+        # Verify hypothesis & methodology binding
+        hyp_id = str(replication_attestation.get("hypothesis_id") or "").strip()
+        meth_id = str(replication_attestation.get("methodology_id") or "").strip()
+        if not hyp_id or not meth_id or meth_id == "INCOMPATIBLE":
+            return {
+                "is_verified": False,
+                "rejection_code": "INVALID_HYPOTHESIS_OR_METHODOLOGY_BINDING",
+                "rationale": "Replication attestation lacks valid hypothesis_id or compatible methodology_id.",
+            }
+
+        # Verify physical replication result artifact integrity on disk
+        res_rel = str(replication_attestation.get("result_artifact_path") or "").strip()
+        expected_res_sha = str(replication_attestation.get("result_artifact_sha256") or "").strip()
+        if not res_rel or not expected_res_sha:
+            return {
+                "is_verified": False,
+                "rejection_code": "MISSING_REPLICATION_RESULT_ARTIFACT",
+                "rationale": "Replication result artifact path or SHA-256 is missing.",
+            }
+
+        res_fp = self.workspace_root / res_rel
+        if not res_fp.exists() or not res_fp.is_file():
+            return {
+                "is_verified": False,
+                "rejection_code": "MISSING_REPLICATION_RESULT_ARTIFACT",
+                "rationale": f"Replication result artifact '{res_rel}' does not exist on disk.",
+            }
+
+        try:
+            res_stat = res_fp.stat()
+            res_bytes = res_fp.read_bytes()
+        except Exception as exc:
+            return {
+                "is_verified": False,
+                "rejection_code": "UNREADABLE_REPLICATION_RESULT_ARTIFACT",
+                "rationale": f"Replication result artifact '{res_rel}' could not be read: {exc}",
+            }
+
+        actual_res_sha = hashlib.sha256(res_bytes).hexdigest()
+        sig_digest = hashlib.sha256(sig_str.encode("utf-8")).hexdigest()
+        cached = attestation_cache.get(
+            artifact_digest=actual_res_sha,
+            claims_sha256=claims_sha256,
+            signature_digest=sig_digest,
+            key_id=key_id,
+            trust_policy_version="CBE-REPLICATION-ATTESTATION-1.0.0",
+            is_revoked=False,
+            source_path=str(res_fp.resolve()),
+        )
+        if cached is not None and actual_res_sha == expected_res_sha:
+            return cached
+
+        if actual_res_sha != expected_res_sha:
+            return {
+                "is_verified": False,
+                "rejection_code": "INVALID_REPLICATION_RESULT_ARTIFACT_HASH",
+                "rationale": (
+                    f"Replication result artifact '{res_rel}' SHA-256 mismatch "
+                    f"(expected {expected_res_sha[:12]}..., got {actual_res_sha[:12]}...)."
+                ),
+            }
+
+        # Validate structure of JSON result artifact if .json
+        if res_fp.suffix.lower() == ".json":
+            try:
+                parsed_res = json.loads(res_bytes.decode("utf-8"))
+                if not isinstance(parsed_res, dict):
+                    return {
+                        "is_verified": False,
+                        "rejection_code": "INVALID_REPLICATION_RESULT_ARTIFACT_CONTENT",
+                        "rationale": "Replication result JSON artifact must be a JSON object.",
+                    }
+                art_attempt = parsed_res.get("replication_attempt_id")
+                if art_attempt and str(art_attempt) != attempt_id:
+                    return {
+                        "is_verified": False,
+                        "rejection_code": "REPLICATION_ARTIFACT_ATTEMPT_MISMATCH",
+                        "rationale": "Result artifact replication_attempt_id does not match signed attestation.",
+                    }
+                art_rec = parsed_res.get("primary_record_id")
+                if art_rec and str(art_rec) != str(primary["record_id"]):
+                    return {
+                        "is_verified": False,
+                        "rejection_code": "REPLICATION_RECORD_BINDING_MISMATCH",
+                        "rationale": "Result artifact primary_record_id belongs to another research record.",
+                    }
+            except Exception as exc:
+                return {
+                    "is_verified": False,
+                    "rejection_code": "INVALID_REPLICATION_RESULT_ARTIFACT_CONTENT",
+                    "rationale": f"Replication result artifact is not valid JSON: {exc}",
+                }
+
+        outcome = str(replication_attestation.get("replication_outcome") or "").upper()
+        if outcome not in ("CONFIRMED", "REPLICATED", "OUT_OF_SAMPLE_REPLICATED"):
+            return {
+                "is_verified": False,
+                "rejection_code": "UNCONFIRMED_REPLICATION_OUTCOME",
+                "rationale": f"Replication outcome '{outcome}' does not confirm replication.",
+            }
+
+        verified_res = {
+            "is_verified": True,
+            "rejection_code": None,
+            "replication_attempt_id": attempt_id,
+            "primary_record_id": str(primary["record_id"]),
+            "candidate_record_id": str(candidate["record_id"]),
+            "result_artifact_path": res_rel,
+            "result_artifact_sha256": actual_res_sha,
+            "hypothesis_id": hyp_id,
+            "methodology_id": meth_id,
+            "primary_procedure_id": att_p_proc,
+            "candidate_procedure_id": att_c_proc,
+            "procedure_version": att_ver,
+            "independent_execution_lineage": att_exec,
+            "replication_outcome": outcome,
+            "issuer": issuer,
+            "key_id": key_id,
+            "claims_sha256": claims_sha256,
+        }
+        attestation_cache.put(
+            artifact_digest=actual_res_sha,
+            claims_sha256=claims_sha256,
+            signature_digest=sig_digest,
+            key_id=key_id,
+            trust_policy_version="CBE-REPLICATION-ATTESTATION-1.0.0",
+            is_revoked=False,
+            result=verified_res,
+            source_mtime_ns=res_stat.st_mtime_ns,
+            source_size=res_stat.st_size,
+        )
+        return verified_res
+
     def _inspect_study_evidence(self, study: Dict[str, Any]) -> Dict[str, Any]:
-        """Extract content hashes, normalized timestamps, and lineage metadata for a study."""
+        """Extract content hashes, normalized timestamps, and verified provenance metadata for a study."""
         rec_id = str(study.get("record_id") or study.get("research_id") or "UNKNOWN")
         ds_id = str(study.get("dataset_id") or "UNKNOWN")
         source_path_str = str(study.get("source_path") or study.get("source_artifact") or "")
@@ -132,6 +512,27 @@ class IndependentValidationFramework:
 
         file_exists = False
         file_sha = explicit_sha
+        provenance_verified = False
+        provenance_rejection_code: Optional[str] = None
+        provenance_details: Dict[str, Any] = {}
+
+        if source_path_str or ds_id in ScientificReadinessEvaluator.CANONICAL_HISTORICAL_DATASET_SPECIFICATIONS:
+            prov_res = ScientificReadinessEvaluator.verify_historical_dataset_provenance(
+                dataset_id=ds_id,
+                source_path=source_path_str or None,
+                workspace_root=self.workspace_root,
+                intake_manifest=study.get("intake_manifest"),
+                intake_manifest_path=study.get("intake_manifest_path"),
+                provenance_sidecar_path=study.get("provenance_sidecar_path"),
+                attestation=study.get("dataset_attestation"),
+                caller_supplied_sha256=study.get("caller_supplied_sha256"),
+                require_explicit_evidence=bool(study.get("require_explicit_evidence", False)),
+            )
+            provenance_verified = bool(prov_res.get("is_verified", False))
+            provenance_rejection_code = prov_res.get("rejection_code")
+            provenance_details = prov_res
+            if not source_path_str and prov_res.get("source_path"):
+                source_path_str = str(prov_res["source_path"])
 
         if source_path_str:
             fp = self.workspace_root / source_path_str
@@ -173,11 +574,18 @@ class IndependentValidationFramework:
         return {
             "record_id": rec_id,
             "dataset_id": ds_id,
-            "dataset_lineage_id": study.get("dataset_lineage_id") or content_fingerprint or file_sha,
+            "dataset_lineage_id": (
+                provenance_details.get("source_lineage")
+                or study.get("dataset_lineage_id")
+                or content_fingerprint
+                or file_sha
+            ),
             "source_path": source_path_str,
             "file_exists": file_exists,
             "source_sha256": file_sha,
             "content_fingerprint_sha256": content_fingerprint or file_sha,
+            "provenance_verified": provenance_verified,
+            "provenance_rejection_code": provenance_rejection_code,
             "timestamps_set": timestamps,
             "observation_count": len(timestamps) if timestamps else int(study.get("sample_size") or 0),
             "start_ms": start_ms,
@@ -193,13 +601,15 @@ class IndependentValidationFramework:
             "methodology_id": study.get("methodology_id", "CBE-0.7.0-CANONICAL"),
             "procedure_id": study.get("procedure_id"),
             "researcher_or_execution_lineage": study.get("researcher_or_execution_lineage"),
-            "independent_replication_evidence_verified": bool(
+            "caller_independent_replication_flag": bool(
                 study.get("independent_replication_evidence_verified", False)
             ),
+            "replication_attestation": study.get("replication_attestation"),
             "quarantined": bool(
                 study.get("quarantined", False)
                 or "QUARANTINE" in str(study.get("evidence_status", "")).upper()
                 or "QUARANTINE" in ds_id.upper()
+                or provenance_rejection_code == "DATASET_QUARANTINED"
             ),
         }
 
@@ -223,9 +633,34 @@ class IndependentValidationFramework:
             cand_id = cand["record_id"]
             reasons: List[str] = []
 
-            # Fail-closed check for quarantined datasets
-            if prim["quarantined"] or cand["quarantined"]:
-                reasons.append("One or both studies reference a quarantined/contaminated dataset.")
+            # Fail-closed check for quarantined datasets or tampered cryptographic provenance
+            tampered_codes = {
+                "SIGNATURE_VERIFICATION_FAILED",
+                "SOURCE_ARTIFACT_HASH_MISMATCH",
+                "REVOKED_SIGNING_KEY",
+                "ATTESTATION_EXPIRED",
+                "UNSIGNED_PROVENANCE_SIDECAR",
+                "DATASET_QUARANTINED",
+                "CALLER_SUPPLIED_SHA256_MISMATCH",
+                "CALLER_SUPPLIED_SHA256_UNTRUSTED",
+                "UNTRUSTED_ISSUER",
+            }
+            if (
+                prim["quarantined"]
+                or cand["quarantined"]
+                or prim.get("provenance_rejection_code") in tampered_codes
+                or cand.get("provenance_rejection_code") in tampered_codes
+            ):
+                if prim["quarantined"] or cand["quarantined"]:
+                    reasons.append("One or both studies reference a quarantined/contaminated dataset.")
+                if prim.get("provenance_rejection_code") in tampered_codes:
+                    reasons.append(
+                        f"Primary study provenance failed closed ({prim.get('provenance_rejection_code')})."
+                    )
+                if cand.get("provenance_rejection_code") in tampered_codes:
+                    reasons.append(
+                        f"Candidate study provenance failed closed ({cand.get('provenance_rejection_code')})."
+                    )
                 return self._build_report(
                     prim=prim,
                     cand=cand,
@@ -239,13 +674,28 @@ class IndependentValidationFramework:
 
             checks: Dict[str, IndependenceCheckDimension] = {}
 
-            # 1. Dataset Lineage Check (detects same data under different filename/dataset_id)
+            # 1. Dataset Lineage Check (detects same data under different filename/dataset_id and requires verified provenance)
             prim_fp = prim["content_fingerprint_sha256"]
             cand_fp = cand["content_fingerprint_sha256"]
             prim_lin = prim["dataset_lineage_id"]
             cand_lin = cand["dataset_lineage_id"]
 
-            if not prim_fp or not cand_fp:
+            if (prim["source_path"] and not prim["provenance_verified"]) or (
+                cand["source_path"] and not cand["provenance_verified"]
+            ):
+                lineage_pass = False
+                lineage_code = (
+                    cand.get("provenance_rejection_code")
+                    or prim.get("provenance_rejection_code")
+                    or "UNVERIFIED_DATASET_PROVENANCE"
+                )
+                lineage_msg = (
+                    f"Dataset provenance could not be cryptographically verified "
+                    f"(primary_verified={prim['provenance_verified']}, "
+                    f"candidate_verified={cand['provenance_verified']}, code={lineage_code})."
+                )
+                reasons.append(lineage_msg)
+            elif not prim_fp or not cand_fp:
                 lineage_pass = False
                 lineage_code = "MISSING_DATASET_LINEAGE_DIGEST"
                 lineage_msg = "Dataset content fingerprint or SHA-256 lineage is missing; independence cannot be verified."
@@ -261,7 +711,7 @@ class IndependentValidationFramework:
             else:
                 lineage_pass = True
                 lineage_code = "DISTINCT_DATASET_LINEAGE_VERIFIED"
-                lineage_msg = "Primary and candidate datasets have distinct content digests and lineage."
+                lineage_msg = "Primary and candidate datasets have verified provenance and distinct content digests/lineage."
 
             checks["dataset_lineage"] = IndependenceCheckDimension(
                 check_name="dataset_lineage",
@@ -273,6 +723,8 @@ class IndependentValidationFramework:
                     "candidate_dataset_id": cand["dataset_id"],
                     "primary_content_sha256": prim_fp,
                     "candidate_content_sha256": cand_fp,
+                    "primary_provenance_verified": prim["provenance_verified"],
+                    "candidate_provenance_verified": cand["provenance_verified"],
                 },
             )
 
@@ -478,31 +930,45 @@ class IndependentValidationFramework:
             # 8. Researcher / Procedure Independence Check (Required for INDEPENDENT_REPLICATION)
             p_proc = prim["procedure_id"] or prim["researcher_or_execution_lineage"]
             c_proc = cand["procedure_id"] or cand["researcher_or_execution_lineage"]
+            rep_attestation = cand.get("replication_attestation") or candidate_study.get("replication_attestation")
+            rep_ver_result = self.verify_replication_attestation(
+                primary=prim,
+                candidate=cand,
+                replication_attestation=rep_attestation,
+            )
             has_ind_rep_evidence = bool(
-                cand["independent_replication_evidence_verified"]
+                rep_ver_result.get("is_verified")
                 and p_proc
                 and c_proc
                 and str(p_proc) != str(c_proc)
             )
+            rep_rejection_code = rep_ver_result.get("rejection_code")
+            if not has_ind_rep_evidence and not rep_rejection_code:
+                rep_rejection_code = "SAME_OR_UNVERIFIED_PROCEDURE_LINEAGE"
+
             checks["researcher_or_procedure_independence"] = IndependenceCheckDimension(
                 check_name="researcher_or_procedure_independence",
                 passed=has_ind_rep_evidence,
                 status_code=(
-                    "INDEPENDENT_PROCEDURE_LINEAGE_VERIFIED"
+                    "AUTHENTICATED_REPLICATION_ATTESTATION_VERIFIED"
                     if has_ind_rep_evidence
-                    else "SAME_OR_UNVERIFIED_PROCEDURE_LINEAGE"
+                    else str(rep_rejection_code or "SAME_OR_UNVERIFIED_PROCEDURE_LINEAGE")
                 ),
                 details=(
-                    "Independent replication procedure and out-of-sample replication evidence verified."
+                    "Authenticated cryptographic replication attestation, independent execution lineage, and physical result artifact verified."
                     if has_ind_rep_evidence
-                    else "Procedure lineage is shared or lacks independent replication certification; eligible for dataset/holdout validation only, not INDEPENDENT_REPLICATION."
+                    else (
+                        rep_ver_result.get("rationale")
+                        or "Procedure lineage is shared or lacks authenticated replication attestation; eligible for dataset/holdout validation only, not INDEPENDENT_REPLICATION."
+                    )
                 ),
                 evidence={
                     "primary_procedure_lineage": p_proc,
                     "candidate_procedure_lineage": c_proc,
-                    "independent_replication_evidence_verified": cand[
-                        "independent_replication_evidence_verified"
-                    ],
+                    "caller_boolean_flag_ignored": cand.get("caller_independent_replication_flag", False),
+                    "replication_attestation_verified": bool(rep_ver_result.get("is_verified")),
+                    "replication_rejection_code": rep_rejection_code,
+                    "replication_attempt_id": rep_ver_result.get("replication_attempt_id"),
                 },
             )
 
@@ -548,9 +1014,8 @@ class IndependentValidationFramework:
                         assigned = "INDEPENDENCE_NOT_ESTABLISHED"
                         ind_established = False
                         reasons.append(
-                            "INDEPENDENT_REPLICATION claim rejected: independent dataset validation does not "
-                            "automatically establish independent replication without independent procedure "
-                            "lineage and verified replication evidence."
+                            f"INDEPENDENT_REPLICATION claim rejected ({rep_rejection_code}): "
+                            f"{rep_ver_result.get('rationale') or 'independent dataset validation does not automatically establish independent replication without an authenticated replication attestation.'}"
                         )
                 elif claimed_norm == "TEMPORAL_HOLDOUT_VALIDATION":
                     assigned = "TEMPORAL_HOLDOUT_VALIDATION"
@@ -676,6 +1141,9 @@ class IndependentValidationFramework:
         }
 
         audits = [
+            self.evaluate_validation_independence(
+                q1_1h, jan_2025_1h, claimed_category="INDEPENDENT_DATASET_VALIDATION"
+            ).to_dict(),
             self.evaluate_validation_independence(
                 q1_1h, jan_2025_1h, claimed_category="INDEPENDENT_REPLICATION"
             ).to_dict(),

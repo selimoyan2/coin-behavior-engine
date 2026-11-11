@@ -29,6 +29,7 @@ import numpy as np
 import pandas as pd
 
 from coin_behavior_engine.product.resource_governor import resource_governor
+from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
 
 
 CANONICAL_MODEL_ID = "CBE-0.7.0"
@@ -464,14 +465,21 @@ class HistoricalMarketRegimeResearchEngine:
         """Compare regime distribution and transition dynamics across distinct historical periods."""
         comp_rel_path = AUTHORIZED_HISTORICAL_DATASETS.get(
             comparison_dataset_id,
-            "data/historical/historical_binance_btcusdt_15m_q2_2024.parquet",
+            str(comparison_dataset_id),
         )
-        comp_path = self.workspace_root / comp_rel_path
-        if not comp_path.exists():
+        comp_prov = ScientificReadinessEvaluator.verify_historical_dataset_provenance(
+            dataset_id=comparison_dataset_id,
+            source_path=comp_rel_path,
+            workspace_root=self.workspace_root,
+        )
+        if not comp_prov.get("is_verified"):
             return {
-                "status": "COMPARISON_DATASET_UNAVAILABLE",
+                "status": "COMPARISON_DATASET_UNVERIFIED",
                 "comparison_dataset_id": comparison_dataset_id,
+                "rejection_code": comp_prov.get("rejection_code", "UNVERIFIED_HISTORICAL_INPUT"),
+                "rejection_reason": comp_prov.get("rationale"),
             }
+        comp_path = self.workspace_root / comp_prov["source_path"]
 
         comp_df = pd.read_parquet(comp_path)
         comp_regimes, _, _ = self.classify_canonical_regimes(comp_df)
@@ -492,8 +500,9 @@ class HistoricalMarketRegimeResearchEngine:
         return {
             "status": "COMPUTED",
             "comparison_dataset_id": comparison_dataset_id,
-            "comparison_source_path": comp_rel_path,
-            "comparison_source_sha256": hashlib.sha256(comp_path.read_bytes()).hexdigest(),
+            "comparison_source_path": comp_prov["source_path"],
+            "comparison_source_sha256": comp_prov["source_artifact_sha256"],
+            "comparison_provenance_method": comp_prov["verification_method"],
             "comparison_observation_count": len(comp_df),
             "comparison_regime_distribution": comp_dist,
             "transition_matrix_frobenius_distance": round(frob_dist, 4),
@@ -515,6 +524,14 @@ class HistoricalMarketRegimeResearchEngine:
         comparison_dataset_id: str = "DS-BTC-15M-Q2-2024",
         custom_df: Optional[pd.DataFrame] = None,
         custom_thresholds: Optional[Dict[str, float]] = None,
+        source_path: Optional[str] = None,
+        intake_manifest: Optional[Dict[str, Any]] = None,
+        intake_manifest_path: Optional[str] = None,
+        provenance_sidecar_path: Optional[str] = None,
+        attestation: Optional[Dict[str, Any]] = None,
+        caller_supplied_sha256: Optional[str] = None,
+        require_explicit_evidence: bool = False,
+        trusted_fixture_context: bool = False,
     ) -> HistoricalRegimeResearchReport:
         """Execute full historical market regime research on an authorized BTC/USDT dataset."""
         with resource_governor.ComputationGuard("historical_regime_research_run"):
@@ -540,30 +557,94 @@ class HistoricalMarketRegimeResearchEngine:
                     rejection_code="QUARANTINED_DATASET_REJECTED",
                     rejection_reason=f"Dataset '{dataset_id}' is quarantined and blocked from regime research.",
                     now_utc=now_utc,
+                    verified_source_artifact={
+                        "verification_status": "UNVERIFIED_HISTORICAL_INPUT",
+                        "provenance_rejection_code": "DATASET_QUARANTINED",
+                        "is_verified": False,
+                    },
                 )
 
             if custom_df is not None:
+                if not trusted_fixture_context:
+                    return self._build_blocked_regime_report(
+                        dataset_id=dataset_id,
+                        rejection_code="CALLER_SUPPLIED_UNVERIFIED",
+                        rejection_reason=(
+                            "Caller-supplied DataFrames without authenticated provenance cannot "
+                            "become verified regime research inputs (CALLER_SUPPLIED_UNVERIFIED)."
+                        ),
+                        now_utc=now_utc,
+                        verified_source_artifact={
+                            "source_path": "IN_MEMORY_CUSTOM_DATAFRAME",
+                            "verification_status": "CALLER_SUPPLIED_UNVERIFIED",
+                            "provenance_rejection_code": "CALLER_SUPPLIED_UNVERIFIED",
+                            "is_verified": False,
+                        },
+                    )
                 df = custom_df.copy()
                 rel_path = "IN_MEMORY_CUSTOM_DATAFRAME"
                 art_sha = hashlib.sha256(
                     pd.util.hash_pandas_object(df, index=True).values.tobytes()
                 ).hexdigest()
-                prov_exists = False
+                verified_source_meta = {
+                    "source_path": rel_path,
+                    "source_artifact_sha256": art_sha,
+                    "provenance_sidecar_present": False,
+                    "verification_status": "TRUSTED_TEST_FIXTURE_ONLY",
+                    "verification_method": "TRUSTED_TEST_FIXTURE_ONLY",
+                    "is_verified": False,
+                    "trusted_fixture_context": True,
+                }
             else:
-                rel_path = AUTHORIZED_HISTORICAL_DATASETS.get(dataset_id, str(dataset_id))
-                file_path = self.workspace_root / rel_path
-                if not file_path.exists() or not file_path.is_file():
+                candidate_rel = source_path or AUTHORIZED_HISTORICAL_DATASETS.get(dataset_id, str(dataset_id))
+                prov_res = ScientificReadinessEvaluator.verify_historical_dataset_provenance(
+                    dataset_id=dataset_id,
+                    source_path=candidate_rel,
+                    workspace_root=self.workspace_root,
+                    intake_manifest=intake_manifest,
+                    intake_manifest_path=intake_manifest_path,
+                    provenance_sidecar_path=provenance_sidecar_path,
+                    attestation=attestation,
+                    caller_supplied_sha256=caller_supplied_sha256,
+                    require_explicit_evidence=require_explicit_evidence,
+                )
+                if not prov_res.get("is_verified"):
+                    prov_code = str(
+                        prov_res.get("provenance_rejection_code")
+                        or prov_res.get("rejection_code")
+                        or "UNVERIFIED_HISTORICAL_INPUT"
+                    )
                     return self._build_blocked_regime_report(
                         dataset_id=dataset_id,
-                        rejection_code="MISSING_OR_UNVERIFIED_DATASET",
-                        rejection_reason=f"Authorized dataset '{dataset_id}' not found at '{rel_path}'.",
+                        rejection_code="UNVERIFIED_HISTORICAL_INPUT",
+                        rejection_reason=(
+                            f"Dataset '{dataset_id}' failed trusted provenance verification "
+                            f"({prov_code}): {prov_res.get('rejection_reason') or prov_res.get('rationale')}"
+                        ),
                         now_utc=now_utc,
+                        verified_source_artifact={
+                            "source_path": candidate_rel,
+                            "verification_status": "UNVERIFIED_HISTORICAL_INPUT",
+                            "provenance_rejection_code": prov_code,
+                            "is_verified": False,
+                            "rationale": prov_res.get("rejection_reason") or prov_res.get("rationale"),
+                        },
                     )
-                raw_bytes = file_path.read_bytes()
-                art_sha = hashlib.sha256(raw_bytes).hexdigest()
-                prov_sidecar = file_path.with_name(file_path.stem + "_provenance.json")
-                prov_exists = prov_sidecar.exists()
+                rel_path = prov_res["source_path"]
+                file_path = self.workspace_root / rel_path
+                art_sha = prov_res["source_artifact_sha256"]
                 df = pd.read_parquet(file_path)
+                verified_source_meta = {
+                    "source_path": rel_path,
+                    "source_artifact_sha256": art_sha,
+                    "expected_sha256": prov_res.get("expected_sha256"),
+                    "verification_status": "VERIFIED",
+                    "verification_method": prov_res.get("verification_method"),
+                    "issuer": prov_res.get("issuer"),
+                    "key_id": prov_res.get("key_id"),
+                    "source_lineage": prov_res.get("source_lineage"),
+                    "is_verified": True,
+                }
 
             if len(df) < 30 or not {"high", "low", "close"}.issubset(df.columns):
                 return self._build_blocked_regime_report(
@@ -650,12 +731,7 @@ class HistoricalMarketRegimeResearchEngine:
                     "source_path": rel_path,
                     "observation_count": n_obs,
                 },
-                verified_source_artifact={
-                    "source_path": rel_path,
-                    "source_artifact_sha256": art_sha,
-                    "provenance_sidecar_present": prov_exists,
-                    "verification_status": "VERIFIED_GENUINE_PARQUET" if rel_path != "IN_MEMORY_CUSTOM_DATAFRAME" else "CALLER_SUPPLIED_DATAFRAME",
-                },
+                verified_source_artifact=verified_source_meta,
                 evaluation_window={
                     "start_utc": start_utc,
                     "end_utc": end_utc,
@@ -701,6 +777,7 @@ class HistoricalMarketRegimeResearchEngine:
         rejection_code: str,
         rejection_reason: str,
         now_utc: str,
+        verified_source_artifact: Optional[Dict[str, Any]] = None,
     ) -> HistoricalRegimeResearchReport:
         b_hash = hashlib.sha256(f"{dataset_id}:{rejection_code}:{now_utc}".encode("utf-8")).hexdigest()[:8]
         return HistoricalRegimeResearchReport(
@@ -709,7 +786,11 @@ class HistoricalMarketRegimeResearchEngine:
             rejection_code=rejection_code,
             rejection_reason=rejection_reason,
             historical_dataset={"dataset_id": dataset_id},
-            verified_source_artifact={"verification_status": "BLOCKED"},
+            verified_source_artifact=verified_source_artifact or {
+                "verification_status": "UNVERIFIED_HISTORICAL_INPUT",
+                "is_verified": False,
+                "provenance_rejection_code": rejection_code,
+            },
             evaluation_window={},
             methodology={"canonical_model": CANONICAL_MODEL_ID, "thresholds_modified": False},
             computation_version=COMPUTATION_VERSION,

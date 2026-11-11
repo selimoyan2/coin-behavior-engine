@@ -148,6 +148,10 @@ async def run_suite():
 
             stat_view = await page.wait_for_selector("#ws-view-stat-validation", state="visible", timeout=10000)
             assert stat_view is not None
+            await page.wait_for_function(
+                "() => { const el = document.getElementById('stat-val-results-container'); return el && (el.innerText.includes('RES-') || el.innerText.includes('CBE-0.7.0') || el.innerText.includes('Ljung-Box') || el.innerText.includes('N_eff')); }",
+                timeout=15000,
+            )
             stat_text = await page.locator("#stat-val-results-container").text_content()
             assert "CBE-0.7.0" in stat_text or "Ljung-Box" in stat_text or "N_eff" in stat_text or "RES-" in stat_text
             results["tests"].append({"name": "desktop_statistical_validation_panel", "viewport": "1440x900", "status": "PASSED"})
@@ -159,9 +163,12 @@ async def run_suite():
 
             # Walk-Forward Lab on Desktop
             await page.evaluate("() => switchWorkspaceView('walk-forward')")
-            await page.wait_for_timeout(1200)
             wf_view = await page.wait_for_selector("#ws-view-walk-forward", state="visible", timeout=10000)
             assert wf_view is not None
+            await page.wait_for_function(
+                "() => { const el = document.getElementById('ws-view-walk-forward'); return el && (el.innerText.includes('EVALUATION_COMPLETED') || el.innerText.includes('Purge') || el.innerText.includes('Fold')); }",
+                timeout=15000,
+            )
             wf_text = await page.locator("#ws-view-walk-forward").text_content()
             assert "EVALUATION_COMPLETED" in wf_text or "Purge" in wf_text or "Fold" in wf_text
             results["tests"].append({"name": "desktop_walk_forward_lab", "viewport": "1440x900", "status": "PASSED"})
@@ -187,9 +194,12 @@ async def run_suite():
             print("\n--- Running Tablet (768x1024) Tests ---")
             await page_tab.goto(f"{BASE_URL}/product#research-explorer", wait_until="networkidle", timeout=15000)
             await page_tab.evaluate("() => { if (typeof switchTab === 'function') switchTab('research-explorer'); switchWorkspaceView('regime-research'); }")
-            await page_tab.wait_for_timeout(1200)
             reg_view = await page_tab.wait_for_selector("#ws-view-regime-research", state="visible", timeout=10000)
             assert reg_view is not None
+            await page_tab.wait_for_function(
+                "() => { const el = document.getElementById('ws-view-regime-research'); return el && (el.innerText.includes('RESEARCH_COMPLETED') || el.innerText.includes('Transition') || el.innerText.includes('Geçiş')); }",
+                timeout=15000,
+            )
             reg_text = await page_tab.locator("#ws-view-regime-research").text_content()
             assert "RESEARCH_COMPLETED" in reg_text or "Transition" in reg_text or "Geçiş" in reg_text
             results["tests"].append({"name": "tablet_market_regime_research", "viewport": "768x1024", "status": "PASSED"})
@@ -219,11 +229,14 @@ async def run_suite():
             print("\n--- Running Mobile (390x844) Tests ---")
             await page_mob.goto(f"{BASE_URL}/product#research-explorer", wait_until="networkidle", timeout=15000)
             await page_mob.evaluate("() => { if (typeof switchTab === 'function') switchTab('research-explorer'); switchWorkspaceView('independent-validation'); }")
-            await page_mob.wait_for_timeout(1200)
             ind_view = await page_mob.wait_for_selector("#ws-view-independent-validation", state="visible", timeout=10000)
             assert ind_view is not None
+            await page_mob.wait_for_function(
+                "() => { const el = document.getElementById('ind-val-audits-container'); return el && (el.innerText.includes('INDEPENDENCE_NOT_ESTABLISHED') || el.innerText.includes('INDEPENDENT_DATASET_VALIDATION') || el.innerText.includes('INDEPENDENT_REPLICATION')); }",
+                timeout=15000,
+            )
             ind_text = await page_mob.locator("#ind-val-audits-container").text_content()
-            assert "INDEPENDENCE_NOT_ESTABLISHED" in ind_text or "INDEPENDENT_REPLICATION" in ind_text
+            assert "INDEPENDENCE_NOT_ESTABLISHED" in ind_text or "INDEPENDENT_DATASET_VALIDATION" in ind_text or "INDEPENDENT_REPLICATION" in ind_text
             results["tests"].append({"name": "mobile_independent_validation_matrix", "viewport": "390x844", "status": "PASSED"})
 
             screenshot_3 = ARTIFACT_DIR / "sprint26_screenshot_03_mobile_independent_validation.png"

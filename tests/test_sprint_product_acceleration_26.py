@@ -24,7 +24,9 @@ Covers:
 
 from __future__ import annotations
 
+import hashlib
 from http import HTTPStatus
+import json
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -361,7 +363,7 @@ class TestModule263HistoricalMarketRegimeResearch:
         assert blocked.status == "RESEARCH_BLOCKED"
         assert blocked.rejection_code == "FROZEN_REGIME_THRESHOLD_MUTATION_BLOCKED"
 
-        # Missing OHLC observations rejected
+        # Caller-supplied DataFrame without trusted_fixture_context is blocked fail-closed
         df_nan = pd.DataFrame(
             {
                 "open_time": [1704067200000 + i * 3600000 for i in range(40)],
@@ -370,7 +372,12 @@ class TestModule263HistoricalMarketRegimeResearch:
                 "close": [41500.0] * 40,
             }
         )
-        blocked_nan = engine.run_regime_research(custom_df=df_nan)
+        blocked_untrusted_df = engine.run_regime_research(custom_df=df_nan)
+        assert blocked_untrusted_df.status == "RESEARCH_BLOCKED"
+        assert blocked_untrusted_df.rejection_code == "CALLER_SUPPLIED_UNVERIFIED"
+
+        # Missing OHLC observations rejected when trusted_fixture_context=True
+        blocked_nan = engine.run_regime_research(custom_df=df_nan, trusted_fixture_context=True)
         assert blocked_nan.status == "RESEARCH_BLOCKED"
         assert blocked_nan.rejection_code == "MISSING_OHLC_OBSERVATIONS"
 
@@ -543,10 +550,48 @@ class TestModule265IndependentValidationFramework:
         assert audit_rep.independence_established is False
         assert audit_rep.assigned_category == "INDEPENDENCE_NOT_ESTABLISHED"
 
-        # Succeeds when independent procedure lineage and replication evidence are verified
+        # Rejected when caller only sets boolean flag independent_replication_evidence_verified=True without signed attestation
+        candidate_boolean_only = dict(candidate_disjoint_dataset)
+        candidate_boolean_only["procedure_id"] = "INDEPENDENT-REPLICATION-PROC-02"
+        candidate_boolean_only["independent_replication_evidence_verified"] = True
+        audit_bool_rejected = fw.evaluate_validation_independence(
+            primary_study=primary,
+            candidate_study=candidate_boolean_only,
+            claimed_category="INDEPENDENT_REPLICATION",
+        )
+        assert audit_bool_rejected.independence_established is False
+        assert audit_bool_rejected.assigned_category == "INDEPENDENCE_NOT_ESTABLISHED"
+
+        # Succeeds when independent procedure lineage AND signed replication attestation + physical artifact are verified
+        res_artifact_rel = "research_outputs/sprint26_advanced_scientific_validation/08_independent_validation_criteria.json"
+        res_artifact_sha = hashlib.sha256((Path.cwd() / res_artifact_rel).read_bytes()).hexdigest()
+        prim_sha = hashlib.sha256(
+            (Path.cwd() / "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet").read_bytes()
+        ).hexdigest()
+        cand_sha = hashlib.sha256(
+            (Path.cwd() / "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet").read_bytes()
+        ).hexdigest()
+        signed_rep_att = IndependentValidationFramework.create_signed_replication_attestation(
+            replication_attempt_id="REP-ATTEMPT-S26-JAN2025-01",
+            primary_record_id="STUDY-Q1-2024",
+            candidate_record_id="STUDY-JAN-2025",
+            primary_dataset_id="DS-BTC-1H-Q1-2024",
+            candidate_dataset_id="DS-BTC-1H-JAN-2025",
+            primary_source_sha256=prim_sha,
+            candidate_source_sha256=cand_sha,
+            result_artifact_path=res_artifact_rel,
+            result_artifact_sha256=res_artifact_sha,
+            hypothesis_id="HYP-PAT-SIM-S26",
+            methodology_id="CBE-0.7.0-CANONICAL",
+            primary_procedure_id="SAME-PROC-01",
+            candidate_procedure_id="INDEPENDENT-REPLICATION-PROC-02",
+            procedure_version="SPRINT26-V1.0",
+            independent_execution_lineage="EXEC-LINEAGE-INDEPENDENT-2025",
+            replication_outcome="OUT_OF_SAMPLE_REPLICATED",
+        )
         candidate_true_rep = dict(candidate_disjoint_dataset)
         candidate_true_rep["procedure_id"] = "INDEPENDENT-REPLICATION-PROC-02"
-        candidate_true_rep["independent_replication_evidence_verified"] = True
+        candidate_true_rep["replication_attestation"] = signed_rep_att
         audit_true_rep = fw.evaluate_validation_independence(
             primary_study=primary,
             candidate_study=candidate_true_rep,
@@ -730,4 +775,611 @@ class TestModule266DashboardV4AndCrossModuleIntegration:
         assert val_rep["model_status"] == "STRICTLY_FROZEN"
         assert val_rep["governance_decision"] == "TECHNICAL_NO_GO"
         assert val_rep["trading_eligibility"] == "LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED"
+
+
+# ===========================================================================
+# 7. SPRINT 26 FINAL SCIENTIFIC TRUST CLOSURE — 20 NEGATIVE + POSITIVE TESTS
+# ===========================================================================
+
+
+class TestSprint26FinalScientificTrustClosure:
+    """Comprehensive negative and positive test suite for Sprint 26 Final Scientific Trust Closure."""
+
+    def test_01_existing_parquet_without_trusted_provenance_rejected(self, tmp_path):
+        # Copy a real Parquet file to a new path not bound in any signed manifest
+        src = Path.cwd() / "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet"
+        unverified_parquet = tmp_path / "unverified_copy.parquet"
+        unverified_parquet.write_bytes(src.read_bytes())
+
+        wf_lab = WalkForwardResearchLab(workspace_root=tmp_path)
+        wf_res = wf_lab.run_walk_forward_evaluation(
+            dataset_id="DS-UNREGISTERED-PARQUET",
+            source_path="unverified_copy.parquet",
+        )
+        assert wf_res.status == "EVALUATION_BLOCKED"
+        assert wf_res.rejection_code == "UNVERIFIED_HISTORICAL_INPUT"
+        assert wf_res.dataset_provenance["verification_status"] == "UNVERIFIED_HISTORICAL_INPUT"
+
+        reg_engine = HistoricalMarketRegimeResearchEngine(workspace_root=tmp_path)
+        reg_res = reg_engine.run_regime_research(
+            dataset_id="DS-UNREGISTERED-PARQUET",
+            source_path="unverified_copy.parquet",
+        )
+        assert reg_res.status == "RESEARCH_BLOCKED"
+        assert reg_res.rejection_code == "UNVERIFIED_HISTORICAL_INPUT"
+        assert reg_res.verified_source_artifact["verification_status"] == "UNVERIFIED_HISTORICAL_INPUT"
+
+    def test_02_valid_looking_unsigned_provenance_sidecar_rejected(self, tmp_path):
+        src = Path.cwd() / "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet"
+        raw = src.read_bytes()
+        sha = hashlib.sha256(raw).hexdigest()
+        p_file = tmp_path / "historical_binance_btcusdt_1h_q1_2024.parquet"
+        p_file.write_bytes(raw)
+        sidecar = tmp_path / "historical_binance_btcusdt_1h_q1_2024_provenance.json"
+        sidecar.write_text(
+            json.dumps(
+                {
+                    "dataset_id": "DS-BTC-1H-Q1-2024",
+                    "sha256": sha,
+                    "status": "VERIFIED",
+                    "issuer": "SELF_DECLARED_UNSIGNED",
+                }
+            ),
+            encoding="utf-8",
+        )
+
+        wf_lab = WalkForwardResearchLab(workspace_root=tmp_path)
+        wf_res = wf_lab.run_walk_forward_evaluation(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            source_path="historical_binance_btcusdt_1h_q1_2024.parquet",
+            provenance_sidecar_path=str(sidecar),
+            require_explicit_evidence=True,
+        )
+        assert wf_res.status == "EVALUATION_BLOCKED"
+        assert wf_res.rejection_code == "UNVERIFIED_HISTORICAL_INPUT"
+        assert wf_res.dataset_provenance["provenance_rejection_code"] == "UNSIGNED_PROVENANCE_SIDECAR"
+
+        reg_engine = HistoricalMarketRegimeResearchEngine(workspace_root=tmp_path)
+        reg_res = reg_engine.run_regime_research(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            source_path="historical_binance_btcusdt_1h_q1_2024.parquet",
+            provenance_sidecar_path=str(sidecar),
+            require_explicit_evidence=True,
+        )
+        assert reg_res.status == "RESEARCH_BLOCKED"
+        assert reg_res.rejection_code == "UNVERIFIED_HISTORICAL_INPUT"
+        assert reg_res.verified_source_artifact["provenance_rejection_code"] == "UNSIGNED_PROVENANCE_SIDECAR"
+
+    def test_03_forged_signed_intake_manifest_rejected(self):
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        manifest = ScientificReadinessEvaluator.create_signed_intake_manifest(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            artifact_hashes={
+                "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5"
+            },
+            source_lineage="BINANCE_SPOT_KLINES_BTCUSDT_1H_2024Q1",
+        )
+        forged_manifest = dict(manifest)
+        forged_manifest["signature"] = "0" * 64
+
+        wf_lab = WalkForwardResearchLab()
+        wf_res = wf_lab.run_walk_forward_evaluation(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            intake_manifest=forged_manifest,
+            require_explicit_evidence=True,
+        )
+        assert wf_res.status == "EVALUATION_BLOCKED"
+        assert wf_res.rejection_code == "UNVERIFIED_HISTORICAL_INPUT"
+        assert wf_res.dataset_provenance["provenance_rejection_code"] == "SIGNATURE_VERIFICATION_FAILED"
+
+        reg_engine = HistoricalMarketRegimeResearchEngine()
+        reg_res = reg_engine.run_regime_research(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            intake_manifest=forged_manifest,
+            require_explicit_evidence=True,
+        )
+        assert reg_res.status == "RESEARCH_BLOCKED"
+        assert reg_res.rejection_code == "UNVERIFIED_HISTORICAL_INPUT"
+        assert reg_res.verified_source_artifact["provenance_rejection_code"] == "SIGNATURE_VERIFICATION_FAILED"
+
+    def test_04_source_sha256_mismatch_rejected(self):
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        bad_hash_manifest = ScientificReadinessEvaluator.create_signed_intake_manifest(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            artifact_hashes={
+                "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet": "f" * 64
+            },
+            source_lineage="BINANCE_SPOT_KLINES_BTCUSDT_1H_2024Q1",
+        )
+        wf_lab = WalkForwardResearchLab()
+        wf_res = wf_lab.run_walk_forward_evaluation(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            intake_manifest=bad_hash_manifest,
+            require_explicit_evidence=True,
+        )
+        assert wf_res.status == "EVALUATION_BLOCKED"
+        assert wf_res.rejection_code == "UNVERIFIED_HISTORICAL_INPUT"
+        assert wf_res.dataset_provenance["provenance_rejection_code"] == "SOURCE_ARTIFACT_HASH_MISMATCH"
+
+        reg_engine = HistoricalMarketRegimeResearchEngine()
+        reg_res = reg_engine.run_regime_research(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            intake_manifest=bad_hash_manifest,
+            require_explicit_evidence=True,
+        )
+        assert reg_res.status == "RESEARCH_BLOCKED"
+        assert reg_res.rejection_code == "UNVERIFIED_HISTORICAL_INPUT"
+        assert reg_res.verified_source_artifact["provenance_rejection_code"] == "SOURCE_ARTIFACT_HASH_MISMATCH"
+
+    def test_05_dataset_identity_mismatch_rejected(self):
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        wrong_id_manifest = ScientificReadinessEvaluator.create_signed_intake_manifest(
+            dataset_id="DS-OTHER-DATASET-ID",
+            artifact_hashes={
+                "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5"
+            },
+            source_lineage="BINANCE_SPOT_KLINES_BTCUSDT_1H_2024Q1",
+        )
+        wf_lab = WalkForwardResearchLab()
+        wf_res = wf_lab.run_walk_forward_evaluation(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            intake_manifest=wrong_id_manifest,
+            require_explicit_evidence=True,
+        )
+        assert wf_res.status == "EVALUATION_BLOCKED"
+        assert wf_res.rejection_code == "UNVERIFIED_HISTORICAL_INPUT"
+        assert wf_res.dataset_provenance["provenance_rejection_code"] == "DATASET_ID_MISMATCH"
+
+        reg_engine = HistoricalMarketRegimeResearchEngine()
+        reg_res = reg_engine.run_regime_research(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            intake_manifest=wrong_id_manifest,
+            require_explicit_evidence=True,
+        )
+        assert reg_res.status == "RESEARCH_BLOCKED"
+        assert reg_res.rejection_code == "UNVERIFIED_HISTORICAL_INPUT"
+        assert reg_res.verified_source_artifact["provenance_rejection_code"] == "DATASET_ID_MISMATCH"
+
+    def test_06_revoked_attestation_signing_key_rejected(self):
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        revoked_manifest = ScientificReadinessEvaluator.create_signed_intake_manifest(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            artifact_hashes={
+                "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5"
+            },
+            source_lineage="BINANCE_SPOT_KLINES_BTCUSDT_1H_2024Q1",
+            key_id="cbe-attestation-2025-revoked",
+        )
+        wf_lab = WalkForwardResearchLab()
+        wf_res = wf_lab.run_walk_forward_evaluation(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            intake_manifest=revoked_manifest,
+            require_explicit_evidence=True,
+        )
+        assert wf_res.status == "EVALUATION_BLOCKED"
+        assert wf_res.rejection_code == "UNVERIFIED_HISTORICAL_INPUT"
+        assert wf_res.dataset_provenance["provenance_rejection_code"] == "REVOKED_SIGNING_KEY"
+
+    def test_07_expired_attestation_rejected(self):
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        expired_manifest = ScientificReadinessEvaluator.create_signed_intake_manifest(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            artifact_hashes={
+                "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5"
+            },
+            source_lineage="BINANCE_SPOT_KLINES_BTCUSDT_1H_2024Q1",
+            issued_at_utc="2020-01-01T00:00:00Z",
+            expires_at_utc="2021-01-01T00:00:00Z",
+        )
+        wf_lab = WalkForwardResearchLab()
+        wf_res = wf_lab.run_walk_forward_evaluation(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            intake_manifest=expired_manifest,
+            require_explicit_evidence=True,
+        )
+        assert wf_res.status == "EVALUATION_BLOCKED"
+        assert wf_res.rejection_code == "UNVERIFIED_HISTORICAL_INPUT"
+        assert wf_res.dataset_provenance["provenance_rejection_code"] == "ATTESTATION_EXPIRED"
+
+    def test_08_quarantined_historical_dataset_rejected(self):
+        wf_lab = WalkForwardResearchLab()
+        wf_res = wf_lab.run_walk_forward_evaluation(dataset_id="DS-BTC-1H-OCT2026-QUARANTINE")
+        assert wf_res.status == "EVALUATION_BLOCKED"
+        assert wf_res.rejection_code == "UNVERIFIED_HISTORICAL_INPUT"
+        assert wf_res.dataset_provenance["provenance_rejection_code"] == "DATASET_QUARANTINED"
+
+        reg_engine = HistoricalMarketRegimeResearchEngine()
+        reg_res = reg_engine.run_regime_research(dataset_id="DS-BTC-1H-OCT2026-QUARANTINE")
+        assert reg_res.status == "RESEARCH_BLOCKED"
+        assert reg_res.rejection_code == "QUARANTINED_DATASET_REJECTED"
+
+        fw = IndependentValidationFramework()
+        audit = fw.evaluate_validation_independence(
+            primary_study={"record_id": "R1", "dataset_id": "DS-BTC-1H-Q1-2024", "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet"},
+            candidate_study={"record_id": "R2", "dataset_id": "DS-BTC-1H-OCT2026-QUARANTINE", "quarantined": True},
+        )
+        assert audit.assigned_category == "VALIDATION_BLOCKED"
+        assert audit.independence_established is False
+
+    def test_09_caller_supplied_dataframe_without_provenance_rejected(self):
+        df_caller = pd.DataFrame(
+            {
+                "open_time": [1704067200000 + i * 3600000 for i in range(200)],
+                "open": [42000.0] * 200,
+                "high": [42200.0] * 200,
+                "low": [41800.0] * 200,
+                "close": [42100.0] * 200,
+            }
+        )
+        wf_lab = WalkForwardResearchLab()
+        wf_res = wf_lab.run_walk_forward_evaluation(custom_df=df_caller)
+        assert wf_res.status == "EVALUATION_BLOCKED"
+        assert wf_res.rejection_code == "CALLER_SUPPLIED_UNVERIFIED"
+        assert wf_res.dataset_provenance["verification_status"] == "CALLER_SUPPLIED_UNVERIFIED"
+
+        reg_engine = HistoricalMarketRegimeResearchEngine()
+        reg_res = reg_engine.run_regime_research(custom_df=df_caller)
+        assert reg_res.status == "RESEARCH_BLOCKED"
+        assert reg_res.rejection_code == "CALLER_SUPPLIED_UNVERIFIED"
+        assert reg_res.verified_source_artifact["verification_status"] == "CALLER_SUPPLIED_UNVERIFIED"
+
+        rob_lab = RobustnessSensitivityLab()
+        rob_res = rob_lab.run_sensitivity_experiment(custom_df=df_caller)
+        assert rob_res.status == "EXPERIMENT_BLOCKED"
+        assert rob_res.rejection_code == "CALLER_SUPPLIED_UNVERIFIED"
+
+    def test_10_caller_supplied_fake_source_sha256_rejected(self):
+        wf_lab = WalkForwardResearchLab()
+        wf_res = wf_lab.run_walk_forward_evaluation(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            caller_supplied_sha256="deadbeef" * 8,
+        )
+        assert wf_res.status == "EVALUATION_BLOCKED"
+        assert wf_res.rejection_code == "UNVERIFIED_HISTORICAL_INPUT"
+        assert wf_res.dataset_provenance["provenance_rejection_code"] == "CALLER_SUPPLIED_SHA256_MISMATCH"
+
+        reg_engine = HistoricalMarketRegimeResearchEngine()
+        reg_res = reg_engine.run_regime_research(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            caller_supplied_sha256="deadbeef" * 8,
+        )
+        assert reg_res.status == "RESEARCH_BLOCKED"
+        assert reg_res.rejection_code == "UNVERIFIED_HISTORICAL_INPUT"
+        assert reg_res.verified_source_artifact["provenance_rejection_code"] == "CALLER_SUPPLIED_SHA256_MISMATCH"
+
+    def test_11_caller_provided_independent_replication_boolean_flag_rejected(self):
+        fw = IndependentValidationFramework()
+        primary = {
+            "record_id": "STUDY-Q1-2024",
+            "dataset_id": "DS-BTC-1H-Q1-2024",
+            "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+            "period_start_utc": "2024-01-01T00:00:00Z",
+            "period_end_utc": "2024-03-31T23:00:00Z",
+            "preprocessing_lineage_id": "PREP-Q1",
+            "procedure_id": "PROC-PRIMARY-01",
+        }
+        candidate = {
+            "record_id": "STUDY-JAN-2025",
+            "dataset_id": "DS-BTC-1H-JAN-2025",
+            "source_path": "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
+            "period_start_utc": "2025-01-01T00:00:00Z",
+            "period_end_utc": "2025-01-31T23:00:00Z",
+            "preprocessing_lineage_id": "PREP-JAN25",
+            "procedure_id": "PROC-CANDIDATE-02",
+            "independent_replication_evidence_verified": True,
+        }
+        audit = fw.evaluate_validation_independence(
+            primary_study=primary,
+            candidate_study=candidate,
+            claimed_category="INDEPENDENT_REPLICATION",
+        )
+        assert audit.independence_established is False
+        assert audit.assigned_category == "INDEPENDENCE_NOT_ESTABLISHED"
+        assert audit.eight_point_checks["researcher_or_procedure_independence"]["passed"] is False
+        assert (
+            audit.eight_point_checks["researcher_or_procedure_independence"]["status_code"]
+            == "CALLER_BOOLEAN_REPLICATION_FLAG_REJECTED"
+        )
+
+    def test_12_different_procedure_ids_without_independent_execution_evidence_rejected(self):
+        fw = IndependentValidationFramework()
+        primary = {
+            "record_id": "STUDY-Q1-2024",
+            "dataset_id": "DS-BTC-1H-Q1-2024",
+            "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+            "period_start_utc": "2024-01-01T00:00:00Z",
+            "period_end_utc": "2024-03-31T23:00:00Z",
+            "preprocessing_lineage_id": "PREP-Q1",
+            "procedure_id": "PROC-PRIMARY-A",
+        }
+        candidate = {
+            "record_id": "STUDY-JAN-2025",
+            "dataset_id": "DS-BTC-1H-JAN-2025",
+            "source_path": "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
+            "period_start_utc": "2025-01-01T00:00:00Z",
+            "period_end_utc": "2025-01-31T23:00:00Z",
+            "preprocessing_lineage_id": "PREP-JAN25",
+            "procedure_id": "PROC-CANDIDATE-B",
+        }
+        audit = fw.evaluate_validation_independence(
+            primary_study=primary,
+            candidate_study=candidate,
+            claimed_category="INDEPENDENT_REPLICATION",
+        )
+        assert audit.independence_established is False
+        assert audit.assigned_category == "INDEPENDENCE_NOT_ESTABLISHED"
+        assert (
+            audit.eight_point_checks["researcher_or_procedure_independence"]["status_code"]
+            == "MISSING_REPLICATION_ATTESTATION"
+        )
+
+    def test_13_different_filenames_pointing_to_identical_data_rejected(self, tmp_path):
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        src = Path.cwd() / "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet"
+        raw = src.read_bytes()
+        sha = hashlib.sha256(raw).hexdigest()
+        f_a = tmp_path / "dataset_alpha.parquet"
+        f_b = tmp_path / "dataset_beta.parquet"
+        f_a.write_bytes(raw)
+        f_b.write_bytes(raw)
+
+        man_a = ScientificReadinessEvaluator.create_signed_intake_manifest(
+            dataset_id="DS-ALPHA",
+            artifact_hashes={"dataset_alpha.parquet": sha},
+            source_lineage="LINEAGE-ALPHA",
+        )
+        man_b = ScientificReadinessEvaluator.create_signed_intake_manifest(
+            dataset_id="DS-BETA",
+            artifact_hashes={"dataset_beta.parquet": sha},
+            source_lineage="LINEAGE-BETA",
+        )
+        fw = IndependentValidationFramework(workspace_root=tmp_path)
+        audit = fw.evaluate_validation_independence(
+            primary_study={
+                "record_id": "R-ALPHA",
+                "dataset_id": "DS-ALPHA",
+                "source_path": "dataset_alpha.parquet",
+                "intake_manifest": man_a,
+            },
+            candidate_study={
+                "record_id": "R-BETA",
+                "dataset_id": "DS-BETA",
+                "source_path": "dataset_beta.parquet",
+                "intake_manifest": man_b,
+            },
+            claimed_category="INDEPENDENT_DATASET_VALIDATION",
+        )
+        assert audit.independence_established is False
+        assert audit.assigned_category == "INDEPENDENCE_NOT_ESTABLISHED"
+        assert audit.eight_point_checks["dataset_lineage"]["passed"] is False
+        assert audit.eight_point_checks["source_overlap"]["passed"] is False
+
+    def test_14_different_dataset_ids_with_overlapping_observations_rejected(self):
+        fw = IndependentValidationFramework()
+        audit = fw.evaluate_validation_independence(
+            primary_study={
+                "record_id": "R-Q1-1H",
+                "dataset_id": "DS-BTC-1H-Q1-2024",
+                "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+            },
+            candidate_study={
+                "record_id": "R-Q1-15M",
+                "dataset_id": "DS-BTC-15M-Q1-2024",
+                "source_path": "data/historical/historical_binance_btcusdt_15m_q1_2024.parquet",
+            },
+            claimed_category="INDEPENDENT_DATASET_VALIDATION",
+        )
+        assert audit.independence_established is False
+        assert audit.assigned_category == "INDEPENDENCE_NOT_ESTABLISHED"
+        assert audit.eight_point_checks["observation_overlap"]["passed"] is False
+        assert audit.eight_point_checks["time_window_overlap"]["passed"] is False
+
+    def test_15_shared_preprocessing_lineage_rejected(self):
+        fw = IndependentValidationFramework()
+        audit = fw.evaluate_validation_independence(
+            primary_study={
+                "record_id": "R-Q1-1H",
+                "dataset_id": "DS-BTC-1H-Q1-2024",
+                "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+                "preprocessing_lineage_id": "SHARED-FIT-SCALER-2024",
+            },
+            candidate_study={
+                "record_id": "R-JAN25-1H",
+                "dataset_id": "DS-BTC-1H-JAN-2025",
+                "source_path": "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
+                "preprocessing_lineage_id": "SHARED-FIT-SCALER-2024",
+            },
+            claimed_category="INDEPENDENT_DATASET_VALIDATION",
+        )
+        assert audit.independence_established is False
+        assert audit.assigned_category == "INDEPENDENCE_NOT_ESTABLISHED"
+        assert audit.eight_point_checks["shared_preprocessing_artifacts"]["passed"] is False
+
+    def test_16_invalid_replication_result_artifact_rejected(self, tmp_path):
+        fw = IndependentValidationFramework()
+        prim_sha = hashlib.sha256(
+            (Path.cwd() / "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet").read_bytes()
+        ).hexdigest()
+        cand_sha = hashlib.sha256(
+            (Path.cwd() / "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet").read_bytes()
+        ).hexdigest()
+        bad_att = IndependentValidationFramework.create_signed_replication_attestation(
+            replication_attempt_id="REP-BAD-ARTIFACT",
+            primary_record_id="STUDY-Q1-2024",
+            candidate_record_id="STUDY-JAN-2025",
+            primary_dataset_id="DS-BTC-1H-Q1-2024",
+            candidate_dataset_id="DS-BTC-1H-JAN-2025",
+            primary_source_sha256=prim_sha,
+            candidate_source_sha256=cand_sha,
+            result_artifact_path="research_outputs/sprint26_advanced_scientific_validation/08_independent_validation_criteria.json",
+            result_artifact_sha256="0" * 64,  # Wrong SHA-256 for the result artifact
+            hypothesis_id="HYP-PAT-SIM-S26",
+            methodology_id="CBE-0.7.0-CANONICAL",
+            primary_procedure_id="PROC-01",
+            candidate_procedure_id="PROC-02",
+            procedure_version="V1.0",
+            independent_execution_lineage="EXEC-IND-02",
+        )
+        audit = fw.evaluate_validation_independence(
+            primary_study={
+                "record_id": "STUDY-Q1-2024",
+                "dataset_id": "DS-BTC-1H-Q1-2024",
+                "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+                "procedure_id": "PROC-01",
+            },
+            candidate_study={
+                "record_id": "STUDY-JAN-2025",
+                "dataset_id": "DS-BTC-1H-JAN-2025",
+                "source_path": "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
+                "procedure_id": "PROC-02",
+                "replication_attestation": bad_att,
+            },
+            claimed_category="INDEPENDENT_REPLICATION",
+        )
+        assert audit.independence_established is False
+        assert audit.assigned_category == "INDEPENDENCE_NOT_ESTABLISHED"
+        assert (
+            audit.eight_point_checks["researcher_or_procedure_independence"]["status_code"]
+            == "INVALID_REPLICATION_RESULT_ARTIFACT_HASH"
+        )
+
+    def test_17_replication_evidence_belonging_to_another_research_record_rejected(self):
+        fw = IndependentValidationFramework()
+        res_rel = "research_outputs/sprint26_advanced_scientific_validation/08_independent_validation_criteria.json"
+        res_sha = hashlib.sha256((Path.cwd() / res_rel).read_bytes()).hexdigest()
+        prim_sha = hashlib.sha256(
+            (Path.cwd() / "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet").read_bytes()
+        ).hexdigest()
+        cand_sha = hashlib.sha256(
+            (Path.cwd() / "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet").read_bytes()
+        ).hexdigest()
+
+        other_record_att = IndependentValidationFramework.create_signed_replication_attestation(
+            replication_attempt_id="REP-OTHER-RECORD",
+            primary_record_id="RES-OTHER-RECORD-999",
+            candidate_record_id="STUDY-JAN-2025",
+            primary_dataset_id="DS-BTC-1H-Q1-2024",
+            candidate_dataset_id="DS-BTC-1H-JAN-2025",
+            primary_source_sha256=prim_sha,
+            candidate_source_sha256=cand_sha,
+            result_artifact_path=res_rel,
+            result_artifact_sha256=res_sha,
+            hypothesis_id="HYP-OTHER",
+            methodology_id="CBE-0.7.0-CANONICAL",
+            primary_procedure_id="PROC-01",
+            candidate_procedure_id="PROC-02",
+            procedure_version="V1.0",
+            independent_execution_lineage="EXEC-IND-02",
+        )
+        audit = fw.evaluate_validation_independence(
+            primary_study={
+                "record_id": "STUDY-Q1-2024",
+                "dataset_id": "DS-BTC-1H-Q1-2024",
+                "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+                "procedure_id": "PROC-01",
+            },
+            candidate_study={
+                "record_id": "STUDY-JAN-2025",
+                "dataset_id": "DS-BTC-1H-JAN-2025",
+                "source_path": "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
+                "procedure_id": "PROC-02",
+                "replication_attestation": other_record_att,
+            },
+            claimed_category="INDEPENDENT_REPLICATION",
+        )
+        assert audit.independence_established is False
+        assert audit.assigned_category == "INDEPENDENCE_NOT_ESTABLISHED"
+        assert (
+            audit.eight_point_checks["researcher_or_procedure_independence"]["status_code"]
+            == "REPLICATION_RECORD_BINDING_MISMATCH"
+        )
+
+    def test_18_and_19_source_mutation_after_verification_invalidates_cache_and_fails_closed(self, tmp_path):
+        from coin_behavior_engine.product.scientific_readiness import ScientificReadinessEvaluator
+
+        src = Path.cwd() / "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet"
+        raw = src.read_bytes()
+        sha = hashlib.sha256(raw).hexdigest()
+        rel_p = "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet"
+        target_p = tmp_path / rel_p
+        target_p.parent.mkdir(parents=True, exist_ok=True)
+        target_p.write_bytes(raw)
+
+        manifest = ScientificReadinessEvaluator.create_signed_intake_manifest(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            artifact_hashes={rel_p: sha},
+            source_lineage="BINANCE_SPOT_KLINES_BTCUSDT_1H_2024Q1",
+        )
+
+        # First verification succeeds and populates cache
+        wf_lab = WalkForwardResearchLab(workspace_root=tmp_path)
+        res_ok = wf_lab.run_walk_forward_evaluation(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            source_path=rel_p,
+            intake_manifest=manifest,
+            require_explicit_evidence=True,
+        )
+        assert res_ok.status == "EVALUATION_COMPLETED"
+        assert res_ok.dataset_provenance["is_verified"] is True
+
+        # Mutate physical Parquet file on disk after successful verification
+        other_src = Path.cwd() / "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet"
+        target_p.write_bytes(other_src.read_bytes())
+
+        # Subsequent call must NOT reuse stale cache and must fail closed with SOURCE_ARTIFACT_HASH_MISMATCH
+        res_mutated = wf_lab.run_walk_forward_evaluation(
+            dataset_id="DS-BTC-1H-Q1-2024",
+            source_path=rel_p,
+            intake_manifest=manifest,
+            require_explicit_evidence=True,
+        )
+        assert res_mutated.status == "EVALUATION_BLOCKED"
+        assert res_mutated.rejection_code == "UNVERIFIED_HISTORICAL_INPUT"
+        assert res_mutated.dataset_provenance["provenance_rejection_code"] == "SOURCE_ARTIFACT_HASH_MISMATCH"
+
+    def test_20_explicit_independent_replication_claim_without_authenticated_evidence_rejected_while_dataset_validation_preserved(self):
+        fw = IndependentValidationFramework()
+        primary = {
+            "record_id": "RES-29-PAT-SIM",
+            "dataset_id": "DS-BTC-1H-Q1-2024",
+            "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+            "period_start_utc": "2024-01-01T00:00:00Z",
+            "period_end_utc": "2024-03-31T23:00:00Z",
+            "preprocessing_lineage_id": "PREP-Q1-ISOLATED",
+            "procedure_id": "PROC-DISCOVERY-01",
+        }
+        candidate = {
+            "record_id": "VAL-BTC-1H-JAN-2025",
+            "dataset_id": "DS-BTC-1H-JAN-2025",
+            "source_path": "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
+            "period_start_utc": "2025-01-01T00:00:00Z",
+            "period_end_utc": "2025-01-31T23:00:00Z",
+            "preprocessing_lineage_id": "PREP-JAN25-ISOLATED",
+            "procedure_id": "PROC-HOLDOUT-02",
+        }
+
+        # Explicit INDEPENDENT_REPLICATION claim without signed replication attestation -> INDEPENDENCE_NOT_ESTABLISHED
+        rep_claim = fw.evaluate_validation_independence(
+            primary_study=primary,
+            candidate_study=candidate,
+            claimed_category="INDEPENDENT_REPLICATION",
+        )
+        assert rep_claim.independence_established is False
+        assert rep_claim.assigned_category == "INDEPENDENCE_NOT_ESTABLISHED"
+
+        # Permitted INDEPENDENT_DATASET_VALIDATION assessment -> INDEPENDENT_DATASET_VALIDATION
+        ds_claim = fw.evaluate_validation_independence(
+            primary_study=primary,
+            candidate_study=candidate,
+            claimed_category="INDEPENDENT_DATASET_VALIDATION",
+        )
+        assert ds_claim.independence_established is True
+        assert ds_claim.assigned_category == "INDEPENDENT_DATASET_VALIDATION"
+
 

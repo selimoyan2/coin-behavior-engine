@@ -93,6 +93,10 @@ class WalkForwardFoldResult:
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
 
+    @property
+    def dataset_provenance(self) -> Dict[str, Any]:
+        return self.source_provenance
+
 
 @dataclass(frozen=True)
 class WalkForwardEvaluationReport:
@@ -121,6 +125,10 @@ class WalkForwardEvaluationReport:
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
+
+    @property
+    def dataset_provenance(self) -> Dict[str, Any]:
+        return self.source_provenance
 
 
 def _ms_to_iso_utc(ts_ms: int) -> str:
@@ -296,79 +304,135 @@ class WalkForwardResearchLab:
         dataset_id: str,
         frequency: str = "1h",
         custom_df: Optional[pd.DataFrame] = None,
+        source_path: Optional[str] = None,
+        record_id: str = "RES-29-PAT-SIM",
+        intake_manifest: Optional[Dict[str, Any]] = None,
+        intake_manifest_path: Optional[str] = None,
+        provenance_sidecar_path: Optional[str] = None,
+        attestation: Optional[Dict[str, Any]] = None,
+        caller_supplied_sha256: Optional[str] = None,
+        require_explicit_evidence: bool = False,
+        trusted_fixture_context: bool = False,
     ) -> Tuple[Optional[pd.DataFrame], Dict[str, Any], Optional[str], Optional[str]]:
-        """Resolve an authorized historical dataset and verify its provenance."""
-        ds_norm = str(dataset_id or "").strip()
-        if "QUARANTINE" in ds_norm.upper() or "OCT2026" in ds_norm.upper() or "CONTAMINATED" in ds_norm.upper():
-            return (
-                None,
-                {"dataset_id": ds_norm, "verification_status": "QUARANTINED_CONTAMINATED"},
-                "UNVERIFIED_HISTORICAL_INPUT",
-                f"Dataset '{ds_norm}' is quarantined due to synthetic contamination and cannot be used.",
-            )
+        """Resolve an authorized historical dataset and enforce Sprint 25–26 trusted provenance."""
+        from coin_behavior_engine.product.scientific_readiness import (
+            ScientificReadinessEvaluator,
+        )
 
+        ds_norm = str(dataset_id or "").strip()
+
+        # 1. Caller-supplied DataFrame policy (never automatically VERIFIED)
         if custom_df is not None:
+            df_sha = hashlib.sha256(
+                pd.util.hash_pandas_object(custom_df, index=True).values.tobytes()
+            ).hexdigest()
+            if not trusted_fixture_context:
+                return (
+                    None,
+                    {
+                        "dataset_id": ds_norm or "CUSTOM_IN_MEMORY_DATASET",
+                        "source_path": "IN_MEMORY_DATAFRAME",
+                        "source_sha256": df_sha,
+                        "is_verified": False,
+                        "verification_status": "CALLER_SUPPLIED_UNVERIFIED",
+                        "provenance_status": "CALLER_SUPPLIED_UNVERIFIED",
+                        "provenance_rejection_code": "CALLER_SUPPLIED_UNVERIFIED",
+                    },
+                    "CALLER_SUPPLIED_UNVERIFIED",
+                    (
+                        "Caller-supplied DataFrame lacks independently authenticated dataset provenance "
+                        "(CALLER_SUPPLIED_UNVERIFIED) and cannot be promoted to a verified research dataset."
+                    ),
+                )
             return (
                 custom_df.copy(),
                 {
-                    "dataset_id": ds_norm or "CUSTOM_IN_MEMORY_DATASET",
-                    "source_path": "IN_MEMORY_DATAFRAME",
-                    "source_sha256": hashlib.sha256(
-                        pd.util.hash_pandas_object(custom_df, index=True).values.tobytes()
-                    ).hexdigest(),
-                    "verification_status": "VERIFIED_CALLER_DATAFRAME",
+                    "dataset_id": ds_norm or "TEST_FIXTURE_DATAFRAME",
+                    "source_path": "TRUSTED_TEST_FIXTURE_IN_MEMORY",
+                    "source_sha256": df_sha,
+                    "is_verified": False,
+                    "verification_status": "TRUSTED_TEST_FIXTURE_ONLY",
+                    "provenance_status": "TRUSTED_TEST_FIXTURE_ONLY",
+                    "trusted_fixture_context": True,
                 },
                 None,
                 None,
             )
 
         freq_norm = str(frequency or "1h").strip().lower()
-        candidates: List[Path] = []
+        effective_ds_id = ds_norm
+        effective_src_path = source_path
 
-        if ds_norm.endswith(".parquet"):
-            candidates.append(self.workspace_root / ds_norm)
-        if freq_norm == "15m":
-            candidates.extend(
-                [
-                    self.workspace_root / "data/historical/historical_binance_btcusdt_15m_q1_2024.parquet",
-                    self.workspace_root / "data/historical/historical_binance_btcusdt_15m_q2_2024.parquet",
-                ]
-            )
-        else:
-            candidates.extend(
-                [
-                    self.workspace_root / "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
-                    self.workspace_root / "data/historical/historical_binance_btcusdt_1h_jan_2025.parquet",
-                ]
+        if ds_norm.endswith(".parquet") and not effective_src_path:
+            effective_src_path = ds_norm
+        elif (
+            ds_norm == "DS-BTC-1H-Q1-2024"
+            and freq_norm == "15m"
+            and not effective_src_path
+            and intake_manifest is None
+            and intake_manifest_path is None
+            and provenance_sidecar_path is None
+            and attestation is None
+        ):
+            effective_ds_id = "DS-BTC-15M-Q1-2024"
+
+        prov_res = ScientificReadinessEvaluator.verify_historical_dataset_provenance(
+            dataset_id=effective_ds_id,
+            source_path=effective_src_path,
+            record_id=record_id,
+            methodology_id=CANONICAL_MODEL_ID,
+            intake_manifest=intake_manifest,
+            intake_manifest_path=intake_manifest_path,
+            provenance_sidecar_path=provenance_sidecar_path,
+            attestation=attestation,
+            caller_supplied_sha256=caller_supplied_sha256,
+            require_explicit_evidence=require_explicit_evidence,
+            workspace_root=self.workspace_root,
+        )
+
+        if not prov_res.get("is_verified"):
+            return (
+                None,
+                {
+                    "dataset_id": effective_ds_id,
+                    "source_path": prov_res.get("source_path"),
+                    "source_sha256": None,
+                    "is_verified": False,
+                    "verification_status": "UNVERIFIED_HISTORICAL_INPUT",
+                    "provenance_status": prov_res.get("provenance_status", "UNVERIFIED_HISTORICAL_INPUT"),
+                    "provenance_rejection_code": prov_res.get("provenance_rejection_code"),
+                    "trust_progression_state": prov_res.get("trust_progression_state", "UNVERIFIED"),
+                },
+                "UNVERIFIED_HISTORICAL_INPUT",
+                str(
+                    prov_res.get("rejection_reason")
+                    or f"Historical dataset '{effective_ds_id}' provenance could not be verified."
+                ),
             )
 
-        for cand in candidates:
-            if cand.exists() and cand.is_file():
-                raw_bytes = cand.read_bytes()
-                sha = hashlib.sha256(raw_bytes).hexdigest()
-                prov_sidecar = cand.with_name(cand.stem + "_provenance.json")
-                df = pd.read_parquet(cand)
-                if len(df) > MAX_DATASET_ROWS:
-                    df = df.iloc[:MAX_DATASET_ROWS].copy()
-                return (
-                    df,
-                    {
-                        "dataset_id": ds_norm or cand.stem,
-                        "source_path": str(cand.relative_to(self.workspace_root)).replace("\\", "/"),
-                        "source_sha256": sha,
-                        "provenance_sidecar_exists": prov_sidecar.exists(),
-                        "row_count": int(len(df)),
-                        "verification_status": "VERIFIED_AUTHORIZED_PARQUET",
-                    },
-                    None,
-                    None,
-                )
+        resolved_path = Path(prov_res["resolved_path"])
+        df = pd.read_parquet(resolved_path)
+        if len(df) > MAX_DATASET_ROWS:
+            df = df.iloc[:MAX_DATASET_ROWS].copy()
 
         return (
+            df,
+            {
+                "dataset_id": effective_ds_id,
+                "source_path": prov_res["source_path"],
+                "source_sha256": prov_res["source_sha256"],
+                "is_verified": True,
+                "verification_status": "VERIFIED_TRUSTED_PROVENANCE",
+                "provenance_status": "VERIFIED_TRUSTED_PROVENANCE",
+                "provenance_mechanism": prov_res["mechanism"],
+                "verified_key_id": prov_res["verified_key_id"],
+                "source_lineage": prov_res["source_lineage"],
+                "evidence_reference": prov_res["evidence_reference"],
+                "trust_progression_state": "INTEGRITY_VERIFIED",
+                "row_count": int(len(df)),
+            },
             None,
-            {"dataset_id": ds_norm, "verification_status": "MISSING_SOURCE_FILE"},
-            "UNVERIFIED_HISTORICAL_INPUT",
-            f"Authorized offline dataset '{ds_norm}' could not be located or verified.",
+            None,
         )
 
     # ------------------------------------------------------------------
@@ -440,6 +504,14 @@ class WalkForwardResearchLab:
         custom_model_parameters: Optional[Dict[str, Any]] = None,
         custom_df: Optional[pd.DataFrame] = None,
         explicit_splits: Optional[Sequence[Dict[str, Any]]] = None,
+        source_path: Optional[str] = None,
+        intake_manifest: Optional[Dict[str, Any]] = None,
+        intake_manifest_path: Optional[str] = None,
+        provenance_sidecar_path: Optional[str] = None,
+        attestation: Optional[Dict[str, Any]] = None,
+        caller_supplied_sha256: Optional[str] = None,
+        require_explicit_evidence: bool = False,
+        trusted_fixture_context: bool = False,
     ) -> WalkForwardEvaluationReport:
         """Execute chronological walk-forward evaluation under frozen CBE-0.7.0 governance."""
         with resource_governor.ComputationGuard("walk_forward_research_lab_run"):
@@ -499,6 +571,15 @@ class WalkForwardResearchLab:
                 dataset_id=dataset_id,
                 frequency=frequency,
                 custom_df=custom_df,
+                source_path=source_path,
+                record_id=record_id,
+                intake_manifest=intake_manifest,
+                intake_manifest_path=intake_manifest_path,
+                provenance_sidecar_path=provenance_sidecar_path,
+                attestation=attestation,
+                caller_supplied_sha256=caller_supplied_sha256,
+                require_explicit_evidence=require_explicit_evidence,
+                trusted_fixture_context=trusted_fixture_context,
             )
             if df is None or ds_err_code is not None:
                 return self._build_blocked_report(

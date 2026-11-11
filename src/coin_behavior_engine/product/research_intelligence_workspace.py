@@ -1658,24 +1658,30 @@ class ResearchWorkspaceV2Engine:
         gaps_res = cls.get_evidence_gaps(record_id=rec.id).get("gaps", [])
         decision_rep = cls.generate_decision_report(record_id=rec.id).get("report", {})
 
-        # Explicit 4-pillar concept separation required by Section 9
+        # Explicit 4-pillar concept separation required by Section 9 & Trust Closure Section 5
+        prov_meta = stat_res.get("source_provenance", {})
+        is_prov_verified = bool(prov_meta.get("provenance_verified")) and rec.evidence_status == "VERIFIED_GENUINE"
+        is_art_present = bool(prov_meta.get("source_artifact_exists"))
         concept_separation = {
             "cryptographic_integrity": (
                 "INTEGRITY_VERIFIED"
-                if stat_res.get("source_provenance", {}).get("source_artifact_exists")
-                and rec.evidence_status == "VERIFIED_GENUINE"
-                else "UNVERIFIED_OR_QUARANTINED"
+                if is_prov_verified
+                else ("ARTIFACT_PRESENT" if is_art_present else "UNVERIFIED_OR_QUARANTINED")
             ),
             "methodological_validity": (
-                "FROZEN_CBE_0_7_0_COMPLIANT"
+                "METHODOLOGY_VALIDATED"
                 if wf_res.get("status") == "EVALUATION_COMPLETED"
                 else "METHODOLOGY_BLOCKED"
             ),
-            "statistical_validity": stat_res.get("finding_classification", "INSUFFICIENT_EVIDENCE"),
+            "statistical_validity": (
+                "STATISTICALLY_SUPPORTED"
+                if stat_res.get("finding_classification")
+                in ("CONFIRMATORY_FINDING", "INDEPENDENTLY_VALIDATED_FINDING")
+                else stat_res.get("finding_classification", "INSUFFICIENT_EVIDENCE")
+            ),
             "independent_validation": (
-                "INDEPENDENT_REPLICATION"
-                if rec.replication_verdict == "OUT_OF_SAMPLE_REPLICATED"
-                and rec.evidence_status == "VERIFIED_GENUINE"
+                "INDEPENDENT_DATASET_VALIDATION"
+                if is_prov_verified and rec.replication_verdict == "OUT_OF_SAMPLE_REPLICATED"
                 else "INDEPENDENCE_NOT_ESTABLISHED"
             ),
         }
