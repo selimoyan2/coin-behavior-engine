@@ -1,0 +1,160 @@
+{
+  "timestamp_utc": "2026-11-11T02:08:57.218813+00:00",
+  "all_records_consistent": true,
+  "records": [
+    {
+      "record_id": "RES-FUND-01",
+      "dataset_id": "BTCUSDT-PERP-FUNDING-2022-2026",
+      "scientific_readiness_dimension_status": "UNVERIFIED",
+      "evidence_graph_dataset_node_state": "REGISTERED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: UNVERIFIED (MISSING_AUTHENTICATED_PROVENANCE). Veri seti 'BTCUSDT-PERP-FUNDING-2022-2026' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı bilimsel soykütüğü kanıtlamaz. Kaynak dosya ('data/reports/sprint09_38_funding_predictability_report.json') bütünlük durumu: VERIFIED (SHA-256: 5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a).",
+      "cross_module_consistent": true
+    },
+    {
+      "record_id": "RES-REGIME-01",
+      "dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
+      "scientific_readiness_dimension_status": "UNVERIFIED",
+      "evidence_graph_dataset_node_state": "REGISTERED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: UNVERIFIED (MISSING_AUTHENTICATED_PROVENANCE). Veri seti 'BTCUSDT-SPOT-1H-2022-2026' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı bilimsel soykütüğü kanıtlamaz. Kaynak dosya ('data/reports/sprint09_27_validation_and_holdout_report.json') bütünlük durumu: VERIFIED (SHA-256: 14ae2c3a0ebcbbf8e96a50ad5ada06a5ce2b0fc22082f3a225d9becfcee4cebf).",
+      "cross_module_consistent": true
+    },
+    {
+      "record_id": "RES-ANALOG-01",
+      "dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
+      "scientific_readiness_dimension_status": "UNVERIFIED",
+      "evidence_graph_dataset_node_state": "REGISTERED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: UNVERIFIED (MISSING_AUTHENTICATED_PROVENANCE). Veri seti 'BTCUSDT-SPOT-1H-2022-2026' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı bilimsel soykütüğü kanıtlamaz. Kaynak dosya ('research_outputs/research_report_29_pattern_similarity.json') bütünlük durumu: VERIFIED (SHA-256: 337b19b98c381d0cac508161efa9bb776826cd8708bd2d64d1b9e8779f8b6847).",
+      "cross_module_consistent": true
+    },
+    {
+      "record_id": "RES-MACRO-01",
+      "dataset_id": "US-MACRO-EVENTS-2022-2026",
+      "scientific_readiness_dimension_status": "UNVERIFIED",
+      "evidence_graph_dataset_node_state": "REGISTERED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: UNVERIFIED (MISSING_AUTHENTICATED_PROVENANCE). Veri seti 'US-MACRO-EVENTS-2022-2026' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı bilimsel soykütüğü kanıtlamaz. Kaynak dosya ('research_outputs/experiment_cpi_volatility.cbe-hyp.json') bütünlük durumu: VERIFIED (SHA-256: 3cda89064b6837ef23d76c6d220d3998ebfc5a3f7261d3afc6ea68c29a4bf7ac).",
+      "cross_module_consistent": true
+    },
+    {
+      "record_id": "RES-DURABILITY-01",
+      "dataset_id": "CBE-SYSTEM-AUDIT-LOGS",
+      "scientific_readiness_dimension_status": "UNVERIFIED",
+      "evidence_graph_dataset_node_state": "REGISTERED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: UNVERIFIED (MISSING_AUTHENTICATED_PROVENANCE). Veri seti 'CBE-SYSTEM-AUDIT-LOGS' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı bilimsel soykütüğü kanıtlamaz. Kaynak dosya ('research_outputs/sprint23_delivery/persistent_volume_verification.json') bütünlük durumu: VERIFIED (SHA-256: cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c).",
+      "cross_module_consistent": true
+    },
+    {
+      "record_id": "RES-CRYPTO-01",
+      "dataset_id": "BTCUSDT-OCTOBER-2026-INTAKE",
+      "scientific_readiness_dimension_status": "BLOCKED",
+      "evidence_graph_dataset_node_state": "BLOCKED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: BLOCKED (DATASET_QUARANTINED). Veri seti 'BTCUSDT-OCTOBER-2026-INTAKE' sentetik anomaliler veya karantina nedeniyle bloke edilmiştir. Kaynak dosya ('data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet') bütünlük durumu: VERIFIED (SHA-256: 05874e97d06db21fad8e7583b5b8038141d4e3dcfbabf68238fca52f5efab718).",
+      "cross_module_consistent": true
+    },
+    {
+      "record_id": "RLIB-c5730b081950",
+      "dataset_id": "BTCUSDT-1h",
+      "scientific_readiness_dimension_status": "UNVERIFIED",
+      "evidence_graph_dataset_node_state": "REGISTERED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: UNVERIFIED (MISSING_AUTHENTICATED_PROVENANCE). Veri seti 'BTCUSDT-1h' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı bilimsel soykütüğü kanıtlamaz. Kaynak dosya ('data/research_library/RLIB-c5730b081950.json') bütünlük durumu: VERIFIED (SHA-256: 7d3a39550d5fa8754dd3d580855da42bb0c2871e261d5891ea2ba11be0994af5).",
+      "cross_module_consistent": true
+    },
+    {
+      "record_id": "RLIB-ee060f623584",
+      "dataset_id": "BTCUSDT-1h",
+      "scientific_readiness_dimension_status": "UNVERIFIED",
+      "evidence_graph_dataset_node_state": "REGISTERED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: UNVERIFIED (MISSING_AUTHENTICATED_PROVENANCE). Veri seti 'BTCUSDT-1h' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı bilimsel soykütüğü kanıtlamaz. Kaynak dosya ('data/research_library/RLIB-ee060f623584.json') bütünlük durumu: VERIFIED (SHA-256: 1af6c92f6e2f0b3c01ab7f7227fe88826f4986940e49074b2015716541b7be01).",
+      "cross_module_consistent": true
+    },
+    {
+      "record_id": "RLIB-f9ddf66ba096",
+      "dataset_id": "BTCUSDT-1h",
+      "scientific_readiness_dimension_status": "UNVERIFIED",
+      "evidence_graph_dataset_node_state": "REGISTERED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: UNVERIFIED (MISSING_AUTHENTICATED_PROVENANCE). Veri seti 'BTCUSDT-1h' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı bilimsel soykütüğü kanıtlamaz. Kaynak dosya ('data/research_library/RLIB-f9ddf66ba096.json') bütünlük durumu: VERIFIED (SHA-256: 8b9c1018b20224a85c136e5c68cd759b05c7fdceea7b0ace549891a5163f4e22).",
+      "cross_module_consistent": true
+    },
+    {
+      "record_id": "RLIB-03c6ea53cf3d",
+      "dataset_id": "BTCUSDT-1h",
+      "scientific_readiness_dimension_status": "UNVERIFIED",
+      "evidence_graph_dataset_node_state": "REGISTERED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: UNVERIFIED (MISSING_AUTHENTICATED_PROVENANCE). Veri seti 'BTCUSDT-1h' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı bilimsel soykütüğü kanıtlamaz. Kaynak dosya ('/app/data/prospective/research_library/RLIB-03c6ea53cf3d.json') bütünlük durumu: VERIFIED (SHA-256: de76c8e29242081eaa85f41fa800ce144fcb91e41107d7289ab4cbeb04244274).",
+      "cross_module_consistent": true
+    },
+    {
+      "record_id": "RLIB-07c7c65c7e91",
+      "dataset_id": "BTCUSDT-1h",
+      "scientific_readiness_dimension_status": "UNVERIFIED",
+      "evidence_graph_dataset_node_state": "REGISTERED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: UNVERIFIED (MISSING_AUTHENTICATED_PROVENANCE). Veri seti 'BTCUSDT-1h' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı bilimsel soykütüğü kanıtlamaz. Kaynak dosya ('/app/data/prospective/research_library/RLIB-07c7c65c7e91.json') bütünlük durumu: VERIFIED (SHA-256: 3ca1b02a8b185fcd12554fead907099da6bf6c54dee6bd5e58f1b18f038dcd2e).",
+      "cross_module_consistent": true
+    },
+    {
+      "record_id": "RLIB-2f30980866e9",
+      "dataset_id": "BTCUSDT-1h",
+      "scientific_readiness_dimension_status": "UNVERIFIED",
+      "evidence_graph_dataset_node_state": "REGISTERED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: UNVERIFIED (MISSING_AUTHENTICATED_PROVENANCE). Veri seti 'BTCUSDT-1h' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı bilimsel soykütüğü kanıtlamaz. Kaynak dosya ('/app/data/prospective/research_library/RLIB-2f30980866e9.json') bütünlük durumu: VERIFIED (SHA-256: dd211e7f6b3e01fba967f9f26e3b377aec84fccafadf6721ed3c590830d63ff8).",
+      "cross_module_consistent": true
+    },
+    {
+      "record_id": "RLIB-3c104ed0c333",
+      "dataset_id": "BTCUSDT-1h",
+      "scientific_readiness_dimension_status": "UNVERIFIED",
+      "evidence_graph_dataset_node_state": "REGISTERED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: UNVERIFIED (MISSING_AUTHENTICATED_PROVENANCE). Veri seti 'BTCUSDT-1h' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı bilimsel soykütüğü kanıtlamaz. Kaynak dosya ('/app/data/prospective/research_library/RLIB-3c104ed0c333.json') bütünlük durumu: VERIFIED (SHA-256: 65667ba31904815d77513d51184cafb99503686c57d3e5bfa39752f4d24e0c6c).",
+      "cross_module_consistent": true
+    },
+    {
+      "record_id": "RLIB-669a3bc52ddf",
+      "dataset_id": "BTCUSDT-1h",
+      "scientific_readiness_dimension_status": "UNVERIFIED",
+      "evidence_graph_dataset_node_state": "REGISTERED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: UNVERIFIED (MISSING_AUTHENTICATED_PROVENANCE). Veri seti 'BTCUSDT-1h' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı bilimsel soykütüğü kanıtlamaz. Kaynak dosya ('/app/data/prospective/research_library/RLIB-669a3bc52ddf.json') bütünlük durumu: VERIFIED (SHA-256: 413ebd1e48dcfe8ddc963376dcb3bef47782cb6283a2c7a1b976139cad45e1c1).",
+      "cross_module_consistent": true
+    },
+    {
+      "record_id": "RLIB-7b0cb4781b20",
+      "dataset_id": "BTCUSDT-1h",
+      "scientific_readiness_dimension_status": "UNVERIFIED",
+      "evidence_graph_dataset_node_state": "REGISTERED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: UNVERIFIED (MISSING_AUTHENTICATED_PROVENANCE). Veri seti 'BTCUSDT-1h' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı bilimsel soykütüğü kanıtlamaz. Kaynak dosya ('/app/data/prospective/research_library/RLIB-7b0cb4781b20.json') bütünlük durumu: VERIFIED (SHA-256: 3fc10ff1eadb88801187df560c4dc29956142d532e636f6d53e28480828e4d15).",
+      "cross_module_consistent": true
+    },
+    {
+      "record_id": "RLIB-dbb10adc0f69",
+      "dataset_id": "BTCUSDT-1h",
+      "scientific_readiness_dimension_status": "UNVERIFIED",
+      "evidence_graph_dataset_node_state": "REGISTERED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: UNVERIFIED (MISSING_AUTHENTICATED_PROVENANCE). Veri seti 'BTCUSDT-1h' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı bilimsel soykütüğü kanıtlamaz. Kaynak dosya ('/app/data/prospective/research_library/RLIB-dbb10adc0f69.json') bütünlük durumu: VERIFIED (SHA-256: 4f017576070ac3cd1e710ee1abec853eb547020ee6eb3a4acabd87fa65f80815).",
+      "cross_module_consistent": true
+    },
+    {
+      "record_id": "RLIB-f93d9176002d",
+      "dataset_id": "BTCUSDT-1h",
+      "scientific_readiness_dimension_status": "UNVERIFIED",
+      "evidence_graph_dataset_node_state": "REGISTERED",
+      "evidence_gap_analyzer_missing_provenance_emitted": true,
+      "decision_report_sec04_summary": "Veri Seti Soykütüğü Durumu: UNVERIFIED (MISSING_AUTHENTICATED_PROVENANCE). Veri seti 'BTCUSDT-1h' kayıtlıdır ve kaynak dosya mevcuttur ancak kriptografik olarak doğrulanmış soykütüğü tasdiki veya imzalı kabul manifestosu bulunmamaktadır; yalnızca dizin/dosya varlığı bilimsel soykütüğü kanıtlamaz. Kaynak dosya ('/app/data/prospective/research_library/RLIB-f93d9176002d.json') bütünlük durumu: VERIFIED (SHA-256: 9ca88e77b131a981d0237b105caff21f7a3976311bbe7e98472280ab3e28bcb9).",
+      "cross_module_consistent": true
+    }
+  ],
+  "priority_queue_tasks_count": 17
+}

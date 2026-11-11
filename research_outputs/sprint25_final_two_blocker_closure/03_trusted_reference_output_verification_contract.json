@@ -1,0 +1,60 @@
+{
+  "contract_id": "CBE-SPRINT25-INDEPENDENT-REFERENCE-VALIDATION-CONTRACT-V2",
+  "timestamp_utc": "2026-11-11T02:08:57.218813+00:00",
+  "enforced_in_module": "src/coin_behavior_engine/product/reproducibility_lab.py",
+  "validator_method": "ReproducibilityLabEngine.validate_reference_provenance",
+  "computed_to_reference_fallbacks_removed": [
+    "PROC_PARKINSON_VOLATILITY: raw_json.get('parkinson_volatility', round(computed_annualized, 4))",
+    "PROC_FUNDING_RATE_SUMMARY: be.get('observed_mean_funding_bps', mean_bps) & median/min/max/neg_count fallbacks",
+    "PROC_REGIME_STABILITY_EVAL: hm.get('direction_match_rate', match_rate) & audit.get('direct_transition_rate_pct', computed_rate_pct)",
+    "PROC_DTW_PATTERN_DISTANCE: raw_json.get('dtw_distance', computed_dtw) & cand.get('composite_distance', computed_comp_dist)",
+    "PROC_STORAGE_VERIFICATION: neg_tests.get('total_negative_tests', recomputed_count) & historical report self-comparison"
+  ],
+  "blocked_reasons": [
+    "MISSING_TRUSTED_REFERENCE",
+    "UNVERIFIED_REFERENCE_PROVENANCE",
+    "HISTORICAL_REPORT_INSPECTION_ONLY",
+    "MISSING_RAW_OBSERVATIONS"
+  ],
+  "reference_gate_rules": {
+    "must_predate_reproduction_attempt": true,
+    "reject_created_during_reproduction_attempt": true,
+    "require_record_id_binding": true,
+    "require_dataset_id_binding": true,
+    "require_procedure_methodology_compatibility": true,
+    "reject_untrusted_caller_override_reference": true,
+    "require_raw_mountinfo_for_storage_reexecution": true
+  },
+  "trusted_artifact_registry": {
+    "data/reports/sprint09_38_funding_predictability_report.json": {
+      "expected_sha256": "5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a",
+      "provenance_source": "data/reports/canonical_research_evidence_registry.json",
+      "manifest_version": "SPRINT_09.38_CANONICAL"
+    },
+    "data/reports/sprint09_27_validation_and_holdout_report.json": {
+      "expected_sha256": "14ae2c3a0ebcbbf8e96a50ad5ada06a5ce2b0fc22082f3a225d9becfcee4cebf",
+      "provenance_source": "policy_freeze_manifest.json",
+      "manifest_version": "1.0.0-sprint11.15"
+    },
+    "research_outputs/research_report_29_pattern_similarity.json": {
+      "expected_sha256": "337b19b98c381d0cac508161efa9bb776826cd8708bd2d64d1b9e8779f8b6847",
+      "provenance_source": "research_outputs/delivery_manifest_sprint16.json",
+      "manifest_version": "cbe-manifest-v2-7ed2e950dec3"
+    },
+    "research_outputs/experiment_cpi_volatility.cbe-hyp.json": {
+      "expected_sha256": "3cda89064b6837ef23d76c6d220d3998ebfc5a3f7261d3afc6ea68c29a4bf7ac",
+      "provenance_source": "research_outputs/sprint18_delivery/delivery_manifest.json",
+      "manifest_version": "CBE-HYPOTHESIS-PKG-1.0.0"
+    },
+    "research_outputs/sprint23_delivery/persistent_volume_verification.json": {
+      "expected_sha256": "cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c",
+      "provenance_source": "research_outputs/sprint23_delivery/delivery_manifest.json",
+      "manifest_version": "CBE-VOLUME-VERIFICATION-1.0.0"
+    },
+    "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet": {
+      "expected_sha256": "05874e97d06db21fad8e7583b5b8038141d4e3dcfbabf68238fca52f5efab718",
+      "provenance_source": "research_outputs/product_acceleration_09_october_intake.json",
+      "manifest_version": "OCTOBER_2026_INTAKE_QUARANTINE"
+    }
+  }
+}

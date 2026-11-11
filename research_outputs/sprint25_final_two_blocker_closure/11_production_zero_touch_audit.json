@@ -1,0 +1,14 @@
+{
+  "timestamp_utc": "2026-11-11T02:08:57.218813+00:00",
+  "production_policy": "STRICT_ZERO_TOUCH",
+  "production_domain": "coin.ozelweb.com.tr",
+  "production_coolify_service": "6t63aehpaw0cw1bbt4zcm09g",
+  "active_production_container_id": "eb37be2f7771105f9a8e39f92106c90bb92189042a750b1288013803a9f2f17f",
+  "active_production_container_name": "/6t63aehpaw0cw1bbt4zcm09g-20261111T011215",
+  "status": "running",
+  "started_at_utc": "2026-11-11T01:14:28.328120459Z",
+  "restart_count": 0,
+  "staging_isolation_verified": true,
+  "staging_service_targeted_exclusively": "dzzfws54by1whlbq6fk4ywut (127.0.0.1:18080 -> 39429f0e2c92)",
+  "production_mutations_during_staging_deploy": 0
+}

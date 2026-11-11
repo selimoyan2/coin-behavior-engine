@@ -1,0 +1,255 @@
+{
+  "timestamp_utc": "2026-11-11T02:08:57.218813+00:00",
+  "executions": [
+    {
+      "run_id": "REP-RUN-D17ED4B5344E",
+      "record_id": "RES-FUND-01",
+      "procedure_name": "PROC_FUNDING_RATE_SUMMARY",
+      "procedure_version": "1.1.0",
+      "status": "OUTPUTS_MATCHED",
+      "is_independent_replication": false,
+      "source_dataset_id": "BTCUSDT-PERP-FUNDING-2022-2026",
+      "source_artifact_path": "data/reports/sprint09_38_funding_predictability_report.json",
+      "source_artifact_sha256": "5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a",
+      "start_time_utc": "2026-11-11T02:08:57.659205+00:00",
+      "end_time_utc": "2026-11-11T02:08:57.673577+00:00",
+      "execution_duration_ms": 14.802800003963057,
+      "execution_environment": {
+        "python_version": "3.11.16",
+        "platform": "Windows-10-10.0.26300-SP0",
+        "cpu_architecture": "AMD64",
+        "process_id": 25872,
+        "canonical_model": "CBE-0.7.0"
+      },
+      "dependency_versions": {
+        "python": "3.11.16",
+        "hashlib": "builtin",
+        "json": "builtin",
+        "math": "builtin"
+      },
+      "reference_outputs": {
+        "mean_funding_bps": 1.0103,
+        "negative_funding_count": 103,
+        "observed_median_funding_bps": 1.0,
+        "observed_min_funding_bps": -1.1235,
+        "observed_max_funding_bps": 8.8148,
+        "sample_size": 1185
+      },
+      "reproduced_outputs": {
+        "mean_funding_bps": 1.0103,
+        "negative_funding_count": 103,
+        "observed_median_funding_bps": 1.0,
+        "observed_min_funding_bps": -1.1235,
+        "observed_max_funding_bps": 8.8148,
+        "sample_size": 1185
+      },
+      "reference_output_sha256": "a2ca2a8dc0c448fe6e80d175f92597f51ef6b94606d6694529de5393b16e8654",
+      "reproduced_output_sha256": "a2ca2a8dc0c448fe6e80d175f92597f51ef6b94606d6694529de5393b16e8654",
+      "comparison_details": {
+        "matched": true,
+        "numerical_tolerance": 0.0001,
+        "discrepancies": {},
+        "governance_notice_tr": "Yerel yeniden çalıştırma (re-execution) başarıyla tamamlandı. Bu sonuç bağımsız replikasyon teşkil ETMEZ.",
+        "governance_notice_en": "Local re-execution completed. This does NOT constitute independent replication."
+      },
+      "error_message_tr": null,
+      "error_message_en": null
+    },
+    {
+      "run_id": "REP-RUN-04D5D1CB00D1",
+      "record_id": "RES-REGIME-01",
+      "procedure_name": "PROC_REGIME_STABILITY_EVAL",
+      "procedure_version": "1.0.0",
+      "status": "OUTPUTS_MATCHED",
+      "is_independent_replication": false,
+      "source_dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
+      "source_artifact_path": "data/reports/sprint09_27_validation_and_holdout_report.json",
+      "source_artifact_sha256": "14ae2c3a0ebcbbf8e96a50ad5ada06a5ce2b0fc22082f3a225d9becfcee4cebf",
+      "start_time_utc": "2026-11-11T02:08:57.673577+00:00",
+      "end_time_utc": "2026-11-11T02:08:59.241154+00:00",
+      "execution_duration_ms": 1566.8095000000903,
+      "execution_environment": {
+        "python_version": "3.11.16",
+        "platform": "Windows-10-10.0.26300-SP0",
+        "cpu_architecture": "AMD64",
+        "process_id": 25872,
+        "canonical_model": "CBE-0.7.0"
+      },
+      "dependency_versions": {
+        "python": "3.11.16",
+        "hashlib": "builtin",
+        "json": "builtin",
+        "math": "builtin"
+      },
+      "reference_outputs": {
+        "direct_transitions_observed_count": 5,
+        "direct_transitions_total_evaluated": 822,
+        "direct_transition_rate_pct": 0.61,
+        "total_bars_evaluated": 8736,
+        "model_version": "CBE-0.7.0"
+      },
+      "reproduced_outputs": {
+        "direct_transitions_observed_count": 5,
+        "direct_transitions_total_evaluated": 822,
+        "direct_transition_rate_pct": 0.61,
+        "total_bars_evaluated": 8736,
+        "model_version": "CBE-0.7.0"
+      },
+      "reference_output_sha256": "6bae0a7dd8638a4e24028c836ef95ac42bdb665c11d95fad8674280169759d47",
+      "reproduced_output_sha256": "6bae0a7dd8638a4e24028c836ef95ac42bdb665c11d95fad8674280169759d47",
+      "comparison_details": {
+        "matched": true,
+        "numerical_tolerance": 0.0001,
+        "discrepancies": {},
+        "governance_notice_tr": "Yerel yeniden çalıştırma (re-execution) başarıyla tamamlandı. Bu sonuç bağımsız replikasyon teşkil ETMEZ.",
+        "governance_notice_en": "Local re-execution completed. This does NOT constitute independent replication."
+      },
+      "error_message_tr": null,
+      "error_message_en": null
+    },
+    {
+      "run_id": "REP-RUN-01AD8AF139B2",
+      "record_id": "RES-ANALOG-01",
+      "procedure_name": "PROC_DTW_PATTERN_DISTANCE",
+      "procedure_version": "1.0.0",
+      "status": "OUTPUTS_MATCHED",
+      "is_independent_replication": false,
+      "source_dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
+      "source_artifact_path": "research_outputs/research_report_29_pattern_similarity.json",
+      "source_artifact_sha256": "337b19b98c381d0cac508161efa9bb776826cd8708bd2d64d1b9e8779f8b6847",
+      "start_time_utc": "2026-11-11T02:08:59.241154+00:00",
+      "end_time_utc": "2026-11-11T02:08:59.241472+00:00",
+      "execution_duration_ms": 0.98230000003241,
+      "execution_environment": {
+        "python_version": "3.11.16",
+        "platform": "Windows-10-10.0.26300-SP0",
+        "cpu_architecture": "AMD64",
+        "process_id": 25872,
+        "canonical_model": "CBE-0.7.0"
+      },
+      "dependency_versions": {
+        "python": "3.11.16",
+        "hashlib": "builtin",
+        "json": "builtin",
+        "math": "builtin"
+      },
+      "reference_outputs": {
+        "composite_distance": 0.0692,
+        "similarity_score_pct": 93.08,
+        "components_evaluated_count": 5
+      },
+      "reproduced_outputs": {
+        "composite_distance": 0.0692,
+        "similarity_score_pct": 93.08,
+        "components_evaluated_count": 5
+      },
+      "reference_output_sha256": "5962c8dec0cfc782f09432ee27daf4ffc9ab8c32a0a78fbe16139417f90131c0",
+      "reproduced_output_sha256": "5962c8dec0cfc782f09432ee27daf4ffc9ab8c32a0a78fbe16139417f90131c0",
+      "comparison_details": {
+        "matched": true,
+        "numerical_tolerance": 0.0001,
+        "discrepancies": {},
+        "governance_notice_tr": "Yerel yeniden çalıştırma (re-execution) başarıyla tamamlandı. Bu sonuç bağımsız replikasyon teşkil ETMEZ.",
+        "governance_notice_en": "Local re-execution completed. This does NOT constitute independent replication."
+      },
+      "error_message_tr": null,
+      "error_message_en": null
+    },
+    {
+      "run_id": "REP-RUN-8E863C77DCA3",
+      "record_id": "RES-DURABILITY-01",
+      "procedure_name": "PROC_STORAGE_VERIFICATION",
+      "procedure_version": "1.0.0",
+      "status": "REPRODUCTION_BLOCKED",
+      "is_independent_replication": false,
+      "source_dataset_id": "CBE-SYSTEM-AUDIT-LOGS",
+      "source_artifact_path": "research_outputs/sprint23_delivery/persistent_volume_verification.json",
+      "source_artifact_sha256": "cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c",
+      "start_time_utc": "2026-11-11T02:08:59.241472+00:00",
+      "end_time_utc": "2026-11-11T02:08:59.241472+00:00",
+      "execution_duration_ms": 0.2583999958005734,
+      "execution_environment": {
+        "python_version": "3.11.16",
+        "platform": "Windows-10-10.0.26300-SP0",
+        "cpu_architecture": "AMD64",
+        "process_id": 25872,
+        "canonical_model": "CBE-0.7.0"
+      },
+      "dependency_versions": {
+        "python": "3.11.16",
+        "hashlib": "builtin",
+        "json": "builtin",
+        "math": "builtin"
+      },
+      "reference_outputs": {},
+      "reproduced_outputs": {},
+      "reference_output_sha256": "",
+      "reproduced_output_sha256": "",
+      "comparison_details": {
+        "blocked_reason": "HISTORICAL_REPORT_INSPECTION_ONLY: Historical report inspection only; raw kernel mountinfo_content input is required to re-execute StorageDurabilityEngine verification.",
+        "audit_mode": "HISTORICAL_REPORT_INSPECTION",
+        "storage_test_reexecuted": false
+      },
+      "error_message_tr": "Tekrarlama engellendi: HISTORICAL_REPORT_INSPECTION_ONLY: Historical report inspection only; raw kernel mountinfo_content input is required to re-execute StorageDurabilityEngine verification.",
+      "error_message_en": "Reproduction blocked: HISTORICAL_REPORT_INSPECTION_ONLY: Historical report inspection only; raw kernel mountinfo_content input is required to re-execute StorageDurabilityEngine verification."
+    },
+    {
+      "run_id": "REP-RUN-BE1BB158D3AD",
+      "record_id": "RES-DURABILITY-01",
+      "procedure_name": "PROC_STORAGE_VERIFICATION",
+      "procedure_version": "1.0.0",
+      "status": "OUTPUTS_MATCHED",
+      "is_independent_replication": false,
+      "source_dataset_id": "CBE-SYSTEM-AUDIT-LOGS",
+      "source_artifact_path": "research_outputs/sprint23_delivery/persistent_volume_verification.json",
+      "source_artifact_sha256": "cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c",
+      "start_time_utc": "2026-11-11T02:08:59.242474+00:00",
+      "end_time_utc": "2026-11-11T02:08:59.244004+00:00",
+      "execution_duration_ms": 2.0377000037115067,
+      "execution_environment": {
+        "python_version": "3.11.16",
+        "platform": "Windows-10-10.0.26300-SP0",
+        "cpu_architecture": "AMD64",
+        "process_id": 25872,
+        "canonical_model": "CBE-0.7.0"
+      },
+      "dependency_versions": {
+        "python": "3.11.16",
+        "hashlib": "builtin",
+        "json": "builtin",
+        "math": "builtin"
+      },
+      "reference_outputs": {
+        "authorized_volume_id": "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f",
+        "destination": "/app/data/prospective",
+        "filesystem": "ext4",
+        "underlying_device": "/dev/sda1",
+        "is_tmpfs": false,
+        "is_overlay": false,
+        "is_writable": true,
+        "durability_verdict": "VERIFIED_DURABLE"
+      },
+      "reproduced_outputs": {
+        "authorized_volume_id": "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f",
+        "destination": "/app/data/prospective",
+        "filesystem": "ext4",
+        "underlying_device": "/dev/sda1",
+        "is_tmpfs": false,
+        "is_overlay": false,
+        "is_writable": true,
+        "durability_verdict": "VERIFIED_DURABLE"
+      },
+      "reference_output_sha256": "44868042eeff131ec809239d2fd999a0b6eb17035b4e4be17ac334a029cd4b25",
+      "reproduced_output_sha256": "44868042eeff131ec809239d2fd999a0b6eb17035b4e4be17ac334a029cd4b25",
+      "comparison_details": {
+        "matched": true,
+        "numerical_tolerance": 0.0001,
+        "discrepancies": {},
+        "governance_notice_tr": "Yerel yeniden çalıştırma (re-execution) başarıyla tamamlandı. Bu sonuç bağımsız replikasyon teşkil ETMEZ.",
+        "governance_notice_en": "Local re-execution completed. This does NOT constitute independent replication."
+      },
+      "error_message_tr": null,
+      "error_message_en": null
+    }
+  ]
+}

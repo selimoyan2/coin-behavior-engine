@@ -1,0 +1,81 @@
+{
+  "timestamp_utc": "2026-11-11T02:08:57.218813+00:00",
+  "staging_host": "srv1114257 (168.231.125.238:18080)",
+  "implementation_commit_sha": "e69d5d1204f8bc61c969c2c1de77fdf4b048f727",
+  "staging_container_id": "39429f0e2c92",
+  "staging_image_tag": "cbe-market-intelligence:sprint25-decision-intel-e69d5d1",
+  "staging_image_id": "sha256:1f61a461a3e1e1cb29f594ca91ce88d2d85d0f156ba857d15486f931e87dc2f9",
+  "probe_suites_passed": 10,
+  "probe_suites_failed": 0,
+  "endpoints_verified": {
+    "health": {
+      "status": 200,
+      "model_version": "CBE-0.7.0",
+      "model_status": "FROZEN"
+    },
+    "ready": {
+      "status": 200,
+      "canonical_model_status": "STRICTLY_FROZEN",
+      "governance_decision": "TECHNICAL_NO_GO",
+      "live_order_execution": "PERMANENTLY_PROHIBITED"
+    },
+    "overview": {
+      "status": 200,
+      "decision_intelligence": {
+        "graph_nodes_count": 41,
+        "graph_edges_count": 40,
+        "missing_links_count": 24,
+        "total_gaps_count": 25,
+        "critical_gaps_count": 6,
+        "ready_for_review_count": 0,
+        "reproducible_procedures_count": 5
+      }
+    },
+    "evidence_graph": {
+      "status": 200,
+      "node_count": 41,
+      "edge_count": 40,
+      "missing_link_count": 24
+    },
+    "scientific_readiness": {
+      "status": 200,
+      "scorecard_count": 6,
+      "sample_scorecard": {
+        "record_id": "RES-FUND-01",
+        "heuristic_readiness_index": 70.0,
+        "overall_verdict": "INSUFFICIENT_EVIDENCE",
+        "critical_gates_passed": 4,
+        "total_critical_gates": 6
+      }
+    },
+    "evidence_gaps": {
+      "status": 200,
+      "total_gaps": 25
+    },
+    "research_priorities": {
+      "status": 200,
+      "task_count": 6,
+      "top_rank_score": 92.5
+    },
+    "reproducibility": {
+      "status": 200,
+      "procedure_count": 5,
+      "execution_test": {
+        "status": 200,
+        "provenance_status": "OUTPUTS_MATCHED",
+        "independent_replication_flag": false,
+        "run_id": "REP-RUN-959D16CA4F2E"
+      }
+    },
+    "decision_reports": {
+      "status_json": 200,
+      "status_html": 200,
+      "html_size_bytes": 5917,
+      "record_id": "RES-FUND-01"
+    },
+    "negative_security_check": {
+      "status": 200,
+      "rejection_response": "REPRODUCTION_BLOCKED"
+    }
+  }
+}

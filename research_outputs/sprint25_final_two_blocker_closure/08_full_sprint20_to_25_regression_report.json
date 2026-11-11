@@ -1,0 +1,83 @@
+{
+  "timestamp_utc": "2026-11-11T02:08:57.218813+00:00",
+  "command": ".\\.venv\\Scripts\\python.exe -m pytest tests/test_sprint_product_acceleration_20.py ... tests/test_sprint_product_acceleration_25.py -q",
+  "total_suites": 14,
+  "total_collected": 380,
+  "total_passed": 380,
+  "total_failed": 0,
+  "total_skipped": 0,
+  "total_errors": 0,
+  "duration_seconds": 133.79,
+  "suites": [
+    {
+      "file": "tests/test_sprint_product_acceleration_20.py",
+      "passed": 14,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_21.py",
+      "passed": 34,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_22.py",
+      "passed": 30,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_22_hardening.py",
+      "passed": 18,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_23.py",
+      "passed": 27,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_23_closure.py",
+      "passed": 25,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_23_correction.py",
+      "passed": 29,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_24.py",
+      "passed": 28,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_24_correction.py",
+      "passed": 19,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_24_final_closure.py",
+      "passed": 20,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_24_two_blocker_closure.py",
+      "passed": 18,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_24_trust_boundary_closure.py",
+      "passed": 31,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_24_cryptographic_hardening.py",
+      "passed": 24,
+      "failed": 0
+    },
+    {
+      "file": "tests/test_sprint_product_acceleration_25.py",
+      "passed": 63,
+      "failed": 0
+    }
+  ]
+}

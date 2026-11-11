@@ -1,0 +1,21 @@
+{
+  "sprint_id": "CBE_SPRINT25_FINAL_TWO_BLOCKER_CLOSURE",
+  "repository": "selimoyan2/coin-behavior-engine",
+  "branch": "main",
+  "verified_starting_head": "6233c21839b93a430023a2e3dcd5a14b9a193710",
+  "historical_report_cited_sha_corrected": {
+    "previously_cited_in_report_text": "6233c21a4f0037a5015b3c58cfa9d3000b0f4fdc",
+    "actual_verified_github_commit": "6233c21839b93a430023a2e3dcd5a14b9a193710",
+    "git_history_rewritten": false
+  },
+  "implementation_commit_sha": "e69d5d1204f8bc61c969c2c1de77fdf4b048f727",
+  "implementation_commit_short": "e69d5d1",
+  "files_modified_in_implementation_commit": [
+    "src/coin_behavior_engine/product/scientific_readiness.py",
+    "src/coin_behavior_engine/product/evidence_graph.py",
+    "src/coin_behavior_engine/product/evidence_gap_analyzer.py",
+    "src/coin_behavior_engine/product/research_decision_reports.py",
+    "src/coin_behavior_engine/product/reproducibility_lab.py",
+    "tests/test_sprint_product_acceleration_25.py"
+  ]
+}

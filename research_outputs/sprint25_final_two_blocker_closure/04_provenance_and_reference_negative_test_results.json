@@ -1,0 +1,158 @@
+{
+  "suite": "SPRINT_25_FINAL_TWO_BLOCKER_NEGATIVE_TESTS",
+  "timestamp_utc": "2026-11-11T02:08:57.218813+00:00",
+  "total_negative_tests": 21,
+  "passed": 21,
+  "failed": 0,
+  "dataset_provenance_negative_tests": [
+    {
+      "id": "PROV-NEG-01",
+      "test": "test_01_existing_directory_with_no_manifest_is_unverified",
+      "expected": "UNVERIFIED",
+      "actual": "UNVERIFIED",
+      "status": "PASSED"
+    },
+    {
+      "id": "PROV-NEG-02",
+      "test": "test_02_existing_raw_file_with_no_trusted_lineage_is_unverified",
+      "expected": "UNVERIFIED",
+      "actual": "UNVERIFIED",
+      "status": "PASSED"
+    },
+    {
+      "id": "PROV-NEG-03",
+      "test": "test_03_forged_attestation_fails_provenance",
+      "expected": "FAILED",
+      "actual": "FAILED",
+      "status": "PASSED"
+    },
+    {
+      "id": "PROV-NEG-04",
+      "test": "test_04_expired_attestation_fails_provenance",
+      "expected": "FAILED",
+      "actual": "FAILED",
+      "status": "PASSED"
+    },
+    {
+      "id": "PROV-NEG-05",
+      "test": "test_05_revoked_signing_key_fails_provenance",
+      "expected": "FAILED",
+      "actual": "FAILED",
+      "status": "PASSED"
+    },
+    {
+      "id": "PROV-NEG-06",
+      "test": "test_06_dataset_id_mismatch_fails_provenance",
+      "expected": "FAILED",
+      "actual": "FAILED",
+      "status": "PASSED"
+    },
+    {
+      "id": "PROV-NEG-07",
+      "test": "test_07_source_sha256_mismatch_fails_provenance",
+      "expected": "FAILED",
+      "actual": "FAILED",
+      "status": "PASSED"
+    },
+    {
+      "id": "PROV-NEG-08",
+      "test": "test_08_missing_physical_source_fails_provenance",
+      "expected": "FAILED",
+      "actual": "FAILED",
+      "status": "PASSED"
+    },
+    {
+      "id": "PROV-NEG-09",
+      "test": "test_09_quarantined_dataset_is_blocked",
+      "expected": "FAILED",
+      "actual": "FAILED",
+      "status": "PASSED"
+    },
+    {
+      "id": "PROV-NEG-10",
+      "test": "test_10_source_mutation_after_verification_invalidates_provenance",
+      "expected": "FAILED",
+      "actual": "FAILED",
+      "status": "PASSED"
+    }
+  ],
+  "independent_reference_negative_tests": [
+    {
+      "id": "REF-NEG-01",
+      "test": "test_neg_01_missing_reference_blocks_reproduction",
+      "expected": "REPRODUCTION_BLOCKED (MISSING_TRUSTED_REFERENCE)",
+      "actual": "REPRODUCTION_BLOCKED (MISSING_TRUSTED_REFERENCE)",
+      "status": "PASSED"
+    },
+    {
+      "id": "REF-NEG-02",
+      "test": "test_neg_02_reference_with_missing_provenance_blocks_reproduction",
+      "expected": "REPRODUCTION_BLOCKED (UNVERIFIED_REFERENCE_PROVENANCE)",
+      "actual": "REPRODUCTION_BLOCKED (UNVERIFIED_REFERENCE_PROVENANCE)",
+      "status": "PASSED"
+    },
+    {
+      "id": "REF-NEG-03",
+      "test": "test_neg_03_reference_from_another_dataset_blocks_reproduction",
+      "expected": "REPRODUCTION_BLOCKED (UNVERIFIED_REFERENCE_PROVENANCE)",
+      "actual": "REPRODUCTION_BLOCKED (UNVERIFIED_REFERENCE_PROVENANCE)",
+      "status": "PASSED"
+    },
+    {
+      "id": "REF-NEG-04",
+      "test": "test_neg_04_reference_from_another_methodology_blocks_reproduction",
+      "expected": "REPRODUCTION_BLOCKED (UNVERIFIED_REFERENCE_PROVENANCE)",
+      "actual": "REPRODUCTION_BLOCKED (UNVERIFIED_REFERENCE_PROVENANCE)",
+      "status": "PASSED"
+    },
+    {
+      "id": "REF-NEG-05",
+      "test": "test_neg_05_reference_created_during_same_attempt_blocks_reproduction",
+      "expected": "REPRODUCTION_BLOCKED (UNVERIFIED_REFERENCE_PROVENANCE)",
+      "actual": "REPRODUCTION_BLOCKED (UNVERIFIED_REFERENCE_PROVENANCE)",
+      "status": "PASSED"
+    },
+    {
+      "id": "REF-NEG-06",
+      "test": "test_neg_06_caller_supplied_untrusted_override_blocks_reproduction",
+      "expected": "REPRODUCTION_BLOCKED (UNVERIFIED_REFERENCE_PROVENANCE)",
+      "actual": "REPRODUCTION_BLOCKED (UNVERIFIED_REFERENCE_PROVENANCE)",
+      "status": "PASSED"
+    },
+    {
+      "id": "REF-NEG-07",
+      "test": "test_neg_07_tampered_reference_artifact_blocks_reproduction",
+      "expected": "REPRODUCTION_BLOCKED (SOURCE_ARTIFACT_INTEGRITY_FAILED)",
+      "actual": "REPRODUCTION_BLOCKED (SOURCE_ARTIFACT_INTEGRITY_FAILED)",
+      "status": "PASSED"
+    },
+    {
+      "id": "REF-NEG-08",
+      "test": "test_neg_08_changed_source_observations_yields_outputs_differ",
+      "expected": "OUTPUTS_DIFFER",
+      "actual": "OUTPUTS_DIFFER",
+      "status": "PASSED"
+    },
+    {
+      "id": "REF-NEG-09",
+      "test": "test_neg_09_different_computed_output_yields_outputs_differ",
+      "expected": "OUTPUTS_DIFFER",
+      "actual": "OUTPUTS_DIFFER",
+      "status": "PASSED"
+    },
+    {
+      "id": "REF-NEG-10",
+      "test": "test_neg_10_missing_essential_raw_data_blocks_reproduction",
+      "expected": "REPRODUCTION_BLOCKED (MISSING_RAW_OBSERVATIONS)",
+      "actual": "REPRODUCTION_BLOCKED (MISSING_RAW_OBSERVATIONS)",
+      "status": "PASSED"
+    },
+    {
+      "id": "REF-NEG-11",
+      "test": "test_neg_11_historical_storage_report_without_mountinfo_blocks_reexecution",
+      "expected": "REPRODUCTION_BLOCKED (HISTORICAL_REPORT_INSPECTION_ONLY)",
+      "actual": "REPRODUCTION_BLOCKED (HISTORICAL_REPORT_INSPECTION_ONLY)",
+      "status": "PASSED"
+    }
+  ]
+}

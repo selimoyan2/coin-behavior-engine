@@ -1,0 +1,93 @@
+{
+  "manifest_id": "CBE-SPRINT25-FINAL-TWO-BLOCKER-CLOSURE-MANIFEST",
+  "timestamp_utc": "2026-11-11T02:08:57.218813+00:00",
+  "implementation_commit_sha": "e69d5d1204f8bc61c969c2c1de77fdf4b048f727",
+  "artifact_count": 17,
+  "artifacts": [
+    {
+      "relative_path": "01_root_cause_analysis_two_blockers.md",
+      "size_bytes": 6549,
+      "sha256": "865c1dbbd7e57389a57e3f153bfa20e2113d3d67ae9a68cdbf1c0787a759ec68"
+    },
+    {
+      "relative_path": "02_dataset_provenance_verification_contract.json",
+      "size_bytes": 2520,
+      "sha256": "0570c0b57ba18c5407d3125bd69e58363e621555d784b2521407acb9d63ce4f6"
+    },
+    {
+      "relative_path": "03_trusted_reference_output_verification_contract.json",
+      "size_bytes": 3445,
+      "sha256": "f5245261a533b74f9498676bc50f6f3a91337701131859d28ef7cfbf6a89b837"
+    },
+    {
+      "relative_path": "04_provenance_and_reference_negative_test_results.json",
+      "size_bytes": 5364,
+      "sha256": "c59469e1f607aac468e98b619f4dc4accad6543ee83672c36681071eb8e0a720"
+    },
+    {
+      "relative_path": "05_positive_provenance_verification_evidence.json",
+      "size_bytes": 8336,
+      "sha256": "1c7c19b93ef43dcb725443befa2862857c192de5b537d9f4be4f0ea19b5fba93"
+    },
+    {
+      "relative_path": "06_genuine_reproduction_computation_and_reference_comparison.json",
+      "size_bytes": 11385,
+      "sha256": "1c1fac1b132021cc828a6db57b791ed6276fb9b1484902de3620f718beee67ca"
+    },
+    {
+      "relative_path": "07_cross_module_provenance_consistency_report.json",
+      "size_bytes": 14796,
+      "sha256": "85ef63da78f886c98e2d23b79c89b31aaa8daefaa8426c3ca24190101138aff2"
+    },
+    {
+      "relative_path": "08_full_sprint20_to_25_regression_report.json",
+      "size_bytes": 2178,
+      "sha256": "6ded70a5f9c1ab64bd8a13e28c7c8fb99b915b0b83e86d9e89b9518ae6ceef9e"
+    },
+    {
+      "relative_path": "09_playwright_desktop_tablet_mobile_results.json",
+      "size_bytes": 1683,
+      "sha256": "9a75e64e5cb5bb3daa4ca755d58441e4fb69b5a292ada15ba65396052046f539"
+    },
+    {
+      "relative_path": "10_staging_verification_results.json",
+      "size_bytes": 2390,
+      "sha256": "ac4f1365cfc65237fe90e467b268687494ba3c03a8780fb22238d0ab02245cb7"
+    },
+    {
+      "relative_path": "11_production_zero_touch_audit.json",
+      "size_bytes": 699,
+      "sha256": "9da81c86d49bd1c0156bfd29cb920941073ecc9ba932f1ffb2e2d7640d705bba"
+    },
+    {
+      "relative_path": "13_implementation_commit_identity.json",
+      "size_bytes": 1012,
+      "sha256": "282fb678f5518114d9424657ceb9b48dc0d476b9923bd98fc5fc4d8dd57ee6ba"
+    },
+    {
+      "relative_path": "14_delivery_commit_and_remote_head_verification.md",
+      "size_bytes": 1456,
+      "sha256": "34bec286343d4bbbf2c80b99cf2fe295be05577be5c1fa261136fba6d1b6982a"
+    },
+    {
+      "relative_path": "15_final_sprint25_acceptance_report.md",
+      "size_bytes": 3938,
+      "sha256": "8f4dd51c5ccfa8830456750f41e7230116da491c7ff3b6f383179623578a78e8"
+    },
+    {
+      "relative_path": "screenshots/sprint25_screenshot_01_desktop_evidence_graph.png",
+      "size_bytes": 1088735,
+      "sha256": "67cfb5da60ac76e9d45c9a7a595e80286a7d1784d9a0beda3de88bc2e1816452"
+    },
+    {
+      "relative_path": "screenshots/sprint25_screenshot_02_tablet_readiness_scorecards.png",
+      "size_bytes": 631285,
+      "sha256": "633cd595e40e2393078186a19af4ff5d4a79e8927abfe375797d1deacfe07a99"
+    },
+    {
+      "relative_path": "screenshots/sprint25_screenshot_03_mobile_gap_analysis.png",
+      "size_bytes": 793677,
+      "sha256": "69c34eacf986f2da0e527fe440b05868bc5abf10cfb4c0ece03d7d4142c3bdcc"
+    }
+  ]
+}

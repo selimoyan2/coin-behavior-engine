@@ -1,0 +1,49 @@
+{
+  "contract_id": "CBE-SPRINT25-DATASET-PROVENANCE-CONTRACT-V2",
+  "timestamp_utc": "2026-11-11T02:08:57.218813+00:00",
+  "enforced_in_module": "src/coin_behavior_engine/product/scientific_readiness.py",
+  "verifier_method": "ScientificReadinessEvaluator.verify_dataset_provenance",
+  "prohibited_shortcuts_removed": [
+    "Path('data/binance_spot_multiyear/1h/').exists()",
+    "Path('data/normalized/binance_pilot_2022_01/').exists()",
+    "Path('data/historical/futures/raw/').exists()",
+    "Path('research_outputs/sprint23_delivery/').exists()",
+    "Bare Path(dataset_provenance_ref).exists() and is_file()",
+    "enforce_source_file_integrity=False bypass"
+  ],
+  "accepted_verification_paths": [
+    {
+      "path_id": "CRYPTOGRAPHIC_ATTESTATION",
+      "verifier": "ObservationCompletenessAttestationVerifier.verify_attestation(record, att, use_cache=True, enforce_source_file_integrity=True)",
+      "requirements": [
+        "Registered dataset_id non-empty and not in QUARANTINED_DATASETS",
+        "Physical source_artifact exists on disk and matches 64-hex SHA-256",
+        "HMAC-SHA256 signature valid under active key in signing_key_registry",
+        "Issuer in TRUSTED_ISSUERS",
+        "Attestation not expired and key not revoked",
+        "Claim dataset_id == record.dataset_id and record_id == record.id"
+      ]
+    },
+    {
+      "path_id": "SIGNED_INTAKE_MANIFEST",
+      "verifier": "ScientificReadinessEvaluator.verify_dataset_provenance (intake_manifest branch)",
+      "requirements": [
+        "Manifest schema cbe-dataset-intake-manifest-v1",
+        "Manifest dataset_id == record.dataset_id and record_id == record.id",
+        "Issuer in TRUSTED_ISSUERS and key active in signing_key_registry",
+        "Non-empty source_lineage and non-empty artifacts list",
+        "Every artifact in manifest exists on disk and matches recorded SHA-256",
+        "record.source_artifact is covered by manifest with matching SHA-256",
+        "Valid HMAC-SHA256 signature over canonical JSON claims"
+      ]
+    }
+  ],
+  "Synchronized_modules": [
+    "src/coin_behavior_engine/product/scientific_readiness.py",
+    "src/coin_behavior_engine/product/evidence_graph.py",
+    "src/coin_behavior_engine/product/evidence_gap_analyzer.py",
+    "src/coin_behavior_engine/product/research_priority_engine.py",
+    "src/coin_behavior_engine/product/research_decision_reports.py",
+    "src/coin_behavior_engine/product/research_intelligence_workspace.py"
+  ]
+}
