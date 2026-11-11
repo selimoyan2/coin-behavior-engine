@@ -1439,3 +1439,299 @@ class ResearchWorkspaceV2Engine:
         if format_type.lower() == "html":
             return {"status": "success", "report_id": report.report_id, "format": "html", "html_content": report.to_html()}
         return {"status": "success", "report": report.to_dict()}
+
+    # ------------------------------------------------------------------
+    # Sprint 26: Advanced Scientific Research, Statistical Validation & Robustness
+    # ------------------------------------------------------------------
+
+    RECORD_ID_ALIASES: Dict[str, str] = {
+        "RES-29-PAT-SIM": "RES-ANALOG-01",
+        "RES-09-38-FUNDING": "RES-FUND-01",
+        "RES-09-27-HOLDOUT": "RES-REGIME-01",
+        "RES-HYP-CPI-VOL": "RES-MACRO-01",
+        "RES-23-PERSIST-VOL": "RES-DURABILITY-01",
+    }
+
+    @classmethod
+    def _resolve_catalog_record_id(cls, record_id: Optional[str]) -> Optional[str]:
+        if not record_id:
+            return None
+        s = str(record_id).strip()
+        return cls.RECORD_ID_ALIASES.get(s, s)
+
+    @classmethod
+    def get_statistical_validation(
+        cls,
+        record_id: Optional[str] = None,
+        bootstrap_method: str = "moving_block",
+        correction_method: str = "benjamini_hochberg_fdr",
+        allow_iid_with_justification: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        from coin_behavior_engine.product.advanced_statistical_validation import (
+            AdvancedStatisticalValidator,
+        )
+
+        validator = AdvancedStatisticalValidator()
+        catalog = cls.get_canonical_catalog()
+        cat_dicts = [r.to_dict() for r in catalog]
+
+        if record_id:
+            resolved_id = cls._resolve_catalog_record_id(record_id)
+            matched = [
+                d
+                for d in cat_dicts
+                if d.get("research_id") in (record_id, resolved_id)
+                or d.get("id") in (record_id, resolved_id)
+            ]
+            if not matched:
+                return {
+                    "status": "error",
+                    "error_code": "NOT_FOUND",
+                    "message": f"Kayıt '{record_id}' bulunamadı.",
+                }
+            rec_dict = dict(matched[0])
+            rec_dict["research_id"] = record_id
+            assessment = validator.evaluate_research_record(
+                record=rec_dict,
+                bootstrap_method=bootstrap_method,
+                correction_method=correction_method,
+                allow_iid_with_justification=allow_iid_with_justification,
+            )
+            return {
+                "status": "success",
+                "record_id": record_id,
+                "assessment": assessment.to_dict(),
+            }
+
+        normalized_cat = []
+        for d in cat_dicts:
+            nd = dict(d)
+            nd.setdefault("research_id", nd.get("id"))
+            normalized_cat.append(nd)
+
+        summary = validator.evaluate_catalog(
+            catalog_records=normalized_cat,
+            correction_method=correction_method,
+            bootstrap_method=bootstrap_method,
+        )
+        return {"status": "success", **summary}
+
+    @classmethod
+    def run_walk_forward_lab(
+        cls,
+        record_id: str = "RES-29-PAT-SIM",
+        dataset_id: str = "DS-BTC-1H-Q1-2024",
+        frequency: str = "1h",
+        split_mode: str = "expanding",
+        n_splits: int = 4,
+        warmup_bars: int = 24,
+        purge_bars: int = 2,
+        embargo_bars: int = 2,
+        allow_parameter_refit: bool = False,
+        optimize_parameters: bool = False,
+    ) -> Dict[str, Any]:
+        from coin_behavior_engine.product.walk_forward_research_lab import (
+            WalkForwardResearchLab,
+        )
+
+        lab = WalkForwardResearchLab()
+        report = lab.run_walk_forward_evaluation(
+            record_id=record_id,
+            dataset_id=dataset_id,
+            frequency=frequency,
+            split_mode=split_mode,
+            n_splits=n_splits,
+            warmup_bars=warmup_bars,
+            purge_bars=purge_bars,
+            embargo_bars=embargo_bars,
+            allow_parameter_refit=allow_parameter_refit,
+            optimize_parameters=optimize_parameters,
+        )
+        return {"status": "success", "walk_forward_report": report.to_dict()}
+
+    @classmethod
+    def run_regime_research_lab(
+        cls,
+        dataset_id: str = "DS-BTC-1H-Q1-2024",
+        comparison_dataset_id: str = "DS-BTC-15M-Q2-2024",
+        custom_thresholds: Optional[Dict[str, float]] = None,
+    ) -> Dict[str, Any]:
+        from coin_behavior_engine.product.historical_regime_research import (
+            HistoricalMarketRegimeResearchEngine,
+        )
+
+        engine = HistoricalMarketRegimeResearchEngine()
+        report = engine.run_regime_research(
+            dataset_id=dataset_id,
+            comparison_dataset_id=comparison_dataset_id,
+            custom_thresholds=custom_thresholds,
+        )
+        return {"status": "success", "regime_research_report": report.to_dict()}
+
+    @classmethod
+    def run_robustness_sensitivity_lab(
+        cls,
+        record_id: str = "RES-29-PAT-SIM",
+        analysis_type: Optional[str] = None,
+        dataset_id: str = "DS-BTC-1H-Q1-2024",
+        perturbation_params: Optional[Dict[str, Any]] = None,
+        modify_canonical_model: bool = False,
+    ) -> Dict[str, Any]:
+        from coin_behavior_engine.product.robustness_sensitivity_lab import (
+            RobustnessSensitivityLab,
+        )
+
+        lab = RobustnessSensitivityLab()
+        if analysis_type and str(analysis_type).strip().upper() != "ALL":
+            exp = lab.run_sensitivity_experiment(
+                original_record_id=record_id,
+                analysis_type=analysis_type,
+                dataset_id=dataset_id,
+                perturbation_params=perturbation_params,
+                modify_canonical_model=modify_canonical_model,
+            )
+            return {"status": "success", "experiment": exp.to_dict()}
+
+        suite = lab.run_comprehensive_suite(
+            original_record_id=record_id,
+            dataset_id=dataset_id,
+        )
+        return {"status": "success", **suite}
+
+    @classmethod
+    def run_independent_validation_audit(
+        cls,
+        primary_study: Optional[Dict[str, Any]] = None,
+        candidate_study: Optional[Dict[str, Any]] = None,
+        claimed_category: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        from coin_behavior_engine.product.independent_validation_framework import (
+            IndependentValidationFramework,
+        )
+
+        fw = IndependentValidationFramework()
+        if primary_study and candidate_study:
+            audit = fw.evaluate_validation_independence(
+                primary_study=primary_study,
+                candidate_study=candidate_study,
+                claimed_category=claimed_category,
+            )
+            return {"status": "success", "audit": audit.to_dict()}
+
+        matrix = fw.run_canonical_independence_matrix()
+        return {"status": "success", **matrix}
+
+    @classmethod
+    def get_scientific_validation_reports(
+        cls,
+        record_id: Optional[str] = None,
+        dataset_id: str = "DS-BTC-1H-Q1-2024",
+    ) -> Dict[str, Any]:
+        """Generate integrated Sprint 26 Scientific Validation Report V4 combining
+        Statistical Validation, Walk-Forward, Regime Research, Robustness,
+        Independent Validation, and Sprint 25 Readiness / Evidence Graph / Gaps.
+        """
+        target_id = record_id or "RES-ANALOG-01"
+        resolved_id = cls._resolve_catalog_record_id(target_id)
+        catalog = cls.get_canonical_catalog()
+        matched = [r for r in catalog if r.id in (target_id, resolved_id)]
+        if not matched:
+            return {
+                "status": "error",
+                "error_code": "NOT_FOUND",
+                "message": f"Kayıt '{target_id}' bulunamadı.",
+            }
+        rec = matched[0]
+        rec_dict = rec.to_dict()
+        rec_dict.setdefault("research_id", rec.id)
+
+        stat_res = cls.get_statistical_validation(record_id=target_id).get("assessment", {})
+        wf_res = cls.run_walk_forward_lab(record_id=target_id, dataset_id=dataset_id).get(
+            "walk_forward_report", {}
+        )
+        reg_res = cls.run_regime_research_lab(dataset_id=dataset_id).get(
+            "regime_research_report", {}
+        )
+        rob_res = cls.run_robustness_sensitivity_lab(record_id=target_id, dataset_id=dataset_id)
+        ind_res = cls.run_independent_validation_audit()
+        readiness_res = cls.get_readiness_scorecards(record_id=rec.id).get("scorecard", {})
+        gaps_res = cls.get_evidence_gaps(record_id=rec.id).get("gaps", [])
+        decision_rep = cls.generate_decision_report(record_id=rec.id).get("report", {})
+
+        # Explicit 4-pillar concept separation required by Section 9
+        concept_separation = {
+            "cryptographic_integrity": (
+                "INTEGRITY_VERIFIED"
+                if stat_res.get("source_provenance", {}).get("source_artifact_exists")
+                and rec.evidence_status == "VERIFIED_GENUINE"
+                else "UNVERIFIED_OR_QUARANTINED"
+            ),
+            "methodological_validity": (
+                "FROZEN_CBE_0_7_0_COMPLIANT"
+                if wf_res.get("status") == "EVALUATION_COMPLETED"
+                else "METHODOLOGY_BLOCKED"
+            ),
+            "statistical_validity": stat_res.get("finding_classification", "INSUFFICIENT_EVIDENCE"),
+            "independent_validation": (
+                "INDEPENDENT_REPLICATION"
+                if rec.replication_verdict == "OUT_OF_SAMPLE_REPLICATED"
+                and rec.evidence_status == "VERIFIED_GENUINE"
+                else "INDEPENDENCE_NOT_ESTABLISHED"
+            ),
+        }
+
+        combined_fp = hashlib.sha256(
+            json.dumps(
+                {
+                    "record_id": target_id,
+                    "stat_fp": stat_res.get("evidence_fingerprint_sha256"),
+                    "wf_sha": wf_res.get("evaluation_manifest", {}).get("manifest_sha256"),
+                    "reg_sha": reg_res.get("output_artifact", {}).get("output_digest_sha256"),
+                    "readiness_verdict": readiness_res.get("overall_verdict"),
+                },
+                sort_keys=True,
+            ).encode("utf-8")
+        ).hexdigest()
+
+        return {
+            "status": "success",
+            "validation_report_id": f"VAL-RPT-V4-{target_id}-{combined_fp[:8].upper()}",
+            "record_id": target_id,
+            "title": rec.title,
+            "dataset_id": dataset_id,
+            "canonical_model": "CBE-0.7.0",
+            "model_status": "STRICTLY_FROZEN",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "trading_eligibility": "LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED",
+            "evidence_fingerprint_sha256": combined_fp,
+            "concept_separation": concept_separation,
+            "statistical_validation": stat_res,
+            "walk_forward_summary": {
+                "evaluation_id": wf_res.get("evaluation_id"),
+                "status": wf_res.get("status"),
+                "fold_count": wf_res.get("fold_count"),
+                "cross_window_consistency": wf_res.get("cross_window_consistency"),
+            },
+            "regime_research_summary": {
+                "research_report_id": reg_res.get("research_report_id"),
+                "status": reg_res.get("status"),
+                "dominant_regime": reg_res.get("regime_distribution", {}).get("dominant_regime"),
+                "perturbation_stability": reg_res.get("perturbation_stability"),
+                "cross_period_consistency": reg_res.get("cross_period_consistency"),
+            },
+            "robustness_summary": {
+                "total_experiments": rob_res.get("total_experiments"),
+                "stability_summary": rob_res.get("stability_summary"),
+            },
+            "independent_validation_summary": {
+                "total_audits": ind_res.get("total_audits"),
+                "audits": ind_res.get("audits", [])[:3],
+            },
+            "sprint25_readiness_and_gaps": {
+                "readiness_verdict": readiness_res.get("overall_verdict"),
+                "readiness_index": readiness_res.get("readiness_index"),
+                "open_gaps_count": len(gaps_res),
+                "decision_report_id": decision_rep.get("report_id"),
+            },
+            "scientific_limitations": stat_res.get("limitations", []),
+        }

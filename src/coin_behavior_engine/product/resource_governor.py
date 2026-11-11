@@ -229,6 +229,12 @@ class ResourceGovernor:
                 pass
 
     @contextmanager
+    def ComputationGuard(self, task_name: str = "research", timeout: float = 5.0):
+        """Context manager acquiring a research computation slot under ResourceGovernor."""
+        with self.acquire_research_slot(timeout=timeout):
+            yield
+
+    @contextmanager
     def acquire_pdf_slot(self, timeout: float = 5.0):
         """Acquires a concurrency slot for PDF chart rendering."""
         acquired = False

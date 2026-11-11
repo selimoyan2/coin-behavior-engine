@@ -539,6 +539,80 @@ class ProductDashboardApiService:
                 if res.get("status") == "error":
                     return HTTPStatus.NOT_FOUND, res
                 return HTTPStatus.OK, res
+
+            # Sprint 26 GET endpoints
+            elif sub_path in ("workspace/statistical-validation", "statistical-validation"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                rid = query_params.get("record_id", [None])[0]
+                bm = query_params.get("bootstrap_method", ["moving_block"])[0]
+                cm = query_params.get("correction_method", ["benjamini_hochberg_fdr"])[0]
+                just = query_params.get("allow_iid_with_justification", [None])[0]
+                res = ResearchWorkspaceV2Engine.get_statistical_validation(
+                    record_id=rid,
+                    bootstrap_method=bm,
+                    correction_method=cm,
+                    allow_iid_with_justification=just,
+                )
+                if res.get("status") == "error":
+                    return HTTPStatus.NOT_FOUND, res
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("workspace/walk-forward", "walk-forward"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                rid = query_params.get("record_id", ["RES-29-PAT-SIM"])[0]
+                ds_id = query_params.get("dataset_id", ["DS-BTC-1H-Q1-2024"])[0]
+                freq = query_params.get("frequency", ["1h"])[0]
+                smode = query_params.get("split_mode", ["expanding"])[0]
+                nsplits = int(query_params.get("n_splits", ["4"])[0])
+                warmup = int(query_params.get("warmup_bars", ["24"])[0])
+                res = ResearchWorkspaceV2Engine.run_walk_forward_lab(
+                    record_id=rid,
+                    dataset_id=ds_id,
+                    frequency=freq,
+                    split_mode=smode,
+                    n_splits=nsplits,
+                    warmup_bars=warmup,
+                )
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("workspace/regime-research", "regime-research"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                ds_id = query_params.get("dataset_id", ["DS-BTC-1H-Q1-2024"])[0]
+                comp_ds = query_params.get("comparison_dataset_id", ["DS-BTC-15M-Q2-2024"])[0]
+                res = ResearchWorkspaceV2Engine.run_regime_research_lab(
+                    dataset_id=ds_id,
+                    comparison_dataset_id=comp_ds,
+                )
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("workspace/robustness-lab", "robustness-lab"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                rid = query_params.get("record_id", ["RES-29-PAT-SIM"])[0]
+                atype = query_params.get("analysis_type", [None])[0]
+                ds_id = query_params.get("dataset_id", ["DS-BTC-1H-Q1-2024"])[0]
+                res = ResearchWorkspaceV2Engine.run_robustness_sensitivity_lab(
+                    record_id=rid,
+                    analysis_type=atype,
+                    dataset_id=ds_id,
+                )
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("workspace/independent-validation", "independent-validation"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                res = ResearchWorkspaceV2Engine.run_independent_validation_audit()
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("workspace/validation-reports", "validation-reports"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                rid = query_params.get("record_id", ["RES-29-PAT-SIM"])[0]
+                ds_id = query_params.get("dataset_id", ["DS-BTC-1H-Q1-2024"])[0]
+                res = ResearchWorkspaceV2Engine.get_scientific_validation_reports(
+                    record_id=rid,
+                    dataset_id=ds_id,
+                )
+                if res.get("status") == "error":
+                    return HTTPStatus.NOT_FOUND, res
+                return HTTPStatus.OK, res
             else:
                 return HTTPStatus.NOT_FOUND, {
                     "error": "Not Found",
@@ -877,6 +951,95 @@ class ProductDashboardApiService:
                 if not rid:
                     return HTTPStatus.BAD_REQUEST, {"error": "Bad Request", "message": "record_id is required."}
                 res = ResearchWorkspaceV2Engine.generate_decision_report(record_id=rid, format_type=fmt)
+                if res.get("status") == "error":
+                    return HTTPStatus.NOT_FOUND, res
+                return HTTPStatus.OK, res
+
+            # Sprint 26 POST endpoints
+            elif sub_path in ("workspace/statistical-validation", "statistical-validation"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                payload = body or query_params or {}
+                rid = payload.get("record_id")
+                if isinstance(rid, list):
+                    rid = rid[0] if rid else None
+                bm = payload.get("bootstrap_method", "moving_block")
+                if isinstance(bm, list):
+                    bm = bm[0] if bm else "moving_block"
+                cm = payload.get("correction_method", "benjamini_hochberg_fdr")
+                if isinstance(cm, list):
+                    cm = cm[0] if cm else "benjamini_hochberg_fdr"
+                just = payload.get("allow_iid_with_justification")
+                if isinstance(just, list):
+                    just = just[0] if just else None
+                res = ResearchWorkspaceV2Engine.get_statistical_validation(
+                    record_id=rid,
+                    bootstrap_method=bm,
+                    correction_method=cm,
+                    allow_iid_with_justification=just,
+                )
+                if res.get("status") == "error":
+                    return HTTPStatus.NOT_FOUND, res
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("workspace/walk-forward", "walk-forward"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                payload = body or query_params or {}
+                def _val(key: str, default: Any) -> Any:
+                    v = payload.get(key, default)
+                    return v[0] if isinstance(v, list) and v else v
+                res = ResearchWorkspaceV2Engine.run_walk_forward_lab(
+                    record_id=_val("record_id", "RES-29-PAT-SIM"),
+                    dataset_id=_val("dataset_id", "DS-BTC-1H-Q1-2024"),
+                    frequency=_val("frequency", "1h"),
+                    split_mode=_val("split_mode", "expanding"),
+                    n_splits=int(_val("n_splits", 4)),
+                    warmup_bars=int(_val("warmup_bars", 24)),
+                    purge_bars=int(_val("purge_bars", 2)),
+                    embargo_bars=int(_val("embargo_bars", 2)),
+                    allow_parameter_refit=bool(_val("allow_parameter_refit", False)),
+                    optimize_parameters=bool(_val("optimize_parameters", False)),
+                )
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("workspace/regime-research", "regime-research"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                payload = body or query_params or {}
+                res = ResearchWorkspaceV2Engine.run_regime_research_lab(
+                    dataset_id=payload.get("dataset_id", "DS-BTC-1H-Q1-2024"),
+                    comparison_dataset_id=payload.get("comparison_dataset_id", "DS-BTC-15M-Q2-2024"),
+                    custom_thresholds=payload.get("custom_thresholds"),
+                )
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("workspace/robustness-lab", "robustness-lab"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                payload = body or query_params or {}
+                res = ResearchWorkspaceV2Engine.run_robustness_sensitivity_lab(
+                    record_id=payload.get("record_id", "RES-29-PAT-SIM"),
+                    analysis_type=payload.get("analysis_type"),
+                    dataset_id=payload.get("dataset_id", "DS-BTC-1H-Q1-2024"),
+                    perturbation_params=payload.get("perturbation_params"),
+                    modify_canonical_model=bool(payload.get("modify_canonical_model", False)),
+                )
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("workspace/independent-validation", "independent-validation"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                payload = body or query_params or {}
+                res = ResearchWorkspaceV2Engine.run_independent_validation_audit(
+                    primary_study=payload.get("primary_study"),
+                    candidate_study=payload.get("candidate_study"),
+                    claimed_category=payload.get("claimed_category"),
+                )
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("workspace/validation-reports", "validation-reports"):
+                from coin_behavior_engine.product.research_intelligence_workspace import ResearchWorkspaceV2Engine
+                payload = body or query_params or {}
+                res = ResearchWorkspaceV2Engine.get_scientific_validation_reports(
+                    record_id=payload.get("record_id", "RES-29-PAT-SIM"),
+                    dataset_id=payload.get("dataset_id", "DS-BTC-1H-Q1-2024"),
+                )
                 if res.get("status") == "error":
                     return HTTPStatus.NOT_FOUND, res
                 return HTTPStatus.OK, res

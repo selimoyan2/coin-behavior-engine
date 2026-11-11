@@ -381,8 +381,26 @@ def render_research_explorer_html() -> str:
         <button class="ws-tab-btn" id="ws-tab-priorities" onclick="switchWorkspaceView('priorities')">
           <span>🎯</span> Araştırma Öncelikleri
         </button>
+        <button class="ws-tab-btn" id="ws-tab-stat-validation" onclick="switchWorkspaceView('stat-validation')">
+          <span>📐</span> İstatistiksel Doğrulama
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-walk-forward" onclick="switchWorkspaceView('walk-forward')">
+          <span>⏩</span> Walk-Forward Lab
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-regime-research" onclick="switchWorkspaceView('regime-research')">
+          <span>🌊</span> Piyasa Rejim Araştırması
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-robustness-lab" onclick="switchWorkspaceView('robustness-lab')">
+          <span>🛡️</span> Sağlamlık &amp; Duyarlılık
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-independent-validation" onclick="switchWorkspaceView('independent-validation')">
+          <span>🏛️</span> Bağımsız Doğrulama
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-validation-reports" onclick="switchWorkspaceView('validation-reports')">
+          <span>📜</span> Doğrulama Raporları V4
+        </button>
         <button class="ws-tab-btn" id="ws-tab-operations" onclick="switchWorkspaceView('operations')">
-          <span>⚙️</span> Sistem Durumu & Teşhis
+          <span>⚙️</span> Sistem Durumu &amp; Teşhis
         </button>
       </div>
 
@@ -1026,6 +1044,206 @@ def render_research_explorer_html() -> str:
               <tbody id="priorities-table-body"></tbody>
             </table>
           </div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- WORKSPACE VIEW 13: SPRINT 26.1 İSTATİSTİKSEL DOĞRULAMA              -->
+      <!-- =================================================================== -->
+      <div id="ws-view-stat-validation" class="ws-view-container" style="display: none;">
+        <div class="card" style="margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">📐 Gelişmiş İstatistiksel Doğrulama (Module 26.1 — Statistical Validation)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Zamansal bağımlılık (otokorelasyon), efektif örneklem büyüklüğü (N_eff), blok bootstrap ve çoklu hipotez düzeltmesi</div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+              <select id="stat-val-record-select" class="input input-sm" style="font-size: 12px;" onchange="loadStatisticalValidationLab()">
+                <option value="">Tüm Katalog Kayıtları</option>
+                <option value="RES-29-PAT-SIM">RES-29-PAT-SIM (Pattern Similarity)</option>
+                <option value="RES-09-38-FUNDING">RES-09-38-FUNDING (Funding Rate)</option>
+                <option value="RES-09-27-HOLDOUT">RES-09-27-HOLDOUT (Out-of-Sample Holdout)</option>
+                <option value="RES-HYP-CPI-VOL">RES-HYP-CPI-VOL (CPI Macro Volatility)</option>
+                <option value="RES-CRYPTO-01">RES-CRYPTO-01 (Karantina Kaydı)</option>
+              </select>
+              <select id="stat-val-correction-select" class="input input-sm" style="font-size: 12px;" onchange="loadStatisticalValidationLab()">
+                <option value="benjamini_hochberg_fdr">Benjamini–Hochberg FDR</option>
+                <option value="holm">Holm–Bonferroni</option>
+                <option value="bonferroni">Bonferroni</option>
+              </select>
+              <select id="stat-val-bootstrap-select" class="input input-sm" style="font-size: 12px;" onchange="loadStatisticalValidationLab()">
+                <option value="moving_block">Moving-Block Bootstrap (Otokorelasyon Korumalı)</option>
+                <option value="event_cluster">Event-Cluster Bootstrap</option>
+                <option value="iid">IID Bootstrap (Otokorelasyonda Reddedilir)</option>
+              </select>
+              <button class="btn btn-sm btn-primary" id="btn-run-stat-validation" onclick="loadStatisticalValidationLab()">📐 Değerlendir</button>
+            </div>
+          </div>
+          <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid #0284c7; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; font-size: 12px; color: #bae6fd;">
+            <strong>🔒 İSTATİSTİKSEL GÜVENCE:</strong> Otokorelasyonlu finansal zaman serilerinde açık gerekçe olmaksızın sıradan IID bootstrap reddedilir. Eksik kaynak veriden asla yapay p-değeri veya güven aralığı üretilmez (<code>INSUFFICIENT_EVIDENCE</code>).
+          </div>
+          <div id="stat-val-kpi-summary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px;"></div>
+          <div id="stat-val-results-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- WORKSPACE VIEW 14: SPRINT 26.2 WALK-FORWARD RESEARCH LAB            -->
+      <!-- =================================================================== -->
+      <div id="ws-view-walk-forward" class="ws-view-container" style="display: none;">
+        <div class="card" style="margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">⏩ İleriye Yürüyüş Araştırma Laboratuvarı (Module 26.2 — Walk-Forward Lab)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Gelecek verisi sızıntısı (look-ahead leakage) olmadan ardışık zaman pencerelerinde dondurulmuş CBE-0.7.0 değerlendirmesi</div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+              <select id="wf-dataset-select" class="input input-sm" style="font-size: 12px;">
+                <option value="DS-BTC-1H-Q1-2024">DS-BTC-1H-Q1-2024 (1 Saatlik, 2.184 Bar)</option>
+                <option value="DS-BTC-15M-Q1-2024">DS-BTC-15M-Q1-2024 (15 Dakikalık, 8.736 Bar)</option>
+                <option value="DS-BTC-1H-JAN-2025">DS-BTC-1H-JAN-2025 (1 Saatlik, 744 Bar)</option>
+                <option value="DS-BTC-1H-OCT2026-QUARANTINE">DS-BTC-1H-OCT2026-QUARANTINE (Karantina — Bloke Testi)</option>
+              </select>
+              <select id="wf-split-mode-select" class="input input-sm" style="font-size: 12px;">
+                <option value="expanding">Genişleyen Pencere (Expanding Window)</option>
+                <option value="rolling">Kayan Pencere (Rolling Window)</option>
+              </select>
+              <select id="wf-splits-count-select" class="input input-sm" style="font-size: 12px;">
+                <option value="4">4 Katlama (4 Folds)</option>
+                <option value="5">5 Katlama (5 Folds)</option>
+                <option value="6">6 Katlama (6 Folds)</option>
+              </select>
+              <button class="btn btn-sm btn-primary" id="btn-run-walk-forward" onclick="runWalkForwardLabUI(false)">⏩ Walk-Forward Çalıştır</button>
+              <button class="btn btn-sm btn-secondary" id="btn-test-wf-refit-block" onclick="runWalkForwardLabUI(true)" title="Parametre yeniden uydurma girişiminin EVALUATION_BLOCKED ile engellendiğini doğrula">🛑 Refit Engeli Testi</button>
+            </div>
+          </div>
+          <div id="wf-status-banner" style="margin-bottom: 14px;"></div>
+          <div id="wf-kpi-summary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px;"></div>
+          <div style="overflow-x: auto;">
+            <table class="table" style="width: 100%; border-collapse: collapse; font-size: 12px;">
+              <thead>
+                <tr style="background: #1e293b; color: #94a3b8; text-align: left;">
+                  <th style="padding: 8px 12px;">Fold</th>
+                  <th style="padding: 8px 12px;">Mod</th>
+                  <th style="padding: 8px 12px;">Eğitim (Train) Penceresi</th>
+                  <th style="padding: 8px 12px;">Test Penceresi</th>
+                  <th style="padding: 8px 12px;">Purge / Embargo</th>
+                  <th style="padding: 8px 12px;">Sızıntı Denetimi</th>
+                  <th style="padding: 8px 12px;">Volatilite Oranı</th>
+                  <th style="padding: 8px 12px;">Dağılım PSI</th>
+                  <th style="padding: 8px 12px;">Tutarlılık Hükmü</th>
+                </tr>
+              </thead>
+              <tbody id="wf-folds-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- WORKSPACE VIEW 15: SPRINT 26.3 PİYASA REJİM ARAŞTIRMASI             -->
+      <!-- =================================================================== -->
+      <div id="ws-view-regime-research" class="ws-view-container" style="display: none;">
+        <div class="card" style="margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🌊 Tarihsel Piyasa Rejim Araştırması (Module 26.3 — Market Regime Research)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Dondurulmuş CBE-0.7.0 eşikleriyle rejim süresi, geçiş sıklığı, kalıcılık (persistence), Dirichlet belirsizliği ve dönemler arası tutarlılık</div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+              <select id="regime-res-dataset-select" class="input input-sm" style="font-size: 12px;" onchange="loadRegimeResearchLabUI()">
+                <option value="DS-BTC-1H-Q1-2024">DS-BTC-1H-Q1-2024 (2024 Q1 1h)</option>
+                <option value="DS-BTC-15M-Q1-2024">DS-BTC-15M-Q1-2024 (2024 Q1 15m)</option>
+                <option value="DS-BTC-15M-Q2-2024">DS-BTC-15M-Q2-2024 (2024 Q2 15m)</option>
+                <option value="DS-BTC-15M-Q3-2024">DS-BTC-15M-Q3-2024 (2024 Q3 15m)</option>
+                <option value="DS-BTC-15M-Q4-2024">DS-BTC-15M-Q4-2024 (2024 Q4 15m)</option>
+                <option value="DS-BTC-1H-JAN-2025">DS-BTC-1H-JAN-2025 (Ocak 2025 1h)</option>
+              </select>
+              <button class="btn btn-sm btn-primary" id="btn-run-regime-research" onclick="loadRegimeResearchLabUI()">🌊 Rejim Analizini Çalıştır</button>
+            </div>
+          </div>
+          <div id="regime-res-kpi-summary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px;"></div>
+          <div id="regime-res-details-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 14px;"></div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- WORKSPACE VIEW 16: SPRINT 26.4 SAĞLAMLIK & DUYARLILIK LAB           -->
+      <!-- =================================================================== -->
+      <div id="ws-view-robustness-lab" class="ws-view-container" style="display: none;">
+        <div class="card" style="margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🛡️ Sağlamlık &amp; Duyarlılık Laboratuvarı (Module 26.4 — Robustness &amp; Sensitivity Lab)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Pencere sınırları, örneklem büyüklüğü, eksik veri, uç değer (outlier), gözlem frekansı ve metodolojik varsayım duyarlılığı</div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+              <select id="rob-record-select" class="input input-sm" style="font-size: 12px;">
+                <option value="RES-29-PAT-SIM">RES-29-PAT-SIM</option>
+                <option value="RES-09-38-FUNDING">RES-09-38-FUNDING</option>
+                <option value="RES-09-27-HOLDOUT">RES-09-27-HOLDOUT</option>
+              </select>
+              <select id="rob-analysis-select" class="input input-sm" style="font-size: 12px;">
+                <option value="ALL">Tüm 8 Duyarlılık Boyutu (Kapsamlı Paket)</option>
+                <option value="HISTORICAL_WINDOW_SENSITIVITY">Tarihsel Pencere Duyarlılığı</option>
+                <option value="SAMPLE_SIZE_SENSITIVITY">Örneklem Büyüklüğü Duyarlılığı</option>
+                <option value="MISSING_DATA_SENSITIVITY">Eksik Veri Duyarlılığı</option>
+                <option value="OUTLIER_SENSITIVITY">Uç Değer (Outlier) Duyarlılığı</option>
+                <option value="OBSERVATION_FREQUENCY_SENSITIVITY">Gözlem Frekansı Duyarlılığı</option>
+                <option value="BOOTSTRAP_UNCERTAINTY">Bootstrap Blok Duyarlılığı</option>
+                <option value="METHODOLOGICAL_ASSUMPTION_SENSITIVITY">Metodolojik Varsayım (Keşifsel)</option>
+                <option value="CROSS_PERIOD_ROBUSTNESS">Dönemler Arası Sağlamlık (Q1-Q4)</option>
+              </select>
+              <button class="btn btn-sm btn-primary" id="btn-run-robustness-lab" onclick="runRobustnessLabUI()">🛡️ Duyarlılık Testini Çalıştır</button>
+            </div>
+          </div>
+          <div id="rob-kpi-summary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px;"></div>
+          <div id="rob-experiments-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- WORKSPACE VIEW 17: SPRINT 26.5 BAĞIMSIZ DOĞRULAMA ÇERÇEVESİ         -->
+      <!-- =================================================================== -->
+      <div id="ws-view-independent-validation" class="ws-view-container" style="display: none;">
+        <div class="card" style="margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🏛️ Bağımsız Doğrulama Çerçevesi (Module 26.5 — Independent Validation Framework)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">8 boyutlu bağımsızlık denetimi: Veri soykütüğü, kaynak örtüşmesi, gözlem kesişimi, zaman penceresi ve prosedür bağımsızlığı</div>
+            </div>
+            <button class="btn btn-sm btn-primary" id="btn-run-ind-validation" onclick="loadIndependentValidationLabUI()">🏛️ Bağımsızlık Matrisini Denetle</button>
+          </div>
+          <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid #f59e0b; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; font-size: 12px; color: #fde68a;">
+            <strong>⚠️ KESİN KATEGORİ AYRIMI:</strong> Farklı bir dosya adı veya veri seti kimliği bağımsızlık kanıtı için yeterli değildir. <code>INDEPENDENT_DATASET_VALIDATION</code> otomatik olarak <code>INDEPENDENT_REPLICATION</code> anlamına gelmez; bağımsızlık kanıtlanamadığında fail-closed olarak <code>INDEPENDENCE_NOT_ESTABLISHED</code> döndürülür.
+          </div>
+          <div id="ind-val-audits-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- WORKSPACE VIEW 18: SPRINT 26.6 BİLİMSEL DOĞRULAMA RAPORLARI V4      -->
+      <!-- =================================================================== -->
+      <div id="ws-view-validation-reports" class="ws-view-container" style="display: none;">
+        <div class="card" style="margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">📜 Bütünleşik Bilimsel Doğrulama Raporları V4 (Module 26.6 — Scientific Validation Reports)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">Kriptografik bütünlük, metodolojik geçerlilik, istatistiksel geçerlilik ve bağımsız doğrulama kavramlarını ayrı tutan birleşik kanıt raporu</div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+              <select id="val-rep-record-select" class="input input-sm" style="font-size: 12px;" onchange="loadValidationReportsV4UI()">
+                <option value="RES-29-PAT-SIM">RES-29-PAT-SIM (Pattern Similarity)</option>
+                <option value="RES-09-38-FUNDING">RES-09-38-FUNDING (Funding Rate)</option>
+                <option value="RES-09-27-HOLDOUT">RES-09-27-HOLDOUT (Out-of-Sample Holdout)</option>
+                <option value="RES-HYP-CPI-VOL">RES-HYP-CPI-VOL (CPI Macro Volatility)</option>
+                <option value="RES-CRYPTO-01">RES-CRYPTO-01 (Karantina Kaydı)</option>
+              </select>
+              <button class="btn btn-sm btn-primary" id="btn-load-val-report-v4" onclick="loadValidationReportsV4UI()">📜 Raporu Oluştur</button>
+              <button class="btn btn-sm btn-secondary" id="btn-export-val-report-v4" onclick="exportValidationReportV4JSON()">💾 JSON Dışa Aktar</button>
+            </div>
+          </div>
+          <div id="val-rep-v4-container" style="background: #090e1a; border: 1px solid #1e293b; border-radius: 8px; padding: 16px;"></div>
         </div>
       </div>
 
@@ -3105,7 +3323,12 @@ def render_research_explorer_scripts() -> str:
     let wsActiveDetailId = null;
 
     function switchWorkspaceView(viewId) {
-      const views = ['overview', 'catalog', 'comparison', 'evidence', 'library', 'reports', 'graph', 'readiness', 'gaps', 'reproducibility', 'priorities', 'operations'];
+      const views = [
+        'overview', 'catalog', 'comparison', 'evidence', 'library', 'reports',
+        'graph', 'readiness', 'gaps', 'reproducibility', 'priorities',
+        'stat-validation', 'walk-forward', 'regime-research', 'robustness-lab',
+        'independent-validation', 'validation-reports', 'operations'
+      ];
       views.forEach(v => {
         const el = document.getElementById('ws-view-' + v);
         if (el) el.style.display = (v === viewId) ? 'block' : 'none';
@@ -3129,6 +3352,12 @@ def render_research_explorer_scripts() -> str:
         gaps: 'Kanıt Boşluk Analizi',
         reproducibility: 'Tekrarlanabilirlik Laboratuvarı',
         priorities: 'Araştırma Öncelik Motoru',
+        'stat-validation': 'İstatistiksel Doğrulama (Modül 26.1)',
+        'walk-forward': 'Walk-Forward Araştırma Lab (Modül 26.2)',
+        'regime-research': 'Piyasa Rejim Araştırması (Modül 26.3)',
+        'robustness-lab': 'Sağlamlık & Duyarlılık Lab (Modül 26.4)',
+        'independent-validation': 'Bağımsız Doğrulama Çerçevesi (Modül 26.5)',
+        'validation-reports': 'Bilimsel Doğrulama Raporları V4 (Modül 26.6)',
         operations: 'Sistem Durumu & Teşhis'
       };
       if (breadcrumb) breadcrumb.textContent = titles[viewId] || viewId;
@@ -3170,6 +3399,24 @@ def render_research_explorer_scripts() -> str:
       }
       else if (viewId === 'priorities') {
         loadResearchPriorities();
+      }
+      else if (viewId === 'stat-validation') {
+        loadStatisticalValidationLab();
+      }
+      else if (viewId === 'walk-forward') {
+        runWalkForwardLabUI(false);
+      }
+      else if (viewId === 'regime-research') {
+        loadRegimeResearchLabUI();
+      }
+      else if (viewId === 'robustness-lab') {
+        runRobustnessLabUI();
+      }
+      else if (viewId === 'independent-validation') {
+        loadIndependentValidationLabUI();
+      }
+      else if (viewId === 'validation-reports') {
+        loadValidationReportsV4UI();
       }
       else if (viewId === 'operations') {
         checkOperationalStatus();
@@ -4143,6 +4390,536 @@ def render_research_explorer_scripts() -> str:
     function generateDecisionReportUI() {
       const recId = document.getElementById('rep-record-select')?.value || 'RES-REGIME-01';
       window.open(`/api/v1/product/workspace/decision-reports?record_id=${encodeURIComponent(recId)}&format=html`, '_blank');
+    }
+
+    // -------------------------------------------------------------------------
+    // Sprint 26: Scientific Validation Dashboard V4 Client Methods
+    // -------------------------------------------------------------------------
+
+    async function loadStatisticalValidationLab() {
+      const kpiBox = document.getElementById('stat-val-kpi-summary');
+      const container = document.getElementById('stat-val-results-container');
+      if (!container) return;
+      container.innerHTML = '<div style="color:#94a3b8; font-size:13px; padding:20px; text-align:center;">İstatistiksel doğrulama analizleri çalıştırılıyor...</div>';
+
+      try {
+        const recId = document.getElementById('stat-val-record-select')?.value || '';
+        const corr = document.getElementById('stat-val-correction-select')?.value || 'benjamini_hochberg_fdr';
+        const boot = document.getElementById('stat-val-bootstrap-select')?.value || 'moving_block';
+
+        let url = `/api/v1/product/workspace/statistical-validation?correction_method=${encodeURIComponent(corr)}&bootstrap_method=${encodeURIComponent(boot)}`;
+        if (recId) url += `&record_id=${encodeURIComponent(recId)}`;
+
+        const res = await fetch(url);
+        const data = await res.json();
+        const items = data.assessments ? data.assessments : (data.assessment ? [data.assessment] : []);
+
+        if (kpiBox) {
+          const total = items.length;
+          const indVal = items.filter(a => a.finding_classification === 'INDEPENDENTLY_VALIDATED_FINDING').length;
+          const insuff = items.filter(a => a.finding_classification === 'INSUFFICIENT_EVIDENCE').length;
+          kpiBox.innerHTML = `
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Değerlendirilen Kayıt</div>
+              <div class="ws-kpi-value" style="color:#38bdf8;">${total}</div>
+              <div class="ws-kpi-sub">Düzeltme: ${corr}</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Bağımsız Doğrulanmış</div>
+              <div class="ws-kpi-value" style="color:#10b981;">${indVal}</div>
+              <div class="ws-kpi-sub">FDR / Holm Anlamlı</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Yetersiz / Reddedilen</div>
+              <div class="ws-kpi-value" style="color:#ef4444;">${insuff}</div>
+              <div class="ws-kpi-sub">INSUFFICIENT_EVIDENCE</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Kanonik Model</div>
+              <div class="ws-kpi-value" style="color:#a855f7;">CBE-0.7.0</div>
+              <div class="ws-kpi-sub">STRICTLY_FROZEN</div>
+            </div>
+          `;
+        }
+
+        container.innerHTML = items.map(a => {
+          const fClass = a.finding_classification || 'INSUFFICIENT_EVIDENCE';
+          let badgeColor = '#38bdf8';
+          let badgeBg = 'rgba(56, 189, 248, 0.15)';
+          if (fClass === 'INDEPENDENTLY_VALIDATED_FINDING' || fClass === 'CONFIRMATORY_FINDING') {
+            badgeColor = '#10b981'; badgeBg = 'rgba(16, 185, 129, 0.15)';
+          } else if (fClass === 'INSUFFICIENT_EVIDENCE') {
+            badgeColor = '#ef4444'; badgeBg = 'rgba(239, 68, 68, 0.15)';
+          } else if (fClass === 'EXPLORATORY_FINDING') {
+            badgeColor = '#f59e0b'; badgeBg = 'rgba(245, 158, 11, 0.15)';
+          }
+
+          const ci = a.confidence_interval || {};
+          const ciText = (ci.ci_lower != null && ci.ci_upper != null)
+            ? `[${ci.ci_lower}, ${ci.ci_upper}] (${ci.method_used || ''})`
+            : (ci.status === 'BOOTSTRAP_METHOD_REJECTED_AUTOCORRELATION' ? `REDDEDİLDİ: ${ci.rejection_code}` : 'Hesaplanmadı (INSUFFICIENT_EVIDENCE)');
+
+          const adj = a.adjusted_significance_result || {};
+          const adjText = adj.adjusted_p_or_q_value != null
+            ? `Ham p=${adj.raw_p_value} &rarr; Düzeltilmiş=${adj.adjusted_p_or_q_value} (${adj.correction_method}, M=${adj.family_size_m})`
+            : 'Hipotez testi uygulanamaz (Betimsel / Bloke)';
+
+          const dep = a.temporal_dependence_diagnostics || {};
+          const pwr = a.power_assessment || {};
+
+          return `
+            <div class="card" style="background:#090e1a; border:1px solid #1e293b; border-radius:8px; padding:14px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+                <div>
+                  <span class="badge" style="background:#1e293b; color:#38bdf8; font-family:var(--font-mono); font-size:11px;">${a.record_id}</span>
+                  <strong style="color:#f8fafc; font-size:13px; margin-left:8px;">Veri Seti: ${a.dataset_id}</strong>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <span class="badge" style="background:${badgeBg}; color:${badgeColor}; font-size:11px;">${fClass}</span>
+                  <span class="badge" style="background:#1e293b; color:#cbd5e1; font-size:10px;">${a.verification_status}</span>
+                </div>
+              </div>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:10px; font-size:11px; color:#cbd5e1; margin-bottom:10px;">
+                <div style="background:#0f172a; padding:8px 10px; border-radius:6px;">
+                  <div style="color:#94a3b8; font-size:10px;">ÖRNEKLEM ADEKVASYONU (N vs N_eff)</div>
+                  <div style="font-weight:700; margin-top:2px;">Ham N=${a.sample_size?.reported_sample_size || 0} | Efektif N_eff=${a.sample_size?.effective_sample_size || 0}</div>
+                  <div style="color:#38bdf8; font-size:10px;">${a.sample_size?.adequacy_verdict || ''}</div>
+                </div>
+                <div style="background:#0f172a; padding:8px 10px; border-radius:6px;">
+                  <div style="color:#94a3b8; font-size:10px;">ZAMANSAL BAĞIMLILIK &amp; OTOKORELASYON</div>
+                  <div style="font-weight:700; margin-top:2px;">Lag-1=${dep.lag_1_autocorr ?? 'N/A'} | Ljung-Box p=${dep.ljung_box_p_value ?? 'N/A'}</div>
+                  <div style="color:#f59e0b; font-size:10px;">${dep.dependence_classification || dep.status || ''}</div>
+                </div>
+                <div style="background:#0f172a; padding:8px 10px; border-radius:6px;">
+                  <div style="color:#94a3b8; font-size:10px;">%95 GÜVEN ARALIĞI &amp; ETKİ BÜYÜKLÜĞÜ</div>
+                  <div style="font-weight:700; margin-top:2px;">${ciText}</div>
+                  <div style="color:#10b981; font-size:10px;">Cohen's d=${a.effect_size?.cohens_d ?? 'N/A'} | Cliff's &delta;=${a.effect_size?.cliffs_delta ?? 'N/A'}</div>
+                </div>
+                <div style="background:#0f172a; padding:8px 10px; border-radius:6px;">
+                  <div style="color:#94a3b8; font-size:10px;">ÇOKLU TEST DÜZELTMESİ &amp; GÜÇ (POWER)</div>
+                  <div style="font-weight:700; margin-top:2px;">${adjText}</div>
+                  <div style="color:#a855f7; font-size:10px;">MDE d=${pwr.minimum_detectable_effect_cohens_d ?? 'N/A'} (${pwr.power_adequacy_verdict || ''})</div>
+                </div>
+              </div>
+              <div style="font-size:11px; color:#94a3b8; border-top:1px solid #1e293b; padding-top:6px;">
+                <strong>Metodolojik Sınırlılıklar:</strong> ${(a.limitations || []).join(' &bull; ')}
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error('loadStatisticalValidationLab error:', err);
+        container.innerHTML = `<div style="color:#ef4444; font-size:13px; padding:16px;">Hata: ${err.message}</div>`;
+      }
+    }
+
+    async function runWalkForwardLabUI(testRefitBlock) {
+      const banner = document.getElementById('wf-status-banner');
+      const kpiBox = document.getElementById('wf-kpi-summary');
+      const tbody = document.getElementById('wf-folds-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '<tr><td colspan="9" style="color:#94a3b8; font-size:12px; padding:20px; text-align:center;">Walk-Forward değerlendirmesi yürütülüyor...</td></tr>';
+
+      try {
+        const dsId = document.getElementById('wf-dataset-select')?.value || 'DS-BTC-1H-Q1-2024';
+        const smode = document.getElementById('wf-split-mode-select')?.value || 'expanding';
+        const nsplits = parseInt(document.getElementById('wf-splits-count-select')?.value || '4', 10);
+        const freq = dsId.includes('15M') ? '15m' : '1h';
+
+        const res = await fetch('/api/v1/product/workspace/walk-forward', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            record_id: 'RES-29-PAT-SIM',
+            dataset_id: dsId,
+            frequency: freq,
+            split_mode: smode,
+            n_splits: nsplits,
+            warmup_bars: 24,
+            purge_bars: 2,
+            embargo_bars: 2,
+            allow_parameter_refit: Boolean(testRefitBlock)
+          })
+        });
+        const data = await res.json();
+        const rep = data.walk_forward_report || {};
+
+        if (rep.status === 'EVALUATION_BLOCKED') {
+          if (banner) {
+            banner.innerHTML = `
+              <div style="background:rgba(239,68,68,0.15); border:1px solid #ef4444; border-radius:8px; padding:12px 16px; color:#fca5a5; font-size:12px;">
+                <strong>🛑 EVALUATION_BLOCKED [${rep.rejection_code}]:</strong> ${rep.rejection_reason}
+              </div>
+            `;
+          }
+          if (kpiBox) kpiBox.innerHTML = '';
+          tbody.innerHTML = `<tr><td colspan="9" style="color:#ef4444; font-weight:600; padding:16px; text-align:center;">Değerlendirme güvenlik/bütünlük kapısı tarafından engellendi (${rep.rejection_code}).</td></tr>`;
+          return;
+        }
+
+        if (banner) {
+          banner.innerHTML = `
+            <div style="background:rgba(16,185,129,0.12); border:1px solid #10b981; border-radius:8px; padding:10px 14px; color:#d1fae5; font-size:12px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+              <span><strong>✓ SIFIR ZAMANSAL SIZINTI DOĞRULANDI:</strong> Purged &amp; Embargo kronolojik ayırma tamamlandı (Parametre Mutasyonu: 0).</span>
+              <span style="font-family:var(--font-mono); font-size:11px;">Manifest SHA-256: ${(rep.evaluation_manifest?.manifest_sha256 || '').substring(0, 16)}...</span>
+            </div>
+          `;
+        }
+
+        const cw = rep.cross_window_consistency || {};
+        if (kpiBox) {
+          kpiBox.innerHTML = `
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Değerlendirme Durumu</div>
+              <div class="ws-kpi-value" style="color:#10b981; font-size:15px;">${rep.status}</div>
+              <div class="ws-kpi-sub">Mod: ${rep.split_mode} (${rep.fold_count} Fold)</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Tutarlı Pencere Oranı</div>
+              <div class="ws-kpi-value" style="color:#38bdf8;">${cw.consistent_folds_count || 0} / ${cw.total_folds || 0}</div>
+              <div class="ws-kpi-sub">${cw.overall_consistency_verdict || ''}</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Ort. Test/Train Vol Oranı</div>
+              <div class="ws-kpi-value" style="color:#f8fafc;">${cw.mean_test_to_train_volatility_ratio || 1.0}x</div>
+              <div class="ws-kpi-sub">CV: ${cw.volatility_ratio_cv || 0}</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Ort. Dağılım PSI</div>
+              <div class="ws-kpi-value" style="color:#a855f7;">${cw.mean_distribution_psi || 0}</div>
+              <div class="ws-kpi-sub">Look-Ahead Leakage: FALSE</div>
+            </div>
+          `;
+        }
+
+        const folds = rep.folds || [];
+        tbody.innerHTML = folds.map(f => `
+          <tr style="border-bottom:1px solid #1e293b;">
+            <td style="padding:8px 12px; font-weight:700; color:#38bdf8;">Fold #${f.fold_index}</td>
+            <td style="padding:8px 12px; color:#cbd5e1;">${f.split_mode}</td>
+            <td style="padding:8px 12px; font-family:var(--font-mono); font-size:11px; color:#94a3b8;">${f.train_start_utc} &rarr; ${f.train_end_utc} (${f.train_bar_count} bar)</td>
+            <td style="padding:8px 12px; font-family:var(--font-mono); font-size:11px; color:#e2e8f0;">${f.test_start_utc} &rarr; ${f.test_end_utc} (${f.test_bar_count} bar)</td>
+            <td style="padding:8px 12px; font-size:11px; color:#cbd5e1;">Purge: ${f.purged_bars_count} | Embargo: ${f.embargo_bars_count}</td>
+            <td style="padding:8px 12px;"><span class="badge" style="background:rgba(16,185,129,0.15); color:#10b981; font-size:10px;">${f.leakage_check_passed ? 'ZERO_LEAKAGE' : 'FAILED'}</span></td>
+            <td style="padding:8px 12px; font-family:var(--font-mono); color:#38bdf8;">${f.consistency_metrics?.test_to_train_volatility_ratio}x</td>
+            <td style="padding:8px 12px; font-family:var(--font-mono); color:#a855f7;">${f.consistency_metrics?.volatility_distribution_psi}</td>
+            <td style="padding:8px 12px;"><span class="badge" style="background:#1e293b; color:#f8fafc; font-size:10px;">${f.fold_verdict}</span></td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        console.error('runWalkForwardLabUI error:', err);
+        tbody.innerHTML = `<tr><td colspan="9" style="color:#ef4444; padding:16px;">Hata: ${err.message}</td></tr>`;
+      }
+    }
+
+    async function loadRegimeResearchLabUI() {
+      const kpiBox = document.getElementById('regime-res-kpi-summary');
+      const detailsBox = document.getElementById('regime-res-details-container');
+      if (!detailsBox) return;
+      detailsBox.innerHTML = '<div style="color:#94a3b8; font-size:13px; padding:20px;">Piyasa rejim araştırması yükleniyor...</div>';
+
+      try {
+        const dsId = document.getElementById('regime-res-dataset-select')?.value || 'DS-BTC-1H-Q1-2024';
+        const res = await fetch(`/api/v1/product/workspace/regime-research?dataset_id=${encodeURIComponent(dsId)}`);
+        const data = await res.json();
+        const rep = data.regime_research_report || {};
+
+        if (rep.status !== 'RESEARCH_COMPLETED') {
+          detailsBox.innerHTML = `<div style="color:#ef4444; padding:16px; font-weight:700;">Bloke Edildi [${rep.rejection_code}]: ${rep.rejection_reason}</div>`;
+          return;
+        }
+
+        const dist = rep.regime_distribution?.shares || {};
+        const dur = rep.regime_duration_statistics?.by_regime || {};
+        const pers = rep.regime_persistence?.by_regime || {};
+        const stab = rep.perturbation_stability || {};
+        const cp = rep.cross_period_consistency || {};
+
+        if (kpiBox) {
+          kpiBox.innerHTML = `
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Baskın Piyasa Rejimi</div>
+              <div class="ws-kpi-value" style="color:#38bdf8; font-size:14px;">${rep.regime_distribution?.dominant_regime || ''}</div>
+              <div class="ws-kpi-sub">Gözlem: ${rep.evaluation_window?.observation_count || 0} Bar</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Ortalama Kalıcılık (Persistence)</div>
+              <div class="ws-kpi-value" style="color:#10b981;">${((rep.regime_persistence?.mean_diagonal_persistence || 0) * 100).toFixed(1)}%</div>
+              <div class="ws-kpi-sub">Öz-Geçiş Olasılığı P(i&rarr;i)</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Pertürbasyon Kararlılığı</div>
+              <div class="ws-kpi-value" style="color:#a855f7;">${((stab.combined_stability_score || 0) * 100).toFixed(1)}%</div>
+              <div class="ws-kpi-sub">${stab.stability_verdict || ''}</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Dönemler Arası JS Sapması</div>
+              <div class="ws-kpi-value" style="color:#f59e0b;">${cp.regime_distribution_jensen_shannon_divergence ?? 'N/A'}</div>
+              <div class="ws-kpi-sub">${cp.cross_period_verdict || ''}</div>
+            </div>
+          `;
+        }
+
+        const regRows = Object.keys(dist).map(r => {
+          const sharePct = ((dist[r] || 0) * 100).toFixed(1) + '%';
+          const dInfo = dur[r] || {};
+          const pInfo = pers[r] || {};
+          return `
+            <tr style="border-bottom:1px solid #1e293b;">
+              <td style="padding:6px 8px; font-weight:600; color:#f8fafc;">${r}</td>
+              <td style="padding:6px 8px; font-family:var(--font-mono); color:#38bdf8;">${sharePct}</td>
+              <td style="padding:6px 8px; font-family:var(--font-mono); color:#cbd5e1;">${dInfo.mean_duration_hours || 0} saat (${dInfo.total_episodes || 0} ep)</td>
+              <td style="padding:6px 8px; font-family:var(--font-mono); color:#10b981;">${pInfo.self_transition_probability ?? 0}</td>
+            </tr>
+          `;
+        }).join('');
+
+        detailsBox.innerHTML = `
+          <div style="background:#090e1a; border:1px solid #1e293b; border-radius:8px; padding:14px;">
+            <h4 style="margin:0 0 10px 0; font-size:13px; color:#f8fafc;">📊 Rejim Dağılımı, Süre ve Kalıcılık Tablosu</h4>
+            <table class="table" style="width:100%; border-collapse:collapse; font-size:11px;">
+              <thead>
+                <tr style="background:#1e293b; color:#94a3b8; text-align:left;">
+                  <th style="padding:6px 8px;">Kanonik Rejim</th>
+                  <th style="padding:6px 8px;">Pay (%)</th>
+                  <th style="padding:6px 8px;">Ort. Süre</th>
+                  <th style="padding:6px 8px;">P(i&rarr;i)</th>
+                </tr>
+              </thead>
+              <tbody>${regRows}</tbody>
+            </table>
+          </div>
+          <div style="background:#090e1a; border:1px solid #1e293b; border-radius:8px; padding:14px;">
+            <h4 style="margin:0 0 10px 0; font-size:13px; color:#f8fafc;">🔗 Kanıt Soykütüğü &amp; Bilimsel Sınırlılıklar</h4>
+            <div style="font-size:11px; color:#cbd5e1; line-height:1.5; margin-bottom:10px;">
+              <div><strong>Veri Seti:</strong> <code>${rep.historical_dataset?.dataset_id}</code> (${rep.historical_dataset?.source_path})</div>
+              <div><strong>Kaynak SHA-256:</strong> <code style="font-size:10px; color:#38bdf8;">${(rep.verified_source_artifact?.source_artifact_sha256 || '').substring(0, 24)}...</code></div>
+              <div><strong>Pencere:</strong> ${rep.evaluation_window?.start_utc} &rarr; ${rep.evaluation_window?.end_utc}</div>
+              <div><strong>Eşik Mutasyonu:</strong> <code>${rep.methodology?.thresholds_modified ? 'EVET' : 'HAYIR (STRICTLY_FROZEN)'}</code></div>
+            </div>
+            <div style="font-size:11px; color:#94a3b8; border-top:1px solid #1e293b; padding-top:8px;">
+              ${(rep.scientific_limitations || []).map(l => `<div style="margin-bottom:4px;">&bull; ${l}</div>`).join('')}
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        console.error('loadRegimeResearchLabUI error:', err);
+        detailsBox.innerHTML = `<div style="color:#ef4444; padding:16px;">Hata: ${err.message}</div>`;
+      }
+    }
+
+    async function runRobustnessLabUI() {
+      const kpiBox = document.getElementById('rob-kpi-summary');
+      const container = document.getElementById('rob-experiments-container');
+      if (!container) return;
+      container.innerHTML = '<div style="color:#94a3b8; font-size:13px; padding:20px; text-align:center;">Sağlamlık ve duyarlılık deneyleri yürütülüyor...</div>';
+
+      try {
+        const recId = document.getElementById('rob-record-select')?.value || 'RES-29-PAT-SIM';
+        const aType = document.getElementById('rob-analysis-select')?.value || 'ALL';
+
+        let url = `/api/v1/product/workspace/robustness-lab?record_id=${encodeURIComponent(recId)}`;
+        if (aType !== 'ALL') url += `&analysis_type=${encodeURIComponent(aType)}`;
+
+        const res = await fetch(url);
+        const data = await res.json();
+        const exps = data.experiments ? data.experiments : (data.experiment ? [data.experiment] : []);
+
+        if (kpiBox) {
+          const robCount = exps.filter(e => e.stability_classification === 'ROBUST').length;
+          const modCount = exps.filter(e => e.stability_classification === 'MODERATELY_SENSITIVE').length;
+          const fragCount = exps.filter(e => e.stability_classification === 'FRAGILE_OR_SENSITIVE').length;
+          kpiBox.innerHTML = `
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Toplam Duyarlılık Deneyi</div>
+              <div class="ws-kpi-value" style="color:#38bdf8;">${exps.length}</div>
+              <div class="ws-kpi-sub">Hedef: ${recId}</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Sağlam (ROBUST)</div>
+              <div class="ws-kpi-value" style="color:#10b981;">${robCount}</div>
+              <div class="ws-kpi-sub">&le; %15 Göreli Sapma</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Orta Duyarlı</div>
+              <div class="ws-kpi-value" style="color:#f59e0b;">${modCount}</div>
+              <div class="ws-kpi-sub">%15 – %30 Sapma</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Hassas / Kırılgan</div>
+              <div class="ws-kpi-value" style="color:#ef4444;">${fragCount}</div>
+              <div class="ws-kpi-sub">&gt; %30 Sapma (Metodolojik Fark)</div>
+            </div>
+          `;
+        }
+
+        container.innerHTML = exps.map(e => {
+          const st = e.stability_classification || 'UNKNOWN';
+          let bColor = '#10b981';
+          let bBg = 'rgba(16,185,129,0.15)';
+          if (st === 'MODERATELY_SENSITIVE') { bColor = '#f59e0b'; bBg = 'rgba(245,158,11,0.15)'; }
+          else if (st === 'FRAGILE_OR_SENSITIVE' || st === 'EXPERIMENT_BLOCKED') { bColor = '#ef4444'; bBg = 'rgba(239,68,68,0.15)'; }
+
+          const diff = e.difference_from_baseline || {};
+          const ci = e.confidence_or_uncertainty_estimate || {};
+
+          return `
+            <div class="card" style="background:#090e1a; border:1px solid #1e293b; border-radius:8px; padding:12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
+                <div>
+                  <span class="badge" style="background:#1e293b; color:#38bdf8; font-family:var(--font-mono); font-size:10px;">${e.experiment_id}</span>
+                  <strong style="color:#f8fafc; font-size:13px; margin-left:8px;">${e.analysis_type}</strong>
+                </div>
+                <span class="badge" style="background:${bBg}; color:${bColor}; font-size:11px;">${st}</span>
+              </div>
+              <div style="font-size:11px; color:#94a3b8; margin-bottom:8px;">${e.scientific_rationale || ''}</div>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:8px; font-size:11px; color:#cbd5e1;">
+                <div>Baz Ort. Volatilite: <strong>${e.baseline_evaluation?.mean_volatility ?? 'N/A'}</strong></div>
+                <div>Pertürbe Ort. Volatilite: <strong>${e.resulting_measurements?.primary_perturbed_metrics?.mean_volatility ?? 'N/A'}</strong></div>
+                <div>Göreli Fark: <strong style="color:#38bdf8;">${diff.mean_volatility_rel_diff_pct ?? 0}%</strong></div>
+                <div>%95 Blok Bootstrap GA: <strong>[${ci.ci_95_lower ?? 'N/A'}, ${ci.ci_95_upper ?? 'N/A'}]</strong></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error('runRobustnessLabUI error:', err);
+        container.innerHTML = `<div style="color:#ef4444; padding:16px;">Hata: ${err.message}</div>`;
+      }
+    }
+
+    async function loadIndependentValidationLabUI() {
+      const container = document.getElementById('ind-val-audits-container');
+      if (!container) return;
+      container.innerHTML = '<div style="color:#94a3b8; font-size:13px; padding:20px; text-align:center;">8 boyutlu bağımsızlık denetimleri yükleniyor...</div>';
+
+      try {
+        const res = await fetch('/api/v1/product/workspace/independent-validation');
+        const data = await res.json();
+        const audits = data.audits || [];
+
+        container.innerHTML = audits.map(a => {
+          const cat = a.assigned_category || 'INDEPENDENCE_NOT_ESTABLISHED';
+          let bColor = '#10b981';
+          let bBg = 'rgba(16,185,129,0.15)';
+          if (cat === 'INDEPENDENCE_NOT_ESTABLISHED' || cat === 'VALIDATION_BLOCKED') {
+            bColor = '#ef4444'; bBg = 'rgba(239,68,68,0.15)';
+          } else if (cat === 'REPRODUCTION') {
+            bColor = '#f59e0b'; bBg = 'rgba(245,158,11,0.15)';
+          }
+
+          const checks = a.eight_point_checks || {};
+          const checkPills = Object.keys(checks).map(k => {
+            const c = checks[k];
+            const cCol = c.passed ? '#10b981' : '#ef4444';
+            return `<span class="badge" style="background:#0f172a; border:1px solid ${cCol}; color:${cCol}; font-size:10px;">${c.passed ? '✓' : '✕'} ${k}</span>`;
+          }).join(' ');
+
+          const reasonsHtml = (a.rejection_or_downgrade_reasons && a.rejection_or_downgrade_reasons.length > 0)
+            ? `<div style="margin-top:8px; color:#fca5a5; font-size:11px;"><strong>Red / İndirgeme Gerekçesi:</strong> ${a.rejection_or_downgrade_reasons.join(' | ')}</div>`
+            : '';
+
+          return `
+            <div class="card" style="background:#090e1a; border:1px solid #1e293b; border-radius:8px; padding:14px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+                <div>
+                  <span class="badge" style="background:#1e293b; color:#38bdf8; font-family:var(--font-mono); font-size:10px;">${a.audit_id}</span>
+                  <strong style="color:#f8fafc; font-size:13px; margin-left:8px;">${a.primary_record_id} &rarr; ${a.candidate_record_id}</strong>
+                  <span style="font-size:11px; color:#94a3b8; margin-left:8px;">(Talep Edilen: <code>${a.claimed_category || 'AUTO'}</code>)</span>
+                </div>
+                <span class="badge" style="background:${bBg}; color:${bColor}; font-size:11px; padding:5px 10px;">Atanan: ${cat}</span>
+              </div>
+              <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;">${checkPills}</div>
+              ${reasonsHtml}
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error('loadIndependentValidationLabUI error:', err);
+        container.innerHTML = `<div style="color:#ef4444; padding:16px;">Hata: ${err.message}</div>`;
+      }
+    }
+
+    let cachedValidationReportV4 = null;
+    async function loadValidationReportsV4UI() {
+      const container = document.getElementById('val-rep-v4-container');
+      if (!container) return;
+      container.innerHTML = '<div style="color:#94a3b8; font-size:13px; padding:20px; text-align:center;">Birleşik Bilimsel Doğrulama Raporu V4 oluşturuluyor...</div>';
+
+      try {
+        const recId = document.getElementById('val-rep-record-select')?.value || 'RES-29-PAT-SIM';
+        const res = await fetch(`/api/v1/product/workspace/validation-reports?record_id=${encodeURIComponent(recId)}`);
+        const data = await res.json();
+        cachedValidationReportV4 = data;
+
+        const cs = data.concept_separation || {};
+        container.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; border-bottom:1px solid #1e293b; padding-bottom:12px; margin-bottom:14px;">
+            <div>
+              <span class="badge" style="background:#1e293b; color:#38bdf8; font-family:var(--font-mono); font-size:11px;">${data.validation_report_id}</span>
+              <h4 style="margin:4px 0 0 0; font-size:15px; color:#f8fafc;">${data.title} (${data.record_id})</h4>
+            </div>
+            <div style="text-align:right; font-size:11px; color:#94a3b8;">
+              <div>Model: <strong style="color:#f8fafc;">${data.canonical_model} (${data.model_status})</strong> | Kanıt Parmak İzi (SHA-256): <code style="color:#38bdf8;">${(data.evidence_fingerprint_sha256 || '').substring(0, 20)}...</code></div>
+              <div>Yönetişim: <strong style="color:#ef4444;">${data.governance_decision} (${data.trading_eligibility})</strong></div>
+            </div>
+          </div>
+
+          <h5 style="margin:0 0 8px 0; font-size:12px; color:#94a3b8; letter-spacing:0.5px;">4 SÜTUNLU BİLİMSEL KAVRAM AYRIMI (CONCEPT SEPARATION)</h5>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:10px; margin-bottom:16px;">
+            <div style="background:#0f172a; border:1px solid #1e293b; border-radius:6px; padding:10px;">
+              <div style="font-size:10px; color:#94a3b8;">1. KRİPTOGRAFİK BÜTÜNLÜK</div>
+              <div style="font-size:12px; font-weight:700; color:#38bdf8; margin-top:4px;">${cs.cryptographic_integrity || ''}</div>
+            </div>
+            <div style="background:#0f172a; border:1px solid #1e293b; border-radius:6px; padding:10px;">
+              <div style="font-size:10px; color:#94a3b8;">2. METODOLOJİK GEÇERLİLİK</div>
+              <div style="font-size:12px; font-weight:700; color:#10b981; margin-top:4px;">${cs.methodological_validity || ''}</div>
+            </div>
+            <div style="background:#0f172a; border:1px solid #1e293b; border-radius:6px; padding:10px;">
+              <div style="font-size:10px; color:#94a3b8;">3. İSTATİSTİKSEL GEÇERLİLİK</div>
+              <div style="font-size:12px; font-weight:700; color:#a855f7; margin-top:4px;">${cs.statistical_validity || ''}</div>
+            </div>
+            <div style="background:#0f172a; border:1px solid #1e293b; border-radius:6px; padding:10px;">
+              <div style="font-size:10px; color:#94a3b8;">4. BAĞIMSIZ DOĞRULAMA</div>
+              <div style="font-size:12px; font-weight:700; color:#f59e0b; margin-top:4px;">${cs.independent_validation || ''}</div>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:12px; font-size:12px; color:#cbd5e1;">
+            <div style="background:#0f172a; padding:12px; border-radius:6px;">
+              <strong>Walk-Forward Özeti:</strong>
+              <div style="margin-top:4px; color:#94a3b8;">Durum: ${data.walk_forward_summary?.status} (${data.walk_forward_summary?.fold_count} Fold) — ${data.walk_forward_summary?.cross_window_consistency?.overall_consistency_verdict || ''}</div>
+            </div>
+            <div style="background:#0f172a; padding:12px; border-radius:6px;">
+              <strong>Piyasa Rejim Özeti:</strong>
+              <div style="margin-top:4px; color:#94a3b8;">Baskın Rejim: ${data.regime_research_summary?.dominant_regime} | Pertürbasyon: ${data.regime_research_summary?.perturbation_stability?.stability_verdict || ''}</div>
+            </div>
+            <div style="background:#0f172a; padding:12px; border-radius:6px;">
+              <strong>Sprint 25 Hazırlık &amp; Boşluk Entegrasyonu:</strong>
+              <div style="margin-top:4px; color:#94a3b8;">Hazırlık: ${data.sprint25_readiness_and_gaps?.readiness_verdict} (İndeks: ${data.sprint25_readiness_and_gaps?.readiness_index}) | Açık Boşluk: ${data.sprint25_readiness_and_gaps?.open_gaps_count}</div>
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        console.error('loadValidationReportsV4UI error:', err);
+        container.innerHTML = `<div style="color:#ef4444; padding:16px;">Hata: ${err.message}</div>`;
+      }
+    }
+
+    function exportValidationReportV4JSON() {
+      if (!cachedValidationReportV4) {
+        alert('Lütfen önce raporu oluşturun.');
+        return;
+      }
+      const blob = new Blob([JSON.stringify(cachedValidationReportV4, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${cachedValidationReportV4.validation_report_id || 'validation_report_v4'}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
 
     // Initialize Workspace V2 on page load

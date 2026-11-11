@@ -944,6 +944,16 @@ class EvidenceGraphService:
                     "sample_size": sample_size,
                     "volatility_ratio": vol_ratio,
                     "p_value": p_val,
+                    "concept_separation": {
+                        "cryptographic_integrity": art_status,
+                        "methodological_validity": "REGISTERED_FROZEN_CBE_0_7_0",
+                        "statistical_validity": (
+                            "STATISTICALLY_EVALUATED" if has_valid_stats else "INSUFFICIENT_OR_UNVERIFIED"
+                        ),
+                        "independent_validation": getattr(
+                            rec, "replication_verdict", "INDEPENDENCE_NOT_ESTABLISHED"
+                        ),
+                    },
                 },
             )
             graph.add_node(stat_node)
