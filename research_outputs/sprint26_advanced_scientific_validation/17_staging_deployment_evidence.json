@@ -1,0 +1,28 @@
+{
+  "artifact": "17_staging_deployment_evidence",
+  "sprint_id": "CBE_SPRINT26_ADVANCED_SCIENTIFIC_VALIDATION",
+  "generated_at_utc": "2026-11-11T03:44:25.106032+00:00",
+  "staging_host": "srv1114257 (168.231.125.238)",
+  "staging_port": "127.0.0.1:18080->8000/tcp",
+  "previous_container_id": "39429f0e2c92",
+  "new_container_id": "cb9d2ff1e5a7",
+  "new_image": "cbe-market-intelligence:sprint26-scientific-val-d7ae5b8",
+  "image_sha256": "sha256:ae7f3ada46e1349bc01802065139b80221a115d63844f4f3c6e0abe19e3c5b03",
+  "deployed_commit_sha": "d7ae5b8214359f4feaa8c249de8b16c2136dded5",
+  "persistent_volumes_preserved": [
+    "zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data:/app/data/live_capture:ro",
+    "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f:/app/data/prospective:rw"
+  ],
+  "endpoint_verification": {
+    "/health": 200,
+    "/product": 200,
+    "/api/v1/product/workspace/statistical-validation": 200,
+    "/api/v1/product/workspace/walk-forward": 200,
+    "/api/v1/product/workspace/regime-research": 200,
+    "/api/v1/product/workspace/robustness-lab": 200,
+    "/api/v1/product/workspace/independent-validation": 200,
+    "/api/v1/product/workspace/validation-reports": 200,
+    "/api/v1/product/workspace/evidence-graph": 200,
+    "/api/v1/product/workspace/readiness-scorecards": 200
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "sprint_id": "CBE_SPRINT26_ADVANCED_SCIENTIFIC_VALIDATION",
+  "audit_timestamp_utc": "2026-11-11T02:53:21Z",
+  "starting_baseline_commit": "fd174c56150a13d1b09145eeb57bec2c5d1ae9ac",
+  "canonical_scientific_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "governance_decision": "TECHNICAL_NO_GO",
+  "execution_mode": "STRICTLY_OFFLINE_RESEARCH",
+  "existing_scientific_modules_audited": {
+    "sprint24_cryptographic_verification": {
+      "file": "src/coin_behavior_engine/product/research_intelligence_workspace.py",
+      "capabilities": [
+        "verify_completeness_attestation",
+        "calculate_temporal_observation_overlap",
+        "TRUSTED_COMPLETENESS_ATTESTATION_KEY_RING",
+        "REVOKED_ATTESTATION_IDS"
+      ],
+      "reuse_plan": "Honor all signature-bound cache, revocation, expiry, and source-artifact SHA-256 controls across Sprint 26 modules."
+    },
+    "sprint25_decision_intelligence": {
+      "files": [
+        "src/coin_behavior_engine/product/evidence_graph.py",
+        "src/coin_behavior_engine/product/scientific_readiness.py",
+        "src/coin_behavior_engine/product/evidence_gap_analyzer.py",
+        "src/coin_behavior_engine/product/reproducibility_lab.py",
+        "src/coin_behavior_engine/product/research_priority_engine.py",
+        "src/coin_behavior_engine/product/research_decision_reports.py"
+      ],
+      "reuse_plan": "Extend Evidence Graph, Readiness Scorecards, Gap Analyzer, Priority Engine, and Decision Reports with Sprint 26 statistical validation, walk-forward, regime, robustness, and independence evaluations without breaking Sprint 25 contracts."
+    },
+    "existing_statistical_and_regime_engines": {
+      "statistical_validity": "src/coin_behavior_engine/product/statistical_validity.py (StatisticalValidityEngine: block_bootstrap_ci, event_level_bootstrap_ci, Benjamini-Hochberg FDR, Cohens d, Cliffs delta)",
+      "walk_forward_purged": "src/coin_behavior_engine/research/historical/walkforward_purged.py (PurgedEmbargoTimeSeriesSplitter, PurgedFold) and src/coin_behavior_engine/product/walk_forward_validation.py",
+      "market_regime_intelligence": "src/coin_behavior_engine/research/historical/market_regime_intelligence.py (MarketRegimeEngine) and src/coin_behavior_engine/product/historical_regime_transition_lab.py (HistoricalRegimeTransitionLabEngine)",
+      "robustness_explorer": "src/coin_behavior_engine/product/robustness_explorer.py (HistoricalRobustnessExplorer)",
+      "independent_reproduction": "src/coin_behavior_engine/product/independent_reproduction.py (IndependentScientificReproductionEngine)"
+    }
+  },
+  "sprint26_new_modules_architecture": {
+    "module_26_1": "src/coin_behavior_engine/product/advanced_statistical_validation.py (AdvancedStatisticalValidator)",
+    "module_26_2": "src/coin_behavior_engine/product/walk_forward_research_lab.py (WalkForwardResearchLab)",
+    "module_26_3": "src/coin_behavior_engine/product/historical_regime_research.py (HistoricalMarketRegimeResearchEngine)",
+    "module_26_4": "src/coin_behavior_engine/product/robustness_sensitivity_lab.py (RobustnessSensitivityLab)",
+    "module_26_5": "src/coin_behavior_engine/product/independent_validation_framework.py (IndependentValidationFramework)",
+    "module_26_6": "Scientific Validation Dashboard V4 integrated into research_intelligence_workspace.py, dashboard_api.py, and research_explorer_ui.py"
+  },
+  "frozen_model_and_governance_invariants": {
+    "CANONICAL_MODEL": "CBE-0.7.0",
+    "MODEL_STATUS": "STRICTLY_FROZEN",
+    "PARAMETER_MUTATIONS": "ZERO",
+    "TECHNICAL_DECISION": "TECHNICAL_NO_GO",
+    "LIVE_ORDER_EXECUTION": "PERMANENTLY_PROHIBITED",
+    "DIRECTIONAL_TRADING_ELIGIBILITY": "ZERO"
+  }
+}

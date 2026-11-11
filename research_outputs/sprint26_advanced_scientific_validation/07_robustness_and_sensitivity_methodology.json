@@ -1,0 +1,729 @@
+{
+  "artifact": "07_robustness_and_sensitivity_methodology",
+  "sprint_id": "CBE_SPRINT26_ADVANCED_SCIENTIFIC_VALIDATION",
+  "generated_at_utc": "2026-11-11T03:44:25.106032+00:00",
+  "canonical_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "supported_sensitivity_dimensions": [
+    "HISTORICAL_WINDOW_SENSITIVITY",
+    "SAMPLE_SIZE_SENSITIVITY",
+    "MISSING_DATA_SENSITIVITY",
+    "OUTLIER_SENSITIVITY",
+    "OBSERVATION_FREQUENCY_SENSITIVITY",
+    "BOOTSTRAP_UNCERTAINTY",
+    "METHODOLOGICAL_ASSUMPTION_SENSITIVITY",
+    "CROSS_PERIOD_ROBUSTNESS"
+  ],
+  "comprehensive_suite_results": {
+    "status": "SUCCESS",
+    "original_record_id": "RES-29-PAT-SIM",
+    "dataset_id": "DS-BTC-1H-Q1-2024",
+    "canonical_model": "CBE-0.7.0",
+    "model_status": "STRICTLY_FROZEN",
+    "governance_decision": "TECHNICAL_NO_GO",
+    "total_experiments": 8,
+    "stability_summary": {
+      "ROBUST": 6,
+      "MODERATELY_SENSITIVE": 0,
+      "FRAGILE_OR_SENSITIVE": 2,
+      "EXPERIMENT_BLOCKED": 0
+    },
+    "experiments": [
+      {
+        "experiment_id": "ROB-RES-29-PAT-SIM-HISTORICAL-c7ad348e",
+        "status": "EXPERIMENT_COMPLETED",
+        "rejection_code": null,
+        "rejection_reason": null,
+        "analysis_type": "HISTORICAL_WINDOW_SENSITIVITY",
+        "original_record_id": "RES-29-PAT-SIM",
+        "baseline_evaluation": {
+          "sample_size": 2184,
+          "mean_volatility": 0.00499,
+          "median_volatility": 0.003818,
+          "iqr_volatility": 0.003582,
+          "p90_to_median_expansion_ratio": 2.4513
+        },
+        "perturbation_definition": {
+          "analysis_type": "HISTORICAL_WINDOW_SENSITIVITY",
+          "assumption_scope": "EXPLORATORY_EVALUATION_CONDITION",
+          "canonical_model_mutated": false,
+          "deterministic_seed": 42,
+          "trim_fraction": 0.1
+        },
+        "scientific_rationale": "Tests whether the volatility structure is driven by boundary macro events at the start or end of the historical observation window.",
+        "dataset_identity": {
+          "dataset_id": "DS-BTC-1H-Q1-2024",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "row_count": 2184
+        },
+        "resulting_measurements": {
+          "primary_perturbed_metrics": {
+            "sample_size": 1748,
+            "mean_volatility": 0.005007,
+            "median_volatility": 0.003747,
+            "iqr_volatility": 0.003773,
+            "p90_to_median_expansion_ratio": 2.5944
+          },
+          "variants": {
+            "drop_first_10pct": {
+              "sample_size": 1966,
+              "mean_volatility": 0.004938,
+              "median_volatility": 0.003764,
+              "iqr_volatility": 0.003588,
+              "p90_to_median_expansion_ratio": 2.4771
+            },
+            "drop_last_10pct": {
+              "sample_size": 1966,
+              "mean_volatility": 0.005057,
+              "median_volatility": 0.003794,
+              "iqr_volatility": 0.003717,
+              "p90_to_median_expansion_ratio": 2.5687
+            },
+            "symmetric_trim": {
+              "sample_size": 1748,
+              "mean_volatility": 0.005007,
+              "median_volatility": 0.003747,
+              "iqr_volatility": 0.003773,
+              "p90_to_median_expansion_ratio": 2.5944
+            }
+          }
+        },
+        "difference_from_baseline": {
+          "mean_volatility_abs_diff": 1.7e-05,
+          "mean_volatility_rel_diff_pct": 0.34,
+          "expansion_ratio_abs_diff": 0.1431,
+          "expansion_ratio_rel_diff_pct": 5.84
+        },
+        "confidence_or_uncertainty_estimate": {
+          "method": "MOVING_BLOCK_BOOTSTRAP (block_size=8)",
+          "point_estimate": 0.005,
+          "ci_95_lower": 0.0046,
+          "ci_95_upper": 0.0054,
+          "bootstrap_se": null
+        },
+        "stability_classification": "ROBUST",
+        "limitations": [
+          "Historical stability under perturbation does not establish future predictive reliability or live trading eligibility.",
+          "Exploratory evaluation conditions are isolated from the frozen CBE-0.7.0 canonical specification."
+        ],
+        "evidence_provenance": {
+          "dataset_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "experiment_fingerprint_sha256": "c7ad348e3585cbf2c1b3c59591e8b0c39eb56e8e80c17888076a61e41e1fd497",
+          "reproducible_seed": 42,
+          "methodology_version": "SPRINT26-ROBUSTNESS-LAB-V1.0"
+        },
+        "evaluated_at_utc": "2026-11-11T03:44:25Z",
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "governance_decision": "TECHNICAL_NO_GO"
+      },
+      {
+        "experiment_id": "ROB-RES-29-PAT-SIM-SAMPLE_SIZ-071240da",
+        "status": "EXPERIMENT_COMPLETED",
+        "rejection_code": null,
+        "rejection_reason": null,
+        "analysis_type": "SAMPLE_SIZE_SENSITIVITY",
+        "original_record_id": "RES-29-PAT-SIM",
+        "baseline_evaluation": {
+          "sample_size": 2184,
+          "mean_volatility": 0.00499,
+          "median_volatility": 0.003818,
+          "iqr_volatility": 0.003582,
+          "p90_to_median_expansion_ratio": 2.4513
+        },
+        "perturbation_definition": {
+          "analysis_type": "SAMPLE_SIZE_SENSITIVITY",
+          "assumption_scope": "EXPLORATORY_EVALUATION_CONDITION",
+          "canonical_model_mutated": false,
+          "deterministic_seed": 42,
+          "subsample_fraction": 0.75
+        },
+        "scientific_rationale": "Evaluates estimate convergence and stability across smaller contiguous sample sizes.",
+        "dataset_identity": {
+          "dataset_id": "DS-BTC-1H-Q1-2024",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "row_count": 2184
+        },
+        "resulting_measurements": {
+          "primary_perturbed_metrics": {
+            "sample_size": 1638,
+            "mean_volatility": 0.004677,
+            "median_volatility": 0.003539,
+            "iqr_volatility": 0.003181,
+            "p90_to_median_expansion_ratio": 2.4476
+          },
+          "variants": {
+            "subsample_50pct": {
+              "sample_size": 1092,
+              "mean_volatility": 0.004383,
+              "median_volatility": 0.003442,
+              "iqr_volatility": 0.002861,
+              "p90_to_median_expansion_ratio": 2.3442
+            },
+            "subsample_75pct": {
+              "sample_size": 1638,
+              "mean_volatility": 0.004677,
+              "median_volatility": 0.003539,
+              "iqr_volatility": 0.003181,
+              "p90_to_median_expansion_ratio": 2.4476
+            },
+            "subsample_90pct": {
+              "sample_size": 1965,
+              "mean_volatility": 0.005053,
+              "median_volatility": 0.003792,
+              "iqr_volatility": 0.003708,
+              "p90_to_median_expansion_ratio": 2.569
+            }
+          }
+        },
+        "difference_from_baseline": {
+          "mean_volatility_abs_diff": -0.000313,
+          "mean_volatility_rel_diff_pct": -6.27,
+          "expansion_ratio_abs_diff": -0.0037,
+          "expansion_ratio_rel_diff_pct": -0.15
+        },
+        "confidence_or_uncertainty_estimate": {
+          "method": "MOVING_BLOCK_BOOTSTRAP (block_size=8)",
+          "point_estimate": 0.0047,
+          "ci_95_lower": 0.0044,
+          "ci_95_upper": 0.0051,
+          "bootstrap_se": null
+        },
+        "stability_classification": "ROBUST",
+        "limitations": [
+          "Historical stability under perturbation does not establish future predictive reliability or live trading eligibility.",
+          "Exploratory evaluation conditions are isolated from the frozen CBE-0.7.0 canonical specification."
+        ],
+        "evidence_provenance": {
+          "dataset_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "experiment_fingerprint_sha256": "071240da97686616a038920f942420bed3f28453a960771b02f210e0b9d7bf7a",
+          "reproducible_seed": 42,
+          "methodology_version": "SPRINT26-ROBUSTNESS-LAB-V1.0"
+        },
+        "evaluated_at_utc": "2026-11-11T03:44:25Z",
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "governance_decision": "TECHNICAL_NO_GO"
+      },
+      {
+        "experiment_id": "ROB-RES-29-PAT-SIM-MISSING_DA-cfc31f3c",
+        "status": "EXPERIMENT_COMPLETED",
+        "rejection_code": null,
+        "rejection_reason": null,
+        "analysis_type": "MISSING_DATA_SENSITIVITY",
+        "original_record_id": "RES-29-PAT-SIM",
+        "baseline_evaluation": {
+          "sample_size": 2184,
+          "mean_volatility": 0.00499,
+          "median_volatility": 0.003818,
+          "iqr_volatility": 0.003582,
+          "p90_to_median_expansion_ratio": 2.4513
+        },
+        "perturbation_definition": {
+          "analysis_type": "MISSING_DATA_SENSITIVITY",
+          "assumption_scope": "EXPLORATORY_EVALUATION_CONDITION",
+          "canonical_model_mutated": false,
+          "deterministic_seed": 42,
+          "dropout_rate": 0.03
+        },
+        "scientific_rationale": "Evaluates sensitivity to random observation dropouts without fabricating synthetic forward-filled prices.",
+        "dataset_identity": {
+          "dataset_id": "DS-BTC-1H-Q1-2024",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "row_count": 2184
+        },
+        "resulting_measurements": {
+          "primary_perturbed_metrics": {
+            "sample_size": 2127,
+            "mean_volatility": 0.00499,
+            "median_volatility": 0.003825,
+            "iqr_volatility": 0.003599,
+            "p90_to_median_expansion_ratio": 2.4375
+          },
+          "variants": {
+            "dropout_1pct": {
+              "sample_size": 2167,
+              "mean_volatility": 0.004996,
+              "median_volatility": 0.003819,
+              "iqr_volatility": 0.003606,
+              "p90_to_median_expansion_ratio": 2.4525
+            },
+            "dropout_3pct": {
+              "sample_size": 2125,
+              "mean_volatility": 0.005004,
+              "median_volatility": 0.003825,
+              "iqr_volatility": 0.003581,
+              "p90_to_median_expansion_ratio": 2.4489
+            },
+            "dropout_5pct": {
+              "sample_size": 2070,
+              "mean_volatility": 0.005015,
+              "median_volatility": 0.003822,
+              "iqr_volatility": 0.003624,
+              "p90_to_median_expansion_ratio": 2.4847
+            }
+          }
+        },
+        "difference_from_baseline": {
+          "mean_volatility_abs_diff": 0.0,
+          "mean_volatility_rel_diff_pct": 0.0,
+          "expansion_ratio_abs_diff": -0.0138,
+          "expansion_ratio_rel_diff_pct": -0.56
+        },
+        "confidence_or_uncertainty_estimate": {
+          "method": "MOVING_BLOCK_BOOTSTRAP (block_size=8)",
+          "point_estimate": 0.005,
+          "ci_95_lower": 0.0046,
+          "ci_95_upper": 0.0054,
+          "bootstrap_se": null
+        },
+        "stability_classification": "ROBUST",
+        "limitations": [
+          "Historical stability under perturbation does not establish future predictive reliability or live trading eligibility.",
+          "Exploratory evaluation conditions are isolated from the frozen CBE-0.7.0 canonical specification."
+        ],
+        "evidence_provenance": {
+          "dataset_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "experiment_fingerprint_sha256": "cfc31f3c7fe53a5a899cd4d76a491de50f839327ef5459813f760981db69db14",
+          "reproducible_seed": 42,
+          "methodology_version": "SPRINT26-ROBUSTNESS-LAB-V1.0"
+        },
+        "evaluated_at_utc": "2026-11-11T03:44:25Z",
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "governance_decision": "TECHNICAL_NO_GO"
+      },
+      {
+        "experiment_id": "ROB-RES-29-PAT-SIM-OUTLIER_SE-5a73701f",
+        "status": "EXPERIMENT_COMPLETED",
+        "rejection_code": null,
+        "rejection_reason": null,
+        "analysis_type": "OUTLIER_SENSITIVITY",
+        "original_record_id": "RES-29-PAT-SIM",
+        "baseline_evaluation": {
+          "sample_size": 2184,
+          "mean_volatility": 0.00499,
+          "median_volatility": 0.003818,
+          "iqr_volatility": 0.003582,
+          "p90_to_median_expansion_ratio": 2.4513
+        },
+        "perturbation_definition": {
+          "analysis_type": "OUTLIER_SENSITIVITY",
+          "assumption_scope": "EXPLORATORY_EVALUATION_CONDITION",
+          "canonical_model_mutated": false,
+          "deterministic_seed": 42,
+          "winsorize_tail_quantile": 0.01
+        },
+        "scientific_rationale": "Assesses whether empirical findings are dominated by isolated extreme tail spikes (flash crashes / liquidation cascades).",
+        "dataset_identity": {
+          "dataset_id": "DS-BTC-1H-Q1-2024",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "row_count": 2184
+        },
+        "resulting_measurements": {
+          "primary_perturbed_metrics": {
+            "sample_size": 2184,
+            "mean_volatility": 0.004912,
+            "median_volatility": 0.003818,
+            "iqr_volatility": 0.003582,
+            "p90_to_median_expansion_ratio": 2.4513
+          },
+          "variants": {
+            "winsorized_1pct": {
+              "sample_size": 2184,
+              "mean_volatility": 0.004912,
+              "median_volatility": 0.003818,
+              "iqr_volatility": 0.003582,
+              "p90_to_median_expansion_ratio": 2.4513
+            },
+            "trimmed_1pct": {
+              "sample_size": 2140,
+              "mean_volatility": 0.004796,
+              "median_volatility": 0.003818,
+              "iqr_volatility": 0.003501,
+              "p90_to_median_expansion_ratio": 2.3769
+            }
+          }
+        },
+        "difference_from_baseline": {
+          "mean_volatility_abs_diff": -7.8e-05,
+          "mean_volatility_rel_diff_pct": -1.56,
+          "expansion_ratio_abs_diff": 0.0,
+          "expansion_ratio_rel_diff_pct": 0.0
+        },
+        "confidence_or_uncertainty_estimate": {
+          "method": "MOVING_BLOCK_BOOTSTRAP (block_size=8)",
+          "point_estimate": 0.0049,
+          "ci_95_lower": 0.0046,
+          "ci_95_upper": 0.0052,
+          "bootstrap_se": null
+        },
+        "stability_classification": "ROBUST",
+        "limitations": [
+          "Historical stability under perturbation does not establish future predictive reliability or live trading eligibility.",
+          "Exploratory evaluation conditions are isolated from the frozen CBE-0.7.0 canonical specification."
+        ],
+        "evidence_provenance": {
+          "dataset_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "experiment_fingerprint_sha256": "5a73701ff675f270387eda9fe59dfe1dc3fd63509d850b1a8b7afc3e0214e9ae",
+          "reproducible_seed": 42,
+          "methodology_version": "SPRINT26-ROBUSTNESS-LAB-V1.0"
+        },
+        "evaluated_at_utc": "2026-11-11T03:44:25Z",
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "governance_decision": "TECHNICAL_NO_GO"
+      },
+      {
+        "experiment_id": "ROB-RES-29-PAT-SIM-OBSERVATIO-ba5b101a",
+        "status": "EXPERIMENT_COMPLETED",
+        "rejection_code": null,
+        "rejection_reason": null,
+        "analysis_type": "OBSERVATION_FREQUENCY_SENSITIVITY",
+        "original_record_id": "RES-29-PAT-SIM",
+        "baseline_evaluation": {
+          "sample_size": 2184,
+          "mean_volatility": 0.00499,
+          "median_volatility": 0.003818,
+          "iqr_volatility": 0.003582,
+          "p90_to_median_expansion_ratio": 2.4513
+        },
+        "perturbation_definition": {
+          "analysis_type": "OBSERVATION_FREQUENCY_SENSITIVITY",
+          "assumption_scope": "EXPLORATORY_EVALUATION_CONDITION",
+          "canonical_model_mutated": false,
+          "deterministic_seed": 42,
+          "aggregation_factor": 4
+        },
+        "scientific_rationale": "Evaluates whether Parkinson volatility scaling holds across coarser temporal aggregation cadences.",
+        "dataset_identity": {
+          "dataset_id": "DS-BTC-1H-Q1-2024",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "row_count": 2184
+        },
+        "resulting_measurements": {
+          "primary_perturbed_metrics": {
+            "sample_size": 546,
+            "mean_volatility": 0.005161,
+            "median_volatility": 0.004149,
+            "iqr_volatility": 0.003594,
+            "p90_to_median_expansion_ratio": 2.3654
+          },
+          "variants": {
+            "aggregated_4x_time_normalized": {
+              "sample_size": 546,
+              "mean_volatility": 0.005161,
+              "median_volatility": 0.004149,
+              "iqr_volatility": 0.003594,
+              "p90_to_median_expansion_ratio": 2.3654
+            }
+          }
+        },
+        "difference_from_baseline": {
+          "mean_volatility_abs_diff": 0.000171,
+          "mean_volatility_rel_diff_pct": 3.43,
+          "expansion_ratio_abs_diff": -0.0859,
+          "expansion_ratio_rel_diff_pct": -3.5
+        },
+        "confidence_or_uncertainty_estimate": {
+          "method": "MOVING_BLOCK_BOOTSTRAP (block_size=8)",
+          "point_estimate": 0.0052,
+          "ci_95_lower": 0.0046,
+          "ci_95_upper": 0.0058,
+          "bootstrap_se": null
+        },
+        "stability_classification": "ROBUST",
+        "limitations": [
+          "Historical stability under perturbation does not establish future predictive reliability or live trading eligibility.",
+          "Exploratory evaluation conditions are isolated from the frozen CBE-0.7.0 canonical specification."
+        ],
+        "evidence_provenance": {
+          "dataset_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "experiment_fingerprint_sha256": "ba5b101acb3c86aa08183da9500f83c831b2e771498daa31f26571020b1d6ee0",
+          "reproducible_seed": 42,
+          "methodology_version": "SPRINT26-ROBUSTNESS-LAB-V1.0"
+        },
+        "evaluated_at_utc": "2026-11-11T03:44:25Z",
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "governance_decision": "TECHNICAL_NO_GO"
+      },
+      {
+        "experiment_id": "ROB-RES-29-PAT-SIM-BOOTSTRAP_-90d1c760",
+        "status": "EXPERIMENT_COMPLETED",
+        "rejection_code": null,
+        "rejection_reason": null,
+        "analysis_type": "BOOTSTRAP_UNCERTAINTY",
+        "original_record_id": "RES-29-PAT-SIM",
+        "baseline_evaluation": {
+          "sample_size": 2184,
+          "mean_volatility": 0.00499,
+          "median_volatility": 0.003818,
+          "iqr_volatility": 0.003582,
+          "p90_to_median_expansion_ratio": 2.4513
+        },
+        "perturbation_definition": {
+          "analysis_type": "BOOTSTRAP_UNCERTAINTY",
+          "assumption_scope": "EXPLORATORY_EVALUATION_CONDITION",
+          "canonical_model_mutated": false,
+          "deterministic_seed": 42,
+          "block_sizes_evaluated": [
+            4,
+            8,
+            16,
+            24
+          ]
+        },
+        "scientific_rationale": "Assesses sensitivity of confidence interval widths to the choice of moving-block bootstrap length under serial correlation.",
+        "dataset_identity": {
+          "dataset_id": "DS-BTC-1H-Q1-2024",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "row_count": 2184
+        },
+        "resulting_measurements": {
+          "primary_perturbed_metrics": {
+            "sample_size": 2184,
+            "mean_volatility": 0.00499,
+            "median_volatility": 0.003818,
+            "iqr_volatility": 0.003582,
+            "p90_to_median_expansion_ratio": 2.4513
+          },
+          "variants": {
+            "block_size_4": {
+              "ci_lower": 0.0047,
+              "ci_upper": 0.0053,
+              "bootstrap_se": null
+            },
+            "block_size_8": {
+              "ci_lower": 0.0046,
+              "ci_upper": 0.0053,
+              "bootstrap_se": null
+            },
+            "block_size_16": {
+              "ci_lower": 0.0046,
+              "ci_upper": 0.0054,
+              "bootstrap_se": null
+            },
+            "block_size_24": {
+              "ci_lower": 0.0046,
+              "ci_upper": 0.0054,
+              "bootstrap_se": null
+            }
+          }
+        },
+        "difference_from_baseline": {
+          "mean_volatility_abs_diff": 0.0,
+          "mean_volatility_rel_diff_pct": 0.0,
+          "expansion_ratio_abs_diff": 0.0,
+          "expansion_ratio_rel_diff_pct": 0.0
+        },
+        "confidence_or_uncertainty_estimate": {
+          "method": "MOVING_BLOCK_BOOTSTRAP (block_size=8)",
+          "point_estimate": 0.005,
+          "ci_95_lower": 0.0046,
+          "ci_95_upper": 0.0053,
+          "bootstrap_se": null
+        },
+        "stability_classification": "ROBUST",
+        "limitations": [
+          "Historical stability under perturbation does not establish future predictive reliability or live trading eligibility.",
+          "Exploratory evaluation conditions are isolated from the frozen CBE-0.7.0 canonical specification."
+        ],
+        "evidence_provenance": {
+          "dataset_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "experiment_fingerprint_sha256": "90d1c760c3c12a7d6c06d085c85e6a9f732c5a84bc4d52aba568697d93b6e51f",
+          "reproducible_seed": 42,
+          "methodology_version": "SPRINT26-ROBUSTNESS-LAB-V1.0"
+        },
+        "evaluated_at_utc": "2026-11-11T03:44:25Z",
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "governance_decision": "TECHNICAL_NO_GO"
+      },
+      {
+        "experiment_id": "ROB-RES-29-PAT-SIM-METHODOLOG-f2230f56",
+        "status": "EXPERIMENT_COMPLETED",
+        "rejection_code": null,
+        "rejection_reason": null,
+        "analysis_type": "METHODOLOGICAL_ASSUMPTION_SENSITIVITY",
+        "original_record_id": "RES-29-PAT-SIM",
+        "baseline_evaluation": {
+          "sample_size": 2184,
+          "mean_volatility": 0.00499,
+          "median_volatility": 0.003818,
+          "iqr_volatility": 0.003582,
+          "p90_to_median_expansion_ratio": 2.4513
+        },
+        "perturbation_definition": {
+          "analysis_type": "METHODOLOGICAL_ASSUMPTION_SENSITIVITY",
+          "assumption_scope": "EXPLORATORY_EVALUATION_CONDITION",
+          "canonical_model_mutated": false,
+          "deterministic_seed": 42,
+          "exploratory_estimator": "CLOSE_TO_CLOSE_ABS_LOG_RETURN",
+          "exploratory_disclaimer": "Exploratory alternative volatility estimator; does not replace CBE-0.7.0 Parkinson estimator."
+        },
+        "scientific_rationale": "Compares canonical range-based Parkinson volatility against an exploratory close-to-close return dispersion estimator.",
+        "dataset_identity": {
+          "dataset_id": "DS-BTC-1H-Q1-2024",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "row_count": 2184
+        },
+        "resulting_measurements": {
+          "primary_perturbed_metrics": {
+            "sample_size": 2183,
+            "mean_volatility": 0.003966,
+            "median_volatility": 0.002604,
+            "iqr_volatility": 0.003742,
+            "p90_to_median_expansion_ratio": 3.3277
+          },
+          "variants": {
+            "exploratory_close_to_close_volatility": {
+              "sample_size": 2183,
+              "mean_volatility": 0.003966,
+              "median_volatility": 0.002604,
+              "iqr_volatility": 0.003742,
+              "p90_to_median_expansion_ratio": 3.3277
+            }
+          }
+        },
+        "difference_from_baseline": {
+          "mean_volatility_abs_diff": -0.001024,
+          "mean_volatility_rel_diff_pct": -20.52,
+          "expansion_ratio_abs_diff": 0.8764,
+          "expansion_ratio_rel_diff_pct": 35.75
+        },
+        "confidence_or_uncertainty_estimate": {
+          "method": "MOVING_BLOCK_BOOTSTRAP (block_size=8)",
+          "point_estimate": 0.004,
+          "ci_95_lower": 0.0037,
+          "ci_95_upper": 0.0043,
+          "bootstrap_se": null
+        },
+        "stability_classification": "FRAGILE_OR_SENSITIVE",
+        "limitations": [
+          "Historical stability under perturbation does not establish future predictive reliability or live trading eligibility.",
+          "Exploratory evaluation conditions are isolated from the frozen CBE-0.7.0 canonical specification."
+        ],
+        "evidence_provenance": {
+          "dataset_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "experiment_fingerprint_sha256": "f2230f56c4d4d21b072925e75c8a59fda24ea795d931cb3814a8b0c99003ca46",
+          "reproducible_seed": 42,
+          "methodology_version": "SPRINT26-ROBUSTNESS-LAB-V1.0"
+        },
+        "evaluated_at_utc": "2026-11-11T03:44:25Z",
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "governance_decision": "TECHNICAL_NO_GO"
+      },
+      {
+        "experiment_id": "ROB-RES-29-PAT-SIM-CROSS_PERI-885804f5",
+        "status": "EXPERIMENT_COMPLETED",
+        "rejection_code": null,
+        "rejection_reason": null,
+        "analysis_type": "CROSS_PERIOD_ROBUSTNESS",
+        "original_record_id": "RES-29-PAT-SIM",
+        "baseline_evaluation": {
+          "sample_size": 2184,
+          "mean_volatility": 0.00499,
+          "median_volatility": 0.003818,
+          "iqr_volatility": 0.003582,
+          "p90_to_median_expansion_ratio": 2.4513
+        },
+        "perturbation_definition": {
+          "analysis_type": "CROSS_PERIOD_ROBUSTNESS",
+          "assumption_scope": "EXPLORATORY_EVALUATION_CONDITION",
+          "canonical_model_mutated": false,
+          "deterministic_seed": 42,
+          "cohorts_evaluated": [
+            "Q1_2024_15M",
+            "Q2_2024_15M",
+            "Q3_2024_15M",
+            "Q4_2024_15M"
+          ]
+        },
+        "scientific_rationale": "Evaluates structural metric stability across four sequential 2024 quarterly cohorts.",
+        "dataset_identity": {
+          "dataset_id": "DS-BTC-1H-Q1-2024",
+          "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+          "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "row_count": 2184
+        },
+        "resulting_measurements": {
+          "primary_perturbed_metrics": {
+            "sample_size": 8736,
+            "mean_volatility": 0.002004,
+            "median_volatility": 0.001599,
+            "iqr_volatility": 0.001475,
+            "p90_to_median_expansion_ratio": 2.3315
+          },
+          "variants": {
+            "Q1_2024_15M": {
+              "sample_size": 8736,
+              "mean_volatility": 0.002386,
+              "median_volatility": 0.001823,
+              "iqr_volatility": 0.001743,
+              "p90_to_median_expansion_ratio": 2.46
+            },
+            "Q2_2024_15M": {
+              "sample_size": 8736,
+              "mean_volatility": 0.002004,
+              "median_volatility": 0.001599,
+              "iqr_volatility": 0.001475,
+              "p90_to_median_expansion_ratio": 2.3315
+            },
+            "Q3_2024_15M": {
+              "sample_size": 8832,
+              "mean_volatility": 0.00227,
+              "median_volatility": 0.001769,
+              "iqr_volatility": 0.001571,
+              "p90_to_median_expansion_ratio": 2.3699
+            },
+            "Q4_2024_15M": {
+              "sample_size": 8832,
+              "mean_volatility": 0.002128,
+              "median_volatility": 0.001716,
+              "iqr_volatility": 0.001496,
+              "p90_to_median_expansion_ratio": 2.3062
+            }
+          }
+        },
+        "difference_from_baseline": {
+          "mean_volatility_abs_diff": -0.002986,
+          "mean_volatility_rel_diff_pct": -59.84,
+          "expansion_ratio_abs_diff": -0.1198,
+          "expansion_ratio_rel_diff_pct": -4.89
+        },
+        "confidence_or_uncertainty_estimate": {
+          "method": "MOVING_BLOCK_BOOTSTRAP (block_size=8)",
+          "point_estimate": 0.002,
+          "ci_95_lower": 0.0019,
+          "ci_95_upper": 0.0021,
+          "bootstrap_se": null
+        },
+        "stability_classification": "FRAGILE_OR_SENSITIVE",
+        "limitations": [
+          "Historical stability under perturbation does not establish future predictive reliability or live trading eligibility.",
+          "Exploratory evaluation conditions are isolated from the frozen CBE-0.7.0 canonical specification."
+        ],
+        "evidence_provenance": {
+          "dataset_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+          "experiment_fingerprint_sha256": "885804f53a1275454c8caed6a79aaad7d789b7b8cf12b6eb0104091e8614230e",
+          "reproducible_seed": 42,
+          "methodology_version": "SPRINT26-ROBUSTNESS-LAB-V1.0"
+        },
+        "evaluated_at_utc": "2026-11-11T03:44:25Z",
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "governance_decision": "TECHNICAL_NO_GO"
+      }
+    ],
+    "evaluated_at_utc": "2026-11-11T03:44:25Z"
+  }
+}

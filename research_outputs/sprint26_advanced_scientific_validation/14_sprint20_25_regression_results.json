@@ -1,0 +1,25 @@
+{
+  "artifact": "14_sprint20_25_regression_results",
+  "sprint_id": "CBE_SPRINT26_ADVANCED_SCIENTIFIC_VALIDATION",
+  "generated_at_utc": "2026-11-11T03:44:25.106032+00:00",
+  "test_files": [
+    "tests/test_sprint_product_acceleration_20.py",
+    "tests/test_sprint_product_acceleration_21.py",
+    "tests/test_sprint_product_acceleration_22.py",
+    "tests/test_sprint_product_acceleration_22_hardening.py",
+    "tests/test_sprint_product_acceleration_23.py",
+    "tests/test_sprint_product_acceleration_23_closure.py",
+    "tests/test_sprint_product_acceleration_23_correction.py",
+    "tests/test_sprint_product_acceleration_24.py",
+    "tests/test_sprint_product_acceleration_24_correction.py",
+    "tests/test_sprint_product_acceleration_24_final_closure.py",
+    "tests/test_sprint_product_acceleration_24_two_blocker_closure.py",
+    "tests/test_sprint_product_acceleration_24_trust_boundary_closure.py",
+    "tests/test_sprint_product_acceleration_24_cryptographic_hardening.py",
+    "tests/test_sprint_product_acceleration_25.py"
+  ],
+  "total_regression_tests": 380,
+  "passed": 380,
+  "failed": 0,
+  "status": "ALL_PASSED"
+}

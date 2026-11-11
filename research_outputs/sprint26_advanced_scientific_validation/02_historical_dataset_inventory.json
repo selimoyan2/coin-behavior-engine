@@ -1,0 +1,498 @@
+{
+  "sprint_id": "CBE_SPRINT26_ADVANCED_SCIENTIFIC_VALIDATION",
+  "generated_at_utc": "2026-11-11T02:53:21Z",
+  "historical_parquet_count": 49,
+  "historical_parquet_files": [
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_15m_feb_2025.parquet",
+      "sha256": "6317e86f5ce91cd26e06a991b4b2abc0a6507695d5ad94cd7daa89541c6bd31e",
+      "size_bytes": 271897,
+      "row_count": 2688,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "3eb2458876460e9f687509c2bd4e83013c798f87453a2de73feb22213c09ea93",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_15m_jan_2025.parquet",
+      "sha256": "7e797f51f5fcdcb6c43053e67b0891f5231ea7b10a8bb069f27d476ae9eeeb19",
+      "size_bytes": 360768,
+      "row_count": 2976,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "cf50bb1573573e18b1243537e67fcf5d5c1479d4139e42ff5654b9063b5422b2",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_15m_q1_2024.parquet",
+      "sha256": "b0a9778c8aab3cdf211ba7c6ef20ed3ab6ab1d5dc9b4a2e6b28288c16f80503b",
+      "size_bytes": 1059037,
+      "row_count": 8736,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "e1bbc4d92a1b0fd8f4a7f36bde36d4b56f9cc2a0b394009bc471ad776ff60d80",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_15m_q2_2024.parquet",
+      "sha256": "02366bf9ccd3e5a879e05b553c68847a0e7f28fc8480cc5a244b5bd51f1b4024",
+      "size_bytes": 1047008,
+      "row_count": 8736,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "b124aec866e3c63eac2f30780d9c18bccf752086d7222d6ab238b6ae9ead11c3",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_15m_q3_2024.parquet",
+      "sha256": "476d78e5f7800dfd79267a7f0019b398828908e403e2d539fad03775534efa10",
+      "size_bytes": 1063644,
+      "row_count": 8832,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "2682f2bab3620613635e54b1a3dc95f1e5be5a8b3873f518592457a53816aa95",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_15m_q4_2024.parquet",
+      "sha256": "540c5a51a0fcd0c343e1de32fb1f833fa9bef9a30b43828b6ab0eb63f8550224",
+      "size_bytes": 1076503,
+      "row_count": 8832,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "0d1c0f675457b33f1e732cc0c271c85be3ba0347a01b1ee40521661625e00c9e",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_1h_jan_2025.parquet",
+      "sha256": "3fc6fb4cb0dc8e5f50cf4d51f2cac889d201aed3f722e20a7bb7e74961c55550",
+      "size_bytes": 97185,
+      "row_count": 744,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "aaed9c8f7b8063637ead3ec7f64f70d1f59bb5bd365d143c3872dc5c35dc6412",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_1h_q1_2024.parquet",
+      "sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+      "size_bytes": 270101,
+      "row_count": 2184,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "9d7f7289d5d09878d3e5712eff0cf4c2b22053aa369dee29cfe5c665ee1c0578",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_1h_q2_2024.parquet",
+      "sha256": "e9520a8c4e32abf1e9760a703f55d1b62f66b33d03515c5dc6180e89dfacfbd9",
+      "size_bytes": 269202,
+      "row_count": 2184,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "3f3f811cb7d622843ed4fa67a7eb0dad1fd5513f7c7e2d4a1ca14ed4b07a9016",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_1h_q3_2024.parquet",
+      "sha256": "39bcd79a2262ea06c70677527bf6a810ceae2cfce1a7cf056c24a1048d07302e",
+      "size_bytes": 272410,
+      "row_count": 2208,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "8e2bc0c59cf1f66e77e033f70e14de2a303c372d6d105b3ce7401c90aadcb357",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_1h_q4_2024.parquet",
+      "sha256": "27f7e7ebc3bdc15b10b8992bceb2aa73152f527ec1b15522db1c10592099c67e",
+      "size_bytes": 273043,
+      "row_count": 2208,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "f352f19516744a4d9fb12899c4293d279561d7edf6b01d885329e1ace21aaf5a",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_5m.parquet",
+      "sha256": "9c4b95c226c4a5bd9564877664db61009c467a50b3d0d79fdba852320b7933bf",
+      "size_bytes": 877233,
+      "row_count": 8928,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "be21840d5aabba851671537afb04a4b844638576d1db91c15e68b27b8735427c",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_5m_jan_2025.parquet",
+      "sha256": "02ed56c3175dcb3b1492aa6a408e2ca2aa3679ebee1852910cd535556aa28cf8",
+      "size_bytes": 896217,
+      "row_count": 8928,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "e47514255f801d721c09add702c662b0992d666f85ca45ae0dde30ce6af5239b",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_5m_q1_2024.parquet",
+      "sha256": "d1301e87d71441edef31a9908c9cb02a10fb6e1b37d9eb1a2cb0c9accb3043ba",
+      "size_bytes": 2584395,
+      "row_count": 26208,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "4e829a2ae039e3927743c56a43f7d8970e368d22bb88ad966c539ae9a0fa7e1d",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_5m_q2_2024.parquet",
+      "sha256": "f4b9b8aed5a920f4927429cb03779f7504e0b5f192cf5e7d9f6cae0e41d7e27c",
+      "size_bytes": 2550433,
+      "row_count": 26208,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "5d5197c31e06682f1fcdfa9d29f373dff9e6e3983c835534fb2e0c420b8af0c6",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_5m_q3_2024.parquet",
+      "sha256": "1feffaa10139ec1902242542b100750f80dc1f948afa2e6dcf0364155999c57c",
+      "size_bytes": 2573170,
+      "row_count": 26496,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "5799d450bcd22bba56565dc34f967e9e7270268c3dd5460dcb4253839c8bad0b",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_btcusdt_5m_q4_2024.parquet",
+      "sha256": "2a726b84feffa053797a7e9ee1a878726ffde4fd5e9fbbb0aa8d79e2e7a51078",
+      "size_bytes": 2633610,
+      "row_count": 26496,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "eb758cb3c17186f4b6ce715210168a1c22c3cdd11efb02b0a449f39889df7691",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_ethusdt_15m_feb_2025.parquet",
+      "sha256": "94c8a01e8faeec71841e863d760bae0795c456d0ef28ed14b032ef93173fc3fe",
+      "size_bytes": 261348,
+      "row_count": 2688,
+      "has_provenance_sidecar": false,
+      "provenance_sidecar_sha256": null,
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_ethusdt_15m_jan_2025.parquet",
+      "sha256": "8c0a09afa379a4bf0e5e3cba8174680e2eb78451e931ebe50b578f22c581c8cf",
+      "size_bytes": 351320,
+      "row_count": 2976,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "45717aba18f4b705fa3a941dcd5927d0025fe158902595eaa50a27af4a0df380",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_ethusdt_15m_q1_2024.parquet",
+      "sha256": "37c527d6494448be788bf1a5e940c551abd165955203522f0d3d7228403162d3",
+      "size_bytes": 1018828,
+      "row_count": 8736,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "49a4459568166ae97c5203328d597e559da8e6fed84276ce32ef30e285a72081",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_ethusdt_15m_q2_2024.parquet",
+      "sha256": "ac75e918de38fbbc78df4b9a092ad8b5767cda74f41052c8c384c71ea6677362",
+      "size_bytes": 1009521,
+      "row_count": 8736,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "97bd964506909d59f4e3078e8a641e97588ff5583cfb8725d0bbe6c443726aae",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_ethusdt_15m_q3_2024.parquet",
+      "sha256": "ea2477016e91e4d55fe0547127ca94fb7e2ed58e11cf260c65c4f3899fa1bafa",
+      "size_bytes": 1034268,
+      "row_count": 8832,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "2b0f6962a020a27e923aeb597a513f11631e0b2f602c1ab24c10bcb4d3aa4f7a",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_ethusdt_15m_q4_2024.parquet",
+      "sha256": "e18d55189baa8eb1a51379fa2c338fe83e1ca816e073045dd737d31231db43e7",
+      "size_bytes": 1036014,
+      "row_count": 8832,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "83b3e684e8c34cb02474d52240a0fd2b989274bafeed9983a787bcde2b639859",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_ethusdt_1h_jan_2025.parquet",
+      "sha256": "b7282bfa540553935d76de2624abf2ecbfb3b22ec7359120e359b883124347a5",
+      "size_bytes": 95575,
+      "row_count": 744,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "6fc4f97004b41b6fed8499ee6ab97ce9a78b32092b9a97c9190c0eb59ba6a927",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_ethusdt_1h_q1_2024.parquet",
+      "sha256": "f2d5219d95df8b2d099063a63d23c1d91671a76c89820e8e79e8800ffc9e7406",
+      "size_bytes": 264937,
+      "row_count": 2184,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "f2151c11d90945bce4d5b708d87ef23d1565625f368c09ccaa136f93faefdebd",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_ethusdt_1h_q2_2024.parquet",
+      "sha256": "d2319d6c132adfdfbdd48a8c90bb61b33b9417289acf128557ba05ec945c4412",
+      "size_bytes": 264591,
+      "row_count": 2184,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "78441988632b13aea2daf08bb45590b0dab656c7a1bdf4780c24dd5cc2840b8d",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_ethusdt_1h_q3_2024.parquet",
+      "sha256": "ef72c990997fd625a4b56a06c1a218124b9572bb1f88d63d7f0e06d194d1b2fe",
+      "size_bytes": 268370,
+      "row_count": 2208,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "c21c2566292c44ed94119f17db3b99b597c2c7c95949f015b4e71f4049a09e32",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_ethusdt_1h_q4_2024.parquet",
+      "sha256": "d8d6ce59b0c0b8703009301b29d62d71e409a141425d399b2eb0536cf4e135bd",
+      "size_bytes": 268771,
+      "row_count": 2208,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "84b84597b36bdfd5d78085542f7dbc13c78e50b84e5357061024b277cbe8fea0",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_ethusdt_5m_jan_2025.parquet",
+      "sha256": "183900a12dda5dd576a73546dca1b78995533031be5a335f06aa4573c33a1748",
+      "size_bytes": 829113,
+      "row_count": 8928,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "08cb964dac9d28249b3dc2a441b42f8d864700d7a9ef0d812656e40865c80259",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_ethusdt_5m_q1_2024.parquet",
+      "sha256": "46b58d9afac3cf8ecd18f700e1f9a78c5947cc098a71176a40ccbab84401a081",
+      "size_bytes": 2433825,
+      "row_count": 26208,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "26e2bd0afdbafde46936e8294cd762fa80c03c639ba12b561193f6c899efa895",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_ethusdt_5m_q2_2024.parquet",
+      "sha256": "4b7fc8107f9a4dde6abed79afe8d6e728aa4cf4686790468c20fb46ef1eff058",
+      "size_bytes": 2365978,
+      "row_count": 26208,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "5f0bb4bc28c0e44f8d3e3702453709fae654b471ac283889f2610cd4cea8a9e3",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_ethusdt_5m_q3_2024.parquet",
+      "sha256": "5f81c6dfaf863d68e813bd912e99cb514fe8e92b79463275c8a324b50568a918",
+      "size_bytes": 2419990,
+      "row_count": 26496,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "f1517ec1195646c40c1a1e995290c2b2119bd66988a99364fe1c0d328b67f0df",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_ethusdt_5m_q4_2024.parquet",
+      "sha256": "488b538b51d8154218537fa74566f616ac3bec5ccc2cb8d0c76fb40911ac3e91",
+      "size_bytes": 2486627,
+      "row_count": 26496,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "75919e77111da3896b52a53e13a85a4e536b52318deb63c18a312a22398b2d2d",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_solusdt_15m_feb_2025.parquet",
+      "sha256": "ac74f52ce65a618ee480181057444eaf6d7a2188befa1c0860535b32605422bd",
+      "size_bytes": 244826,
+      "row_count": 2688,
+      "has_provenance_sidecar": false,
+      "provenance_sidecar_sha256": null,
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_solusdt_15m_jan_2025.parquet",
+      "sha256": "105c542659e63a04fba38acc21bf35c0b7755c719bb1f41dc19a301813152c64",
+      "size_bytes": 334037,
+      "row_count": 2976,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "073d4bf3242d9c4fe632e4a874e691bb0a892f54f8d6c09f904e1e4c683a22af",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_solusdt_15m_q1_2024.parquet",
+      "sha256": "07eaec8ce9a234b3d9c41539026ba33ee80a0859a203cd9f3f404130fe51a629",
+      "size_bytes": 928517,
+      "row_count": 8736,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "4248a13b9ace87c4defe61ef387270280122e9bd02c83c08861d425d60dc73ce",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_solusdt_15m_q2_2024.parquet",
+      "sha256": "34405de494ec1f2d83fe8c87d1cc922db83785d583127f50f2b01c2d86d63399",
+      "size_bytes": 924015,
+      "row_count": 8736,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "bc674ff60f18eeaeff68ed82f12dadfb2d5c2258fee3546687457aa445b15108",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_solusdt_15m_q3_2024.parquet",
+      "sha256": "655f684a1f30e157f9a07be193dc7c4f52575873235bb29dcf1c6df9d23f6802",
+      "size_bytes": 933288,
+      "row_count": 8832,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "e6d22235d653d75ccb60b9bf02db8c2bb28f631645c700822e236cf33a0620ba",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_solusdt_15m_q4_2024.parquet",
+      "sha256": "93785c78659cfd5e7e56b2f784b63e3c06d07c12a942ddfc64b6f3d2bcbc2219",
+      "size_bytes": 969091,
+      "row_count": 8832,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "a20a0eae5df8dc2e5286814cbf2cf0e10c41c5a9651619b9a182c1490b9a8462",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_solusdt_1h_jan_2025.parquet",
+      "sha256": "6d1ca4055623d54494f6fbe4d140c1a13bf237210deab153d2e60805f7f46c64",
+      "size_bytes": 94095,
+      "row_count": 744,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "624bad6e939b26a6fb0091d5e9fd95e488c8edf510ef9a630b2189da5d7bd39a",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_solusdt_1h_q1_2024.parquet",
+      "sha256": "c88ffca9f85071b85e3610fa85b04cccb46e889be2a356bc9691de2ee7befb56",
+      "size_bytes": 248036,
+      "row_count": 2184,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "f90e56da254ffe34167f62cc5231bc8f49ae36b9a23c1bbca463aeae3bcb7b14",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_solusdt_1h_q2_2024.parquet",
+      "sha256": "bb62f13dc813af7d45770e8e95d9f6fbaeb1fe237636cd76121afe8b54ced45f",
+      "size_bytes": 248743,
+      "row_count": 2184,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "d7aba8f6d8d02985a34a814fd1ef5f8ca1b115e63902deeaed270133c4ac2694",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_solusdt_1h_q3_2024.parquet",
+      "sha256": "c1f7e2cd6968a77d6820c3a1407180f1e6f58328bfd0eda02172288b737d2d62",
+      "size_bytes": 253812,
+      "row_count": 2208,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "b810aa974c9550c01858be36531f14d04cd5fd91ea04d3a473e310359f326662",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_solusdt_1h_q4_2024.parquet",
+      "sha256": "89d95b460a4b7f69331732c366135bd5359064dfe1dab379ced2b30c5c057ea6",
+      "size_bytes": 257488,
+      "row_count": 2208,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "c862354d301f9e8831d17c224115450cf822cc1552d2151f925ce68e3decb3a6",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_solusdt_5m_jan_2025.parquet",
+      "sha256": "d209428404a69208cbbabebc4de8b1bbab8ce373e8a9aa0f5f0ba78b3a3bdd49",
+      "size_bytes": 769394,
+      "row_count": 8928,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "960f101db112c00a31a5ea618e10b0ccc38d2ffabcd437ff6184ce395e49d640",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_solusdt_5m_q1_2024.parquet",
+      "sha256": "0850bb61e9073ac934afaa5372d7fd2cdbcea35e8c912d967f5f3c1743d1155f",
+      "size_bytes": 2075437,
+      "row_count": 26208,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "518dfa7bc3fa0ce5eefa819b60290b2265dba2239f6468c3a130c46ee45a5fa7",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_solusdt_5m_q2_2024.parquet",
+      "sha256": "82db0ea6da3f99f40a9647e029dd1c5e387f58dac225805cb26271d71cc37760",
+      "size_bytes": 2052457,
+      "row_count": 26208,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "0fa9ea3c3dce8bd7a51591e1dc8217cb0c91f5d0ab258d06afa20506a22c8472",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_solusdt_5m_q3_2024.parquet",
+      "sha256": "261d51d451891d99ba8c538d3a9304e205d46659cd6d9c42767d618c2ccabc81",
+      "size_bytes": 2090430,
+      "row_count": 26496,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "3b08921b7cac4d7635e2caa2770c7597aa07527b6fb73a1c1d6314cdfde1cdd5",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    },
+    {
+      "dataset_path": "data\\historical\\historical_binance_solusdt_5m_q4_2024.parquet",
+      "sha256": "5529ffd9cff79a0f52b947d3c80926b8c0adb434f8ba5fa11c0b25d52eb46e27",
+      "size_bytes": 2187217,
+      "row_count": 26496,
+      "has_provenance_sidecar": true,
+      "provenance_sidecar_sha256": "f25ea90cf02b40087a613c0c0106d7ea61f0ba4187d56ae74192ed42e7989a03",
+      "category": "AUTHORIZED_HISTORICAL_PARQUET"
+    }
+  ],
+  "binance_spot_multiyear_summary": {
+    "5m": {
+      "file_count": 57,
+      "first_file": "BTCUSDT-5m-2022-01.parquet",
+      "first_file_sha256": "6114b98442bf8eec34a364b71fbc2f23be762dd41a1456698e9c2e8939229371",
+      "last_file": "BTCUSDT-5m-2026-09.parquet",
+      "last_file_sha256": "6635d4eddf04663fae3f8beb13ddf346592026c6311d90f4e7e158d9b4b98570",
+      "status": "VERIFIED_GENUINE_OFFLINE"
+    },
+    "15m": {
+      "file_count": 57,
+      "first_file": "BTCUSDT-15m-2022-01.parquet",
+      "first_file_sha256": "bbeb556305884f7cba812629081e145abe600f31dfcfd69bc58b5c74e6151695",
+      "last_file": "BTCUSDT-15m-2026-09.parquet",
+      "last_file_sha256": "12c1ac008daba2bb9b7e34be6c5512cfd03049ac5d3aa6d5a99aab063c2f539e",
+      "status": "VERIFIED_GENUINE_OFFLINE"
+    },
+    "1h": {
+      "file_count": 57,
+      "first_file": "BTCUSDT-1h-2022-01.parquet",
+      "first_file_sha256": "1f8a0c30e456750cf73737c538546f34ca3746a5549bfbbe0d47a50249428da9",
+      "last_file": "BTCUSDT-1h-2026-09.parquet",
+      "last_file_sha256": "148ce3c769af9fe071d9c00a7d09e3ada4e9a432d0b77d9cedc76246bc4a56bf",
+      "status": "VERIFIED_GENUINE_OFFLINE"
+    },
+    "4h": {
+      "file_count": 57,
+      "first_file": "BTCUSDT-4h-2022-01.parquet",
+      "first_file_sha256": "15042627b0beaa4952df03ecb034b280683ea0f2d1b1cac48aea3fb8286be4d1",
+      "last_file": "BTCUSDT-4h-2026-09.parquet",
+      "last_file_sha256": "59853df68d17c9c6768b5947d3da2c0597cde45efa976ecdf7a7daf3bb8cb517",
+      "status": "VERIFIED_GENUINE_OFFLINE"
+    },
+    "1d": {
+      "file_count": 57,
+      "first_file": "BTCUSDT-1d-2022-01.parquet",
+      "first_file_sha256": "89e5a724a512bad86c6e1035005ef33eb256d7971cd92dc2dacea7b2bfe97ea9",
+      "last_file": "BTCUSDT-1d-2026-09.parquet",
+      "last_file_sha256": "81cb7bddcc3edd07a2f18ba9040fa740234919e871007245b4f91ba5a5008534",
+      "status": "VERIFIED_GENUINE_OFFLINE"
+    }
+  },
+  "quarantined_datasets": [
+    {
+      "dataset_id": "DS-BTC-1H-OCT2026-QUARANTINE",
+      "path": "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet",
+      "status": "QUARANTINED_CONTAMINATED",
+      "reason": "Synthetic timestamp discontinuities and forward-filled price anomalies."
+    }
+  ]
+}

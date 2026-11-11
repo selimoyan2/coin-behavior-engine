@@ -1,0 +1,52 @@
+{
+  "artifact": "05_temporal_leakage_test_evidence",
+  "sprint_id": "CBE_SPRINT26_ADVANCED_SCIENTIFIC_VALIDATION",
+  "generated_at_utc": "2026-11-11T03:44:25.106032+00:00",
+  "zero_leakage_invariants": [
+    "train_end_utc < test_start_utc across all folds",
+    "train_indices disjoint from test_indices",
+    "explicit purge_bars and embargo_bars enforced between train and test windows",
+    "explicit warmup_bars applied inside each window",
+    "normalization and volatility thresholds computed strictly from past (train) window",
+    "non-monotonic or duplicate timestamps rejected fail-closed"
+  ],
+  "expanding_folds_leakage_audit": [
+    {
+      "fold_index": 0,
+      "train_end_idx": 97,
+      "test_start_idx": 100,
+      "purged_bars_count": 2,
+      "embargo_bars_count": 2,
+      "temporal_gap_ms": 10800000,
+      "leakage_check_passed": true
+    },
+    {
+      "fold_index": 1,
+      "train_end_idx": 618,
+      "test_start_idx": 621,
+      "purged_bars_count": 2,
+      "embargo_bars_count": 2,
+      "temporal_gap_ms": 10800000,
+      "leakage_check_passed": true
+    },
+    {
+      "fold_index": 2,
+      "train_end_idx": 1139,
+      "test_start_idx": 1142,
+      "purged_bars_count": 2,
+      "embargo_bars_count": 2,
+      "temporal_gap_ms": 10800000,
+      "leakage_check_passed": true
+    },
+    {
+      "fold_index": 3,
+      "train_end_idx": 1660,
+      "test_start_idx": 1663,
+      "purged_bars_count": 2,
+      "embargo_bars_count": 0,
+      "temporal_gap_ms": 10800000,
+      "leakage_check_passed": true
+    }
+  ],
+  "overall_zero_leakage_verified": true
+}

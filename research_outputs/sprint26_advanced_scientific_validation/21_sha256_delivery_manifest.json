@@ -1,0 +1,94 @@
+{
+  "artifact": "21_sha256_delivery_manifest",
+  "sprint_id": "CBE_SPRINT26_ADVANCED_SCIENTIFIC_VALIDATION",
+  "generated_at_utc": "2026-11-11T03:44:25.106032+00:00",
+  "starting_baseline_sha": "fd174c56150a13d1b09145eeb57bec2c5d1ae9ac",
+  "implementation_commit_sha": "d7ae5b8214359f4feaa8c249de8b16c2136dded5",
+  "total_files_hashed": 21,
+  "files": {
+    "01_pre_implementation_architecture_audit.json": {
+      "sha256": "9fae0334dcb25d27f05dae4d9c7491e4b1eca4776ba0073ce25dbabb3dc3d7de",
+      "size_bytes": 3770
+    },
+    "02_historical_dataset_inventory.json": {
+      "sha256": "8e05e72e0ee1a5f6618d0ef63064a0a1092616b505a6ea0da70f190376456f99",
+      "size_bytes": 23890
+    },
+    "03_statistical_validation_methodology.json": {
+      "sha256": "480968c21aef9a44f7eabb6c0ce03fefae0abd54158baba95214a6a3eb86b06c",
+      "size_bytes": 87912
+    },
+    "04_walk_forward_evaluation_contract.json": {
+      "sha256": "fcb8fd84c2adcd5846d639e5abfba358fbdff59eb81903db847802c61cb8592a",
+      "size_bytes": 23322
+    },
+    "05_temporal_leakage_test_evidence.json": {
+      "sha256": "75821667c855ca6490f711214218968a2625209ed06bb11fe2bae99fafa4ede5",
+      "size_bytes": 1638
+    },
+    "06_market_regime_research_specification.json": {
+      "sha256": "8a7573bee47a0bac954ab0e75aa32149161cc122f5c94a960cf87114df2f5a64",
+      "size_bytes": 20337
+    },
+    "07_robustness_and_sensitivity_methodology.json": {
+      "sha256": "982f6a536e413868ac67628b9c963ae04c14333571d698c10c3849246c473b6c",
+      "size_bytes": 31000
+    },
+    "08_independent_validation_criteria.json": {
+      "sha256": "0c7d6abbaf55e9dec4e9ea9adea81cc08692e590fa70bbd4159fd6099efc9dc5",
+      "size_bytes": 46257
+    },
+    "09_source_provenance_verification.json": {
+      "sha256": "7e4686f78ce39a33bc0dd800255e7e7a9befd23d243d11c19a9459cfd212bf3c",
+      "size_bytes": 590
+    },
+    "10_api_contract_inventory.json": {
+      "sha256": "de793166bde8e974230bb6005f33cda82df1a3972e01bca374d7e9d120db047c",
+      "size_bytes": 38205
+    },
+    "11_dashboard_acceptance_report.json": {
+      "sha256": "94d8faf7501a6d6807b0ed8059316afd9cadc3a1f241e0a6907defdee6a02135",
+      "size_bytes": 1295
+    },
+    "12_security_test_results.json": {
+      "sha256": "38913ad1670b717ba2c29d002acaa0fb8ce1d9ff22efbdbc2fa9a647c57e418b",
+      "size_bytes": 569
+    },
+    "13_resource_and_performance_benchmarks.json": {
+      "sha256": "2949c21d22c60b679daaae5cc01c24cb5c9b17a5834c3a14b8e46b7bc59aab24",
+      "size_bytes": 640
+    },
+    "14_sprint20_25_regression_results.json": {
+      "sha256": "25b1b8b5e8d4a4902ee2611b01bf13156a4d378fd7a3b6af4dc0e27f2823290d",
+      "size_bytes": 1159
+    },
+    "15_sprint26_test_results.json": {
+      "sha256": "9d384e3180a4912861a8b4ff9910b54adacbb423a4dedc35540d20e74ac17cd5",
+      "size_bytes": 400
+    },
+    "16_playwright_results.json": {
+      "sha256": "0ecec72e7339809b6babf188d4eead848abfb5dfe7a948fdfb6b5b99b57cac12",
+      "size_bytes": 2310
+    },
+    "17_staging_deployment_evidence.json": {
+      "sha256": "1a987699d6d17d9dd6a01a7a132e67e963d337488403bea0caea5293e8590c94",
+      "size_bytes": 1355
+    },
+    "18_production_zero_touch_audit.json": {
+      "sha256": "c208f4d9193f2392a21719d67f90f3b90d055497e7269ec4141ed1111fd5f3d6",
+      "size_bytes": 821
+    },
+    "19_scientific_governance_verification.json": {
+      "sha256": "822659bb80c2460489fb7c7287d25833283919a418d75c4bc44d79348350759f",
+      "size_bytes": 646
+    },
+    "20_git_implementation_identity.json": {
+      "sha256": "d9e2029576397bfd0ad448faf192c8fd551ca0cc5e401d23dc4a42012ad11299",
+      "size_bytes": 395
+    },
+    "22_final_acceptance_report.md": {
+      "sha256": "7d5fa7716b1dd916721228b772389e7559c4394e89daf5c8fb2421e95af361fb",
+      "size_bytes": 4627
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "artifact": "13_resource_and_performance_benchmarks",
+  "sprint_id": "CBE_SPRINT26_ADVANCED_SCIENTIFIC_VALIDATION",
+  "generated_at_utc": "2026-11-11T03:44:25.106032+00:00",
+  "benchmarks_ms": {
+    "statistical_validation_suite_ms": 171.08,
+    "walk_forward_expanding_rolling_ms": 14.58,
+    "market_regime_research_ms": 21.46,
+    "robustness_8_dimensions_suite_ms": 378.94,
+    "independent_validation_matrix_ms": 116.89,
+    "validation_report_v4_generation_ms": 578.17
+  },
+  "resource_governor_limits": {
+    "max_bootstrap_iterations": 2000,
+    "max_walk_forward_splits": 12,
+    "max_concurrent_jobs": 4
+  }
+}

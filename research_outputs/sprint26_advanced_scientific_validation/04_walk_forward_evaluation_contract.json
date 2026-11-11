@@ -1,0 +1,649 @@
+{
+  "artifact": "04_walk_forward_evaluation_contract",
+  "sprint_id": "CBE_SPRINT26_ADVANCED_SCIENTIFIC_VALIDATION",
+  "generated_at_utc": "2026-11-11T03:44:25.106032+00:00",
+  "canonical_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "parameter_mutations_allowed": false,
+  "supported_split_modes": [
+    "expanding",
+    "rolling"
+  ],
+  "expanding_evaluation": {
+    "evaluation_id": "WF-RES-29-PAT-SIM-EXPANDING-1c021f68",
+    "status": "EVALUATION_COMPLETED",
+    "rejection_code": null,
+    "rejection_reason": null,
+    "record_id": "RES-29-PAT-SIM",
+    "dataset_id": "DS-BTC-1H-Q1-2024",
+    "frequency": "1h",
+    "split_mode": "expanding",
+    "source_provenance": {
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+      "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+      "provenance_sidecar_exists": true,
+      "row_count": 2184,
+      "verification_status": "VERIFIED_AUTHORIZED_PARQUET"
+    },
+    "frozen_model_contract": {
+      "model_id": "CBE-0.7.0",
+      "parkinson_window_bars": 24,
+      "high_volatility_z_threshold": 1.5,
+      "capitulation_return_z_threshold": -2.0,
+      "fdr_alpha_threshold": 0.05,
+      "parameter_refit_allowed": false,
+      "parameter_mutations_applied": 0
+    },
+    "temporal_leakage_diagnostics": {
+      "valid": true,
+      "rejection_code": null,
+      "rejection_reason": null,
+      "observation_count": 2184,
+      "start_timestamp_ms": 1704067200000,
+      "end_timestamp_ms": 1711926000000,
+      "start_utc": "2024-01-01T00:00:00Z",
+      "end_utc": "2024-03-31T23:00:00Z",
+      "monotonic_increasing_verified": true,
+      "unique_timestamps_verified": true,
+      "splitter_zero_leakage_audit": {
+        "overall_zero_leakage_verified": true,
+        "fold_count": 4
+      },
+      "future_data_leakage_detected": false,
+      "train_test_overlap_detected": false,
+      "parameter_refitting_performed": false
+    },
+    "evaluation_manifest": {
+      "record_id": "RES-29-PAT-SIM",
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+      "frequency": "1h",
+      "split_mode": "expanding",
+      "n_splits": 4,
+      "warmup_bars": 24,
+      "purge_bars": 2,
+      "embargo_bars": 2,
+      "canonical_model": "CBE-0.7.0",
+      "fold_boundaries": [
+        {
+          "fold": 0,
+          "train": [
+            "2024-01-01T00:00:00Z",
+            "2024-01-05T01:00:00Z"
+          ],
+          "test": [
+            "2024-01-05T04:00:00Z",
+            "2024-01-26T20:00:00Z"
+          ]
+        },
+        {
+          "fold": 1,
+          "train": [
+            "2024-01-01T00:00:00Z",
+            "2024-01-26T18:00:00Z"
+          ],
+          "test": [
+            "2024-01-26T21:00:00Z",
+            "2024-02-17T13:00:00Z"
+          ]
+        },
+        {
+          "fold": 2,
+          "train": [
+            "2024-01-01T00:00:00Z",
+            "2024-02-17T11:00:00Z"
+          ],
+          "test": [
+            "2024-02-17T14:00:00Z",
+            "2024-03-10T06:00:00Z"
+          ]
+        },
+        {
+          "fold": 3,
+          "train": [
+            "2024-01-01T00:00:00Z",
+            "2024-03-10T04:00:00Z"
+          ],
+          "test": [
+            "2024-03-10T07:00:00Z",
+            "2024-03-31T23:00:00Z"
+          ]
+        }
+      ],
+      "manifest_sha256": "1c021f682b573358f29ec2b3d549be238c3c789ff2b20ee1ce8386e556ffdf10"
+    },
+    "fold_count": 4,
+    "folds": [
+      {
+        "fold_index": 0,
+        "split_mode": "expanding",
+        "train_start_idx": 0,
+        "train_end_idx": 97,
+        "test_start_idx": 100,
+        "test_end_idx": 620,
+        "train_start_utc": "2024-01-01T00:00:00Z",
+        "train_end_utc": "2024-01-05T01:00:00Z",
+        "test_start_utc": "2024-01-05T04:00:00Z",
+        "test_end_utc": "2024-01-26T20:00:00Z",
+        "train_bar_count": 98,
+        "test_bar_count": 521,
+        "warmup_bars_applied": 24,
+        "purged_bars_count": 2,
+        "embargo_bars_count": 2,
+        "temporal_gap_ms": 10800000,
+        "leakage_check_passed": true,
+        "train_metrics": {
+          "mean_parkinson_volatility": 0.006639,
+          "median_parkinson_volatility": 0.005149,
+          "volatility_std": 0.005859,
+          "volatility_iqr": 0.003268,
+          "high_volatility_regime_share": 0.0405,
+          "mean_abs_log_return": 0.005157,
+          "volatility_persistence_lag1": 0.3333
+        },
+        "test_metrics": {
+          "mean_parkinson_volatility": 0.004782,
+          "median_parkinson_volatility": 0.003533,
+          "volatility_std": 0.004034,
+          "volatility_iqr": 0.003117,
+          "high_volatility_regime_share": 0.0302,
+          "mean_abs_log_return": 0.003838,
+          "volatility_persistence_lag1": 0.5359
+        },
+        "consistency_metrics": {
+          "test_to_train_volatility_ratio": 0.7203,
+          "volatility_distribution_psi": 0.347006,
+          "high_vol_share_delta": -0.0103
+        },
+        "fold_verdict": "MODERATE_REGIME_SHIFT"
+      },
+      {
+        "fold_index": 1,
+        "split_mode": "expanding",
+        "train_start_idx": 0,
+        "train_end_idx": 618,
+        "test_start_idx": 621,
+        "test_end_idx": 1141,
+        "train_start_utc": "2024-01-01T00:00:00Z",
+        "train_end_utc": "2024-01-26T18:00:00Z",
+        "test_start_utc": "2024-01-26T21:00:00Z",
+        "test_end_utc": "2024-02-17T13:00:00Z",
+        "train_bar_count": 619,
+        "test_bar_count": 521,
+        "warmup_bars_applied": 24,
+        "purged_bars_count": 2,
+        "embargo_bars_count": 2,
+        "temporal_gap_ms": 10800000,
+        "leakage_check_passed": true,
+        "train_metrics": {
+          "mean_parkinson_volatility": 0.005042,
+          "median_parkinson_volatility": 0.003796,
+          "volatility_std": 0.0043,
+          "volatility_iqr": 0.003494,
+          "high_volatility_regime_share": 0.0555,
+          "mean_abs_log_return": 0.003991,
+          "volatility_persistence_lag1": 0.4965
+        },
+        "test_metrics": {
+          "mean_parkinson_volatility": 0.00368,
+          "median_parkinson_volatility": 0.00308,
+          "volatility_std": 0.002284,
+          "volatility_iqr": 0.002348,
+          "high_volatility_regime_share": 0.0141,
+          "mean_abs_log_return": 0.003008,
+          "volatility_persistence_lag1": 0.4394
+        },
+        "consistency_metrics": {
+          "test_to_train_volatility_ratio": 0.7299,
+          "volatility_distribution_psi": 0.15078,
+          "high_vol_share_delta": -0.0414
+        },
+        "fold_verdict": "CONSISTENT_ACROSS_WINDOW"
+      },
+      {
+        "fold_index": 2,
+        "split_mode": "expanding",
+        "train_start_idx": 0,
+        "train_end_idx": 1139,
+        "test_start_idx": 1142,
+        "test_end_idx": 1662,
+        "train_start_utc": "2024-01-01T00:00:00Z",
+        "train_end_utc": "2024-02-17T11:00:00Z",
+        "test_start_utc": "2024-02-17T14:00:00Z",
+        "test_end_utc": "2024-03-10T06:00:00Z",
+        "train_bar_count": 1140,
+        "test_bar_count": 521,
+        "warmup_bars_applied": 24,
+        "purged_bars_count": 2,
+        "embargo_bars_count": 2,
+        "temporal_gap_ms": 10800000,
+        "leakage_check_passed": true,
+        "train_metrics": {
+          "mean_parkinson_volatility": 0.00437,
+          "median_parkinson_volatility": 0.003434,
+          "volatility_std": 0.003571,
+          "volatility_iqr": 0.002844,
+          "high_volatility_regime_share": 0.0609,
+          "mean_abs_log_return": 0.003491,
+          "volatility_persistence_lag1": 0.5081
+        },
+        "test_metrics": {
+          "mean_parkinson_volatility": 0.005389,
+          "median_parkinson_volatility": 0.003784,
+          "volatility_std": 0.005062,
+          "volatility_iqr": 0.003997,
+          "high_volatility_regime_share": 0.1207,
+          "mean_abs_log_return": 0.004162,
+          "volatility_persistence_lag1": 0.6041
+        },
+        "consistency_metrics": {
+          "test_to_train_volatility_ratio": 1.2332,
+          "volatility_distribution_psi": 0.063179,
+          "high_vol_share_delta": 0.0598
+        },
+        "fold_verdict": "CONSISTENT_ACROSS_WINDOW"
+      },
+      {
+        "fold_index": 3,
+        "split_mode": "expanding",
+        "train_start_idx": 0,
+        "train_end_idx": 1660,
+        "test_start_idx": 1663,
+        "test_end_idx": 2183,
+        "train_start_utc": "2024-01-01T00:00:00Z",
+        "train_end_utc": "2024-03-10T04:00:00Z",
+        "test_start_utc": "2024-03-10T07:00:00Z",
+        "test_end_utc": "2024-03-31T23:00:00Z",
+        "train_bar_count": 1661,
+        "test_bar_count": 521,
+        "warmup_bars_applied": 24,
+        "purged_bars_count": 2,
+        "embargo_bars_count": 0,
+        "temporal_gap_ms": 10800000,
+        "leakage_check_passed": true,
+        "train_metrics": {
+          "mean_parkinson_volatility": 0.004667,
+          "median_parkinson_volatility": 0.003517,
+          "volatility_std": 0.004092,
+          "volatility_iqr": 0.003197,
+          "high_volatility_regime_share": 0.0605,
+          "mean_abs_log_return": 0.003691,
+          "volatility_persistence_lag1": 0.5598
+        },
+        "test_metrics": {
+          "mean_parkinson_volatility": 0.006152,
+          "median_parkinson_volatility": 0.005035,
+          "volatility_std": 0.004014,
+          "volatility_iqr": 0.004299,
+          "high_volatility_regime_share": 0.1227,
+          "mean_abs_log_return": 0.004936,
+          "volatility_persistence_lag1": 0.5627
+        },
+        "consistency_metrics": {
+          "test_to_train_volatility_ratio": 1.3182,
+          "volatility_distribution_psi": 0.2745,
+          "high_vol_share_delta": 0.0622
+        },
+        "fold_verdict": "MODERATE_REGIME_SHIFT"
+      }
+    ],
+    "cross_window_consistency": {
+      "total_folds": 4,
+      "consistent_folds_count": 2,
+      "consistency_ratio": 0.5,
+      "mean_test_to_train_volatility_ratio": 1.0004,
+      "volatility_ratio_cv": 0.2768,
+      "mean_distribution_psi": 0.2089,
+      "overall_consistency_verdict": "TEMPORALLY_CONSISTENT",
+      "primary_validation_objective": "SCIENTIFIC_STRUCTURAL_CONSISTENCY_NON_DIRECTIONAL"
+    },
+    "limitations": [
+      "Walk-forward evaluation measures structural and distributional consistency across chronological windows; it does not evaluate or authorize trading profitability.",
+      "Cryptocurrency volatility exhibits structural regime shifts across macro cycles, reflected in fold-level PSI."
+    ],
+    "evaluated_at_utc": "2026-11-11T03:44:25Z",
+    "canonical_model": "CBE-0.7.0",
+    "model_status": "STRICTLY_FROZEN",
+    "governance_decision": "TECHNICAL_NO_GO"
+  },
+  "rolling_evaluation": {
+    "evaluation_id": "WF-RES-29-PAT-SIM-ROLLING-1bb306db",
+    "status": "EVALUATION_COMPLETED",
+    "rejection_code": null,
+    "rejection_reason": null,
+    "record_id": "RES-29-PAT-SIM",
+    "dataset_id": "DS-BTC-1H-Q1-2024",
+    "frequency": "1h",
+    "split_mode": "rolling",
+    "source_provenance": {
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+      "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+      "provenance_sidecar_exists": true,
+      "row_count": 2184,
+      "verification_status": "VERIFIED_AUTHORIZED_PARQUET"
+    },
+    "frozen_model_contract": {
+      "model_id": "CBE-0.7.0",
+      "parkinson_window_bars": 24,
+      "high_volatility_z_threshold": 1.5,
+      "capitulation_return_z_threshold": -2.0,
+      "fdr_alpha_threshold": 0.05,
+      "parameter_refit_allowed": false,
+      "parameter_mutations_applied": 0
+    },
+    "temporal_leakage_diagnostics": {
+      "valid": true,
+      "rejection_code": null,
+      "rejection_reason": null,
+      "observation_count": 2184,
+      "start_timestamp_ms": 1704067200000,
+      "end_timestamp_ms": 1711926000000,
+      "start_utc": "2024-01-01T00:00:00Z",
+      "end_utc": "2024-03-31T23:00:00Z",
+      "monotonic_increasing_verified": true,
+      "unique_timestamps_verified": true,
+      "splitter_zero_leakage_audit": {
+        "overall_zero_leakage_verified": true,
+        "fold_count": 4
+      },
+      "future_data_leakage_detected": false,
+      "train_test_overlap_detected": false,
+      "parameter_refitting_performed": false
+    },
+    "evaluation_manifest": {
+      "record_id": "RES-29-PAT-SIM",
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+      "frequency": "1h",
+      "split_mode": "rolling",
+      "n_splits": 4,
+      "warmup_bars": 24,
+      "purge_bars": 2,
+      "embargo_bars": 2,
+      "canonical_model": "CBE-0.7.0",
+      "fold_boundaries": [
+        {
+          "fold": 0,
+          "train": [
+            "2024-01-01T00:00:00Z",
+            "2024-01-05T01:00:00Z"
+          ],
+          "test": [
+            "2024-01-05T04:00:00Z",
+            "2024-01-26T20:00:00Z"
+          ]
+        },
+        {
+          "fold": 1,
+          "train": [
+            "2024-01-01T00:00:00Z",
+            "2024-01-26T18:00:00Z"
+          ],
+          "test": [
+            "2024-01-26T21:00:00Z",
+            "2024-02-17T13:00:00Z"
+          ]
+        },
+        {
+          "fold": 2,
+          "train": [
+            "2024-01-05T02:00:00Z",
+            "2024-02-17T11:00:00Z"
+          ],
+          "test": [
+            "2024-02-17T14:00:00Z",
+            "2024-03-10T06:00:00Z"
+          ]
+        },
+        {
+          "fold": 3,
+          "train": [
+            "2024-01-26T19:00:00Z",
+            "2024-03-10T04:00:00Z"
+          ],
+          "test": [
+            "2024-03-10T07:00:00Z",
+            "2024-03-31T23:00:00Z"
+          ]
+        }
+      ],
+      "manifest_sha256": "1bb306db9e8a44ec1d639704665c96cd6af9306ae3718db0b6b1a15f9be69666"
+    },
+    "fold_count": 4,
+    "folds": [
+      {
+        "fold_index": 0,
+        "split_mode": "rolling",
+        "train_start_idx": 0,
+        "train_end_idx": 97,
+        "test_start_idx": 100,
+        "test_end_idx": 620,
+        "train_start_utc": "2024-01-01T00:00:00Z",
+        "train_end_utc": "2024-01-05T01:00:00Z",
+        "test_start_utc": "2024-01-05T04:00:00Z",
+        "test_end_utc": "2024-01-26T20:00:00Z",
+        "train_bar_count": 98,
+        "test_bar_count": 521,
+        "warmup_bars_applied": 24,
+        "purged_bars_count": 2,
+        "embargo_bars_count": 2,
+        "temporal_gap_ms": 10800000,
+        "leakage_check_passed": true,
+        "train_metrics": {
+          "mean_parkinson_volatility": 0.006639,
+          "median_parkinson_volatility": 0.005149,
+          "volatility_std": 0.005859,
+          "volatility_iqr": 0.003268,
+          "high_volatility_regime_share": 0.0405,
+          "mean_abs_log_return": 0.005157,
+          "volatility_persistence_lag1": 0.3333
+        },
+        "test_metrics": {
+          "mean_parkinson_volatility": 0.004782,
+          "median_parkinson_volatility": 0.003533,
+          "volatility_std": 0.004034,
+          "volatility_iqr": 0.003117,
+          "high_volatility_regime_share": 0.0302,
+          "mean_abs_log_return": 0.003838,
+          "volatility_persistence_lag1": 0.5359
+        },
+        "consistency_metrics": {
+          "test_to_train_volatility_ratio": 0.7203,
+          "volatility_distribution_psi": 0.347006,
+          "high_vol_share_delta": -0.0103
+        },
+        "fold_verdict": "MODERATE_REGIME_SHIFT"
+      },
+      {
+        "fold_index": 1,
+        "split_mode": "rolling",
+        "train_start_idx": 0,
+        "train_end_idx": 618,
+        "test_start_idx": 621,
+        "test_end_idx": 1141,
+        "train_start_utc": "2024-01-01T00:00:00Z",
+        "train_end_utc": "2024-01-26T18:00:00Z",
+        "test_start_utc": "2024-01-26T21:00:00Z",
+        "test_end_utc": "2024-02-17T13:00:00Z",
+        "train_bar_count": 619,
+        "test_bar_count": 521,
+        "warmup_bars_applied": 24,
+        "purged_bars_count": 2,
+        "embargo_bars_count": 2,
+        "temporal_gap_ms": 10800000,
+        "leakage_check_passed": true,
+        "train_metrics": {
+          "mean_parkinson_volatility": 0.005042,
+          "median_parkinson_volatility": 0.003796,
+          "volatility_std": 0.0043,
+          "volatility_iqr": 0.003494,
+          "high_volatility_regime_share": 0.0555,
+          "mean_abs_log_return": 0.003991,
+          "volatility_persistence_lag1": 0.4965
+        },
+        "test_metrics": {
+          "mean_parkinson_volatility": 0.00368,
+          "median_parkinson_volatility": 0.00308,
+          "volatility_std": 0.002284,
+          "volatility_iqr": 0.002348,
+          "high_volatility_regime_share": 0.0141,
+          "mean_abs_log_return": 0.003008,
+          "volatility_persistence_lag1": 0.4394
+        },
+        "consistency_metrics": {
+          "test_to_train_volatility_ratio": 0.7299,
+          "volatility_distribution_psi": 0.15078,
+          "high_vol_share_delta": -0.0414
+        },
+        "fold_verdict": "CONSISTENT_ACROSS_WINDOW"
+      },
+      {
+        "fold_index": 2,
+        "split_mode": "rolling",
+        "train_start_idx": 98,
+        "train_end_idx": 1139,
+        "test_start_idx": 1142,
+        "test_end_idx": 1662,
+        "train_start_utc": "2024-01-05T02:00:00Z",
+        "train_end_utc": "2024-02-17T11:00:00Z",
+        "test_start_utc": "2024-02-17T14:00:00Z",
+        "test_end_utc": "2024-03-10T06:00:00Z",
+        "train_bar_count": 1042,
+        "test_bar_count": 521,
+        "warmup_bars_applied": 24,
+        "purged_bars_count": 2,
+        "embargo_bars_count": 2,
+        "temporal_gap_ms": 10800000,
+        "leakage_check_passed": true,
+        "train_metrics": {
+          "mean_parkinson_volatility": 0.004176,
+          "median_parkinson_volatility": 0.003263,
+          "volatility_std": 0.003301,
+          "volatility_iqr": 0.002613,
+          "high_volatility_regime_share": 0.0619,
+          "mean_abs_log_return": 0.003368,
+          "volatility_persistence_lag1": 0.5314
+        },
+        "test_metrics": {
+          "mean_parkinson_volatility": 0.005389,
+          "median_parkinson_volatility": 0.003784,
+          "volatility_std": 0.005062,
+          "volatility_iqr": 0.003997,
+          "high_volatility_regime_share": 0.1328,
+          "mean_abs_log_return": 0.004162,
+          "volatility_persistence_lag1": 0.6041
+        },
+        "consistency_metrics": {
+          "test_to_train_volatility_ratio": 1.2905,
+          "volatility_distribution_psi": 0.077426,
+          "high_vol_share_delta": 0.0709
+        },
+        "fold_verdict": "CONSISTENT_ACROSS_WINDOW"
+      },
+      {
+        "fold_index": 3,
+        "split_mode": "rolling",
+        "train_start_idx": 619,
+        "train_end_idx": 1660,
+        "test_start_idx": 1663,
+        "test_end_idx": 2183,
+        "train_start_utc": "2024-01-26T19:00:00Z",
+        "train_end_utc": "2024-03-10T04:00:00Z",
+        "test_start_utc": "2024-03-10T07:00:00Z",
+        "test_end_utc": "2024-03-31T23:00:00Z",
+        "train_bar_count": 1042,
+        "test_bar_count": 521,
+        "warmup_bars_applied": 24,
+        "purged_bars_count": 2,
+        "embargo_bars_count": 0,
+        "temporal_gap_ms": 10800000,
+        "leakage_check_passed": true,
+        "train_metrics": {
+          "mean_parkinson_volatility": 0.004506,
+          "median_parkinson_volatility": 0.00343,
+          "volatility_std": 0.003982,
+          "volatility_iqr": 0.003084,
+          "high_volatility_regime_share": 0.0629,
+          "mean_abs_log_return": 0.003572,
+          "volatility_persistence_lag1": 0.5966
+        },
+        "test_metrics": {
+          "mean_parkinson_volatility": 0.006152,
+          "median_parkinson_volatility": 0.005035,
+          "volatility_std": 0.004014,
+          "volatility_iqr": 0.004299,
+          "high_volatility_regime_share": 0.1288,
+          "mean_abs_log_return": 0.004936,
+          "volatility_persistence_lag1": 0.5627
+        },
+        "consistency_metrics": {
+          "test_to_train_volatility_ratio": 1.3653,
+          "volatility_distribution_psi": 0.317121,
+          "high_vol_share_delta": 0.0659
+        },
+        "fold_verdict": "MODERATE_REGIME_SHIFT"
+      }
+    ],
+    "cross_window_consistency": {
+      "total_folds": 4,
+      "consistent_folds_count": 2,
+      "consistency_ratio": 0.5,
+      "mean_test_to_train_volatility_ratio": 1.0265,
+      "volatility_ratio_cv": 0.2948,
+      "mean_distribution_psi": 0.2231,
+      "overall_consistency_verdict": "TEMPORALLY_CONSISTENT",
+      "primary_validation_objective": "SCIENTIFIC_STRUCTURAL_CONSISTENCY_NON_DIRECTIONAL"
+    },
+    "limitations": [
+      "Walk-forward evaluation measures structural and distributional consistency across chronological windows; it does not evaluate or authorize trading profitability.",
+      "Cryptocurrency volatility exhibits structural regime shifts across macro cycles, reflected in fold-level PSI."
+    ],
+    "evaluated_at_utc": "2026-11-11T03:44:25Z",
+    "canonical_model": "CBE-0.7.0",
+    "model_status": "STRICTLY_FROZEN",
+    "governance_decision": "TECHNICAL_NO_GO"
+  },
+  "frozen_model_refit_block_verification": {
+    "evaluation_id": "WF-BLOCKED-3f868803",
+    "status": "EVALUATION_BLOCKED",
+    "rejection_code": "FROZEN_MODEL_REFIT_PROHIBITED",
+    "rejection_reason": "Walk-forward evaluation is not permission to retrain or refit the frozen CBE-0.7.0 model.",
+    "record_id": "RES-29-PAT-SIM",
+    "dataset_id": "DS-BTC-1H-Q1-2024",
+    "frequency": "1h",
+    "split_mode": "expanding",
+    "source_provenance": {},
+    "frozen_model_contract": {
+      "model_id": "CBE-0.7.0",
+      "parkinson_window_bars": 24,
+      "high_volatility_z_threshold": 1.5,
+      "capitulation_return_z_threshold": -2.0,
+      "fdr_alpha_threshold": 0.05,
+      "parameter_refit_allowed": false,
+      "parameter_mutations_applied": 0
+    },
+    "temporal_leakage_diagnostics": {
+      "valid": false,
+      "frozen_model_violation": true
+    },
+    "evaluation_manifest": {
+      "status": "BLOCKED",
+      "rejection_code": "FROZEN_MODEL_REFIT_PROHIBITED",
+      "manifest_sha256": null
+    },
+    "fold_count": 0,
+    "folds": [],
+    "cross_window_consistency": {
+      "status": "EVALUATION_BLOCKED"
+    },
+    "limitations": [
+      "Walk-forward evaluation is not permission to retrain or refit the frozen CBE-0.7.0 model."
+    ],
+    "evaluated_at_utc": "2026-11-11T03:44:25Z",
+    "canonical_model": "CBE-0.7.0",
+    "model_status": "STRICTLY_FROZEN",
+    "governance_decision": "TECHNICAL_NO_GO"
+  }
+}

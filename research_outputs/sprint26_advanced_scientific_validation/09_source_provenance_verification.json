@@ -1,0 +1,14 @@
+{
+  "artifact": "09_source_provenance_verification",
+  "sprint_id": "CBE_SPRINT26_ADVANCED_SCIENTIFIC_VALIDATION",
+  "generated_at_utc": "2026-11-11T03:44:25.106032+00:00",
+  "provenance_policy": "STRICT_FAIL_CLOSED_SHA256_AND_SCHEMA_VERIFICATION",
+  "verified_sources": [
+    null,
+    {
+      "output_digest_sha256": "8b729a71bb4fdd6ed5c18beadf8d4fe30f8c6b57ce9c363611970a8615915e8f",
+      "target_artifact_path": "research_outputs/sprint26_advanced_scientific_validation/06_market_regime_research_specification.json"
+    }
+  ],
+  "quarantine_dataset_block_verified": true
+}

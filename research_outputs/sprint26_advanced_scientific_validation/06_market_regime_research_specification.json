@@ -1,0 +1,615 @@
+{
+  "artifact": "06_market_regime_research_specification",
+  "sprint_id": "CBE_SPRINT26_ADVANCED_SCIENTIFIC_VALIDATION",
+  "generated_at_utc": "2026-11-11T03:44:25.106032+00:00",
+  "canonical_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "regime_research_report": {
+    "research_report_id": "REGIME-RES-DS-BTC-1H-Q1-2024-8b729a71",
+    "status": "RESEARCH_COMPLETED",
+    "rejection_code": null,
+    "rejection_reason": null,
+    "historical_dataset": {
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "asset": "BTCUSDT",
+      "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+      "observation_count": 2184
+    },
+    "verified_source_artifact": {
+      "source_path": "data/historical/historical_binance_btcusdt_1h_q1_2024.parquet",
+      "source_artifact_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+      "provenance_sidecar_present": true,
+      "verification_status": "VERIFIED_GENUINE_PARQUET"
+    },
+    "evaluation_window": {
+      "start_utc": "2024-01-01T00:00:00Z",
+      "end_utc": "2024-03-31T23:00:00Z",
+      "bar_duration_hours": 1.0,
+      "observation_count": 2184
+    },
+    "methodology": {
+      "canonical_model": "CBE-0.7.0",
+      "regime_taxonomy": "CBE_6_STATE_MARKET_AND_4_STATE_VOLATILITY_TAXONOMY",
+      "frozen_thresholds": {
+        "parkinson_rolling_window": 24,
+        "vol_compressed_quantile": 0.25,
+        "vol_elevated_quantile": 0.75,
+        "vol_extreme_quantile": 0.9,
+        "return_z_capitulation": -1.75,
+        "return_z_momentum": 1.25,
+        "return_z_distribution": -0.75,
+        "return_z_recovery": 0.35
+      },
+      "thresholds_modified": false,
+      "transition_estimation": "First-order empirical Markov chain with gap-exclusion and Dirichlet(1.0) credible intervals",
+      "perturbation_procedure": "Exploratory 5% boundary trim and 15bps microstructure noise sensitivity"
+    },
+    "computation_version": "SPRINT26-REGIME-RESEARCH-V1.0",
+    "output_artifact": {
+      "output_digest_sha256": "8b729a71bb4fdd6ed5c18beadf8d4fe30f8c6b57ce9c363611970a8615915e8f",
+      "target_artifact_path": "research_outputs/sprint26_advanced_scientific_validation/06_market_regime_research_specification.json"
+    },
+    "volatility_regimes_summary": {
+      "mean_parkinson_volatility": 0.00499,
+      "median_parkinson_volatility": 0.003818,
+      "p90_parkinson_volatility": 0.009358,
+      "volatility_regime_shares": {
+        "COMPRESSED_VOLATILITY": 0.25,
+        "NORMAL_VOLATILITY": 0.5,
+        "ELEVATED_VOLATILITY": 0.1497,
+        "EXTREME_VOLATILITY": 0.1003
+      }
+    },
+    "regime_duration_statistics": {
+      "status": "COMPUTED",
+      "total_episodes_count": 331,
+      "bar_duration_hours": 1.0,
+      "by_regime": {
+        "CONSOLIDATION_RANGING": {
+          "total_episodes": 110,
+          "completed_episodes": 109,
+          "boundary_censored_episodes": 1,
+          "mean_duration_bars": 10.64,
+          "mean_duration_hours": 10.64,
+          "median_duration_bars": 5.0,
+          "iqr_duration_bars": 9.0,
+          "max_duration_bars": 101
+        },
+        "RECOVERY_ACCUMULATION": {
+          "total_episodes": 92,
+          "completed_episodes": 91,
+          "boundary_censored_episodes": 1,
+          "mean_duration_bars": 3.59,
+          "mean_duration_hours": 3.59,
+          "median_duration_bars": 2.0,
+          "iqr_duration_bars": 3.5,
+          "max_duration_bars": 24
+        },
+        "MOMENTUM_EXPANSION": {
+          "total_episodes": 25,
+          "completed_episodes": 25,
+          "boundary_censored_episodes": 0,
+          "mean_duration_bars": 5.28,
+          "mean_duration_hours": 5.28,
+          "median_duration_bars": 4.0,
+          "iqr_duration_bars": 6.0,
+          "max_duration_bars": 19
+        },
+        "DISTRIBUTION": {
+          "total_episodes": 52,
+          "completed_episodes": 52,
+          "boundary_censored_episodes": 0,
+          "mean_duration_bars": 2.81,
+          "mean_duration_hours": 2.81,
+          "median_duration_bars": 2.0,
+          "iqr_duration_bars": 2.0,
+          "max_duration_bars": 23
+        },
+        "HIGH_VOLATILITY_EXPANSION": {
+          "total_episodes": 37,
+          "completed_episodes": 37,
+          "boundary_censored_episodes": 0,
+          "mean_duration_bars": 7.92,
+          "mean_duration_hours": 7.92,
+          "median_duration_bars": 3.0,
+          "iqr_duration_bars": 5.0,
+          "max_duration_bars": 39
+        },
+        "CAPITULATION": {
+          "total_episodes": 15,
+          "completed_episodes": 15,
+          "boundary_censored_episodes": 0,
+          "mean_duration_bars": 6.6,
+          "mean_duration_hours": 6.6,
+          "median_duration_bars": 2.0,
+          "iqr_duration_bars": 10.0,
+          "max_duration_bars": 25
+        }
+      }
+    },
+    "regime_transition_frequency": {
+      "regimes": [
+        "CONSOLIDATION_RANGING",
+        "RECOVERY_ACCUMULATION",
+        "MOMENTUM_EXPANSION",
+        "DISTRIBUTION",
+        "HIGH_VOLATILITY_EXPANSION",
+        "CAPITULATION"
+      ],
+      "counts_matrix": [
+        [
+          1074,
+          64,
+          1,
+          39,
+          5,
+          1
+        ],
+        [
+          65,
+          238,
+          22,
+          0,
+          4,
+          0
+        ],
+        [
+          0,
+          20,
+          107,
+          0,
+          5,
+          0
+        ],
+        [
+          38,
+          0,
+          0,
+          94,
+          10,
+          4
+        ],
+        [
+          5,
+          8,
+          2,
+          12,
+          256,
+          10
+        ],
+        [
+          1,
+          0,
+          0,
+          1,
+          13,
+          84
+        ]
+      ],
+      "probabilities_matrix": [
+        [
+          0.907095,
+          0.054054,
+          0.000845,
+          0.032939,
+          0.004223,
+          0.000845
+        ],
+        [
+          0.197568,
+          0.723404,
+          0.066869,
+          0.0,
+          0.012158,
+          0.0
+        ],
+        [
+          0.0,
+          0.151515,
+          0.810606,
+          0.0,
+          0.037879,
+          0.0
+        ],
+        [
+          0.260274,
+          0.0,
+          0.0,
+          0.643836,
+          0.068493,
+          0.027397
+        ],
+        [
+          0.017065,
+          0.027304,
+          0.006826,
+          0.040956,
+          0.87372,
+          0.03413
+        ],
+        [
+          0.010101,
+          0.0,
+          0.0,
+          0.010101,
+          0.131313,
+          0.848485
+        ]
+      ],
+      "total_valid_transitions": 2183,
+      "skipped_gap_transitions": 0
+    },
+    "regime_persistence": {
+      "by_regime": {
+        "CONSOLIDATION_RANGING": {
+          "self_transition_probability": 0.9071,
+          "source_observations": 1184,
+          "expected_residence_bars": 10.76,
+          "persistence_classification": "HIGH_PERSISTENCE"
+        },
+        "RECOVERY_ACCUMULATION": {
+          "self_transition_probability": 0.7234,
+          "source_observations": 329,
+          "expected_residence_bars": 3.62,
+          "persistence_classification": "MODERATE_PERSISTENCE"
+        },
+        "MOMENTUM_EXPANSION": {
+          "self_transition_probability": 0.8106,
+          "source_observations": 132,
+          "expected_residence_bars": 5.28,
+          "persistence_classification": "HIGH_PERSISTENCE"
+        },
+        "DISTRIBUTION": {
+          "self_transition_probability": 0.6438,
+          "source_observations": 146,
+          "expected_residence_bars": 2.81,
+          "persistence_classification": "MODERATE_PERSISTENCE"
+        },
+        "HIGH_VOLATILITY_EXPANSION": {
+          "self_transition_probability": 0.8737,
+          "source_observations": 293,
+          "expected_residence_bars": 7.92,
+          "persistence_classification": "HIGH_PERSISTENCE"
+        },
+        "CAPITULATION": {
+          "self_transition_probability": 0.8485,
+          "source_observations": 99,
+          "expected_residence_bars": 6.6,
+          "persistence_classification": "HIGH_PERSISTENCE"
+        }
+      },
+      "mean_diagonal_persistence": 0.8012
+    },
+    "transition_uncertainty": {
+      "prior_specification": "Symmetric Dirichlet(alpha=1.0)",
+      "active_transition_cells": {
+        "CONSOLIDATION_RANGING->CONSOLIDATION_RANGING": {
+          "count": 1074,
+          "row_total": 1184,
+          "empirical_probability": 0.9071,
+          "posterior_mean": 0.9034,
+          "posterior_se": 0.0086,
+          "ci_95_lower": 0.8903,
+          "ci_95_upper": 0.9239,
+          "low_sample_warning": false
+        },
+        "CONSOLIDATION_RANGING->RECOVERY_ACCUMULATION": {
+          "count": 64,
+          "row_total": 1184,
+          "empirical_probability": 0.0541,
+          "posterior_mean": 0.0546,
+          "posterior_se": 0.0066,
+          "ci_95_lower": 0.0411,
+          "ci_95_upper": 0.067,
+          "low_sample_warning": false
+        },
+        "CONSOLIDATION_RANGING->MOMENTUM_EXPANSION": {
+          "count": 1,
+          "row_total": 1184,
+          "empirical_probability": 0.0008,
+          "posterior_mean": 0.0017,
+          "posterior_se": 0.0012,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0032,
+          "low_sample_warning": false
+        },
+        "CONSOLIDATION_RANGING->DISTRIBUTION": {
+          "count": 39,
+          "row_total": 1184,
+          "empirical_probability": 0.0329,
+          "posterior_mean": 0.0336,
+          "posterior_se": 0.0052,
+          "ci_95_lower": 0.0227,
+          "ci_95_upper": 0.0432,
+          "low_sample_warning": false
+        },
+        "CONSOLIDATION_RANGING->HIGH_VOLATILITY_EXPANSION": {
+          "count": 5,
+          "row_total": 1184,
+          "empirical_probability": 0.0042,
+          "posterior_mean": 0.005,
+          "posterior_se": 0.0021,
+          "ci_95_lower": 0.0002,
+          "ci_95_upper": 0.0082,
+          "low_sample_warning": false
+        },
+        "CONSOLIDATION_RANGING->CAPITULATION": {
+          "count": 1,
+          "row_total": 1184,
+          "empirical_probability": 0.0008,
+          "posterior_mean": 0.0017,
+          "posterior_se": 0.0012,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0032,
+          "low_sample_warning": false
+        },
+        "RECOVERY_ACCUMULATION->CONSOLIDATION_RANGING": {
+          "count": 65,
+          "row_total": 329,
+          "empirical_probability": 0.1976,
+          "posterior_mean": 0.197,
+          "posterior_se": 0.0217,
+          "ci_95_lower": 0.155,
+          "ci_95_upper": 0.2401,
+          "low_sample_warning": false
+        },
+        "RECOVERY_ACCUMULATION->RECOVERY_ACCUMULATION": {
+          "count": 238,
+          "row_total": 329,
+          "empirical_probability": 0.7234,
+          "posterior_mean": 0.7134,
+          "posterior_se": 0.0247,
+          "ci_95_lower": 0.6751,
+          "ci_95_upper": 0.7718,
+          "low_sample_warning": false
+        },
+        "RECOVERY_ACCUMULATION->MOMENTUM_EXPANSION": {
+          "count": 22,
+          "row_total": 329,
+          "empirical_probability": 0.0669,
+          "posterior_mean": 0.0687,
+          "posterior_se": 0.0138,
+          "ci_95_lower": 0.0398,
+          "ci_95_upper": 0.0939,
+          "low_sample_warning": false
+        },
+        "RECOVERY_ACCUMULATION->HIGH_VOLATILITY_EXPANSION": {
+          "count": 4,
+          "row_total": 329,
+          "empirical_probability": 0.0122,
+          "posterior_mean": 0.0149,
+          "posterior_se": 0.0066,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0251,
+          "low_sample_warning": false
+        },
+        "MOMENTUM_EXPANSION->RECOVERY_ACCUMULATION": {
+          "count": 20,
+          "row_total": 132,
+          "empirical_probability": 0.1515,
+          "posterior_mean": 0.1522,
+          "posterior_se": 0.0305,
+          "ci_95_lower": 0.0918,
+          "ci_95_upper": 0.2112,
+          "low_sample_warning": false
+        },
+        "MOMENTUM_EXPANSION->MOMENTUM_EXPANSION": {
+          "count": 107,
+          "row_total": 132,
+          "empirical_probability": 0.8106,
+          "posterior_mean": 0.7826,
+          "posterior_se": 0.035,
+          "ci_95_lower": 0.742,
+          "ci_95_upper": 0.8792,
+          "low_sample_warning": false
+        },
+        "MOMENTUM_EXPANSION->HIGH_VOLATILITY_EXPANSION": {
+          "count": 5,
+          "row_total": 132,
+          "empirical_probability": 0.0379,
+          "posterior_mean": 0.0435,
+          "posterior_se": 0.0173,
+          "ci_95_lower": 0.004,
+          "ci_95_upper": 0.0718,
+          "low_sample_warning": false
+        },
+        "DISTRIBUTION->CONSOLIDATION_RANGING": {
+          "count": 38,
+          "row_total": 146,
+          "empirical_probability": 0.2603,
+          "posterior_mean": 0.2566,
+          "posterior_se": 0.0353,
+          "ci_95_lower": 0.1911,
+          "ci_95_upper": 0.3295,
+          "low_sample_warning": false
+        },
+        "DISTRIBUTION->DISTRIBUTION": {
+          "count": 94,
+          "row_total": 146,
+          "empirical_probability": 0.6438,
+          "posterior_mean": 0.625,
+          "posterior_se": 0.0391,
+          "ci_95_lower": 0.5671,
+          "ci_95_upper": 0.7205,
+          "low_sample_warning": false
+        },
+        "DISTRIBUTION->HIGH_VOLATILITY_EXPANSION": {
+          "count": 10,
+          "row_total": 146,
+          "empirical_probability": 0.0685,
+          "posterior_mean": 0.0724,
+          "posterior_se": 0.0209,
+          "ci_95_lower": 0.0274,
+          "ci_95_upper": 0.1095,
+          "low_sample_warning": false
+        },
+        "DISTRIBUTION->CAPITULATION": {
+          "count": 4,
+          "row_total": 146,
+          "empirical_probability": 0.0274,
+          "posterior_mean": 0.0329,
+          "posterior_se": 0.0144,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0557,
+          "low_sample_warning": false
+        },
+        "HIGH_VOLATILITY_EXPANSION->CONSOLIDATION_RANGING": {
+          "count": 5,
+          "row_total": 293,
+          "empirical_probability": 0.0171,
+          "posterior_mean": 0.0201,
+          "posterior_se": 0.0081,
+          "ci_95_lower": 0.0012,
+          "ci_95_upper": 0.0329,
+          "low_sample_warning": false
+        },
+        "HIGH_VOLATILITY_EXPANSION->RECOVERY_ACCUMULATION": {
+          "count": 8,
+          "row_total": 293,
+          "empirical_probability": 0.0273,
+          "posterior_mean": 0.0301,
+          "posterior_se": 0.0099,
+          "ci_95_lower": 0.008,
+          "ci_95_upper": 0.0466,
+          "low_sample_warning": false
+        },
+        "HIGH_VOLATILITY_EXPANSION->MOMENTUM_EXPANSION": {
+          "count": 2,
+          "row_total": 293,
+          "empirical_probability": 0.0068,
+          "posterior_mean": 0.01,
+          "posterior_se": 0.0058,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0181,
+          "low_sample_warning": false
+        },
+        "HIGH_VOLATILITY_EXPANSION->DISTRIBUTION": {
+          "count": 12,
+          "row_total": 293,
+          "empirical_probability": 0.041,
+          "posterior_mean": 0.0435,
+          "posterior_se": 0.0118,
+          "ci_95_lower": 0.0179,
+          "ci_95_upper": 0.064,
+          "low_sample_warning": false
+        },
+        "HIGH_VOLATILITY_EXPANSION->HIGH_VOLATILITY_EXPANSION": {
+          "count": 256,
+          "row_total": 293,
+          "empirical_probability": 0.8737,
+          "posterior_mean": 0.8595,
+          "posterior_se": 0.0201,
+          "ci_95_lower": 0.8344,
+          "ci_95_upper": 0.913,
+          "low_sample_warning": false
+        },
+        "HIGH_VOLATILITY_EXPANSION->CAPITULATION": {
+          "count": 10,
+          "row_total": 293,
+          "empirical_probability": 0.0341,
+          "posterior_mean": 0.0368,
+          "posterior_se": 0.0109,
+          "ci_95_lower": 0.0128,
+          "ci_95_upper": 0.0554,
+          "low_sample_warning": false
+        },
+        "CAPITULATION->CONSOLIDATION_RANGING": {
+          "count": 1,
+          "row_total": 99,
+          "empirical_probability": 0.0101,
+          "posterior_mean": 0.019,
+          "posterior_se": 0.0133,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0361,
+          "low_sample_warning": false
+        },
+        "CAPITULATION->DISTRIBUTION": {
+          "count": 1,
+          "row_total": 99,
+          "empirical_probability": 0.0101,
+          "posterior_mean": 0.019,
+          "posterior_se": 0.0133,
+          "ci_95_lower": 0.0,
+          "ci_95_upper": 0.0361,
+          "low_sample_warning": false
+        },
+        "CAPITULATION->HIGH_VOLATILITY_EXPANSION": {
+          "count": 13,
+          "row_total": 99,
+          "empirical_probability": 0.1313,
+          "posterior_mean": 0.1333,
+          "posterior_se": 0.033,
+          "ci_95_lower": 0.0666,
+          "ci_95_upper": 0.196,
+          "low_sample_warning": false
+        },
+        "CAPITULATION->CAPITULATION": {
+          "count": 84,
+          "row_total": 99,
+          "empirical_probability": 0.8485,
+          "posterior_mean": 0.8095,
+          "posterior_se": 0.0381,
+          "ci_95_lower": 0.7737,
+          "ci_95_upper": 0.9232,
+          "low_sample_warning": false
+        }
+      },
+      "low_sample_regimes": []
+    },
+    "regime_distribution": {
+      "counts": {
+        "CONSOLIDATION_RANGING": 1184,
+        "RECOVERY_ACCUMULATION": 330,
+        "MOMENTUM_EXPANSION": 132,
+        "DISTRIBUTION": 146,
+        "HIGH_VOLATILITY_EXPANSION": 293,
+        "CAPITULATION": 99
+      },
+      "shares": {
+        "CONSOLIDATION_RANGING": 0.5421,
+        "RECOVERY_ACCUMULATION": 0.1511,
+        "MOMENTUM_EXPANSION": 0.0604,
+        "DISTRIBUTION": 0.0668,
+        "HIGH_VOLATILITY_EXPANSION": 0.1342,
+        "CAPITULATION": 0.0453
+      },
+      "dominant_regime": "CONSOLIDATION_RANGING"
+    },
+    "perturbation_stability": {
+      "status": "COMPUTED",
+      "procedure_classification": "EXPLORATORY_PERTURBATION_DIAGNOSTIC",
+      "canonical_model_modified": false,
+      "boundary_trim_5pct_agreement_rate": 0.9725,
+      "microstructure_jitter_15bps_agreement_rate": 0.9519,
+      "combined_stability_score": 0.9622,
+      "stability_verdict": "HIGH_REGIME_STABILITY"
+    },
+    "cross_period_consistency": {
+      "status": "COMPUTED",
+      "comparison_dataset_id": "DS-BTC-15M-Q2-2024",
+      "comparison_source_path": "data/historical/historical_binance_btcusdt_15m_q2_2024.parquet",
+      "comparison_source_sha256": "02366bf9ccd3e5a879e05b553c68847a0e7f28fc8480cc5a244b5bd51f1b4024",
+      "comparison_observation_count": 8736,
+      "comparison_regime_distribution": {
+        "CONSOLIDATION_RANGING": 0.5283,
+        "RECOVERY_ACCUMULATION": 0.1965,
+        "MOMENTUM_EXPANSION": 0.0295,
+        "DISTRIBUTION": 0.0752,
+        "HIGH_VOLATILITY_EXPANSION": 0.1313,
+        "CAPITULATION": 0.0391
+      },
+      "transition_matrix_frobenius_distance": 0.1208,
+      "regime_distribution_jensen_shannon_divergence": 0.004488,
+      "cross_period_verdict": "CONSISTENT_MACRO_STRUCTURE"
+    },
+    "scientific_limitations": [
+      "Historical regime transition probabilities and residence durations are strictly descriptive of past BTC/USDT structure and do not imply out-of-sample predictive validity or directional trading edge.",
+      "Boundary episodes at the start and end of the historical window are right/left censored.",
+      "Quantile-anchored volatility regimes reflect relative within-window dispersion; cross-period comparisons must account for baseline volatility level shifts."
+    ],
+    "evaluated_at_utc": "2026-11-11T03:44:25Z",
+    "canonical_model": "CBE-0.7.0",
+    "model_status": "STRICTLY_FROZEN",
+    "governance_decision": "TECHNICAL_NO_GO"
+  }
+}

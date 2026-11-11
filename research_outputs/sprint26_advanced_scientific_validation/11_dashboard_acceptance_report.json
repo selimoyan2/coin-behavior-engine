@@ -1,0 +1,47 @@
+{
+  "artifact": "11_dashboard_acceptance_report",
+  "sprint_id": "CBE_SPRINT26_ADVANCED_SCIENTIFIC_VALIDATION",
+  "generated_at_utc": "2026-11-11T03:44:25.106032+00:00",
+  "dashboard_version": "Scientific Validation Dashboard V4",
+  "new_sprint26_tabs": [
+    {
+      "tab_id": "ws-tab-stat-validation",
+      "view_id": "ws-view-stat-validation"
+    },
+    {
+      "tab_id": "ws-tab-walk-forward",
+      "view_id": "ws-view-walk-forward"
+    },
+    {
+      "tab_id": "ws-tab-regime-research",
+      "view_id": "ws-view-regime-research"
+    },
+    {
+      "tab_id": "ws-tab-robustness-lab",
+      "view_id": "ws-view-robustness-lab"
+    },
+    {
+      "tab_id": "ws-tab-independent-validation",
+      "view_id": "ws-view-independent-validation"
+    },
+    {
+      "tab_id": "ws-tab-validation-reports",
+      "view_id": "ws-view-validation-reports"
+    }
+  ],
+  "preserved_sprint24_25_tabs": [
+    "ws-tab-overview",
+    "ws-tab-catalog",
+    "ws-tab-comparison",
+    "ws-tab-saved",
+    "ws-tab-reports",
+    "ws-tab-evidence",
+    "ws-tab-graph",
+    "ws-tab-readiness",
+    "ws-tab-gaps",
+    "ws-tab-reproducibility",
+    "ws-tab-priorities"
+  ],
+  "four_pillar_concept_separation_displayed": true,
+  "turkish_first_terminology_verified": true
+}
