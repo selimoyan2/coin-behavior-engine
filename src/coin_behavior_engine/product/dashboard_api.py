@@ -613,6 +613,155 @@ class ProductDashboardApiService:
                 if res.get("status") == "error":
                     return HTTPStatus.NOT_FOUND, res
                 return HTTPStatus.OK, res
+
+            # Sprint 27 GET endpoints
+            elif sub_path in ("research/portfolio", "workspace/portfolio", "portfolio"):
+                from coin_behavior_engine.product.research_portfolio_manager import (
+                    ScientificResearchPortfolioManager,
+                )
+                page_raw = query_params.get("page", ["1"])[0]
+                ps_raw = query_params.get("page_size", ["20"])[0]
+                res = ScientificResearchPortfolioManager.query_portfolio(
+                    search_query=query_params.get("q", [None])[0] or query_params.get("search", [None])[0],
+                    research_id=query_params.get("research_id", [None])[0],
+                    research_category=query_params.get("research_category", [None])[0] or query_params.get("category", [None])[0],
+                    methodology_id=query_params.get("methodology_id", [None])[0],
+                    dataset_id=query_params.get("dataset_id", [None])[0],
+                    research_period=query_params.get("research_period", [None])[0],
+                    scientific_status=query_params.get("scientific_status", [None])[0],
+                    evidence_integrity_status=query_params.get("evidence_integrity_status", [None])[0],
+                    reproducibility_status=query_params.get("reproducibility_status", [None])[0],
+                    independence_status=query_params.get("independence_status", [None])[0],
+                    sort_by=query_params.get("sort_by", ["research_id"])[0],
+                    sort_dir=query_params.get("sort_dir", ["asc"])[0],
+                    page=int(page_raw) if str(page_raw).isdigit() else 1,
+                    page_size=int(ps_raw) if str(ps_raw).isdigit() else 20,
+                )
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("research/experiments", "workspace/experiments"):
+                from coin_behavior_engine.product.experiment_timeline_registry import (
+                    experiment_registry_service,
+                )
+                res = experiment_registry_service.list_experiments(
+                    research_id=query_params.get("research_id", [None])[0],
+                    experiment_type=query_params.get("experiment_type", [None])[0],
+                    execution_status=query_params.get("execution_status", [None])[0],
+                    dataset_id=query_params.get("dataset_id", [None])[0],
+                )
+                return HTTPStatus.OK, res
+
+            elif sub_path.startswith("research/experiments/") and sub_path.endswith("/timeline"):
+                from coin_behavior_engine.product.experiment_timeline_registry import (
+                    experiment_registry_service,
+                )
+                parts = sub_path.split("/")
+                exp_id = parts[2] if len(parts) >= 3 else "ALL"
+                res = experiment_registry_service.get_experiment_timeline(experiment_id=exp_id)
+                return HTTPStatus.OK, res
+
+            elif sub_path.startswith("research/experiments/"):
+                from coin_behavior_engine.product.experiment_timeline_registry import (
+                    experiment_registry_service,
+                )
+                exp_id = sub_path.split("/")[-1]
+                exp_obj = experiment_registry_service.get_experiment(exp_id)
+                if not exp_obj:
+                    return HTTPStatus.NOT_FOUND, {
+                        "status": "error",
+                        "error_code": "EXPERIMENT_NOT_FOUND",
+                        "message": f"Experiment '{exp_id}' not found.",
+                    }
+                return HTTPStatus.OK, {"status": "success", "experiment": exp_obj}
+
+            elif sub_path in ("research/comparisons", "workspace/comparisons"):
+                from coin_behavior_engine.product.cross_experiment_comparison import (
+                    CrossExperimentComparisonEngine,
+                )
+                raw_ids = query_params.get("candidate_ids", ["RES-REGIME-01,RES-ANALOG-01"])[0]
+                c_ids = [x.strip() for x in raw_ids.split(",") if x.strip()]
+                res = CrossExperimentComparisonEngine.compare_experiments(c_ids)
+                if res.get("status") == "error":
+                    return HTTPStatus.BAD_REQUEST, res
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("research/evidence", "workspace/traceability"):
+                from coin_behavior_engine.product.evidence_traceability_explorer import (
+                    EvidenceTraceabilityExplorer,
+                )
+                res = EvidenceTraceabilityExplorer.get_explorer_overview(
+                    node_type=query_params.get("node_type", [None])[0],
+                    status=query_params.get("status", [None])[0],
+                )
+                return HTTPStatus.OK, res
+
+            elif sub_path.startswith("research/evidence/"):
+                from coin_behavior_engine.product.evidence_traceability_explorer import (
+                    EvidenceTraceabilityExplorer,
+                )
+                target_id = sub_path.split("/")[-1]
+                depth_raw = query_params.get("max_depth", ["6"])[0]
+                res = EvidenceTraceabilityExplorer.trace_evidence_chain(
+                    target_id=target_id,
+                    max_depth=int(depth_raw) if str(depth_raw).isdigit() else 6,
+                )
+                if res.get("status") == "error":
+                    return HTTPStatus.NOT_FOUND, res
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("research/findings", "workspace/findings"):
+                from coin_behavior_engine.product.findings_contradiction_intelligence import (
+                    FindingsAndContradictionEngine,
+                )
+                res = FindingsAndContradictionEngine.get_findings_and_contradictions(
+                    finding_type=query_params.get("finding_type", [None])[0],
+                    research_id=query_params.get("research_id", [None])[0],
+                )
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("research/contradictions", "workspace/contradictions"):
+                from coin_behavior_engine.product.findings_contradiction_intelligence import (
+                    FindingsAndContradictionEngine,
+                )
+                res = FindingsAndContradictionEngine.get_findings_and_contradictions()
+                return HTTPStatus.OK, {
+                    "status": "success",
+                    "canonical_model": "CBE-0.7.0",
+                    "governance_decision": "TECHNICAL_NO_GO",
+                    "total_contradiction_checks": res.get("total_contradiction_checks", 0),
+                    "contradictions": res.get("contradictions", []),
+                }
+
+            elif sub_path in ("research/reviews", "workspace/reviews"):
+                from coin_behavior_engine.product.research_review_workflow import (
+                    research_review_workflow_engine,
+                )
+                res = research_review_workflow_engine.list_reviews(
+                    research_id=query_params.get("research_id", [None])[0]
+                )
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("research/reports", "workspace/reports-v5"):
+                from coin_behavior_engine.product.scientific_report_builder_v5 import (
+                    ReportBuilderSecurityError,
+                    ScientificReportBuilderV5,
+                )
+                try:
+                    res = ScientificReportBuilderV5.generate_report(
+                        report_type=query_params.get("report_type", ["INDIVIDUAL_RESEARCH_REPORT"])[0],
+                        research_id=query_params.get("research_id", ["RES-REGIME-01"])[0],
+                        export_format=query_params.get("format", ["JSON"])[0],
+                        output_filename=query_params.get("output_filename", [None])[0],
+                        custom_title=query_params.get("title", [None])[0],
+                        custom_notes=query_params.get("notes", [None])[0],
+                    )
+                    return HTTPStatus.OK, res
+                except ReportBuilderSecurityError as r_err:
+                    return HTTPStatus.FORBIDDEN, {
+                        "status": "error",
+                        "rejection_code": r_err.rejection_code,
+                        "message": r_err.message,
+                    }
             else:
                 return HTTPStatus.NOT_FOUND, {
                     "error": "Not Found",
@@ -1086,6 +1235,156 @@ class ProductDashboardApiService:
                 if res.get("status") == "error":
                     return HTTPStatus.NOT_FOUND, res
                 return HTTPStatus.OK, res
+
+            # Sprint 27 POST endpoints
+            elif sub_path in ("research/portfolio", "workspace/portfolio", "portfolio"):
+                from coin_behavior_engine.product.research_portfolio_manager import (
+                    PortfolioSecurityError,
+                    ScientificResearchPortfolioManager,
+                )
+                payload = body or {}
+                if payload.get("action") in ("register", "promote") or payload.get("promote_dataset_to_verified") or payload.get("evidence_integrity_status"):
+                    try:
+                        ScientificResearchPortfolioManager.register_custom_portfolio_entry(payload)
+                    except PortfolioSecurityError as p_err:
+                        return HTTPStatus.FORBIDDEN, {
+                            "status": "error",
+                            "rejection_code": p_err.rejection_code,
+                            "message": p_err.message,
+                        }
+                res = ScientificResearchPortfolioManager.query_portfolio(
+                    search_query=payload.get("search_query") or payload.get("q"),
+                    research_id=payload.get("research_id"),
+                    research_category=payload.get("research_category"),
+                    methodology_id=payload.get("methodology_id"),
+                    dataset_id=payload.get("dataset_id"),
+                    research_period=payload.get("research_period"),
+                    scientific_status=payload.get("scientific_status"),
+                    evidence_integrity_status=payload.get("evidence_integrity_status"),
+                    reproducibility_status=payload.get("reproducibility_status"),
+                    independence_status=payload.get("independence_status"),
+                    sort_by=payload.get("sort_by", "research_id"),
+                    sort_dir=payload.get("sort_dir", "asc"),
+                    page=int(payload.get("page", 1)),
+                    page_size=int(payload.get("page_size", 20)),
+                )
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("research/experiments", "workspace/experiments"):
+                from coin_behavior_engine.product.experiment_timeline_registry import (
+                    ExperimentRegistrySecurityError,
+                    experiment_registry_service,
+                )
+                payload = body or {}
+                try:
+                    res = experiment_registry_service.register_experiment(
+                        research_id=str(payload.get("research_id") or "RES-REGIME-01"),
+                        experiment_type=str(payload.get("experiment_type") or "CUSTOM_OFFLINE_EVALUATION"),
+                        experiment_title=str(payload.get("experiment_title") or "Offline Research Run"),
+                        hypothesis_id=str(payload.get("hypothesis_id") or "HYP-CUSTOM"),
+                        methodology_id=str(payload.get("methodology_id") or "METH-CANONICAL-0.7.0"),
+                        dataset_id=str(payload.get("dataset_id") or "BTCUSDT-SPOT-1H"),
+                        dataset_fingerprint=str(payload.get("dataset_fingerprint") or "unverified"),
+                        parameters=payload.get("parameters") if isinstance(payload.get("parameters"), dict) else {},
+                        input_artifact_ids=payload.get("input_artifact_ids"),
+                        output_artifact_ids=payload.get("output_artifact_ids"),
+                        result_digest=payload.get("result_digest"),
+                        requested_status=str(payload.get("execution_status") or payload.get("requested_status") or "REGISTERED"),
+                        evidence_verified_by_authority=False,
+                        is_rerun=bool(payload.get("is_rerun", False)),
+                    )
+                    return HTTPStatus.OK, res
+                except ExperimentRegistrySecurityError as e_err:
+                    return HTTPStatus.FORBIDDEN, {
+                        "status": "error",
+                        "rejection_code": e_err.rejection_code,
+                        "message": e_err.message,
+                    }
+
+            elif sub_path in ("research/comparisons", "workspace/comparisons"):
+                from coin_behavior_engine.product.cross_experiment_comparison import (
+                    CrossExperimentComparisonEngine,
+                )
+                payload = body or {}
+                c_ids = payload.get("candidate_ids") or ["RES-REGIME-01", "RES-ANALOG-01"]
+                if isinstance(c_ids, str):
+                    c_ids = [x.strip() for x in c_ids.split(",") if x.strip()]
+                res = CrossExperimentComparisonEngine.compare_experiments(
+                    candidate_ids=c_ids,
+                    custom_candidates=payload.get("custom_candidates"),
+                    rank_by_raw_p_value=bool(payload.get("rank_by_raw_p_value", False)),
+                    treat_overlapping_as_independent=bool(payload.get("treat_overlapping_as_independent", False)),
+                    replace_missing_with_zero=bool(payload.get("replace_missing_with_zero", False)),
+                )
+                if res.get("status") == "error":
+                    return HTTPStatus.BAD_REQUEST, res
+                return HTTPStatus.OK, res
+
+            elif sub_path in ("research/contradictions", "workspace/contradictions"):
+                from coin_behavior_engine.product.findings_contradiction_intelligence import (
+                    FindingsAndContradictionEngine,
+                )
+                payload = body or {}
+                if payload.get("finding_a") and payload.get("finding_b"):
+                    item = FindingsAndContradictionEngine.evaluate_pair_contradiction(
+                        payload["finding_a"],
+                        payload["finding_b"],
+                    )
+                    return HTTPStatus.OK, {"status": "success", "contradiction": item.to_dict()}
+                res = FindingsAndContradictionEngine.get_findings_and_contradictions()
+                return HTTPStatus.OK, {
+                    "status": "success",
+                    "total_contradiction_checks": res.get("total_contradiction_checks", 0),
+                    "contradictions": res.get("contradictions", []),
+                }
+
+            elif sub_path in ("research/reviews", "workspace/reviews"):
+                from coin_behavior_engine.product.research_review_workflow import (
+                    ReviewWorkflowSecurityError,
+                    research_review_workflow_engine,
+                )
+                payload = body or {}
+                try:
+                    res = research_review_workflow_engine.submit_review_decision(
+                        research_id=str(payload.get("research_id") or ""),
+                        decision=str(payload.get("decision") or ""),
+                        decision_reason=str(payload.get("decision_reason") or ""),
+                        supporting_evidence_ids=payload.get("supporting_evidence_ids"),
+                        operator_token=None,
+                        headers=headers,
+                        payload=payload,
+                    )
+                    return HTTPStatus.OK, res
+                except ReviewWorkflowSecurityError as rev_err:
+                    return HTTPStatus.FORBIDDEN, {
+                        "status": "error",
+                        "rejection_code": rev_err.rejection_code,
+                        "message": rev_err.message,
+                    }
+
+            elif sub_path in ("research/reports", "workspace/reports-v5"):
+                from coin_behavior_engine.product.scientific_report_builder_v5 import (
+                    ReportBuilderSecurityError,
+                    ScientificReportBuilderV5,
+                )
+                payload = body or {}
+                try:
+                    res = ScientificReportBuilderV5.generate_report(
+                        report_type=str(payload.get("report_type") or "INDIVIDUAL_RESEARCH_REPORT"),
+                        research_id=str(payload.get("research_id") or "RES-REGIME-01"),
+                        candidate_ids=payload.get("candidate_ids"),
+                        export_format=str(payload.get("format") or payload.get("export_format") or "JSON"),
+                        output_filename=payload.get("output_filename") or payload.get("path"),
+                        custom_title=payload.get("title"),
+                        custom_notes=payload.get("notes"),
+                    )
+                    return HTTPStatus.OK, res
+                except ReportBuilderSecurityError as r_err:
+                    return HTTPStatus.FORBIDDEN, {
+                        "status": "error",
+                        "rejection_code": r_err.rejection_code,
+                        "message": r_err.message,
+                    }
 
             else:
                 return HTTPStatus.NOT_FOUND, {

@@ -1272,6 +1272,11 @@ class ResearchCatalogProvider:
         return [copy.deepcopy(r) for r in records]
 
     @classmethod
+    def get_canonical_catalog(cls, force_reload: bool = False) -> List[ResearchRecord]:
+        """Alias for load_catalog() returning canonical ResearchRecord instances."""
+        return cls.load_catalog(force_reload=force_reload)
+
+    @classmethod
     def get_catalog_summary_counts(cls) -> Dict[str, int]:
         """
         Calculates grounded, reproducible catalog summary counts directly from loaded records.

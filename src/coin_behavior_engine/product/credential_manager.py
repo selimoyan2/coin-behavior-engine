@@ -648,6 +648,10 @@ class SigningKeyRegistry:
             return False
         return key_id.strip() in self._revoked_key_ids
 
+    def get_revoked_keys(self) -> List[str]:
+        """Returns sorted list of revoked key IDs."""
+        return sorted(self._revoked_key_ids)
+
     @contextmanager
     def isolated_test_signing_context(
         self,

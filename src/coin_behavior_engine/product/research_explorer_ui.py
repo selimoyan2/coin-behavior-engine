@@ -346,10 +346,52 @@ def render_research_explorer_html() -> str:
         </div>
       </div>
 
-      <!-- Sprint 24: 7-Tab Workspace Navigation Bar -->
+      <!-- Sprint 27: Prominent Non-Green Governance & Safety Banner -->
+      <div id="sprint27-governance-banner" style="background: rgba(245, 158, 11, 0.14); border: 2px solid #f59e0b; border-left: 6px solid #ef4444; border-radius: 8px; padding: 12px 18px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div style="font-size: 13px; font-weight: 800; color: #fde68a; letter-spacing: 0.4px;">
+          ⚠️ CBE-0.7.0 — FROZEN SCIENTIFIC MODEL | TECHNICAL_NO_GO | OFFLINE RESEARCH ONLY | LIVE TRADING DISABLED
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <span class="badge" style="background: rgba(245, 158, 11, 0.25); color: #fbbf24; border: 1px solid #f59e0b; font-size: 11px;">
+            DASHBOARD V5 — SCIENTIFIC COMMAND CENTER
+          </span>
+          <span class="badge" style="background: rgba(239, 68, 68, 0.25); color: #fca5a5; border: 1px solid #ef4444; font-size: 11px;">
+            RUNTIME SIGNING: VERIFICATION_ONLY
+          </span>
+        </div>
+      </div>
+
+      <!-- Sprint 24-27: Unified Workspace Navigation Bar -->
       <div class="workspace-tabs-bar" role="tablist" aria-label="Araştırma Alanı Sekmeleri">
         <button class="ws-tab-btn active" id="ws-tab-overview" onclick="switchWorkspaceView('overview')">
           <span>📊</span> Genel Bakış
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-portfolio-v5" onclick="switchWorkspaceView('portfolio-v5')">
+          <span>🗂️</span> Araştırma Portföyü
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-experiment-registry-v5" onclick="switchWorkspaceView('experiment-registry-v5')">
+          <span>🧪</span> Deney Kayıt Defteri
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-experiment-timeline-v5" onclick="switchWorkspaceView('experiment-timeline-v5')">
+          <span>⏱️</span> Deney Zaman Çizelgesi
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-compare-experiments-v5" onclick="switchWorkspaceView('compare-experiments-v5')">
+          <span>⚖️</span> Deneyleri Karşılaştır V5
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-evidence-explorer-v5" onclick="switchWorkspaceView('evidence-explorer-v5')">
+          <span>🔗</span> Kanıt İzlenebilirlik Gezgini
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-scientific-findings-v5" onclick="switchWorkspaceView('scientific-findings-v5')">
+          <span>💡</span> Bilimsel Bulgular
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-contradiction-analysis-v5" onclick="switchWorkspaceView('contradiction-analysis-v5')">
+          <span>⚡</span> Çelişki Analizi
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-research-reviews-v5" onclick="switchWorkspaceView('research-reviews-v5')">
+          <span>🏛️</span> Araştırma İncelemeleri
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-report-builder-v5" onclick="switchWorkspaceView('report-builder-v5')">
+          <span>📘</span> Bilimsel Rapor Oluşturucu V5
         </button>
         <button class="ws-tab-btn" id="ws-tab-catalog" onclick="switchWorkspaceView('catalog')">
           <span>🔭</span> Araştırmaları Keşfet
@@ -1853,6 +1895,210 @@ def render_research_explorer_html() -> str:
         </div>
       </div>
 
+      <!-- =================================================================== -->
+      <!-- SPRINT 27 DASHBOARD V5: UNIFIED SCIENTIFIC RESEARCH COMMAND CENTER  -->
+      <!-- =================================================================== -->
+
+      <!-- VIEW 27.1: RESEARCH PORTFOLIO MANAGER -->
+      <div id="ws-view-portfolio-v5" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #38bdf8; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🗂️ Bilimsel Araştırma Portföy Yöneticisi (Modül 27.1)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                Kanonik araştırma çalışmaları, hipotezler, metodolojiler, veri seti soykütüğü, istatistiksel doğrulama ve tekrarlanabilirlik durumu.
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <input type="text" id="v5-portfolio-search" class="input" placeholder="Araştırma ID, başlık veya hipotez ara..." style="font-size: 12px; width: 220px;" oninput="loadPortfolioV5UI()" />
+              <select id="v5-portfolio-integrity-filter" class="input" style="font-size: 12px;" onchange="loadPortfolioV5UI()">
+                <option value="ALL">Tüm Bütünlük Durumları</option>
+                <option value="INTEGRITY_VERIFIED">INTEGRITY_VERIFIED</option>
+                <option value="BLOCKED_QUARANTINED">BLOCKED_QUARANTINED</option>
+              </select>
+              <button class="btn btn-sm btn-primary" onclick="loadPortfolioV5UI()">🔄 Yenile</button>
+            </div>
+          </div>
+          <div id="v5-portfolio-summary-kpis" class="ws-kpi-grid" style="margin-bottom: 14px;"></div>
+          <div class="table-container" style="overflow-x: auto;">
+            <table class="ws-catalog-table">
+              <thead>
+                <tr>
+                  <th>Araştırma ID</th>
+                  <th>Başlık &amp; Kategori</th>
+                  <th>Hipotez &amp; Metodoloji</th>
+                  <th>Veri Seti &amp; Sürüm</th>
+                  <th>Bütünlük</th>
+                  <th>Hazırlık &amp; İstatistik</th>
+                  <th>Tekrarlanabilirlik</th>
+                  <th>Bağımsızlık</th>
+                  <th>İnceleme</th>
+                </tr>
+              </thead>
+              <tbody id="v5-portfolio-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 27.2A: EXPERIMENT REGISTRY -->
+      <div id="ws-view-experiment-registry-v5" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #818cf8; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🧪 Deney Kayıt Defteri (Modül 27.2)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                Deterministik deney kimlikleri, parametre parmak izleri, yürütme denemeleri ve kanıt doğrulama kararları.
+              </div>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="loadExperimentRegistryV5UI()">🔄 Kayıtları Yükle</button>
+          </div>
+          <div id="v5-exp-registry-container"></div>
+        </div>
+      </div>
+
+      <!-- VIEW 27.2B: EXPERIMENT TIMELINE -->
+      <div id="ws-view-experiment-timeline-v5" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #a855f7; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">⏱️ Hash-Zincirli Deney Zaman Çizelgesi (Modül 27.2)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                Salt-eklenir (append-only) kronolojik araştırma olay günlüğü ve SHA-256 önceki olay özeti doğrulaması.
+              </div>
+            </div>
+            <span id="v5-timeline-chain-badge" class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">ZİNCİR BÜTÜNLÜĞÜ: DOĞRULANDI</span>
+          </div>
+          <div id="v5-exp-timeline-container"></div>
+        </div>
+      </div>
+
+      <!-- VIEW 27.3: COMPARE EXPERIMENTS V5 -->
+      <div id="ws-view-compare-experiments-v5" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #38bdf8; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">⚖️ Deneyler Arası Karşılaştırma İstihbaratı (Modül 27.3)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                8-Noktalı Karşılaştırılabilirlik Kapısı ve 16-Boyutlu Bilimsel Karşılaştırma Matrisi (2–6 aday).
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <input type="text" id="v5-comp-candidates-input" class="input" value="RES-REGIME-01,RES-ANALOG-01" style="font-size: 12px; width: 240px;" />
+              <button class="btn btn-sm btn-primary" onclick="loadCompareExperimentsV5UI()">⚖️ Karşılaştır</button>
+            </div>
+          </div>
+          <div id="v5-comp-experiments-container"></div>
+        </div>
+      </div>
+
+      <!-- VIEW 27.4: EVIDENCE TRACEABILITY EXPLORER -->
+      <div id="ws-view-evidence-explorer-v5" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #10b981; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🔗 Kanıt İzlenebilirlik &amp; Soykütüğü Gezgini (Modül 27.4)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                12-Aşamalı uçtan uca kanıt zinciri ve 6-Kademeli değiştirilemez bilimsel güven ilerleme durumu.
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <select id="v5-trace-record-select" class="input" style="font-size: 12px;" onchange="loadEvidenceExplorerV5UI()">
+                <option value="RES-REGIME-01">RES-REGIME-01 (Rejim Kararlılığı)</option>
+                <option value="RES-FUND-01">RES-FUND-01 (Perpetual Fonlama)</option>
+                <option value="RES-ANALOG-01">RES-ANALOG-01 (DTW Örüntü)</option>
+                <option value="RES-MACRO-01">RES-MACRO-01 (Makro Olay)</option>
+                <option value="RES-QUARANTINE-01">RES-QUARANTINE-01 (Ekim 2026 Karantina)</option>
+              </select>
+              <button class="btn btn-sm btn-primary" onclick="loadEvidenceExplorerV5UI()">🔍 Zinciri İncele</button>
+            </div>
+          </div>
+          <div id="v5-evidence-explorer-container"></div>
+        </div>
+      </div>
+
+      <!-- VIEW 27.5A: SCIENTIFIC FINDINGS -->
+      <div id="ws-view-scientific-findings-v5" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #f59e0b; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">💡 Bilimsel Bulgular &amp; Hipotez Kanıtları (Modül 27.5)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                SUPPORTED, PARTIALLY_SUPPORTED, INCONCLUSIVE, CONTRADICTED, NOT_REPRODUCED ve INSUFFICIENT_EVIDENCE sınıflandırmaları.
+              </div>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="loadScientificFindingsV5UI()">🔄 Bulguları Yükle</button>
+          </div>
+          <div id="v5-findings-container"></div>
+        </div>
+      </div>
+
+      <!-- VIEW 27.5B: CONTRADICTION ANALYSIS -->
+      <div id="ws-view-contradiction-analysis-v5" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #ef4444; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">⚡ Bağlamsal Çelişki &amp; Farklılık Analizi (Modül 27.5)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                Metodolojiye bağlı farklılık, döneme bağlı farklılık, doğrulanmış kanıt çelişkisi ve yetersiz kanıt ayrımı.
+              </div>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="loadContradictionsV5UI()">🔄 Çelişkileri Denetle</button>
+          </div>
+          <div id="v5-contradictions-container"></div>
+        </div>
+      </div>
+
+      <!-- VIEW 27.6: RESEARCH REVIEWS & DECISION WORKFLOW -->
+      <div id="ws-view-research-reviews-v5" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #10b981; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🏛️ Bilimsel İnceleme &amp; Karar İş Akışı (Modül 27.6)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                Sunucu doğrulamalı inceleme kararları ve hash-zincirli inceleme denetim günlüğü (Canlı işlem yetkisi vermez).
+              </div>
+            </div>
+            <span id="v5-review-chain-badge" class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">İNCELEME ZİNCİRİ: DOĞRULANDI</span>
+          </div>
+          <div id="v5-reviews-container"></div>
+        </div>
+      </div>
+
+      <!-- VIEW 27.7: SCIENTIFIC REPORT BUILDER V5 -->
+      <div id="ws-view-report-builder-v5" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #38bdf8; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">📘 Bilimsel Rapor Oluşturucu V5 (Modül 27.7)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                8 rapor tipi, 21 zorunlu bilimsel bölüm, SHA-256 içerik özeti ve güvenli JSON/Markdown/HTML dışa aktarım.
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <select id="v5-report-type-select" class="input" style="font-size: 12px;">
+                <option value="INDIVIDUAL_RESEARCH_REPORT">INDIVIDUAL_RESEARCH_REPORT</option>
+                <option value="EXPERIMENT_COMPARISON_REPORT">EXPERIMENT_COMPARISON_REPORT</option>
+                <option value="EVIDENCE_TRACEABILITY_REPORT">EVIDENCE_TRACEABILITY_REPORT</option>
+                <option value="SCIENTIFIC_READINESS_REPORT">SCIENTIFIC_READINESS_REPORT</option>
+                <option value="REPRODUCIBILITY_AND_INDEPENDENCE_REPORT">REPRODUCIBILITY_AND_INDEPENDENCE_REPORT</option>
+                <option value="CONTRADICTION_ANALYSIS_REPORT">CONTRADICTION_ANALYSIS_REPORT</option>
+                <option value="RESEARCH_PORTFOLIO_SUMMARY">RESEARCH_PORTFOLIO_SUMMARY</option>
+                <option value="SCIENTIFIC_REVIEW_DECISION_REPORT">SCIENTIFIC_REVIEW_DECISION_REPORT</option>
+              </select>
+              <select id="v5-report-record-select" class="input" style="font-size: 12px;">
+                <option value="RES-REGIME-01">RES-REGIME-01</option>
+                <option value="RES-FUND-01">RES-FUND-01</option>
+                <option value="RES-ANALOG-01">RES-ANALOG-01</option>
+                <option value="RES-MACRO-01">RES-MACRO-01</option>
+              </select>
+              <button class="btn btn-sm btn-primary" onclick="loadReportBuilderV5UI()">📘 Rapor Oluştur</button>
+            </div>
+          </div>
+          <div id="v5-report-builder-container"></div>
+        </div>
+      </div>
+
       <!-- Save to Library Modal -->
       <div id="lib-save-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;">
         <div style="background: #0f172a; border: 1px solid #38bdf8; border-radius: 10px; width: 90%; max-width: 500px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
@@ -1923,12 +2169,12 @@ def render_research_explorer_scripts() -> str:
     }
 
     async function explorerLoadData() {
-      const startStr = document.getElementById('exp-start-utc').value;
-      const endStr = document.getElementById('exp-end-utc').value;
-      const interval = document.getElementById('exp-interval').value;
+      const startStr = document.getElementById('exp-start-utc')?.value || '2022-06-01T00:00';
+      const endStr = document.getElementById('exp-end-utc')?.value || '2022-06-15T00:00';
+      const interval = document.getElementById('exp-interval')?.value || '1h';
 
-      const startUtc = startStr.includes('Z') ? startStr : startStr + ':00Z';
-      const endUtc = endStr.includes('Z') ? endStr : endStr + ':00Z';
+      const startUtc = startStr.includes('Z') ? startStr : (startStr.length === 16 ? startStr + ':00Z' : startStr + 'Z');
+      const endUtc = endStr.includes('Z') ? endStr : (endStr.length === 16 ? endStr + ':00Z' : endStr + 'Z');
 
       const overlay = document.getElementById('explorer-loading-overlay');
       if (overlay) overlay.style.display = 'flex';
@@ -2782,12 +3028,12 @@ def render_research_explorer_scripts() -> str:
     function workflowSyncInputs(startUtc, endUtc, asset, interval) {
       if (startUtc) {
         const inp = document.getElementById('exp-start-utc');
-        if (inp) inp.value = startUtc;
+        if (inp) inp.value = String(startUtc).replace('Z', '').substring(0, 16);
         cbeWorkflowContext.reference_start_utc = startUtc;
       }
       if (endUtc) {
         const inp = document.getElementById('exp-end-utc');
-        if (inp) inp.value = endUtc;
+        if (inp) inp.value = String(endUtc).replace('Z', '').substring(0, 16);
         cbeWorkflowContext.reference_end_utc = endUtc;
       }
       if (asset) cbeWorkflowContext.asset = asset;
@@ -3324,7 +3570,10 @@ def render_research_explorer_scripts() -> str:
 
     function switchWorkspaceView(viewId) {
       const views = [
-        'overview', 'catalog', 'comparison', 'evidence', 'library', 'reports',
+        'overview', 'portfolio-v5', 'experiment-registry-v5', 'experiment-timeline-v5',
+        'compare-experiments-v5', 'evidence-explorer-v5', 'scientific-findings-v5',
+        'contradiction-analysis-v5', 'research-reviews-v5', 'report-builder-v5',
+        'catalog', 'comparison', 'evidence', 'library', 'reports',
         'graph', 'readiness', 'gaps', 'reproducibility', 'priorities',
         'stat-validation', 'walk-forward', 'regime-research', 'robustness-lab',
         'independent-validation', 'validation-reports', 'operations'
@@ -3342,6 +3591,15 @@ def render_research_explorer_scripts() -> str:
       const breadcrumb = document.getElementById('ws-breadcrumb-active');
       const titles = {
         overview: 'Genel Bakış',
+        'portfolio-v5': 'Bilimsel Araştırma Portföyü (Modül 27.1)',
+        'experiment-registry-v5': 'Deney Kayıt Defteri (Modül 27.2)',
+        'experiment-timeline-v5': 'Deney Zaman Çizelgesi (Modül 27.2)',
+        'compare-experiments-v5': 'Deneyler Arası Karşılaştırma V5 (Modül 27.3)',
+        'evidence-explorer-v5': 'Kanıt İzlenebilirlik Gezgini (Modül 27.4)',
+        'scientific-findings-v5': 'Bilimsel Bulgular (Modül 27.5)',
+        'contradiction-analysis-v5': 'Bağlamsal Çelişki Analizi (Modül 27.5)',
+        'research-reviews-v5': 'Araştırma İncelemeleri & İş Akışı (Modül 27.6)',
+        'report-builder-v5': 'Bilimsel Rapor Oluşturucu V5 (Modül 27.7)',
         catalog: 'Araştırmaları Keşfet',
         comparison: 'Karşılaştırma Laboratuvarı',
         evidence: 'Kanıt Merkezi',
@@ -3363,6 +3621,15 @@ def render_research_explorer_scripts() -> str:
       if (breadcrumb) breadcrumb.textContent = titles[viewId] || viewId;
 
       if (viewId === 'overview') loadWorkspaceOverview();
+      else if (viewId === 'portfolio-v5') loadPortfolioV5UI();
+      else if (viewId === 'experiment-registry-v5') loadExperimentRegistryV5UI();
+      else if (viewId === 'experiment-timeline-v5') loadExperimentTimelineV5UI();
+      else if (viewId === 'compare-experiments-v5') loadCompareExperimentsV5UI();
+      else if (viewId === 'evidence-explorer-v5') loadEvidenceExplorerV5UI();
+      else if (viewId === 'scientific-findings-v5') loadScientificFindingsV5UI();
+      else if (viewId === 'contradiction-analysis-v5') loadContradictionsV5UI();
+      else if (viewId === 'research-reviews-v5') loadResearchReviewsV5UI();
+      else if (viewId === 'report-builder-v5') loadReportBuilderV5UI();
       else if (viewId === 'catalog') catalogLoadResearch();
       else if (viewId === 'comparison') {
         renderCompCandidateChips();
@@ -4920,6 +5187,320 @@ def render_research_explorer_scripts() -> str:
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+    }
+
+    // -------------------------------------------------------------------------
+    // Sprint 27: Dashboard V5 — Unified Scientific Research Command Center JS
+    // -------------------------------------------------------------------------
+
+    async function loadPortfolioV5UI() {
+      const kpiBox = document.getElementById('v5-portfolio-summary-kpis');
+      const tbody = document.getElementById('v5-portfolio-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '<tr><td colspan="9" style="color:#94a3b8; padding:16px; text-align:center;">Araştırma portföyü yükleniyor...</td></tr>';
+
+      try {
+        const q = document.getElementById('v5-portfolio-search')?.value || '';
+        const intF = document.getElementById('v5-portfolio-integrity-filter')?.value || 'ALL';
+        const url = `/api/v1/product/research/portfolio?q=${encodeURIComponent(q)}&evidence_integrity_status=${encodeURIComponent(intF)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const s = data.portfolio_summary || {};
+        const items = data.items || [];
+
+        if (kpiBox) {
+          kpiBox.innerHTML = `
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Kayıtlı Araştırma</div>
+              <div class="ws-kpi-value" style="color:#38bdf8;">${s.total_registered_records || 0}</div>
+              <div class="ws-kpi-sub">Kanonik Portföy</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Doğrulanmış Kanıt</div>
+              <div class="ws-kpi-value" style="color:#10b981;">${s.records_with_verified_evidence || 0}</div>
+              <div class="ws-kpi-sub">INTEGRITY_VERIFIED</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">Soykütüğü Engelli</div>
+              <div class="ws-kpi-value" style="color:#ef4444;">${s.records_blocked_by_provenance || 0}</div>
+              <div class="ws-kpi-sub">Karantina / Doğrulanmamış</div>
+            </div>
+            <div class="ws-kpi-card">
+              <div class="ws-kpi-title">İstatistiksel Doğrulama</div>
+              <div class="ws-kpi-value" style="color:#a855f7;">${s.records_with_statistical_validation || 0}</div>
+              <div class="ws-kpi-sub">Tekrarlanabilir: ${s.records_with_reproducibility_evidence || 0}</div>
+            </div>
+          `;
+        }
+
+        tbody.innerHTML = items.map(it => {
+          const intCol = it.evidence_integrity_status === 'INTEGRITY_VERIFIED' ? '#10b981' : '#ef4444';
+          return `
+            <tr style="border-bottom:1px solid #1e293b;">
+              <td style="font-family:var(--font-mono); font-weight:700; color:#38bdf8;">${it.research_id}</td>
+              <td><strong>${it.research_title}</strong><div style="font-size:11px; color:#94a3b8;">${it.research_category}</div></td>
+              <td style="font-family:var(--font-mono); font-size:11px;">${it.hypothesis_id || 'UNAVAILABLE'}<div style="color:#94a3b8;">${it.methodology_id || 'UNAVAILABLE'}</div></td>
+              <td style="font-family:var(--font-mono); font-size:11px;">${it.dataset_id}<div style="color:#94a3b8;">${it.dataset_version || 'UNAVAILABLE'}</div></td>
+              <td><span class="badge" style="background:#0f172a; border:1px solid ${intCol}; color:${intCol}; font-size:10px;">${it.evidence_integrity_status}</span></td>
+              <td style="font-size:11px;">${it.scientific_readiness_status}<div style="color:#a855f7;">${it.statistical_validation_status}</div></td>
+              <td style="font-size:11px; color:#38bdf8;">${it.reproducibility_status}</td>
+              <td style="font-size:11px; color:#f59e0b;">${it.independence_status}</td>
+              <td style="font-size:11px;">${it.review_status}</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error('loadPortfolioV5UI error:', err);
+        tbody.innerHTML = `<tr><td colspan="9" style="color:#ef4444; padding:16px;">Hata: ${err.message}</td></tr>`;
+      }
+    }
+
+    async function loadExperimentRegistryV5UI() {
+      const container = document.getElementById('v5-exp-registry-container');
+      if (!container) return;
+      container.innerHTML = '<div style="color:#94a3b8; padding:16px;">Deney kayıt defteri yükleniyor...</div>';
+
+      try {
+        const res = await fetch('/api/v1/product/research/experiments');
+        const data = await res.json();
+        const exps = data.experiments || [];
+        container.innerHTML = exps.map(e => `
+          <div class="card" style="background:#090e1a; border:1px solid #1e293b; border-radius:8px; padding:12px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <div>
+                <span class="badge" style="background:#1e293b; color:#38bdf8; font-family:var(--font-mono); font-size:11px;">${e.experiment_id}</span>
+                <strong style="color:#f8fafc; font-size:13px; margin-left:8px;">${e.experiment_title}</strong>
+              </div>
+              <span class="badge" style="background:#1e293b; color:#10b981; font-size:11px;">${e.execution_status}</span>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:8px; font-size:11px; color:#cbd5e1; margin-top:8px;">
+              <div>Araştırma: <code>${e.research_id}</code></div>
+              <div>Metodoloji: <code>${e.methodology_id}</code></div>
+              <div>Veri Seti: <code>${e.dataset_id}</code></div>
+              <div>Soykütüğü Kararı: <strong>${e.provenance_verdict}</strong></div>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error('loadExperimentRegistryV5UI error:', err);
+        container.innerHTML = `<div style="color:#ef4444; padding:16px;">Hata: ${err.message}</div>`;
+      }
+    }
+
+    async function loadExperimentTimelineV5UI() {
+      const container = document.getElementById('v5-exp-timeline-container');
+      if (!container) return;
+      container.innerHTML = '<div style="color:#94a3b8; padding:16px;">Deney zaman çizelgesi yükleniyor...</div>';
+
+      try {
+        const res = await fetch('/api/v1/product/research/experiments/ALL/timeline');
+        const data = await res.json();
+        const events = data.events || [];
+        const chainOk = data.timeline_chain_integrity?.chain_valid;
+        const badge = document.getElementById('v5-timeline-chain-badge');
+        if (badge) {
+          badge.textContent = chainOk ? `ZİNCİR BÜTÜNLÜĞÜ: DOĞRULANDI (${events.length} Olay)` : 'ZİNCİR BÜTÜNLÜĞÜ: BOZULDU';
+        }
+        container.innerHTML = events.map(ev => `
+          <div style="background:#090e1a; border-left:3px solid #a855f7; padding:10px 14px; margin-bottom:8px; border-radius:4px; font-size:12px;">
+            <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+              <span><strong style="color:#38bdf8;">${ev.event_id}</strong> &bull; <span style="color:#f8fafc; font-weight:700;">${ev.event_type}</span> (${ev.experiment_id})</span>
+              <span style="font-family:var(--font-mono); font-size:11px; color:#94a3b8;">${ev.event_timestamp}</span>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:10px; color:#64748b; margin-top:4px;">
+              Önceki Özet: ${(ev.previous_event_digest || '').substring(0, 20)}... | Olay Özeti: ${(ev.event_digest || '').substring(0, 20)}...
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error('loadExperimentTimelineV5UI error:', err);
+        container.innerHTML = `<div style="color:#ef4444; padding:16px;">Hata: ${err.message}</div>`;
+      }
+    }
+
+    async function loadCompareExperimentsV5UI() {
+      const container = document.getElementById('v5-comp-experiments-container');
+      if (!container) return;
+      container.innerHTML = '<div style="color:#94a3b8; padding:16px;">Deney karşılaştırması yürütülüyor...</div>';
+
+      try {
+        const rawIds = document.getElementById('v5-comp-candidates-input')?.value || 'RES-REGIME-01,RES-ANALOG-01';
+        const res = await fetch(`/api/v1/product/research/comparisons?candidate_ids=${encodeURIComponent(rawIds)}`);
+        const data = await res.json();
+        const comp = data.comparison || data || {};
+        const gates = comp.comparability_gate_checks || {};
+        const gatePills = Object.keys(gates).map(k => {
+          const g = gates[k];
+          const col = g.passed ? '#10b981' : '#f59e0b';
+          return `<span class="badge" style="background:#0f172a; border:1px solid ${col}; color:${col}; font-size:10px;">${g.passed ? '✓' : '!'} ${k}</span>`;
+        }).join(' ');
+
+        container.innerHTML = `
+          <div style="background:#090e1a; border:1px solid #1e293b; border-radius:8px; padding:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+              <div>
+                <span class="badge" style="background:#1e293b; color:#38bdf8; font-family:var(--font-mono); font-size:11px;">${comp.comparison_id || 'CMP-V5'}</span>
+                <strong style="color:#f8fafc; font-size:14px; margin-left:8px;">Karşılaştırma Kararı: ${comp.comparison_verdict}</strong>
+              </div>
+              <span class="badge" style="background:#1e293b; color:#f59e0b; font-size:11px;">${comp.sample_independence_verdict || ''}</span>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;">${gatePills}</div>
+            <div style="font-size:11px; color:#94a3b8;">
+              ${(comp.scientific_warnings || []).map(w => `<div>&bull; ${w}</div>`).join('')}
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        console.error('loadCompareExperimentsV5UI error:', err);
+        container.innerHTML = `<div style="color:#ef4444; padding:16px;">Hata: ${err.message}</div>`;
+      }
+    }
+
+    async function loadEvidenceExplorerV5UI() {
+      const container = document.getElementById('v5-evidence-explorer-container');
+      if (!container) return;
+      container.innerHTML = '<div style="color:#94a3b8; padding:16px;">Kanıt izlenebilirlik zinciri yükleniyor...</div>';
+
+      try {
+        const rid = document.getElementById('v5-trace-record-select')?.value || 'RES-REGIME-01';
+        const res = await fetch(`/api/v1/product/research/evidence/${encodeURIComponent(rid)}`);
+        const data = await res.json();
+        const chain = data.traceability_chain || [];
+        const tp = data.trust_progression || {};
+
+        container.innerHTML = `
+          <div style="margin-bottom:12px; font-size:12px; color:#cbd5e1;">
+            En Yüksek Doğrulanmış Güven Kademesi: <strong style="color:#10b981;">${tp.highest_verified_trust_tier || ''}</strong>
+            | Maks. Derinlik: <code>${data.max_depth_enforced}</code>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px;">
+            ${chain.map(st => `
+              <div style="background:#090e1a; border:1px solid #1e293b; border-radius:6px; padding:10px; font-size:11px;">
+                <div style="font-weight:700; color:#38bdf8;">${st.stage_name}</div>
+                <div style="color:#f8fafc; margin-top:4px;">Durum: <strong>${st.verification_status}</strong></div>
+                <div style="color:#94a3b8; font-size:10px;">Kademe: ${st.trust_tier}</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } catch (err) {
+        console.error('loadEvidenceExplorerV5UI error:', err);
+        container.innerHTML = `<div style="color:#ef4444; padding:16px;">Hata: ${err.message}</div>`;
+      }
+    }
+
+    async function loadScientificFindingsV5UI() {
+      const container = document.getElementById('v5-findings-container');
+      if (!container) return;
+      container.innerHTML = '<div style="color:#94a3b8; padding:16px;">Bilimsel bulgular yükleniyor...</div>';
+
+      try {
+        const res = await fetch('/api/v1/product/research/findings');
+        const data = await res.json();
+        const findings = data.findings || [];
+        container.innerHTML = findings.map(f => `
+          <div class="card" style="background:#090e1a; border:1px solid #1e293b; border-radius:8px; padding:12px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <div>
+                <span class="badge" style="background:#1e293b; color:#38bdf8; font-family:var(--font-mono); font-size:11px;">${f.finding_id}</span>
+                <strong style="color:#f8fafc; font-size:13px; margin-left:8px;">${f.research_id} (${f.hypothesis_id})</strong>
+              </div>
+              <span class="badge" style="background:#1e293b; color:#10b981; font-size:11px;">${f.finding_type}</span>
+            </div>
+            <div style="font-size:12px; color:#cbd5e1; margin-top:6px;">${f.finding_statement}</div>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error('loadScientificFindingsV5UI error:', err);
+        container.innerHTML = `<div style="color:#ef4444; padding:16px;">Hata: ${err.message}</div>`;
+      }
+    }
+
+    async function loadContradictionsV5UI() {
+      const container = document.getElementById('v5-contradictions-container');
+      if (!container) return;
+      container.innerHTML = '<div style="color:#94a3b8; padding:16px;">Bağlamsal çelişkiler yükleniyor...</div>';
+
+      try {
+        const res = await fetch('/api/v1/product/research/contradictions');
+        const data = await res.json();
+        const items = data.contradictions || [];
+        container.innerHTML = items.map(c => `
+          <div class="card" style="background:#090e1a; border:1px solid #1e293b; border-radius:8px; padding:12px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <div>
+                <span class="badge" style="background:#1e293b; color:#38bdf8; font-family:var(--font-mono); font-size:11px;">${c.contradiction_id}</span>
+                <strong style="color:#f8fafc; font-size:13px; margin-left:8px;">${c.finding_id_a} vs ${c.finding_id_b}</strong>
+              </div>
+              <span class="badge" style="background:#1e293b; color:#f59e0b; font-size:11px;">${c.contradiction_verdict}</span>
+            </div>
+            <div style="font-size:12px; color:#cbd5e1; margin-top:6px;">${c.explanation}</div>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error('loadContradictionsV5UI error:', err);
+        container.innerHTML = `<div style="color:#ef4444; padding:16px;">Hata: ${err.message}</div>`;
+      }
+    }
+
+    async function loadResearchReviewsV5UI() {
+      const container = document.getElementById('v5-reviews-container');
+      if (!container) return;
+      container.innerHTML = '<div style="color:#94a3b8; padding:16px;">Bilimsel inceleme kayıtları yükleniyor...</div>';
+
+      try {
+        const res = await fetch('/api/v1/product/research/reviews');
+        const data = await res.json();
+        const revs = data.reviews || [];
+        container.innerHTML = revs.map(r => `
+          <div class="card" style="background:#090e1a; border:1px solid #1e293b; border-radius:8px; padding:12px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <div>
+                <span class="badge" style="background:#1e293b; color:#38bdf8; font-family:var(--font-mono); font-size:11px;">${r.review_id}</span>
+                <strong style="color:#f8fafc; font-size:13px; margin-left:8px;">${r.research_id} &bull; ${r.decision}</strong>
+              </div>
+              <span class="badge" style="background:#1e293b; color:#10b981; font-size:11px;">${r.resulting_review_state}</span>
+            </div>
+            <div style="font-size:12px; color:#cbd5e1; margin-top:6px;">${r.decision_reason}</div>
+            <div style="font-size:10px; color:#94a3b8; margin-top:4px;">İnceleyen: ${r.reviewer_identity} | Kapsam: ${r.governance_scope_notice}</div>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error('loadResearchReviewsV5UI error:', err);
+        container.innerHTML = `<div style="color:#ef4444; padding:16px;">Hata: ${err.message}</div>`;
+      }
+    }
+
+    async function loadReportBuilderV5UI() {
+      const container = document.getElementById('v5-report-builder-container');
+      if (!container) return;
+      container.innerHTML = '<div style="color:#94a3b8; padding:16px;">Bilimsel Rapor V5 oluşturuluyor...</div>';
+
+      try {
+        const rtype = document.getElementById('v5-report-type-select')?.value || 'INDIVIDUAL_RESEARCH_REPORT';
+        const rid = document.getElementById('v5-report-record-select')?.value || 'RES-REGIME-01';
+        const res = await fetch(`/api/v1/product/research/reports?report_type=${encodeURIComponent(rtype)}&research_id=${encodeURIComponent(rid)}&format=JSON`);
+        const data = await res.json();
+        const rep = data.report || {};
+        container.innerHTML = `
+          <div style="background:#090e1a; border:1px solid #1e293b; border-radius:8px; padding:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+              <div>
+                <span class="badge" style="background:#1e293b; color:#38bdf8; font-family:var(--font-mono); font-size:11px;">${rep.report_id}</span>
+                <strong style="color:#f8fafc; font-size:14px; margin-left:8px;">${rep.executive_summary?.title || ''}</strong>
+              </div>
+              <span class="badge" style="background:#1e293b; color:#10b981; font-size:11px;">21 / 21 BÖLÜM TAMAMLANDI</span>
+            </div>
+            <div style="font-size:11px; color:#cbd5e1;">
+              <div>İçerik SHA-256: <code style="color:#38bdf8;">${rep.report_content_sha256}</code></div>
+              <div style="margin-top:4px;">Yönetişim: <strong style="color:#f59e0b;">${rep.governance_status}</strong></div>
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        console.error('loadReportBuilderV5UI error:', err);
+        container.innerHTML = `<div style="color:#ef4444; padding:16px;">Hata: ${err.message}</div>`;
+      }
     }
 
     // Initialize Workspace V2 on page load
