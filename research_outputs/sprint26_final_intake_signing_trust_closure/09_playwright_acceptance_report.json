@@ -1,0 +1,22 @@
+{
+  "artifact": "09_playwright_acceptance_report",
+  "sprint_id": "CBE_SPRINT26_FINAL_INTAKE_SIGNING_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T21:23:43Z",
+  "runner": "scripts/run_playwright_sprint26.py",
+  "viewports_verified": [
+    "1440x900",
+    "768x1024",
+    "390x844"
+  ],
+  "total_checks": 11,
+  "passed": 11,
+  "failed": 0,
+  "console_errors": 0,
+  "page_errors": 0,
+  "failed_network_requests": 0,
+  "screenshots": [
+    "screenshots/sprint26_screenshot_01_desktop_statistical_validation.png",
+    "screenshots/sprint26_screenshot_02_tablet_regime_and_robustness.png",
+    "screenshots/sprint26_screenshot_03_mobile_independent_validation.png"
+  ]
+}

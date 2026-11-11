@@ -1,0 +1,14 @@
+{
+  "artifact": "07_positive_authorized_signing_results",
+  "sprint_id": "CBE_SPRINT26_FINAL_INTAKE_SIGNING_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T21:23:43Z",
+  "positive_tests": [
+    "test_pos_21_authorized_intake_manifest_signing_and_cross_module_compatibility",
+    "test_pos_22_source_code_audit_no_direct_hmac_or_forged_signature_in_intake_signing",
+    "TestSprint25DatasetProvenanceTrustBoundary::test_11_positive_verified_provenance_via_attestation_and_intake_manifest"
+  ],
+  "sprint26_total_tests": 83,
+  "sprint26_passed": 83,
+  "sprint26_failed": 0,
+  "duration_seconds": 9.45
+}

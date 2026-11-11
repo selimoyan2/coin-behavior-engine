@@ -1,0 +1,14 @@
+{
+  "artifact": "12_production_zero_touch_audit",
+  "sprint_id": "CBE_SPRINT26_FINAL_INTAKE_SIGNING_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T21:23:43Z",
+  "production_domain": "https://coin.ozelweb.com.tr",
+  "production_policy": "STRICT_ZERO_TOUCH",
+  "container_id_before": "6baf9524ec445cbebace53ae267ee38d75e86b39cf97e26c0cfe8d10602ce025",
+  "container_id_after": "6baf9524ec445cbebace53ae267ee38d75e86b39cf97e26c0cfe8d10602ce025",
+  "started_at_before": "2026-11-11T20:59:56.870172334Z",
+  "started_at_after": "2026-11-11T20:59:56.870172334Z",
+  "restarts": 0,
+  "config_mutations": 0,
+  "verdict": "PRODUCTION_STRICT_ZERO_TOUCH_VERIFIED"
+}

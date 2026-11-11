@@ -1,0 +1,31 @@
+{
+  "artifact": "06_negative_security_test_results",
+  "sprint_id": "CBE_SPRINT26_FINAL_INTAKE_SIGNING_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T21:23:43Z",
+  "test_class": "TestSprint26FinalIntakeSigningTrustClosure",
+  "total_negative_tests": 20,
+  "passed": 20,
+  "failed": 0,
+  "cases": [
+    "test_neg_01_caller_supplied_intake_signing_secret_rejected",
+    "test_neg_02_caller_supplied_forged_signature_rejected",
+    "test_neg_03_missing_signing_authority_context_rejected",
+    "test_neg_04_boolean_authorization_flag_rejected",
+    "test_neg_05_forged_authority_context_rejected",
+    "test_neg_06_revoked_signing_key_rejected",
+    "test_neg_07_unknown_signing_key_rejected",
+    "test_neg_08_wrong_signing_key_purpose_rejected",
+    "test_neg_09_verification_only_runtime_attempting_intake_signing_rejected",
+    "test_neg_10_public_api_attempting_intake_signing_rejected",
+    "test_neg_11_direct_sign_for_purpose_bypass_attempt_rejected",
+    "test_neg_12_test_authority_leaking_into_staging_runtime_rejected",
+    "test_neg_13_invalid_signature_verification_rejected",
+    "test_neg_14_source_artifact_hash_mismatch_rejected",
+    "test_neg_15_manifest_dataset_id_mismatch_rejected",
+    "test_neg_16_previously_valid_manifest_verification_after_signing_api_changes",
+    "test_neg_17_signing_key_rotation_compatibility",
+    "test_neg_18_signature_cache_invalidation_after_revocation",
+    "test_neg_19_trusted_signing_attempt_using_unregistered_secret_rejected",
+    "test_neg_20_unauthorized_signing_attempt_through_indirect_helper_rejected"
+  ]
+}

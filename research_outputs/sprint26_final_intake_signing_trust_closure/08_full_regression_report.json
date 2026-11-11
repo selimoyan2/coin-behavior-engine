@@ -1,0 +1,16 @@
+{
+  "artifact": "08_full_regression_report",
+  "sprint_id": "CBE_SPRINT26_FINAL_INTAKE_SIGNING_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T21:23:43Z",
+  "previous_baseline_passed": 441,
+  "new_intake_signing_tests_added": 22,
+  "total_collected": 463,
+  "passed": 463,
+  "failed": 0,
+  "skipped": 0,
+  "duration_seconds": 124.99,
+  "sprint24_cryptographic_hardening_passed": 140,
+  "sprint25_scientific_trust_passed": 63,
+  "sprint26_all_suites_passed": 83,
+  "verdict": "ZERO_REGRESSIONS_ALL_463_PASSED"
+}

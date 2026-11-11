@@ -1,0 +1,28 @@
+{
+  "artifact": "01_root_cause_analysis",
+  "sprint_id": "CBE_SPRINT26_FINAL_INTAKE_SIGNING_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T21:23:43Z",
+  "confirmed_defects_closed": [
+    {
+      "defect_id": "P0-INTAKE-01",
+      "file": "src/coin_behavior_engine/product/scientific_readiness.py",
+      "function": "ScientificReadinessEvaluator.create_signed_intake_manifest",
+      "root_cause": "Previously accepted caller-supplied secret and forged_signature parameters and invoked signing_key_registry.sign_for_purpose() without requiring a verified server-side SigningAuthorityContext.",
+      "remediation": "Removed caller-supplied secret and forged_signature branches, removed import hmac from scientific_readiness.py, explicitly rejected secret/signing_secret/signing_key/forged_signature/is_admin/authorized with SigningAuthorityError, and delegated signing exclusively to signing_key_registry.sign_with_authority() with required_purpose=KEY_PURPOSE_INTAKE_MANIFEST."
+    },
+    {
+      "defect_id": "P0-INTAKE-02",
+      "file": "src/coin_behavior_engine/product/credential_manager.py",
+      "function": "SigningKeyRegistry.sign_for_purpose",
+      "root_cause": "Previously signed payloads using a registered key without validating a server-side SigningAuthorityContext or runtime mode.",
+      "remediation": "Refactored sign_for_purpose() to delegate directly to sign_with_authority(), enforcing all 6 P0 authorization, key lifecycle, purpose, and runtime verification-only checks."
+    },
+    {
+      "defect_id": "P0-INTAKE-03",
+      "file": "src/coin_behavior_engine/product/scientific_readiness.py",
+      "function": "ScientificReadinessEvaluator.get_canonical_signed_intake_manifest",
+      "root_cause": "Indirect helper accepted secret parameter and forwarded to create_signed_intake_manifest without requiring authority_context.",
+      "remediation": "Removed secret parameter, required authority_context, and enforced fail-closed delegation to create_signed_intake_manifest()."
+    }
+  ]
+}

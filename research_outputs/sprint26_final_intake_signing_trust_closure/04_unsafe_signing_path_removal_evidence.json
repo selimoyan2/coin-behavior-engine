@@ -1,0 +1,25 @@
+{
+  "artifact": "04_unsafe_signing_path_removal_evidence",
+  "sprint_id": "CBE_SPRINT26_FINAL_INTAKE_SIGNING_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T21:23:43Z",
+  "scientific_readiness_hmac_new_occurrences": 0,
+  "scientific_readiness_secret_branch_occurrences": 0,
+  "scientific_readiness_forged_signature_branch_occurrences": 0,
+  "rejected_parameters": [
+    "secret",
+    "signing_secret",
+    "key_secret",
+    "raw_secret",
+    "signing_key",
+    "private_key",
+    "raw_key",
+    "custom_key",
+    "key_material",
+    "forged_signature",
+    "is_admin",
+    "authorized",
+    "is_authorized",
+    "bypass_authority",
+    "force_sign"
+  ]
+}

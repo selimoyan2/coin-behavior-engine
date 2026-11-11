@@ -1,0 +1,10 @@
+{
+  "artifact": "05_test_fixture_isolation_evidence",
+  "sprint_id": "CBE_SPRINT26_FINAL_INTAKE_SIGNING_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T21:23:43Z",
+  "isolated_forged_manifest_helper": "TestSprint26FinalScientificTrustClosure._build_test_only_forged_intake_manifest",
+  "isolated_authorized_signing_context": "SigningKeyRegistry.isolated_test_signing_context",
+  "production_code_exposes_test_helpers": false,
+  "test_keys_purged_on_context_exit": true,
+  "test_authority_blocked_in_staging_and_production": true
+}

@@ -1,0 +1,19 @@
+{
+  "artifact": "11_staging_deployment_evidence",
+  "sprint_id": "CBE_SPRINT26_FINAL_INTAKE_SIGNING_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T21:23:43Z",
+  "staging_host": "srv1114257 (168.231.125.238)",
+  "staging_binding": "127.0.0.1:18080->8000/tcp",
+  "previous_staging_image": "cbe-market-intelligence:sprint26-signing-authority-8206d38",
+  "previous_staging_container_id": "2a574564e4e3b730ac612b88ddb2aa40f1576147b8a85db70e9b90faf006fa5b",
+  "implementation_commit_sha": "768f7ae12392335679a5fd9b0b2dd16e17943f43",
+  "new_staging_image": "cbe-market-intelligence:sprint26-intake-signing-768f7ae",
+  "new_staging_image_id": "sha256:b4735b64218674d6278ed4803f7ce3ea4bed07b2217ce92180b58915fc8d6afd",
+  "new_staging_container_id": "d9570c0982c005bb15186cf3efb7aff7ea40eaabf0129c91b92b17fd9de5c110",
+  "new_staging_started_at_utc": "2026-11-11T21:20:52.281557046Z",
+  "runtime_signing_mode": "VERIFICATION_ONLY",
+  "persistent_volumes_preserved": [
+    "zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data:/app/data/live_capture:ro",
+    "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f:/app/data/prospective:rw"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "artifact": "10_api_authorization_verification",
+  "sprint_id": "CBE_SPRINT26_FINAL_INTAKE_SIGNING_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T21:23:43Z",
+  "runtime_signing_mode": "VERIFICATION_ONLY",
+  "verified_endpoints": {
+    "GET /health": 200,
+    "GET /product": 200,
+    "GET /api/v1/product/workspace/statistical-validation": 200,
+    "GET /api/v1/product/workspace/walk-forward": 200,
+    "GET /api/v1/product/workspace/regime-research": 200,
+    "GET /api/v1/product/workspace/robustness-lab": 200,
+    "GET /api/v1/product/workspace/independent-validation": 200,
+    "GET /api/v1/product/workspace/validation-reports": 200,
+    "POST /api/v1/product/workspace/intake-manifest/sign": {
+      "http_status": 403,
+      "rejection_code": "SIGNING_OPERATION_NOT_PERMITTED"
+    },
+    "POST /api/v1/product/workspace/walk-forward (create_intake_manifest=true)": {
+      "http_status": 403,
+      "rejection_code": "SIGNING_OPERATION_NOT_PERMITTED"
+    },
+    "POST /api/v1/product/workspace/walk-forward (secret=forged-secret)": {
+      "http_status": 403,
+      "rejection_code": "SIGNING_KEY_NOT_AUTHORIZED"
+    },
+    "POST /api/v1/product/workspace/walk-forward (forged_signature=...)": {
+      "http_status": 403,
+      "rejection_code": "SIGNING_AUTHORITY_NOT_GRANTED"
+    },
+    "POST /api/v1/product/workspace/replication-attestation/sign": {
+      "http_status": 403,
+      "rejection_code": "SIGNING_OPERATION_NOT_PERMITTED"
+    }
+  }
+}

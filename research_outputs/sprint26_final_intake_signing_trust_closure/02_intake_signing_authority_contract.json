@@ -1,0 +1,15 @@
+{
+  "artifact": "02_intake_signing_authority_contract",
+  "sprint_id": "CBE_SPRINT26_FINAL_INTAKE_SIGNING_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T21:23:43Z",
+  "central_signing_method": "SigningKeyRegistry.sign_with_authority",
+  "required_purpose": "INTAKE_MANIFEST_SIGNING",
+  "enforced_conditions": [
+    "1. Key exists in authorized SigningKeyRegistry (SIGNING_KEY_NOT_FOUND)",
+    "2. Key is active for signing (SIGNING_KEY_NOT_AUTHORIZED)",
+    "3. Key is not revoked (SIGNING_KEY_REVOKED)",
+    "4. Key is authorized for INTAKE_MANIFEST_SIGNING (SIGNING_KEY_NOT_AUTHORIZED)",
+    "5. Caller holds a verified server-side SigningAuthorityContext (SIGNING_AUTHORITY_NOT_GRANTED)",
+    "6. Runtime environment permits signing and is not VERIFICATION_ONLY or public API (SIGNING_OPERATION_NOT_PERMITTED)"
+  ]
+}

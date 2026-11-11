@@ -1,0 +1,16 @@
+{
+  "artifact": "03_sign_for_purpose_security_audit",
+  "sprint_id": "CBE_SPRINT26_FINAL_INTAKE_SIGNING_TRUST_CLOSURE",
+  "generated_at_utc": "2026-11-11T21:23:43Z",
+  "file": "src/coin_behavior_engine/product/credential_manager.py",
+  "method": "SigningKeyRegistry.sign_for_purpose",
+  "delegates_to": "SigningKeyRegistry.sign_with_authority",
+  "can_bypass_signing_authority_context": false,
+  "fail_closed_codes": {
+    "missing_authority": "SIGNING_AUTHORITY_NOT_GRANTED",
+    "missing_key": "SIGNING_KEY_NOT_FOUND",
+    "revoked_key": "SIGNING_KEY_REVOKED",
+    "wrong_key_purpose": "SIGNING_KEY_NOT_AUTHORIZED",
+    "verification_only_runtime": "SIGNING_OPERATION_NOT_PERMITTED"
+  }
+}
