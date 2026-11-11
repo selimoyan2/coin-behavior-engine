@@ -1,0 +1,104 @@
+{
+  "artifact": "16_sha256_manifest",
+  "sprint_id": "CBE_SPRINT26_FINAL_SIGNING_AUTHORITY_HARDENING",
+  "generated_at_utc": "2026-11-11T20:32:59Z",
+  "implementation_commit_sha": "8206d3895ea4443e193df020f4d4d96899ba25f2",
+  "total_files": 19,
+  "files": [
+    {
+      "path": "01_signing_authority_root_cause_audit.json",
+      "sha256": "fda11b4cf4ab3f7337d0ce7f3d89faab38313f40328bb5dd8cd9c9ab80e29de2",
+      "bytes": 2567
+    },
+    {
+      "path": "02_hardcoded_secret_removal_verification.json",
+      "sha256": "cc026f0d98661d968a187e0f5045d55c1f567b6d3ff71fd29fe1039a6984000a",
+      "bytes": 1207
+    },
+    {
+      "path": "03_signing_authority_contract.json",
+      "sha256": "e81fd3ff43122f51a3a2e909f0464d73a8fb0e4287e388cba09d1e41607d97e0",
+      "bytes": 1193
+    },
+    {
+      "path": "04_key_registry_lifecycle_verification.json",
+      "sha256": "11479d0a78ec628107967aca462080d54de2c43c45093ca5f82c9df1526ab2eb",
+      "bytes": 746
+    },
+    {
+      "path": "05_verification_only_runtime_separation.json",
+      "sha256": "763e327c4410daaa6397499e085d6dfaf755279c7561d137fcfc8b8518886455",
+      "bytes": 1484
+    },
+    {
+      "path": "06_negative_security_test_matrix.json",
+      "sha256": "f5794011ff7b24aa429554b7bf647696eea5f691e13136310f519bd43323b91f",
+      "bytes": 4158
+    },
+    {
+      "path": "07_sprint26_targeted_test_results.json",
+      "sha256": "dbe77f9edec9348495f7f116bb3bc4caf129c95a282ce1c3c1797c0d4fa069c9",
+      "bytes": 371
+    },
+    {
+      "path": "08_sprint24_cryptographic_regression.json",
+      "sha256": "b8c8bbbefb3f6234b72e6c57dfb4150481cd422b1bf82585e78901af9ebc56f7",
+      "bytes": 723
+    },
+    {
+      "path": "09_sprint25_scientific_trust_regression.json",
+      "sha256": "f1bede4112b2d1e89f65889551029dedadecb2ef55ac1555d591e5d20c5d7ead",
+      "bytes": 369
+    },
+    {
+      "path": "10_full_regression_results.json",
+      "sha256": "9f82b6e3045e553437e6bbab13be5dbf39b996815bb2b76c081cefab15e4ea1b",
+      "bytes": 392
+    },
+    {
+      "path": "11_playwright_verification.json",
+      "sha256": "8818dff87192070d70f59cdde75ed24c660ec1a890c23366b229d08ad24f7140",
+      "bytes": 2310
+    },
+    {
+      "path": "12_staging_deployment_verification.json",
+      "sha256": "d53fded5e36beb378e202a69b29e10c065a5264d6db6049c4d30260498f0bacf",
+      "bytes": 1746
+    },
+    {
+      "path": "13_production_zero_touch_audit.json",
+      "sha256": "f96f34e297cd4306955fd58382203719c6838708fd668ec10f4f242ce0039f30",
+      "bytes": 814
+    },
+    {
+      "path": "14_scientific_governance_verification.json",
+      "sha256": "a16e4c133f8b1146fa40d1976870415e5de927168eb94c943ab010b54b2149b1",
+      "bytes": 639
+    },
+    {
+      "path": "15_git_commit_chain_verification.json",
+      "sha256": "b7877a9c8fc805c3c71dae10cf53f18cecb39735d19d5a0d70c4a035799478a4",
+      "bytes": 491
+    },
+    {
+      "path": "17_final_acceptance_report.md",
+      "sha256": "44ab6f33ce36348953c0f57312061b8d59961bd0743ac355e0761809dc488d83",
+      "bytes": 3193
+    },
+    {
+      "path": "screenshots/sprint26_screenshot_01_desktop_statistical_validation.png",
+      "sha256": "4cf6c01c53ceb6259f185908622addd6847e6c260dc0cd80d06a9aea7d568f92",
+      "bytes": 983674
+    },
+    {
+      "path": "screenshots/sprint26_screenshot_02_tablet_regime_and_robustness.png",
+      "sha256": "13900636bb2ec2d6f2e71aa23d911093d8e8ba7d9d564b7ec6ea5769172789b3",
+      "bytes": 579660
+    },
+    {
+      "path": "screenshots/sprint26_screenshot_03_mobile_independent_validation.png",
+      "sha256": "08142e00d7b67cbb8df1d119224dda6bad09e1e200bfbe6e1148904626fb36b5",
+      "bytes": 781736
+    }
+  ]
+}

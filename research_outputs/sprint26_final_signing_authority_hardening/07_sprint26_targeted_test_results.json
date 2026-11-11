@@ -1,0 +1,11 @@
+{
+  "artifact": "07_sprint26_targeted_test_results",
+  "sprint_id": "CBE_SPRINT26_FINAL_SIGNING_AUTHORITY_HARDENING",
+  "generated_at_utc": "2026-11-11T20:32:59Z",
+  "command": "pytest tests/test_sprint_product_acceleration_26.py -q",
+  "collected": 61,
+  "passed": 61,
+  "failed": 0,
+  "duration_seconds": 12.02,
+  "verdict": "ALL_61_SPRINT26_TESTS_PASSED"
+}

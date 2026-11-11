@@ -1,0 +1,31 @@
+{
+  "artifact": "12_staging_deployment_verification",
+  "sprint_id": "CBE_SPRINT26_FINAL_SIGNING_AUTHORITY_HARDENING",
+  "generated_at_utc": "2026-11-11T20:32:59Z",
+  "staging_host": "srv1114257 (168.231.125.238)",
+  "staging_port": "127.0.0.1:18080->8000/tcp",
+  "previous_container_id": "4f31bf271f62872a55f4bae13bce47dc5c24db670187c6f3202661a1cb2c21b4",
+  "new_container_id": "2a574564e4e3b730ac612b88ddb2aa40f1576147b8a85db70e9b90faf006fa5b",
+  "new_image": "cbe-market-intelligence:sprint26-signing-authority-8206d38",
+  "image_sha256": "sha256:2ad601d9351206422e759a5babf1e54dea23273b91024022b7aa98e46fa3197a",
+  "deployed_commit_sha": "8206d3895ea4443e193df020f4d4d96899ba25f2",
+  "runtime_signing_mode": "VERIFICATION_ONLY",
+  "persistent_volumes_preserved": [
+    "zgit1s3n1acdtqtsxp0s44vj_cbe-080-live-capture-data:/app/data/live_capture:ro",
+    "dbc52dc547a4121d1fdb3bf69709337f322c62fb08d97194287f22d2d229868f:/app/data/prospective:rw"
+  ],
+  "endpoint_verification": {
+    "GET /health": 200,
+    "GET /product": 200,
+    "GET /api/v1/product/workspace/statistical-validation": 200,
+    "GET /api/v1/product/workspace/walk-forward": 200,
+    "GET /api/v1/product/workspace/regime-research": 200,
+    "GET /api/v1/product/workspace/robustness-lab": 200,
+    "GET /api/v1/product/workspace/independent-validation": 200,
+    "GET /api/v1/product/workspace/validation-reports": 200,
+    "POST /api/v1/product/workspace/independent-validation (action=sign)": 403,
+    "POST /api/v1/product/workspace/independent-validation (is_admin=true)": 403,
+    "POST /api/v1/product/workspace/independent-validation (signing_secret)": 403,
+    "POST /api/v1/product/workspace/replication-attestation/sign": 403
+  }
+}

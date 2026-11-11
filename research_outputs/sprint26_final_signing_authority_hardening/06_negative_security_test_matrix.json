@@ -1,0 +1,139 @@
+{
+  "artifact": "06_negative_security_test_matrix",
+  "sprint_id": "CBE_SPRINT26_FINAL_SIGNING_AUTHORITY_HARDENING",
+  "generated_at_utc": "2026-11-11T20:32:59Z",
+  "implementation_commit_sha": "8206d3895ea4443e193df020f4d4d96899ba25f2",
+  "test_suite": "tests/test_sprint_product_acceleration_26.py::TestSprint26FinalSigningAuthorityHardening",
+  "total_negative_cases": 20,
+  "positive_authorized_signing_cases": 1,
+  "source_code_audit_cases": 1,
+  "all_passed": true,
+  "cases": [
+    {
+      "id": 1,
+      "scenario": "Missing signing key",
+      "expected": "SIGNING_KEY_NOT_FOUND",
+      "status": "PASSED"
+    },
+    {
+      "id": 2,
+      "scenario": "Unknown key ID",
+      "expected": "SIGNING_KEY_NOT_FOUND",
+      "status": "PASSED"
+    },
+    {
+      "id": 3,
+      "scenario": "Revoked signing key",
+      "expected": "SIGNING_KEY_REVOKED",
+      "status": "PASSED"
+    },
+    {
+      "id": 4,
+      "scenario": "Key without replication-signing permission",
+      "expected": "SIGNING_KEY_NOT_AUTHORIZED",
+      "status": "PASSED"
+    },
+    {
+      "id": 5,
+      "scenario": "Unauthorized signing caller",
+      "expected": "SIGNING_AUTHORITY_NOT_GRANTED",
+      "status": "PASSED"
+    },
+    {
+      "id": 6,
+      "scenario": "Ordinary research API attempting attestation creation",
+      "expected": "SIGNING_OPERATION_NOT_PERMITTED (HTTP 403)",
+      "status": "PASSED"
+    },
+    {
+      "id": 7,
+      "scenario": "Caller-supplied authorization boolean (is_admin=True, authorized=True)",
+      "expected": "SIGNING_AUTHORITY_NOT_GRANTED",
+      "status": "PASSED"
+    },
+    {
+      "id": 8,
+      "scenario": "Caller-supplied signing key",
+      "expected": "SIGNING_KEY_NOT_AUTHORIZED",
+      "status": "PASSED"
+    },
+    {
+      "id": 9,
+      "scenario": "Caller-supplied signing secret",
+      "expected": "SIGNING_KEY_NOT_AUTHORIZED",
+      "status": "PASSED"
+    },
+    {
+      "id": 10,
+      "scenario": "Forged replication attestation",
+      "expected": "SIGNATURE_VERIFICATION_FAILED",
+      "status": "PASSED"
+    },
+    {
+      "id": 11,
+      "scenario": "Modified signed claims",
+      "expected": "SIGNATURE_VERIFICATION_FAILED",
+      "status": "PASSED"
+    },
+    {
+      "id": 12,
+      "scenario": "Expired attestation",
+      "expected": "ATTESTATION_EXPIRED",
+      "status": "PASSED"
+    },
+    {
+      "id": 13,
+      "scenario": "Revoked attestation key",
+      "expected": "REVOKED_SIGNING_KEY",
+      "status": "PASSED"
+    },
+    {
+      "id": 14,
+      "scenario": "Invalid result artifact hash",
+      "expected": "INVALID_REPLICATION_RESULT_ARTIFACT_HASH",
+      "status": "PASSED"
+    },
+    {
+      "id": 15,
+      "scenario": "Missing replication result artifact",
+      "expected": "MISSING_REPLICATION_RESULT_ARTIFACT",
+      "status": "PASSED"
+    },
+    {
+      "id": 16,
+      "scenario": "Signing-key rotation lifecycle enforcement",
+      "expected": "HISTORICAL_VERIFY_ONLY verifies old, blocks new signing with SIGNING_KEY_NOT_AUTHORIZED",
+      "status": "PASSED"
+    },
+    {
+      "id": 17,
+      "scenario": "Verification-only runtime attempting signing",
+      "expected": "SIGNING_OPERATION_NOT_PERMITTED",
+      "status": "PASSED"
+    },
+    {
+      "id": 18,
+      "scenario": "Test signing authority leaking into application runtime",
+      "expected": "SIGNING_OPERATION_NOT_PERMITTED & test key auto-purged",
+      "status": "PASSED"
+    },
+    {
+      "id": 19,
+      "scenario": "Signature cache reuse after revocation",
+      "expected": "REVOKED_SIGNING_KEY (cache entry invalidated)",
+      "status": "PASSED"
+    },
+    {
+      "id": 20,
+      "scenario": "Replication claim with valid signature but insufficient scientific independence",
+      "expected": "INDEPENDENCE_NOT_ESTABLISHED",
+      "status": "PASSED"
+    },
+    {
+      "id": 21,
+      "scenario": "Positive authorized signing with isolated test key & verified non-overlapping datasets",
+      "expected": "INDEPENDENT_REPLICATION",
+      "status": "PASSED"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "artifact": "04_key_registry_lifecycle_verification",
+  "sprint_id": "CBE_SPRINT26_FINAL_SIGNING_AUTHORITY_HARDENING",
+  "generated_at_utc": "2026-11-11T20:32:59Z",
+  "implementation_commit_sha": "8206d3895ea4443e193df020f4d4d96899ba25f2",
+  "lifecycle_states": [
+    "ACTIVE (eligible for signing with authorized purpose and verification)",
+    "HISTORICAL_VERIFY_ONLY (demoted upon key rotation; historical signatures verify, new signing fails closed with SIGNING_KEY_NOT_AUTHORIZED)",
+    "REVOKED (rejected for both signing and verification; immediately purges attestation_cache entries)"
+  ],
+  "rotation_verified": true,
+  "revocation_cache_invalidation_verified": true,
+  "isolated_test_context_cleanup_verified": true
+}

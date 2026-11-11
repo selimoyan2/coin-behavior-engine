@@ -1,0 +1,31 @@
+{
+  "artifact": "01_signing_authority_root_cause_audit",
+  "sprint_id": "CBE_SPRINT26_FINAL_SIGNING_AUTHORITY_HARDENING",
+  "generated_at_utc": "2026-11-11T20:32:59Z",
+  "starting_baseline_commit": "70a1a15da67f152799495f6520fcc4e032ec890d",
+  "previous_implementation_commit": "935a1786a12d1be91a71860e75209e73176a25df",
+  "implementation_commit_sha": "8206d3895ea4443e193df020f4d4d96899ba25f2",
+  "defects_audited_and_closed": [
+    {
+      "defect_id": "P0-SIGNING-FALLBACK-SECRET-01",
+      "file": "src/coin_behavior_engine/product/independent_validation_framework.py",
+      "function": "create_signed_replication_attestation",
+      "root_cause": "Previously fell back to a hardcoded source-code secret when key_id was missing in signing_key_registry._keys and accessed _keys directly without checking caller signing authority or key purpose permissions.",
+      "remediation": "Removed hardcoded fallback secret and direct _keys access completely. Delegated signing exclusively to signing_key_registry.sign_with_authority(..., required_purpose=KEY_PURPOSE_REPLICATION_ATTESTATION, authority_context=authority_context). Rejected caller-supplied secrets, keys, and authorization booleans."
+    },
+    {
+      "defect_id": "P0-HISTORICAL-KEY-EXPOSURE-02",
+      "file": "src/coin_behavior_engine/product/scientific_readiness.py",
+      "function": "create_signed_intake_manifest / module initialization",
+      "root_cause": "Previously registered cbe-data-authority-2026-v1, cbe-attestation-2026-v1, and cbe-attestation-2025-revoked with hardcoded literal secrets in signing_key_registry._keys at import time.",
+      "remediation": "Removed all hardcoded secret literals and _keys accesses from scientific_readiness.py. Permanently revoked cbe-attestation-2026-v1, cbe-data-authority-2026-v1, and cbe-attestation-2025-revoked in SigningKeyRegistry.DEFAULT_REVOKED_KEY_IDS."
+    },
+    {
+      "defect_id": "P0-RUNTIME-SIGNING-SEPARATION-03",
+      "file": "src/coin_behavior_engine/product/credential_manager.py & dashboard_api.py",
+      "function": "SigningAuthorityContext / ProductDashboardApiService.handle_post_request",
+      "root_cause": "Ordinary research application runtime and public HTTP APIs needed explicit fail-closed separation between verification (permitted) and signing (prohibited).",
+      "remediation": "Enforced CBE_RUNTIME_SIGNING_MODE=VERIFICATION_ONLY by default, added public_api_request_guard(), and rejected all API signing or caller-flag escalation attempts with HTTP 403 FORBIDDEN."
+    }
+  ]
+}

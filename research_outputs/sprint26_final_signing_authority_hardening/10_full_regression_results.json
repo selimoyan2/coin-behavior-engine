@@ -1,0 +1,12 @@
+{
+  "artifact": "10_full_regression_results",
+  "sprint_id": "CBE_SPRINT26_FINAL_SIGNING_AUTHORITY_HARDENING",
+  "generated_at_utc": "2026-11-11T20:32:59Z",
+  "suites_executed": "Sprint 20 through Sprint 26 (15 test modules)",
+  "total_collected": 441,
+  "passed": 441,
+  "failed": 0,
+  "skipped": 0,
+  "duration_seconds": 135.38,
+  "verdict": "ZERO_REGRESSIONS_ALL_441_PASSED"
+}

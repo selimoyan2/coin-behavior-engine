@@ -1,0 +1,45 @@
+{
+  "artifact": "05_verification_only_runtime_separation",
+  "sprint_id": "CBE_SPRINT26_FINAL_SIGNING_AUTHORITY_HARDENING",
+  "generated_at_utc": "2026-11-11T20:32:59Z",
+  "implementation_commit_sha": "8206d3895ea4443e193df020f4d4d96899ba25f2",
+  "default_runtime_signing_mode": "VERIFICATION_ONLY",
+  "public_api_request_guard_enforced": true,
+  "verified_api_rejections": [
+    {
+      "endpoint": "POST /api/v1/product/workspace/independent-validation",
+      "payload": {
+        "action": "sign",
+        "create_attestation": true
+      },
+      "http_status": 403,
+      "rejection_code": "SIGNING_OPERATION_NOT_PERMITTED"
+    },
+    {
+      "endpoint": "POST /api/v1/product/workspace/independent-validation",
+      "payload": {
+        "is_admin": true,
+        "authorized": true
+      },
+      "http_status": 403,
+      "rejection_code": "SIGNING_AUTHORITY_NOT_GRANTED"
+    },
+    {
+      "endpoint": "POST /api/v1/product/workspace/independent-validation",
+      "payload": {
+        "signing_secret": "forged-secret"
+      },
+      "http_status": 403,
+      "rejection_code": "SIGNING_KEY_NOT_AUTHORIZED"
+    },
+    {
+      "endpoint": "POST /api/v1/product/workspace/replication-attestation/sign",
+      "payload": {
+        "replication_attempt_id": "TEST"
+      },
+      "http_status": 403,
+      "rejection_code": "SIGNING_OPERATION_NOT_PERMITTED"
+    }
+  ],
+  "verdict": "VERIFICATION_ONLY_RUNTIME_SEPARATION_VERIFIED"
+}

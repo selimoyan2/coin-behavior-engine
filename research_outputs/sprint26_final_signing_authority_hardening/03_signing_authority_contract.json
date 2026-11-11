@@ -1,0 +1,22 @@
+{
+  "artifact": "03_signing_authority_contract",
+  "sprint_id": "CBE_SPRINT26_FINAL_SIGNING_AUTHORITY_HARDENING",
+  "generated_at_utc": "2026-11-11T20:32:59Z",
+  "implementation_commit_sha": "8206d3895ea4443e193df020f4d4d96899ba25f2",
+  "enforced_signing_conditions": [
+    "1. Requested key_id exists in the authorized signing-key registry (SIGNING_KEY_NOT_FOUND)",
+    "2. Key is active for signing in lifecycle metadata (SIGNING_KEY_NOT_AUTHORIZED)",
+    "3. Key has not been revoked in SigningKeyRegistry (SIGNING_KEY_REVOKED)",
+    "4. Key is explicitly authorized for REPLICATION_ATTESTATION_SIGNING purpose (SIGNING_KEY_NOT_AUTHORIZED)",
+    "5. Caller holds an unforgeable HMAC-sealed server-side SigningAuthorityContext with an open session (SIGNING_AUTHORITY_NOT_GRANTED)",
+    "6. Signing operation is permitted in the current runtime environment and outside public API handlers (SIGNING_OPERATION_NOT_PERMITTED)"
+  ],
+  "rejection_codes": [
+    "SIGNING_KEY_NOT_FOUND",
+    "SIGNING_KEY_REVOKED",
+    "SIGNING_KEY_NOT_AUTHORIZED",
+    "SIGNING_AUTHORITY_NOT_GRANTED",
+    "SIGNING_OPERATION_NOT_PERMITTED"
+  ],
+  "secret_exposure_in_errors_or_logs": "ZERO"
+}
