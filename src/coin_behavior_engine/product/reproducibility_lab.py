@@ -434,8 +434,17 @@ class ReproducibilityLabEngine:
                     pass
 
         # Verify that the source artifact itself has identifiable trusted provenance:
-        # Either pinned in TRUSTED_ARTIFACT_REGISTRY with matching SHA-256, OR backed by a valid signed attestation, OR signed reference_provenance
+        # Either pinned in TRUSTED_ARTIFACT_REGISTRY with matching SHA-256 (supporting both CRLF and LF git checkouts),
+        # OR backed by a valid signed attestation, OR signed reference_provenance
         trust_status, _ = ResearchCatalogProvider.check_trusted_provenance(source_path, actual_sha)
+        sp_obj = Path(source_path) if source_path else None
+        if trust_status != "TRUSTED_PROVENANCE_CONFIRMED" and sp_obj is not None and sp_obj.exists() and sp_obj.suffix.lower() == ".json":
+            try:
+                crlf_bytes = sp_obj.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
+                crlf_sha = hashlib.sha256(crlf_bytes).hexdigest()
+                trust_status, _ = ResearchCatalogProvider.check_trusted_provenance(source_path, crlf_sha)
+            except Exception:
+                pass
         has_trusted_registry = trust_status == "TRUSTED_PROVENANCE_CONFIRMED"
 
         has_valid_att = False
