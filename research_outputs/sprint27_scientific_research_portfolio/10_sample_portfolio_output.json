@@ -1,0 +1,716 @@
+{
+  "status": "success",
+  "canonical_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "governance_decision": "TECHNICAL_NO_GO",
+  "trading_eligibility": "LIVE_ORDER_EXECUTION_PERMANENTLY_PROHIBITED",
+  "portfolio_summary": {
+    "total_registered_records": 17,
+    "records_with_verified_evidence": 16,
+    "records_with_unresolved_evidence_gaps": 17,
+    "records_blocked_by_provenance": 1,
+    "records_with_reproducibility_evidence": 3,
+    "records_with_statistical_validation": 3,
+    "records_awaiting_scientific_review": 16
+  },
+  "pagination": {
+    "page": 1,
+    "page_size": 20,
+    "max_page_size": 100,
+    "total_matching_records": 17,
+    "total_pages": 1
+  },
+  "filters_applied": {
+    "search_query": null,
+    "research_id": null,
+    "research_category": null,
+    "methodology_id": null,
+    "dataset_id": null,
+    "research_period": null,
+    "scientific_status": null,
+    "evidence_integrity_status": null,
+    "reproducibility_status": null,
+    "independence_status": null,
+    "sort_by": "research_id",
+    "sort_dir": "asc"
+  },
+  "items": [
+    {
+      "research_id": "RES-ANALOG-01",
+      "research_title": "Dinamik Zaman Bükmesi (DTW) Tarihsel Örüntü Benzerliği V2",
+      "research_category": "Örüntü Keşfi",
+      "research_objective": "Zaman ekseninde normalize edilmiş DTW mesafesi en düşük analoglarda rejim tutarlılığı %76.4 olarak saptanmıştır.",
+      "hypothesis_id": "SPEC-003-DTW-ANALOGS",
+      "methodology_id": "METH-DTW-ANALOG-1.0",
+      "dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
+      "dataset_version": null,
+      "source_artifact_sha256": "337b19b98c381d0cac508161efa9bb776826cd8708bd2d64d1b9e8779f8b6847",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": "2022-06-01T00:00:00+00:00",
+      "research_period_end": "2022-06-15T00:00:00+00:00",
+      "research_created_at": "2026-10-25T12:00:00Z",
+      "research_updated_at": "2026-10-25T12:00:00Z",
+      "research_status": "UNVERIFIED",
+      "scientific_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "statistical_validation_status": "DESCRIPTIVE_STATISTICS",
+      "reproducibility_status": "OUTPUTS_MATCHED",
+      "independence_status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "evidence_integrity_status": "INTEGRITY_VERIFIED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RES-ANALOG-01-B45D2F13",
+        "EXP-WF-RES-ANALOG-01",
+        "EXP-ROB-RES-ANALOG-01"
+      ],
+      "related_artifacts": [
+        "research_outputs/research_report_29_pattern_similarity.json",
+        "sha256:337b19b98c381d0cac508161efa9bb776826cd8708bd2d64d1b9e8779f8b6847"
+      ],
+      "title_en": "Dynamic Time Warping Historical Pattern Analogs V2",
+      "sample_size": 860,
+      "open_evidence_gaps_count": 3,
+      "blocking_reasons": [
+        "Dataset provenance unverified (MISSING_AUTHENTICATED_PROVENANCE).",
+        "Observation completeness evidence insufficient."
+      ],
+      "review_status": "EVIDENCE_CHECK_COMPLETED"
+    },
+    {
+      "research_id": "RES-CRYPTO-01",
+      "research_title": "Ekim 2026 Aday Veri Seti Karantina & Sentetik Hacim İncelemesi",
+      "research_category": "Veri Bütünlüğü",
+      "research_objective": "Sabit 15.2 hacim ve yapay fiyat basamakları saptanmış; kanonik depoya aktarımı kalıcı olarak engellenmiştir.",
+      "hypothesis_id": "SPEC-006-DATA-INTAKE",
+      "methodology_id": null,
+      "dataset_id": "BTCUSDT-OCTOBER-2026-INTAKE",
+      "dataset_version": null,
+      "source_artifact_sha256": "05874e97d06db21fad8e7583b5b8038141d4e3dcfbabf68238fca52f5efab718",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": "2026-10-01T00:00:00Z",
+      "research_period_end": "2026-10-02T00:00:00Z",
+      "research_created_at": "2026-10-25T14:00:00Z",
+      "research_updated_at": "2026-10-25T14:00:00Z",
+      "research_status": "QUARANTINED_INELIGIBLE",
+      "scientific_readiness_status": "METHODOLOGICALLY_BLOCKED",
+      "statistical_validation_status": "INSUFFICIENT_EVIDENCE",
+      "reproducibility_status": "REPRODUCTION_BLOCKED",
+      "independence_status": "VALIDATION_BLOCKED",
+      "evidence_integrity_status": "BLOCKED_QUARANTINED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RES-CRYPTO-01-774A9E30"
+      ],
+      "related_artifacts": [
+        "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet",
+        "sha256:05874e97d06db21fad8e7583b5b8038141d4e3dcfbabf68238fca52f5efab718"
+      ],
+      "title_en": "October 2026 Intake Quarantine & Synthetic Volume Forensics",
+      "sample_size": 288,
+      "open_evidence_gaps_count": 4,
+      "blocking_reasons": [
+        "Dataset quarantined (BTCUSDT-OCTOBER-2026-INTAKE).",
+        "Observation completeness evidence insufficient.",
+        "No allowlisted reproduction procedure."
+      ],
+      "review_status": "BLOCKED"
+    },
+    {
+      "research_id": "RES-DURABILITY-01",
+      "research_title": "Dayanıklı Depolama Doğrulaması & Kanıt Soykütüğü Sertifikasyonu",
+      "research_category": "Sistem Güvenilirliği",
+      "research_objective": "Çift çekirdek mountinfo mutabakatı ve HMAC-SHA256 imzalı tasdik ile yetkili kalıcı birim kimliği doğrulanmıştır.",
+      "hypothesis_id": "SPEC-005-STORAGE-DURABILITY",
+      "methodology_id": "METH-STORAGE-MOUNTINFO-1.0",
+      "dataset_id": "CBE-SYSTEM-AUDIT-LOGS",
+      "dataset_version": null,
+      "source_artifact_sha256": "cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": null,
+      "research_period_end": null,
+      "research_created_at": "2026-11-08T18:00:00Z",
+      "research_updated_at": "2026-11-08T18:00:00Z",
+      "research_status": "UNVERIFIED",
+      "scientific_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "statistical_validation_status": "DESCRIPTIVE_STATISTICS",
+      "reproducibility_status": "REPRODUCTION_BLOCKED",
+      "independence_status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "evidence_integrity_status": "INTEGRITY_VERIFIED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RES-DURABILITY-01-22EDBA04"
+      ],
+      "related_artifacts": [
+        "research_outputs/sprint23_delivery/persistent_volume_verification.json",
+        "sha256:cbf65eb5ed14a781ad84fe174fcca005f9f491cffe4d7dfcd6c77041e5d2e53c"
+      ],
+      "title_en": "Durable Storage Verification & Evidence Provenance Certification",
+      "sample_size": 20,
+      "open_evidence_gaps_count": 4,
+      "blocking_reasons": [
+        "Dataset provenance unverified (MISSING_AUTHENTICATED_PROVENANCE).",
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (20 < 100).",
+        "Storage audit is historical report inspection only (missing mountinfo input)."
+      ],
+      "review_status": "EVIDENCE_CHECK_COMPLETED"
+    },
+    {
+      "research_id": "RES-FUND-01",
+      "research_title": "Perpetual Fonlama Oranı Öngörülebilirliği & Hesaplama Gecikmesi",
+      "research_category": "Türev Piyasalar",
+      "research_objective": "Fonlama serisinde otoregresif modeller rastgele yürüyüşe kıyasla anlamlı üstünlük gösterememiştir (p = 1.000).",
+      "hypothesis_id": "SPEC-001-PERP-FUNDING",
+      "methodology_id": null,
+      "dataset_id": "BTCUSDT-PERP-FUNDING-2022-2026",
+      "dataset_version": null,
+      "source_artifact_sha256": "5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": null,
+      "research_period_end": null,
+      "research_created_at": "2026-10-25T10:00:00Z",
+      "research_updated_at": "2026-10-25T10:00:00Z",
+      "research_status": "UNVERIFIED",
+      "scientific_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "statistical_validation_status": "EXPLORATORY_FINDING",
+      "reproducibility_status": "OUTPUTS_MATCHED",
+      "independence_status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "evidence_integrity_status": "INTEGRITY_VERIFIED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RES-FUND-01-4A8FA6B1"
+      ],
+      "related_artifacts": [
+        "data/reports/sprint09_38_funding_predictability_report.json",
+        "sha256:5d579e165aade2e39bee1a7bc015c941599deca1c94f3f798e0d74b2d9338e9a"
+      ],
+      "title_en": "Perpetual Funding Rate Predictability & Pure Compute Latency",
+      "sample_size": 1185,
+      "open_evidence_gaps_count": 5,
+      "blocking_reasons": [
+        "Dataset provenance unverified (MISSING_AUTHENTICATED_PROVENANCE).",
+        "Observation completeness evidence insufficient."
+      ],
+      "review_status": "EVIDENCE_CHECK_COMPLETED"
+    },
+    {
+      "research_id": "RES-MACRO-01",
+      "research_title": "Makroekonomik Duyurular (CPI & FOMC) T0 Rejim Dönüşümleri",
+      "research_category": "Makro Olaylar",
+      "research_objective": "CPI ve FOMC duyurularını takip eden 12 saatte volatilite genişleme oranı 1.913x seviyesine çıkmakta ve anlamlılık göstermektedir (p = 1.2e-05).",
+      "hypothesis_id": "SPEC-004-MACRO-SHIFTS",
+      "methodology_id": "METH-SYMMETRIC-EVENT-STUDY-1.2",
+      "dataset_id": "US-MACRO-EVENTS-2022-2026",
+      "dataset_version": null,
+      "source_artifact_sha256": "3cda89064b6837ef23d76c6d220d3998ebfc5a3f7261d3afc6ea68c29a4bf7ac",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": null,
+      "research_period_end": null,
+      "research_created_at": "2026-10-25T13:00:00Z",
+      "research_updated_at": "2026-10-25T13:00:00Z",
+      "research_status": "UNVERIFIED",
+      "scientific_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "statistical_validation_status": "INFERENTIAL_STATISTICS",
+      "reproducibility_status": "REPRODUCTION_BLOCKED",
+      "independence_status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "evidence_integrity_status": "INTEGRITY_VERIFIED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RES-MACRO-01-F4E95E60"
+      ],
+      "related_artifacts": [
+        "research_outputs/experiment_cpi_volatility.cbe-hyp.json",
+        "sha256:3cda89064b6837ef23d76c6d220d3998ebfc5a3f7261d3afc6ea68c29a4bf7ac"
+      ],
+      "title_en": "Macro Announcements (CPI & FOMC) T0 Regime Transitions",
+      "sample_size": null,
+      "open_evidence_gaps_count": 4,
+      "blocking_reasons": [
+        "Dataset provenance unverified (MISSING_AUTHENTICATED_PROVENANCE).",
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "review_status": "EVIDENCE_CHECK_COMPLETED"
+    },
+    {
+      "research_id": "RES-REGIME-01",
+      "research_title": "2022–2026 Kronolojik İleriye Yönelik Rejim Kararlılığı Doğrulaması",
+      "research_category": "Rejim Dinamikleri",
+      "research_objective": "Çoklu test kontrollerinde (Bonferroni ve FDR) hipotez ailesi anlamlılık eşiğini aşamamıştır (min p = 0.1738).",
+      "hypothesis_id": "SPEC-002-WALK-FORWARD",
+      "methodology_id": "METH-WALK-FORWARD-REGIME-1.0",
+      "dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
+      "dataset_version": null,
+      "source_artifact_sha256": "14ae2c3a0ebcbbf8e96a50ad5ada06a5ce2b0fc22082f3a225d9becfcee4cebf",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": null,
+      "research_period_end": null,
+      "research_created_at": "2026-10-25T11:00:00Z",
+      "research_updated_at": "2026-10-25T11:00:00Z",
+      "research_status": "UNVERIFIED",
+      "scientific_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "statistical_validation_status": "EXPLORATORY_FINDING",
+      "reproducibility_status": "OUTPUTS_MATCHED",
+      "independence_status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "evidence_integrity_status": "INTEGRITY_VERIFIED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RES-REGIME-01-AE372F95",
+        "EXP-WF-RES-REGIME-01",
+        "EXP-ROB-RES-REGIME-01"
+      ],
+      "related_artifacts": [
+        "data/reports/sprint09_27_validation_and_holdout_report.json",
+        "sha256:14ae2c3a0ebcbbf8e96a50ad5ada06a5ce2b0fc22082f3a225d9becfcee4cebf"
+      ],
+      "title_en": "2022–2026 Chronological Walk-Forward Regime Stability Validation",
+      "sample_size": 8736,
+      "open_evidence_gaps_count": 5,
+      "blocking_reasons": [
+        "Dataset provenance unverified (MISSING_AUTHENTICATED_PROVENANCE).",
+        "Observation completeness evidence insufficient."
+      ],
+      "review_status": "EVIDENCE_CHECK_COMPLETED"
+    },
+    {
+      "research_id": "RLIB-03c6ea53cf3d",
+      "research_title": "Acceptance Test Definition",
+      "research_category": "Kütüphane Çalışması",
+      "research_objective": null,
+      "hypothesis_id": "SPEC-LIB-RLIB-03c6ea53cf3d",
+      "methodology_id": null,
+      "dataset_id": "BTCUSDT-1h",
+      "dataset_version": null,
+      "source_artifact_sha256": "de76c8e29242081eaa85f41fa800ce144fcb91e41107d7289ab4cbeb04244274",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": "2022-06-01T00:00:00Z",
+      "research_period_end": "2022-06-03T00:00:00Z",
+      "research_created_at": "2026-11-08T20:52:22.616526+00:00",
+      "research_updated_at": "2026-11-08T20:52:22.616526+00:00",
+      "research_status": "UNVERIFIED",
+      "scientific_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "statistical_validation_status": "INSUFFICIENT_EVIDENCE",
+      "reproducibility_status": "REPRODUCTION_BLOCKED",
+      "independence_status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "evidence_integrity_status": "INTEGRITY_VERIFIED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RLIB-03c6ea53cf3d-A2F56647"
+      ],
+      "related_artifacts": [
+        "/app/data/prospective/research_library/RLIB-03c6ea53cf3d.json",
+        "sha256:de76c8e29242081eaa85f41fa800ce144fcb91e41107d7289ab4cbeb04244274"
+      ],
+      "title_en": "Definition for Playwright E2E verification",
+      "sample_size": null,
+      "open_evidence_gaps_count": 4,
+      "blocking_reasons": [
+        "Dataset provenance unverified (MISSING_AUTHENTICATED_PROVENANCE).",
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "review_status": "EVIDENCE_CHECK_COMPLETED"
+    },
+    {
+      "research_id": "RLIB-07c7c65c7e91",
+      "research_title": "Acceptance Test Definition",
+      "research_category": "Kütüphane Çalışması",
+      "research_objective": null,
+      "hypothesis_id": "SPEC-LIB-RLIB-07c7c65c7e91",
+      "methodology_id": null,
+      "dataset_id": "BTCUSDT-1h",
+      "dataset_version": null,
+      "source_artifact_sha256": "3ca1b02a8b185fcd12554fead907099da6bf6c54dee6bd5e58f1b18f038dcd2e",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": "2022-06-01T00:00:00Z",
+      "research_period_end": "2022-06-03T00:00:00Z",
+      "research_created_at": "2026-11-05T23:18:51.119140+00:00",
+      "research_updated_at": "2026-11-05T23:18:51.119140+00:00",
+      "research_status": "UNVERIFIED",
+      "scientific_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "statistical_validation_status": "INSUFFICIENT_EVIDENCE",
+      "reproducibility_status": "REPRODUCTION_BLOCKED",
+      "independence_status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "evidence_integrity_status": "INTEGRITY_VERIFIED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RLIB-07c7c65c7e91-2056B80A"
+      ],
+      "related_artifacts": [
+        "/app/data/prospective/research_library/RLIB-07c7c65c7e91.json",
+        "sha256:3ca1b02a8b185fcd12554fead907099da6bf6c54dee6bd5e58f1b18f038dcd2e"
+      ],
+      "title_en": "Definition for Playwright E2E verification",
+      "sample_size": null,
+      "open_evidence_gaps_count": 4,
+      "blocking_reasons": [
+        "Dataset provenance unverified (MISSING_AUTHENTICATED_PROVENANCE).",
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "review_status": "EVIDENCE_CHECK_COMPLETED"
+    },
+    {
+      "research_id": "RLIB-2f30980866e9",
+      "research_title": "Acceptance Test Definition",
+      "research_category": "Kütüphane Çalışması",
+      "research_objective": null,
+      "hypothesis_id": "SPEC-LIB-RLIB-2f30980866e9",
+      "methodology_id": null,
+      "dataset_id": "BTCUSDT-1h",
+      "dataset_version": null,
+      "source_artifact_sha256": "dd211e7f6b3e01fba967f9f26e3b377aec84fccafadf6721ed3c590830d63ff8",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": "2022-06-01T00:00:00Z",
+      "research_period_end": "2022-06-03T00:00:00Z",
+      "research_created_at": "2026-11-05T23:13:27.909193+00:00",
+      "research_updated_at": "2026-11-05T23:13:27.909193+00:00",
+      "research_status": "UNVERIFIED",
+      "scientific_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "statistical_validation_status": "INSUFFICIENT_EVIDENCE",
+      "reproducibility_status": "REPRODUCTION_BLOCKED",
+      "independence_status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "evidence_integrity_status": "INTEGRITY_VERIFIED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RLIB-2f30980866e9-2F4CDD1C"
+      ],
+      "related_artifacts": [
+        "/app/data/prospective/research_library/RLIB-2f30980866e9.json",
+        "sha256:dd211e7f6b3e01fba967f9f26e3b377aec84fccafadf6721ed3c590830d63ff8"
+      ],
+      "title_en": "Definition for Playwright E2E verification",
+      "sample_size": null,
+      "open_evidence_gaps_count": 4,
+      "blocking_reasons": [
+        "Dataset provenance unverified (MISSING_AUTHENTICATED_PROVENANCE).",
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "review_status": "EVIDENCE_CHECK_COMPLETED"
+    },
+    {
+      "research_id": "RLIB-3c104ed0c333",
+      "research_title": "E2E Kabul Kütüphane Tanımı",
+      "research_category": "Kütüphane Çalışması",
+      "research_objective": null,
+      "hypothesis_id": "SPEC-LIB-RLIB-3c104ed0c333",
+      "methodology_id": null,
+      "dataset_id": "BTCUSDT-1h",
+      "dataset_version": null,
+      "source_artifact_sha256": "65667ba31904815d77513d51184cafb99503686c57d3e5bfa39752f4d24e0c6c",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": "2022-06-01T00:00:00Z",
+      "research_period_end": "2022-06-15T00:00:00Z",
+      "research_created_at": "2026-11-05T12:02:30.861772+00:00",
+      "research_updated_at": "2026-11-05T12:02:30.861772+00:00",
+      "research_status": "UNVERIFIED",
+      "scientific_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "statistical_validation_status": "INSUFFICIENT_EVIDENCE",
+      "reproducibility_status": "REPRODUCTION_BLOCKED",
+      "independence_status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "evidence_integrity_status": "INTEGRITY_VERIFIED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RLIB-3c104ed0c333-E9E0ED10"
+      ],
+      "related_artifacts": [
+        "/app/data/prospective/research_library/RLIB-3c104ed0c333.json",
+        "sha256:65667ba31904815d77513d51184cafb99503686c57d3e5bfa39752f4d24e0c6c"
+      ],
+      "title_en": "Playwright Gerçek Kütüphane Rapor Entegrasyonu",
+      "sample_size": null,
+      "open_evidence_gaps_count": 4,
+      "blocking_reasons": [
+        "Dataset provenance unverified (MISSING_AUTHENTICATED_PROVENANCE).",
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "review_status": "EVIDENCE_CHECK_COMPLETED"
+    },
+    {
+      "research_id": "RLIB-669a3bc52ddf",
+      "research_title": "Acceptance Test Definition",
+      "research_category": "Kütüphane Çalışması",
+      "research_objective": null,
+      "hypothesis_id": "SPEC-LIB-RLIB-669a3bc52ddf",
+      "methodology_id": null,
+      "dataset_id": "BTCUSDT-1h",
+      "dataset_version": null,
+      "source_artifact_sha256": "413ebd1e48dcfe8ddc963376dcb3bef47782cb6283a2c7a1b976139cad45e1c1",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": "2022-06-01T00:00:00Z",
+      "research_period_end": "2022-06-03T00:00:00Z",
+      "research_created_at": "2026-11-08T21:31:14.744757+00:00",
+      "research_updated_at": "2026-11-08T21:31:14.744757+00:00",
+      "research_status": "UNVERIFIED",
+      "scientific_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "statistical_validation_status": "INSUFFICIENT_EVIDENCE",
+      "reproducibility_status": "REPRODUCTION_BLOCKED",
+      "independence_status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "evidence_integrity_status": "INTEGRITY_VERIFIED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RLIB-669a3bc52ddf-B4385F03"
+      ],
+      "related_artifacts": [
+        "/app/data/prospective/research_library/RLIB-669a3bc52ddf.json",
+        "sha256:413ebd1e48dcfe8ddc963376dcb3bef47782cb6283a2c7a1b976139cad45e1c1"
+      ],
+      "title_en": "Definition for Playwright E2E verification",
+      "sample_size": null,
+      "open_evidence_gaps_count": 4,
+      "blocking_reasons": [
+        "Dataset provenance unverified (MISSING_AUTHENTICATED_PROVENANCE).",
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "review_status": "EVIDENCE_CHECK_COMPLETED"
+    },
+    {
+      "research_id": "RLIB-7b0cb4781b20",
+      "research_title": "Acceptance Test Definition",
+      "research_category": "Kütüphane Çalışması",
+      "research_objective": null,
+      "hypothesis_id": "SPEC-LIB-RLIB-7b0cb4781b20",
+      "methodology_id": null,
+      "dataset_id": "BTCUSDT-1h",
+      "dataset_version": null,
+      "source_artifact_sha256": "3fc10ff1eadb88801187df560c4dc29956142d532e636f6d53e28480828e4d15",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": "2022-06-01T00:00:00Z",
+      "research_period_end": "2022-06-03T00:00:00Z",
+      "research_created_at": "2026-11-08T20:53:58.424570+00:00",
+      "research_updated_at": "2026-11-08T20:53:58.424570+00:00",
+      "research_status": "UNVERIFIED",
+      "scientific_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "statistical_validation_status": "INSUFFICIENT_EVIDENCE",
+      "reproducibility_status": "REPRODUCTION_BLOCKED",
+      "independence_status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "evidence_integrity_status": "INTEGRITY_VERIFIED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RLIB-7b0cb4781b20-0A18268D"
+      ],
+      "related_artifacts": [
+        "/app/data/prospective/research_library/RLIB-7b0cb4781b20.json",
+        "sha256:3fc10ff1eadb88801187df560c4dc29956142d532e636f6d53e28480828e4d15"
+      ],
+      "title_en": "Definition for Playwright E2E verification",
+      "sample_size": null,
+      "open_evidence_gaps_count": 4,
+      "blocking_reasons": [
+        "Dataset provenance unverified (MISSING_AUTHENTICATED_PROVENANCE).",
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "review_status": "EVIDENCE_CHECK_COMPLETED"
+    },
+    {
+      "research_id": "RLIB-c5730b081950",
+      "research_title": "Playwright Sprint 21 Verified Library Item",
+      "research_category": "Kütüphane Çalışması",
+      "research_objective": null,
+      "hypothesis_id": "SPEC-LIB-RLIB-c5730b081950",
+      "methodology_id": null,
+      "dataset_id": "BTCUSDT-1h",
+      "dataset_version": null,
+      "source_artifact_sha256": "7d3a39550d5fa8754dd3d580855da42bb0c2871e261d5891ea2ba11be0994af5",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": "2022-06-01T00:00:00Z",
+      "research_period_end": "2022-06-15T00:00:00Z",
+      "research_created_at": "2026-11-02T23:44:28.405598+00:00",
+      "research_updated_at": "2026-11-02T23:44:28.405598+00:00",
+      "research_status": "UNVERIFIED",
+      "scientific_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "statistical_validation_status": "INSUFFICIENT_EVIDENCE",
+      "reproducibility_status": "REPRODUCTION_BLOCKED",
+      "independence_status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "evidence_integrity_status": "INTEGRITY_VERIFIED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RLIB-c5730b081950-C29735D6"
+      ],
+      "related_artifacts": [
+        "data/research_library/RLIB-c5730b081950.json",
+        "sha256:7d3a39550d5fa8754dd3d580855da42bb0c2871e261d5891ea2ba11be0994af5"
+      ],
+      "title_en": "E2E automated verification item",
+      "sample_size": null,
+      "open_evidence_gaps_count": 4,
+      "blocking_reasons": [
+        "Dataset provenance unverified (MISSING_AUTHENTICATED_PROVENANCE).",
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "review_status": "EVIDENCE_CHECK_COMPLETED"
+    },
+    {
+      "research_id": "RLIB-dbb10adc0f69",
+      "research_title": "Sprint 22 Rapor Tanımı",
+      "research_category": "Kütüphane Çalışması",
+      "research_objective": null,
+      "hypothesis_id": "SPEC-LIB-RLIB-dbb10adc0f69",
+      "methodology_id": null,
+      "dataset_id": "BTCUSDT-1h",
+      "dataset_version": null,
+      "source_artifact_sha256": "4f017576070ac3cd1e710ee1abec853eb547020ee6eb3a4acabd87fa65f80815",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": "2022-06-01T00:00:00Z",
+      "research_period_end": "2022-06-03T00:00:00Z",
+      "research_created_at": "2026-11-05T00:52:29.098876+00:00",
+      "research_updated_at": "2026-11-05T00:52:29.098876+00:00",
+      "research_status": "UNVERIFIED",
+      "scientific_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "statistical_validation_status": "INSUFFICIENT_EVIDENCE",
+      "reproducibility_status": "REPRODUCTION_BLOCKED",
+      "independence_status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "evidence_integrity_status": "INTEGRITY_VERIFIED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RLIB-dbb10adc0f69-7A21285D"
+      ],
+      "related_artifacts": [
+        "/app/data/prospective/research_library/RLIB-dbb10adc0f69.json",
+        "sha256:4f017576070ac3cd1e710ee1abec853eb547020ee6eb3a4acabd87fa65f80815"
+      ],
+      "title_en": "Raporlama testi",
+      "sample_size": null,
+      "open_evidence_gaps_count": 4,
+      "blocking_reasons": [
+        "Dataset provenance unverified (MISSING_AUTHENTICATED_PROVENANCE).",
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "review_status": "EVIDENCE_CHECK_COMPLETED"
+    },
+    {
+      "research_id": "RLIB-ee060f623584",
+      "research_title": "Playwright Sprint 21 Verified Library Item",
+      "research_category": "Kütüphane Çalışması",
+      "research_objective": null,
+      "hypothesis_id": "SPEC-LIB-RLIB-ee060f623584",
+      "methodology_id": null,
+      "dataset_id": "BTCUSDT-1h",
+      "dataset_version": null,
+      "source_artifact_sha256": "1af6c92f6e2f0b3c01ab7f7227fe88826f4986940e49074b2015716541b7be01",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": "2022-06-01T00:00:00Z",
+      "research_period_end": "2022-06-15T00:00:00Z",
+      "research_created_at": "2026-11-02T23:42:14.529487+00:00",
+      "research_updated_at": "2026-11-02T23:42:14.529487+00:00",
+      "research_status": "UNVERIFIED",
+      "scientific_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "statistical_validation_status": "INSUFFICIENT_EVIDENCE",
+      "reproducibility_status": "REPRODUCTION_BLOCKED",
+      "independence_status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "evidence_integrity_status": "INTEGRITY_VERIFIED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RLIB-ee060f623584-3A76DF87"
+      ],
+      "related_artifacts": [
+        "data/research_library/RLIB-ee060f623584.json",
+        "sha256:1af6c92f6e2f0b3c01ab7f7227fe88826f4986940e49074b2015716541b7be01"
+      ],
+      "title_en": "E2E automated verification item",
+      "sample_size": null,
+      "open_evidence_gaps_count": 4,
+      "blocking_reasons": [
+        "Dataset provenance unverified (MISSING_AUTHENTICATED_PROVENANCE).",
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "review_status": "EVIDENCE_CHECK_COMPLETED"
+    },
+    {
+      "research_id": "RLIB-f93d9176002d",
+      "research_title": "Acceptance Test Definition",
+      "research_category": "Kütüphane Çalışması",
+      "research_objective": null,
+      "hypothesis_id": "SPEC-LIB-RLIB-f93d9176002d",
+      "methodology_id": null,
+      "dataset_id": "BTCUSDT-1h",
+      "dataset_version": null,
+      "source_artifact_sha256": "9ca88e77b131a981d0237b105caff21f7a3976311bbe7e98472280ab3e28bcb9",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": "2022-06-01T00:00:00Z",
+      "research_period_end": "2022-06-03T00:00:00Z",
+      "research_created_at": "2026-11-09T17:54:55.285543+00:00",
+      "research_updated_at": "2026-11-09T17:54:55.285543+00:00",
+      "research_status": "UNVERIFIED",
+      "scientific_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "statistical_validation_status": "INSUFFICIENT_EVIDENCE",
+      "reproducibility_status": "REPRODUCTION_BLOCKED",
+      "independence_status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "evidence_integrity_status": "INTEGRITY_VERIFIED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RLIB-f93d9176002d-DDEC1A72"
+      ],
+      "related_artifacts": [
+        "/app/data/prospective/research_library/RLIB-f93d9176002d.json",
+        "sha256:9ca88e77b131a981d0237b105caff21f7a3976311bbe7e98472280ab3e28bcb9"
+      ],
+      "title_en": "Definition for Playwright E2E verification",
+      "sample_size": null,
+      "open_evidence_gaps_count": 4,
+      "blocking_reasons": [
+        "Dataset provenance unverified (MISSING_AUTHENTICATED_PROVENANCE).",
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "review_status": "EVIDENCE_CHECK_COMPLETED"
+    },
+    {
+      "research_id": "RLIB-f9ddf66ba096",
+      "research_title": "Sprint 22 Library Report Test",
+      "research_category": "Kütüphane Çalışması",
+      "research_objective": null,
+      "hypothesis_id": "SPEC-LIB-RLIB-f9ddf66ba096",
+      "methodology_id": null,
+      "dataset_id": "BTCUSDT-1h",
+      "dataset_version": null,
+      "source_artifact_sha256": "8b9c1018b20224a85c136e5c68cd759b05c7fdceea7b0ace549891a5163f4e22",
+      "canonical_model_version": "CBE-0.7.0",
+      "research_period_start": "2022-06-01T00:00:00Z",
+      "research_period_end": "2022-06-15T00:00:00Z",
+      "research_created_at": "2026-11-03T05:23:31.967348+00:00",
+      "research_updated_at": "2026-11-03T05:23:31.967348+00:00",
+      "research_status": "UNVERIFIED",
+      "scientific_readiness_status": "INSUFFICIENT_EVIDENCE",
+      "statistical_validation_status": "INSUFFICIENT_EVIDENCE",
+      "reproducibility_status": "REPRODUCTION_BLOCKED",
+      "independence_status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "evidence_integrity_status": "INTEGRITY_VERIFIED",
+      "governance_status": "TECHNICAL_NO_GO | LIVE_TRADING_PROHIBITED",
+      "related_experiments": [
+        "EXP-RLIB-f9ddf66ba096-751E1790"
+      ],
+      "related_artifacts": [
+        "data/research_library/RLIB-f9ddf66ba096.json",
+        "sha256:8b9c1018b20224a85c136e5c68cd759b05c7fdceea7b0ace549891a5163f4e22"
+      ],
+      "title_en": "",
+      "sample_size": null,
+      "open_evidence_gaps_count": 4,
+      "blocking_reasons": [
+        "Dataset provenance unverified (MISSING_AUTHENTICATED_PROVENANCE).",
+        "Observation completeness evidence insufficient.",
+        "Insufficient sample size (0 < 100).",
+        "No allowlisted reproduction procedure."
+      ],
+      "review_status": "EVIDENCE_CHECK_COMPLETED"
+    }
+  ]
+}

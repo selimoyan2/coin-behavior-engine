@@ -1,0 +1,58 @@
+{
+  "suite": "SPRINT_27_PLAYWRIGHT_ACCEPTANCE",
+  "sprint_id": "CBE_SPRINT27_SCIENTIFIC_RESEARCH_PORTFOLIO",
+  "timestamp_utc": "2026-11-11T22:27:18.084016+00:00",
+  "base_url": "http://127.0.0.1:18099",
+  "viewports_tested": [
+    "1440x900",
+    "768x1024",
+    "390x844"
+  ],
+  "console_error_count": 0,
+  "uncaught_pageerror_count": 0,
+  "failed_network_request_count": 0,
+  "tests": [
+    {
+      "name": "desktop_portfolio_overview_v5",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    },
+    {
+      "name": "desktop_experiment_registry_and_timeline_v5",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    },
+    {
+      "name": "tablet_cross_experiment_comparison_v5",
+      "viewport": "768x1024",
+      "status": "PASSED"
+    },
+    {
+      "name": "tablet_evidence_traceability_explorer_v5",
+      "viewport": "768x1024",
+      "status": "PASSED"
+    },
+    {
+      "name": "mobile_findings_and_contradictions_v5",
+      "viewport": "390x844",
+      "status": "PASSED"
+    },
+    {
+      "name": "mobile_review_workflow_and_report_builder_v5",
+      "viewport": "390x844",
+      "status": "PASSED"
+    },
+    {
+      "name": "existing_sprint20_to_26_views_preserved",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    }
+  ],
+  "screenshots": {
+    "desktop_1440x900_portfolio_and_timeline": "research_outputs\\sprint27_scientific_research_portfolio\\screenshots\\desktop_1440x900_portfolio_and_timeline.png",
+    "tablet_768x1024_comparison_and_traceability": "research_outputs\\sprint27_scientific_research_portfolio\\screenshots\\tablet_768x1024_comparison_and_traceability.png",
+    "mobile_390x844_reviews_and_reports": "research_outputs\\sprint27_scientific_research_portfolio\\screenshots\\mobile_390x844_reviews_and_reports.png"
+  },
+  "status": "ALL_PASSED",
+  "performance_benchmarks_summary": "ALL_SLA_TARGETS_MET"
+}

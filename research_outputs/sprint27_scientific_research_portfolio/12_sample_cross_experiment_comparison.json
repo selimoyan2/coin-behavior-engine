@@ -1,0 +1,198 @@
+{
+  "status": "success",
+  "comparison": {
+    "comparison_id": "CMP-V5-E3E506A3",
+    "candidate_ids": [
+      "RES-REGIME-01",
+      "RES-ANALOG-01"
+    ],
+    "comparison_verdict": "CONDITIONALLY_COMPARABLE",
+    "is_inferentially_comparable": false,
+    "rejection_or_downgrade_reasons": [
+      "observation_periods_identified: MISSING_OBSERVATION_BOUNDARIES (One or more candidates lack verifiable UTC observation window boundaries.)",
+      "dataset_overlap_quantified: INSUFFICIENT_OVERLAP_EVIDENCE (Temporal overlap check did not pass for direct inferential comparison (INSUFFICIENT_OVERLAP_EVIDENCE, shared=0).)",
+      "statistical_procedures_comparable: STATISTICAL_PROCEDURE_DIVERGENCE (Statistical validation procedures differ or are unavailable: ['MOVING_BLOCK_BOOTSTRAP (block_size=10)', 'MOVING_BLOCK_BOOTSTRAP (block_size=13)'].)"
+    ],
+    "comparability_gate_checks": {
+      "metric_definitions_match": {
+        "gate_key": "metric_definitions_match",
+        "passed": true,
+        "status_code": "METRIC_DEFINITIONS_MATCHED",
+        "explanation": "All candidates share primary metric contract 'sample_size'."
+      },
+      "units_match": {
+        "gate_key": "units_match",
+        "passed": true,
+        "status_code": "UNITS_MATCHED",
+        "explanation": "All candidates share measurement unit 'observations'."
+      },
+      "methodologies_compatible": {
+        "gate_key": "methodologies_compatible",
+        "passed": true,
+        "status_code": "METHODOLOGIES_COMPATIBLE",
+        "explanation": "Sampling cadence (1h) and estimator (DISCRETE_OBSERVATION_COUNT) are compatible."
+      },
+      "observation_periods_identified": {
+        "gate_key": "observation_periods_identified",
+        "passed": false,
+        "status_code": "MISSING_OBSERVATION_BOUNDARIES",
+        "explanation": "One or more candidates lack verifiable UTC observation window boundaries."
+      },
+      "dataset_overlap_quantified": {
+        "gate_key": "dataset_overlap_quantified",
+        "passed": false,
+        "status_code": "INSUFFICIENT_OVERLAP_EVIDENCE",
+        "explanation": "Temporal overlap check did not pass for direct inferential comparison (INSUFFICIENT_OVERLAP_EVIDENCE, shared=0)."
+      },
+      "model_versions_compatible": {
+        "gate_key": "model_versions_compatible",
+        "passed": true,
+        "status_code": "MODEL_VERSIONS_COMPATIBLE",
+        "explanation": "All candidates evaluated under frozen canonical model CBE-0.7.0."
+      },
+      "statistical_procedures_comparable": {
+        "gate_key": "statistical_procedures_comparable",
+        "passed": false,
+        "status_code": "STATISTICAL_PROCEDURE_DIVERGENCE",
+        "explanation": "Statistical validation procedures differ or are unavailable: ['MOVING_BLOCK_BOOTSTRAP (block_size=10)', 'MOVING_BLOCK_BOOTSTRAP (block_size=13)']."
+      },
+      "evidence_provenance_established": {
+        "gate_key": "evidence_provenance_established",
+        "passed": true,
+        "status_code": "PROVENANCE_VERIFIED",
+        "explanation": "All candidates have cryptographically verified dataset provenance and physical source artifacts."
+      }
+    },
+    "temporal_overlap_summary": {
+      "overlap_valid": false,
+      "rejection_code": "INSUFFICIENT_OVERLAP_EVIDENCE",
+      "rejection_reason_tr": "Kayıt RES-REGIME-01 için doğrulanabilir gözlem zaman sınırları (start/end UTC) bulunamadı; örtüşme kanıtı yetersiz.",
+      "shared_interval_count": 0
+    },
+    "sample_independence_verdict": "OVERLAPPING_SAMPLES_NOT_INDEPENDENT (shared_observations=0; cannot be treated as independent replication)",
+    "dimension_comparison_matrix": {
+      "research_objective": {
+        "RES-REGIME-01": "Çoklu test kontrollerinde (Bonferroni ve FDR) hipotez ailesi anlamlılık eşiğini aşamamıştır (min p = 0.1738).",
+        "RES-ANALOG-01": "Zaman ekseninde normalize edilmiş DTW mesafesi en düşük analoglarda rejim tutarlılığı %76.4 olarak saptanmıştır."
+      },
+      "hypothesis_definition": {
+        "RES-REGIME-01": "SPEC-002-WALK-FORWARD",
+        "RES-ANALOG-01": "SPEC-003-DTW-ANALOGS"
+      },
+      "methodology_and_estimator": {
+        "RES-REGIME-01": {
+          "metric_id": "sample_size",
+          "estimator": "DISCRETE_OBSERVATION_COUNT",
+          "unit": "observations",
+          "cadence": "1h"
+        },
+        "RES-ANALOG-01": {
+          "metric_id": "sample_size",
+          "estimator": "DISCRETE_OBSERVATION_COUNT",
+          "unit": "observations",
+          "cadence": "1h"
+        }
+      },
+      "dataset_identity_and_coverage": {
+        "RES-REGIME-01": {
+          "dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
+          "historical_period": "2022-01-01 to 2026-09-01 (4.6 yıl)"
+        },
+        "RES-ANALOG-01": {
+          "dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
+          "historical_period": "2022-01-01 to 2026-09-01 (4.6 yıl)"
+        }
+      },
+      "observation_period": {
+        "RES-REGIME-01": {
+          "start_utc": null,
+          "end_utc": null
+        },
+        "RES-ANALOG-01": {
+          "start_utc": "2022-06-01T00:00:00+00:00",
+          "end_utc": "2022-06-15T00:00:00+00:00"
+        }
+      },
+      "sample_size_and_effective_sample_size": {
+        "RES-REGIME-01": {
+          "reported_sample_size": 8736,
+          "effective_sample_size": 597.37
+        },
+        "RES-ANALOG-01": {
+          "reported_sample_size": 860,
+          "effective_sample_size": 271.27
+        }
+      },
+      "statistical_uncertainty": {
+        "RES-REGIME-01": {
+          "raw_p_value": 0.1738,
+          "adjusted_p_or_q_value": 0.1738,
+          "correction_method": "benjamini_hochberg_fdr"
+        },
+        "RES-ANALOG-01": {
+          "raw_p_value": null,
+          "adjusted_p_or_q_value": null,
+          "correction_method": null
+        }
+      },
+      "confidence_intervals": {
+        "RES-REGIME-01": {
+          "ci_lower": 0.0046,
+          "ci_upper": 0.0054,
+          "method": "MOVING_BLOCK_BOOTSTRAP (block_size=13)"
+        },
+        "RES-ANALOG-01": {
+          "ci_lower": 0.004,
+          "ci_upper": 0.0051,
+          "method": "MOVING_BLOCK_BOOTSTRAP (block_size=10)"
+        }
+      },
+      "effect_sizes": {
+        "RES-REGIME-01": {
+          "cohens_d": 0.2996,
+          "cliffs_delta": 0.2011
+        },
+        "RES-ANALOG-01": {
+          "cohens_d": -0.4754,
+          "cliffs_delta": -0.3035
+        }
+      },
+      "walk_forward_behavior": {
+        "RES-REGIME-01": "NOT_APPLICABLE_OR_UNRUN",
+        "RES-ANALOG-01": "NOT_APPLICABLE_OR_UNRUN"
+      },
+      "regime_stability": {
+        "RES-REGIME-01": "NOT_EVALUATED",
+        "RES-ANALOG-01": "NOT_EVALUATED"
+      },
+      "robustness_and_sensitivity": {
+        "RES-REGIME-01": "INSUFFICIENT_EVIDENCE",
+        "RES-ANALOG-01": "INSUFFICIENT_EVIDENCE"
+      },
+      "reproducibility_status": {
+        "RES-REGIME-01": "REPRODUCTION_BLOCKED",
+        "RES-ANALOG-01": "REPRODUCTION_BLOCKED"
+      },
+      "independent_validation_status": {
+        "RES-REGIME-01": "REPLICATION_NOT_ESTABLISHED",
+        "RES-ANALOG-01": "REPLICATION_NOT_ESTABLISHED"
+      },
+      "evidence_integrity_status": {
+        "RES-REGIME-01": "UNVERIFIED_OR_BLOCKED",
+        "RES-ANALOG-01": "UNVERIFIED_OR_BLOCKED"
+      },
+      "scientific_readiness_verdict": {
+        "RES-REGIME-01": "INSUFFICIENT_EVIDENCE",
+        "RES-ANALOG-01": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    "scientific_warnings": [
+      "Studies are never ranked by raw p-value alone; effect sizes, CIs, and FDR-adjusted significance must be interpreted together.",
+      "Overlapping historical observation windows measure the same underlying market trajectory and do not constitute independent replication.",
+      "Missing metrics or uncertainty intervals are preserved explicitly as None and never imputed with zero."
+    ],
+    "evaluated_at_utc": "2026-11-11T22:32:48Z",
+    "canonical_model": "CBE-0.7.0",
+    "governance_decision": "TECHNICAL_NO_GO"
+  }
+}

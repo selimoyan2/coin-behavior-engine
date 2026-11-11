@@ -1,0 +1,745 @@
+{
+  "status": "success",
+  "experiment_id": "ALL",
+  "event_count": 50,
+  "timeline_chain_integrity": {
+    "chain_valid": true,
+    "rejection_code": null,
+    "total_events_verified": 50,
+    "head_event_digest": "c4e261963ef567f4868775068c85506ec4066604da23ecea9481b18193aa6ebf"
+  },
+  "events": [
+    {
+      "event_id": "TLE-0001-EXP-RES-FUND-01-E3C098B0",
+      "experiment_id": "EXP-RES-FUND-01-E3C098B0",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-09-12T10:00:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "66b76f7b8efc2818ec5ce28efe70f70fffe3fb108832dd680776b7d3d5377692",
+      "previous_event_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+      "payload": {
+        "research_id": "RES-FUND-01",
+        "dataset_id": "BTCUSDT-PERP-FUNDING-2022-2026",
+        "methodology_id": "METH-QUARANTINE-FORENSIC-1.0"
+      },
+      "event_digest": "558c2fc535005e81e97c9b04392ac288a184f12498e6f8067e6b5e516b617ac1"
+    },
+    {
+      "event_id": "TLE-0002-EXP-RES-FUND-01-E3C098B0",
+      "experiment_id": "EXP-RES-FUND-01-E3C098B0",
+      "event_type": "EXECUTION_COMPLETED",
+      "event_timestamp": "2026-09-12T10:02:15Z",
+      "event_source": "CBE_OFFLINE_RUNNER",
+      "event_payload_digest": "31906d63d35145228050508e1b67299da843b9ab5af9a4986397afd27ebaf50e",
+      "previous_event_digest": "558c2fc535005e81e97c9b04392ac288a184f12498e6f8067e6b5e516b617ac1",
+      "payload": {
+        "attempt_id": "ATT-EXP-RES-FUND-01-E3C098B0-01",
+        "result_digest": "4c5464c5c4244dc29fbbe4f21ba59ecad1d14c0ae73e76c644a3451dd1de5ace"
+      },
+      "event_digest": "be27657edf3d8d3d2093c8a868ada37de2d97570386284ed44cfd3eca417e548"
+    },
+    {
+      "event_id": "TLE-0003-EXP-RES-FUND-01-E3C098B0",
+      "experiment_id": "EXP-RES-FUND-01-E3C098B0",
+      "event_type": "EVIDENCE_VERIFIED",
+      "event_timestamp": "2026-09-12T10:02:15Z",
+      "event_source": "CBE_EVIDENCE_VERIFIER",
+      "event_payload_digest": "fbbae74fdbea8b8884ad8ec4bb7d10a8b19e6cd71e2599ef4f55c8fd126e4553",
+      "previous_event_digest": "be27657edf3d8d3d2093c8a868ada37de2d97570386284ed44cfd3eca417e548",
+      "payload": {
+        "provenance_verdict": "INTEGRITY_VERIFIED",
+        "reproducibility_verdict": "OUTPUTS_MATCHED",
+        "validation_verdict": "EXPLORATORY_FINDING"
+      },
+      "event_digest": "e53a2de45df91d5443f145ea67f89cd1733bd3d28022911325c77fcd394e5e8b"
+    },
+    {
+      "event_id": "TLE-0004-EXP-RES-REGIME-01-96E369FA",
+      "experiment_id": "EXP-RES-REGIME-01-96E369FA",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-09-18T14:15:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "eb8cb0a2bea33b4866bd50360f197e1191a0720151d09ff550ed0e09c5936974",
+      "previous_event_digest": "e53a2de45df91d5443f145ea67f89cd1733bd3d28022911325c77fcd394e5e8b",
+      "payload": {
+        "research_id": "RES-REGIME-01",
+        "dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
+        "methodology_id": "METH-WALK-FORWARD-REGIME-1.0"
+      },
+      "event_digest": "b6919dd959d3751a06daa2af3b1cead367164bd0afda63a5ed2e5ff059c9963d"
+    },
+    {
+      "event_id": "TLE-0005-EXP-RES-REGIME-01-96E369FA",
+      "experiment_id": "EXP-RES-REGIME-01-96E369FA",
+      "event_type": "EXECUTION_COMPLETED",
+      "event_timestamp": "2026-09-18T14:18:40Z",
+      "event_source": "CBE_OFFLINE_RUNNER",
+      "event_payload_digest": "58ad44200327f8e1cdc5d4952263cfa86cd73f7a1f8f601ad0abb94729685643",
+      "previous_event_digest": "b6919dd959d3751a06daa2af3b1cead367164bd0afda63a5ed2e5ff059c9963d",
+      "payload": {
+        "attempt_id": "ATT-EXP-RES-REGIME-01-96E369FA-01",
+        "result_digest": "26e773464798e6bcef7a804872d7a4c76031af1afa90bc8af942a960b5fb65ab"
+      },
+      "event_digest": "2e6558343d12bceadc561f13e8583ac1219282c7ab668cc3c28d97cac49a8494"
+    },
+    {
+      "event_id": "TLE-0006-EXP-RES-REGIME-01-96E369FA",
+      "experiment_id": "EXP-RES-REGIME-01-96E369FA",
+      "event_type": "EVIDENCE_VERIFIED",
+      "event_timestamp": "2026-09-18T14:18:40Z",
+      "event_source": "CBE_EVIDENCE_VERIFIER",
+      "event_payload_digest": "fbbae74fdbea8b8884ad8ec4bb7d10a8b19e6cd71e2599ef4f55c8fd126e4553",
+      "previous_event_digest": "2e6558343d12bceadc561f13e8583ac1219282c7ab668cc3c28d97cac49a8494",
+      "payload": {
+        "provenance_verdict": "INTEGRITY_VERIFIED",
+        "reproducibility_verdict": "OUTPUTS_MATCHED",
+        "validation_verdict": "EXPLORATORY_FINDING"
+      },
+      "event_digest": "fc33b3c8b2390ea3042341a32e06ca9a1859917eef91440afa19cea4f343cf54"
+    },
+    {
+      "event_id": "TLE-0007-EXP-RES-ANALOG-01-439D4C6E",
+      "experiment_id": "EXP-RES-ANALOG-01-439D4C6E",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-09-25T09:30:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "720377f9b4a47d8c0deb6d130155e8c2033538310fb1994840033997c846e344",
+      "previous_event_digest": "fc33b3c8b2390ea3042341a32e06ca9a1859917eef91440afa19cea4f343cf54",
+      "payload": {
+        "research_id": "RES-ANALOG-01",
+        "dataset_id": "BTCUSDT-SPOT-1H-2022-2026",
+        "methodology_id": "METH-DTW-ANALOG-1.0"
+      },
+      "event_digest": "1ee7cfe23e82ddf1adf97fc8e24b4bbc9ef52abe615ecd7805363de551c6a2ef"
+    },
+    {
+      "event_id": "TLE-0008-EXP-RES-ANALOG-01-439D4C6E",
+      "experiment_id": "EXP-RES-ANALOG-01-439D4C6E",
+      "event_type": "EXECUTION_COMPLETED",
+      "event_timestamp": "2026-09-25T09:34:10Z",
+      "event_source": "CBE_OFFLINE_RUNNER",
+      "event_payload_digest": "606fb903d67b3fb4cd1f9946daf9fd464281a77566d2b4746da3fe00b675e038",
+      "previous_event_digest": "1ee7cfe23e82ddf1adf97fc8e24b4bbc9ef52abe615ecd7805363de551c6a2ef",
+      "payload": {
+        "attempt_id": "ATT-EXP-RES-ANALOG-01-439D4C6E-01",
+        "result_digest": "b22a5fc4d3a58ec0c69da290e22d0dfc47a0ac0b3ff9f89b1700db5aeb07040c"
+      },
+      "event_digest": "fcdbc792150464405d187ea66f2207e9f67f8f5cd49a7e3675850d81d9d08c83"
+    },
+    {
+      "event_id": "TLE-0009-EXP-RES-ANALOG-01-439D4C6E",
+      "experiment_id": "EXP-RES-ANALOG-01-439D4C6E",
+      "event_type": "EVIDENCE_VERIFIED",
+      "event_timestamp": "2026-09-25T09:34:10Z",
+      "event_source": "CBE_EVIDENCE_VERIFIER",
+      "event_payload_digest": "fbbae74fdbea8b8884ad8ec4bb7d10a8b19e6cd71e2599ef4f55c8fd126e4553",
+      "previous_event_digest": "fcdbc792150464405d187ea66f2207e9f67f8f5cd49a7e3675850d81d9d08c83",
+      "payload": {
+        "provenance_verdict": "INTEGRITY_VERIFIED",
+        "reproducibility_verdict": "OUTPUTS_MATCHED",
+        "validation_verdict": "EXPLORATORY_FINDING"
+      },
+      "event_digest": "7042521785817343c05a70000317fef203081f6d0f4a012617410a86ef333d55"
+    },
+    {
+      "event_id": "TLE-0010-EXP-RES-MACRO-01-4C84779F",
+      "experiment_id": "EXP-RES-MACRO-01-4C84779F",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-10-02T11:00:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "a02746f874b67e6b8ca73005a81a5bd7583b84b7e8f126f412a3761e78337bb2",
+      "previous_event_digest": "7042521785817343c05a70000317fef203081f6d0f4a012617410a86ef333d55",
+      "payload": {
+        "research_id": "RES-MACRO-01",
+        "dataset_id": "US-MACRO-EVENTS-2022-2026",
+        "methodology_id": "METH-SYMMETRIC-EVENT-STUDY-1.2"
+      },
+      "event_digest": "a09d0a4ba93fe954c0edeb3c9cd6d8458e167dcfb6aa5dff5a476a8803965677"
+    },
+    {
+      "event_id": "TLE-0011-EXP-RES-MACRO-01-4C84779F",
+      "experiment_id": "EXP-RES-MACRO-01-4C84779F",
+      "event_type": "EXECUTION_COMPLETED",
+      "event_timestamp": "2026-10-02T11:03:20Z",
+      "event_source": "CBE_OFFLINE_RUNNER",
+      "event_payload_digest": "6b01757ecf8a67913e359c6a163f98b37e32ec67d424d62440f5d675c4278046",
+      "previous_event_digest": "a09d0a4ba93fe954c0edeb3c9cd6d8458e167dcfb6aa5dff5a476a8803965677",
+      "payload": {
+        "attempt_id": "ATT-EXP-RES-MACRO-01-4C84779F-01",
+        "result_digest": "993b81076311bf4a092763b23e015f924b7f0a25c765206f23c603a780839d5e"
+      },
+      "event_digest": "f12b1c19c930b3d42850114fada88509fad93bffe67221cee35e398e335191dc"
+    },
+    {
+      "event_id": "TLE-0012-EXP-RES-MACRO-01-4C84779F",
+      "experiment_id": "EXP-RES-MACRO-01-4C84779F",
+      "event_type": "EVIDENCE_VERIFIED",
+      "event_timestamp": "2026-10-02T11:03:20Z",
+      "event_source": "CBE_EVIDENCE_VERIFIER",
+      "event_payload_digest": "fbbae74fdbea8b8884ad8ec4bb7d10a8b19e6cd71e2599ef4f55c8fd126e4553",
+      "previous_event_digest": "f12b1c19c930b3d42850114fada88509fad93bffe67221cee35e398e335191dc",
+      "payload": {
+        "provenance_verdict": "INTEGRITY_VERIFIED",
+        "reproducibility_verdict": "OUTPUTS_MATCHED",
+        "validation_verdict": "EXPLORATORY_FINDING"
+      },
+      "event_digest": "0c13c622568c02ec8bb95dbe3faf1285d33b20c806dc8559c715e16b1f49ff8d"
+    },
+    {
+      "event_id": "TLE-0013-EXP-RES-DURABILITY-01-03D12657",
+      "experiment_id": "EXP-RES-DURABILITY-01-03D12657",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-10-10T16:20:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "6194cc46ee440ab50519f05697f094d737a3430f1681c25789e95d31d21e7bb8",
+      "previous_event_digest": "0c13c622568c02ec8bb95dbe3faf1285d33b20c806dc8559c715e16b1f49ff8d",
+      "payload": {
+        "research_id": "RES-DURABILITY-01",
+        "dataset_id": "CBE-SYSTEM-AUDIT-LOGS",
+        "methodology_id": "METH-STORAGE-MOUNTINFO-1.0"
+      },
+      "event_digest": "bebcf156bd77b0a649ef99cbbe8abdce482114d1e0876b22de98a23eccdfa73a"
+    },
+    {
+      "event_id": "TLE-0014-EXP-RES-DURABILITY-01-03D12657",
+      "experiment_id": "EXP-RES-DURABILITY-01-03D12657",
+      "event_type": "EXECUTION_COMPLETED",
+      "event_timestamp": "2026-10-10T16:21:05Z",
+      "event_source": "CBE_OFFLINE_RUNNER",
+      "event_payload_digest": "79d12ad5753a0b71179232ad2010721f90427eec7b02f0facc25ba013fa4784f",
+      "previous_event_digest": "bebcf156bd77b0a649ef99cbbe8abdce482114d1e0876b22de98a23eccdfa73a",
+      "payload": {
+        "attempt_id": "ATT-EXP-RES-DURABILITY-01-03D12657-01",
+        "result_digest": "c15b271a13f0e380abc4380db3f6974d47aa21196c770429ae572e933807204f"
+      },
+      "event_digest": "050c352c60706cf6aac47d660bed5a811fcbb13dcb2d2709bb80d7b42f26821b"
+    },
+    {
+      "event_id": "TLE-0015-EXP-RES-DURABILITY-01-03D12657",
+      "experiment_id": "EXP-RES-DURABILITY-01-03D12657",
+      "event_type": "EVIDENCE_VERIFIED",
+      "event_timestamp": "2026-10-10T16:21:05Z",
+      "event_source": "CBE_EVIDENCE_VERIFIER",
+      "event_payload_digest": "fbbae74fdbea8b8884ad8ec4bb7d10a8b19e6cd71e2599ef4f55c8fd126e4553",
+      "previous_event_digest": "050c352c60706cf6aac47d660bed5a811fcbb13dcb2d2709bb80d7b42f26821b",
+      "payload": {
+        "provenance_verdict": "INTEGRITY_VERIFIED",
+        "reproducibility_verdict": "OUTPUTS_MATCHED",
+        "validation_verdict": "EXPLORATORY_FINDING"
+      },
+      "event_digest": "3ead4160239e977d246e0ef3a558c8fa87af8ddb5100b2c74e5d314d21a3710e"
+    },
+    {
+      "event_id": "TLE-0016-EXP-RES-CRYPTO-01-392DA392",
+      "experiment_id": "EXP-RES-CRYPTO-01-392DA392",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-10-16T08:00:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "0649003cfea8174a46bfd4ecf2864217b0e7d8eaa76d187a7e082fa39dbdf913",
+      "previous_event_digest": "3ead4160239e977d246e0ef3a558c8fa87af8ddb5100b2c74e5d314d21a3710e",
+      "payload": {
+        "research_id": "RES-CRYPTO-01",
+        "dataset_id": "BTCUSDT-OCTOBER-2026-INTAKE",
+        "methodology_id": "METH-QUARANTINE-FORENSIC-1.0"
+      },
+      "event_digest": "ac311bc1bfad02dc0990fb98063d74f4515fce70d2269d8de5ca856ea9bd713a"
+    },
+    {
+      "event_id": "TLE-0017-EXP-RES-CRYPTO-01-392DA392",
+      "experiment_id": "EXP-RES-CRYPTO-01-392DA392",
+      "event_type": "BLOCKED",
+      "event_timestamp": "2026-10-16T08:01:30Z",
+      "event_source": "CBE_PROVENANCE_GATE",
+      "event_payload_digest": "2796434432d71a5b99af6a46a9d1fa121d43faa97ea1c77946926c3e0bb53328",
+      "previous_event_digest": "ac311bc1bfad02dc0990fb98063d74f4515fce70d2269d8de5ca856ea9bd713a",
+      "payload": {
+        "rejection_code": "QUARANTINED_OCTOBER_2026_DATA"
+      },
+      "event_digest": "3cc8c3f089dc2b374c65a5ae5d2c19984889fc24f4ea136fbee7023501f43e1c"
+    },
+    {
+      "event_id": "TLE-0018-EXP-RLIB-c5730b081950-EB4F2785",
+      "experiment_id": "EXP-RLIB-c5730b081950-EB4F2785",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-10-22T12:00:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "eff2153fd1b22c54fb4da4af36e74fc84764603946ac65d7f5c3d169ed0e6b6b",
+      "previous_event_digest": "3cc8c3f089dc2b374c65a5ae5d2c19984889fc24f4ea136fbee7023501f43e1c",
+      "payload": {
+        "research_id": "RLIB-c5730b081950",
+        "dataset_id": "BTCUSDT-1h",
+        "methodology_id": "METH-QUARANTINE-FORENSIC-1.0"
+      },
+      "event_digest": "0c803c14baafde59e0babfa33da56904ec6e5d321f178a1620ed60e030fa83eb"
+    },
+    {
+      "event_id": "TLE-0019-EXP-RLIB-c5730b081950-EB4F2785",
+      "experiment_id": "EXP-RLIB-c5730b081950-EB4F2785",
+      "event_type": "EXECUTION_COMPLETED",
+      "event_timestamp": "2026-10-22T12:00:15Z",
+      "event_source": "CBE_OFFLINE_RUNNER",
+      "event_payload_digest": "edc923c6e51e2cd964eab3b78afb66774b51cc366ba292136bc7fb4de489dad2",
+      "previous_event_digest": "0c803c14baafde59e0babfa33da56904ec6e5d321f178a1620ed60e030fa83eb",
+      "payload": {
+        "attempt_id": "ATT-EXP-RLIB-c5730b081950-EB4F2785-01",
+        "result_digest": "9f35db6180c61243e9854b539f2b9b7c0de05e5a6d4d773b28356d1157a719d2"
+      },
+      "event_digest": "85b937015914e797d763885ec85178e7850913fa5ae8f38afeca7a93cf480327"
+    },
+    {
+      "event_id": "TLE-0020-EXP-RLIB-c5730b081950-EB4F2785",
+      "experiment_id": "EXP-RLIB-c5730b081950-EB4F2785",
+      "event_type": "EVIDENCE_VERIFIED",
+      "event_timestamp": "2026-10-22T12:00:15Z",
+      "event_source": "CBE_EVIDENCE_VERIFIER",
+      "event_payload_digest": "fbbae74fdbea8b8884ad8ec4bb7d10a8b19e6cd71e2599ef4f55c8fd126e4553",
+      "previous_event_digest": "85b937015914e797d763885ec85178e7850913fa5ae8f38afeca7a93cf480327",
+      "payload": {
+        "provenance_verdict": "INTEGRITY_VERIFIED",
+        "reproducibility_verdict": "OUTPUTS_MATCHED",
+        "validation_verdict": "EXPLORATORY_FINDING"
+      },
+      "event_digest": "83ee102013cc1bcb156e3805dca14b0db82f3b46738d1cd64bfe8353d0ed4f33"
+    },
+    {
+      "event_id": "TLE-0021-EXP-RLIB-ee060f623584-99B633E8",
+      "experiment_id": "EXP-RLIB-ee060f623584-99B633E8",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-09-12T10:00:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "2df1ed5fb4b6e3d8942bcfd602e1bd160aa917c206a7c1bc6371c8e715d657c3",
+      "previous_event_digest": "83ee102013cc1bcb156e3805dca14b0db82f3b46738d1cd64bfe8353d0ed4f33",
+      "payload": {
+        "research_id": "RLIB-ee060f623584",
+        "dataset_id": "BTCUSDT-1h",
+        "methodology_id": "METH-QUARANTINE-FORENSIC-1.0"
+      },
+      "event_digest": "b64107f0fb06272bc46302e97574a2f73d4bca85240fc8e1937c991e174c1aff"
+    },
+    {
+      "event_id": "TLE-0022-EXP-RLIB-ee060f623584-99B633E8",
+      "experiment_id": "EXP-RLIB-ee060f623584-99B633E8",
+      "event_type": "EXECUTION_COMPLETED",
+      "event_timestamp": "2026-09-12T10:02:15Z",
+      "event_source": "CBE_OFFLINE_RUNNER",
+      "event_payload_digest": "fbc9cf09e873115e8e162605354ab10c541e7c685521d5b7b6a79d1204233b26",
+      "previous_event_digest": "b64107f0fb06272bc46302e97574a2f73d4bca85240fc8e1937c991e174c1aff",
+      "payload": {
+        "attempt_id": "ATT-EXP-RLIB-ee060f623584-99B633E8-01",
+        "result_digest": "ea281d89353ab7111e66d6cca4e1581d3494e3a941cadf4632295b7a434878bb"
+      },
+      "event_digest": "d2a45053ea761813160783a2b2ce40f0495707368c7cff42cd0c0300afb7597a"
+    },
+    {
+      "event_id": "TLE-0023-EXP-RLIB-ee060f623584-99B633E8",
+      "experiment_id": "EXP-RLIB-ee060f623584-99B633E8",
+      "event_type": "EVIDENCE_VERIFIED",
+      "event_timestamp": "2026-09-12T10:02:15Z",
+      "event_source": "CBE_EVIDENCE_VERIFIER",
+      "event_payload_digest": "fbbae74fdbea8b8884ad8ec4bb7d10a8b19e6cd71e2599ef4f55c8fd126e4553",
+      "previous_event_digest": "d2a45053ea761813160783a2b2ce40f0495707368c7cff42cd0c0300afb7597a",
+      "payload": {
+        "provenance_verdict": "INTEGRITY_VERIFIED",
+        "reproducibility_verdict": "OUTPUTS_MATCHED",
+        "validation_verdict": "EXPLORATORY_FINDING"
+      },
+      "event_digest": "37faf024391f0c3d29cca30723292de160e4145c3ec282cea58929a4c3e3a307"
+    },
+    {
+      "event_id": "TLE-0024-EXP-RLIB-f9ddf66ba096-6983AE3D",
+      "experiment_id": "EXP-RLIB-f9ddf66ba096-6983AE3D",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-09-18T14:15:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "9075e64251e3c3f7239f3350f33f372234095982511d158c82fc3344ef488d87",
+      "previous_event_digest": "37faf024391f0c3d29cca30723292de160e4145c3ec282cea58929a4c3e3a307",
+      "payload": {
+        "research_id": "RLIB-f9ddf66ba096",
+        "dataset_id": "BTCUSDT-1h",
+        "methodology_id": "METH-QUARANTINE-FORENSIC-1.0"
+      },
+      "event_digest": "5bac414308438a810a88ce913c6f553b6a002f0143d78b921858b0f76b5c2d68"
+    },
+    {
+      "event_id": "TLE-0025-EXP-RLIB-f9ddf66ba096-6983AE3D",
+      "experiment_id": "EXP-RLIB-f9ddf66ba096-6983AE3D",
+      "event_type": "EXECUTION_COMPLETED",
+      "event_timestamp": "2026-09-18T14:18:40Z",
+      "event_source": "CBE_OFFLINE_RUNNER",
+      "event_payload_digest": "dc973e831cf2a323468f9836adbb3888418c22ca401a87bf209dd3ad1bf59535",
+      "previous_event_digest": "5bac414308438a810a88ce913c6f553b6a002f0143d78b921858b0f76b5c2d68",
+      "payload": {
+        "attempt_id": "ATT-EXP-RLIB-f9ddf66ba096-6983AE3D-01",
+        "result_digest": "a8c7a4baa037d8b554abb4989c9cf8253d8cb749f54ae5238c2b2196d814b3bf"
+      },
+      "event_digest": "a3291e0e9580bdabb1ab4ed3360e657a9be907abb668674a744b43d26f72590a"
+    },
+    {
+      "event_id": "TLE-0026-EXP-RLIB-f9ddf66ba096-6983AE3D",
+      "experiment_id": "EXP-RLIB-f9ddf66ba096-6983AE3D",
+      "event_type": "EVIDENCE_VERIFIED",
+      "event_timestamp": "2026-09-18T14:18:40Z",
+      "event_source": "CBE_EVIDENCE_VERIFIER",
+      "event_payload_digest": "fbbae74fdbea8b8884ad8ec4bb7d10a8b19e6cd71e2599ef4f55c8fd126e4553",
+      "previous_event_digest": "a3291e0e9580bdabb1ab4ed3360e657a9be907abb668674a744b43d26f72590a",
+      "payload": {
+        "provenance_verdict": "INTEGRITY_VERIFIED",
+        "reproducibility_verdict": "OUTPUTS_MATCHED",
+        "validation_verdict": "EXPLORATORY_FINDING"
+      },
+      "event_digest": "69b67d7a9d0a0269d566c0425c67a6a7dd2236e05e15ddbf5d0d49e64d4dc377"
+    },
+    {
+      "event_id": "TLE-0027-EXP-RLIB-03c6ea53cf3d-336C3CE0",
+      "experiment_id": "EXP-RLIB-03c6ea53cf3d-336C3CE0",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-09-25T09:30:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "60711b944db05fa73ff5e8eb735903db4a34062f587b4e78eae43ee69439be76",
+      "previous_event_digest": "69b67d7a9d0a0269d566c0425c67a6a7dd2236e05e15ddbf5d0d49e64d4dc377",
+      "payload": {
+        "research_id": "RLIB-03c6ea53cf3d",
+        "dataset_id": "BTCUSDT-1h",
+        "methodology_id": "METH-QUARANTINE-FORENSIC-1.0"
+      },
+      "event_digest": "c8ffc1dbdc89f0209eb7c94e741d5046b9380bdae49ca1fac713a1692861b480"
+    },
+    {
+      "event_id": "TLE-0028-EXP-RLIB-03c6ea53cf3d-336C3CE0",
+      "experiment_id": "EXP-RLIB-03c6ea53cf3d-336C3CE0",
+      "event_type": "EXECUTION_COMPLETED",
+      "event_timestamp": "2026-09-25T09:34:10Z",
+      "event_source": "CBE_OFFLINE_RUNNER",
+      "event_payload_digest": "0498b737fcb0b437e30a43b7692a6b344d50d74dd583f3916dbeb94147cbbb03",
+      "previous_event_digest": "c8ffc1dbdc89f0209eb7c94e741d5046b9380bdae49ca1fac713a1692861b480",
+      "payload": {
+        "attempt_id": "ATT-EXP-RLIB-03c6ea53cf3d-336C3CE0-01",
+        "result_digest": "db57f51dd47b62f1914a6c218a61ad2c240496fe89d9e4b7c2d014115b5b915b"
+      },
+      "event_digest": "358b0ebe50f403790a37eafe0cc3f2897dca1696c4a782ef3e5f8e8bb09852c2"
+    },
+    {
+      "event_id": "TLE-0029-EXP-RLIB-03c6ea53cf3d-336C3CE0",
+      "experiment_id": "EXP-RLIB-03c6ea53cf3d-336C3CE0",
+      "event_type": "EVIDENCE_VERIFIED",
+      "event_timestamp": "2026-09-25T09:34:10Z",
+      "event_source": "CBE_EVIDENCE_VERIFIER",
+      "event_payload_digest": "fbbae74fdbea8b8884ad8ec4bb7d10a8b19e6cd71e2599ef4f55c8fd126e4553",
+      "previous_event_digest": "358b0ebe50f403790a37eafe0cc3f2897dca1696c4a782ef3e5f8e8bb09852c2",
+      "payload": {
+        "provenance_verdict": "INTEGRITY_VERIFIED",
+        "reproducibility_verdict": "OUTPUTS_MATCHED",
+        "validation_verdict": "EXPLORATORY_FINDING"
+      },
+      "event_digest": "d1badc48743cb9956bb7926085df74116ebe0d8cc185fd78a1fa3e590c03341e"
+    },
+    {
+      "event_id": "TLE-0030-EXP-RLIB-07c7c65c7e91-CDAF9201",
+      "experiment_id": "EXP-RLIB-07c7c65c7e91-CDAF9201",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-10-02T11:00:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "b6fddf005be580706ed99cf1545160c21d9ece218fa24b67f5a21c5b1b3acac2",
+      "previous_event_digest": "d1badc48743cb9956bb7926085df74116ebe0d8cc185fd78a1fa3e590c03341e",
+      "payload": {
+        "research_id": "RLIB-07c7c65c7e91",
+        "dataset_id": "BTCUSDT-1h",
+        "methodology_id": "METH-QUARANTINE-FORENSIC-1.0"
+      },
+      "event_digest": "25d3b669f064c9266414d35b5a11043f844bf16f65633cd5678ee2af90732901"
+    },
+    {
+      "event_id": "TLE-0031-EXP-RLIB-07c7c65c7e91-CDAF9201",
+      "experiment_id": "EXP-RLIB-07c7c65c7e91-CDAF9201",
+      "event_type": "EXECUTION_COMPLETED",
+      "event_timestamp": "2026-10-02T11:03:20Z",
+      "event_source": "CBE_OFFLINE_RUNNER",
+      "event_payload_digest": "6ddcd5d88078168fe78fd485cae8a9d4f9844ee39788a02652f70045de38583f",
+      "previous_event_digest": "25d3b669f064c9266414d35b5a11043f844bf16f65633cd5678ee2af90732901",
+      "payload": {
+        "attempt_id": "ATT-EXP-RLIB-07c7c65c7e91-CDAF9201-01",
+        "result_digest": "9d4dd2a66b5b661c44609dc092a7fc9a88d5818c3b8f6c247f367a2f0c9a4bb7"
+      },
+      "event_digest": "605ada33bf577a7bf424f28657657aaf127513b2be9ecf4cdb9c8c17cd42017c"
+    },
+    {
+      "event_id": "TLE-0032-EXP-RLIB-07c7c65c7e91-CDAF9201",
+      "experiment_id": "EXP-RLIB-07c7c65c7e91-CDAF9201",
+      "event_type": "EVIDENCE_VERIFIED",
+      "event_timestamp": "2026-10-02T11:03:20Z",
+      "event_source": "CBE_EVIDENCE_VERIFIER",
+      "event_payload_digest": "fbbae74fdbea8b8884ad8ec4bb7d10a8b19e6cd71e2599ef4f55c8fd126e4553",
+      "previous_event_digest": "605ada33bf577a7bf424f28657657aaf127513b2be9ecf4cdb9c8c17cd42017c",
+      "payload": {
+        "provenance_verdict": "INTEGRITY_VERIFIED",
+        "reproducibility_verdict": "OUTPUTS_MATCHED",
+        "validation_verdict": "EXPLORATORY_FINDING"
+      },
+      "event_digest": "a01feb40708fc707ac479cf63022830e0fbfe4aa864fae13bb0c85ad907477ae"
+    },
+    {
+      "event_id": "TLE-0033-EXP-RLIB-2f30980866e9-5AE80BFC",
+      "experiment_id": "EXP-RLIB-2f30980866e9-5AE80BFC",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-10-10T16:20:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "d8cbd7073cb6570684873b64b993d54a085861c37f699c43ec41efd8614a41c6",
+      "previous_event_digest": "a01feb40708fc707ac479cf63022830e0fbfe4aa864fae13bb0c85ad907477ae",
+      "payload": {
+        "research_id": "RLIB-2f30980866e9",
+        "dataset_id": "BTCUSDT-1h",
+        "methodology_id": "METH-QUARANTINE-FORENSIC-1.0"
+      },
+      "event_digest": "362b2893bf9214445f0e7f13f569e35d9125794dc64b0e7a48c60e3099a39607"
+    },
+    {
+      "event_id": "TLE-0034-EXP-RLIB-2f30980866e9-5AE80BFC",
+      "experiment_id": "EXP-RLIB-2f30980866e9-5AE80BFC",
+      "event_type": "EXECUTION_COMPLETED",
+      "event_timestamp": "2026-10-10T16:21:05Z",
+      "event_source": "CBE_OFFLINE_RUNNER",
+      "event_payload_digest": "67662af4e2492bc3605a07bb06df1a7b82136295d0999c87a0e7c336942f7712",
+      "previous_event_digest": "362b2893bf9214445f0e7f13f569e35d9125794dc64b0e7a48c60e3099a39607",
+      "payload": {
+        "attempt_id": "ATT-EXP-RLIB-2f30980866e9-5AE80BFC-01",
+        "result_digest": "ee0e2cb6aea38df5d6ab7c1c913c0eba594b135b866d1598d5e3e8822f94206a"
+      },
+      "event_digest": "92ab4c02a86b9107ca82c5219ecd3df419dba31e5a12df5444fa631c2d41c7c8"
+    },
+    {
+      "event_id": "TLE-0035-EXP-RLIB-2f30980866e9-5AE80BFC",
+      "experiment_id": "EXP-RLIB-2f30980866e9-5AE80BFC",
+      "event_type": "EVIDENCE_VERIFIED",
+      "event_timestamp": "2026-10-10T16:21:05Z",
+      "event_source": "CBE_EVIDENCE_VERIFIER",
+      "event_payload_digest": "fbbae74fdbea8b8884ad8ec4bb7d10a8b19e6cd71e2599ef4f55c8fd126e4553",
+      "previous_event_digest": "92ab4c02a86b9107ca82c5219ecd3df419dba31e5a12df5444fa631c2d41c7c8",
+      "payload": {
+        "provenance_verdict": "INTEGRITY_VERIFIED",
+        "reproducibility_verdict": "OUTPUTS_MATCHED",
+        "validation_verdict": "EXPLORATORY_FINDING"
+      },
+      "event_digest": "235a49e3611f02985db211759fe184de446565d5b3cb22857a4a33a8a2d592cf"
+    },
+    {
+      "event_id": "TLE-0036-EXP-RLIB-3c104ed0c333-EA037C5B",
+      "experiment_id": "EXP-RLIB-3c104ed0c333-EA037C5B",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-10-16T08:00:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "e219cafe289d6b268c8e9f69bb095d287fa7b42228c2ea1654a0298bb5ad5e58",
+      "previous_event_digest": "235a49e3611f02985db211759fe184de446565d5b3cb22857a4a33a8a2d592cf",
+      "payload": {
+        "research_id": "RLIB-3c104ed0c333",
+        "dataset_id": "BTCUSDT-1h",
+        "methodology_id": "METH-QUARANTINE-FORENSIC-1.0"
+      },
+      "event_digest": "e77e08d14f90fb89c8efe1baf804f2b4589542b82cb4d7cee114407920651345"
+    },
+    {
+      "event_id": "TLE-0037-EXP-RLIB-3c104ed0c333-EA037C5B",
+      "experiment_id": "EXP-RLIB-3c104ed0c333-EA037C5B",
+      "event_type": "EXECUTION_COMPLETED",
+      "event_timestamp": "2026-10-16T08:01:30Z",
+      "event_source": "CBE_OFFLINE_RUNNER",
+      "event_payload_digest": "4f8e20813c20bb36ee373dca159fd8cfe483908f82582641d3c4ac3103504c5e",
+      "previous_event_digest": "e77e08d14f90fb89c8efe1baf804f2b4589542b82cb4d7cee114407920651345",
+      "payload": {
+        "attempt_id": "ATT-EXP-RLIB-3c104ed0c333-EA037C5B-01",
+        "result_digest": "da6583bba48acbe6488ac8a7fa1a839be8381a7b92363c899bc85a11da2d0c2d"
+      },
+      "event_digest": "02bd2e85b58a0303b7d3ce9f4bc2b531da75a4ab9b4f712f3852627267bd5fd9"
+    },
+    {
+      "event_id": "TLE-0038-EXP-RLIB-3c104ed0c333-EA037C5B",
+      "experiment_id": "EXP-RLIB-3c104ed0c333-EA037C5B",
+      "event_type": "EVIDENCE_VERIFIED",
+      "event_timestamp": "2026-10-16T08:01:30Z",
+      "event_source": "CBE_EVIDENCE_VERIFIER",
+      "event_payload_digest": "fbbae74fdbea8b8884ad8ec4bb7d10a8b19e6cd71e2599ef4f55c8fd126e4553",
+      "previous_event_digest": "02bd2e85b58a0303b7d3ce9f4bc2b531da75a4ab9b4f712f3852627267bd5fd9",
+      "payload": {
+        "provenance_verdict": "INTEGRITY_VERIFIED",
+        "reproducibility_verdict": "OUTPUTS_MATCHED",
+        "validation_verdict": "EXPLORATORY_FINDING"
+      },
+      "event_digest": "1eebf6c69b843d8ae0c4b8ee55f5b9ca7fd2258f8e33e57d33ed16d8df72ee17"
+    },
+    {
+      "event_id": "TLE-0039-EXP-RLIB-669a3bc52ddf-22EFF54D",
+      "experiment_id": "EXP-RLIB-669a3bc52ddf-22EFF54D",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-10-22T12:00:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "859490b030990d8a99b36ebb2d4fddeae42889c4a78242013fce1445a7861ed5",
+      "previous_event_digest": "1eebf6c69b843d8ae0c4b8ee55f5b9ca7fd2258f8e33e57d33ed16d8df72ee17",
+      "payload": {
+        "research_id": "RLIB-669a3bc52ddf",
+        "dataset_id": "BTCUSDT-1h",
+        "methodology_id": "METH-QUARANTINE-FORENSIC-1.0"
+      },
+      "event_digest": "aa4b1b59f5bd291d21b6d055db282dd37987814ccd9ed7f676b051957e1a5519"
+    },
+    {
+      "event_id": "TLE-0040-EXP-RLIB-669a3bc52ddf-22EFF54D",
+      "experiment_id": "EXP-RLIB-669a3bc52ddf-22EFF54D",
+      "event_type": "EXECUTION_COMPLETED",
+      "event_timestamp": "2026-10-22T12:00:15Z",
+      "event_source": "CBE_OFFLINE_RUNNER",
+      "event_payload_digest": "a8243bc52d935713d12f6b705ea856cb1accbddeb3771085dd27b031beb7ff21",
+      "previous_event_digest": "aa4b1b59f5bd291d21b6d055db282dd37987814ccd9ed7f676b051957e1a5519",
+      "payload": {
+        "attempt_id": "ATT-EXP-RLIB-669a3bc52ddf-22EFF54D-01",
+        "result_digest": "07049c206f3fe35de03e8c3c5965476204c12232d2f821722f2cf8e0590b7cb3"
+      },
+      "event_digest": "1a5f318c94e6925739a86f66cd2afd8bdeb27d4927619d4241b222b1d908853b"
+    },
+    {
+      "event_id": "TLE-0041-EXP-RLIB-669a3bc52ddf-22EFF54D",
+      "experiment_id": "EXP-RLIB-669a3bc52ddf-22EFF54D",
+      "event_type": "EVIDENCE_VERIFIED",
+      "event_timestamp": "2026-10-22T12:00:15Z",
+      "event_source": "CBE_EVIDENCE_VERIFIER",
+      "event_payload_digest": "fbbae74fdbea8b8884ad8ec4bb7d10a8b19e6cd71e2599ef4f55c8fd126e4553",
+      "previous_event_digest": "1a5f318c94e6925739a86f66cd2afd8bdeb27d4927619d4241b222b1d908853b",
+      "payload": {
+        "provenance_verdict": "INTEGRITY_VERIFIED",
+        "reproducibility_verdict": "OUTPUTS_MATCHED",
+        "validation_verdict": "EXPLORATORY_FINDING"
+      },
+      "event_digest": "8ddb4a189fcb2aefa61301fb1618a0b7f4843374dc5285b3ae3e1c417f7bfb56"
+    },
+    {
+      "event_id": "TLE-0042-EXP-RLIB-7b0cb4781b20-396080F5",
+      "experiment_id": "EXP-RLIB-7b0cb4781b20-396080F5",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-09-12T10:00:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "b309c0910d49fa83e29bc02d5f0f5578aa0f503915fcd140150666835933da8d",
+      "previous_event_digest": "8ddb4a189fcb2aefa61301fb1618a0b7f4843374dc5285b3ae3e1c417f7bfb56",
+      "payload": {
+        "research_id": "RLIB-7b0cb4781b20",
+        "dataset_id": "BTCUSDT-1h",
+        "methodology_id": "METH-QUARANTINE-FORENSIC-1.0"
+      },
+      "event_digest": "5ae12a54079dd5e3222edb39e6f0a4f5c4bee1c3d134a72876cd5c2b80c43683"
+    },
+    {
+      "event_id": "TLE-0043-EXP-RLIB-7b0cb4781b20-396080F5",
+      "experiment_id": "EXP-RLIB-7b0cb4781b20-396080F5",
+      "event_type": "EXECUTION_COMPLETED",
+      "event_timestamp": "2026-09-12T10:02:15Z",
+      "event_source": "CBE_OFFLINE_RUNNER",
+      "event_payload_digest": "da621f7d2c3b9b092ffd88c6c38472b56b8acf715164890fc114dddf04f7d482",
+      "previous_event_digest": "5ae12a54079dd5e3222edb39e6f0a4f5c4bee1c3d134a72876cd5c2b80c43683",
+      "payload": {
+        "attempt_id": "ATT-EXP-RLIB-7b0cb4781b20-396080F5-01",
+        "result_digest": "cf41a518e7691ed15984753e82e23582c098c813c6ec2e82767e91321da37328"
+      },
+      "event_digest": "74da7e4cb3c19fab36480ad233f6d0e09df1357c3bf5e4278e87be02a929fa40"
+    },
+    {
+      "event_id": "TLE-0044-EXP-RLIB-7b0cb4781b20-396080F5",
+      "experiment_id": "EXP-RLIB-7b0cb4781b20-396080F5",
+      "event_type": "EVIDENCE_VERIFIED",
+      "event_timestamp": "2026-09-12T10:02:15Z",
+      "event_source": "CBE_EVIDENCE_VERIFIER",
+      "event_payload_digest": "fbbae74fdbea8b8884ad8ec4bb7d10a8b19e6cd71e2599ef4f55c8fd126e4553",
+      "previous_event_digest": "74da7e4cb3c19fab36480ad233f6d0e09df1357c3bf5e4278e87be02a929fa40",
+      "payload": {
+        "provenance_verdict": "INTEGRITY_VERIFIED",
+        "reproducibility_verdict": "OUTPUTS_MATCHED",
+        "validation_verdict": "EXPLORATORY_FINDING"
+      },
+      "event_digest": "5177f792289e93d13403e643e39247ada4bbee4a1ca3e10f733dfe4cfde5cc11"
+    },
+    {
+      "event_id": "TLE-0045-EXP-RLIB-dbb10adc0f69-57884D72",
+      "experiment_id": "EXP-RLIB-dbb10adc0f69-57884D72",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-09-18T14:15:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "4b70f393e60e8dc8bf22bef8d83c0e54db43ae59f7998ddb7a3068a8e6874164",
+      "previous_event_digest": "5177f792289e93d13403e643e39247ada4bbee4a1ca3e10f733dfe4cfde5cc11",
+      "payload": {
+        "research_id": "RLIB-dbb10adc0f69",
+        "dataset_id": "BTCUSDT-1h",
+        "methodology_id": "METH-QUARANTINE-FORENSIC-1.0"
+      },
+      "event_digest": "0a11856f5bcb4393c4ff5390b9508c1a734a7e9839d03ce8838a84e207e3dea0"
+    },
+    {
+      "event_id": "TLE-0046-EXP-RLIB-dbb10adc0f69-57884D72",
+      "experiment_id": "EXP-RLIB-dbb10adc0f69-57884D72",
+      "event_type": "EXECUTION_COMPLETED",
+      "event_timestamp": "2026-09-18T14:18:40Z",
+      "event_source": "CBE_OFFLINE_RUNNER",
+      "event_payload_digest": "e798b23b574d1d244a24e7b4a843b460456d83d569d80bf3213c067d5bc543fb",
+      "previous_event_digest": "0a11856f5bcb4393c4ff5390b9508c1a734a7e9839d03ce8838a84e207e3dea0",
+      "payload": {
+        "attempt_id": "ATT-EXP-RLIB-dbb10adc0f69-57884D72-01",
+        "result_digest": "f09b5f7cbd4e5ec7d4e2aef4150a35d8609a5b18d8ee3ef44b689e09d6375999"
+      },
+      "event_digest": "6ad34448674a610e92c2e244b1905bd4f8df189a9dd597330cc278f39fef1c28"
+    },
+    {
+      "event_id": "TLE-0047-EXP-RLIB-dbb10adc0f69-57884D72",
+      "experiment_id": "EXP-RLIB-dbb10adc0f69-57884D72",
+      "event_type": "EVIDENCE_VERIFIED",
+      "event_timestamp": "2026-09-18T14:18:40Z",
+      "event_source": "CBE_EVIDENCE_VERIFIER",
+      "event_payload_digest": "fbbae74fdbea8b8884ad8ec4bb7d10a8b19e6cd71e2599ef4f55c8fd126e4553",
+      "previous_event_digest": "6ad34448674a610e92c2e244b1905bd4f8df189a9dd597330cc278f39fef1c28",
+      "payload": {
+        "provenance_verdict": "INTEGRITY_VERIFIED",
+        "reproducibility_verdict": "OUTPUTS_MATCHED",
+        "validation_verdict": "EXPLORATORY_FINDING"
+      },
+      "event_digest": "1d162560f1bea3cd25de0bcf5d6dc06dcbfa1395fa31b93618d4ea3693a1318c"
+    },
+    {
+      "event_id": "TLE-0048-EXP-RLIB-f93d9176002d-A26851FB",
+      "experiment_id": "EXP-RLIB-f93d9176002d-A26851FB",
+      "event_type": "REGISTERED",
+      "event_timestamp": "2026-09-25T09:30:00Z",
+      "event_source": "CBE_EXPERIMENT_REGISTRY",
+      "event_payload_digest": "02e1c685fe6b818bc8e06fc5e9eda46b6851c518724c19a4b3747216be4e8ee6",
+      "previous_event_digest": "1d162560f1bea3cd25de0bcf5d6dc06dcbfa1395fa31b93618d4ea3693a1318c",
+      "payload": {
+        "research_id": "RLIB-f93d9176002d",
+        "dataset_id": "BTCUSDT-1h",
+        "methodology_id": "METH-QUARANTINE-FORENSIC-1.0"
+      },
+      "event_digest": "8c717fa5517b3cc812a9a0806d28c45600d9c7249ae747aedcdc3c80b654fd48"
+    },
+    {
+      "event_id": "TLE-0049-EXP-RLIB-f93d9176002d-A26851FB",
+      "experiment_id": "EXP-RLIB-f93d9176002d-A26851FB",
+      "event_type": "EXECUTION_COMPLETED",
+      "event_timestamp": "2026-09-25T09:34:10Z",
+      "event_source": "CBE_OFFLINE_RUNNER",
+      "event_payload_digest": "6c609b8cfd650164513089890c1e1df9fde0068ab2836204e8d606a7ffb19889",
+      "previous_event_digest": "8c717fa5517b3cc812a9a0806d28c45600d9c7249ae747aedcdc3c80b654fd48",
+      "payload": {
+        "attempt_id": "ATT-EXP-RLIB-f93d9176002d-A26851FB-01",
+        "result_digest": "51e25bdfb6b3828ffc7269dabb78667d19e1cf3d76b71bc1c4bdfca1f36a93c0"
+      },
+      "event_digest": "49072263f0e2db089228b2c57fb4a5b86e55761577e693c4a665cc4b42b22ae8"
+    },
+    {
+      "event_id": "TLE-0050-EXP-RLIB-f93d9176002d-A26851FB",
+      "experiment_id": "EXP-RLIB-f93d9176002d-A26851FB",
+      "event_type": "EVIDENCE_VERIFIED",
+      "event_timestamp": "2026-09-25T09:34:10Z",
+      "event_source": "CBE_EVIDENCE_VERIFIER",
+      "event_payload_digest": "fbbae74fdbea8b8884ad8ec4bb7d10a8b19e6cd71e2599ef4f55c8fd126e4553",
+      "previous_event_digest": "49072263f0e2db089228b2c57fb4a5b86e55761577e693c4a665cc4b42b22ae8",
+      "payload": {
+        "provenance_verdict": "INTEGRITY_VERIFIED",
+        "reproducibility_verdict": "OUTPUTS_MATCHED",
+        "validation_verdict": "EXPLORATORY_FINDING"
+      },
+      "event_digest": "c4e261963ef567f4868775068c85506ec4066604da23ecea9481b18193aa6ebf"
+    }
+  ]
+}

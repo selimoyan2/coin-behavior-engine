@@ -1,0 +1,140 @@
+{
+  "sprint_id": "CBE_SPRINT27_SCIENTIFIC_RESEARCH_PORTFOLIO",
+  "generated_at_utc": "2026-11-11T22:36:20Z",
+  "baseline_sha": "19517a45fcc5a4544d4b34c1aed1736c25941d26",
+  "implementation_sha": "c67fa77bab7da415c1aab44494198cb8268600df",
+  "canonical_model": "CBE-0.7.0",
+  "total_files_hashed": 26,
+  "files": [
+    {
+      "file": "01_repository_architecture_audit.md",
+      "size_bytes": 2893,
+      "sha256": "e9a2c286cad6974cd9099dc716519993fec40dc0b87bc32b789f241027de9f29"
+    },
+    {
+      "file": "02_research_portfolio_manager_spec.md",
+      "size_bytes": 1474,
+      "sha256": "a3354b78e508065abdbbffeb04103c015a430dae56f9913c14183427553c3475"
+    },
+    {
+      "file": "03_experiment_registry_and_timeline_spec.md",
+      "size_bytes": 1158,
+      "sha256": "eb87d22147285cbc808ca2820d8336fae248a0b9e1c1d634c18e214f5594a924"
+    },
+    {
+      "file": "04_cross_experiment_comparison_spec.md",
+      "size_bytes": 932,
+      "sha256": "a47ccb15b8f7a307317e0fdc3d48dec394d11ebc3b80b82986538328205b00ca"
+    },
+    {
+      "file": "05_evidence_traceability_explorer_spec.md",
+      "size_bytes": 872,
+      "sha256": "c58da6e1d61ae974b2c97da51501f41298c84f08bc0d54c53884b3afaa07c854"
+    },
+    {
+      "file": "06_findings_and_contradiction_intelligence_spec.md",
+      "size_bytes": 836,
+      "sha256": "c1684bd2f3c1e84b4c5f6055d750c6f3d30f851e2ffbf07c6c757c1eef40bff6"
+    },
+    {
+      "file": "07_research_review_workflow_spec.md",
+      "size_bytes": 1021,
+      "sha256": "4c1876a9ad979b6d3a57e142bbaa368de9f396b4930e16d1e44158feefaa745d"
+    },
+    {
+      "file": "08_scientific_report_builder_v5_spec.md",
+      "size_bytes": 1245,
+      "sha256": "ba106e302fc715d531d9ba5f29aa334e1ad32507a930e77c9ed2a8bd36b41ab5"
+    },
+    {
+      "file": "09_dashboard_v5_ux_architecture.md",
+      "size_bytes": 1225,
+      "sha256": "880162edd70807383e4e41eac4d84af3781ce31f096a224d6bafd5aa4018c5cf"
+    },
+    {
+      "file": "10_sample_portfolio_output.json",
+      "size_bytes": 34029,
+      "sha256": "d0add8a18ec319c3f8c715abda532b3417d6bfbe1bfdce09f43b67fa858bfd31"
+    },
+    {
+      "file": "11_sample_experiment_timeline.json",
+      "size_bytes": 37343,
+      "sha256": "da0f73794098087f755801fd944e8c72389aa5ccb66c2684f49799868183e2cf"
+    },
+    {
+      "file": "12_sample_cross_experiment_comparison.json",
+      "size_bytes": 8224,
+      "sha256": "a4b0db4f6b0c9aa14a80f4baf9becb837b44a523138c043aa2aaa008d69e59e9"
+    },
+    {
+      "file": "13_sample_evidence_traceability_chain.json",
+      "size_bytes": 121564,
+      "sha256": "b323d50d4a083f25e9a47a0ed6a5651f068c4c09e978ad4037056dd2bc0e8777"
+    },
+    {
+      "file": "14_sample_contradiction_analysis.json",
+      "size_bytes": 36762,
+      "sha256": "9f83e89b5e19f0d0c6370bbe400e2d518e8cbfc1940a096c9850c2bb720aee61"
+    },
+    {
+      "file": "15_sample_research_review_log.json",
+      "size_bytes": 17211,
+      "sha256": "b757ee667db305c2260cd11519c77afee4c8a21b911e9e54ad2c6092911d3794"
+    },
+    {
+      "file": "16_sample_scientific_report_v5.md",
+      "size_bytes": 1953,
+      "sha256": "067630465c41917c73735b68e8b2f82ecb763133417c188bb337bf52f054c472"
+    },
+    {
+      "file": "17_pytest_full_regression_log.txt",
+      "size_bytes": 4578,
+      "sha256": "5781c1c410eca0ef78cc056d5896f796a455e8bd21a34792914c87c350d735af"
+    },
+    {
+      "file": "18_playwright_acceptance_report.json",
+      "size_bytes": 1921,
+      "sha256": "61f0b6fbf402c276e3c6724558d3602d82bf58a94e19d34891d948fb705013ec"
+    },
+    {
+      "file": "19_performance_benchmarks.json",
+      "size_bytes": 2369,
+      "sha256": "4d3a284c5c0ab558edbe752224eaa6dde6afb2337053231df41caa277e08cc1d"
+    },
+    {
+      "file": "20_security_and_trust_boundary_audit.md",
+      "size_bytes": 2600,
+      "sha256": "1f8219264d79801073afca86211ac34ea632ceaf9c9744590c3a96a72d696693"
+    },
+    {
+      "file": "21_staging_deployment_verification.md",
+      "size_bytes": 2377,
+      "sha256": "41df066be07f491512923b421de981a8f3998725b5f982e5b89bbb49f2d66e64"
+    },
+    {
+      "file": "22_production_zero_touch_proof.md",
+      "size_bytes": 919,
+      "sha256": "9794e46b660c6e8d36b0ac4db9cd8ee7e5ccbbec5a141b2b3432e2a60ba987ef"
+    },
+    {
+      "file": "24_final_sprint27_acceptance_report.md",
+      "size_bytes": 2761,
+      "sha256": "b432d71c4c53e8e73026c21e851802ebee31cafe3b12ff1c0ebe91af015d74f8"
+    },
+    {
+      "file": "screenshots/desktop_1440x900_portfolio_and_timeline.png",
+      "size_bytes": 1385694,
+      "sha256": "591775c11005b1c4052d39ec5f8148af3acedd83c19081c54870ddb6fd635c14"
+    },
+    {
+      "file": "screenshots/mobile_390x844_reviews_and_reports.png",
+      "size_bytes": 911125,
+      "sha256": "f58801a3418595023f671bed7ac30be0fa063b00222a41bd3999d9d5be1e419a"
+    },
+    {
+      "file": "screenshots/tablet_768x1024_comparison_and_traceability.png",
+      "size_bytes": 678314,
+      "sha256": "27b57d23477f4f975771bf6782e0afe98f33106eddcd69561f9df8bd9449a97e"
+    }
+  ]
+}

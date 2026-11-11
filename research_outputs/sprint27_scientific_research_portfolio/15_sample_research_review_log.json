@@ -1,0 +1,323 @@
+{
+  "status": "success",
+  "canonical_model": "CBE-0.7.0",
+  "governance_decision": "TECHNICAL_NO_GO",
+  "valid_review_states": [
+    "DRAFT",
+    "SUBMITTED_FOR_REVIEW",
+    "EVIDENCE_CHECK_PENDING",
+    "EVIDENCE_CHECK_COMPLETED",
+    "SCIENTIFIC_REVIEW_IN_PROGRESS",
+    "REVISION_REQUESTED",
+    "REVIEW_COMPLETED",
+    "REJECTED",
+    "BLOCKED"
+  ],
+  "valid_review_decisions": [
+    "ACCEPT_FOR_RESEARCH_ARCHIVE",
+    "REQUEST_ADDITIONAL_EVIDENCE",
+    "REQUEST_REPRODUCTION",
+    "REQUEST_METHODOLOGY_REVIEW",
+    "REJECT_UNSUPPORTED_CLAIM",
+    "BLOCK_DUE_TO_PROVENANCE"
+  ],
+  "audit_chain_integrity": {
+    "chain_valid": true,
+    "rejection_code": null,
+    "total_reviews_verified": 17,
+    "head_review_digest": "69c9828ba1e2f57e56f75863715828d6674047d7b454580d6ff9e5606ac6ec0a"
+  },
+  "record_review_states": {
+    "RES-FUND-01": "EVIDENCE_CHECK_COMPLETED",
+    "RES-REGIME-01": "EVIDENCE_CHECK_COMPLETED",
+    "RES-ANALOG-01": "EVIDENCE_CHECK_COMPLETED",
+    "RES-MACRO-01": "EVIDENCE_CHECK_COMPLETED",
+    "RES-DURABILITY-01": "EVIDENCE_CHECK_COMPLETED",
+    "RES-CRYPTO-01": "BLOCKED",
+    "RLIB-c5730b081950": "EVIDENCE_CHECK_COMPLETED",
+    "RLIB-ee060f623584": "EVIDENCE_CHECK_COMPLETED",
+    "RLIB-f9ddf66ba096": "EVIDENCE_CHECK_COMPLETED",
+    "RLIB-03c6ea53cf3d": "EVIDENCE_CHECK_COMPLETED",
+    "RLIB-07c7c65c7e91": "EVIDENCE_CHECK_COMPLETED",
+    "RLIB-2f30980866e9": "EVIDENCE_CHECK_COMPLETED",
+    "RLIB-3c104ed0c333": "EVIDENCE_CHECK_COMPLETED",
+    "RLIB-669a3bc52ddf": "EVIDENCE_CHECK_COMPLETED",
+    "RLIB-7b0cb4781b20": "EVIDENCE_CHECK_COMPLETED",
+    "RLIB-dbb10adc0f69": "EVIDENCE_CHECK_COMPLETED",
+    "RLIB-f93d9176002d": "EVIDENCE_CHECK_COMPLETED"
+  },
+  "total_reviews": 17,
+  "reviews": [
+    {
+      "review_id": "REV-0001-RES-FUND-01",
+      "research_id": "RES-FUND-01",
+      "reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD",
+      "decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "decision_reason": "Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RES-FUND-01",
+        "DS-BTCUSDT-PERP-FUNDING-2022-2026"
+      ],
+      "decision_timestamp": "2026-10-15T12:00:00Z",
+      "previous_review_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+      "resulting_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "b575fd1c6ef2f1ec432f295d0e20eec0d9fd4c206a3e6c472ee899facbfee0f8"
+    },
+    {
+      "review_id": "REV-0002-RES-REGIME-01",
+      "research_id": "RES-REGIME-01",
+      "reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD",
+      "decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "decision_reason": "Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RES-REGIME-01",
+        "DS-BTCUSDT-SPOT-1H-2022-2026"
+      ],
+      "decision_timestamp": "2026-10-16T12:00:00Z",
+      "previous_review_digest": "b575fd1c6ef2f1ec432f295d0e20eec0d9fd4c206a3e6c472ee899facbfee0f8",
+      "resulting_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "3e4e05b6660ebfffe8277b82c9483c520482eb2b923186fd74164e94467f8e4f"
+    },
+    {
+      "review_id": "REV-0003-RES-ANALOG-01",
+      "research_id": "RES-ANALOG-01",
+      "reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD",
+      "decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "decision_reason": "Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RES-ANALOG-01",
+        "DS-BTCUSDT-SPOT-1H-2022-2026"
+      ],
+      "decision_timestamp": "2026-10-17T12:00:00Z",
+      "previous_review_digest": "3e4e05b6660ebfffe8277b82c9483c520482eb2b923186fd74164e94467f8e4f",
+      "resulting_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "ab1cc548338b72bd5a88de4eec316b86b071876c4a4f3dbd1886f9944c41801c"
+    },
+    {
+      "review_id": "REV-0004-RES-MACRO-01",
+      "research_id": "RES-MACRO-01",
+      "reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD",
+      "decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "decision_reason": "Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RES-MACRO-01",
+        "DS-US-MACRO-EVENTS-2022-2026"
+      ],
+      "decision_timestamp": "2026-10-18T12:00:00Z",
+      "previous_review_digest": "ab1cc548338b72bd5a88de4eec316b86b071876c4a4f3dbd1886f9944c41801c",
+      "resulting_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "b1bf527ffddb32762ee50ef0112732e8f48fe0f5feae08e9cf600635175d12e8"
+    },
+    {
+      "review_id": "REV-0005-RES-DURABILITY-01",
+      "research_id": "RES-DURABILITY-01",
+      "reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD",
+      "decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "decision_reason": "Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RES-DURABILITY-01",
+        "DS-CBE-SYSTEM-AUDIT-LOGS"
+      ],
+      "decision_timestamp": "2026-10-19T12:00:00Z",
+      "previous_review_digest": "b1bf527ffddb32762ee50ef0112732e8f48fe0f5feae08e9cf600635175d12e8",
+      "resulting_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "57aeca3063dd75c3a4576f5c75dcb41fca60004bdeb07f45ab751f53e94ed092"
+    },
+    {
+      "review_id": "REV-0006-RES-CRYPTO-01",
+      "research_id": "RES-CRYPTO-01",
+      "reviewer_identity": "CBE_DATA_GOVERNANCE_COUNCIL",
+      "decision": "BLOCK_DUE_TO_PROVENANCE",
+      "decision_reason": "October 2026 dataset is quarantined due to synthetic contamination; blocked from confirmatory research.",
+      "supporting_evidence_ids": [
+        "DS-BTCUSDT-OCTOBER-2026-INTAKE"
+      ],
+      "decision_timestamp": "2026-10-20T12:00:00Z",
+      "previous_review_digest": "57aeca3063dd75c3a4576f5c75dcb41fca60004bdeb07f45ab751f53e94ed092",
+      "resulting_review_state": "BLOCKED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "b3b032c6ac0ea03c88bb2a57c1d615fbcec2db53faca261db7d91d9322610d98"
+    },
+    {
+      "review_id": "REV-0007-RLIB-c5730b081950",
+      "research_id": "RLIB-c5730b081950",
+      "reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD",
+      "decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "decision_reason": "Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-c5730b081950",
+        "DS-BTCUSDT-1h"
+      ],
+      "decision_timestamp": "2026-10-21T12:00:00Z",
+      "previous_review_digest": "b3b032c6ac0ea03c88bb2a57c1d615fbcec2db53faca261db7d91d9322610d98",
+      "resulting_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "31555d2eb435263e7a0d53727f74c16a564e25153aae69fff2b4667e5567bc8a"
+    },
+    {
+      "review_id": "REV-0008-RLIB-ee060f623584",
+      "research_id": "RLIB-ee060f623584",
+      "reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD",
+      "decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "decision_reason": "Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-ee060f623584",
+        "DS-BTCUSDT-1h"
+      ],
+      "decision_timestamp": "2026-10-22T12:00:00Z",
+      "previous_review_digest": "31555d2eb435263e7a0d53727f74c16a564e25153aae69fff2b4667e5567bc8a",
+      "resulting_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "dc5188b50214de2ea33add8bbed1a0a4c1aa177f4a31237a360d2017fc80ac1b"
+    },
+    {
+      "review_id": "REV-0009-RLIB-f9ddf66ba096",
+      "research_id": "RLIB-f9ddf66ba096",
+      "reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD",
+      "decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "decision_reason": "Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-f9ddf66ba096",
+        "DS-BTCUSDT-1h"
+      ],
+      "decision_timestamp": "2026-10-23T12:00:00Z",
+      "previous_review_digest": "dc5188b50214de2ea33add8bbed1a0a4c1aa177f4a31237a360d2017fc80ac1b",
+      "resulting_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "565651bb622c6e254af42ba86380c6caa8545443109c2531a336a47f02b883f2"
+    },
+    {
+      "review_id": "REV-0010-RLIB-03c6ea53cf3d",
+      "research_id": "RLIB-03c6ea53cf3d",
+      "reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD",
+      "decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "decision_reason": "Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-03c6ea53cf3d",
+        "DS-BTCUSDT-1h"
+      ],
+      "decision_timestamp": "2026-10-24T12:00:00Z",
+      "previous_review_digest": "565651bb622c6e254af42ba86380c6caa8545443109c2531a336a47f02b883f2",
+      "resulting_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "8442a5039ea2ae4e5577cdf4a533d22ee44660357dda0c32195b947d69432563"
+    },
+    {
+      "review_id": "REV-0011-RLIB-07c7c65c7e91",
+      "research_id": "RLIB-07c7c65c7e91",
+      "reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD",
+      "decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "decision_reason": "Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-07c7c65c7e91",
+        "DS-BTCUSDT-1h"
+      ],
+      "decision_timestamp": "2026-10-25T12:00:00Z",
+      "previous_review_digest": "8442a5039ea2ae4e5577cdf4a533d22ee44660357dda0c32195b947d69432563",
+      "resulting_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "3e0cbc9f4636814f8b0c1862c9b2e0c625fe364c03aeab65720c9de12effe349"
+    },
+    {
+      "review_id": "REV-0012-RLIB-2f30980866e9",
+      "research_id": "RLIB-2f30980866e9",
+      "reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD",
+      "decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "decision_reason": "Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-2f30980866e9",
+        "DS-BTCUSDT-1h"
+      ],
+      "decision_timestamp": "2026-10-26T12:00:00Z",
+      "previous_review_digest": "3e0cbc9f4636814f8b0c1862c9b2e0c625fe364c03aeab65720c9de12effe349",
+      "resulting_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "cd55e82b25eddc78cb9663a508b7efe0e1ec8bb54f013116578645939e3e9e78"
+    },
+    {
+      "review_id": "REV-0013-RLIB-3c104ed0c333",
+      "research_id": "RLIB-3c104ed0c333",
+      "reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD",
+      "decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "decision_reason": "Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-3c104ed0c333",
+        "DS-BTCUSDT-1h"
+      ],
+      "decision_timestamp": "2026-10-27T12:00:00Z",
+      "previous_review_digest": "cd55e82b25eddc78cb9663a508b7efe0e1ec8bb54f013116578645939e3e9e78",
+      "resulting_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "b9ef8737ea8f3a7d529df538a710696d70e0522b6ccd8db23c0118536f4fe4b9"
+    },
+    {
+      "review_id": "REV-0014-RLIB-669a3bc52ddf",
+      "research_id": "RLIB-669a3bc52ddf",
+      "reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD",
+      "decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "decision_reason": "Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-669a3bc52ddf",
+        "DS-BTCUSDT-1h"
+      ],
+      "decision_timestamp": "2026-10-28T12:00:00Z",
+      "previous_review_digest": "b9ef8737ea8f3a7d529df538a710696d70e0522b6ccd8db23c0118536f4fe4b9",
+      "resulting_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "6c8a41d578a29d663d956d619339944ec6bfef76e8eef76d48fd986bd6825db5"
+    },
+    {
+      "review_id": "REV-0015-RLIB-7b0cb4781b20",
+      "research_id": "RLIB-7b0cb4781b20",
+      "reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD",
+      "decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "decision_reason": "Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-7b0cb4781b20",
+        "DS-BTCUSDT-1h"
+      ],
+      "decision_timestamp": "2026-10-29T12:00:00Z",
+      "previous_review_digest": "6c8a41d578a29d663d956d619339944ec6bfef76e8eef76d48fd986bd6825db5",
+      "resulting_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "f49079534994b7affaba27c2cc0487783765336eba43bcbfccb1a8de7997f6bf"
+    },
+    {
+      "review_id": "REV-0016-RLIB-dbb10adc0f69",
+      "research_id": "RLIB-dbb10adc0f69",
+      "reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD",
+      "decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "decision_reason": "Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-dbb10adc0f69",
+        "DS-BTCUSDT-1h"
+      ],
+      "decision_timestamp": "2026-10-30T12:00:00Z",
+      "previous_review_digest": "f49079534994b7affaba27c2cc0487783765336eba43bcbfccb1a8de7997f6bf",
+      "resulting_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "62c85d0eb99d5fbe5eaf023f3447a66687a937e932b3b678cf3dde79cf934e15"
+    },
+    {
+      "review_id": "REV-0017-RLIB-f93d9176002d",
+      "research_id": "RLIB-f93d9176002d",
+      "reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD",
+      "decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "decision_reason": "Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-f93d9176002d",
+        "DS-BTCUSDT-1h"
+      ],
+      "decision_timestamp": "2026-10-31T12:00:00Z",
+      "previous_review_digest": "62c85d0eb99d5fbe5eaf023f3447a66687a937e932b3b678cf3dde79cf934e15",
+      "resulting_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_scope_notice": "OFFLINE_RESEARCH_ARCHIVE_ONLY | TECHNICAL_NO_GO_UNCHANGED | LIVE_TRADING_PERMANENTLY_PROHIBITED",
+      "review_digest": "69c9828ba1e2f57e56f75863715828d6674047d7b454580d6ff9e5606ac6ec0a"
+    }
+  ]
+}
