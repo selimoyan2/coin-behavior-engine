@@ -224,6 +224,55 @@ class ScientificReportBuilderV5:
         safe_custom_title = str(custom_title).replace("\x00", "").strip()[:2000] if custom_title else f"{rec.title} ({r_type})"
         safe_custom_notes = str(custom_notes).replace("\x00", "").strip()[:2000] if custom_notes else "Canonical offline scientific evaluation."
 
+        repro_verdict = (
+            exp_obj.get("reproducibility_verdict", "REPRODUCTION_NOT_ESTABLISHED")
+            if exp_obj
+            else "REPRODUCTION_NOT_ESTABLISHED"
+        )
+        auth_reviews_list = reviews_data.get("authenticated_reviews", [])
+        auto_assess_list = reviews_data.get("automated_assessments", [])
+        has_verified_exec = bool(
+            exp_obj
+            and exp_obj.get("record_origin") in ("VERIFIED_HISTORICAL_EXECUTION", "OFFLINE_EXPERIMENT_EXECUTION")
+            and exp_obj.get("execution_status") in ("EXECUTION_COMPLETED", "EXECUTION_EVIDENCE_VERIFIED")
+        )
+
+        trust_classifications = {
+            "CATALOG_METADATA": {
+                "classification": "CATALOG_METADATA",
+                "research_id": rec.id,
+                "record_origin": exp_obj.get("record_origin", "CATALOG_PROJECTION") if exp_obj else "CATALOG_PROJECTION",
+                "execution_started_at": exp_obj.get("execution_started_at") if exp_obj else None,
+                "execution_completed_at": exp_obj.get("execution_completed_at") if exp_obj else None,
+                "notice": "Catalog discovery metadata only; never represented as historical execution completion.",
+            },
+            "VERIFIED_EXECUTION_EVIDENCE": {
+                "classification": "VERIFIED_EXECUTION_EVIDENCE",
+                "has_verified_execution_log": has_verified_exec,
+                "execution_status": exp_obj.get("execution_status") if exp_obj else "HISTORICAL_EXECUTION_UNVERIFIED",
+                "result_digest": exp_obj.get("result_digest") if exp_obj else None,
+                "output_artifact_ids": exp_obj.get("output_artifact_ids", []) if exp_obj else [],
+            },
+            "AUTOMATED_ASSESSMENT": {
+                "classification": "AUTOMATED_ASSESSMENT",
+                "authoritative": False,
+                "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+                "assessments": auto_assess_list,
+            },
+            "AUTHENTICATED_REVIEW_DECISION": {
+                "classification": "AUTHENTICATED_REVIEW_DECISION",
+                "authoritative": True,
+                "authenticated_review_count": len(auth_reviews_list),
+                "decisions": auth_reviews_list,
+            },
+            "UNVERIFIED_HISTORICAL_CLAIM": {
+                "classification": "UNVERIFIED_HISTORICAL_CLAIM",
+                "reproducibility_status": repro_verdict,
+                "independent_replication_established": False,
+                "unverified_execution_history": not has_verified_exec,
+            },
+        }
+
         core_sections: Dict[str, Any] = {
             "report_type": r_type,
             "generated_at": now_utc,
@@ -235,6 +284,7 @@ class ScientificReportBuilderV5:
                 "notes": safe_custom_notes,
                 "overall_readiness_verdict": scorecard.overall_verdict,
                 "portfolio_summary": portfolio_data.get("portfolio_summary", {}),
+                "evidence_trust_classifications": trust_classifications,
             },
             "research_scope": {
                 "research_id": rec.id,
@@ -278,9 +328,12 @@ class ScientificReportBuilderV5:
             },
             "robustness_and_sensitivity_findings": val_v4.get("robustness_summary", {}),
             "reproducibility_status": {
-                "status": "OUTPUTS_MATCHED" if prov.get("is_verified") else "REPRODUCTION_BLOCKED",
+                "status": repro_verdict,
                 "is_independent_replication": False,
-                "distinction_notice": "Local deterministic procedure re-execution does not constitute independent out-of-sample replication.",
+                "distinction_notice": (
+                    "OUTPUTS_MATCHED requires actual comparison against independently persisted expected results; "
+                    "dataset provenance or source integrity alone remains REPRODUCTION_NOT_ESTABLISHED."
+                ),
             },
             "independent_validation_status": {
                 "replication_verdict": getattr(rec, "replication_verdict", "INDEPENDENCE_NOT_ESTABLISHED"),
@@ -295,11 +348,18 @@ class ScientificReportBuilderV5:
             "evidence_manifest": {
                 "traceability_chain": trace_data.get("traceability_chain", []),
                 "evidence_fingerprint_sha256": val_v4.get("evidence_fingerprint_sha256"),
+                "evidence_trust_classifications": trust_classifications,
+                "timeline_chain_integrity": experiment_registry_service.verify_timeline_chain_integrity(),
             },
             "review_status": {
                 "current_state": reviews_data.get("record_review_states", {}).get(rec.id, "EVIDENCE_CHECK_COMPLETED"),
+                "review_classification": (
+                    "AUTHENTICATED_REVIEW_DECISION" if auth_reviews_list else "AUTOMATED_ASSESSMENT"
+                ),
                 "audit_chain_integrity": reviews_data.get("audit_chain_integrity", {}),
-                "reviews": reviews_data.get("reviews", []),
+                "reviews": auth_reviews_list,
+                "authenticated_reviews": auth_reviews_list,
+                "automated_assessments": auto_assess_list,
             },
         }
 
@@ -372,9 +432,12 @@ class ScientificReportBuilderV5:
             f"- Reproducibility Status: `{rep.get('reproducibility_status', {}).get('status')}`",
             f"- Independent Validation: `{rep.get('independent_validation_status', {}).get('replication_verdict')}`",
             "",
-            "## 4. Scientific Review Status",
+            "## 4. Scientific Review Status & Trust Classifications",
             f"- Current Review State: `{rev.get('current_state')}`",
+            f"- Review Classification: `{rev.get('review_classification')}`",
+            f"- Audit Chain Mechanism: `{rev.get('audit_chain_integrity', {}).get('integrity_mechanism')}` (`externally_anchored={rev.get('audit_chain_integrity', {}).get('externally_anchored')}`)",
             f"- Audit Chain Valid: `{rev.get('audit_chain_integrity', {}).get('chain_valid')}`",
+            "- Mandatory Trust Classifications: `CATALOG_METADATA`, `VERIFIED_EXECUTION_EVIDENCE`, `AUTOMATED_ASSESSMENT`, `AUTHENTICATED_REVIEW_DECISION`, `UNVERIFIED_HISTORICAL_CLAIM`",
             "",
             "## 5. Scientific Limitations",
         ]
@@ -415,7 +478,9 @@ class ScientificReportBuilderV5:
   </div>
   <div class="card">
     <h2>Review &amp; Governance Status</h2>
-    <p>Review State: <code>{rev.get('current_state')}</code> | Governance: <code>{safe_rep.get('governance_status')}</code></p>
+    <p>Review State: <code>{rev.get('current_state')}</code> | Classification: <code>{rev.get('review_classification')}</code> | Governance: <code>{safe_rep.get('governance_status')}</code></p>
+    <p>Trust Classifications: <code>CATALOG_METADATA</code> | <code>VERIFIED_EXECUTION_EVIDENCE</code> | <code>AUTOMATED_ASSESSMENT</code> | <code>AUTHENTICATED_REVIEW_DECISION</code> | <code>UNVERIFIED_HISTORICAL_CLAIM</code></p>
+    <p>Audit Chain Mechanism: <code>INTERNAL_TAMPER_DETECTION_CHAIN</code> (externally_anchored=false)</p>
   </div>
   <div class="card">
     <h2>Scientific Limitations</h2>

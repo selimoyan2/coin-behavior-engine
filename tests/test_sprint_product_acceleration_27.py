@@ -512,9 +512,18 @@ class TestSprint27TwentyMandatoryNegativeSecurityControls:
             )
         assert exc.value.rejection_code == "CLIENT_AUTHORIZATION_FLAG_REJECTED"
 
-    def test_neg_09_tampered_review_audit_log_hash_chain_detected(self):
+    def test_neg_09_tampered_review_audit_log_hash_chain_detected(self, monkeypatch):
         """9. Attempt to tamper with the review audit log hash chain."""
+        monkeypatch.setenv("CBE_OPERATOR_TOKEN", "sprint27-op-tok")
         wf = ResearchReviewWorkflowEngine()
+        wf.submit_review_decision(
+            research_id="RES-REGIME-01",
+            decision="ACCEPT_FOR_RESEARCH_ARCHIVE",
+            decision_reason="Initial authenticated review decision for hash chain test.",
+            supporting_evidence_ids=["RES-REGIME-01", "DS-BTCUSDT-SPOT-1H"],
+            operator_token="sprint27-op-tok",
+            payload={"reviewer_identity": "CBE_SCIENTIFIC_REVIEW_BOARD"},
+        )
         revs = [dict(r) for r in wf.list_reviews()["reviews"]]
         revs[0]["decision_reason"] = "Forged reason after signing"
         check = wf.verify_review_audit_chain(revs)

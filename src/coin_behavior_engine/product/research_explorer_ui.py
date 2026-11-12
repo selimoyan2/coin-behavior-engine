@@ -5274,10 +5274,10 @@ def render_research_explorer_scripts() -> str:
               <span class="badge" style="background:#1e293b; color:#10b981; font-size:11px;">${e.execution_status}</span>
             </div>
             <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:8px; font-size:11px; color:#cbd5e1; margin-top:8px;">
-              <div>Araştırma: <code>${e.research_id}</code></div>
+              <div>Araştırma: <code>${e.research_id}</code> (${e.record_origin || 'CATALOG_PROJECTION'})</div>
               <div>Metodoloji: <code>${e.methodology_id}</code></div>
               <div>Veri Seti: <code>${e.dataset_id}</code></div>
-              <div>Soykütüğü Kararı: <strong>${e.provenance_verdict}</strong></div>
+              <div>Soykütüğü: <strong>${e.provenance_verdict}</strong> | Tekrar: <strong>${e.reproducibility_verdict}</strong></div>
             </div>
           </div>
         `).join('');
@@ -5299,7 +5299,9 @@ def render_research_explorer_scripts() -> str:
         const chainOk = data.timeline_chain_integrity?.chain_valid;
         const badge = document.getElementById('v5-timeline-chain-badge');
         if (badge) {
-          badge.textContent = chainOk ? `ZİNCİR BÜTÜNLÜĞÜ: DOĞRULANDI (${events.length} Olay)` : 'ZİNCİR BÜTÜNLÜĞÜ: BOZULDU';
+          badge.textContent = chainOk
+            ? `INTERNAL_TAMPER_DETECTION_CHAIN: DOĞRULANDI (${events.length} Olay | externally_anchored=false)`
+            : 'ZİNCİR BÜTÜNLÜĞÜ: BOZULDU';
         }
         container.innerHTML = events.map(ev => `
           <div style="background:#090e1a; border-left:3px solid #a855f7; padding:10px 14px; margin-bottom:8px; border-radius:4px; font-size:12px;">
@@ -5451,20 +5453,39 @@ def render_research_explorer_scripts() -> str:
       try {
         const res = await fetch('/api/v1/product/research/reviews');
         const data = await res.json();
-        const revs = data.reviews || [];
-        container.innerHTML = revs.map(r => `
+        const authRevs = data.authenticated_reviews || data.reviews || [];
+        const autoAssess = data.automated_assessments || [];
+        const authHtml = authRevs.length > 0
+          ? authRevs.map(r => `
+              <div class="card" style="background:#090e1a; border:1px solid #10b981; border-radius:8px; padding:12px; margin-bottom:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                  <div>
+                    <span class="badge" style="background:#064e3b; color:#10b981; font-family:var(--font-mono); font-size:11px;">AUTHENTICATED_REVIEW_DECISION &bull; ${r.review_id}</span>
+                    <strong style="color:#f8fafc; font-size:13px; margin-left:8px;">${r.research_id} &bull; ${r.decision}</strong>
+                  </div>
+                  <span class="badge" style="background:#1e293b; color:#10b981; font-size:11px;">${r.resulting_review_state}</span>
+                </div>
+                <div style="font-size:12px; color:#cbd5e1; margin-top:6px;">${r.decision_reason}</div>
+                <div style="font-size:10px; color:#94a3b8; margin-top:4px;">Doğrulanmış İnceleyen: ${r.reviewer_identity} | Zaman: ${r.decision_timestamp} | Kapsam: ${r.governance_scope_notice}</div>
+              </div>
+            `).join('')
+          : `<div style="background:#090e1a; border:1px dashed #334155; border-radius:8px; padding:10px 14px; margin-bottom:12px; font-size:12px; color:#94a3b8;">Henüz kimliği doğrulanmış insan/kurul inceleme kararı (AUTHENTICATED_REVIEW_DECISION) kaydedilmedi. Aşağıdaki kayıtlar yetkisiz sistem değerlendirmeleridir (SYSTEM_GENERATED_ASSESSMENT).</div>`;
+
+        const autoHtml = autoAssess.map(a => `
           <div class="card" style="background:#090e1a; border:1px solid #1e293b; border-radius:8px; padding:12px; margin-bottom:10px;">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
               <div>
-                <span class="badge" style="background:#1e293b; color:#38bdf8; font-family:var(--font-mono); font-size:11px;">${r.review_id}</span>
-                <strong style="color:#f8fafc; font-size:13px; margin-left:8px;">${r.research_id} &bull; ${r.decision}</strong>
+                <span class="badge" style="background:#1e293b; color:#f59e0b; font-family:var(--font-mono); font-size:11px;">AUTOMATED_ASSESSMENT &bull; ${a.assessment_id}</span>
+                <strong style="color:#f8fafc; font-size:13px; margin-left:8px;">${a.research_id} &bull; Öneri: ${a.suggested_decision}</strong>
               </div>
-              <span class="badge" style="background:#1e293b; color:#10b981; font-size:11px;">${r.resulting_review_state}</span>
+              <span class="badge" style="background:#1e293b; color:#94a3b8; font-size:11px;">${a.recommended_review_state} (authoritative=false)</span>
             </div>
-            <div style="font-size:12px; color:#cbd5e1; margin-top:6px;">${r.decision_reason}</div>
-            <div style="font-size:10px; color:#94a3b8; margin-top:4px;">İnceleyen: ${r.reviewer_identity} | Kapsam: ${r.governance_scope_notice}</div>
+            <div style="font-size:12px; color:#cbd5e1; margin-top:6px;">${a.assessment_reason}</div>
+            <div style="font-size:10px; color:#94a3b8; margin-top:4px;">Kaynak: ${a.reviewer_identity} | Yönetişim Etkisi: ${a.governance_effect}</div>
           </div>
         `).join('');
+
+        container.innerHTML = authHtml + autoHtml;
       } catch (err) {
         console.error('loadResearchReviewsV5UI error:', err);
         container.innerHTML = `<div style="color:#ef4444; padding:16px;">Hata: ${err.message}</div>`;
@@ -5493,6 +5514,8 @@ def render_research_explorer_scripts() -> str:
             </div>
             <div style="font-size:11px; color:#cbd5e1;">
               <div>İçerik SHA-256: <code style="color:#38bdf8;">${rep.report_content_sha256}</code></div>
+              <div style="margin-top:4px;">Tekrarlanabilirlik: <code>${rep.reproducibility_status?.status || 'REPRODUCTION_NOT_ESTABLISHED'}</code> | İnceleme Sınıfı: <code>${rep.review_status?.review_classification || 'AUTOMATED_ASSESSMENT'}</code></div>
+              <div style="margin-top:4px;">Güven Sınıfları: <code>CATALOG_METADATA</code> &bull; <code>VERIFIED_EXECUTION_EVIDENCE</code> &bull; <code>AUTOMATED_ASSESSMENT</code> &bull; <code>AUTHENTICATED_REVIEW_DECISION</code> &bull; <code>UNVERIFIED_HISTORICAL_CLAIM</code></div>
               <div style="margin-top:4px;">Yönetişim: <strong style="color:#f59e0b;">${rep.governance_status}</strong></div>
             </div>
           </div>

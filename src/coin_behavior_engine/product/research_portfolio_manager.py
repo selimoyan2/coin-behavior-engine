@@ -25,6 +25,9 @@ from coin_behavior_engine.product.advanced_statistical_validation import (
     AdvancedStatisticalValidator,
 )
 from coin_behavior_engine.product.evidence_gap_analyzer import EvidenceGapAnalyzer
+from coin_behavior_engine.product.experiment_timeline_registry import (
+    experiment_registry_service,
+)
 from coin_behavior_engine.product.independent_validation_framework import (
     IndependentValidationFramework,
 )
@@ -32,6 +35,9 @@ from coin_behavior_engine.product.reproducibility_lab import ReproducibilityLabE
 from coin_behavior_engine.product.research_catalog_provider import (
     ResearchCatalogProvider,
     ResearchRecord,
+)
+from coin_behavior_engine.product.research_review_workflow import (
+    research_review_workflow_engine,
 )
 from coin_behavior_engine.product.scientific_readiness import (
     ScientificReadinessEvaluator,
@@ -217,6 +223,15 @@ class ScientificResearchPortfolioManager:
     def build_portfolio_items(cls) -> List[PortfolioResearchItem]:
         """Builds the complete canonical list of PortfolioResearchItem records from authoritative engines."""
         if cls._cached_portfolio_items is not None:
+            rev_states = research_review_workflow_engine.list_reviews().get("record_review_states", {})
+            for item in cls._cached_portfolio_items:
+                if item.evidence_integrity_status != "BLOCKED_QUARANTINED":
+                    item.review_status = rev_states.get(item.research_id, "EVIDENCE_CHECK_COMPLETED")
+                    exp_obj = experiment_registry_service.get_experiment(item.research_id)
+                    if exp_obj and exp_obj.get("reproducibility_verdict") == "OUTPUTS_MATCHED":
+                        item.reproducibility_status = "OUTPUTS_MATCHED"
+                    else:
+                        item.reproducibility_status = "REPRODUCTION_NOT_ESTABLISHED"
             return list(cls._cached_portfolio_items)
 
         catalog = ResearchCatalogProvider.get_canonical_catalog()
@@ -266,14 +281,15 @@ class ScientificResearchPortfolioManager:
             else:
                 ev_integrity = "UNVERIFIED"
 
-            # Determine reproducibility_status from ReproducibilityLabEngine / Readiness gate
-            rep_status = "REPRODUCTION_NOT_RUN"
+            # Determine reproducibility_status strictly from verified reproduction evidence (never from dataset provenance alone)
+            exp_obj = experiment_registry_service.get_experiment(rec_id)
+            exp_repro = exp_obj.get("reproducibility_verdict") if exp_obj else None
             if is_quarantined:
                 rep_status = "REPRODUCTION_BLOCKED"
-            elif repro_verified or prov_res.get("is_verified"):
+            elif repro_verified or exp_repro == "OUTPUTS_MATCHED":
                 rep_status = "OUTPUTS_MATCHED"
             else:
-                rep_status = "REPRODUCTION_BLOCKED"
+                rep_status = "REPRODUCTION_NOT_ESTABLISHED"
 
             # Determine independence_status
             if is_quarantined:
@@ -346,11 +362,9 @@ class ScientificResearchPortfolioManager:
                     review_status=(
                         "BLOCKED"
                         if is_quarantined
-                        else (
-                            "REVIEW_COMPLETED"
-                            if scorecard.overall_verdict == "READY_FOR_CONFIRMATORY_REVIEW"
-                            else "EVIDENCE_CHECK_COMPLETED"
-                        )
+                        else research_review_workflow_engine.list_reviews()
+                        .get("record_review_states", {})
+                        .get(rec_id, "EVIDENCE_CHECK_COMPLETED")
                     ),
                 )
             )

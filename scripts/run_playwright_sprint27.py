@@ -412,11 +412,12 @@ async def run_suite():
             await page_mob.evaluate("() => switchWorkspaceView('research-reviews-v5')")
             await page_mob.wait_for_selector("#ws-view-research-reviews-v5", state="visible", timeout=10000)
             await page_mob.wait_for_function(
-                "() => { const el = document.getElementById('v5-reviews-container'); return el && el.innerText.includes('REV-000'); }",
+                "() => { const el = document.getElementById('v5-reviews-container'); return el && el.innerText.includes('AUTOMATED_ASSESSMENT') && el.innerText.includes('AUTO-ASSESS-RES-REGIME-01'); }",
                 timeout=15000,
             )
             rev_text = await page_mob.locator("#ws-view-research-reviews-v5").text_content()
-            assert "REV-000" in rev_text
+            assert "AUTOMATED_ASSESSMENT" in rev_text
+            assert "SYSTEM_GENERATED_ASSESSMENT" in rev_text
 
             await page_mob.evaluate("() => switchWorkspaceView('report-builder-v5')")
             await page_mob.wait_for_selector("#ws-view-report-builder-v5", state="visible", timeout=10000)

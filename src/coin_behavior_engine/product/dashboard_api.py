@@ -1292,6 +1292,15 @@ class ProductDashboardApiService:
                         requested_status=str(payload.get("execution_status") or payload.get("requested_status") or "REGISTERED"),
                         evidence_verified_by_authority=False,
                         is_rerun=bool(payload.get("is_rerun", False)),
+                        record_origin=str(payload.get("record_origin") or "OFFLINE_EXPERIMENT_EXECUTION"),
+                        execution_started_at=payload.get("execution_started_at"),
+                        execution_completed_at=payload.get("execution_completed_at"),
+                        has_verified_execution_log=bool(payload.get("has_verified_execution_log", True)),
+                        reproducibility_verdict=str(payload.get("reproducibility_verdict") or "REPRODUCTION_NOT_ESTABLISHED"),
+                        independent_reference_compared=bool(payload.get("independent_reference_compared", False)),
+                        reference_artifact_sha256=payload.get("reference_artifact_sha256"),
+                        digest_source=payload.get("digest_source"),
+                        metadata_for_check=payload.get("metadata_for_check") if isinstance(payload.get("metadata_for_check"), dict) else None,
                     )
                     return HTTPStatus.OK, res
                 except ExperimentRegistrySecurityError as e_err:

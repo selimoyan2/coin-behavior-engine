@@ -225,10 +225,11 @@ class FindingsAndContradictionEngine:
             if q_val is None:
                 q_val = getattr(rec, "holdout_fdr_q", None)
 
+            repro_matched = bool(exp and exp.get("reproducibility_verdict") == "OUTPUTS_MATCHED")
             f_type = cls.classify_candidate_finding(
                 execution_completed=not is_quarantined,
                 provenance_verified=is_prov_ok,
-                reproducibility_matched=is_prov_ok,
+                reproducibility_matched=repro_matched,
                 sample_size=sample_n,
                 adjusted_q_or_p=q_val,
             )
@@ -248,7 +249,11 @@ class FindingsAndContradictionEngine:
             elif "Sistem" in rec.category or "Kriptografik" in rec.category:
                 direction = "INFRASTRUCTURE_VERIFIED"
 
-            created_ts = getattr(rec, "created_at_utc", None) or "2026-10-15T00:00:00Z"
+            created_ts = (
+                getattr(rec, "created_at_utc", None)
+                or (exp.get("source_artifact_timestamp_utc") if exp else None)
+                or "UNAVAILABLE"
+            )
 
             findings.append(
                 ScientificFinding(

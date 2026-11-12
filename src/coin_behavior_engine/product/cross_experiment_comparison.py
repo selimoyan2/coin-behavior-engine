@@ -544,8 +544,11 @@ class CrossExperimentComparisonEngine:
                 if pv.get("is_verified") and getattr(r, "sample_size", 0) >= 100
                 else "INSUFFICIENT_EVIDENCE"
             )
+            exp_for_r = experiment_registry_service.get_experiment(rid)
             matrix["reproducibility_status"][rid] = (
-                "OUTPUTS_MATCHED" if pv.get("is_verified") else "REPRODUCTION_BLOCKED"
+                exp_for_r.get("reproducibility_verdict", "REPRODUCTION_NOT_ESTABLISHED")
+                if exp_for_r
+                else ("REPRODUCTION_BLOCKED" if rid in ("RES-CRYPTO-01", "RES-QUARANTINE-01") else "REPRODUCTION_NOT_ESTABLISHED")
             )
             matrix["independent_validation_status"][rid] = getattr(
                 r, "replication_verdict", "INDEPENDENCE_NOT_ESTABLISHED"

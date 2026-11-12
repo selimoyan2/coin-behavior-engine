@@ -40,6 +40,9 @@ from coin_behavior_engine.product.research_catalog_provider import (
     ResearchCatalogProvider,
     ResearchRecord,
 )
+from coin_behavior_engine.product.research_review_workflow import (
+    research_review_workflow_engine,
+)
 from coin_behavior_engine.product.scientific_readiness import (
     CANONICAL_TRUST_PROGRESSION_TIERS,
     ScientificReadinessEvaluator,
@@ -350,10 +353,17 @@ class EvidenceTraceabilityExplorer:
                 stage_name="EXECUTION_ATTEMPT",
                 present=first_att is not None,
                 node_id=first_att.get("attempt_id") if first_att else None,
-                verification_status=first_att.get("execution_status") if first_att else "MISSING",
+                verification_status=(
+                    first_att.get("execution_status")
+                    if first_att
+                    else (exp_obj.get("execution_status", "HISTORICAL_EXECUTION_UNVERIFIED") if exp_obj else "HISTORICAL_EXECUTION_UNVERIFIED")
+                ),
                 trust_tier="ARTIFACT_PRESENT" if first_att else "UNVERIFIED",
                 provenance_reference=first_att.get("result_digest") if first_att else None,
-                details={"attempt_count": len(attempts)},
+                details={
+                    "attempt_count": len(attempts),
+                    "record_origin": exp_obj.get("record_origin", "CATALOG_PROJECTION") if exp_obj else "CATALOG_PROJECTION",
+                },
             )
         )
 
@@ -364,9 +374,13 @@ class EvidenceTraceabilityExplorer:
                 stage_name="RESULT_ARTIFACT",
                 present=len(out_arts) > 0,
                 node_id=out_arts[0] if out_arts else None,
-                verification_status="PRESENT" if out_arts else "MISSING",
+                verification_status="PRESENT" if out_arts else "CATALOG_SOURCE_ARTIFACT_ONLY_NO_EXECUTION_OUTPUT",
                 trust_tier="ARTIFACT_PRESENT" if out_arts else "UNVERIFIED",
                 provenance_reference=exp_obj.get("result_digest") if exp_obj else None,
+                details={
+                    "source_report_artifact": getattr(rec, "source_artifact", None),
+                    "execution_output_artifact": out_arts[0] if out_arts else None,
+                },
             )
         )
 
@@ -389,14 +403,19 @@ class EvidenceTraceabilityExplorer:
             )
         )
 
-        # 10. Reproducibility Evidence
-        repro_ok = prov["is_verified"]
+        # 10. Reproducibility Evidence (never inferred from dataset provenance alone)
+        repro_verdict = (
+            exp_obj.get("reproducibility_verdict", "REPRODUCTION_NOT_ESTABLISHED")
+            if exp_obj
+            else "REPRODUCTION_NOT_ESTABLISHED"
+        )
+        repro_ok = repro_verdict == "OUTPUTS_MATCHED"
         stages.append(
             TraceabilityStageEntry(
                 stage_name="REPRODUCIBILITY_EVIDENCE",
                 present=repro_ok,
                 node_id=f"REPRO-{rec.id}" if repro_ok else None,
-                verification_status="OUTPUTS_MATCHED" if repro_ok else "REPRODUCTION_BLOCKED",
+                verification_status=repro_verdict,
                 trust_tier="METHODOLOGY_VALIDATED" if repro_ok else "UNVERIFIED",
                 provenance_reference="ReproducibilityLabEngine" if repro_ok else None,
             )
@@ -417,16 +436,35 @@ class EvidenceTraceabilityExplorer:
             )
         )
 
-        # 12. Review Decision
+        # 12. Review Decision (distinguishes AUTHENTICATED_REVIEW_DECISION from AUTOMATED_ASSESSMENT)
+        rev_listing = research_review_workflow_engine.list_reviews(research_id=rec.id)
+        auth_revs = rev_listing.get("authenticated_reviews", [])
+        auto_ass = rev_listing.get("automated_assessments", [])
+        latest_auth = auth_revs[-1] if auth_revs else None
+        latest_auto = auto_ass[-1] if auto_ass else None
         gov_node = graph.get_node("GOV-DECISION-NO-GO")
         stages.append(
             TraceabilityStageEntry(
                 stage_name="REVIEW_DECISION",
-                present=gov_node is not None,
-                node_id="GOV-DECISION-NO-GO" if gov_node else None,
-                verification_status="VERIFIED" if gov_node else "MISSING",
-                trust_tier="INTEGRITY_VERIFIED",
+                present=latest_auth is not None or gov_node is not None,
+                node_id=(
+                    latest_auth["review_id"]
+                    if latest_auth
+                    else (latest_auto["assessment_id"] if latest_auto else "GOV-DECISION-NO-GO")
+                ),
+                verification_status=(
+                    "AUTHENTICATED_REVIEW_DECISION"
+                    if latest_auth
+                    else "AUTOMATED_ASSESSMENT"
+                ),
+                trust_tier="INTEGRITY_VERIFIED" if latest_auth else "UNVERIFIED",
                 provenance_reference="TECHNICAL_NO_GO | OFFLINE_RESEARCH_ONLY",
+                details={
+                    "review_classification": (
+                        "AUTHENTICATED_REVIEW_DECISION" if latest_auth else "AUTOMATED_ASSESSMENT"
+                    ),
+                    "authoritative": bool(latest_auth),
+                },
             )
         )
 
