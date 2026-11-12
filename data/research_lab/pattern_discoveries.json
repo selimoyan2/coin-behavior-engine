@@ -1,0 +1,126 @@
+{
+  "schema_version": "CBE-DISCOVERIES-V28",
+  "saved_at": "2026-11-12T09:49:00.168170+00:00",
+  "discoveries": [
+    {
+      "discovery_id": "DISC-VOL-CLUST-001",
+      "research_id": "RES-STAT-02",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "methodology_id": "METH-ENGLE-ARCH-01",
+      "discovery_method": "VOLATILITY_CLUSTERING_ENGLE_LM",
+      "observation_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-03-31T23:00:00Z"
+      },
+      "sample_size": 2184,
+      "effective_sample_size": 1840,
+      "effect_estimate": 0.284,
+      "uncertainty_estimate": {
+        "std_error": 0.038,
+        "ci_lower": 0.209,
+        "ci_upper": 0.358
+      },
+      "raw_p_value": 4.2e-05,
+      "adjusted_p_value": 0.000168,
+      "multiple_testing_family_id": "FAM-VOL-DYNAMICS-01",
+      "discovery_status": "VALIDATION_SUPPORTED",
+      "validation_status": "CONFIRMED_OUT_OF_SAMPLE",
+      "provenance_status": "TRUSTED_PROVENANCE_VERIFIED",
+      "reproducibility_status": "REPEATABILITY_VERIFIED",
+      "limitations": [
+        "Evaluated on spot hourly cadence; microsecond structural breaks not modeled.",
+        "Assumes stationarity across quarterly observation boundaries."
+      ],
+      "supporting_artifact_ids": [
+        "ART-VOL-001",
+        "ART-ARCH-STAT-2024Q1"
+      ],
+      "metrics": {
+        "arch_lm_stat": 44.12,
+        "degrees_of_freedom": 1,
+        "kurtosis": 6.84
+      },
+      "created_at": "2026-11-12T09:49:00.167648+00:00"
+    },
+    {
+      "discovery_id": "DISC-REG-SHIFT-002",
+      "research_id": "RES-GEN-05",
+      "hypothesis_id": "HYP-REG-SHIFT-002",
+      "dataset_id": "DS-BTC-15M-Q1-2024",
+      "methodology_id": "METH-KS-DIST-SHIFT-01",
+      "discovery_method": "TWO_SAMPLE_KOLMOGOROV_SMIRNOV",
+      "observation_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-09-30T23:45:00Z"
+      },
+      "sample_size": 17568,
+      "effective_sample_size": 12400,
+      "effect_estimate": 0.082,
+      "uncertainty_estimate": {
+        "std_error": 0.012,
+        "ci_lower": 0.058,
+        "ci_upper": 0.106
+      },
+      "raw_p_value": 0.0018,
+      "adjusted_p_value": 0.0054,
+      "multiple_testing_family_id": "FAM-REGIME-DIST-01",
+      "discovery_status": "VALIDATION_SUPPORTED",
+      "validation_status": "CONFIRMED_OUT_OF_SAMPLE",
+      "provenance_status": "TRUSTED_PROVENANCE_VERIFIED",
+      "reproducibility_status": "REPEATABILITY_VERIFIED",
+      "limitations": [
+        "Intraday seasonality not explicitly removed before KS comparison.",
+        "Sample size differences between quarters slightly affect asymptotic bounds."
+      ],
+      "supporting_artifact_ids": [
+        "ART-DIST-002",
+        "ART-KS-2024Q1Q3"
+      ],
+      "metrics": {
+        "ks_statistic": 0.082,
+        "wasserstein_distance": 0.00034
+      },
+      "created_at": "2026-11-12T09:49:00.168170+00:00"
+    },
+    {
+      "discovery_id": "DISC-ANALOG-EXP-003",
+      "research_id": "RES-HIST-01",
+      "hypothesis_id": "HYP-RETRO-ANALOG-003",
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "methodology_id": "METH-ANALOG-EUCLID-01",
+      "discovery_method": "HISTORICAL_ANALOG_SIMILARITY",
+      "observation_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-03-31T23:00:00Z"
+      },
+      "sample_size": 2184,
+      "effective_sample_size": 420,
+      "effect_estimate": 0.518,
+      "uncertainty_estimate": {
+        "std_error": 0.048,
+        "ci_lower": 0.424,
+        "ci_upper": 0.612
+      },
+      "raw_p_value": 0.485,
+      "adjusted_p_value": 0.72,
+      "multiple_testing_family_id": "FAM-ANALOG-01",
+      "discovery_status": "INCONCLUSIVE",
+      "validation_status": "VALIDATION_FAILED",
+      "provenance_status": "TRUSTED_PROVENANCE_VERIFIED",
+      "reproducibility_status": "REPEATABILITY_VERIFIED",
+      "limitations": [
+        "Null hypothesis of random future evolution cannot be rejected (p > 0.05).",
+        "High sensitivity to distance metric choice (Euclidean vs Cosine)."
+      ],
+      "supporting_artifact_ids": [
+        "ART-ANALOG-003"
+      ],
+      "metrics": {
+        "binomial_p_value": 0.485,
+        "top_matches_count": 25
+      },
+      "created_at": "2026-11-12T09:49:00.168170+00:00"
+    }
+  ]
+}

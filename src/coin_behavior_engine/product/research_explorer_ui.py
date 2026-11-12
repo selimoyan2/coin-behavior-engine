@@ -346,14 +346,14 @@ def render_research_explorer_html() -> str:
         </div>
       </div>
 
-      <!-- Sprint 27: Prominent Non-Green Governance & Safety Banner -->
-      <div id="sprint27-governance-banner" style="background: rgba(245, 158, 11, 0.14); border: 2px solid #f59e0b; border-left: 6px solid #ef4444; border-radius: 8px; padding: 12px 18px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+      <!-- Sprint 28: Prominent Non-Green Governance & Safety Banner -->
+      <div id="sprint28-governance-banner" style="background: rgba(245, 158, 11, 0.14); border: 2px solid #f59e0b; border-left: 6px solid #ef4444; border-radius: 8px; padding: 12px 18px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
         <div style="font-size: 13px; font-weight: 800; color: #fde68a; letter-spacing: 0.4px;">
           ⚠️ CBE-0.7.0 — FROZEN SCIENTIFIC MODEL | TECHNICAL_NO_GO | OFFLINE RESEARCH ONLY | LIVE TRADING DISABLED
         </div>
         <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
           <span class="badge" style="background: rgba(245, 158, 11, 0.25); color: #fbbf24; border: 1px solid #f59e0b; font-size: 11px;">
-            DASHBOARD V5 — SCIENTIFIC COMMAND CENTER
+            DASHBOARD V6 — HISTORICAL SCIENTIFIC DISCOVERY ENGINE
           </span>
           <span class="badge" style="background: rgba(239, 68, 68, 0.25); color: #fca5a5; border: 1px solid #ef4444; font-size: 11px;">
             RUNTIME SIGNING: VERIFICATION_ONLY
@@ -365,6 +365,39 @@ def render_research_explorer_html() -> str:
       <div class="workspace-tabs-bar" role="tablist" aria-label="Araştırma Alanı Sekmeleri">
         <button class="ws-tab-btn active" id="ws-tab-overview" onclick="switchWorkspaceView('overview')">
           <span>📊</span> Genel Bakış
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-discovery-overview-v6" onclick="switchWorkspaceView('discovery-overview-v6')">
+          <span>🧭</span> Keşif Genel Bakış V6
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-dataset-validation-v6" onclick="switchWorkspaceView('dataset-validation-v6')">
+          <span>🗃️</span> Veri Seti Doğrulama V6
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-hypothesis-registry-v6" onclick="switchWorkspaceView('hypothesis-registry-v6')">
+          <span>📜</span> Hipotez &amp; Ön Kayıt
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-pattern-discovery-v6" onclick="switchWorkspaceView('pattern-discovery-v6')">
+          <span>🔬</span> Örüntü Keşif Lab
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-temporal-validation-v6" onclick="switchWorkspaceView('temporal-validation-v6')">
+          <span>⏳</span> Zamansal OOS Doğrulama
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-reproducibility-v2" onclick="switchWorkspaceView('reproducibility-v2')">
+          <span>🔁</span> Tekrarlanabilirlik Lab V2
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-false-discovery-v6" onclick="switchWorkspaceView('false-discovery-v6')">
+          <span>📉</span> Çoklu Test Kontrolü
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-regime-stability-v6" onclick="switchWorkspaceView('regime-stability-v6')">
+          <span>🌐</span> Rejim Kararlılığı
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-evidence-grading-v6" onclick="switchWorkspaceView('evidence-grading-v6')">
+          <span>🎖️</span> Kanıt Derecelendirme
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-knowledge-base-v6" onclick="switchWorkspaceView('knowledge-base-v6')">
+          <span>🧠</span> Keşif Bilgi Tabanı
+        </button>
+        <button class="ws-tab-btn" id="ws-tab-reports-v6" onclick="switchWorkspaceView('reports-v6')">
+          <span>📑</span> Bilimsel Raporlar V6
         </button>
         <button class="ws-tab-btn" id="ws-tab-portfolio-v5" onclick="switchWorkspaceView('portfolio-v5')">
           <span>🗂️</span> Araştırma Portföyü
@@ -2124,6 +2157,304 @@ def render_research_explorer_html() -> str:
         </div>
       </div>
 
+    
+      <!-- =================================================================== -->
+      <!-- SPRINT 28 DASHBOARD V6: HISTORICAL SCIENTIFIC DISCOVERY VIEWS       -->
+      <!-- =================================================================== -->
+
+      <!-- VIEW 28.0: SCIENTIFIC DISCOVERY OVERVIEW V6 -->
+      <div id="ws-view-discovery-overview-v6" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #38bdf8; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🧭 Bilimsel Keşif Genel Bakış (Dashboard V6)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                Tarihsel BTC/USDT piyasa davranışı keşif metrikleri, ön kayıtlı hipotezler, OOS doğrulama ve kanıt dereceleri.
+              </div>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="loadDiscoveryOverviewV6()">🔄 Yenile</button>
+          </div>
+          <div id="v6-overview-kpis" class="ws-kpi-grid" style="margin-bottom: 14px;"></div>
+          <div id="v6-overview-gap-alerts" style="margin-top: 14px;"></div>
+        </div>
+      </div>
+
+      <!-- VIEW 28.1: HISTORICAL DATASET VALIDATION -->
+      <div id="ws-view-dataset-validation-v6" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #10b981; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🗃️ Tarihsel Veri Seti Doğrulama Motoru (Modül 28.1)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                Şema doğrulama, OHLC matematiksel tutarlılığı, eksik aralık kontrolü, SHA-256 soykütüğü ve karantina sınırları.
+              </div>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="loadDatasetValidationV6()">🔄 Envanteri Doğrula</button>
+          </div>
+          <div class="table-container" style="overflow-x: auto;">
+            <table class="ws-catalog-table">
+              <thead>
+                <tr>
+                  <th>Veri Seti ID</th>
+                  <th>Zaman Dilimi</th>
+                  <th>Gözlem Sayısı</th>
+                  <th>Tarih Aralığı</th>
+                  <th>Şema / OHLC</th>
+                  <th>Zamansal Bütünlük</th>
+                  <th>Soykütük Durumu</th>
+                  <th>Karantina</th>
+                  <th>Parmak İzi</th>
+                </tr>
+              </thead>
+              <tbody id="v6-dataset-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 28.2: HYPOTHESIS REGISTRY & PREREGISTRATION -->
+      <div id="ws-view-hypothesis-registry-v6" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #818cf8; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">📜 Bilimsel Hipotez Kayıt Defteri &amp; Ön Kayıt (Modül 28.2)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                Geriye dönük hipotez değiştirmeyi önleyen değiştirilemez kanonik özetler, ekleme geçmişi ve doğrulayıcı geçit.
+              </div>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="loadHypothesisRegistryV6()">🔄 Yenile</button>
+          </div>
+          <div class="table-container" style="overflow-x: auto;">
+            <table class="ws-catalog-table">
+              <thead>
+                <tr>
+                  <th>Hipotez ID</th>
+                  <th>Araştırma ID</th>
+                  <th>Hipotez Başlığı</th>
+                  <th>Bilimsel Soru</th>
+                  <th>Hedef Metrik</th>
+                  <th>Ön Kayıt Durumu</th>
+                  <th>Ön Kayıt Özeti (Digest)</th>
+                  <th>Geriye Dönük?</th>
+                  <th>Değişiklikler</th>
+                </tr>
+              </thead>
+              <tbody id="v6-hypothesis-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 28.3: PATTERN DISCOVERY LABORATORY -->
+      <div id="ws-view-pattern-discovery-v6" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #f59e0b; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🔬 Tarihsel Örüntü Keşif Laboratuvarı (Modül 28.3)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                Oynaklık kümelenmesi, otokorelasyon, dağılım kayması ve analog benzerlik (alım-satım sinyali üretilmez).
+              </div>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="loadPatternDiscoveryV6()">🔄 Yenile</button>
+          </div>
+          <div class="table-container" style="overflow-x: auto;">
+            <table class="ws-catalog-table">
+              <thead>
+                <tr>
+                  <th>Keşif ID</th>
+                  <th>Hipotez ID</th>
+                  <th>Metodoloji &amp; Yöntem</th>
+                  <th>Örneklem (N)</th>
+                  <th>Etki Büyüklüğü</th>
+                  <th>Belirsizlik (CI %95)</th>
+                  <th>Ham p-değeri</th>
+                  <th>Düzeltilmiş p</th>
+                  <th>Durum</th>
+                </tr>
+              </thead>
+              <tbody id="v6-discovery-tbody"></tbody>
+            </table>
+          </div>
+          <div style="margin-top: 14px;">
+            <h4 style="color:#f8fafc; font-size:13px; margin-bottom:6px;">Aday Arama Alanı Denetim Günlüğü (Seçim Yanlılığını Önleme):</h4>
+            <div id="v6-search-space-log" style="font-size:12px; color:#cbd5e1;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 28.4: TEMPORAL OUT-OF-SAMPLE VALIDATION -->
+      <div id="ws-view-temporal-validation-v6" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #a855f7; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">⏳ Zamansal Örneklem Dışı (OOS) Doğrulama Motoru (Modül 28.4)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                Kronolojik bölümler (Keşif, Geliştirme, Doğrulama, Holdout), ambargo penceresi ve holdout erişim denetim defteri.
+              </div>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="loadTemporalValidationV6()">🔄 Yenile</button>
+          </div>
+          <div id="v6-temporal-partitions-cards" class="ws-kpi-grid" style="margin-bottom: 14px;"></div>
+          <h4 style="color:#f8fafc; font-size:13px; margin: 12px 0 6px 0;">OOS Doğrulama Raporları:</h4>
+          <div class="table-container" style="overflow-x: auto;">
+            <table class="ws-catalog-table">
+              <thead>
+                <tr>
+                  <th>Doğrulama ID</th>
+                  <th>Hipotez ID</th>
+                  <th>İç Örneklem Metriği</th>
+                  <th>Dış Örneklem Metriği</th>
+                  <th>Bozulma (Degradation)</th>
+                  <th>Sızıntı Durumu</th>
+                  <th>Ambargo</th>
+                  <th>Karar</th>
+                </tr>
+              </thead>
+              <tbody id="v6-temporal-tbody"></tbody>
+            </table>
+          </div>
+          <h4 style="color:#f8fafc; font-size:13px; margin: 16px 0 6px 0;">Holdout Bölümü Erişim Defteri (Holdout Usage Ledger):</h4>
+          <div id="v6-holdout-ledger-tbody" style="font-size:12px; color:#cbd5e1;"></div>
+        </div>
+      </div>
+
+      <!-- VIEW 28.5: REPRODUCIBILITY LAB V2 -->
+      <div id="ws-view-reproducibility-v2" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #06b6d4; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🔁 Bağımsız Tekrarlanabilirlik &amp; Çoğaltma Laboratuvarı V2 (Modül 28.5)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                Hesaplamalı tekrarlanabilirlik, bağımsız uygulama ve bağımsız veri seti çoğaltması arasındaki kesin ayrım.
+              </div>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="loadReproducibilityV2()">🔄 Yenile</button>
+          </div>
+          <div class="table-container" style="overflow-x: auto;">
+            <table class="ws-catalog-table">
+              <thead>
+                <tr>
+                  <th>Çoğaltma ID</th>
+                  <th>Orijinal Deney</th>
+                  <th>Tür</th>
+                  <th>Kaynak Veri Seti</th>
+                  <th>Çoğaltma Veri Seti</th>
+                  <th>Bağımsızlık</th>
+                  <th>Tolerans (rtol/atol)</th>
+                  <th>Maksimum Hata</th>
+                  <th>Nihai Karar</th>
+                </tr>
+              </thead>
+              <tbody id="v6-reproducibility-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 28.6: FALSE DISCOVERY & MULTIPLE TESTING -->
+      <div id="ws-view-false-discovery-v6" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #ec4899; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">📉 İstatistiksel Yanlış Keşif &amp; Çoklu Test Kontrolü (Modül 28.6)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                Test aileleri, Bonferroni, Holm, Benjamini-Hochberg FDR ve Benjamini-Yekutieli düzeltmeleri.
+              </div>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="loadFalseDiscoveryV6()">🔄 Yenile</button>
+          </div>
+          <div id="v6-testing-families-container"></div>
+        </div>
+      </div>
+
+      <!-- VIEW 28.7: REGIME STABILITY & GENERALIZATION -->
+      <div id="ws-view-regime-stability-v6" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #eab308; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🌐 Piyasa Rejimi Kararlılığı &amp; Genelleme Zekası (Modül 28.7)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                Tarihsel rejimler (Boğa, Ayı, Yatay, Oynaklık) boyunca etki büyüklüğü heterojenliği ve genelleme kararları.
+              </div>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="loadRegimeStabilityV6()">🔄 Yenile</button>
+          </div>
+          <div id="v6-regime-stability-container"></div>
+        </div>
+      </div>
+
+      <!-- VIEW 28.8: SCIENTIFIC EVIDENCE GRADING -->
+      <div id="ws-view-evidence-grading-v6" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #6366f1; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🎖️ Bilimsel Keşif Güveni &amp; Kanıt Derecelendirme (Modül 28.8)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                12 kanıt boyutu üzerinden yapay puan şişirmesi olmaksızın belirlenen kategorik kanıt dereceleri.
+              </div>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="loadEvidenceGradingV6()">🔄 Yenile</button>
+          </div>
+          <div id="v6-evidence-grading-container"></div>
+        </div>
+      </div>
+
+      <!-- VIEW 28.9: DISCOVERY KNOWLEDGE BASE -->
+      <div id="ws-view-knowledge-base-v6" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #14b8a6; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">🧠 Araştırma Keşif Bilgi Tabanı (Modül 28.9)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                Doğrulanmış tarihsel bilimsel bulgular, kanıt dereceleri, metodolojik kısıtlar ve izlenebilir raporlar.
+              </div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="v6-kb-search" class="input" placeholder="Bilgi tabanında ara..." style="font-size:12px; width:220px;" oninput="loadKnowledgeBaseV6()" />
+              <button class="btn btn-sm btn-primary" onclick="loadKnowledgeBaseV6()">🔍 Ara</button>
+            </div>
+          </div>
+          <div id="v6-knowledge-base-cards"></div>
+        </div>
+      </div>
+
+      <!-- VIEW 28.10: SCIENTIFIC REPORTS V6 -->
+      <div id="ws-view-reports-v6" class="ws-view-container" style="display: none;">
+        <div class="card" style="border-top: 4px solid #f43f5e; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #f8fafc;">📑 Bilimsel Rapor Oluşturucu V6 (Modül 28.9)</h3>
+              <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                10 standart kanıt raporu türü (JSON, Markdown, HTML) ile tam denetlenebilir rapor dışa aktarımı.
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; background: #0f172a; padding: 12px; border-radius: 6px;">
+            <select id="v6-report-type-select" class="input" style="font-size: 12px;">
+              <option value="HISTORICAL_DISCOVERY">Historical Discovery Report</option>
+              <option value="HYPOTHESIS_VALIDATION">Hypothesis Validation Report</option>
+              <option value="OUT_OF_SAMPLE_VALIDATION">Out-of-Sample Validation Report</option>
+              <option value="REPRODUCIBILITY">Reproducibility Report</option>
+              <option value="INDEPENDENT_REPLICATION">Independent Replication Report</option>
+              <option value="FALSE_DISCOVERY_CONTROL">False Discovery Control Report</option>
+              <option value="REGIME_STABILITY">Regime Stability Report</option>
+              <option value="EVIDENCE_GRADE">Scientific Evidence Grade Report</option>
+              <option value="CONTRADICTION_REVIEW">Contradiction Review Report</option>
+              <option value="PORTFOLIO_SUMMARY">Research Discovery Portfolio Summary</option>
+            </select>
+            <select id="v6-report-format-select" class="input" style="font-size: 12px;">
+              <option value="MARKDOWN">Markdown</option>
+              <option value="JSON">JSON</option>
+              <option value="HTML">HTML</option>
+            </select>
+            <button class="btn btn-sm btn-primary" onclick="generateReportV6()">⚡ Rapor Oluştur</button>
+          </div>
+          <div id="v6-report-preview-container" style="background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 14px; font-size: 12px; color: #cbd5e1; max-height: 500px; overflow-y: auto;">
+            Henüz rapor oluşturulmadı. Yukarıdaki seçenekleri belirleyip 'Rapor Oluştur' butonuna basınız.
+          </div>
+        </div>
+      </div>
+
     </section>
     """
 
@@ -3570,7 +3901,11 @@ def render_research_explorer_scripts() -> str:
 
     function switchWorkspaceView(viewId) {
       const views = [
-        'overview', 'portfolio-v5', 'experiment-registry-v5', 'experiment-timeline-v5',
+        'overview', 'discovery-overview-v6', 'dataset-validation-v6', 'hypothesis-registry-v6',
+        'pattern-discovery-v6', 'temporal-validation-v6', 'reproducibility-v2',
+        'false-discovery-v6', 'regime-stability-v6', 'evidence-grading-v6',
+        'knowledge-base-v6', 'reports-v6',
+        'portfolio-v5', 'experiment-registry-v5', 'experiment-timeline-v5',
         'compare-experiments-v5', 'evidence-explorer-v5', 'scientific-findings-v5',
         'contradiction-analysis-v5', 'research-reviews-v5', 'report-builder-v5',
         'catalog', 'comparison', 'evidence', 'library', 'reports',
@@ -3591,6 +3926,17 @@ def render_research_explorer_scripts() -> str:
       const breadcrumb = document.getElementById('ws-breadcrumb-active');
       const titles = {
         overview: 'Genel Bakış',
+        'discovery-overview-v6': 'Bilimsel Keşif Genel Bakış (Dashboard V6)',
+        'dataset-validation-v6': 'Tarihsel Veri Seti Doğrulama Motoru (Modül 28.1)',
+        'hypothesis-registry-v6': 'Hipotez Kayıt Defteri & Ön Kayıt (Modül 28.2)',
+        'pattern-discovery-v6': 'Tarihsel Örüntü Keşif Lab (Modül 28.3)',
+        'temporal-validation-v6': 'Zamansal OOS Doğrulama (Modül 28.4)',
+        'reproducibility-v2': 'Tekrarlanabilirlik & Çoğaltma Lab V2 (Modül 28.5)',
+        'false-discovery-v6': 'Yanlış Keşif & Çoklu Test Kontrolü (Modül 28.6)',
+        'regime-stability-v6': 'Piyasa Rejim Kararlılığı (Modül 28.7)',
+        'evidence-grading-v6': 'Bilimsel Kanıt Derecelendirme (Modül 28.8)',
+        'knowledge-base-v6': 'Araştırma Keşif Bilgi Tabanı (Modül 28.9)',
+        'reports-v6': 'Bilimsel Raporlar V6 (Modül 28.9)',
         'portfolio-v5': 'Bilimsel Araştırma Portföyü (Modül 27.1)',
         'experiment-registry-v5': 'Deney Kayıt Defteri (Modül 27.2)',
         'experiment-timeline-v5': 'Deney Zaman Çizelgesi (Modül 27.2)',
@@ -3621,7 +3967,18 @@ def render_research_explorer_scripts() -> str:
       if (breadcrumb) breadcrumb.textContent = titles[viewId] || viewId;
 
       if (viewId === 'overview') loadWorkspaceOverview();
-      else if (viewId === 'portfolio-v5') loadPortfolioV5UI();
+      else if (viewId === 'discovery-overview-v6') loadDiscoveryOverviewV6();
+      if (viewId === 'dataset-validation-v6') loadDatasetValidationV6();
+      if (viewId === 'hypothesis-registry-v6') loadHypothesisRegistryV6();
+      if (viewId === 'pattern-discovery-v6') loadPatternDiscoveryV6();
+      if (viewId === 'temporal-validation-v6') loadTemporalValidationV6();
+      if (viewId === 'reproducibility-v2') loadReproducibilityV2();
+      if (viewId === 'false-discovery-v6') loadFalseDiscoveryV6();
+      if (viewId === 'regime-stability-v6') loadRegimeStabilityV6();
+      if (viewId === 'evidence-grading-v6') loadEvidenceGradingV6();
+      if (viewId === 'knowledge-base-v6') loadKnowledgeBaseV6();
+      if (viewId === 'reports-v6') loadReportsV6();
+      if (viewId === 'portfolio-v5') loadPortfolioV5UI();
       else if (viewId === 'experiment-registry-v5') loadExperimentRegistryV5UI();
       else if (viewId === 'experiment-timeline-v5') loadExperimentTimelineV5UI();
       else if (viewId === 'compare-experiments-v5') loadCompareExperimentsV5UI();
@@ -3792,7 +4149,7 @@ def render_research_explorer_scripts() -> str:
       if (resultsBox) resultsBox.style.display = 'none';
 
       // Strict route allowlist for navigation security
-      const ALLOWED_TABS = ['overview', 'catalog', 'comparison', 'visualization', 'evidence', 'library', 'reports', 'graph', 'readiness', 'gaps', 'reproducibility', 'priorities', 'operations', 'research-explorer', 'comparison-lab'];
+      const ALLOWED_TABS = ['overview', 'discovery-overview-v6', 'dataset-validation-v6', 'hypothesis-registry-v6', 'pattern-discovery-v6', 'temporal-validation-v6', 'reproducibility-v2', 'false-discovery-v6', 'regime-stability-v6', 'evidence-grading-v6', 'knowledge-base-v6', 'reports-v6', 'catalog', 'comparison', 'visualization', 'evidence', 'library', 'reports', 'graph', 'readiness', 'gaps', 'reproducibility', 'priorities', 'operations', 'research-explorer', 'comparison-lab'];
       const cleanTab = ALLOWED_TABS.includes(targetTab) ? targetTab : 'overview';
       const cleanId = String(itemId || '').replace(/[^a-zA-Z0-9_-]/g, '');
 
@@ -5538,4 +5895,416 @@ def render_research_explorer_scripts() -> str:
     document.addEventListener('DOMContentLoaded', function() {
       workflowSyncInputs('2022-06-01T00:00:00Z', '2022-06-15T00:00:00Z', 'BTCUSDT', '1h');
     });
+
+
+    // -------------------------------------------------------------------------
+    // Sprint 28: Dashboard V6 — Historical Scientific Discovery Engine Client JS
+    // -------------------------------------------------------------------------
+
+    async function loadDiscoveryOverviewV6() {
+      const kpis = document.getElementById('v6-overview-kpis');
+      const alerts = document.getElementById('v6-overview-gap-alerts');
+      if (!kpis) return;
+
+      try {
+        const [dsRes, hypRes, discRes, reprRes, kbRes] = await Promise.all([
+          fetch('/api/v1/product/research/datasets').then(r => r.json()),
+          fetch('/api/v1/product/research/hypotheses').then(r => r.json()),
+          fetch('/api/v1/product/research/discoveries').then(r => r.json()),
+          fetch('/api/v1/product/research/reproducibility-v2').then(r => r.json()),
+          fetch('/api/v1/product/research/knowledge-base').then(r => r.json()),
+        ]);
+
+        const totalDs = dsRes.total_datasets || 0;
+        const totalHyps = hypRes.total_hypotheses || 0;
+        const preregCount = (hypRes.hypotheses || []).filter(h => h.preregistration_status === 'PREREGISTERED').length;
+        const totalDiscs = discRes.total_discoveries || 0;
+        const validatedDiscs = (discRes.discoveries || []).filter(d => d.discovery_status === 'VALIDATION_SUPPORTED').length;
+        const reprCount = (reprRes.records || []).filter(r => r.reproduction_verdict === 'INDEPENDENT_DATASET_REPLICATED').length;
+        const kbRecords = kbRes.records || [];
+        const blockedCount = (dsRes.datasets || []).filter(d => d.quarantine_status === 'QUARANTINED').length;
+
+        kpis.innerHTML = `
+          <div class="ws-kpi-card">
+            <div class="ws-kpi-title">Kayıtlı Hipotezler</div>
+            <div class="ws-kpi-value" style="color:#38bdf8;">${totalHyps}</div>
+            <div class="ws-kpi-sub">Ön Kayıtlı: ${preregCount}</div>
+          </div>
+          <div class="ws-kpi-card">
+            <div class="ws-kpi-title">Aday Keşifler</div>
+            <div class="ws-kpi-value" style="color:#f59e0b;">${totalDiscs}</div>
+            <div class="ws-kpi-sub">OOS Doğrulanmış: ${validatedDiscs}</div>
+          </div>
+          <div class="ws-kpi-card">
+            <div class="ws-kpi-title">Bağımsız Çoğaltma</div>
+            <div class="ws-kpi-value" style="color:#10b981;">${reprCount}</div>
+            <div class="ws-kpi-sub">INDEPENDENT_REPLICATED</div>
+          </div>
+          <div class="ws-kpi-card">
+            <div class="ws-kpi-title">Doğrulanmış Veri Seti</div>
+            <div class="ws-kpi-value" style="color:#a855f7;">${totalDs - blockedCount}</div>
+            <div class="ws-kpi-sub">Karantina: ${blockedCount}</div>
+          </div>
+        `;
+
+        if (alerts) {
+          alerts.innerHTML = `
+            <div style="background:rgba(56,189,248,0.1); border:1px solid #38bdf8; border-radius:6px; padding:10px 14px; font-size:12px; color:#e0f2fe;">
+              <strong>ℹ️ Bilimsel Güvenlik Durumu:</strong> Kanonik model <code>CBE-0.7.0</code> kesin dondurulmuştur. <code>TECHNICAL_NO_GO</code> aktiftir. Doğrulanmış hiçbir bilimsel bulgu gerçek alım-satım yetkisi doğurmaz.
+            </div>
+          `;
+        }
+      } catch (err) {
+        console.error('Error loading discovery overview:', err);
+      }
+    }
+
+    async function loadDatasetValidationV6() {
+      const tbody = document.getElementById('v6-dataset-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:16px; color:#94a3b8;">Veri setleri taranıyor ve doğrulanıyor...</td></tr>';
+
+      try {
+        const res = await fetch('/api/v1/product/research/datasets');
+        const data = await res.json();
+        const dsList = data.datasets || [];
+
+        tbody.innerHTML = dsList.map(d => {
+          const provColor = d.provenance_status === 'TRUSTED_PROVENANCE_VERIFIED' ? '#10b981' : (d.provenance_status === 'QUARANTINED' ? '#ef4444' : '#f59e0b');
+          const quarColor = d.quarantine_status === 'QUARANTINED' ? '#ef4444' : '#10b981';
+          return `
+            <tr style="border-bottom:1px solid #1e293b;">
+              <td style="font-family:var(--font-mono); font-weight:700; color:#38bdf8;">${d.dataset_id}</td>
+              <td>${d.timeframe}</td>
+              <td style="font-family:var(--font-mono);">${d.observation_count}</td>
+              <td style="font-size:11px; color:#94a3b8;">${(d.observation_start||'').substring(0,10)} → ${(d.observation_end||'').substring(0,10)}</td>
+              <td><span class="badge" style="background:rgba(16,185,129,0.15); color:#10b981;">${d.schema_validation_status}</span></td>
+              <td><span class="badge" style="background:rgba(56,189,248,0.15); color:#38bdf8;">${d.temporal_integrity_status}</span></td>
+              <td><span class="badge" style="background:rgba(16,185,129,0.15); color:${provColor};">${d.provenance_status}</span></td>
+              <td><span class="badge" style="background:rgba(239,68,68,0.15); color:${quarColor};">${d.quarantine_status}</span></td>
+              <td style="font-family:var(--font-mono); font-size:10px; color:#64748b;">${(d.dataset_fingerprint||'').substring(0,12)}...</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="9" style="color:#ef4444; padding:16px;">Veri seti yüklenemedi: ${err.message}</td></tr>`;
+      }
+    }
+
+    async function loadHypothesisRegistryV6() {
+      const tbody = document.getElementById('v6-hypothesis-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:16px; color:#94a3b8;">Hipotezler yükleniyor...</td></tr>';
+
+      try {
+        const res = await fetch('/api/v1/product/research/hypotheses');
+        const data = await res.json();
+        const hyps = data.hypotheses || [];
+
+        tbody.innerHTML = hyps.map(h => {
+          const isRetro = h.is_retrospective ? '<span class="badge" style="background:rgba(245,158,11,0.2); color:#fbbf24;">RETROSPECTIVE</span>' : '<span class="badge" style="background:rgba(16,185,129,0.2); color:#10b981;">PROSPECTIVE</span>';
+          return `
+            <tr style="border-bottom:1px solid #1e293b;">
+              <td style="font-family:var(--font-mono); font-weight:700; color:#38bdf8;">${h.hypothesis_id}</td>
+              <td style="font-family:var(--font-mono); color:#94a3b8;">${h.research_id}</td>
+              <td style="font-weight:600; color:#f8fafc;">${h.hypothesis_title}</td>
+              <td style="font-size:11px; color:#cbd5e1; max-width:240px;">${h.scientific_question}</td>
+              <td><span class="badge" style="background:rgba(129,140,248,0.15); color:#818cf8;">${h.target_metric}</span></td>
+              <td><span class="badge" style="background:rgba(16,185,129,0.15); color:#10b981;">${h.preregistration_status}</span></td>
+              <td style="font-family:var(--font-mono); font-size:10px; color:#64748b;">${(h.preregistration_digest||'').substring(0,12)}...</td>
+              <td>${isRetro}</td>
+              <td>${(h.amendments||[]).length} adet</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="9" style="color:#ef4444; padding:16px;">Hipotezler yüklenemedi: ${err.message}</td></tr>`;
+      }
+    }
+
+    async function loadPatternDiscoveryV6() {
+      const tbody = document.getElementById('v6-discovery-tbody');
+      const ssLog = document.getElementById('v6-search-space-log');
+      if (!tbody) return;
+      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:16px; color:#94a3b8;">Örüntü keşif kayıtları yükleniyor...</td></tr>';
+
+      try {
+        const [discRes, ssRes] = await Promise.all([
+          fetch('/api/v1/product/research/discoveries').then(r => r.json()),
+          fetch('/api/v1/product/research/discoveries/search-space').then(r => r.json()),
+        ]);
+
+        const discs = discRes.discoveries || [];
+        tbody.innerHTML = discs.map(d => {
+          const ci = d.uncertainty_estimate || {};
+          const ciStr = ci.ci_lower !== undefined ? `[${ci.ci_lower.toFixed(3)}, ${ci.ci_upper.toFixed(3)}]` : '-';
+          return `
+            <tr style="border-bottom:1px solid #1e293b;">
+              <td style="font-family:var(--font-mono); font-weight:700; color:#f59e0b;">${d.discovery_id}</td>
+              <td style="font-family:var(--font-mono); color:#38bdf8;">${d.hypothesis_id}</td>
+              <td>${d.discovery_method}</td>
+              <td style="font-family:var(--font-mono);">${d.sample_size}</td>
+              <td style="font-family:var(--font-mono); font-weight:700; color:#38bdf8;">${d.effect_estimate.toFixed(4)}</td>
+              <td style="font-family:var(--font-mono); font-size:11px; color:#94a3b8;">${ciStr}</td>
+              <td style="font-family:var(--font-mono); color:${d.raw_p_value < 0.05 ? '#10b981' : '#f59e0b'};">${d.raw_p_value.toExponential(3)}</td>
+              <td style="font-family:var(--font-mono); color:#cbd5e1;">${d.adjusted_p_value ? d.adjusted_p_value.toExponential(3) : '-'}</td>
+              <td><span class="badge" style="background:rgba(16,185,129,0.15); color:#10b981;">${d.discovery_status}</span></td>
+            </tr>
+          `;
+        }).join('');
+
+        if (ssLog) {
+          const audits = ssRes.search_audits || [];
+          ssLog.innerHTML = audits.map(a => `
+            <div style="background:#0f172a; border:1px solid #334155; padding:8px 12px; border-radius:4px; margin-bottom:6px;">
+              <strong>${a.search_id}</strong> (${a.methodology_id}): ${a.candidates_evaluated_count} aday test edildi, ${a.candidates_selected_count} seçildi, ${a.candidates_rejected_count} reddedildi.
+              <span style="color:#94a3b8; font-size:11px; margin-left:8px;">Kriter: ${a.selection_criteria}</span>
+            </div>
+          `).join('');
+        }
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="9" style="color:#ef4444; padding:16px;">Keşifler yüklenemedi: ${err.message}</td></tr>`;
+      }
+    }
+
+    async function loadTemporalValidationV6() {
+      const partCards = document.getElementById('v6-temporal-partitions-cards');
+      const tbody = document.getElementById('v6-temporal-tbody');
+      const holdoutBox = document.getElementById('v6-holdout-ledger-tbody');
+      if (!tbody) return;
+
+      try {
+        const res = await fetch('/api/v1/product/research/temporal-validation');
+        const data = await res.json();
+        const parts = data.partitions || [];
+        const reports = data.validation_reports || [];
+        const holdouts = data.holdout_events || [];
+
+        if (partCards) {
+          partCards.innerHTML = parts.map(p => `
+            <div class="ws-kpi-card" style="border-top:3px solid ${p.partition_type === 'HOLDOUT' ? '#ef4444' : '#38bdf8'};">
+              <div class="ws-kpi-title">${p.partition_type} (${p.partition_id})</div>
+              <div class="ws-kpi-value" style="font-size:14px; color:#f8fafc;">${p.start_utc.substring(0,10)} → ${p.end_utc.substring(0,10)}</div>
+              <div class="ws-kpi-sub">Ambargo: ${p.embargo_seconds}s | ${p.dataset_id}</div>
+            </div>
+          `).join('');
+        }
+
+        tbody.innerHTML = reports.map(r => `
+          <tr style="border-bottom:1px solid #1e293b;">
+            <td style="font-family:var(--font-mono); font-weight:700; color:#38bdf8;">${r.validation_id}</td>
+            <td style="font-family:var(--font-mono);">${r.hypothesis_id}</td>
+            <td style="font-family:var(--font-mono);">${r.in_sample_metric.toFixed(3)}</td>
+            <td style="font-family:var(--font-mono);">${r.out_of_sample_metric.toFixed(3)}</td>
+            <td style="font-family:var(--font-mono); color:${r.metric_degradation_pct < 20 ? '#10b981' : '#f59e0b'};">%${r.metric_degradation_pct.toFixed(2)}</td>
+            <td><span class="badge" style="background:${r.temporal_overlap_detected ? 'rgba(239,68,68,0.2)' : 'rgba(16,185,129,0.2)'}; color:${r.temporal_overlap_detected ? '#ef4444' : '#10b981'};">${r.temporal_overlap_detected ? 'SIZI-VAR' : 'TEMİZ'}</span></td>
+            <td><span class="badge" style="background:rgba(16,185,129,0.2); color:#10b981;">${r.embargo_satisfied ? 'UYGUN' : 'İHLAL'}</span></td>
+            <td><span class="badge" style="background:rgba(16,185,129,0.2); color:#10b981;">${r.validation_verdict}</span></td>
+          </tr>
+        `).join('');
+
+        if (holdoutBox) {
+          holdoutBox.innerHTML = holdouts.map(h => `
+            <div style="background:#0f172a; border:1px solid #334155; padding:8px 12px; border-radius:4px; margin-bottom:6px;">
+              <strong>${h.usage_id}</strong>: ${h.hypothesis_id} için holdout (${h.holdout_partition_id}) erişildi. Erişim sayısı: ${h.holdout_access_count}.
+              ${h.selection_bias_flag ? '<span class="badge" style="background:rgba(239,68,68,0.2); color:#ef4444; margin-left:8px;">SEÇİM YANLILIĞI UYARISI</span>' : '<span class="badge" style="background:rgba(16,185,129,0.2); color:#10b981; margin-left:8px;">İLK ERİŞİM</span>'}
+              <div style="font-size:11px; color:#94a3b8; margin-top:2px;">${h.notes} (${h.access_timestamp})</div>
+            </div>
+          `).join('');
+        }
+      } catch (err) {
+        console.error('Error loading temporal validation:', err);
+      }
+    }
+
+    async function loadReproducibilityV2() {
+      const tbody = document.getElementById('v6-reproducibility-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:16px; color:#94a3b8;">Tekrarlanabilirlik kayıtları yükleniyor...</td></tr>';
+
+      try {
+        const res = await fetch('/api/v1/product/research/reproducibility-v2');
+        const data = await res.json();
+        const recs = data.records || [];
+
+        tbody.innerHTML = recs.map(r => `
+          <tr style="border-bottom:1px solid #1e293b;">
+            <td style="font-family:var(--font-mono); font-weight:700; color:#06b6d4;">${r.reproduction_id}</td>
+            <td style="font-family:var(--font-mono); color:#94a3b8;">${r.original_experiment_id}</td>
+            <td><span class="badge" style="background:rgba(6,182,212,0.15); color:#06b6d4;">${r.reproduction_type}</span></td>
+            <td style="font-family:var(--font-mono); font-size:11px;">${r.source_dataset_id}</td>
+            <td style="font-family:var(--font-mono); font-size:11px;">${r.reproduction_dataset_id}</td>
+            <td><span class="badge" style="background:rgba(56,189,248,0.15); color:#38bdf8;">${r.independence_verdict}</span></td>
+            <td style="font-family:var(--font-mono); font-size:11px;">rtol: ${r.comparison_tolerance.rtol || '-'}, atol: ${r.comparison_tolerance.atol || '-'}</td>
+            <td style="font-family:var(--font-mono); font-size:11px; color:#10b981;">${r.metrics?.max_rel_error !== undefined ? r.metrics.max_rel_error.toExponential(2) : '0.00'}</td>
+            <td><span class="badge" style="background:rgba(16,185,129,0.2); color:#10b981; font-weight:700;">${r.reproduction_verdict}</span></td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="9" style="color:#ef4444; padding:16px;">Kayıtlar yüklenemedi: ${err.message}</td></tr>`;
+      }
+    }
+
+    async function loadFalseDiscoveryV6() {
+      const container = document.getElementById('v6-testing-families-container');
+      if (!container) return;
+
+      try {
+        const res = await fetch('/api/v1/product/research/false-discovery');
+        const data = await res.json();
+        const fams = data.families || [];
+
+        container.innerHTML = fams.map(f => `
+          <div style="background:#0f172a; border:1px solid #334155; border-radius:6px; padding:14px; margin-bottom:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h4 style="margin:0; color:#ec4899; font-size:14px;">${f.testing_family_id} (${f.family_definition})</h4>
+              <span class="badge" style="background:rgba(236,72,153,0.15); color:#ec4899;">Düzeltme: ${f.correction_method}</span>
+            </div>
+            <div style="font-size:12px; color:#cbd5e1; margin:8px 0;">
+              İlişkili Hipotezler (${f.test_count} adet): <code>${f.hypothesis_ids.join(', ')}</code>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error('Error loading false discovery:', err);
+      }
+    }
+
+    async function loadRegimeStabilityV6() {
+      const container = document.getElementById('v6-regime-stability-container');
+      if (!container) return;
+
+      try {
+        const res = await fetch('/api/v1/product/research/regime-stability');
+        const data = await res.json();
+        const assessments = data.assessments || [];
+
+        container.innerHTML = assessments.map(a => {
+          const col = a.generalization_verdict === 'STABLE_ACROSS_EVALUATED_REGIMES' ? '#10b981' : '#f59e0b';
+          return `
+            <div style="background:#0f172a; border:1px solid #334155; border-radius:6px; padding:14px; margin-bottom:14px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h4 style="margin:0; color:#eab308; font-size:14px;">${a.assessment_id} — ${a.hypothesis_id} (${a.regime_dimension})</h4>
+                <span class="badge" style="background:rgba(16,185,129,0.15); color:${col}; font-weight:700;">${a.generalization_verdict}</span>
+              </div>
+              <div style="font-size:12px; color:#cbd5e1; margin:8px 0;">
+                Heterojenlik Göstergesi: <strong>${a.heterogeneity_metric.toFixed(3)}</strong> (p = ${a.heterogeneity_p_value})
+                ${a.is_retrospective_labeling ? '<span class="badge" style="background:rgba(245,158,11,0.2); color:#fbbf24; margin-left:8px;">GERİYE DÖNÜK ETİKETLEME</span>' : ''}
+              </div>
+              <div style="font-size:11px; color:#94a3b8;">
+                Değerlendirilen Rejimler: ${(a.regimes_evaluated||[]).map(r => `${r.regime_name} (N=${r.observation_count}, etki=${r.effect_estimate.toFixed(3)})`).join(' | ')}
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error('Error loading regime stability:', err);
+      }
+    }
+
+    async function loadEvidenceGradingV6() {
+      const container = document.getElementById('v6-evidence-grading-container');
+      if (!container) return;
+
+      try {
+        const res = await fetch('/api/v1/product/research/evidence-grades');
+        const data = await res.json();
+        const assessments = data.assessments || [];
+
+        container.innerHTML = assessments.map(g => {
+          let badgeColor = '#38bdf8';
+          if (g.grade === 'INDEPENDENTLY_REPLICATED_EVIDENCE') badgeColor = '#10b981';
+          else if (g.grade === 'VALIDATED_HISTORICAL_EVIDENCE') badgeColor = '#06b6d4';
+          else if (g.grade === 'EXPLORATORY_EVIDENCE') badgeColor = '#f59e0b';
+          else if (g.grade === 'BLOCKED_BY_PROVENANCE') badgeColor = '#ef4444';
+
+          return `
+            <div style="background:#0f172a; border:1px solid #334155; border-radius:6px; padding:14px; margin-bottom:14px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h4 style="margin:0; color:#f8fafc; font-size:14px;">${g.assessment_id} — ${g.hypothesis_id}</h4>
+                <span class="badge" style="background:rgba(16,185,129,0.15); color:${badgeColor}; font-weight:700;">${g.grade}</span>
+              </div>
+              <div style="font-size:12px; margin:8px 0; color:#cbd5e1;">
+                <strong>Destekleyen Boyutlar (${(g.supporting_dimensions||[]).length}/12):</strong> ${(g.supporting_dimensions||[]).join(', ')}
+              </div>
+              ${(g.failed_dimensions||[]).length > 0 ? `<div style="font-size:12px; color:#ef4444; margin-bottom:4px;"><strong>Başarısız Boyutlar:</strong> ${g.failed_dimensions.join(', ')}</div>` : ''}
+              ${(g.missing_dimensions||[]).length > 0 ? `<div style="font-size:12px; color:#f59e0b; margin-bottom:4px;"><strong>Eksik Boyutlar:</strong> ${g.missing_dimensions.join(', ')}</div>` : ''}
+              ${(g.blocking_reasons||[]).length > 0 ? `<div style="font-size:11px; color:#fca5a5; margin-top:4px;"><strong>Engelleme Nedenleri:</strong> ${g.blocking_reasons.join(' | ')}</div>` : ''}
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error('Error loading evidence grades:', err);
+      }
+    }
+
+    async function loadKnowledgeBaseV6() {
+      const container = document.getElementById('v6-knowledge-base-cards');
+      const q = document.getElementById('v6-kb-search')?.value || '';
+      if (!container) return;
+
+      try {
+        const url = `/api/v1/product/research/knowledge-base?q=${encodeURIComponent(q)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const records = data.records || [];
+
+        container.innerHTML = records.map(k => `
+          <div style="background:#0f172a; border:1px solid #334155; border-radius:6px; padding:14px; margin-bottom:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-family:var(--font-mono); font-weight:700; color:#14b8a6;">${k.knowledge_record_id}</span>
+              <span class="badge" style="background:rgba(20,184,166,0.15); color:#14b8a6; font-weight:700;">${k.evidence_grade}</span>
+            </div>
+            <div style="font-size:13px; color:#f8fafc; line-height:1.5; margin-bottom:8px;">${k.finding_statement}</div>
+            <div style="font-size:11px; color:#94a3b8;">
+              Hipotez: <code>${k.hypothesis_id}</code> | Keşif: <code>${k.discovery_id}</code> | Doğrulama: <code>${k.validation_verdict}</code> | Rejim: <code>${k.regime_stability_verdict}</code>
+            </div>
+            <div style="font-size:11px; color:#64748b; margin-top:4px;">
+              Kısıtlar: ${(k.limitations||[]).join(' • ')}
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error('Error loading knowledge base:', err);
+      }
+    }
+
+    async function loadReportsV6() {
+      // Intentionally lightweight placeholder to keep DOM ready
+    }
+
+    async function generateReportV6() {
+      const typeSelect = document.getElementById('v6-report-type-select');
+      const formatSelect = document.getElementById('v6-report-format-select');
+      const previewBox = document.getElementById('v6-report-preview-container');
+      if (!previewBox) return;
+
+      const reportType = typeSelect?.value || 'HISTORICAL_DISCOVERY';
+      const formatType = formatSelect?.value || 'MARKDOWN';
+      previewBox.innerHTML = 'Rapor oluşturuluyor...';
+
+      try {
+        const res = await fetch('/api/v1/product/research/discovery-reports/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            report_type: reportType,
+            title: `CBE Bilimsel Keşif Raporu — ${reportType}`,
+            research_id: 'RES-STAT-02',
+            hypothesis_id: 'HYP-VOL-PERSIST-001',
+            discovery_id: 'DISC-VOL-CLUST-001',
+            dataset_id: 'DS-BTC-1H-Q1-2024',
+            format: formatType,
+          }),
+        });
+        const data = await res.json();
+        if (data.status === 'error') {
+          previewBox.innerHTML = `<span style="color:#ef4444;">Hata: ${data.message}</span>`;
+        } else {
+          previewBox.innerHTML = `<pre style="white-space:pre-wrap; margin:0;">${data.content || JSON.stringify(data, null, 2)}</pre>`;
+        }
+      } catch (err) {
+        previewBox.innerHTML = `<span style="color:#ef4444;">Rapor oluşturma hatası: ${err.message}</span>`;
+      }
+    }
     """

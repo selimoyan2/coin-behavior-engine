@@ -762,6 +762,129 @@ class ProductDashboardApiService:
                         "rejection_code": r_err.rejection_code,
                         "message": r_err.message,
                     }
+
+            # Sprint 28 GET endpoints
+            elif sub_path in ("research/datasets", "workspace/datasets"):
+                from coin_behavior_engine.product.dataset_validation_engine import DatasetValidationEngine
+                ds_id = query_params.get("dataset_id", [None])[0]
+                if ds_id:
+                    rec = DatasetValidationEngine.validate_dataset(ds_id)
+                    return HTTPStatus.OK, {"status": "success", "dataset": rec.to_dict()}
+                inv = DatasetValidationEngine.get_dataset_inventory()
+                return HTTPStatus.OK, {"status": "success", "total_datasets": len(inv), "datasets": [d.to_dict() for d in inv]}
+
+            elif sub_path in ("research/hypotheses", "workspace/hypotheses"):
+                from coin_behavior_engine.product.hypothesis_preregistration_registry import HypothesisPreregistrationRegistry
+                reg = HypothesisPreregistrationRegistry()
+                h_id = query_params.get("hypothesis_id", [None])[0]
+                if h_id:
+                    h = reg.get_hypothesis(h_id)
+                    if not h:
+                        return HTTPStatus.NOT_FOUND, {"status": "error", "message": f"Hypothesis '{h_id}' not found."}
+                    return HTTPStatus.OK, {"status": "success", "hypothesis": h.to_dict()}
+                hyps = reg.list_hypotheses()
+                return HTTPStatus.OK, {"status": "success", "total_hypotheses": len(hyps), "hypotheses": [h.to_dict() for h in hyps]}
+
+            elif sub_path in ("research/preregistrations", "workspace/preregistrations"):
+                from coin_behavior_engine.product.hypothesis_preregistration_registry import HypothesisPreregistrationRegistry
+                reg = HypothesisPreregistrationRegistry()
+                preregs = [h.to_dict() for h in reg.list_hypotheses() if h.preregistration_status == "PREREGISTERED"]
+                return HTTPStatus.OK, {"status": "success", "total_preregistered": len(preregs), "preregistrations": preregs}
+
+            elif sub_path in ("research/discoveries/search-space", "workspace/discoveries/search-space"):
+                from coin_behavior_engine.product.pattern_discovery_laboratory import PatternDiscoveryLaboratory
+                lab = PatternDiscoveryLaboratory()
+                audits = lab.list_search_audits()
+                return HTTPStatus.OK, {"status": "success", "total_search_audits": len(audits), "search_audits": [a.to_dict() for a in audits]}
+
+            elif sub_path in ("research/discoveries", "workspace/discoveries"):
+                from coin_behavior_engine.product.pattern_discovery_laboratory import PatternDiscoveryLaboratory
+                lab = PatternDiscoveryLaboratory()
+                d_id = query_params.get("discovery_id", [None])[0]
+                if d_id:
+                    d = lab.get_discovery(d_id)
+                    if not d:
+                        return HTTPStatus.NOT_FOUND, {"status": "error", "message": f"Discovery '{d_id}' not found."}
+                    return HTTPStatus.OK, {"status": "success", "discovery": d.to_dict()}
+                discs = lab.list_discoveries()
+                return HTTPStatus.OK, {"status": "success", "total_discoveries": len(discs), "discoveries": [d.to_dict() for d in discs]}
+
+            elif sub_path in ("research/temporal-validation", "workspace/temporal-validation"):
+                from coin_behavior_engine.product.temporal_validation_engine import TemporalValidationEngine
+                eng = TemporalValidationEngine()
+                return HTTPStatus.OK, {
+                    "status": "success",
+                    "partitions": [p.to_dict() for p in eng.list_partitions()],
+                    "validation_reports": [v.to_dict() for v in eng.list_validation_reports()],
+                    "holdout_events": [h.to_dict() for h in eng.list_holdout_events()],
+                }
+
+            elif sub_path in ("research/reproducibility-v2", "workspace/reproducibility-v2"):
+                from coin_behavior_engine.product.reproducibility_lab_v2 import ReproducibilityLabV2
+                lab = ReproducibilityLabV2()
+                r_id = query_params.get("reproduction_id", [None])[0]
+                if r_id:
+                    r = lab.get_record(r_id)
+                    if not r:
+                        return HTTPStatus.NOT_FOUND, {"status": "error", "message": f"Reproduction record '{r_id}' not found."}
+                    return HTTPStatus.OK, {"status": "success", "reproduction": r.to_dict()}
+                recs = lab.list_records()
+                return HTTPStatus.OK, {"status": "success", "total_reproductions": len(recs), "records": [r.to_dict() for r in recs]}
+
+            elif sub_path in ("research/false-discovery", "workspace/false-discovery"):
+                from coin_behavior_engine.product.multiple_testing_control import MultipleTestingControlEngine
+                eng = MultipleTestingControlEngine()
+                f_id = query_params.get("family_id", [None])[0]
+                if f_id:
+                    f = eng.get_family(f_id)
+                    if not f:
+                        return HTTPStatus.NOT_FOUND, {"status": "error", "message": f"Testing family '{f_id}' not found."}
+                    return HTTPStatus.OK, {"status": "success", "family": f.to_dict()}
+                fams = eng.list_families()
+                return HTTPStatus.OK, {"status": "success", "total_families": len(fams), "families": [f.to_dict() for f in fams]}
+
+            elif sub_path in ("research/regime-stability", "workspace/regime-stability"):
+                from coin_behavior_engine.product.regime_stability_generalization import RegimeStabilityEngine
+                eng = RegimeStabilityEngine()
+                a_id = query_params.get("assessment_id", [None])[0]
+                if a_id:
+                    r = eng.get_record(a_id)
+                    if not r:
+                        return HTTPStatus.NOT_FOUND, {"status": "error", "message": f"Regime assessment '{a_id}' not found."}
+                    return HTTPStatus.OK, {"status": "success", "assessment": r.to_dict()}
+                recs = eng.list_records()
+                return HTTPStatus.OK, {"status": "success", "total_assessments": len(recs), "assessments": [r.to_dict() for r in recs]}
+
+            elif sub_path in ("research/evidence-grades", "workspace/evidence-grades"):
+                from coin_behavior_engine.product.evidence_grading_engine import EvidenceGradingEngine
+                eng = EvidenceGradingEngine()
+                a_id = query_params.get("assessment_id", [None])[0]
+                if a_id:
+                    r = eng.get_assessment(a_id)
+                    if not r:
+                        return HTTPStatus.NOT_FOUND, {"status": "error", "message": f"Evidence grade assessment '{a_id}' not found."}
+                    return HTTPStatus.OK, {"status": "success", "assessment": r.to_dict()}
+                recs = eng.list_assessments()
+                return HTTPStatus.OK, {"status": "success", "total_assessments": len(recs), "assessments": [r.to_dict() for r in recs]}
+
+            elif sub_path in ("research/knowledge-base", "workspace/knowledge-base"):
+                from coin_behavior_engine.product.discovery_knowledge_base import DiscoveryKnowledgeBase
+                kb = DiscoveryKnowledgeBase()
+                q = query_params.get("q", [None])[0] or query_params.get("query", [None])[0]
+                grade = query_params.get("evidence_grade", [None])[0] or query_params.get("grade", [None])[0]
+                h_id = query_params.get("hypothesis_id", [None])[0]
+                r_id = query_params.get("research_id", [None])[0]
+                recs = kb.search(query=q, evidence_grade=grade, hypothesis_id=h_id, research_id=r_id)
+                return HTTPStatus.OK, {"status": "success", "total_records": len(recs), "records": [r.to_dict() for r in recs]}
+
+            elif sub_path in ("research/discovery-reports", "workspace/discovery-reports"):
+                from coin_behavior_engine.product.scientific_report_builder_v6 import REPORT_TYPES_V6
+                return HTTPStatus.OK, {
+                    "status": "success",
+                    "available_report_types": sorted(list(REPORT_TYPES_V6)),
+                    "supported_formats": ["JSON", "MARKDOWN", "HTML"],
+                }
+
             else:
                 return HTTPStatus.NOT_FOUND, {
                     "error": "Not Found",
@@ -1394,6 +1517,291 @@ class ProductDashboardApiService:
                         "rejection_code": r_err.rejection_code,
                         "message": r_err.message,
                     }
+
+            # Sprint 28 POST endpoints
+            elif sub_path in ("research/datasets/validate", "workspace/datasets/validate"):
+                from coin_behavior_engine.product.dataset_validation_engine import DatasetValidationEngine
+                payload = body or {}
+                ds_id = payload.get("dataset_id")
+                if not ds_id:
+                    return HTTPStatus.BAD_REQUEST, {"status": "error", "message": "dataset_id is mandatory."}
+                try:
+                    rec = DatasetValidationEngine.validate_dataset(
+                        dataset_id=ds_id,
+                        file_path=payload.get("file_path"),
+                        timeframe=payload.get("timeframe"),
+                    )
+                    return HTTPStatus.OK, {"status": "success", "dataset": rec.to_dict()}
+                except Exception as e:
+                    return HTTPStatus.BAD_REQUEST, {"status": "error", "message": str(e)}
+
+            elif sub_path in ("research/hypotheses", "workspace/hypotheses"):
+                from coin_behavior_engine.product.hypothesis_preregistration_registry import HypothesisPreregistrationRegistry
+                payload = body or {}
+                reg = HypothesisPreregistrationRegistry()
+                try:
+                    rec = reg.register_hypothesis(
+                        hypothesis_id=payload.get("hypothesis_id"),
+                        research_id=payload.get("research_id", "RES-CUSTOM"),
+                        hypothesis_title=payload.get("hypothesis_title", "Custom Hypothesis"),
+                        scientific_question=payload.get("scientific_question", ""),
+                        null_hypothesis=payload.get("null_hypothesis", ""),
+                        alternative_hypothesis=payload.get("alternative_hypothesis", ""),
+                        target_population=payload.get("target_population", "BTC/USDT Spot"),
+                        target_metric=payload.get("target_metric", "STATISTIC"),
+                        effect_definition=payload.get("effect_definition", ""),
+                        expected_effect_direction=payload.get("expected_effect_direction", "POSITIVE"),
+                        dataset_eligibility_rules=payload.get("dataset_eligibility_rules", {}),
+                        training_period=payload.get("training_period", {}),
+                        validation_period=payload.get("validation_period", {}),
+                        holdout_period=payload.get("holdout_period", {}),
+                        statistical_test_plan=payload.get("statistical_test_plan", {}),
+                        multiple_testing_family_id=payload.get("multiple_testing_family_id", "FAM-DEFAULT"),
+                        minimum_sample_requirements=payload.get("minimum_sample_requirements", {"min_obs": 100}),
+                        is_retrospective=bool(payload.get("is_retrospective", False)),
+                        retrospective_justification=payload.get("retrospective_justification"),
+                    )
+                    return HTTPStatus.OK, {"status": "success", "hypothesis": rec.to_dict()}
+                except Exception as e:
+                    return HTTPStatus.BAD_REQUEST, {"status": "error", "message": str(e)}
+
+            elif sub_path in ("research/preregistrations", "workspace/preregistrations"):
+                from coin_behavior_engine.product.hypothesis_preregistration_registry import HypothesisPreregistrationRegistry
+                payload = body or {}
+                action = payload.get("action", "preregister")
+                reg = HypothesisPreregistrationRegistry()
+                h_id = payload.get("hypothesis_id")
+                if not h_id:
+                    return HTTPStatus.BAD_REQUEST, {"status": "error", "message": "hypothesis_id is mandatory."}
+
+                try:
+                    if action == "preregister":
+                        rec = reg.preregister_hypothesis(h_id)
+                        return HTTPStatus.OK, {"status": "success", "hypothesis": rec.to_dict()}
+                    elif action == "amend":
+                        amd = reg.amend_preregistered_hypothesis(
+                            hypothesis_id=h_id,
+                            amendment_reason=payload.get("amendment_reason", ""),
+                            changed_fields=payload.get("changed_fields", {}),
+                        )
+                        return HTTPStatus.OK, {"status": "success", "amendment": amd.to_dict()}
+                    elif action == "evaluate_confirmatory_gate":
+                        ok, gate_status, reasons = reg.evaluate_confirmatory_eligibility(
+                            hypothesis_id=h_id,
+                            evaluation_timestamp=payload.get("evaluation_timestamp", datetime.now(timezone.utc).isoformat()),
+                            methodology_id=payload.get("methodology_id", ""),
+                            statistical_test_name=payload.get("statistical_test_name", ""),
+                            dataset_provenance_status=payload.get("dataset_provenance_status", "UNVERIFIED"),
+                            multiple_testing_accounted=bool(payload.get("multiple_testing_accounted", False)),
+                            reproducibility_status=payload.get("reproducibility_status", "UNVERIFIED"),
+                            has_uncertainty_measures=bool(payload.get("has_uncertainty_measures", False)),
+                        )
+                        return HTTPStatus.OK, {
+                            "status": "success",
+                            "is_eligible": ok,
+                            "gate_status": gate_status,
+                            "blocking_reasons": reasons,
+                        }
+                    else:
+                        return HTTPStatus.BAD_REQUEST, {"status": "error", "message": f"Unknown action: {action}"}
+                except Exception as e:
+                    return HTTPStatus.BAD_REQUEST, {"status": "error", "message": str(e)}
+
+            elif sub_path in ("research/discoveries/execute", "workspace/discoveries/execute"):
+                from coin_behavior_engine.product.pattern_discovery_laboratory import PatternDiscoveryLaboratory
+                from coin_behavior_engine.product.dataset_validation_engine import DatasetValidationEngine
+                import pandas as pd
+                payload = body or {}
+                ds_id = payload.get("dataset_id")
+                h_id = payload.get("hypothesis_id", "HYP-VOL-PERSIST-001")
+                if not ds_id:
+                    return HTTPStatus.BAD_REQUEST, {"status": "error", "message": "dataset_id is mandatory."}
+
+                try:
+                    ds_rec = DatasetValidationEngine.validate_dataset(ds_id)
+                    if ds_rec.quarantine_status == "QUARANTINED":
+                        return HTTPStatus.FORBIDDEN, {"status": "error", "rejection_code": "DATASET_QUARANTINED", "message": "Quarantined dataset cannot be used for discovery."}
+
+                    file_p = ds_rec.file_path
+                    if not file_p or not Path(file_p).exists():
+                        return HTTPStatus.BAD_REQUEST, {"status": "error", "message": "Physical dataset file not found."}
+
+                    df = pd.read_parquet(file_p)
+                    lab = PatternDiscoveryLaboratory()
+                    disc = lab.execute_volatility_clustering_analysis(
+                        df=df,
+                        dataset_id=ds_id,
+                        hypothesis_id=h_id,
+                        research_id=payload.get("research_id", "RES-STAT-02"),
+                    )
+                    lab.record_discovery(disc)
+                    return HTTPStatus.OK, {"status": "success", "discovery": disc.to_dict()}
+                except Exception as e:
+                    return HTTPStatus.BAD_REQUEST, {"status": "error", "message": str(e)}
+
+            elif sub_path in ("research/temporal-validation/check-leakage", "workspace/temporal-validation/check-leakage"):
+                from coin_behavior_engine.product.temporal_validation_engine import TemporalValidationEngine, TemporalPartitionSpec
+                payload = body or {}
+                p_in = TemporalPartitionSpec(**payload.get("partition_in", {}))
+                p_out = TemporalPartitionSpec(**payload.get("partition_out", {}))
+                clean, status_sep, errs = TemporalValidationEngine.check_temporal_leakage(p_in, p_out)
+                return HTTPStatus.OK, {
+                    "status": "success",
+                    "is_clean": clean,
+                    "status_code": status_sep,
+                    "detected_errors": errs,
+                }
+
+            elif sub_path in ("research/temporal-validation/record-holdout-access", "workspace/temporal-validation/record-holdout-access"):
+                from coin_behavior_engine.product.temporal_validation_engine import TemporalValidationEngine
+                payload = body or {}
+                eng = TemporalValidationEngine()
+                try:
+                    evt = eng.record_holdout_access(
+                        holdout_partition_id=payload.get("holdout_partition_id", "PART-2024-HOLD"),
+                        hypothesis_id=payload.get("hypothesis_id", "HYP-VOL-PERSIST-001"),
+                        research_id=payload.get("research_id", "RES-STAT-02"),
+                        evaluation_purpose=payload.get("evaluation_purpose", "Out-of-sample holdout test"),
+                        accessed_by=payload.get("accessed_by", "OFFLINE_VALIDATOR"),
+                        notes=payload.get("notes", ""),
+                    )
+                    return HTTPStatus.OK, {"status": "success", "holdout_event": evt.to_dict()}
+                except Exception as e:
+                    return HTTPStatus.BAD_REQUEST, {"status": "error", "message": str(e)}
+
+            elif sub_path in ("research/reproducibility-v2/evaluate", "workspace/reproducibility-v2/evaluate"):
+                from coin_behavior_engine.product.reproducibility_lab_v2 import ReproducibilityLabV2
+                payload = body or {}
+                lab = ReproducibilityLabV2()
+                try:
+                    rec = lab.evaluate_reproduction_attempt(
+                        reproduction_id=payload.get("reproduction_id", f"REP-EVAL-{int(time.time())}"),
+                        original_experiment_id=payload.get("original_experiment_id", "EXP-001"),
+                        reproduction_type=payload.get("reproduction_type", "COMPUTATIONAL_REPEATABILITY"),
+                        source_dataset_id=payload.get("source_dataset_id", "DS-BTC-1H-Q1-2024"),
+                        reproduction_dataset_id=payload.get("reproduction_dataset_id", "DS-BTC-1H-Q1-2024"),
+                        original_methodology_id=payload.get("original_methodology_id", "METH-001"),
+                        reproduction_methodology_id=payload.get("reproduction_methodology_id", "METH-001"),
+                        implementation_identity=payload.get("implementation_identity", "CBE_CORE"),
+                        expected_results=payload.get("expected_results", {}),
+                        actual_results=payload.get("actual_results", {}),
+                        source_sha256=payload.get("source_sha256", ""),
+                        reproduction_sha256=payload.get("reproduction_sha256", ""),
+                        rtol=float(payload.get("rtol", 1e-4)),
+                        atol=float(payload.get("atol", 1e-6)),
+                    )
+                    return HTTPStatus.OK, {"status": "success", "reproduction": rec.to_dict()}
+                except Exception as e:
+                    return HTTPStatus.BAD_REQUEST, {"status": "error", "message": str(e)}
+
+            elif sub_path in ("research/false-discovery/correct", "workspace/false-discovery/correct"):
+                from coin_behavior_engine.product.multiple_testing_control import MultipleTestingControlEngine
+                payload = body or {}
+                eng = MultipleTestingControlEngine()
+                fam_id = payload.get("family_id")
+                p_dict = payload.get("p_values", {})
+                if not fam_id or not p_dict:
+                    return HTTPStatus.BAD_REQUEST, {"status": "error", "message": "family_id and p_values dict are required."}
+                try:
+                    res_list = eng.apply_family_correction(
+                        testing_family_id=fam_id,
+                        hypothesis_p_values=p_dict,
+                        method=payload.get("method"),
+                        alpha=float(payload.get("alpha", 0.05)),
+                    )
+                    sens = MultipleTestingControlEngine.sensitivity_analysis(p_dict, alpha=float(payload.get("alpha", 0.05)))
+                    return HTTPStatus.OK, {
+                        "status": "success",
+                        "corrected_results": [r.to_dict() for r in res_list],
+                        "sensitivity_analysis": sens,
+                    }
+                except Exception as e:
+                    return HTTPStatus.BAD_REQUEST, {"status": "error", "message": str(e)}
+
+            elif sub_path in ("research/regime-stability/evaluate", "workspace/regime-stability/evaluate"):
+                from coin_behavior_engine.product.regime_stability_generalization import RegimeStabilityEngine
+                payload = body or {}
+                eng = RegimeStabilityEngine()
+                try:
+                    rec = RegimeStabilityEngine.evaluate_regime_stability(
+                        assessment_id=payload.get("assessment_id", f"REG-EVAL-{int(time.time())}"),
+                        discovery_id=payload.get("discovery_id", "DISC-001"),
+                        hypothesis_id=payload.get("hypothesis_id", "HYP-001"),
+                        research_id=payload.get("research_id", "RES-001"),
+                        regime_dimension=payload.get("regime_dimension", "VOLATILITY"),
+                        regime_subsamples=payload.get("regime_subsamples", []),
+                        is_retrospective=bool(payload.get("is_retrospective", False)),
+                        retrospective_disclosure=payload.get("retrospective_disclosure"),
+                    )
+                    eng.record_assessment(rec)
+                    return HTTPStatus.OK, {"status": "success", "assessment": rec.to_dict()}
+                except Exception as e:
+                    return HTTPStatus.BAD_REQUEST, {"status": "error", "message": str(e)}
+
+            elif sub_path in ("research/evidence-grades/evaluate", "workspace/evidence-grades/evaluate"):
+                from coin_behavior_engine.product.evidence_grading_engine import EvidenceGradingEngine
+                payload = body or {}
+                eng = EvidenceGradingEngine()
+                try:
+                    rec = EvidenceGradingEngine.evaluate_grade(
+                        assessment_id=payload.get("assessment_id", f"GRD-EVAL-{int(time.time())}"),
+                        discovery_id=payload.get("discovery_id", "DISC-001"),
+                        hypothesis_id=payload.get("hypothesis_id", "HYP-001"),
+                        research_id=payload.get("research_id", "RES-001"),
+                        dimension_evaluations=payload.get("dimension_evaluations", {}),
+                        evidence_artifact_ids=payload.get("evidence_artifact_ids", []),
+                    )
+                    eng.record_assessment(rec)
+                    return HTTPStatus.OK, {"status": "success", "assessment": rec.to_dict()}
+                except Exception as e:
+                    return HTTPStatus.BAD_REQUEST, {"status": "error", "message": str(e)}
+
+            elif sub_path in ("research/knowledge-base", "workspace/knowledge-base"):
+                from coin_behavior_engine.product.discovery_knowledge_base import DiscoveryKnowledgeBase, DiscoveryKnowledgeRecord
+                payload = body or {}
+                kb = DiscoveryKnowledgeBase()
+                try:
+                    k_rec = DiscoveryKnowledgeRecord(**payload)
+                    kb.record_finding(k_rec)
+                    return HTTPStatus.OK, {"status": "success", "record": k_rec.to_dict()}
+                except Exception as e:
+                    return HTTPStatus.BAD_REQUEST, {"status": "error", "message": str(e)}
+
+            elif sub_path in ("research/discovery-reports/generate", "workspace/discovery-reports/generate"):
+                from coin_behavior_engine.product.scientific_report_builder_v6 import (
+                    ReportSecurityError,
+                    ScientificReportBuilderV6,
+                )
+                payload = body or {}
+                try:
+                    res = ScientificReportBuilderV6.generate_report(
+                        report_type=str(payload.get("report_type") or "HISTORICAL_DISCOVERY"),
+                        title=str(payload.get("title") or "Scientific Discovery Report"),
+                        research_id=str(payload.get("research_id") or "RES-STAT-02"),
+                        hypothesis_id=payload.get("hypothesis_id"),
+                        discovery_id=payload.get("discovery_id"),
+                        dataset_id=payload.get("dataset_id"),
+                        dataset_fingerprint=payload.get("dataset_fingerprint"),
+                        methodology_id=payload.get("methodology_id"),
+                        statistical_results=payload.get("statistical_results"),
+                        uncertainty=payload.get("uncertainty"),
+                        partitions=payload.get("partitions"),
+                        reproduction_evidence=payload.get("reproduction_evidence"),
+                        evidence_grade=payload.get("evidence_grade"),
+                        limitations=payload.get("limitations"),
+                        format_type=str(payload.get("format") or "JSON"),
+                        export_filename=payload.get("output_filename") or payload.get("filename"),
+                    )
+                    return HTTPStatus.OK, res
+                except ReportSecurityError as r_err:
+                    return HTTPStatus.FORBIDDEN, {
+                        "status": "error",
+                        "rejection_code": r_err.rejection_code,
+                        "message": str(r_err),
+                    }
+                except Exception as e:
+                    return HTTPStatus.BAD_REQUEST, {"status": "error", "message": str(e)}
+
 
             else:
                 return HTTPStatus.NOT_FOUND, {

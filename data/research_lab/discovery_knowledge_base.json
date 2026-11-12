@@ -1,0 +1,87 @@
+{
+  "schema_version": "CBE-KNOWLEDGE-BASE-V28",
+  "saved_at": "2026-11-12T09:55:17.714173+00:00",
+  "knowledge_records": [
+    {
+      "knowledge_record_id": "KB-VOL-CLUST-001",
+      "discovery_id": "DISC-VOL-CLUST-001",
+      "research_id": "RES-STAT-02",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "finding_statement": "Historical BTC/USDT spot return variance exhibits statistically significant autoregressive conditional heteroskedasticity (ARCH effect p < 0.001) that persists across 2024 quarterly regimes.",
+      "evidence_grade": "VALIDATED_HISTORICAL_EVIDENCE",
+      "validation_verdict": "VALIDATION_CONFIRMED",
+      "reproduction_verdict": "REPEATABILITY_VERIFIED",
+      "independence_verdict": "SAME_DATASET",
+      "regime_stability_verdict": "STABLE_ACROSS_EVALUATED_REGIMES",
+      "contradiction_status": "NO_CONTRADICTIONS",
+      "limitations": [
+        "Evaluated on spot hourly bars; structural intraday shocks not modeled.",
+        "Finding describes historical statistical variance clustering, not directional predictability."
+      ],
+      "supporting_evidence_ids": [
+        "ART-VOL-001",
+        "VAL-VOL-2024-01",
+        "GRD-VOL-001"
+      ],
+      "report_artifact_ids": [
+        "REP-VOL-DISCOVERY-2024",
+        "REP-OOS-VOL-2024"
+      ],
+      "record_created_at": "2026-11-12T09:55:17.714173+00:00",
+      "record_updated_at": "2026-11-12T09:55:17.714173+00:00"
+    },
+    {
+      "knowledge_record_id": "KB-REG-SHIFT-002",
+      "discovery_id": "DISC-REG-SHIFT-002",
+      "research_id": "RES-GEN-05",
+      "hypothesis_id": "HYP-REG-SHIFT-002",
+      "finding_statement": "15-minute return distributions in high-volatility expansion regimes differ significantly from low-volatility consolidation regimes (Kolmogorov-Smirnov distance = 0.082, p < 0.01), verified across independent quarters.",
+      "evidence_grade": "INDEPENDENTLY_REPLICATED_EVIDENCE",
+      "validation_verdict": "VALIDATION_CONFIRMED",
+      "reproduction_verdict": "INDEPENDENT_DATASET_REPLICATED",
+      "independence_verdict": "INDEPENDENT",
+      "regime_stability_verdict": "STABLE_ACROSS_EVALUATED_REGIMES",
+      "contradiction_status": "NO_CONTRADICTIONS",
+      "limitations": [
+        "Intraday seasonality remains present in both distributions.",
+        "Nonparametric KS test sensitive to extreme tail returns."
+      ],
+      "supporting_evidence_ids": [
+        "ART-DIST-002",
+        "REP-IND-DATA-003",
+        "GRD-REG-SHIFT-002"
+      ],
+      "report_artifact_ids": [
+        "REP-REG-SHIFT-2024"
+      ],
+      "record_created_at": "2026-11-12T09:55:17.714173+00:00",
+      "record_updated_at": "2026-11-12T09:55:17.714173+00:00"
+    },
+    {
+      "knowledge_record_id": "KB-ANALOG-EXP-003",
+      "discovery_id": "DISC-ANALOG-EXP-003",
+      "research_id": "RES-HIST-01",
+      "hypothesis_id": "HYP-RETRO-ANALOG-003",
+      "finding_statement": "Retrospective historical analog pattern matching fails to provide statistically significant directional accuracy over random walk expectations (accuracy = 51.8%, p = 0.485).",
+      "evidence_grade": "EXPLORATORY_EVIDENCE",
+      "validation_verdict": "VALIDATION_FAILED",
+      "reproduction_verdict": "REPEATABILITY_VERIFIED",
+      "independence_verdict": "SAME_DATASET",
+      "regime_stability_verdict": "REGIME_DEPENDENT",
+      "contradiction_status": "RESOLVED",
+      "limitations": [
+        "Directional predictability null hypothesis could not be rejected.",
+        "High sensitivity to distance metric hyperparameters."
+      ],
+      "supporting_evidence_ids": [
+        "ART-ANALOG-003",
+        "GRD-ANALOG-EXP-003"
+      ],
+      "report_artifact_ids": [
+        "REP-ANALOG-EXP-2024"
+      ],
+      "record_created_at": "2026-11-12T09:55:17.714173+00:00",
+      "record_updated_at": "2026-11-12T09:55:17.714173+00:00"
+    }
+  ]
+}

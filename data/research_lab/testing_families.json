@@ -1,0 +1,54 @@
+{
+  "schema_version": "CBE-TESTING-FAMILIES-V28",
+  "saved_at": "2026-11-12T09:55:17.706629+00:00",
+  "families": [
+    {
+      "testing_family_id": "FAM-VOL-DYNAMICS-01",
+      "research_id": "RES-STAT-02",
+      "family_definition": "Family of BTC return volatility clustering and ARCH lag specifications.",
+      "hypothesis_ids": [
+        "HYP-VOL-PERSIST-001",
+        "HYP-VOL-LAG2-001B",
+        "HYP-VOL-LAG5-001C",
+        "HYP-VOL-15M-001D"
+      ],
+      "test_count": 4,
+      "family_registration_timestamp": "2024-01-01T00:00:00Z",
+      "correction_method": "HOLM",
+      "correction_parameters": {
+        "alpha": 0.01
+      }
+    },
+    {
+      "testing_family_id": "FAM-REGIME-DIST-01",
+      "research_id": "RES-GEN-05",
+      "family_definition": "Family of cross-regime Kolmogorov-Smirnov distribution comparisons.",
+      "hypothesis_ids": [
+        "HYP-REG-SHIFT-002",
+        "HYP-REG-VOL-HIGH-002B",
+        "HYP-REG-VOL-LOW-002C"
+      ],
+      "test_count": 3,
+      "family_registration_timestamp": "2024-01-01T00:00:00Z",
+      "correction_method": "BENJAMINI_HOCHBERG",
+      "correction_parameters": {
+        "alpha": 0.05
+      }
+    },
+    {
+      "testing_family_id": "FAM-ANALOG-01",
+      "research_id": "RES-HIST-01",
+      "family_definition": "Family of retrospective analog pattern similarity evaluations.",
+      "hypothesis_ids": [
+        "HYP-RETRO-ANALOG-003",
+        "HYP-RETRO-COSINE-003B"
+      ],
+      "test_count": 2,
+      "family_registration_timestamp": "2024-01-01T00:00:00Z",
+      "correction_method": "BONFERRONI",
+      "correction_parameters": {
+        "alpha": 0.05
+      }
+    }
+  ]
+}
