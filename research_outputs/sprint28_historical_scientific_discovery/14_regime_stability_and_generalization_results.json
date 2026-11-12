@@ -1,0 +1,101 @@
+{
+  "sprint_id": "CBE_SPRINT28_HISTORICAL_SCIENTIFIC_DISCOVERY_ENGINE",
+  "generated_at_utc": "2026-11-12T10:29:46Z",
+  "regime_stability_records_count": 2,
+  "records": [
+    {
+      "assessment_id": "REG-STAB-VOL-001",
+      "discovery_id": "DISC-VOL-CLUST-001",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "research_id": "RES-STAT-02",
+      "regime_dimension": "TREND_AND_VOLATILITY",
+      "regimes_evaluated": [
+        {
+          "regime_id": "REG-BULL-2024Q1",
+          "regime_name": "BULLISH_TREND_Q1",
+          "observation_count": 2184,
+          "effect_estimate": 0.284,
+          "ci_lower": 0.209,
+          "ci_upper": 0.358,
+          "p_value": 4.2e-05,
+          "is_statistically_significant": true
+        },
+        {
+          "regime_id": "REG-RANGE-2024Q2",
+          "regime_name": "RANGE_BOUND_Q2",
+          "observation_count": 2184,
+          "effect_estimate": 0.261,
+          "ci_lower": 0.188,
+          "ci_upper": 0.334,
+          "p_value": 0.00012,
+          "is_statistically_significant": true
+        },
+        {
+          "regime_id": "REG-CHOP-2024Q3",
+          "regime_name": "LOW_VOLATILITY_CHOP_Q3",
+          "observation_count": 2208,
+          "effect_estimate": 0.246,
+          "ci_lower": 0.172,
+          "ci_upper": 0.32,
+          "p_value": 0.00035,
+          "is_statistically_significant": true
+        }
+      ],
+      "heterogeneity_metric": 0.019,
+      "heterogeneity_p_value": 0.74,
+      "generalization_verdict": "STABLE_ACROSS_EVALUATED_REGIMES",
+      "is_retrospective_labeling": false,
+      "retrospective_disclosure": null,
+      "missing_regimes": [
+        "EXTREME_CRASH_LIQUIDATION_EVENT"
+      ],
+      "limitations": [
+        "Evaluated across 2024 market regimes (Bull, Range, Chop).",
+        "Extreme systemic exchange solvency events (e.g. Nov 2022) not represented in 2024 sample."
+      ],
+      "assessed_at": "2026-11-12T09:50:49.392447+00:00"
+    },
+    {
+      "assessment_id": "REG-STAB-ANALOG-002",
+      "discovery_id": "DISC-ANALOG-EXP-003",
+      "hypothesis_id": "HYP-RETRO-ANALOG-003",
+      "research_id": "RES-HIST-01",
+      "regime_dimension": "MACRO_TREND",
+      "regimes_evaluated": [
+        {
+          "regime_id": "REG-BEAR-2022",
+          "regime_name": "BEAR_MARKET_2022",
+          "observation_count": 8760,
+          "effect_estimate": 0.542,
+          "ci_lower": 0.485,
+          "ci_upper": 0.599,
+          "p_value": 0.145,
+          "is_statistically_significant": false
+        },
+        {
+          "regime_id": "REG-BULL-2023",
+          "regime_name": "RECOVERY_BULL_2023",
+          "observation_count": 8760,
+          "effect_estimate": 0.481,
+          "ci_lower": 0.425,
+          "ci_upper": 0.537,
+          "p_value": 0.492,
+          "is_statistically_significant": false
+        }
+      ],
+      "heterogeneity_metric": 0.043,
+      "heterogeneity_p_value": 0.18,
+      "generalization_verdict": "REGIME_DEPENDENT",
+      "is_retrospective_labeling": true,
+      "retrospective_disclosure": "Regime boundaries for 2022-2023 constructed retrospectively.",
+      "missing_regimes": [
+        "HIGH_VOLATILITY_EXPANSION"
+      ],
+      "limitations": [
+        "Retrospective regime labels cannot be used for prospective claims.",
+        "Insignificant directional predictability in both regimes."
+      ],
+      "assessed_at": "2026-11-12T09:50:49.392447+00:00"
+    }
+  ]
+}

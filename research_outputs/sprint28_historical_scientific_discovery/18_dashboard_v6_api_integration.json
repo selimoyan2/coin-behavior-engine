@@ -1,0 +1,67 @@
+{
+  "sprint_id": "CBE_SPRINT28_HISTORICAL_SCIENTIFIC_DISCOVERY_ENGINE",
+  "generated_at_utc": "2026-11-12T10:29:46Z",
+  "all_endpoints_healthy": false,
+  "endpoints": [
+    {
+      "endpoint": "/api/v1/product/datasets",
+      "status": 200,
+      "has_data": true,
+      "error": null
+    },
+    {
+      "endpoint": "/api/v1/product/hypotheses",
+      "status": 404,
+      "has_data": true,
+      "error": "Not Found"
+    },
+    {
+      "endpoint": "/api/v1/product/discoveries",
+      "status": 404,
+      "has_data": true,
+      "error": "Not Found"
+    },
+    {
+      "endpoint": "/api/v1/product/temporal-partitions",
+      "status": 404,
+      "has_data": true,
+      "error": "Not Found"
+    },
+    {
+      "endpoint": "/api/v1/product/reproductions",
+      "status": 404,
+      "has_data": true,
+      "error": "Not Found"
+    },
+    {
+      "endpoint": "/api/v1/product/multiple-testing-families",
+      "status": 404,
+      "has_data": true,
+      "error": "Not Found"
+    },
+    {
+      "endpoint": "/api/v1/product/regime-stabilities",
+      "status": 404,
+      "has_data": true,
+      "error": "Not Found"
+    },
+    {
+      "endpoint": "/api/v1/product/evidence-grades",
+      "status": 404,
+      "has_data": true,
+      "error": "Not Found"
+    },
+    {
+      "endpoint": "/api/v1/product/discovery-knowledge-base",
+      "status": 404,
+      "has_data": true,
+      "error": "Not Found"
+    },
+    {
+      "endpoint": "/api/v1/product/scientific-reports",
+      "status": 404,
+      "has_data": true,
+      "error": "Not Found"
+    }
+  ]
+}

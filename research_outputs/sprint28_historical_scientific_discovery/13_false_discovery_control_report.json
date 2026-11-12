@@ -1,0 +1,112 @@
+{
+  "sprint_id": "CBE_SPRINT28_HISTORICAL_SCIENTIFIC_DISCOVERY_ENGINE",
+  "generated_at_utc": "2026-11-12T10:29:46Z",
+  "fdr_target_alpha": 0.05,
+  "evaluations": [
+    [
+      {
+        "hypothesis_id": "HYP-VOL-PERSIST-001",
+        "raw_p_value": 0.0001,
+        "adjusted_p_value": 0.00030000000000000003,
+        "correction_method": "BENJAMINI_HOCHBERG",
+        "testing_family_size": 3,
+        "significance_threshold": 0.05,
+        "is_significant_after_correction": true,
+        "false_discovery_control_status": "CONTROLLED_SIGNIFICANT",
+        "selection_bias_warning": "Subset of tests evaluated (3 of registered 4); potential reporting selection."
+      },
+      {
+        "hypothesis_id": "HYP-VOL-LAG2-001B",
+        "raw_p_value": 0.002,
+        "adjusted_p_value": 0.003,
+        "correction_method": "BENJAMINI_HOCHBERG",
+        "testing_family_size": 3,
+        "significance_threshold": 0.05,
+        "is_significant_after_correction": true,
+        "false_discovery_control_status": "CONTROLLED_SIGNIFICANT",
+        "selection_bias_warning": "Subset of tests evaluated (3 of registered 4); potential reporting selection."
+      },
+      {
+        "hypothesis_id": "HYP-VOL-LAG5-001C",
+        "raw_p_value": 0.04,
+        "adjusted_p_value": 0.04,
+        "correction_method": "BENJAMINI_HOCHBERG",
+        "testing_family_size": 3,
+        "significance_threshold": 0.05,
+        "is_significant_after_correction": true,
+        "false_discovery_control_status": "CONTROLLED_SIGNIFICANT",
+        "selection_bias_warning": "Subset of tests evaluated (3 of registered 4); potential reporting selection."
+      }
+    ],
+    [
+      {
+        "hypothesis_id": "HYP-VOL-PERSIST-001",
+        "raw_p_value": 0.0001,
+        "adjusted_p_value": 0.00030000000000000003,
+        "correction_method": "HOLM",
+        "testing_family_size": 3,
+        "significance_threshold": 0.05,
+        "is_significant_after_correction": true,
+        "false_discovery_control_status": "CONTROLLED_SIGNIFICANT",
+        "selection_bias_warning": "Subset of tests evaluated (3 of registered 4); potential reporting selection."
+      },
+      {
+        "hypothesis_id": "HYP-VOL-LAG2-001B",
+        "raw_p_value": 0.002,
+        "adjusted_p_value": 0.004,
+        "correction_method": "HOLM",
+        "testing_family_size": 3,
+        "significance_threshold": 0.05,
+        "is_significant_after_correction": true,
+        "false_discovery_control_status": "CONTROLLED_SIGNIFICANT",
+        "selection_bias_warning": "Subset of tests evaluated (3 of registered 4); potential reporting selection."
+      },
+      {
+        "hypothesis_id": "HYP-VOL-LAG5-001C",
+        "raw_p_value": 0.04,
+        "adjusted_p_value": 0.04,
+        "correction_method": "HOLM",
+        "testing_family_size": 3,
+        "significance_threshold": 0.05,
+        "is_significant_after_correction": true,
+        "false_discovery_control_status": "CONTROLLED_SIGNIFICANT",
+        "selection_bias_warning": "Subset of tests evaluated (3 of registered 4); potential reporting selection."
+      }
+    ],
+    [
+      {
+        "hypothesis_id": "HYP-VOL-PERSIST-001",
+        "raw_p_value": 0.0001,
+        "adjusted_p_value": 0.00030000000000000003,
+        "correction_method": "BONFERRONI",
+        "testing_family_size": 3,
+        "significance_threshold": 0.05,
+        "is_significant_after_correction": true,
+        "false_discovery_control_status": "CONTROLLED_SIGNIFICANT",
+        "selection_bias_warning": "Subset of tests evaluated (3 of registered 4); potential reporting selection."
+      },
+      {
+        "hypothesis_id": "HYP-VOL-LAG2-001B",
+        "raw_p_value": 0.002,
+        "adjusted_p_value": 0.006,
+        "correction_method": "BONFERRONI",
+        "testing_family_size": 3,
+        "significance_threshold": 0.05,
+        "is_significant_after_correction": true,
+        "false_discovery_control_status": "CONTROLLED_SIGNIFICANT",
+        "selection_bias_warning": "Subset of tests evaluated (3 of registered 4); potential reporting selection."
+      },
+      {
+        "hypothesis_id": "HYP-VOL-LAG5-001C",
+        "raw_p_value": 0.04,
+        "adjusted_p_value": 0.12,
+        "correction_method": "BONFERRONI",
+        "testing_family_size": 3,
+        "significance_threshold": 0.05,
+        "is_significant_after_correction": false,
+        "false_discovery_control_status": "CONTROLLED_INSIGNIFICANT",
+        "selection_bias_warning": "Subset of tests evaluated (3 of registered 4); potential reporting selection."
+      }
+    ]
+  ]
+}

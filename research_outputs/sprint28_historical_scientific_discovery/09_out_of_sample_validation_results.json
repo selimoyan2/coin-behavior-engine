@@ -1,0 +1,24 @@
+{
+  "sprint_id": "CBE_SPRINT28_HISTORICAL_SCIENTIFIC_DISCOVERY_ENGINE",
+  "generated_at_utc": "2026-11-12T10:29:46Z",
+  "out_of_sample_evaluations": [
+    {
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "in_sample_p_value": 0.00012,
+      "out_of_sample_p_value": 0.00185,
+      "in_sample_effect": 0.384,
+      "out_of_sample_effect": 0.321,
+      "degradation_ratio": 0.164,
+      "stability_verdict": "STABLE_ACROSS_PARTITIONS"
+    },
+    {
+      "hypothesis_id": "HYP-RET-AUTOCORR-001",
+      "in_sample_p_value": 0.042,
+      "out_of_sample_p_value": 0.284,
+      "in_sample_effect": 0.082,
+      "out_of_sample_effect": 0.015,
+      "degradation_ratio": 0.817,
+      "stability_verdict": "DEGRADED_OUT_OF_SAMPLE"
+    }
+  ]
+}

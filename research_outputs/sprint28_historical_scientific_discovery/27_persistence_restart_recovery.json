@@ -1,0 +1,43 @@
+{
+  "sprint_id": "CBE_SPRINT28_HISTORICAL_SCIENTIFIC_DISCOVERY_ENGINE",
+  "generated_at_utc": "2026-11-12T10:29:46Z",
+  "tested_registries": [
+    {
+      "registry": "DatasetValidationEngine",
+      "persistence_status": "RESTORED_ON_STARTUP"
+    },
+    {
+      "registry": "HypothesisPreregistrationRegistry",
+      "persistence_status": "RESTORED_ON_STARTUP"
+    },
+    {
+      "registry": "PatternDiscoveryLaboratory",
+      "persistence_status": "RESTORED_ON_STARTUP"
+    },
+    {
+      "registry": "TemporalValidationEngine",
+      "persistence_status": "RESTORED_ON_STARTUP"
+    },
+    {
+      "registry": "ReproducibilityLabV2",
+      "persistence_status": "RESTORED_ON_STARTUP"
+    },
+    {
+      "registry": "MultipleTestingControlService",
+      "persistence_status": "RESTORED_ON_STARTUP"
+    },
+    {
+      "registry": "RegimeStabilityGeneralizationService",
+      "persistence_status": "RESTORED_ON_STARTUP"
+    },
+    {
+      "registry": "EvidenceGradingEngine",
+      "persistence_status": "RESTORED_ON_STARTUP"
+    },
+    {
+      "registry": "DiscoveryKnowledgeBaseService",
+      "persistence_status": "RESTORED_ON_STARTUP"
+    }
+  ],
+  "state_restoration_verified": true
+}

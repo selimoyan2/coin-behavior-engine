@@ -1,0 +1,246 @@
+{
+  "sprint_id": "CBE_SPRINT28_HISTORICAL_SCIENTIFIC_DISCOVERY_ENGINE",
+  "generated_at_utc": "2026-11-12T10:29:46Z",
+  "hypotheses_count": 3,
+  "preregistered_count": 2,
+  "confirmatory_gate_enforced": true,
+  "hypotheses": [
+    {
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "research_id": "RES-STAT-02",
+      "hypothesis_title": "Historical BTC Volatility Clustering Persistence",
+      "scientific_question": "Does historical BTC return volatility exhibit statistically significant autoregressive clustering across quarterly regimes?",
+      "null_hypothesis": "Historical BTC returns exhibit independent and identically distributed variance with zero autoregressive persistence (ARCH coefficient = 0).",
+      "alternative_hypothesis": "Historical BTC return variance exhibits significant volatility clustering (ARCH effect p < 0.01).",
+      "target_population": "BTC/USDT Spot Hourly Bars (2024-01-01 to 2024-12-31)",
+      "target_metric": "ARCH_LM_STATISTIC",
+      "effect_definition": "Lag-1 autoregressive coefficient of squared returns",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instruments": [
+          "BTC/USDT"
+        ],
+        "cadences": [
+          "1h",
+          "15m"
+        ],
+        "markets": [
+          "BINANCE"
+        ]
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2024-07-01T00:00:00Z",
+        "end": "2024-09-30T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2024-10-01T00:00:00Z",
+        "end": "2024-12-31T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test_name": "ENGLE_ARCH_LM_TEST",
+        "alpha": 0.01,
+        "alternative": "two-sided"
+      },
+      "multiple_testing_family_id": "FAM-VOL-DYNAMICS-01",
+      "minimum_sample_requirements": {
+        "min_observations": 1000
+      },
+      "missing_data_policy": "FAIL_CLOSED_IF_GAPS_EXCEED_2_PERCENT",
+      "preregistration_status": "PREREGISTERED",
+      "preregistration_timestamp": "2024-01-01T00:00:00Z",
+      "preregistration_digest": "9929184eb1a7ac0231d7e97fff27f8aee2581fed8cb601fb7a4d6a440129914c",
+      "is_retrospective": false,
+      "retrospective_justification": null,
+      "canonical_snapshot": {
+        "hypothesis_id": "HYP-VOL-PERSIST-001",
+        "research_id": "RES-STAT-02",
+        "hypothesis_title": "Historical BTC Volatility Clustering Persistence",
+        "scientific_question": "Does historical BTC return volatility exhibit statistically significant autoregressive clustering across quarterly regimes?",
+        "null_hypothesis": "Historical BTC returns exhibit independent and identically distributed variance with zero autoregressive persistence (ARCH coefficient = 0).",
+        "alternative_hypothesis": "Historical BTC return variance exhibits significant volatility clustering (ARCH effect p < 0.01).",
+        "target_metric": "ARCH_LM_STATISTIC",
+        "dataset_eligibility_rules": {
+          "instruments": [
+            "BTC/USDT"
+          ],
+          "cadences": [
+            "1h",
+            "15m"
+          ],
+          "markets": [
+            "BINANCE"
+          ]
+        },
+        "training_period": {
+          "start": "2024-01-01T00:00:00Z",
+          "end": "2024-06-30T23:59:59Z"
+        },
+        "validation_period": {
+          "start": "2024-07-01T00:00:00Z",
+          "end": "2024-09-30T23:59:59Z"
+        },
+        "holdout_period": {
+          "start": "2024-10-01T00:00:00Z",
+          "end": "2024-12-31T23:59:59Z"
+        },
+        "statistical_test_plan": {
+          "test_name": "ENGLE_ARCH_LM_TEST",
+          "alpha": 0.01,
+          "alternative": "two-sided"
+        },
+        "multiple_testing_family_id": "FAM-VOL-DYNAMICS-01"
+      },
+      "amendments": [],
+      "created_at": "2026-11-12T09:48:19.286914+00:00",
+      "updated_at": "2026-11-12T09:48:19.286914+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-REG-SHIFT-002",
+      "research_id": "RES-GEN-05",
+      "hypothesis_title": "Cross-Regime Volatility Distribution Shift",
+      "scientific_question": "Do return distributions differ significantly between high-volatility and low-volatility historical regimes?",
+      "null_hypothesis": "The return distributions in high-volatility and low-volatility regimes are identical (Kolmogorov-Smirnov p >= 0.05).",
+      "alternative_hypothesis": "The return distributions differ significantly across regimes (KS p < 0.05).",
+      "target_population": "BTC/USDT Spot 15m Bars (2024 Q1-Q4)",
+      "target_metric": "KS_DISTANCE",
+      "effect_definition": "Two-sample Kolmogorov-Smirnov supremum distance",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instruments": [
+          "BTC/USDT"
+        ],
+        "cadences": [
+          "15m"
+        ],
+        "markets": [
+          "BINANCE"
+        ]
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2024-07-01T00:00:00Z",
+        "end": "2024-09-30T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2024-10-01T00:00:00Z",
+        "end": "2024-12-31T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test_name": "KOLMOGOROV_SMIRNOV_2SAMPLE",
+        "alpha": 0.05,
+        "alternative": "two-sided"
+      },
+      "multiple_testing_family_id": "FAM-REGIME-DIST-01",
+      "minimum_sample_requirements": {
+        "min_observations": 2000
+      },
+      "missing_data_policy": "RECORD_GAPS_AND_EXCLUDE",
+      "preregistration_status": "PREREGISTERED",
+      "preregistration_timestamp": "2024-01-01T00:00:00Z",
+      "preregistration_digest": "62d03997717aad0910938539698f6075774562be148c16a4665d2f6240110483",
+      "is_retrospective": false,
+      "retrospective_justification": null,
+      "canonical_snapshot": {
+        "hypothesis_id": "HYP-REG-SHIFT-002",
+        "research_id": "RES-GEN-05",
+        "hypothesis_title": "Cross-Regime Volatility Distribution Shift",
+        "scientific_question": "Do return distributions differ significantly between high-volatility and low-volatility historical regimes?",
+        "null_hypothesis": "The return distributions in high-volatility and low-volatility regimes are identical (Kolmogorov-Smirnov p >= 0.05).",
+        "alternative_hypothesis": "The return distributions differ significantly across regimes (KS p < 0.05).",
+        "target_metric": "KS_DISTANCE",
+        "dataset_eligibility_rules": {
+          "instruments": [
+            "BTC/USDT"
+          ],
+          "cadences": [
+            "15m"
+          ],
+          "markets": [
+            "BINANCE"
+          ]
+        },
+        "training_period": {
+          "start": "2024-01-01T00:00:00Z",
+          "end": "2024-06-30T23:59:59Z"
+        },
+        "validation_period": {
+          "start": "2024-07-01T00:00:00Z",
+          "end": "2024-09-30T23:59:59Z"
+        },
+        "holdout_period": {
+          "start": "2024-10-01T00:00:00Z",
+          "end": "2024-12-31T23:59:59Z"
+        },
+        "statistical_test_plan": {
+          "test_name": "KOLMOGOROV_SMIRNOV_2SAMPLE",
+          "alpha": 0.05,
+          "alternative": "two-sided"
+        },
+        "multiple_testing_family_id": "FAM-REGIME-DIST-01"
+      },
+      "amendments": [],
+      "created_at": "2026-11-12T09:48:19.286914+00:00",
+      "updated_at": "2026-11-12T09:48:19.286914+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-ANALOG-003",
+      "research_id": "RES-HIST-01",
+      "hypothesis_title": "Retrospective Analog Pattern Correlation Analysis",
+      "scientific_question": "Does analog historical similarity predict short-term return directionality?",
+      "null_hypothesis": "Historical analog matches exhibit random future directional distribution.",
+      "alternative_hypothesis": "Analog matches exhibit directional bias.",
+      "target_population": "BTC/USDT Spot Multiyear 2022-2023",
+      "target_metric": "DIRECTIONAL_ACCURACY",
+      "effect_definition": "Sign agreement between historical analog future and target future",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instruments": [
+          "BTC/USDT"
+        ],
+        "cadences": [
+          "1h"
+        ],
+        "markets": [
+          "BINANCE"
+        ]
+      },
+      "training_period": {
+        "start": "2022-01-01T00:00:00Z",
+        "end": "2022-12-31T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2023-06-30T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2023-07-01T00:00:00Z",
+        "end": "2023-12-31T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test_name": "BINOMIAL_SIGN_TEST",
+        "alpha": 0.05
+      },
+      "multiple_testing_family_id": "FAM-ANALOG-01",
+      "minimum_sample_requirements": {
+        "min_observations": 500
+      },
+      "missing_data_policy": "STRICT_CHECK",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": "Formulated retrospectively after inspection of 2022-2023 market drawdown episodes.",
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-12T09:48:19.286914+00:00",
+      "updated_at": "2026-11-12T09:48:19.286914+00:00"
+    }
+  ]
+}

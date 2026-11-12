@@ -1,0 +1,12 @@
+{
+  "sprint_id": "CBE_SPRINT28_HISTORICAL_SCIENTIFIC_DISCOVERY_ENGINE",
+  "generated_at_utc": "2026-11-12T10:29:46Z",
+  "canonical_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "governance_decision": "TECHNICAL_NO_GO",
+  "directional_trading_eligibility": 0.0,
+  "runtime_signing_mode": "VERIFICATION_ONLY",
+  "execution_mode": "STRICTLY_OFFLINE_RESEARCH",
+  "scientific_discovery_status": "CONFIRMATORY_RESEARCH_ONLY",
+  "rule_enforced": "SCIENTIFIC_FINDING_SUPPORTED !=> LIVE_TRADING_AUTHORIZED"
+}

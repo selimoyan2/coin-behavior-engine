@@ -1,0 +1,12 @@
+{
+  "sprint_id": "CBE_SPRINT28_HISTORICAL_SCIENTIFIC_DISCOVERY_ENGINE",
+  "generated_at_utc": "2026-11-12T10:29:46Z",
+  "suite": "FULL_SPRINT_1_TO_28_REGRESSION",
+  "baseline_tests_passed": 851,
+  "sprint28_tests_passed": 90,
+  "total_tests_collected": 941,
+  "total_tests_passed": 941,
+  "total_tests_failed": 0,
+  "total_tests_skipped": 0,
+  "status": "ALL_PASSED"
+}

@@ -1,0 +1,87 @@
+{
+  "benchmark_suite": "SPRINT_28_HISTORICAL_SCIENTIFIC_DISCOVERY_BENCHMARKS",
+  "timestamp_utc": "2026-11-12T10:27:59.090760+00:00",
+  "all_passed": true,
+  "benchmarks": [
+    {
+      "operation": "Dataset inventory query",
+      "target_p95_ms": 150.0,
+      "measured_p50_ms": 0.001,
+      "measured_p95_ms": 0.005,
+      "sample_count": 15,
+      "passed": true
+    },
+    {
+      "operation": "Hypothesis preregistration query",
+      "target_p95_ms": 150.0,
+      "measured_p50_ms": 0.001,
+      "measured_p95_ms": 0.003,
+      "sample_count": 15,
+      "passed": true
+    },
+    {
+      "operation": "Pattern discovery laboratory analysis",
+      "target_p95_ms": 300.0,
+      "measured_p50_ms": 36.028,
+      "measured_p95_ms": 84.233,
+      "sample_count": 15,
+      "passed": true
+    },
+    {
+      "operation": "Temporal partition & leakage validation",
+      "target_p95_ms": 200.0,
+      "measured_p50_ms": 0.001,
+      "measured_p95_ms": 0.004,
+      "sample_count": 15,
+      "passed": true
+    },
+    {
+      "operation": "Reproducibility Lab V2 records query",
+      "target_p95_ms": 150.0,
+      "measured_p50_ms": 0.001,
+      "measured_p95_ms": 0.002,
+      "sample_count": 15,
+      "passed": true
+    },
+    {
+      "operation": "Multiple testing control (Benjamini-Hochberg)",
+      "target_p95_ms": 150.0,
+      "measured_p50_ms": 0.02,
+      "measured_p95_ms": 0.042,
+      "sample_count": 15,
+      "passed": true
+    },
+    {
+      "operation": "Regime stability assessment",
+      "target_p95_ms": 250.0,
+      "measured_p50_ms": 0.001,
+      "measured_p95_ms": 0.002,
+      "sample_count": 15,
+      "passed": true
+    },
+    {
+      "operation": "Evidence grading calculation",
+      "target_p95_ms": 150.0,
+      "measured_p50_ms": 0.001,
+      "measured_p95_ms": 0.002,
+      "sample_count": 15,
+      "passed": true
+    },
+    {
+      "operation": "Discovery knowledge base search",
+      "target_p95_ms": 150.0,
+      "measured_p50_ms": 0.007,
+      "measured_p95_ms": 0.014,
+      "sample_count": 15,
+      "passed": true
+    },
+    {
+      "operation": "Scientific report builder V6 generation",
+      "target_p95_ms": 400.0,
+      "measured_p50_ms": 0.098,
+      "measured_p95_ms": 1.857,
+      "sample_count": 15,
+      "passed": true
+    }
+  ]
+}

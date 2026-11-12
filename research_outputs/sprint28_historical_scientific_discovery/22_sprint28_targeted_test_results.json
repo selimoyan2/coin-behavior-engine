@@ -1,0 +1,11 @@
+{
+  "sprint_id": "CBE_SPRINT28_HISTORICAL_SCIENTIFIC_DISCOVERY_ENGINE",
+  "generated_at_utc": "2026-11-12T10:29:46Z",
+  "test_file": "tests/test_sprint_product_acceleration_28.py",
+  "collected_tests": 90,
+  "passed_tests": 90,
+  "failed_tests": 0,
+  "skipped_tests": 0,
+  "duration_seconds": 2.02,
+  "status": "ALL_PASSED"
+}

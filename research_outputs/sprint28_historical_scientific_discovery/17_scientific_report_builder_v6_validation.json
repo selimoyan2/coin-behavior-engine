@@ -1,0 +1,56 @@
+{
+  "sprint_id": "CBE_SPRINT28_HISTORICAL_SCIENTIFIC_DISCOVERY_ENGINE",
+  "generated_at_utc": "2026-11-12T10:29:46Z",
+  "supported_report_types_count": 10,
+  "supported_report_types": [
+    "CONTRADICTION_REVIEW",
+    "EVIDENCE_GRADE",
+    "FALSE_DISCOVERY_CONTROL",
+    "HISTORICAL_DISCOVERY",
+    "HYPOTHESIS_VALIDATION",
+    "INDEPENDENT_REPLICATION",
+    "OUT_OF_SAMPLE_VALIDATION",
+    "PORTFOLIO_SUMMARY",
+    "REGIME_STABILITY",
+    "REPRODUCIBILITY"
+  ],
+  "security_features": {
+    "path_traversal_detection": "ENFORCED",
+    "format_isolation": [
+      "JSON",
+      "MARKDOWN",
+      "HTML"
+    ]
+  },
+  "sample_report_generated": {
+    "report_id": "REP-V6-0EEAE1BEF6",
+    "report_type": "HISTORICAL_DISCOVERY",
+    "title": "Historical Volatility Clustering Discovery Report",
+    "generated_at": "2026-11-12T10:29:47.624847+00:00",
+    "research_id": "DISC-VOL-CLUST-001",
+    "hypothesis_id": "",
+    "discovery_id": "",
+    "dataset_id": "",
+    "dataset_fingerprint": "",
+    "methodology_id": "",
+    "evidence_grade": "EVIDENCE_NOT_ESTABLISHED",
+    "statistical_results": {},
+    "uncertainty": {},
+    "partitions": {},
+    "reproduction_evidence": {},
+    "limitations": [
+      "Research conducted on historical spot BTC/USDT data."
+    ],
+    "governance_invariants": {
+      "canonical_model": "CBE-0.7.0",
+      "model_status": "STRICTLY_FROZEN",
+      "technical_decision": "TECHNICAL_NO_GO",
+      "execution_mode": "STRICTLY_OFFLINE_RESEARCH",
+      "live_order_execution": "PERMANENTLY_PROHIBITED",
+      "directional_trading_eligibility": 0,
+      "scientific_finding_rule": "SCIENTIFIC_FINDING_SUPPORTED !=> LIVE_TRADING_AUTHORIZED"
+    },
+    "format": "JSON",
+    "content": "{\n  \"report_id\": \"REP-V6-0EEAE1BEF6\",\n  \"report_type\": \"HISTORICAL_DISCOVERY\",\n  \"title\": \"Historical Volatility Clustering Discovery Report\",\n  \"generated_at\": \"2026-11-12T10:29:47.624847+00:00\",\n  \"research_id\": \"DISC-VOL-CLUST-001\",\n  \"hypothesis_id\": \"\",\n  \"discovery_id\": \"\",\n  \"dataset_id\": \"\",\n  \"dataset_fingerprint\": \"\",\n  \"methodology_id\": \"\",\n  \"evidence_grade\": \"EVIDENCE_NOT_ESTABLISHED\",\n  \"statistical_results\": {},\n  \"uncertainty\": {},\n  \"partitions\": {},\n  \"reproduction_evidence\": {},\n  \"limitations\": [\n    \"Research conducted on historical spot BTC/USDT data.\"\n  ],\n  \"governance_invariants\": {\n    \"canonical_model\": \"CBE-0.7.0\",\n    \"model_status\": \"STRICTLY_FROZEN\",\n    \"technical_decision\": \"TECHNICAL_NO_GO\",\n    \"execution_mode\": \"STRICTLY_OFFLINE_RESEARCH\",\n    \"live_order_execution\": \"PERMANENTLY_PROHIBITED\",\n    \"directional_trading_eligibility\": 0,\n    \"scientific_finding_rule\": \"SCIENTIFIC_FINDING_SUPPORTED !=> LIVE_TRADING_AUTHORIZED\"\n  }\n}"
+  }
+}

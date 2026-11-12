@@ -1,0 +1,109 @@
+{
+  "sprint_id": "CBE_SPRINT28_HISTORICAL_SCIENTIFIC_DISCOVERY_ENGINE",
+  "generated_at_utc": "2026-11-12T10:29:46Z",
+  "evaluations_count": 3,
+  "anti_grade_inflation_rules": {
+    "unverified_provenance_max_grade": "GRADE_D_UNSUPPORTED",
+    "quarantined_provenance_max_grade": "GRADE_F_DISCREDITED",
+    "unaccounted_multiple_testing_caps_at": "GRADE_C_PRELIMINARY",
+    "confirmatory_support_requires_reproducibility": true
+  },
+  "evaluations": [
+    {
+      "assessment_id": "GRD-VOL-001",
+      "discovery_id": "DISC-VOL-CLUST-001",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "research_id": "RES-STAT-02",
+      "grade": "VALIDATED_HISTORICAL_EVIDENCE",
+      "supporting_dimensions": [
+        "dataset_provenance",
+        "data_structural_integrity",
+        "hypothesis_preregistration",
+        "statistical_validity",
+        "multiple_testing_control",
+        "temporal_validation",
+        "robustness",
+        "computational_repeatability",
+        "regime_generalization",
+        "absence_of_contradictions",
+        "disclosed_limitations"
+      ],
+      "failed_dimensions": [],
+      "missing_dimensions": [
+        "independent_replication"
+      ],
+      "blocking_reasons": [],
+      "evidence_artifact_ids": [
+        "ART-VOL-001",
+        "ART-ARCH-STAT-2024Q1",
+        "VAL-VOL-2024-01"
+      ],
+      "is_inflation_prevented": true,
+      "assessed_at": "2026-11-12T09:51:11.431669+00:00"
+    },
+    {
+      "assessment_id": "GRD-REG-SHIFT-002",
+      "discovery_id": "DISC-REG-SHIFT-002",
+      "hypothesis_id": "HYP-REG-SHIFT-002",
+      "research_id": "RES-GEN-05",
+      "grade": "INDEPENDENTLY_REPLICATED_EVIDENCE",
+      "supporting_dimensions": [
+        "dataset_provenance",
+        "data_structural_integrity",
+        "hypothesis_preregistration",
+        "statistical_validity",
+        "multiple_testing_control",
+        "temporal_validation",
+        "robustness",
+        "computational_repeatability",
+        "independent_replication",
+        "regime_generalization",
+        "absence_of_contradictions",
+        "disclosed_limitations"
+      ],
+      "failed_dimensions": [],
+      "missing_dimensions": [],
+      "blocking_reasons": [],
+      "evidence_artifact_ids": [
+        "ART-DIST-002",
+        "REP-IND-DATA-003"
+      ],
+      "is_inflation_prevented": true,
+      "assessed_at": "2026-11-12T09:51:11.431669+00:00"
+    },
+    {
+      "assessment_id": "GRD-ANALOG-EXP-003",
+      "discovery_id": "DISC-ANALOG-EXP-003",
+      "hypothesis_id": "HYP-RETRO-ANALOG-003",
+      "research_id": "RES-HIST-01",
+      "grade": "EXPLORATORY_EVIDENCE",
+      "supporting_dimensions": [
+        "dataset_provenance",
+        "data_structural_integrity",
+        "computational_repeatability",
+        "disclosed_limitations"
+      ],
+      "failed_dimensions": [
+        "hypothesis_preregistration",
+        "statistical_validity",
+        "temporal_validation",
+        "regime_generalization"
+      ],
+      "missing_dimensions": [
+        "multiple_testing_control",
+        "robustness",
+        "independent_replication"
+      ],
+      "blocking_reasons": [
+        "Hypothesis registered retrospectively.",
+        "Statistical test failed to reject null hypothesis (p = 0.485 > 0.05).",
+        "Temporal out-of-sample validation failed."
+      ],
+      "evidence_artifact_ids": [
+        "ART-ANALOG-003"
+      ],
+      "is_inflation_prevented": true,
+      "assessed_at": "2026-11-12T09:51:11.431669+00:00"
+    }
+  ]
+}

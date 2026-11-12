@@ -1,0 +1,20 @@
+{
+  "sprint_id": "CBE_SPRINT28_HISTORICAL_SCIENTIFIC_DISCOVERY_ENGINE",
+  "generated_at_utc": "2026-11-12T10:29:46Z",
+  "independent_replications": [
+    {
+      "reproduction_id": "REP-IND-IMPL-002",
+      "original_experiment_id": "EXP-WF-002",
+      "implementation_identity": "INDEPENDENT_REFERENCE_VALIDATOR_V2",
+      "verdict": "INDEPENDENT_IMPLEMENTATION_REPRODUCED",
+      "provenance_status": "VERIFIED"
+    },
+    {
+      "reproduction_id": "REP-IND-DATA-003",
+      "original_experiment_id": "EXP-ASV-001",
+      "reproduction_dataset_id": "DS-BTC-1H-JAN-2025",
+      "verdict": "INDEPENDENT_DATASET_REPLICATED",
+      "provenance_status": "VERIFIED"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "suite": "SPRINT_28_PLAYWRIGHT_ACCEPTANCE",
+  "sprint_id": "CBE_SPRINT28_HISTORICAL_SCIENTIFIC_DISCOVERY_ENGINE",
+  "timestamp_utc": "2026-11-12T10:27:40.304163+00:00",
+  "base_url": "http://127.0.0.1:18099",
+  "viewports_tested": [
+    "1440x900",
+    "768x1024",
+    "390x844"
+  ],
+  "console_error_count": 0,
+  "uncaught_pageerror_count": 0,
+  "failed_network_request_count": 0,
+  "tests": [
+    {
+      "name": "desktop_discovery_overview_v6",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    },
+    {
+      "name": "desktop_dataset_and_pattern_discovery_v6",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    },
+    {
+      "name": "tablet_reproducibility_and_regimes_v6",
+      "viewport": "768x1024",
+      "status": "PASSED"
+    },
+    {
+      "name": "mobile_evidence_and_reports_v6",
+      "viewport": "390x844",
+      "status": "PASSED"
+    }
+  ],
+  "screenshots": {
+    "desktop_1440x900_discovery_and_temporal": "research_outputs\\sprint28_historical_scientific_discovery\\screenshots\\desktop_1440x900_discovery_and_temporal.png",
+    "tablet_768x1024_reproducibility_and_regimes": "research_outputs\\sprint28_historical_scientific_discovery\\screenshots\\tablet_768x1024_reproducibility_and_regimes.png",
+    "mobile_390x844_evidence_and_reports": "research_outputs\\sprint28_historical_scientific_discovery\\screenshots\\mobile_390x844_evidence_and_reports.png"
+  },
+  "status": "PASSED",
+  "console_errors": [],
+  "page_errors": [],
+  "failed_requests": []
+}

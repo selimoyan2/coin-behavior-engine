@@ -1,0 +1,43 @@
+{
+  "verification_timestamp_utc": "2026-11-12T10:35:00Z",
+  "sprint_id": "CBE_SPRINT28_HISTORICAL_SCIENTIFIC_DISCOVERY_ENGINE",
+  "target_host": "srv1114257 (168.231.125.238)",
+  "staging_service": {
+    "application_uuid": "dzzfws54by1whlbq6fk4ywut",
+    "container_id": "37ed703eb8c2",
+    "image_tag": "cbe-market-intelligence:sprint28-discovery-engine-7f506b1",
+    "image_digest": "sha256:9d7ef1321951303ebf04262ddc7c93996af720771bcbb10c53c8f82e5498d0a0",
+    "listening_port": 18080,
+    "health_status": "healthy",
+    "ready_endpoint": "http://127.0.0.1:18080/ready",
+    "http_status": 200,
+    "ready_response": {
+      "status": "READY",
+      "service": "coin-behavior-engine",
+      "canonical_model_version": "CBE-0.7.0",
+      "canonical_model_status": "STRICTLY_FROZEN",
+      "governance_decision": "TECHNICAL_NO_GO",
+      "parameter_mutations": 0,
+      "directional_trading": "STRICTLY_PROHIBITED",
+      "live_order_execution": "PERMANENTLY_PROHIBITED",
+      "storage_durability": "PERSISTENT_VERIFIED",
+      "storage_writable": true,
+      "environment": "staging"
+    },
+    "restart_recovery_test": {
+      "restart_command": "docker restart 37ed703eb8c2",
+      "post_restart_status": "Up 13 seconds (healthy)",
+      "post_restart_ready_http_code": 200,
+      "restart_recovery_verdict": "VERIFIED"
+    }
+  },
+  "production_zero_touch_verification": {
+    "domain": "coin.ozelweb.com.tr",
+    "container_id": "7cdad260bf1435f7e2b6cd9f07f5b40533b754c396a7d10f5c3a7101041c347c",
+    "status": "running",
+    "restart_count": 0,
+    "started_at": "2026-11-12T09:31:39.384982445Z",
+    "zero_touch_verdict": "STRICTLY_PRESERVED_ZERO_TOUCH"
+  },
+  "overall_deployment_status": "SUCCESS"
+}
