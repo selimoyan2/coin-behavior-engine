@@ -1,0 +1,37 @@
+{
+  "sprint_id": "CBE_SPRINT27_FINAL_RECORD_INTEGRITY_CLOSURE",
+  "verified_at_utc": "2026-11-12T07:31:46Z",
+  "implementation_commit_sha": "6dd263fab00d6362d7196abf5112d847d84789b2",
+  "fail_closed_cases_verified": [
+    {
+      "case": "corrupted_json_syntax",
+      "rejection_code": "CORRUPTED_PERSISTED_STATE",
+      "passed": true
+    },
+    {
+      "case": "missing_required_experiment_fields",
+      "rejection_code": "MALFORMED_PERSISTED_EXPERIMENT",
+      "passed": true
+    },
+    {
+      "case": "broken_timeline_hash_chain",
+      "rejection_code": "TIMELINE_HASH_CHAIN_BROKEN",
+      "passed": true
+    },
+    {
+      "case": "orphan_timeline_event_missing_experiment",
+      "rejection_code": "MISSING_EXPERIMENT_REFERENCE_IN_TIMELINE",
+      "passed": true
+    },
+    {
+      "case": "out_of_order_timeline_timestamps",
+      "rejection_code": "TIMELINE_OUT_OF_ORDER_TIMESTAMP",
+      "passed": true
+    },
+    {
+      "case": "duplicate_timeline_event_ids",
+      "rejection_code": "DUPLICATE_TIMELINE_EVENT_ID",
+      "passed": true
+    }
+  ]
+}

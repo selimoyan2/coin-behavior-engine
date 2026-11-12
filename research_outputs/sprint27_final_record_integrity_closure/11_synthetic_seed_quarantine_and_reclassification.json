@@ -1,0 +1,33 @@
+{
+  "sprint_id": "CBE_SPRINT27_FINAL_RECORD_INTEGRITY_CLOSURE",
+  "verified_at_utc": "2026-11-12T07:31:46Z",
+  "implementation_commit_sha": "6dd263fab00d6362d7196abf5112d847d84789b2",
+  "experiment_seed_reclassification": {
+    "record_origin": "CATALOG_PROJECTION",
+    "promotion_without_execution_log_blocked": true,
+    "rejection_code": "SYNTHETIC_SEED_PROMOTION_REJECTED"
+  },
+  "review_seed_quarantine_and_reclassification": {
+    "preserved_authenticated_count": 0,
+    "quarantined_synthetic_count": 1,
+    "preserved_authenticated_reviews": [],
+    "quarantined_synthetic_reviews": [
+      {
+        "review_id": "REV-0001-RES-REGIME-01",
+        "research_id": "RES-REGIME-01",
+        "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+        "decision": "ACCEPT_FOR_RESEARCH_ARCHIVE",
+        "decision_reason": "Legacy synthetic seed record",
+        "supporting_evidence_ids": [
+          "RES-REGIME-01"
+        ],
+        "decision_timestamp": "2026-10-15T12:00:00Z",
+        "previous_review_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "review_classification": "AUTOMATED_ASSESSMENT",
+        "record_origin": "AUTOMATED_ASSESSMENT",
+        "authoritative": false,
+        "quarantine_status": "QUARANTINED_SYNTHETIC_SEED_REVIEW"
+      }
+    ]
+  }
+}

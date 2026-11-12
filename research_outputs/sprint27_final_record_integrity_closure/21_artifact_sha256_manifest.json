@@ -1,0 +1,123 @@
+{
+  "sprint_id": "CBE_SPRINT27_FINAL_RECORD_INTEGRITY_CLOSURE",
+  "generated_at_utc": "2026-11-12T07:31:46Z",
+  "implementation_commit_sha": "6dd263fab00d6362d7196abf5112d847d84789b2",
+  "total_files": 23,
+  "artifacts": [
+    {
+      "file": "01_sprint27_record_integrity_gap_audit.md",
+      "sha256": "7aeee5f891b04fc288265f7ee68eab572ecbb04074831e142bca96b6a063ef7b",
+      "bytes": 3172
+    },
+    {
+      "file": "02_historical_execution_authenticity_design.md",
+      "sha256": "5844abb21c0215596f9636572577d9f82147d5423bf4caf5496df32081df0756",
+      "bytes": 1248
+    },
+    {
+      "file": "03_historical_execution_authenticity_verification.json",
+      "sha256": "3035365d4680c29af7a2fab4748b95303c525655516e5b710b9c321d9cee5b43",
+      "bytes": 24391
+    },
+    {
+      "file": "04_review_provenance_and_authenticity_design.md",
+      "sha256": "496143aa5dc76fa6a5453717c70d2b49d307c6bb0791fa018a3871d99c01fdb2",
+      "bytes": 1250
+    },
+    {
+      "file": "05_review_provenance_verification.json",
+      "sha256": "4970db26c4b00f8ef4802ba2f3ed74a5f92fc72d7b4f4e700abc17b3534084d7",
+      "bytes": 14291
+    },
+    {
+      "file": "06_durable_experiment_persistence_design.md",
+      "sha256": "5cbc29e489da6fae5fd0bfd719a75625b78b0e646a8d9de59d22432e9ed61795",
+      "bytes": 1266
+    },
+    {
+      "file": "07_durable_persistence_recovery_verification.json",
+      "sha256": "c5d351ec25da250398608678f46aae919026effe98bb4d7017a94f874c992157",
+      "bytes": 1111
+    },
+    {
+      "file": "08_timeline_hash_chain_and_restart_verification.json",
+      "sha256": "4e6f56f5ecceb01533c0f21e16a3f011a48a48fd598176f46c476fb6499ad324",
+      "bytes": 834
+    },
+    {
+      "file": "09_corrupted_state_fail_closed_verification.json",
+      "sha256": "5bb77d54b840027d49298b218607ac09e156e5b16f16e1664d335762029358ef",
+      "bytes": 1100
+    },
+    {
+      "file": "10_concurrent_persistence_lock_verification.json",
+      "sha256": "b479c9185a3ebe3001ce509e624ad8f77fff4379c653a27bb7b78b6dcd97923c",
+      "bytes": 467
+    },
+    {
+      "file": "11_synthetic_seed_quarantine_and_reclassification.json",
+      "sha256": "07d91170c43fa9228d4022c7507fa39c80c2b4ff141466e0a7d6339a220f1441",
+      "bytes": 1345
+    },
+    {
+      "file": "12_negative_security_and_integrity_test_matrix.json",
+      "sha256": "9bfe4ea2c7f3a62f647bdd7d092245b935f64cc620ffd572809341ded3719fac",
+      "bytes": 5084
+    },
+    {
+      "file": "13_unit_and_integration_test_results.json",
+      "sha256": "8fedaa6b70d324a080e646b71b5de4f679ee693205400c1706f394bf95a4a593",
+      "bytes": 458
+    },
+    {
+      "file": "14_full_regression_suite_report.json",
+      "sha256": "972a0c232eb1e9f60e0fe32f70d101589d0eabeb2ff13c769549b1e4d9bd2107",
+      "bytes": 482
+    },
+    {
+      "file": "15_dashboard_v5_trust_semantics_verification.json",
+      "sha256": "999dc7f76b755a1471ab5fa600850e17c63038129c68eae35cdae2443317cf33",
+      "bytes": 1298
+    },
+    {
+      "file": "16_scientific_report_v5_trust_semantics_verification.json",
+      "sha256": "5de6476dc96ecd6a20f7167192b9fd7bf7b0181cae83101da9516604df9b6507",
+      "bytes": 1743
+    },
+    {
+      "file": "17_staging_deployment_and_restart_validation.json",
+      "sha256": "14fcbdf86206fd54dc68d07100ca6a2489b9bd79084fcfd4832160bee4458d4b",
+      "bytes": 1075
+    },
+    {
+      "file": "18_production_zero_touch_verification.json",
+      "sha256": "d238ccaa321db721c71a3801b17f2dfa5ddfc155de00bca7562074276661a18e",
+      "bytes": 471
+    },
+    {
+      "file": "19_git_commit_and_delivery_consistency.json",
+      "sha256": "c4202d97d4dc9b49c6f20ee7c706a9885c236338db028c6d49741272423feea6",
+      "bytes": 563
+    },
+    {
+      "file": "20_final_sprint27_acceptance_certification.md",
+      "sha256": "7ecb82c7210a85b9d85eb19a95cff1fe77fd42b59f0b163172d1a2273e3040e3",
+      "bytes": 2884
+    },
+    {
+      "file": "screenshots/desktop_1440x900_portfolio_and_timeline.png",
+      "sha256": "01565109f2d248c520af437a510b140c950afbd2e5dfec8603b91fd48533380d",
+      "bytes": 1234317
+    },
+    {
+      "file": "screenshots/mobile_390x844_reviews_and_reports.png",
+      "sha256": "cbbcfa99dd59b68dc6e969b76d14d8377647b8bd68ee343822926df864c626a8",
+      "bytes": 969817
+    },
+    {
+      "file": "screenshots/tablet_768x1024_comparison_and_traceability.png",
+      "sha256": "2474f21d29795de954e474f23b4a0e0af291ffe98db482cc4315a089ecaf49d4",
+      "bytes": 682496
+    }
+  ]
+}

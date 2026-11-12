@@ -1,0 +1,11 @@
+{
+  "sprint_id": "CBE_SPRINT27_FINAL_RECORD_INTEGRITY_CLOSURE",
+  "verified_at_utc": "2026-11-12T07:31:46Z",
+  "production_url": "https://coin.ozelweb.com.tr",
+  "production_container_id": "6baf9524ec445cbebace53ae267ee38d75e86b39cf97e26c0cfe8d10602ce025",
+  "production_container_name": "/6t63aehpaw0cw1bbt4zcm09g-20261111T205843",
+  "started_at": "2026-11-11T20:59:56.870172334Z",
+  "restart_count": 0,
+  "status": "running",
+  "zero_touch_verified": true
+}

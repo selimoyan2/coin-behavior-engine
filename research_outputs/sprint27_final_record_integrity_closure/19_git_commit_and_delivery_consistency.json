@@ -1,0 +1,12 @@
+{
+  "sprint_id": "CBE_SPRINT27_FINAL_RECORD_INTEGRITY_CLOSURE",
+  "repository": "selimoyan2/coin-behavior-engine",
+  "branch": "main",
+  "starting_baseline_sha": "69895f906cfeb40b4d22781a569f666108aaa399",
+  "previous_implementation_sha": "c67fa77bab7da415c1aab44494198cb8268600df",
+  "implementation_commit_sha": "6dd263fab00d6362d7196abf5112d847d84789b2",
+  "staging_deployed_commit_sha": "6dd263fab00d6362d7196abf5112d847d84789b2",
+  "canonical_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "governance_decision": "TECHNICAL_NO_GO"
+}

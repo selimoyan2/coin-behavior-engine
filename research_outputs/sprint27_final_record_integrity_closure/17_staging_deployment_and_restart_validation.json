@@ -1,0 +1,23 @@
+{
+  "sprint_id": "CBE_SPRINT27_FINAL_RECORD_INTEGRITY_CLOSURE",
+  "verified_at_utc": "2026-11-12T07:31:46Z",
+  "staging_host": "srv1114257 (168.231.125.238:18080)",
+  "container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261016T221942",
+  "container_id": "98c943d656bae85930eadd33862d5a533174a8b3efd008f9556412acbf3bcecc",
+  "image_tag": "cbe-market-intelligence:sprint27-closure-6dd263f",
+  "application_revision": "6dd263fab00d6362d7196abf5112d847d84789b2",
+  "health_status": "healthy",
+  "ready_status": "READY",
+  "restart_persistence_verification": {
+    "registered_experiment_id": "EXP-RES-REGIME-01-7CEB2B1C",
+    "storage_path": "/app/data/prospective/sprint27_experiment_registry.json",
+    "survived_docker_restart": true,
+    "survived_container_recreation": true,
+    "timeline_events_before_restart": 13,
+    "timeline_events_after_restart": 13,
+    "duplicate_seed_events": 0,
+    "timeline_chain_valid": true,
+    "integrity_mechanism": "INTERNAL_TAMPER_DETECTION_CHAIN",
+    "externally_anchored": false
+  }
+}

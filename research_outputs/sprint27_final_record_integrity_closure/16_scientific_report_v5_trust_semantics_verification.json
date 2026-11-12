@@ -1,0 +1,38 @@
+{
+  "sprint_id": "CBE_SPRINT27_FINAL_RECORD_INTEGRITY_CLOSURE",
+  "verified_at_utc": "2026-11-12T07:31:46Z",
+  "implementation_commit_sha": "6dd263fab00d6362d7196abf5112d847d84789b2",
+  "report_id": "RPT-V5-RES-REGIME-01-DF369E7D",
+  "report_content_sha256": "df369e7ddaa3d7f1bf98706310654383bea57e47f816aa971a32d43912f137cc",
+  "reproducibility_status": {
+    "status": "REPRODUCTION_NOT_ESTABLISHED",
+    "is_independent_replication": false,
+    "distinction_notice": "OUTPUTS_MATCHED requires actual comparison against independently persisted expected results; dataset provenance or source integrity alone remains REPRODUCTION_NOT_ESTABLISHED."
+  },
+  "review_classification": "AUTOMATED_ASSESSMENT",
+  "mandatory_5_trust_classifications_present": [
+    "CATALOG_METADATA",
+    "VERIFIED_EXECUTION_EVIDENCE",
+    "AUTOMATED_ASSESSMENT",
+    "AUTHENTICATED_REVIEW_DECISION",
+    "UNVERIFIED_HISTORICAL_CLAIM"
+  ],
+  "timeline_chain_integrity": {
+    "chain_valid": true,
+    "rejection_code": null,
+    "total_events_verified": 34,
+    "head_event_digest": "3190dfad280a45c861ec3b4dc45839a48870dc3e89784ab0b8025a54884e07cd",
+    "integrity_mechanism": "INTERNAL_TAMPER_DETECTION_CHAIN",
+    "externally_anchored": false,
+    "authenticity_claim": "INTERNAL_TAMPER_DETECTION_ONLY_NOT_EXTERNALLY_ANCHORED"
+  },
+  "audit_chain_integrity": {
+    "chain_valid": true,
+    "rejection_code": null,
+    "total_reviews_verified": 0,
+    "head_review_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+    "integrity_mechanism": "INTERNAL_TAMPER_DETECTION_CHAIN",
+    "externally_anchored": false,
+    "authenticity_claim": "INTERNAL_TAMPER_DETECTION_ONLY_NOT_EXTERNALLY_ANCHORED"
+  }
+}

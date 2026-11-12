@@ -1,0 +1,27 @@
+{
+  "sprint_id": "CBE_SPRINT27_FINAL_RECORD_INTEGRITY_CLOSURE",
+  "verified_at_utc": "2026-11-12T07:31:46Z",
+  "implementation_commit_sha": "6dd263fab00d6362d7196abf5112d847d84789b2",
+  "viewports_verified": [
+    "1440x900",
+    "768x1024",
+    "390x844"
+  ],
+  "console_errors": 0,
+  "uncaught_page_errors": 0,
+  "failed_network_requests": 0,
+  "sla_benchmarks_status": "ALL_SLA_TARGETS_MET",
+  "trust_semantics_verified": {
+    "no_invented_execution_dates_displayed": true,
+    "catalog_discovery_never_shown_as_execution_completed": true,
+    "no_metadata_hashes_shown_as_result_digests": true,
+    "automated_assessments_never_shown_as_authenticated_review_decisions": true,
+    "unverified_reproduction_shown_as_reproduction_not_established": true,
+    "local_hash_chains_labeled_internal_tamper_detection_chain": true
+  },
+  "screenshots": {
+    "desktop_1440x900": "research_outputs/sprint27_final_record_integrity_closure/screenshots/desktop_1440x900_portfolio_and_timeline.png",
+    "tablet_768x1024": "research_outputs/sprint27_final_record_integrity_closure/screenshots/tablet_768x1024_comparison_and_traceability.png",
+    "mobile_390x844": "research_outputs/sprint27_final_record_integrity_closure/screenshots/mobile_390x844_reviews_and_reports.png"
+  }
+}

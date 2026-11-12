@@ -1,0 +1,26 @@
+{
+  "sprint_id": "CBE_SPRINT27_FINAL_RECORD_INTEGRITY_CLOSURE",
+  "verified_at_utc": "2026-11-12T07:31:46Z",
+  "implementation_commit_sha": "6dd263fab00d6362d7196abf5112d847d84789b2",
+  "persistence_schema_version": "1.0",
+  "recovery_steps_verified": {
+    "schema_version_validated": true,
+    "required_experiment_fields_validated": true,
+    "execution_attempt_structures_validated": true,
+    "timeline_event_structures_validated": true,
+    "hash_chain_verified": true,
+    "experiment_to_event_references_validated": true,
+    "malformed_records_rejected_fail_closed": true,
+    "verified_experiments_hydrated_into_runtime": true,
+    "verified_timeline_hydrated_into_runtime": true,
+    "zero_duplicate_seed_events_on_restart": true,
+    "interrupted_tmp_file_recovered_cleanly": true
+  },
+  "staging_restart_verification": {
+    "persisted_experiment_id": "EXP-RES-REGIME-01-7CEB2B1C",
+    "restored_after_docker_restart": true,
+    "restored_after_container_recreation": true,
+    "timeline_event_count_before_restart": 13,
+    "timeline_event_count_after_restart": 13
+  }
+}

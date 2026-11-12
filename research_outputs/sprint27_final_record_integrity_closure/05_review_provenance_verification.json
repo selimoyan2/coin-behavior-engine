@@ -1,0 +1,295 @@
+{
+  "sprint_id": "CBE_SPRINT27_FINAL_RECORD_INTEGRITY_CLOSURE",
+  "verified_at_utc": "2026-11-12T07:31:46Z",
+  "implementation_commit_sha": "6dd263fab00d6362d7196abf5112d847d84789b2",
+  "startup_authenticated_reviews_count": 0,
+  "automated_assessments_count": 17,
+  "invariants_verified": {
+    "zero_fabricated_reviews_on_startup": true,
+    "all_automated_assessments_labeled_system_generated": true,
+    "governance_decision_unchanged": true
+  },
+  "audit_chain_integrity": {
+    "chain_valid": true,
+    "rejection_code": null,
+    "total_reviews_verified": 0,
+    "head_review_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+    "integrity_mechanism": "INTERNAL_TAMPER_DETECTION_CHAIN",
+    "externally_anchored": false,
+    "authenticity_claim": "INTERNAL_TAMPER_DETECTION_ONLY_NOT_EXTERNALLY_ANCHORED"
+  },
+  "automated_assessments": [
+    {
+      "assessment_id": "AUTO-ASSESS-RES-FUND-01",
+      "research_id": "RES-FUND-01",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "assessment_reason": "Automated readiness check: Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RES-FUND-01",
+        "DS-BTCUSDT-PERP-FUNDING-2022-2026"
+      ],
+      "recommended_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    },
+    {
+      "assessment_id": "AUTO-ASSESS-RES-REGIME-01",
+      "research_id": "RES-REGIME-01",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "assessment_reason": "Automated readiness check: Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RES-REGIME-01",
+        "DS-BTCUSDT-SPOT-1H-2022-2026"
+      ],
+      "recommended_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    },
+    {
+      "assessment_id": "AUTO-ASSESS-RES-ANALOG-01",
+      "research_id": "RES-ANALOG-01",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "assessment_reason": "Automated readiness check: Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RES-ANALOG-01",
+        "DS-BTCUSDT-SPOT-1H-2022-2026"
+      ],
+      "recommended_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    },
+    {
+      "assessment_id": "AUTO-ASSESS-RES-MACRO-01",
+      "research_id": "RES-MACRO-01",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "assessment_reason": "Automated readiness check: Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RES-MACRO-01",
+        "DS-US-MACRO-EVENTS-2022-2026"
+      ],
+      "recommended_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    },
+    {
+      "assessment_id": "AUTO-ASSESS-RES-DURABILITY-01",
+      "research_id": "RES-DURABILITY-01",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "assessment_reason": "Automated readiness check: Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RES-DURABILITY-01",
+        "DS-CBE-SYSTEM-AUDIT-LOGS"
+      ],
+      "recommended_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    },
+    {
+      "assessment_id": "AUTO-ASSESS-RES-CRYPTO-01",
+      "research_id": "RES-CRYPTO-01",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "BLOCK_DUE_TO_PROVENANCE",
+      "assessment_reason": "Automated readiness check: October 2026 dataset is quarantined due to synthetic contamination; recommended state is BLOCKED.",
+      "supporting_evidence_ids": [
+        "RES-CRYPTO-01",
+        "DS-BTCUSDT-OCTOBER-2026-INTAKE"
+      ],
+      "recommended_review_state": "BLOCKED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    },
+    {
+      "assessment_id": "AUTO-ASSESS-RLIB-c5730b081950",
+      "research_id": "RLIB-c5730b081950",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "assessment_reason": "Automated readiness check: Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-c5730b081950",
+        "DS-BTCUSDT-1h"
+      ],
+      "recommended_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    },
+    {
+      "assessment_id": "AUTO-ASSESS-RLIB-ee060f623584",
+      "research_id": "RLIB-ee060f623584",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "assessment_reason": "Automated readiness check: Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-ee060f623584",
+        "DS-BTCUSDT-1h"
+      ],
+      "recommended_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    },
+    {
+      "assessment_id": "AUTO-ASSESS-RLIB-f9ddf66ba096",
+      "research_id": "RLIB-f9ddf66ba096",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "assessment_reason": "Automated readiness check: Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-f9ddf66ba096",
+        "DS-BTCUSDT-1h"
+      ],
+      "recommended_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    },
+    {
+      "assessment_id": "AUTO-ASSESS-RLIB-03c6ea53cf3d",
+      "research_id": "RLIB-03c6ea53cf3d",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "assessment_reason": "Automated readiness check: Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-03c6ea53cf3d",
+        "DS-BTCUSDT-1h"
+      ],
+      "recommended_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    },
+    {
+      "assessment_id": "AUTO-ASSESS-RLIB-07c7c65c7e91",
+      "research_id": "RLIB-07c7c65c7e91",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "assessment_reason": "Automated readiness check: Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-07c7c65c7e91",
+        "DS-BTCUSDT-1h"
+      ],
+      "recommended_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    },
+    {
+      "assessment_id": "AUTO-ASSESS-RLIB-2f30980866e9",
+      "research_id": "RLIB-2f30980866e9",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "assessment_reason": "Automated readiness check: Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-2f30980866e9",
+        "DS-BTCUSDT-1h"
+      ],
+      "recommended_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    },
+    {
+      "assessment_id": "AUTO-ASSESS-RLIB-3c104ed0c333",
+      "research_id": "RLIB-3c104ed0c333",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "assessment_reason": "Automated readiness check: Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-3c104ed0c333",
+        "DS-BTCUSDT-1h"
+      ],
+      "recommended_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    },
+    {
+      "assessment_id": "AUTO-ASSESS-RLIB-669a3bc52ddf",
+      "research_id": "RLIB-669a3bc52ddf",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "assessment_reason": "Automated readiness check: Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-669a3bc52ddf",
+        "DS-BTCUSDT-1h"
+      ],
+      "recommended_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    },
+    {
+      "assessment_id": "AUTO-ASSESS-RLIB-7b0cb4781b20",
+      "research_id": "RLIB-7b0cb4781b20",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "assessment_reason": "Automated readiness check: Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-7b0cb4781b20",
+        "DS-BTCUSDT-1h"
+      ],
+      "recommended_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    },
+    {
+      "assessment_id": "AUTO-ASSESS-RLIB-dbb10adc0f69",
+      "research_id": "RLIB-dbb10adc0f69",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "assessment_reason": "Automated readiness check: Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-dbb10adc0f69",
+        "DS-BTCUSDT-1h"
+      ],
+      "recommended_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    },
+    {
+      "assessment_id": "AUTO-ASSESS-RLIB-f93d9176002d",
+      "research_id": "RLIB-f93d9176002d",
+      "record_origin": "AUTOMATED_ASSESSMENT",
+      "review_classification": "AUTOMATED_ASSESSMENT",
+      "reviewer_identity": "SYSTEM_GENERATED_ASSESSMENT",
+      "authoritative": false,
+      "suggested_decision": "REQUEST_ADDITIONAL_EVIDENCE",
+      "assessment_reason": "Automated readiness check: Source artifact integrity verified; independent out-of-sample replication or inferential hypothesis evidence still pending.",
+      "supporting_evidence_ids": [
+        "RLIB-f93d9176002d",
+        "DS-BTCUSDT-1h"
+      ],
+      "recommended_review_state": "EVIDENCE_CHECK_COMPLETED",
+      "governance_effect": "NONE_NON_AUTHORITATIVE_AUTOMATED_ASSESSMENT"
+    }
+  ]
+}

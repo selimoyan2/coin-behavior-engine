@@ -1,0 +1,154 @@
+{
+  "sprint_id": "CBE_SPRINT27_FINAL_RECORD_INTEGRITY_CLOSURE",
+  "verified_at_utc": "2026-11-12T07:31:46Z",
+  "implementation_commit_sha": "6dd263fab00d6362d7196abf5112d847d84789b2",
+  "total_mandatory_negative_tests": 24,
+  "passed": 24,
+  "failed": 0,
+  "negative_test_matrix": [
+    {
+      "id": 1,
+      "test": "test_01_fabricated_historical_execution_timestamp_rejected",
+      "rejection_code": "FABRICATED_EXECUTION_TIMESTAMP_REJECTED",
+      "status": "PASSED"
+    },
+    {
+      "id": 2,
+      "test": "test_02_synthetic_output_artifact_out_art_rejected",
+      "rejection_code": "SYNTHETIC_OUTPUT_ARTIFACT_REJECTED",
+      "status": "PASSED"
+    },
+    {
+      "id": 3,
+      "test": "test_03_metadata_derived_digest_rejected_as_execution_result_digest",
+      "rejection_code": "METADATA_DERIVED_RESULT_DIGEST_REJECTED",
+      "status": "PASSED"
+    },
+    {
+      "id": 4,
+      "test": "test_04_catalog_discovery_record_cannot_be_marked_execution_completed_without_evidence",
+      "rejection_code": "UNSUPPORTED_EXECUTION_COMPLETED_REJECTED",
+      "status": "PASSED"
+    },
+    {
+      "id": 5,
+      "test": "test_05_unverified_reproduction_cannot_be_marked_outputs_matched",
+      "rejection_code": "UNSUPPORTED_OUTPUTS_MATCHED_REJECTED",
+      "status": "PASSED"
+    },
+    {
+      "id": 6,
+      "test": "test_06_synthetic_seed_record_cannot_be_promoted_to_verified_historical_execution",
+      "rejection_code": "SYNTHETIC_SEED_PROMOTION_REJECTED",
+      "status": "PASSED"
+    },
+    {
+      "id": 7,
+      "test": "test_07_automated_review_recommendation_cannot_be_stored_as_authenticated_review_decision",
+      "rejection_code": "AUTOMATED_ASSESSMENT_IMPERSONATION_REJECTED",
+      "status": "PASSED"
+    },
+    {
+      "id": 8,
+      "test": "test_08_synthetic_reviewer_identity_rejected_without_verified_authentication",
+      "rejection_code": "UNAUTHENTICATED_REVIEW_SUBMISSION_REJECTED",
+      "status": "PASSED"
+    },
+    {
+      "id": 9,
+      "test": "test_09_unauthenticated_review_submission_rejected",
+      "rejection_code": "UNAUTHENTICATED_REVIEW_SUBMISSION_REJECTED",
+      "status": "PASSED"
+    },
+    {
+      "id": 10,
+      "test": "test_10_client_supplied_is_admin_and_authorized_rejected",
+      "rejection_code": "CLIENT_AUTHORIZATION_FLAG_REJECTED",
+      "status": "PASSED"
+    },
+    {
+      "id": 11,
+      "test": "test_11_forged_review_timestamp_rejected",
+      "rejection_code": "FORGED_REVIEW_TIMESTAMP_REJECTED",
+      "status": "PASSED"
+    },
+    {
+      "id": 12,
+      "test": "test_12_review_decision_referencing_nonexistent_or_unverified_evidence_rejected",
+      "rejection_code": "UNVERIFIED_EVIDENCE_REFERENCE_REJECTED",
+      "status": "PASSED"
+    },
+    {
+      "id": 13,
+      "test": "test_13_persisted_state_with_corrupted_json_fails_closed",
+      "rejection_code": "CORRUPTED_PERSISTED_STATE",
+      "status": "PASSED"
+    },
+    {
+      "id": 14,
+      "test": "test_14_persisted_state_with_missing_required_experiment_fields_rejected",
+      "rejection_code": "MALFORMED_PERSISTED_EXPERIMENT",
+      "status": "PASSED"
+    },
+    {
+      "id": 15,
+      "test": "test_15_persisted_state_with_broken_timeline_hash_chain_rejected",
+      "rejection_code": "TIMELINE_HASH_CHAIN_BROKEN",
+      "status": "PASSED"
+    },
+    {
+      "id": 16,
+      "test": "test_16_persisted_timeline_event_referencing_missing_experiment_rejected",
+      "rejection_code": "MISSING_EXPERIMENT_REFERENCE_IN_TIMELINE",
+      "status": "PASSED"
+    },
+    {
+      "id": 17,
+      "test": "test_17_persisted_timeline_with_out_of_order_timestamps_rejected",
+      "rejection_code": "TIMELINE_OUT_OF_ORDER_TIMESTAMP",
+      "status": "PASSED"
+    },
+    {
+      "id": 18,
+      "test": "test_18_duplicate_timeline_event_ids_rejected_during_recovery",
+      "rejection_code": "DUPLICATE_TIMELINE_EVENT_ID",
+      "status": "PASSED"
+    },
+    {
+      "id": 19,
+      "test": "test_19_restart_recovery_restores_persisted_experiments_and_timeline_without_loss",
+      "rejection_code": null,
+      "status": "PASSED"
+    },
+    {
+      "id": 20,
+      "test": "test_20_restart_recovery_does_not_duplicate_seed_events",
+      "rejection_code": null,
+      "status": "PASSED"
+    },
+    {
+      "id": 21,
+      "test": "test_21_interrupted_write_leftover_tmp_file_handled_without_corrupting_registry",
+      "rejection_code": null,
+      "status": "PASSED"
+    },
+    {
+      "id": 22,
+      "test": "test_22_quarantined_october_2026_records_remain_blocked",
+      "rejection_code": "BLOCKED_QUARANTINED_OCTOBER_2026",
+      "status": "PASSED"
+    },
+    {
+      "id": 23,
+      "test": "test_23_frozen_cbe_0_7_0_and_technical_no_go_remain_unchanged",
+      "rejection_code": null,
+      "status": "PASSED"
+    },
+    {
+      "id": 24,
+      "test": "test_24_no_secret_material_exposed_in_api_responses_or_reports",
+      "rejection_code": null,
+      "status": "PASSED"
+    }
+  ]
+}

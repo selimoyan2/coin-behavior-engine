@@ -1,0 +1,14 @@
+{
+  "sprint_id": "CBE_SPRINT27_FINAL_RECORD_INTEGRITY_CLOSURE",
+  "verified_at_utc": "2026-11-12T07:31:46Z",
+  "implementation_commit_sha": "6dd263fab00d6362d7196abf5112d847d84789b2",
+  "suite_scope": "Sprint 1 through Sprint 27 (all tests/test_sprint_product_acceleration_*.py)",
+  "previous_baseline_passed": 822,
+  "collected": 851,
+  "passed": 851,
+  "failed": 0,
+  "skipped": 0,
+  "errors": 0,
+  "duration_seconds": 384.39,
+  "status": "FULL_REGRESSION_PASSED"
+}
