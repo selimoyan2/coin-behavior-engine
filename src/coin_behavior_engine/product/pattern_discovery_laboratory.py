@@ -471,7 +471,7 @@ class PatternDiscoveryLaboratory:
             discovery_status=disc_status,
             validation_status="VALIDATION_PENDING",
             provenance_status=dataset_rec.provenance_status,
-            reproducibility_status="REPEATABILITY_VERIFIED",
+            reproducibility_status="REPRODUCTION_NOT_ESTABLISHED",
             limitations=[
                 "Evaluated on historical spot data.",
                 "Statistical inference subject to stationarity assumptions.",
@@ -565,7 +565,7 @@ class PatternDiscoveryLaboratory:
             discovery_status=status,
             validation_status=val_status,
             provenance_status=dataset_rec.provenance_status,
-            reproducibility_status="REPEATABILITY_VERIFIED",
+            reproducibility_status="REPRODUCTION_NOT_ESTABLISHED",
             limitations=[
                 "Linear AR(1) specification for conditional variance.",
                 "Subject to potential regime shifts and structural breaks.",

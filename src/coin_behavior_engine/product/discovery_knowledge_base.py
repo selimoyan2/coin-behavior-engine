@@ -50,6 +50,10 @@ class DiscoveryKnowledgeRecord:
         default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
 
+    @property
+    def status(self) -> str:
+        return self.evidence_grade
+
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
 
@@ -207,3 +211,53 @@ class DiscoveryKnowledgeBase:
 
     def get_record(self, record_id: str) -> Optional[DiscoveryKnowledgeRecord]:
         return self._records.get(record_id)
+
+    def get_finding(self, discovery_id: str) -> Optional[DiscoveryKnowledgeRecord]:
+        for rec in self._records.values():
+            if rec.discovery_id == discovery_id or rec.knowledge_record_id == discovery_id:
+                return rec
+        return None
+
+    def add_finding(
+        self,
+        discovery_id: str,
+        hypothesis_id: str,
+        research_id: str,
+        finding_name: str,
+        evidence_grade: str = "PRELIMINARY_SUPPORT",
+        statistical_p_value: float = 0.01,
+        limitations: Optional[List[str]] = None,
+    ) -> DiscoveryKnowledgeRecord:
+        rec = DiscoveryKnowledgeRecord(
+            knowledge_record_id=f"KB-{discovery_id}",
+            discovery_id=discovery_id,
+            research_id=research_id,
+            hypothesis_id=hypothesis_id,
+            finding_statement=finding_name,
+            evidence_grade=evidence_grade,
+            validation_verdict="VALIDATED",
+            reproduction_verdict="REPEATABILITY_VERIFIED",
+            independence_verdict="SAME_DATASET",
+            regime_stability_verdict="STABLE",
+            contradiction_status="NO_CONTRADICTIONS",
+            limitations=limitations or [],
+            supporting_evidence_ids=[discovery_id],
+            report_artifact_ids=[],
+            record_type="VERIFIED_HISTORICAL_EVIDENCE",
+        )
+        self.record_finding(rec)
+        return rec
+
+    def invalidate_or_downgrade_finding(self, discovery_id: str, new_grade: str, reason: str = "") -> List[str]:
+        """Propagate evidence grade downgrade or invalidation across knowledge base records."""
+        affected: List[str] = []
+        clean_id = str(discovery_id or "").strip()
+        for rec in self._records.values():
+            if rec.discovery_id == clean_id or clean_id in rec.supporting_evidence_ids:
+                rec.evidence_grade = new_grade
+                if reason:
+                    rec.limitations.append(f"DOWNGRADE: {reason}")
+                affected.append(rec.knowledge_record_id)
+        if affected:
+            self.save_to_storage()
+        return affected

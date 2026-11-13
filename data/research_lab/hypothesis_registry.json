@@ -1,6 +1,6 @@
 {
   "schema_version": "CBE-HYPOTHESIS-REGISTRY-V28",
-  "saved_at": "2026-11-13T19:05:22.360176+00:00",
+  "saved_at": "2026-11-13T20:30:43.827940+00:00",
   "hypotheses": [
     {
       "hypothesis_id": "HYP-VOL-PERSIST-001",
@@ -1131,6 +1131,1596 @@
       "amendments": [],
       "created_at": "2026-11-13T19:05:22.360176+00:00",
       "updated_at": "2026-11-13T19:05:22.360176+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-38284",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-RETRO-TEST-01-38284",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T19:35:08.071720+00:00",
+      "updated_at": "2026-11-13T19:35:08.071720+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-38284",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-01-DYNAMIC-38284",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2027-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "PROSPECTIVELY_PREREGISTERED",
+      "preregistration_timestamp": "2026-11-13T19:35:08.435570+00:00",
+      "preregistration_digest": "9a1f8f9226a56a50807608afaa0cdfa6c0a3de22d5ab60275d8e224898bc5500",
+      "is_retrospective": false,
+      "retrospective_justification": null,
+      "canonical_snapshot": {
+        "hypothesis_id": "HYP-POS-01-DYNAMIC-38284",
+        "research_id": "RES-EXP-01",
+        "hypothesis_title": "Title HYP-POS-01-DYNAMIC-38284",
+        "scientific_question": "Scientific question",
+        "null_hypothesis": "H0: no effect",
+        "alternative_hypothesis": "H1: effect exists",
+        "target_metric": "volatility",
+        "dataset_eligibility_rules": {
+          "instrument": "BTCUSDT"
+        },
+        "training_period": {
+          "start": "2024-01-01T00:00:00Z",
+          "end": "2024-06-30T23:59:59Z"
+        },
+        "validation_period": {
+          "start": "2027-01-01T00:00:00Z",
+          "end": "2027-12-31T23:59:59Z"
+        },
+        "holdout_period": {
+          "start": "2028-01-01T00:00:00Z",
+          "end": "2028-06-30T23:59:59Z"
+        },
+        "statistical_test_plan": {
+          "test": "ARCH_LM"
+        },
+        "multiple_testing_family_id": "FAM-01"
+      },
+      "amendments": [],
+      "created_at": "2026-11-13T19:35:08.433086+00:00",
+      "updated_at": "2026-11-13T19:35:08.435570+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-38284",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-02-DYNAMIC-38284",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T19:35:08.452752+00:00",
+      "updated_at": "2026-11-13T19:35:08.452752+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-40304",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-RETRO-TEST-01-40304",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T19:35:37.634287+00:00",
+      "updated_at": "2026-11-13T19:35:37.634287+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-40304",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-01-DYNAMIC-40304",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2027-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "PROSPECTIVELY_PREREGISTERED",
+      "preregistration_timestamp": "2026-11-13T19:35:38.012629+00:00",
+      "preregistration_digest": "b57204005fb3d72ef289c4735ff88ce9c6444a21e6296157626d9be4edfb3dd0",
+      "is_retrospective": false,
+      "retrospective_justification": null,
+      "canonical_snapshot": {
+        "hypothesis_id": "HYP-POS-01-DYNAMIC-40304",
+        "research_id": "RES-EXP-01",
+        "hypothesis_title": "Title HYP-POS-01-DYNAMIC-40304",
+        "scientific_question": "Scientific question",
+        "null_hypothesis": "H0: no effect",
+        "alternative_hypothesis": "H1: effect exists",
+        "target_metric": "volatility",
+        "dataset_eligibility_rules": {
+          "instrument": "BTCUSDT"
+        },
+        "training_period": {
+          "start": "2024-01-01T00:00:00Z",
+          "end": "2024-06-30T23:59:59Z"
+        },
+        "validation_period": {
+          "start": "2027-01-01T00:00:00Z",
+          "end": "2027-12-31T23:59:59Z"
+        },
+        "holdout_period": {
+          "start": "2028-01-01T00:00:00Z",
+          "end": "2028-06-30T23:59:59Z"
+        },
+        "statistical_test_plan": {
+          "test": "ARCH_LM"
+        },
+        "multiple_testing_family_id": "FAM-01"
+      },
+      "amendments": [],
+      "created_at": "2026-11-13T19:35:38.010061+00:00",
+      "updated_at": "2026-11-13T19:35:38.012629+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-40304",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-02-DYNAMIC-40304",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T19:35:38.033939+00:00",
+      "updated_at": "2026-11-13T19:35:38.033939+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-38864",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-RETRO-TEST-01-38864",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T19:40:39.172659+00:00",
+      "updated_at": "2026-11-13T19:40:39.172659+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-38864",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-01-DYNAMIC-38864",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2027-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "PROSPECTIVELY_PREREGISTERED",
+      "preregistration_timestamp": "2026-11-13T19:40:39.740868+00:00",
+      "preregistration_digest": "e79eb24dd043524443838147ddaf62f73cc7f3a9ddab62a695468333022a99fb",
+      "is_retrospective": false,
+      "retrospective_justification": null,
+      "canonical_snapshot": {
+        "hypothesis_id": "HYP-POS-01-DYNAMIC-38864",
+        "research_id": "RES-EXP-01",
+        "hypothesis_title": "Title HYP-POS-01-DYNAMIC-38864",
+        "scientific_question": "Scientific question",
+        "null_hypothesis": "H0: no effect",
+        "alternative_hypothesis": "H1: effect exists",
+        "target_metric": "volatility",
+        "dataset_eligibility_rules": {
+          "instrument": "BTCUSDT"
+        },
+        "training_period": {
+          "start": "2024-01-01T00:00:00Z",
+          "end": "2024-06-30T23:59:59Z"
+        },
+        "validation_period": {
+          "start": "2027-01-01T00:00:00Z",
+          "end": "2027-12-31T23:59:59Z"
+        },
+        "holdout_period": {
+          "start": "2028-01-01T00:00:00Z",
+          "end": "2028-06-30T23:59:59Z"
+        },
+        "statistical_test_plan": {
+          "test": "ARCH_LM"
+        },
+        "multiple_testing_family_id": "FAM-01"
+      },
+      "amendments": [],
+      "created_at": "2026-11-13T19:40:39.737926+00:00",
+      "updated_at": "2026-11-13T19:40:39.740868+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-38864",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-02-DYNAMIC-38864",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T19:40:39.766369+00:00",
+      "updated_at": "2026-11-13T19:40:39.766369+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-5464",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-RETRO-TEST-01-5464",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T19:44:32.418885+00:00",
+      "updated_at": "2026-11-13T19:44:32.418885+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-5464",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-01-DYNAMIC-5464",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2027-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "PROSPECTIVELY_PREREGISTERED",
+      "preregistration_timestamp": "2026-11-13T19:44:32.919578+00:00",
+      "preregistration_digest": "8051009e26ab9df3a1f9e4b63a5aeaadc1ee42aaace33c66affa49614c6d2a5a",
+      "is_retrospective": false,
+      "retrospective_justification": null,
+      "canonical_snapshot": {
+        "hypothesis_id": "HYP-POS-01-DYNAMIC-5464",
+        "research_id": "RES-EXP-01",
+        "hypothesis_title": "Title HYP-POS-01-DYNAMIC-5464",
+        "scientific_question": "Scientific question",
+        "null_hypothesis": "H0: no effect",
+        "alternative_hypothesis": "H1: effect exists",
+        "target_metric": "volatility",
+        "dataset_eligibility_rules": {
+          "instrument": "BTCUSDT"
+        },
+        "training_period": {
+          "start": "2024-01-01T00:00:00Z",
+          "end": "2024-06-30T23:59:59Z"
+        },
+        "validation_period": {
+          "start": "2027-01-01T00:00:00Z",
+          "end": "2027-12-31T23:59:59Z"
+        },
+        "holdout_period": {
+          "start": "2028-01-01T00:00:00Z",
+          "end": "2028-06-30T23:59:59Z"
+        },
+        "statistical_test_plan": {
+          "test": "ARCH_LM"
+        },
+        "multiple_testing_family_id": "FAM-01"
+      },
+      "amendments": [],
+      "created_at": "2026-11-13T19:44:32.916259+00:00",
+      "updated_at": "2026-11-13T19:44:32.919578+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-5464",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-02-DYNAMIC-5464",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T19:44:32.941021+00:00",
+      "updated_at": "2026-11-13T19:44:32.941021+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-2512",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-RETRO-TEST-01-2512",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T19:45:34.577214+00:00",
+      "updated_at": "2026-11-13T19:45:34.577214+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-2512",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-01-DYNAMIC-2512",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2027-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "PROSPECTIVELY_PREREGISTERED",
+      "preregistration_timestamp": "2026-11-13T19:45:35.046482+00:00",
+      "preregistration_digest": "0534eb6007d8a91242befa5d2007cabc61d8d23aa4af4c84ba430f1fa42cda7c",
+      "is_retrospective": false,
+      "retrospective_justification": null,
+      "canonical_snapshot": {
+        "hypothesis_id": "HYP-POS-01-DYNAMIC-2512",
+        "research_id": "RES-EXP-01",
+        "hypothesis_title": "Title HYP-POS-01-DYNAMIC-2512",
+        "scientific_question": "Scientific question",
+        "null_hypothesis": "H0: no effect",
+        "alternative_hypothesis": "H1: effect exists",
+        "target_metric": "volatility",
+        "dataset_eligibility_rules": {
+          "instrument": "BTCUSDT"
+        },
+        "training_period": {
+          "start": "2024-01-01T00:00:00Z",
+          "end": "2024-06-30T23:59:59Z"
+        },
+        "validation_period": {
+          "start": "2027-01-01T00:00:00Z",
+          "end": "2027-12-31T23:59:59Z"
+        },
+        "holdout_period": {
+          "start": "2028-01-01T00:00:00Z",
+          "end": "2028-06-30T23:59:59Z"
+        },
+        "statistical_test_plan": {
+          "test": "ARCH_LM"
+        },
+        "multiple_testing_family_id": "FAM-01"
+      },
+      "amendments": [],
+      "created_at": "2026-11-13T19:45:35.043154+00:00",
+      "updated_at": "2026-11-13T19:45:35.046482+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-2512",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-02-DYNAMIC-2512",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T19:45:35.071375+00:00",
+      "updated_at": "2026-11-13T19:45:35.071375+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-40616",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-RETRO-TEST-01-40616",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T19:52:51.085850+00:00",
+      "updated_at": "2026-11-13T19:52:51.085850+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-40616",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-01-DYNAMIC-40616",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2027-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "PROSPECTIVELY_PREREGISTERED",
+      "preregistration_timestamp": "2026-11-13T19:52:51.781867+00:00",
+      "preregistration_digest": "ea9244ccaacea4875f7ccc71014f8e995e552d3fe5eaa84d85a4e4349cd7eaf6",
+      "is_retrospective": false,
+      "retrospective_justification": null,
+      "canonical_snapshot": {
+        "hypothesis_id": "HYP-POS-01-DYNAMIC-40616",
+        "research_id": "RES-EXP-01",
+        "hypothesis_title": "Title HYP-POS-01-DYNAMIC-40616",
+        "scientific_question": "Scientific question",
+        "null_hypothesis": "H0: no effect",
+        "alternative_hypothesis": "H1: effect exists",
+        "target_metric": "volatility",
+        "dataset_eligibility_rules": {
+          "instrument": "BTCUSDT"
+        },
+        "training_period": {
+          "start": "2024-01-01T00:00:00Z",
+          "end": "2024-06-30T23:59:59Z"
+        },
+        "validation_period": {
+          "start": "2027-01-01T00:00:00Z",
+          "end": "2027-12-31T23:59:59Z"
+        },
+        "holdout_period": {
+          "start": "2028-01-01T00:00:00Z",
+          "end": "2028-06-30T23:59:59Z"
+        },
+        "statistical_test_plan": {
+          "test": "ARCH_LM"
+        },
+        "multiple_testing_family_id": "FAM-01"
+      },
+      "amendments": [],
+      "created_at": "2026-11-13T19:52:51.756170+00:00",
+      "updated_at": "2026-11-13T19:52:51.781867+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-40616",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-02-DYNAMIC-40616",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T19:52:51.851437+00:00",
+      "updated_at": "2026-11-13T19:52:51.851437+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-38156",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-RETRO-TEST-01-38156",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T19:53:19.118413+00:00",
+      "updated_at": "2026-11-13T19:53:19.118413+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-38156",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-01-DYNAMIC-38156",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2027-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "PROSPECTIVELY_PREREGISTERED",
+      "preregistration_timestamp": "2026-11-13T19:53:19.447643+00:00",
+      "preregistration_digest": "2ae2f7825955698c9e75a4705e632ac2afdb76efd46349d26ff29c490cf2dff2",
+      "is_retrospective": false,
+      "retrospective_justification": null,
+      "canonical_snapshot": {
+        "hypothesis_id": "HYP-POS-01-DYNAMIC-38156",
+        "research_id": "RES-EXP-01",
+        "hypothesis_title": "Title HYP-POS-01-DYNAMIC-38156",
+        "scientific_question": "Scientific question",
+        "null_hypothesis": "H0: no effect",
+        "alternative_hypothesis": "H1: effect exists",
+        "target_metric": "volatility",
+        "dataset_eligibility_rules": {
+          "instrument": "BTCUSDT"
+        },
+        "training_period": {
+          "start": "2024-01-01T00:00:00Z",
+          "end": "2024-06-30T23:59:59Z"
+        },
+        "validation_period": {
+          "start": "2027-01-01T00:00:00Z",
+          "end": "2027-12-31T23:59:59Z"
+        },
+        "holdout_period": {
+          "start": "2028-01-01T00:00:00Z",
+          "end": "2028-06-30T23:59:59Z"
+        },
+        "statistical_test_plan": {
+          "test": "ARCH_LM"
+        },
+        "multiple_testing_family_id": "FAM-01"
+      },
+      "amendments": [],
+      "created_at": "2026-11-13T19:53:19.441342+00:00",
+      "updated_at": "2026-11-13T19:53:19.447643+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-38156",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-02-DYNAMIC-38156",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T19:53:19.475244+00:00",
+      "updated_at": "2026-11-13T19:53:19.475244+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-40760",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-RETRO-TEST-01-40760",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T20:10:51.234794+00:00",
+      "updated_at": "2026-11-13T20:10:51.234794+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-40760",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-01-DYNAMIC-40760",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2027-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "PROSPECTIVELY_PREREGISTERED",
+      "preregistration_timestamp": "2026-11-13T20:10:52.064255+00:00",
+      "preregistration_digest": "54eb85e42084229a7e56ada9443830df4afe9bd8d19fe727a76d6a5e35b2bfb4",
+      "is_retrospective": false,
+      "retrospective_justification": null,
+      "canonical_snapshot": {
+        "hypothesis_id": "HYP-POS-01-DYNAMIC-40760",
+        "research_id": "RES-EXP-01",
+        "hypothesis_title": "Title HYP-POS-01-DYNAMIC-40760",
+        "scientific_question": "Scientific question",
+        "null_hypothesis": "H0: no effect",
+        "alternative_hypothesis": "H1: effect exists",
+        "target_metric": "volatility",
+        "dataset_eligibility_rules": {
+          "instrument": "BTCUSDT"
+        },
+        "training_period": {
+          "start": "2024-01-01T00:00:00Z",
+          "end": "2024-06-30T23:59:59Z"
+        },
+        "validation_period": {
+          "start": "2027-01-01T00:00:00Z",
+          "end": "2027-12-31T23:59:59Z"
+        },
+        "holdout_period": {
+          "start": "2028-01-01T00:00:00Z",
+          "end": "2028-06-30T23:59:59Z"
+        },
+        "statistical_test_plan": {
+          "test": "ARCH_LM"
+        },
+        "multiple_testing_family_id": "FAM-01"
+      },
+      "amendments": [],
+      "created_at": "2026-11-13T20:10:52.042829+00:00",
+      "updated_at": "2026-11-13T20:10:52.064255+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-40760",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-02-DYNAMIC-40760",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T20:10:52.104171+00:00",
+      "updated_at": "2026-11-13T20:10:52.104171+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-35936",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-RETRO-TEST-01-35936",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T20:28:25.461273+00:00",
+      "updated_at": "2026-11-13T20:28:25.461273+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-35936",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-01-DYNAMIC-35936",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2027-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "PROSPECTIVELY_PREREGISTERED",
+      "preregistration_timestamp": "2026-11-13T20:28:26.519428+00:00",
+      "preregistration_digest": "a454c54fa5a5d049b75ce3c707154ab8c742925bc70c0c1145cb44d0e152bfe0",
+      "is_retrospective": false,
+      "retrospective_justification": null,
+      "canonical_snapshot": {
+        "hypothesis_id": "HYP-POS-01-DYNAMIC-35936",
+        "research_id": "RES-EXP-01",
+        "hypothesis_title": "Title HYP-POS-01-DYNAMIC-35936",
+        "scientific_question": "Scientific question",
+        "null_hypothesis": "H0: no effect",
+        "alternative_hypothesis": "H1: effect exists",
+        "target_metric": "volatility",
+        "dataset_eligibility_rules": {
+          "instrument": "BTCUSDT"
+        },
+        "training_period": {
+          "start": "2024-01-01T00:00:00Z",
+          "end": "2024-06-30T23:59:59Z"
+        },
+        "validation_period": {
+          "start": "2027-01-01T00:00:00Z",
+          "end": "2027-12-31T23:59:59Z"
+        },
+        "holdout_period": {
+          "start": "2028-01-01T00:00:00Z",
+          "end": "2028-06-30T23:59:59Z"
+        },
+        "statistical_test_plan": {
+          "test": "ARCH_LM"
+        },
+        "multiple_testing_family_id": "FAM-01"
+      },
+      "amendments": [],
+      "created_at": "2026-11-13T20:28:26.494426+00:00",
+      "updated_at": "2026-11-13T20:28:26.519428+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-35936",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-02-DYNAMIC-35936",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T20:28:26.590887+00:00",
+      "updated_at": "2026-11-13T20:28:26.590887+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-42168",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-RETRO-TEST-01-42168",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T20:30:42.824751+00:00",
+      "updated_at": "2026-11-13T20:30:42.824751+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-42168",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-01-DYNAMIC-42168",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2027-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "PROSPECTIVELY_PREREGISTERED",
+      "preregistration_timestamp": "2026-11-13T20:30:43.778139+00:00",
+      "preregistration_digest": "5b8ddc7ac62c92a70685028c77d6b7a2e86b284e1a68a007766556ac77184457",
+      "is_retrospective": false,
+      "retrospective_justification": null,
+      "canonical_snapshot": {
+        "hypothesis_id": "HYP-POS-01-DYNAMIC-42168",
+        "research_id": "RES-EXP-01",
+        "hypothesis_title": "Title HYP-POS-01-DYNAMIC-42168",
+        "scientific_question": "Scientific question",
+        "null_hypothesis": "H0: no effect",
+        "alternative_hypothesis": "H1: effect exists",
+        "target_metric": "volatility",
+        "dataset_eligibility_rules": {
+          "instrument": "BTCUSDT"
+        },
+        "training_period": {
+          "start": "2024-01-01T00:00:00Z",
+          "end": "2024-06-30T23:59:59Z"
+        },
+        "validation_period": {
+          "start": "2027-01-01T00:00:00Z",
+          "end": "2027-12-31T23:59:59Z"
+        },
+        "holdout_period": {
+          "start": "2028-01-01T00:00:00Z",
+          "end": "2028-06-30T23:59:59Z"
+        },
+        "statistical_test_plan": {
+          "test": "ARCH_LM"
+        },
+        "multiple_testing_family_id": "FAM-01"
+      },
+      "amendments": [],
+      "created_at": "2026-11-13T20:30:43.758597+00:00",
+      "updated_at": "2026-11-13T20:30:43.778139+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-42168",
+      "research_id": "RES-EXP-01",
+      "hypothesis_title": "Title HYP-POS-02-DYNAMIC-42168",
+      "scientific_question": "Scientific question",
+      "null_hypothesis": "H0: no effect",
+      "alternative_hypothesis": "H1: effect exists",
+      "target_population": "BTC/USDT",
+      "target_metric": "volatility",
+      "effect_definition": "Engle ARCH LM",
+      "expected_effect_direction": "POSITIVE",
+      "dataset_eligibility_rules": {
+        "instrument": "BTCUSDT"
+      },
+      "training_period": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-06-30T23:59:59Z"
+      },
+      "validation_period": {
+        "start": "2023-01-01T00:00:00Z",
+        "end": "2027-12-31T23:59:59Z"
+      },
+      "holdout_period": {
+        "start": "2028-01-01T00:00:00Z",
+        "end": "2028-06-30T23:59:59Z"
+      },
+      "statistical_test_plan": {
+        "test": "ARCH_LM"
+      },
+      "multiple_testing_family_id": "FAM-01",
+      "minimum_sample_requirements": {
+        "obs": 100
+      },
+      "missing_data_policy": "FAIL_CLOSED_ON_GAPS",
+      "preregistration_status": "EXPLORATORY",
+      "preregistration_timestamp": null,
+      "preregistration_digest": null,
+      "is_retrospective": true,
+      "retrospective_justification": null,
+      "canonical_snapshot": null,
+      "amendments": [],
+      "created_at": "2026-11-13T20:30:43.827940+00:00",
+      "updated_at": "2026-11-13T20:30:43.827940+00:00"
     }
   ]
 }

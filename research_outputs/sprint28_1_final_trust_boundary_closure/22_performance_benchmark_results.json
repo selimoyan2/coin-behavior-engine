@@ -1,0 +1,119 @@
+{
+  "benchmark_suite": "SPRINT_28_1_TRUST_BOUNDARY_CLOSURE_BENCHMARKS",
+  "timestamp_utc": "2026-11-13T20:30:18.162764+00:00",
+  "all_passed": true,
+  "benchmarks": [
+    {
+      "operation": "Trusted dataset provenance resolution",
+      "target_p95_ms": 50.0,
+      "measured_p50_ms": 0.055,
+      "measured_p95_ms": 0.229,
+      "sample_count": 20,
+      "passed": true
+    },
+    {
+      "operation": "Reproduction artifact authenticity resolution (cached)",
+      "target_p95_ms": 50.0,
+      "measured_p50_ms": 1.391,
+      "measured_p95_ms": 2.635,
+      "sample_count": 20,
+      "passed": true
+    },
+    {
+      "operation": "Reproduction artifact numerical comparison",
+      "target_p95_ms": 50.0,
+      "measured_p50_ms": 4.247,
+      "measured_p95_ms": 5.989,
+      "sample_count": 20,
+      "passed": true
+    },
+    {
+      "operation": "Evidence grade recomputation & capping",
+      "target_p95_ms": 50.0,
+      "measured_p50_ms": 0.007,
+      "measured_p95_ms": 0.014,
+      "sample_count": 20,
+      "passed": true
+    },
+    {
+      "operation": "Dataset inventory query",
+      "target_p95_ms": 150.0,
+      "measured_p50_ms": 0.0,
+      "measured_p95_ms": 0.001,
+      "sample_count": 20,
+      "passed": true
+    },
+    {
+      "operation": "Hypothesis preregistration query",
+      "target_p95_ms": 150.0,
+      "measured_p50_ms": 0.001,
+      "measured_p95_ms": 0.001,
+      "sample_count": 20,
+      "passed": true
+    },
+    {
+      "operation": "Pattern discovery laboratory analysis",
+      "target_p95_ms": 300.0,
+      "measured_p50_ms": 30.082,
+      "measured_p95_ms": 41.566,
+      "sample_count": 20,
+      "passed": true
+    },
+    {
+      "operation": "Temporal partition & leakage validation",
+      "target_p95_ms": 200.0,
+      "measured_p50_ms": 0.0,
+      "measured_p95_ms": 0.002,
+      "sample_count": 20,
+      "passed": true
+    },
+    {
+      "operation": "Reproducibility Lab V2 records query",
+      "target_p95_ms": 150.0,
+      "measured_p50_ms": 0.0,
+      "measured_p95_ms": 0.001,
+      "sample_count": 20,
+      "passed": true
+    },
+    {
+      "operation": "Multiple testing control (Benjamini-Hochberg)",
+      "target_p95_ms": 150.0,
+      "measured_p50_ms": 0.009,
+      "measured_p95_ms": 0.019,
+      "sample_count": 20,
+      "passed": true
+    },
+    {
+      "operation": "Regime stability assessment",
+      "target_p95_ms": 250.0,
+      "measured_p50_ms": 0.0,
+      "measured_p95_ms": 0.001,
+      "sample_count": 20,
+      "passed": true
+    },
+    {
+      "operation": "Evidence grading calculation",
+      "target_p95_ms": 150.0,
+      "measured_p50_ms": 0.0,
+      "measured_p95_ms": 0.001,
+      "sample_count": 20,
+      "passed": true
+    },
+    {
+      "operation": "Discovery knowledge base search",
+      "target_p95_ms": 150.0,
+      "measured_p50_ms": 0.003,
+      "measured_p95_ms": 0.006,
+      "sample_count": 20,
+      "passed": true
+    },
+    {
+      "operation": "Scientific report builder V6 generation",
+      "target_p95_ms": 400.0,
+      "measured_p50_ms": 0.041,
+      "measured_p95_ms": 0.195,
+      "sample_count": 20,
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "execution_id": "REP-IND-DATA-003",
+  "dataset_id": "DS-BTC-15M-Q3-2024",
+  "methodology_id": "METH-KS-DIST-SHIFT-01",
+  "ks_statistic": 0.076,
+  "raw_p_value": 0.0048,
+  "effect_replication": 0.076
+}

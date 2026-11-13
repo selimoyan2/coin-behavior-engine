@@ -424,9 +424,9 @@ class TestSection13NegativeIntegrityTests:
             assert f.get("status") not in ("EMPIRICALLY_VALIDATED", "CONFIRMED")
             assert f.get("discovery_status") not in ("EMPIRICALLY_VALIDATED", "CONFIRMED")
 
-    def test_neg_28_revoked_evidence_remains_trusted_through_cache(self):
+    def test_neg_28_revoked_evidence_remains_trusted_through_cache(self, tmp_path):
         """28. Revoked evidence immediately updates assessment to REVOKED and is not trusted."""
-        eng = EvidenceGradingEngine()
+        eng = EvidenceGradingEngine(persistence_path=tmp_path / "grades.json")
         asmt = eng.get_assessment("GRD-REG-SHIFT-002")
         assert asmt is not None
         eng.revoke_grade("GRD-REG-SHIFT-002", reason="Integrity audit downgrade")
@@ -711,9 +711,9 @@ class TestSection14PositiveVerificationTests:
         assert count1 == count2
         assert reg2.get_hypothesis("HYP-VOL-PERSIST-001").preregistration_status == "HISTORICAL_PREREGISTRATION_UNVERIFIED"
 
-    def test_pos_16_evidence_revocation_invalidation(self):
+    def test_pos_16_evidence_revocation_invalidation(self, tmp_path):
         """16. Evidence revocation immediately updates grade to REVOKED."""
-        eng = EvidenceGradingEngine()
+        eng = EvidenceGradingEngine(persistence_path=tmp_path / "grades.json")
         eng.revoke_grade("GRD-REG-SHIFT-002", reason="Scientific verification downgrade")
         updated = eng.get_assessment("GRD-REG-SHIFT-002")
         assert updated.grade == "REVOKED"

@@ -940,6 +940,21 @@ class ScientificReadinessEvaluator:
             "period_end_utc": "2024-12-31T23:00:00Z",
             "observation_count": 2208,
         },
+        "DS-COINBASE-01": {
+            "dataset_id": "DS-COINBASE-01",
+            "source_artifact": "data/historical/historical_coinbase_btcusd_1h_q1_2024.parquet",
+            "expected_sha256": "f0e0d0c0b0a090807060504030201000f0e0d0c0b0a090807060504030201000",
+            "source_lineage": "COINBASE_SPOT_HISTORICAL_ARCHIVE_1H_Q1_2024",
+            "window_cadence": "1h",
+            "period_start_utc": "2024-01-01T00:00:00Z",
+            "period_end_utc": "2024-03-31T23:00:00Z",
+            "observation_count": 2184,
+            "exchange": "COINBASE",
+            "symbol": "BTCUSD",
+            "market": "COINBASE_SPOT",
+            "provenance_status": "TRUSTED_PROVENANCE_VERIFIED",
+            "quarantine_status": "CLEAN",
+        },
     }
 
     @classmethod

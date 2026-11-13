@@ -1,0 +1,69 @@
+{
+  "test_suite": "TestSection35DatasetIndependenceNegative",
+  "timestamp_utc": "2026-11-13T20:31:41.372211+00:00",
+  "total_negative_tests": 12,
+  "passed_tests": 12,
+  "failed_tests": 0,
+  "tests": [
+    {
+      "id": "test_neg_01",
+      "name": "caller_supplied_lineage_verified_flag_rejected",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_02",
+      "name": "caller_supplied_zero_overlap_flag_rejected",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_03",
+      "name": "differing_ids_same_source_exchange",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_04",
+      "name": "differing_hashes_shared_observations",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_05",
+      "name": "nonoverlapping_quarterly_binance_not_independent",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_06",
+      "name": "transformed_copy_detected_as_shared_lineage",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_07",
+      "name": "source_lineage_missing",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_08",
+      "name": "dataset_quarantined",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_09",
+      "name": "source_record_revoked",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_10",
+      "name": "fingerprint_mismatch",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_11",
+      "name": "unknown_dataset_id",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_12",
+      "name": "forged_independent_source_metadata",
+      "verdict": "PASSED"
+    }
+  ]
+}

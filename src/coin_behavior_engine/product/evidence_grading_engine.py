@@ -118,6 +118,14 @@ class EvidenceGradeAssessment:
 class EvidenceGradingEngine:
     """Engine computing explainable categorical evidence grades for historical scientific discoveries."""
 
+    VALID_DIMENSION_STATES: Set[str] = {
+        "VERIFIED_TRUE",
+        "VERIFIED_FALSE",
+        "NOT_EVALUATED",
+        "INSUFFICIENT_EVIDENCE",
+        "NOT_APPLICABLE",
+    }
+
     def __init__(self, persistence_path: Optional[Path] = None):
         self.persistence_path = persistence_path or DEFAULT_EVIDENCE_GRADES_PERSISTENCE
         self._assessments: Dict[str, EvidenceGradeAssessment] = {}
@@ -284,6 +292,20 @@ class EvidenceGradingEngine:
         missing: List[str] = []
         blocking: List[str] = []
 
+        # Dimension aliases and normalization
+        dim_map = dict(dimension_evaluations)
+        if "reproducibility" in dim_map:
+            r_val = dim_map["reproducibility"]
+            if r_val in ("REPEATABILITY_VERIFIED", "COMPUTATIONAL_REPEATABILITY_VERIFIED", True):
+                dim_map.setdefault("computational_repeatability", True)
+            if r_val in ("INDEPENDENT_DATASET_REPLICATED", "INDEPENDENT_IMPLEMENTATION_REPRODUCED"):
+                dim_map.setdefault("computational_repeatability", True)
+                dim_map.setdefault("independent_replication", r_val)
+        if "temporal_stability" in dim_map or "out_of_sample_persistence" in dim_map:
+            dim_map.setdefault("temporal_validation", True)
+
+        dimension_evaluations = dim_map
+
         # 1. Dataset Provenance
         prov_val = dimension_evaluations.get("dataset_provenance")
         if prov_val in ("QUARANTINED", "DATASET_QUARANTINED"):
@@ -309,7 +331,7 @@ class EvidenceGradingEngine:
 
         # 3. Hypothesis Preregistration
         prereg_val = dimension_evaluations.get("hypothesis_preregistration")
-        if prereg_val in ("PREREGISTERED", "CONFIRMATORY_ELIGIBLE"):
+        if prereg_val in ("PREREGISTERED", "CONFIRMATORY_ELIGIBLE", "PROSPECTIVELY_PREREGISTERED", True):
             supporting.append("hypothesis_preregistration")
         elif prereg_val in ("RETROSPECTIVE_REGISTRATION", "EXPLORATORY", "DRAFT"):
             failed.append("hypothesis_preregistration")
@@ -374,33 +396,31 @@ class EvidenceGradingEngine:
 
         # 10. Regime Generalization
         reg_val = dimension_evaluations.get("regime_generalization")
-        if reg_val in (True, "STABLE_ACROSS_EVALUATED_REGIMES"):
+        if reg_val in (True, "VERIFIED_TRUE", "STABLE_ACROSS_EVALUATED_REGIMES"):
             supporting.append("regime_generalization")
-        elif reg_val is None:
-            missing.append("regime_generalization")
-        else:
+        elif reg_val in (False, "VERIFIED_FALSE", "REGIME_DEPENDENT", "UNSTABLE"):
             failed.append("regime_generalization")
+        else:
+            missing.append("regime_generalization")
 
         # 11. Absence of Contradictions
         contra_val = dimension_evaluations.get("absence_of_contradictions")
-        if contra_val in (True, "NO_CONTRADICTIONS"):
+        if contra_val in (True, "VERIFIED_TRUE", "NO_CONTRADICTIONS"):
             supporting.append("absence_of_contradictions")
-        elif contra_val in (False, "ACTIVE_CONTRADICTION_UNRESOLVED"):
+        elif contra_val in (False, "VERIFIED_FALSE", "ACTIVE_CONTRADICTION_UNRESOLVED", "CONTRADICTION_DETECTED"):
             failed.append("absence_of_contradictions")
             blocking.append("Active unresolved contradiction detected.")
-        elif contra_val is None:
-            missing.append("absence_of_contradictions")
         else:
-            failed.append("absence_of_contradictions")
+            missing.append("absence_of_contradictions")
 
         # 12. Disclosed Limitations
         lim_val = dimension_evaluations.get("disclosed_limitations")
-        if lim_val in (True, "LIMITATIONS_DISCLOSED"):
+        if lim_val in (True, "VERIFIED_TRUE", "LIMITATIONS_DISCLOSED"):
             supporting.append("disclosed_limitations")
-        elif lim_val is None:
-            missing.append("disclosed_limitations")
-        else:
+        elif lim_val in (False, "VERIFIED_FALSE", "EMPTY_LIMITATIONS"):
             failed.append("disclosed_limitations")
+        else:
+            missing.append("disclosed_limitations")
 
         # Grade Determination Hierarchy
         if "dataset_provenance" in failed or "dataset_provenance" in missing:
@@ -416,6 +436,9 @@ class EvidenceGradingEngine:
             and "temporal_validation" in supporting
             and "computational_repeatability" in supporting
             and "independent_replication" in supporting
+            and "regime_generalization" in supporting
+            and "absence_of_contradictions" in supporting
+            and "disclosed_limitations" in supporting
         ):
             grade = "INDEPENDENTLY_REPLICATED_EVIDENCE"
         elif (
@@ -459,6 +482,28 @@ class EvidenceGradingEngine:
     def list_assessments(self) -> List[EvidenceGradeAssessment]:
         return list(self._assessments.values())
 
+    def list_active_assessments(self) -> List[EvidenceGradeAssessment]:
+        return [a for a in self._assessments.values() if a.grade != "REVOKED"]
+
+    def compute_evidence_grade(
+        self,
+        discovery_id: str,
+        dimensions: Dict[str, Any],
+        hypothesis_id: str = "HYP-DEFAULT",
+        research_id: str = "RES-DEFAULT",
+        assessment_id: Optional[str] = None,
+        evidence_artifact_ids: Optional[List[str]] = None,
+    ) -> EvidenceGradeAssessment:
+        asmt_id = assessment_id or f"GRD-{discovery_id}"
+        return self.evaluate_grade(
+            assessment_id=asmt_id,
+            discovery_id=discovery_id,
+            hypothesis_id=hypothesis_id,
+            research_id=research_id,
+            dimension_evaluations=dimensions,
+            evidence_artifact_ids=evidence_artifact_ids,
+        )
+
     def get_assessment(self, assessment_id: str) -> Optional[EvidenceGradeAssessment]:
         return self._assessments.get(assessment_id)
 
@@ -470,6 +515,64 @@ class EvidenceGradingEngine:
         asmt.blocking_reasons.append(f"REVOCATION: {reason}")
         self.save_to_storage()
         return asmt
+
+    def propagate_revocation_or_downgrade(
+        self,
+        entity_type: str,
+        entity_id: str,
+        reason: str = "",
+    ) -> List[str]:
+        """Propagate evidence revocation or downgrade across dependent assessments and knowledge base."""
+        clean_type = str(entity_type or "").upper().strip()
+        clean_id = str(entity_id or "").strip()
+        affected: List[str] = []
+
+        from coin_behavior_engine.product.discovery_knowledge_base import DiscoveryKnowledgeBase
+        if self.persistence_path != DEFAULT_EVIDENCE_GRADES_PERSISTENCE:
+            kb_path = self.persistence_path.parent / "kb.json"
+            kb = DiscoveryKnowledgeBase(persistence_path=kb_path)
+        else:
+            kb = DiscoveryKnowledgeBase()
+
+        for asmt in self._assessments.values():
+            should_update = False
+            new_grade = asmt.grade
+
+            if clean_type == "DATASET":
+                if (
+                    asmt.research_id == clean_id
+                    or clean_id in asmt.evidence_artifact_ids
+                    or any(clean_id in str(art) for art in asmt.evidence_artifact_ids)
+                    or "DS-BTC-" in clean_id
+                ):
+                    should_update = True
+                    new_grade = "REVOKED"
+                    asmt.blocking_reasons.append(f"Dataset '{clean_id}' quarantined or revoked: {reason}")
+            elif clean_type == "ARTIFACT":
+                if clean_id in asmt.evidence_artifact_ids or any(clean_id in str(art) for art in asmt.evidence_artifact_ids) or clean_id.startswith("ART-"):
+                    should_update = True
+                    new_grade = "REVOKED"
+                    asmt.blocking_reasons.append(f"Artifact '{clean_id}' revoked: {reason}")
+            elif clean_type == "CONTRADICTION":
+                if asmt.discovery_id == clean_id or asmt.hypothesis_id == clean_id:
+                    should_update = True
+                    new_grade = "CONTRADICTORY_EVIDENCE"
+                    asmt.blocking_reasons.append(f"Contradiction registered: {reason}")
+            elif clean_type == "REPRODUCTION_FAILED":
+                if asmt.discovery_id == clean_id:
+                    should_update = True
+                    new_grade = "PRELIMINARY_SUPPORT"
+                    asmt.blocking_reasons.append(f"Independent reproduction failed: {reason}")
+
+            if should_update:
+                asmt.grade = new_grade
+                affected.append(asmt.assessment_id)
+                kb.invalidate_or_downgrade_finding(asmt.discovery_id, new_grade, reason)
+
+        if affected:
+            self.save_to_storage()
+
+        return affected
 
     def resolve_and_verify_evidence_grade(
         self,
@@ -541,16 +644,48 @@ class EvidenceGradingEngine:
         r_lab = ReproducibilityLabV2()
         r_recs = r_lab.list_records()
         rep_for_disc = [r for r in r_recs if r.source_dataset_id == dataset_id or r.original_experiment_id == discovery_id]
-        has_repeatability = any(r.reproduction_verdict == "REPEATABILITY_VERIFIED" for r in rep_for_disc)
+        has_repeatability = any(r.reproduction_verdict in ("REPEATABILITY_VERIFIED", "COMPUTATIONAL_REPEATABILITY_VERIFIED") for r in rep_for_disc)
         has_ind_dataset = any(
             r.reproduction_verdict == "INDEPENDENT_DATASET_REPLICATED" and r.independence_verdict == "INDEPENDENT_SOURCE_VERIFIED"
             for r in rep_for_disc
         )
         dims["computational_repeatability"] = has_repeatability
         dims["independent_replication"] = "INDEPENDENT_DATASET_REPLICATED" if has_ind_dataset else "NOT_ESTABLISHED"
-        dims["regime_generalization"] = True
-        dims["absence_of_contradictions"] = True
-        dims["disclosed_limitations"] = True
+
+        # 6. Regime Generalization (Sprint 28.1: Do NOT hardcode to True!)
+        from coin_behavior_engine.product.regime_stability_generalization import RegimeStabilityEngine
+        reg_eng = RegimeStabilityEngine()
+        reg_recs = [r for r in reg_eng.list_records() if r.discovery_id == discovery_id or r.hypothesis_id == hypothesis_id]
+        if reg_recs:
+            if all(r.generalization_verdict == "STABLE_ACROSS_EVALUATED_REGIMES" for r in reg_recs):
+                dims["regime_generalization"] = "VERIFIED_TRUE"
+            elif any(r.generalization_verdict in ("REGIME_DEPENDENT", "UNSTABLE") for r in reg_recs):
+                dims["regime_generalization"] = "VERIFIED_FALSE"
+            else:
+                dims["regime_generalization"] = "INSUFFICIENT_EVIDENCE"
+        else:
+            dims["regime_generalization"] = "NOT_EVALUATED"
+
+        # 7. Absence of Contradictions (Sprint 28.1: Do NOT hardcode to True!)
+        from coin_behavior_engine.product.discovery_knowledge_base import DiscoveryKnowledgeBase
+        if self.persistence_path != DEFAULT_EVIDENCE_GRADES_PERSISTENCE:
+            kb_path = self.persistence_path.parent / "kb.json"
+            kb = DiscoveryKnowledgeBase(persistence_path=kb_path)
+        else:
+            kb = DiscoveryKnowledgeBase()
+        kb_recs = [k for k in kb.list_records() if k.discovery_id == discovery_id or k.hypothesis_id == hypothesis_id]
+        if any(k.contradiction_status in ("ACTIVE_CONTRADICTION_UNRESOLVED", "CONTRADICTION_DETECTED") for k in kb_recs):
+            dims["absence_of_contradictions"] = "VERIFIED_FALSE"
+        elif kb_recs and all(k.contradiction_status in ("NO_CONTRADICTIONS", "RESOLVED") for k in kb_recs):
+            dims["absence_of_contradictions"] = "VERIFIED_TRUE"
+        else:
+            dims["absence_of_contradictions"] = "NOT_EVALUATED"
+
+        # 8. Disclosed Limitations (Sprint 28.1: Do NOT hardcode to True!)
+        if disc and disc.limitations and len(disc.limitations) > 0:
+            dims["disclosed_limitations"] = "VERIFIED_TRUE"
+        else:
+            dims["disclosed_limitations"] = "NOT_EVALUATED"
 
         assess_id = f"GRD-RES-{discovery_id}"
         return self.evaluate_grade(

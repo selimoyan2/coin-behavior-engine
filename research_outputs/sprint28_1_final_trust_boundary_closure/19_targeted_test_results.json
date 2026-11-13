@@ -1,0 +1,46 @@
+{
+  "test_suite": "tests/test_sprint_28_1_trust_boundary_closure.py",
+  "timestamp_utc": "2026-11-13T20:31:41.372211+00:00",
+  "total_tests": 66,
+  "passed": 66,
+  "failed": 0,
+  "skipped": 0,
+  "duration_seconds": 1.83,
+  "test_classes": [
+    {
+      "name": "TestSection35DatasetIndependenceNegative",
+      "tests": 12,
+      "passed": 12
+    },
+    {
+      "name": "TestSection45ReproductionArtifactAuthenticityNegative",
+      "tests": 16,
+      "passed": 16
+    },
+    {
+      "name": "TestSection5FirstExecutionSeparation",
+      "tests": 8,
+      "passed": 8
+    },
+    {
+      "name": "TestSection6EvidenceGradeInflation",
+      "tests": 8,
+      "passed": 8
+    },
+    {
+      "name": "TestSection63TrustPropagation",
+      "tests": 8,
+      "passed": 8
+    },
+    {
+      "name": "TestSection8PositiveReferenceTests",
+      "tests": 8,
+      "passed": 8
+    },
+    {
+      "name": "TestPersistenceRecoveryAndGovernance",
+      "tests": 4,
+      "passed": 4
+    }
+  ]
+}

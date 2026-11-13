@@ -1,0 +1,9 @@
+{
+  "execution_id": "EXP-WF-002",
+  "dataset_id": "DS-BTC-1H-Q1-2024",
+  "methodology_id": "METH-WF-ROLLING-01",
+  "rolling_mean": 0.0012,
+  "rolling_vol": 0.0185,
+  "sharpe_ratio": 1.45,
+  "raw_p_value": 0.002
+}

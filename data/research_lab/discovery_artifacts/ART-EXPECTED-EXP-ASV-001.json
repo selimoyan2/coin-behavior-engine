@@ -1,0 +1,10 @@
+{
+  "execution_id": "EXP-ASV-001",
+  "dataset_id": "DS-BTC-1H-Q1-2024",
+  "methodology_id": "METH-ENGLE-ARCH-01",
+  "arch_lm_stat": 44.12,
+  "raw_p_value": 0.000042,
+  "effect_estimate": 0.284,
+  "degrees_of_freedom": 1.0,
+  "kurtosis": 6.84
+}

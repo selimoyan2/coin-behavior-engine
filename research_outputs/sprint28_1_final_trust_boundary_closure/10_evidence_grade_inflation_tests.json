@@ -1,0 +1,49 @@
+{
+  "test_suite": "TestSection6EvidenceGradeInflation",
+  "timestamp_utc": "2026-11-13T20:31:41.372211+00:00",
+  "total_negative_tests": 8,
+  "passed_tests": 8,
+  "failed_tests": 0,
+  "tests": [
+    {
+      "id": "test_gi_01",
+      "name": "regime_generalization_defaults_to_not_evaluated",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_gi_02",
+      "name": "absence_of_contradictions_defaults_to_not_evaluated",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_gi_03",
+      "name": "disclosed_limitations_missing_caps_grade",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_gi_04",
+      "name": "dimension_states_classification",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_gi_05",
+      "name": "missing_contradiction_record_does_not_prove_absence",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_gi_06",
+      "name": "missing_generalization_caps_to_preliminary_support",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_gi_07",
+      "name": "unknown_dimensions_do_not_inflate_grade",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_gi_08",
+      "name": "deterministic_grading",
+      "verdict": "PASSED"
+    }
+  ]
+}

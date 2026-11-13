@@ -1,6 +1,6 @@
 {
   "schema_version": "CBE-TEMPORAL-PARTITIONS-V28",
-  "saved_at": "2026-11-13T19:05:21.889695+00:00",
+  "saved_at": "2026-11-13T20:30:43.048116+00:00",
   "partitions": [
     {
       "partition_id": "PART-2024-DISC",

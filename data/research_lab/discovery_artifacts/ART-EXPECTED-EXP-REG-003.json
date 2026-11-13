@@ -1,0 +1,8 @@
+{
+  "execution_id": "EXP-REG-003",
+  "dataset_id": "DS-BTC-15M-Q1-2024",
+  "methodology_id": "METH-KS-DIST-SHIFT-01",
+  "ks_statistic": 0.082,
+  "raw_p_value": 0.0041,
+  "effect_original": 0.082
+}

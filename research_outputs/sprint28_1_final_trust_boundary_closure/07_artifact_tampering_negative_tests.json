@@ -1,0 +1,89 @@
+{
+  "test_suite": "TestSection45ReproductionArtifactAuthenticityNegative",
+  "timestamp_utc": "2026-11-13T20:31:41.372211+00:00",
+  "total_negative_tests": 16,
+  "passed_tests": 16,
+  "failed_tests": 0,
+  "tests": [
+    {
+      "id": "test_neg_art_01",
+      "name": "nonexistent_artifact_id",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_art_02",
+      "name": "existing_id_pointing_to_missing_file",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_art_03",
+      "name": "correct_filename_incorrect_sha256",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_art_04",
+      "name": "artifact_belonging_to_another_execution",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_art_05",
+      "name": "artifact_belonging_to_another_dataset",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_art_06",
+      "name": "same_file_self_comparison",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_art_07",
+      "name": "different_ids_same_execution_evidence",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_art_08",
+      "name": "matching_dicts_without_real_artifacts",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_art_09",
+      "name": "quarantined_artifact_rejected",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_art_10",
+      "name": "revoked_artifact_rejected",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_art_11",
+      "name": "path_traversal_rejected",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_art_12",
+      "name": "symlink_escape_rejected",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_art_13",
+      "name": "malformed_result_schema",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_art_14",
+      "name": "nan_or_infinite_numerical_results",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_art_15",
+      "name": "missing_methodology_identity",
+      "verdict": "PASSED"
+    },
+    {
+      "id": "test_neg_art_16",
+      "name": "forged_independent_implementation_claim",
+      "verdict": "PASSED"
+    }
+  ]
+}

@@ -35,11 +35,14 @@ DEFAULT_REPRODUCTION_PERSISTENCE = REPO_ROOT / "data" / "research_lab" / "reprod
 
 REPRODUCTION_VERDICTS: Set[str] = {
     "REPEATABILITY_VERIFIED",
+    "COMPUTATIONAL_REPEATABILITY_VERIFIED",
     "INDEPENDENT_IMPLEMENTATION_REPRODUCED",
     "INDEPENDENT_DATASET_REPLICATED",
     "PARTIALLY_REPRODUCED",
     "REPRODUCTION_FAILED",
     "REPRODUCTION_NOT_ESTABLISHED",
+    "REPRODUCTION_EVIDENCE_INCOMPLETE",
+    "REPRODUCTION_ARTIFACT_INVALID",
     "INSUFFICIENT_EVIDENCE",
 }
 
@@ -269,69 +272,15 @@ class ReproducibilityLabV2:
         lineage_evidence: Optional[Dict[str, Any]] = None,
     ) -> Tuple[str, List[str]]:
         """Verify whether two datasets are genuinely independent, identical/renamed, or shared lineage."""
-        issues: List[str] = []
-        s_id = str(source_dataset_id or "").strip()
-        r_id = str(reproduction_dataset_id or "").strip()
+        from coin_behavior_engine.product.trusted_provenance_resolver import TrustedDatasetProvenanceResolver
 
-        if not s_id or not r_id:
-            return "UNVERIFIED", ["Missing dataset identities."]
-
-        if s_id == r_id:
-            return "SAME_DATASET", ["Identical dataset identifiers."]
-
-        # If IDs are different but file SHA-256 is identical, it's a renamed identical dataset!
-        if source_sha256 and reproduction_sha256 and source_sha256 == reproduction_sha256:
-            issues.append(
-                f"Fraudulent independence detected: dataset '{r_id}' has identical SHA-256 "
-                f"hash ({source_sha256[:12]}...) to source dataset '{s_id}'."
-            )
-            return "IDENTICAL_DATA_RENAMED", issues
-
-        # Check canonical specs for shared exchange / symbol lineage
-        specs = ScientificReadinessEvaluator.CANONICAL_HISTORICAL_DATASET_SPECIFICATIONS
-        src_spec = specs.get(s_id)
-        rep_spec = specs.get(r_id)
-
-        if src_spec and rep_spec:
-            src_market = str(src_spec.get("market", "")).upper()
-            rep_market = str(rep_spec.get("market", "")).upper()
-            src_lin = str(src_spec.get("source_lineage", "")).upper()
-            rep_lin = str(rep_spec.get("source_lineage", "")).upper()
-
-            is_same_source = (
-                (src_market and rep_market and src_market == rep_market)
-                or ("BINANCE" in src_lin and "BINANCE" in rep_lin)
-            )
-
-            if is_same_source:
-                s_start = str(src_spec.get("period_start_utc", "") or src_spec.get("start_time", ""))
-                s_end = str(src_spec.get("period_end_utc", "") or src_spec.get("end_time", ""))
-                r_start = str(rep_spec.get("period_start_utc", "") or rep_spec.get("start_time", ""))
-                r_end = str(rep_spec.get("period_end_utc", "") or rep_spec.get("end_time", ""))
-
-                if s_start and s_end and r_start and r_end:
-                    if not (s_end < r_start or r_end < s_start):
-                        issues.append(f"Observation periods overlap between '{s_id}' and '{r_id}'.")
-                        return "OVERLAPPING_DATA", issues
-
-                issues.append(
-                    f"Shared source lineage: both '{s_id}' and '{r_id}' are from exchange Binance. "
-                    "Distinct partitions do not establish independent sourcing."
-                )
-                return "DISTINCT_PARTITIONS_SAME_SOURCE", issues
-
-        # If explicit verified external lineage evidence is supplied
-        if lineage_evidence and isinstance(lineage_evidence, dict):
-            src_prov = str(lineage_evidence.get("source_provider", "")).upper()
-            rep_prov = str(lineage_evidence.get("reproduction_provider", "")).upper()
-            is_verified = bool(lineage_evidence.get("lineage_verified", False))
-            has_no_overlap = bool(lineage_evidence.get("zero_observation_overlap", False))
-
-            if src_prov and rep_prov and src_prov != rep_prov and is_verified and has_no_overlap:
-                return "INDEPENDENT_SOURCE_VERIFIED", []
-
-        issues.append("Independence not established: distinct independent source lineage evidence is absent or unverified.")
-        return "INDEPENDENCE_NOT_ESTABLISHED", issues
+        return TrustedDatasetProvenanceResolver.verify_independence(
+            source_dataset_id=source_dataset_id,
+            reproduction_dataset_id=reproduction_dataset_id,
+            source_sha256=source_sha256,
+            reproduction_sha256=reproduction_sha256,
+            lineage_evidence=lineage_evidence,
+        )
 
     def evaluate_reproduction_attempt(
         self,
@@ -343,8 +292,8 @@ class ReproducibilityLabV2:
         original_methodology_id: str,
         reproduction_methodology_id: str,
         implementation_identity: str,
-        expected_results: Dict[str, float],
-        actual_results: Dict[str, float],
+        expected_results: Optional[Dict[str, float]] = None,
+        actual_results: Optional[Dict[str, float]] = None,
         source_sha256: str = "",
         reproduction_sha256: str = "",
         expected_result_artifact_id: Optional[str] = None,
@@ -354,29 +303,31 @@ class ReproducibilityLabV2:
         atol: float = 1e-6,
     ) -> ReproductionRecordV2:
         """Execute a complete independent reproduction evaluation and determine final verdict."""
+        from coin_behavior_engine.product.dataset_validation_engine import DatasetValidationEngine
+        from coin_behavior_engine.product.trusted_provenance_resolver import TrustedDatasetProvenanceResolver
+        from coin_behavior_engine.product.trusted_reproduction_artifact_resolver import TrustedReproductionArtifactResolver
+
         # 1. Self-comparison detection
         rep_id_clean = str(reproduction_id or "").strip()
         orig_id_clean = str(original_experiment_id or "").strip()
 
-        is_self_comparison = (rep_id_clean == orig_id_clean) or (expected_results is actual_results)
+        is_self_comparison = (rep_id_clean == orig_id_clean) or (
+            expected_results is not None and actual_results is not None and expected_results is actual_results
+        )
 
-        # 2. Check Provenance
-        from coin_behavior_engine.product.dataset_validation_engine import DatasetValidationEngine
+        # 2. Check Provenance & Quarantine via Trusted Provenance Resolver
+        meta_s = TrustedDatasetProvenanceResolver.resolve_dataset(source_dataset_id)
+        meta_r = TrustedDatasetProvenanceResolver.resolve_dataset(reproduction_dataset_id)
 
-        is_quar_src = DatasetValidationEngine.is_quarantined(source_dataset_id)
-        is_quar_rep = DatasetValidationEngine.is_quarantined(reproduction_dataset_id)
+        is_quar_src = DatasetValidationEngine.is_quarantined(source_dataset_id) or (meta_s and meta_s.quarantine_status == "QUARANTINED")
+        is_quar_rep = DatasetValidationEngine.is_quarantined(reproduction_dataset_id) or (meta_r and meta_r.quarantine_status == "QUARANTINED")
 
-        prov_src = ScientificReadinessEvaluator.verify_historical_dataset_provenance(source_dataset_id)
-        prov_rep = ScientificReadinessEvaluator.verify_historical_dataset_provenance(reproduction_dataset_id)
+        prov_src_ok = (meta_s and meta_s.provenance_status in ("TRUSTED_PROVENANCE_VERIFIED", "VERIFIED"))
+        prov_rep_ok = (meta_r and meta_r.provenance_status in ("TRUSTED_PROVENANCE_VERIFIED", "VERIFIED"))
 
-        if (
-            is_quar_src
-            or is_quar_rep
-            or prov_src.get("provenance_status") == "DATASET_QUARANTINED"
-            or prov_rep.get("provenance_status") == "DATASET_QUARANTINED"
-        ):
+        if is_quar_src or is_quar_rep:
             prov_verdict = "QUARANTINED"
-        elif prov_src.get("is_verified") and prov_rep.get("is_verified"):
+        elif prov_src_ok and prov_rep_ok:
             prov_verdict = "VERIFIED"
         else:
             prov_verdict = "UNVERIFIED"
@@ -390,36 +341,91 @@ class ReproducibilityLabV2:
             lineage_evidence=lineage_evidence,
         )
 
-        # 4. Compare Results
-        match_ok, comp_verdict, max_rel, max_abs, discrepancies = self.compare_numerical_results(
-            expected_results, actual_results, rtol=rtol, atol=atol
-        )
+        # 4. Compare Results Numerically & Check Artifacts
+        exp_art_id = expected_result_artifact_id
+        act_art_id = actual_result_artifact_id
 
-        all_discrepancies = list(discrepancies) + ind_issues
+        verified_exp = None
+        verified_act = None
+        artifact_error = None
+        has_unverified_caller_input = False
+        all_discrepancies: List[str] = list(ind_issues)
 
-        # Check artifact IDs
-        exp_art_id = expected_result_artifact_id or f"ART-EXP-{original_experiment_id}"
-        act_art_id = actual_result_artifact_id or f"ART-ACT-{reproduction_id}"
+        max_rel = 0.0
+        max_abs = 0.0
+        match_ok = True
+        comp_verdict = "MATCH_WITHIN_TOLERANCE"
 
-        has_unverified_caller_input = (
-            not expected_result_artifact_id
-            or not actual_result_artifact_id
-            or str(exp_art_id).startswith("ART-FAKE")
+        if not exp_art_id or not act_art_id:
+            has_unverified_caller_input = True
+            artifact_error = "MISSING_ARTIFACT_ID"
+            all_discrepancies.append("Authoritative reproduction requires persisted result artifact identifiers.")
+            if expected_results and actual_results:
+                m_ok, c_verd, m_rel, m_abs, disc = self.compare_numerical_results(
+                    expected_results, actual_results, rtol=rtol, atol=atol
+                )
+                match_ok = m_ok
+                comp_verdict = c_verd
+                max_rel = m_rel
+                max_abs = m_abs
+                all_discrepancies.extend(disc)
+            else:
+                match_ok = False
+                comp_verdict = "EMPTY_COMPARISON_TARGETS"
+        elif exp_art_id == act_art_id:
+            is_self_comparison = True
+            match_ok = False
+            comp_verdict = "FRAUDULENT_SELF_COMPARISON"
+            all_discrepancies.append("Self-comparison fraud detected: identical expected and actual artifact ID.")
+        elif (
+            ".." in exp_art_id or ".." in act_art_id
+            or "/" in exp_art_id or "/" in act_art_id
+            or "\\" in exp_art_id or "\\" in act_art_id
+        ):
+            has_unverified_caller_input = True
+            artifact_error = "PATH_TRAVERSAL"
+            all_discrepancies.append("Path traversal rejected in artifact identifier.")
+        elif (
+            str(exp_art_id).startswith("ART-FAKE")
             or str(act_art_id).startswith("ART-FAKE")
-            or str(exp_art_id).startswith("ART-SYNTHETIC")
-            or str(act_art_id).startswith("ART-SYNTHETIC")
             or "SYNTHETIC" in str(exp_art_id)
             or "SYNTHETIC" in str(act_art_id)
             or "NON_EXISTENT" in str(exp_art_id)
             or "NON_EXISTENT" in str(act_art_id)
-        )
+        ):
+            has_unverified_caller_input = True
+            artifact_error = "SYNTHETIC_OR_NON_EXISTENT_ARTIFACT"
+            all_discrepancies.append("Synthetic, fake, or non-existent artifact ID cannot certify authoritative reproduction.")
+        else:
+            v_exp, err_exp = TrustedReproductionArtifactResolver.load_and_verify_artifact(exp_art_id)
+            v_act, err_act = TrustedReproductionArtifactResolver.load_and_verify_artifact(act_art_id)
+            if err_exp or err_act:
+                has_unverified_caller_input = True
+                artifact_error = err_exp or err_act
+                all_discrepancies.append(f"Artifact verification failed: {artifact_error}")
+            elif v_exp and v_act:
+                verified_exp = v_exp
+                verified_act = v_act
+                art_match, art_comp, art_rel, art_abs, art_disc = TrustedReproductionArtifactResolver.compare_verified_artifacts(
+                    v_exp, v_act, rtol=rtol, atol=atol
+                )
+                match_ok = art_match
+                comp_verdict = art_comp
+                max_rel = art_rel
+                max_abs = art_abs
+                all_discrepancies.extend(art_disc)
+                if expected_results is None:
+                    expected_results = v_exp.metrics
+                if actual_results is None:
+                    actual_results = v_act.metrics
 
+        # Check self-comparison identity
         if is_self_comparison:
             match_ok = False
             comp_verdict = "FRAUDULENT_SELF_COMPARISON"
             all_discrepancies.append("Self-comparison fraud detected: identical identity or in-memory result dictionary.")
 
-        # 5. Final Verdict Synthesis
+        # 6. Final Verdict Synthesis
         if is_self_comparison:
             rep_verdict = "REPRODUCTION_FAILED"
         elif prov_verdict == "QUARANTINED":
@@ -427,21 +433,32 @@ class ReproducibilityLabV2:
             all_discrepancies.append("Reproduction blocked by dataset quarantine.")
         elif not match_ok:
             rep_verdict = "REPRODUCTION_FAILED"
-        elif has_unverified_caller_input:
-            rep_verdict = "INSUFFICIENT_EVIDENCE"
-            all_discrepancies.append("Unverified, missing, or synthetic artifact ID cannot certify authoritative reproduction.")
         elif ind_verdict == "IDENTICAL_DATA_RENAMED":
             rep_verdict = "REPRODUCTION_FAILED"
-        elif reproduction_type == "COMPUTATIONAL_REPEATABILITY":
-            if has_unverified_caller_input and (expected_result_artifact_id and "FAKE" in str(expected_result_artifact_id)):
+        elif ind_verdict == "DISTINCT_PARTITIONS_SAME_SOURCE" and reproduction_type == "INDEPENDENT_DATASET":
+            rep_verdict = "PARTIALLY_REPRODUCED"
+            all_discrepancies.append(
+                f"Distinct partitions from same source do not establish independent dataset replication ({ind_verdict})."
+            )
+        elif has_unverified_caller_input:
+            if artifact_error in ("PATH_TRAVERSAL",) or (artifact_error and "invalid" in artifact_error.lower()):
+                rep_verdict = "REPRODUCTION_ARTIFACT_INVALID"
+            elif reproduction_type == "EXACT_REPLICATION":
                 rep_verdict = "INSUFFICIENT_EVIDENCE"
-                all_discrepancies.append("Unverified or synthetic artifact ID cannot certify authoritative repeatability.")
+            elif artifact_error in ("MISSING_ARTIFACT_ID", "SYNTHETIC_OR_NON_EXISTENT_ARTIFACT") or (artifact_error and "not found" in artifact_error.lower()):
+                rep_verdict = "REPRODUCTION_EVIDENCE_INCOMPLETE"
             else:
-                rep_verdict = "REPEATABILITY_VERIFIED"
-        elif reproduction_type == "INDEPENDENT_IMPLEMENTATION":
-            if has_unverified_caller_input and (expected_result_artifact_id and "FAKE" in str(expected_result_artifact_id)):
                 rep_verdict = "INSUFFICIENT_EVIDENCE"
-                all_discrepancies.append("Unverified or synthetic artifact ID cannot certify authoritative reproduction.")
+            all_discrepancies.append("Unverified, missing, or invalid artifact cannot certify authoritative reproduction.")
+        elif reproduction_type == "COMPUTATIONAL_REPEATABILITY":
+            rep_verdict = "COMPUTATIONAL_REPEATABILITY_VERIFIED"
+        elif reproduction_type == "INDEPENDENT_IMPLEMENTATION":
+            clean_impl = str(implementation_identity or "").upper().strip()
+            if not clean_impl or clean_impl in ("CBE_ENGINE", "CBE_INTERNAL_ENGINE", "INTERNAL", "SAME_ENGINE"):
+                rep_verdict = "REPRODUCTION_FAILED"
+                all_discrepancies.append(
+                    f"Independent implementation requires distinct verified external engine identity; got '{implementation_identity}'."
+                )
             else:
                 rep_verdict = "INDEPENDENT_IMPLEMENTATION_REPRODUCED"
         elif reproduction_type == "INDEPENDENT_DATASET":
@@ -469,8 +486,8 @@ class ReproducibilityLabV2:
             implementation_identity=implementation_identity,
             environment_fingerprint="ENV-FP-PYTHON-3.11-CBE28",
             input_artifact_ids=[f"ART-IN-{source_dataset_id}"],
-            expected_result_artifact_id=exp_art_id,
-            actual_result_artifact_id=act_art_id,
+            expected_result_artifact_id=exp_art_id or f"ART-EXP-{original_experiment_id}",
+            actual_result_artifact_id=act_art_id or f"ART-ACT-{reproduction_id}",
             comparison_method="NUMERICAL_TOLERANCE",
             comparison_tolerance={"rtol": rtol, "atol": atol},
             comparison_verdict=comp_verdict,
