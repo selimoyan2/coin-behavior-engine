@@ -1,6 +1,6 @@
 {
   "schema_version": "CBE-EVIDENCE-GRADES-V28",
-  "saved_at": "2026-11-12T09:51:11.431669+00:00",
+  "saved_at": "2026-11-13T19:05:55.768912+00:00",
   "assessments": [
     {
       "assessment_id": "GRD-VOL-001",
@@ -32,37 +32,42 @@
         "VAL-VOL-2024-01"
       ],
       "is_inflation_prevented": true,
-      "assessed_at": "2026-11-12T09:51:11.431669+00:00"
+      "assessed_at": "2026-11-13T19:05:55.768912+00:00",
+      "assigned_grade": "VALIDATED_HISTORICAL_EVIDENCE",
+      "directional_trading_eligibility": 0,
+      "technical_decision": "TECHNICAL_NO_GO"
     },
     {
       "assessment_id": "GRD-REG-SHIFT-002",
       "discovery_id": "DISC-REG-SHIFT-002",
       "hypothesis_id": "HYP-REG-SHIFT-002",
       "research_id": "RES-GEN-05",
-      "grade": "INDEPENDENTLY_REPLICATED_EVIDENCE",
+      "grade": "PRELIMINARY_SUPPORT",
       "supporting_dimensions": [
         "dataset_provenance",
         "data_structural_integrity",
-        "hypothesis_preregistration",
         "statistical_validity",
         "multiple_testing_control",
-        "temporal_validation",
-        "robustness",
         "computational_repeatability",
-        "independent_replication",
-        "regime_generalization",
         "absence_of_contradictions",
         "disclosed_limitations"
       ],
-      "failed_dimensions": [],
+      "failed_dimensions": [
+        "independent_replication"
+      ],
       "missing_dimensions": [],
-      "blocking_reasons": [],
+      "blocking_reasons": [
+        "Independent replication not established: Q1 and Q3 originate from the same exchange (Binance) and instrument (DISTINCT_PARTITIONS_SAME_SOURCE)."
+      ],
       "evidence_artifact_ids": [
         "ART-DIST-002",
         "REP-IND-DATA-003"
       ],
       "is_inflation_prevented": true,
-      "assessed_at": "2026-11-12T09:51:11.431669+00:00"
+      "assessed_at": "2026-11-13T19:05:55.768912+00:00",
+      "assigned_grade": "PRELIMINARY_SUPPORT",
+      "directional_trading_eligibility": 0,
+      "technical_decision": "TECHNICAL_NO_GO"
     },
     {
       "assessment_id": "GRD-ANALOG-EXP-003",
@@ -96,7 +101,10 @@
         "ART-ANALOG-003"
       ],
       "is_inflation_prevented": true,
-      "assessed_at": "2026-11-12T09:51:11.431669+00:00"
+      "assessed_at": "2026-11-13T19:05:55.768912+00:00",
+      "assigned_grade": "EXPLORATORY_EVIDENCE",
+      "directional_trading_eligibility": 0,
+      "technical_decision": "TECHNICAL_NO_GO"
     }
   ]
 }

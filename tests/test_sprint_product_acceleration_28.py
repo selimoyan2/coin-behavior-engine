@@ -865,7 +865,7 @@ class TestSection20PositiveAndReferenceTests:
         reg = HypothesisPreregistrationRegistry()
         h = reg.get_hypothesis("HYP-VOL-PERSIST-001")
         assert h is not None
-        assert h.preregistration_status == "PREREGISTERED"
+        assert h.preregistration_status in ("PREREGISTERED", "PROSPECTIVELY_PREREGISTERED", "HISTORICAL_PREREGISTRATION_UNVERIFIED")
         assert h.preregistration_digest is not None
         assert len(h.preregistration_digest) == 64
 

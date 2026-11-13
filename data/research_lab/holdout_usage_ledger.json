@@ -1,5 +1,126 @@
 {
   "schema_version": "CBE-HOLDOUT-LEDGER-V28",
-  "saved_at": "2026-11-12T09:49:38.426795+00:00",
-  "holdout_events": []
+  "saved_at": "2026-11-13T19:05:21.890715+00:00",
+  "holdout_events": [
+    {
+      "usage_id": "HLD-EVT-0001-4AE05C",
+      "holdout_partition_id": "PART-2024-HOLD",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "research_id": "RES-STAT-02",
+      "evaluation_purpose": "MODEL_GENERALIZATION_EVAL",
+      "accessed_by": "Researcher_Audit",
+      "access_timestamp": "2026-11-13T18:44:31.142162+00:00",
+      "holdout_access_count": 1,
+      "selection_bias_flag": false,
+      "notes": "Initial virgin holdout evaluation."
+    },
+    {
+      "usage_id": "HLD-EVT-0002-0ED2ED",
+      "holdout_partition_id": "PART-2024-HOLD",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "research_id": "RES-STAT-02",
+      "evaluation_purpose": "EVAL",
+      "accessed_by": "Audit_Check",
+      "access_timestamp": "2026-11-13T18:44:31.164146+00:00",
+      "holdout_access_count": 2,
+      "selection_bias_flag": true,
+      "notes": "Second or subsequent access to holdout set; selection bias risk."
+    },
+    {
+      "usage_id": "HLD-EVT-0003-83C401",
+      "holdout_partition_id": "PART-2024-HOLD",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "research_id": "RES-STAT-02",
+      "evaluation_purpose": "MODEL_GENERALIZATION_EVAL",
+      "accessed_by": "Researcher_Audit",
+      "access_timestamp": "2026-11-13T18:45:49.099187+00:00",
+      "holdout_access_count": 3,
+      "selection_bias_flag": true,
+      "notes": "Second or subsequent access to holdout set; selection bias risk."
+    },
+    {
+      "usage_id": "HLD-EVT-0004-099ABC",
+      "holdout_partition_id": "PART-2024-HOLD",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "research_id": "RES-STAT-02",
+      "evaluation_purpose": "EVAL",
+      "accessed_by": "Audit_Check",
+      "access_timestamp": "2026-11-13T18:45:49.129052+00:00",
+      "holdout_access_count": 4,
+      "selection_bias_flag": true,
+      "notes": "Second or subsequent access to holdout set; selection bias risk."
+    },
+    {
+      "usage_id": "HLD-EVT-0005-AC4488",
+      "holdout_partition_id": "PART-2024-HOLD",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "research_id": "RES-STAT-02",
+      "evaluation_purpose": "MODEL_GENERALIZATION_EVAL",
+      "accessed_by": "Researcher_Audit",
+      "access_timestamp": "2026-11-13T18:46:12.628310+00:00",
+      "holdout_access_count": 5,
+      "selection_bias_flag": true,
+      "notes": "Second or subsequent access to holdout set; selection bias risk."
+    },
+    {
+      "usage_id": "HLD-EVT-0006-217A7F",
+      "holdout_partition_id": "PART-2024-HOLD",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "research_id": "RES-STAT-02",
+      "evaluation_purpose": "EVAL",
+      "accessed_by": "Audit_Check",
+      "access_timestamp": "2026-11-13T18:46:12.656624+00:00",
+      "holdout_access_count": 6,
+      "selection_bias_flag": true,
+      "notes": "Second or subsequent access to holdout set; selection bias risk."
+    },
+    {
+      "usage_id": "HLD-EVT-0007-51B40A",
+      "holdout_partition_id": "PART-2024-HOLD",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "research_id": "RES-STAT-02",
+      "evaluation_purpose": "MODEL_GENERALIZATION_EVAL",
+      "accessed_by": "Researcher_Audit",
+      "access_timestamp": "2026-11-13T18:47:42.550634+00:00",
+      "holdout_access_count": 7,
+      "selection_bias_flag": true,
+      "notes": "Second or subsequent access to holdout set; selection bias risk."
+    },
+    {
+      "usage_id": "HLD-EVT-0008-F32313",
+      "holdout_partition_id": "PART-2024-HOLD",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "research_id": "RES-STAT-02",
+      "evaluation_purpose": "EVAL",
+      "accessed_by": "Audit_Check",
+      "access_timestamp": "2026-11-13T18:47:42.585963+00:00",
+      "holdout_access_count": 8,
+      "selection_bias_flag": true,
+      "notes": "Second or subsequent access to holdout set; selection bias risk."
+    },
+    {
+      "usage_id": "HLD-EVT-0009-9FC5C5",
+      "holdout_partition_id": "PART-2024-HOLD",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "research_id": "RES-STAT-02",
+      "evaluation_purpose": "MODEL_GENERALIZATION_EVAL",
+      "accessed_by": "Researcher_Audit",
+      "access_timestamp": "2026-11-13T19:05:21.835964+00:00",
+      "holdout_access_count": 9,
+      "selection_bias_flag": true,
+      "notes": "Second or subsequent access to holdout set; selection bias risk."
+    },
+    {
+      "usage_id": "HLD-EVT-0010-C6A590",
+      "holdout_partition_id": "PART-2024-HOLD",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "research_id": "RES-STAT-02",
+      "evaluation_purpose": "EVAL",
+      "accessed_by": "Audit_Check",
+      "access_timestamp": "2026-11-13T19:05:21.888741+00:00",
+      "holdout_access_count": 10,
+      "selection_bias_flag": true,
+      "notes": "Second or subsequent access to holdout set; selection bias risk."
+    }
+  ]
 }

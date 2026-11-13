@@ -1,6 +1,6 @@
 {
   "schema_version": "CBE-TEMPORAL-PARTITIONS-V28",
-  "saved_at": "2026-11-12T09:49:38.425779+00:00",
+  "saved_at": "2026-11-13T19:05:21.889695+00:00",
   "partitions": [
     {
       "partition_id": "PART-2024-DISC",
@@ -8,25 +8,25 @@
       "start_utc": "2024-01-01T00:00:00Z",
       "end_utc": "2024-06-30T23:59:59Z",
       "dataset_id": "DS-BTC-1H-Q1-2024",
-      "embargo_seconds": 3600,
+      "embargo_seconds": 259200,
       "description": "Discovery in-sample partition: H1 2024 spot data."
     },
     {
       "partition_id": "PART-2024-VAL",
       "partition_type": "VALIDATION",
-      "start_utc": "2024-07-01T01:00:00Z",
+      "start_utc": "2024-07-04T00:00:00Z",
       "end_utc": "2024-09-30T23:59:59Z",
       "dataset_id": "DS-BTC-1H-Q3-2024",
-      "embargo_seconds": 3600,
+      "embargo_seconds": 259200,
       "description": "Validation out-of-sample partition: Q3 2024 spot data with 1h embargo."
     },
     {
       "partition_id": "PART-2024-HOLD",
       "partition_type": "HOLDOUT",
-      "start_utc": "2024-10-01T01:00:00Z",
+      "start_utc": "2024-10-04T00:00:00Z",
       "end_utc": "2024-12-31T23:59:59Z",
       "dataset_id": "DS-BTC-1H-Q4-2024",
-      "embargo_seconds": 3600,
+      "embargo_seconds": 259200,
       "description": "Strict holdout partition: Q4 2024 spot data with 1h embargo."
     }
   ],
@@ -47,6 +47,11 @@
       "limitations": [
         "Degradation of 13.38% observed between H1 and Q3, remaining statistically significant (p < 0.001)."
       ],
+      "applied_embargo_seconds": 259200,
+      "feature_dependency_horizon_seconds": 0,
+      "dataset_fingerprint_in": null,
+      "dataset_fingerprint_out": null,
+      "execution_evidence_id": "EXEC-VAL-VOL-2024Q1Q3",
       "evaluated_at": "2026-11-12T09:49:38.425779+00:00"
     }
   ]

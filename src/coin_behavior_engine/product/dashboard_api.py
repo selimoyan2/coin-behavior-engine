@@ -764,6 +764,11 @@ class ProductDashboardApiService:
                     }
 
             # Sprint 28 GET endpoints
+            elif sub_path in ("research/inventory-reconciliation", "workspace/inventory-reconciliation", "discovery/inventory-reconciliation", "research/datasets/inventory-reconciliation"):
+                from coin_behavior_engine.product.dataset_validation_engine import DatasetValidationEngine
+                rec = DatasetValidationEngine.get_dataset_inventory_reconciliation()
+                return HTTPStatus.OK, {"status": "success", "inventory_reconciliation": rec}
+
             elif sub_path in ("research/datasets", "workspace/datasets"):
                 from coin_behavior_engine.product.dataset_validation_engine import DatasetValidationEngine
                 ds_id = query_params.get("dataset_id", [None])[0]
@@ -797,6 +802,22 @@ class ProductDashboardApiService:
                 audits = lab.list_search_audits()
                 return HTTPStatus.OK, {"status": "success", "total_search_audits": len(audits), "search_audits": [a.to_dict() for a in audits]}
 
+            elif sub_path in ("research/discoveries/overview", "workspace/discoveries/overview", "discovery/overview"):
+                from coin_behavior_engine.product.pattern_discovery_laboratory import PatternDiscoveryLaboratory
+                lab = PatternDiscoveryLaboratory()
+                discs = lab.list_discoveries()
+                fixtures_cnt = len([d for d in discs if d.discovery_type in ("DEMONSTRATION_FIXTURE", "EXAMPLE_DISCOVERY", "EXAMPLE_RECORD")])
+                validated_cnt = len([d for d in discs if d.discovery_type == "EMPIRICALLY_EXECUTED_DISCOVERY" and d.status in ("EMPIRICALLY_VALIDATED", "CONFIRMED", "VALIDATION_SUPPORTED")])
+                unverified_cnt = len([d for d in discs if d.status == "UNVERIFIED"])
+                return HTTPStatus.OK, {
+                    "status": "success",
+                    "total_discoveries": len(discs),
+                    "demonstration_fixtures_count": fixtures_cnt,
+                    "validated_discoveries_count": validated_cnt,
+                    "unverified_count": unverified_cnt,
+                    "discoveries": [d.to_dict() for d in discs]
+                }
+
             elif sub_path in ("research/discoveries", "workspace/discoveries"):
                 from coin_behavior_engine.product.pattern_discovery_laboratory import PatternDiscoveryLaboratory
                 lab = PatternDiscoveryLaboratory()
@@ -807,7 +828,15 @@ class ProductDashboardApiService:
                         return HTTPStatus.NOT_FOUND, {"status": "error", "message": f"Discovery '{d_id}' not found."}
                     return HTTPStatus.OK, {"status": "success", "discovery": d.to_dict()}
                 discs = lab.list_discoveries()
-                return HTTPStatus.OK, {"status": "success", "total_discoveries": len(discs), "discoveries": [d.to_dict() for d in discs]}
+                fixtures_cnt = len([d for d in discs if d.discovery_type in ("DEMONSTRATION_FIXTURE", "EXAMPLE_DISCOVERY", "EXAMPLE_RECORD")])
+                validated_cnt = len([d for d in discs if d.discovery_type == "EMPIRICALLY_EXECUTED_DISCOVERY" and d.status in ("EMPIRICALLY_VALIDATED", "CONFIRMED", "VALIDATION_SUPPORTED")])
+                return HTTPStatus.OK, {
+                    "status": "success",
+                    "total_discoveries": len(discs),
+                    "demonstration_fixtures_count": fixtures_cnt,
+                    "validated_discoveries_count": validated_cnt,
+                    "discoveries": [d.to_dict() for d in discs]
+                }
 
             elif sub_path in ("research/temporal-validation", "workspace/temporal-validation"):
                 from coin_behavior_engine.product.temporal_validation_engine import TemporalValidationEngine

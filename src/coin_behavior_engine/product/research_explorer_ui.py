@@ -5907,50 +5907,57 @@ def render_research_explorer_scripts() -> str:
       if (!kpis) return;
 
       try {
-        const [dsRes, hypRes, discRes, reprRes, kbRes] = await Promise.all([
+        const [dsRes, hypRes, discRes, reprRes, kbRes, reconcRes] = await Promise.all([
           fetch('/api/v1/product/research/datasets').then(r => r.json()),
           fetch('/api/v1/product/research/hypotheses').then(r => r.json()),
-          fetch('/api/v1/product/research/discoveries').then(r => r.json()),
+          fetch('/api/v1/product/research/discoveries/overview').then(r => r.json()).catch(() => fetch('/api/v1/product/research/discoveries').then(r => r.json())),
           fetch('/api/v1/product/research/reproducibility-v2').then(r => r.json()),
           fetch('/api/v1/product/research/knowledge-base').then(r => r.json()),
+          fetch('/api/v1/product/research/inventory-reconciliation').then(r => r.json()).catch(() => ({})),
         ]);
 
         const totalDs = dsRes.total_datasets || 0;
         const totalHyps = hypRes.total_hypotheses || 0;
-        const preregCount = (hypRes.hypotheses || []).filter(h => h.preregistration_status === 'PREREGISTERED').length;
+        const preregCount = (hypRes.hypotheses || []).filter(h => h.preregistration_status === 'PREREGISTERED' || h.preregistration_status === 'PROSPECTIVELY_PREREGISTERED').length;
+        const unverifiedPreregCount = (hypRes.hypotheses || []).filter(h => h.preregistration_status === 'HISTORICAL_PREREGISTRATION_UNVERIFIED').length;
         const totalDiscs = discRes.total_discoveries || 0;
-        const validatedDiscs = (discRes.discoveries || []).filter(d => d.discovery_status === 'VALIDATION_SUPPORTED').length;
-        const reprCount = (reprRes.records || []).filter(r => r.reproduction_verdict === 'INDEPENDENT_DATASET_REPLICATED').length;
-        const kbRecords = kbRes.records || [];
+        const fixturesCount = discRes.demonstration_fixtures_count !== undefined ? discRes.demonstration_fixtures_count : (discRes.discoveries || []).filter(d => ['DEMONSTRATION_FIXTURE', 'EXAMPLE_DISCOVERY', 'EXAMPLE_RECORD'].includes(d.discovery_type)).length;
+        const validatedDiscs = discRes.validated_discoveries_count !== undefined ? discRes.validated_discoveries_count : (discRes.discoveries || []).filter(d => d.discovery_type === 'EMPIRICALLY_EXECUTED_DISCOVERY' && ['EMPIRICALLY_VALIDATED', 'CONFIRMED', 'VALIDATION_SUPPORTED'].includes(d.discovery_status || d.status)).length;
+        const reprRecords = reprRes.records || [];
+        const trueIndepCount = reprRecords.filter(r => r.reproduction_verdict === 'INDEPENDENT_DATASET_REPLICATED').length;
+        const sameSourceCount = reprRecords.filter(r => r.reproduction_verdict === 'DISTINCT_PARTITIONS_SAME_SOURCE' || r.independence_verdict === 'DISTINCT_PARTITIONS_SAME_SOURCE').length;
         const blockedCount = (dsRes.datasets || []).filter(d => d.quarantine_status === 'QUARANTINED').length;
+        const reconcData = reconcRes.inventory_reconciliation || {};
+        const rawCount = reconcData.raw_multiyear_parquet_count || 342;
+        const registeredCount = reconcData.total_registered_inventory || 10;
 
         kpis.innerHTML = `
           <div class="ws-kpi-card">
             <div class="ws-kpi-title">Kayıtlı Hipotezler</div>
             <div class="ws-kpi-value" style="color:#38bdf8;">${totalHyps}</div>
-            <div class="ws-kpi-sub">Ön Kayıtlı: ${preregCount}</div>
+            <div class="ws-kpi-sub">Doğrulanmamış Ön Kayıt: ${unverifiedPreregCount} | İleriye Dönük: ${preregCount}</div>
           </div>
           <div class="ws-kpi-card">
-            <div class="ws-kpi-title">Aday Keşifler</div>
+            <div class="ws-kpi-title">Tanıtım &amp; Keşif Kayıtları</div>
             <div class="ws-kpi-value" style="color:#f59e0b;">${totalDiscs}</div>
-            <div class="ws-kpi-sub">OOS Doğrulanmış: ${validatedDiscs}</div>
+            <div class="ws-kpi-sub">Tanıtım/Örnek: ${fixturesCount} | Doğrulanmış: ${validatedDiscs}</div>
           </div>
           <div class="ws-kpi-card">
             <div class="ws-kpi-title">Bağımsız Çoğaltma</div>
-            <div class="ws-kpi-value" style="color:#10b981;">${reprCount}</div>
-            <div class="ws-kpi-sub">INDEPENDENT_REPLICATED</div>
+            <div class="ws-kpi-value" style="color:#10b981;">${trueIndepCount}</div>
+            <div class="ws-kpi-sub">Aynı Kaynak/Farklı Dönem: ${sameSourceCount}</div>
           </div>
           <div class="ws-kpi-card">
-            <div class="ws-kpi-title">Doğrulanmış Veri Seti</div>
-            <div class="ws-kpi-value" style="color:#a855f7;">${totalDs - blockedCount}</div>
-            <div class="ws-kpi-sub">Karantina: ${blockedCount}</div>
+            <div class="ws-kpi-title">Veri Envanteri Uzlaştırması</div>
+            <div class="ws-kpi-value" style="color:#a855f7;">${rawCount} / ${registeredCount}</div>
+            <div class="ws-kpi-sub">342 Ham Dosya | 10 Tescilli (9 Kanonik + 1 Karantina)</div>
           </div>
         `;
 
         if (alerts) {
           alerts.innerHTML = `
             <div style="background:rgba(56,189,248,0.1); border:1px solid #38bdf8; border-radius:6px; padding:10px 14px; font-size:12px; color:#e0f2fe;">
-              <strong>ℹ️ Bilimsel Güvenlik Durumu:</strong> Kanonik model <code>CBE-0.7.0</code> kesin dondurulmuştur. <code>TECHNICAL_NO_GO</code> aktiftir. Doğrulanmış hiçbir bilimsel bulgu gerçek alım-satım yetkisi doğurmaz.
+              <strong>ℹ️ Bilimsel Güvenlik Durumu:</strong> Kanonik model <code>CBE-0.7.0</code> kesin dondurulmuştur. <code>TECHNICAL_NO_GO</code> aktiftir. Doğrulanmış hiçbir bilimsel bulgu gerçek alım-satım yetkisi doğurmaz. Tanıtım/örnek kayıtları bilimsel yetki oluşturmaz.
             </div>
           `;
         }

@@ -333,3 +333,40 @@ class MultipleTestingControlEngine:
 
     def get_family(self, family_id: str) -> Optional[MultipleTestingFamily]:
         return self._families.get(family_id)
+
+    @classmethod
+    def apply_fdr_correction(
+        cls,
+        p_values: List[float],
+        alpha: float = 0.05,
+        method: str = "BENJAMINI_HOCHBERG",
+    ) -> Any:
+        """Apply FDR or FWER correction directly to a list of p-values."""
+        if method == "BENJAMINI_HOCHBERG":
+            adj = cls.benjamini_hochberg_correction(p_values)
+        elif method == "BONFERRONI":
+            adj = cls.bonferroni_correction(p_values)
+        elif method == "HOLM":
+            adj = cls.holm_bonferroni_correction(p_values)
+        elif method == "BENJAMINI_YEKUTIELI":
+            adj = cls.benjamini_yekutieli_correction(p_values)
+        else:
+            raise ValueError(f"Unsupported method: {method}")
+
+        rejected = [bool(p <= alpha) for p in adj]
+
+        from dataclasses import make_dataclass
+        Res = make_dataclass("FDRCorrectionResult", [
+            ("p_values", list),
+            ("adjusted_p_values", list),
+            ("rejected", list),
+            ("alpha", float),
+            ("method", str),
+        ])
+        return Res(
+            p_values=list(p_values),
+            adjusted_p_values=adj,
+            rejected=rejected,
+            alpha=float(alpha),
+            method=str(method),
+        )

@@ -102,11 +102,31 @@ class ScientificReportBuilderV6:
         now_utc = datetime.now(timezone.utc).isoformat()
         report_id = f"REP-V6-{hashlib.sha256(f'{rep_type}-{title}-{now_utc}'.encode()).hexdigest()[:10].upper()}"
 
+        # Determine report trust label
+        eg = str(evidence_grade or "")
+        if eg in ("VALIDATED_HISTORICAL_EVIDENCE", "INDEPENDENTLY_REPLICATED_EVIDENCE"):
+            report_trust_label = "VERIFIED_HISTORICAL_REPORT"
+        elif "DEMONSTRATION" in eg or "FIXTURE" in eg or "EXAMPLE" in eg:
+            report_trust_label = "DEMONSTRATION_FIXTURE_REPORT"
+        else:
+            report_trust_label = "EXPLORATORY_RESEARCH_REPORT"
+
+        if discovery_id:
+            try:
+                from coin_behavior_engine.product.pattern_discovery_laboratory import PatternDiscoveryLaboratory
+                lab = PatternDiscoveryLaboratory()
+                d_rec = lab.get_discovery(discovery_id)
+                if d_rec and d_rec.discovery_type in ("DEMONSTRATION_FIXTURE", "EXAMPLE_DISCOVERY", "EXAMPLE_RECORD"):
+                    report_trust_label = "DEMONSTRATION_FIXTURE_REPORT"
+            except Exception:
+                pass
+
         report_payload = {
             "report_id": report_id,
             "report_type": rep_type,
             "title": str(title),
             "generated_at": now_utc,
+            "report_trust_label": report_trust_label,
             "research_id": str(research_id),
             "hypothesis_id": str(hypothesis_id or ""),
             "discovery_id": str(discovery_id or ""),

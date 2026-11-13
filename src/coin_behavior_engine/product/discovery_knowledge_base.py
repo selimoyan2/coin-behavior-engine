@@ -42,6 +42,7 @@ class DiscoveryKnowledgeRecord:
     limitations: List[str]
     supporting_evidence_ids: List[str]
     report_artifact_ids: List[str]
+    record_type: str = "DEMONSTRATION_FIXTURE"  # VERIFIED_HISTORICAL_EVIDENCE, EXPLORATORY_DERIVED_RECORD, DEMONSTRATION_FIXTURE
     record_created_at: str = field(
         default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
@@ -71,7 +72,12 @@ class DiscoveryKnowledgeBase:
             with open(self.persistence_path, "r", encoding="utf-8") as f:
                 raw = json.load(f)
             for item in raw.get("knowledge_records", []):
-                rec = DiscoveryKnowledgeRecord(**item)
+                item_copy = dict(item)
+                if item_copy.get("knowledge_record_id") == "KB-REG-SHIFT-002":
+                    item_copy["evidence_grade"] = "PRELIMINARY_SUPPORT"
+                    item_copy["reproduction_verdict"] = "PARTIALLY_REPRODUCED"
+                    item_copy["independence_verdict"] = "DISTINCT_PARTITIONS_SAME_SOURCE"
+                rec = DiscoveryKnowledgeRecord(**item_copy)
                 self._records[rec.knowledge_record_id] = rec
         except Exception as e:
             logger.error(f"Error loading knowledge base: {e}")
@@ -110,28 +116,30 @@ class DiscoveryKnowledgeBase:
             ],
             supporting_evidence_ids=["ART-VOL-001", "VAL-VOL-2024-01", "GRD-VOL-001"],
             report_artifact_ids=["REP-VOL-DISCOVERY-2024", "REP-OOS-VOL-2024"],
+            record_type="DEMONSTRATION_FIXTURE",
         )
         self._records[k1.knowledge_record_id] = k1
 
-        # 2. Distribution Shift
+        # 2. Distribution Shift - Reclassified from false independent replication
         k2 = DiscoveryKnowledgeRecord(
             knowledge_record_id="KB-REG-SHIFT-002",
             discovery_id="DISC-REG-SHIFT-002",
             research_id="RES-GEN-05",
             hypothesis_id="HYP-REG-SHIFT-002",
-            finding_statement="15-minute return distributions in high-volatility expansion regimes differ significantly from low-volatility consolidation regimes (Kolmogorov-Smirnov distance = 0.082, p < 0.01), verified across independent quarters.",
-            evidence_grade="INDEPENDENTLY_REPLICATED_EVIDENCE",
+            finding_statement="15-minute return distributions in high-volatility expansion regimes differ significantly from low-volatility consolidation regimes (Kolmogorov-Smirnov distance = 0.082, p < 0.01), evaluated across non-overlapping quarters.",
+            evidence_grade="PRELIMINARY_SUPPORT",
             validation_verdict="VALIDATION_CONFIRMED",
-            reproduction_verdict="INDEPENDENT_DATASET_REPLICATED",
-            independence_verdict="INDEPENDENT",
+            reproduction_verdict="PARTIALLY_REPRODUCED",
+            independence_verdict="DISTINCT_PARTITIONS_SAME_SOURCE",
             regime_stability_verdict="STABLE_ACROSS_EVALUATED_REGIMES",
             contradiction_status="NO_CONTRADICTIONS",
             limitations=[
                 "Intraday seasonality remains present in both distributions.",
-                "Nonparametric KS test sensitive to extreme tail returns.",
+                "Independent dataset replication not established: Q1 and Q3 originate from the same exchange (Binance) and instrument.",
             ],
             supporting_evidence_ids=["ART-DIST-002", "REP-IND-DATA-003", "GRD-REG-SHIFT-002"],
             report_artifact_ids=["REP-REG-SHIFT-2024"],
+            record_type="DEMONSTRATION_FIXTURE",
         )
         self._records[k2.knowledge_record_id] = k2
 

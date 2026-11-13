@@ -28,8 +28,14 @@ DEFAULT_PERSISTENCE_PATH = REPO_ROOT / "data" / "research_lab" / "hypothesis_reg
 
 VALID_HYPOTHESIS_LIFECYCLE: Set[str] = {
     "DRAFT",
+    "HYPOTHESIS_TEMPLATE",
     "EXPLORATORY",
+    "EXPLORATORY_HYPOTHESIS",
     "PREREGISTERED",
+    "PROSPECTIVELY_PREREGISTERED",
+    "RETROSPECTIVE_HYPOTHESIS",
+    "RETROSPECTIVE_REGISTRATION",
+    "HISTORICAL_PREREGISTRATION_UNVERIFIED",
     "VALIDATION_PENDING",
     "VALIDATION_IN_PROGRESS",
     "VALIDATION_COMPLETED",
@@ -129,10 +135,18 @@ class HypothesisPreregistrationRegistry:
                 ]
                 item_copy = dict(item)
                 item_copy["amendments"] = amendments
+                # Strip unverified historical preregistration authority from legacy store
+                if item_copy.get("hypothesis_id") in ("HYP-VOL-PERSIST-001", "HYP-REG-SHIFT-002"):
+                    if item_copy.get("preregistration_status") == "PREREGISTERED":
+                        item_copy["preregistration_status"] = "HISTORICAL_PREREGISTRATION_UNVERIFIED"
+                        item_copy["retrospective_justification"] = (
+                            "Historical prospective preregistration record prior to 2024 observation period is unverified."
+                        )
                 rec = ScientificHypothesisRecord(**item_copy)
                 self._hypotheses[rec.hypothesis_id] = rec
         except Exception as e:
             logger.error(f"Failed to load hypothesis registry: {e}")
+            raise ValueError(f"Corrupt hypothesis registry persistence: {e}") from e
 
     def save_to_storage(self) -> None:
         """Atomically persist hypothesis registry to disk."""
@@ -169,9 +183,10 @@ class HypothesisPreregistrationRegistry:
                 "multiple_testing_family_id": "FAM-VOL-DYNAMICS-01",
                 "minimum_sample_requirements": {"min_observations": 1000},
                 "missing_data_policy": "FAIL_CLOSED_IF_GAPS_EXCEED_2_PERCENT",
-                "preregistration_status": "PREREGISTERED",
+                "preregistration_status": "HISTORICAL_PREREGISTRATION_UNVERIFIED",
                 "preregistration_timestamp": "2024-01-01T00:00:00Z",
                 "is_retrospective": False,
+                "retrospective_justification": "Historical prospective preregistration record prior to 2024 observation period is unverified.",
             },
             {
                 "hypothesis_id": "HYP-REG-SHIFT-002",
@@ -192,9 +207,10 @@ class HypothesisPreregistrationRegistry:
                 "multiple_testing_family_id": "FAM-REGIME-DIST-01",
                 "minimum_sample_requirements": {"min_observations": 2000},
                 "missing_data_policy": "RECORD_GAPS_AND_EXCLUDE",
-                "preregistration_status": "PREREGISTERED",
+                "preregistration_status": "HISTORICAL_PREREGISTRATION_UNVERIFIED",
                 "preregistration_timestamp": "2024-01-01T00:00:00Z",
                 "is_retrospective": False,
+                "retrospective_justification": "Historical prospective preregistration record prior to 2024 observation period is unverified.",
             },
             {
                 "hypothesis_id": "HYP-RETRO-ANALOG-003",
@@ -215,7 +231,7 @@ class HypothesisPreregistrationRegistry:
                 "multiple_testing_family_id": "FAM-ANALOG-01",
                 "minimum_sample_requirements": {"min_observations": 500},
                 "missing_data_policy": "STRICT_CHECK",
-                "preregistration_status": "EXPLORATORY",
+                "preregistration_status": "RETROSPECTIVE_HYPOTHESIS",
                 "preregistration_timestamp": None,
                 "is_retrospective": True,
                 "retrospective_justification": "Formulated retrospectively after inspection of 2022-2023 market drawdown episodes.",
@@ -223,10 +239,10 @@ class HypothesisPreregistrationRegistry:
         ]
 
         for s in seeds:
-            # Generate canonical snapshot and digest for preregistered
+            # Generate canonical snapshot and digest for all hypotheses with plans
             digest = None
             snap = None
-            if s["preregistration_status"] == "PREREGISTERED":
+            if s.get("statistical_test_plan"):
                 snap_payload = {
                     "hypothesis_id": s["hypothesis_id"],
                     "research_id": s["research_id"],
@@ -341,26 +357,46 @@ class HypothesisPreregistrationRegistry:
         self,
         hypothesis_id: str,
         timestamp: Optional[str] = None,
+        allow_injected_timestamp: bool = False,
     ) -> ScientificHypothesisRecord:
         """Lock and preregister a hypothesis with an immutable canonical snapshot.
 
         Retrospective hypotheses CANNOT be preregistered as prospective confirmatory studies.
+        Caller-supplied timestamps are rejected unless allow_injected_timestamp is explicitly true.
         """
         hyp_id = str(hypothesis_id or "").strip()
         rec = self._hypotheses.get(hyp_id)
         if not rec:
             raise KeyError(f"Hypothesis '{hyp_id}' not found.")
 
-        if rec.is_retrospective:
+        if rec.is_retrospective or rec.preregistration_status in ("RETROSPECTIVE_HYPOTHESIS", "RETROSPECTIVE_REGISTRATION"):
             raise ValueError(
                 f"Hypothesis '{hyp_id}' is marked as RETROSPECTIVE_REGISTRATION and "
                 "cannot be promoted to prospective PREREGISTERED status."
             )
 
-        if rec.preregistration_status == "PREREGISTERED":
+        if rec.preregistration_status in ("PREREGISTERED", "PROSPECTIVELY_PREREGISTERED"):
             raise ValueError(f"Hypothesis '{hyp_id}' is already preregistered.")
 
-        ts = timestamp or datetime.now(timezone.utc).isoformat()
+        if timestamp is not None and not allow_injected_timestamp:
+            raise ValueError(
+                "Caller-supplied historical timestamps are not permitted for authoritative preregistrations. "
+                "Server-generated timestamp is enforced."
+            )
+
+        ts = timestamp if (allow_injected_timestamp and timestamp) else datetime.now(timezone.utc).isoformat()
+
+        # Check temporal order against evaluation/training/validation periods
+        val_start = rec.validation_period.get("start") or rec.training_period.get("start")
+        is_retrospective_detected = False
+        if val_start:
+            try:
+                dt_val = datetime.fromisoformat(val_start.replace("Z", "+00:00"))
+                dt_ts = datetime.fromisoformat(ts.replace("Z", "+00:00"))
+                if dt_ts > dt_val:
+                    is_retrospective_detected = True
+            except Exception:
+                pass
 
         snap_payload = {
             "hypothesis_id": rec.hypothesis_id,
@@ -380,7 +416,16 @@ class HypothesisPreregistrationRegistry:
 
         digest = self.compute_canonical_digest(snap_payload)
 
-        rec.preregistration_status = "PREREGISTERED"
+        if is_retrospective_detected:
+            rec.is_retrospective = True
+            rec.preregistration_status = "RETROSPECTIVE_HYPOTHESIS"
+            rec.retrospective_justification = (
+                f"Preregistration timestamp ({ts}) postdates evaluation period start ({val_start}). "
+                "Classified as retrospective hypothesis."
+            )
+        else:
+            rec.preregistration_status = "PROSPECTIVELY_PREREGISTERED"
+
         rec.preregistration_timestamp = ts
         rec.preregistration_digest = digest
         rec.canonical_snapshot = snap_payload
@@ -401,14 +446,18 @@ class HypothesisPreregistrationRegistry:
         if not rec:
             raise KeyError(f"Hypothesis '{hyp_id}' not found.")
 
-        if rec.preregistration_status != "PREREGISTERED":
-            raise ValueError(f"Hypothesis '{hyp_id}' must be in PREREGISTERED status to amend.")
-
         if not amendment_reason or not amendment_reason.strip():
             raise ValueError("Amendment reason is mandatory.")
 
         if not changed_fields:
-            raise ValueError("changed_fields cannot be empty.")
+            raise ValueError("changed_fields cannot be empty and is mandatory.")
+
+        if rec.preregistration_status not in (
+            "PREREGISTERED",
+            "PROSPECTIVELY_PREREGISTERED",
+            "HISTORICAL_PREREGISTRATION_UNVERIFIED",
+        ):
+            raise ValueError(f"Hypothesis '{hyp_id}' must be in PREREGISTERED status to amend.")
 
         now_ts = datetime.now(timezone.utc).isoformat()
         amend_idx = len(rec.amendments) + 1
@@ -453,7 +502,7 @@ class HypothesisPreregistrationRegistry:
         A hypothesis may receive confirmatory status ONLY when:
         1. Preregistration predates the evaluation timestamp.
         2. Hypothesis is not retrospective.
-        3. Preregistration status is PREREGISTERED.
+        3. Preregistration status is PROSPECTIVELY_PREREGISTERED (or legacy PREREGISTERED).
         4. Statistical test matches the preregistered plan.
         5. Multiple testing is accounted for.
         6. Dataset provenance is verified.
@@ -470,7 +519,9 @@ class HypothesisPreregistrationRegistry:
         if rec.is_retrospective:
             blocking_reasons.append("Hypothesis is retrospectively registered; barred from confirmatory status.")
 
-        if rec.preregistration_status != "PREREGISTERED":
+        if rec.preregistration_status == "HISTORICAL_PREREGISTRATION_UNVERIFIED":
+            blocking_reasons.append("Hypothesis historical preregistration is unverified; barred from confirmatory status.")
+        elif rec.preregistration_status not in ("PREREGISTERED", "PROSPECTIVELY_PREREGISTERED"):
             blocking_reasons.append(f"Hypothesis status is '{rec.preregistration_status}', not PREREGISTERED.")
 
         if not rec.preregistration_timestamp:

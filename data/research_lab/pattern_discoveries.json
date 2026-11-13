@@ -1,6 +1,6 @@
 {
   "schema_version": "CBE-DISCOVERIES-V28",
-  "saved_at": "2026-11-12T09:49:00.168170+00:00",
+  "saved_at": "2026-11-13T19:05:22.542291+00:00",
   "discoveries": [
     {
       "discovery_id": "DISC-VOL-CLUST-001",
@@ -24,24 +24,38 @@
       "raw_p_value": 4.2e-05,
       "adjusted_p_value": 0.000168,
       "multiple_testing_family_id": "FAM-VOL-DYNAMICS-01",
-      "discovery_status": "VALIDATION_SUPPORTED",
-      "validation_status": "CONFIRMED_OUT_OF_SAMPLE",
+      "discovery_status": "EXAMPLE_RECORD",
+      "validation_status": "UNVERIFIED",
       "provenance_status": "TRUSTED_PROVENANCE_VERIFIED",
-      "reproducibility_status": "REPEATABILITY_VERIFIED",
+      "reproducibility_status": "UNVERIFIED",
       "limitations": [
-        "Evaluated on spot hourly cadence; microsecond structural breaks not modeled.",
-        "Assumes stationarity across quarterly observation boundaries."
+        "Demonstration fixture representing anticipated hourly variance clustering.",
+        "Requires empirical execution run against verified historical dataset."
       ],
       "supporting_artifact_ids": [
-        "ART-VOL-001",
-        "ART-ARCH-STAT-2024Q1"
+        "ART-VOL-001"
       ],
+      "discovery_type": "DEMONSTRATION_FIXTURE",
+      "execution_id": null,
+      "dataset_source_sha256": null,
+      "methodology_version": "1.0.0",
+      "statistical_test_id": null,
+      "parameter_snapshot_digest": null,
+      "execution_started_at": null,
+      "execution_completed_at": null,
+      "result_artifact_sha256": null,
+      "raw_statistical_results": {},
       "metrics": {
         "arch_lm_stat": 44.12,
         "degrees_of_freedom": 1,
         "kurtosis": 6.84
       },
-      "created_at": "2026-11-12T09:49:00.167648+00:00"
+      "created_at": "2026-11-13T18:44:31.572368+00:00",
+      "status": "EXAMPLE_RECORD",
+      "sample_summary": {
+        "sample_size": 2184,
+        "effective_sample_size": 1840
+      }
     },
     {
       "discovery_id": "DISC-REG-SHIFT-002",
@@ -65,23 +79,36 @@
       "raw_p_value": 0.0018,
       "adjusted_p_value": 0.0054,
       "multiple_testing_family_id": "FAM-REGIME-DIST-01",
-      "discovery_status": "VALIDATION_SUPPORTED",
-      "validation_status": "CONFIRMED_OUT_OF_SAMPLE",
+      "discovery_status": "EXAMPLE_RECORD",
+      "validation_status": "UNVERIFIED",
       "provenance_status": "TRUSTED_PROVENANCE_VERIFIED",
-      "reproducibility_status": "REPEATABILITY_VERIFIED",
+      "reproducibility_status": "UNVERIFIED",
       "limitations": [
-        "Intraday seasonality not explicitly removed before KS comparison.",
-        "Sample size differences between quarters slightly affect asymptotic bounds."
+        "Demonstration fixture for nonparametric distribution shift across regimes."
       ],
       "supporting_artifact_ids": [
-        "ART-DIST-002",
-        "ART-KS-2024Q1Q3"
+        "ART-DIST-002"
       ],
+      "discovery_type": "DEMONSTRATION_FIXTURE",
+      "execution_id": null,
+      "dataset_source_sha256": null,
+      "methodology_version": "1.0.0",
+      "statistical_test_id": null,
+      "parameter_snapshot_digest": null,
+      "execution_started_at": null,
+      "execution_completed_at": null,
+      "result_artifact_sha256": null,
+      "raw_statistical_results": {},
       "metrics": {
         "ks_statistic": 0.082,
         "wasserstein_distance": 0.00034
       },
-      "created_at": "2026-11-12T09:49:00.168170+00:00"
+      "created_at": "2026-11-13T18:44:31.572368+00:00",
+      "status": "EXAMPLE_RECORD",
+      "sample_summary": {
+        "sample_size": 17568,
+        "effective_sample_size": 12400
+      }
     },
     {
       "discovery_id": "DISC-ANALOG-EXP-003",
@@ -105,22 +132,166 @@
       "raw_p_value": 0.485,
       "adjusted_p_value": 0.72,
       "multiple_testing_family_id": "FAM-ANALOG-01",
-      "discovery_status": "INCONCLUSIVE",
-      "validation_status": "VALIDATION_FAILED",
+      "discovery_status": "EXAMPLE_RECORD",
+      "validation_status": "UNVERIFIED",
       "provenance_status": "TRUSTED_PROVENANCE_VERIFIED",
-      "reproducibility_status": "REPEATABILITY_VERIFIED",
+      "reproducibility_status": "UNVERIFIED",
       "limitations": [
-        "Null hypothesis of random future evolution cannot be rejected (p > 0.05).",
-        "High sensitivity to distance metric choice (Euclidean vs Cosine)."
+        "Null hypothesis of random future evolution cannot be rejected (p > 0.05)."
       ],
       "supporting_artifact_ids": [
         "ART-ANALOG-003"
       ],
+      "discovery_type": "DEMONSTRATION_FIXTURE",
+      "execution_id": null,
+      "dataset_source_sha256": null,
+      "methodology_version": "1.0.0",
+      "statistical_test_id": null,
+      "parameter_snapshot_digest": null,
+      "execution_started_at": null,
+      "execution_completed_at": null,
+      "result_artifact_sha256": null,
+      "raw_statistical_results": {},
       "metrics": {
         "binomial_p_value": 0.485,
         "top_matches_count": 25
       },
-      "created_at": "2026-11-12T09:49:00.168170+00:00"
+      "created_at": "2026-11-13T18:44:31.572368+00:00",
+      "status": "EXAMPLE_RECORD",
+      "sample_summary": {
+        "sample_size": 2184,
+        "effective_sample_size": 420
+      }
+    },
+    {
+      "discovery_id": "DISC-TEST-DIGEST",
+      "research_id": "RES-EXP-01",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "methodology_id": "METH-VOL-01",
+      "discovery_method": "VOLATILITY_CLUSTERING_ENGLE_LM",
+      "observation_period": {
+        "start": "",
+        "end": ""
+      },
+      "sample_size": 2183,
+      "effective_sample_size": 2158,
+      "effect_estimate": 0.28237512150388694,
+      "uncertainty_estimate": {
+        "std_error": 0.020545849917213335,
+        "ci_lower": 0.2421052556661488,
+        "ci_upper": 0.32264498734162506
+      },
+      "raw_p_value": 9.967706705352419e-40,
+      "adjusted_p_value": null,
+      "multiple_testing_family_id": "FAM-EMPIRICAL-01",
+      "discovery_status": "VALIDATION_SUPPORTED",
+      "validation_status": "VALIDATION_PENDING",
+      "provenance_status": "TRUSTED_PROVENANCE_VERIFIED",
+      "reproducibility_status": "REPEATABILITY_VERIFIED",
+      "limitations": [
+        "Evaluated on historical spot data.",
+        "Statistical inference subject to stationarity assumptions."
+      ],
+      "supporting_artifact_ids": [
+        "ART-EXEC-360F6B101007"
+      ],
+      "discovery_type": "EMPIRICALLY_EXECUTED_DISCOVERY",
+      "execution_id": "EXEC-360F6B101007",
+      "dataset_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+      "methodology_version": "1.0.0",
+      "statistical_test_id": "VOLATILITY_CLUSTERING_ENGLE_LM",
+      "parameter_snapshot_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "execution_started_at": "2026-11-13T19:05:21.595393+00:00",
+      "execution_completed_at": "2026-11-13T19:05:21.597925+00:00",
+      "result_artifact_sha256": "0e1235bc57f7caca93117d8b768d5b683ce211840120701beebfd978f6b9be91",
+      "raw_statistical_results": {
+        "arch_lm_stat": 173.9862131065276,
+        "r2": 0.0797370362541373,
+        "slope": 0.28237512150388694,
+        "intercept": 2.536992077998147e-05,
+        "raw_p_value": 9.967706705352419e-40,
+        "std_err": 0.020545849917213335
+      },
+      "metrics": {
+        "arch_lm_stat": 173.9862131065276,
+        "r2": 0.0797370362541373,
+        "slope": 0.28237512150388694,
+        "intercept": 2.536992077998147e-05,
+        "raw_p_value": 9.967706705352419e-40,
+        "std_err": 0.020545849917213335
+      },
+      "created_at": "2026-11-13T19:05:21.598431+00:00",
+      "status": "VALIDATION_SUPPORTED",
+      "sample_summary": {
+        "sample_size": 2183,
+        "effective_sample_size": 2158
+      }
+    },
+    {
+      "discovery_id": "DISC-REP-01",
+      "research_id": "RES-EXP-01",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "methodology_id": "METH-VOL-01",
+      "discovery_method": "VOLATILITY_CLUSTERING_ENGLE_LM",
+      "observation_period": {
+        "start": "",
+        "end": ""
+      },
+      "sample_size": 2183,
+      "effective_sample_size": 2158,
+      "effect_estimate": 0.28237512150388694,
+      "uncertainty_estimate": {
+        "std_error": 0.020545849917213335,
+        "ci_lower": 0.2421052556661488,
+        "ci_upper": 0.32264498734162506
+      },
+      "raw_p_value": 9.967706705352419e-40,
+      "adjusted_p_value": null,
+      "multiple_testing_family_id": "FAM-EMPIRICAL-01",
+      "discovery_status": "VALIDATION_SUPPORTED",
+      "validation_status": "VALIDATION_PENDING",
+      "provenance_status": "TRUSTED_PROVENANCE_VERIFIED",
+      "reproducibility_status": "REPEATABILITY_VERIFIED",
+      "limitations": [
+        "Evaluated on historical spot data.",
+        "Statistical inference subject to stationarity assumptions."
+      ],
+      "supporting_artifact_ids": [
+        "ART-EXEC-8F2B673C69B0"
+      ],
+      "discovery_type": "EMPIRICALLY_EXECUTED_DISCOVERY",
+      "execution_id": "EXEC-8F2B673C69B0",
+      "dataset_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
+      "methodology_version": "1.0.0",
+      "statistical_test_id": "VOLATILITY_CLUSTERING_ENGLE_LM",
+      "parameter_snapshot_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "execution_started_at": "2026-11-13T19:05:22.540410+00:00",
+      "execution_completed_at": "2026-11-13T19:05:22.541419+00:00",
+      "result_artifact_sha256": "0e1235bc57f7caca93117d8b768d5b683ce211840120701beebfd978f6b9be91",
+      "raw_statistical_results": {
+        "arch_lm_stat": 173.9862131065276,
+        "r2": 0.0797370362541373,
+        "slope": 0.28237512150388694,
+        "intercept": 2.536992077998147e-05,
+        "raw_p_value": 9.967706705352419e-40,
+        "std_err": 0.020545849917213335
+      },
+      "metrics": {
+        "arch_lm_stat": 173.9862131065276,
+        "r2": 0.0797370362541373,
+        "slope": 0.28237512150388694,
+        "intercept": 2.536992077998147e-05,
+        "raw_p_value": 9.967706705352419e-40,
+        "std_err": 0.020545849917213335
+      },
+      "created_at": "2026-11-13T19:05:22.542291+00:00",
+      "status": "VALIDATION_SUPPORTED",
+      "sample_summary": {
+        "sample_size": 2183,
+        "effective_sample_size": 2158
+      }
     }
   ]
 }
