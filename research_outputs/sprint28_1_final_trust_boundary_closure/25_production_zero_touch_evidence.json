@@ -1,0 +1,9 @@
+{
+  "production_container_id": "de04c34aac95",
+  "production_port": 8000,
+  "zero_touch_enforced": true,
+  "restarts_count": 0,
+  "status": "running",
+  "audited_at_utc": "2026-11-13T20:38:12.605720+00:00",
+  "audit_evidence": "Production container de04c34aac95 confirmed running untouched with 0 restarts."
+}

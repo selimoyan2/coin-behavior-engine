@@ -1,0 +1,12 @@
+{
+  "sprint_id": "CBE_SPRINT28_1_FINAL_TRUST_BOUNDARY_CLOSURE",
+  "deployment_target": "staging",
+  "remote_host": "srv1114257 (168.231.125.238)",
+  "staging_port": 18080,
+  "commit_sha": "9dbc21ff301a3808927584592e50f69a82060dff",
+  "image_tag": "cbe-market-intelligence:sprint28-1-closure-9dbc21f",
+  "ready_http_status": 200,
+  "restart_recovery_verified": true,
+  "deployed_at_utc": "2026-11-13T20:38:12.603590+00:00",
+  "stdout": "=== PRE-FLIGHT AUDIT: CHECK PRODUCTION CONTAINER ===\n[OK] Production container de04c34aac95 is running untouched.\nProduction Container State: Status: running, Restarts: 0\nProduction Container StartedAt: 2026-11-13T18:19:12.488177218Z\n=== 1. PREPARING BUILD CONTEXT FOR SPRINT 28.1 CLOSURE (9dbc21ff301a3808927584592e50f69a82060dff) ===\nCloned SHA: 9dbc21ff301a3808927584592e50f69a82060dff\n=== 2. INJECTING AUTHORITATIVE BUILD METADATA ===\n=== 3. DOCKER BUILD IMMUTABLE SPRINT 28.1 IMAGE ===\n=== 4. INSPECTING CREATED IMAGE ===\nIMAGE_ID: sha256:d911f02f0cd9a67458633b7e3a253d74e75e3f56dd8c6f0f4a5d3f4372184f69\n=== 5. STOPPING OLD STAGING CONTAINER ===\nStopping old staging container 75929079b9e3\n75929079b9e3\n75929079b9e3\n=== 6. STARTING NEW STAGING CONTAINER FROM IMMUTABLE IMAGE ===\n=== 7. WAITING FOR STAGING READINESS ON PORT 18080 ===\n[OK] Staging is READY (HTTP 200) after 8 seconds.\nNEW_STAGING_CID: 41d8771f1bc7\n=== 8. TESTING CONTAINER RESTAURT RECOVERY ===\n41d8771f1bc7\n[OK] Staging recovered successfully after restart (HTTP 200) after 5 seconds.\n=== 9. POST-DEPLOYMENT PRODUCTION ZERO-TOUCH VERIFICATION ===\n[VERIFIED] Production container de04c34aac95 untouched: Status: running, Restarts: 0\nProduction Container StartedAt: 2026-11-13T18:19:12.488177218Z\nDEPLOYMENT_SUCCESS: NEW_STAGING_CID=41d8771f1bc7 IMAGE_TAG=cbe-market-intelligence:sprint28-1-closure-9dbc21f IMAGE_ID=sha256:d911f02f0cd9a67458633b7e3a253d74e75e3f56dd8c6f0f4a5d3f4372184f69 PROD_STATUS=Status: running, Restarts: 0 PROD_STARTED=2026-11-13T18:19:12.488177218Z\n"
+}
