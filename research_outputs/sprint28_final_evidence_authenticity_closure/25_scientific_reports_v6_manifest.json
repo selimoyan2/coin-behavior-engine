@@ -1,0 +1,89 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "generated_at_utc": "2026-11-13T19:14:07Z",
+  "supported_report_types_count": 10,
+  "supported_report_types": [
+    "CONTRADICTION_REVIEW",
+    "EVIDENCE_GRADE",
+    "FALSE_DISCOVERY_CONTROL",
+    "HISTORICAL_DISCOVERY",
+    "HYPOTHESIS_VALIDATION",
+    "INDEPENDENT_REPLICATION",
+    "OUT_OF_SAMPLE_VALIDATION",
+    "PORTFOLIO_SUMMARY",
+    "REGIME_STABILITY",
+    "REPRODUCIBILITY"
+  ],
+  "trust_labels_enforced": [
+    "DEMONSTRATION_FIXTURE_REPORT",
+    "EXPLORATORY_RESEARCH_REPORT",
+    "VERIFIED_HISTORICAL_REPORT"
+  ],
+  "reports_count": 2,
+  "reports": [
+    {
+      "report_id": "REP-V6-967C42C7C2",
+      "report_type": "HISTORICAL_DISCOVERY",
+      "title": "Empirical Volatility Clustering Discovery Report",
+      "generated_at": "2026-11-13T19:14:08.996071+00:00",
+      "report_trust_label": "DEMONSTRATION_FIXTURE_REPORT",
+      "research_id": "RES-STAT-02",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "discovery_id": "DISC-VOL-CLUST-001",
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "dataset_fingerprint": "",
+      "methodology_id": "",
+      "evidence_grade": "VALIDATED_HISTORICAL_EVIDENCE",
+      "statistical_results": {},
+      "uncertainty": {},
+      "partitions": {},
+      "reproduction_evidence": {},
+      "limitations": [
+        "Research conducted on historical spot BTC/USDT data."
+      ],
+      "governance_invariants": {
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "technical_decision": "TECHNICAL_NO_GO",
+        "execution_mode": "STRICTLY_OFFLINE_RESEARCH",
+        "live_order_execution": "PERMANENTLY_PROHIBITED",
+        "directional_trading_eligibility": 0,
+        "scientific_finding_rule": "SCIENTIFIC_FINDING_SUPPORTED !=> LIVE_TRADING_AUTHORIZED"
+      },
+      "format": "JSON",
+      "content": "{\n  \"report_id\": \"REP-V6-967C42C7C2\",\n  \"report_type\": \"HISTORICAL_DISCOVERY\",\n  \"title\": \"Empirical Volatility Clustering Discovery Report\",\n  \"generated_at\": \"2026-11-13T19:14:08.996071+00:00\",\n  \"report_trust_label\": \"DEMONSTRATION_FIXTURE_REPORT\",\n  \"research_id\": \"RES-STAT-02\",\n  \"hypothesis_id\": \"HYP-VOL-PERSIST-001\",\n  \"discovery_id\": \"DISC-VOL-CLUST-001\",\n  \"dataset_id\": \"DS-BTC-1H-Q1-2024\",\n  \"dataset_fingerprint\": \"\",\n  \"methodology_id\": \"\",\n  \"evidence_grade\": \"VALIDATED_HISTORICAL_EVIDENCE\",\n  \"statistical_results\": {},\n  \"uncertainty\": {},\n  \"partitions\": {},\n  \"reproduction_evidence\": {},\n  \"limitations\": [\n    \"Research conducted on historical spot BTC/USDT data.\"\n  ],\n  \"governance_invariants\": {\n    \"canonical_model\": \"CBE-0.7.0\",\n    \"model_status\": \"STRICTLY_FROZEN\",\n    \"technical_decision\": \"TECHNICAL_NO_GO\",\n    \"execution_mode\": \"STRICTLY_OFFLINE_RESEARCH\",\n    \"live_order_execution\": \"PERMANENTLY_PROHIBITED\",\n    \"directional_trading_eligibility\": 0,\n    \"scientific_finding_rule\": \"SCIENTIFIC_FINDING_SUPPORTED !=> LIVE_TRADING_AUTHORIZED\"\n  }\n}"
+    },
+    {
+      "report_id": "REP-V6-3E52D7319D",
+      "report_type": "REPRODUCIBILITY",
+      "title": "Computational Repeatability Verification Report",
+      "generated_at": "2026-11-13T19:14:08.996071+00:00",
+      "report_trust_label": "DEMONSTRATION_FIXTURE_REPORT",
+      "research_id": "RES-STAT-02",
+      "hypothesis_id": "",
+      "discovery_id": "DISC-VOL-CLUST-001",
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "dataset_fingerprint": "",
+      "methodology_id": "",
+      "evidence_grade": "VALIDATED_HISTORICAL_EVIDENCE",
+      "statistical_results": {},
+      "uncertainty": {},
+      "partitions": {},
+      "reproduction_evidence": {},
+      "limitations": [
+        "Research conducted on historical spot BTC/USDT data."
+      ],
+      "governance_invariants": {
+        "canonical_model": "CBE-0.7.0",
+        "model_status": "STRICTLY_FROZEN",
+        "technical_decision": "TECHNICAL_NO_GO",
+        "execution_mode": "STRICTLY_OFFLINE_RESEARCH",
+        "live_order_execution": "PERMANENTLY_PROHIBITED",
+        "directional_trading_eligibility": 0,
+        "scientific_finding_rule": "SCIENTIFIC_FINDING_SUPPORTED !=> LIVE_TRADING_AUTHORIZED"
+      },
+      "format": "JSON",
+      "content": "{\n  \"report_id\": \"REP-V6-3E52D7319D\",\n  \"report_type\": \"REPRODUCIBILITY\",\n  \"title\": \"Computational Repeatability Verification Report\",\n  \"generated_at\": \"2026-11-13T19:14:08.996071+00:00\",\n  \"report_trust_label\": \"DEMONSTRATION_FIXTURE_REPORT\",\n  \"research_id\": \"RES-STAT-02\",\n  \"hypothesis_id\": \"\",\n  \"discovery_id\": \"DISC-VOL-CLUST-001\",\n  \"dataset_id\": \"DS-BTC-1H-Q1-2024\",\n  \"dataset_fingerprint\": \"\",\n  \"methodology_id\": \"\",\n  \"evidence_grade\": \"VALIDATED_HISTORICAL_EVIDENCE\",\n  \"statistical_results\": {},\n  \"uncertainty\": {},\n  \"partitions\": {},\n  \"reproduction_evidence\": {},\n  \"limitations\": [\n    \"Research conducted on historical spot BTC/USDT data.\"\n  ],\n  \"governance_invariants\": {\n    \"canonical_model\": \"CBE-0.7.0\",\n    \"model_status\": \"STRICTLY_FROZEN\",\n    \"technical_decision\": \"TECHNICAL_NO_GO\",\n    \"execution_mode\": \"STRICTLY_OFFLINE_RESEARCH\",\n    \"live_order_execution\": \"PERMANENTLY_PROHIBITED\",\n    \"directional_trading_eligibility\": 0,\n    \"scientific_finding_rule\": \"SCIENTIFIC_FINDING_SUPPORTED !=> LIVE_TRADING_AUTHORIZED\"\n  }\n}"
+    }
+  ]
+}

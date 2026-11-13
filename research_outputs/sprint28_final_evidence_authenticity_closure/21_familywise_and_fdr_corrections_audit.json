@@ -1,0 +1,55 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "generated_at_utc": "2026-11-13T19:14:07Z",
+  "supported_corrections": [
+    "BONFERRONI",
+    "HOLM_BONFERRONI",
+    "BENJAMINI_HOCHBERG"
+  ],
+  "demonstration_run": [
+    {
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "raw_p_value": 4.2e-05,
+      "adjusted_p_value": 0.000168,
+      "correction_method": "BENJAMINI_HOCHBERG",
+      "testing_family_size": 4,
+      "significance_threshold": 0.05,
+      "is_significant_after_correction": true,
+      "false_discovery_control_status": "CONTROLLED_SIGNIFICANT",
+      "selection_bias_warning": null
+    },
+    {
+      "hypothesis_id": "HYP-VOL-LAG2-001B",
+      "raw_p_value": 0.0034,
+      "adjusted_p_value": 0.0068,
+      "correction_method": "BENJAMINI_HOCHBERG",
+      "testing_family_size": 4,
+      "significance_threshold": 0.05,
+      "is_significant_after_correction": true,
+      "false_discovery_control_status": "CONTROLLED_SIGNIFICANT",
+      "selection_bias_warning": null
+    },
+    {
+      "hypothesis_id": "HYP-VOL-LAG5-001C",
+      "raw_p_value": 0.041,
+      "adjusted_p_value": 0.05466666666666667,
+      "correction_method": "BENJAMINI_HOCHBERG",
+      "testing_family_size": 4,
+      "significance_threshold": 0.05,
+      "is_significant_after_correction": false,
+      "false_discovery_control_status": "CONTROLLED_INSIGNIFICANT",
+      "selection_bias_warning": null
+    },
+    {
+      "hypothesis_id": "HYP-VOL-15M-001D",
+      "raw_p_value": 0.082,
+      "adjusted_p_value": 0.082,
+      "correction_method": "BENJAMINI_HOCHBERG",
+      "testing_family_size": 4,
+      "significance_threshold": 0.05,
+      "is_significant_after_correction": false,
+      "false_discovery_control_status": "CONTROLLED_INSIGNIFICANT",
+      "selection_bias_warning": null
+    }
+  ]
+}

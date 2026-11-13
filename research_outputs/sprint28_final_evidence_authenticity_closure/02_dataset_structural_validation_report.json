@@ -1,0 +1,90 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "generated_at_utc": "2026-11-13T19:14:07Z",
+  "structural_checks": {
+    "required_columns_present": [
+      "timestamp",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume"
+    ],
+    "all_canonical_monotonic": true,
+    "all_canonical_positive_prices": true,
+    "all_canonical_positive_volumes": true,
+    "zero_null_records": true
+  },
+  "datasets": [
+    {
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "schema_validation_status": "STRUCTURE_VALIDATED",
+      "temporal_integrity_status": "TEMPORAL_INTEGRITY_VERIFIED",
+      "observation_count": 2184,
+      "quarantine_status": "CLEAN"
+    },
+    {
+      "dataset_id": "DS-BTC-15M-Q1-2024",
+      "schema_validation_status": "STRUCTURE_VALIDATED",
+      "temporal_integrity_status": "TEMPORAL_INTEGRITY_VERIFIED",
+      "observation_count": 8736,
+      "quarantine_status": "CLEAN"
+    },
+    {
+      "dataset_id": "DS-BTC-15M-Q2-2024",
+      "schema_validation_status": "STRUCTURE_VALIDATED",
+      "temporal_integrity_status": "TEMPORAL_INTEGRITY_VERIFIED",
+      "observation_count": 8736,
+      "quarantine_status": "CLEAN"
+    },
+    {
+      "dataset_id": "DS-BTC-15M-Q3-2024",
+      "schema_validation_status": "STRUCTURE_VALIDATED",
+      "temporal_integrity_status": "TEMPORAL_INTEGRITY_VERIFIED",
+      "observation_count": 8832,
+      "quarantine_status": "CLEAN"
+    },
+    {
+      "dataset_id": "DS-BTC-15M-Q4-2024",
+      "schema_validation_status": "STRUCTURE_VALIDATED",
+      "temporal_integrity_status": "TEMPORAL_INTEGRITY_VERIFIED",
+      "observation_count": 8832,
+      "quarantine_status": "CLEAN"
+    },
+    {
+      "dataset_id": "DS-BTC-1H-JAN-2025",
+      "schema_validation_status": "STRUCTURE_VALIDATED",
+      "temporal_integrity_status": "TEMPORAL_INTEGRITY_VERIFIED",
+      "observation_count": 744,
+      "quarantine_status": "CLEAN"
+    },
+    {
+      "dataset_id": "DS-BTC-1H-Q2-2024",
+      "schema_validation_status": "STRUCTURE_VALIDATED",
+      "temporal_integrity_status": "TEMPORAL_INTEGRITY_VERIFIED",
+      "observation_count": 2184,
+      "quarantine_status": "CLEAN"
+    },
+    {
+      "dataset_id": "DS-BTC-1H-Q3-2024",
+      "schema_validation_status": "STRUCTURE_VALIDATED",
+      "temporal_integrity_status": "TEMPORAL_INTEGRITY_VERIFIED",
+      "observation_count": 2208,
+      "quarantine_status": "CLEAN"
+    },
+    {
+      "dataset_id": "DS-BTC-1H-Q4-2024",
+      "schema_validation_status": "STRUCTURE_VALIDATED",
+      "temporal_integrity_status": "TEMPORAL_INTEGRITY_VERIFIED",
+      "observation_count": 2208,
+      "quarantine_status": "CLEAN"
+    },
+    {
+      "dataset_id": "DS-BTC-5M-2026-10-INTAKE",
+      "schema_validation_status": "STRUCTURE_VALIDATED",
+      "temporal_integrity_status": "TEMPORAL_INTEGRITY_VERIFIED",
+      "observation_count": 288,
+      "quarantine_status": "QUARANTINED"
+    }
+  ]
+}

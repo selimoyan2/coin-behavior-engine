@@ -1,0 +1,123 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "generated_at_utc": "2026-11-13T19:14:07Z",
+  "prospectively_preregistered_count": 5,
+  "retrospective_hypotheses_count": 2,
+  "historical_unverified_count": 2,
+  "hypotheses_breakdown": [
+    {
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "preregistration_status": "HISTORICAL_PREREGISTRATION_UNVERIFIED",
+      "is_prospective": false,
+      "authority_classification": "UNVERIFIED_SEED"
+    },
+    {
+      "hypothesis_id": "HYP-REG-SHIFT-002",
+      "preregistration_status": "HISTORICAL_PREREGISTRATION_UNVERIFIED",
+      "is_prospective": false,
+      "authority_classification": "UNVERIFIED_SEED"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-ANALOG-003",
+      "preregistration_status": "EXPLORATORY",
+      "is_prospective": false,
+      "authority_classification": "PROSPECTIVE_AUTHENTIC"
+    },
+    {
+      "hypothesis_id": "HYP-ATTEMPT-BACKDATE",
+      "preregistration_status": "DRAFT",
+      "is_prospective": false,
+      "authority_classification": "PROSPECTIVE_AUTHENTIC"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01",
+      "preregistration_status": "RETROSPECTIVE_HYPOTHESIS",
+      "is_prospective": false,
+      "authority_classification": "RETROSPECTIVE_OBSERVATION"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01",
+      "preregistration_status": "PROSPECTIVELY_PREREGISTERED",
+      "is_prospective": true,
+      "authority_classification": "PROSPECTIVE_AUTHENTIC"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02",
+      "preregistration_status": "RETROSPECTIVE_HYPOTHESIS",
+      "is_prospective": false,
+      "authority_classification": "RETROSPECTIVE_OBSERVATION"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-42448",
+      "preregistration_status": "EXPLORATORY",
+      "is_prospective": false,
+      "authority_classification": "PROSPECTIVE_AUTHENTIC"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-42448",
+      "preregistration_status": "PROSPECTIVELY_PREREGISTERED",
+      "is_prospective": true,
+      "authority_classification": "PROSPECTIVE_AUTHENTIC"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-42448",
+      "preregistration_status": "EXPLORATORY",
+      "is_prospective": false,
+      "authority_classification": "PROSPECTIVE_AUTHENTIC"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-35412",
+      "preregistration_status": "EXPLORATORY",
+      "is_prospective": false,
+      "authority_classification": "PROSPECTIVE_AUTHENTIC"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-35412",
+      "preregistration_status": "PROSPECTIVELY_PREREGISTERED",
+      "is_prospective": true,
+      "authority_classification": "PROSPECTIVE_AUTHENTIC"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-35412",
+      "preregistration_status": "EXPLORATORY",
+      "is_prospective": false,
+      "authority_classification": "PROSPECTIVE_AUTHENTIC"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-34088",
+      "preregistration_status": "EXPLORATORY",
+      "is_prospective": false,
+      "authority_classification": "PROSPECTIVE_AUTHENTIC"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-34088",
+      "preregistration_status": "PROSPECTIVELY_PREREGISTERED",
+      "is_prospective": true,
+      "authority_classification": "PROSPECTIVE_AUTHENTIC"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-34088",
+      "preregistration_status": "EXPLORATORY",
+      "is_prospective": false,
+      "authority_classification": "PROSPECTIVE_AUTHENTIC"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-38176",
+      "preregistration_status": "EXPLORATORY",
+      "is_prospective": false,
+      "authority_classification": "PROSPECTIVE_AUTHENTIC"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-38176",
+      "preregistration_status": "PROSPECTIVELY_PREREGISTERED",
+      "is_prospective": true,
+      "authority_classification": "PROSPECTIVE_AUTHENTIC"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-38176",
+      "preregistration_status": "EXPLORATORY",
+      "is_prospective": false,
+      "authority_classification": "PROSPECTIVE_AUTHENTIC"
+    }
+  ]
+}

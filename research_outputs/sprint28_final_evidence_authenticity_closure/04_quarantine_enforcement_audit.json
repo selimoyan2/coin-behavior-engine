@@ -1,0 +1,15 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "generated_at_utc": "2026-11-13T19:14:07Z",
+  "quarantine_policy": "STRICT_ISOLATION",
+  "quarantined_datasets_count": 1,
+  "quarantined_records": [
+    {
+      "dataset_id": "DS-BTC-5M-2026-10-INTAKE",
+      "quarantine_reason": "DETECTED_CORRUPT_OR_UNVERIFIED_STAGING_PATTERN",
+      "access_blocked_from_discovery": true,
+      "access_blocked_from_testing": true,
+      "access_blocked_from_model_training": true
+    }
+  ]
+}

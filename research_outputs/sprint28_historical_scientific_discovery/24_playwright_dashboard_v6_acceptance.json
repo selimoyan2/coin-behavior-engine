@@ -1,7 +1,7 @@
 {
   "suite": "SPRINT_28_PLAYWRIGHT_ACCEPTANCE",
   "sprint_id": "CBE_SPRINT28_HISTORICAL_SCIENTIFIC_DISCOVERY_ENGINE",
-  "timestamp_utc": "2026-11-12T10:27:40.304163+00:00",
+  "timestamp_utc": "2026-11-13T19:06:24.471604+00:00",
   "base_url": "http://127.0.0.1:18099",
   "viewports_tested": [
     "1440x900",

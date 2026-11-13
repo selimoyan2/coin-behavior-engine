@@ -1,0 +1,79 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "generated_at_utc": "2026-11-13T19:14:07Z",
+  "canonical_datasets_count": 9,
+  "canonical_fingerprints": [
+    {
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "instrument": "BTC/USDT",
+      "timeframe": "1h",
+      "period": "2024-01-01T00:00:00+00:00 to 2024-03-31T23:00:00+00:00",
+      "fingerprint": "ffe588ef7a397cdbdd53863bb1738a9415f29b07eec9188c8eb18ed5a8ee2bac",
+      "source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5"
+    },
+    {
+      "dataset_id": "DS-BTC-15M-Q1-2024",
+      "instrument": "BTC/USDT",
+      "timeframe": "15m",
+      "period": "2024-01-01T00:00:00+00:00 to 2024-03-31T23:45:00+00:00",
+      "fingerprint": "10ee8bddaa125beb53162c6ac159ca093c77572241fa4c2b78e7a9bf404db11b",
+      "source_sha256": "b0a9778c8aab3cdf211ba7c6ef20ed3ab6ab1d5dc9b4a2e6b28288c16f80503b"
+    },
+    {
+      "dataset_id": "DS-BTC-15M-Q2-2024",
+      "instrument": "BTC/USDT",
+      "timeframe": "15m",
+      "period": "2024-04-01T00:00:00+00:00 to 2024-06-30T23:45:00+00:00",
+      "fingerprint": "8df0556251fcb6495503dd7dfd9a38eab05c09c5ad76d612210a410e319a9a36",
+      "source_sha256": "02366bf9ccd3e5a879e05b553c68847a0e7f28fc8480cc5a244b5bd51f1b4024"
+    },
+    {
+      "dataset_id": "DS-BTC-15M-Q3-2024",
+      "instrument": "BTC/USDT",
+      "timeframe": "15m",
+      "period": "2024-07-01T00:00:00+00:00 to 2024-09-30T23:45:00+00:00",
+      "fingerprint": "f2478d3c57455da3e7dab6b502a024d6cbcecb1567cccf8e00621c0f65796f8b",
+      "source_sha256": "476d78e5f7800dfd79267a7f0019b398828908e403e2d539fad03775534efa10"
+    },
+    {
+      "dataset_id": "DS-BTC-15M-Q4-2024",
+      "instrument": "BTC/USDT",
+      "timeframe": "15m",
+      "period": "2024-10-01T00:00:00+00:00 to 2024-12-31T23:45:00+00:00",
+      "fingerprint": "473ef64d2ff0f4a484ae5e69ca60701ceabe51c4351f611cff5cca6f9e2bae35",
+      "source_sha256": "540c5a51a0fcd0c343e1de32fb1f833fa9bef9a30b43828b6ab0eb63f8550224"
+    },
+    {
+      "dataset_id": "DS-BTC-1H-JAN-2025",
+      "instrument": "BTC/USDT",
+      "timeframe": "1h",
+      "period": "2025-01-01T00:00:00+00:00 to 2025-01-31T23:00:00+00:00",
+      "fingerprint": "4cf1ef5472ae76640c5d8bf9f5924da4c7d24fcf6bde3828775895cef49ef47f",
+      "source_sha256": "3fc6fb4cb0dc8e5f50cf4d51f2cac889d201aed3f722e20a7bb7e74961c55550"
+    },
+    {
+      "dataset_id": "DS-BTC-1H-Q2-2024",
+      "instrument": "BTC/USDT",
+      "timeframe": "1h",
+      "period": "2024-04-01T00:00:00+00:00 to 2024-06-30T23:00:00+00:00",
+      "fingerprint": "986abaa492434d7263bcb3aded587c05dd0f39adf0c27f9900c1520eca3bcae2",
+      "source_sha256": "e9520a8c4e32abf1e9760a703f55d1b62f66b33d03515c5dc6180e89dfacfbd9"
+    },
+    {
+      "dataset_id": "DS-BTC-1H-Q3-2024",
+      "instrument": "BTC/USDT",
+      "timeframe": "1h",
+      "period": "2024-07-01T00:00:00+00:00 to 2024-09-30T23:00:00+00:00",
+      "fingerprint": "da9560c7df187cb30f1573ffffc96686e999403efeff874fe4d36ac8c4a4d666",
+      "source_sha256": "39bcd79a2262ea06c70677527bf6a810ceae2cfce1a7cf056c24a1048d07302e"
+    },
+    {
+      "dataset_id": "DS-BTC-1H-Q4-2024",
+      "instrument": "BTC/USDT",
+      "timeframe": "1h",
+      "period": "2024-10-01T00:00:00+00:00 to 2024-12-31T23:00:00+00:00",
+      "fingerprint": "2f1f7b4ced508bbd991347ff1ef959b4aa44f9b546d4ce4fc429f471d4537a94",
+      "source_sha256": "27f7e7ebc3bdc15b10b8992bceb2aa73152f527ec1b15522db1c10592099c67e"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 """
-Script to build and deploy Sprint 28 on authorized staging (srv1114257:18080).
+Script to build and deploy Sprint 28 Authenticity Closure on authorized staging (srv1114257:18080).
 Remote Host: 168.231.125.238
-STRICT ZERO-TOUCH ON PRODUCTION (container 19004adaea21).
+STRICT ZERO-TOUCH ON PRODUCTION (container de04c34aac95).
 """
 
 import json
@@ -17,33 +17,34 @@ SHORT_SHA = COMMIT_SHA[:7]
 print(f"Deploying commit: {COMMIT_SHA} ({SHORT_SHA})")
 
 metadata = {
-    "build_timestamp_utc": "2026-11-12T13:30:00Z",
+    "build_timestamp_utc": "2026-11-13T22:15:00Z",
     "commit_sha": COMMIT_SHA,
     "branch": "main",
     "canonical_model": "CBE-0.7.0",
     "model_status": "STRICTLY_FROZEN",
     "governance_decision": "TECHNICAL_NO_GO",
-    "sprint_id": "CBE_SPRINT28_HISTORICAL_SCIENTIFIC_DISCOVERY_ENGINE",
+    "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
     "build_environment": "Docker on srv1114257",
     "reproducible_build": True,
 }
 metadata_json_str = json.dumps(metadata, indent=2)
 
-IMAGE_TAG = f"cbe-market-intelligence:sprint28-discovery-engine-{SHORT_SHA}"
+IMAGE_TAG = f"cbe-market-intelligence:sprint28-closure-{SHORT_SHA}"
 
 remote_bash_script = f"""#!/bin/bash
 set -e
 echo "=== PRE-FLIGHT AUDIT: CHECK PRODUCTION CONTAINER ==="
-PROD_CID="19004adaea21"
+PROD_CID="de04c34aac95"
 if docker ps --format '{{{{.ID}}}}' | grep -q "$PROD_CID"; then
     echo "[OK] Production container $PROD_CID is running untouched."
     PROD_STATUS=$(docker inspect "$PROD_CID" --format 'Status: {{{{.State.Status}}}}, Restarts: {{{{.RestartCount}}}}')
     echo "Production Container State: $PROD_STATUS"
 else
-    echo "WARNING: Production container $PROD_CID status check."
+    echo "ERROR: Production container $PROD_CID is not running!"
+    exit 1
 fi
 
-echo "=== 1. PREPARING BUILD CONTEXT FOR SPRINT 28 ({COMMIT_SHA}) ==="
+echo "=== 1. PREPARING BUILD CONTEXT FOR SPRINT 28 CLOSURE ({COMMIT_SHA}) ==="
 rm -rf /tmp/cbe_sprint28_build
 git clone --depth 1 https://github.com/selimoyan2/coin-behavior-engine.git /tmp/cbe_sprint28_build
 cd /tmp/cbe_sprint28_build
@@ -98,13 +99,38 @@ if [ "$READY" != "1" ]; then
     exit 1
 fi
 
-echo "=== 8. POST-DEPLOYMENT PRODUCTION ZERO-TOUCH VERIFICATION ==="
+NEW_STAGING_CID=$(docker ps -q --filter name=dzzfws54by1whlbq6fk4ywut)
+echo "NEW_STAGING_CID: $NEW_STAGING_CID"
+
+echo "=== 8. TESTING CONTAINER RESTAURT RECOVERY ==="
+docker restart "$NEW_STAGING_CID"
+sleep 3
+RESTART_READY=0
+for i in {{1..20}}; do
+    HTTP_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/ready || true)
+    if [ "$HTTP_CODE" = "200" ]; then
+        echo "[OK] Staging recovered successfully after restart (HTTP 200) after $i seconds."
+        RESTART_READY=1
+        break
+    fi
+    sleep 1
+done
+
+if [ "$RESTART_READY" != "1" ]; then
+    echo "ERROR: Staging failed to recover after restart."
+    docker compose logs --tail=50
+    exit 1
+fi
+
+echo "=== 9. POST-DEPLOYMENT PRODUCTION ZERO-TOUCH VERIFICATION ==="
 if docker ps --format '{{{{.ID}}}}' | grep -q "$PROD_CID"; then
     PROD_POST_STATUS=$(docker inspect "$PROD_CID" --format 'Status: {{{{.State.Status}}}}, Restarts: {{{{.RestartCount}}}}')
     echo "[VERIFIED] Production container $PROD_CID untouched: $PROD_POST_STATUS"
+else
+    echo "ERROR: Production container $PROD_CID missing after staging deploy!"
+    exit 1
 fi
 
-NEW_STAGING_CID=$(docker ps -q --filter name=dzzfws54by1whlbq6fk4ywut)
 echo "DEPLOYMENT_SUCCESS: NEW_STAGING_CID=$NEW_STAGING_CID IMAGE_TAG={IMAGE_TAG} IMAGE_ID=$IMAGE_ID"
 """
 

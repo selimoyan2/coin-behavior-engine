@@ -1,0 +1,140 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "chain_length": 19,
+  "terminal_digest": "2203587858c5973b0a5ba7f553eae645538254a892ef83b09b317bf139775495",
+  "blocks": [
+    {
+      "hypothesis_id": "HYP-ATTEMPT-BACKDATE",
+      "hypothesis_digest": "cd8281f6af6c02983962106854f269f14df165cd070a171f73a8745c9dd7b370",
+      "previous_block_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "block_hash": "e73da2e9a69fd355202c083750cee1df3d224f0aadbf280fc6778c61e8de3849",
+      "recorded_at_utc": "2026-11-13T19:14:07Z"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01",
+      "hypothesis_digest": "c3947f564a4f78a0ddefe67f1db61b0267f6f1a40323d0b8914bf2259857f57c",
+      "previous_block_hash": "e73da2e9a69fd355202c083750cee1df3d224f0aadbf280fc6778c61e8de3849",
+      "block_hash": "80dee6ff073850ebdbf2baf4c72edbfdb93f4aefe20e60833be805506d2085f0",
+      "recorded_at_utc": "2026-11-13T18:40:56.664909+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-34088",
+      "hypothesis_digest": "75c566d2fad964c643e82da84e587dba7d538872a5ccb8c63bbb417912c0dba2",
+      "previous_block_hash": "80dee6ff073850ebdbf2baf4c72edbfdb93f4aefe20e60833be805506d2085f0",
+      "block_hash": "f98f47217b08d22b3f340b770bfb95c594ffa91b2138cee59d5e63bd89aedd02",
+      "recorded_at_utc": "2026-11-13T18:47:42.807749+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-35412",
+      "hypothesis_digest": "98b1de878dc2b8d01cbf0ca9cf47e4efbef47b65faaa5f0a46c31e6378d43c8d",
+      "previous_block_hash": "f98f47217b08d22b3f340b770bfb95c594ffa91b2138cee59d5e63bd89aedd02",
+      "block_hash": "892b32b4c78390c7f63cbc4d99c4f98baa7eb699d5b752b87f5540db5ac76678",
+      "recorded_at_utc": "2026-11-13T18:46:12.795295+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-38176",
+      "hypothesis_digest": "76f60d52212b738898daef85877db5934800dae20f21d3b88863b6a1abe1a6c7",
+      "previous_block_hash": "892b32b4c78390c7f63cbc4d99c4f98baa7eb699d5b752b87f5540db5ac76678",
+      "block_hash": "33ba8061e4d01697a3620233e89eeb9325ea8f42edbad15f0ef0790c7be70ee7",
+      "recorded_at_utc": "2026-11-13T19:05:22.306927+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-01-DYNAMIC-42448",
+      "hypothesis_digest": "e56be448abc89ae6132adb193e5d71d99375c4875531d836b1a445a6d7c4bf36",
+      "previous_block_hash": "33ba8061e4d01697a3620233e89eeb9325ea8f42edbad15f0ef0790c7be70ee7",
+      "block_hash": "eeac7a60c612632525ea2e4891a2faa7d547b228aecf0211633c7e46ac0bbe3a",
+      "recorded_at_utc": "2026-11-13T18:45:49.515618+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02",
+      "hypothesis_digest": "6c65f4d862e817ed2b868ce9eb7e4a0860335a2f7b7f389736a281a86d05d1ca",
+      "previous_block_hash": "eeac7a60c612632525ea2e4891a2faa7d547b228aecf0211633c7e46ac0bbe3a",
+      "block_hash": "4e6b600844006dde09cbddca498e44aa9f7c8da370e99993cb05da8f6e497470",
+      "recorded_at_utc": "2026-11-13T18:40:56.689712+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-34088",
+      "hypothesis_digest": "a2b8ab38bb2cbfbe769513fd2fe8c2a6ec43acc6e054af730c46e2a96ebe3d8e",
+      "previous_block_hash": "4e6b600844006dde09cbddca498e44aa9f7c8da370e99993cb05da8f6e497470",
+      "block_hash": "1991ee7263681c1226bb7f0a8f112ff7e79078c27006e73ac505e4c6d1b37ebe",
+      "recorded_at_utc": "2026-11-13T19:14:07Z"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-35412",
+      "hypothesis_digest": "f98601c6743c8d35a0b06f5ed9fb011fdcdb251559a97e3521d2ddfbd3331470",
+      "previous_block_hash": "1991ee7263681c1226bb7f0a8f112ff7e79078c27006e73ac505e4c6d1b37ebe",
+      "block_hash": "4b905e8d2793e67aab393cd2eab84bb7affb53f8f7282780ea531a00d015af0d",
+      "recorded_at_utc": "2026-11-13T19:14:07Z"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-38176",
+      "hypothesis_digest": "87ca2e8f943f7952c9c696bb81b2f44b03dc648e7594bd0bcbbf8ba025883bff",
+      "previous_block_hash": "4b905e8d2793e67aab393cd2eab84bb7affb53f8f7282780ea531a00d015af0d",
+      "block_hash": "e35802df201a4e28e2ce380f0981bbb14887d5bc83f99cb81c9c6f2238a2a8fc",
+      "recorded_at_utc": "2026-11-13T19:14:07Z"
+    },
+    {
+      "hypothesis_id": "HYP-POS-02-DYNAMIC-42448",
+      "hypothesis_digest": "219f84373d16d8b2220a51fd0710486192883e20fbbd50ce2982ba5466550f74",
+      "previous_block_hash": "e35802df201a4e28e2ce380f0981bbb14887d5bc83f99cb81c9c6f2238a2a8fc",
+      "block_hash": "0214b9de4bfadace42d2ca5b51d076be699326799207e722c77dd43027b440cb",
+      "recorded_at_utc": "2026-11-13T19:14:07Z"
+    },
+    {
+      "hypothesis_id": "HYP-REG-SHIFT-002",
+      "hypothesis_digest": "62d03997717aad0910938539698f6075774562be148c16a4665d2f6240110483",
+      "previous_block_hash": "0214b9de4bfadace42d2ca5b51d076be699326799207e722c77dd43027b440cb",
+      "block_hash": "6381c432d18384cec8195e49fd23b40ff2f41182eac7657437601a1a7c90d933",
+      "recorded_at_utc": "2024-01-01T00:00:00Z"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-ANALOG-003",
+      "hypothesis_digest": "9c5fe98bfeaf4f5b5428829d0592d92f3c9806d879fcabbf64ca78db8ecdd8bf",
+      "previous_block_hash": "6381c432d18384cec8195e49fd23b40ff2f41182eac7657437601a1a7c90d933",
+      "block_hash": "9b8b513ae34683dc57805fc726d77c9e38a50c7051037045fd862657667b039c",
+      "recorded_at_utc": "2026-11-13T19:14:07Z"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01",
+      "hypothesis_digest": "d8ba03894437a63695e19dcd1a8f81203952b13f1c974019d9bc0ea945a31e5d",
+      "previous_block_hash": "9b8b513ae34683dc57805fc726d77c9e38a50c7051037045fd862657667b039c",
+      "block_hash": "e0c98fecc5ddd76fd1a0edc828adabdc9188f3c01cc9bd389e2c2e78e2f6ae01",
+      "recorded_at_utc": "2026-11-13T18:40:56.274033+00:00"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-34088",
+      "hypothesis_digest": "000b003463048787986352fa2b960aa8d2a840222d0c97d638cbf835caf39fbc",
+      "previous_block_hash": "e0c98fecc5ddd76fd1a0edc828adabdc9188f3c01cc9bd389e2c2e78e2f6ae01",
+      "block_hash": "ca5661dacc345b0e10538eeb061f5c473bfe03ce149c081ffe40ee6252d66ab5",
+      "recorded_at_utc": "2026-11-13T19:14:07Z"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-35412",
+      "hypothesis_digest": "c7c39dedbe6666b3e58940e26f90e12875cb752da0e583f05735c259ea2e9618",
+      "previous_block_hash": "ca5661dacc345b0e10538eeb061f5c473bfe03ce149c081ffe40ee6252d66ab5",
+      "block_hash": "482d3176b1d95b8801546d6e64abbe831e31408ae352cd40faab947a47c1116d",
+      "recorded_at_utc": "2026-11-13T19:14:07Z"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-38176",
+      "hypothesis_digest": "f7eb4e841f43a490d5dada77dc2d4b3a7975ab1afd6b2cdbf5c7001f836ba518",
+      "previous_block_hash": "482d3176b1d95b8801546d6e64abbe831e31408ae352cd40faab947a47c1116d",
+      "block_hash": "0d68ecd8ea4b330a0ad262cddc8fce910b108cd691a5c4a87fe702be6f724f52",
+      "recorded_at_utc": "2026-11-13T19:14:07Z"
+    },
+    {
+      "hypothesis_id": "HYP-RETRO-TEST-01-42448",
+      "hypothesis_digest": "7b2df498ba9340d8407791fb78e9272e0918568fccb866ae34dc39e535b78270",
+      "previous_block_hash": "0d68ecd8ea4b330a0ad262cddc8fce910b108cd691a5c4a87fe702be6f724f52",
+      "block_hash": "25c36001dac2eced5414092913a61253ea14e10dc5cadb4afc6725cb0d8c0653",
+      "recorded_at_utc": "2026-11-13T19:14:07Z"
+    },
+    {
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "hypothesis_digest": "9929184eb1a7ac0231d7e97fff27f8aee2581fed8cb601fb7a4d6a440129914c",
+      "previous_block_hash": "25c36001dac2eced5414092913a61253ea14e10dc5cadb4afc6725cb0d8c0653",
+      "block_hash": "2203587858c5973b0a5ba7f553eae645538254a892ef83b09b317bf139775495",
+      "recorded_at_utc": "2024-01-01T00:00:00Z"
+    }
+  ]
+}

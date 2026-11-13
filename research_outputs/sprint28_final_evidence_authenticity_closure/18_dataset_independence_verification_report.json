@@ -1,0 +1,14 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "generated_at_utc": "2026-11-13T19:14:07Z",
+  "same_source_partitions_test": {
+    "verdict": "INDEPENDENCE_NOT_ESTABLISHED",
+    "issues": [
+      "Independence not established: distinct independent source lineage evidence is absent or unverified."
+    ]
+  },
+  "independence_classification_rules": {
+    "DISTINCT_PARTITIONS_SAME_SOURCE": "Partitions from same exchange/source; cannot grant full independent verification",
+    "INDEPENDENT_SOURCE_VERIFIED": "Strictly requires independent verified external source/exchange lineage"
+  }
+}

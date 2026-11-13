@@ -1,0 +1,22 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "generated_at_utc": "2026-11-13T19:14:07Z",
+  "mandatory_embargo_hours": 72.0,
+  "mandatory_embargo_seconds": 259200.0,
+  "embargo_enforcement_verified": true,
+  "temporal_leakage_detected": false,
+  "tested_windows": [
+    {
+      "discovery_end": "2024-03-31T23:59:59Z",
+      "validation_start": "2024-04-04T00:00:00Z",
+      "embargo_duration_hours": 72.00028,
+      "status": "VALID_EMBARGO_RESPECTED"
+    },
+    {
+      "discovery_end": "2024-03-31T23:59:59Z",
+      "validation_start": "2024-04-01T00:00:00Z",
+      "embargo_duration_hours": 0.00028,
+      "status": "VIOLATION_BLOCKED"
+    }
+  ]
+}

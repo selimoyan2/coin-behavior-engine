@@ -1,0 +1,23 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "deployed_at_utc": "2026-11-13T19:14:07Z",
+  "staging_host": "srv1114257 (168.231.125.238)",
+  "staging_port": 18080,
+  "deployed_commit_sha": "17d4ee2428eaca9b7e7b9da7c6373540dd08822f",
+  "deployed_container_id": "75929079b9e3",
+  "deployed_image_tag": "cbe-market-intelligence:sprint28-closure-17d4ee2",
+  "deployed_image_id": "sha256:69fcb7f06e3c0799d9df4d24949f4fe8cc9a62d77ab427333521c7175d49adce",
+  "readiness_probe": {
+    "endpoint": "http://127.0.0.1:18080/ready",
+    "status_code": 200,
+    "response_verified": true,
+    "latency_seconds": 8
+  },
+  "container_restart_recovery_test": {
+    "action": "docker restart 75929079b9e3",
+    "recovery_time_seconds": 4,
+    "post_restart_status_code": 200,
+    "restart_recovery_verified": true
+  },
+  "staging_verification_verdict": "VERIFIED_OPERATIONAL"
+}

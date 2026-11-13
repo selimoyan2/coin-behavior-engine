@@ -1,0 +1,327 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "generated_at_utc": "2026-11-13T19:14:07Z",
+  "search_space_audits_count": 8,
+  "audits": [
+    {
+      "search_id": "SRCH-VOL-2024-01",
+      "research_id": "RES-STAT-02",
+      "methodology_id": "METH-ENGLE-ARCH-01",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "parameters_tested": {
+        "lags": [
+          1,
+          2,
+          3,
+          5,
+          10
+        ],
+        "cadences": [
+          "15m",
+          "1h"
+        ],
+        "subsamples": [
+          "monthly",
+          "quarterly"
+        ]
+      },
+      "candidates_evaluated_count": 20,
+      "candidates_selected_count": 1,
+      "candidates_rejected_count": 19,
+      "rejected_candidates": [
+        {
+          "candidate_id": "CAND-LAG-10-15M",
+          "reason": "Multi-lag collinearity inflated p-value",
+          "p_value": 0.084
+        },
+        {
+          "candidate_id": "CAND-MONTH-FEB",
+          "reason": "Insufficient sample size (672 bars)",
+          "p_value": 0.042
+        }
+      ],
+      "selection_criteria": "Preregistered lag-1 ARCH LM test on quarterly 1h data with p < 0.01 threshold.",
+      "search_timestamp": "2026-11-12T09:49:00.168170+00:00"
+    },
+    {
+      "search_id": "SRCH-VOL-2024-01",
+      "research_id": "RES-STAT-02",
+      "methodology_id": "METH-ENGLE-ARCH-01",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "parameters_tested": {
+        "lags": [
+          1,
+          2,
+          3,
+          5,
+          10
+        ],
+        "cadences": [
+          "15m",
+          "1h"
+        ],
+        "subsamples": [
+          "monthly",
+          "quarterly"
+        ]
+      },
+      "candidates_evaluated_count": 20,
+      "candidates_selected_count": 1,
+      "candidates_rejected_count": 19,
+      "rejected_candidates": [
+        {
+          "candidate_id": "CAND-LAG-10-15M",
+          "reason": "Multi-lag collinearity inflated p-value",
+          "p_value": 0.084
+        },
+        {
+          "candidate_id": "CAND-MONTH-FEB",
+          "reason": "Insufficient sample size (672 bars)",
+          "p_value": 0.042
+        }
+      ],
+      "selection_criteria": "Preregistered lag-1 ARCH LM test on quarterly 1h data with p < 0.01 threshold.",
+      "search_timestamp": "2026-11-13T18:44:31.183907+00:00"
+    },
+    {
+      "search_id": "SRCH-VOL-2024-01",
+      "research_id": "RES-STAT-02",
+      "methodology_id": "METH-ENGLE-ARCH-01",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "parameters_tested": {
+        "lags": [
+          1,
+          2,
+          3,
+          5,
+          10
+        ],
+        "cadences": [
+          "15m",
+          "1h"
+        ],
+        "subsamples": [
+          "monthly",
+          "quarterly"
+        ]
+      },
+      "candidates_evaluated_count": 20,
+      "candidates_selected_count": 1,
+      "candidates_rejected_count": 19,
+      "rejected_candidates": [
+        {
+          "candidate_id": "CAND-LAG-10-15M",
+          "reason": "Multi-lag collinearity inflated p-value",
+          "p_value": 0.084
+        },
+        {
+          "candidate_id": "CAND-MONTH-FEB",
+          "reason": "Insufficient sample size (672 bars)",
+          "p_value": 0.042
+        }
+      ],
+      "selection_criteria": "Preregistered lag-1 ARCH LM test on quarterly 1h data with p < 0.01 threshold.",
+      "search_timestamp": "2026-11-13T18:44:31.225680+00:00"
+    },
+    {
+      "search_id": "SRCH-VOL-2024-01",
+      "research_id": "RES-STAT-02",
+      "methodology_id": "METH-ENGLE-ARCH-01",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "parameters_tested": {
+        "lags": [
+          1,
+          2,
+          3,
+          5,
+          10
+        ],
+        "cadences": [
+          "15m",
+          "1h"
+        ],
+        "subsamples": [
+          "monthly",
+          "quarterly"
+        ]
+      },
+      "candidates_evaluated_count": 20,
+      "candidates_selected_count": 1,
+      "candidates_rejected_count": 19,
+      "rejected_candidates": [
+        {
+          "candidate_id": "CAND-LAG-10-15M",
+          "reason": "Multi-lag collinearity inflated p-value",
+          "p_value": 0.084
+        },
+        {
+          "candidate_id": "CAND-MONTH-FEB",
+          "reason": "Insufficient sample size (672 bars)",
+          "p_value": 0.042
+        }
+      ],
+      "selection_criteria": "Preregistered lag-1 ARCH LM test on quarterly 1h data with p < 0.01 threshold.",
+      "search_timestamp": "2026-11-13T18:44:31.268238+00:00"
+    },
+    {
+      "search_id": "SRCH-VOL-2024-01",
+      "research_id": "RES-STAT-02",
+      "methodology_id": "METH-ENGLE-ARCH-01",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "parameters_tested": {
+        "lags": [
+          1,
+          2,
+          3,
+          5,
+          10
+        ],
+        "cadences": [
+          "15m",
+          "1h"
+        ],
+        "subsamples": [
+          "monthly",
+          "quarterly"
+        ]
+      },
+      "candidates_evaluated_count": 20,
+      "candidates_selected_count": 1,
+      "candidates_rejected_count": 19,
+      "rejected_candidates": [
+        {
+          "candidate_id": "CAND-LAG-10-15M",
+          "reason": "Multi-lag collinearity inflated p-value",
+          "p_value": 0.084
+        },
+        {
+          "candidate_id": "CAND-MONTH-FEB",
+          "reason": "Insufficient sample size (672 bars)",
+          "p_value": 0.042
+        }
+      ],
+      "selection_criteria": "Preregistered lag-1 ARCH LM test on quarterly 1h data with p < 0.01 threshold.",
+      "search_timestamp": "2026-11-13T18:44:31.291519+00:00"
+    },
+    {
+      "search_id": "SRCH-VOL-2024-01",
+      "research_id": "RES-STAT-02",
+      "methodology_id": "METH-ENGLE-ARCH-01",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "parameters_tested": {
+        "lags": [
+          1,
+          2,
+          3,
+          5,
+          10
+        ],
+        "cadences": [
+          "15m",
+          "1h"
+        ],
+        "subsamples": [
+          "monthly",
+          "quarterly"
+        ]
+      },
+      "candidates_evaluated_count": 20,
+      "candidates_selected_count": 1,
+      "candidates_rejected_count": 19,
+      "rejected_candidates": [
+        {
+          "candidate_id": "CAND-LAG-10-15M",
+          "reason": "Multi-lag collinearity inflated p-value",
+          "p_value": 0.084
+        },
+        {
+          "candidate_id": "CAND-MONTH-FEB",
+          "reason": "Insufficient sample size (672 bars)",
+          "p_value": 0.042
+        }
+      ],
+      "selection_criteria": "Preregistered lag-1 ARCH LM test on quarterly 1h data with p < 0.01 threshold.",
+      "search_timestamp": "2026-11-13T18:44:31.340149+00:00"
+    },
+    {
+      "search_id": "SRCH-VOL-2024-01",
+      "research_id": "RES-STAT-02",
+      "methodology_id": "METH-ENGLE-ARCH-01",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "parameters_tested": {
+        "lags": [
+          1,
+          2,
+          3,
+          5,
+          10
+        ],
+        "cadences": [
+          "15m",
+          "1h"
+        ],
+        "subsamples": [
+          "monthly",
+          "quarterly"
+        ]
+      },
+      "candidates_evaluated_count": 20,
+      "candidates_selected_count": 1,
+      "candidates_rejected_count": 19,
+      "rejected_candidates": [
+        {
+          "candidate_id": "CAND-LAG-10-15M",
+          "reason": "Multi-lag collinearity inflated p-value",
+          "p_value": 0.084
+        },
+        {
+          "candidate_id": "CAND-MONTH-FEB",
+          "reason": "Insufficient sample size (672 bars)",
+          "p_value": 0.042
+        }
+      ],
+      "selection_criteria": "Preregistered lag-1 ARCH LM test on quarterly 1h data with p < 0.01 threshold.",
+      "search_timestamp": "2026-11-13T18:44:31.481562+00:00"
+    },
+    {
+      "search_id": "SRCH-VOL-2024-01",
+      "research_id": "RES-STAT-02",
+      "methodology_id": "METH-ENGLE-ARCH-01",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "parameters_tested": {
+        "lags": [
+          1,
+          2,
+          3,
+          5,
+          10
+        ],
+        "cadences": [
+          "15m",
+          "1h"
+        ],
+        "subsamples": [
+          "monthly",
+          "quarterly"
+        ]
+      },
+      "candidates_evaluated_count": 20,
+      "candidates_selected_count": 1,
+      "candidates_rejected_count": 19,
+      "rejected_candidates": [
+        {
+          "candidate_id": "CAND-LAG-10-15M",
+          "reason": "Multi-lag collinearity inflated p-value",
+          "p_value": 0.084
+        },
+        {
+          "candidate_id": "CAND-MONTH-FEB",
+          "reason": "Insufficient sample size (672 bars)",
+          "p_value": 0.042
+        }
+      ],
+      "selection_criteria": "Preregistered lag-1 ARCH LM test on quarterly 1h data with p < 0.01 threshold.",
+      "search_timestamp": "2026-11-13T18:44:31.572368+00:00"
+    }
+  ]
+}

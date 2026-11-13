@@ -1,0 +1,35 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "generated_at_utc": "2026-11-13T19:14:07Z",
+  "mandatory_minimum_embargo_seconds": 259200.0,
+  "partitions_count": 3,
+  "partition_specifications": [
+    {
+      "partition_id": "PART-2024-DISC",
+      "partition_type": "DISCOVERY",
+      "start_utc": "2024-01-01T00:00:00Z",
+      "end_utc": "2024-06-30T23:59:59Z",
+      "dataset_id": "DS-BTC-1H-Q1-2024",
+      "embargo_seconds": 259200,
+      "description": "Discovery in-sample partition: H1 2024 spot data."
+    },
+    {
+      "partition_id": "PART-2024-VAL",
+      "partition_type": "VALIDATION",
+      "start_utc": "2024-07-04T00:00:00Z",
+      "end_utc": "2024-09-30T23:59:59Z",
+      "dataset_id": "DS-BTC-1H-Q3-2024",
+      "embargo_seconds": 259200,
+      "description": "Validation out-of-sample partition: Q3 2024 spot data with 1h embargo."
+    },
+    {
+      "partition_id": "PART-2024-HOLD",
+      "partition_type": "HOLDOUT",
+      "start_utc": "2024-10-04T00:00:00Z",
+      "end_utc": "2024-12-31T23:59:59Z",
+      "dataset_id": "DS-BTC-1H-Q4-2024",
+      "embargo_seconds": 259200,
+      "description": "Strict holdout partition: Q4 2024 spot data with 1h embargo."
+    }
+  ]
+}

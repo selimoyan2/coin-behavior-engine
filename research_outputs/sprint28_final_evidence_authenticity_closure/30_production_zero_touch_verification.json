@@ -1,0 +1,14 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "verified_at_utc": "2026-11-13T19:14:07Z",
+  "production_host": "srv1114257 (168.231.125.238)",
+  "production_domain": "coin.ozelweb.com.tr",
+  "production_container_id": "de04c34aac950a3d48a03c7a6366bb378456e22bad6eaef20f8f38c100811588",
+  "production_container_short_id": "de04c34aac95",
+  "production_image": "6t63aehpaw0cw1bbt4zcm09g:bedce52ea237e7522e22aa2176783fde12d5eed3",
+  "status": "running",
+  "restart_count": 0,
+  "ports": "8000/tcp",
+  "zero_touch_compliance": "STRICTLY_COMPLIANT",
+  "verification_statement": "Production container de04c34aac95 was strictly untouched during all testing, deployment, and validation procedures. Restart count remains zero."
+}

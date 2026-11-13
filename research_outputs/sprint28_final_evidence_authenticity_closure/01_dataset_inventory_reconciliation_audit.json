@@ -1,0 +1,27 @@
+{
+  "reconciliation_status": "RECONCILED",
+  "physical_monthly_source_files_count": 342,
+  "physical_monthly_directory": "data/binance_spot_multiyear/",
+  "canonical_registered_datasets_count": 9,
+  "canonical_registered_ids": [
+    "DS-BTC-1H-Q1-2024",
+    "DS-BTC-15M-Q1-2024",
+    "DS-BTC-15M-Q2-2024",
+    "DS-BTC-15M-Q3-2024",
+    "DS-BTC-15M-Q4-2024",
+    "DS-BTC-1H-JAN-2025",
+    "DS-BTC-1H-Q2-2024",
+    "DS-BTC-1H-Q3-2024",
+    "DS-BTC-1H-Q4-2024"
+  ],
+  "derived_aggregate_datasets_count": 5,
+  "quarantined_datasets_count": 1,
+  "quarantined_ids": [
+    "DS-BTC-5M-2026-10-INTAKE"
+  ],
+  "available_unverified_files_count": 342,
+  "total_registered_inventory_count": 10,
+  "explanation": "The 342 monthly files represent raw unaggregated physical files stored under data/binance_spot_multiyear/ (57 months x 6 timeframes). The 10 registered datasets represent the 9 canonical research datasets with formal cryptographic provenance specifications plus 1 quarantined dataset under intake.",
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "audit_timestamp_utc": "2026-11-13T19:14:07Z"
+}

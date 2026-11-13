@@ -1,0 +1,203 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "generated_at_utc": "2026-11-13T19:14:07Z",
+  "rules": [
+    "HYPOTHESIS_MUST_BE_PROSPECTIVELY_PREREGISTERED",
+    "DATASET_PROVENANCE_MUST_BE_VERIFIED",
+    "MULTIPLE_TESTING_MUST_BE_ACCOUNTED",
+    "REPRODUCIBILITY_STATUS_MUST_BE_VERIFIED",
+    "UNCERTAINTY_MEASURES_MANDATORY"
+  ],
+  "evaluations": [
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Hypothesis historical preregistration is unverified; barred from confirmatory status.",
+        "Statistical test 'ARCH_LM' differs from preregistered test 'ENGLE_ARCH_LM_TEST'.",
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Hypothesis historical preregistration is unverified; barred from confirmatory status.",
+        "Statistical test 'ARCH_LM' differs from preregistered test 'KOLMOGOROV_SMIRNOV_2SAMPLE'.",
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Hypothesis is retrospectively registered; barred from confirmatory status.",
+        "Hypothesis status is 'EXPLORATORY', not PREREGISTERED.",
+        "Missing preregistration timestamp.",
+        "Statistical test 'ARCH_LM' differs from preregistered test 'BINOMIAL_SIGN_TEST'.",
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Hypothesis status is 'DRAFT', not PREREGISTERED.",
+        "Missing preregistration timestamp.",
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Hypothesis is retrospectively registered; barred from confirmatory status.",
+        "Hypothesis status is 'RETROSPECTIVE_HYPOTHESIS', not PREREGISTERED.",
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Hypothesis is retrospectively registered; barred from confirmatory status.",
+        "Hypothesis status is 'RETROSPECTIVE_HYPOTHESIS', not PREREGISTERED.",
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Hypothesis is retrospectively registered; barred from confirmatory status.",
+        "Hypothesis status is 'EXPLORATORY', not PREREGISTERED.",
+        "Missing preregistration timestamp.",
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Hypothesis is retrospectively registered; barred from confirmatory status.",
+        "Hypothesis status is 'EXPLORATORY', not PREREGISTERED.",
+        "Missing preregistration timestamp.",
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Hypothesis is retrospectively registered; barred from confirmatory status.",
+        "Hypothesis status is 'EXPLORATORY', not PREREGISTERED.",
+        "Missing preregistration timestamp.",
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Hypothesis is retrospectively registered; barred from confirmatory status.",
+        "Hypothesis status is 'EXPLORATORY', not PREREGISTERED.",
+        "Missing preregistration timestamp.",
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Hypothesis is retrospectively registered; barred from confirmatory status.",
+        "Hypothesis status is 'EXPLORATORY', not PREREGISTERED.",
+        "Missing preregistration timestamp.",
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Hypothesis is retrospectively registered; barred from confirmatory status.",
+        "Hypothesis status is 'EXPLORATORY', not PREREGISTERED.",
+        "Missing preregistration timestamp.",
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Hypothesis is retrospectively registered; barred from confirmatory status.",
+        "Hypothesis status is 'EXPLORATORY', not PREREGISTERED.",
+        "Missing preregistration timestamp.",
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ],
+    [
+      false,
+      "CONFIRMATORY_BLOCKED",
+      [
+        "Hypothesis is retrospectively registered; barred from confirmatory status.",
+        "Hypothesis status is 'EXPLORATORY', not PREREGISTERED.",
+        "Missing preregistration timestamp.",
+        "Dataset provenance status 'VERIFIED' is not verified.",
+        "Reproducibility status 'OUTPUTS_MATCHED' is not verified."
+      ]
+    ]
+  ]
+}

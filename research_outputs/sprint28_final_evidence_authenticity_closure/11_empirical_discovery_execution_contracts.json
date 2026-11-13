@@ -1,0 +1,20 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "generated_at_utc": "2026-11-13T19:14:07Z",
+  "contract_specifications": [
+    {
+      "contract_id": "CONTRACT-ARCH-LM-V1",
+      "target_property": "VOLATILITY_CLUSTERING",
+      "test_methodology": "Engle ARCH LM Test with auxiliary OLS regression",
+      "statistical_significance_alpha": 0.01,
+      "reproducibility_guarantee": "DETERMINISTIC_GIVEN_SAMPLE"
+    },
+    {
+      "contract_id": "CONTRACT-KS-2SAMPLE-V1",
+      "target_property": "DISTRIBUTION_DRIFT",
+      "test_methodology": "Two-sample Kolmogorov-Smirnov test (scipy.stats.ks_2samp)",
+      "statistical_significance_alpha": 0.05,
+      "reproducibility_guarantee": "DETERMINISTIC_GIVEN_SAMPLES"
+    }
+  ]
+}

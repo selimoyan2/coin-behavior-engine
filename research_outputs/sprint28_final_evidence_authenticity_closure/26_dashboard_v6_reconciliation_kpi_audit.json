@@ -1,0 +1,21 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "generated_at_utc": "2026-11-13T19:14:07Z",
+  "reconciled_kpis": {
+    "total_raw_parquet_files": 342,
+    "registered_datasets_count": 10,
+    "canonical_datasets_count": 9,
+    "quarantined_datasets_count": 1,
+    "demonstration_fixtures_count": 3,
+    "validated_empirical_discoveries_count": 2,
+    "prospective_hypotheses_count": 5,
+    "unverified_seed_hypotheses_count": 2,
+    "retrospective_hypotheses_count": 2,
+    "same_source_partitions_replications": 2,
+    "independent_verified_replications": 0,
+    "directional_trading_eligibility": 0,
+    "governance_decision": "TECHNICAL_NO_GO",
+    "canonical_model": "CBE-0.7.0",
+    "model_status": "STRICTLY_FROZEN"
+  }
+}

@@ -1,0 +1,308 @@
+{
+  "sprint_id": "CBE_SPRINT28_FINAL_SCIENTIFIC_EVIDENCE_AUTHENTICITY_CLOSURE",
+  "generated_at_utc": "2026-11-13T19:14:07Z",
+  "reproduction_attempts_count": 9,
+  "attempts": [
+    {
+      "reproduction_id": "REP-COMP-VOL-001",
+      "original_experiment_id": "EXP-ASV-001",
+      "reproduction_type": "COMPUTATIONAL_REPEATABILITY",
+      "source_dataset_id": "DS-BTC-1H-Q1-2024",
+      "reproduction_dataset_id": "DS-BTC-1H-Q1-2024",
+      "original_methodology_id": "METH-ENGLE-ARCH-01",
+      "reproduction_methodology_id": "METH-ENGLE-ARCH-01",
+      "implementation_identity": "CBE_STATISTICAL_CORE_28_CANONICAL",
+      "environment_fingerprint": "ENV-FP-PYTHON-3.11-SCIPY-NUMPY",
+      "input_artifact_ids": [
+        "ART-INPUT-Q1-2024"
+      ],
+      "expected_result_artifact_id": "ART-EXPECTED-EXP-ASV-001",
+      "actual_result_artifact_id": "ART-ACTUAL-REP-VOL-001",
+      "comparison_method": "NUMERICAL_TOLERANCE",
+      "comparison_tolerance": {
+        "rtol": 0.0001,
+        "atol": 1e-06
+      },
+      "comparison_verdict": "MATCH",
+      "independence_verdict": "SAME_DATASET",
+      "provenance_verdict": "VERIFIED",
+      "reproduction_verdict": "REPEATABILITY_VERIFIED",
+      "discrepancies": [],
+      "metrics": {
+        "max_rel_error": 0.0,
+        "max_abs_error": 0.0,
+        "tested_values_count": 5
+      },
+      "created_at": "2026-11-12T09:50:01.730957+00:00"
+    },
+    {
+      "reproduction_id": "REP-IND-IMPL-002",
+      "original_experiment_id": "EXP-WF-002",
+      "reproduction_type": "INDEPENDENT_IMPLEMENTATION",
+      "source_dataset_id": "DS-BTC-1H-Q1-2024",
+      "reproduction_dataset_id": "DS-BTC-1H-Q1-2024",
+      "original_methodology_id": "METH-WF-ROLLING-01",
+      "reproduction_methodology_id": "METH-WF-INDEPENDENT-IMPL-02",
+      "implementation_identity": "INDEPENDENT_REFERENCE_VALIDATOR_V2",
+      "environment_fingerprint": "ENV-FP-CLEANROOM-OFFLINE",
+      "input_artifact_ids": [
+        "ART-INPUT-Q1-2024"
+      ],
+      "expected_result_artifact_id": "ART-EXPECTED-EXP-WF-002",
+      "actual_result_artifact_id": "ART-ACTUAL-REP-IMPL-002",
+      "comparison_method": "NUMERICAL_TOLERANCE",
+      "comparison_tolerance": {
+        "rtol": 0.01,
+        "atol": 0.001
+      },
+      "comparison_verdict": "MATCH",
+      "independence_verdict": "SAME_DATASET",
+      "provenance_verdict": "VERIFIED",
+      "reproduction_verdict": "INDEPENDENT_IMPLEMENTATION_REPRODUCED",
+      "discrepancies": [],
+      "metrics": {
+        "max_rel_error": 0.0024,
+        "max_abs_error": 0.00045,
+        "tested_values_count": 8
+      },
+      "created_at": "2026-11-12T09:50:01.730957+00:00"
+    },
+    {
+      "reproduction_id": "REP-IND-DATA-003",
+      "original_experiment_id": "EXP-REG-003",
+      "reproduction_type": "INDEPENDENT_DATASET",
+      "source_dataset_id": "DS-BTC-15M-Q1-2024",
+      "reproduction_dataset_id": "DS-BTC-15M-Q3-2024",
+      "original_methodology_id": "METH-KS-DIST-SHIFT-01",
+      "reproduction_methodology_id": "METH-KS-DIST-SHIFT-01",
+      "implementation_identity": "CBE_STATISTICAL_CORE_28_CANONICAL",
+      "environment_fingerprint": "ENV-FP-PYTHON-3.11-SCIPY-NUMPY",
+      "input_artifact_ids": [
+        "ART-INPUT-Q1-2024",
+        "ART-INPUT-Q3-2024"
+      ],
+      "expected_result_artifact_id": "ART-EXPECTED-EXP-REG-003",
+      "actual_result_artifact_id": "ART-ACTUAL-REP-DATA-003",
+      "comparison_method": "DISTRIBUTIONAL_EQUIVALENCE",
+      "comparison_tolerance": {
+        "alpha": 0.05
+      },
+      "comparison_verdict": "MATCH",
+      "independence_verdict": "DISTINCT_PARTITIONS_SAME_SOURCE",
+      "provenance_verdict": "VERIFIED",
+      "reproduction_verdict": "PARTIALLY_REPRODUCED",
+      "discrepancies": [
+        "Independence not established: distinct temporal partitions of the same exchange and symbol (Binance BTC/USDT)."
+      ],
+      "metrics": {
+        "effect_original": 0.082,
+        "effect_replication": 0.076,
+        "both_p_under_005": true
+      },
+      "created_at": "2026-11-12T09:50:01.730957+00:00"
+    },
+    {
+      "reproduction_id": "REP-SYNTHETIC-CHECK",
+      "original_experiment_id": "EXP-01",
+      "reproduction_type": "EXACT_REPLICATION",
+      "source_dataset_id": "DS-BTC-1H-Q1-2024",
+      "reproduction_dataset_id": "DS-BTC-1H-Q1-2024",
+      "original_methodology_id": "METH-01",
+      "reproduction_methodology_id": "METH-01",
+      "implementation_identity": "IMPL-TEST",
+      "environment_fingerprint": "ENV-FP-PYTHON-3.11-CBE28",
+      "input_artifact_ids": [
+        "ART-IN-DS-BTC-1H-Q1-2024"
+      ],
+      "expected_result_artifact_id": "ART-SYNTHETIC-FAKE",
+      "actual_result_artifact_id": "ART-SYNTHETIC-FAKE-REPRO",
+      "comparison_method": "NUMERICAL_TOLERANCE",
+      "comparison_tolerance": {
+        "rtol": 0.0001,
+        "atol": 1e-06
+      },
+      "comparison_verdict": "MATCH",
+      "independence_verdict": "SAME_DATASET",
+      "provenance_verdict": "VERIFIED",
+      "reproduction_verdict": "INSUFFICIENT_EVIDENCE",
+      "discrepancies": [
+        "Identical dataset identifiers.",
+        "Unverified, missing, or synthetic artifact ID cannot certify authoritative reproduction."
+      ],
+      "metrics": {
+        "max_rel_error": 0.0,
+        "max_abs_error": 0.0
+      },
+      "created_at": "2026-11-13T19:05:21.550970+00:00"
+    },
+    {
+      "reproduction_id": "REP-IDENTICAL-DICTS",
+      "original_experiment_id": "EXP-01",
+      "reproduction_type": "INDEPENDENT_DATASET",
+      "source_dataset_id": "DS-BTC-1H-Q1-2024",
+      "reproduction_dataset_id": "DS-BTC-1H-Q3-2024",
+      "original_methodology_id": "METH-01",
+      "reproduction_methodology_id": "METH-01",
+      "implementation_identity": "IMPL-01",
+      "environment_fingerprint": "ENV-FP-PYTHON-3.11-CBE28",
+      "input_artifact_ids": [
+        "ART-IN-DS-BTC-1H-Q1-2024"
+      ],
+      "expected_result_artifact_id": "ART-1",
+      "actual_result_artifact_id": "ART-2",
+      "comparison_method": "NUMERICAL_TOLERANCE",
+      "comparison_tolerance": {
+        "rtol": 0.0001,
+        "atol": 1e-06
+      },
+      "comparison_verdict": "MATCH",
+      "independence_verdict": "DISTINCT_PARTITIONS_SAME_SOURCE",
+      "provenance_verdict": "VERIFIED",
+      "reproduction_verdict": "PARTIALLY_REPRODUCED",
+      "discrepancies": [
+        "Shared source lineage: both 'DS-BTC-1H-Q1-2024' and 'DS-BTC-1H-Q3-2024' are from exchange Binance. Distinct partitions do not establish independent sourcing.",
+        "Distinct partitions from same source do not establish independent dataset replication (DISTINCT_PARTITIONS_SAME_SOURCE)."
+      ],
+      "metrics": {
+        "max_rel_error": 0.0,
+        "max_abs_error": 0.0
+      },
+      "created_at": "2026-11-13T19:05:21.657172+00:00"
+    },
+    {
+      "reproduction_id": "REP-MISSING-ORIG",
+      "original_experiment_id": "EXP-01",
+      "reproduction_type": "EXACT_REPLICATION",
+      "source_dataset_id": "DS-BTC-1H-Q1-2024",
+      "reproduction_dataset_id": "DS-BTC-1H-Q1-2024",
+      "original_methodology_id": "METH-01",
+      "reproduction_methodology_id": "METH-01",
+      "implementation_identity": "IMPL-01",
+      "environment_fingerprint": "ENV-FP-PYTHON-3.11-CBE28",
+      "input_artifact_ids": [
+        "ART-IN-DS-BTC-1H-Q1-2024"
+      ],
+      "expected_result_artifact_id": "NON_EXISTENT_ORIGINAL_ARTIFACT_SHA256",
+      "actual_result_artifact_id": "ART-ACT-REP-MISSING-ORIG",
+      "comparison_method": "NUMERICAL_TOLERANCE",
+      "comparison_tolerance": {
+        "rtol": 0.0001,
+        "atol": 1e-06
+      },
+      "comparison_verdict": "MATCH",
+      "independence_verdict": "SAME_DATASET",
+      "provenance_verdict": "VERIFIED",
+      "reproduction_verdict": "INSUFFICIENT_EVIDENCE",
+      "discrepancies": [
+        "Identical dataset identifiers.",
+        "Unverified, missing, or synthetic artifact ID cannot certify authoritative reproduction."
+      ],
+      "metrics": {
+        "max_rel_error": 0.0,
+        "max_abs_error": 0.0
+      },
+      "created_at": "2026-11-13T19:05:21.702404+00:00"
+    },
+    {
+      "reproduction_id": "REP-MISSING-REPRO",
+      "original_experiment_id": "EXP-01",
+      "reproduction_type": "EXACT_REPLICATION",
+      "source_dataset_id": "DS-BTC-1H-Q1-2024",
+      "reproduction_dataset_id": "DS-BTC-1H-Q1-2024",
+      "original_methodology_id": "METH-01",
+      "reproduction_methodology_id": "METH-01",
+      "implementation_identity": "IMPL-01",
+      "environment_fingerprint": "ENV-FP-PYTHON-3.11-CBE28",
+      "input_artifact_ids": [
+        "ART-IN-DS-BTC-1H-Q1-2024"
+      ],
+      "expected_result_artifact_id": "ART-EXP-EXP-01",
+      "actual_result_artifact_id": "NON_EXISTENT_REPRO_ARTIFACT_SHA256",
+      "comparison_method": "NUMERICAL_TOLERANCE",
+      "comparison_tolerance": {
+        "rtol": 0.0001,
+        "atol": 1e-06
+      },
+      "comparison_verdict": "MATCH",
+      "independence_verdict": "SAME_DATASET",
+      "provenance_verdict": "VERIFIED",
+      "reproduction_verdict": "INSUFFICIENT_EVIDENCE",
+      "discrepancies": [
+        "Identical dataset identifiers.",
+        "Unverified, missing, or synthetic artifact ID cannot certify authoritative reproduction."
+      ],
+      "metrics": {
+        "max_rel_error": 0.0,
+        "max_abs_error": 0.0
+      },
+      "created_at": "2026-11-13T19:05:21.752369+00:00"
+    },
+    {
+      "reproduction_id": "REP-SAME-CODE",
+      "original_experiment_id": "EXP-01",
+      "reproduction_type": "INDEPENDENT_IMPLEMENTATION",
+      "source_dataset_id": "DS-BTC-1H-Q1-2024",
+      "reproduction_dataset_id": "DS-BTC-1H-Q1-2024",
+      "original_methodology_id": "METH-01",
+      "reproduction_methodology_id": "METH-01",
+      "implementation_identity": "IDENTICAL_INTERNAL_RUNNER",
+      "environment_fingerprint": "ENV-FP-PYTHON-3.11-CBE28",
+      "input_artifact_ids": [
+        "ART-IN-DS-BTC-1H-Q1-2024"
+      ],
+      "expected_result_artifact_id": "ART-EXP-EXP-01",
+      "actual_result_artifact_id": "ART-ACT-REP-SAME-CODE",
+      "comparison_method": "NUMERICAL_TOLERANCE",
+      "comparison_tolerance": {
+        "rtol": 0.0001,
+        "atol": 1e-06
+      },
+      "comparison_verdict": "MATCH",
+      "independence_verdict": "SAME_DATASET",
+      "provenance_verdict": "VERIFIED",
+      "reproduction_verdict": "INSUFFICIENT_EVIDENCE",
+      "discrepancies": [
+        "Identical dataset identifiers.",
+        "Unverified, missing, or synthetic artifact ID cannot certify authoritative reproduction."
+      ],
+      "metrics": {
+        "max_rel_error": 0.0,
+        "max_abs_error": 0.0
+      },
+      "created_at": "2026-11-13T19:05:21.792869+00:00"
+    },
+    {
+      "reproduction_id": "REP-POS-IMPL",
+      "original_experiment_id": "EXP-01",
+      "reproduction_type": "INDEPENDENT_IMPLEMENTATION",
+      "source_dataset_id": "DS-BTC-1H-Q1-2024",
+      "reproduction_dataset_id": "DS-BTC-1H-Q1-2024",
+      "original_methodology_id": "METH-01",
+      "reproduction_methodology_id": "METH-01",
+      "implementation_identity": "EXTERNAL_JULIA_ENGINE",
+      "environment_fingerprint": "ENV-FP-PYTHON-3.11-CBE28",
+      "input_artifact_ids": [
+        "ART-IN-DS-BTC-1H-Q1-2024"
+      ],
+      "expected_result_artifact_id": "ART-1",
+      "actual_result_artifact_id": "ART-2",
+      "comparison_method": "NUMERICAL_TOLERANCE",
+      "comparison_tolerance": {
+        "rtol": 0.0001,
+        "atol": 1e-06
+      },
+      "comparison_verdict": "MATCH",
+      "independence_verdict": "SAME_DATASET",
+      "provenance_verdict": "VERIFIED",
+      "reproduction_verdict": "INDEPENDENT_IMPLEMENTATION_REPRODUCED",
+      "discrepancies": [
+        "Identical dataset identifiers."
+      ],
+      "metrics": {
+        "max_rel_error": 0.0,
+        "max_abs_error": 0.0
+      },
+      "created_at": "2026-11-13T19:05:22.557600+00:00"
+    }
+  ]
+}
