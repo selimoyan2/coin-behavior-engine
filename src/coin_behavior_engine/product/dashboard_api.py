@@ -176,16 +176,48 @@ class ProductDashboardApiService:
             path = path_only
 
         # Normalize path
+        is_known_prefix = False
         operator_prefix = "/api/v1/operator"
         if path.startswith(operator_prefix):
             sub_path = path[len(operator_prefix):].strip("/")
+            is_known_prefix = True
         elif path.startswith(cls.API_PREFIX):
             sub_path = path[len(cls.API_PREFIX):].strip("/")
+            is_known_prefix = True
         else:
             sub_path = path.strip("/")
 
+        # Strict governance rejection on live trading attempts under BTC timing research
+        sub_lower = sub_path.lower()
+        if "btc-timing" in sub_lower and any(bad in sub_lower for bad in ("live-trade", "order", "broker-api", "place-order", "trade/execute", "live_order")):
+            return HTTPStatus.FORBIDDEN, {
+                "error": "GOVERNANCE_VIOLATION",
+                "message": "Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.",
+                "canonical_model": "CBE-0.7.0",
+                "governance_decision": "TECHNICAL_NO_GO",
+            }
+
         try:
-            if sub_path in ("", "overview"):
+            # BTC Timing Research (Sprint 29)
+            if sub_path in ("research/btc-timing/overview", "btc-timing/overview"):
+                return cls.get_btc_timing_overview()
+            elif sub_path in ("research/btc-timing/datasets", "btc-timing/datasets"):
+                return cls.get_btc_timing_datasets()
+            elif sub_path in ("research/btc-timing/policies", "btc-timing/policies"):
+                return cls.get_btc_timing_policies()
+            elif sub_path in ("research/btc-timing/cost-profiles", "btc-timing/cost-profiles"):
+                return cls.get_btc_timing_cost_profiles()
+            elif sub_path in ("research/btc-timing/experiments", "btc-timing/experiments"):
+                return cls.get_btc_timing_experiments(query_params)
+            elif sub_path.startswith("research/btc-timing/experiments/") and sub_path.endswith("/report"):
+                exp_id = sub_path.split("/")[-2]
+                return cls.get_btc_timing_experiment_report(exp_id)
+            elif sub_path.startswith("research/btc-timing/experiments/"):
+                exp_id = sub_path.split("/")[-1]
+                return cls.get_btc_timing_experiment_detail(exp_id)
+            elif sub_path in ("research/btc-timing/compare", "btc-timing/compare"):
+                return cls.get_btc_timing_compare(query_params)
+            elif sub_path in ("", "overview"):
                 return HTTPStatus.OK, cls.get_overview()
             elif sub_path == "research-results":
                 return HTTPStatus.OK, cls.get_research_results(query_params)
@@ -1064,16 +1096,34 @@ class ProductDashboardApiService:
         body = body or {}
         headers = headers or {}
 
+        is_known_prefix = False
         operator_prefix = "/api/v1/operator"
         if path.startswith(operator_prefix):
             sub_path = path[len(operator_prefix):].strip("/")
+            is_known_prefix = True
         elif path.startswith(cls.API_PREFIX):
             sub_path = path[len(cls.API_PREFIX):].strip("/")
+            is_known_prefix = True
         else:
             sub_path = path.strip("/")
 
+        # Strict governance rejection on live trading attempts under BTC timing research
+        sub_lower = sub_path.lower()
+        if "btc-timing" in sub_lower and any(bad in sub_lower for bad in ("live-trade", "order", "broker-api", "place-order", "trade/execute", "live_order")):
+            return HTTPStatus.FORBIDDEN, {
+                "error": "GOVERNANCE_VIOLATION",
+                "message": "Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.",
+                "canonical_model": "CBE-0.7.0",
+                "governance_decision": "TECHNICAL_NO_GO",
+            }
+
         try:
-            if sub_path in ("session/login", "auth/login"):
+            # BTC Timing Research (Sprint 29)
+            if sub_path in ("research/btc-timing/simulate", "btc-timing/simulate"):
+                return cls.post_btc_timing_simulate(body)
+            elif sub_path in ("research/btc-timing/walk-forward", "btc-timing/walk-forward"):
+                return cls.post_btc_timing_walk_forward(body)
+            elif sub_path in ("session/login", "auth/login"):
                 return cls.post_session_login_api(body, headers)
             elif sub_path in ("session/logout", "auth/logout"):
                 return cls.post_session_logout_api(headers)
@@ -6794,6 +6844,235 @@ class ProductDashboardApiService:
         reports_dir = os.environ.get("CBE_REPORTS_STORAGE_PATH", "research_outputs/reports")
         info = StorageDurabilityEngine.inspect_storage_path(reports_dir)
         return HTTPStatus.OK, info
+
+    # =========================================================================
+    # SPRINT 29: BTC TIMING RESEARCH ENGINE & HISTORICAL PAPER PORTFOLIO APIs
+    # =========================================================================
+
+    @classmethod
+    def get_btc_timing_overview(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Returns high-level BTC timing research workspace summary."""
+        from coin_behavior_engine.product.btc_timing_research.timing_research_coordinator import (
+            BTCTimingResearchCoordinator,
+        )
+        coord = BTCTimingResearchCoordinator.get_instance()
+        exps = coord.repository.list_experiments()
+        datasets = coord.dataset_adapter.get_registered_datasets()
+        from coin_behavior_engine.product.btc_timing_research.timing_policy_engine import POLICY_REGISTRY
+        from coin_behavior_engine.product.btc_timing_research.transaction_cost_model import CANONICAL_COST_PROFILES
+
+        latest = exps[-1] if exps else None
+
+        return HTTPStatus.OK, {
+            "status": "success",
+            "research_mode": "STRICTLY_OFFLINE_RESEARCH",
+            "model_version": "CBE-0.7.0",
+            "model_status": "STRICTLY_FROZEN",
+            "governance_decision": "TECHNICAL_NO_GO",
+            "directional_trading_eligibility": 0,
+            "live_order_execution": "PERMANENTLY_PROHIBITED",
+            "total_datasets": len(datasets),
+            "datasets": [d["dataset_id"] for d in datasets],
+            "total_policies": len(POLICY_REGISTRY),
+            "policies": list(POLICY_REGISTRY.keys()),
+            "cost_profiles": list(CANONICAL_COST_PROFILES.keys()),
+            "total_experiments_recorded": len(exps),
+            "latest_experiment": latest,
+            "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        }
+
+    @classmethod
+    def get_btc_timing_datasets(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Returns catalogue of verified historical BTC datasets."""
+        from coin_behavior_engine.product.btc_timing_research.dataset_adapter import (
+            HistoricalBTCDatasetAdapter,
+        )
+        adapter = HistoricalBTCDatasetAdapter()
+        items = adapter.get_registered_datasets()
+        return HTTPStatus.OK, {
+            "status": "success",
+            "total_datasets": len(items),
+            "datasets": items,
+        }
+
+    @classmethod
+    def get_btc_timing_policies(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Returns list of all supported timing policies."""
+        from coin_behavior_engine.product.btc_timing_research.timing_policy_engine import (
+            POLICY_REGISTRY,
+            create_policy,
+        )
+        policies = []
+        for pid in POLICY_REGISTRY.keys():
+            pol = create_policy(pid)
+            policies.append(pol.to_dict())
+        return HTTPStatus.OK, {
+            "status": "success",
+            "total_policies": len(policies),
+            "policies": policies,
+        }
+
+    @classmethod
+    def get_btc_timing_cost_profiles(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Returns canonical transaction cost profiles."""
+        from coin_behavior_engine.product.btc_timing_research.transaction_cost_model import (
+            CANONICAL_COST_PROFILES,
+        )
+        return HTTPStatus.OK, {
+            "status": "success",
+            "cost_profiles": [p.to_dict() for p in CANONICAL_COST_PROFILES.values()],
+        }
+
+    @classmethod
+    def get_btc_timing_experiments(cls, query_params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """List persisted historical timing experiments."""
+        from coin_behavior_engine.product.btc_timing_research.timing_research_coordinator import (
+            BTCTimingResearchCoordinator,
+        )
+        coord = BTCTimingResearchCoordinator.get_instance()
+        exps = coord.repository.list_experiments()
+        policy_filter = query_params.get("policy_id", [None])[0]
+        if policy_filter:
+            exps = [e for e in exps if e.get("policy_id") == policy_filter]
+        return HTTPStatus.OK, {
+            "status": "success",
+            "total_experiments": len(exps),
+            "experiments": exps,
+        }
+
+    @classmethod
+    def get_btc_timing_experiment_detail(cls, experiment_id: str) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Retrieve full details of an experiment including equity curve and trades."""
+        from coin_behavior_engine.product.btc_timing_research.timing_research_coordinator import (
+            BTCTimingResearchCoordinator,
+        )
+        coord = BTCTimingResearchCoordinator.get_instance()
+        exp = coord.repository.get_experiment(experiment_id)
+        if not exp:
+            return HTTPStatus.NOT_FOUND, {
+                "status": "error",
+                "error_code": "EXPERIMENT_NOT_FOUND",
+                "message": f"Experiment '{experiment_id}' was not found in the timing repository.",
+            }
+        return HTTPStatus.OK, {
+            "status": "success",
+            "experiment": exp,
+        }
+
+    @classmethod
+    def get_btc_timing_experiment_report(cls, experiment_id: str) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Generate and retrieve downloadable scientific research report."""
+        from coin_behavior_engine.product.btc_timing_research.timing_research_coordinator import (
+            BTCTimingResearchCoordinator,
+        )
+        coord = BTCTimingResearchCoordinator.get_instance()
+        exp = coord.repository.get_experiment(experiment_id)
+        if not exp:
+            return HTTPStatus.NOT_FOUND, {
+                "status": "error",
+                "error_code": "EXPERIMENT_NOT_FOUND",
+                "message": f"Experiment '{experiment_id}' not found.",
+            }
+        markdown_text = coord.report_builder.build_markdown_report(exp)
+        return HTTPStatus.OK, {
+            "status": "success",
+            "experiment_id": experiment_id,
+            "markdown_report": markdown_text,
+            "json_payload": exp,
+        }
+
+    @classmethod
+    def get_btc_timing_compare(cls, query_params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Compare all supported timing policies side by side."""
+        from coin_behavior_engine.product.btc_timing_research.timing_research_coordinator import (
+            BTCTimingResearchCoordinator,
+        )
+        coord = BTCTimingResearchCoordinator.get_instance()
+        dataset_id = query_params.get("dataset_id", ["DS-BTC-1H-2023-2024"])[0]
+        cost_profile = query_params.get("cost_profile_id", ["BASE_COST"])[0]
+        comparisons = coord.compare_all_policies(dataset_id=dataset_id, cost_profile_id=cost_profile)
+        return HTTPStatus.OK, {
+            "status": "success",
+            "dataset_id": dataset_id,
+            "cost_profile_id": cost_profile,
+            "total_policies_compared": len(comparisons),
+            "comparisons": comparisons,
+        }
+
+    @classmethod
+    def post_btc_timing_simulate(cls, body: Dict[str, Any]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Execute a new historical paper simulation."""
+        from coin_behavior_engine.product.btc_timing_research.timing_research_coordinator import (
+            BTCTimingResearchCoordinator,
+        )
+        coord = BTCTimingResearchCoordinator.get_instance()
+        policy_id = body.get("policy_id", "POLICY_SIMPLE_TREND")
+        dataset_id = body.get("dataset_id", "DS-BTC-1H-2023-2024")
+        cost_profile_id = body.get("cost_profile_id", "BASE_COST")
+        init_cap = float(body.get("initial_capital_usdt", 10000.0))
+        params = body.get("parameters", {})
+        start_idx = int(body.get("start_index", 50))
+        end_idx = body.get("end_index")
+        if end_idx is not None:
+            end_idx = int(end_idx)
+
+        try:
+            res = coord.run_experiment(
+                policy_id=policy_id,
+                dataset_id=dataset_id,
+                parameters=params,
+                cost_profile_id=cost_profile_id,
+                initial_capital_usdt=init_cap,
+                start_index=start_idx,
+                end_index=end_idx,
+            )
+            return HTTPStatus.OK, {
+                "status": "success",
+                "message": f"Historical paper simulation completed for policy '{policy_id}'.",
+                "experiment": res,
+            }
+        except Exception as e:
+            logger.error(f"Error executing timing simulation: {e}")
+            return HTTPStatus.INTERNAL_SERVER_ERROR, {
+                "status": "error",
+                "error_code": "SIMULATION_FAILED",
+                "message": str(e),
+            }
+
+    @classmethod
+    def post_btc_timing_walk_forward(cls, body: Dict[str, Any]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Execute walk-forward cross validation."""
+        from coin_behavior_engine.product.btc_timing_research.timing_research_coordinator import (
+            BTCTimingResearchCoordinator,
+        )
+        from coin_behavior_engine.product.btc_timing_research.timing_policy_engine import create_policy
+        coord = BTCTimingResearchCoordinator.get_instance()
+        policy_id = body.get("policy_id", "POLICY_SIMPLE_TREND")
+        dataset_id = body.get("dataset_id", "DS-BTC-1H-2023-2024")
+        cost_profile_id = body.get("cost_profile_id", "BASE_COST")
+        n_folds = int(body.get("n_folds", 3))
+        params = body.get("parameters", {})
+
+        try:
+            df_features = coord.get_feature_table(dataset_id)
+            policy = create_policy(policy_id, params)
+            report = coord.walk_forward_validator.execute_walk_forward(
+                df_features=df_features,
+                policy=policy,
+                n_folds=n_folds,
+                cost_profile_id=cost_profile_id,
+            )
+            return HTTPStatus.OK, {
+                "status": "success",
+                "report": report.to_dict(),
+            }
+        except Exception as e:
+            logger.error(f"Error executing walk-forward validation: {e}")
+            return HTTPStatus.INTERNAL_SERVER_ERROR, {
+                "status": "error",
+                "error_code": "WALK_FORWARD_FAILED",
+                "message": str(e),
+            }
 
 
 START_TIME = time.time()

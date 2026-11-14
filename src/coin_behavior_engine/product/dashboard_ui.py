@@ -4134,6 +4134,7 @@ def render_product_dashboard_html() -> str:
 
     // Tab Navigation & Category Groups (Phase G)
     const tabGroupsMap = {
+      "btc-timing": "market",
       "unified-workspace": "market",
       overview: "market",
       behavior: "market",
@@ -4186,6 +4187,7 @@ def render_product_dashboard_html() -> str:
     }
 
     function switchTab(tabId) {
+      if (tabId === 'btc-timing') setTimeout(loadBtcTimingTab, 50);
       if (tabId === 'research-explorer') setTimeout(loadResearchExplorer, 50);
       if (tabId === 'unified-workspace') setTimeout(loadUnifiedWorkspace, 50);
       if (tabId === 'regimes') setTimeout(loadRegimeTransitionLab, 50);
@@ -8720,6 +8722,12 @@ def render_product_dashboard_html() -> str:
         render_research_explorer_scripts,
         render_research_explorer_styles,
     )
+    from coin_behavior_engine.product.btc_timing_research.btc_timing_ui import (
+        render_btc_timing_html,
+        render_btc_timing_nav_tab,
+        render_btc_timing_scripts,
+        render_btc_timing_styles,
+    )
     # Inject Sprint 19 Explorer styles into <style> block
     html = html.replace("</style>", render_research_explorer_styles() + "\n  </style>", 1)
 
@@ -8729,6 +8737,14 @@ def render_product_dashboard_html() -> str:
 
     # Inject Sprint 19 Explorer scripts before </script>
     html = html.replace("</script>\n</body>", render_research_explorer_scripts() + "\n</script>\n</body>", 1)
+
+    # Inject Sprint 29 BTC Timing Research UI
+    html = html.replace("</style>", render_btc_timing_styles() + "\n  </style>", 1)
+    nav_hook = '<a href="#research-explorer"'
+    html = html.replace(nav_hook, render_btc_timing_nav_tab() + "\n    " + nav_hook, 1)
+    main_hook = "</main>"
+    html = html.replace(main_hook, render_btc_timing_html() + "\n  " + main_hook, 1)
+    html = html.replace("</script>\n</body>", render_btc_timing_scripts() + "\n</script>\n</body>", 1)
 
     return html
 

@@ -1,0 +1,164 @@
+{
+  "schema_version": "CBE-TIMING-HYPOTHESES-V1",
+  "saved_at": "2026-11-14T20:18:40.258455+00:00",
+  "hypotheses": [
+    {
+      "hypothesis_id": "HYP-TIMING-BnH-001",
+      "hypothesis_name": "BTC Buy and Hold Passive Benchmark",
+      "hypothesis_version": "1.0.0",
+      "research_question": "What is the baseline historical return, volatility, and max drawdown of passively holding BTC over the observation period?",
+      "policy_id": "POLICY_BUY_AND_HOLD",
+      "dataset_id": "DS-BTC-1H-2023-2024",
+      "dataset_sha256": "b83ec887baa37fb557544143e80f4f35628bd701f1ea8a51be7a88c199e9c874",
+      "feature_set": [
+        "close"
+      ],
+      "decision_rule": "Allocate 100% to BTC at start and hold indefinitely.",
+      "parameters": {
+        "target_allocation": 1.0
+      },
+      "parameter_selection_method": "FIXED_BENCHMARK",
+      "transaction_cost_profile": "BASE_COST",
+      "training_window": null,
+      "validation_window": null,
+      "test_window": null,
+      "preregistration_timestamp": "2026-11-14T19:00:06.552446+00:00",
+      "research_status": "EXPLORATORY",
+      "notes": "Mandatory passive benchmark."
+    },
+    {
+      "hypothesis_id": "HYP-TIMING-CASH-001",
+      "hypothesis_name": "USDT Cash Capital Preservation Benchmark",
+      "hypothesis_version": "1.0.0",
+      "research_question": "What is the capital preservation baseline of holding 100% USDT without assumed yield?",
+      "policy_id": "POLICY_USDT_CASH",
+      "dataset_id": "DS-BTC-1H-2023-2024",
+      "dataset_sha256": "b83ec887baa37fb557544143e80f4f35628bd701f1ea8a51be7a88c199e9c874",
+      "feature_set": [],
+      "decision_rule": "Allocate 0% to BTC (100% USDT cash) throughout.",
+      "parameters": {
+        "target_allocation": 0.0
+      },
+      "parameter_selection_method": "FIXED_BENCHMARK",
+      "transaction_cost_profile": "BASE_COST",
+      "training_window": null,
+      "validation_window": null,
+      "test_window": null,
+      "preregistration_timestamp": "2026-11-14T19:00:06.552446+00:00",
+      "research_status": "EXPLORATORY",
+      "notes": "Zero-yield cash benchmark."
+    },
+    {
+      "hypothesis_id": "HYP-TIMING-TREND-001",
+      "hypothesis_name": "Dual SMA Trend Following Allocation",
+      "hypothesis_version": "1.0.0",
+      "research_question": "Does reducing BTC exposure to 0% when price falls below SMA(50) reduce drawdown compared to Buy and Hold?",
+      "policy_id": "POLICY_SIMPLE_TREND",
+      "dataset_id": "DS-BTC-1H-2023-2024",
+      "dataset_sha256": "b83ec887baa37fb557544143e80f4f35628bd701f1ea8a51be7a88c199e9c874",
+      "feature_set": [
+        "close",
+        "sma_20",
+        "sma_50"
+      ],
+      "decision_rule": "100% BTC when close > sma_50, else 0% BTC.",
+      "parameters": {
+        "trend_indicator": "SMA",
+        "fast_window": 20,
+        "slow_window": 50
+      },
+      "parameter_selection_method": "HEURISTIC_PRESPECIFIED",
+      "transaction_cost_profile": "BASE_COST",
+      "training_window": null,
+      "validation_window": null,
+      "test_window": null,
+      "preregistration_timestamp": "2026-11-14T19:00:06.553455+00:00",
+      "research_status": "OUT_OF_SAMPLE_TESTED",
+      "notes": "Evaluates whether simple trend filter protects capital during downtrends."
+    },
+    {
+      "hypothesis_id": "HYP-TIMING-VOL-001",
+      "hypothesis_name": "Parkinson Volatility-Scaled Allocation",
+      "hypothesis_version": "1.0.0",
+      "research_question": "Does dynamically scaling down BTC allocation during elevated historical volatility improve risk-adjusted returns?",
+      "policy_id": "POLICY_VOLATILITY_AWARE",
+      "dataset_id": "DS-BTC-1H-2023-2024",
+      "dataset_sha256": "b83ec887baa37fb557544143e80f4f35628bd701f1ea8a51be7a88c199e9c874",
+      "feature_set": [
+        "high",
+        "low",
+        "parkinson_vol_24",
+        "volatility_regime"
+      ],
+      "decision_rule": "COMPRESSED_VOL: 100%, NORMAL_VOL: 75%, ELEVATED_VOL: 25%, EXTREME_VOL: 0%.",
+      "parameters": {
+        "window": 24,
+        "scale_rule": "DISCRETE_TIERS"
+      },
+      "parameter_selection_method": "HEURISTIC_PRESPECIFIED",
+      "transaction_cost_profile": "BASE_COST",
+      "training_window": null,
+      "validation_window": null,
+      "test_window": null,
+      "preregistration_timestamp": "2026-11-14T19:00:06.553455+00:00",
+      "research_status": "EXPLORATORY",
+      "notes": "Evaluates volatility risk-budgeting without directional bias."
+    },
+    {
+      "hypothesis_id": "HYP-TIMING-REGIME-001",
+      "hypothesis_name": "CBE Frozen Regime Research Allocation",
+      "hypothesis_version": "1.0.0",
+      "research_question": "Can CBE-0.7.0 canonical market regimes (Momentum, Recovery, Consolidation, Distribution, Capitulation) improve BTC timing?",
+      "policy_id": "POLICY_CBE_REGIME",
+      "dataset_id": "DS-BTC-1H-2023-2024",
+      "dataset_sha256": "b83ec887baa37fb557544143e80f4f35628bd701f1ea8a51be7a88c199e9c874",
+      "feature_set": [
+        "market_regime",
+        "volatility_regime"
+      ],
+      "decision_rule": "MOMENTUM: 100%, RECOVERY: 75%, CONSOLIDATION: 50%, DISTRIBUTION: 25%, CAPITULATION/HIGH_VOL: 0%.",
+      "parameters": {
+        "model_version": "CBE-0.7.0",
+        "thresholds": "FROZEN"
+      },
+      "parameter_selection_method": "CANONICAL_MODEL_MAPPING",
+      "transaction_cost_profile": "BASE_COST",
+      "training_window": null,
+      "validation_window": null,
+      "test_window": null,
+      "preregistration_timestamp": "2026-11-14T19:00:06.554466+00:00",
+      "research_status": "EXPLORATORY",
+      "notes": "Maps frozen scientific regimes to discrete exposure tiers."
+    },
+    {
+      "hypothesis_id": "HYP-TIMING-COMBINED-001",
+      "hypothesis_name": "Combined Trend and CBE Regime Filter",
+      "hypothesis_version": "1.0.0",
+      "research_question": "Does combining a moving average trend filter with CBE regime confirmation yield superior downside protection?",
+      "policy_id": "POLICY_COMBINED_TREND_REGIME",
+      "dataset_id": "DS-BTC-1H-2023-2024",
+      "dataset_sha256": "b83ec887baa37fb557544143e80f4f35628bd701f1ea8a51be7a88c199e9c874",
+      "feature_set": [
+        "close",
+        "sma_50",
+        "market_regime"
+      ],
+      "decision_rule": "Exposure active only when trend is positive AND regime is non-capitulating.",
+      "parameters": {
+        "trend_window": 50,
+        "exclude_regimes": [
+          "CAPITULATION",
+          "HIGH_VOLATILITY_EXPANSION"
+        ]
+      },
+      "parameter_selection_method": "EXPLORATORY_HYBRID",
+      "transaction_cost_profile": "BASE_COST",
+      "training_window": null,
+      "validation_window": null,
+      "test_window": null,
+      "preregistration_timestamp": "2026-11-14T19:00:06.555492+00:00",
+      "research_status": "EXPLORATORY",
+      "notes": "Experimental multi-factor research policy."
+    }
+  ]
+}

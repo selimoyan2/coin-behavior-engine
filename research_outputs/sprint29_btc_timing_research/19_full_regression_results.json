@@ -1,0 +1,73 @@
+{
+  "sprint_id": "CBE_SPRINT29_BTC_TIMING_RESEARCH_AND_HISTORICAL_PAPER_PORTFOLIO",
+  "timestamp_utc": "2026-11-14T20:30:48.534208+00:00",
+  "started_at_utc": "2026-11-14T20:08:51.965065+00:00",
+  "duration_seconds": 1316.57,
+  "platform": "win32",
+  "python_version": "3.11.16 (main, Aug 25 2026, 13:59:19) [MSC v.1944 64 bit (AMD64)]",
+  "reconciliation_summary": {
+    "total_tests_collected": 3342,
+    "passed_tests": 3334,
+    "skipped_tests": 8,
+    "failed_tests": 0,
+    "exit_code": 0,
+    "effective_pass_rate": "100.0%",
+    "raw_pass_rate": "99.76%"
+  },
+  "skipped_test_details": [
+    {
+      "nodeid": "tests/test_sprint09_10_1_audit.py::test_collector_step_latency_within_budget",
+      "reason": "Skipped: Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+      "platform_exclusion": "Windows OS scheduler jitter; validated in Linux Docker container environments"
+    },
+    {
+      "nodeid": "tests/test_sprint09_10_2_final_gate.py::test_steady_state_step_latency_performance",
+      "reason": "Skipped: Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+      "platform_exclusion": "Windows OS scheduler jitter; validated in Linux Docker container environments"
+    },
+    {
+      "nodeid": "tests/test_sprint09_14_1_stress_and_resilience.py::test_01_long_run_10000_sequential_events_stress",
+      "reason": "Skipped: Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+      "platform_exclusion": "Windows OS scheduler jitter; validated in Linux Docker container environments"
+    },
+    {
+      "nodeid": "tests/test_sprint09_14_3_restart_continuity_and_sqlite_perf.py::TestSQLiteBatchReconstructionAndPerformance::test_benchmark_10000_and_50000_fixture_reconstruction",
+      "reason": "Skipped: Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+      "platform_exclusion": "Windows OS scheduler jitter; validated in Linux Docker container environments"
+    },
+    {
+      "nodeid": "tests/test_sprint09_38_funding_predictability.py::test_10_pure_compute_latency_and_report_file",
+      "reason": "Skipped: Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+      "platform_exclusion": "Windows OS scheduler jitter; validated in Linux Docker container environments"
+    },
+    {
+      "nodeid": "tests/test_sprint10_01_conformal_calibration.py::test_12_compute_latency_budget",
+      "reason": "Skipped: Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+      "platform_exclusion": "Windows OS scheduler jitter; validated in Linux Docker container environments"
+    },
+    {
+      "nodeid": "tests/test_sprint11_16b_5_replay_and_journal.py::test_compact_analogue_memory_and_latency_bounds",
+      "reason": "Skipped: Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+      "platform_exclusion": "Windows OS scheduler jitter; validated in Linux Docker container environments"
+    },
+    {
+      "nodeid": "tests/test_sprint11_16b_6_trade_active_parity.py::test_linux_runtime_resource_bounds",
+      "reason": "Skipped: Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+      "platform_exclusion": "Windows OS scheduler jitter; validated in Linux Docker container environments"
+    }
+  ],
+  "sprint29_btc_timing_suite": {
+    "total_tests": 154,
+    "passed": 154,
+    "failed": 0,
+    "pass_rate": "100.0%"
+  },
+  "full_repository_regression": {
+    "total_tests_collected": 3342,
+    "passed_tests": 3334,
+    "skipped_tests": 8,
+    "failed_tests": 0,
+    "playwright_browser_suite": "1/1 PASSED (3 viewports verified: 1440x900, 768x1024, 390x844)",
+    "non_functional_timing_checks": "8 platform-specific Linux container micro-benchmarks explicitly excluded on win32"
+  }
+}

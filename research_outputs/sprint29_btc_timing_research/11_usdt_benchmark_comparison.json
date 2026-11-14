@@ -1,0 +1,60 @@
+{
+  "benchmark_policy": "POLICY_USDT_CASH",
+  "benchmark_return_pct": 0.0,
+  "comparisons": {
+    "POLICY_BUY_AND_HOLD": {
+      "policy_id": "POLICY_BUY_AND_HOLD",
+      "policy_net_return_pct": 155.14,
+      "usdt_return_pct": 0.0,
+      "excess_over_cash_pct": 155.14,
+      "policy_max_dd_pct": 32.3,
+      "usdt_max_dd_pct": 0.0,
+      "risk_premium_positive": true
+    },
+    "POLICY_USDT_CASH": {
+      "policy_id": "POLICY_USDT_CASH",
+      "policy_net_return_pct": 0.0,
+      "usdt_return_pct": 0.0,
+      "excess_over_cash_pct": 0.0,
+      "policy_max_dd_pct": 0.0,
+      "usdt_max_dd_pct": 0.0,
+      "risk_premium_positive": false
+    },
+    "POLICY_SIMPLE_TREND": {
+      "policy_id": "POLICY_SIMPLE_TREND",
+      "policy_net_return_pct": -23.39,
+      "usdt_return_pct": 0.0,
+      "excess_over_cash_pct": -23.39,
+      "policy_max_dd_pct": 44.37,
+      "usdt_max_dd_pct": 0.0,
+      "risk_premium_positive": false
+    },
+    "POLICY_VOLATILITY_AWARE": {
+      "policy_id": "POLICY_VOLATILITY_AWARE",
+      "policy_net_return_pct": 16.08,
+      "usdt_return_pct": 0.0,
+      "excess_over_cash_pct": 16.08,
+      "policy_max_dd_pct": 31.19,
+      "usdt_max_dd_pct": 0.0,
+      "risk_premium_positive": true
+    },
+    "POLICY_CBE_REGIME": {
+      "policy_id": "POLICY_CBE_REGIME",
+      "policy_net_return_pct": -13.96,
+      "usdt_return_pct": 0.0,
+      "excess_over_cash_pct": -13.96,
+      "policy_max_dd_pct": 30.72,
+      "usdt_max_dd_pct": 0.0,
+      "risk_premium_positive": false
+    },
+    "POLICY_COMBINED_TREND_REGIME": {
+      "policy_id": "POLICY_COMBINED_TREND_REGIME",
+      "policy_net_return_pct": -37.93,
+      "usdt_return_pct": 0.0,
+      "excess_over_cash_pct": -37.93,
+      "policy_max_dd_pct": 43.95,
+      "usdt_max_dd_pct": 0.0,
+      "risk_premium_positive": false
+    }
+  }
+}

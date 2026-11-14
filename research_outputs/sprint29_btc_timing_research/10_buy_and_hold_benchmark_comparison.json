@@ -1,0 +1,68 @@
+{
+  "benchmark_policy": "POLICY_BUY_AND_HOLD",
+  "benchmark_return_pct": 155.14,
+  "benchmark_max_drawdown_pct": 32.3,
+  "comparisons": {
+    "POLICY_BUY_AND_HOLD": {
+      "policy_id": "POLICY_BUY_AND_HOLD",
+      "policy_net_return_pct": 155.14,
+      "bnh_net_return_pct": 155.14,
+      "underperformance_pct": 0.0,
+      "policy_max_dd_pct": 32.3,
+      "bnh_max_dd_pct": 32.3,
+      "drawdown_reduction_pct": 0.0,
+      "outperformed_bnh": false
+    },
+    "POLICY_USDT_CASH": {
+      "policy_id": "POLICY_USDT_CASH",
+      "policy_net_return_pct": 0.0,
+      "bnh_net_return_pct": 155.14,
+      "underperformance_pct": -155.14,
+      "policy_max_dd_pct": 0.0,
+      "bnh_max_dd_pct": 32.3,
+      "drawdown_reduction_pct": 32.3,
+      "outperformed_bnh": false
+    },
+    "POLICY_SIMPLE_TREND": {
+      "policy_id": "POLICY_SIMPLE_TREND",
+      "policy_net_return_pct": -23.39,
+      "bnh_net_return_pct": 155.14,
+      "underperformance_pct": -178.53,
+      "policy_max_dd_pct": 44.37,
+      "bnh_max_dd_pct": 32.3,
+      "drawdown_reduction_pct": -12.07,
+      "outperformed_bnh": false
+    },
+    "POLICY_VOLATILITY_AWARE": {
+      "policy_id": "POLICY_VOLATILITY_AWARE",
+      "policy_net_return_pct": 16.08,
+      "bnh_net_return_pct": 155.14,
+      "underperformance_pct": -139.06,
+      "policy_max_dd_pct": 31.19,
+      "bnh_max_dd_pct": 32.3,
+      "drawdown_reduction_pct": 1.11,
+      "outperformed_bnh": false
+    },
+    "POLICY_CBE_REGIME": {
+      "policy_id": "POLICY_CBE_REGIME",
+      "policy_net_return_pct": -13.96,
+      "bnh_net_return_pct": 155.14,
+      "underperformance_pct": -169.1,
+      "policy_max_dd_pct": 30.72,
+      "bnh_max_dd_pct": 32.3,
+      "drawdown_reduction_pct": 1.58,
+      "outperformed_bnh": false
+    },
+    "POLICY_COMBINED_TREND_REGIME": {
+      "policy_id": "POLICY_COMBINED_TREND_REGIME",
+      "policy_net_return_pct": -37.93,
+      "bnh_net_return_pct": 155.14,
+      "underperformance_pct": -193.07,
+      "policy_max_dd_pct": 43.95,
+      "bnh_max_dd_pct": 32.3,
+      "drawdown_reduction_pct": -11.65,
+      "outperformed_bnh": false
+    }
+  },
+  "empirical_finding": "No active timing policy outperformed Buy and Hold after realistic transaction costs in the 2023-2024 bull trend."
+}

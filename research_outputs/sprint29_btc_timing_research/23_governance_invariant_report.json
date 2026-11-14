@@ -1,0 +1,31 @@
+{
+  "sprint_id": "CBE_SPRINT29_BTC_TIMING_RESEARCH_AND_HISTORICAL_PAPER_PORTFOLIO",
+  "timestamp_utc": "2026-11-14T19:44:47.411985+00:00",
+  "governance_invariants": {
+    "CANONICAL_MODEL": {
+      "value": "CBE-0.7.0",
+      "status": "STRICTLY_FROZEN",
+      "immutable": true
+    },
+    "RESEARCH_MODE": {
+      "value": "STRICTLY_OFFLINE_RESEARCH",
+      "active": true
+    },
+    "DIRECTIONAL_TRADING_ELIGIBILITY": {
+      "value": 0,
+      "authorized": false
+    },
+    "LIVE_ORDER_EXECUTION": {
+      "value": "PERMANENTLY_PROHIBITED",
+      "enforced_by_api_filter": true,
+      "rejection_http_status": 403
+    },
+    "PRODUCTION_CONTAINER_ZERO_TOUCH": {
+      "container_id": "de04c34aac95",
+      "port": 8000,
+      "restarts_allowed": 0,
+      "status": "UNTOUCHED_ZERO_TOUCH_PRESERVED"
+    }
+  },
+  "verification_status": "GOVERNANCE_INVARIANTS_COMPLIANT"
+}

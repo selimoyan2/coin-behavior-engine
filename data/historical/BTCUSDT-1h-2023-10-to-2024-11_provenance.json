@@ -1,0 +1,17 @@
+{
+  "dataset_id": "DS-BTC-1H-2023-2024",
+  "symbol": "BTCUSDT",
+  "interval": "1h",
+  "exchange": "BINANCE",
+  "market_type": "SPOT",
+  "provenance_source": "COMPILED_FROM_BINANCE_SPOT_MULTIYEAR_1H",
+  "earliest_candle_open_utc": "2023-10-01T00:00:00+00:00",
+  "earliest_candle_open_ms": 1696118400000,
+  "latest_candle_open_utc": "2024-10-31T23:00:00+00:00",
+  "latest_candle_open_ms": 1730415600000,
+  "total_bars": 9528,
+  "sha256_checksum": "b83ec887baa37fb557544143e80f4f35628bd701f1ea8a51be7a88c199e9c874",
+  "created_at_utc": "2026-11-14T21:58:00+00:00",
+  "documentation_url": "https://data.binance.vision/",
+  "license_or_coverage_notes": "Binance public historical market 1h klines (October 2023 - October 2024)"
+}

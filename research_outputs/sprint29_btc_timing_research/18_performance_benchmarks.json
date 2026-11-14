@@ -1,0 +1,51 @@
+{
+  "Historical Feature Extraction (9,528 candles)": {
+    "p50_ms": 19.178,
+    "p95_ms": 19.573,
+    "threshold_ms": 250.0,
+    "iterations": 3,
+    "status": "PASS"
+  },
+  "Simple Trend Policy Evaluation (Single Point)": {
+    "p50_ms": 0.062,
+    "p95_ms": 0.237,
+    "threshold_ms": 1.0,
+    "iterations": 15,
+    "status": "PASS"
+  },
+  "Transaction Cost Engine Calculation (Buy & Sell)": {
+    "p50_ms": 0.006,
+    "p95_ms": 0.009,
+    "threshold_ms": 1.0,
+    "iterations": 15,
+    "status": "PASS"
+  },
+  "Paper Portfolio Engine Single Rebalance": {
+    "p50_ms": 0.015,
+    "p95_ms": 0.026,
+    "threshold_ms": 2.0,
+    "iterations": 15,
+    "status": "PASS"
+  },
+  "Full 9,528-Candle Historical Simulation (Simple Trend)": {
+    "p50_ms": 282.283,
+    "p95_ms": 302.309,
+    "threshold_ms": 800.0,
+    "iterations": 3,
+    "status": "PASS"
+  },
+  "Performance Analytics Calculation (Full Curve)": {
+    "p50_ms": 14.509,
+    "p95_ms": 27.612,
+    "threshold_ms": 50.0,
+    "iterations": 15,
+    "status": "PASS"
+  },
+  "Coordinator Compare All 6 Policies": {
+    "p50_ms": 25482.18,
+    "p95_ms": 25752.682,
+    "threshold_ms": 35000.0,
+    "iterations": 3,
+    "status": "PASS"
+  }
+}

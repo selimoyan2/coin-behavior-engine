@@ -1,0 +1,8 @@
+{
+  "test_timestamp_utc": "2026-11-14T19:44:47.410962+00:00",
+  "experiment_id": "EXP-POLICY_BUY-843EAB67",
+  "persistence_format": "ATOMIC_JSON",
+  "save_verified": true,
+  "data_intact": true,
+  "restart_recovery_status": "DURABLE_PERSISTENCE_VERIFIED"
+}
