@@ -414,6 +414,9 @@ class ReproducibilityLabV2:
                 max_rel = art_rel
                 max_abs = art_abs
                 all_discrepancies.extend(art_disc)
+                if not art_match and art_comp in ("MISSING_EXECUTION_BINDING", "IDENTICAL_EXECUTION_EVIDENCE", "UNAUTHENTICATED_EXECUTION_RECORD"):
+                    has_unverified_caller_input = True
+                    artifact_error = art_comp
                 if expected_results is None:
                     expected_results = v_exp.metrics
                 if actual_results is None:
@@ -441,14 +444,17 @@ class ReproducibilityLabV2:
                 f"Distinct partitions from same source do not establish independent dataset replication ({ind_verdict})."
             )
         elif has_unverified_caller_input:
-            if artifact_error in ("PATH_TRAVERSAL",) or (artifact_error and "invalid" in artifact_error.lower()):
+            if (
+                artifact_error in ("PATH_TRAVERSAL", "MISSING_EXECUTION_BINDING", "IDENTICAL_EXECUTION_EVIDENCE", "UNAUTHENTICATED_EXECUTION_RECORD")
+                or (artifact_error and ("invalid" in artifact_error.lower() or "unregistered" in artifact_error.lower() or "mismatch" in artifact_error.lower()))
+            ):
                 rep_verdict = "REPRODUCTION_ARTIFACT_INVALID"
             elif reproduction_type == "EXACT_REPLICATION":
                 rep_verdict = "INSUFFICIENT_EVIDENCE"
             elif artifact_error in ("MISSING_ARTIFACT_ID", "SYNTHETIC_OR_NON_EXISTENT_ARTIFACT") or (artifact_error and "not found" in artifact_error.lower()):
                 rep_verdict = "REPRODUCTION_EVIDENCE_INCOMPLETE"
             else:
-                rep_verdict = "INSUFFICIENT_EVIDENCE"
+                rep_verdict = "REPRODUCTION_ARTIFACT_INVALID"
             all_discrepancies.append("Unverified, missing, or invalid artifact cannot certify authoritative reproduction.")
         elif reproduction_type == "COMPUTATIONAL_REPEATABILITY":
             rep_verdict = "COMPUTATIONAL_REPEATABILITY_VERIFIED"

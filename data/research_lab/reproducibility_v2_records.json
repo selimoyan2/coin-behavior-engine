@@ -1,6 +1,6 @@
 {
   "schema_version": "CBE-REPRODUCIBILITY-V2",
-  "saved_at": "2026-11-13T20:30:44.047177+00:00",
+  "saved_at": "2026-11-14T10:51:48.013425+00:00",
   "reproduction_records": [
     {
       "reproduction_id": "REP-COMP-VOL-001",
@@ -133,7 +133,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-13T20:30:42.834525+00:00"
+      "created_at": "2026-11-14T10:41:23.817135+00:00"
     },
     {
       "reproduction_id": "REP-IDENTICAL-DICTS",
@@ -167,7 +167,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-13T20:30:42.871008+00:00"
+      "created_at": "2026-11-14T10:41:23.866631+00:00"
     },
     {
       "reproduction_id": "REP-MISSING-ORIG",
@@ -202,7 +202,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-13T20:30:42.894416+00:00"
+      "created_at": "2026-11-14T10:41:23.895041+00:00"
     },
     {
       "reproduction_id": "REP-MISSING-REPRO",
@@ -237,7 +237,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-13T20:30:42.915509+00:00"
+      "created_at": "2026-11-14T10:41:23.915574+00:00"
     },
     {
       "reproduction_id": "REP-SAME-CODE",
@@ -272,7 +272,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-13T20:30:42.939229+00:00"
+      "created_at": "2026-11-14T10:41:23.938081+00:00"
     },
     {
       "reproduction_id": "REP-POS-IMPL",
@@ -305,7 +305,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-13T20:30:44.047177+00:00"
+      "created_at": "2026-11-14T10:41:24.288217+00:00"
     },
     {
       "reproduction_id": "REP-NO-REAL-ART",
@@ -340,7 +340,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-13T20:30:42.315364+00:00"
+      "created_at": "2026-11-14T10:51:47.553092+00:00"
     },
     {
       "reproduction_id": "REP-FORGED-IMPL",
@@ -374,7 +374,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-13T20:30:42.354133+00:00"
+      "created_at": "2026-11-14T10:51:47.586657+00:00"
     },
     {
       "reproduction_id": "REP-SAME-EXCHANGE-PARTITION",
@@ -402,14 +402,14 @@
       "reproduction_verdict": "REPRODUCTION_FAILED",
       "discrepancies": [
         "Shared source lineage: both 'DS-BTC-1H-Q1-2024' and 'DS-BTC-1H-Q3-2024' originate from exchange BINANCE. Distinct non-overlapping temporal partitions do not establish independent sourcing.",
-        "Metric 'ks_statistic' exceeded tolerance: expected=0.082, actual=0.076, diff=0.006, tol=9.2e-06",
-        "Metric 'raw_p_value' exceeded tolerance: expected=0.0041, actual=0.0048, diff=0.0007, tol=1.41e-06"
+        "Metric 'raw_p_value' exceeded tolerance: expected=0.0041, actual=0.0048, diff=0.0007, tol=1.41e-06",
+        "Metric 'ks_statistic' exceeded tolerance: expected=0.082, actual=0.076, diff=0.006, tol=9.2e-06"
       ],
       "metrics": {
         "max_rel_error": 0.17073170727543108,
         "max_abs_error": 0.006000000000000005
       },
-      "created_at": "2026-11-13T20:30:42.382984+00:00"
+      "created_at": "2026-11-14T10:51:47.607090+00:00"
     },
     {
       "reproduction_id": "REP-VALID-COMP-01",
@@ -442,7 +442,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-13T20:30:42.531185+00:00"
+      "created_at": "2026-11-14T10:51:47.736349+00:00"
     },
     {
       "reproduction_id": "REP-SELF-COMP-01",
@@ -477,7 +477,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-13T20:30:42.548081+00:00"
+      "created_at": "2026-11-14T10:51:47.758438+00:00"
     },
     {
       "reproduction_id": "REP-CHECK-PROMOTION",
@@ -511,7 +511,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-13T20:30:42.574756+00:00"
+      "created_at": "2026-11-14T10:51:47.780044+00:00"
     },
     {
       "reproduction_id": "REP-POS-COMP-01",
@@ -544,7 +544,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-13T20:30:42.652826+00:00"
+      "created_at": "2026-11-14T10:51:47.854705+00:00"
     },
     {
       "reproduction_id": "REP-POS-IMPL-02",
@@ -577,7 +577,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-13T20:30:42.678428+00:00"
+      "created_at": "2026-11-14T10:51:47.877238+00:00"
     },
     {
       "reproduction_id": "REP-POS-DATA-03",
@@ -608,7 +608,42 @@
         "max_rel_error": 0.17073170727543108,
         "max_abs_error": 0.006000000000000005
       },
-      "created_at": "2026-11-13T20:30:42.701009+00:00"
+      "created_at": "2026-11-14T10:51:47.896815+00:00"
+    },
+    {
+      "reproduction_id": "REP-UNREG-01",
+      "original_experiment_id": "EXP-ASV-001",
+      "reproduction_type": "EXACT_REPLICATION",
+      "source_dataset_id": "DS-BTC-1H-Q1-2024",
+      "reproduction_dataset_id": "DS-BTC-1H-Q1-2024",
+      "original_methodology_id": "METH-ENGLE-ARCH-01",
+      "reproduction_methodology_id": "METH-ENGLE-ARCH-01",
+      "implementation_identity": "CBE_ENGINE",
+      "environment_fingerprint": "ENV-FP-PYTHON-3.11-CBE28",
+      "input_artifact_ids": [
+        "ART-IN-DS-BTC-1H-Q1-2024"
+      ],
+      "expected_result_artifact_id": "NON_EXISTENT_OR_UNREGISTERED_ART_ID",
+      "actual_result_artifact_id": "ART-ACTUAL-REP-VOL-001",
+      "comparison_method": "NUMERICAL_TOLERANCE",
+      "comparison_tolerance": {
+        "rtol": 0.0001,
+        "atol": 1e-06
+      },
+      "comparison_verdict": "MATCH_WITHIN_TOLERANCE",
+      "independence_verdict": "SAME_DATASET",
+      "provenance_verdict": "VERIFIED",
+      "reproduction_verdict": "INSUFFICIENT_EVIDENCE",
+      "discrepancies": [
+        "Identical dataset identifiers.",
+        "Synthetic, fake, or non-existent artifact ID cannot certify authoritative reproduction.",
+        "Unverified, missing, or invalid artifact cannot certify authoritative reproduction."
+      ],
+      "metrics": {
+        "max_rel_error": 0.0,
+        "max_abs_error": 0.0
+      },
+      "created_at": "2026-11-14T10:51:48.013425+00:00"
     }
   ]
 }

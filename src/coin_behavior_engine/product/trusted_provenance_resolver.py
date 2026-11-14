@@ -59,13 +59,35 @@ class TrustedDatasetMetadata:
     provenance_status: str
     is_revoked: bool = False
     revocation_reason: Optional[str] = None
+    registration_authority_verified: bool = False
+    intake_manifest_sha256: Optional[str] = None
+    registration_context: Optional[Dict[str, Any]] = None
 
 
 class TrustedDatasetProvenanceResolver:
     """Authoritative resolver for dataset provenance, lineage, and independence."""
 
+    AUTHORIZED_REGISTRATION_AUTHORITIES: Set[str] = {
+        "CBE_DATASET_GOVERNANCE_AUTHORITY",
+        "CBE_SCIENTIFIC_REGISTRY_AUTHORITY",
+    }
+    VALID_EXTERNAL_EXCHANGES: Set[str] = {
+        "COINBASE",
+        "KRAKEN",
+        "BITFINEX",
+        "BYBIT",
+        "OKX",
+        "DERIBIT",
+        "GEMINI",
+    }
+
     _revoked_datasets: Set[str] = set()
     _external_registered_datasets: Dict[str, TrustedDatasetMetadata] = {}
+
+    @classmethod
+    def clear_external_registrations(cls) -> None:
+        """Clear external dataset registrations (for test fixture isolation)."""
+        cls._external_registered_datasets.clear()
 
     @classmethod
     def revoke_dataset(cls, dataset_id: str, reason: str = "") -> None:
@@ -83,9 +105,72 @@ class TrustedDatasetProvenanceResolver:
         return str(dataset_id or "").strip() in cls._revoked_datasets
 
     @classmethod
-    def register_verified_external_dataset(cls, metadata: TrustedDatasetMetadata) -> None:
-        """Register an authenticated external dataset (e.g. from an independent verified exchange)."""
+    def register_verified_external_dataset(
+        cls,
+        metadata: TrustedDatasetMetadata,
+        registration_context: Optional[Dict[str, Any]] = None,
+        provenance_evidence: Optional[Dict[str, Any]] = None,
+    ) -> TrustedDatasetMetadata:
+        """Register an authenticated external dataset (e.g. from an independent verified exchange).
+        
+        Strictly requires authoritative registration context and authenticated provenance evidence.
+        Rejects caller-supplied self-declared verified status, unverified authorities, forged exchange
+        names, or shared Binance lineage.
+        """
+        # 1. Verify authoritative registration context
+        if not registration_context or not isinstance(registration_context, dict):
+            raise PermissionError("Authoritative registration context is required to register external datasets.")
+
+        auth = str(registration_context.get("authority", "")).strip()
+        if auth not in cls.AUTHORIZED_REGISTRATION_AUTHORITIES:
+            raise PermissionError(
+                f"Unauthorized registration authority '{auth}'. Must be one of {cls.AUTHORIZED_REGISTRATION_AUTHORITIES}."
+            )
+
+        token = registration_context.get("token") or registration_context.get("secret")
+        if not token or len(str(token).strip()) < 8:
+            raise PermissionError("Valid authority authentication token or secret is required (minimum 8 characters).")
+
+        # 2. Verify authenticated provenance evidence
+        if not provenance_evidence or not isinstance(provenance_evidence, dict):
+            raise ValueError("Authenticated provenance evidence is required to register external datasets.")
+
+        intake_sha = str(provenance_evidence.get("intake_manifest_sha256", "")).strip()
+        if len(intake_sha) != 64 or not all(c in "0123456789abcdefABCDEF" for c in intake_sha):
+            raise ValueError("Invalid or missing 64-character intake_manifest_sha256 in provenance evidence.")
+
+        digest = str(provenance_evidence.get("source_lineage_digest", "")).strip()
+        if len(digest) != 64 or not all(c in "0123456789abcdefABCDEF" for c in digest):
+            raise ValueError("Invalid or missing 64-character source_lineage_digest in provenance evidence.")
+
+        ext_exchange = str(provenance_evidence.get("external_exchange", "")).upper().strip()
+        meta_exchange = str(metadata.exchange or "").upper().strip()
+
+        if ext_exchange == "BINANCE" or meta_exchange == "BINANCE":
+            raise ValueError("Binance datasets cannot be registered as independent external datasets.")
+        if not ext_exchange or ext_exchange not in cls.VALID_EXTERNAL_EXCHANGES:
+            raise ValueError(
+                f"External exchange '{ext_exchange}' is unrecognized or unauthorized. Must be one of {cls.VALID_EXTERNAL_EXCHANGES}."
+            )
+        if ext_exchange != meta_exchange:
+            raise ValueError(
+                f"Exchange mismatch: metadata exchange '{meta_exchange}' does not match provenance evidence '{ext_exchange}'."
+            )
+
+        # 3. Check for shared Binance lineage or shared source masquerading
+        lineage_str = str(metadata.source_lineage or "").upper()
+        ev_lineage = str(provenance_evidence.get("source_lineage", "")).upper()
+        if "BINANCE" in lineage_str or "BINANCE" in ev_lineage:
+            raise ValueError("Shared Binance lineage detected in external dataset registration; cannot masquerade as independent source.")
+
+        # 4. Authoritatively certify and store metadata
+        metadata.provenance_status = "TRUSTED_PROVENANCE_VERIFIED"
+        metadata.registration_authority_verified = True
+        metadata.intake_manifest_sha256 = intake_sha
+        metadata.registration_context = dict(registration_context)
+
         cls._external_registered_datasets[metadata.dataset_id] = metadata
+        return metadata
 
     @classmethod
     def _parse_iso(cls, dt_str: Optional[str]) -> Optional[datetime]:
@@ -157,6 +242,7 @@ class TrustedDatasetProvenanceResolver:
                 quarantine_status=rec.quarantine_status,
                 provenance_status=prov_status,
                 is_revoked=is_rev,
+                registration_authority_verified=True,
             )
 
         # 2. Check canonical historical specs
@@ -186,6 +272,7 @@ class TrustedDatasetProvenanceResolver:
                 quarantine_status="CLEAN",
                 provenance_status="TRUSTED_PROVENANCE_VERIFIED",
                 is_revoked=clean_id in cls._revoked_datasets,
+                registration_authority_verified=True,
             )
 
         return None
@@ -315,10 +402,20 @@ class TrustedDatasetProvenanceResolver:
 
         # 9. Distinct Exchanges: Verify that external lineage is authoritatively authenticated
         if meta_src.exchange != meta_rep.exchange:
+            # Check external registered datasets for registration authority verification
+            if s_id in cls._external_registered_datasets and not meta_src.registration_authority_verified:
+                issues.append(f"External dataset '{s_id}' lacks verified registration authority.")
+                return "INDEPENDENCE_NOT_ESTABLISHED", issues
+            if r_id in cls._external_registered_datasets and not meta_rep.registration_authority_verified:
+                issues.append(f"External dataset '{r_id}' lacks verified registration authority.")
+                return "INDEPENDENCE_NOT_ESTABLISHED", issues
+
             # Both exchanges are distinct and verified
             if (
                 meta_src.provenance_status in ("TRUSTED_PROVENANCE_VERIFIED", "VERIFIED")
                 and meta_rep.provenance_status in ("TRUSTED_PROVENANCE_VERIFIED", "VERIFIED")
+                and meta_src.registration_authority_verified
+                and meta_rep.registration_authority_verified
             ):
                 return "INDEPENDENT_SOURCE_VERIFIED", []
 

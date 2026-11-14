@@ -465,9 +465,9 @@ class NewsIngestionCoordinator:
             except Exception as e:
                 logger.error(f"Error executing adapter {name}: {e}")
 
-        # 2. If live ingestion returned insufficient events (e.g. offline execution), load cached snapshot
+        # 2. Merge with persistent verified cache to preserve existing historical events
         fallback_cache = self.cache_file if (self.cache_file and self.cache_file.exists()) else Path("data/research_lab/verified_events_cache.json")
-        if len(all_events) < 5 and fallback_cache.exists():
+        if fallback_cache.exists():
             logger.info(f"Loading verified events from persistent cache: {fallback_cache}")
             with open(fallback_cache, "r", encoding="utf-8") as f:
                 cached_data = json.load(f)

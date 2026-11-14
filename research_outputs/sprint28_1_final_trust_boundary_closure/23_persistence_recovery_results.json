@@ -1,6 +1,6 @@
 {
   "test_suite": "Persistence, Restart Recovery & Governance Invariants",
-  "timestamp_utc": "2026-11-13T20:38:22.214049+00:00",
+  "timestamp_utc": "2026-11-14T10:55:49.679406+00:00",
   "restart_recovery": {
     "staging_container_restart": "SUCCESS (HTTP 200 on /ready within 3s)",
     "disk_state_reconstruction": "SUCCESS (records restored from canonical JSON files)",

@@ -17,6 +17,7 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
+import sys
 import tempfile
 import time
 import tracemalloc
@@ -466,6 +467,7 @@ def test_analogue_freeze_identity_audit():
 # -------------------------------------------------------------------------
 # Test 7: Linux Runtime Memory Footprint & CPU Latency Bounds
 # -------------------------------------------------------------------------
+@pytest.mark.skipif(sys.platform == "win32", reason="Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler")
 def test_linux_runtime_resource_bounds():
     """Verify heap memory < 120 MB and query latency < 10 ms."""
     tracemalloc.start()

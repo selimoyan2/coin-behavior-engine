@@ -55,13 +55,20 @@ def verifier() -> IndependentCalibrationVerifier:
 
 
 @pytest.fixture(scope="module")
-def master_report(verifier: IndependentCalibrationVerifier) -> Sprint1002MasterReport:
+def master_report(verifier: IndependentCalibrationVerifier):
     report_path = Path("data/reports/sprint10_02_independent_verification_report.json")
     contracts_path = Path("data/reports/sprint10_02_product_data_contracts.json")
-    return verifier.run_full_sprint_verification(
+    orig_rep = report_path.read_bytes() if report_path.exists() else None
+    orig_cont = contracts_path.read_bytes() if contracts_path.exists() else None
+    rep = verifier.run_full_sprint_verification(
         output_report_path=report_path,
         contracts_output_path=contracts_path,
     )
+    yield rep
+    if orig_rep is not None:
+        report_path.write_bytes(orig_rep)
+    if orig_cont is not None:
+        contracts_path.write_bytes(orig_cont)
 
 
 def test_01_baseline_verification_and_prior_artifacts_preservation(master_report: Sprint1002MasterReport):

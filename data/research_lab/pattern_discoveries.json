@@ -1,6 +1,6 @@
 {
   "schema_version": "CBE-DISCOVERIES-V28",
-  "saved_at": "2026-11-13T20:30:44.024259+00:00",
+  "saved_at": "2026-11-14T10:51:47.717690+00:00",
   "discoveries": [
     {
       "discovery_id": "DISC-VOL-CLUST-001",
@@ -194,16 +194,16 @@
         "Statistical inference subject to stationarity assumptions."
       ],
       "supporting_artifact_ids": [
-        "ART-EXEC-23D945E8C26D"
+        "ART-EXEC-0D7D98513523"
       ],
       "discovery_type": "EMPIRICALLY_EXECUTED_DISCOVERY",
-      "execution_id": "EXEC-23D945E8C26D",
+      "execution_id": "EXEC-0D7D98513523",
       "dataset_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
       "methodology_version": "1.0.0",
       "statistical_test_id": "VOLATILITY_CLUSTERING_ENGLE_LM",
       "parameter_snapshot_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
-      "execution_started_at": "2026-11-13T20:30:42.848155+00:00",
-      "execution_completed_at": "2026-11-13T20:30:42.849161+00:00",
+      "execution_started_at": "2026-11-14T10:41:23.835390+00:00",
+      "execution_completed_at": "2026-11-14T10:41:23.835942+00:00",
       "result_artifact_sha256": "0e1235bc57f7caca93117d8b768d5b683ce211840120701beebfd978f6b9be91",
       "raw_statistical_results": {
         "arch_lm_stat": 173.9862131065276,
@@ -221,7 +221,7 @@
         "raw_p_value": 9.967706705352419e-40,
         "std_err": 0.020545849917213335
       },
-      "created_at": "2026-11-13T20:30:42.849715+00:00",
+      "created_at": "2026-11-14T10:41:23.836484+00:00",
       "status": "VALIDATION_SUPPORTED",
       "sample_summary": {
         "sample_size": 2183,
@@ -259,16 +259,16 @@
         "Statistical inference subject to stationarity assumptions."
       ],
       "supporting_artifact_ids": [
-        "ART-EXEC-76262313D93C"
+        "ART-EXEC-8302339CEB0D"
       ],
       "discovery_type": "EMPIRICALLY_EXECUTED_DISCOVERY",
-      "execution_id": "EXEC-76262313D93C",
+      "execution_id": "EXEC-8302339CEB0D",
       "dataset_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
       "methodology_version": "1.0.0",
       "statistical_test_id": "VOLATILITY_CLUSTERING_ENGLE_LM",
       "parameter_snapshot_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
-      "execution_started_at": "2026-11-13T20:30:44.014583+00:00",
-      "execution_completed_at": "2026-11-13T20:30:44.020209+00:00",
+      "execution_started_at": "2026-11-14T10:41:24.277355+00:00",
+      "execution_completed_at": "2026-11-14T10:41:24.279379+00:00",
       "result_artifact_sha256": "0e1235bc57f7caca93117d8b768d5b683ce211840120701beebfd978f6b9be91",
       "raw_statistical_results": {
         "arch_lm_stat": 173.9862131065276,
@@ -286,7 +286,7 @@
         "raw_p_value": 9.967706705352419e-40,
         "std_err": 0.020545849917213335
       },
-      "created_at": "2026-11-13T20:30:44.024259+00:00",
+      "created_at": "2026-11-14T10:41:24.279893+00:00",
       "status": "VALIDATION_SUPPORTED",
       "sample_summary": {
         "sample_size": 2183,
@@ -324,16 +324,16 @@
         "Statistical inference subject to stationarity assumptions."
       ],
       "supporting_artifact_ids": [
-        "ART-EXEC-8D58BCB6C160"
+        "ART-EXEC-166D46F9B408"
       ],
       "discovery_type": "EMPIRICALLY_EXECUTED_DISCOVERY",
-      "execution_id": "EXEC-8D58BCB6C160",
+      "execution_id": "EXEC-166D46F9B408",
       "dataset_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
       "methodology_version": "1.0.0",
       "statistical_test_id": "VOLATILITY_CLUSTERING_ENGLE_LM",
       "parameter_snapshot_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
-      "execution_started_at": "2026-11-13T20:30:42.402678+00:00",
-      "execution_completed_at": "2026-11-13T20:30:42.403701+00:00",
+      "execution_started_at": "2026-11-14T10:51:47.621656+00:00",
+      "execution_completed_at": "2026-11-14T10:51:47.622802+00:00",
       "result_artifact_sha256": "0e1235bc57f7caca93117d8b768d5b683ce211840120701beebfd978f6b9be91",
       "raw_statistical_results": {
         "arch_lm_stat": 173.9862131065276,
@@ -351,7 +351,7 @@
         "raw_p_value": 9.967706705352419e-40,
         "std_err": 0.020545849917213335
       },
-      "created_at": "2026-11-13T20:30:42.403701+00:00",
+      "created_at": "2026-11-14T10:51:47.622802+00:00",
       "status": "VALIDATION_SUPPORTED",
       "sample_summary": {
         "sample_size": 2183,
@@ -389,16 +389,16 @@
         "Statistical inference subject to stationarity assumptions."
       ],
       "supporting_artifact_ids": [
-        "ART-EXEC-7DF04D917BDE"
+        "ART-EXEC-7F42D1E4637F"
       ],
       "discovery_type": "EMPIRICALLY_EXECUTED_DISCOVERY",
-      "execution_id": "EXEC-7DF04D917BDE",
+      "execution_id": "EXEC-7F42D1E4637F",
       "dataset_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
       "methodology_version": "1.0.0",
       "statistical_test_id": "VOLATILITY_CLUSTERING_ENGLE_LM",
       "parameter_snapshot_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
-      "execution_started_at": "2026-11-13T20:30:42.457949+00:00",
-      "execution_completed_at": "2026-11-13T20:30:42.458575+00:00",
+      "execution_started_at": "2026-11-14T10:51:47.668835+00:00",
+      "execution_completed_at": "2026-11-14T10:51:47.668835+00:00",
       "result_artifact_sha256": "0e1235bc57f7caca93117d8b768d5b683ce211840120701beebfd978f6b9be91",
       "raw_statistical_results": {
         "arch_lm_stat": 173.9862131065276,
@@ -416,7 +416,7 @@
         "raw_p_value": 9.967706705352419e-40,
         "std_err": 0.020545849917213335
       },
-      "created_at": "2026-11-13T20:30:42.459106+00:00",
+      "created_at": "2026-11-14T10:51:47.669856+00:00",
       "status": "VALIDATION_SUPPORTED",
       "sample_summary": {
         "sample_size": 2183,
@@ -454,16 +454,16 @@
         "Statistical inference subject to stationarity assumptions."
       ],
       "supporting_artifact_ids": [
-        "ART-EXEC-38AFBFE28057"
+        "ART-EXEC-93C9CE13B700"
       ],
       "discovery_type": "EMPIRICALLY_EXECUTED_DISCOVERY",
-      "execution_id": "EXEC-38AFBFE28057",
+      "execution_id": "EXEC-93C9CE13B700",
       "dataset_source_sha256": "c559ac59275e85bc02daa4f6b1379dd65c83b421c940d59fede0dabfcc2dbbc5",
       "methodology_version": "1.0.0",
       "statistical_test_id": "VOLATILITY_CLUSTERING_ENGLE_LM",
       "parameter_snapshot_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
-      "execution_started_at": "2026-11-13T20:30:42.505225+00:00",
-      "execution_completed_at": "2026-11-13T20:30:42.506849+00:00",
+      "execution_started_at": "2026-11-14T10:51:47.716593+00:00",
+      "execution_completed_at": "2026-11-14T10:51:47.716593+00:00",
       "result_artifact_sha256": "0e1235bc57f7caca93117d8b768d5b683ce211840120701beebfd978f6b9be91",
       "raw_statistical_results": {
         "arch_lm_stat": 173.9862131065276,
@@ -481,7 +481,7 @@
         "raw_p_value": 9.967706705352419e-40,
         "std_err": 0.020545849917213335
       },
-      "created_at": "2026-11-13T20:30:42.507861+00:00",
+      "created_at": "2026-11-14T10:51:47.717690+00:00",
       "status": "VALIDATION_SUPPORTED",
       "sample_summary": {
         "sample_size": 2183,

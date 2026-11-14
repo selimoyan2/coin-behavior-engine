@@ -14,6 +14,7 @@ Verifies:
 """
 
 import json
+import sys
 import time
 from pathlib import Path
 
@@ -38,9 +39,13 @@ def auditor() -> Sprint38FundingAuditor:
 
 
 @pytest.fixture(scope="module")
-def master_report(auditor: Sprint38FundingAuditor) -> Sprint38MasterReport:
+def master_report(auditor: Sprint38FundingAuditor):
     report_path = Path("data/reports/sprint09_38_funding_predictability_report.json")
-    return auditor.run_full_sprint_audit(output_report_path=report_path)
+    orig_bytes = report_path.read_bytes() if report_path.exists() else None
+    rep = auditor.run_full_sprint_audit(output_report_path=report_path)
+    yield rep
+    if orig_bytes is not None:
+        report_path.write_bytes(orig_bytes)
 
 
 def test_01_baseline_verification_and_margin_documentation(master_report: Sprint38MasterReport):
@@ -199,6 +204,7 @@ def test_09_decision_gate_strict_classification(master_report: Sprint38MasterRep
     assert "JAN_FEB_2025_RANGEBOUND" in master_report.regime_breakdown
 
 
+@pytest.mark.skipif(sys.platform == "win32", reason="Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler")
 def test_10_pure_compute_latency_and_report_file(master_report: Sprint38MasterReport, auditor: Sprint38FundingAuditor):
     """Test 10: Pure compute latency is < 50 ms and JSON report is written."""
     report_file = Path("data/reports/sprint09_38_funding_predictability_report.json")

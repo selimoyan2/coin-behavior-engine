@@ -448,6 +448,29 @@ class PatternDiscoveryLaboratory:
         with open(art_file, "w", encoding="utf-8") as f:
             f.write(res_serialized)
 
+        from coin_behavior_engine.product.trusted_reproduction_artifact_resolver import TrustedReproductionArtifactResolver
+        TrustedReproductionArtifactResolver.register_authenticated_execution(exec_id)
+        TrustedReproductionArtifactResolver.register_artifact(
+            f"ART-{exec_id}",
+            {
+                "file_path": str(art_file),
+                "execution_id": exec_id,
+                "dataset_id": dataset_id,
+                "methodology_id": methodology_id,
+                "expected_sha256": result_artifact_sha256,
+            },
+        )
+        TrustedReproductionArtifactResolver.register_artifact(
+            exec_id,
+            {
+                "file_path": str(art_file),
+                "execution_id": exec_id,
+                "dataset_id": dataset_id,
+                "methodology_id": methodology_id,
+                "expected_sha256": result_artifact_sha256,
+            },
+        )
+
         obs_start = str(df["timestamp"].iloc[0]) if "timestamp" in df.columns else ""
         obs_end = str(df["timestamp"].iloc[-1]) if "timestamp" in df.columns else ""
 

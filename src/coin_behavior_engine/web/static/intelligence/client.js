@@ -32,23 +32,30 @@ class MarketIntelligenceClient {
     this.cache = {};
   }
 
-  async fetchEndpoint(endpoint) {
+  async fetchEndpoint(endpoint, retries = 3) {
     const url = `${this.baseUrl}${endpoint}`;
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Accept": "application/json",
-        "X-Requested-With": "CbeMarketIntelligenceClient"
+    for (let attempt = 0; attempt < retries; attempt++) {
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+            "X-Requested-With": "CbeMarketIntelligenceClient"
+          }
+        });
+
+        if (!response.ok) {
+          const errorBody = await response.json().catch(() => ({}));
+          throw new Error(`API Hatası (${response.status}): ${errorBody.message || response.statusText}`);
+        }
+
+        const data = await response.json();
+        return this.validateResponseEnvelope(data, endpoint);
+      } catch (err) {
+        if (attempt === retries - 1) throw err;
+        await new Promise((r) => setTimeout(r, 80 * (attempt + 1)));
       }
-    });
-
-    if (!response.ok) {
-      const errorBody = await response.json().catch(() => ({}));
-      throw new Error(`API Hatası (${response.status}): ${errorBody.message || response.statusText}`);
     }
-
-    const data = await response.json();
-    return this.validateResponseEnvelope(data, endpoint);
   }
 
   validateResponseEnvelope(data, endpoint) {

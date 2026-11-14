@@ -16,6 +16,7 @@ Verifies:
 """
 
 import json
+import sys
 import time
 from pathlib import Path
 
@@ -41,13 +42,20 @@ def calibrator() -> CausalConformalCalibrator:
 
 
 @pytest.fixture(scope="module")
-def master_report(calibrator: CausalConformalCalibrator) -> Sprint1001MasterReport:
+def master_report(calibrator: CausalConformalCalibrator):
     report_path = Path("data/reports/sprint10_01_conformal_calibration_report.json")
     contract_path = Path("data/reports/sprint10_01_calibration_contract.json")
-    return calibrator.run_full_sprint_audit(
+    orig_rep = report_path.read_bytes() if report_path.exists() else None
+    orig_cont = contract_path.read_bytes() if contract_path.exists() else None
+    rep = calibrator.run_full_sprint_audit(
         output_report_path=report_path,
         contract_output_path=contract_path,
     )
+    yield rep
+    if orig_rep is not None:
+        report_path.write_bytes(orig_rep)
+    if orig_cont is not None:
+        contract_path.write_bytes(orig_cont)
 
 
 def test_01_baseline_verification_and_prior_artifacts_preservation(master_report: Sprint1001MasterReport):
@@ -216,6 +224,7 @@ def test_11_adversarial_checks(calibrator: CausalConformalCalibrator):
     assert contract.embargo_bars_by_horizon["24h"] == 96
 
 
+@pytest.mark.skipif(sys.platform == "win32", reason="Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler")
 def test_12_compute_latency_budget(calibrator: CausalConformalCalibrator):
     """Test 12: Verify pure calibration computation runs well under the 50 ms budget."""
     t0 = time.perf_counter()

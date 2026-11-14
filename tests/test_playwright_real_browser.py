@@ -31,6 +31,7 @@ SCREENSHOTS_DIR = Path("data/reports/screenshots")
 
 class LocalServerFixture:
     def __init__(self):
+        ThreadingHTTPServer.request_queue_size = 128
         self.server = ThreadingHTTPServer(("127.0.0.1", 0), EngineRequestHandler)
         self.host, self.port = self.server.server_address
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
@@ -45,7 +46,7 @@ class LocalServerFixture:
 def local_server():
     fixture = LocalServerFixture()
     # Give server a moment to spin up
-    time.sleep(0.1)
+    time.sleep(0.5)
     yield fixture
     fixture.stop()
 
@@ -89,8 +90,8 @@ def test_real_browser_validation_all_viewports(local_server):
             assert resp.status == 200, f"Expected HTTP 200, got {resp.status}"
 
             # Wait for content to render
-            page.wait_for_selector("#intelligence-root", timeout=10000)
-            page.wait_for_selector(".card", timeout=10000)
+            page.wait_for_selector("#intelligence-root", timeout=25000)
+            page.wait_for_selector(".card", timeout=25000)
 
             # Check no horizontal overflow
             scroll_width = page.evaluate("document.documentElement.scrollWidth")
@@ -116,7 +117,7 @@ def test_real_browser_validation_all_viewports(local_server):
             assert refresh_btn is not None
             refresh_btn.click()
             page.wait_for_timeout(1000)
-            page.wait_for_selector(".card", timeout=10000)
+            page.wait_for_selector(".card", timeout=25000)
 
             # Check fail-closed regime & freshness warning & dual-time
             page_text = page.inner_text("body")

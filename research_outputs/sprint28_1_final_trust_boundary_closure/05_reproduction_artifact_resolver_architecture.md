@@ -1,6 +1,6 @@
 # REPRODUCTION ARTIFACT RESOLVER ARCHITECTURE
 **Module:** `coin_behavior_engine.product.trusted_reproduction_artifact_resolver`  
-**Timestamp UTC:** 2026-11-13T20:38:22.214049+00:00
+**Timestamp UTC:** 2026-11-14T10:55:49.679406+00:00
 
 ## 1. Security & Authenticity Controls
 1. **Path Traversal Protection:** Identifiers containing `..`, `/`, or `\` are rejected immediately.

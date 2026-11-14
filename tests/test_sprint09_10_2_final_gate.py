@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import sys
 import tempfile
 import time
 import pytest
@@ -60,6 +61,7 @@ def test_process_rss_measurement_validity():
     assert hm_rss > 0.0
 
 
+@pytest.mark.skipif(sys.platform == "win32", reason="Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler")
 def test_steady_state_step_latency_performance():
     """Verify that steady-state step latency is well below 150 ms P95 across 200 bars."""
     candles = generate_synthetic_candles(200)

@@ -18,6 +18,7 @@ import json
 import os
 import shutil
 import sqlite3
+import sys
 import tempfile
 import time
 import tracemalloc
@@ -394,6 +395,7 @@ class TestSQLiteBatchReconstructionAndPerformance:
 
         test_store.close()
 
+    @pytest.mark.skipif(sys.platform == "win32", reason="Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler")
     def test_benchmark_10000_and_50000_fixture_reconstruction(self, temp_engine_env):
         config, _ = temp_engine_env
         raw_dir = config.raw_market_dir

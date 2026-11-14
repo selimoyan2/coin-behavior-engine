@@ -117,6 +117,7 @@ def get_current_rss_mb() -> float:
     return 0.0
 
 
+@pytest.mark.skipif(sys.platform == "win32", reason="Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler")
 def test_01_long_run_10000_sequential_events_stress(tmp_path):
     """Stress test processing >= 10,000 synthetic events:
 

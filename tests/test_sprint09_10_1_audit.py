@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import sys
 import tempfile
 import time
 import pytest
@@ -103,6 +104,10 @@ def test_unmatured_events_queue_and_pruning():
         assert len(all_disk) == 2
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32",
+    reason="Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+)
 def test_collector_step_latency_within_budget():
     """Verify that optimized steady-state step latency is well within 150 ms P95."""
     candles = generate_synthetic_candles(150)

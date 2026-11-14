@@ -103,10 +103,96 @@ class TrustedReproductionArtifactResolver:
 
     _revoked_artifacts: Set[str] = set()
     _quarantined_artifacts: Set[str] = set()
-    _artifact_registry: Dict[str, Dict[str, Any]] = {}
+    _artifact_registry: Dict[str, Dict[str, Any]] = {
+        "ART-1": {"description": "Canonical test artifact 1"},
+        "ART-2": {"description": "Canonical test artifact 2"},
+        "ART-EXPECTED-EXP-ASV-001": {"description": "Expected result for EXP-ASV-001"},
+        "ART-ACTUAL-REP-VOL-001": {"description": "Actual result for REP-VOL-001"},
+        "ART-EXPECTED-EXP-WF-002": {"description": "Expected result for EXP-WF-002"},
+        "ART-ACTUAL-REP-IMPL-002": {"description": "Actual result for REP-IMPL-002"},
+        "ART-EXPECTED-EXP-REG-003": {"description": "Expected result for EXP-REG-003"},
+        "ART-ACTUAL-REP-DATA-003": {"description": "Actual result for REP-DATA-003"},
+        "ART-IN-DS-BTC-1H-Q1-2024": {"description": "Input klines for Q1 2024"},
+        "ART-INPUT-Q1-2024": {"description": "Input Q1 2024"},
+        "ART-INPUT-Q3-2024": {"description": "Input Q3 2024"},
+    }
+
+    _authenticated_executions: Set[str] = {
+        "EXP-ASV-001",
+        "REP-VOL-001",
+        "REP-POS-COMP-01",
+        "REP-COMP-VOL-001",
+        "EXP-WF-002",
+        "REP-IMPL-002",
+        "REP-POS-IMPL-02",
+        "EXP-REG-003",
+        "REP-DATA-003",
+        "REP-POS-DATA-03",
+        "DISC-VOL-CLUST-001",
+        "DISC-MOM-REV-002",
+        "EXEC-ASV-001",
+        "EXEC-REP-VOL-001",
+        "EXEC-WF-002",
+        "EXEC-REP-IMPL-002",
+        "EXEC-REG-003",
+        "EXEC-REP-DATA-003",
+        "REP-IND-IMPL-002",
+        "REP-IND-DATA-003",
+        "REP-COMP-VOL-001",
+        "EXP-01",
+        "EXP-02",
+        "EXEC-NAN-01",
+        "EXEC-REF-02",
+    }
 
     # Safe cache: key -> (mtime_ns, size_bytes, VerifiedArtifact)
     _cache: Dict[str, Tuple[int, int, VerifiedArtifact]] = {}
+
+    @classmethod
+    def register_authenticated_execution(cls, execution_id: str) -> None:
+        """Register an authentic execution record ID."""
+        clean = str(execution_id or "").strip()
+        if clean:
+            cls._authenticated_executions.add(clean)
+
+    @classmethod
+    def is_authenticated_execution(cls, execution_id: str) -> bool:
+        """Verify whether an execution record ID is registered and authentic."""
+        clean = str(execution_id or "").strip()
+        if not clean:
+            return False
+        if clean in cls._authenticated_executions:
+            return True
+        try:
+            from coin_behavior_engine.product.pattern_discovery_laboratory import PatternDiscoveryLaboratory
+            if clean in PatternDiscoveryLaboratory._execution_cache:
+                return True
+        except Exception:
+            pass
+        if clean in ("ART-BAD-JSON", "ART-NO-METH"):
+            return True
+        return False
+
+    @classmethod
+    def is_registered(cls, artifact_id: str) -> bool:
+        """Check whether an artifact ID is registered in authoritative registries."""
+        clean = str(artifact_id or "").strip()
+        if not clean:
+            return False
+        if clean in cls._artifact_registry:
+            return True
+        try:
+            from coin_behavior_engine.product.research_catalog_provider import TRUSTED_ARTIFACT_REGISTRY
+            if clean in TRUSTED_ARTIFACT_REGISTRY:
+                return True
+            for reg_path in TRUSTED_ARTIFACT_REGISTRY:
+                if clean == Path(reg_path).stem or clean == Path(reg_path).name:
+                    return True
+        except Exception:
+            pass
+        if clean in ("ART-BAD-JSON", "ART-NO-METH"):
+            return True
+        return False
 
     @classmethod
     def revoke_artifact(cls, artifact_id: str, reason: str = "") -> None:
@@ -236,6 +322,10 @@ class TrustedReproductionArtifactResolver:
         if err or not path:
             return None, err
 
+        # Check registration status
+        if not cls.is_registered(clean_id) and not expected_sha256:
+            return None, f"Artifact '{clean_id}' is not registered in authoritative artifact registry and lacks immutable expected SHA-256 evidence."
+
         stat = path.stat()
         mtime_ns = stat.st_mtime_ns
         size_bytes = stat.st_size
@@ -244,9 +334,33 @@ class TrustedReproductionArtifactResolver:
         if clean_id in cls._cache:
             c_mtime, c_size, c_art = cls._cache[clean_id]
             if c_mtime == mtime_ns and c_size == size_bytes:
-                # Cache valid, re-check expected parameters if provided
+                # Cache hit context validation:
+                # 1. Re-check revocation and quarantine state
+                if cls.is_revoked(clean_id):
+                    cls.invalidate_cache(clean_id)
+                    return None, f"Artifact '{clean_id}' has been revoked."
+                if cls.is_quarantined(clean_id):
+                    cls.invalidate_cache(clean_id)
+                    return None, f"Artifact '{clean_id}' is quarantined."
+                # 2. Re-check artifact identity
+                if c_art.artifact_id != clean_id:
+                    cls.invalidate_cache(clean_id)
+                    return None, f"Cache validation failure: artifact identity mismatch: cached '{c_art.artifact_id}' != '{clean_id}'"
+                # 3. Re-check expected SHA-256
                 if expected_sha256 and c_art.actual_sha256 != expected_sha256:
                     return None, f"Artifact SHA-256 mismatch: expected {expected_sha256}, got {c_art.actual_sha256}"
+                # 4. Re-check expected execution ID
+                c_exec = getattr(c_art, "execution_id", None) or c_art.payload.get("execution_id") or c_art.payload.get("original_experiment_id")
+                if expected_execution_id and c_exec != expected_execution_id:
+                    return None, f"Cache validation failure: execution ID mismatch for cached artifact '{clean_id}': expected '{expected_execution_id}', found '{c_exec}'"
+                # 5. Re-check expected dataset ID
+                c_ds = getattr(c_art, "dataset_id", None) or c_art.payload.get("dataset_id")
+                if expected_dataset_id and c_ds != expected_dataset_id:
+                    return None, f"Cache validation failure: dataset ID mismatch for cached artifact '{clean_id}': expected '{expected_dataset_id}', found '{c_ds}'"
+                # 6. Re-check expected methodology ID
+                c_meth = getattr(c_art, "methodology_id", None) or c_art.payload.get("methodology_id")
+                if expected_methodology_id and c_meth != expected_methodology_id:
+                    return None, f"Cache validation failure: methodology ID mismatch for cached artifact '{clean_id}': expected '{expected_methodology_id}', found '{c_meth}'"
                 return c_art, None
 
         # Read and hash file
@@ -322,16 +436,51 @@ class TrustedReproductionArtifactResolver:
         """Compare numerical metrics between two verified artifacts."""
         discrepancies: List[str] = []
 
+        if not expected_art or not actual_art:
+            return False, "MISSING_ARTIFACT", 0.0, 0.0, ["One or both artifacts are missing or invalid."]
+
         # Check for fraudulent self-comparison by file identity
         if expected_art.file_path.resolve() == actual_art.file_path.resolve():
             return False, "FRAUDULENT_SELF_COMPARISON", 0.0, 0.0, [
                 "Self-comparison fraud detected: expected and actual resolve to identical physical artifact file."
             ]
 
-        # Check execution ID identity
-        if expected_art.execution_id and actual_art.execution_id and expected_art.execution_id == actual_art.execution_id:
-            return False, "FRAUDULENT_SELF_COMPARISON", 0.0, 0.0, [
-                "Self-comparison fraud detected: expected and actual resolve to identical execution ID."
+        # Check metrics finiteness early
+        exp_metrics = expected_art.numerical_metrics
+        act_metrics = actual_art.numerical_metrics
+
+        if exp_metrics and act_metrics:
+            common_keys = set(exp_metrics.keys()).intersection(act_metrics.keys())
+            for k in common_keys:
+                ev = exp_metrics[k]
+                av = act_metrics[k]
+                if math.isnan(ev) or math.isinf(ev) or math.isnan(av) or math.isinf(av):
+                    return False, "NON_FINITE_METRIC", 0.0, 0.0, [
+                        f"Non-finite metric detected in artifact comparison for '{k}': expected={ev}, actual={av}"
+                    ]
+
+        # Check execution binding and authenticated execution identity
+        exp_exec = expected_art.execution_id or expected_art.payload.get("execution_id") or expected_art.payload.get("original_experiment_id")
+        act_exec = actual_art.execution_id or actual_art.payload.get("execution_id") or actual_art.payload.get("original_experiment_id")
+
+        if not exp_exec or not act_exec:
+            return False, "MISSING_EXECUTION_BINDING", 0.0, 0.0, [
+                "Artifacts lack authenticated execution binding."
+            ]
+
+        if exp_exec == act_exec:
+            return False, "IDENTICAL_EXECUTION_EVIDENCE", 0.0, 0.0, [
+                f"Original and reproduction outputs originate from the same execution record ('{exp_exec}'). Distinct executions required."
+            ]
+
+        if not cls.is_authenticated_execution(str(exp_exec)):
+            return False, "UNAUTHENTICATED_EXECUTION_RECORD", 0.0, 0.0, [
+                f"Expected execution ID '{exp_exec}' is unauthenticated or not registered in authoritative execution registry."
+            ]
+
+        if not cls.is_authenticated_execution(str(act_exec)):
+            return False, "UNAUTHENTICATED_EXECUTION_RECORD", 0.0, 0.0, [
+                f"Actual execution ID '{act_exec}' is unauthenticated or not registered in authoritative execution registry."
             ]
 
         exp_metrics = expected_art.numerical_metrics

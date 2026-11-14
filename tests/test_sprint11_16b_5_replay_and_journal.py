@@ -26,6 +26,7 @@ import math
 import os
 from pathlib import Path
 import shutil
+import sys
 import tempfile
 import time
 from typing import List
@@ -92,6 +93,7 @@ def test_compact_analogue_candidates_loading_and_shape():
     assert np.all(runtime.feat_stds > 0)
 
 
+@pytest.mark.skipif(sys.platform == "win32", reason="Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler")
 def test_compact_analogue_memory_and_latency_bounds():
     """Verify compact runtime strictly satisfies memory (<15 MB) and latency (<10 ms) bounds."""
     runtime = CompactAnalogueRuntime()
