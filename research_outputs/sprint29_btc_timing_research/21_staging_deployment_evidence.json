@@ -1,0 +1,13 @@
+{
+  "sprint_id": "CBE_SPRINT29_BTC_TIMING_RESEARCH_AND_HISTORICAL_PAPER_PORTFOLIO",
+  "deployment_target": "staging",
+  "remote_host": "srv1114257 (168.231.125.238)",
+  "staging_port": 18080,
+  "commit_sha": "dca2904d28f38e34498c9828e9c95f9399e39201",
+  "image_tag": "cbe-market-intelligence:sprint29-dca2904",
+  "ready_http_status": 200,
+  "btc_timing_api_verified": true,
+  "restart_recovery_verified": true,
+  "deployed_at_utc": "2026-11-14T20:40:50.263011+00:00",
+  "stdout": "=== PRE-FLIGHT AUDIT: CHECK PRODUCTION CONTAINER ===\n[OK] Production container fdbdba96e677 is running untouched.\nProduction Container State: Status: running, Restarts: 0\nProduction Container StartedAt: 2026-11-14T18:56:57.442994328Z\n=== 1. PREPARING BUILD CONTEXT FOR SPRINT 29 (dca2904d28f38e34498c9828e9c95f9399e39201) ===\nCloned SHA: dca2904d28f38e34498c9828e9c95f9399e39201\n=== 2. INJECTING AUTHORITATIVE BUILD METADATA ===\n=== 3. DOCKER BUILD IMMUTABLE SPRINT 29 IMAGE ===\n=== 4. INSPECTING CREATED IMAGE ===\nIMAGE_ID: sha256:c3ebb5c1c6b75bc0b5ac74d496de0e260c9f321059372e57255eca68aee8a5e2\n=== 5. STOPPING OLD STAGING CONTAINER ===\nStopping old staging container 999928fe3615\n999928fe3615\n999928fe3615\n=== 6. STARTING NEW STAGING CONTAINER FROM IMMUTABLE IMAGE ===\n=== 7. WAITING FOR STAGING READINESS ON PORT 18080 ===\n[OK] Staging is READY (HTTP 200) after 8 seconds.\nNEW_STAGING_CID: 22933c855db5\n=== 8. TESTING CONTAINER RESTART RECOVERY ===\n22933c855db5\n[OK] Staging recovered successfully after restart (HTTP 200) after 4 seconds.\n=== 9. VERIFYING BTC TIMING API ENDPOINT ON STAGING ===\nBTC Timing Overview HTTP Code: 200\n=== 10. POST-DEPLOYMENT PRODUCTION ZERO-TOUCH VERIFICATION ===\n[VERIFIED] Production container fdbdba96e677 untouched: Status: running, Restarts: 0\nProduction Container StartedAt: 2026-11-14T18:56:57.442994328Z\nDEPLOYMENT_SUCCESS: NEW_STAGING_CID=22933c855db5 IMAGE_TAG=cbe-market-intelligence:sprint29-dca2904 IMAGE_ID=sha256:c3ebb5c1c6b75bc0b5ac74d496de0e260c9f321059372e57255eca68aee8a5e2 PROD_STATUS=Status: running, Restarts: 0 PROD_STARTED=2026-11-14T18:56:57.442994328Z\n"
+}

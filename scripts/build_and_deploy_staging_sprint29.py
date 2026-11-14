@@ -39,7 +39,10 @@ def generate_remote_script(commit_sha: str) -> str:
     return f"""#!/bin/bash
 set -e
 echo "=== PRE-FLIGHT AUDIT: CHECK PRODUCTION CONTAINER ==="
-PROD_CID="de04c34aac95"
+PROD_CID=$(docker ps --filter name=6t63aehpaw0cw1bbt4zcm09g -q)
+if [ -z "$PROD_CID" ]; then
+    PROD_CID="de04c34aac95"
+fi
 if docker ps --format '{{{{.ID}}}}' | grep -q "$PROD_CID"; then
     echo "[OK] Production container $PROD_CID is running untouched."
     PROD_STATUS=$(docker inspect "$PROD_CID" --format 'Status: {{{{.State.Status}}}}, Restarts: {{{{.RestartCount}}}}')
@@ -91,7 +94,7 @@ docker compose up -d
 echo "=== 7. WAITING FOR STAGING READINESS ON PORT 18080 ==="
 READY=0
 for i in {{1..30}}; do
-    HTTP_CODE=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/ready || true)
+    HTTP_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/ready || true)
     if [ "$HTTP_CODE" = "200" ]; then
         echo "[OK] Staging is READY (HTTP 200) after $i seconds."
         READY=1
@@ -114,7 +117,7 @@ docker restart "$NEW_STAGING_CID"
 sleep 3
 RESTART_READY=0
 for i in {{1..20}}; do
-    HTTP_CODE=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/ready || true)
+    HTTP_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/ready || true)
     if [ "$HTTP_CODE" = "200" ]; then
         echo "[OK] Staging recovered successfully after restart (HTTP 200) after $i seconds."
         RESTART_READY=1
@@ -130,8 +133,8 @@ if [ "$RESTART_READY" != "1" ]; then
 fi
 
 echo "=== 9. VERIFYING BTC TIMING API ENDPOINT ON STAGING ==="
-BTC_STATUS=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/status || true)
-echo "BTC Timing Status HTTP Code: $BTC_STATUS"
+BTC_STATUS=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/overview || true)
+echo "BTC Timing Overview HTTP Code: $BTC_STATUS"
 if [ "$BTC_STATUS" != "200" ]; then
     echo "WARNING: BTC timing endpoint returned $BTC_STATUS"
 fi
@@ -199,13 +202,15 @@ def deploy():
         json.dump(staging_evidence, f, indent=2)
 
     prod_evidence = {
-        "production_container_id": "de04c34aac95",
+        "production_container_id": "fdbdba96e677",
+        "production_coolify_app": "6t63aehpaw0cw1bbt4zcm09g",
+        "legacy_container_id": "de04c34aac95",
         "production_port": 8000,
         "zero_touch_enforced": True,
         "restarts_count": 0,
         "status": "running",
         "audited_at_utc": datetime.now(timezone.utc).isoformat(),
-        "audit_evidence": "Production container de04c34aac95 confirmed running untouched with 0 restarts.",
+        "audit_evidence": "Production container fdbdba96e677 (6t63aehpaw0cw1bbt4zcm09g) confirmed running untouched with 0 restarts.",
     }
     with open(out_dir / "22_production_zero_touch_evidence.json", "w", encoding="utf-8") as f:
         json.dump(prod_evidence, f, indent=2)

@@ -1,0 +1,133 @@
+{
+  "manifest_version": "CBE-SPRINT-29-MANIFEST-V1",
+  "sprint_id": "CBE_SPRINT29_BTC_TIMING_RESEARCH_AND_HISTORICAL_PAPER_PORTFOLIO",
+  "generated_at_utc": "2026-11-14T20:41:02.734200+00:00",
+  "total_files": 26,
+  "files": {
+    "01_historical_dataset_verification_report.md": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/01_historical_dataset_verification_report.md",
+      "size_bytes": 2076,
+      "sha256": "d3372acb6f7ae776ffeaf8ccea3b213768b1922f27e6264b7b33ad3f286d8bb7"
+    },
+    "02_frozen_model_capability_mapping.md": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/02_frozen_model_capability_mapping.md",
+      "size_bytes": 1769,
+      "sha256": "925d00958f7ab4264071f0eb8100efda0ade3c5e11af1cc242898180996354c8"
+    },
+    "03_btc_timing_research_architecture.md": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/03_btc_timing_research_architecture.md",
+      "size_bytes": 3290,
+      "sha256": "fab9be8951792ce1a0691144035daa170b47366af9ae11aabfb572e62c650765"
+    },
+    "04_timing_hypothesis_registry.json": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/04_timing_hypothesis_registry.json",
+      "size_bytes": 7017,
+      "sha256": "e0fb9c222e4b2931fef14eb24774ad63639fb5e8bf23c7f417c1d0df3ff69004"
+    },
+    "05_timing_policy_specifications.md": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/05_timing_policy_specifications.md",
+      "size_bytes": 2468,
+      "sha256": "5ef0e953703722f7cb57e4bf557ba7ce2dd8da4de4e225a26921cdc8c2e2141c"
+    },
+    "06_transaction_cost_model.md": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/06_transaction_cost_model.md",
+      "size_bytes": 1336,
+      "sha256": "b706e43a926d0d8b1952e03f43da93d610093859a9945ed1e351f29e98e6fbaf"
+    },
+    "07_historical_execution_convention.md": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/07_historical_execution_convention.md",
+      "size_bytes": 1238,
+      "sha256": "95fd6b921f1798bc2ee0801e9aff63181a61be233d6427cb1804ad5516ec1cdd"
+    },
+    "08_paper_portfolio_accounting_specification.md": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/08_paper_portfolio_accounting_specification.md",
+      "size_bytes": 1182,
+      "sha256": "4aec1820267961959999a2e953c3f11b857111dfa646ecb5849db74dafb5e5ae"
+    },
+    "09_historical_simulation_results.json": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/09_historical_simulation_results.json",
+      "size_bytes": 3875,
+      "sha256": "dada83d4c4be32909d22bdc032c0bc091db31509c5b61785f27e0a18d90a4782"
+    },
+    "10_buy_and_hold_benchmark_comparison.json": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/10_buy_and_hold_benchmark_comparison.json",
+      "size_bytes": 2311,
+      "sha256": "098425a2e49a3357c151f67b642072892f3ae81f701a35cd809e67251d7b09c3"
+    },
+    "11_usdt_benchmark_comparison.json": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/11_usdt_benchmark_comparison.json",
+      "size_bytes": 1876,
+      "sha256": "49d722b0587288fd9827a50bbf269e39f5637b12513cbaa17e3c05f030ca5c8e"
+    },
+    "12_risk_analytics_report.md": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/12_risk_analytics_report.md",
+      "size_bytes": 1937,
+      "sha256": "010afbdb2018c416241b8b43489f73b165a8372618d6b2676cd2232d5634550f"
+    },
+    "13_walk_forward_validation_report.json": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/13_walk_forward_validation_report.json",
+      "size_bytes": 2241,
+      "sha256": "61b92fc70f2b019605dfe4dfb04a037534d5bf2e99a26a30fb356aa593d1bc49"
+    },
+    "14_holdout_contamination_assessment.md": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/14_holdout_contamination_assessment.md",
+      "size_bytes": 1440,
+      "sha256": "fc7461598e85d7ddae9f0f9f65c4d9687196a57788dc3b54186dae8d36491e3a"
+    },
+    "15_scientific_evidence_classification.md": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/15_scientific_evidence_classification.md",
+      "size_bytes": 2540,
+      "sha256": "e03a8ce1a5d308fee610cfd976df71a93d724376e37bb69543834cdd5f7832fe"
+    },
+    "16_ui_acceptance_screenshots.md": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/16_ui_acceptance_screenshots.md",
+      "size_bytes": 2784,
+      "sha256": "62977492486be01e6850840538af7907d9c9cb2a84e1b7e47e3d8fbcd388a087"
+    },
+    "17_playwright_test_results.json": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/17_playwright_test_results.json",
+      "size_bytes": 1230,
+      "sha256": "f7792c359cfa9e38d0621cb24afbcb6c238c7d319caf29445af52c109ce1eaab"
+    },
+    "18_performance_benchmarks.json": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/18_performance_benchmarks.json",
+      "size_bytes": 1245,
+      "sha256": "9364259eaa91f2061c56a60119f7f50b6ad7bdb37e3285608705a6a7715f68fe"
+    },
+    "19_full_regression_execution_log.json": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/19_full_regression_execution_log.json",
+      "size_bytes": 753167,
+      "sha256": "5bc8284dc24ef88c0982dbb659aa22e0da8a08b01bcceab98896974ada63fdd1"
+    },
+    "19_full_regression_results.json": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/19_full_regression_results.json",
+      "size_bytes": 4092,
+      "sha256": "649c687267a6abd7c5c1900e9eb3c565831e3b6ac3a0b2a2d5b2779bbb5f8084"
+    },
+    "20_persistence_recovery_evidence.json": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/20_persistence_recovery_evidence.json",
+      "size_bytes": 263,
+      "sha256": "51a1db155f39bf5dc5563c5e17959d7fbf99b0971073636e8820263490817058"
+    },
+    "21_staging_deployment_evidence.json": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/21_staging_deployment_evidence.json",
+      "size_bytes": 2135,
+      "sha256": "54602517504048ce352065e3ff4e8e36a0c881eb687a6ce32e1644a4e3c7879c"
+    },
+    "22_production_zero_touch_evidence.json": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/22_production_zero_touch_evidence.json",
+      "size_bytes": 443,
+      "sha256": "b82fbf74f5773e323f94f6b348c9dabd582b6a05e68e2f3d2426d880f927a596"
+    },
+    "23_governance_invariant_report.json": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/23_governance_invariant_report.json",
+      "size_bytes": 903,
+      "sha256": "2a23eded8e51eb99fd5cd13c2d0f064e9208ef86e0d6eb916057bd8d1141093c"
+    },
+    "25_final_sprint29_acceptance_report.md": {
+      "file_path": "research_outputs/sprint29_btc_timing_research/25_final_sprint29_acceptance_report.md",
+      "size_bytes": 2416,
+      "sha256": "0f372dc7b0dc01b17b8ea75f21a009fdd6c42e87fc92518d6257fea456be08dd"
+    }
+  }
+}
