@@ -1,6 +1,6 @@
 # FROZEN MODEL CAPABILITY ASSESSMENT
 **Model:** `CBE-0.7.0` (STRICTLY_FROZEN)  
-**Timestamp UTC:** 2026-11-14T15:05:21.110885+00:00
+**Timestamp UTC:** 2026-11-14T15:09:42.107918+00:00
 
 ## 1. Model State & Capabilities
 - The canonical scientific model `CBE-0.7.0` is strictly frozen and has zero mutations since baseline commit `849e76ed27d9275921c7d2b11cd340a543790c80`.

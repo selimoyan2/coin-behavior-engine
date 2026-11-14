@@ -1,6 +1,6 @@
 # TRUSTED PROVENANCE RESOLVER IMPLEMENTATION
 **Module:** `coin_behavior_engine.product.trusted_provenance_resolver`  
-**Timestamp UTC:** 2026-11-14T15:05:21.110885+00:00
+**Timestamp UTC:** 2026-11-14T15:09:42.107918+00:00
 
 ## 1. Class Structure
 The `TrustedDatasetProvenanceResolver` provides:

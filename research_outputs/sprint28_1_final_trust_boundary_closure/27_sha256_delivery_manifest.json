@@ -1,93 +1,93 @@
 {
   "manifest_version": "CBE-SPRINT-28.1-MANIFEST-V1",
   "sprint_id": "CBE_SPRINT28_1_FINAL_TRUST_BOUNDARY_CLOSURE",
-  "generated_at_utc": "2026-11-14T15:05:21.648893+00:00",
+  "generated_at_utc": "2026-11-14T15:09:42.445973+00:00",
   "total_files": 28,
   "files": {
     "01_root_cause_audit.md": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/01_root_cause_audit.md",
       "size_bytes": 2400,
-      "sha256": "ed6d0ff932526bf5544d4f3b27665592486a818dd5c71fbae86897a28bfcfd33"
+      "sha256": "33fdcd0689b8f8331a0dd733bd5b3861b490ae2b78fa607def3502cf4faf3c36"
     },
     "02_dataset_independence_architecture.md": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/02_dataset_independence_architecture.md",
       "size_bytes": 1468,
-      "sha256": "f70dac60f81d50c4f51fd02ae34a06047643436c7a181b029ae106db4c67bb08"
+      "sha256": "ef2d6f225c24859713dc19bf0517926655a15a28c51075ecdc9400397f1133d7"
     },
     "03_trusted_provenance_resolver_implementation.md": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/03_trusted_provenance_resolver_implementation.md",
       "size_bytes": 1196,
-      "sha256": "dd628748279267482cbb5b44befc1f455a5a4ff94d1bb14d1a459e568505fbf8"
+      "sha256": "300741e391a9f6f7876337367ebaecc2c69082322f0e2293b4f9481ccf0c12cd"
     },
     "04_dataset_lineage_negative_test_results.json": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/04_dataset_lineage_negative_test_results.json",
       "size_bytes": 1668,
-      "sha256": "15b973b35a5f6a919e255624e272b9b3691ee07e9453eb008e964eab3db0cef0"
+      "sha256": "0159649f20cb3299e4f4d8cbbf3c4d08c9f4170ad85e80c2a59e3abb39a47f96"
     },
     "05_reproduction_artifact_resolver_architecture.md": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/05_reproduction_artifact_resolver_architecture.md",
       "size_bytes": 941,
-      "sha256": "aab2ea2bf302f04b65029d261ef0b3fbb965cd9d7e3b5230dcfae7a56124c377"
+      "sha256": "8b88887e1932f8a1583de0eec970bb4d6c39ba61491cf100ba2fa1652ad41cb5"
     },
     "06_artifact_authenticity_verification.md": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/06_artifact_authenticity_verification.md",
       "size_bytes": 993,
-      "sha256": "6b8f78929692ef0f538991e78f92dc7c2be239dec3ba7377a964490e62ac8ae3"
+      "sha256": "1999c90368d674462d359ad2f1215eb9c2c519cda700346c3d8e42004bad0ca8"
     },
     "07_artifact_tampering_negative_tests.json": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/07_artifact_tampering_negative_tests.json",
       "size_bytes": 2208,
-      "sha256": "1d952ed9fa24d78d072c2fd266c551dba510b9c7651da7b61c9bea78f3c6c573"
+      "sha256": "280a64c66d0ab7a51cf27403fa549f55411dc29e9fe2e09d0872c6171aacaa32"
     },
     "08_first_execution_reproduction_separation.md": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/08_first_execution_reproduction_separation.md",
       "size_bytes": 927,
-      "sha256": "ad00c14904ca8e8277faabe5c31e82935b7dbe54d12569e65522b84af9996149"
+      "sha256": "dcb3cb685ce85a619b03663a91dc45e79a7db72564ea7670f18cf42930e3f9aa"
     },
     "09_evidence_grading_policy.md": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/09_evidence_grading_policy.md",
       "size_bytes": 899,
-      "sha256": "1187f8247bcf79d4611fcc9fe445d2501a8e45dda99dea15e40f52c52aba87cc"
+      "sha256": "ae9fc7bd6542e0a4656061265665df169f7c222e89c54b1c6047dc8807ba772e"
     },
     "10_evidence_grade_inflation_tests.json": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/10_evidence_grade_inflation_tests.json",
       "size_bytes": 1243,
-      "sha256": "5b0f1ce36ce617f8d195e3656a621eb8cdfcf19e7b6a783923e512301c7fff1e"
+      "sha256": "5fd390f5cb8c86d7b11a642a261824833048b7bac2b6c3f3d42939cf694d426d"
     },
     "11_trust_propagation_audit.md": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/11_trust_propagation_audit.md",
       "size_bytes": 833,
-      "sha256": "102da6160badb2acf454f30da0709995dc2306f5ed2265558ee8900720fa4364"
+      "sha256": "aef686b74702dbc922d9ca9c0b50f136963b8423a0a0521c8d0890d10902abf9"
     },
     "12_knowledge_base_verification.md": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/12_knowledge_base_verification.md",
       "size_bytes": 578,
-      "sha256": "e8cb96854f692141e4e008895182e02b0ebd613d47b21c13ba206eb64ea86a6b"
+      "sha256": "8f8d4bfce91fcf64cd07cf39223666e24e57e3f46d71679542291fb58cb07c82"
     },
     "13_report_builder_v6_verification.md": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/13_report_builder_v6_verification.md",
       "size_bytes": 498,
-      "sha256": "5877bc9d8ac35bf1ac505e115db40437eb5b5341ce9fd3e34c8aebfcbd28d604"
+      "sha256": "08508041a728525f0eb60e46250837151712f1adeffa64c88a272e9c0b42ef55"
     },
     "14_dashboard_v6_verification.md": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/14_dashboard_v6_verification.md",
       "size_bytes": 488,
-      "sha256": "31c2e7024265b0bfd97594a169291c12269f41ad550d9a1fc7962830e9e73de5"
+      "sha256": "ce1447ed2a94c0935358ea0b2e2005bb2a2f60893a4b853a53bbac114cd3226a"
     },
     "15_btc_historical_data_inventory.json": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/15_btc_historical_data_inventory.json",
       "size_bytes": 1234,
-      "sha256": "131800c5dbbf9dcfe5aee971ef9473ab463ec633c3ce294db2c14ab1bd827398"
+      "sha256": "9c113acf3d1498e3a43a0ab818ae9f627a7307e1cfc5102627ee452cdcbe5c21"
     },
     "16_frozen_model_capability_assessment.md": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/16_frozen_model_capability_assessment.md",
       "size_bytes": 720,
-      "sha256": "c8004ce364e89f3685e40df4865c3a838d7bad762e1544c6b43c2cf60f7b753a"
+      "sha256": "998ca9a2013bb29857923beabb311f5074df2ff800a5d65a5cae98fc69ed836b"
     },
     "17_btc_timing_research_feasibility_assessment.md": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/17_btc_timing_research_feasibility_assessment.md",
       "size_bytes": 674,
-      "sha256": "b7c9fddf3e92af832e1f910eeeeca0fb82438042f470afc219adf1d1f850d696"
+      "sha256": "ce30177e91721d5c900d1f99f7e311fdc268e404dce415d183f4c471f68d57a7"
     },
     "18_btc_timing_research_readiness_report.md": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/18_btc_timing_research_readiness_report.md",
@@ -97,7 +97,7 @@
     "19_targeted_test_results.json": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/19_targeted_test_results.json",
       "size_bytes": 1027,
-      "sha256": "b4e40f3a704c9fc117ca7d1be8563c93264a445498bd1cbb1e50fd8a3ed59287"
+      "sha256": "c3fb17d1872cc6dd59dd74042613b95008eb40353f92c5ef3289974d99eaf174"
     },
     "20_full_regression_execution_log.json": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/20_full_regression_execution_log.json",
@@ -117,27 +117,27 @@
     "23_persistence_recovery_results.json": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/23_persistence_recovery_results.json",
       "size_bytes": 727,
-      "sha256": "363c0e787d7a12e104c21553d79aadb810c3809efcc493bf753a138a94032c24"
+      "sha256": "86e01bc8ba38092538e5c6948de8b59000759915fae6bd685c5b747f9093203d"
     },
     "24_staging_deployment_evidence.json": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/24_staging_deployment_evidence.json",
-      "size_bytes": 2018,
-      "sha256": "f0305200c2f5ecacaff652a2d24e077cddc405b6eb57390c2ccb6ee5cba8d334"
+      "size_bytes": 2019,
+      "sha256": "753f4c6e618de4c48f829ee4297e369971b5c6844216d86ee6b687fb38b9d9c4"
     },
     "25_production_zero_touch_evidence.json": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/25_production_zero_touch_evidence.json",
       "size_bytes": 317,
-      "sha256": "462a4b7d65b11f2d7a2e05195b32e7b9fe4d0b8e5d199e09d402d9ed85efa7a0"
+      "sha256": "2d66ebf1ae116bb54863a034fccc83f77c4b387d7ff8e625ec7059968b7fa071"
     },
     "26_governance_invariant_verification.json": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/26_governance_invariant_verification.json",
       "size_bytes": 518,
-      "sha256": "a4742e02a6cfe9e673e59370393e3e2c02a2ef2ee4903be7a8980ad577def8c0"
+      "sha256": "0c8e61fcce7ff6a321565e4cabd279084e2fab7d8ef67a0ffca9bfcb1a060b99"
     },
     "28_final_sprint28_1_authenticity_closure_report.md": {
       "file_path": "research_outputs/sprint28_1_final_trust_boundary_closure/28_final_sprint28_1_authenticity_closure_report.md",
       "size_bytes": 4124,
-      "sha256": "c9bd10a79941d5a036329382c7d7918de921192e03041e15f16856d42d6e1120"
+      "sha256": "7836487bcdf5a7230dbe65d874a434890bae0c6917cafcffebf6096b72050f68"
     }
   }
 }
