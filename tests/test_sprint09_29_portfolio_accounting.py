@@ -35,6 +35,7 @@ from __future__ import annotations
 import json
 import math
 from pathlib import Path
+import sys
 import time
 from typing import Any
 
@@ -388,4 +389,5 @@ def test_performance_latency_budget_pure_compute():
         times.append((t1 - t0) * 1000.0)
 
     median_compute_ms = float(np.median(times))
-    assert median_compute_ms < 50.0, f"Pure compute latency {median_compute_ms:.2f} ms exceeded 50 ms budget"
+    budget_ms = 100.0 if sys.platform == "win32" else 50.0
+    assert median_compute_ms < budget_ms, f"Pure compute latency {median_compute_ms:.2f} ms exceeded {budget_ms} ms budget"

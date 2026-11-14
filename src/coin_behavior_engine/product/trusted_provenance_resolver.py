@@ -19,10 +19,19 @@ from __future__ import annotations
 
 import hashlib
 import logging
+import secrets
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
+
+from coin_behavior_engine.product.credential_manager import (
+    KEY_PURPOSE_DATASET_REGISTRATION,
+    is_public_api_request_active,
+    signing_key_registry,
+    SigningAuthorityContext,
+)
+from coin_behavior_engine.product.research_report_evidence import rfc8785_canonical_json
 
 logger = logging.getLogger(__name__)
 
@@ -83,11 +92,15 @@ class TrustedDatasetProvenanceResolver:
 
     _revoked_datasets: Set[str] = set()
     _external_registered_datasets: Dict[str, TrustedDatasetMetadata] = {}
+    _registered_nonces: Set[str] = set()
+    _registered_signatures: Set[str] = set()
 
     @classmethod
     def clear_external_registrations(cls) -> None:
         """Clear external dataset registrations (for test fixture isolation)."""
         cls._external_registered_datasets.clear()
+        cls._registered_nonces.clear()
+        cls._registered_signatures.clear()
 
     @classmethod
     def revoke_dataset(cls, dataset_id: str, reason: str = "") -> None:
@@ -105,6 +118,81 @@ class TrustedDatasetProvenanceResolver:
         return str(dataset_id or "").strip() in cls._revoked_datasets
 
     @classmethod
+    def build_registration_claims(
+        cls,
+        metadata: TrustedDatasetMetadata,
+        source_lineage_digest: str,
+        intake_manifest_sha256: str,
+        nonce: str,
+    ) -> Dict[str, Any]:
+        """Build canonical claims for cryptographic dataset registration."""
+        return {
+            "dataset_id": str(metadata.dataset_id or "").strip(),
+            "exchange": str(metadata.exchange or "").upper().strip(),
+            "symbol": str(metadata.symbol or "").strip(),
+            "dataset_fingerprint": str(metadata.dataset_fingerprint or "").strip(),
+            "source_artifact_sha256": str(metadata.source_artifact_sha256 or "").strip().lower(),
+            "source_lineage": str(metadata.source_lineage or "").strip(),
+            "source_lineage_digest": str(source_lineage_digest or "").strip().lower(),
+            "intake_manifest_sha256": str(intake_manifest_sha256 or "").strip().lower(),
+            "registration_purpose": KEY_PURPOSE_DATASET_REGISTRATION,
+            "nonce": str(nonce or "").strip(),
+        }
+
+    @classmethod
+    def create_authenticated_registration_evidence(
+        cls,
+        metadata: TrustedDatasetMetadata,
+        authority_context: Any,
+        key_id: Optional[str] = None,
+        source_lineage_digest: Optional[str] = None,
+        intake_manifest: Optional[Dict[str, Any]] = None,
+        nonce: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Creates cryptographically signed registration evidence using verified signing authority."""
+        if not nonce:
+            nonce = secrets.token_hex(16)
+
+        manifest_sha = ""
+        if intake_manifest:
+            m_bytes = rfc8785_canonical_json(intake_manifest)
+            manifest_sha = hashlib.sha256(m_bytes).hexdigest()
+        else:
+            manifest_sha = hashlib.sha256(f"intake-manifest-{metadata.dataset_id}-{nonce}".encode("utf-8")).hexdigest()
+
+        lin_digest = source_lineage_digest or hashlib.sha256(
+            str(metadata.source_lineage or "").encode("utf-8")
+        ).hexdigest()
+
+        claims = cls.build_registration_claims(
+            metadata=metadata,
+            source_lineage_digest=lin_digest,
+            intake_manifest_sha256=manifest_sha,
+            nonce=nonce,
+        )
+        canonical_bytes = rfc8785_canonical_json(claims)
+        active_key = key_id or signing_key_registry.DEFAULT_KEY_ID
+
+        sig = signing_key_registry.sign_with_authority(
+            canonical_bytes=canonical_bytes,
+            key_id=active_key,
+            required_purpose=KEY_PURPOSE_DATASET_REGISTRATION,
+            authority_context=authority_context,
+        )
+
+        ev: Dict[str, Any] = {
+            "signature": sig,
+            "nonce": nonce,
+            "source_lineage_digest": lin_digest,
+            "intake_manifest_sha256": manifest_sha,
+            "external_exchange": str(metadata.exchange or "").upper().strip(),
+            "source_lineage": str(metadata.source_lineage or "").strip(),
+        }
+        if intake_manifest:
+            ev["intake_manifest"] = intake_manifest
+        return ev
+
+    @classmethod
     def register_verified_external_dataset(
         cls,
         metadata: TrustedDatasetMetadata,
@@ -113,61 +201,133 @@ class TrustedDatasetProvenanceResolver:
     ) -> TrustedDatasetMetadata:
         """Register an authenticated external dataset (e.g. from an independent verified exchange).
         
-        Strictly requires authoritative registration context and authenticated provenance evidence.
-        Rejects caller-supplied self-declared verified status, unverified authorities, forged exchange
-        names, or shared Binance lineage.
+        Strictly requires cryptographic verification against trusted preconfigured keys and
+        authenticated provenance evidence. Rejects caller-supplied self-declared verified status,
+        arbitrary string tokens, unverified authority names, forged exchange names, replay attacks,
+        or shared Binance lineage.
         """
-        # 1. Verify authoritative registration context
-        if not registration_context or not isinstance(registration_context, dict):
-            raise PermissionError("Authoritative registration context is required to register external datasets.")
-
-        auth = str(registration_context.get("authority", "")).strip()
-        if auth not in cls.AUTHORIZED_REGISTRATION_AUTHORITIES:
+        # 1. Environment & API Context Check (Block public API / research API request context)
+        if is_public_api_request_active():
             raise PermissionError(
-                f"Unauthorized registration authority '{auth}'. Must be one of {cls.AUTHORIZED_REGISTRATION_AUTHORITIES}."
+                "External dataset registration is prohibited inside public or research API request contexts."
             )
 
-        token = registration_context.get("token") or registration_context.get("secret")
-        if not token or len(str(token).strip()) < 8:
-            raise PermissionError("Valid authority authentication token or secret is required (minimum 8 characters).")
+        # 2. Validate metadata
+        if not metadata or not isinstance(metadata, TrustedDatasetMetadata):
+            raise ValueError("Valid TrustedDatasetMetadata instance is required.")
 
-        # 2. Verify authenticated provenance evidence
+        meta_exchange = str(metadata.exchange or "").upper().strip()
+        if meta_exchange == "BINANCE":
+            raise ValueError("Binance datasets cannot be registered as independent external datasets.")
+        if not meta_exchange or meta_exchange not in cls.VALID_EXTERNAL_EXCHANGES:
+            raise ValueError(
+                f"External exchange '{meta_exchange}' is unrecognized or unauthorized. Must be one of {cls.VALID_EXTERNAL_EXCHANGES}."
+            )
+
+        lineage_str = str(metadata.source_lineage or "").upper()
+        if "BINANCE" in lineage_str:
+            raise ValueError(
+                "Shared Binance lineage detected in external dataset registration; cannot masquerade as independent source."
+            )
+
+        # 3. Authenticated provenance evidence validation
         if not provenance_evidence or not isinstance(provenance_evidence, dict):
             raise ValueError("Authenticated provenance evidence is required to register external datasets.")
 
-        intake_sha = str(provenance_evidence.get("intake_manifest_sha256", "")).strip()
-        if len(intake_sha) != 64 or not all(c in "0123456789abcdefABCDEF" for c in intake_sha):
+        sig = str(provenance_evidence.get("signature") or "").strip()
+        if not sig:
+            raise PermissionError(
+                "Cryptographic signature is required in provenance evidence for external dataset registration. "
+                "Arbitrary tokens or caller-supplied authority names are rejected."
+            )
+
+        nonce = str(provenance_evidence.get("nonce") or "").strip()
+        if not nonce or len(nonce) < 8:
+            raise ValueError("Valid nonce (minimum 8 characters) is required in provenance evidence.")
+
+        intake_sha = str(provenance_evidence.get("intake_manifest_sha256") or "").strip().lower()
+        if len(intake_sha) != 64 or not all(c in "0123456789abcdef" for c in intake_sha):
             raise ValueError("Invalid or missing 64-character intake_manifest_sha256 in provenance evidence.")
 
-        digest = str(provenance_evidence.get("source_lineage_digest", "")).strip()
-        if len(digest) != 64 or not all(c in "0123456789abcdefABCDEF" for c in digest):
+        digest = str(provenance_evidence.get("source_lineage_digest") or "").strip().lower()
+        if len(digest) != 64 or not all(c in "0123456789abcdef" for c in digest):
             raise ValueError("Invalid or missing 64-character source_lineage_digest in provenance evidence.")
 
-        ext_exchange = str(provenance_evidence.get("external_exchange", "")).upper().strip()
-        meta_exchange = str(metadata.exchange or "").upper().strip()
-
-        if ext_exchange == "BINANCE" or meta_exchange == "BINANCE":
+        ext_exchange = str(provenance_evidence.get("external_exchange") or "").upper().strip()
+        if ext_exchange == "BINANCE":
             raise ValueError("Binance datasets cannot be registered as independent external datasets.")
-        if not ext_exchange or ext_exchange not in cls.VALID_EXTERNAL_EXCHANGES:
-            raise ValueError(
-                f"External exchange '{ext_exchange}' is unrecognized or unauthorized. Must be one of {cls.VALID_EXTERNAL_EXCHANGES}."
-            )
-        if ext_exchange != meta_exchange:
+        if ext_exchange and ext_exchange != meta_exchange:
             raise ValueError(
                 f"Exchange mismatch: metadata exchange '{meta_exchange}' does not match provenance evidence '{ext_exchange}'."
             )
 
-        # 3. Check for shared Binance lineage or shared source masquerading
-        lineage_str = str(metadata.source_lineage or "").upper()
-        ev_lineage = str(provenance_evidence.get("source_lineage", "")).upper()
-        if "BINANCE" in lineage_str or "BINANCE" in ev_lineage:
-            raise ValueError("Shared Binance lineage detected in external dataset registration; cannot masquerade as independent source.")
+        ev_lineage = str(provenance_evidence.get("source_lineage") or "").upper()
+        if "BINANCE" in ev_lineage:
+            raise ValueError(
+                "Shared Binance lineage detected in external dataset registration; cannot masquerade as independent source."
+            )
 
-        # 4. Authoritatively certify and store metadata
+        # 4. Replay Prevention
+        if nonce in cls._registered_nonces:
+            raise PermissionError(f"Replay attack detected: registration nonce '{nonce}' has already been used.")
+        if sig in cls._registered_signatures:
+            raise PermissionError("Replay attack detected: registration signature has already been used.")
+
+        # 5. Manifest correspondence verification
+        intake_manifest = provenance_evidence.get("intake_manifest")
+        if intake_manifest is not None:
+            if not isinstance(intake_manifest, dict):
+                raise ValueError("intake_manifest in provenance evidence must be a dictionary.")
+            actual_manifest_sha = hashlib.sha256(rfc8785_canonical_json(intake_manifest)).hexdigest()
+            if actual_manifest_sha.lower() != intake_sha:
+                raise ValueError(
+                    f"Intake manifest digest mismatch: computed '{actual_manifest_sha}' does not match intake_manifest_sha256 '{intake_sha}'."
+                )
+            m_ds_id = intake_manifest.get("dataset_id")
+            if m_ds_id and m_ds_id != metadata.dataset_id:
+                raise ValueError(
+                    f"Intake manifest dataset_id '{m_ds_id}' does not match metadata dataset_id '{metadata.dataset_id}'."
+                )
+
+        # 6. Cryptographic Authority Verification
+        claims = cls.build_registration_claims(
+            metadata=metadata,
+            source_lineage_digest=digest,
+            intake_manifest_sha256=intake_sha,
+            nonce=nonce,
+        )
+        canonical_bytes = rfc8785_canonical_json(claims)
+
+        is_valid, reason, key_id = signing_key_registry.verify_signature(canonical_bytes, sig)
+        if not is_valid:
+            raise PermissionError(
+                f"Cryptographic dataset registration verification failed: {reason}. "
+                "Arbitrary tokens or self-declared authorities are strictly rejected."
+            )
+
+        meta_key = signing_key_registry.get_key_metadata(key_id or "")
+        if not meta_key:
+            raise PermissionError(f"Signing key '{key_id}' lacks registration metadata.")
+        if meta_key.get("is_revoked", False):
+            raise PermissionError(f"Signing key '{key_id}' is revoked.")
+        if KEY_PURPOSE_DATASET_REGISTRATION not in meta_key.get("allowed_purposes", set()):
+            raise PermissionError(
+                f"Signing key '{key_id}' is not authorized for purpose '{KEY_PURPOSE_DATASET_REGISTRATION}'."
+            )
+
+        # 7. Record nonces, signatures and certify metadata
+        cls._registered_nonces.add(nonce)
+        cls._registered_signatures.add(sig)
+
         metadata.provenance_status = "TRUSTED_PROVENANCE_VERIFIED"
         metadata.registration_authority_verified = True
         metadata.intake_manifest_sha256 = intake_sha
-        metadata.registration_context = dict(registration_context)
+        metadata.registration_context = {
+            "key_id": key_id,
+            "nonce": nonce,
+            "verified_at": datetime.now(timezone.utc).isoformat(),
+            "registration_purpose": KEY_PURPOSE_DATASET_REGISTRATION,
+        }
 
         cls._external_registered_datasets[metadata.dataset_id] = metadata
         return metadata

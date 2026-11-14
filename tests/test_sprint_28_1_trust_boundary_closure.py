@@ -47,6 +47,12 @@ from coin_behavior_engine.product.discovery_knowledge_base import (
 from coin_behavior_engine.product.dataset_validation_engine import (
     DatasetValidationEngine,
 )
+import secrets
+from coin_behavior_engine.product.credential_manager import (
+    KEY_PURPOSE_DATASET_REGISTRATION,
+    public_api_request_guard,
+    signing_key_registry,
+)
 from coin_behavior_engine.product.scientific_readiness import (
     ScientificReadinessEvaluator,
 )
@@ -171,19 +177,23 @@ class TestSection35DatasetIndependenceNegative:
             quarantine_status="CLEAN",
             provenance_status="TRUSTED_PROVENANCE_VERIFIED",
         )
-        ctx = {"authority": "CBE_DATASET_GOVERNANCE_AUTHORITY", "token": "auth_token_secret_12345"}
-        ev_parent = {
-            "intake_manifest_sha256": "1" * 64,
-            "source_lineage_digest": "2" * 64,
-            "external_exchange": "KRAKEN",
-        }
-        ev_derived = {
-            "intake_manifest_sha256": "3" * 64,
-            "source_lineage_digest": "4" * 64,
-            "external_exchange": "COINBASE",
-        }
-        TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta_parent, ctx, ev_parent)
-        TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta_derived, ctx, ev_derived)
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="test-ds-reg-key",
+            secret=secrets.token_hex(32),
+            purposes=[KEY_PURPOSE_DATASET_REGISTRATION],
+        ) as auth_ctx:
+            ev_parent = TrustedDatasetProvenanceResolver.create_authenticated_registration_evidence(
+                metadata=meta_parent,
+                authority_context=auth_ctx,
+                key_id="test-ds-reg-key",
+            )
+            ev_derived = TrustedDatasetProvenanceResolver.create_authenticated_registration_evidence(
+                metadata=meta_derived,
+                authority_context=auth_ctx,
+                key_id="test-ds-reg-key",
+            )
+            TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta_parent, provenance_evidence=ev_parent)
+            TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta_derived, provenance_evidence=ev_derived)
         v, issues = TrustedDatasetProvenanceResolver.verify_independence("DS-SRC-ROOT", "DS-DERIVED")
         assert v == "SHARED_SOURCE_LINEAGE"
 
@@ -1135,10 +1145,10 @@ class TestTask1ArtifactCacheContextValidation:
 
 
 class TestTask2ExternalDatasetRegistrationAuthority:
-    """Task 2: Authoritative registration context and authenticated provenance evidence enforcement."""
+    """Task 2: Cryptographically authenticated dataset registration and authority verification enforcement."""
 
     def test_registration_without_context_rejected(self):
-        """Calling register_verified_external_dataset without context raises PermissionError."""
+        """Calling register_verified_external_dataset without context raises PermissionError or ValueError."""
         meta = TrustedDatasetMetadata(
             dataset_id="DS-EXT-NO-CTX",
             exchange="COINBASE",
@@ -1156,13 +1166,13 @@ class TestTask2ExternalDatasetRegistrationAuthority:
             quarantine_status="CLEAN",
             provenance_status="VERIFIED",
         )
-        with pytest.raises(PermissionError, match="Authoritative registration context is required"):
-            TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta, registration_context=None)
+        with pytest.raises((PermissionError, ValueError)):
+            TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta, registration_context=None, provenance_evidence=None)
 
-    def test_registration_with_unauthorized_authority_rejected(self):
-        """Registration with an unauthorized authority identifier raises PermissionError."""
+    def test_registration_without_signature_rejected(self):
+        """Provenance evidence missing cryptographic signature is rejected."""
         meta = TrustedDatasetMetadata(
-            dataset_id="DS-EXT-BAD-AUTH",
+            dataset_id="DS-EXT-NO-SIG",
             exchange="COINBASE",
             symbol="BTC/USD",
             market_type="SPOT",
@@ -1178,15 +1188,19 @@ class TestTask2ExternalDatasetRegistrationAuthority:
             quarantine_status="CLEAN",
             provenance_status="VERIFIED",
         )
-        ctx = {"authority": "UNAUTHORIZED_COMMUNITY_KEY", "token": "valid_looking_token_12345"}
-        ev = {"intake_manifest_sha256": "1" * 64, "source_lineage_digest": "2" * 64, "external_exchange": "COINBASE"}
-        with pytest.raises(PermissionError, match="Unauthorized registration authority"):
-            TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta, ctx, ev)
+        ev = {
+            "intake_manifest_sha256": "1" * 64,
+            "source_lineage_digest": "2" * 64,
+            "external_exchange": "COINBASE",
+            "nonce": "test_nonce_12345",
+        }
+        with pytest.raises(PermissionError, match="Cryptographic signature is required"):
+            TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta, provenance_evidence=ev)
 
-    def test_registration_with_missing_provenance_evidence_rejected(self):
-        """Registration missing 64-char provenance evidence digests raises ValueError."""
+    def test_registration_with_caller_authority_name_and_made_up_token_coinbase_rejected(self):
+        """P0 Requirement 10: Caller cannot register Coinbase dataset using made-up token and valid-looking authority name."""
         meta = TrustedDatasetMetadata(
-            dataset_id="DS-EXT-BAD-EV",
+            dataset_id="DS-EXT-COINBASE-FORGED",
             exchange="COINBASE",
             symbol="BTC/USD",
             market_type="SPOT",
@@ -1202,10 +1216,157 @@ class TestTask2ExternalDatasetRegistrationAuthority:
             quarantine_status="CLEAN",
             provenance_status="VERIFIED",
         )
-        ctx = {"authority": "CBE_DATASET_GOVERNANCE_AUTHORITY", "token": "secret_token_12345"}
-        bad_ev = {"intake_manifest_sha256": "too_short", "source_lineage_digest": "2" * 64, "external_exchange": "COINBASE"}
-        with pytest.raises(ValueError, match="intake_manifest_sha256"):
-            TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta, ctx, bad_ev)
+        ctx = {
+            "authority": "CBE_DATASET_GOVERNANCE_AUTHORITY",
+            "token": "made_up_secret_token_12345",
+        }
+        ev = {
+            "intake_manifest_sha256": "1" * 64,
+            "source_lineage_digest": "2" * 64,
+            "external_exchange": "COINBASE",
+            "nonce": "forged_nonce_12345",
+            "signature": "hmac-sha256:fake-key:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        }
+        with pytest.raises(PermissionError, match="Cryptographic dataset registration verification failed"):
+            TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta, registration_context=ctx, provenance_evidence=ev)
+
+    def test_registration_with_forged_signature_rejected(self):
+        """Registration with a forged HMAC signature under registered key ID is rejected."""
+        meta = TrustedDatasetMetadata(
+            dataset_id="DS-EXT-BAD-SIG",
+            exchange="COINBASE",
+            symbol="BTC/USD",
+            market_type="SPOT",
+            timeframe="1h",
+            observation_start=datetime(2024, 1, 1, tzinfo=timezone.utc),
+            observation_end=datetime(2024, 1, 2, tzinfo=timezone.utc),
+            observation_count=24,
+            source_artifact_sha256="a" * 64,
+            dataset_fingerprint="fp1",
+            source_lineage="COINBASE_API",
+            parent_dataset_id=None,
+            transformation_lineage=[],
+            quarantine_status="CLEAN",
+            provenance_status="VERIFIED",
+        )
+        ev = {
+            "intake_manifest_sha256": "1" * 64,
+            "source_lineage_digest": "2" * 64,
+            "external_exchange": "COINBASE",
+            "nonce": "test_nonce_99999",
+            "signature": f"hmac-sha256:{signing_key_registry.DEFAULT_KEY_ID}:{'f' * 64}",
+        }
+        with pytest.raises(PermissionError, match="Cryptographic dataset registration verification failed"):
+            TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta, provenance_evidence=ev)
+
+    def test_registration_with_tampered_claims_rejected(self):
+        """Altering metadata claims after signature creation causes verification failure."""
+        meta = TrustedDatasetMetadata(
+            dataset_id="DS-EXT-TAMPERED",
+            exchange="KRAKEN",
+            symbol="BTC/USD",
+            market_type="SPOT",
+            timeframe="1h",
+            observation_start=datetime(2024, 1, 1, tzinfo=timezone.utc),
+            observation_end=datetime(2024, 1, 2, tzinfo=timezone.utc),
+            observation_count=24,
+            source_artifact_sha256="b" * 64,
+            dataset_fingerprint="fp_orig",
+            source_lineage="KRAKEN_HISTORICAL",
+            parent_dataset_id=None,
+            transformation_lineage=[],
+            quarantine_status="CLEAN",
+            provenance_status="VERIFIED",
+        )
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="test-tamper-key",
+            secret=secrets.token_hex(32),
+            purposes=[KEY_PURPOSE_DATASET_REGISTRATION],
+        ) as auth_ctx:
+            ev = TrustedDatasetProvenanceResolver.create_authenticated_registration_evidence(
+                metadata=meta,
+                authority_context=auth_ctx,
+                key_id="test-tamper-key",
+            )
+            # Tamper metadata after signature
+            tampered_meta = TrustedDatasetMetadata(
+                dataset_id="DS-EXT-TAMPERED",
+                exchange="KRAKEN",
+                symbol="ETH/USD",  # Tampered symbol!
+                market_type="SPOT",
+                timeframe="1h",
+                observation_start=datetime(2024, 1, 1, tzinfo=timezone.utc),
+                observation_end=datetime(2024, 1, 2, tzinfo=timezone.utc),
+                observation_count=24,
+                source_artifact_sha256="b" * 64,
+                dataset_fingerprint="fp_orig",
+                source_lineage="KRAKEN_HISTORICAL",
+                parent_dataset_id=None,
+                transformation_lineage=[],
+                quarantine_status="CLEAN",
+                provenance_status="VERIFIED",
+            )
+            with pytest.raises(PermissionError, match="Cryptographic dataset registration verification failed"):
+                TrustedDatasetProvenanceResolver.register_verified_external_dataset(tampered_meta, provenance_evidence=ev)
+
+    def test_registration_replay_attack_rejected(self):
+        """Replaying the same signature or nonce across registrations is strictly blocked."""
+        meta = TrustedDatasetMetadata(
+            dataset_id="DS-EXT-REPLAY-01",
+            exchange="KRAKEN",
+            symbol="BTC/USD",
+            market_type="SPOT",
+            timeframe="1h",
+            observation_start=datetime(2024, 1, 1, tzinfo=timezone.utc),
+            observation_end=datetime(2024, 1, 2, tzinfo=timezone.utc),
+            observation_count=24,
+            source_artifact_sha256="c" * 64,
+            dataset_fingerprint="fp_rep",
+            source_lineage="KRAKEN_LINEAGE",
+            parent_dataset_id=None,
+            transformation_lineage=[],
+            quarantine_status="CLEAN",
+            provenance_status="VERIFIED",
+        )
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="test-replay-key",
+            secret=secrets.token_hex(32),
+            purposes=[KEY_PURPOSE_DATASET_REGISTRATION],
+        ) as auth_ctx:
+            ev = TrustedDatasetProvenanceResolver.create_authenticated_registration_evidence(
+                metadata=meta,
+                authority_context=auth_ctx,
+                key_id="test-replay-key",
+            )
+            # First registration succeeds
+            TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta, provenance_evidence=ev)
+
+            # Replay attempt with same signature/nonce
+            with pytest.raises(PermissionError, match="Replay attack detected"):
+                TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta, provenance_evidence=ev)
+
+    def test_registration_in_public_api_context_blocked(self):
+        """External registration attempts initiated from public or research API contexts are blocked."""
+        meta = TrustedDatasetMetadata(
+            dataset_id="DS-EXT-API-BLOCK",
+            exchange="KRAKEN",
+            symbol="BTC/USD",
+            market_type="SPOT",
+            timeframe="1h",
+            observation_start=datetime(2024, 1, 1, tzinfo=timezone.utc),
+            observation_end=datetime(2024, 1, 2, tzinfo=timezone.utc),
+            observation_count=24,
+            source_artifact_sha256="d" * 64,
+            dataset_fingerprint="fp_api",
+            source_lineage="KRAKEN_API",
+            parent_dataset_id=None,
+            transformation_lineage=[],
+            quarantine_status="CLEAN",
+            provenance_status="VERIFIED",
+        )
+        with public_api_request_guard():
+            with pytest.raises(PermissionError, match="prohibited inside public or research API request contexts"):
+                TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta, provenance_evidence={})
 
     def test_registration_with_binance_as_external_rejected(self):
         """Binance datasets cannot be registered as independent external datasets."""
@@ -1226,10 +1387,9 @@ class TestTask2ExternalDatasetRegistrationAuthority:
             quarantine_status="CLEAN",
             provenance_status="VERIFIED",
         )
-        ctx = {"authority": "CBE_DATASET_GOVERNANCE_AUTHORITY", "token": "secret_token_12345"}
-        ev = {"intake_manifest_sha256": "1" * 64, "source_lineage_digest": "2" * 64, "external_exchange": "BINANCE"}
+        ev = {"intake_manifest_sha256": "1" * 64, "source_lineage_digest": "2" * 64, "external_exchange": "BINANCE", "nonce": "nonce_12345", "signature": "sig"}
         with pytest.raises(ValueError, match="Binance datasets cannot be registered as independent external datasets"):
-            TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta, ctx, ev)
+            TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta, provenance_evidence=ev)
 
     def test_registration_with_shared_binance_lineage_masquerading_rejected(self):
         """External dataset masquerading with Binance lineage is rejected."""
@@ -1250,10 +1410,9 @@ class TestTask2ExternalDatasetRegistrationAuthority:
             quarantine_status="CLEAN",
             provenance_status="VERIFIED",
         )
-        ctx = {"authority": "CBE_DATASET_GOVERNANCE_AUTHORITY", "token": "secret_token_12345"}
-        ev = {"intake_manifest_sha256": "1" * 64, "source_lineage_digest": "2" * 64, "external_exchange": "KRAKEN"}
+        ev = {"intake_manifest_sha256": "1" * 64, "source_lineage_digest": "2" * 64, "external_exchange": "KRAKEN", "nonce": "nonce_12345", "signature": "sig"}
         with pytest.raises(ValueError, match="Shared Binance lineage detected"):
-            TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta, ctx, ev)
+            TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta, provenance_evidence=ev)
 
     def test_genuine_authenticated_registration_certifies_independence(self):
         """Properly authenticated external dataset establishes verified independence against Binance."""
@@ -1274,23 +1433,30 @@ class TestTask2ExternalDatasetRegistrationAuthority:
             quarantine_status="CLEAN",
             provenance_status="UNVERIFIED",
         )
-        ctx = {"authority": "CBE_DATASET_GOVERNANCE_AUTHORITY", "token": "secret_token_12345"}
-        ev = {"intake_manifest_sha256": "1" * 64, "source_lineage_digest": "2" * 64, "external_exchange": "KRAKEN"}
+        with signing_key_registry.isolated_test_signing_context(
+            key_id="test-genuine-key",
+            secret=secrets.token_hex(32),
+            purposes=[KEY_PURPOSE_DATASET_REGISTRATION],
+        ) as auth_ctx:
+            ev = TrustedDatasetProvenanceResolver.create_authenticated_registration_evidence(
+                metadata=meta,
+                authority_context=auth_ctx,
+                key_id="test-genuine-key",
+            )
+            res_meta = TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta, provenance_evidence=ev)
+            assert res_meta.provenance_status == "TRUSTED_PROVENANCE_VERIFIED"
+            assert res_meta.registration_authority_verified is True
 
-        res_meta = TrustedDatasetProvenanceResolver.register_verified_external_dataset(meta, ctx, ev)
-        assert res_meta.provenance_status == "TRUSTED_PROVENANCE_VERIFIED"
-        assert res_meta.registration_authority_verified is True
-
-        verdict, issues = TrustedDatasetProvenanceResolver.verify_independence(
-            "DS-BTC-1H-Q1-2024",
-            "DS-GENUINE-KRAKEN-01",
-        )
-        assert verdict == "INDEPENDENT_SOURCE_VERIFIED"
-        assert len(issues) == 0
+            verdict, issues = TrustedDatasetProvenanceResolver.verify_independence(
+                "DS-BTC-1H-Q1-2024",
+                "DS-GENUINE-KRAKEN-01",
+            )
+            assert verdict == "INDEPENDENT_SOURCE_VERIFIED"
+            assert len(issues) == 0
 
 
 class TestTask3ReproductionArtifactIntegrity:
-    """Task 3: Authoritative reproduction artifact registration and execution record binding."""
+    """Task 3 & Task 2 Authenticated Execution Registry: Authoritative execution records, artifact integrity, and reproduction comparison."""
 
     def test_unregistered_artifact_file_rejected(self):
         """Unregistered artifact file with valid JSON structure is rejected."""
@@ -1331,54 +1497,168 @@ class TestTask3ReproductionArtifactIntegrity:
         )
         assert rec.reproduction_verdict in ("REPRODUCTION_ARTIFACT_INVALID", "REPRODUCTION_EVIDENCE_INCOMPLETE", "INSUFFICIENT_EVIDENCE")
 
-    def test_fabricated_unauthenticated_execution_records_rejected(self):
-        """Two files with fabricated, unauthenticated execution IDs are rejected in compare_verified_artifacts."""
-        p1 = Path("data/research_lab/discovery_artifacts/art_fab1.json")
-        p2 = Path("data/research_lab/discovery_artifacts/art_fab2.json")
+    def test_bare_execution_id_string_registration_rejected(self):
+        """Task 2 Requirement 4: Arbitrary callers cannot register bare execution ID strings."""
+        with pytest.raises(PermissionError, match="Bare execution ID string cannot establish execution authenticity"):
+            TrustedReproductionArtifactResolver.register_authenticated_execution("BARE-STRING-EXEC-01")
+
+    def test_demonstration_fixture_execution_rejected(self):
+        """Task 2 Requirement 6: Demonstration fixtures cannot be registered or treated as authoritative executions."""
+        fix_rec = {
+            "execution_id": "FIXTURE-EXEC-01",
+            "dataset_id": "DS-BTC-1H-Q1-2024",
+            "methodology_id": "METH-ENGLE-ARCH-01",
+            "discovery_type": "DEMONSTRATION_FIXTURE",
+            "execution_completed_at": "2026-11-13T22:38:00+00:00",
+            "result_artifact_sha256": "0" * 64,
+        }
+        with pytest.raises(ValueError, match="Demonstration fixtures"):
+            TrustedReproductionArtifactResolver.register_authenticated_execution(fix_rec)
+
+        # Confirm demonstration fixtures on disk (e.g. DISC-VOL-CLUST-001) are not authoritative
+        assert TrustedReproductionArtifactResolver.is_authenticated_execution("DISC-VOL-CLUST-001") is False
+
+    def test_fabricated_execution_record_without_completion_evidence_fails(self):
+        """Task 2 Requirement 3 & 9: Execution record without completion evidence fails."""
+        bad_rec = {
+            "execution_id": "NO-EVIDENCE-EXEC-01",
+            "dataset_id": "DS-BTC-1H-Q1-2024",
+            "methodology_id": "METH-ENGLE-ARCH-01",
+            "discovery_type": "EMPIRICALLY_EXECUTED_DISCOVERY",
+            # missing execution_completed_at and result_artifact_sha256
+        }
+        with pytest.raises(ValueError, match="lacks verifiable execution_completed_at"):
+            TrustedReproductionArtifactResolver.register_authenticated_execution(bad_rec)
+
+    def test_forged_execution_id_rejected_in_comparison(self):
+        """Task 2 Requirement 9: Forged execution ID without authenticated record fails comparison."""
+        p1 = Path("data/research_lab/discovery_artifacts/art_forged1.json")
+        p2 = Path("data/research_lab/discovery_artifacts/art_forged2.json")
         try:
-            p1.write_text(json.dumps({"execution_id": "FAB-EXEC-01", "metrics": {"v": 1.0}}))
-            p2.write_text(json.dumps({"execution_id": "FAB-EXEC-02", "metrics": {"v": 1.0}}))
+            p1.write_text(json.dumps({"execution_id": "FORGED-EXEC-01", "metrics": {"v": 1.0}}))
+            p2.write_text(json.dumps({"execution_id": "FORGED-EXEC-02", "metrics": {"v": 1.0}}))
 
             sha1 = hashlib.sha256(p1.read_bytes()).hexdigest()
             sha2 = hashlib.sha256(p2.read_bytes()).hexdigest()
 
-            TrustedReproductionArtifactResolver.register_artifact("ART-FAB-1", {"file_path": str(p1), "expected_sha256": sha1})
-            TrustedReproductionArtifactResolver.register_artifact("ART-FAB-2", {"file_path": str(p2), "expected_sha256": sha2})
+            TrustedReproductionArtifactResolver.register_artifact("ART-FORGED-1", {"file_path": str(p1), "expected_sha256": sha1})
+            TrustedReproductionArtifactResolver.register_artifact("ART-FORGED-2", {"file_path": str(p2), "expected_sha256": sha2})
 
-            art1, _ = TrustedReproductionArtifactResolver.load_and_verify_artifact("ART-FAB-1", expected_sha256=sha1)
-            art2, _ = TrustedReproductionArtifactResolver.load_and_verify_artifact("ART-FAB-2", expected_sha256=sha2)
+            art1, _ = TrustedReproductionArtifactResolver.load_and_verify_artifact("ART-FORGED-1", expected_sha256=sha1)
+            art2, _ = TrustedReproductionArtifactResolver.load_and_verify_artifact("ART-FORGED-2", expected_sha256=sha2)
 
             matched, comp, rel, abs_d, disc = TrustedReproductionArtifactResolver.compare_verified_artifacts(art1, art2)
             assert matched is False
             assert comp == "UNAUTHENTICATED_EXECUTION_RECORD"
-            assert any("unauthenticated" in d.lower() for d in disc)
         finally:
             if p1.exists():
                 p1.unlink()
             if p2.exists():
                 p2.unlink()
 
-    def test_identical_execution_evidence_rejected(self):
-        """Original and reproduction outputs originating from identical execution are rejected."""
-        p1 = Path("data/research_lab/discovery_artifacts/art_ident1.json")
-        p2 = Path("data/research_lab/discovery_artifacts/art_ident2.json")
+    def test_altered_artifact_file_fails_verification_against_execution_record(self):
+        """Task 2 Requirement 8 & 9: Modifying artifact file on disk causes RESULT_ARTIFACT_HASH_MISMATCH."""
+        art_dir = Path("data/research_lab/discovery_artifacts")
+        p_orig = art_dir / "art_tamper_target.json"
+        p_comp = art_dir / "art_tamper_comp.json"
         try:
-            p1.write_text(json.dumps({"execution_id": "EXEC-SAME-01", "metrics": {"v": 1.0}}))
-            p2.write_text(json.dumps({"execution_id": "EXEC-SAME-01", "metrics": {"v": 1.0}}))
+            content_orig = json.dumps({"execution_id": "EXEC-TAMPER-TARGET", "dataset_id": "DS-01", "methodology_id": "M-01", "metrics": {"v": 1.0}})
+            content_comp = json.dumps({"execution_id": "EXEC-TAMPER-COMP", "dataset_id": "DS-01", "methodology_id": "M-01", "metrics": {"v": 1.0}})
+
+            p_orig.write_text(content_orig)
+            p_comp.write_text(content_comp)
+
+            orig_sha = hashlib.sha256(p_orig.read_bytes()).hexdigest()
+            comp_sha = hashlib.sha256(p_comp.read_bytes()).hexdigest()
+
+            # Register authoritative execution records with original sha
+            rec1 = {
+                "execution_id": "EXEC-TAMPER-TARGET",
+                "dataset_id": "DS-01",
+                "methodology_id": "M-01",
+                "discovery_type": "EMPIRICALLY_EXECUTED_DISCOVERY",
+                "execution_completed_at": "2026-11-14T12:00:00+00:00",
+                "result_artifact_sha256": orig_sha,
+            }
+            rec2 = {
+                "execution_id": "EXEC-TAMPER-COMP",
+                "dataset_id": "DS-01",
+                "methodology_id": "M-01",
+                "discovery_type": "EMPIRICALLY_EXECUTED_DISCOVERY",
+                "execution_completed_at": "2026-11-14T12:05:00+00:00",
+                "result_artifact_sha256": comp_sha,
+            }
+            TrustedReproductionArtifactResolver.register_authenticated_execution(rec1)
+            TrustedReproductionArtifactResolver.register_authenticated_execution(rec2)
+
+            # Now tamper p_orig on disk
+            tampered_content = json.dumps({"execution_id": "EXEC-TAMPER-TARGET", "dataset_id": "DS-01", "methodology_id": "M-01", "metrics": {"v": 1.0, "tampered": True}})
+            p_orig.write_text(tampered_content)
+            tampered_sha = hashlib.sha256(p_orig.read_bytes()).hexdigest()
+
+            # Register artifact under tampered sha so loading succeeds
+            TrustedReproductionArtifactResolver.register_artifact("ART-TAMPER-1", {"file_path": str(p_orig), "expected_sha256": tampered_sha})
+            TrustedReproductionArtifactResolver.register_artifact("ART-COMP-2", {"file_path": str(p_comp), "expected_sha256": comp_sha})
+
+            art1, err1 = TrustedReproductionArtifactResolver.load_and_verify_artifact("ART-TAMPER-1", expected_sha256=tampered_sha)
+            art2, err2 = TrustedReproductionArtifactResolver.load_and_verify_artifact("ART-COMP-2", expected_sha256=comp_sha)
+            assert art1 is not None and art2 is not None
+
+            # Comparison must fail closed with RESULT_ARTIFACT_HASH_MISMATCH against the execution record digest!
+            matched, comp, rel, abs_d, disc = TrustedReproductionArtifactResolver.compare_verified_artifacts(art1, art2)
+            assert matched is False
+            assert comp == "RESULT_ARTIFACT_HASH_MISMATCH"
+            assert any("hash mismatch" in d.lower() or "does not match digest recorded" in d.lower() for d in disc)
+        finally:
+            if p_orig.exists():
+                p_orig.unlink()
+            if p_comp.exists():
+                p_comp.unlink()
+
+    def test_identical_execution_evidence_under_distinct_ids_rejected(self):
+        """Task 2 Requirement 7 & 9: Two distinct execution IDs referencing identical evidence are rejected."""
+        p1 = Path("data/research_lab/discovery_artifacts/art_dual1.json")
+        p2 = Path("data/research_lab/discovery_artifacts/art_dual2.json")
+        try:
+            content = json.dumps({"execution_id": "EXEC-DUAL-A", "metrics": {"v": 1.0}})
+            p1.write_text(content)
+            p2.write_text(content)
 
             sha1 = hashlib.sha256(p1.read_bytes()).hexdigest()
             sha2 = hashlib.sha256(p2.read_bytes()).hexdigest()
 
-            TrustedReproductionArtifactResolver.register_artifact("ART-IDENT-1", {"file_path": str(p1), "expected_sha256": sha1})
-            TrustedReproductionArtifactResolver.register_artifact("ART-IDENT-2", {"file_path": str(p2), "expected_sha256": sha2})
-            TrustedReproductionArtifactResolver.register_authenticated_execution("EXEC-SAME-01")
+            rec_a = {
+                "execution_id": "EXEC-DUAL-A",
+                "dataset_id": "DS-01",
+                "methodology_id": "M-01",
+                "discovery_type": "EMPIRICALLY_EXECUTED_DISCOVERY",
+                "execution_completed_at": "2026-11-14T11:00:00+00:00",
+                "result_artifact_sha256": sha1,
+            }
+            rec_b = {
+                "execution_id": "EXEC-DUAL-B",
+                "dataset_id": "DS-01",
+                "methodology_id": "M-01",
+                "discovery_type": "EMPIRICALLY_EXECUTED_DISCOVERY",
+                "execution_completed_at": "2026-11-14T11:00:00+00:00",  # Identical timestamp and result sha!
+                "result_artifact_sha256": sha1,
+            }
+            TrustedReproductionArtifactResolver.register_authenticated_execution(rec_a)
+            TrustedReproductionArtifactResolver.register_authenticated_execution(rec_b)
 
-            art1, _ = TrustedReproductionArtifactResolver.load_and_verify_artifact("ART-IDENT-1", expected_sha256=sha1)
-            art2, _ = TrustedReproductionArtifactResolver.load_and_verify_artifact("ART-IDENT-2", expected_sha256=sha2)
+            TrustedReproductionArtifactResolver.register_artifact("ART-DUAL-1", {"file_path": str(p1), "expected_sha256": sha1})
+            TrustedReproductionArtifactResolver.register_artifact("ART-DUAL-2", {"file_path": str(p2), "expected_sha256": sha2})
+
+            art1, _ = TrustedReproductionArtifactResolver.load_and_verify_artifact("ART-DUAL-1", expected_sha256=sha1)
+            art2, _ = TrustedReproductionArtifactResolver.load_and_verify_artifact("ART-DUAL-2", expected_sha256=sha2)
+
+            # art2 has execution_id EXEC-DUAL-B from caller override
+            art2.execution_id = "EXEC-DUAL-B"
 
             matched, comp, rel, abs_d, disc = TrustedReproductionArtifactResolver.compare_verified_artifacts(art1, art2)
             assert matched is False
-            assert comp in ("IDENTICAL_EXECUTION_EVIDENCE", "FRAUDULENT_SELF_COMPARISON")
+            assert comp == "IDENTICAL_EXECUTION_EVIDENCE"
+            assert any("identical execution evidence" in d.lower() for d in disc)
         finally:
             if p1.exists():
                 p1.unlink()

@@ -21,6 +21,8 @@ import hashlib
 import json
 import logging
 import math
+import os
+import time
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -121,7 +123,8 @@ class ReproducibilityLabV2:
             logger.error(f"Error loading reproduction records: {e}")
 
     def save_to_storage(self) -> None:
-        """Atomically persist reproduction records."""
+        """Atomically persist reproduction records with Windows-safe lock retry handling."""
+        import time
         self.persistence_path.parent.mkdir(parents=True, exist_ok=True)
         tmp = self.persistence_path.with_suffix(".tmp")
         payload = {
@@ -131,7 +134,21 @@ class ReproducibilityLabV2:
         }
         with open(tmp, "w", encoding="utf-8") as f:
             json.dump(payload, f, indent=2)
-        tmp.replace(self.persistence_path)
+            f.flush()
+            try:
+                os.fsync(f.fileno())
+            except Exception:
+                pass
+
+        max_attempts = 10
+        for attempt in range(max_attempts):
+            try:
+                os.replace(tmp, self.persistence_path)
+                break
+            except PermissionError:
+                if attempt == max_attempts - 1:
+                    raise
+                time.sleep(0.05)
 
     def _seed_canonical_records(self) -> None:
         """Seed verified reproduction records for baseline research experiments."""

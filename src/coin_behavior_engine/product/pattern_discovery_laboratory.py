@@ -18,6 +18,9 @@ import hashlib
 import json
 import logging
 import math
+import os
+import shutil
+import time
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -196,11 +199,19 @@ class PatternDiscoveryLaboratory:
         }
         with open(tmp_disc, "w", encoding="utf-8") as f:
             json.dump(disc_payload, f, indent=2)
-        try:
-            tmp_disc.replace(self.discovery_path)
-        except Exception:
-            shutil.copy2(tmp_disc, self.discovery_path)
-            tmp_disc.unlink(missing_ok=True)
+        for attempt in range(10):
+            try:
+                os.replace(tmp_disc, self.discovery_path)
+                break
+            except Exception:
+                if attempt == 9:
+                    shutil.copy2(tmp_disc, self.discovery_path)
+                    try:
+                        tmp_disc.unlink(missing_ok=True)
+                    except Exception:
+                        pass
+                else:
+                    time.sleep(0.05)
 
         tmp_ss = self.search_space_path.with_suffix(".tmp")
         ss_payload = {
@@ -210,11 +221,19 @@ class PatternDiscoveryLaboratory:
         }
         with open(tmp_ss, "w", encoding="utf-8") as f:
             json.dump(ss_payload, f, indent=2)
-        try:
-            tmp_ss.replace(self.search_space_path)
-        except Exception:
-            shutil.copy2(tmp_ss, self.search_space_path)
-            tmp_ss.unlink(missing_ok=True)
+        for attempt in range(10):
+            try:
+                os.replace(tmp_ss, self.search_space_path)
+                break
+            except Exception:
+                if attempt == 9:
+                    shutil.copy2(tmp_ss, self.search_space_path)
+                    try:
+                        tmp_ss.unlink(missing_ok=True)
+                    except Exception:
+                        pass
+                else:
+                    time.sleep(0.05)
 
     def _seed_canonical_discoveries(self) -> None:
         """Seed initial demonstration pattern discoveries clearly marked as demonstration fixtures."""
@@ -449,7 +468,6 @@ class PatternDiscoveryLaboratory:
             f.write(res_serialized)
 
         from coin_behavior_engine.product.trusted_reproduction_artifact_resolver import TrustedReproductionArtifactResolver
-        TrustedReproductionArtifactResolver.register_authenticated_execution(exec_id)
         TrustedReproductionArtifactResolver.register_artifact(
             f"ART-{exec_id}",
             {
@@ -515,6 +533,7 @@ class PatternDiscoveryLaboratory:
 
         self._discoveries[disc_id] = rec
         self.save_to_storage()
+        TrustedReproductionArtifactResolver.register_authenticated_execution(rec)
         return rec
 
     @classmethod

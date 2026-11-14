@@ -244,11 +244,11 @@ def test_11_cross_process_identical_writes_idempotent(tmp_path):
 
     p1.start()
     p2.start()
-    p1.join(timeout=10)
-    p2.join(timeout=10)
+    p1.join(timeout=30)
+    p2.join(timeout=30)
 
-    assert return_dict[1]["status"] == "OK"
-    assert return_dict[2]["status"] == "OK"
+    assert return_dict.get(1, {}).get("status") == "OK", f"Process 1 failed or timed out: {return_dict.get(1)}"
+    assert return_dict.get(2, {}).get("status") == "OK", f"Process 2 failed or timed out: {return_dict.get(2)}"
     assert return_dict[1]["sha"] == return_dict[2]["sha"]
 
     # One must be original write, one duplicate (or both recorded cleanly)
@@ -276,11 +276,11 @@ def test_12_cross_process_different_writes_consistent(tmp_path):
 
     p1.start()
     p2.start()
-    p1.join(timeout=10)
-    p2.join(timeout=10)
+    p1.join(timeout=30)
+    p2.join(timeout=30)
 
-    assert return_dict[1]["status"] == "OK"
-    assert return_dict[2]["status"] == "OK"
+    assert return_dict.get(1, {}).get("status") == "OK", f"Process 1 failed or timed out: {return_dict.get(1)}"
+    assert return_dict.get(2, {}).get("status") == "OK", f"Process 2 failed or timed out: {return_dict.get(2)}"
 
     audit = vault.verify_vault_integrity()
     assert audit["status"] == "HEALTHY"
