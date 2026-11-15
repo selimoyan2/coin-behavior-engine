@@ -228,11 +228,13 @@ def main():
 
     print("\n=== Step 2: Preparing and executing remote staging deployment ===")
     remote_script = generate_remote_script(commit_sha).replace("\r\n", "\n")
+    remote_script_bytes = remote_script.encode("utf-8")
 
     # Execute on remote host via ssh
     ssh_cmd = ["ssh", "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=no", REMOTE_HOST, "bash -s"]
-    proc = subprocess.Popen(ssh_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
-    stdout, _ = proc.communicate(input=remote_script)
+    proc = subprocess.Popen(ssh_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    stdout_bytes, _ = proc.communicate(input=remote_script_bytes)
+    stdout = stdout_bytes.decode("utf-8", errors="replace")
 
     print("\n--- Remote Deployment Log ---")
     print(stdout)
