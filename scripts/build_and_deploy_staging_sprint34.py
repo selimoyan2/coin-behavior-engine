@@ -227,7 +227,7 @@ def main():
     print("[OK] Pushed to research branch.")
 
     print("\n=== Step 2: Preparing and executing remote staging deployment ===")
-    remote_script = generate_remote_script(commit_sha)
+    remote_script = generate_remote_script(commit_sha).replace("\r\n", "\n")
 
     # Execute on remote host via ssh
     ssh_cmd = ["ssh", "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=no", REMOTE_HOST, "bash -s"]
