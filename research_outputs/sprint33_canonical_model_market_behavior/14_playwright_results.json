@@ -1,0 +1,50 @@
+{
+  "sprint_id": "CBE_SPRINT33_CANONICAL_MODEL_BRIDGE_AND_MARKET_BEHAVIOR",
+  "timestamp_utc": "2026-11-15T15:29:59.404265+00:00",
+  "status": "PASSED_ZERO_CONSOLE_ERRORS",
+  "total_viewports_tested": 3,
+  "total_console_errors": 0,
+  "total_page_errors": 0,
+  "zero_console_error_invariant": true,
+  "viewports": {
+    "desktop": {
+      "width": 1440,
+      "height": 900,
+      "disclaimer_text": "CBE-0.7.0 KANON\u0130K MODEL ARA\u015eTIRMA K\u00d6PR\u00dcS\u00dc & P\u0130YASA DAVRANI\u015e \u0130ST\u0130HBARATI (V11)",
+      "bridge_status": "OPERATIONAL_READ_ONLY_BRIDGE_ACTIVE",
+      "kpi_model": "CBE-0.7.0",
+      "kpi_fallback": "SPOT_ONLY_U0",
+      "screenshot": "14_dashboard_v11_desktop.png",
+      "console_errors_count": 0,
+      "console_errors": [],
+      "page_errors_count": 0,
+      "page_errors": []
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024,
+      "disclaimer_text": "CBE-0.7.0 KANON\u0130K MODEL ARA\u015eTIRMA K\u00d6PR\u00dcS\u00dc & P\u0130YASA DAVRANI\u015e \u0130ST\u0130HBARATI (V11)",
+      "bridge_status": "OPERATIONAL_READ_ONLY_BRIDGE_ACTIVE",
+      "kpi_model": "CBE-0.7.0",
+      "kpi_fallback": "SPOT_ONLY_U0",
+      "screenshot": "14_dashboard_v11_tablet.png",
+      "console_errors_count": 0,
+      "console_errors": [],
+      "page_errors_count": 0,
+      "page_errors": []
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "disclaimer_text": "CBE-0.7.0 KANON\u0130K MODEL ARA\u015eTIRMA K\u00d6PR\u00dcS\u00dc & P\u0130YASA DAVRANI\u015e \u0130ST\u0130HBARATI (V11)",
+      "bridge_status": "OPERATIONAL_READ_ONLY_BRIDGE_ACTIVE",
+      "kpi_model": "CBE-0.7.0",
+      "kpi_fallback": "SPOT_ONLY_U0",
+      "screenshot": "14_dashboard_v11_mobile.png",
+      "console_errors_count": 0,
+      "console_errors": [],
+      "page_errors_count": 0,
+      "page_errors": []
+    }
+  }
+}

@@ -250,6 +250,21 @@ class ProductDashboardApiService:
                 return cls.get_btc_timing_v10_timeline()
             elif sub_path in ("research/btc-timing/v10/report/download", "btc-timing/v10/report/download"):
                 return cls.get_btc_timing_v10_report_download(query_params)
+            # --- Sprint 33: Investment Research Workspace V11 Endpoints ---
+            elif sub_path in ("research/btc-timing/v11/model-status", "btc-timing/v11/model-status"):
+                return cls.get_btc_timing_v11_model_status()
+            elif sub_path in ("research/btc-timing/v11/regime-explorer", "btc-timing/v11/regime-explorer"):
+                return cls.get_btc_timing_v11_regime_explorer()
+            elif sub_path in ("research/btc-timing/v11/forward-returns", "btc-timing/v11/forward-returns"):
+                return cls.get_btc_timing_v11_forward_returns(query_params)
+            elif sub_path in ("research/btc-timing/v11/risk-intelligence", "btc-timing/v11/risk-intelligence"):
+                return cls.get_btc_timing_v11_risk_intelligence()
+            elif sub_path in ("research/btc-timing/v11/model-comparison", "btc-timing/v11/model-comparison"):
+                return cls.get_btc_timing_v11_model_comparison()
+            elif sub_path in ("research/btc-timing/v11/evidence-ledger", "btc-timing/v11/evidence-ledger"):
+                return cls.get_btc_timing_v11_evidence_ledger()
+            elif sub_path in ("research/btc-timing/v11/deployment-safety", "btc-timing/v11/deployment-safety"):
+                return cls.get_btc_timing_v11_deployment_safety()
             elif sub_path in ("", "overview"):
                 return HTTPStatus.OK, cls.get_overview()
             elif sub_path == "research-results":
@@ -7418,6 +7433,57 @@ class ProductDashboardApiService:
             "media_type": media_type,
             "content": content,
         }
+
+    # --- Sprint 33 V11 Handlers ---
+    @classmethod
+    def get_btc_timing_v11_model_status(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        from coin_behavior_engine.product.btc_timing_research.investment_research_v11 import (
+            InvestmentResearchV11Service,
+        )
+        return HTTPStatus.OK, InvestmentResearchV11Service.get_instance().get_model_status()
+
+    @classmethod
+    def get_btc_timing_v11_regime_explorer(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        from coin_behavior_engine.product.btc_timing_research.investment_research_v11 import (
+            InvestmentResearchV11Service,
+        )
+        return HTTPStatus.OK, InvestmentResearchV11Service.get_instance().get_regime_explorer()
+
+    @classmethod
+    def get_btc_timing_v11_forward_returns(cls, query_params: Optional[Dict[str, List[str]]] = None) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        from coin_behavior_engine.product.btc_timing_research.investment_research_v11 import (
+            InvestmentResearchV11Service,
+        )
+        horizon = query_params.get("horizon", ["24h"])[0] if query_params else "24h"
+        return HTTPStatus.OK, InvestmentResearchV11Service.get_instance().get_forward_returns(horizon)
+
+    @classmethod
+    def get_btc_timing_v11_risk_intelligence(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        from coin_behavior_engine.product.btc_timing_research.investment_research_v11 import (
+            InvestmentResearchV11Service,
+        )
+        return HTTPStatus.OK, InvestmentResearchV11Service.get_instance().get_risk_intelligence()
+
+    @classmethod
+    def get_btc_timing_v11_model_comparison(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        from coin_behavior_engine.product.btc_timing_research.investment_research_v11 import (
+            InvestmentResearchV11Service,
+        )
+        return HTTPStatus.OK, InvestmentResearchV11Service.get_instance().get_model_comparison()
+
+    @classmethod
+    def get_btc_timing_v11_evidence_ledger(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        from coin_behavior_engine.product.btc_timing_research.investment_research_v11 import (
+            InvestmentResearchV11Service,
+        )
+        return HTTPStatus.OK, InvestmentResearchV11Service.get_instance().get_evidence_ledger()
+
+    @classmethod
+    def get_btc_timing_v11_deployment_safety(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        from coin_behavior_engine.product.btc_timing_research.investment_research_v11 import (
+            InvestmentResearchV11Service,
+        )
+        return HTTPStatus.OK, InvestmentResearchV11Service.get_instance().get_deployment_safety()
 
 
 

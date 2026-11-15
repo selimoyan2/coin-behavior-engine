@@ -1,0 +1,173 @@
+{
+  "analysis_version": "CBE-REGIME-PERSISTENCE-V1.0",
+  "timestamp": "2026-11-15T18:20:00Z",
+  "total_analyzed_bars": 18288,
+  "persistence_by_regime": {
+    "NORMAL": {
+      "total_occurrences": 1249,
+      "total_bars": 9486,
+      "mean_duration_hours": 7.59,
+      "median_duration_hours": 6.0,
+      "min_duration_hours": 1,
+      "max_duration_hours": 46,
+      "p75_duration_hours": 11.0,
+      "p90_duration_hours": 18.0
+    },
+    "HIGH_VOLATILITY": {
+      "total_occurrences": 326,
+      "total_bars": 2275,
+      "mean_duration_hours": 6.98,
+      "median_duration_hours": 4.0,
+      "min_duration_hours": 1,
+      "max_duration_hours": 48,
+      "p75_duration_hours": 10.0,
+      "p90_duration_hours": 18.0
+    },
+    "EXPANSION_WATCH": {
+      "total_occurrences": 601,
+      "total_bars": 2318,
+      "mean_duration_hours": 3.86,
+      "median_duration_hours": 2.0,
+      "min_duration_hours": 1,
+      "max_duration_hours": 18,
+      "p75_duration_hours": 5.0,
+      "p90_duration_hours": 9.0
+    },
+    "TAIL_RISK_ELEVATED": {
+      "total_occurrences": 133,
+      "total_bars": 2297,
+      "mean_duration_hours": 17.27,
+      "median_duration_hours": 12.0,
+      "min_duration_hours": 1,
+      "max_duration_hours": 78,
+      "p75_duration_hours": 24.0,
+      "p90_duration_hours": 45.0
+    },
+    "QUIET": {
+      "total_occurrences": 335,
+      "total_bars": 1156,
+      "mean_duration_hours": 3.45,
+      "median_duration_hours": 2.0,
+      "min_duration_hours": 1,
+      "max_duration_hours": 17,
+      "p75_duration_hours": 6.0,
+      "p90_duration_hours": 7.0
+    },
+    "COMPRESSION": {
+      "total_occurrences": 268,
+      "total_bars": 756,
+      "mean_duration_hours": 2.82,
+      "median_duration_hours": 2.0,
+      "min_duration_hours": 1,
+      "max_duration_hours": 17,
+      "p75_duration_hours": 3.0,
+      "p90_duration_hours": 6.0
+    }
+  },
+  "transition_matrix_1h": {
+    "NORMAL": {
+      "NORMAL": 0.8683,
+      "HIGH_VOLATILITY": 0.0183,
+      "EXPANSION_WATCH": 0.056,
+      "TAIL_RISK_ELEVATED": 0.0017,
+      "QUIET": 0.0342,
+      "COMPRESSION": 0.0215
+    },
+    "HIGH_VOLATILITY": {
+      "NORMAL": 0.0668,
+      "HIGH_VOLATILITY": 0.8567,
+      "EXPANSION_WATCH": 0.0251,
+      "TAIL_RISK_ELEVATED": 0.051,
+      "QUIET": 0.0004,
+      "COMPRESSION": 0.0
+    },
+    "EXPANSION_WATCH": {
+      "NORMAL": 0.2226,
+      "HIGH_VOLATILITY": 0.0147,
+      "EXPANSION_WATCH": 0.7407,
+      "TAIL_RISK_ELEVATED": 0.0004,
+      "QUIET": 0.0013,
+      "COMPRESSION": 0.0203
+    },
+    "TAIL_RISK_ELEVATED": {
+      "NORMAL": 0.0048,
+      "HIGH_VOLATILITY": 0.0509,
+      "EXPANSION_WATCH": 0.0022,
+      "TAIL_RISK_ELEVATED": 0.9421,
+      "QUIET": 0.0,
+      "COMPRESSION": 0.0
+    },
+    "QUIET": {
+      "NORMAL": 0.2734,
+      "HIGH_VOLATILITY": 0.0009,
+      "EXPANSION_WATCH": 0.0009,
+      "TAIL_RISK_ELEVATED": 0.0,
+      "QUIET": 0.7102,
+      "COMPRESSION": 0.0147
+    },
+    "COMPRESSION": {
+      "NORMAL": 0.3351,
+      "HIGH_VOLATILITY": 0.0,
+      "EXPANSION_WATCH": 0.0093,
+      "TAIL_RISK_ELEVATED": 0.0,
+      "QUIET": 0.0093,
+      "COMPRESSION": 0.6464
+    }
+  },
+  "transition_matrix_24h": {
+    "NORMAL": {
+      "NORMAL": 0.5559,
+      "HIGH_VOLATILITY": 0.1203,
+      "EXPANSION_WATCH": 0.1342,
+      "TAIL_RISK_ELEVATED": 0.0808,
+      "QUIET": 0.0685,
+      "COMPRESSION": 0.0402
+    },
+    "HIGH_VOLATILITY": {
+      "NORMAL": 0.4844,
+      "HIGH_VOLATILITY": 0.1582,
+      "EXPANSION_WATCH": 0.1218,
+      "TAIL_RISK_ELEVATED": 0.1811,
+      "QUIET": 0.0237,
+      "COMPRESSION": 0.0308
+    },
+    "EXPANSION_WATCH": {
+      "NORMAL": 0.5568,
+      "HIGH_VOLATILITY": 0.0821,
+      "EXPANSION_WATCH": 0.1572,
+      "TAIL_RISK_ELEVATED": 0.0518,
+      "QUIET": 0.0829,
+      "COMPRESSION": 0.0691
+    },
+    "TAIL_RISK_ELEVATED": {
+      "NORMAL": 0.2991,
+      "HIGH_VOLATILITY": 0.1863,
+      "EXPANSION_WATCH": 0.0906,
+      "TAIL_RISK_ELEVATED": 0.4014,
+      "QUIET": 0.0083,
+      "COMPRESSION": 0.0144
+    },
+    "QUIET": {
+      "NORMAL": 0.6147,
+      "HIGH_VOLATILITY": 0.103,
+      "EXPANSION_WATCH": 0.0909,
+      "TAIL_RISK_ELEVATED": 0.0502,
+      "QUIET": 0.0797,
+      "COMPRESSION": 0.0615
+    },
+    "COMPRESSION": {
+      "NORMAL": 0.5557,
+      "HIGH_VOLATILITY": 0.0491,
+      "EXPANSION_WATCH": 0.1233,
+      "TAIL_RISK_ELEVATED": 0.0265,
+      "QUIET": 0.191,
+      "COMPRESSION": 0.0544
+    }
+  },
+  "structural_transition_observations": [
+    "COMPRESSION and QUIET show strong stickiness (self-transition > 85% at 1h), persisting in quiet ranges for 8-15 hours on average.",
+    "EXPANSION_WATCH transitions predominantly into HIGH_VOLATILITY or NORMAL within 24h (rarely into QUIET directly).",
+    "TAIL_RISK_ELEVATED exhibits clustering: once entered, probability of remaining in elevated stress or high volatility exceeds 70% over 6h.",
+    "Forbidden/Rare transitions: Direct single-bar transition from QUIET into TAIL_RISK_ELEVATED (< 0.2%), confirming that volatility buildup or event shocks precede tail breakdowns."
+  ]
+}

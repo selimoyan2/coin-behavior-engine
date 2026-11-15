@@ -1,0 +1,24 @@
+{
+  "simulation_2023_2024": {
+    "initial_capital": 10000.0,
+    "bnh_final_equity": 26042.69,
+    "bnh_max_drawdown_pct": -32.31,
+    "bnh_trades": 1,
+    "bnh_total_cost": 15.0,
+    "bounded_final_equity": 24995.92,
+    "bounded_max_drawdown_pct": -26.42,
+    "bounded_trades": 84,
+    "bounded_total_cost": 2154.11
+  },
+  "simulation_2025": {
+    "initial_capital": 10000.0,
+    "bnh_final_equity": 9284.66,
+    "bnh_max_drawdown_pct": -34.76,
+    "bnh_trades": 1,
+    "bnh_total_cost": 15.0,
+    "bounded_final_equity": 8983.07,
+    "bounded_max_drawdown_pct": -28.27,
+    "bounded_trades": 78,
+    "bounded_total_cost": 888.21
+  }
+}

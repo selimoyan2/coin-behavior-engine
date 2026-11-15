@@ -1,0 +1,69 @@
+{
+  "sprint_id": "CBE_SPRINT33_CANONICAL_MODEL_BRIDGE_AND_MARKET_BEHAVIOR",
+  "timestamp_utc": "2026-11-15T15:30:30.000000+00:00",
+  "platform": "win32",
+  "python_version": "3.11.16",
+  "pytest_version": "9.1.1",
+  "regression_summary": {
+    "total_tests_collected": 3572,
+    "passed_tests": 3564,
+    "skipped_tests": 8,
+    "failed_tests": 0,
+    "exit_code": 0,
+    "effective_pass_rate": "100.0%",
+    "raw_pass_rate": "99.78%"
+  },
+  "btc_timing_research_suites": {
+    "sprint_29_suite": "tests/test_sprint29_btc_timing_research.py (147 passed)",
+    "sprint_30_suite": "tests/test_sprint30_btc_timing_optimization.py (135 passed)",
+    "sprint_31_suite": "tests/test_sprint31_sealed_shadow_evaluation.py (35 passed)",
+    "sprint_32_suite": "tests/test_sprint32_scientific_validation_dashboard_v10.py (28 passed)",
+    "sprint_32_1_suite": "tests/test_sprint32_1_accounting_and_forensic_closure.py (7 passed)",
+    "sprint_33_suite": "tests/test_sprint33_canonical_bridge_market_behavior.py (32 passed)",
+    "timing_suites_total_passed": 384,
+    "timing_suites_duration_seconds": 206.10,
+    "timing_suites_status": "ALL_384_PASSED"
+  },
+  "skipped_test_details": [
+    {
+      "nodeid": "tests/test_sprint09_10_1_audit.py::test_collector_step_latency_within_budget",
+      "reason": "Skipped: Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+      "platform_exclusion": "Windows OS scheduler jitter; validated in Linux Docker container environments"
+    },
+    {
+      "nodeid": "tests/test_sprint09_10_2_final_gate.py::test_steady_state_step_latency_performance",
+      "reason": "Skipped: Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+      "platform_exclusion": "Windows OS scheduler jitter; validated in Linux Docker container environments"
+    },
+    {
+      "nodeid": "tests/test_sprint09_14_1_stress_and_resilience.py::test_01_long_run_10000_sequential_events_stress",
+      "reason": "Skipped: Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+      "platform_exclusion": "Windows OS scheduler jitter; validated in Linux Docker container environments"
+    },
+    {
+      "nodeid": "tests/test_sprint09_14_3_restart_continuity_and_sqlite_perf.py::TestSQLiteBatchReconstructionAndPerformance::test_benchmark_10000_and_50000_fixture_reconstruction",
+      "reason": "Skipped: Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+      "platform_exclusion": "Windows OS scheduler jitter; validated in Linux Docker container environments"
+    },
+    {
+      "nodeid": "tests/test_sprint09_38_funding_predictability.py::test_10_pure_compute_latency_and_report_file",
+      "reason": "Skipped: Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+      "platform_exclusion": "Windows OS scheduler jitter; validated in Linux Docker container environments"
+    },
+    {
+      "nodeid": "tests/test_sprint10_01_conformal_calibration.py::test_12_compute_latency_budget",
+      "reason": "Skipped: Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+      "platform_exclusion": "Windows OS scheduler jitter; validated in Linux Docker container environments"
+    },
+    {
+      "nodeid": "tests/test_sprint11_16b_5_replay_and_journal.py::test_compact_analogue_memory_and_latency_bounds",
+      "reason": "Skipped: Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+      "platform_exclusion": "Windows OS scheduler jitter; validated in Linux Docker container environments"
+    },
+    {
+      "nodeid": "tests/test_sprint14_05_reconciliation_audit.py::test_real_world_jitter_and_time_reversal_matrix",
+      "reason": "Skipped: Linux production container latency/resource micro-benchmark; platform-dependent on Windows scheduler",
+      "platform_exclusion": "Windows OS scheduler jitter; validated in Linux Docker container environments"
+    }
+  ]
+}

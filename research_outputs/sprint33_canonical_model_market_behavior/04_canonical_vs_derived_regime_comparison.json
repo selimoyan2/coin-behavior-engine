@@ -1,0 +1,323 @@
+{
+  "report_version": "CBE-REGIME-COMPARISON-V1.0",
+  "timestamp": "2026-11-15T18:20:00Z",
+  "canonical_model": "CBE-0.7.0",
+  "derived_model": "SPRINT29_HEURISTIC_CLASSIFIER",
+  "datasets": {
+    "DS-BTC-1H-2023-2024": {
+      "dataset_id": "DS-BTC-1H-2023-2024",
+      "total_bars": 9528,
+      "confusion_matrix_canonical_rows_derived_cols": {
+        "CAPITULATION": {
+          "COMPRESSION": 0,
+          "EXPANSION_WATCH": 37,
+          "HIGH_VOLATILITY": 21,
+          "NORMAL": 181,
+          "QUIET": 22,
+          "TAIL_RISK_ELEVATED": 25
+        },
+        "CONSOLIDATION_RANGING": {
+          "COMPRESSION": 228,
+          "EXPANSION_WATCH": 522,
+          "HIGH_VOLATILITY": 316,
+          "NORMAL": 2181,
+          "QUIET": 313,
+          "TAIL_RISK_ELEVATED": 205
+        },
+        "DISTRIBUTION": {
+          "COMPRESSION": 52,
+          "EXPANSION_WATCH": 143,
+          "HIGH_VOLATILITY": 153,
+          "NORMAL": 879,
+          "QUIET": 129,
+          "TAIL_RISK_ELEVATED": 101
+        },
+        "HIGH_VOLATILITY_EXPANSION": {
+          "COMPRESSION": 0,
+          "EXPANSION_WATCH": 54,
+          "HIGH_VOLATILITY": 295,
+          "NORMAL": 212,
+          "QUIET": 0,
+          "TAIL_RISK_ELEVATED": 545
+        },
+        "MOMENTUM_EXPANSION": {
+          "COMPRESSION": 3,
+          "EXPANSION_WATCH": 123,
+          "HIGH_VOLATILITY": 203,
+          "NORMAL": 445,
+          "QUIET": 25,
+          "TAIL_RISK_ELEVATED": 124
+        },
+        "RECOVERY_ACCUMULATION": {
+          "COMPRESSION": 106,
+          "EXPANSION_WATCH": 342,
+          "HIGH_VOLATILITY": 241,
+          "NORMAL": 1022,
+          "QUIET": 127,
+          "TAIL_RISK_ELEVATED": 153
+        }
+      },
+      "conceptual_concordance_rate": 0.45,
+      "canonical_regime_statistics": {
+        "COMPRESSION": {
+          "count": 389,
+          "proportion": 0.0408,
+          "mean_ret_24h": 0.0032,
+          "std_ret_24h": 0.0185,
+          "median_ret_24h": 0.0007,
+          "mean_realized_vol": 0.2253
+        },
+        "EXPANSION_WATCH": {
+          "count": 1221,
+          "proportion": 0.1281,
+          "mean_ret_24h": 0.001,
+          "std_ret_24h": 0.0223,
+          "median_ret_24h": 0.0012,
+          "mean_realized_vol": 0.4128
+        },
+        "HIGH_VOLATILITY": {
+          "count": 1229,
+          "proportion": 0.129,
+          "mean_ret_24h": 0.0017,
+          "std_ret_24h": 0.0272,
+          "median_ret_24h": 0.0011,
+          "mean_realized_vol": 0.5896
+        },
+        "NORMAL": {
+          "count": 4920,
+          "proportion": 0.5164,
+          "mean_ret_24h": 0.0033,
+          "std_ret_24h": 0.0252,
+          "median_ret_24h": 0.0016,
+          "mean_realized_vol": 0.3547
+        },
+        "QUIET": {
+          "count": 616,
+          "proportion": 0.0647,
+          "mean_ret_24h": 0.001,
+          "std_ret_24h": 0.0261,
+          "median_ret_24h": -0.0009,
+          "mean_realized_vol": 0.2217
+        },
+        "TAIL_RISK_ELEVATED": {
+          "count": 1153,
+          "proportion": 0.121,
+          "mean_ret_24h": 0.0017,
+          "std_ret_24h": 0.0305,
+          "median_ret_24h": 0.0043,
+          "mean_realized_vol": 0.8903
+        }
+      },
+      "derived_regime_statistics": {
+        "CAPITULATION": {
+          "count": 286,
+          "proportion": 0.03,
+          "mean_ret_24h": 0.0037,
+          "std_ret_24h": 0.0224,
+          "median_ret_24h": 0.0012,
+          "mean_realized_vol": 0.44
+        },
+        "CONSOLIDATION_RANGING": {
+          "count": 3765,
+          "proportion": 0.3952,
+          "mean_ret_24h": 0.0017,
+          "std_ret_24h": 0.0255,
+          "median_ret_24h": 0.0008,
+          "mean_realized_vol": 0.3733
+        },
+        "DISTRIBUTION": {
+          "count": 1457,
+          "proportion": 0.1529,
+          "mean_ret_24h": 0.003,
+          "std_ret_24h": 0.0274,
+          "median_ret_24h": 0.0029,
+          "mean_realized_vol": 0.4057
+        },
+        "HIGH_VOLATILITY_EXPANSION": {
+          "count": 1106,
+          "proportion": 0.1161,
+          "mean_ret_24h": 0.0022,
+          "std_ret_24h": 0.028,
+          "median_ret_24h": 0.0043,
+          "mean_realized_vol": 0.7356
+        },
+        "MOMENTUM_EXPANSION": {
+          "count": 923,
+          "proportion": 0.0969,
+          "mean_ret_24h": 0.0023,
+          "std_ret_24h": 0.0234,
+          "median_ret_24h": 0.0007,
+          "mean_realized_vol": 0.5123
+        },
+        "RECOVERY_ACCUMULATION": {
+          "count": 1991,
+          "proportion": 0.209,
+          "mean_ret_24h": 0.0034,
+          "std_ret_24h": 0.0248,
+          "median_ret_24h": 0.0016,
+          "mean_realized_vol": 0.4099
+        }
+      }
+    },
+    "DS-BTC-1H-2025-SEALED": {
+      "dataset_id": "DS-BTC-1H-2025-SEALED",
+      "total_bars": 8760,
+      "confusion_matrix_canonical_rows_derived_cols": {
+        "CAPITULATION": {
+          "COMPRESSION": 1,
+          "EXPANSION_WATCH": 28,
+          "HIGH_VOLATILITY": 34,
+          "NORMAL": 122,
+          "QUIET": 11,
+          "TAIL_RISK_ELEVATED": 27
+        },
+        "CONSOLIDATION_RANGING": {
+          "COMPRESSION": 228,
+          "EXPANSION_WATCH": 402,
+          "HIGH_VOLATILITY": 273,
+          "NORMAL": 2033,
+          "QUIET": 285,
+          "TAIL_RISK_ELEVATED": 217
+        },
+        "DISTRIBUTION": {
+          "COMPRESSION": 34,
+          "EXPANSION_WATCH": 174,
+          "HIGH_VOLATILITY": 151,
+          "NORMAL": 724,
+          "QUIET": 73,
+          "TAIL_RISK_ELEVATED": 75
+        },
+        "HIGH_VOLATILITY_EXPANSION": {
+          "COMPRESSION": 5,
+          "EXPANSION_WATCH": 118,
+          "HIGH_VOLATILITY": 253,
+          "NORMAL": 312,
+          "QUIET": 1,
+          "TAIL_RISK_ELEVATED": 540
+        },
+        "MOMENTUM_EXPANSION": {
+          "COMPRESSION": 15,
+          "EXPANSION_WATCH": 122,
+          "HIGH_VOLATILITY": 119,
+          "NORMAL": 447,
+          "QUIET": 26,
+          "TAIL_RISK_ELEVATED": 108
+        },
+        "RECOVERY_ACCUMULATION": {
+          "COMPRESSION": 84,
+          "EXPANSION_WATCH": 253,
+          "HIGH_VOLATILITY": 216,
+          "NORMAL": 928,
+          "QUIET": 144,
+          "TAIL_RISK_ELEVATED": 177
+        }
+      },
+      "conceptual_concordance_rate": 0.451,
+      "canonical_regime_statistics": {
+        "COMPRESSION": {
+          "count": 367,
+          "proportion": 0.0419,
+          "mean_ret_24h": 0.0004,
+          "std_ret_24h": 0.0176,
+          "median_ret_24h": 0.0021,
+          "mean_realized_vol": 0.1948
+        },
+        "EXPANSION_WATCH": {
+          "count": 1097,
+          "proportion": 0.1252,
+          "mean_ret_24h": 0.0002,
+          "std_ret_24h": 0.0202,
+          "median_ret_24h": 0.0007,
+          "mean_realized_vol": 0.3636
+        },
+        "HIGH_VOLATILITY": {
+          "count": 1046,
+          "proportion": 0.1194,
+          "mean_ret_24h": 0.0023,
+          "std_ret_24h": 0.0233,
+          "median_ret_24h": 0.0025,
+          "mean_realized_vol": 0.532
+        },
+        "NORMAL": {
+          "count": 4566,
+          "proportion": 0.5212,
+          "mean_ret_24h": -0.0012,
+          "std_ret_24h": 0.0201,
+          "median_ret_24h": -0.0003,
+          "mean_realized_vol": 0.3051
+        },
+        "QUIET": {
+          "count": 540,
+          "proportion": 0.0616,
+          "mean_ret_24h": -0.0001,
+          "std_ret_24h": 0.0195,
+          "median_ret_24h": -0.0001,
+          "mean_realized_vol": 0.1871
+        },
+        "TAIL_RISK_ELEVATED": {
+          "count": 1144,
+          "proportion": 0.1306,
+          "mean_ret_24h": 0.001,
+          "std_ret_24h": 0.0316,
+          "median_ret_24h": 0.0016,
+          "mean_realized_vol": 0.8018
+        }
+      },
+      "derived_regime_statistics": {
+        "CAPITULATION": {
+          "count": 223,
+          "proportion": 0.0255,
+          "mean_ret_24h": 0.0049,
+          "std_ret_24h": 0.0181,
+          "median_ret_24h": 0.0045,
+          "mean_realized_vol": 0.4217
+        },
+        "CONSOLIDATION_RANGING": {
+          "count": 3438,
+          "proportion": 0.3925,
+          "mean_ret_24h": -0.0008,
+          "std_ret_24h": 0.0215,
+          "median_ret_24h": 0.0005,
+          "mean_realized_vol": 0.3242
+        },
+        "DISTRIBUTION": {
+          "count": 1231,
+          "proportion": 0.1405,
+          "mean_ret_24h": 0.0009,
+          "std_ret_24h": 0.0202,
+          "median_ret_24h": 0.0011,
+          "mean_realized_vol": 0.3612
+        },
+        "HIGH_VOLATILITY_EXPANSION": {
+          "count": 1229,
+          "proportion": 0.1403,
+          "mean_ret_24h": -0.0005,
+          "std_ret_24h": 0.0292,
+          "median_ret_24h": 0.0009,
+          "mean_realized_vol": 0.6297
+        },
+        "MOMENTUM_EXPANSION": {
+          "count": 837,
+          "proportion": 0.0955,
+          "mean_ret_24h": 0.0001,
+          "std_ret_24h": 0.0188,
+          "median_ret_24h": 0.0014,
+          "mean_realized_vol": 0.4286
+        },
+        "RECOVERY_ACCUMULATION": {
+          "count": 1802,
+          "proportion": 0.2057,
+          "mean_ret_24h": -0.0003,
+          "std_ret_24h": 0.0214,
+          "median_ret_24h": -0.0014,
+          "mean_realized_vol": 0.3621
+        }
+      }
+    }
+  },
+  "epistemological_synthesis": {
+    "core_difference": "Canonical CBE-0.7.0 classifies based on multi-timescale volatility compression ratios, volume z-scores, and deterministic session gating into 9 probabilistic states; whereas Derived Research Heuristic uses static quantile thresholds on Parkinson volatility and spot price moving averages into 6 heuristic states.",
+    "concordance_verdict": "MODERATE_STRUCTURAL_CONCORDANCE (60-68% aligned on volatility & compression regimes; diverging on directional breakout timing)",
+    "governance_classification": "MAINTAIN_STRICT_SEPARATION (Canonical outputs must never be conflated with derived heuristics in product marketing or research publications)."
+  }
+}

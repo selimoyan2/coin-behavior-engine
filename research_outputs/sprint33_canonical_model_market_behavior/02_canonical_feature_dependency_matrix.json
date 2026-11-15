@@ -1,0 +1,206 @@
+{
+  "matrix_version": "CBE-CANONICAL-FEATURE-MATRIX-V1.0",
+  "audit_timestamp": "2026-11-15T18:18:00Z",
+  "canonical_model_version": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "evaluated_datasets": [
+    {
+      "dataset_id": "DS-BTC-1H-2023-2024",
+      "timeframe": "1h",
+      "period": "2023-10-01 to 2024-10-31",
+      "total_bars": 9528
+    },
+    {
+      "dataset_id": "DS-BTC-1H-2025-SEALED",
+      "timeframe": "1h",
+      "period": "2025-01-01 to 2025-12-31",
+      "total_bars": 8760
+    }
+  ],
+  "feature_dependency_matrix": [
+    {
+      "feature_name": "volatility_realized_24h",
+      "ladder_tier": "U0",
+      "category": "SPOT_CORE",
+      "source": "Derived from Spot OHLCV Close",
+      "availability_2023_2024": "AVAILABLE_100_PERCENT",
+      "availability_2025": "AVAILABLE_100_PERCENT",
+      "fallback_strategy": "NONE_REQUIRED",
+      "confidence_impact": "ZERO_DEGRADATION",
+      "data_quality_impact": "NONE"
+    },
+    {
+      "feature_name": "volatility_compression_ratio",
+      "ladder_tier": "U0",
+      "category": "SPOT_CORE",
+      "source": "Derived from Spot OHLCV (1h vol / 24h vol)",
+      "availability_2023_2024": "AVAILABLE_100_PERCENT",
+      "availability_2025": "AVAILABLE_100_PERCENT",
+      "fallback_strategy": "NONE_REQUIRED",
+      "confidence_impact": "ZERO_DEGRADATION",
+      "data_quality_impact": "NONE"
+    },
+    {
+      "feature_name": "volume_zscore",
+      "ladder_tier": "U0",
+      "category": "SPOT_CORE",
+      "source": "Derived from Spot OHLCV Volume (24h rolling z-score)",
+      "availability_2023_2024": "AVAILABLE_100_PERCENT",
+      "availability_2025": "AVAILABLE_100_PERCENT",
+      "fallback_strategy": "NONE_REQUIRED",
+      "confidence_impact": "ZERO_DEGRADATION",
+      "data_quality_impact": "NONE"
+    },
+    {
+      "feature_name": "session_asia_active",
+      "ladder_tier": "U2",
+      "category": "SESSION_CONTEXT",
+      "source": "Derived deterministically from UTC hour (00:00-09:00 UTC)",
+      "availability_2023_2024": "AVAILABLE_100_PERCENT",
+      "availability_2025": "AVAILABLE_100_PERCENT",
+      "fallback_strategy": "NONE_REQUIRED",
+      "confidence_impact": "ZERO_DEGRADATION",
+      "data_quality_impact": "NONE"
+    },
+    {
+      "feature_name": "session_london_active",
+      "ladder_tier": "U2",
+      "category": "SESSION_CONTEXT",
+      "source": "Derived deterministically from UTC hour (08:00-16:00 UTC)",
+      "availability_2023_2024": "AVAILABLE_100_PERCENT",
+      "availability_2025": "AVAILABLE_100_PERCENT",
+      "fallback_strategy": "NONE_REQUIRED",
+      "confidence_impact": "ZERO_DEGRADATION",
+      "data_quality_impact": "NONE"
+    },
+    {
+      "feature_name": "session_new_york_active",
+      "ladder_tier": "U2",
+      "category": "SESSION_CONTEXT",
+      "source": "Derived deterministically from UTC hour (13:00-21:00 UTC)",
+      "availability_2023_2024": "AVAILABLE_100_PERCENT",
+      "availability_2025": "AVAILABLE_100_PERCENT",
+      "fallback_strategy": "NONE_REQUIRED",
+      "confidence_impact": "ZERO_DEGRADATION",
+      "data_quality_impact": "NONE"
+    },
+    {
+      "feature_name": "london_new_york_overlap",
+      "ladder_tier": "U2",
+      "category": "SESSION_CONTEXT",
+      "source": "Derived deterministically from UTC hour (13:00-16:00 UTC)",
+      "availability_2023_2024": "AVAILABLE_100_PERCENT",
+      "availability_2025": "AVAILABLE_100_PERCENT",
+      "fallback_strategy": "NONE_REQUIRED",
+      "confidence_impact": "ZERO_DEGRADATION",
+      "data_quality_impact": "NONE"
+    },
+    {
+      "feature_name": "weekend_flag",
+      "ladder_tier": "U2",
+      "category": "SESSION_CONTEXT",
+      "source": "Derived deterministically from UTC day of week (Saturday/Sunday)",
+      "availability_2023_2024": "AVAILABLE_100_PERCENT",
+      "availability_2025": "AVAILABLE_100_PERCENT",
+      "fallback_strategy": "NONE_REQUIRED",
+      "confidence_impact": "ZERO_DEGRADATION",
+      "data_quality_impact": "NONE"
+    },
+    {
+      "feature_name": "basis_level",
+      "ladder_tier": "U1",
+      "category": "DERIVATIVES",
+      "source": "data/historical/futures/btcusdt_spot_perp_basis_15m_2024_2025.parquet",
+      "availability_2023_2024": "PARTIAL_AVAILABLE_FOR_2024_ONLY",
+      "availability_2025": "PARTIAL_AVAILABLE_FOR_EARLY_2025_ONLY",
+      "fallback_strategy": "DEFAULT_ZERO_FALLBACK_TO_U0",
+      "confidence_impact": "MODERATE_DEGRADATION_ON_DELEVERAGING_DETECTION",
+      "data_quality_impact": "FALLBACK_TRIGGERED_WHEN_MISSING"
+    },
+    {
+      "feature_name": "funding_rate_latest",
+      "ladder_tier": "U1",
+      "category": "DERIVATIVES",
+      "source": "data/historical/futures/btcusdt_funding_settlements_2024_2025.parquet",
+      "availability_2023_2024": "PARTIAL_AVAILABLE_FOR_2024_ONLY",
+      "availability_2025": "PARTIAL_AVAILABLE_FOR_EARLY_2025_ONLY",
+      "fallback_strategy": "DEFAULT_ZERO_FALLBACK_TO_U0",
+      "confidence_impact": "MODERATE_DEGRADATION_ON_PERP_PREMIUM",
+      "data_quality_impact": "FALLBACK_TRIGGERED_WHEN_MISSING"
+    },
+    {
+      "feature_name": "oi_change_1h",
+      "ladder_tier": "U1",
+      "category": "DERIVATIVES",
+      "source": "Binance Futures Open Interest History",
+      "availability_2023_2024": "NOT_CO_INDEXED_IN_HOURLY_RESEARCH_PARQUET",
+      "availability_2025": "NOT_CO_INDEXED_IN_HOURLY_RESEARCH_PARQUET",
+      "fallback_strategy": "DEFAULT_ZERO_FALLBACK_TO_U0",
+      "confidence_impact": "MODERATE_DEGRADATION_ON_JUMP_EXPANSION_WATCH",
+      "data_quality_impact": "FALLBACK_TRIGGERED_WHEN_MISSING"
+    },
+    {
+      "feature_name": "futures_taker_buy_sell_ratio",
+      "ladder_tier": "U1",
+      "category": "DERIVATIVES",
+      "source": "Derived from taker_buy_volume / total_volume (Spot proxy)",
+      "availability_2023_2024": "AVAILABLE_AS_SPOT_PROXY_100_PERCENT",
+      "availability_2025": "AVAILABLE_AS_SPOT_PROXY_100_PERCENT",
+      "fallback_strategy": "DEFAULT_0_5_NEUTRAL_RATIO",
+      "confidence_impact": "MINOR_DEGRADATION",
+      "data_quality_impact": "FALLBACK_TRIGGERED_IF_VOLUME_ZERO"
+    },
+    {
+      "feature_name": "routed_etf_flow",
+      "ladder_tier": "U4",
+      "category": "ROUTED_OVERLAYS",
+      "source": "data/normalized/etf/etf_flows_daily.parquet",
+      "availability_2023_2024": "PARTIAL_LAUNCHED_JAN_2024_ABSENT_IN_2023",
+      "availability_2025": "NOT_CO_INDEXED_IN_HOURLY_RESEARCH_PARQUET",
+      "fallback_strategy": "ZERO_ROUTED_OVERLAY",
+      "confidence_impact": "MINOR_DEGRADATION_ABSENCE_OF_INSTITUTIONAL_SHIFT",
+      "data_quality_impact": "DEGRADED_STREAM_ROUTED_ZERO"
+    },
+    {
+      "feature_name": "routed_macro_spx",
+      "ladder_tier": "U4",
+      "category": "ROUTED_OVERLAYS",
+      "source": "External Macro Feed (S&P 500 Daily)",
+      "availability_2023_2024": "NOT_CO_INDEXED_IN_HOURLY_RESEARCH_PARQUET",
+      "availability_2025": "NOT_CO_INDEXED_IN_HOURLY_RESEARCH_PARQUET",
+      "fallback_strategy": "ZERO_ROUTED_OVERLAY",
+      "confidence_impact": "LOW_DEGRADATION_WEEKEND_ROUTING_ZEROES_NORMALLY",
+      "data_quality_impact": "DEGRADED_STREAM_ROUTED_ZERO"
+    },
+    {
+      "feature_name": "routed_macro_dxy",
+      "ladder_tier": "U4",
+      "category": "ROUTED_OVERLAYS",
+      "source": "External Macro Feed (US Dollar Index Daily)",
+      "availability_2023_2024": "NOT_CO_INDEXED_IN_HOURLY_RESEARCH_PARQUET",
+      "availability_2025": "NOT_CO_INDEXED_IN_HOURLY_RESEARCH_PARQUET",
+      "fallback_strategy": "ZERO_ROUTED_OVERLAY",
+      "confidence_impact": "LOW_DEGRADATION",
+      "data_quality_impact": "DEGRADED_STREAM_ROUTED_ZERO"
+    },
+    {
+      "feature_name": "event_severity_score",
+      "ladder_tier": "U3",
+      "category": "EVENT_RAW",
+      "source": "Historical Event Registry",
+      "availability_2023_2024": "NOT_CO_INDEXED_IN_HOURLY_RESEARCH_PARQUET",
+      "availability_2025": "NOT_CO_INDEXED_IN_HOURLY_RESEARCH_PARQUET",
+      "fallback_strategy": "ZERO_EVENT_OVERLAY",
+      "confidence_impact": "LOW_DEGRADATION_EXCEPT_DURING_CPI_FOMC",
+      "data_quality_impact": "DEGRADED_STREAM_ROUTED_ZERO"
+    }
+  ],
+  "summary": {
+    "total_canonical_features": 16,
+    "fully_available_features": 8,
+    "partial_or_proxy_features": 3,
+    "missing_features": 5,
+    "effective_fallback_tier": "SPOT_ONLY_U0_AND_CORE_BASELINE_U2_SESSION",
+    "fallback_justification": "Spot OHLCV provides complete 24h realized volatility, compression ratios, volume z-scores, and deterministic session flags. Derivatives and macro features are safely zeroed via canonical model fallback specifications."
+  }
+}

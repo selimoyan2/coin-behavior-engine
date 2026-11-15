@@ -1,0 +1,91 @@
+{
+  "benchmark_suite_version": "CBE-V11-BENCHMARK-V1.0",
+  "timestamp": "2026-11-15T18:24:00Z",
+  "sla_target_ms": 500.0,
+  "overall_status": "ALL_ENDPOINTS_MEET_SLA",
+  "endpoints": {
+    "/api/v1/product/btc-timing/v11/model-status": {
+      "iterations": 50,
+      "status": "PASS",
+      "latency_p50_ms": 0.086,
+      "latency_p90_ms": 0.166,
+      "latency_p95_ms": 0.203,
+      "latency_p99_ms": 0.772,
+      "latency_min_ms": 0.079,
+      "latency_max_ms": 1.22,
+      "p95_under_500ms_sla": true
+    },
+    "/api/v1/product/btc-timing/v11/regime-explorer": {
+      "iterations": 50,
+      "status": "PASS",
+      "latency_p50_ms": 0.201,
+      "latency_p90_ms": 0.271,
+      "latency_p95_ms": 0.329,
+      "latency_p99_ms": 0.404,
+      "latency_min_ms": 0.18,
+      "latency_max_ms": 0.421,
+      "p95_under_500ms_sla": true
+    },
+    "/api/v1/product/btc-timing/v11/forward-returns": {
+      "iterations": 50,
+      "status": "PASS",
+      "latency_p50_ms": 0.122,
+      "latency_p90_ms": 0.151,
+      "latency_p95_ms": 0.212,
+      "latency_p99_ms": 0.398,
+      "latency_min_ms": 0.114,
+      "latency_max_ms": 0.486,
+      "p95_under_500ms_sla": true
+    },
+    "/api/v1/product/btc-timing/v11/risk-intelligence": {
+      "iterations": 50,
+      "status": "PASS",
+      "latency_p50_ms": 0.101,
+      "latency_p90_ms": 0.113,
+      "latency_p95_ms": 0.125,
+      "latency_p99_ms": 0.163,
+      "latency_min_ms": 0.096,
+      "latency_max_ms": 0.185,
+      "p95_under_500ms_sla": true
+    },
+    "/api/v1/product/btc-timing/v11/model-comparison": {
+      "iterations": 50,
+      "status": "PASS",
+      "latency_p50_ms": 0.107,
+      "latency_p90_ms": 0.127,
+      "latency_p95_ms": 0.169,
+      "latency_p99_ms": 0.223,
+      "latency_min_ms": 0.098,
+      "latency_max_ms": 0.26,
+      "p95_under_500ms_sla": true
+    },
+    "/api/v1/product/btc-timing/v11/evidence-ledger": {
+      "iterations": 50,
+      "status": "PASS",
+      "latency_p50_ms": 0.004,
+      "latency_p90_ms": 0.005,
+      "latency_p95_ms": 0.005,
+      "latency_p99_ms": 0.01,
+      "latency_min_ms": 0.004,
+      "latency_max_ms": 0.014,
+      "p95_under_500ms_sla": true
+    },
+    "/api/v1/product/btc-timing/v11/deployment-safety": {
+      "iterations": 50,
+      "status": "PASS",
+      "latency_p50_ms": 0.003,
+      "latency_p90_ms": 0.003,
+      "latency_p95_ms": 0.004,
+      "latency_p99_ms": 0.009,
+      "latency_min_ms": 0.003,
+      "latency_max_ms": 0.011,
+      "p95_under_500ms_sla": true
+    }
+  },
+  "governance_verification": {
+    "read_only_verified": true,
+    "model_invocation_isolated": true,
+    "caching_architecture": "PERSISTED_JSON_PRECOMPUTED_STORE",
+    "memory_safety": "ZERO_RUNAWAY_LEAKAGE"
+  }
+}

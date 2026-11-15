@@ -1,0 +1,93 @@
+{
+  "test_suite": "tests/test_sprint33_canonical_bridge_market_behavior.py",
+  "sprint_id": "CBE_SPRINT33_CANONICAL_MODEL_BRIDGE_AND_MARKET_BEHAVIOR",
+  "execution_timestamp": "2026-11-15T18:24:58Z",
+  "total_tests": 32,
+  "passed": 32,
+  "failed": 0,
+  "skipped": 0,
+  "duration_seconds": 1.78,
+  "status": "ALL_TESTS_PASSED",
+  "test_categories": {
+    "canonical_model_identity_and_lockbox": {
+      "count": 4,
+      "passed": 4,
+      "tests": [
+        "test_01_canonical_model_version_frozen",
+        "test_02_lockbox_integrity_29_artifacts",
+        "test_03_historical_research_end_preserved",
+        "test_04_bridge_initialization_read_only"
+      ]
+    },
+    "feature_extraction_and_fallback": {
+      "count": 4,
+      "passed": 4,
+      "tests": [
+        "test_05_feature_extraction_spot_core",
+        "test_06_feature_extraction_session_context",
+        "test_07_fallback_hierarchy_spot_only_u0",
+        "test_08_no_lookahead_leakage"
+      ]
+    },
+    "canonical_bridge_evaluation": {
+      "count": 3,
+      "passed": 3,
+      "tests": [
+        "test_09_canonical_evaluation_2023_2024",
+        "test_10_canonical_evaluation_2025_sealed",
+        "test_11_epistemic_confidence_bounds"
+      ]
+    },
+    "regime_persistence_and_transitions": {
+      "count": 3,
+      "passed": 3,
+      "tests": [
+        "test_12_persistence_artifact_exists",
+        "test_13_regime_persistence_durations",
+        "test_14_transition_matrix_row_stochastic"
+      ]
+    },
+    "forward_returns_and_downside_risk": {
+      "count": 4,
+      "passed": 4,
+      "tests": [
+        "test_15_forward_return_horizons_complete",
+        "test_16_tail_risk_negative_skewness",
+        "test_17_downside_risk_cvar_separation",
+        "test_18_mae_metrics_consistency"
+      ]
+    },
+    "incremental_value_and_model_comparison": {
+      "count": 3,
+      "passed": 3,
+      "tests": [
+        "test_19_incremental_value_report_exists",
+        "test_20_model_comparison_artifact",
+        "test_21_historical_integrity_audit_exists"
+      ]
+    },
+    "dashboard_v11_rest_api": {
+      "count": 7,
+      "passed": 7,
+      "tests": [
+        "test_22_api_v11_model_status",
+        "test_23_api_v11_regime_explorer",
+        "test_24_api_v11_forward_returns",
+        "test_25_api_v11_risk_intelligence",
+        "test_26_api_v11_model_comparison",
+        "test_27_api_v11_evidence_ledger",
+        "test_28_api_v11_deployment_safety"
+      ]
+    },
+    "deployment_safety_and_ui": {
+      "count": 4,
+      "passed": 4,
+      "tests": [
+        "test_29_live_trading_permanently_prohibited",
+        "test_30_deployment_audit_and_isolation_plan",
+        "test_31_performance_benchmarks_sla",
+        "test_32_dashboard_html_contains_v11_panels"
+      ]
+    }
+  }
+}

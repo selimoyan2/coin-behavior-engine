@@ -1,0 +1,38 @@
+{
+  "Baseline A: SMA 50/200 Trend": {
+    "anova_f_stat": 17.3701,
+    "anova_p_val": 3.1e-05,
+    "kruskal_h_stat": 1.1928,
+    "kruskal_p_val": 0.274762,
+    "cvar_spread_pct": 1.1436,
+    "mae_spread_pct": 0.3259,
+    "mutual_info_score": 0.0012
+  },
+  "Baseline B: Parkinson Volatility Quantile": {
+    "anova_f_stat": 5.0272,
+    "anova_p_val": 0.006566,
+    "kruskal_h_stat": 9.1197,
+    "kruskal_p_val": 0.010463,
+    "cvar_spread_pct": 2.1771,
+    "mae_spread_pct": 0.9553,
+    "mutual_info_score": 0.0062
+  },
+  "Baseline C: Derived Research Heuristic": {
+    "anova_f_stat": 8.9658,
+    "anova_p_val": 0.0,
+    "kruskal_h_stat": 28.6318,
+    "kruskal_p_val": 2.7e-05,
+    "cvar_spread_pct": 2.7832,
+    "mae_spread_pct": 0.6531,
+    "mutual_info_score": 0.0036
+  },
+  "Baseline D: Canonical CBE-0.7.0 (Bridge)": {
+    "anova_f_stat": 0.5612,
+    "anova_p_val": 0.729877,
+    "kruskal_h_stat": 21.2887,
+    "kruskal_p_val": 0.000714,
+    "cvar_spread_pct": 3.0648,
+    "mae_spread_pct": 1.7061,
+    "mutual_info_score": 0.0107
+  }
+}
