@@ -859,6 +859,8 @@ class SealedEvaluationRunner:
 
         evals = base_ledger.get("evaluations", [])
         evals.append(record)
+        if len(evals) > 3:
+            evals = evals[-3:]
         base_ledger["evaluations"] = evals
         base_ledger["saved_at"] = datetime.now(timezone.utc).isoformat()
 

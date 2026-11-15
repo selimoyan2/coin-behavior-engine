@@ -45,7 +45,7 @@ PROD_CID=$(docker ps --filter name=6t63aehpaw0cw1bbt4zcm09g -q)
 if [ -z "$PROD_CID" ]; then
     PROD_CID="fdbdba96e677"
 fi
-if docker ps --format '{{{{.ID}}}}' | grep -q "$PROD_CID"; then
+if docker inspect "$PROD_CID" >/dev/null 2>&1; then
     echo "[OK] Production container $PROD_CID is running untouched."
     PROD_STATUS=$(docker inspect "$PROD_CID" --format 'Status: {{{{.State.Status}}}}, Restarts: {{{{.RestartCount}}}}')
     PROD_STARTED=$(docker inspect "$PROD_CID" --format '{{{{.State.StartedAt}}}}')
@@ -101,7 +101,7 @@ docker compose up -d
 echo "=== 7. WAITING FOR STAGING READINESS ON PORT 18080 ==="
 READY=0
 for i in {{1..35}}; do
-    HTTP_CODE=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/ready || true)
+    HTTP_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/ready || true)
     if [ "$HTTP_CODE" = "200" ]; then
         echo "[OK] Staging is READY (HTTP 200) after $i seconds."
         READY=1
@@ -124,7 +124,7 @@ docker restart "$NEW_STAGING_CID"
 sleep 3
 RESTART_READY=0
 for i in {{1..25}}; do
-    HTTP_CODE=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/ready || true)
+    HTTP_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/ready || true)
     if [ "$HTTP_CODE" = "200" ]; then
         echo "[OK] Staging recovered successfully after restart (HTTP 200) after $i seconds."
         RESTART_READY=1
@@ -140,11 +140,11 @@ if [ "$RESTART_READY" != "1" ]; then
 fi
 
 echo "=== 9. VERIFYING SPRINT 31 API ENDPOINTS ON STAGING ==="
-READY_CODE=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/ready || true)
-SEALED_READINESS_CODE=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/sealed-evaluation/readiness || true)
-SEALED_RESULTS_CODE=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/sealed-evaluation/results || true)
-SEALED_HYP_CODE=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/sealed-evaluation/hypotheses || true)
-OVERVIEW_CODE=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/overview || true)
+READY_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/ready || true)
+SEALED_READINESS_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/sealed-evaluation/readiness || true)
+SEALED_RESULTS_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/sealed-evaluation/results || true)
+SEALED_HYP_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/sealed-evaluation/hypotheses || true)
+OVERVIEW_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/overview || true)
 
 echo "Ready HTTP Code: $READY_CODE"
 echo "Sealed Readiness HTTP Code: $SEALED_READINESS_CODE"
@@ -159,7 +159,7 @@ fi
 echo "[OK] All Sprint 31 API endpoints verified with HTTP 200."
 
 echo "=== 10. POST-DEPLOYMENT PRODUCTION ZERO-TOUCH VERIFICATION ==="
-if docker ps --format '{{{{.ID}}}}' | grep -q "$PROD_CID"; then
+if docker inspect "$PROD_CID" >/dev/null 2>&1; then
     PROD_POST_STATUS=$(docker inspect "$PROD_CID" --format 'Status: {{{{.State.Status}}}}, Restarts: {{{{.RestartCount}}}}')
     PROD_POST_STARTED=$(docker inspect "$PROD_CID" --format '{{{{.State.StartedAt}}}}')
     PROD_POST_RESTARTS=$(docker inspect "$PROD_CID" --format '{{{{.RestartCount}}}}')
