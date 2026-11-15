@@ -1,0 +1,49 @@
+{
+  "sprint_id": "CBE_SPRINT34_1_SCIENTIFIC_RECONCILIATION_DATA_RECOVERY_AND_DEPLOYMENT_FORENSICS",
+  "verified_at_utc": "2026-11-15T19:42:25.498808+00:00",
+  "total_viewports_tested": 3,
+  "all_passed": true,
+  "total_console_errors": 0,
+  "total_page_errors": 0,
+  "viewport_results": {
+    "desktop": {
+      "width": 1440,
+      "height": 900,
+      "http_status": 200,
+      "badge_found": true,
+      "badge_text": "TAM DO\u011eRULANMI\u015e VER\u0130 (Eksiksiz Tarihsel Seri)",
+      "screenshot": "15_dashboard_v11_1_desktop.png",
+      "console_errors_count": 0,
+      "console_errors": [],
+      "page_errors_count": 0,
+      "page_errors": [],
+      "passed": true
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024,
+      "http_status": 200,
+      "badge_found": true,
+      "badge_text": "TAM DO\u011eRULANMI\u015e VER\u0130 (Eksiksiz Tarihsel Seri)",
+      "screenshot": "15_dashboard_v11_1_tablet.png",
+      "console_errors_count": 0,
+      "console_errors": [],
+      "page_errors_count": 0,
+      "page_errors": [],
+      "passed": true
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "http_status": 200,
+      "badge_found": true,
+      "badge_text": "TAM DO\u011eRULANMI\u015e VER\u0130 (Eksiksiz Tarihsel Seri)",
+      "screenshot": "15_dashboard_v11_1_mobile.png",
+      "console_errors_count": 0,
+      "console_errors": [],
+      "page_errors_count": 0,
+      "page_errors": [],
+      "passed": true
+    }
+  }
+}

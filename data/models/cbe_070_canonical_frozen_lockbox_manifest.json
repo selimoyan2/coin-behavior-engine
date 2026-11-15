@@ -1,0 +1,18 @@
+{
+  "model_version": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "lockbox_file": "data\\models\\cbe_070_canonical_frozen_lockbox.pkl",
+  "calibration_partition": "data/historical/BTCUSDT-1h-2023-10-to-2024-11.parquet (bars 0:2000)",
+  "discovery_start_utc": "2023-10-01T00:00:00Z",
+  "discovery_end_utc": "2023-12-23T07:00:00Z",
+  "total_bars": 2000,
+  "frozen_thresholds": {
+    "vol_p25": 0.254757,
+    "vol_p75": 0.45404,
+    "comp_p25": 0.62325,
+    "comp_p75": 1.203961,
+    "oi_drop_p05": -0.05,
+    "basis_p05": -0.02
+  },
+  "created_at_utc": "2026-11-15T19:09:41.340617+00:00"
+}

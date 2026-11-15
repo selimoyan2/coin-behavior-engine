@@ -1,0 +1,17 @@
+{
+  "source_file": "data\\binance_spot_multiyear\\1h\\BTCUSDT-1h-2026-10.parquet",
+  "source_sha256": "c1ee9644929a52fe9138f49aee84b93b7a0bdbc3e75407fd561a1506ae34efff",
+  "raw_rows": 24,
+  "clean_rows": 24,
+  "duplicates_removed": 0,
+  "expected_interval_minutes": 60,
+  "start_time_utc": "2026-10-01 00:00:00+00:00",
+  "end_time_utc": "2026-10-01 23:00:00+00:00",
+  "total_gaps_found": 0,
+  "gaps_detail": [],
+  "synthesis_applied": false,
+  "validation_passed": true,
+  "verified_at_utc": "2026-11-15T19:12:46.480627+00:00",
+  "target_path": "data\\binance_spot_multiyear\\1h\\BTCUSDT-1h-2026-10.parquet",
+  "target_sha256": "c1ee9644929a52fe9138f49aee84b93b7a0bdbc3e75407fd561a1506ae34efff"
+}

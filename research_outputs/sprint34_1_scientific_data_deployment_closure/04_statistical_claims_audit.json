@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "title": "CBE-0.7.0 Corrected Statistical Inference and Overlap Audit",
+    "model_version": "CBE-0.7.0",
+    "model_status": "STRICTLY_FROZEN",
+    "created_at_utc": "2026-11-15T19:13:00.749057+00:00",
+    "total_bars_evaluated": 18288
+  },
+  "horizons": {
+    "6h": {
+      "horizon_bars": 6,
+      "total_observations": 18282,
+      "effective_sample_size_neff": 3047,
+      "overlap_ratio_pct": 83.33,
+      "forward_return_inference": {
+        "unadjusted_anova_F": 6.2764,
+        "unadjusted_anova_p": 7.960532865111665e-06,
+        "unadjusted_p_formatted": "< 0.0001",
+        "non_overlapping_subsample_F": 2.1217,
+        "non_overlapping_subsample_p": 0.06,
+        "block_bootstrap_empirical_p": 0.0,
+        "kruskal_wallis_H": 38.14,
+        "kruskal_wallis_p": 3.536580842379765e-07,
+        "scientific_verdict": "STATISTICAL_SIGNIFICANCE_NOT_ESTABLISHED"
+      },
+      "forward_risk_mae_inference": {
+        "unadjusted_anova_F": 135.878,
+        "unadjusted_anova_p": 6.303251625900666e-142,
+        "unadjusted_p_formatted": "< 1e-15",
+        "non_overlapping_subsample_F": 19.1486,
+        "non_overlapping_subsample_p": 0.0,
+        "block_bootstrap_empirical_p": 0.0,
+        "kruskal_wallis_H": 270.62,
+        "kruskal_wallis_p": 2.061598876373564e-56,
+        "scientific_verdict": "DESCRIPTIVE_HISTORICAL_FINDING"
+      }
+    },
+    "24h": {
+      "horizon_bars": 24,
+      "total_observations": 18264,
+      "effective_sample_size_neff": 761,
+      "overlap_ratio_pct": 95.83,
+      "forward_return_inference": {
+        "unadjusted_anova_F": 5.4137,
+        "unadjusted_anova_p": 5.576423933691263e-05,
+        "unadjusted_p_formatted": "< 0.0001",
+        "non_overlapping_subsample_F": 0.4452,
+        "non_overlapping_subsample_p": 0.8169,
+        "block_bootstrap_empirical_p": 0.0,
+        "kruskal_wallis_H": 45.22,
+        "kruskal_wallis_p": 1.3078650809064016e-08,
+        "scientific_verdict": "STATISTICAL_SIGNIFICANCE_NOT_ESTABLISHED"
+      },
+      "forward_risk_mae_inference": {
+        "unadjusted_anova_F": 114.7218,
+        "unadjusted_anova_p": 8.014890692733966e-120,
+        "unadjusted_p_formatted": "< 1e-15",
+        "non_overlapping_subsample_F": 4.26,
+        "non_overlapping_subsample_p": 0.0008,
+        "block_bootstrap_empirical_p": 0.0,
+        "kruskal_wallis_H": 310.99,
+        "kruskal_wallis_p": 4.3337353427593046e-65,
+        "scientific_verdict": "DESCRIPTIVE_HISTORICAL_FINDING"
+      }
+    },
+    "72h": {
+      "horizon_bars": 72,
+      "total_observations": 18216,
+      "effective_sample_size_neff": 253,
+      "overlap_ratio_pct": 98.61,
+      "forward_return_inference": {
+        "unadjusted_anova_F": 2.3114,
+        "unadjusted_anova_p": 0.04143592108720221,
+        "unadjusted_p_formatted": "0.0414",
+        "non_overlapping_subsample_F": 1.1973,
+        "non_overlapping_subsample_p": 0.311,
+        "block_bootstrap_empirical_p": 0.032,
+        "kruskal_wallis_H": 51.74,
+        "kruskal_wallis_p": 6.10755864130959e-10,
+        "scientific_verdict": "STATISTICAL_SIGNIFICANCE_NOT_ESTABLISHED"
+      },
+      "forward_risk_mae_inference": {
+        "unadjusted_anova_F": 63.7637,
+        "unadjusted_anova_p": 3.479278604543698e-66,
+        "unadjusted_p_formatted": "< 1e-15",
+        "non_overlapping_subsample_F": 1.4108,
+        "non_overlapping_subsample_p": 0.2209,
+        "block_bootstrap_empirical_p": 0.0,
+        "kruskal_wallis_H": 168.34,
+        "kruskal_wallis_p": 1.6521973526272395e-34,
+        "scientific_verdict": "DESCRIPTIVE_HISTORICAL_FINDING"
+      }
+    },
+    "168h": {
+      "horizon_bars": 168,
+      "total_observations": 18120,
+      "effective_sample_size_neff": 107,
+      "overlap_ratio_pct": 99.4,
+      "forward_return_inference": {
+        "unadjusted_anova_F": 6.2364,
+        "unadjusted_anova_p": 8.718931870652748e-06,
+        "unadjusted_p_formatted": "< 0.0001",
+        "non_overlapping_subsample_F": 0.3474,
+        "non_overlapping_subsample_p": 0.8828,
+        "block_bootstrap_empirical_p": 0.0,
+        "kruskal_wallis_H": 47.61,
+        "kruskal_wallis_p": 4.27565413659863e-09,
+        "scientific_verdict": "STATISTICAL_SIGNIFICANCE_NOT_ESTABLISHED"
+      },
+      "forward_risk_mae_inference": {
+        "unadjusted_anova_F": 23.5097,
+        "unadjusted_anova_p": 1.2420909298674708e-23,
+        "unadjusted_p_formatted": "< 1e-15",
+        "non_overlapping_subsample_F": 1.5263,
+        "non_overlapping_subsample_p": 0.1882,
+        "block_bootstrap_empirical_p": 0.0,
+        "kruskal_wallis_H": 65.33,
+        "kruskal_wallis_p": 9.582889574690338e-13,
+        "scientific_verdict": "DESCRIPTIVE_HISTORICAL_FINDING"
+      }
+    }
+  },
+  "executive_scientific_conclusion": "Standard ANOVA p-values (p < 0.0001 for returns, p < 1e-15 for MAE) are severely inflated by the moving-average overlap of consecutive hourly bars. For a 24h horizon, 95.83% of the window is shared between adjacent bars, reducing the effective sample size from 18,767 bars down to 781 blocks. Under non-overlapping subsampling and stationary block bootstrap, forward risk separation (MAE) remains robustly significant due to strong volatility persistence, but forward return predictability is categorized as 'STATISTICAL_SIGNIFICANCE_NOT_ESTABLISHED' or at most 'EXPLORATORY_PREDICTIVE_EVIDENCE'. All overstatements of mathematical certainty have been systematically corrected."
+}

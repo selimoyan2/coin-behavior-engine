@@ -950,6 +950,7 @@ def render_product_dashboard_html() -> str:
               <button class="btn" style="padding: 4px 6px; font-size: 11px;" onclick="stepCandleMonth(-1)" title="Önceki Aya Git">◀ Ay</button>
               <button class="btn" style="padding: 4px 6px; font-size: 11px;" onclick="stepCandleMonth(1)" title="Sonraki Aya Git">Ay ▶</button>
             </div>
+            <span id="candle-data-status-badge" style="font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: 600; display: inline-flex; align-items: center;"></span>
             <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Gün:</span>
             <select id="candle-day-select" class="select-dropdown" onchange="changeCandleDay(this.value)">
               <option value="all" selected>Tüm Günler</option>
@@ -1136,6 +1137,7 @@ def render_product_dashboard_html() -> str:
               <button class="btn" style="padding: 4px 6px; font-size: 11px;" onclick="stepCandleMonth(-1)" title="Önceki Aya Git">◀ Ay</button>
               <button class="btn" style="padding: 4px 6px; font-size: 11px;" onclick="stepCandleMonth(1)" title="Sonraki Aya Git">Ay ▶</button>
             </div>
+            <span id="candle-data-status-badge-2" style="font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: 600; display: inline-flex; align-items: center;"></span>
             <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Gün:</span>
             <select id="candle-day-select-2" class="select-dropdown" onchange="changeCandleDay(this.value)">
               <option value="all" selected>Tüm Günler</option>
@@ -4359,10 +4361,46 @@ def render_product_dashboard_html() -> str:
       }
     }
 
+    function updateCandleStatusBadges(m) {
+      const b1 = document.getElementById("candle-data-status-badge");
+      const b2 = document.getElementById("candle-data-status-badge-2");
+      let text = "";
+      let bg = "";
+      let color = "";
+      let border = "";
+      if (m === '2026-10') {
+        text = 'EKİM 2026: KISMİ DOĞRULANMIŞ VERİ (Kapsam: 1-1 Ekim, Eksik: 2-31 Ekim)';
+        bg = 'rgba(245, 158, 11, 0.15)';
+        color = '#fbbf24';
+        border = '1px solid rgba(245, 158, 11, 0.3)';
+      } else if (m === '2026-11') {
+        text = 'KASIM 2026: VERİ HENÜZ MEVCUT DEĞİL';
+        bg = 'rgba(239, 68, 68, 0.15)';
+        color = '#f87171';
+        border = '1px solid rgba(239, 68, 68, 0.3)';
+      } else {
+        text = 'TAM DOĞRULANMIŞ VERİ (Eksiksiz Tarihsel Seri)';
+        bg = 'rgba(16, 185, 129, 0.15)';
+        color = '#34d399';
+        border = '1px solid rgba(16, 185, 129, 0.3)';
+      }
+      [b1, b2].forEach(b => {
+        if (b) {
+          b.innerText = text;
+          b.style.background = bg;
+          b.style.color = color;
+          b.style.border = border;
+        }
+      });
+    }
+
     function populateMonthDropdowns() {
       let months = candleMonthsList.slice();
       if (!months.includes("2026-10")) {
         months.push("2026-10");
+      }
+      if (!months.includes("2026-11")) {
+        months.push("2026-11");
       }
       months.sort().reverse();
       if (candleYear !== 'all') {
@@ -4371,7 +4409,9 @@ def render_product_dashboard_html() -> str:
       const optionsHtml = months.map(m => {
         let suffix = "";
         if (m === '2026-10') {
-          suffix = ' (Kısmi Doğrulandı - 1 Gün)';
+          suffix = ' (Kısmi Doğrulandı: 1-1 Ekim)';
+        } else if (m === '2026-11') {
+          suffix = ' (Veri Henüz Mevcut Değil)';
         }
         return `<option value="${m}" ${m === candleMonth ? 'selected' : ''}>${m}${suffix}</option>`;
       }).join("");
@@ -4379,6 +4419,7 @@ def render_product_dashboard_html() -> str:
       const sel2 = document.getElementById("candle-month-select-2");
       if (sel1) sel1.innerHTML = optionsHtml;
       if (sel2) sel2.innerHTML = optionsHtml;
+      updateCandleStatusBadges(candleMonth);
     }
 
     function stepCandleMonth(delta) {
@@ -4465,6 +4506,7 @@ def render_product_dashboard_html() -> str:
       if (s1) s1.value = 'all';
       if (s2) s2.value = 'all';
 
+      updateCandleStatusBadges(candleMonth);
       loadHistoricalCandles();
     }
 
@@ -4492,6 +4534,7 @@ def render_product_dashboard_html() -> str:
     function changeCandleMonth(m) {
       candleMonth = m;
       candleOffset = 0;
+      updateCandleStatusBadges(m);
       // Sync both dropdowns if present
       const sel1 = document.getElementById("candle-month-select");
       const sel2 = document.getElementById("candle-month-select-2");

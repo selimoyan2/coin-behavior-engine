@@ -1,0 +1,37 @@
+{
+  "acceptance_test": "DASHBOARD_DATA_COVERAGE_AND_STATUS_BADGES",
+  "tested_at_utc": "2026-11-15T19:17:15Z",
+  "tested_url_staging": "http://127.0.0.1:18080/dashboard",
+  "tested_url_production": "https://coin.ozelweb.com.tr",
+  "components_verified": {
+    "october_2026_status_badge": {
+      "expected_text": "EKİM 2026: KISMİ DOĞRULANMIŞ VERİ (Kapsam: 1-1 Ekim, Eksik: 2-31 Ekim)",
+      "badge_id": "candle-data-status-badge",
+      "verified": true,
+      "style_theme": "DARK_THEME_AMBER"
+    },
+    "november_2026_status_badge": {
+      "expected_text": "KASIM 2026: VERİ HENÜZ MEVCUT DEĞİL",
+      "badge_id": "candle-data-status-badge",
+      "verified": true,
+      "style_theme": "DARK_THEME_MUTED_RED"
+    },
+    "verified_months_badge": {
+      "expected_text": "TAM DOĞRULANMIŞ VERİ (Eksiksiz Tarihsel Seri)",
+      "badge_id": "candle-data-status-badge",
+      "verified": true,
+      "style_theme": "DARK_THEME_EMERALD"
+    },
+    "month_dropdown_options": {
+      "includes_october_partial": true,
+      "includes_november_missing": true,
+      "verified": true
+    },
+    "navigation_step_buttons": {
+      "step_month_prev_next": true,
+      "step_day_prev_next": true,
+      "verified": true
+    }
+  },
+  "overall_verdict": "ACCEPTED"
+}

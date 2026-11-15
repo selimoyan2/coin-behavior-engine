@@ -1,0 +1,22 @@
+{
+  "test_suite": "tests/test_sprint34_1_scientific_reconciliation.py",
+  "executed_at_utc": "2026-11-15T19:17:50Z",
+  "total_collected": 11,
+  "passed": 11,
+  "failed": 0,
+  "skipped": 0,
+  "duration_seconds": 1.92,
+  "tests": [
+    {"name": "test_01_bridge_constructor_loads_frozen_lockbox_without_parquet_fit", "status": "PASSED"},
+    {"name": "test_02_frozen_lockbox_manifest_and_file_exist", "status": "PASSED"},
+    {"name": "test_03_point_in_time_fallback_evaluation_no_middle_row_sampling", "status": "PASSED"},
+    {"name": "test_04_prefix_invariance_under_point_in_time_fallbacks", "status": "PASSED"},
+    {"name": "test_05_portfolio_reconciliation_event_categories_and_drawdown", "status": "PASSED"},
+    {"name": "test_06_statistical_claims_audit_effective_sample_size_and_verdicts", "status": "PASSED"},
+    {"name": "test_07_offline_importer_deduplication_and_zero_synthesis", "status": "PASSED"},
+    {"name": "test_08_offline_importer_rejects_candle_physics_violation", "status": "PASSED"},
+    {"name": "test_09_dataset_registry_october_partial_and_november_missing", "status": "PASSED"},
+    {"name": "test_10_dataset_registry_full_audit_distribution", "status": "PASSED"},
+    {"name": "test_11_dashboard_ui_renders_status_badges_and_month_options", "status": "PASSED"}
+  ]
+}

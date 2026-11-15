@@ -25,6 +25,7 @@ from datetime import datetime, timezone
 from enum import Enum
 import logging
 import math
+import pickle
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -142,21 +143,49 @@ class CanonicalModelResearchBridge:
         self,
         base_engine: Optional[UnifiedMarketStateEngine] = None,
         enforce_read_only: bool = True,
+        auto_load_lockbox: bool = True,
     ):
         self.engine = base_engine or UnifiedMarketStateEngine()
         self.enforce_read_only = enforce_read_only
         self.model_version = CANONICAL_MODEL_VERSION
         self.model_status = MODEL_STATUS
 
-        if not self.engine.is_fitted:
-            disc_path = Path("data/historical/BTCUSDT-1h-2023-10-to-2024-11.parquet")
-            if disc_path.exists():
-                try:
-                    df_disc = pd.read_parquet(disc_path)
-                    df_feat = self.extract_features(df_disc.iloc[:2000])
-                    self.engine.fit_discovery(df_feat)
-                except Exception as e:
-                    logger.warning("Could not auto-fit UnifiedMarketStateEngine on discovery partition: %s", e)
+        # Load pre-trained frozen lockbox parameters without runtime parquet fitting
+        if not self.engine.is_fitted and auto_load_lockbox:
+            self._load_frozen_lockbox_if_available()
+
+    def _load_frozen_lockbox_if_available(self) -> bool:
+        """Load pre-calibrated frozen canonical lockbox parameters without runtime fitting overhead."""
+        lockbox_path = Path("data/models/cbe_070_canonical_frozen_lockbox.pkl")
+        if lockbox_path.exists():
+            try:
+                with open(lockbox_path, "rb") as f:
+                    state = pickle.load(f)
+                self.engine.tail_thresholds_95 = state["tail_thresholds_95"]
+                self.engine.tail_thresholds_99 = state["tail_thresholds_99"]
+                self.engine.jump_thresholds = state["jump_thresholds"]
+                self.engine.vol_models = state["vol_models"]
+                self.engine.tail_models = state["tail_models"]
+                self.engine.jump_models = state["jump_models"]
+                self.engine.scalers = state["scalers"]
+                self.engine.state_priors = state["state_priors"]
+                self.engine.state_transition_matrix = state["state_transition_matrix"]
+                self.engine.discovery_centroid = state["discovery_centroid"]
+                self.engine.discovery_cov_inv = state["discovery_cov_inv"]
+                self.engine.is_fitted = True
+                logger.info("CanonicalModelResearchBridge loaded frozen canonical lockbox (%s)", lockbox_path)
+                return True
+            except Exception as e:
+                logger.warning("Could not load frozen canonical lockbox: %s", e)
+        return False
+
+    def fit_discovery_partition(self, discovery_df: pd.DataFrame) -> None:
+        """Explicitly fit UnifiedMarketStateEngine on an authoritative discovery partition.
+        
+        Decoupled from __init__ to guarantee read-only immutability by default.
+        """
+        feats = self.extract_features(discovery_df)
+        self.engine.fit_discovery(feats)
 
     def predict_bar_authoritative(
         self,
@@ -277,24 +306,31 @@ class CanonicalModelResearchBridge:
         if n == 0:
             raise ValueError("Input historical dataset is empty.")
 
-        # Determine Data Quality & Fallback Level
-        sample_row = df.iloc[n // 2]
-        dq_state, auto_fallback = self.engine.evaluate_data_quality(sample_row)
-        active_fallback = forced_fallback_level or auto_fallback
-
-        # Calculate Feature Availability
-        canonical_features = self.engine.features_u5_unified
-        available_feats = [c for c in canonical_features if c in df.columns and not df[c].isna().all()]
-        availability_pct = (len(available_feats) / len(canonical_features)) * 100.0
-
-        # Vectorized Causal Classification
+        # Vectorized Causal Features
         vol = df["volatility_realized_24h"].values
         comp = df["volatility_compression_ratio"].values
         oi_chg = df["oi_change_1h"].values
         basis = df["basis_level"].values
         is_event = df["is_event_active_4h"].values.astype(bool)
 
-        has_deriv = not (np.isnan(oi_chg).all() or np.isnan(basis).all())
+        # Determine Point-in-Time Data Quality & Fallback Level per bar
+        # Evaluates presence of derivatives / features at each bar without middle-row sampling
+        has_deriv_bar = ~(np.isnan(oi_chg) | np.isnan(basis))
+        if forced_fallback_level is not None:
+            active_fallback = forced_fallback_level
+            can_use_deriv = np.full(n, forced_fallback_level != FallbackLevel.SPOT_ONLY_U0) & has_deriv_bar
+        else:
+            can_use_deriv = has_deriv_bar
+            active_fallback = FallbackLevel.CORE_BASELINE_U2 if np.all(can_use_deriv) else (
+                FallbackLevel.SPOT_DERIVATIVES_U1 if np.any(can_use_deriv) else FallbackLevel.SPOT_ONLY_U0
+            )
+
+        # Calculate Feature Availability
+        canonical_features = self.engine.features_u5_unified
+        available_feats = [c for c in canonical_features if c in df.columns and not df[c].isna().all()]
+        availability_pct = (len(available_feats) / len(canonical_features)) * 100.0
+
+        has_deriv = np.any(has_deriv_bar)
 
         # Calibration Thresholds according to causal_mode
         if causal_mode == CausalCalibrationMode.PREDECLARED_FROZEN:
@@ -347,18 +383,15 @@ class CanonicalModelResearchBridge:
         else:
             raise ValueError(f"Unknown causal calibration mode: {causal_mode}")
 
-        # Build conditions respecting active fallback level and point-in-time thresholds
-        if has_deriv and active_fallback in (FallbackLevel.FULL_CONTEXT_U5, FallbackLevel.CORE_BASELINE_U2, FallbackLevel.SPOT_DERIVATIVES_U1):
-            cond_delev = (oi_chg <= oi_drop_p05_arr) & (basis <= basis_p05_arr)
-            cond_event = is_event
-            cond_jump = (vol >= vol_p75_arr) & (oi_chg > 0.05)
-            cond_tail = (basis <= basis_p05_arr) | (vol >= vol_p75_arr * 1.2)
-        else:
-            # Fallback level SPOT_ONLY_U0: derivatives conditions cannot fire
-            cond_delev = np.zeros(n, dtype=bool)
-            cond_event = is_event
-            cond_jump = np.zeros(n, dtype=bool)
-            cond_tail = vol >= (vol_p75_arr * 1.25)
+        # Build conditions respecting point-in-time fallback level and thresholds
+        cond_delev = np.where(can_use_deriv, (oi_chg <= oi_drop_p05_arr) & (basis <= basis_p05_arr), False)
+        cond_event = is_event
+        cond_jump = np.where(can_use_deriv, (vol >= vol_p75_arr) & (oi_chg > 0.05), False)
+        cond_tail = np.where(
+            can_use_deriv,
+            (basis <= basis_p05_arr) | (vol >= vol_p75_arr * 1.2),
+            vol >= (vol_p75_arr * 1.25),
+        )
 
         cond_high_vol = vol >= vol_p75_arr
         cond_exp_watch = (comp <= comp_p25_arr) & (vol >= vol_p25_arr)
