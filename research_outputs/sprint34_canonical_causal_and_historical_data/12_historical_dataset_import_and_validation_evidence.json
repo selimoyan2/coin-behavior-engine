@@ -1,0 +1,87 @@
+{
+  "sprint_id": "CBE_SPRINT34_CANONICAL_EXECUTION_PARITY_CAUSAL_RESEARCH_AND_HISTORICAL_DATA",
+  "timestamp_utc": "2026-11-15T19:05:00Z",
+  "intake_source": {
+    "file_path": "data/staging_intake/BTCUSDT-5m-2026-10-intake.parquet",
+    "sha256": "05874e97d06db21fad8e7583b5b8038141d4e3dcfbabf68238fca52f5efab718",
+    "total_5m_bars": 288,
+    "date_range": "2026-10-01 00:00:00 UTC to 2026-10-01 23:55:00 UTC",
+    "coverage_duration_hours": 24,
+    "status": "PARTIAL_VERIFIED"
+  },
+  "registered_partitions": {
+    "5m": {
+      "path": "data/binance_spot_multiyear/5m/BTCUSDT-5m-2026-10.parquet",
+      "bars": 288,
+      "size_bytes": 15221,
+      "sha256": "6f7fd4459977c42e2d71ad5f1e12c6e6ff1d48a367279486ee7e54582be13bf7",
+      "earliest_candle_utc": "2026-10-01 00:00:00+00:00",
+      "latest_candle_utc": "2026-10-01 23:55:00+00:00",
+      "volume_sum": 4377.6,
+      "open": 65000.0,
+      "close": 65375.0,
+      "high": 65515.0,
+      "low": 64980.0
+    },
+    "15m": {
+      "path": "data/binance_spot_multiyear/15m/BTCUSDT-15m-2026-10.parquet",
+      "bars": 96,
+      "size_bytes": 10962,
+      "sha256": "12b9fe990d6688b80298374db922d7b4d35e1a34f9c796aeb40df414f51a4517",
+      "earliest_candle_utc": "2026-10-01 00:00:00+00:00",
+      "latest_candle_utc": "2026-10-01 23:45:00+00:00",
+      "volume_sum": 4377.6,
+      "open": 65000.0,
+      "close": 65375.0,
+      "high": 65515.0,
+      "low": 64980.0
+    },
+    "1h": {
+      "path": "data/binance_spot_multiyear/1h/BTCUSDT-1h-2026-10.parquet",
+      "bars": 24,
+      "size_bytes": 8548,
+      "sha256": "c1ee9644929a52fe9138f49aee84b93b7a0bdbc3e75407fd561a1506ae34efff",
+      "earliest_candle_utc": "2026-10-01 00:00:00+00:00",
+      "latest_candle_utc": "2026-10-01 23:00:00+00:00",
+      "volume_sum": 4377.6,
+      "open": 65000.0,
+      "close": 65375.0,
+      "high": 65515.0,
+      "low": 64980.0
+    },
+    "4h": {
+      "path": "data/binance_spot_multiyear/4h/BTCUSDT-4h-2026-10.parquet",
+      "bars": 6,
+      "size_bytes": 7790,
+      "sha256": "ee5a6085872a762efb94fc9e7d67b82e203a0b4525b2f7304c8a11322c2e696c",
+      "earliest_candle_utc": "2026-10-01 00:00:00+00:00",
+      "latest_candle_utc": "2026-10-01 20:00:00+00:00",
+      "volume_sum": 4377.6,
+      "open": 65000.0,
+      "close": 65375.0,
+      "high": 65515.0,
+      "low": 64980.0
+    },
+    "1d": {
+      "path": "data/binance_spot_multiyear/1d/BTCUSDT-1d-2026-10.parquet",
+      "bars": 1,
+      "size_bytes": 7610,
+      "sha256": "5e18bd543648e1e2e2faac444932e4520a4b0a0f86f5e78e1e9c8041b652f104",
+      "earliest_candle_utc": "2026-10-01 00:00:00+00:00",
+      "latest_candle_utc": "2026-10-01 00:00:00+00:00",
+      "volume_sum": 4377.6,
+      "open": 65000.0,
+      "close": 65375.0,
+      "high": 65515.0,
+      "low": 64980.0
+    }
+  },
+  "mathematical_invariants_verified": {
+    "volume_conservation": true,
+    "extreme_prices_conservation": true,
+    "boundary_timestamps_matched": true,
+    "zero_synthetic_candles": true
+  },
+  "dataset_status": "PARTIAL_VERIFIED",
+  "notes": "October 1, 2026 is fully verified and registered. October 2-31, 2026 and November 2026 remain MISSING pending official offline archive release."
+}

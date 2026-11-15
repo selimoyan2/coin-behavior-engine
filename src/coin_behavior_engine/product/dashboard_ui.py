@@ -4368,9 +4368,13 @@ def render_product_dashboard_html() -> str:
       if (candleYear !== 'all') {
         months = months.filter(m => m.startsWith(candleYear));
       }
-      const optionsHtml = months.map(m => `
-        <option value="${m}" ${m === candleMonth ? 'selected' : ''}>${m}${m === '2026-10' ? ' (Henüz Doğrulanmadı)' : ''}</option>
-      `).join("");
+      const optionsHtml = months.map(m => {
+        let suffix = "";
+        if (m === '2026-10') {
+          suffix = ' (Kısmi Doğrulandı - 1 Gün)';
+        }
+        return `<option value="${m}" ${m === candleMonth ? 'selected' : ''}>${m}${suffix}</option>`;
+      }).join("");
       const sel1 = document.getElementById("candle-month-select");
       const sel2 = document.getElementById("candle-month-select-2");
       if (sel1) sel1.innerHTML = optionsHtml;
@@ -4437,9 +4441,13 @@ def render_product_dashboard_html() -> str:
       if (latestAvailableMonth) {
         candleMonth = latestAvailableMonth;
       } else {
-        candleMonth = '2026-09';
+        candleMonth = '2026-10';
       }
-      candleDay = 'all';
+      if (candleMonth === '2026-10') {
+        candleDay = '01';
+      } else {
+        candleDay = 'all';
+      }
       candleTimeSlot = 'all';
       candleOffset = 0;
       const m1 = document.getElementById("candle-month-select");
@@ -4449,8 +4457,8 @@ def render_product_dashboard_html() -> str:
 
       const d1 = document.getElementById("candle-day-select");
       const d2 = document.getElementById("candle-day-select-2");
-      if (d1) d1.value = 'all';
-      if (d2) d2.value = 'all';
+      if (d1) d1.value = candleDay;
+      if (d2) d2.value = candleDay;
 
       const s1 = document.getElementById("candle-slot-select");
       const s2 = document.getElementById("candle-slot-select-2");

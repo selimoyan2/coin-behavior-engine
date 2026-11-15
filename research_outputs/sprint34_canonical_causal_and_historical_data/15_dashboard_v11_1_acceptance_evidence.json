@@ -1,0 +1,53 @@
+{
+  "sprint_id": "CBE_SPRINT34_CANONICAL_EXECUTION_PARITY_CAUSAL_RESEARCH_AND_HISTORICAL_DATA",
+  "timestamp_utc": "2026-11-15T19:08:00Z",
+  "dashboard_version": "V11.1",
+  "ui_subtab": "v11-market-intelligence",
+  "attribution_tier": "CANONICAL_COMPATIBLE_DERIVED_OUTPUT",
+  "causal_calibration_mode": "PREDECLARED_FROZEN",
+  "prefix_invariance_verified": true,
+  "verified_candle_head": "2026-10-01 23:55:00 UTC",
+  "sections_verified": {
+    "I0_causal_integrity_banner": {
+      "element_id": "v11-causal-status-badge",
+      "text": "POINT_IN_TIME_CAUSAL_CALIBRATION_ACTIVE",
+      "kpis": {
+        "tier": "CANONICAL_COMPATIBLE_DERIVED_OUTPUT",
+        "causal_mode": "PREDECLARED_FROZEN",
+        "prefix_invariance": "100.0% VERIFIED",
+        "data_coverage": "2026-10 (PARTIAL_VERIFIED - 1 Day / 288 Bars)"
+      },
+      "status": "PASS"
+    },
+    "I1_model_status": {
+      "element_id": "v11-bridge-status-badge",
+      "text": "OPERATIONAL_READ_ONLY_BRIDGE_ACTIVE",
+      "status": "PASS"
+    },
+    "I2_regime_explorer": {
+      "element_id": "v11-persistence-table",
+      "total_bars_analyzed": 18791,
+      "status": "PASS"
+    },
+    "I3_forward_returns": {
+      "horizons_supported": ["6h", "24h", "72h", "168h"],
+      "status": "PASS"
+    },
+    "I4_risk_intelligence": {
+      "element_id": "v11-risk-table",
+      "status": "PASS"
+    },
+    "I5_model_comparison": {
+      "status": "PASS"
+    },
+    "I6_evidence_ledger": {
+      "total_sprint34_artifacts": 22,
+      "status": "PASS"
+    },
+    "I7_deployment_safety": {
+      "production_zero_touch": "STRICT_ZERO_TOUCH_PRESERVED",
+      "status": "PASS"
+    }
+  },
+  "acceptance_verdict": "DASHBOARD_V11_1_ACCEPTED"
+}

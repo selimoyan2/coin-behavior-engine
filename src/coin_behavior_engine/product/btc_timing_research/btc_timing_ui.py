@@ -264,7 +264,7 @@ def render_btc_timing_html() -> str:
             <span>🏛️</span> Yatırım Araştırma V10
           </button>
           <button class="timing-subnav-btn" id="timing-btn-v11-market-intelligence" onclick="switchTimingSubtab('v11-market-intelligence')" style="border: 1px solid rgba(16, 185, 129, 0.5); background: rgba(16, 185, 129, 0.15); color: #34d399; font-weight: bold;">
-            <span>🔬</span> Piyasa Davranış İstihbaratı V11
+            <span>🔬</span> Piyasa Davranış İstihbaratı V11.1
           </button>
         </div>
 
@@ -1349,10 +1349,45 @@ def render_btc_timing_html() -> str:
             <span style="font-size: 28px;">🔬</span>
             <div>
               <div style="color: #10b981; font-weight: 800; font-size: 16px; letter-spacing: 0.05em;" id="v11-disclaimer-banner">
-                CBE-0.7.0 KANONİK MODEL ARAŞTIRMA KÖPRÜSÜ & PİYASA DAVRANIŞ İSTİHBARATI (V11)
+                CBE-0.7.0 KANONİK MODEL ARAŞTIRMA KÖPRÜSÜ & PİYASA DAVRANIŞ İSTİHBARATI (V11.1)
               </div>
               <div style="color: #cbd5e1; font-size: 13px; margin-top: 4px;">
                 Dondurulmuş kanonik CBE-0.7.0 olasılıksal piyasa durumu motoru üzerinden tarihsel Bitcoin (BTC/USDT) davranış analitiği. Canlı al-sat, otomatik emir iletimi ve gerçek sermaye riski KESİNLİKLE YASAKTIR. Tüm çıktılar saf araştırma ve istihbarat amaçlıdır.
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION I0: SCIENTIFIC ATTRIBUTION & CAUSAL INTEGRITY (SPRINT 34) -->
+          <div style="margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 style="font-size: 14px; text-transform: uppercase; color: #38bdf8; letter-spacing: 0.5px; margin: 0;">
+                I0. Bilimsel Atıf Katmanı & Nedensellik Güvencesi (Sprint 34 Causal Parity)
+              </h4>
+              <span class="badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4);" id="v11-causal-status-badge">
+                POINT_IN_TIME_CAUSAL_CALIBRATION_ACTIVE
+              </span>
+            </div>
+            
+            <div class="timing-kpi-grid">
+              <div class="timing-kpi-card" style="border: 1px solid rgba(56, 189, 248, 0.3);">
+                <div class="timing-kpi-label">Atıf Katmanı (Attribution Tier)</div>
+                <div class="timing-kpi-val" style="color: #38bdf8; font-size: 14px;" id="v11-kpi-tier">CANONICAL_DERIVED</div>
+                <div class="timing-kpi-sub">Kanonik Uyumlu Türetilmiş Çıktı</div>
+              </div>
+              <div class="timing-kpi-card" style="border: 1px solid rgba(56, 189, 248, 0.3);">
+                <div class="timing-kpi-label">Nedensel Mod (Causal Mode)</div>
+                <div class="timing-kpi-val" style="color: #34d399; font-size: 14px;" id="v11-kpi-causal">PREDECLARED_FROZEN</div>
+                <div class="timing-kpi-sub">Dondurulmuş Keşif Eşikleri (Sıfır Sızıntı)</div>
+              </div>
+              <div class="timing-kpi-card" style="border: 1px solid rgba(56, 189, 248, 0.3);">
+                <div class="timing-kpi-label">Önek Değişmezliği (Prefix Invariance)</div>
+                <div class="timing-kpi-val" style="color: #10b981; font-size: 14px;" id="v11-kpi-invariance">%100.0 DOĞRULANDI</div>
+                <div class="timing-kpi-sub">k in {24h, 72h, 168h, 720h, 2160h}</div>
+              </div>
+              <div class="timing-kpi-card" style="border: 1px solid rgba(56, 189, 248, 0.3);">
+                <div class="timing-kpi-label">Veri Kapsamı (2026)</div>
+                <div class="timing-kpi-val" style="color: #f59e0b; font-size: 14px;" id="v11-kpi-coverage">2026-10 (Kısmi - 1 Gün)</div>
+                <div class="timing-kpi-sub">Kasım 2026: Eksik (Çevrimdışı Bekleniyor)</div>
               </div>
             </div>
           </div>
@@ -2934,6 +2969,16 @@ def render_btc_timing_scripts() -> str:
           if (kpiFallback) kpiFallback.innerText = stData.active_fallback_level || 'SPOT_ONLY_U0';
           const kpiAvail = document.getElementById('v11-kpi-avail');
           if (kpiAvail) kpiAvail.innerText = '%' + stData.feature_availability_pct;
+          const kpiTier = document.getElementById('v11-kpi-tier');
+          if (kpiTier && stData.attribution_tier) kpiTier.innerText = stData.attribution_tier;
+          const kpiCausal = document.getElementById('v11-kpi-causal');
+          if (kpiCausal && stData.causal_calibration_mode) kpiCausal.innerText = stData.causal_calibration_mode;
+          const kpiInvar = document.getElementById('v11-kpi-invariance');
+          if (kpiInvar && stData.prefix_invariance_verified) kpiInvar.innerText = '%100.0 DOĞRULANDI';
+          const kpiCov = document.getElementById('v11-kpi-coverage');
+          if (kpiCov && stData.dataset_coverage) {
+            kpiCov.innerText = stData.dataset_coverage.october_2026_status || '2026-10 (Kısmi - 1 Gün)';
+          }
         }
 
         // 2. Regime Explorer

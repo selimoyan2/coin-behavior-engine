@@ -1,0 +1,62 @@
+{
+  "sprint_id": "CBE_SPRINT34_CANONICAL_EXECUTION_PARITY_CAUSAL_RESEARCH_AND_HISTORICAL_DATA",
+  "timestamp_utc": "2026-11-15T16:11:23.614943+00:00",
+  "status": "PASSED_ZERO_CONSOLE_ERRORS",
+  "total_viewports_tested": 3,
+  "total_console_errors": 0,
+  "total_page_errors": 0,
+  "zero_console_error_invariant": true,
+  "viewports": {
+    "desktop": {
+      "width": 1440,
+      "height": 900,
+      "disclaimer_text": "CBE-0.7.0 KANON\u0130K MODEL ARA\u015eTIRMA K\u00d6PR\u00dcS\u00dc & P\u0130YASA DAVRANI\u015e \u0130ST\u0130HBARATI (V11.1)",
+      "causal_status": "POINT_IN_TIME_CAUSAL_CALIBRATION_ACTIVE",
+      "kpi_model": "CBE-0.7.0",
+      "kpi_fallback": "SPOT_ONLY_U0",
+      "kpi_tier": "CANONICAL_COMPATIBLE_DERIVED_OUTPUT",
+      "kpi_causal": "PREDECLARED_FROZEN",
+      "kpi_invariance": "%100.0 DO\u011eRULANDI",
+      "kpi_coverage": "PARTIAL_VERIFIED (1 G\u00fcn / 288 Mum)",
+      "screenshot": "18_dashboard_v11_1_desktop.png",
+      "console_errors_count": 0,
+      "console_errors": [],
+      "page_errors_count": 0,
+      "page_errors": []
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024,
+      "disclaimer_text": "CBE-0.7.0 KANON\u0130K MODEL ARA\u015eTIRMA K\u00d6PR\u00dcS\u00dc & P\u0130YASA DAVRANI\u015e \u0130ST\u0130HBARATI (V11.1)",
+      "causal_status": "POINT_IN_TIME_CAUSAL_CALIBRATION_ACTIVE",
+      "kpi_model": "CBE-0.7.0",
+      "kpi_fallback": "SPOT_ONLY_U0",
+      "kpi_tier": "CANONICAL_COMPATIBLE_DERIVED_OUTPUT",
+      "kpi_causal": "PREDECLARED_FROZEN",
+      "kpi_invariance": "%100.0 DO\u011eRULANDI",
+      "kpi_coverage": "PARTIAL_VERIFIED (1 G\u00fcn / 288 Mum)",
+      "screenshot": "18_dashboard_v11_1_tablet.png",
+      "console_errors_count": 0,
+      "console_errors": [],
+      "page_errors_count": 0,
+      "page_errors": []
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "disclaimer_text": "CBE-0.7.0 KANON\u0130K MODEL ARA\u015eTIRMA K\u00d6PR\u00dcS\u00dc & P\u0130YASA DAVRANI\u015e \u0130ST\u0130HBARATI (V11.1)",
+      "causal_status": "POINT_IN_TIME_CAUSAL_CALIBRATION_ACTIVE",
+      "kpi_model": "CBE-0.7.0",
+      "kpi_fallback": "SPOT_ONLY_U0",
+      "kpi_tier": "CANONICAL_COMPATIBLE_DERIVED_OUTPUT",
+      "kpi_causal": "PREDECLARED_FROZEN",
+      "kpi_invariance": "%100.0 DO\u011eRULANDI",
+      "kpi_coverage": "PARTIAL_VERIFIED (1 G\u00fcn / 288 Mum)",
+      "screenshot": "18_dashboard_v11_1_mobile.png",
+      "console_errors_count": 0,
+      "console_errors": [],
+      "page_errors_count": 0,
+      "page_errors": []
+    }
+  }
+}

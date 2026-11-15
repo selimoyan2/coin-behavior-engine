@@ -1,0 +1,58 @@
+{
+  "sprint_id": "CBE_SPRINT34_CANONICAL_EXECUTION_PARITY_CAUSAL_RESEARCH_AND_HISTORICAL_DATA",
+  "timestamp_utc": "2026-11-15T19:10:40Z",
+  "test_suite": "tests/test_sprint34_canonical_parity_and_historical_data.py",
+  "test_count": 32,
+  "passed": 32,
+  "failed": 0,
+  "skipped": 0,
+  "execution_duration_sec": 1.88,
+  "categories": {
+    "governance_and_model_freeze": {
+      "tests": 3,
+      "passed": 3,
+      "status": "PASS"
+    },
+    "causal_calibration_and_prefix_invariance": {
+      "tests": 4,
+      "passed": 4,
+      "status": "PASS"
+    },
+    "attribution_tiers_and_authoritative_inference": {
+      "tests": 3,
+      "passed": 3,
+      "status": "PASS"
+    },
+    "october_2026_data_and_multi_timeframe_resampling": {
+      "tests": 7,
+      "passed": 7,
+      "status": "PASS"
+    },
+    "november_2026_missing_and_zero_fabrication": {
+      "tests": 2,
+      "passed": 2,
+      "status": "PASS"
+    },
+    "dataset_manager_verification": {
+      "tests": 2,
+      "passed": 2,
+      "status": "PASS"
+    },
+    "corrected_research_artifacts": {
+      "tests": 4,
+      "passed": 4,
+      "status": "PASS"
+    },
+    "dashboard_v11_1_api": {
+      "tests": 5,
+      "passed": 5,
+      "status": "PASS"
+    },
+    "safety_and_production_isolation": {
+      "tests": 2,
+      "passed": 2,
+      "status": "PASS"
+    }
+  },
+  "verdict": "ALL_TESTS_PASSED_ZERO_DEFECTS"
+}
