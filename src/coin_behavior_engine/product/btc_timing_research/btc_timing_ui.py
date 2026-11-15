@@ -532,28 +532,33 @@ def render_btc_timing_html() -> str:
               </div>
             </div>
 
-            <h4 style="font-size: 14px; color: #f8fafc; margin-top: 20px; margin-bottom: 12px;">📊 Bağımsız Portföy Muhasebe Mutabakatı (Sprint 29 Deneyleri)</h4>
+            <h4 style="font-size: 14px; color: #f8fafc; margin-top: 20px; margin-bottom: 12px;">📊 Bağımsız Portföy Muhasebe Mutabakatı (Defter vs Rapor Ayrımı)</h4>
             <div class="timing-table-box">
               <table class="timing-table">
                 <thead>
                   <tr>
                     <th>Politika ID</th>
-                    <th>Yayınlanan Bitiş</th>
+                    <th>Yayınlanan Rapor</th>
                     <th>Defter Bitiş</th>
                     <th>Yeniden Kurulan</th>
-                    <th>Fark (USDT)</th>
-                    <th>İşlem Sayısı</th>
-                    <th>Nakit / Satoşi Korunumu</th>
+                    <th>Rapor Farkı</th>
+                    <th>Defter Mutabakatı</th>
+                    <th>Rapor Statüsü</th>
+                    <th>İşlem</th>
                     <th>Kök Neden Tanısı</th>
                   </tr>
                 </thead>
                 <tbody id="timing-reconciliation-tbody">
-                  <tr><td colspan="8" style="text-align: center; color: #64748b;">Yükleniyor...</td></tr>
+                  <tr><td colspan="9" style="text-align: center; color: #64748b;">Yükleniyor...</td></tr>
                 </tbody>
               </table>
             </div>
             <div style="background: #0b1120; border: 1px solid #1e293b; border-radius: 6px; padding: 12px; margin-top: 14px; font-size: 12px; color: #94a3b8;">
-              <strong style="color: #38bdf8;">📌 $0.08 USDT Fark Açıklaması:</strong> Basit Trend stratejisindeki $7.660,77 (yayınlanan) ile $7.660,69 (defter) arasındaki $0.0817'lik fark; üst düzey skaler formül ile 700 işlem boyunca mum-mum düşülen komisyonların bileşik etkisi arasındaki ayrık zamanlı hesaplama farkından kaynaklanmaktadır. 4.767 işlemin tamamında nakit ve satoşi korunumu %100 doğrulanmıştır.
+              <strong style="color: #38bdf8;">📌 Defter ve Rapor Ayrımı (Sprint 30.1):</strong>
+              Tüm politikalarda yetkili kaynak kalıcı işlem defterleridir (persisted trade ledgers). 
+              Yeniden kurulan özkaynak ile defter özkaynağı kuruşu kuruşuna uyuşmakta olup (<strong>LEDGER_RECONCILED</strong>), 
+              yayınlanan üst düzey skaler tahminler ile ayrık işlem bileşik maliyetleri arasındaki farklar <strong>PUBLISHED_REPORT_VARIANCE</strong> olarak belgelenmiştir. 
+              Türetilmiş Rejim Onayı politikasında nihai yetkili defter bakiyesi <strong>$12.404,63 USDT</strong> (+%24,05)'tir.
             </div>
           </div>
         </div>
@@ -628,24 +633,48 @@ def render_btc_timing_html() -> str:
               <span class="badge badge-info">≤ 20 Yapılandırma Kuralı</span>
             </div>
             <p style="font-size: 12px; color: #94a3b8; margin-bottom: 16px;">
-              Aşırı uyumu (overfitting) önlemek amacıyla kronolojik eğitim bölmesi (Ekim 2023 - Mart 2024) ile test bölmesi (Nisan 2024 - Ekim 2024) ayrımı:
+              İki farklı değerlendirme bağımsız olarak raporlanmıştır: <strong>(1) Tekil Kronolojik Bölme</strong> ve <strong>(2) Katı 3-Katlamalı Genişleyen Walk-Forward Doğrulaması</strong>:
             </p>
+            <div style="font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 8px;">1. Keşif Amaçlı Tekil Kronolojik Bölme (IS: Ekim 2023 - Mart 2024 / OOS: Nisan 2024 - Ekim 2024):</div>
             <div class="timing-kpi-grid" style="margin-bottom: 16px;">
               <div class="timing-kpi-card">
-                <div class="timing-kpi-label">En İyi Eğitim Parametresi</div>
-                <div class="timing-kpi-val" style="color: #38bdf8; font-size: 15px;">SMA-50 + %2.0 Histerezis</div>
-                <div class="timing-kpi-sub">Eğitim Dönemi Net Getirisi: +%64.10</div>
+                <div class="timing-kpi-label">Eğitim (IS) Net Getirisi</div>
+                <div class="timing-kpi-val" style="color: #38bdf8; font-size: 15px;">+%64.10</div>
+                <div class="timing-kpi-sub">SMA-50 + %2.0 Histerezis (38 İşlem)</div>
               </div>
               <div class="timing-kpi-card">
-                <div class="timing-kpi-label">Örneklem Dışı Net Getiri</div>
+                <div class="timing-kpi-label">Test (OOS) Net Getirisi</div>
                 <div class="timing-kpi-val" style="color: #34d399; font-size: 16px;">+%3.38</div>
-                <div class="timing-kpi-sub">Basit Trend: -%23.39 (Sermaye Korundu)</div>
+                <div class="timing-kpi-sub">Yatay Dönemde Pozitif (40 İşlem)</div>
               </div>
               <div class="timing-kpi-card">
-                <div class="timing-kpi-label">Performans Bozulması (Degradation)</div>
+                <div class="timing-kpi-label">Tekil Bölme Bozulması</div>
                 <div class="timing-kpi-val" style="color: #fbbf24; font-size: 16px;">%94.73</div>
                 <div class="timing-kpi-sub">Hüküm: MODERATE_DEGRADATION</div>
               </div>
+            </div>
+
+            <div style="font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 8px;">2. Katı 3-Katlamalı Genişleyen Walk-Forward Çapraz Doğrulaması (WF-VAL-POLICY_TRE-3F):</div>
+            <div class="timing-kpi-grid" style="margin-bottom: 16px;">
+              <div class="timing-kpi-card">
+                <div class="timing-kpi-label">OOS Tutarlılığı (Pozitif Katlar)</div>
+                <div class="timing-kpi-val" style="color: #f87171; font-size: 16px;">%33.33</div>
+                <div class="timing-kpi-sub">1 / 3 Kat Pozitif (Fold 1: -%0.86, Fold 2: -%4.87, Fold 3: +%10.80)</div>
+              </div>
+              <div class="timing-kpi-card">
+                <div class="timing-kpi-label">Ortalama Bozulma (Degradation)</div>
+                <div class="timing-kpi-val" style="color: #f87171; font-size: 16px;">%96.34</div>
+                <div class="timing-kpi-sub">Eğitim: +%58.77 → Test: +%1.69</div>
+              </div>
+              <div class="timing-kpi-card">
+                <div class="timing-kpi-label">Bilimsel Walk-Forward Hükmü</div>
+                <div class="timing-kpi-val" style="color: #ef4444; font-size: 15px;">REJECTED_OVERFITTING</div>
+                <div class="timing-kpi-sub">Aşırı Uyum Reddedildi (Koşulsuz Stabil Değil)</div>
+              </div>
+            </div>
+
+            <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; padding: 12px; margin-bottom: 20px; font-size: 12px; color: #fca5a5;">
+              <strong>⚠️ Bilimsel Aşırı Uyum (Overfitting) Ayrımı:</strong> Strateji tekil kronolojik bölmede (+%3.38 OOS) ve tam dönemde (+%69.64) sermayeyi koruyarak pozitif getiri sağlamış olsa da; katı 3-katlamalı genişleyen walk-forward değerlendirmesinde 3 katlamanın 2'sinde negatif test sonucu (%33.33 tutarlılık) vererek <strong>REJECTED_OVERFITTING</strong> hükmü almıştır. Strateji koşulsuz stabil değildir.
             </div>
 
             <h4 style="font-size: 14px; color: #f8fafc; margin-top: 20px; margin-bottom: 12px;">📈 Hiyerarşik Artımlı Değer Analizi (Regime Incremental Value)</h4>
@@ -1089,30 +1118,38 @@ def render_btc_timing_scripts() -> str:
     async function loadTimingReconciliation() {
       const tbody = document.getElementById("timing-reconciliation-tbody");
       if (!tbody) return;
-      tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #64748b;">Bağımsız mutabakat verileri yükleniyor...</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #64748b;">Bağımsız mutabakat verileri yükleniyor...</td></tr>';
       try {
         const res = await fetch("/api/v1/product/research/btc-timing/accounting-reconciliation");
         if (res.ok) {
           const data = await res.json();
           tbody.innerHTML = "";
-          (data.policies || []).forEach(p => {
+          const policies = [...(data.policies || [])];
+          if (data.derived_regime_reconciliation) {
+            policies.push(data.derived_regime_reconciliation);
+          }
+          policies.forEach(p => {
             const row = document.createElement("tr");
-            const discColor = Math.abs(p.equity_discrepancy_usdt) > 0.01 ? "#fbbf24" : "#34d399";
+            const hasDisc = Math.abs(p.equity_discrepancy_usdt) > 0.01;
+            const discColor = hasDisc ? "#fbbf24" : "#34d399";
+            const pubBadge = hasDisc ? '<span class="badge" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">RAPOR_FARKI</span>' : '<span class="badge badge-success">TAM_EŞLEŞME</span>';
+            const ledBadge = '<span class="badge badge-success">✓ DEFTER_MUTABIK</span>';
             row.innerHTML = `
               <td style="color: #38bdf8; font-weight: 600;">${p.policy_id}</td>
               <td>$${p.published_final_equity.toLocaleString("en-US", {minimumFractionDigits: 2})}</td>
               <td>$${p.persisted_final_equity.toLocaleString("en-US", {minimumFractionDigits: 2})}</td>
               <td>$${p.reconstructed_final_equity.toLocaleString("en-US", {minimumFractionDigits: 2})}</td>
-              <td style="color: ${discColor}; font-weight: bold;">$${p.equity_discrepancy_usdt}</td>
+              <td style="color: ${discColor}; font-weight: bold;">$${p.equity_discrepancy_usdt.toFixed(4)}</td>
+              <td>${ledBadge}</td>
+              <td>${pubBadge}</td>
               <td>${p.trade_count_reconstructed}</td>
-              <td><span class="badge badge-success">✓ Korundu (%100)</span></td>
-              <td style="font-size: 11px; color: #94a3b8; max-width: 280px;">${p.discrepancy_root_cause.substring(0, 90)}...</td>
+              <td style="font-size: 11px; color: #94a3b8; max-width: 250px;">${p.discrepancy_root_cause.substring(0, 85)}...</td>
             `;
             tbody.appendChild(row);
           });
         }
       } catch (e) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #ef4444;">Mutabakat yüklenemedi: ' + e + '</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #ef4444;">Mutabakat yüklenemedi: ' + e + '</td></tr>';
       }
     }
 

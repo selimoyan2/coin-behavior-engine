@@ -1,6 +1,6 @@
 {
   "sprint_id": "CBE_SPRINT30_BTC_TIMING_OPTIMIZATION",
-  "timestamp_utc": "2026-11-15T01:17:03.167481+00:00",
+  "timestamp_utc": "2026-11-15T08:28:20.802007+00:00",
   "total_deliverables": 24,
   "files": {
     "01_model_parity_audit_report.md": {
@@ -8,8 +8,8 @@
       "size_bytes": 4463
     },
     "02_independent_accounting_reconciliation.md": {
-      "sha256": "c319c121e8a44a190563e167830567bc8ef2897b10ef3903ce89c7df1997a6d6",
-      "size_bytes": 2864
+      "sha256": "2e15a304f4cc60e6ebab1543835a7a4b2bb5deaedde4366386f3f8e3afae1e64",
+      "size_bytes": 5182
     },
     "03_transaction_cost_attribution_report.md": {
       "sha256": "5e62051513f3c1f4ea21ad66309011cb21ee351919d90669796616116203a914",
@@ -28,12 +28,12 @@
       "size_bytes": 3149
     },
     "07_out_of_sample_stability_analysis.md": {
-      "sha256": "8dfa2166bffaa8b1bad8858f275847796847ddfb83f5f3d2f8c6abe8a82f197a",
-      "size_bytes": 1288
+      "sha256": "3e19c14ba3442b4b5d645b85dde6b1fc38a6a519bf390b6043ea7497177e92a8",
+      "size_bytes": 4183
     },
     "08_regime_incremental_value_report.md": {
-      "sha256": "4081f5c8ca9a6007be70fb5e04d6470f5024f1997aef13f32f12f4f56b66d27d",
-      "size_bytes": 2793
+      "sha256": "77270b59fc99cf296c43ae5ca8c4e1bd577368713a81938e0555b498550b915d",
+      "size_bytes": 3379
     },
     "09_comparative_policy_performance_matrix.json": {
       "sha256": "057fb4c5057f34b68c78926e0846950fbad191530341bc11d639a1d73f201641",
@@ -76,12 +76,12 @@
       "size_bytes": 1224
     },
     "19_full_regression_execution_log.json": {
-      "sha256": "6d62cc8a3fa1e9330b91f1bd876c2aea59d64213b32a1286c790874aeb99b718",
-      "size_bytes": 786439
+      "sha256": "f345d0298b8cdd16b77cc587134a29f778b1619d3e145274f3818768422f71e2",
+      "size_bytes": 788159
     },
     "19_full_regression_results.json": {
-      "sha256": "a4c9a3af38f8169bbd92c729eee69630775c3f3be30bc41dddec06a3342a91ac",
-      "size_bytes": 4065
+      "sha256": "bdf8314868f966efac958e265cd9a847fc39e1729c5dddfca0032d7ab4d38693",
+      "size_bytes": 4064
     },
     "20_persistence_recovery_evidence.json": {
       "sha256": "7f6c891c11e964758313e5974a522610f449e6ad10887d29993ebd328e60311d",
@@ -96,8 +96,8 @@
       "size_bytes": 401
     },
     "23_final_sprint30_acceptance_report.md": {
-      "sha256": "fd590e1923008db622683df62ac0c1ddad13383be462cf3d956270e9410777c8",
-      "size_bytes": 3221
+      "sha256": "e73a9165799098774eead4a3129b5641fa778f99ab9a774c6cc38516b7d16893",
+      "size_bytes": 6952
     }
   }
 }

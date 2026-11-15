@@ -1,13 +1,13 @@
 {
   "sprint_id": "CBE_SPRINT30_BTC_TIMING_OPTIMIZATION",
-  "timestamp_utc": "2026-11-15T01:12:26.507711+00:00",
-  "started_at_utc": "2026-11-15T00:53:38.918020+00:00",
-  "duration_seconds": 1127.59,
+  "timestamp_utc": "2026-11-15T08:28:06.451609+00:00",
+  "started_at_utc": "2026-11-15T08:21:35.803824+00:00",
+  "duration_seconds": 390.65,
   "platform": "win32",
   "python_version": "3.11.16 (main, Aug 25 2026, 13:59:19) [MSC v.1944 64 bit (AMD64)]",
   "reconciliation_summary": {
-    "total_tests_collected": 3466,
-    "passed_tests": 3458,
+    "total_tests_collected": 3472,
+    "passed_tests": 3464,
     "skipped_tests": 8,
     "failed_tests": 0,
     "exit_code": 0,
@@ -63,8 +63,8 @@
     "pass_rate": "100.0%"
   },
   "full_repository_regression": {
-    "total_tests_collected": 3466,
-    "passed_tests": 3458,
+    "total_tests_collected": 3472,
+    "passed_tests": 3464,
     "skipped_tests": 8,
     "failed_tests": 0,
     "playwright_browser_suite": "1/1 PASSED (5 viewports verified: 1440x900, 768x1024, 390x844)",

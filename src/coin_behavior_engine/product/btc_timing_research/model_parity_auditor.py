@@ -70,6 +70,10 @@ class ParityAuditResult:
         return False
 
     @property
+    def is_canonical_parity_established(self) -> bool:
+        return False
+
+    @property
     def model_frozen(self) -> bool:
         return True
 

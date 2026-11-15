@@ -76,6 +76,18 @@ class PolicyAccountingReconciliation:
     net_return_pct_published: float
     net_return_pct_reconstructed: float
     is_accounting_valid: bool
+    ledger_status: str = "LEDGER_RECONCILED"
+    published_status: str = "PUBLISHED_REPORT_VARIANCE"
+
+    @property
+    def is_ledger_reconciled(self) -> bool:
+        """Ledger reconciliation strictly verifies that reconstructed equity matches persisted ledger."""
+        return abs(self.reconstructed_final_equity - self.persisted_final_equity) < 0.01
+
+    @property
+    def is_published_report_reconciled(self) -> bool:
+        """Indicates whether published report matches persisted ledger equity."""
+        return abs(self.equity_discrepancy_usdt) < 0.01
 
     @property
     def cash_conservation_verified(self) -> bool:
@@ -242,6 +254,9 @@ class IndependentAccountingReconciler:
         turnover_ratio = round(total_notional / self.initial_capital_usdt, 4)
         turnover_percent = round(turnover_ratio * 100.0, 2)
 
+        published_status = "EXACT_MATCH" if abs(equity_discrepancy) < 0.01 else "PUBLISHED_REPORT_VARIANCE"
+        ledger_status = "LEDGER_RECONCILED" if abs(reconstructed_final_equity - persisted_final_equity) < 0.01 else "LEDGER_DISCREPANCY"
+
         return PolicyAccountingReconciliation(
             policy_id=policy_id,
             policy_name=policy_name,
@@ -266,6 +281,8 @@ class IndependentAccountingReconciler:
             net_return_pct_published=published_return_pct,
             net_return_pct_reconstructed=reconstructed_return_pct,
             is_accounting_valid=True,
+            ledger_status=ledger_status,
+            published_status=published_status,
         )
 
     def reconcile_all_sprint29_experiments(self, repo_root: Optional[Path] = None) -> ReconciliationSummaryReport:
@@ -295,7 +312,51 @@ class IndependentAccountingReconciler:
         for p in summary.policies:
             if p.policy_id == policy_id:
                 return p
+        if policy_id == "POLICY_DERIVED_REGIME_CONFIRMATION":
+            return self.reconcile_derived_regime_confirmation(repo_root)
         raise ValueError(f"Policy {policy_id} not found in reconciled experiments.")
+
+    def reconcile_derived_regime_confirmation(
+        self, repo_root: Optional[Path] = None
+    ) -> PolicyAccountingReconciliation:
+        """Reconciles the Sprint 30 Derived Regime Confirmation policy, resolving
+
+        the discrepancy between preliminary reported figure (12,441.12 USDT) and
+        authoritative persisted trade ledger (12,404.63 USDT).
+        """
+        root = repo_root or REPO_ROOT
+        exp_dir = root / "data" / "research_lab" / "btc_timing_experiments"
+        matching_files = list(exp_dir.glob("EXP-POLICY_DER-*.json"))
+        target_file = None
+        for mf in matching_files:
+            try:
+                with open(mf, encoding="utf-8") as f:
+                    d = json.load(f)
+                    if d.get("metadata", {}).get("policy_id") == "POLICY_DERIVED_REGIME_CONFIRMATION":
+                        target_file = mf
+                        break
+            except Exception:
+                continue
+
+        if not target_file:
+            raise FileNotFoundError("Could not find persisted experiment file for POLICY_DERIVED_REGIME_CONFIRMATION")
+
+        with open(target_file, encoding="utf-8") as f:
+            exp_data = json.load(f)
+
+        # Preliminary un-reconciled quote was $12,441.12 USDT (+24.41%)
+        # Authoritative persisted ledger is $12,404.63 USDT (+24.05%)
+        rec = self.reconstruct_from_ledger(
+            trades=exp_data.get("trades", []),
+            equity_curve=exp_data.get("equity_curve", []),
+            policy_id="POLICY_DERIVED_REGIME_CONFIRMATION",
+            policy_name="Derived Regime Multi-Bar Confirmation",
+            published_equity=12441.12,
+            published_return_pct=24.41,
+            published_max_dd_pct=21.30,
+            published_trade_count=696,
+        )
+        return rec
 
 
 

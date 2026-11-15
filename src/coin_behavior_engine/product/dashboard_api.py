@@ -7098,19 +7098,27 @@ class ProductDashboardApiService:
 
     @classmethod
     def get_btc_timing_accounting_reconciliation(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
-        """Returns independent mathematical reconciliation across all Sprint 29 experiments."""
+        """Returns independent mathematical reconciliation across all Sprint 29 and Sprint 30 experiments."""
         from coin_behavior_engine.product.btc_timing_research.accounting_reconciler import (
             IndependentAccountingReconciler,
             DISCREPANCY_EXPLANATION,
         )
         reconciler = IndependentAccountingReconciler()
         summary = reconciler.reconcile_all_sprint29_experiments()
+        r30_dict = None
+        try:
+            r30 = reconciler.reconcile_derived_regime_confirmation()
+            r30_dict = asdict(r30)
+        except Exception as e:
+            logger.warning(f"Could not reconcile derived regime confirmation: {e}")
+
         return HTTPStatus.OK, {
             "status": "success",
             "all_policies_reconciled": summary.all_policies_reconciled,
             "total_trades_reconciled": summary.total_trades_reconciled,
             "discrepancy_explanation": DISCREPANCY_EXPLANATION,
             "policies": [asdict(p) for p in summary.policies],
+            "derived_regime_reconciliation": r30_dict,
         }
 
     @classmethod
