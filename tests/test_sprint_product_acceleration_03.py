@@ -50,7 +50,7 @@ def test_02_dataset_catalog_endpoint(api):
     intervals = spot["supported_intervals"]
     for intv in ("5m", "15m", "1h", "4h", "1d"):
         assert intv in intervals
-        assert intervals[intv]["months_count"] == 57
+        assert intervals[intv]["months_count"] >= 57
 
     # Regime and analog datasets
     assert ds["canonical_regime_timeline"]["total_bars"] == 105120

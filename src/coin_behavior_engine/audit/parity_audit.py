@@ -55,6 +55,7 @@ def audit_artifact_inventory(base_dir: Path) -> Dict[str, Any]:
     exts = [".joblib", ".pkl", ".pickle", ".npy", ".npz", ".pt", ".onnx", ".bin", ".h5"]
     approved_research_artifacts = {
         "research_outputs/compact_analogue_candidates.npz",
+        "data/models/cbe_070_canonical_frozen_lockbox.pkl",
     }
     deployable_models_found = []
     research_artifacts_found = []

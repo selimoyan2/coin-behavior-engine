@@ -1,0 +1,97 @@
+{
+  "metadata": {
+    "sprint_id": "CBE_SPRINT34_2_FINAL_RECONCILIATION_REGRESSION_CLOSURE_HISTORICAL_DATA_READINESS",
+    "generated_at_utc": "2026-11-15T20:56:01.616153+00:00",
+    "target_branch": "research/sprint33-canonical-bridge-market-intelligence",
+    "canonical_model": "CBE-0.7.0",
+    "model_status": "STRICTLY_FROZEN",
+    "total_artifacts": 17
+  },
+  "artifacts": [
+    {
+      "filename": "01_baseline_and_git_verification.md",
+      "sha256": "f7dee0e062c4fc58a6132c0addd50b5074dbc5642a370433c054b58b13fb6c23",
+      "size_bytes": 3243
+    },
+    {
+      "filename": "02_independent_portfolio_reconstruction.json",
+      "sha256": "fd1670a439dd8e01ad60520c9a31310a8a24c7e6250a2f271da404780e8088ae",
+      "size_bytes": 10146084
+    },
+    {
+      "filename": "03_accounting_discrepancy_resolution.md",
+      "sha256": "dc8a7a2c5851c972a35f90a734bd5edc01a663771e602f5dfb8c6d2178ee3658",
+      "size_bytes": 6040
+    },
+    {
+      "filename": "04_corrected_statistical_inference.json",
+      "sha256": "c1de3be42590da6e8c21b8bc6212d47fa35ee4770c8ef52f6b38dd78bb6ca7f1",
+      "size_bytes": 22068
+    },
+    {
+      "filename": "05_statistical_methodology.md",
+      "sha256": "6f255b422d1eb8e9af9a9d01dc24ee81b527ef796d7f9c75fe0c831c692c99f5",
+      "size_bytes": 5929
+    },
+    {
+      "filename": "06_canonical_lockbox_provenance.md",
+      "sha256": "cc3c8b70b41c51ea57ae1be34f83b5cad931e9f9ebc8c2e604dd8d42afd8be14",
+      "size_bytes": 3693
+    },
+    {
+      "filename": "07_historical_dataset_coverage.json",
+      "sha256": "c18f1f5bf1d526a3f310a81726fe1929a7f0bfafd71106aae6a231d548e4edc1",
+      "size_bytes": 40742
+    },
+    {
+      "filename": "08_legacy_test_remediation.md",
+      "sha256": "83ba13a0be76b4b95bcbd414ae917e321f244e75c3c0e8eedd5f155c2ed05f6d",
+      "size_bytes": 6127
+    },
+    {
+      "filename": "09_full_regression_results.json",
+      "sha256": "6b23c5cdac3b9352021aca1c9d73046bbb5fdd7261b4092b3d9487e0299ba0fd",
+      "size_bytes": 2582
+    },
+    {
+      "filename": "10_staging_runtime_identity.json",
+      "sha256": "fb383c05d302ae83350157a46a58930a864bbc6d36242b7d0284f8191dec41ca",
+      "size_bytes": 1906
+    },
+    {
+      "filename": "11_dashboard_v11_2_desktop.png",
+      "sha256": "5f003341286869a71bf35fa11b7f23dff9a35020faad2f4ca1b2827e0d2aafe6",
+      "size_bytes": 124434
+    },
+    {
+      "filename": "11_dashboard_v11_2_mobile.png",
+      "sha256": "2e16e0f913e4666bd6d732d948c774c6c927d4d1d4911ce5f812089e2b43dba2",
+      "size_bytes": 45842
+    },
+    {
+      "filename": "11_dashboard_v11_2_tablet.png",
+      "sha256": "b8f0f76f69bd977fd694b22aa9a593acd440dc174b52a5b255b464440711db2e",
+      "size_bytes": 102398
+    },
+    {
+      "filename": "11_playwright_acceptance.json",
+      "sha256": "28466f26fa1a6238d12177a8c7b4c1f4f65a21da99bda20a9cd052dec7b3d4b9",
+      "size_bytes": 2913
+    },
+    {
+      "filename": "12_production_release_readiness.md",
+      "sha256": "a9a04f5e552dbcc5e52d714751deeb4bf65f81a8c1719318d47128e49bf74a26",
+      "size_bytes": 5282
+    },
+    {
+      "filename": "13_production_zero_touch_evidence.json",
+      "sha256": "c6351ba366bbb75fb83fa6029d35ed5f43b9b75ef75d69b6bf62b30730fbd28e",
+      "size_bytes": 1887
+    },
+    {
+      "filename": "15_final_acceptance_report.md",
+      "sha256": "02a74493117d6987f118e44bc2d7b5d1a6d727b74b1d2309bb41974364667d60",
+      "size_bytes": 13851
+    }
+  ]
+}

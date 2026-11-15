@@ -1,0 +1,38 @@
+{
+  "full_regression_execution": {
+    "test_suite": "Full Repository Regression (All Tests)",
+    "executed_at_utc": "2026-11-15T20:51:53.419072+00:00",
+    "exit_code": 0,
+    "total_collected": 3621,
+    "total_passed": 3613,
+    "total_failed": 0,
+    "total_skipped": 8,
+    "pass_rate_pct": 100.0,
+    "duration_seconds": 1307.26,
+    "summary_line": "========== 3613 passed, 8 skipped, 17 warnings in 1305.12s (0:21:45) ==========",
+    "gate_c_regression_verdict": "PASSED",
+    "skipped_tests_explanation": "8 skipped tests are legacy integration markers that require live external market feeds or hardware-accelerated GPUs, strictly skipped under OFFLINE_RESEARCH isolation."
+  },
+  "raw_stdout_tail": [
+    "",
+    "tests/test_sprint08_prospective.py::test_delayed_source_handling",
+    "  D:\\Projeler\\Antigravity\\coin-davranis-motoru\\.venv\\Lib\\site-packages\\numpy\\lib\\_nanfunctions_impl.py:1396: RuntimeWarning: All-NaN slice encountered",
+    "    return _nanquantile_unchecked(",
+    "",
+    "tests/test_sprint11_07_behavioral_learning.py::TestHistoricalDatasetIntegrity::test_candle_count_and_continuity",
+    "tests/test_sprint11_07_behavioral_learning.py::TestHistoricalDatasetIntegrity::test_candle_count_and_continuity",
+    "tests/test_sprint11_07_behavioral_learning.py::TestMarketStateAndAnalogueEngine::test_feature_columns_and_causality",
+    "tests/test_sprint11_08_predictive_integrity.py::TestFinancialAccountingReconciliation::test_trade_reconciliation_math",
+    "tests/test_sprint11_08_predictive_integrity.py::TestFinancialAccountingReconciliation::test_portfolio_equity_tracking",
+    "tests/test_sprint11_08_predictive_integrity.py::TestPredictionMetricAudit::test_class_imbalance_and_majority_baseline",
+    "  D:\\Projeler\\Antigravity\\coin-davranis-motoru\\.venv\\Lib\\site-packages\\_pytest\\fixtures.py:1313: PytestRemovedIn10Warning: Class-scoped fixture defined as instance method is deprecated.",
+    "  Instance attributes set in this fixture will NOT be visible to test methods,",
+    "  as each test gets a new instance while the fixture runs only once per class.",
+    "  Use @classmethod decorator and set attributes on cls instead.",
+    "  See https://docs.pytest.org/en/stable/deprecations.html#class-scoped-fixture-as-instance-method",
+    "    fixturefunc = resolve_fixture_function(fixturedef, request)",
+    "",
+    "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+    "========== 3613 passed, 8 skipped, 17 warnings in 1305.12s (0:21:45) =========="
+  ]
+}

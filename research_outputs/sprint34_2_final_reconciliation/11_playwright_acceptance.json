@@ -1,0 +1,63 @@
+{
+  "metadata": {
+    "title": "Sprint 34.2 Playwright Multi-Viewport Acceptance Verification",
+    "sprint_id": "CBE_SPRINT34_2_FINAL_RECONCILIATION_REGRESSION_CLOSURE_HISTORICAL_DATA_READINESS",
+    "executed_at_utc": "2026-11-15T20:37:33.844208+00:00",
+    "attribution_tier": "USER_INTERFACE_AND_EXPERIENCE_VALIDATION",
+    "test_port": 18097,
+    "overall_status": "PASSED"
+  },
+  "viewport_acceptance": {
+    "desktop": {
+      "viewport": "1440x900",
+      "is_mobile": false,
+      "dashboard_http_status": 200,
+      "october_badge_text": "EK\u0130M 2026: KISM\u0130 DO\u011eRULANMI\u015e VER\u0130 (Kapsam: 1-1 Ekim, Eksik: 2-31 Ekim)",
+      "november_badge_text": "KASIM 2026: VER\u0130 HEN\u00dcZ MEVCUT DE\u011e\u0130L",
+      "v11_panel_found": true,
+      "live_trading_prohibition_status": 403,
+      "live_trading_prohibition_detail": "GOVERNANCE_VIOLATION",
+      "console_errors_count": 0,
+      "page_errors_count": 0,
+      "screenshot_path": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint34_2_final_reconciliation\\11_dashboard_v11_2_desktop.png",
+      "status": "PASSED"
+    },
+    "tablet": {
+      "viewport": "768x1024",
+      "is_mobile": false,
+      "dashboard_http_status": 200,
+      "october_badge_text": "EK\u0130M 2026: KISM\u0130 DO\u011eRULANMI\u015e VER\u0130 (Kapsam: 1-1 Ekim, Eksik: 2-31 Ekim)",
+      "november_badge_text": "KASIM 2026: VER\u0130 HEN\u00dcZ MEVCUT DE\u011e\u0130L",
+      "v11_panel_found": true,
+      "live_trading_prohibition_status": 403,
+      "live_trading_prohibition_detail": "GOVERNANCE_VIOLATION",
+      "console_errors_count": 0,
+      "page_errors_count": 0,
+      "screenshot_path": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint34_2_final_reconciliation\\11_dashboard_v11_2_tablet.png",
+      "status": "PASSED"
+    },
+    "mobile": {
+      "viewport": "390x844",
+      "is_mobile": true,
+      "dashboard_http_status": 200,
+      "october_badge_text": "EK\u0130M 2026: KISM\u0130 DO\u011eRULANMI\u015e VER\u0130 (Kapsam: 1-1 Ekim, Eksik: 2-31 Ekim)",
+      "november_badge_text": "KASIM 2026: VER\u0130 HEN\u00dcZ MEVCUT DE\u011e\u0130L",
+      "v11_panel_found": true,
+      "live_trading_prohibition_status": 403,
+      "live_trading_prohibition_detail": "GOVERNANCE_VIOLATION",
+      "console_errors_count": 0,
+      "page_errors_count": 0,
+      "screenshot_path": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint34_2_final_reconciliation\\11_dashboard_v11_2_mobile.png",
+      "status": "PASSED"
+    }
+  },
+  "verification_summary": {
+    "total_viewports_tested": 3,
+    "total_passed": 3,
+    "console_errors_total": 0,
+    "page_errors_total": 0,
+    "live_trading_prohibited_verified": true,
+    "october_partial_badge_verified": true,
+    "november_missing_badge_verified": true
+  }
+}

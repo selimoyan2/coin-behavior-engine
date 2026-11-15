@@ -1,0 +1,34 @@
+{
+  "audit_standard": "CBE-DEPLOYMENT-FORENSICS-V1.2",
+  "attribution_tier": "OPERATIONS_AND_DEPLOYMENT_GOVERNANCE",
+  "generated_at_utc": "2026-11-15T23:31:00Z",
+  "staging_runtime_environment": {
+    "host": "srv1114257 (168.231.125.238)",
+    "staging_internal_port": 18080,
+    "container_internal_port": 8000,
+    "isolation_gate": "STRICT_ISOLATION_PORT_18080_LOCALHOST_ONLY",
+    "git_branch_tracked": "research/sprint33-canonical-bridge-market-intelligence",
+    "active_container": {
+      "container_id": "2fcd6fbd8650",
+      "full_container_id": "2fcd6fbd8650a3eb4fa25020fb245fbcfd98b8150b3d340836fc181dbaf80574",
+      "container_name": "cbe-market-intelligence-staging-sprint34_1-20261115T200806",
+      "image_tag": "cbe-market-intelligence:sprint34_1-d92b1b5",
+      "created_at_utc": "2026-11-15T20:08:06.992180748Z",
+      "status": "running (healthy)",
+      "restart_count": 0,
+      "ports_binding": "127.0.0.1:18080->8000/tcp"
+    },
+    "container_replacement_reconciliation": {
+      "previous_staging_container_id": "6573abbd05f4",
+      "previous_container_image": "cbe-market-intelligence:sprint34-957e0d3",
+      "previous_container_created_utc": "2026-11-15T16:16:24Z",
+      "active_staging_container_id": "2fcd6fbd8650",
+      "active_container_image": "cbe-market-intelligence:sprint34_1-d92b1b5",
+      "active_container_created_utc": "2026-11-15T20:08:06Z",
+      "replacement_occurred": true,
+      "replacement_timestamp_utc": "2026-11-15T20:08:06Z",
+      "replacement_mechanism": "Automated pre-deployment cleanup in build_and_deploy_staging_sprint34_1.py: docker ps -aq --filter name=cbe-market-intelligence-staging -> docker stop -> docker rm -> docker run new container",
+      "forensic_finding": "Container 6573abbd05f4 was intentionally stopped and removed upon promotion of Sprint 34.1 to staging port 18080, successfully replaced by 2fcd6fbd8650."
+    }
+  }
+}

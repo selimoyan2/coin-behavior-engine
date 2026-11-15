@@ -1,0 +1,42 @@
+{
+  "audit_standard": "CBE-PRODUCTION-ZERO-TOUCH-V1.2",
+  "attribution_tier": "PRODUCTION_IMMUTABILITY_AUDIT",
+  "generated_at_utc": "2026-11-15T23:31:10Z",
+  "production_verification": {
+    "host": "srv1114257 (168.231.125.238)",
+    "public_domain": "https://coin.ozelweb.com.tr",
+    "coolify_application_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+    "coolify_project_name": "coin-davranis-motoru",
+    "coolify_resource_name": "coin-behavior-enginemain-wr0qrqizbkuuidhqb8szlmlm",
+    "tracked_git_branch": "main",
+    "canonical_model_version": "CBE-0.7.0",
+    "production_container": {
+      "container_id": "4cdc04ccb16b",
+      "full_container_id": "4cdc04ccb16bc8ee6e7c09e68c20889b1dbc0378d3a80815b33027c6215157c1",
+      "service_name": "6t63aehpaw0cw1bbt4zcm09g-20261115T201144",
+      "image_tag": "6t63aehpaw0cw1bbt4zcm09g:c9e3907a226cfbe01e73f87c960156afdd874dc4",
+      "tracked_commit_sha": "c9e3907a226cfbe01e73f87c960156afdd874dc4",
+      "created_at_utc": "2026-11-15T20:12:32.982148018Z",
+      "status": "running (healthy)",
+      "restart_count": 0,
+      "predecessor_container_id": "0688330c7292",
+      "predecessor_transition_note": "Coolify lifecycle deployment rotated from 0688330c7292 to 4cdc04ccb16b at 2026-11-15T20:11:44Z during base sync, remaining strictly locked on canonical main branch c9e3907a226cfbe01e73f87c960156afdd874dc4."
+    },
+    "volume_mounts": [
+      {
+        "type": "volume",
+        "name": "6t63aehpaw0cw1bbt4zcm09g-cbe_prospective_data",
+        "destination": "/app/data/prospective",
+        "rw": true
+      }
+    ],
+    "zero_touch_invariants_audited": {
+      "no_unauthorized_restarts": true,
+      "no_unauthorized_deployments": true,
+      "no_direct_database_mutations": true,
+      "no_branch_promotion_to_main": true,
+      "live_trading_permanently_prohibited": true,
+      "gate_e_deployment_safety": "PASSED"
+    }
+  }
+}

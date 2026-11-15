@@ -285,8 +285,8 @@ def test_13_regime_drift_transitions_and_durations():
 # 14. Research Readiness — Hardened Fail-Closed on Unimported Month
 # -----------------------------------------------------------------------------
 def test_14_readiness_hardening_fail_closed():
-    """Verify unimported month (2026-10) returns BLOCKED_NO_DATA and score 0.0%."""
-    eval_10 = ResearchReadinessEngine.evaluate_readiness("2026-10")
+    """Verify unimported month (2026-11) returns BLOCKED_NO_DATA and score 0.0%."""
+    eval_10 = ResearchReadinessEngine.evaluate_readiness("2026-11")
     assert eval_10["overall_verdict"] == "BLOCKED_NO_DATA"
     assert eval_10["overall_score_pct"] == 0.0
     assert "Bu dönem için doğrulanmış piyasa verisi bulunmuyor" in eval_10["user_message"]
