@@ -228,15 +228,27 @@ class InvestmentResearchV10Engine:
         """Section B: Historical Portfolio Comparison (All 6 Policies)."""
         data = cls._load_data()
         policies_list = []
+        from coin_behavior_engine.product.btc_timing_research.transaction_cost_auditor import (
+            TransactionCostAuditor,
+        )
+        recon_res = TransactionCostAuditor().run_full_reconciliation()
 
         for pol_key, meta in POLICY_METADATA.items():
             pol_data = data.get(pol_key, {})
+            p_recon = recon_res.policies.get(pol_key)
+            rec_verdict = p_recon.reconciliation_verdict if p_recon else "UNRECONCILED"
+            rec_equity = p_recon.reconstructed_final_equity if p_recon else float(pol_data.get("ending_equity_usdt", 10000.0))
+            eq_diff = p_recon.equity_discrepancy_usdt if p_recon else 0.0
+
             policies_list.append({
                 "policy_key": pol_key,
                 "display_name": meta["display_name"],
                 "category": meta["category"],
                 "initial_capital_usdt": float(pol_data.get("initial_capital_usdt", 10000.0)),
                 "ending_equity_usdt": float(pol_data.get("ending_equity_usdt", 10000.0)),
+                "reconstructed_equity_usdt": rec_equity,
+                "equity_discrepancy_usdt": eq_diff,
+                "reconciliation_verdict": rec_verdict,
                 "net_return_pct": float(pol_data.get("net_return_pct", 0.0)),
                 "max_drawdown_pct": float(pol_data.get("max_drawdown_pct", 0.0)),
                 "sharpe_ratio": float(pol_data.get("sharpe_ratio", 0.0)),

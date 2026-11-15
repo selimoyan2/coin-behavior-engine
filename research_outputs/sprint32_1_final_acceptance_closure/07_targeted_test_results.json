@@ -1,0 +1,148 @@
+{
+  "sprint_id": "CBE_SPRINT32_1_ACCOUNTING_AND_FORENSIC_CLOSURE",
+  "timestamp_utc": "2026-11-15T14:09:47.886031+00:00",
+  "duration_seconds": 2.85,
+  "exit_code": 0,
+  "total_tests": 34,
+  "passed": 34,
+  "failed": 0,
+  "pass_rate_percent": 100.0,
+  "tests": [
+    {
+      "nodeid": "tests/test_sprint32_1_accounting_and_forensic_closure.py::test_nonzero_discrepancy_rejection",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_1_accounting_and_forensic_closure.py::test_valuation_timestamp_and_terminal_price",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_1_accounting_and_forensic_closure.py::test_btc_quantity_precision_and_satoshi_conservation",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_1_accounting_and_forensic_closure.py::test_initial_capital_consistency",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_1_accounting_and_forensic_closure.py::test_explicit_accounting_classifications",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_1_accounting_and_forensic_closure.py::test_production_container_identity_and_continuity_verdict",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_1_accounting_and_forensic_closure.py::test_dashboard_v10_equity_distinction",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestDatasetProvenanceAndParity::test_monthly_partitions_count_and_months",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestDatasetProvenanceAndParity::test_monthly_partitions_ohlcv_and_zero_gaps",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestDatasetProvenanceAndParity::test_raw_to_merged_exact_candle_parity",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestDatasetProvenanceAndParity::test_provenance_audit_classification_unverified",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestDatasetProvenanceAndParity::test_provenance_markdown_reports_generation",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestStatisticalClaimsAudit::test_all_five_hypotheses_audited",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestStatisticalClaimsAudit::test_serial_dependence_and_pvalue_revocation",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestStatisticalClaimsAudit::test_descriptive_verdicts_met_except_h4",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestStatisticalClaimsAudit::test_h4_unsupported_honest_effect_size",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestStatisticalClaimsAudit::test_h5_canonical_model_attribution_disclaimer",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestStatisticalClaimsAudit::test_statistical_audit_markdown_and_json_generation",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestTransactionCostAndAccounting::test_cost_convention_one_way_vs_round_trip",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestTransactionCostAndAccounting::test_independent_portfolio_trade_reconstruction",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestTransactionCostAndAccounting::test_compounded_performance_drag_multiplier",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestSealedEvaluationIntegrity::test_policy_package_seal_verified",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestSealedEvaluationIntegrity::test_chronology_pipeline_sequential",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestSealedEvaluationIntegrity::test_chronology_markdown_and_json",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestDashboardV10BackendAndApi::test_v10_overview_endpoint",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestDashboardV10BackendAndApi::test_v10_comparison_endpoint",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestDashboardV10BackendAndApi::test_v10_strategy_endpoint",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestDashboardV10BackendAndApi::test_v10_trades_pagination_and_filtering",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestDashboardV10BackendAndApi::test_v10_cost_intelligence_endpoint",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestDashboardV10BackendAndApi::test_v10_scientific_evidence_endpoint",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestDashboardV10BackendAndApi::test_v10_timeline_endpoint",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestDashboardV10BackendAndApi::test_v10_report_downloads_json_markdown_csv",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestDashboardV10BackendAndApi::test_live_trading_permanently_prohibited",
+      "status": "PASSED"
+    },
+    {
+      "nodeid": "tests/test_sprint32_scientific_validation_dashboard_v10.py::TestCanonicalModelImmutability::test_canonical_model_cbe_070_frozen",
+      "status": "PASSED"
+    }
+  ]
+}

@@ -170,11 +170,11 @@ class TestTransactionCostAndAccounting:
     def test_independent_portfolio_trade_reconstruction(self):
         auditor = TransactionCostAuditor()
         res = auditor.run_full_reconciliation()
-        assert res.overall_accounting_verdict == "ALL_POLICIES_RECONCILED_ZERO_DISCREPANCY"
+        assert res.overall_accounting_verdict in ("ALL_POLICIES_RECONCILED_WITH_DOCUMENTED_ROUNDING", "ALL_POLICIES_RECONCILED_ZERO_DISCREPANCY")
         assert len(res.policies) == 6
         for pol_key, p_rec in res.policies.items():
-            assert p_rec.reconciliation_verdict == "EXACT_MATCH_ZERO_DISCREPANCY"
-            assert p_rec.equity_discrepancy_usdt < 1.50
+            assert p_rec.reconciliation_verdict in ("EXACT_MATCH", "MATCH_WITH_DOCUMENTED_ROUNDING")
+            assert p_rec.equity_discrepancy_usdt <= 0.01
             assert p_rec.costs_discrepancy_usdt < 0.05
             assert p_rec.return_discrepancy_pct < 0.02
             assert p_rec.cash_flow_conservation_valid is True

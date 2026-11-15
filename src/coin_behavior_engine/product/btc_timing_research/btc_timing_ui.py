@@ -2293,19 +2293,23 @@ def render_btc_timing_scripts() -> str:
         const tr = document.createElement("tr");
         const retColor = p.net_return_pct > 0 ? "#34d399" : (p.net_return_pct === 0 ? "#94a3b8" : "#f87171");
         const ddColor = p.max_drawdown_pct < -50 ? "#ef4444" : "#fb923c";
+        const isExact = p.reconciliation_verdict === "EXACT_MATCH";
+        const badgeLabel = isExact ? "Tam Eşleşme (0.00)" : "Yuvarlama (<$0.01)";
+        const badgeStyle = isExact ? "background: rgba(16, 185, 129, 0.2); color: #10b981;" : "background: rgba(56, 189, 248, 0.15); color: #38bdf8;";
+        const recEquity = p.reconstructed_equity_usdt !== undefined ? p.reconstructed_equity_usdt : p.ending_equity_usdt;
 
         tr.innerHTML = `
           <td style="font-weight: 600; color: #f8fafc;">${p.display_name}</td>
           <td><span class="badge" style="font-size: 10px; background: rgba(56, 189, 248, 0.1); color: #38bdf8;">${p.category}</span></td>
           <td>$${p.initial_capital_usdt.toLocaleString("en-US", {minimumFractionDigits: 2})}</td>
-          <td style="font-weight: bold; color: #f8fafc;">$${p.ending_equity_usdt.toLocaleString("en-US", {minimumFractionDigits: 2})}</td>
+          <td style="font-weight: bold; color: #f8fafc;" title="Yayınlanan: $${p.ending_equity_usdt.toFixed(2)} | Yeniden Oluşturulan: $${recEquity.toFixed(2)}">$${p.ending_equity_usdt.toLocaleString("en-US", {minimumFractionDigits: 2})}</td>
           <td style="color: ${retColor}; font-weight: bold;">${p.net_return_pct > 0 ? "+" : ""}${p.net_return_pct.toFixed(2)}%</td>
           <td style="color: ${ddColor};">${p.max_drawdown_pct.toFixed(2)}%</td>
           <td>${p.sharpe_ratio.toFixed(2)}</td>
           <td>${p.trade_count}</td>
           <td style="color: #fb923c;">$${p.total_transaction_costs_usdt.toLocaleString("en-US", {minimumFractionDigits: 2})}</td>
           <td>%${(p.time_invested_pct * 100).toFixed(1)}</td>
-          <td><span class="badge" style="font-size: 10px; background: rgba(16, 185, 129, 0.2); color: #10b981;">0.00 Mutabık</span></td>
+          <td><span class="badge" style="font-size: 10px; ${badgeStyle}">${badgeLabel}</span></td>
         `;
         tbody.appendChild(tr);
       });

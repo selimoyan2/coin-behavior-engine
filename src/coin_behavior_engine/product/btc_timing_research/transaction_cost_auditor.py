@@ -86,12 +86,22 @@ class TransactionCostAuditor:
         """Return audited cost breakdown specifications."""
         return CostBreakdownAudit()
 
+    @staticmethod
+    def validate_reconciliation_verdict(eq_diff: float, verdict: str) -> bool:
+        """Enforces that nonzero discrepancies cannot be marked as EXACT_MATCH or EXACT_MATCH_ZERO_DISCREPANCY."""
+        if eq_diff > 0.0 and verdict in ("EXACT_MATCH", "EXACT_MATCH_ZERO_DISCREPANCY"):
+            raise ValueError(
+                f"Nonzero discrepancy ({eq_diff} USDT) cannot be classified as {verdict}. "
+                f"Must use MATCH_WITH_DOCUMENTED_ROUNDING or MATERIAL_DISCREPANCY."
+            )
+        return True
+
     def reconstruct_policy_from_trades(
         self,
         policy_name: str,
         policy_data: Dict[str, Any],
         initial_capital: float = 10000.0,
-        final_btc_price: float = 87640.40,
+        final_btc_price: float = 87648.22,
     ) -> PolicyReconciliationRecord:
         """Reconstruct portfolio balance and transaction costs trade-by-trade."""
         trades = policy_data.get("trades", [])
@@ -126,7 +136,7 @@ class TransactionCostAuditor:
             running_cash = initial_capital
             running_btc = 0.0
 
-        # Mark-to-market at final price on bar 8760
+        # Mark-to-market at terminal price on bar 8759 (2025-12-31 23:00:00 UTC)
         reconstructed_equity = running_cash + (running_btc * final_btc_price)
         total_costs = total_fees + total_spread + total_slippage
 
@@ -139,8 +149,22 @@ class TransactionCostAuditor:
         cost_diff = abs(total_costs - reported_costs)
         ret_diff = abs(reconstructed_ret - reported_ret)
 
-        is_exact = (eq_diff < 1.50) and (cost_diff < 0.05) and (ret_diff < 0.02)
-        verdict = "EXACT_MATCH_ZERO_DISCREPANCY" if is_exact else "DISCREPANCY_DETECTED"
+        # Explicit reconciliation classification:
+        # EXACT_MATCH: absolute discrepancy is strictly 0.0
+        # MATCH_WITH_DOCUMENTED_ROUNDING: discrepancy is within fractional cent rounding (<= 0.01 USDT)
+        # MATERIAL_DISCREPANCY: discrepancy exceeds rounding tolerance but is bounded (<= 10.0 USDT)
+        # UNRECONCILED: discrepancy > 10.0 USDT or source ledger missing
+        if eq_diff == 0.0 and cost_diff == 0.0 and ret_diff == 0.0:
+            verdict = "EXACT_MATCH"
+        elif eq_diff <= 0.01 and cost_diff <= 0.01 and ret_diff <= 0.01:
+            verdict = "MATCH_WITH_DOCUMENTED_ROUNDING"
+        elif eq_diff <= 10.0:
+            verdict = "MATERIAL_DISCREPANCY"
+        else:
+            verdict = "UNRECONCILED"
+
+        # Validate that nonzero discrepancy is never falsely certified as exact
+        self.validate_reconciliation_verdict(eq_diff, verdict)
 
         return PolicyReconciliationRecord(
             policy_name=policy_name,
@@ -176,8 +200,8 @@ class TransactionCostAuditor:
 
         policy_records: Dict[str, PolicyReconciliationRecord] = {}
 
-        # 2025 final BTC price on bar 8760
-        final_price = 87640.40
+        # 2025 final BTC price on bar 8759 (2025-12-31 23:00:00 UTC)
+        final_price = 87648.22
 
         for pol_key, pol_data in data.items():
             rec = self.reconstruct_policy_from_trades(
@@ -208,8 +232,17 @@ class TransactionCostAuditor:
             ),
         }
 
-        all_matched = all(r.reconciliation_verdict == "EXACT_MATCH_ZERO_DISCREPANCY" for r in policy_records.values())
-        overall_verdict = "ALL_POLICIES_RECONCILED_ZERO_DISCREPANCY" if all_matched else "DISCREPANCY_DETECTED"
+        all_exact = all(r.reconciliation_verdict == "EXACT_MATCH" for r in policy_records.values())
+        all_reconciled = all(
+            r.reconciliation_verdict in ("EXACT_MATCH", "MATCH_WITH_DOCUMENTED_ROUNDING")
+            for r in policy_records.values()
+        )
+        if all_exact:
+            overall_verdict = "ALL_POLICIES_EXACT_MATCH"
+        elif all_reconciled:
+            overall_verdict = "ALL_POLICIES_RECONCILED_WITH_DOCUMENTED_ROUNDING"
+        else:
+            overall_verdict = "DISCREPANCY_DETECTED"
 
         return PortfolioReconciliationAuditResult(
             sprint_id="CBE_SPRINT32_SCIENTIFIC_VALIDATION_DASHBOARD_V10",
