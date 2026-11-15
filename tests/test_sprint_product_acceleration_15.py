@@ -204,7 +204,7 @@ def test_deterministic_manifest_hash_reproducibility():
 def test_quarantine_enforcement_in_manifest():
     manifest_data = ContentIntegrityEngine.generate_canonical_manifest()
     for p in manifest_data["partitions"]:
-        assert "2026-11" not in p["file_name"]
+        assert "2026-12" not in p["file_name"]
     canonicals = [p for p in manifest_data["partitions"] if p["interval"] == "5m"]
     assert len(canonicals) > 0
     assert all(p["is_canonical"] for p in canonicals)

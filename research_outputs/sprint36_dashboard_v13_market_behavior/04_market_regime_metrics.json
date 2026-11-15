@@ -1,0 +1,244 @@
+{
+  "status": "success",
+  "timestamp_utc": "2026-11-15T23:17:48.275726+00:00",
+  "canonical_regimes_summary": [
+    {
+      "regime": "SIDEWAYS",
+      "description": "Yatay / Sakin piyasa dengesi, ortalama volatilite bandı",
+      "observations": 20470,
+      "frequency_pct": 47.92,
+      "duration_hours": {
+        "mean": 14.9,
+        "median": 8.0,
+        "max": 121,
+        "total_episodes": 1376
+      },
+      "annualized_volatility_pct": 44.1,
+      "return_quantiles_pct": {
+        "q10": -0.5,
+        "q25": -0.23,
+        "median": 0.0,
+        "q75": 0.23,
+        "q90": 0.5
+      }
+    },
+    {
+      "regime": "UNCERTAIN",
+      "description": "Belirsiz / Sıkışma bölgesi, düşük volatilite",
+      "observations": 13805,
+      "frequency_pct": 32.32,
+      "duration_hours": {
+        "mean": 22.9,
+        "median": 10.0,
+        "max": 529,
+        "total_episodes": 602
+      },
+      "annualized_volatility_pct": 24.51,
+      "return_quantiles_pct": {
+        "q10": -0.29,
+        "q25": -0.13,
+        "median": 0.0,
+        "q75": 0.13,
+        "q90": 0.29
+      }
+    },
+    {
+      "regime": "TRENDING_BULL",
+      "description": "Güçlü yükseliş trendi, pozitif momentum",
+      "observations": 2428,
+      "frequency_pct": 5.68,
+      "duration_hours": {
+        "mean": 5.3,
+        "median": 2.0,
+        "max": 42,
+        "total_episodes": 459
+      },
+      "annualized_volatility_pct": 59.62,
+      "return_quantiles_pct": {
+        "q10": -0.4,
+        "q25": -0.17,
+        "median": 0.12,
+        "q75": 0.46,
+        "q90": 0.98
+      }
+    },
+    {
+      "regime": "TRENDING_BEAR",
+      "description": "Güçlü düşüş trendi, negatif momentum",
+      "observations": 1907,
+      "frequency_pct": 4.46,
+      "duration_hours": {
+        "mean": 4.9,
+        "median": 2.0,
+        "max": 40,
+        "total_episodes": 392
+      },
+      "annualized_volatility_pct": 64.84,
+      "return_quantiles_pct": {
+        "q10": -1.1,
+        "q25": -0.55,
+        "median": -0.12,
+        "q75": 0.18,
+        "q90": 0.46
+      }
+    },
+    {
+      "regime": "POSSIBLE_REVERSAL",
+      "description": "Olası dönüş / Aşırı alım-satım tepki bölgesi",
+      "observations": 971,
+      "frequency_pct": 2.27,
+      "duration_hours": {
+        "mean": 2.2,
+        "median": 1.0,
+        "max": 13,
+        "total_episodes": 445
+      },
+      "annualized_volatility_pct": 68.81,
+      "return_quantiles_pct": {
+        "q10": -0.76,
+        "q25": -0.35,
+        "median": -0.01,
+        "q75": 0.33,
+        "q90": 0.83
+      }
+    },
+    {
+      "regime": "HIGH_VOLATILITY",
+      "description": "Geniş ATR, ani yönlü dalgalanmalar",
+      "observations": 3136,
+      "frequency_pct": 7.34,
+      "duration_hours": {
+        "mean": 16.4,
+        "median": 12.0,
+        "max": 90,
+        "total_episodes": 191
+      },
+      "annualized_volatility_pct": 106.34,
+      "return_quantiles_pct": {
+        "q10": -1.13,
+        "q25": -0.45,
+        "median": 0.01,
+        "q75": 0.49,
+        "q90": 1.11
+      }
+    }
+  ],
+  "annual_distributions": {
+    "status": "success",
+    "historical_range": "2022 to 2026",
+    "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "annual_distributions": {
+      "2022": {
+        "total_bars": 8760,
+        "total_hours": 8760,
+        "regime_distribution": {
+          "SIDEWAYS": 36.26,
+          "UNCERTAIN": 36.13,
+          "TRENDING_BULL": 7.16,
+          "TRENDING_BEAR": 8.46,
+          "POSSIBLE_REVERSAL": 1.87,
+          "HIGH_VOLATILITY": 10.13
+        },
+        "distribution_pct": {
+          "SIDEWAYS": 36.26,
+          "UNCERTAIN": 36.13,
+          "TRENDING_BULL": 7.16,
+          "TRENDING_BEAR": 8.46,
+          "POSSIBLE_REVERSAL": 1.87,
+          "HIGH_VOLATILITY": 10.13
+        },
+        "mean_annualized_vol_pct": 63.74
+      },
+      "2023": {
+        "total_bars": 8759,
+        "total_hours": 8759,
+        "regime_distribution": {
+          "SIDEWAYS": 42.45,
+          "UNCERTAIN": 44.21,
+          "TRENDING_BULL": 5.18,
+          "TRENDING_BEAR": 2.63,
+          "POSSIBLE_REVERSAL": 1.43,
+          "HIGH_VOLATILITY": 4.11
+        },
+        "distribution_pct": {
+          "SIDEWAYS": 42.45,
+          "UNCERTAIN": 44.21,
+          "TRENDING_BULL": 5.18,
+          "TRENDING_BEAR": 2.63,
+          "POSSIBLE_REVERSAL": 1.43,
+          "HIGH_VOLATILITY": 4.11
+        },
+        "mean_annualized_vol_pct": 42.51
+      },
+      "2024": {
+        "total_bars": 8784,
+        "total_hours": 8784,
+        "regime_distribution": {
+          "SIDEWAYS": 58.19,
+          "UNCERTAIN": 15.74,
+          "TRENDING_BULL": 8.03,
+          "TRENDING_BEAR": 4.2,
+          "POSSIBLE_REVERSAL": 3.36,
+          "HIGH_VOLATILITY": 10.48
+        },
+        "distribution_pct": {
+          "SIDEWAYS": 58.19,
+          "UNCERTAIN": 15.74,
+          "TRENDING_BULL": 8.03,
+          "TRENDING_BEAR": 4.2,
+          "POSSIBLE_REVERSAL": 3.36,
+          "HIGH_VOLATILITY": 10.48
+        },
+        "mean_annualized_vol_pct": 52.57
+      },
+      "2025": {
+        "total_bars": 8760,
+        "total_hours": 8760,
+        "regime_distribution": {
+          "SIDEWAYS": 51.42,
+          "UNCERTAIN": 32.97,
+          "TRENDING_BULL": 3.82,
+          "TRENDING_BEAR": 3.25,
+          "POSSIBLE_REVERSAL": 2.44,
+          "HIGH_VOLATILITY": 6.1
+        },
+        "distribution_pct": {
+          "SIDEWAYS": 51.42,
+          "UNCERTAIN": 32.97,
+          "TRENDING_BULL": 3.82,
+          "TRENDING_BEAR": 3.25,
+          "POSSIBLE_REVERSAL": 2.44,
+          "HIGH_VOLATILITY": 6.1
+        },
+        "mean_annualized_vol_pct": 44.44
+      },
+      "2026": {
+        "total_bars": 7654,
+        "total_hours": 7654,
+        "regime_distribution": {
+          "SIDEWAYS": 51.75,
+          "UNCERTAIN": 32.62,
+          "TRENDING_BULL": 4.01,
+          "TRENDING_BEAR": 3.68,
+          "POSSIBLE_REVERSAL": 2.26,
+          "HIGH_VOLATILITY": 5.67
+        },
+        "distribution_pct": {
+          "SIDEWAYS": 51.75,
+          "UNCERTAIN": 32.62,
+          "TRENDING_BULL": 4.01,
+          "TRENDING_BEAR": 3.68,
+          "POSSIBLE_REVERSAL": 2.26,
+          "HIGH_VOLATILITY": 5.67
+        },
+        "mean_annualized_vol_pct": 42.45
+      }
+    }
+  }
+}

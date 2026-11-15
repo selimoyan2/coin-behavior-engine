@@ -22,7 +22,8 @@ def render_product_dashboard_html() -> str:
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coin Behavior Engine | Araştırma Portalı & Piyasa İstihbaratı V12</title>
+  <title>Coin Behavior Engine | Araştırma Portalı & Piyasa İstihbaratı V13</title>
+  <meta name="application-name" content="Coin Behavior Engine | Araştırma Portalı & Piyasa İstihbaratı V12 / V13">
   <meta name="description" content="Coin Behavior Engine piyasa davranışı, araştırma sonuçları, yönetişim ve kanıt arşivi.">
   <style>
     :root {
@@ -649,7 +650,7 @@ def render_product_dashboard_html() -> str:
             <h2 style="font-size: 20px; color: #fff; margin: 4px 0;">Çok Modüllü Tarihsel Analiz, Oturum Orkestrasyonu &amp; Kanıt Bütünleşmesi</h2>
             <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
               Model: <b style="color: #4ade80;">CBE-0.7.0 (STRICTLY FROZEN)</b> &bull;
-              Kapsam: <b>2022-01 — 2026-09 (41.615 Saatlik Bar)</b> &bull;
+              Kapsam: <b class="dyn-coverage-span">2022-01 — 2026-11 (58 Tam Ay + 1 Kısmi Ay &bull; 42.746 Saatlik Bar)</b> &bull;
               Rejim &amp; Volatilite &amp; Örüntü V2 &amp; Makro &amp; İstatistiki Kanıt &bull;
               <span class="badge badge-success">ÇEVRİMDIŞI ORKESTRASYON</span>
               <span class="badge badge-warn">CANLI TİCARET: YASAKLI</span>
@@ -897,7 +898,7 @@ def render_product_dashboard_html() -> str:
             <div style="font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: 0.5px;">TARİHSEL PİYASA ARAŞTIRMA ÇALIŞMA ALANI</div>
             <h2 style="font-size: 18px; color: #fff; margin: 4px 0;">BTCUSDT Binance Spot Multi-Year Analiz Platformu</h2>
             <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
-              Kapsam: <b>2022-01 — 2026-09 (57 Kesintisiz Ay)</b> &bull;
+              Kapsam: <b class="dyn-coverage-span">2022-01 — 2026-11 (58 Tam Ay + 1 Kısmi Ay &bull; 59 Ay Toplam)</b> &bull;
               Desteklenen Aralıklar: <b>5m, 15m, 1h, 4h, 1d</b> &bull;
               Rejim Etiketleri: <b>105.120 Bar</b> &bull;
               Denetlenmiş Makro Olaylar: <b>236 Kayıt</b>
@@ -1304,26 +1305,52 @@ def render_product_dashboard_html() -> str:
         </div>
       </div>
 
-      <!-- SECTION 3: REGIME DISTRIBUTION & TRANSITIONS (PRESERVED) -->
-      <div class="section-header">
-        <div class="section-title"><span>📊</span> Tarihsel Piyasa Rejimi Dağılımı (BTCUSDT 2022-2026)</div>
+      <!-- SECTION 3: MARKET BEHAVIOR & REGIME LABORATORY V2 (SPRINT 36) -->
+      <div class="card" style="border-left: 4px solid #38bdf8; margin-top: 24px; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: #38bdf8; letter-spacing: 0.5px;">PİYASA DAVRANIŞI ARAŞTIRMA LABORATUVARI V2 (SPRINT 36)</div>
+            <h2 style="font-size: 18px; color: #fff; margin: 4px 0;">Kanonik Rejim Dinamikleri, Geçiş Olasılıkları &amp; Risk Analitiği</h2>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+              Kapsam: <b class="dyn-coverage-span">2022-01 — 2026-11 (58 Tam Ay + 1 Kısmi Ay &bull; 42.746 Saatlik Bar)</b> &bull;
+              Hesaplama: <b style="color: #4ade80;">Nedensel Noktasal (Point-in-Time, Zero Lookahead)</b>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Yıl Filtresi:</span>
+            <select id="market-behavior-year-select" class="select-dropdown" onchange="onMarketBehaviorYearChanged(this.value)" style="background: #0f172a; color: #fff; border: 1px solid #334155; padding: 6px 12px; border-radius: 4px;">
+              <option value="all" selected>Tüm Yıllar (2022-2026)</option>
+              <option value="2026">2026 (Son Yıl)</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+            </select>
+            <button class="btn btn-primary" onclick="loadBehavior()">↻ Analizi Yenile</button>
+          </div>
+        </div>
       </div>
-      <div class="grid" id="regime-grid">
+
+      <!-- Regime Distribution Grid -->
+      <div class="section-header">
+        <div class="section-title"><span>📊</span> Kanonik Piyasa Rejimi Dağılımı &amp; Süreklilik Metrikleri</div>
+      </div>
+      <div class="grid" id="regime-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
         <!-- Injected via client.js -->
       </div>
 
-      <div class="section-header">
-        <div class="section-title"><span>🔄</span> Rejimler Arası Geçiş Olasılıkları Matrisi</div>
+      <!-- Transition Matrix Heatmap -->
+      <div class="section-header" style="margin-top: 24px;">
+        <div class="section-title"><span>🔄</span> Rejimler Arası Ampirik Geçiş Olasılıkları Matrisi Heatmap (P<sub>ij</sub>)</div>
       </div>
-      <div class="table-container">
-        <table>
+      <div class="table-container" style="background: #0f172a; border-radius: 8px; border: 1px solid #1e293b; padding: 12px; overflow-x: auto;">
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+          Hücreler satırdaki mevcut rejimden sütundaki hedef rejime ampirik saatlik geçiş olasılığını (P<sub>ij</sub>) ve geçiş sayısını göstermektedir. Köşegen elemanlar rejim sürekliliğini temsil eder.
+        </div>
+        <table id="tbl-transition-matrix" style="width: 100%; border-collapse: separate; border-spacing: 4px;">
           <thead>
-            <tr>
-              <th>Mevcut Rejim</th>
-              <th>COMPRESSION (Sıkışma)</th>
-              <th>NORMAL (Denge)</th>
-              <th>EXPANSION WATCH (Genişleme)</th>
-              <th>HIGH VOLATILITY (Yüksek Volatilite)</th>
+            <tr id="transition-matrix-header">
+              <!-- Injected via client.js -->
             </tr>
           </thead>
           <tbody id="regime-transitions-tbody">
@@ -1332,27 +1359,84 @@ def render_product_dashboard_html() -> str:
         </table>
       </div>
 
-      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));">
+      <!-- Annual Regime Distributions (2022-2026) -->
+      <div class="section-header" style="margin-top: 24px;">
+        <div class="section-title"><span>📅</span> Çok Yıllık Rejim Dağılım Karşılaştırması (2022 — 2026)</div>
+      </div>
+      <div class="table-container" style="background: #0f172a; border-radius: 8px; border: 1px solid #1e293b;">
+        <table id="tbl-annual-regime-distribution" style="width: 100%;">
+          <thead>
+            <tr>
+              <th style="padding: 10px;">Yıl</th>
+              <th style="padding: 10px;">Toplam Bar</th>
+              <th style="padding: 10px; text-align: center;">SIDEWAYS %</th>
+              <th style="padding: 10px; text-align: center;">UNCERTAIN %</th>
+              <th style="padding: 10px; text-align: center;">TRENDING BULL %</th>
+              <th style="padding: 10px; text-align: center;">TRENDING BEAR %</th>
+              <th style="padding: 10px; text-align: center;">POSSIBLE REVERSAL %</th>
+              <th style="padding: 10px; text-align: center;">HIGH VOLATILITY %</th>
+            </tr>
+          </thead>
+          <tbody id="annual-regimes-tbody">
+            <!-- Injected via client.js -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Market Risk Analytics Panel -->
+      <div class="section-header" style="margin-top: 24px;">
+        <div class="section-title"><span>🛡️</span> Piyasa Risk &amp; Kuyruk Volatilitesi Analitiği (Point-in-Time)</div>
+      </div>
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;" id="risk-metrics-kpi-grid">
+        <div class="card" style="border-left: 4px solid #ef4444;">
+          <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Tarihsel Maksimum Düşüş (MDD)</div>
+          <div class="value" id="risk-mdd-val" style="font-size: 22px; color: #ef4444;">-%</div>
+          <div class="subtext" id="risk-mdd-sub">Zirve &rarr; Dip</div>
+        </div>
+        <div class="card" style="border-left: 4px solid #f59e0b;">
+          <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Aşağı Yönlü Volatilite (Downside Dev)</div>
+          <div class="value" id="risk-downside-val" style="font-size: 22px; color: #f59e0b;">-%</div>
+          <div class="subtext">Yıllıklandırılmış negatif getiri sapması</div>
+        </div>
+        <div class="card" style="border-left: 4px solid #a855f7;">
+          <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Value at Risk (1h VaR %95 / %99)</div>
+          <div class="value" id="risk-var-val" style="font-size: 20px; color: #a855f7;">-% / -%</div>
+          <div class="subtext">1 saatlik kuyruk risk eşiği</div>
+        </div>
+        <div class="card" style="border-left: 4px solid #38bdf8;">
+          <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Expected Shortfall (CVaR %95 / %99)</div>
+          <div class="value" id="risk-cvar-val" style="font-size: 20px; color: #38bdf8;">-% / -%</div>
+          <div class="subtext">VaR aşıldığındaki ortalama kayıp</div>
+        </div>
+      </div>
+
+      <!-- Regime Excursions & Carry Metrics -->
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 14px; margin-top: 14px;">
         <div class="card">
-          <h3>5 Dakikalık Getiri Volatilitesi Kuantilleri</h3>
-          <div class="subtext" style="font-size: 13px; line-height: 1.8; margin-top: 10px;">
-            Q10 (Alt Kuyruk): <code>-0.34%</code><br>
-            Q25 (Birinci Çeyrek): <code>-0.11%</code><br>
-            Medyan (Q50): <code>0.00%</code><br>
-            Q75 (Üçüncü Çeyrek): <code>+0.12%</code><br>
-            Q90 (Üst Kuyruk): <code>+0.36%</code><br>
-            Ortalama Mutlak Getiri (|r|): <code>0.18% / 5m</code>
-          </div>
+          <h3>Rejim Bazlı 24 Saatlik Maksimum Fiyat Salınımı (MFE vs MAE)</h3>
+          <div class="subtext" style="margin-bottom: 8px;">Her rejimin başlangıcından sonraki 24 saatte kaydedilen ortalama lehte (MFE) ve aleyhte (MAE) salınım.</div>
+          <table style="width: 100%; font-size: 12px;">
+            <thead>
+              <tr>
+                <th style="padding: 6px 8px;">Rejim</th>
+                <th style="padding: 6px 8px;">Ort. Lehte Salınım (MFE)</th>
+                <th style="padding: 6px 8px;">Ort. Aleyhte Salınım (MAE)</th>
+              </tr>
+            </thead>
+            <tbody id="risk-excursions-tbody">
+              <!-- Injected via client.js -->
+            </tbody>
+          </table>
         </div>
 
         <div class="card">
-          <h3>Perpetual Fonlama Oranı Karakteristikleri</h3>
+          <h3>Fonlama &amp; Carry Karakteristikleri (Tarihsel Baseline)</h3>
           <div class="subtext" style="font-size: 13px; line-height: 1.8; margin-top: 10px;">
             Ortalama 8h Fonlama: <code>+0.0108%</code> (Yıllık ~%11.82)<br>
             Medyan 8h Fonlama: <code>+0.0100%</code><br>
-            Negatif Fonlama Dönemi Oranı: <code>%14.6</code><br>
+            Negatif Fonlama Periyot Oranı: <code>%14.6</code><br>
             Kalıcılık Yarılanma Ömrü: <code>2.4 Periyot (19.2 saat)</code><br>
-            Ticari Değerlendirme: <b>İşlem komisyonları net carry getirisini sıfırlar.</b>
+            Ticari Değerlendirme: <b>Komisyon ve fonlama spreadi net carry getirisini sıfırlar.</b>
           </div>
         </div>
       </div>
@@ -1445,7 +1529,9 @@ def render_product_dashboard_html() -> str:
                   <option value="2022-06">Haziran 2022 (Düşüş Dibi)</option>
                   <option value="2023-01">Ocak 2023 (Toparlanma)</option>
                   <option value="2024-11">Kasım 2024 (Ralli)</option>
-                  <option value="2026-09">Eylül 2026 (Son Arşiv)</option>
+                  <option value="2026-11">Kasım 2026 (Kısmi Doğrulandı)</option>
+                  <option value="2026-10">Ekim 2026 (Tam Doğrulandı)</option>
+                  <option value="2026-09">Eylül 2026 (Tam Doğrulandı)</option>
                 </select>
               </div>
               <div>
@@ -1480,7 +1566,9 @@ def render_product_dashboard_html() -> str:
                   <option value="2024-03">Mart 2024 (ATH Öncesi)</option>
                   <option value="2022-11">Kasım 2022 (FTX Çöküşü)</option>
                   <option value="2025-10">Ekim 2025 (Tarihsel)</option>
-                  <option value="2026-09">Eylül 2026 (Son Arşiv)</option>
+                  <option value="2026-11">Kasım 2026 (Kısmi Doğrulandı)</option>
+                  <option value="2026-10">Ekim 2026 (Tam Doğrulandı)</option>
+                  <option value="2026-09">Eylül 2026 (Tam Doğrulandı)</option>
                 </select>
               </div>
               <div>
@@ -1996,7 +2084,7 @@ def render_product_dashboard_html() -> str:
           <table id="regime-matrix-table" style="width: 100%; border-collapse: separate; border-spacing: 4px; text-align: center; font-size: 11px;">
             <thead>
               <tr style="background: #1e293b; color: #94a3b8;">
-                <th style="padding: 10px; text-align: left; width: 140px;">BAŞLANGIÇ \ HEDEF</th>
+                <th style="padding: 10px; text-align: left; width: 140px;">BAŞLANGIÇ / HEDEF</th>
                 <th style="padding: 10px; color: #9ca3af;">SIDEWAYS</th>
                 <th style="padding: 10px; color: #f59e0b;">UNCERTAIN</th>
                 <th style="padding: 10px; color: #10b981;">TRENDING_BULL</th>
@@ -2193,10 +2281,10 @@ def render_product_dashboard_html() -> str:
             <div style="font-size: 10px; color: #10b981; margin-top: 2px;">0.041042 yazım hatası uzlaştırıldı (4h-12h)</div>
           </div>
           <div style="background: #1e293b; padding: 12px; border-radius: 6px; border-left: 3px solid #a855f7;">
-            <div style="font-size: 11px; color: #94a3b8;">Veri Kapsamı & Karantina</div>
-            <div style="font-size: 13px; font-weight: 700; color: #a855f7; margin: 4px 0;">2022-01 - 2026-09</div>
-            <div style="font-size: 11px; color: #cbd5e1;">Son Uygun Olay: 2026-09-11 12:30 UTC</div>
-            <div style="font-size: 10px; color: #ef4444; margin-top: 2px;">Ekim 2026: Karantina Altında (Engelli)</div>
+            <div style="font-size: 11px; color: #94a3b8;">Veri Kapsamı & Doğrulama</div>
+            <div style="font-size: 13px; font-weight: 700; color: #a855f7; margin: 4px 0;" class="dyn-coverage-span">2022-01 — 2026-11</div>
+            <div style="font-size: 11px; color: #cbd5e1;">Son Doğrulanan Mum: 2026-11-15 21:15 UTC</div>
+            <div style="font-size: 10px; color: #10b981; margin-top: 2px;">58 Tam Ay + 1 Kısmi Ay (Doğrulandı)</div>
           </div>
           <div style="background: #1e293b; padding: 12px; border-radius: 6px; border-left: 3px solid #e2e8f0;">
             <div style="font-size: 11px; color: #94a3b8;">Dağıtım & Git Kimliği</div>
@@ -4313,10 +4401,11 @@ def render_product_dashboard_html() -> str:
     // Module 1: Overview
     async function loadOverview() {
       try {
-        const [ovRes, buildRes, dateRes] = await Promise.all([
+        const [ovRes, buildRes, dateRes, covRes] = await Promise.all([
           fetch("/api/v1/product/overview"),
           fetch("/api/v1/product/runtime-build").catch(() => null),
           fetch("/api/v1/product/available-dates?interval=5m").catch(() => null),
+          fetch("/api/v1/product/central-coverage").catch(() => null),
         ]);
 
         if (ovRes && ovRes.ok) {
@@ -4326,6 +4415,13 @@ def render_product_dashboard_html() -> str:
             const shortRev = rev.substring(0, 8);
             document.querySelectorAll(".dyn-git-rev").forEach(el => el.innerText = rev);
             document.querySelectorAll(".dyn-git-rev-short").forEach(el => el.innerText = shortRev);
+          }
+        }
+
+        if (covRes && covRes.ok) {
+          const covData = await covRes.json();
+          if (covData.coverage_span_text) {
+            document.querySelectorAll(".dyn-coverage-span").forEach(el => el.innerHTML = covData.coverage_span_text);
           }
         }
 
@@ -4984,36 +5080,175 @@ def render_product_dashboard_html() -> str:
       });
     }
 
-    // Module 3: Market Behavior & Analog Explorer
+    // Module 3: Market Behavior & Laboratory V2 (Sprint 36)
+    let marketBehaviorYear = "all";
+
+    function onMarketBehaviorYearChanged(val) {
+      marketBehaviorYear = val;
+      loadBehavior();
+    }
+
+    function getRegimeColor(regime) {
+      switch (regime) {
+        case "SIDEWAYS": return "#64748b";
+        case "UNCERTAIN": return "#f59e0b";
+        case "TRENDING_BULL": return "#10b981";
+        case "TRENDING_BEAR": return "#ef4444";
+        case "POSSIBLE_REVERSAL": return "#f97316";
+        case "HIGH_VOLATILITY": return "#8b5cf6";
+        default: return "#38bdf8";
+      }
+    }
+
+    function renderMarketRegimeGrid(regimes) {
+      const rGrid = document.getElementById("regime-grid");
+      if (!rGrid) return;
+      if (!regimes || regimes.length === 0) {
+        rGrid.innerHTML = `<div class="card" style="grid-column: 1/-1; text-align: center; color: #94a3b8; padding: 20px;">Rejim dağılım verisi yükleniyor...</div>`;
+        return;
+      }
+      rGrid.innerHTML = regimes.map(r => `
+        <div class="card" style="border-top: 3px solid ${getRegimeColor(r.regime)}; background: #0f172a;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="margin:0; font-size:15px; color:${getRegimeColor(r.regime)}; font-weight:700;">${r.regime}</h3>
+            <span class="badge" style="background:#1e293b; color:#93c5fd; font-size:11px;">${r.observations ? r.observations.toLocaleString('en-US') + ' bar' : ''}</span>
+          </div>
+          <div class="value" style="font-size:24px; margin:8px 0; color:#fff;">%${typeof r.frequency_percent === 'number' ? r.frequency_percent.toFixed(2) : r.frequency_percent}</div>
+          <div class="subtext" style="font-size:11.5px; line-height:1.6; color:#94a3b8;">
+            <div>Süreklilik: Ort. <b>${r.mean_duration_hours || '-'} saat</b> (Medyan: ${r.median_duration_hours || '-'}s | Maks: ${r.max_duration_hours || '-'}s)</div>
+            <div>Realize Volatilite: <b>%${r.annualized_volatility_pct || '-'}</b> yıllık (Saatlik: %${r.hourly_volatility_pct || '-'})</div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderTransitionMatrixHeatmap(probabilities, counts) {
+      const thead = document.getElementById("transition-matrix-header");
+      const tbody = document.getElementById("regime-transitions-tbody");
+      if (!thead || !tbody) return;
+
+      const toRegimes = ["SIDEWAYS", "UNCERTAIN", "TRENDING_BULL", "TRENDING_BEAR", "POSSIBLE_REVERSAL", "HIGH_VOLATILITY"];
+      const fromRegimes = Object.keys(probabilities);
+      if (fromRegimes.length === 0) return;
+
+      thead.innerHTML = `
+        <th style="padding:10px 12px; background:#1e293b; color:#fff; text-align:left; font-size:12px;">Mevcut / Hedef</th>
+        ${toRegimes.map(r => `<th style="padding:10px 8px; background:#1e293b; color:${getRegimeColor(r)}; text-align:center; font-size:11px;">${r}</th>`).join("")}
+      `;
+
+      tbody.innerHTML = fromRegimes.map(fromR => {
+        const rowTargets = probabilities[fromR] || {};
+        const rowCounts = (counts && counts[fromR]) || {};
+        return `
+          <tr>
+            <td style="padding:8px 12px; font-weight:700; color:${getRegimeColor(fromR)}; background:#0b1120; border-right:1px solid #1e293b; white-space:nowrap; font-size:12px;">
+              ${fromR}
+            </td>
+            ${toRegimes.map(toR => {
+              const prob = rowTargets[toR] !== undefined ? rowTargets[toR] : 0.0;
+              const count = rowCounts[toR] || 0;
+              const pct = (prob * 100).toFixed(1);
+              const isDiagonal = fromR === toR;
+
+              let bg = "rgba(30, 41, 59, 0.4)";
+              let color = "#94a3b8";
+              if (prob >= 0.70) { bg = "rgba(16, 185, 129, 0.35)"; color = "#6ee7b7"; }
+              else if (prob >= 0.40) { bg = "rgba(56, 189, 248, 0.30)"; color = "#7dd3fc"; }
+              else if (prob >= 0.15) { bg = "rgba(245, 158, 11, 0.25)"; color = "#fde68a"; }
+              else if (prob >= 0.03) { bg = "rgba(245, 158, 11, 0.12)"; color = "#cbd5e1"; }
+
+              const border = isDiagonal ? "border: 1px solid rgba(56, 189, 248, 0.6);" : "border: 1px solid #1e293b;";
+
+              return `
+                <td style="padding:8px 6px; text-align:center; background:${bg}; color:${color}; ${border} border-radius:4px; font-size:12px;" title="${fromR} &rarr; ${toR}: ${count} geçiş (%${pct})">
+                  <div style="font-weight:700;">%${pct}</div>
+                  <div style="font-size:10px; opacity:0.8;">(${count})</div>
+                </td>
+              `;
+            }).join("")}
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderAnnualRegimeDistributions(annualDistributions) {
+      const tbody = document.getElementById("annual-regimes-tbody");
+      if (!tbody) return;
+      const years = Object.keys(annualDistributions).sort();
+      if (years.length === 0) return;
+
+      tbody.innerHTML = years.map(yr => {
+        const item = annualDistributions[yr];
+        const dist = item.regime_distribution || {};
+        return `
+          <tr style="border-bottom: 1px solid #1e293b;">
+            <td style="padding:8px 10px; font-weight:700; color:#38bdf8;">${yr}</td>
+            <td style="padding:8px 10px; color:#cbd5e1;">${(item.total_bars || 0).toLocaleString('en-US')}</td>
+            <td style="padding:8px 10px; text-align:center; color:${getRegimeColor('SIDEWAYS')}">%${dist.SIDEWAYS !== undefined ? dist.SIDEWAYS.toFixed(1) : '-'}</td>
+            <td style="padding:8px 10px; text-align:center; color:${getRegimeColor('UNCERTAIN')}">%${dist.UNCERTAIN !== undefined ? dist.UNCERTAIN.toFixed(1) : '-'}</td>
+            <td style="padding:8px 10px; text-align:center; color:${getRegimeColor('TRENDING_BULL')}">%${dist.TRENDING_BULL !== undefined ? dist.TRENDING_BULL.toFixed(1) : '-'}</td>
+            <td style="padding:8px 10px; text-align:center; color:${getRegimeColor('TRENDING_BEAR')}">%${dist.TRENDING_BEAR !== undefined ? dist.TRENDING_BEAR.toFixed(1) : '-'}</td>
+            <td style="padding:8px 10px; text-align:center; color:${getRegimeColor('POSSIBLE_REVERSAL')}">%${dist.POSSIBLE_REVERSAL !== undefined ? dist.POSSIBLE_REVERSAL.toFixed(1) : '-'}</td>
+            <td style="padding:8px 10px; text-align:center; color:${getRegimeColor('HIGH_VOLATILITY')}">%${dist.HIGH_VOLATILITY !== undefined ? dist.HIGH_VOLATILITY.toFixed(1) : '-'}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderMarketRiskAnalytics(riskData) {
+      const dd = riskData.historical_drawdown || {};
+      const downside = riskData.downside_risk || {};
+      const excursions = riskData.regime_excursions_24h_mean_pct || {};
+
+      const mddEl = document.getElementById("risk-mdd-val");
+      const mddSub = document.getElementById("risk-mdd-sub");
+      if (mddEl && dd.max_drawdown_pct !== undefined) {
+        mddEl.innerText = `%${dd.max_drawdown_pct.toFixed(2)}`;
+        if (dd.peak && dd.trough) {
+          const pDt = dd.peak.datetime ? dd.peak.datetime.substring(0, 10) : "";
+          const tDt = dd.trough.datetime ? dd.trough.datetime.substring(0, 10) : "";
+          mddSub.innerHTML = `Zirve: $${Number(dd.peak.price_usdt || 0).toLocaleString('en-US', {maximumFractionDigits: 0})} (${pDt}) &rarr; Dip: $${Number(dd.trough.price_usdt || 0).toLocaleString('en-US', {maximumFractionDigits: 0})} (${tDt})`;
+        }
+      }
+
+      const downEl = document.getElementById("risk-downside-val");
+      if (downEl && downside.annualized_downside_deviation_pct !== undefined) {
+        downEl.innerText = `%${downside.annualized_downside_deviation_pct.toFixed(2)}`;
+      }
+
+      const varEl = document.getElementById("risk-var-val");
+      if (varEl && downside.var_95_1h_pct !== undefined) {
+        varEl.innerText = `-%${downside.var_95_1h_pct.toFixed(2)} / -%${downside.var_99_1h_pct.toFixed(2)}`;
+      }
+
+      const cvarEl = document.getElementById("risk-cvar-val");
+      if (cvarEl && downside.cvar_95_expected_shortfall_pct !== undefined) {
+        cvarEl.innerText = `-%${downside.cvar_95_expected_shortfall_pct.toFixed(2)} / -%${downside.cvar_99_expected_shortfall_pct.toFixed(2)}`;
+      }
+
+      const excTbody = document.getElementById("risk-excursions-tbody");
+      if (excTbody) {
+        excTbody.innerHTML = Object.entries(excursions).map(([reg, exc]) => `
+          <tr style="border-bottom: 1px solid #1e293b;">
+            <td style="padding:6px 8px; font-weight:600; color:${getRegimeColor(reg)};">${reg}</td>
+            <td style="padding:6px 8px; color:#10b981; font-weight:700;">+${exc.mean_mfe_pct ? exc.mean_mfe_pct.toFixed(2) : '-'}%</td>
+            <td style="padding:6px 8px; color:#ef4444; font-weight:700;">-${exc.mean_mae_pct ? exc.mean_mae_pct.toFixed(2) : '-'}%</td>
+          </tr>
+        `).join("");
+      }
+    }
+
     async function loadBehavior() {
-      // 1. Load Market Regimes & Transitions
+      // 1. Load Market Regimes, Transitions, Annual Distributions & Risk Metrics
       try {
-        const res = await fetch("/api/v1/product/market-behavior");
+        const yearParam = marketBehaviorYear && marketBehaviorYear !== "all" ? `?year=${marketBehaviorYear}` : "";
+        const res = await fetch(`/api/v1/product/market-behavior${yearParam}`);
         if (res.ok) {
           const data = await res.json();
-          const rGrid = document.getElementById("regime-grid");
-          if (rGrid && data.regime_distribution) {
-            rGrid.innerHTML = data.regime_distribution.map(r => `
-              <div class="card">
-                <h3>${r.regime}</h3>
-                <div class="value">${r.frequency_percent}%</div>
-                <div class="subtext">${r.description}</div>
-              </div>
-            `).join("");
-          }
-
-          const tBody = document.getElementById("regime-transitions-tbody");
-          if (tBody && data.regime_transitions) {
-            tBody.innerHTML = Object.entries(data.regime_transitions).map(([curr, targets]) => `
-              <tr>
-                <td><strong>${curr}</strong></td>
-                <td>%${(targets.COMPRESSION * 100).toFixed(1)}</td>
-                <td>%${(targets.NORMAL * 100).toFixed(1)}</td>
-                <td>%${(targets.EXPANSION_WATCH * 100).toFixed(1)}</td>
-                <td>%${(targets.HIGH_VOLATILITY * 100).toFixed(1)}</td>
-              </tr>
-            `).join("");
-          }
+          renderMarketRegimeGrid(data.regime_distribution || []);
+          renderTransitionMatrixHeatmap(data.regime_transitions || {}, data.transition_counts || {});
+          renderAnnualRegimeDistributions(data.annual_distributions || {});
+          renderMarketRiskAnalytics(data.risk_metrics || {});
         }
       } catch (e) {
         console.warn("Market behavior fetch error:", e);

@@ -1,0 +1,128 @@
+{
+  "status": "success",
+  "timestamp_utc": "2026-11-15T23:17:52.365214+00:00",
+  "transition_data": {
+    "status": "success",
+    "filter_applied": {
+      "year": null,
+      "month": null
+    },
+    "total_transitions": 42716,
+    "canonical_regimes": [
+      "SIDEWAYS",
+      "UNCERTAIN",
+      "TRENDING_BULL",
+      "TRENDING_BEAR",
+      "POSSIBLE_REVERSAL",
+      "HIGH_VOLATILITY"
+    ],
+    "transition_counts": {
+      "SIDEWAYS": {
+        "SIDEWAYS": 19094,
+        "UNCERTAIN": 564,
+        "TRENDING_BULL": 289,
+        "TRENDING_BEAR": 250,
+        "POSSIBLE_REVERSAL": 225,
+        "HIGH_VOLATILITY": 48
+      },
+      "UNCERTAIN": {
+        "SIDEWAYS": 535,
+        "UNCERTAIN": 13203,
+        "TRENDING_BULL": 36,
+        "TRENDING_BEAR": 24,
+        "POSSIBLE_REVERSAL": 3,
+        "HIGH_VOLATILITY": 4
+      },
+      "TRENDING_BULL": {
+        "SIDEWAYS": 311,
+        "UNCERTAIN": 19,
+        "TRENDING_BULL": 1969,
+        "TRENDING_BEAR": 0,
+        "POSSIBLE_REVERSAL": 88,
+        "HIGH_VOLATILITY": 41
+      },
+      "TRENDING_BEAR": {
+        "SIDEWAYS": 230,
+        "UNCERTAIN": 16,
+        "TRENDING_BULL": 0,
+        "TRENDING_BEAR": 1515,
+        "POSSIBLE_REVERSAL": 83,
+        "HIGH_VOLATILITY": 63
+      },
+      "POSSIBLE_REVERSAL": {
+        "SIDEWAYS": 240,
+        "UNCERTAIN": 1,
+        "TRENDING_BULL": 92,
+        "TRENDING_BEAR": 77,
+        "POSSIBLE_REVERSAL": 526,
+        "HIGH_VOLATILITY": 35
+      },
+      "HIGH_VOLATILITY": {
+        "SIDEWAYS": 60,
+        "UNCERTAIN": 1,
+        "TRENDING_BULL": 42,
+        "TRENDING_BEAR": 41,
+        "POSSIBLE_REVERSAL": 46,
+        "HIGH_VOLATILITY": 2945
+      }
+    },
+    "transition_probabilities": {
+      "SIDEWAYS": {
+        "SIDEWAYS": 0.9328,
+        "UNCERTAIN": 0.0276,
+        "TRENDING_BULL": 0.0141,
+        "TRENDING_BEAR": 0.0122,
+        "POSSIBLE_REVERSAL": 0.011,
+        "HIGH_VOLATILITY": 0.0023
+      },
+      "UNCERTAIN": {
+        "SIDEWAYS": 0.0388,
+        "UNCERTAIN": 0.9564,
+        "TRENDING_BULL": 0.0026,
+        "TRENDING_BEAR": 0.0017,
+        "POSSIBLE_REVERSAL": 0.0002,
+        "HIGH_VOLATILITY": 0.0003
+      },
+      "TRENDING_BULL": {
+        "SIDEWAYS": 0.1281,
+        "UNCERTAIN": 0.0078,
+        "TRENDING_BULL": 0.811,
+        "TRENDING_BEAR": 0.0,
+        "POSSIBLE_REVERSAL": 0.0362,
+        "HIGH_VOLATILITY": 0.0169
+      },
+      "TRENDING_BEAR": {
+        "SIDEWAYS": 0.1206,
+        "UNCERTAIN": 0.0084,
+        "TRENDING_BULL": 0.0,
+        "TRENDING_BEAR": 0.7944,
+        "POSSIBLE_REVERSAL": 0.0435,
+        "HIGH_VOLATILITY": 0.033
+      },
+      "POSSIBLE_REVERSAL": {
+        "SIDEWAYS": 0.2472,
+        "UNCERTAIN": 0.001,
+        "TRENDING_BULL": 0.0947,
+        "TRENDING_BEAR": 0.0793,
+        "POSSIBLE_REVERSAL": 0.5417,
+        "HIGH_VOLATILITY": 0.036
+      },
+      "HIGH_VOLATILITY": {
+        "SIDEWAYS": 0.0191,
+        "UNCERTAIN": 0.0003,
+        "TRENDING_BULL": 0.0134,
+        "TRENDING_BEAR": 0.0131,
+        "POSSIBLE_REVERSAL": 0.0147,
+        "HIGH_VOLATILITY": 0.9394
+      }
+    },
+    "persistence_probabilities": {
+      "SIDEWAYS": 0.9328,
+      "UNCERTAIN": 0.9564,
+      "TRENDING_BULL": 0.811,
+      "TRENDING_BEAR": 0.7944,
+      "POSSIBLE_REVERSAL": 0.5417,
+      "HIGH_VOLATILITY": 0.9394
+    }
+  }
+}

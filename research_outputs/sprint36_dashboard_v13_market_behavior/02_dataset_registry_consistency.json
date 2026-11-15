@@ -1,0 +1,141 @@
+{
+  "status": "success",
+  "timestamp_utc": "2026-11-15T23:17:41.528652+00:00",
+  "central_coverage": {
+    "symbol": "BTCUSDT",
+    "earliest_month": "2022-01",
+    "latest_month": "2026-11",
+    "complete_months": 58,
+    "partial_months": 1,
+    "total_months": 59,
+    "available_months": [
+      "2022-01",
+      "2022-02",
+      "2022-03",
+      "2022-04",
+      "2022-05",
+      "2022-06",
+      "2022-07",
+      "2022-08",
+      "2022-09",
+      "2022-10",
+      "2022-11",
+      "2022-12",
+      "2023-01",
+      "2023-02",
+      "2023-03",
+      "2023-04",
+      "2023-05",
+      "2023-06",
+      "2023-07",
+      "2023-08",
+      "2023-09",
+      "2023-10",
+      "2023-11",
+      "2023-12",
+      "2024-01",
+      "2024-02",
+      "2024-03",
+      "2024-04",
+      "2024-05",
+      "2024-06",
+      "2024-07",
+      "2024-08",
+      "2024-09",
+      "2024-10",
+      "2024-11",
+      "2024-12",
+      "2025-01",
+      "2025-02",
+      "2025-03",
+      "2025-04",
+      "2025-05",
+      "2025-06",
+      "2025-07",
+      "2025-08",
+      "2025-09",
+      "2025-10",
+      "2025-11",
+      "2025-12",
+      "2026-01",
+      "2026-02",
+      "2026-03",
+      "2026-04",
+      "2026-05",
+      "2026-06",
+      "2026-07",
+      "2026-08",
+      "2026-09",
+      "2026-10",
+      "2026-11"
+    ],
+    "coverage_span_text": "2022-01 — 2026-11 (58 Tam Ay + 1 Kısmi Ay)",
+    "supported_intervals": [
+      "5m",
+      "15m",
+      "1h",
+      "4h",
+      "1d"
+    ],
+    "total_parquet_files": 295,
+    "latest_verified_candle": {
+      "timestamp_utc": "2026-11-15T21:15:00Z",
+      "open_time": 1794777300000,
+      "interval": "5m",
+      "month": "2026-11",
+      "open": 65007.31,
+      "high": 65018.01,
+      "low": 64928.44,
+      "close": 64966.01,
+      "volume": 86.97157
+    },
+    "missing_candles": {
+      "total_missing_5m": 8,
+      "total_missing_minutes": 40,
+      "affected_month": "2026-11",
+      "gaps": [
+        {
+          "from_utc": "2026-11-03 05:10 UTC",
+          "to_utc": "2026-11-03 05:30 UTC",
+          "missing_bars": 3,
+          "bars": [
+            "05:15",
+            "05:20",
+            "05:25"
+          ]
+        },
+        {
+          "from_utc": "2026-11-04 21:55 UTC",
+          "to_utc": "2026-11-04 22:05 UTC",
+          "missing_bars": 1,
+          "bars": [
+            "22:00"
+          ]
+        },
+        {
+          "from_utc": "2026-11-05 01:30 UTC",
+          "to_utc": "2026-11-05 01:40 UTC",
+          "missing_bars": 1,
+          "bars": [
+            "01:35"
+          ]
+        },
+        {
+          "from_utc": "2026-11-07 08:55 UTC",
+          "to_utc": "2026-11-07 09:15 UTC",
+          "missing_bars": 3,
+          "bars": [
+            "09:00",
+            "09:05",
+            "09:10"
+          ]
+        }
+      ],
+      "synthetic_candles_allowed": false,
+      "synthetic_candles_count": 0
+    },
+    "dataset_manifest_hash": "1ff50222c31a486b094a7f2ac9f06d38b1258527e5492acbef5faf9a73c55f14",
+    "source_provenance": "Binance Spot Multi-Year Canonical Archive (2022-01..2026-10) + Live Feed Capture (2026-11)",
+    "coverage_status": "58_COMPLETE_1_PARTIAL"
+  }
+}

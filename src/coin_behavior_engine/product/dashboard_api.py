@@ -309,6 +309,18 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.get_runtime_identity_api()
             elif sub_path in ("runtime-build", "build"):
                 return HTTPStatus.OK, cls.get_runtime_build()
+            elif sub_path in ("central-coverage", "dataset/central-coverage"):
+                return HTTPStatus.OK, cls.get_central_coverage_api()
+            elif sub_path in ("candle-quality-audit", "quality/candle-audit"):
+                return HTTPStatus.OK, cls.get_candle_quality_audit_api()
+            elif sub_path in ("market-behavior/regimes", "regimes/analytics-v2"):
+                return HTTPStatus.OK, cls.get_market_regime_analytics_api(query_params)
+            elif sub_path in ("market-behavior/transitions", "regimes/transitions-v2"):
+                return HTTPStatus.OK, cls.get_market_regime_transitions_api(query_params)
+            elif sub_path in ("market-behavior/annual", "regimes/annual-v2"):
+                return HTTPStatus.OK, cls.get_market_regime_annual_api(query_params)
+            elif sub_path in ("market-behavior/risk", "market-risk", "risk/market"):
+                return HTTPStatus.OK, cls.get_market_risk_api(query_params)
             elif sub_path in ("dataset-coverage", "coverage"):
                 return HTTPStatus.OK, cls.get_dataset_coverage(query_params)
             elif sub_path in ("dataset-quality", "quality"):
@@ -2053,7 +2065,7 @@ class ProductDashboardApiService:
             },
             "research_workspace": {
                 "dataset_name": "Binance Spot Multi-Year Archive (BTCUSDT)",
-                "coverage_period": f"{cls._get_dm_manifest().get('earliest_month', '2022-01')} — {cls._get_dm_manifest().get('latest_month', '2026-09')} ({len(cls._get_dm_manifest().get('available_months', []))} Ay Kesintisiz)",
+                "coverage_period": f"{cls._get_dm_manifest().get('earliest_month', '2022-01')} — {cls._get_dm_manifest().get('latest_month', '2026-11')} ({len(cls._get_dm_manifest().get('available_months', []))} Ay Kesintisiz)",
                 "supported_intervals": ["5m", "15m", "1h", "4h", "1d"],
                 "regimes_classified": 105120,
                 "analog_patterns_count": 306,
@@ -2063,7 +2075,7 @@ class ProductDashboardApiService:
             "datasets": {
                 "multiyear_spot_timeframes": ["1m", "5m", "15m", "1h", "4h", "1d"],
                 "spot_symbol": "BTCUSDT",
-                "historical_range": f"{cls._get_dm_manifest().get('earliest_month', '2022-01')} to {cls._get_dm_manifest().get('latest_month', '2026-09')}",
+                "historical_range": f"{cls._get_dm_manifest().get('earliest_month', '2022-01')} to {cls._get_dm_manifest().get('latest_month', '2026-11')}",
                 "dataset_manifest_version": cls._get_dm_manifest().get("manifest_version", "UNKNOWN"),
                 "latest_candle_timestamp": cls._get_dm_manifest().get("latest_candle_utc"),
                 "verified_macro_events": 40,
@@ -2262,33 +2274,108 @@ class ProductDashboardApiService:
         }
 
     # -------------------------------------------------------------------------
-    # 3. Market Behavior Explorer
+    # 3. Market Behavior Explorer & Laboratory V2 (Sprint 36)
     # -------------------------------------------------------------------------
+    @classmethod
+    def get_central_coverage_api(cls) -> Dict[str, Any]:
+        """Return canonical central coverage metadata from HistoricalDatasetRegistry."""
+        from coin_behavior_engine.product.dataset_registry import HistoricalDatasetRegistry
+        reg = HistoricalDatasetRegistry()
+        return reg.get_central_coverage()
+
+    @classmethod
+    def get_candle_quality_audit_api(cls) -> Dict[str, Any]:
+        """Return granular candle quality classification and multi-timeframe gap impact audit."""
+        from coin_behavior_engine.product.dataset_registry import HistoricalDatasetRegistry
+        reg = HistoricalDatasetRegistry()
+        return reg.audit_partial_candles_and_gaps()
+
+    @classmethod
+    def get_market_regime_analytics_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return canonical regime analytics (frequencies, durations, returns, volatilities)."""
+        from coin_behavior_engine.product.market_behavior_analytics import MarketBehaviorAnalyticsEngine
+        year = params.get("year", [None])[0]
+        year_val = int(year) if year and year.isdigit() else None
+        engine = MarketBehaviorAnalyticsEngine.get_instance()
+        regimes = engine.get_regime_analytics(year_filter=year_val)
+        return {
+            "status": "success",
+            "year_filter": year_val,
+            "regimes_count": len(regimes),
+            "regimes": regimes,
+        }
+
+    @classmethod
+    def get_market_regime_transitions_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return empirical regime transition counts and transition probability matrix P_ij."""
+        from coin_behavior_engine.product.market_behavior_analytics import MarketBehaviorAnalyticsEngine
+        year = params.get("year", [None])[0]
+        year_val = int(year) if year and year.isdigit() else None
+        engine = MarketBehaviorAnalyticsEngine.get_instance()
+        return engine.get_transition_matrix(year_filter=year_val)
+
+    @classmethod
+    def get_market_regime_annual_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return annual regime distributions across 2022-2026."""
+        from coin_behavior_engine.product.market_behavior_analytics import MarketBehaviorAnalyticsEngine
+        engine = MarketBehaviorAnalyticsEngine.get_instance()
+        return engine.get_annual_regime_distribution()
+
+    @classmethod
+    def get_market_risk_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return market risk metrics (Drawdowns, Downside Deviation, VaR, CVaR, MAE/MFE)."""
+        from coin_behavior_engine.product.market_behavior_analytics import MarketBehaviorAnalyticsEngine
+        year = params.get("year", [None])[0]
+        year_val = int(year) if year and year.isdigit() else None
+        engine = MarketBehaviorAnalyticsEngine.get_instance()
+        return engine.get_market_risk_metrics(year_filter=year_val)
+
     @classmethod
     def get_market_behavior(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
         """Return historical market behavior distributions, regime transitions, and volatility stats."""
+        from coin_behavior_engine.product.market_behavior_analytics import MarketBehaviorAnalyticsEngine
+        from coin_behavior_engine.product.dataset_registry import HistoricalDatasetRegistry
+        engine = MarketBehaviorAnalyticsEngine.get_instance()
+        reg_analytics = engine.get_regime_analytics()
+        trans = engine.get_transition_matrix()
+        risk = engine.get_market_risk_metrics()
+        annual = engine.get_annual_regime_distribution()
+        cov = HistoricalDatasetRegistry().get_central_coverage()
+
+        # Format regime distribution list for UI rendering
+        regime_dist = []
+        for r in reg_analytics:
+            regime_dist.append({
+                "regime": r["regime"],
+                "frequency_percent": r["frequency_pct"],
+                "description": f"Gözlem: {r['observations']:,} bar | Ort. Süre: {r['duration_hours']['mean']}s | Yıllık Vol: %{r['annualized_volatility_pct']}",
+                "observations": r["observations"],
+                "mean_duration_hours": r["duration_hours"]["mean"],
+                "median_duration_hours": r["duration_hours"]["median"],
+                "max_duration_hours": r["duration_hours"]["max"],
+                "annualized_volatility_pct": r["annualized_volatility_pct"],
+                "hourly_volatility_pct": round(r["annualized_volatility_pct"] / 93.59, 2),
+                "return_quantiles_hourly_pct": r.get("return_quantiles_pct", {}),
+            })
+
+        # Nominal / Legacy CBE model regime compatibility entries
+        regime_dist.extend([
+            {"regime": "NORMAL", "frequency_percent": 41.8, "description": "Sakin piyasa dengesi, ortalama volatilite"},
+            {"regime": "COMPRESSION", "frequency_percent": 27.6, "description": "Düşük volatilite bandı, sıkışma bölgesi"},
+            {"regime": "EXPANSION_WATCH", "frequency_percent": 14.2, "description": "Volatilitenin genişleme olasılığı yüksek"},
+            {"regime": "DELEVERAGING_STRESS", "frequency_percent": 0.0, "description": "Model persentil hatası nedeniyle UNKNOWN'a çekildi"},
+        ])
+
         return {
             "status": "success",
             "market_symbol": "BTCUSDT",
-            "historical_baseline": "Binance Spot 5m & 1h (2022 - 2026)",
-            "regime_distribution": [
-                {"regime": "NORMAL", "frequency_percent": 41.8, "description": "Sakin piyasa dengesi, ortalama volatilite"},
-                {"regime": "COMPRESSION", "frequency_percent": 27.6, "description": "Düşük volatilite bandı, sıkışma bölgesi"},
-                {"regime": "EXPANSION_WATCH", "frequency_percent": 14.2, "description": "Volatilitenin genişleme olasılığı yüksek"},
-                {"regime": "HIGH_VOLATILITY", "frequency_percent": 11.1, "description": "Geniş ATR, ani yönlü salınımlar"},
-                {"regime": "QUIET", "frequency_percent": 5.3, "description": "Düşük likidite, dar fiyat aralığı"},
-                {
-                    "regime": "DELEVERAGING_STRESS",
-                    "frequency_percent": 0.0,
-                    "description": "Kaldıraç tasfiyesi baskısı (Model persentil hatası nedeniyle UNKNOWN'a çekildi)",
-                },
-            ],
-            "regime_transitions": {
-                "COMPRESSION": {"COMPRESSION": 0.68, "NORMAL": 0.18, "EXPANSION_WATCH": 0.12, "HIGH_VOLATILITY": 0.02},
-                "NORMAL": {"NORMAL": 0.72, "COMPRESSION": 0.15, "EXPANSION_WATCH": 0.09, "HIGH_VOLATILITY": 0.04},
-                "EXPANSION_WATCH": {"EXPANSION_WATCH": 0.45, "HIGH_VOLATILITY": 0.35, "NORMAL": 0.15, "COMPRESSION": 0.05},
-                "HIGH_VOLATILITY": {"HIGH_VOLATILITY": 0.58, "NORMAL": 0.28, "EXPANSION_WATCH": 0.10, "COMPRESSION": 0.04},
-            },
+            "historical_baseline": f"Binance Spot 5m & 1h ({cov.get('coverage_span_text', '2022-2026')})",
+            "central_coverage": cov,
+            "regime_distribution": regime_dist,
+            "regime_transitions": trans.get("transition_probabilities", {}),
+            "transition_counts": trans.get("transition_counts", {}),
+            "annual_distributions": annual.get("annual_distributions", {}),
+            "risk_metrics": risk,
             "volatility_quantiles_5m_returns": {
                 "q10": -0.0034,
                 "q25": -0.0011,
@@ -7492,3 +7579,7 @@ class ProductDashboardApiService:
 
 
 START_TIME = time.time()
+
+
+# Sprint 36 Canonical Alias
+ProductDashboardAPI = ProductDashboardApiService

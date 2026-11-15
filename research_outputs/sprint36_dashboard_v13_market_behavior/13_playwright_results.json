@@ -1,0 +1,45 @@
+{
+  "sprint_id": "CBE_SPRINT36_DASHBOARD_V13_MARKET_BEHAVIOR_INTELLIGENCE",
+  "timestamp_utc": "2026-11-15T22:52:20.231537+00:00",
+  "base_url": "http://127.0.0.1:18099",
+  "viewports_tested": 3,
+  "viewport_results": {
+    "desktop": {
+      "width": 1440,
+      "height": 900,
+      "title": "Coin Behavior Engine | Araştırma Portalı & Piyasa İstihbaratı V13",
+      "has_v13_title": true,
+      "coverage_text": "2022-01 — 2026-11 (58 Tam Ay + 1 Kısmi Ay)",
+      "has_coverage_text": true,
+      "screenshot": "13_dashboard_v13_desktop.png"
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024,
+      "title": "Coin Behavior Engine | Araştırma Portalı & Piyasa İstihbaratı V13",
+      "has_v13_title": true,
+      "coverage_text": "2022-01 — 2026-11 (58 Tam Ay + 1 Kısmi Ay • 42.746 Saatlik Bar)",
+      "has_coverage_text": true,
+      "screenshot": "13_dashboard_v13_tablet.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "title": "Coin Behavior Engine | Araştırma Portalı & Piyasa İstihbaratı V13",
+      "has_v13_title": true,
+      "coverage_text": "2022-01 — 2026-11 (58 Tam Ay + 1 Kısmi Ay)",
+      "has_coverage_text": true,
+      "screenshot": "13_dashboard_v13_mobile.png"
+    }
+  },
+  "market_behavior_lab_v2_verified": true,
+  "trading_403_verified": true,
+  "verdict": "ACCEPTED",
+  "console_errors": [
+    "[tablet] error: Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "[tablet] error: Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "[tablet] error: Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "[tablet] error: Failed to load resource: net::ERR_CONNECTION_REFUSED"
+  ],
+  "page_errors": []
+}

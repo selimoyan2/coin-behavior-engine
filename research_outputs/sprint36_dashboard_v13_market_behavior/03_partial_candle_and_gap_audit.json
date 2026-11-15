@@ -1,0 +1,197 @@
+{
+  "status": "success",
+  "timestamp_utc": "2026-11-15T23:17:44.910948+00:00",
+  "audit": {
+    "month": "2026-11",
+    "status": "AUDITED",
+    "candle_taxonomy": {
+      "COMPLETE_VERIFIED": "Eksiksiz tamamlanmış, bütünlüğü doğrulanmış mumlar",
+      "PARTIAL_VERIFIED": "Kısmi doğrulanmış ay/zaman dilimi bütünü",
+      "INCOMPLETE_CANDLE": "Henüz tamamlanmamış, kesme zamanında devam eden sınır mumu",
+      "GAP_AFFECTED": "Canlı besleme kesintisinden dolayı alt zaman dilimi barı eksik olan üst zaman dilimi mumu",
+      "MISSING": "Hiç kaydedilmemiş, fiziksel olarak eksik piyasa mumu",
+      "INVALID": "Fizik/şema doğrulamasını geçemeyen bozuk kayıt"
+    },
+    "timeframe_quality_breakdown": {
+      "5m": {
+        "total_candles": 4280,
+        "complete_verified_count": 4280,
+        "gap_affected_count": 0,
+        "incomplete_candle_count": 0,
+        "gap_affected_candles": [],
+        "incomplete_candles": []
+      },
+      "15m": {
+        "total_candles": 1428,
+        "complete_verified_count": 1426,
+        "gap_affected_count": 1,
+        "incomplete_candle_count": 1,
+        "gap_affected_candles": [
+          {
+            "datetime": "2026-11-05 01:30:00+00:00",
+            "open_time": 1793842200000,
+            "expected_5m": 3,
+            "actual_5m": 2,
+            "missing_5m": 1,
+            "quality": "GAP_AFFECTED",
+            "reason": "Alt zaman diliminde 1 adet 5m mumu eksik"
+          }
+        ],
+        "incomplete_candles": [
+          {
+            "datetime": "2026-11-15 21:15:00+00:00",
+            "open_time": 1794777300000,
+            "expected_5m": 3,
+            "actual_5m": 1,
+            "quality": "INCOMPLETE_CANDLE",
+            "reason": "Kesme zamanında devam eden tamamlanmamış bar"
+          }
+        ]
+      },
+      "1h": {
+        "total_candles": 358,
+        "complete_verified_count": 355,
+        "gap_affected_count": 2,
+        "incomplete_candle_count": 1,
+        "gap_affected_candles": [
+          {
+            "datetime": "2026-11-03 05:00:00+00:00",
+            "open_time": 1793682000000,
+            "expected_5m": 12,
+            "actual_5m": 9,
+            "missing_5m": 3,
+            "quality": "GAP_AFFECTED",
+            "reason": "Alt zaman diliminde 3 adet 5m mumu eksik"
+          },
+          {
+            "datetime": "2026-11-05 01:00:00+00:00",
+            "open_time": 1793840400000,
+            "expected_5m": 12,
+            "actual_5m": 11,
+            "missing_5m": 1,
+            "quality": "GAP_AFFECTED",
+            "reason": "Alt zaman diliminde 1 adet 5m mumu eksik"
+          }
+        ],
+        "incomplete_candles": [
+          {
+            "datetime": "2026-11-15 21:00:00+00:00",
+            "open_time": 1794776400000,
+            "expected_5m": 12,
+            "actual_5m": 4,
+            "quality": "INCOMPLETE_CANDLE",
+            "reason": "Kesme zamanında devam eden tamamlanmamış bar"
+          }
+        ]
+      },
+      "4h": {
+        "total_candles": 90,
+        "complete_verified_count": 85,
+        "gap_affected_count": 4,
+        "incomplete_candle_count": 1,
+        "gap_affected_candles": [
+          {
+            "datetime": "2026-11-03 04:00:00+00:00",
+            "open_time": 1793678400000,
+            "expected_5m": 48,
+            "actual_5m": 45,
+            "missing_5m": 3,
+            "quality": "GAP_AFFECTED",
+            "reason": "Alt zaman diliminde 3 adet 5m mumu eksik"
+          },
+          {
+            "datetime": "2026-11-04 20:00:00+00:00",
+            "open_time": 1793822400000,
+            "expected_5m": 48,
+            "actual_5m": 47,
+            "missing_5m": 1,
+            "quality": "GAP_AFFECTED",
+            "reason": "Alt zaman diliminde 1 adet 5m mumu eksik"
+          },
+          {
+            "datetime": "2026-11-05 00:00:00+00:00",
+            "open_time": 1793836800000,
+            "expected_5m": 48,
+            "actual_5m": 47,
+            "missing_5m": 1,
+            "quality": "GAP_AFFECTED",
+            "reason": "Alt zaman diliminde 1 adet 5m mumu eksik"
+          },
+          {
+            "datetime": "2026-11-07 08:00:00+00:00",
+            "open_time": 1794038400000,
+            "expected_5m": 48,
+            "actual_5m": 45,
+            "missing_5m": 3,
+            "quality": "GAP_AFFECTED",
+            "reason": "Alt zaman diliminde 3 adet 5m mumu eksik"
+          }
+        ],
+        "incomplete_candles": [
+          {
+            "datetime": "2026-11-15 20:00:00+00:00",
+            "open_time": 1794772800000,
+            "expected_5m": 48,
+            "actual_5m": 16,
+            "quality": "INCOMPLETE_CANDLE",
+            "reason": "Kesme zamanında devam eden tamamlanmamış bar"
+          }
+        ]
+      },
+      "1d": {
+        "total_candles": 15,
+        "complete_verified_count": 10,
+        "gap_affected_count": 4,
+        "incomplete_candle_count": 1,
+        "gap_affected_candles": [
+          {
+            "datetime": "2026-11-03 00:00:00+00:00",
+            "open_time": 1793664000000,
+            "expected_5m": 288,
+            "actual_5m": 285,
+            "missing_5m": 3,
+            "quality": "GAP_AFFECTED",
+            "reason": "Alt zaman diliminde 3 adet 5m mumu eksik"
+          },
+          {
+            "datetime": "2026-11-04 00:00:00+00:00",
+            "open_time": 1793750400000,
+            "expected_5m": 288,
+            "actual_5m": 287,
+            "missing_5m": 1,
+            "quality": "GAP_AFFECTED",
+            "reason": "Alt zaman diliminde 1 adet 5m mumu eksik"
+          },
+          {
+            "datetime": "2026-11-05 00:00:00+00:00",
+            "open_time": 1793836800000,
+            "expected_5m": 288,
+            "actual_5m": 287,
+            "missing_5m": 1,
+            "quality": "GAP_AFFECTED",
+            "reason": "Alt zaman diliminde 1 adet 5m mumu eksik"
+          },
+          {
+            "datetime": "2026-11-07 00:00:00+00:00",
+            "open_time": 1794009600000,
+            "expected_5m": 288,
+            "actual_5m": 285,
+            "missing_5m": 3,
+            "quality": "GAP_AFFECTED",
+            "reason": "Alt zaman diliminde 3 adet 5m mumu eksik"
+          }
+        ],
+        "incomplete_candles": [
+          {
+            "datetime": "2026-11-15 00:00:00+00:00",
+            "open_time": 1794700800000,
+            "expected_5m": 288,
+            "actual_5m": 256,
+            "quality": "INCOMPLETE_CANDLE",
+            "reason": "Kesme zamanında devam eden tamamlanmamış bar"
+          }
+        ]
+      }
+    }
+  }
+}

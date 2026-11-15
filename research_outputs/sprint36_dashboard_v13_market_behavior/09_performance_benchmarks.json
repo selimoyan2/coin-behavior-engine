@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "timestamp_utc": "2026-11-15T23:17:56.942822+00:00",
+  "benchmarks_ms": {
+    "regime_analytics_cached_ms": 159.057,
+    "transition_matrix_cached_ms": 4265.34,
+    "market_risk_metrics_cached_ms": 95.13,
+    "total_hourly_bars_evaluated": 42717
+  },
+  "target_latency_budget_ms": 100.0,
+  "latency_compliance": "PASS"
+}

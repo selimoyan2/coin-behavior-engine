@@ -1,0 +1,21 @@
+{
+  "status": "success",
+  "timestamp_utc": "2026-11-15T23:17:56.944827+00:00",
+  "total_tests_collected": 3655,
+  "tests_passed": 3573,
+  "tests_deselected": 74,
+  "tests_skipped": 8,
+  "tests_failed": 0,
+  "targeted_regression_suites": [
+    "tests/test_sprint_product_acceleration_01_api.py",
+    "tests/test_sprint_product_acceleration_05.py",
+    "tests/test_sprint_product_acceleration_06.py",
+    "tests/test_sprint_product_acceleration_07.py",
+    "tests/test_sprint_product_acceleration_15.py",
+    "tests/test_sprint35_historical_data_and_dashboard_v12.py",
+    "tests/test_sprint36_dashboard_v13_and_market_behavior.py"
+  ],
+  "targeted_tests_passed": 108,
+  "targeted_tests_failed": 0,
+  "verdict": "FULL_REGRESSION_PASSED_ZERO_FAILURES"
+}
