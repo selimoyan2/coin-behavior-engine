@@ -58,7 +58,7 @@ Independent reconstruction of the entire portfolio equity curve, cash ledger, BT
 | Metric | 2023–2024 Discovery/In-Sample (B&H) | 2023–2024 Bounded Tail-Policy | 2025 Out-of-Sample Sealed (B&H) | 2025 Bounded Tail-Policy |
 |---|---:|---:|---:|---:|
 | **Initial Capital** | $10,000.00 | $10,000.00 | $10,000.00 | $10,000.00 |
-| **Final Portfolio Equity** | $26,003.63 | $14,533.94 | $9,271.18 | $7,969.52 |
+| **Final Portfolio Equity** | $26,003.63 | $14,533.94 | $9,270.73 | $7,969.52 |
 | **Net Cumulative Return** | +160.04% | +45.34% | -7.29% | -20.30% |
 | **Max Peak-to-Trough Drawdown** | **-32.31%** | **-28.94%** | **-34.76%** | **-25.66%** |
 | **Drawdown Truncation Delta** | — | **+3.37 pp** | — | **+9.10 pp** |

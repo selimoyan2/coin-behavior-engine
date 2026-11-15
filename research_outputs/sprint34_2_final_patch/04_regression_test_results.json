@@ -1,0 +1,48 @@
+{
+  "test_standard": "CBE-REGRESSION-ACCEPTANCE-V1.3",
+  "sprint_id": "CBE_SPRINT34_2_FINAL_PATCH_DRAWDOWN_STATISTICAL_INFERENCE_CLOSURE",
+  "generated_at_utc": "2026-11-15T21:15:00.000000+00:00",
+  "canonical_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "execution_mode": "STRICTLY_OFFLINE_RESEARCH",
+  "targeted_test_suites": [
+    {
+      "test_file": "tests/test_portfolio_drawdown_integrity_patch.py",
+      "purpose": "Verify exact Buy & Hold and policy drawdown reconstruction, reject contradictory peaks/troughs, reconcile 2025 final equity, and verify dependence-aware bootstrap inference.",
+      "tests_collected": 6,
+      "tests_passed": 6,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "duration_seconds": 0.65,
+      "status": "PASSED"
+    },
+    {
+      "test_file": "tests/test_portfolio_reconciliation_integrity.py",
+      "purpose": "Enforce ledger balance, exact fee summation down to cents, and multi-regime drawdown protection.",
+      "tests_collected": 6,
+      "tests_passed": 6,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "duration_seconds": 0.14,
+      "status": "PASSED"
+    },
+    {
+      "test_file": "tests/test_sprint34_1_scientific_reconciliation.py",
+      "purpose": "Enforce prefix invariance, frozen lockbox loading, zero middle-row sampling, and zero-synthesis partition imports.",
+      "tests_collected": 11,
+      "tests_passed": 11,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "duration_seconds": 1.85,
+      "status": "PASSED"
+    }
+  ],
+  "full_repository_regression_summary": {
+    "total_tests_collected": 3627,
+    "total_passed": 3619,
+    "total_failed": 0,
+    "total_skipped": 8,
+    "pass_rate_pct": 100.0,
+    "acceptance_verdict": "FULL_REGRESSION_PASSED"
+  }
+}

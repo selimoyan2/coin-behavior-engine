@@ -1,0 +1,49 @@
+{
+  "sprint_id": "CBE_SPRINT34_2_FINAL_PATCH_DRAWDOWN_STATISTICAL_INFERENCE_CLOSURE",
+  "standard": "CBE-DELIVERY-MANIFEST-V1.3",
+  "generated_at_utc": "2026-11-15T21:11:55.630112+00:00",
+  "canonical_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "research_mode": "STRICTLY_OFFLINE_RESEARCH",
+  "production_status": "STRICT_ZERO_TOUCH",
+  "live_trading_status": "PERMANENTLY_PROHIBITED",
+  "total_files": 6,
+  "files": [
+    {
+      "file_name": "01_portfolio_drawdown_reconciliation.json",
+      "relative_path": "research_outputs/sprint34_2_final_patch/01_portfolio_drawdown_reconciliation.json",
+      "sha256": "81056aac8e79d4f6dc880d8e7866726d5554f46061fff28eecb25327f1410037",
+      "size_bytes": 6848
+    },
+    {
+      "file_name": "02_corrected_statistical_inference.json",
+      "relative_path": "research_outputs/sprint34_2_final_patch/02_corrected_statistical_inference.json",
+      "sha256": "9c7644896b80df5c885bde9e2a907185a701c39b7d091ef61dd62195dde4702f",
+      "size_bytes": 15139
+    },
+    {
+      "file_name": "03_statistical_methodology.md",
+      "relative_path": "research_outputs/sprint34_2_final_patch/03_statistical_methodology.md",
+      "sha256": "f3fa2396dbb9c5d73e1a4cd1d62f1400e95b1aaad8fc9548f1f9f467acbb2d3c",
+      "size_bytes": 7639
+    },
+    {
+      "file_name": "04_regression_test_results.json",
+      "relative_path": "research_outputs/sprint34_2_final_patch/04_regression_test_results.json",
+      "sha256": "4b22e287cab71adfb4e273e64947f5045f119561be21fff3bb9ac6c409a54fb0",
+      "size_bytes": 1769
+    },
+    {
+      "file_name": "06_final_acceptance_report.md",
+      "relative_path": "research_outputs/sprint34_2_final_patch/06_final_acceptance_report.md",
+      "sha256": "5d82bd86f7b04d023be4331425b039f152f750490c871d327eeaffb1f47834df",
+      "size_bytes": 11359
+    },
+    {
+      "file_name": "test_portfolio_drawdown_integrity_patch.py",
+      "relative_path": "tests/test_portfolio_drawdown_integrity_patch.py",
+      "sha256": "cb0d4ca99fb13b315b759c32371ed3248f24e515426317148e032c7f989d7c24",
+      "size_bytes": 8862
+    }
+  ]
+}

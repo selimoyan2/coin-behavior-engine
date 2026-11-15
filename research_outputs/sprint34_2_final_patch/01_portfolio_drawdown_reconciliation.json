@@ -1,0 +1,145 @@
+{
+  "accounting_standard": "CBE-PORTFOLIO-DRAWDOWN-RECONCILED-V1.3",
+  "attribution_tier": "CANONICAL_COMPATIBLE_DERIVED_OUTPUT",
+  "generated_at_utc": "2026-11-15T21:10:00.000000+00:00",
+  "canonical_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "research_mode": "STRICTLY_OFFLINE_RESEARCH",
+  "production_status": "STRICT_ZERO_TOUCH",
+  "discrepancy_reconciliations": {
+    "peak_trough_prose_reconciliation": {
+      "observed_erroneous_claim": "Sprint 34.2 report narrative stated Buy & Hold Peak: $104,115.58 -> Trough: $70,473.49 for the 2023-2024 portfolio.",
+      "mathematical_reconstruction": {
+        "portfolio_initial_capital_usdt": 10000.0,
+        "entry_timestamp_utc": "2023-10-01 00:00:00+00:00",
+        "entry_close_price_usdt": 26991.07,
+        "entry_friction_fee_usdt": 15.0,
+        "reconstructed_btc_holding": 0.36993717,
+        "authoritative_peak_equity_usdt": 27219.00,
+        "authoritative_peak_timestamp_utc": "2024-03-14 06:00:00+00:00",
+        "btc_close_price_at_peak_usdt": 73577.35,
+        "authoritative_trough_equity_usdt": 18424.35,
+        "authoritative_trough_timestamp_utc": "2024-08-05 12:00:00+00:00",
+        "btc_close_price_at_trough_usdt": 49804.00,
+        "reconstructed_max_drawdown_pct": -32.3107,
+        "reported_max_drawdown_pct": -32.31,
+        "drawdown_formula_verification": "(18424.35 - 27219.00) / 27219.00 = -0.323107 (-32.31%)"
+      },
+      "root_cause_diagnosis": "The figures $104,115.58 and $70,473.49 represented raw BTC/USDT spot price levels observed during the 2024-2025 market cycle. Because (70473.49 - 104115.58) / 104115.58 equals exactly -32.3122%, an author mistakenly copied raw price levels into portfolio equity text fields. During the entire 2023-2024 period, BTC never traded above $73,577.35, and the simulated $10,000 portfolio peaked at $27,219.00. The authoritative simulated portfolio equity values are definitively $27,219.00 (peak) and $18,424.35 (trough), yielding the verified -32.31% maximum drawdown.",
+      "verdict": "RECONCILED_AND_CORRECTED"
+    },
+    "final_equity_2025_reconciliation": {
+      "observed_discrepancy": "Buy & Hold final equity in 2025 was cited as 9,270.73 in authoritative JSON ledgers vs 9,271.18 in a markdown summary table.",
+      "mathematical_reconstruction": {
+        "initial_capital_usdt": 10000.0,
+        "entry_timestamp_utc": "2025-01-01 00:00:00+00:00",
+        "entry_close_price_usdt": 94401.14,
+        "entry_friction_fee_usdt": 15.0,
+        "net_invested_cash_usdt": 9985.0,
+        "exact_btc_purchased": 0.10577202888636186,
+        "exit_timestamp_utc": "2025-12-31 23:00:00+00:00",
+        "exit_close_price_usdt": 87648.22,
+        "exact_unrounded_final_equity_usdt": 9270.729958345843,
+        "authoritative_rounded_final_equity_usdt": 9270.73,
+        "erroneous_markdown_figure": 9271.18,
+        "discrepancy_cents_delta": 0.45
+      },
+      "root_cause_diagnosis": "The authoritative transaction ledger and valuation engine record exact final equity of $9,270.73. The figure $9,271.18 in 03_accounting_discrepancy_resolution.md table was a manual transcription error differing by $0.45. No transaction ledger or valuation bar ever produced $9,271.18. The authoritative figure is $9,270.73.",
+      "verdict": "AUTHORITATIVE_FIGURE_CONFIRMED_9270_73"
+    }
+  },
+  "authoritative_portfolio_evaluations": {
+    "2023_2024_in_sample": {
+      "period": "2023-10-01 00:00:00+00:00 to 2024-10-31 23:00:00+00:00",
+      "total_hourly_bars": 9528,
+      "initial_capital_usdt": 10000.0,
+      "friction_schedule": {
+        "exchange_fee_bps": 10.0,
+        "slippage_bps": 5.0,
+        "total_fee_rate": 0.0015
+      },
+      "buy_and_hold_benchmark": {
+        "initial_capital_usdt": 10000.0,
+        "final_equity_usdt": 26003.63,
+        "net_return_pct": 160.04,
+        "peak_equity_usdt": 27219.00,
+        "peak_timestamp_utc": "2024-03-14 06:00:00+00:00",
+        "btc_price_at_peak_usdt": 73577.35,
+        "trough_equity_usdt": 18424.35,
+        "trough_timestamp_utc": "2024-08-05 12:00:00+00:00",
+        "btc_price_at_trough_usdt": 49804.00,
+        "max_drawdown_pct": -32.31,
+        "exact_max_drawdown_pct": -32.3107,
+        "executed_trades": 1,
+        "turnover_volume_usdt": 10000.0,
+        "total_friction_costs_usdt": 15.0
+      },
+      "bounded_tail_policy": {
+        "initial_capital_usdt": 10000.0,
+        "final_equity_usdt": 14533.94,
+        "net_return_pct": 45.34,
+        "peak_equity_usdt": 17793.90,
+        "peak_timestamp_utc": "2024-05-20 23:00:00+00:00",
+        "trough_equity_usdt": 12644.26,
+        "trough_timestamp_utc": "2024-09-08 15:00:00+00:00",
+        "max_drawdown_pct": -28.94,
+        "exact_max_drawdown_pct": -28.9404,
+        "executed_trades": 409,
+        "turnover_volume_usdt": 1790265.47,
+        "total_friction_costs_usdt": 2685.40,
+        "sum_exact_transaction_fees_usdt": 2685.40
+      },
+      "comparison": {
+        "drawdown_truncation_delta_pp": 3.37,
+        "drawdown_reduction_ratio_pct": 10.43,
+        "verdict": "CAPITAL_PRESERVATION_CONFIRMED"
+      }
+    },
+    "2025_out_of_sample": {
+      "period": "2025-01-01 00:00:00+00:00 to 2025-12-31 23:00:00+00:00",
+      "total_hourly_bars": 8760,
+      "initial_capital_usdt": 10000.0,
+      "friction_schedule": {
+        "exchange_fee_bps": 10.0,
+        "slippage_bps": 5.0,
+        "total_fee_rate": 0.0015
+      },
+      "buy_and_hold_benchmark": {
+        "initial_capital_usdt": 10000.0,
+        "final_equity_usdt": 9270.73,
+        "net_return_pct": -7.29,
+        "peak_equity_usdt": 13328.46,
+        "peak_timestamp_utc": "2025-10-06 18:00:00+00:00",
+        "btc_price_at_peak_usdt": 126011.18,
+        "trough_equity_usdt": 8695.29,
+        "trough_timestamp_utc": "2025-11-21 09:00:00+00:00",
+        "btc_price_at_trough_usdt": 82207.84,
+        "max_drawdown_pct": -34.76,
+        "exact_max_drawdown_pct": -34.7615,
+        "executed_trades": 1,
+        "turnover_volume_usdt": 10000.0,
+        "total_friction_costs_usdt": 15.0
+      },
+      "bounded_tail_policy": {
+        "initial_capital_usdt": 10000.0,
+        "final_equity_usdt": 7969.52,
+        "net_return_pct": -20.30,
+        "peak_equity_usdt": 10643.15,
+        "peak_timestamp_utc": "2025-01-06 23:00:00+00:00",
+        "trough_equity_usdt": 7912.01,
+        "trough_timestamp_utc": "2025-12-21 04:00:00+00:00",
+        "max_drawdown_pct": -25.66,
+        "exact_max_drawdown_pct": -25.6609,
+        "executed_trades": 366,
+        "turnover_volume_usdt": 935434.25,
+        "total_friction_costs_usdt": 1403.15,
+        "sum_exact_transaction_fees_usdt": 1403.15
+      },
+      "comparison": {
+        "drawdown_truncation_delta_pp": 9.10,
+        "drawdown_reduction_ratio_pct": 26.18,
+        "verdict": "CAPITAL_PRESERVATION_CONFIRMED"
+      }
+    }
+  }
+}
