@@ -172,7 +172,7 @@ def main():
     commit_sha = get_commit_sha()
     print(f"Current Commit SHA: {commit_sha}")
 
-    remote_script = generate_remote_script(commit_sha)
+    remote_script = generate_remote_script(commit_sha).replace("\r\n", "\n")
     script_path = Path("/tmp/deploy_staging_sprint35.sh")
 
     # Send script to remote host and execute
@@ -181,9 +181,9 @@ def main():
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        text=True,
     )
-    stdout, _ = proc.communicate(input=remote_script)
+    stdout_bytes, _ = proc.communicate(input=remote_script.replace("\r\n", "\n").encode("utf-8"))
+    stdout = stdout_bytes.decode("utf-8", errors="replace")
     print(stdout)
 
     if proc.returncode != 0:

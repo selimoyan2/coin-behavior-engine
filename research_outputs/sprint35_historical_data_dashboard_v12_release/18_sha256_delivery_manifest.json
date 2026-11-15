@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "sprint_id": "CBE_SPRINT35_HISTORICAL_DATA_COMPLETION_DASHBOARD_V12_RELEASE_READINESS",
+    "generated_at_utc": "2026-11-15T21:47:28.354336+00:00",
+    "target_branch": "research/sprint33-canonical-bridge-market-intelligence",
+    "canonical_model": "CBE-0.7.0",
+    "model_status": "STRICTLY_FROZEN",
+    "staging_verified_port": 18080,
+    "staging_container_id": "fa065f377c81",
+    "production_zero_touch_container": "3ec682ef49a4",
+    "production_zero_touch_verified": true,
+    "total_artifacts": 21
+  },
+  "artifacts": [
+    {
+      "filename": "01_source_inventory.md",
+      "sha256": "77d9fd98ac70727e5bb9bba1cd80c3683a3855876e15d7082c2c913611740ad4",
+      "size_bytes": 2898
+    },
+    {
+      "filename": "02_october_2026_recovery.json",
+      "sha256": "77670e0d90413ee3591c1ccf1f0ef3778fae23c8a509bcfdc28ef8a042921427",
+      "size_bytes": 2943
+    },
+    {
+      "filename": "03_november_2026_coverage.json",
+      "sha256": "0a9b63dca30768f006ae59c78f9fb75259871f5ea3c668a20a6c691831f4be13",
+      "size_bytes": 3189
+    },
+    {
+      "filename": "04_offline_import_workflow.md",
+      "sha256": "18a9c33e6d6dd7628e0177a8c48b76c3d4990ec6669f94d156e384675086187b",
+      "size_bytes": 2069
+    },
+    {
+      "filename": "05_importer_security_validation.json",
+      "sha256": "0e1b8c215f13609d65c5d8c2c881ff2fa2424821037f556968179908625f302d",
+      "size_bytes": 1412
+    },
+    {
+      "filename": "06_multitimeframe_integrity.json",
+      "sha256": "f9b9a99b6b1740aa4c535ec890ab269c669f2e64c8f1e689973cecc2bf885d52",
+      "size_bytes": 2008
+    },
+    {
+      "filename": "07_dataset_registry_v2.json",
+      "sha256": "2b60da29e7de2e711320430695481f6a6ddfbfbd0028be75d7bd68f282e34516",
+      "size_bytes": 48627
+    },
+    {
+      "filename": "08_dashboard_v12_acceptance.md",
+      "sha256": "720d27d5d55ff425e3c5fdc9f0013aa7dd3848eac360a8b656994f5ed1fcee1a",
+      "size_bytes": 1614
+    },
+    {
+      "filename": "09_scientific_consistency_corrections.md",
+      "sha256": "2f8955e865e6b328e70edda480886ddf59ad09d8dad639305ac59a8ee6a7caaf",
+      "size_bytes": 3782
+    },
+    {
+      "filename": "10_coolify_deployment_difference.md",
+      "sha256": "393ae5eb1c43a542f133c669c56373c9135ebe26ead402dd43f53e2a363c93f6",
+      "size_bytes": 3539
+    },
+    {
+      "filename": "11_release_candidate_manifest.json",
+      "sha256": "ae93bd86125d837c3fd1589aa24c4eeee384fcb1c7c3f81788937a487f1bff88",
+      "size_bytes": 1639
+    },
+    {
+      "filename": "12_production_release_plan.md",
+      "sha256": "3ee19b6a29605994d94be71d2a5e082a67add55fb26d06402db6dcdef49015ae",
+      "size_bytes": 2168
+    },
+    {
+      "filename": "13_targeted_test_results.json",
+      "sha256": "e79cb0eee0f768939c1953d78748051678448d2c268af4ffd38672040c62d5bd",
+      "size_bytes": 1981
+    },
+    {
+      "filename": "14_full_regression_results.json",
+      "sha256": "4045e0f276757b250cb35bebe2792736dc9ee382cac0e8a9ae3699a75b5535c5",
+      "size_bytes": 2396
+    },
+    {
+      "filename": "15_dashboard_v12_desktop.png",
+      "sha256": "fabdeec2b41527916622937a02e913f081e1eb22757bac65124d5392989b75eb",
+      "size_bytes": 111145
+    },
+    {
+      "filename": "15_dashboard_v12_mobile.png",
+      "sha256": "12b81469907fe56f461cf62eb2f8d0f74907ba3312a404056ffe170754ae37c7",
+      "size_bytes": 51593
+    },
+    {
+      "filename": "15_dashboard_v12_tablet.png",
+      "sha256": "ddb8557c990b9f7c46fc14d0eb9e083c4d6ed7f46327692df50b17a597ca1fe1",
+      "size_bytes": 101340
+    },
+    {
+      "filename": "15_playwright_results.json",
+      "sha256": "27c881313eef37626f7b8bab99bcf7bf2a845f55f81bba2f4a2df49d00bb1a65",
+      "size_bytes": 3824
+    },
+    {
+      "filename": "16_staging_deployment_evidence.json",
+      "sha256": "a407eba90d4affbe488a542fb101118e255765e2cae7cae8c08e65ebcf26e746",
+      "size_bytes": 9721
+    },
+    {
+      "filename": "17_production_zero_touch_evidence.json",
+      "sha256": "60602148757724bfc564d89ef480a9e3613db3e67ed2cbe5b6334658f6a11e19",
+      "size_bytes": 676
+    },
+    {
+      "filename": "19_final_acceptance_report.md",
+      "sha256": "804c0608d96730f793bd10209887e54de74979fd54aa9c60eb404a6e7091da1a",
+      "size_bytes": 14473
+    }
+  ]
+}
