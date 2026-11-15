@@ -13,11 +13,11 @@ This inventory documents all historical BTCUSDT data assets discovered across th
 | Source Location | Asset Name | Format | Time Range (UTC) | Raw Row Count | Provenance Classification | Integrity / Usability |
 |---|---|---|---|---:|---|---|
 | `data/binance_spot_multiyear/5m/` | 57 Monthly Parquets (2022-01 to 2026-09) | Parquet | 2022-01-01 00:00 to 2026-09-30 23:55 | 499,680 | `CANONICAL_HISTORICAL_ARCHIVE` | Complete, verified, zero gaps |
-| `data/research_lab/` | `binance_BTCUSDT_1m_recent.parquet` | Parquet | 2026-09-01 00:00 to 2026-10-18 11:33 | 68,374 | `OFFLINE_1M_ARCHIVE` | Perfect continuity in October (25,174 1m bars) |
-| Remote Staging Volume (`srv1114257`) | `raw_candles_BTCUSDT_5m.jsonl` | JSONL | 2026-10-09 23:00 to 2026-11-15 21:15 | 10,487 | `LIVE_MARKET_FEED_CAPTURE` | SHA-256 chained, verified Binance Spot feed |
+| `data/research_lab/` | `binance_BTCUSDT_1m_recent.parquet` | Parquet | 2026-09-23 11:34 to 2026-10-18 11:33 UTC | 36,000 | `OFFLINE_1M_ARCHIVE` | SHA-256: `8d2719fe8a...`, October slice yields 5,034 5m bars |
+| Remote Staging Volume (`srv1114257`) | `raw_candles_BTCUSDT_5m.jsonl` | JSONL | 2026-10-09 23:00 to 2026-11-15 21:50 UTC | 10,494 | `LIVE_MARKET_FEED_CAPTURE` | SHA-256: `8701ef9eba...`, October slice yields 3,894 5m bars |
 | `data/staging_intake/` | `BTCUSDT-5m-2026-10-intake.parquet` | Parquet | 2026-10-01 00:00 to 2026-10-01 23:55 | 288 | `QUARANTINED_CANDIDATE` | Quarantined test file (only 1 day, superseded) |
-| `data/binance_spot_multiyear/5m/` | `BTCUSDT-5m-2026-10.parquet` | Parquet | 2026-10-01 00:00 to 2026-10-31 23:55 | 8,928 | `RECONSTRUCTED_CANONICAL` | 100% complete, zero synthetic bars |
-| `data/binance_spot_multiyear/5m/` | `BTCUSDT-5m-2026-11.parquet` | Parquet | 2026-11-01 00:00 to 2026-11-15 21:15 | 4,280 | `PARTIAL_VERIFIED` | 4 minor gaps (8 bars total), cutoff 15 Nov 21:15 |
+| `data/binance_spot_multiyear/5m/` | `BTCUSDT-5m-2026-10.parquet` | Parquet | 2026-10-01 00:00 to 2026-10-31 23:55 | 8,928 | `RECONSTRUCTED_CANONICAL` | 5,034 (Src1) + 3,894 (Src2) = 8,928 bars. Zero synthetic. |
+| `data/binance_spot_multiyear/5m/` | `BTCUSDT-5m-2026-11.parquet` | Parquet | 2026-11-01 00:00 to 2026-11-15 21:15 | 4,280 | `PARTIAL_VERIFIED` | 4 minor gaps (8 bars total), cutoff 15 Nov 21:15 UTC |
 
 ---
 

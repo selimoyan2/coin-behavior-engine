@@ -1,7 +1,7 @@
 {
   "metadata": {
     "sprint_id": "CBE_SPRINT35_HISTORICAL_DATA_COMPLETION_DASHBOARD_V12_RELEASE_READINESS",
-    "generated_at_utc": "2026-11-15T21:47:28.354336+00:00",
+    "generated_at_utc": "2026-11-15T22:00:40.213716+00:00",
     "target_branch": "research/sprint33-canonical-bridge-market-intelligence",
     "canonical_model": "CBE-0.7.0",
     "model_status": "STRICTLY_FROZEN",
@@ -9,13 +9,13 @@
     "staging_container_id": "fa065f377c81",
     "production_zero_touch_container": "3ec682ef49a4",
     "production_zero_touch_verified": true,
-    "total_artifacts": 21
+    "total_artifacts": 22
   },
   "artifacts": [
     {
       "filename": "01_source_inventory.md",
-      "sha256": "77d9fd98ac70727e5bb9bba1cd80c3683a3855876e15d7082c2c913611740ad4",
-      "size_bytes": 2898
+      "sha256": "0a00f9f45282d9825bb7e0e464ac77706ad452780f2846bffee58854ca7d85ef",
+      "size_bytes": 2964
     },
     {
       "filename": "02_october_2026_recovery.json",
@@ -69,8 +69,8 @@
     },
     {
       "filename": "12_production_release_plan.md",
-      "sha256": "3ee19b6a29605994d94be71d2a5e082a67add55fb26d06402db6dcdef49015ae",
-      "size_bytes": 2168
+      "sha256": "ddda58a097427ead889d539e63e7963510a4127bd1ec155f6f0a0071075e55e1",
+      "size_bytes": 4744
     },
     {
       "filename": "13_targeted_test_results.json",
@@ -84,8 +84,8 @@
     },
     {
       "filename": "15_dashboard_v12_desktop.png",
-      "sha256": "fabdeec2b41527916622937a02e913f081e1eb22757bac65124d5392989b75eb",
-      "size_bytes": 111145
+      "sha256": "9ce453db6a23758defee85bbcfef2b4a231e3a1de928667aa08e58a322fbbac0",
+      "size_bytes": 111140
     },
     {
       "filename": "15_dashboard_v12_mobile.png",
@@ -94,12 +94,12 @@
     },
     {
       "filename": "15_dashboard_v12_tablet.png",
-      "sha256": "ddb8557c990b9f7c46fc14d0eb9e083c4d6ed7f46327692df50b17a597ca1fe1",
-      "size_bytes": 101340
+      "sha256": "d2e02272b66f26608a3b1b7cbcceb1acba9b7e6435c0406d16b40c4e6e155560",
+      "size_bytes": 101338
     },
     {
       "filename": "15_playwright_results.json",
-      "sha256": "27c881313eef37626f7b8bab99bcf7bf2a845f55f81bba2f4a2df49d00bb1a65",
+      "sha256": "d56743139b0935bcd890a6e68c84320881ae8a6a2d265e06d55898b20aa5b94a",
       "size_bytes": 3824
     },
     {
@@ -114,8 +114,13 @@
     },
     {
       "filename": "19_final_acceptance_report.md",
-      "sha256": "804c0608d96730f793bd10209887e54de74979fd54aa9c60eb404a6e7091da1a",
-      "size_bytes": 14473
+      "sha256": "a00f15298e4854a113492c4c72bdd67b18a1fb13391cec668ce44088ba12cb79",
+      "size_bytes": 8733
+    },
+    {
+      "filename": "test_server_sprint35.log",
+      "sha256": "0f1634d35410c15442d7121e9669ec7bcb282626cbcf60971e352a5d6db2c364",
+      "size_bytes": 5654
     }
   ]
 }

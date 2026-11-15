@@ -1882,13 +1882,39 @@ def render_product_dashboard_html() -> str:
       </div>
 
       <!-- Structural Gap and Anomaly Detection -->
-      <div class="card" style="border-left: 4px solid var(--green);">
-        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 8px;">
-          <span>🔍</span> Yapısal Boşluk ve Anomali Teşhis Raporu
+      <div class="card" style="border-left: 4px solid var(--blue);">
+        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+          <div><span>🔍</span> Yapısal Boşluk ve Anomali Teşhis Raporu (Ekim & Kasım 2026)</div>
+          <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);">Sentetik Üretim: KESİNLİKLE YASAK (0 Sentetik Bar)</span>
         </div>
         <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;" id="quality-gap-report">
-          Kapsam dahilindeki tüm 5m, 15m, 1h, 4h ve 1d partisyonlarında zaman damgası sürekliliği doğrulanmıştır.
-          Monoton artan zaman dizilimi, OHLC mantıksal tutarlılığı ve sıfır çelişki teyit edilmiştir.
+          <div style="margin-bottom: 10px;">
+            <strong style="color: #34d399;">Ekim 2026 (Tam Doğrulanmış):</strong> 31 Gün &bull; 8.928 5m Barı &bull; <strong>0 Boşluk (Gap)</strong> &bull; <strong>0 Mükerrer Bar</strong> &bull; %100 Sürekli & Tam Kapsam.
+          </div>
+          <div style="margin-bottom: 12px; padding: 10px; background: rgba(15, 23, 42, 0.6); border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.2);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <strong style="color: #38bdf8;">Kasım 2026 Kısmi Veri ve Boşluk Analizi:</strong>
+              <span class="badge" style="background: #f59e0b; color: #000; font-weight: bold;">8 Eksik 5m Mumu (40 dk)</span>
+            </div>
+            <div style="font-size: 12px; color: #cbd5e1; margin-bottom: 6px;">
+              Doğrulanmış Kesme Zamanı: <strong>15 Kasım 2026 21:15 UTC</strong> (Mevcut Bar: 4.280 / 8.640 - %49,54). Canlı veri beslemesindeki 4 kesinti dönemi ve eksik barlar:
+            </div>
+            <ul style="margin: 0; padding-left: 20px; font-size: 12px; color: #94a3b8;">
+              <li><code>2026-11-03 05:10 - 05:30 UTC</code>: <strong>3 Eksik Bar</strong> (05:15, 05:20, 05:25 UTC - 20 dk ağ gecikmesi)</li>
+              <li><code>2026-11-04 21:55 - 22:05 UTC</code>: <strong>1 Eksik Bar</strong> (22:00 UTC - 10 dk besleme kesintisi)</li>
+              <li><code>2026-11-05 01:30 - 01:40 UTC</code>: <strong>1 Eksik Bar</strong> (01:35 UTC - 10 dk soket yenileme)</li>
+              <li><code>2026-11-07 08:55 - 09:15 UTC</code>: <strong>3 Eksik Bar</strong> (09:00, 09:05, 09:10 UTC - 20 dk konteyner yeniden bağlanma)</li>
+            </ul>
+            <div style="font-size: 11px; color: #facc15; margin-top: 8px;">
+              ⚠️ <em>Bilimsel Doğruluk Güvencesi: Eksik mumlar hiçbir şekilde sentetik veya interpolasyon ile üretilmemiştir. Gerçek piyasa boşlukları veri setinde korunmuştur.</em>
+            </div>
+          </div>
+          <div>
+            <strong style="color: #a78bfa;">Kasım 2026 Kısmi Zaman Dilimleri Doğrulama Durumu:</strong>
+            <span style="color: #cbd5e1; font-size: 12px;">
+              5m: 4.280 bar | 15m: 1.428 bar | 1h: 358 bar | 4h: 90 bar | 1d: 15 bar (Tümü <code>PARTIAL_VERIFIED</code> olarak tescilli).
+            </span>
+          </div>
         </div>
       </div>
     </section>
