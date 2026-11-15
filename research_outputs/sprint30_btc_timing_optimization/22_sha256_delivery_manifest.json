@@ -1,0 +1,103 @@
+{
+  "sprint_id": "CBE_SPRINT30_BTC_TIMING_OPTIMIZATION",
+  "timestamp_utc": "2026-11-15T01:17:03.167481+00:00",
+  "total_deliverables": 24,
+  "files": {
+    "01_model_parity_audit_report.md": {
+      "sha256": "fd952dfe8e9ba737bd5de3e077217ee4020a08cd2dd361c1f32bef0c72c69d7a",
+      "size_bytes": 4463
+    },
+    "02_independent_accounting_reconciliation.md": {
+      "sha256": "c319c121e8a44a190563e167830567bc8ef2897b10ef3903ce89c7df1997a6d6",
+      "size_bytes": 2864
+    },
+    "03_transaction_cost_attribution_report.md": {
+      "sha256": "5e62051513f3c1f4ea21ad66309011cb21ee351919d90669796616116203a914",
+      "size_bytes": 2813
+    },
+    "04_turnover_control_specifications.md": {
+      "sha256": "79fef1f067edce66708d123d6bb2b6862bbefc2e63b568d666b53ac5190e4b1c",
+      "size_bytes": 1587
+    },
+    "05_low_turnover_policy_definitions.md": {
+      "sha256": "165a286ebd4e0e9d09f74218525a66f676b22fc1e7c9985a704e477373d4435e",
+      "size_bytes": 1560
+    },
+    "06_bounded_strategy_optimization_report.md": {
+      "sha256": "45d4ccb5ed71892215fd5f8c1d4824fe39b5c86f760003d7ff60d0f77ffdd5d3",
+      "size_bytes": 3149
+    },
+    "07_out_of_sample_stability_analysis.md": {
+      "sha256": "8dfa2166bffaa8b1bad8858f275847796847ddfb83f5f3d2f8c6abe8a82f197a",
+      "size_bytes": 1288
+    },
+    "08_regime_incremental_value_report.md": {
+      "sha256": "4081f5c8ca9a6007be70fb5e04d6470f5024f1997aef13f32f12f4f56b66d27d",
+      "size_bytes": 2793
+    },
+    "09_comparative_policy_performance_matrix.json": {
+      "sha256": "057fb4c5057f34b68c78926e0846950fbad191530341bc11d639a1d73f201641",
+      "size_bytes": 4121
+    },
+    "10_cash_and_satoshi_conservation_audit.json": {
+      "sha256": "964b4171111d26ffd29d661e4a3425a9c86db288c19adc7d9afab65d072fea78",
+      "size_bytes": 1478
+    },
+    "11_trade_rejection_audit_ledger.json": {
+      "sha256": "174def48cbbd44b1680b491a47d44f33e3ae20128103ea5f6baa01b40407efa0",
+      "size_bytes": 226718
+    },
+    "12_parameter_sensitivity_surfaces.json": {
+      "sha256": "bc0becedc812a075f8e69d3b74855a66c980456440fe5f69d6bb1ae9f19c1213",
+      "size_bytes": 8549
+    },
+    "13_walk_forward_turnover_controlled_results.json": {
+      "sha256": "b443bb65225af7bf7298436d7bd9fd1d7bd93273d5a6de87401d65f10a574ea6",
+      "size_bytes": 2240
+    },
+    "14_holdout_leakage_audit.md": {
+      "sha256": "c4d3878c161c2e5ac4236c4771316b311a1e4b2ddcc869d6b98d88fe6e369230",
+      "size_bytes": 680
+    },
+    "15_scientific_evidence_classification.md": {
+      "sha256": "00551c24f471169630da6e7b6c6a3a5df38bf04f51e3fc9e5641f9835b458e07",
+      "size_bytes": 925
+    },
+    "16_ui_acceptance_screenshots.md": {
+      "sha256": "4bf06bff47e2012782a95dc280cf309400b2c710ed44edc0819bdcbeea45dcbb",
+      "size_bytes": 2542
+    },
+    "17_playwright_test_results.json": {
+      "sha256": "fb91c29bcfef97d4323df265ad6d50de0795c59a890c26ab49d483ee9b16340e",
+      "size_bytes": 2092
+    },
+    "18_performance_benchmarks.json": {
+      "sha256": "aa09559b98672eff1ded19538a09956cec59d572b386d2f17d76b363c020b7fa",
+      "size_bytes": 1224
+    },
+    "19_full_regression_execution_log.json": {
+      "sha256": "6d62cc8a3fa1e9330b91f1bd876c2aea59d64213b32a1286c790874aeb99b718",
+      "size_bytes": 786439
+    },
+    "19_full_regression_results.json": {
+      "sha256": "a4c9a3af38f8169bbd92c729eee69630775c3f3be30bc41dddec06a3342a91ac",
+      "size_bytes": 4065
+    },
+    "20_persistence_recovery_evidence.json": {
+      "sha256": "7f6c891c11e964758313e5974a522610f449e6ad10887d29993ebd328e60311d",
+      "size_bytes": 230
+    },
+    "21_staging_deployment_evidence.json": {
+      "sha256": "5d8a46cffd7697ab8e3d475a6adfe8be0596935f178374b9599ca6e8c200520a",
+      "size_bytes": 2649
+    },
+    "22_production_zero_touch_evidence.json": {
+      "sha256": "b55e8f4fb410ac93c89de5154590796bb0c4c4ccf9067cf5e69a1ac1a974a1f5",
+      "size_bytes": 401
+    },
+    "23_final_sprint30_acceptance_report.md": {
+      "sha256": "fd590e1923008db622683df62ac0c1ddad13383be462cf3d956270e9410777c8",
+      "size_bytes": 3221
+    }
+  }
+}

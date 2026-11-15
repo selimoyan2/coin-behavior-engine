@@ -1,0 +1,20 @@
+{
+  "sprint_id": "CBE_SPRINT30_BTC_TIMING_OPTIMIZATION",
+  "deployment_target": "staging",
+  "remote_host": "srv1114257 (168.231.125.238)",
+  "staging_port": 18080,
+  "commit_sha": "69631b745b16b386e1a063b6c9f00b658dd9e7d7",
+  "image_tag": "cbe-market-intelligence:sprint30-69631b7",
+  "ready_http_status": 200,
+  "endpoints_verified": {
+    "/ready": 200,
+    "/api/v1/product/research/btc-timing/overview": 200,
+    "/api/v1/product/research/btc-timing/parity-audit": 200,
+    "/api/v1/product/research/btc-timing/accounting-reconciliation": 200,
+    "/api/v1/product/research/btc-timing/cost-attribution": 200,
+    "/api/v1/product/research/btc-timing/incremental-value": 200
+  },
+  "restart_recovery_verified": true,
+  "deployed_at_utc": "2026-11-15T01:16:54.020334+00:00",
+  "stdout": "=== PRE-FLIGHT AUDIT: CHECK PRODUCTION CONTAINER ===\n[OK] Production container fdbdba96e677 is running untouched.\nProduction Container State: Status: running, Restarts: 0\nProduction Container StartedAt: 2026-11-14T18:56:57.442994328Z\n=== 1. PREPARING BUILD CONTEXT FOR SPRINT 30 (69631b745b16b386e1a063b6c9f00b658dd9e7d7) ===\nCloned SHA: 69631b745b16b386e1a063b6c9f00b658dd9e7d7\n=== 2. INJECTING AUTHORITATIVE BUILD METADATA ===\n=== 3. DOCKER BUILD IMMUTABLE SPRINT 30 IMAGE ===\n=== 4. INSPECTING CREATED IMAGE ===\nIMAGE_ID: sha256:de5c63f7a3955e8b71b9b21fced91d2545567e5af802eb8f824c250c5bf53776\n=== 5. STOPPING OLD STAGING CONTAINER ===\nStopping old staging container 22933c855db5\n22933c855db5\n22933c855db5\n=== 6. STARTING NEW STAGING CONTAINER FROM IMMUTABLE IMAGE ===\n=== 7. WAITING FOR STAGING READINESS ON PORT 18080 ===\n[OK] Staging is READY (HTTP 200) after 10 seconds.\nNEW_STAGING_CID: bdc1a7a3ea70\n=== 8. TESTING CONTAINER RESTART RECOVERY ===\nbdc1a7a3ea70\n[OK] Staging recovered successfully after restart (HTTP 200) after 4 seconds.\n=== 9. VERIFYING BTC TIMING SPRINT 30 API ENDPOINTS ON STAGING ===\nOverview HTTP Code: 200\nParity Audit HTTP Code: 200\nAccounting Reconciliation HTTP Code: 200\nCost Attribution HTTP Code: 200\nIncremental Value HTTP Code: 200\n[OK] All Sprint 30 API endpoints verified with HTTP 200.\n=== 10. POST-DEPLOYMENT PRODUCTION ZERO-TOUCH VERIFICATION ===\n[VERIFIED] Production container fdbdba96e677 untouched: Status: running, Restarts: 0\nProduction Container StartedAt: 2026-11-14T18:56:57.442994328Z\nDEPLOYMENT_SUCCESS: NEW_STAGING_CID=bdc1a7a3ea70 IMAGE_TAG=cbe-market-intelligence:sprint30-69631b7 IMAGE_ID=sha256:de5c63f7a3955e8b71b9b21fced91d2545567e5af802eb8f824c250c5bf53776 PROD_STATUS=Status: running, Restarts: 0 PROD_STARTED=2026-11-14T18:56:57.442994328Z\n"
+}
