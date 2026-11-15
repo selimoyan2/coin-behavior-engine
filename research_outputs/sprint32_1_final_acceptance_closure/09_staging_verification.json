@@ -1,0 +1,22 @@
+{
+  "deployment_timestamp_utc": "2026-11-15T14:14:10Z",
+  "staging_container_id": "4cdc0b23fb3c",
+  "staging_port": 18080,
+  "image_tag": "cbe-market-intelligence:sprint32_1-45b773a",
+  "image_id": "sha256:1cd6be8890223ba4b6e0ac5c85f97ab5b79e5762d833ba5a92a69f96bab435e0",
+  "commit_sha": "45b773a40794a66bf0a5d665009664442fdfe6ee",
+  "endpoints_verified": [
+    "/ready",
+    "/api/v1/product/research/btc-timing/v10/overview",
+    "/api/v1/product/research/btc-timing/v10/comparison",
+    "/api/v1/product/research/btc-timing/v10/cost-intelligence"
+  ],
+  "security_boundary_verified": "HTTP 403 Forbidden on execute-live",
+  "production_check": {
+    "container_id": "33c3b568c4c1",
+    "status": "Status: running, Restarts: 0",
+    "started_at": "2026-11-15T11:04:21.579142362Z",
+    "restarts": 0,
+    "historical_continuity_verdict": "PRODUCTION_ZERO_TOUCH_CONTINUITY_NOT_PROVEN"
+  }
+}

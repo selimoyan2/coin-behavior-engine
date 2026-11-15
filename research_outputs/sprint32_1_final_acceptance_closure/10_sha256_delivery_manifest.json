@@ -1,0 +1,47 @@
+{
+  "sprint_id": "CBE_SPRINT32_1_ACCOUNTING_AND_FORENSIC_CLOSURE",
+  "timestamp_utc": "2026-11-15T14:14:14.751210+00:00",
+  "total_deliverables": 11,
+  "files": {
+    "01_accounting_root_cause.md": {
+      "sha256": "bbf1b08a430921f26f5e72d9ed357cfa836e77cd2701be801a9979f38bf4ac0e",
+      "byte_size": 6565
+    },
+    "02_corrected_portfolio_reconciliation.json": {
+      "sha256": "027e376a9ca4ba21761d19b11da043096a328753b3a63c68c93e6dcbfa4abb3f",
+      "byte_size": 7359
+    },
+    "03_initial_capital_consistency_audit.md": {
+      "sha256": "7492665c44a03708718d6042fcfcfe2681b3b4433625cf585af087c0909601c3",
+      "byte_size": 3338
+    },
+    "04_production_container_identity_forensics.md": {
+      "sha256": "d01e4a8604f675b8039b70b73846ea47fd1329ffaadd34efa7174ff0ba017104",
+      "byte_size": 4491
+    },
+    "05_production_continuity_evidence.json": {
+      "sha256": "260503b27b0bb10daa81a457163ce38b6da702c9f4499a642896f9c29ac4ef28",
+      "byte_size": 1938
+    },
+    "06_dashboard_and_report_corrections.md": {
+      "sha256": "e55d4e6361a999d3762ba9d944a053930171764727310b894fce3760a580af37",
+      "byte_size": 3687
+    },
+    "07_targeted_test_results.json": {
+      "sha256": "d43251cac1c986bd1a8c7ee45d67e2f18e3f55c9997edda9248675c49d2c38da",
+      "byte_size": 6571
+    },
+    "08_full_regression_results.json": {
+      "sha256": "e4f62214fda64bfd78c190b7b81095f2777f0f743c1159014503fad26ed9d783",
+      "byte_size": 3867
+    },
+    "09_staging_verification.json": {
+      "sha256": "af236b492ff03095bac9175c82e04bca148d68d2f05f75a6952efe126f2674df",
+      "byte_size": 912
+    },
+    "11_final_acceptance_report.md": {
+      "sha256": "b01652924314f184b601b28c881fab3d32e56885725c1445352570d1d22bef38",
+      "byte_size": 6403
+    }
+  }
+}
