@@ -103,7 +103,7 @@ docker compose up -d
 echo "=== 7. WAITING FOR STAGING READINESS ON PORT 18080 ==="
 READY=0
 for i in {{1..35}}; do
-    HTTP_CODE=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/ready || true)
+    HTTP_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/ready || true)
     if [ "$HTTP_CODE" = "200" ]; then
         echo "[OK] Staging is READY (HTTP 200) after $i seconds."
         READY=1
@@ -126,7 +126,7 @@ docker restart "$NEW_STAGING_CID"
 sleep 3
 RESTART_READY=0
 for i in {{1..25}}; do
-    HTTP_CODE=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/ready || true)
+    HTTP_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/ready || true)
     if [ "$HTTP_CODE" = "200" ]; then
         echo "[OK] Staging recovered successfully after restart (HTTP 200) after $i seconds."
         RESTART_READY=1
@@ -142,15 +142,15 @@ if [ "$RESTART_READY" != "1" ]; then
 fi
 
 echo "=== 9. VERIFYING SPRINT 32 V10 ENDPOINTS ON STAGING ==="
-READY_CODE=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/ready || true)
-V10_OVERVIEW=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/overview || true)
-V10_COMP=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/comparison || true)
-V10_STRAT=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/strategy || true)
-V10_TRADES=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/trades || true)
-V10_COST=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/cost-intelligence || true)
-V10_EVID=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/scientific-evidence || true)
-V10_TIME=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/timeline || true)
-V10_REP=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" "http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/report/download?format=markdown" || true)
+READY_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/ready || true)
+V10_OVERVIEW=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/overview || true)
+V10_COMP=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/comparison || true)
+V10_STRAT=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/strategy/POLICY_TREND_LOW_TURNOVER || true)
+V10_TRADES=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/trades/POLICY_TREND_LOW_TURNOVER || true)
+V10_COST=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/cost-intelligence || true)
+V10_EVID=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/scientific-evidence || true)
+V10_TIME=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/timeline || true)
+V10_REP=$(curl -s -o /dev/null -w "%{{http_code}}" "http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/report/download?format=markdown" || true)
 
 echo "Ready HTTP Code: $READY_CODE"
 echo "V10 Overview HTTP Code: $V10_OVERVIEW"
@@ -169,7 +169,7 @@ fi
 echo "[OK] All Sprint 32 V10 API endpoints verified with HTTP 200."
 
 echo "=== 10. VERIFYING SECURITY BOUNDARY (LIVE TRADING PROHIBITED) ==="
-LIVE_CODE=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" -X POST http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/execute-live || true)
+LIVE_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" -X POST http://127.0.0.1:18080/api/v1/product/research/btc-timing/v10/execute-live || true)
 echo "Live Trading Security Rejection HTTP Code: $LIVE_CODE"
 if [ "$LIVE_CODE" != "403" ]; then
     echo "ERROR: Live trading endpoint did not return 403 Forbidden!"
@@ -227,21 +227,22 @@ EOF
 def main():
     commit_sha = get_commit_sha()
     print(f"Sprint 32 Target Commit SHA: {commit_sha}")
-    remote_script = generate_remote_script(commit_sha)
+    remote_script = generate_remote_script(commit_sha).replace("\r\n", "\n")
 
     print(f"Executing remote deployment and zero-touch audit on {REMOTE_HOST}...")
     proc = subprocess.run(
         ["ssh", REMOTE_HOST, "bash -s"],
-        input=remote_script,
+        input=remote_script.encode("utf-8"),
         capture_output=True,
-        text=True,
     )
+    stdout = proc.stdout.decode("utf-8", errors="replace")
+    stderr = proc.stderr.decode("utf-8", errors="replace")
 
     print("--- STDOUT ---")
-    print(proc.stdout)
-    if proc.stderr:
+    print(stdout)
+    if stderr:
         print("--- STDERR ---")
-        print(proc.stderr)
+        print(stderr)
 
     if proc.returncode != 0:
         print(f"Deployment FAILED with return code {proc.returncode}")

@@ -236,11 +236,11 @@ class ProductDashboardApiService:
                 return cls.get_btc_timing_v10_overview()
             elif sub_path in ("research/btc-timing/v10/comparison", "btc-timing/v10/comparison"):
                 return cls.get_btc_timing_v10_comparison()
-            elif sub_path.startswith("research/btc-timing/v10/strategy/") or sub_path.startswith("btc-timing/v10/strategy/"):
-                pol_key = sub_path.split("/")[-1]
+            elif sub_path in ("research/btc-timing/v10/strategy", "btc-timing/v10/strategy") or sub_path.startswith("research/btc-timing/v10/strategy/") or sub_path.startswith("btc-timing/v10/strategy/"):
+                pol_key = sub_path.split("/")[-1] if "/" in sub_path and sub_path.split("/")[-1] != "strategy" else "POLICY_TREND_LOW_TURNOVER"
                 return cls.get_btc_timing_v10_strategy(pol_key)
-            elif sub_path.startswith("research/btc-timing/v10/trades/") or sub_path.startswith("btc-timing/v10/trades/"):
-                pol_key = sub_path.split("/")[-1]
+            elif sub_path in ("research/btc-timing/v10/trades", "btc-timing/v10/trades") or sub_path.startswith("research/btc-timing/v10/trades/") or sub_path.startswith("btc-timing/v10/trades/"):
+                pol_key = sub_path.split("/")[-1] if "/" in sub_path and sub_path.split("/")[-1] != "trades" else "POLICY_TREND_LOW_TURNOVER"
                 return cls.get_btc_timing_v10_trades(pol_key, query_params)
             elif sub_path in ("research/btc-timing/v10/cost-intelligence", "btc-timing/v10/cost-intelligence"):
                 return cls.get_btc_timing_v10_cost_intelligence()
