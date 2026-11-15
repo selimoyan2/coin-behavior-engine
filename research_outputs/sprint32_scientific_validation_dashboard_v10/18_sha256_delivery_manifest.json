@@ -1,0 +1,79 @@
+{
+  "sprint_id": "CBE_SPRINT32_SCIENTIFIC_VALIDATION_DASHBOARD_V10",
+  "timestamp_utc": "2026-11-15T12:19:49.467001+00:00",
+  "total_deliverables": 19,
+  "files": {
+    "01_dataset_provenance_audit.md": {
+      "sha256": "39a118076655e33820695c45f83c567260e98a1060b66e9148bd7b8cb3015c00",
+      "byte_size": 4478
+    },
+    "02_raw_to_merged_data_verification.md": {
+      "sha256": "0eed9a3a13fb9d6669e77b7c1275e7d838e800c13d7867a694f957c790e95f69",
+      "byte_size": 1962
+    },
+    "03_statistical_claims_audit.md": {
+      "sha256": "e8fa86b17ae81e2affe180ba3d538ea226c3620f068e69919490ea8388b36bf0",
+      "byte_size": 10597
+    },
+    "04_corrected_h1_h5_classifications.json": {
+      "sha256": "e72349b211d94dba069e3f96875c29847cc089829e91f99c09330c977dcffb38",
+      "byte_size": 10059
+    },
+    "05_transaction_cost_convention_audit.md": {
+      "sha256": "fabea5ad65be1956f15f78fa70f054158e2b3686241dfb5ed6596c5fc00b253a",
+      "byte_size": 2710
+    },
+    "06_independent_portfolio_reconciliation.json": {
+      "sha256": "4d73451263b7fe3619dcbf83f6d20a07187493d272085c4d0c96cb2e8aaf2cb3",
+      "byte_size": 7231
+    },
+    "07_policy_freeze_chronology_audit.md": {
+      "sha256": "665fafdc74bde19648b8ab9d549eef4bacba6b18b4094d1ff54882467a9923ac",
+      "byte_size": 3127
+    },
+    "08_scientific_evidence_classification.json": {
+      "sha256": "23df0e5099da933fc8c3c5b7b0c97b6dd88df477839e517afad99ae49c259bd9",
+      "byte_size": 2981
+    },
+    "09_dashboard_v10_desktop.png": {
+      "sha256": "3710c2729cc25548a275f2f569e86b23740974893d5df6c6f97c2fb30da00bb0",
+      "byte_size": 529796
+    },
+    "10_dashboard_v10_tablet.png": {
+      "sha256": "b19934b739ca60f17cea10b1dd46889b9e76b7f16bbc82504db032d750330e37",
+      "byte_size": 465772
+    },
+    "11_dashboard_v10_mobile.png": {
+      "sha256": "c8a5ebbabd411c05d707bb6c180d0ad226e2348fa610088a1c3ba4907cc8e565",
+      "byte_size": 424754
+    },
+    "12_dashboard_v10_acceptance_evidence.json": {
+      "sha256": "160d714b37b0d44d9106031fa20a2d6e6a931a05dfaebd496229ca0542f97d5a",
+      "byte_size": 1173
+    },
+    "13_browser_console_zero_errors.json": {
+      "sha256": "f48a091774b029cabdefc79aa39f7d7c8ef19da9868e1abd791d9f313bc3581c",
+      "byte_size": 269
+    },
+    "14_automated_test_results.json": {
+      "sha256": "8584c440d656598fdd555b5225d9ba690bea3c200c6324b8cb66e28f4f4fd680",
+      "byte_size": 1291
+    },
+    "15_full_regression_results.json": {
+      "sha256": "f83f7a4f7e5c59184d249b5d349e85bffbeb11f7455e370b2bc2911371f2ae7a",
+      "byte_size": 4136
+    },
+    "16_staging_deployment_evidence.json": {
+      "sha256": "7a60cbb3012f1656e87f502500eff16963a6cd21595899bf299dd2401a9dc18b",
+      "byte_size": 640
+    },
+    "17_production_zero_touch_evidence.json": {
+      "sha256": "b8a85d20174d95245cda810515e617e10cabf1dac6def20e01b27e32306c74c2",
+      "byte_size": 398
+    },
+    "19_final_sprint32_acceptance_report.md": {
+      "sha256": "c235c66b1ade263858c837d77ee9cdd75d38ec2e20f74c82789f8106203ead5a",
+      "byte_size": 8880
+    }
+  }
+}

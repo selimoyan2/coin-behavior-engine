@@ -249,7 +249,6 @@ def main():
         sys.exit(1)
 
     # Parse JSON output
-    stdout = proc.stdout
     if "JSON_OUTPUT_START" in stdout and "JSON_OUTPUT_END" in stdout:
         json_part = stdout.split("JSON_OUTPUT_START")[1].split("JSON_OUTPUT_END")[0].strip()
         data = json.loads(json_part)

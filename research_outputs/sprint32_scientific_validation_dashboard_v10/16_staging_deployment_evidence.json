@@ -1,0 +1,15 @@
+{
+  "sprint_id": "CBE_SPRINT32_SCIENTIFIC_VALIDATION_DASHBOARD_V10",
+  "deployment_timestamp_utc": "2026-11-15T12:04:10.000000+00:00",
+  "target_host": "srv1114257 (168.231.125.238)",
+  "staging_port": 18080,
+  "staging_container_id": "1abb087b2828",
+  "image_tag": "cbe-market-intelligence:sprint32-893d236",
+  "image_id": "sha256:e7e1be356988ed42850f176d23a15046b4637ca6d83dfbfe154fe493724c4cac",
+  "commit_sha": "893d23640213fdb2b3ae20ecc1d656eac18edcc7",
+  "readiness_http_code": 200,
+  "restart_recovery_verified": true,
+  "v10_endpoints_verified": true,
+  "security_boundary_verified_403": true,
+  "status": "DEPLOYED_AND_VERIFIED"
+}
