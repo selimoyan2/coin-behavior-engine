@@ -1,6 +1,6 @@
 {
   "sprint_id": "CBE_SPRINT30_BTC_TIMING_OPTIMIZATION",
-  "timestamp_utc": "2026-11-15T08:28:20.802007+00:00",
+  "timestamp_utc": "2026-11-15T08:32:21.378852+00:00",
   "total_deliverables": 24,
   "files": {
     "01_model_parity_audit_report.md": {
@@ -88,11 +88,11 @@
       "size_bytes": 230
     },
     "21_staging_deployment_evidence.json": {
-      "sha256": "5d8a46cffd7697ab8e3d475a6adfe8be0596935f178374b9599ca6e8c200520a",
-      "size_bytes": 2649
+      "sha256": "cbf1cfcfca64f40fde27a1d4e3bdc6607ceba7cd1e8a8b308049d1dc7630db8d",
+      "size_bytes": 2648
     },
     "22_production_zero_touch_evidence.json": {
-      "sha256": "b55e8f4fb410ac93c89de5154590796bb0c4c4ccf9067cf5e69a1ac1a974a1f5",
+      "sha256": "b5de22b1dd1980088351006404fed80cc1cd445b7b924142b18b82ce244fca23",
       "size_bytes": 401
     },
     "23_final_sprint30_acceptance_report.md": {
