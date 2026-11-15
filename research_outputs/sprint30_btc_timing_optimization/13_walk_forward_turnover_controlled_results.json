@@ -1,0 +1,64 @@
+{
+  "validation_id": "WF-VAL-POLICY_TRE-3F",
+  "policy_id": "POLICY_TREND_LOW_TURNOVER",
+  "dataset_id": "DS-BTC-1H-2023-2024",
+  "clean_holdout_available": false,
+  "holdout_status_code": "CLEAN_HOLDOUT_NOT_AVAILABLE",
+  "total_folds": 3,
+  "folds": [
+    {
+      "fold_index": 1,
+      "train_start": "2023-10-01 00:00:00+00:00",
+      "train_end": "2024-03-07 18:00:00+00:00",
+      "test_start": "2024-03-07 19:00:00+00:00",
+      "test_end": "2024-05-26 03:00:00+00:00",
+      "train_net_return_pct": 62.29,
+      "test_net_return_pct": -0.86,
+      "train_sharpe": 3.27,
+      "test_sharpe": 0.06,
+      "train_max_dd_pct": 16.75,
+      "test_max_dd_pct": 21.05,
+      "return_degradation_pct": 101.38,
+      "is_profitable_oos": false
+    },
+    {
+      "fold_index": 2,
+      "train_start": "2023-10-01 00:00:00+00:00",
+      "train_end": "2024-05-26 03:00:00+00:00",
+      "test_start": "2024-05-26 04:00:00+00:00",
+      "test_end": "2024-08-13 13:00:00+00:00",
+      "train_net_return_pct": 60.93,
+      "test_net_return_pct": -4.87,
+      "train_sharpe": 2.22,
+      "test_sharpe": -0.56,
+      "train_max_dd_pct": 21.05,
+      "test_max_dd_pct": 17.57,
+      "return_degradation_pct": 107.99,
+      "is_profitable_oos": false
+    },
+    {
+      "fold_index": 3,
+      "train_start": "2023-10-01 00:00:00+00:00",
+      "train_end": "2024-08-13 13:00:00+00:00",
+      "test_start": "2024-08-13 14:00:00+00:00",
+      "test_end": "2024-10-31 23:00:00+00:00",
+      "train_net_return_pct": 53.1,
+      "test_net_return_pct": 10.8,
+      "train_sharpe": 1.58,
+      "test_sharpe": 1.6,
+      "train_max_dd_pct": 24.57,
+      "test_max_dd_pct": 10.03,
+      "return_degradation_pct": 79.66,
+      "is_profitable_oos": true
+    }
+  ],
+  "mean_in_sample_return_pct": 58.77,
+  "mean_out_of_sample_return_pct": 1.69,
+  "mean_degradation_pct": 96.34,
+  "out_of_sample_consistency_pct": 33.33,
+  "scientific_verdict": "REJECTED_OVERFITTING",
+  "validation_notes": [
+    "Holdout partition has 42 prior recorded accesses in holdout_usage_ledger.json. Retaining EXPLORATORY status.",
+    "Severe out-of-sample degradation detected; policy is overfitted to in-sample data."
+  ]
+}

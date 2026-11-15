@@ -1,0 +1,52 @@
+{
+  "sprint_id": "CBE_SPRINT30_BTC_TIMING_OPTIMIZATION",
+  "timestamp_utc": "2026-11-15T00:28:25.975034+00:00",
+  "viewports_tested": [
+    "1440x900",
+    "768x1024",
+    "390x844"
+  ],
+  "tests": [
+    {
+      "name": "desktop_btc_timing_tab_visible",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    },
+    {
+      "name": "desktop_model_parity_and_reconciliation_rendered",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    },
+    {
+      "name": "desktop_turnover_control_rendered",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    },
+    {
+      "name": "desktop_optimization_and_incremental_value_rendered",
+      "viewport": "1440x900",
+      "status": "PASSED"
+    },
+    {
+      "name": "tablet_responsive_layout",
+      "viewport": "768x1024",
+      "status": "PASSED"
+    },
+    {
+      "name": "mobile_responsive_stacking",
+      "viewport": "390x844",
+      "status": "PASSED"
+    }
+  ],
+  "screenshots": {
+    "desktop_reconciliation_1440x900": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint30_btc_timing_optimization\\screenshots\\01_desktop_model_parity_and_reconciliation_1440x900.png",
+    "desktop_turnover_1440x900": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint30_btc_timing_optimization\\screenshots\\02_desktop_turnover_and_cost_control_1440x900.png",
+    "desktop_optimization_1440x900": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint30_btc_timing_optimization\\screenshots\\03_desktop_optimization_and_incremental_value_1440x900.png",
+    "tablet_768x1024": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint30_btc_timing_optimization\\screenshots\\04_tablet_btc_timing_turnover_768x1024.png",
+    "mobile_390x844": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint30_btc_timing_optimization\\screenshots\\05_mobile_btc_timing_reconciliation_390x844.png"
+  },
+  "console_errors": [],
+  "page_errors": [],
+  "failed_requests": [],
+  "status": "PASSED"
+}

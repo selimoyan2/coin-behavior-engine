@@ -1,0 +1,123 @@
+{
+  "POLICY_BUY_AND_HOLD": {
+    "policy_id": "POLICY_BUY_AND_HOLD",
+    "policy_name": "Buy and Hold (Passive Benchmark)",
+    "net_return_pct": 155.14,
+    "annualized_sharpe": 1.99,
+    "max_drawdown_pct": 32.3,
+    "ending_equity_usdt": 25513.69,
+    "trade_count": 1,
+    "total_transaction_costs_usdt": 17.47,
+    "turnover_pct": 99.83
+  },
+  "POLICY_USDT_CASH": {
+    "policy_id": "POLICY_USDT_CASH",
+    "policy_name": "USDT Cash (Capital Preservation Benchmark)",
+    "net_return_pct": 0.0,
+    "annualized_sharpe": null,
+    "max_drawdown_pct": 0.0,
+    "ending_equity_usdt": 10000.0,
+    "trade_count": 0,
+    "total_transaction_costs_usdt": 0,
+    "turnover_pct": 0.0
+  },
+  "POLICY_SIMPLE_TREND": {
+    "policy_id": "POLICY_SIMPLE_TREND",
+    "policy_name": "Simple Moving Average Trend Filter",
+    "net_return_pct": -23.39,
+    "annualized_sharpe": -0.51,
+    "max_drawdown_pct": 44.37,
+    "ending_equity_usdt": 7660.69,
+    "trade_count": 700,
+    "total_transaction_costs_usdt": 11228.48,
+    "turnover_pct": 64162.74
+  },
+  "POLICY_VOLATILITY_AWARE": {
+    "policy_id": "POLICY_VOLATILITY_AWARE",
+    "policy_name": "Parkinson Volatility-Scaled Allocation",
+    "net_return_pct": 16.08,
+    "annualized_sharpe": 0.6,
+    "max_drawdown_pct": 31.19,
+    "ending_equity_usdt": 11607.98,
+    "trade_count": 682,
+    "total_transaction_costs_usdt": 4847.95,
+    "turnover_pct": 27702.54
+  },
+  "POLICY_CBE_REGIME": {
+    "policy_id": "POLICY_CBE_REGIME",
+    "policy_name": "CBE-0.7.0 Frozen Regime Allocation",
+    "net_return_pct": -13.96,
+    "annualized_sharpe": -0.39,
+    "max_drawdown_pct": 30.72,
+    "ending_equity_usdt": 8603.57,
+    "trade_count": 1823,
+    "total_transaction_costs_usdt": 8636.98,
+    "turnover_pct": 49354.16
+  },
+  "POLICY_COMBINED_TREND_REGIME": {
+    "policy_id": "POLICY_COMBINED_TREND_REGIME",
+    "policy_name": "Combined Trend & CBE Regime Filter (Experimental)",
+    "net_return_pct": -37.93,
+    "annualized_sharpe": -1.76,
+    "max_drawdown_pct": 43.95,
+    "ending_equity_usdt": 6206.7,
+    "trade_count": 1561,
+    "total_transaction_costs_usdt": 8709.88,
+    "turnover_pct": 49770.72
+  },
+  "POLICY_TREND_LOW_TURNOVER": {
+    "policy_id": "POLICY_TREND_LOW_TURNOVER",
+    "policy_name": "Low-Turnover Trend with Hysteresis",
+    "net_return_pct": 69.64,
+    "annualized_sharpe": 1.58,
+    "max_drawdown_pct": 24.57,
+    "ending_equity_usdt": 16963.61,
+    "trade_count": 78,
+    "total_transaction_costs_usdt": 1983.53,
+    "turnover_pct": 11334.45
+  },
+  "POLICY_VOLATILITY_HYSTERESIS": {
+    "policy_id": "POLICY_VOLATILITY_HYSTERESIS",
+    "policy_name": "Volatility Allocation with Threshold Filter",
+    "net_return_pct": 16.08,
+    "annualized_sharpe": 0.6,
+    "max_drawdown_pct": 31.19,
+    "ending_equity_usdt": 11607.98,
+    "trade_count": 682,
+    "total_transaction_costs_usdt": 4847.95,
+    "turnover_pct": 27702.54
+  },
+  "POLICY_DERIVED_REGIME_CONFIRMATION": {
+    "policy_id": "POLICY_DERIVED_REGIME_CONFIRMATION",
+    "policy_name": "Derived Regime Multi-Bar Confirmation",
+    "net_return_pct": 24.05,
+    "annualized_sharpe": 0.88,
+    "max_drawdown_pct": 21.3,
+    "ending_equity_usdt": 12404.63,
+    "trade_count": 696,
+    "total_transaction_costs_usdt": 4531.63,
+    "turnover_pct": 25895.0
+  },
+  "POLICY_RISK_CONTROL_TREND": {
+    "policy_id": "POLICY_RISK_CONTROL_TREND",
+    "policy_name": "Risk-Controlled Trend Following",
+    "net_return_pct": -40.49,
+    "annualized_sharpe": -1.45,
+    "max_drawdown_pct": 47.12,
+    "ending_equity_usdt": 5951.4,
+    "trade_count": 852,
+    "total_transaction_costs_usdt": 9909.13,
+    "turnover_pct": 56623.6
+  },
+  "POLICY_PERIODIC_REBALANCE": {
+    "policy_id": "POLICY_PERIODIC_REBALANCE",
+    "policy_name": "Weekly Periodic Rebalance Policy",
+    "net_return_pct": 51.02,
+    "annualized_sharpe": 1.23,
+    "max_drawdown_pct": 40.82,
+    "ending_equity_usdt": 15101.74,
+    "trade_count": 29,
+    "total_transaction_costs_usdt": 830.88,
+    "turnover_pct": 4747.87
+  }
+}

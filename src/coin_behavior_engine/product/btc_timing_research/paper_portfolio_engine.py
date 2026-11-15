@@ -90,6 +90,7 @@ class PaperPortfolioEngine:
         self,
         initial_capital_usdt: float = 10000.0,
         cost_profile_id: Any = "BASE_COST",
+        turnover_controller: Optional[Any] = None,
     ):
         if initial_capital_usdt <= 0:
             raise ValueError(f"Initial capital must be positive, got {initial_capital_usdt}")
@@ -98,6 +99,7 @@ class PaperPortfolioEngine:
             self.cost_engine = cost_profile_id
         else:
             self.cost_engine = TransactionCostEngine(str(cost_profile_id))
+        self.turnover_controller = turnover_controller
 
         # Internal state
         self.usdt_balance: float = self.initial_capital_usdt
@@ -139,6 +141,20 @@ class PaperPortfolioEngine:
         # Rebalance threshold: only trade if required shift > 0.5% of equity or > $10
         if abs(diff_usdt) < max(10.0, eq * 0.005):
             return None
+
+        # Turnover controller evaluation if active
+        if self.turnover_controller is not None:
+            current_actual_alloc = self.current_allocation(execution_price)
+            approved, adj_target, rejection_reason, msg = self.turnover_controller.evaluate_rebalance_proposal(
+                timestamp_ms=decision.simulated_execution_timestamp_ms,
+                timestamp_iso=decision.simulated_execution_timestamp_iso,
+                current_actual_alloc=current_actual_alloc,
+                proposed_target_alloc=target_alloc,
+                current_equity_usdt=eq,
+                execution_price=execution_price,
+            )
+            if not approved:
+                return None
 
         trade_id = f"TRD-{uuid.uuid4().hex[:12].upper()}"
         ts_ms = decision.simulated_execution_timestamp_ms
@@ -236,6 +252,8 @@ class PaperPortfolioEngine:
             realized_pnl_usdt=round(realized_pnl, 4),
         )
         self.trades.append(trade)
+        if self.turnover_controller is not None:
+            self.turnover_controller.record_executed_trade(ts_ms, trade.gross_usdt_value)
         return trade
 
     def record_snapshot(
@@ -280,6 +298,7 @@ def run_historical_simulation(
     initial_capital_usdt: float = 10000.0,
     cost_profile_id: str = "BASE_COST",
     start_index: int = 50,  # Warm-up window
+    turnover_controller: Optional[Any] = None,
 ) -> Tuple[PaperPortfolioEngine, List[SimulatedDecisionRecord]]:
     """Run full point-in-time simulation over pre-calculated feature DataFrame.
 
@@ -291,6 +310,7 @@ def run_historical_simulation(
     engine = PaperPortfolioEngine(
         initial_capital_usdt=initial_capital_usdt,
         cost_profile_id=cost_profile_id,
+        turnover_controller=turnover_controller,
     )
     decision_engine = HistoricalDecisionEngine(policy=policy)
     decisions: List[SimulatedDecisionRecord] = []

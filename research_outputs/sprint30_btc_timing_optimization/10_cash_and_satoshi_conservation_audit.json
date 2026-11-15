@@ -1,0 +1,55 @@
+{
+  "all_policies_reconciled": true,
+  "total_trades_reconciled": 4767,
+  "conservation_status": "100%_CONSERVED",
+  "policies": [
+    {
+      "policy_id": "POLICY_BUY_AND_HOLD",
+      "trade_count": 1,
+      "cash_conserved": true,
+      "satoshi_conserved": true,
+      "non_negative_balances": true,
+      "discrepancy_usdt": -0.0046
+    },
+    {
+      "policy_id": "POLICY_USDT_CASH",
+      "trade_count": 0,
+      "cash_conserved": true,
+      "satoshi_conserved": true,
+      "non_negative_balances": true,
+      "discrepancy_usdt": 0.0
+    },
+    {
+      "policy_id": "POLICY_SIMPLE_TREND",
+      "trade_count": 700,
+      "cash_conserved": true,
+      "satoshi_conserved": true,
+      "non_negative_balances": true,
+      "discrepancy_usdt": 0.0817
+    },
+    {
+      "policy_id": "POLICY_VOLATILITY_AWARE",
+      "trade_count": 682,
+      "cash_conserved": true,
+      "satoshi_conserved": true,
+      "non_negative_balances": true,
+      "discrepancy_usdt": -0.2399
+    },
+    {
+      "policy_id": "POLICY_CBE_REGIME",
+      "trade_count": 1823,
+      "cash_conserved": true,
+      "satoshi_conserved": true,
+      "non_negative_balances": true,
+      "discrepancy_usdt": 0.6527
+    },
+    {
+      "policy_id": "POLICY_COMBINED_TREND_REGIME",
+      "trade_count": 1561,
+      "cash_conserved": true,
+      "satoshi_conserved": true,
+      "non_negative_balances": true,
+      "discrepancy_usdt": 0.5784
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "model_parity_audit_latency": {
+    "p50_ms": 0.026,
+    "p95_ms": 0.082,
+    "threshold_ms": 10.0,
+    "iterations": 20,
+    "status": "PASS"
+  },
+  "accounting_reconciliation_latency": {
+    "p50_ms": 560.216,
+    "p95_ms": 605.177,
+    "threshold_ms": 15.0,
+    "iterations": 10,
+    "status": "WARN_OVER_BUDGET"
+  },
+  "turnover_control_evaluation_latency": {
+    "p50_ms": 0.005,
+    "p95_ms": 0.019,
+    "threshold_ms": 1.0,
+    "iterations": 50,
+    "status": "PASS"
+  },
+  "cost_attribution_decomposition_latency": {
+    "p50_ms": 80.217,
+    "p95_ms": 88.28,
+    "threshold_ms": 25.0,
+    "iterations": 10,
+    "status": "WARN_OVER_BUDGET"
+  },
+  "api_parity_audit_endpoint_latency": {
+    "p50_ms": 0.189,
+    "p95_ms": 0.307,
+    "threshold_ms": 20.0,
+    "iterations": 15,
+    "status": "PASS"
+  },
+  "api_accounting_reconciliation_endpoint_latency": {
+    "p50_ms": 561.82,
+    "p95_ms": 796.46,
+    "threshold_ms": 25.0,
+    "iterations": 10,
+    "status": "WARN_OVER_BUDGET"
+  },
+  "api_cost_attribution_endpoint_latency": {
+    "p50_ms": 79.916,
+    "p95_ms": 90.487,
+    "threshold_ms": 30.0,
+    "iterations": 10,
+    "status": "WARN_OVER_BUDGET"
+  }
+}

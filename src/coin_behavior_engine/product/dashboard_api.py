@@ -217,6 +217,14 @@ class ProductDashboardApiService:
                 return cls.get_btc_timing_experiment_detail(exp_id)
             elif sub_path in ("research/btc-timing/compare", "btc-timing/compare"):
                 return cls.get_btc_timing_compare(query_params)
+            elif sub_path in ("research/btc-timing/parity-audit", "btc-timing/parity-audit"):
+                return cls.get_btc_timing_parity_audit()
+            elif sub_path in ("research/btc-timing/accounting-reconciliation", "btc-timing/accounting-reconciliation"):
+                return cls.get_btc_timing_accounting_reconciliation()
+            elif sub_path in ("research/btc-timing/cost-attribution", "btc-timing/cost-attribution"):
+                return cls.get_btc_timing_cost_attribution(query_params)
+            elif sub_path in ("research/btc-timing/incremental-value", "btc-timing/incremental-value"):
+                return cls.get_btc_timing_incremental_value()
             elif sub_path in ("", "overview"):
                 return HTTPStatus.OK, cls.get_overview()
             elif sub_path == "research-results":
@@ -1123,6 +1131,8 @@ class ProductDashboardApiService:
                 return cls.post_btc_timing_simulate(body)
             elif sub_path in ("research/btc-timing/walk-forward", "btc-timing/walk-forward"):
                 return cls.post_btc_timing_walk_forward(body)
+            elif sub_path in ("research/btc-timing/optimize", "btc-timing/optimize"):
+                return cls.post_btc_timing_optimize(body)
             elif sub_path in ("session/login", "auth/login"):
                 return cls.post_session_login_api(body, headers)
             elif sub_path in ("session/logout", "auth/logout"):
@@ -7073,6 +7083,116 @@ class ProductDashboardApiService:
                 "error_code": "WALK_FORWARD_FAILED",
                 "message": str(e),
             }
+
+    @classmethod
+    def get_btc_timing_parity_audit(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Returns the canonical CBE-0.7.0 vs research adapter parity audit."""
+        from coin_behavior_engine.product.btc_timing_research.model_parity_auditor import (
+            ModelParityAuditor,
+        )
+        report = ModelParityAuditor.audit_model_parity()
+        return HTTPStatus.OK, {
+            "status": "success",
+            "report": report.to_dict(),
+        }
+
+    @classmethod
+    def get_btc_timing_accounting_reconciliation(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Returns independent mathematical reconciliation across all Sprint 29 experiments."""
+        from coin_behavior_engine.product.btc_timing_research.accounting_reconciler import (
+            IndependentAccountingReconciler,
+            DISCREPANCY_EXPLANATION,
+        )
+        reconciler = IndependentAccountingReconciler()
+        summary = reconciler.reconcile_all_sprint29_experiments()
+        return HTTPStatus.OK, {
+            "status": "success",
+            "all_policies_reconciled": summary.all_policies_reconciled,
+            "total_trades_reconciled": summary.total_trades_reconciled,
+            "discrepancy_explanation": DISCREPANCY_EXPLANATION,
+            "policies": [asdict(p) for p in summary.policies],
+        }
+
+    @classmethod
+    def get_btc_timing_cost_attribution(cls, query_params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Returns transaction cost decomposition and root cause analysis."""
+        from coin_behavior_engine.product.btc_timing_research.cost_attribution_engine import (
+            TransactionCostAttributionEngine,
+        )
+        policy_id = query_params.get("policy_id", ["POLICY_SIMPLE_TREND"])[0]
+        report = TransactionCostAttributionEngine.decompose_experiment(policy_id)
+        return HTTPStatus.OK, {
+            "status": "success",
+            "attribution": report.to_dict(),
+        }
+
+    @classmethod
+    def get_btc_timing_incremental_value(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Returns hierarchical incremental value assessment report."""
+        from coin_behavior_engine.product.btc_timing_research.timing_research_coordinator import (
+            BTCTimingResearchCoordinator,
+        )
+        from coin_behavior_engine.product.btc_timing_research.incremental_value_engine import (
+            IncrementalValueTester,
+        )
+        coord = BTCTimingResearchCoordinator.get_instance()
+        features = coord.get_feature_table("DS-BTC-1H-2023-2024")
+        tester = IncrementalValueTester()
+        report = tester.evaluate_hierarchy(features)
+        return HTTPStatus.OK, {
+            "status": "success",
+            "report": report.to_dict(),
+        }
+
+    @classmethod
+    def post_btc_timing_optimize(cls, body: Dict[str, Any]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Execute bounded parameter optimization."""
+        from coin_behavior_engine.product.btc_timing_research.timing_research_coordinator import (
+            BTCTimingResearchCoordinator,
+        )
+        from coin_behavior_engine.product.btc_timing_research.strategy_optimizer import (
+            BoundedStrategyOptimizer,
+        )
+        from coin_behavior_engine.product.btc_timing_research.turnover_control_engine import (
+            TurnoverControlConfig,
+        )
+        coord = BTCTimingResearchCoordinator.get_instance()
+        policy_id = body.get("policy_id", "POLICY_TREND_LOW_TURNOVER")
+        dataset_id = body.get("dataset_id", "DS-BTC-1H-2023-2024")
+        param_grid = body.get("param_grid")
+        split_date = body.get("split_date", "2024-04-01T00:00:00Z")
+
+        tc_cfg = None
+        if "turnover_control" in body:
+            tc_dict = body["turnover_control"]
+            tc_cfg = TurnoverControlConfig(
+                min_holding_period_hours=tc_dict.get("min_holding_period_hours", 0),
+                min_rebalance_threshold_pct=tc_dict.get("min_rebalance_threshold_pct", 0.0),
+                min_trade_notional_usdt=tc_dict.get("min_trade_notional_usdt", 10.0),
+            )
+
+        try:
+            features = coord.get_feature_table(dataset_id)
+            optimizer = BoundedStrategyOptimizer()
+            report = optimizer.optimize_policy(
+                policy_id=policy_id,
+                df_features=features,
+                param_grid=param_grid,
+                split_date=split_date,
+                turnover_config=tc_cfg,
+            )
+            return HTTPStatus.OK, {
+                "status": "success",
+                "report": report.to_dict(),
+            }
+        except Exception as e:
+            logger.error(f"Optimization error: {e}")
+            return HTTPStatus.INTERNAL_SERVER_ERROR, {
+                "status": "error",
+                "error_code": "OPTIMIZATION_FAILED",
+                "message": str(e),
+            }
+
 
 
 START_TIME = time.time()

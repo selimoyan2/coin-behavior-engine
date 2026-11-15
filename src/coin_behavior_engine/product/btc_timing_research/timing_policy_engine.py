@@ -283,11 +283,40 @@ POLICY_REGISTRY: Dict[str, type] = {
     "POLICY_VOLATILITY_AWARE": VolatilityAwarePolicy,
     "POLICY_CBE_REGIME": CBERegimePolicy,
     "POLICY_COMBINED_TREND_REGIME": CombinedTrendRegimePolicy,
+    "POLICY_DERIVED_RESEARCH_REGIME": CBERegimePolicy,  # Accurate alias grounded in parity audit
 }
+
+
+def _ensure_experimental_policies_registered() -> None:
+    """Lazily registers experimental low-turnover policies to avoid circular import."""
+    if "POLICY_TREND_LOW_TURNOVER" in POLICY_REGISTRY:
+        return
+    try:
+        from coin_behavior_engine.product.btc_timing_research.experimental_policies import (
+            TrendLowTurnoverPolicy,
+            VolatilityHysteresisPolicy,
+            DerivedRegimeConfirmationPolicy,
+            RiskControlTrendPolicy,
+            PeriodicRebalancePolicy,
+        )
+        POLICY_REGISTRY.update({
+            "POLICY_TREND_LOW_TURNOVER": TrendLowTurnoverPolicy,
+            "POLICY_VOLATILITY_HYSTERESIS": VolatilityHysteresisPolicy,
+            "POLICY_DERIVED_REGIME_CONFIRMATION": DerivedRegimeConfirmationPolicy,
+            "POLICY_RISK_CONTROL_TREND": RiskControlTrendPolicy,
+            "POLICY_PERIODIC_REBALANCE": PeriodicRebalancePolicy,
+        })
+    except ImportError:
+        pass
+
+
+# Populate registry at module import time so dictionary does not mutate during iteration
+_ensure_experimental_policies_registered()
 
 
 def create_policy(policy_id: str, parameters: Optional[Dict[str, Any]] = None) -> BaseTimingPolicy:
     """Factory to instantiate any timing policy."""
+    _ensure_experimental_policies_registered()
     if policy_id not in POLICY_REGISTRY:
         raise ValueError(f"Unknown policy_id '{policy_id}'. Allowed: {list(POLICY_REGISTRY.keys())}")
     cls = POLICY_REGISTRY[policy_id]
