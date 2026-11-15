@@ -1,0 +1,85 @@
+{
+  "status": "VERIFIED_PASS",
+  "engine": "CBE-MULTI-TIMEFRAME-INTEGRITY-V2.0",
+  "supported_timeframes": [
+    "5m",
+    "15m",
+    "1h",
+    "4h",
+    "1d"
+  ],
+  "results": {
+    "2026-10": {
+      "row_counts": {
+        "5m": 8928,
+        "15m": 2976,
+        "1h": 744,
+        "4h": 186,
+        "1d": 31
+      },
+      "boundary_alignments": {
+        "5m": {
+          "all_minutes_divisible_by_5": true,
+          "all_seconds_zero": true
+        },
+        "15m": {
+          "all_minutes_divisible_by_15": true,
+          "all_seconds_zero": true
+        },
+        "1h": {
+          "all_minutes_zero": true,
+          "all_seconds_zero": true
+        },
+        "4h": {
+          "all_hours_divisible_by_4": true,
+          "all_minutes_zero": true
+        },
+        "1d": {
+          "all_hours_zero": true,
+          "all_minutes_zero": true
+        }
+      },
+      "aggregation_conservation": {
+        "max_close_discrepancy": 0.0,
+        "max_volume_discrepancy": 0.0,
+        "verdict": "PERFECT_CONSERVATION"
+      }
+    },
+    "2026-11": {
+      "row_counts": {
+        "5m": 4280,
+        "15m": 1428,
+        "1h": 358,
+        "4h": 90,
+        "1d": 15
+      },
+      "boundary_alignments": {
+        "5m": {
+          "all_minutes_divisible_by_5": true,
+          "all_seconds_zero": true
+        },
+        "15m": {
+          "all_minutes_divisible_by_15": true,
+          "all_seconds_zero": true
+        },
+        "1h": {
+          "all_minutes_zero": true,
+          "all_seconds_zero": true
+        },
+        "4h": {
+          "all_hours_divisible_by_4": true,
+          "all_minutes_zero": true
+        },
+        "1d": {
+          "all_hours_zero": true,
+          "all_minutes_zero": true
+        }
+      },
+      "aggregation_conservation": {
+        "max_close_discrepancy": 0.0,
+        "max_volume_discrepancy": 0.0,
+        "verdict": "PERFECT_CONSERVATION"
+      }
+    }
+  }
+}

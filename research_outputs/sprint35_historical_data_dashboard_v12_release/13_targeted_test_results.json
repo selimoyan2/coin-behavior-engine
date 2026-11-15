@@ -1,0 +1,50 @@
+{
+  "test_suite": "tests/test_sprint35_historical_data_and_dashboard_v12.py",
+  "status": "ALL_PASSED",
+  "total_tests": 8,
+  "passed_tests": 8,
+  "failed_tests": 0,
+  "executed_at_utc": "2026-11-15T21:39:00Z",
+  "results": [
+    {
+      "test_name": "test_01_october_2026_complete_verification",
+      "verdict": "PASSED",
+      "description": "8,928 5m bars, 744 1h bars, 31 1d bars verified with monotonic timestamps and zero duplicates"
+    },
+    {
+      "test_name": "test_02_november_2026_partial_verification",
+      "verdict": "PASSED",
+      "description": "4,280 5m bars verified up to cutoff 2026-11-15 21:15:00 UTC with zero synthetic candles"
+    },
+    {
+      "test_name": "test_03_multitimeframe_consistency",
+      "verdict": "PASSED",
+      "description": "Exact UTC boundary alignment verified across 5m, 15m, 1h, 4h, and 1d partitions"
+    },
+    {
+      "test_name": "test_04_dataset_registry_v2_capabilities",
+      "verdict": "PASSED",
+      "description": "Dataset Registry V2 audits all canonical timeframes and reports 58 COMPLETE + 1 PARTIAL partition"
+    },
+    {
+      "test_name": "test_05_importer_security_and_physics",
+      "verdict": "PASSED",
+      "description": "Offline importer strictly rejects High < Low and corrupt candle physics"
+    },
+    {
+      "test_name": "test_06_dashboard_ui_v12_elements",
+      "verdict": "PASSED",
+      "description": "Dashboard V12 renders month dropdowns (2026-11, 2026-10, 2026-09), status badges, and navigation controls"
+    },
+    {
+      "test_name": "test_07_api_historical_candles_oct_nov",
+      "verdict": "PASSED",
+      "description": "Historical candles API returns HTTP 200 with authentic bars for 2026-10 and 2026-11, and no_data for 2026-12"
+    },
+    {
+      "test_name": "test_08_live_trading_prohibition_http_403",
+      "verdict": "PASSED",
+      "description": "All order execution and live trading endpoints strictly return HTTP 403 Forbidden with GOVERNANCE_VIOLATION"
+    }
+  ]
+}

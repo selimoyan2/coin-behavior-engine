@@ -1,0 +1,55 @@
+{
+  "status": "VERIFIED_PASS",
+  "engine_version": "CBE-OFFLINE-IMPORTER-SECURITY-V2.0",
+  "security_gates_verified": 4,
+  "all_security_tests_passed": true,
+  "tests": [
+    {
+      "test_name": "PATH_TRAVERSAL_PREVENTION",
+      "cases_tested": 5,
+      "all_blocked": true,
+      "details": [
+        {
+          "path": "../../etc/passwd",
+          "verdict": "BLOCKED"
+        },
+        {
+          "path": "..\\..\\Windows\\System32\\cmd.exe",
+          "verdict": "BLOCKED"
+        },
+        {
+          "path": "/etc/shadow",
+          "verdict": "BLOCKED"
+        },
+        {
+          "path": "data/../../../sensitive.txt",
+          "verdict": "BLOCKED"
+        },
+        {
+          "path": "data/binance_spot_multiyear/5m/../../../../boot.ini",
+          "verdict": "BLOCKED"
+        }
+      ]
+    },
+    {
+      "test_name": "OHLC_PHYSICS_VALIDATION",
+      "cases": {
+        "high_less_than_low": "REJECTED_AS_EXPECTED",
+        "close_less_than_low": "REJECTED_AS_EXPECTED",
+        "high_less_than_open": "REJECTED_AS_EXPECTED"
+      },
+      "all_passed": true
+    },
+    {
+      "test_name": "POSITIVE_PRICE_ENFORCEMENT",
+      "verdict": "REJECTED_AS_EXPECTED",
+      "passed": true
+    },
+    {
+      "test_name": "DEDUPLICATION_AND_MONOTONICITY",
+      "original_rows": 3,
+      "deduped_rows": 2,
+      "passed": true
+    }
+  ]
+}

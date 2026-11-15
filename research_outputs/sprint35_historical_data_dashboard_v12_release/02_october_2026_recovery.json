@@ -1,0 +1,76 @@
+{
+  "status": "COMPLETE_VERIFIED",
+  "symbol": "BTCUSDT",
+  "month": "2026-10",
+  "days_in_month": 31,
+  "completeness_pct": 100.0,
+  "gaps_count": 0,
+  "duplicates_count": 0,
+  "synthetic_candles_count": 0,
+  "provenance": {
+    "source_1": {
+      "name": "data/research_lab/binance_BTCUSDT_1m_recent.parquet",
+      "coverage": "2026-10-01 00:00:00 UTC to 2026-10-18 11:25:00 UTC",
+      "resampled_5m_bars": 5034,
+      "notes": "Authentic Binance 1m kline archive"
+    },
+    "source_2": {
+      "name": "remote_live_capture_srv1114257/raw_candles_BTCUSDT_5m.jsonl",
+      "coverage": "2026-10-18 11:30:00 UTC to 2026-10-31 23:55:00 UTC",
+      "bars": 3894,
+      "notes": "Docker volume live market feed capture (hash-chained)"
+    },
+    "stitching_junction": {
+      "junction_timestamp_utc": "2026-10-18 11:25:00 UTC -> 2026-10-18 11:30:00 UTC",
+      "junction_delta_seconds": 300,
+      "junction_price_continuity": {
+        "source1_last_close": 68421.05,
+        "source2_first_open": 68421.05,
+        "price_delta": 0.0,
+        "verdict": "PERFECT_CONTINUITY"
+      }
+    }
+  },
+  "timeframe_inventory": {
+    "5m": {
+      "file": "BTCUSDT-5m-2026-10.parquet",
+      "path": "data\\binance_spot_multiyear\\5m\\BTCUSDT-5m-2026-10.parquet",
+      "bars": 8928,
+      "sha256": "54030be91ce45807d47f4f47d9349d64d6b45f872bafd298f5901c9235b772bd",
+      "start_time_utc": "2026-10-01 00:00:00+00:00",
+      "end_time_utc": "2026-10-31 23:55:00+00:00"
+    },
+    "15m": {
+      "file": "BTCUSDT-15m-2026-10.parquet",
+      "path": "data\\binance_spot_multiyear\\15m\\BTCUSDT-15m-2026-10.parquet",
+      "bars": 2976,
+      "sha256": "8e05dcd31a3dfcb4a4b673ac363dc2439eb96ffbaf06199cd680fb93641356bc",
+      "start_time_utc": "2026-10-01 00:00:00+00:00",
+      "end_time_utc": "2026-10-31 23:45:00+00:00"
+    },
+    "1h": {
+      "file": "BTCUSDT-1h-2026-10.parquet",
+      "path": "data\\binance_spot_multiyear\\1h\\BTCUSDT-1h-2026-10.parquet",
+      "bars": 744,
+      "sha256": "e0a968cc5b0a0936df0f628f06a75e2c381e9322a5937ed9c193f2c0bc35c868",
+      "start_time_utc": "2026-10-01 00:00:00+00:00",
+      "end_time_utc": "2026-10-31 23:00:00+00:00"
+    },
+    "4h": {
+      "file": "BTCUSDT-4h-2026-10.parquet",
+      "path": "data\\binance_spot_multiyear\\4h\\BTCUSDT-4h-2026-10.parquet",
+      "bars": 186,
+      "sha256": "f6c24164ab60a32d807cf1690c892090a2dec39c01202515e788de4df0ff9c31",
+      "start_time_utc": "2026-10-01 00:00:00+00:00",
+      "end_time_utc": "2026-10-31 20:00:00+00:00"
+    },
+    "1d": {
+      "file": "BTCUSDT-1d-2026-10.parquet",
+      "path": "data\\binance_spot_multiyear\\1d\\BTCUSDT-1d-2026-10.parquet",
+      "bars": 31,
+      "sha256": "372889dfee6fdf4e71d0de636fba2ce10733f3ae85a9e134b37b78989568b670",
+      "start_time_utc": "2026-10-01 00:00:00+00:00",
+      "end_time_utc": "2026-10-31 00:00:00+00:00"
+    }
+  }
+}

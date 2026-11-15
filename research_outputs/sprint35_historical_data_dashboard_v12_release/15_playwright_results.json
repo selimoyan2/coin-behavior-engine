@@ -1,0 +1,84 @@
+{
+  "metadata": {
+    "title": "Sprint 35 Playwright Multi-Viewport Acceptance Verification",
+    "sprint_id": "CBE_SPRINT35_HISTORICAL_DATA_COMPLETION_DASHBOARD_V12_RELEASE_READINESS",
+    "executed_at_utc": "2026-11-15T21:41:54.258474+00:00",
+    "attribution_tier": "USER_INTERFACE_AND_EXPERIENCE_VALIDATION",
+    "test_port": 18098,
+    "overall_status": "PASSED"
+  },
+  "viewport_acceptance": {
+    "desktop": {
+      "viewport": "1440x900",
+      "is_mobile": false,
+      "dashboard_http_status": 200,
+      "title": "Coin Behavior Engine | Ara\u015ft\u0131rma Portal\u0131 & Piyasa \u0130stihbarat\u0131 V12",
+      "october_badge_text": "EK\u0130M 2026: TAM DO\u011eRULANMI\u015e VER\u0130 (8.928 5m Mum / 744 Saat, S\u0131f\u0131r Bo\u015fluk)",
+      "november_badge_text": "KASIM 2026: KISM\u0130 DO\u011eRULANMI\u015e VER\u0130 (Kapsam: 01-15 Kas\u0131m 21:15 UTC, 4.280 Bar, Kesilme: 15 Kas 21:15)",
+      "month_options": [
+        "2026-11",
+        "2026-10",
+        "2026-09",
+        "2026-08",
+        "2026-07"
+      ],
+      "live_trading_prohibition_status": 403,
+      "live_trading_prohibition_detail": "GOVERNANCE_VIOLATION",
+      "console_errors_count": 0,
+      "page_errors_count": 0,
+      "screenshot_path": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint35_historical_data_dashboard_v12_release\\15_dashboard_v12_desktop.png",
+      "status": "PASSED"
+    },
+    "tablet": {
+      "viewport": "768x1024",
+      "is_mobile": false,
+      "dashboard_http_status": 200,
+      "title": "Coin Behavior Engine | Ara\u015ft\u0131rma Portal\u0131 & Piyasa \u0130stihbarat\u0131 V12",
+      "october_badge_text": "EK\u0130M 2026: TAM DO\u011eRULANMI\u015e VER\u0130 (8.928 5m Mum / 744 Saat, S\u0131f\u0131r Bo\u015fluk)",
+      "november_badge_text": "KASIM 2026: KISM\u0130 DO\u011eRULANMI\u015e VER\u0130 (Kapsam: 01-15 Kas\u0131m 21:15 UTC, 4.280 Bar, Kesilme: 15 Kas 21:15)",
+      "month_options": [
+        "2026-11",
+        "2026-10",
+        "2026-09",
+        "2026-08",
+        "2026-07"
+      ],
+      "live_trading_prohibition_status": 403,
+      "live_trading_prohibition_detail": "GOVERNANCE_VIOLATION",
+      "console_errors_count": 0,
+      "page_errors_count": 0,
+      "screenshot_path": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint35_historical_data_dashboard_v12_release\\15_dashboard_v12_tablet.png",
+      "status": "PASSED"
+    },
+    "mobile": {
+      "viewport": "390x844",
+      "is_mobile": true,
+      "dashboard_http_status": 200,
+      "title": "Coin Behavior Engine | Ara\u015ft\u0131rma Portal\u0131 & Piyasa \u0130stihbarat\u0131 V12",
+      "october_badge_text": "EK\u0130M 2026: TAM DO\u011eRULANMI\u015e VER\u0130 (8.928 5m Mum / 744 Saat, S\u0131f\u0131r Bo\u015fluk)",
+      "november_badge_text": "KASIM 2026: KISM\u0130 DO\u011eRULANMI\u015e VER\u0130 (Kapsam: 01-15 Kas\u0131m 21:15 UTC, 4.280 Bar, Kesilme: 15 Kas 21:15)",
+      "month_options": [
+        "2026-11",
+        "2026-10",
+        "2026-09",
+        "2026-08",
+        "2026-07"
+      ],
+      "live_trading_prohibition_status": 403,
+      "live_trading_prohibition_detail": "GOVERNANCE_VIOLATION",
+      "console_errors_count": 0,
+      "page_errors_count": 0,
+      "screenshot_path": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint35_historical_data_dashboard_v12_release\\15_dashboard_v12_mobile.png",
+      "status": "PASSED"
+    }
+  },
+  "verification_summary": {
+    "total_viewports_tested": 3,
+    "total_passed": 3,
+    "console_errors_total": 0,
+    "page_errors_total": 0,
+    "live_trading_prohibited_verified": true,
+    "october_complete_badge_verified": true,
+    "november_partial_badge_verified": true
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "status": "PARTIAL_VERIFIED",
+  "symbol": "BTCUSDT",
+  "month": "2026-11",
+  "verified_cutoff_utc": "2026-11-15T21:15:00Z",
+  "expected_full_month_5m_bars": 8640,
+  "actual_5m_bars": 4280,
+  "completeness_pct": 49.54,
+  "synthetic_candles_count": 0,
+  "fabricated_candles_allowed": false,
+  "provenance": {
+    "source": "remote_live_capture_srv1114257/raw_candles_BTCUSDT_5m.jsonl",
+    "coverage": "2026-11-01 00:00:00 UTC to 2026-11-15 21:15:00 UTC",
+    "gaps_audit": [
+      {
+        "from_utc": "2026-11-03 05:10:00+00:00",
+        "to_utc": "2026-11-03 05:30:00+00:00",
+        "gap_minutes": 20,
+        "missing_bars": 3
+      },
+      {
+        "from_utc": "2026-11-04 21:55:00+00:00",
+        "to_utc": "2026-11-04 22:05:00+00:00",
+        "gap_minutes": 10,
+        "missing_bars": 1
+      },
+      {
+        "from_utc": "2026-11-05 01:30:00+00:00",
+        "to_utc": "2026-11-05 01:40:00+00:00",
+        "gap_minutes": 10,
+        "missing_bars": 1
+      },
+      {
+        "from_utc": "2026-11-07 08:55:00+00:00",
+        "to_utc": "2026-11-07 09:15:00+00:00",
+        "gap_minutes": 20,
+        "missing_bars": 3
+      }
+    ],
+    "total_missing_bars": 8,
+    "total_missing_minutes": 40
+  },
+  "timeframe_inventory": {
+    "5m": {
+      "file": "BTCUSDT-5m-2026-11.parquet",
+      "path": "data\\binance_spot_multiyear\\5m\\BTCUSDT-5m-2026-11.parquet",
+      "bars": 4280,
+      "sha256": "48e80ae6c44efc5249dfa1d5e39562fd9752128a40d767a303f45f4939e13e57",
+      "start_time_utc": "2026-11-01 00:00:00+00:00",
+      "end_time_utc": "2026-11-15 21:15:00+00:00"
+    },
+    "15m": {
+      "file": "BTCUSDT-15m-2026-11.parquet",
+      "path": "data\\binance_spot_multiyear\\15m\\BTCUSDT-15m-2026-11.parquet",
+      "bars": 1428,
+      "sha256": "bdf2a7e84d9d4e3f42e0e94fabfa734e4ba8118d2d27c41990562247b151ab75",
+      "start_time_utc": "2026-11-01 00:00:00+00:00",
+      "end_time_utc": "2026-11-15 21:15:00+00:00"
+    },
+    "1h": {
+      "file": "BTCUSDT-1h-2026-11.parquet",
+      "path": "data\\binance_spot_multiyear\\1h\\BTCUSDT-1h-2026-11.parquet",
+      "bars": 358,
+      "sha256": "fd5846cce84d91e4fe06fe00444ae044c7f38be9c20031c368869909e21e8961",
+      "start_time_utc": "2026-11-01 00:00:00+00:00",
+      "end_time_utc": "2026-11-15 21:00:00+00:00"
+    },
+    "4h": {
+      "file": "BTCUSDT-4h-2026-11.parquet",
+      "path": "data\\binance_spot_multiyear\\4h\\BTCUSDT-4h-2026-11.parquet",
+      "bars": 90,
+      "sha256": "2b0c91db896d13684af76d9dada47f86ee4dc0d8ff416bd88aad964eb9d68aee",
+      "start_time_utc": "2026-11-01 00:00:00+00:00",
+      "end_time_utc": "2026-11-15 20:00:00+00:00"
+    },
+    "1d": {
+      "file": "BTCUSDT-1d-2026-11.parquet",
+      "path": "data\\binance_spot_multiyear\\1d\\BTCUSDT-1d-2026-11.parquet",
+      "bars": 15,
+      "sha256": "f81b6ba827312a944bb4996ddf5152f531bc317b24bd429e931901ea42247ea9",
+      "start_time_utc": "2026-11-01 00:00:00+00:00",
+      "end_time_utc": "2026-11-15 00:00:00+00:00"
+    }
+  },
+  "operator_instructions": "Do not interpolate missing candles with synthetic bars. Preserve physical gap boundaries."
+}

@@ -1,0 +1,63 @@
+{
+  "test_standard": "CBE-REGRESSION-ACCEPTANCE-V1.4",
+  "sprint_id": "CBE_SPRINT35_HISTORICAL_DATA_COMPLETION_DASHBOARD_V12_RELEASE_READINESS",
+  "generated_at_utc": "2026-11-15T21:40:00Z",
+  "canonical_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "execution_mode": "STRICTLY_OFFLINE_RESEARCH",
+  "targeted_test_suites": [
+    {
+      "test_file": "tests/test_sprint35_historical_data_and_dashboard_v12.py",
+      "purpose": "Verify October 2026 complete recovery, November 2026 partial verification, multi-timeframe consistency, registry v2, importer security, and Dashboard V12 UI/API.",
+      "tests_collected": 8,
+      "tests_passed": 8,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "status": "PASSED"
+    },
+    {
+      "test_file": "tests/test_sprint34_1_scientific_reconciliation.py",
+      "purpose": "Enforce prefix invariance, frozen lockbox loading, zero middle-row sampling, and zero-synthesis partition imports.",
+      "tests_collected": 11,
+      "tests_passed": 11,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "status": "PASSED"
+    },
+    {
+      "test_file": "tests/test_sprint34_canonical_parity_and_historical_data.py",
+      "purpose": "Verify canonical parity, point-in-time calibration, multi-timeframe conservation, and dataset manager invariants.",
+      "tests_collected": 32,
+      "tests_passed": 32,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "status": "PASSED"
+    },
+    {
+      "test_file": "tests/test_sprint33_canonical_bridge_market_behavior.py",
+      "purpose": "Verify market behavior intelligence, regime persistence, downside risk cvar separation, and deployment safety.",
+      "tests_collected": 32,
+      "tests_passed": 32,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "status": "PASSED"
+    },
+    {
+      "test_file": "tests/test_sprint32_scientific_validation_dashboard_v10.py",
+      "purpose": "Verify dataset provenance, statistical claims audit, transaction cost accounting, and sealed evaluation.",
+      "tests_collected": 27,
+      "tests_passed": 27,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "status": "PASSED"
+    }
+  ],
+  "full_repository_regression_summary": {
+    "total_tests_collected": 3635,
+    "total_passed": 3627,
+    "total_failed": 0,
+    "total_skipped": 8,
+    "pass_rate_pct": 100.0,
+    "acceptance_verdict": "FULL_REGRESSION_PASSED"
+  }
+}

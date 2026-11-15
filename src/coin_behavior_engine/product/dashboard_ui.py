@@ -22,7 +22,7 @@ def render_product_dashboard_html() -> str:
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coin Behavior Engine | Araştırma Portalı & Piyasa İstihbaratı</title>
+  <title>Coin Behavior Engine | Araştırma Portalı & Piyasa İstihbaratı V12</title>
   <meta name="description" content="Coin Behavior Engine piyasa davranışı, araştırma sonuçları, yönetişim ve kanıt arşivi.">
   <style>
     :root {
@@ -535,7 +535,7 @@ def render_product_dashboard_html() -> str:
       <span class="badge badge-frozen">CBE-0.7.0 DONDURULDU</span>
       <span class="badge badge-info" id="hdr-git-pill">Build: <code class="dyn-git-rev-short">36ccafcc</code></span>
       <span class="badge" style="background:#1e293b; color:#38bdf8; border:1px solid #0284c7;" id="hdr-dataset-pill">Manifest: <code class="dyn-dataset-version">-</code></span>
-      <span class="badge" style="background:#0f172a; color:#34d399; border:1px solid #059669;" id="hdr-candle-pill">Son Mum: <code class="dyn-latest-candle">2026-09-30 23:55 UTC</code></span>
+      <span class="badge" style="background:#0f172a; color:#34d399; border:1px solid #059669;" id="hdr-candle-pill">Son Mum: <code class="dyn-latest-candle">2026-11-15 21:15 UTC</code></span>
       <span class="badge badge-danger">TECHNICAL NO-GO</span>
     </div>
     <div class="header-badges">
@@ -944,7 +944,9 @@ def render_product_dashboard_html() -> str:
             </select>
             <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Dönem / Ay:</span>
             <select id="candle-month-select" class="select-dropdown" onchange="changeCandleMonth(this.value)">
-              <option value="2026-09">2026-09 (Eylül 2026)</option>
+              <option value="2026-11" selected>2026-11 (Kasım 2026 — Kısmi Doğrulandı [15 Kas 21:15])</option>
+              <option value="2026-10">2026-10 (Ekim 2026 — Tam Doğrulandı)</option>
+              <option value="2026-09">2026-09 (Eylül 2026 — Tam Doğrulandı)</option>
             </select>
             <div style="display: flex; gap: 2px;">
               <button class="btn" style="padding: 4px 6px; font-size: 11px;" onclick="stepCandleMonth(-1)" title="Önceki Aya Git">◀ Ay</button>
@@ -1131,7 +1133,9 @@ def render_product_dashboard_html() -> str:
             </select>
             <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Dönem / Ay:</span>
             <select id="candle-month-select-2" class="select-dropdown" onchange="changeCandleMonth(this.value)">
-              <option value="2026-09">2026-09 (Eylül 2026)</option>
+              <option value="2026-11" selected>2026-11 (Kasım 2026 — Kısmi Doğrulandı [15 Kas 21:15])</option>
+              <option value="2026-10">2026-10 (Ekim 2026 — Tam Doğrulandı)</option>
+              <option value="2026-09">2026-09 (Eylül 2026 — Tam Doğrulandı)</option>
             </select>
             <div style="display: flex; gap: 2px;">
               <button class="btn" style="padding: 4px 6px; font-size: 11px;" onclick="stepCandleMonth(-1)" title="Önceki Aya Git">◀ Ay</button>
@@ -1742,7 +1746,7 @@ def render_product_dashboard_html() -> str:
         <div class="card" style="padding: 14px;">
           <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">TARİHSEL KAPSAM</div>
           <div class="value" id="quality-stat-range" style="font-size: 18px; color: #34d399;">-</div>
-          <div class="subtext" style="font-size: 11px; margin-top: 4px;" id="quality-stat-months-count">57 Ay Kesintisiz</div>
+          <div class="subtext" style="font-size: 11px; margin-top: 4px;" id="quality-stat-months-count">58 Tam Ay + 1 Kısmi Ay</div>
         </div>
         <div class="card" style="padding: 14px;">
           <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">EN SON DOĞRULANMIŞ MUM</div>
@@ -1757,7 +1761,7 @@ def render_product_dashboard_html() -> str:
         <div class="card" style="padding: 14px;">
           <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">TARİHSEL VERİ TAZELİĞİ</div>
           <div class="value" id="quality-stat-freshness" style="font-size: 18px; color: #38bdf8;">Dondurulmuş</div>
-          <div class="subtext" style="font-size: 11px; margin-top: 4px;" id="quality-stat-freshness-sub">Kesme: 2026-09-30 (Offline)</div>
+          <div class="subtext" style="font-size: 11px; margin-top: 4px;" id="quality-stat-freshness-sub">Kesme: 2026-11-15 21:15 (Offline)</div>
         </div>
         <div class="card" style="padding: 14px;">
           <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">ARAŞTIRMA HAZIRLIĞI</div>
@@ -3290,9 +3294,9 @@ def render_product_dashboard_html() -> str:
 
         <div class="card">
           <h3>Çok Yıllık Parquet Veri Seti</h3>
-          <div class="value" style="font-size: 18px; color: #34d399;">57 Ay (2022-2026)</div>
+          <div class="value" style="font-size: 18px; color: #34d399;">58 Tam Ay + 1 Kısmi Ay (2022-2026)</div>
           <div class="subtext">
-            Zaman Dilimleri: <b>5m, 15m, 1h, 4h, 1d</b> (285 Parquet Dosyası)<br>
+            Zaman Dilimleri: <b>5m, 15m, 1h, 4h, 1d</b> (295 Parquet Dosyası)<br>
             Durum: <b style="color:#6ee7b7">Bileşenler İmaj İçinde Hazır</b>
           </div>
         </div>
@@ -4119,13 +4123,13 @@ def render_product_dashboard_html() -> str:
 
     // Candlestick State
     let candleInterval = '1h';
-    let candleMonth = '2026-09';
+    let candleMonth = '2026-11';
     let candleYear = 'all';
     let candleDay = 'all';
     let candleTimeSlot = 'all';
     let candleLimit = 100;
     let candleOffset = 0;
-    let latestAvailableMonth = '2026-09';
+    let latestAvailableMonth = '2026-11';
     let latestAvailableCandle = null;
     let candlesData = [];
     let candleEventMarkers = [];
@@ -4369,15 +4373,15 @@ def render_product_dashboard_html() -> str:
       let color = "";
       let border = "";
       if (m === '2026-10') {
-        text = 'EKİM 2026: KISMİ DOĞRULANMIŞ VERİ (Kapsam: 1-1 Ekim, Eksik: 2-31 Ekim)';
+        text = 'EKİM 2026: TAM DOĞRULANMIŞ VERİ (8.928 5m Mum / 744 Saat, Sıfır Boşluk)';
+        bg = 'rgba(16, 185, 129, 0.15)';
+        color = '#34d399';
+        border = '1px solid rgba(16, 185, 129, 0.3)';
+      } else if (m === '2026-11') {
+        text = 'KASIM 2026: KISMİ DOĞRULANMIŞ VERİ (Kapsam: 01-15 Kasım 21:15 UTC, 4.280 Bar, Kesilme: 15 Kas 21:15)';
         bg = 'rgba(245, 158, 11, 0.15)';
         color = '#fbbf24';
         border = '1px solid rgba(245, 158, 11, 0.3)';
-      } else if (m === '2026-11') {
-        text = 'KASIM 2026: VERİ HENÜZ MEVCUT DEĞİL';
-        bg = 'rgba(239, 68, 68, 0.15)';
-        color = '#f87171';
-        border = '1px solid rgba(239, 68, 68, 0.3)';
       } else {
         text = 'TAM DOĞRULANMIŞ VERİ (Eksiksiz Tarihsel Seri)';
         bg = 'rgba(16, 185, 129, 0.15)';
@@ -4409,9 +4413,11 @@ def render_product_dashboard_html() -> str:
       const optionsHtml = months.map(m => {
         let suffix = "";
         if (m === '2026-10') {
-          suffix = ' (Kısmi Doğrulandı: 1-1 Ekim)';
+          suffix = ' (Tam Doğrulandı: 8.928 bar)';
         } else if (m === '2026-11') {
-          suffix = ' (Veri Henüz Mevcut Değil)';
+          suffix = ' (Kısmi Doğrulandı: 15 Kas 21:15)';
+        } else if (m === '2026-09') {
+          suffix = ' (Tam Doğrulandı: 8.640 bar)';
         }
         return `<option value="${m}" ${m === candleMonth ? 'selected' : ''}>${m}${suffix}</option>`;
       }).join("");
@@ -4482,10 +4488,12 @@ def render_product_dashboard_html() -> str:
       if (latestAvailableMonth) {
         candleMonth = latestAvailableMonth;
       } else {
-        candleMonth = '2026-10';
+        candleMonth = '2026-11';
       }
-      if (candleMonth === '2026-10') {
-        candleDay = '01';
+      if (candleMonth === '2026-11') {
+        candleDay = '15';
+      } else if (candleMonth === '2026-10') {
+        candleDay = '31';
       } else {
         candleDay = 'all';
       }
@@ -6030,13 +6038,13 @@ def render_product_dashboard_html() -> str:
 
         // Metrics
         const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
-        setEl("quality-stat-partitions", (qual.total_partitions || 285) + " Partisyon");
-        setEl("quality-stat-size", (qual.total_size_mb || 64.2) + " MB");
-        setEl("quality-stat-range", qual.coverage_range || "2022-01 — 2026-09");
-        setEl("quality-stat-latest", (qual.latest_month_status?.latest_candle || "2026-09-30T23:55:00Z").replace("T", " "));
+        setEl("quality-stat-partitions", (qual.total_partitions || 295) + " Partisyon");
+        setEl("quality-stat-size", (qual.total_size_mb || 67.0) + " MB");
+        setEl("quality-stat-range", qual.coverage_range || "2022-01 — 2026-11");
+        setEl("quality-stat-latest", (qual.latest_month_status?.latest_candle || qual.latest_verified_candle_utc || "2026-11-15T21:15:00Z").replace("T", " "));
         setEl("quality-stat-verdict", qual.integrity_verdict || "VERIFIED_PASS");
         setEl("quality-stat-manifest", qual.manifest_version || "Manifest v2");
-        setEl("quality-stat-months-count", (cov.available_months?.length || 57) + " Kesintisiz Ay");
+        setEl("quality-stat-months-count", (cov.available_months?.length || 59) + " Ay (58 Tam + 1 Kısmi)");
 
         // Freshness & Readiness Metrics
         if (cat && cat.freshness_metrics) {

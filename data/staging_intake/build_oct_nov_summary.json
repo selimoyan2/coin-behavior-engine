@@ -1,0 +1,61 @@
+{
+  "status": "SUCCESS",
+  "generated_at_utc": "2026-11-15T21:26:43.279272+00:00",
+  "october_2026": {
+    "status": "COMPLETE_VERIFIED",
+    "bars_5m": 8928,
+    "expected_bars_5m": 8928,
+    "completeness_pct": 100.0,
+    "start_time_utc": "2026-10-01 00:00:00+00:00",
+    "end_time_utc": "2026-10-31 23:55:00+00:00",
+    "sha256_by_interval": {
+      "5m": "54030be91ce45807d47f4f47d9349d64d6b45f872bafd298f5901c9235b772bd",
+      "15m": "8e05dcd31a3dfcb4a4b673ac363dc2439eb96ffbaf06199cd680fb93641356bc",
+      "1h": "e0a968cc5b0a0936df0f628f06a75e2c381e9322a5937ed9c193f2c0bc35c868",
+      "4h": "f6c24164ab60a32d807cf1690c892090a2dec39c01202515e788de4df0ff9c31",
+      "1d": "372889dfee6fdf4e71d0de636fba2ce10733f3ae85a9e134b37b78989568b670"
+    }
+  },
+  "november_2026": {
+    "status": "PARTIAL_VERIFIED",
+    "bars_5m": 4280,
+    "verified_cutoff_utc": "2026-11-15 21:15:00+00:00",
+    "gaps_count": 4,
+    "total_missing_5m_bars": 8,
+    "gaps_detail": [
+      {
+        "from_utc": "2026-11-03 05:10:00+00:00",
+        "to_utc": "2026-11-03 05:30:00+00:00",
+        "gap_minutes": 20,
+        "missing_bars": 3
+      },
+      {
+        "from_utc": "2026-11-04 21:55:00+00:00",
+        "to_utc": "2026-11-04 22:05:00+00:00",
+        "gap_minutes": 10,
+        "missing_bars": 1
+      },
+      {
+        "from_utc": "2026-11-05 01:30:00+00:00",
+        "to_utc": "2026-11-05 01:40:00+00:00",
+        "gap_minutes": 10,
+        "missing_bars": 1
+      },
+      {
+        "from_utc": "2026-11-07 08:55:00+00:00",
+        "to_utc": "2026-11-07 09:15:00+00:00",
+        "gap_minutes": 20,
+        "missing_bars": 3
+      }
+    ],
+    "sha256_by_interval": {
+      "5m": "48e80ae6c44efc5249dfa1d5e39562fd9752128a40d767a303f45f4939e13e57",
+      "15m": "bdf2a7e84d9d4e3f42e0e94fabfa734e4ba8118d2d27c41990562247b151ab75",
+      "1h": "fd5846cce84d91e4fe06fe00444ae044c7f38be9c20031c368869909e21e8961",
+      "4h": "2b0c91db896d13684af76d9dada47f86ee4dc0d8ff416bd88aad964eb9d68aee",
+      "1d": "f81b6ba827312a944bb4996ddf5152f531bc317b24bd429e931901ea42247ea9"
+    }
+  },
+  "dataset_manager_manifest_version": "cbe-manifest-v2-5c04420c2f2a",
+  "total_available_months": 59
+}

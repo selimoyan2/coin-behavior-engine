@@ -187,9 +187,9 @@ class ProductDashboardApiService:
         else:
             sub_path = path.strip("/")
 
-        # Strict governance rejection on live trading attempts under BTC timing research
+        # Strict governance rejection on live trading attempts
         sub_lower = sub_path.lower()
-        if "btc-timing" in sub_lower and any(bad in sub_lower for bad in ("live-trade", "order", "broker-api", "place-order", "trade/execute", "live_order", "execute-live", "live")):
+        if ("btc-timing" in sub_lower and any(bad in sub_lower for bad in ("live-trade", "order", "broker-api", "place-order", "trade/execute", "live_order", "execute-live", "live"))) or any(bad in sub_lower for bad in ("order/execute", "trade/live", "execution/submit", "live-trade")):
             return HTTPStatus.FORBIDDEN, {
                 "error": "GOVERNANCE_VIOLATION",
                 "message": "Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.",
@@ -1160,9 +1160,9 @@ class ProductDashboardApiService:
         else:
             sub_path = path.strip("/")
 
-        # Strict governance rejection on live trading attempts under BTC timing research
+        # Strict governance rejection on live trading attempts
         sub_lower = sub_path.lower()
-        if "btc-timing" in sub_lower and any(bad in sub_lower for bad in ("live-trade", "order", "broker-api", "place-order", "trade/execute", "live_order", "execute-live", "live")):
+        if ("btc-timing" in sub_lower and any(bad in sub_lower for bad in ("live-trade", "order", "broker-api", "place-order", "trade/execute", "live_order", "execute-live", "live"))) or any(bad in sub_lower for bad in ("order/execute", "trade/live", "execution/submit", "live-trade")):
             return HTTPStatus.FORBIDDEN, {
                 "error": "GOVERNANCE_VIOLATION",
                 "message": "Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.",
@@ -3497,8 +3497,12 @@ class ProductDashboardApiService:
                 except Exception:
                     pass
 
-        latest_m = manifest.get("latest_month", "2026-09")
+        latest_m = manifest.get("latest_month", "2026-11")
+        earliest_m = manifest.get("earliest_month", "2022-01")
         comp = dm.get_month_completeness(latest_m, interval="5m")
+        total_p = manifest.get("total_partitions", 295)
+        total_mb = manifest.get("total_size_mb", 67.0)
+        latest_c_utc = manifest.get("latest_candle_utc", "2026-11-15T21:15:00Z")
 
         # Operations audit trail
         audit_trail = OperationsConsoleEngine.get_audit_trail(limit=10)
@@ -3509,19 +3513,19 @@ class ProductDashboardApiService:
             "integrity_verdict": "VERIFIED_PASS",
             "manifest_version": manifest.get("manifest_version"),
             "manifest_hash": manifest.get("manifest_hash"),
-            "total_partitions": manifest.get("total_partitions", 285),
-            "total_size_mb": manifest.get("total_size_mb", 65.0),
-            "coverage_range": f"{manifest.get('earliest_month', '2022-01')} — {manifest.get('latest_month', '2026-09')}",
-            "latest_verified_candle_utc": "2026-09-30T23:55:00Z",
+            "total_partitions": total_p,
+            "total_size_mb": total_mb,
+            "coverage_range": f"{earliest_m} — {latest_m}",
+            "latest_verified_candle_utc": latest_c_utc,
             "canonical_intervals": ["5m", "1m"],
             "derived_intervals": ["15m", "1h", "4h", "1d"],
             "supported_assets": [
-                {"symbol": "BTCUSDT", "status": "AVAILABLE", "partitions": 285, "coverage": "2022-01 -> 2026-09"},
+                {"symbol": "BTCUSDT", "status": "AVAILABLE", "partitions": total_p, "coverage": f"{earliest_m} -> {latest_m}"},
                 {"symbol": "ETHUSDT", "status": "BLOCKED_NO_DATA", "partitions": 0, "coverage": "YOK (Sentetik Veri Yasak)"},
                 {"symbol": "SOLUSDT", "status": "BLOCKED_NO_DATA", "partitions": 0, "coverage": "YOK (Sentetik Veri Yasak)"},
             ],
             "provenance_breakdown": {
-                "source_verified_partitions": 285,
+                "source_verified_partitions": total_p,
                 "pending_intake_candidates": 0,
                 "quarantined_candidates": 1,
                 "quarantined_files": ["BTCUSDT-5m-2026-10-intake.parquet (Yapay Test Kurgusu - Karantinada)"],
