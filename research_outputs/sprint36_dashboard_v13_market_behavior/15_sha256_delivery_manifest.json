@@ -1,0 +1,87 @@
+{
+  "sprint_id": "CBE_SPRINT36_DASHBOARD_V13_MARKET_BEHAVIOR_INTELLIGENCE",
+  "commit_sha": "7ed0681921697366d51248b190fb3983bee3c031",
+  "timestamp_utc": "2026-11-15T23:23:00Z",
+  "artifacts": {
+    "01_repository_and_baseline_audit.md": {
+      "sha256": "822b06c3857d8f3714d65233a9c3f266b46c4ac41f3c1988f666816c1f6dde23",
+      "bytes": 1476
+    },
+    "02_dataset_registry_consistency.json": {
+      "sha256": "54ba6e6e1f5994d6319a71739859486a172654ede1dd07678ffefd578fbb993a",
+      "bytes": 3290
+    },
+    "03_partial_candle_and_gap_audit.json": {
+      "sha256": "1754c7e7a295df06637bfa1b97e9d24b9d8645398692137d810be3b741908b40",
+      "bytes": 6777
+    },
+    "04_market_regime_metrics.json": {
+      "sha256": "ff68abc4ffe2e8e10cc3b2a7cbbe0e63dd3ce1e0d6f36a3c5c29913ebb784bd8",
+      "bytes": 6545
+    },
+    "05_regime_transition_matrix.json": {
+      "sha256": "65a4f79e85036c1ec624ab5b92b3b783574d84396543b5949638e874143dc992",
+      "bytes": 3416
+    },
+    "06_volatility_and_risk_metrics.json": {
+      "sha256": "451b8a17a4b2e982e5510b46005dacceb6c09bf8694b9465136162c5e6419fe5",
+      "bytes": 1674
+    },
+    "07_dashboard_v13_acceptance.md": {
+      "sha256": "06eb375aba7101f2487a592c07743ec6b9937f39f93cd2c6c543b196e1b5f524",
+      "bytes": 1388
+    },
+    "08_api_contract_and_security.json": {
+      "sha256": "63d1fdc96cd8d88eb607095d871e56745046a0f0af13a027848e134fa06147d0",
+      "bytes": 1574
+    },
+    "09_performance_benchmarks.json": {
+      "sha256": "0eacc560f4a3b7f3da88fcf01d934d85ba07111c5a980a0e96702028051d3a68",
+      "bytes": 358
+    },
+    "10_scientific_validation.json": {
+      "sha256": "9838216cfecb8ab1358f7a301c69a864fff50bf1ec969b903baca6458c13236b",
+      "bytes": 842
+    },
+    "11_targeted_test_results.json": {
+      "sha256": "81ef5cf747f6ecd932bc1eb1fe41e481003f74143ba7de501e3ac2c00cf896b1",
+      "bytes": 244
+    },
+    "12_full_regression_results.json": {
+      "sha256": "63c74254a14b288580f90d8b3d91190e9acb0fdde570cbcebd1438c2f6e3567a",
+      "bytes": 771
+    },
+    "13_dashboard_v13_desktop.png": {
+      "sha256": "6f5c1139373cbef91a15b571be0d3be10d4f04e1d8bf8afca0a9444113c36998",
+      "bytes": 111321
+    },
+    "13_dashboard_v13_mobile.png": {
+      "sha256": "9b1e4715845777aad476609c1275b421c116d87cef74bd3e95c928154a58379c",
+      "bytes": 51658
+    },
+    "13_dashboard_v13_tablet.png": {
+      "sha256": "bb24d1dd2a1ba7c728a0fa4b62bc808e4b0558684107a0bdb9e8e296b6d1e083",
+      "bytes": 81601
+    },
+    "13_market_behavior_lab_v2.png": {
+      "sha256": "7726134cf8aebf0ee3868868c27ad883281f891fdef70bfc423e8ab7db908d75",
+      "bytes": 105402
+    },
+    "13_playwright_results.json": {
+      "sha256": "4f2650830198713cfebb562f7042f14eaccedf8f7d8a3a1e8ef2b72ec1fbaa6c",
+      "bytes": 1757
+    },
+    "14_staging_deployment_evidence.json": {
+      "sha256": "2f8bc9d25b02eeb2637bbe6befbd30f53ed3d38f59bcf50242513f4871351f61",
+      "bytes": 3452
+    },
+    "16_final_acceptance_report.md": {
+      "sha256": "e2cc7e0e108b5979b162c94477f63f3420d7441e35dc1b9a0f872a92ee64b696",
+      "bytes": 12842
+    },
+    "test_server_sprint36.log": {
+      "sha256": "b2ed570a19841005759817d5adc8416028acc3c52d02798399252753b4903e7b",
+      "bytes": 7646
+    }
+  }
+}
