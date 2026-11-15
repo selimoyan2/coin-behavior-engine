@@ -79,7 +79,7 @@ cat << 'EOF' > build_metadata.json
 EOF
 
 echo "=== 3. DOCKER BUILD IMMUTABLE SPRINT 33 IMAGE ==="
-docker build --no-cache -t "{image_tag}" -t cbe-market-intelligence:staging -t cbe-market-intelligence:sprint33 .
+docker build -t "{image_tag}" -t cbe-market-intelligence:staging -t cbe-market-intelligence:sprint33 .
 
 echo "=== 4. INSPECTING CREATED IMAGE ==="
 IMAGE_ID=$(docker inspect "{image_tag}" --format '{{{{.Id}}}}')
@@ -101,7 +101,7 @@ docker compose up -d
 echo "=== 7. WAITING FOR STAGING READINESS ON PORT 18080 ==="
 READY=0
 for i in {{1..35}}; do
-    HTTP_CODE=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/ready || true)
+    HTTP_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/ready || true)
     if [ "$HTTP_CODE" = "200" ]; then
         echo "[OK] Staging is READY (HTTP 200) after $i seconds."
         READY=1
@@ -123,7 +123,7 @@ echo "=== 8. TESTING CONTAINER RESTART RECOVERY ==="
 docker restart "$NEW_STAGING_CID"
 RECOVERED=0
 for i in {{1..25}}; do
-    HTTP_CODE=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" http://127.0.0.1:18080/ready || true)
+    HTTP_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" http://127.0.0.1:18080/ready || true)
     if [ "$HTTP_CODE" = "200" ]; then
         echo "[OK] Staging recovered successfully after restart (HTTP 200) after $i seconds."
         RECOVERED=1
@@ -138,17 +138,17 @@ if [ "$RECOVERED" -ne 1 ]; then
 fi
 
 echo "=== 9. VERIFYING SPRINT 33 V11 API ENDPOINTS ON STAGING ==="
-curl -s -o /dev/null -w "Ready HTTP Code: %{{{{http_code}}}}\\n" http://127.0.0.1:18080/ready
-curl -s -o /dev/null -w "V11 Model Status HTTP Code: %{{{{http_code}}}}\\n" http://127.0.0.1:18080/api/v1/product/btc-timing/v11/model-status
-curl -s -o /dev/null -w "V11 Regime Explorer HTTP Code: %{{{{http_code}}}}\\n" http://127.0.0.1:18080/api/v1/product/btc-timing/v11/regime-explorer
-curl -s -o /dev/null -w "V11 Risk Intelligence HTTP Code: %{{{{http_code}}}}\\n" http://127.0.0.1:18080/api/v1/product/btc-timing/v11/risk-intelligence
-curl -s -o /dev/null -w "V11 Forward Returns HTTP Code: %{{{{http_code}}}}\\n" "http://127.0.0.1:18080/api/v1/product/btc-timing/v11/forward-returns?horizon=24h"
-curl -s -o /dev/null -w "V11 Model Comparison HTTP Code: %{{{{http_code}}}}\\n" http://127.0.0.1:18080/api/v1/product/btc-timing/v11/model-comparison
-curl -s -o /dev/null -w "V11 Evidence Ledger HTTP Code: %{{{{http_code}}}}\\n" http://127.0.0.1:18080/api/v1/product/btc-timing/v11/evidence-ledger
-curl -s -o /dev/null -w "V11 Deployment Safety HTTP Code: %{{{{http_code}}}}\\n" http://127.0.0.1:18080/api/v1/product/btc-timing/v11/deployment-safety
+curl -s -o /dev/null -w "Ready HTTP Code: %{{http_code}}\\n" http://127.0.0.1:18080/ready
+curl -s -o /dev/null -w "V11 Model Status HTTP Code: %{{http_code}}\\n" http://127.0.0.1:18080/api/v1/product/btc-timing/v11/model-status
+curl -s -o /dev/null -w "V11 Regime Explorer HTTP Code: %{{http_code}}\\n" http://127.0.0.1:18080/api/v1/product/btc-timing/v11/regime-explorer
+curl -s -o /dev/null -w "V11 Risk Intelligence HTTP Code: %{{http_code}}\\n" http://127.0.0.1:18080/api/v1/product/btc-timing/v11/risk-intelligence
+curl -s -o /dev/null -w "V11 Forward Returns HTTP Code: %{{http_code}}\\n" "http://127.0.0.1:18080/api/v1/product/btc-timing/v11/forward-returns?horizon=24h"
+curl -s -o /dev/null -w "V11 Model Comparison HTTP Code: %{{http_code}}\\n" http://127.0.0.1:18080/api/v1/product/btc-timing/v11/model-comparison
+curl -s -o /dev/null -w "V11 Evidence Ledger HTTP Code: %{{http_code}}\\n" http://127.0.0.1:18080/api/v1/product/btc-timing/v11/evidence-ledger
+curl -s -o /dev/null -w "V11 Deployment Safety HTTP Code: %{{http_code}}\\n" http://127.0.0.1:18080/api/v1/product/btc-timing/v11/deployment-safety
 
 echo "=== Testing Security Boundary: Live Trading Prohibited ==="
-LIVE_CODE=$(curl -s -o /dev/null -w "%{{{{http_code}}}}" -X POST http://127.0.0.1:18080/api/v1/product/btc-timing/v11/execute-live || true)
+LIVE_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" -X POST http://127.0.0.1:18080/api/v1/product/btc-timing/v11/execute-live || true)
 echo "V11 Live execution HTTP Code: $LIVE_CODE (expected 403)"
 if [ "$LIVE_CODE" != "403" ]; then
     echo "ERROR: Security boundary failed! Expected HTTP 403, got $LIVE_CODE"
@@ -214,29 +214,31 @@ def main():
     commit_sha = get_commit_sha()
     print(f"Deploying commit: {commit_sha}")
 
-    script_content = generate_remote_script(commit_sha)
+    script_content = generate_remote_script(commit_sha).replace("\r\n", "\n").replace("\r", "\n")
 
     # Run deployment script via SSH
     print("Executing deployment script on remote server...")
     proc = subprocess.run(
         ["ssh", "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=no", REMOTE_HOST, "bash -s"],
-        input=script_content,
-        text=True,
+        input=script_content.encode("utf-8"),
         capture_output=True,
     )
 
+    stdout = proc.stdout.decode("utf-8", errors="replace")
+    stderr = proc.stderr.decode("utf-8", errors="replace")
+
     print("--- Remote stdout ---")
-    print(proc.stdout)
-    if proc.stderr:
+    print(stdout)
+    if stderr:
         print("--- Remote stderr ---")
-        print(proc.stderr)
+        print(stderr)
 
     if proc.returncode != 0:
         print(f"Deployment failed with return code {proc.returncode}")
         sys.exit(proc.returncode)
 
     # Extract JSON output
-    out = proc.stdout
+    out = stdout
     if "JSON_OUTPUT_START" not in out:
         print("Failed to find JSON_OUTPUT_START in output")
         sys.exit(1)

@@ -1,0 +1,99 @@
+{
+  "sprint_id": "CBE_SPRINT33_CANONICAL_MODEL_BRIDGE_AND_MARKET_BEHAVIOR",
+  "timestamp_utc": "2026-11-15T15:41:28.292614+00:00",
+  "total_deliverables": 23,
+  "files": {
+    "01_canonical_model_architecture_audit.md": {
+      "sha256": "e3a0ccd3764124c7ad053811cff55e6f65a1915152c830cf2e67a2b4fe56a388",
+      "byte_size": 8169
+    },
+    "02_canonical_feature_dependency_matrix.json": {
+      "sha256": "c9a34f776c497fc73f4204805032db0d1e83028cf342d8ca82850d52fa078fd2",
+      "byte_size": 8550
+    },
+    "03_canonical_model_bridge_report.md": {
+      "sha256": "8869ee4a07229aafb95c0713f3ac579e7a0de0ead676e7342535bc0be2f39078",
+      "byte_size": 3502
+    },
+    "04_canonical_vs_derived_regime_comparison.json": {
+      "sha256": "0c60972e3e1ec13e3c43d77185030528190f4e698db9b3ac2394eb3a27e14df8",
+      "byte_size": 10225
+    },
+    "05_regime_persistence_analysis.json": {
+      "sha256": "835190b3e9dec9a2939e82380ff3444b2c3003b3389c512d8bdd9c889d3bc308",
+      "byte_size": 5198
+    },
+    "06_forward_return_distributions.json": {
+      "sha256": "c3b2f253251251886d77a7b4987691789c0ba81500f6ad0dd75f910ecd8fdccd",
+      "byte_size": 13224
+    },
+    "07_downside_risk_analysis.json": {
+      "sha256": "f5af28120cde0e9959f039cb121d83b94b3d96cbce8ec94e6f8e40bc46058643",
+      "byte_size": 8098
+    },
+    "08_incremental_value_assessment.md": {
+      "sha256": "611929a3485813c7ab36c4374ff648a46322b188289b0e7138fe886d8f89dade",
+      "byte_size": 4309
+    },
+    "09_historical_research_integrity_audit.md": {
+      "sha256": "04799e3b68c1315fdabc1a635c4acb02d31ac2a67150347b2a821ce2585ea406",
+      "byte_size": 4482
+    },
+    "10_dashboard_v11_acceptance.md": {
+      "sha256": "aca2f3a1e82dbb6df0c2dd700243f71dbd73e1c824cb82d33c325f0ff821fed6",
+      "byte_size": 4322
+    },
+    "11_performance_benchmarks.json": {
+      "sha256": "114620dbf2b10e0f696f4ac48e59961fa27129d513a66c3e4c1ba90e35e385b0",
+      "byte_size": 2809
+    },
+    "12_automated_test_results.json": {
+      "sha256": "7f890ea474c7cfdd2394fcc69c80b99fa10e62b96b00d173941c74afd7fcf162",
+      "byte_size": 2771
+    },
+    "13_full_regression_results.json": {
+      "sha256": "51cce1a3deb0ff51c4e70d275cf229b76ac8a457d13fc996e340467cc956976a",
+      "byte_size": 4125
+    },
+    "14_dashboard_v11_desktop.png": {
+      "sha256": "2f18b010fc9fddc8b25304586d31bfe18920ee3883cde08c042711fa75d398dc",
+      "byte_size": 116912
+    },
+    "14_dashboard_v11_mobile.png": {
+      "sha256": "d2cdb2c390a74ba5e8beb74e4f98111a9dee44da1b3ec42e90a16db765fc5dc8",
+      "byte_size": 47593
+    },
+    "14_dashboard_v11_tablet.png": {
+      "sha256": "9ea2fc20bbdbe22aa41ee9705aab9dea39b2735c88a91af5aadf9a51ad96ace0",
+      "byte_size": 99614
+    },
+    "14_playwright_results.json": {
+      "sha256": "f9d773ed57b4a5b04bee851256e23017edd30533c49bcf3ab6d954d0b2dbc043",
+      "byte_size": 1912
+    },
+    "15_deployment_trigger_audit.md": {
+      "sha256": "e3a407f8341f9e2fbee42180d8fd9ae71d409786071c89c57426e68a5597e201",
+      "byte_size": 3674
+    },
+    "16_deployment_isolation_plan.md": {
+      "sha256": "3df6e72320bf21cbe23a329e65ca86680876eec776ddfede0f162e742ad69f36",
+      "byte_size": 2353
+    },
+    "17_staging_deployment_evidence.json": {
+      "sha256": "3547f0ad6f624dfad216be06e180066b6530c3d411d385f97058d0295cbf6c81",
+      "byte_size": 1253
+    },
+    "18_production_zero_touch_evidence.json": {
+      "sha256": "4aba6fca7a8b90e6fc69946615a7572045c414ba2b4060d6f68103119226c0c7",
+      "byte_size": 819
+    },
+    "19_governance_invariants.json": {
+      "sha256": "5c82a91afd53f1b9e8bf7dc3f1aeec84aab79e5fcedfa754479b2f5c1cb6e56b",
+      "byte_size": 1542
+    },
+    "21_final_sprint33_report.md": {
+      "sha256": "ab1b4b80523194a4eebe7300f79e2e3a0197f1feed17cd0db07e1a965d731c18",
+      "byte_size": 11166
+    }
+  }
+}
