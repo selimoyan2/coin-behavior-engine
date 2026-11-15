@@ -1,0 +1,35 @@
+{
+  "sprint_id": "CBE_SPRINT34_1_SCIENTIFIC_RECONCILIATION_DATA_RECOVERY_AND_DEPLOYMENT_FORENSICS",
+  "deployment_target": "STAGING_PORT_18080",
+  "remote_host": "srv1114257 (168.231.125.238)",
+  "deployed_commit": "d92b1b5aebd82b0ab4ef20202fe0bf198e3f76c0",
+  "deployed_branch": "research/sprint33-canonical-bridge-market-intelligence",
+  "docker_container_id": "2fcd6fbd8650a3eb4fa25020fb245fbcfd98b8150b3d340836fc181dbaf80574",
+  "docker_container_name": "cbe-market-intelligence-staging-sprint34_1-20261115T200806",
+  "docker_image": "cbe-market-intelligence:sprint34_1-d92b1b5",
+  "verified_at_utc": "2026-11-15T20:08:12Z",
+  "probes": {
+    "ready_probe": {
+      "status": "READY",
+      "canonical_model_version": "CBE-0.7.0",
+      "canonical_model_status": "STRICTLY_FROZEN",
+      "governance_decision": "TECHNICAL_NO_GO",
+      "directional_trading": "STRICTLY_PROHIBITED",
+      "live_order_execution": "PERMANENTLY_PROHIBITED",
+      "http_status": 200
+    },
+    "health_probe": {
+      "status": "healthy",
+      "model_version": "CBE-0.7.0",
+      "model_status": "FROZEN",
+      "freeze_verified": true,
+      "worker_status": "RUNNING",
+      "hash_chain_valid": true,
+      "http_status": 200
+    },
+    "dashboard_probe": {
+      "http_status": 200
+    }
+  },
+  "governance_mode": "STRICTLY_OFFLINE_RESEARCH"
+}

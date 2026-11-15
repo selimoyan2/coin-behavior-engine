@@ -1,0 +1,122 @@
+{
+  "sprint_id": "CBE_SPRINT34_1_SCIENTIFIC_RECONCILIATION_DATA_RECOVERY_AND_DEPLOYMENT_FORENSICS",
+  "generated_at_utc": "2026-11-15T20:08:58.598874+00:00",
+  "total_artifacts": 23,
+  "artifacts": [
+    {
+      "filename": "01_git_and_runtime_baseline_audit.md",
+      "bytes": 5017,
+      "sha256": "bdc81059415d9972e81496148bf1122046dba62920e24dc6f94c046578eac53d"
+    },
+    {
+      "filename": "02_portfolio_ledger_reconciliation.json",
+      "bytes": 10830,
+      "sha256": "ba2558adeb3320137e846076b40bfa4eb943bdd7ad7b2e1036b3d43eea3991c5"
+    },
+    {
+      "filename": "03_drawdown_and_trade_count_corrections.md",
+      "bytes": 4555,
+      "sha256": "15dbe13c1edba68595f11415781f24e25a804e3f71f95ae25e484225d94edce5"
+    },
+    {
+      "filename": "04_statistical_claims_audit.json",
+      "bytes": 5544,
+      "sha256": "a53ab6e9d0c2328c96e3c7cc396e4de2b8f19f5edade6e102d9428f9246d306b"
+    },
+    {
+      "filename": "04_statistical_claims_audit.md",
+      "bytes": 4950,
+      "sha256": "5527ca3288774e3dbdcdddd243fa928a46b169ae758d22ab5782088854d2014a"
+    },
+    {
+      "filename": "05_calibration_chronology_audit.md",
+      "bytes": 3151,
+      "sha256": "dfa937adaf07a175814348ef266d6fe3565a77ff2471a5a0992e11b68a4f538b"
+    },
+    {
+      "filename": "06_canonical_fallback_and_attribution_audit.md",
+      "bytes": 3866,
+      "sha256": "4f0cf553b46da9d78657b1b87a158dfaf722e6d149feb44e16c5bcb86aba9c44"
+    },
+    {
+      "filename": "07_october_data_root_cause.md",
+      "bytes": 2043,
+      "sha256": "2f06f8e68eab6eaa65e76ec9c0b5c519a950af110e1640c581ac390536e5d371"
+    },
+    {
+      "filename": "08_november_data_availability.md",
+      "bytes": 1142,
+      "sha256": "bbccc88a92181bbe040e2a7ce04aa3dadbb4e8754288af00ddf17b3b049fedc5"
+    },
+    {
+      "filename": "09_offline_importer_integrity.json",
+      "bytes": 712,
+      "sha256": "fc747a029811a855c46e6af1a29702778551e23839d3aed89f65847531237442"
+    },
+    {
+      "filename": "10_dataset_registry_reconciliation.json",
+      "bytes": 38656,
+      "sha256": "150305fa0dd640e88346dd0a4931c5c932bdf52a751a65925d795d5d0cdf7cea"
+    },
+    {
+      "filename": "11_coolify_runtime_comparison.md",
+      "bytes": 3299,
+      "sha256": "d4ae0bda8e4b6dccdd6e4f1bb4e2748823733c387d0c5c658792ab9f8755beb2"
+    },
+    {
+      "filename": "12_dashboard_data_acceptance.json",
+      "bytes": 1272,
+      "sha256": "b34aa3c06a59fb4a7be787075099a8a6878e863d8fa0f86f543c5f97c660a11b"
+    },
+    {
+      "filename": "13_targeted_test_results.json",
+      "bytes": 1297,
+      "sha256": "987c9885c71c53dcdc0b03f734f516db17a30e3a109bad49e0df239c798e2c0c"
+    },
+    {
+      "filename": "14_full_repository_regression.json",
+      "bytes": 4096,
+      "sha256": "525fc6f2b5d0cb528dd185bd8652d75232b6e5c137fdc4e30cec760c265d0c85"
+    },
+    {
+      "filename": "15_dashboard_v11_1_desktop.png",
+      "bytes": 124434,
+      "sha256": "5f003341286869a71bf35fa11b7f23dff9a35020faad2f4ca1b2827e0d2aafe6"
+    },
+    {
+      "filename": "15_dashboard_v11_1_mobile.png",
+      "bytes": 45842,
+      "sha256": "2e16e0f913e4666bd6d732d948c774c6c927d4d1d4911ce5f812089e2b43dba2"
+    },
+    {
+      "filename": "15_dashboard_v11_1_tablet.png",
+      "bytes": 102399,
+      "sha256": "401f16c0620fde2d45213c7f60c75ebd3a0c988ffe28dfa4fa03c3bc72a0fd1d"
+    },
+    {
+      "filename": "15_playwright_acceptance.json",
+      "bytes": 1518,
+      "sha256": "8d5b54a8c45f4f20f74f426f33ede87411e40b22929136a410338a58df480f13"
+    },
+    {
+      "filename": "16_staging_deployment_evidence.json",
+      "bytes": 1332,
+      "sha256": "ab6b65ba8a418227560b3b3d085a5eed40ccd2e20d31e216c5eaaabed35a21b0"
+    },
+    {
+      "filename": "17_production_zero_touch_evidence.json",
+      "bytes": 795,
+      "sha256": "d3b050a238862b377aa50849946e8bc25db6ed92ca93192560b83a4720a32356"
+    },
+    {
+      "filename": "19_final_acceptance_report.md",
+      "bytes": 13221,
+      "sha256": "02416c308cd473d88d8fd6cde62a584d14ff8b80b6663e396d233876ec1e3162"
+    },
+    {
+      "filename": "test_server_sprint34_1.log",
+      "bytes": 8813,
+      "sha256": "0d233e93ca0c52feff417046e7b325f7a786266652935a6beb1f6d2a2489a7ab"
+    }
+  ]
+}
