@@ -1,0 +1,83 @@
+{
+  "release_verification_timestamp_utc": "2026-11-15T22:18:58.820977+00:00",
+  "production_url": "https://coin.ozelweb.com.tr",
+  "verdict": "PRODUCTION_RELEASE_SUCCESS_VERIFIED",
+  "git_lineage": {
+    "production_baseline_sha": "c9e3907a226cfbe01e73f87c960156afdd874dc4",
+    "approved_candidate_sha": "f342e40546eca538db54d8d32861f6946617dd0b",
+    "deployed_commit_sha": "f342e40546eca538db54d8d32861f6946617dd0b",
+    "fast_forward_merge": "SUCCESS"
+  },
+  "docker_provenance": {
+    "previous_image_id": "sha256:6969f8cb761cb01fc783c1ffbb2b896be8c98f975ed9a438e5d02b4c4820047f",
+    "deployed_image_tag": "6t63aehpaw0cw1bbt4zcm09g:f342e40546eca538db54d8d32861f6946617dd0b",
+    "deployed_container_name": "6t63aehpaw0cw1bbt4zcm09g-20261115T221312",
+    "deployed_container_id": "d20a430d9704"
+  },
+  "runtime_telemetry": {
+    "health": {
+      "status": "healthy",
+      "service": "coin-behavior-engine",
+      "model_version": "CBE-0.7.0",
+      "model_status": "FROZEN",
+      "freeze_verified": true,
+      "worker_status": "RUNNING",
+      "hash_chain_valid": true,
+      "last_processed_bar": "2026-10-23T21:15:00Z",
+      "last_prediction_age_sec": 1991037.5,
+      "prediction_count": 8432,
+      "timestamp": "2026-11-15T22:18:57Z",
+      "uptime_seconds": 190.6
+    },
+    "runtime_build": {
+      "status": "success",
+      "environment": "staging",
+      "application_version": "CBE-0.7.0 (FROZEN)",
+      "build_commit": "f342e40546eca538db54d8d32861f6946617dd0b",
+      "build_commit_short": "f342e405",
+      "build_timestamp_utc": "2026-11-15T22:15:00Z",
+      "dataset_manifest_version": "cbe-manifest-v2-73a6212acca3",
+      "dataset_manifest_sha256": "1ff50222c31a486b094a7f2ac9f06d38b1258527e5492acbef5faf9a73c55f14",
+      "manifest_sha256": "1ff50222c31a486b094a7f2ac9f06d38b1258527e5492acbef5faf9a73c55f14",
+      "manifest_hash": "1ff50222c31a486b094a7f2ac9f06d38b1258527e5492acbef5faf9a73c55f14",
+      "image_digest": "sha256:df870b4ef58bbf6d71ab48a575b1cf196d6618f6fc5ec6f1498de8ce3856dc27",
+      "source_commit_sha": "f342e40546eca538db54d8d32861f6946617dd0b",
+      "runtime_identity_verified": true,
+      "schema_version": "1.0.0"
+    },
+    "dataset_coverage": {
+      "total_months": 59,
+      "earliest_month": "2022-01",
+      "latest_month": "2026-11",
+      "latest_candle": {
+        "timestamp_utc": "2026-11-15T21:15:00Z",
+        "open_time": 1794777300000,
+        "interval": "5m",
+        "month": "2026-11",
+        "open": 65007.31,
+        "high": 65018.01,
+        "low": 64928.44,
+        "close": 64966.01,
+        "volume": 86.97157
+      }
+    }
+  },
+  "governance_enforcement": {
+    "canonical_model": "CBE-0.7.0",
+    "model_frozen": true,
+    "live_trading_prohibition": {
+      "http_status": 403,
+      "body": {
+        "error": "GOVERNANCE_VIOLATION",
+        "message": "Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.",
+        "canonical_model": "CBE-0.7.0",
+        "governance_decision": "TECHNICAL_NO_GO"
+      }
+    }
+  },
+  "playwright_acceptance": {
+    "desktop": "PASS (research_outputs/sprint35_historical_data_dashboard_v12_release/20_prod_desktop.png)",
+    "tablet": "PASS (research_outputs/sprint35_historical_data_dashboard_v12_release/20_prod_tablet.png)",
+    "mobile": "PASS (research_outputs/sprint35_historical_data_dashboard_v12_release/20_prod_mobile.png)"
+  }
+}

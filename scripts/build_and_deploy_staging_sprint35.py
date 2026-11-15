@@ -121,9 +121,16 @@ STAGING_CID=$(docker run -d \\
     {image_tag} python -m coin_behavior_engine.web.server --host 0.0.0.0 --port 8000 --no-worker)
 
 echo "Launched Staging Container: $STAGING_CID ($STAGING_NAME)"
-sleep 4
 
 echo "=== 7. POST-FLIGHT STAGING HEALTH & ENDPOINT VALIDATION ==="
+for i in $(seq 1 20); do
+    if curl -s -f http://127.0.0.1:18080/health >/dev/null 2>&1; then
+        echo "[OK] Staging health check passed after $i seconds!"
+        break
+    fi
+    sleep 1
+done
+
 curl -s -f http://127.0.0.1:18080/health || (echo "Health check failed!" && docker logs "$STAGING_CID" && exit 1)
 
 HEALTH_RESP=$(curl -s http://127.0.0.1:18080/health)
@@ -139,7 +146,7 @@ CANDLES_NOV=$(curl -s "http://127.0.0.1:18080/api/v1/product/historical-candles?
 echo "November 2026 Candles (first 200 chars): ${{CANDLES_NOV:0:200}}"
 
 # Verify live trading blocked
-TRADE_HTTP_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" -X POST http://127.0.0.1:18080/api/v1/order/execute)
+TRADE_HTTP_CODE=$(curl -s -o /dev/null -w "%{{http_code}}" -X POST http://127.0.0.1:18080/api/v1/product/order/execute)
 echo "Trade Endpoint HTTP Code: $TRADE_HTTP_CODE"
 if [ "$TRADE_HTTP_CODE" != "403" ]; then
     echo "ERROR: Expected HTTP 403 on trading endpoint, got $TRADE_HTTP_CODE"

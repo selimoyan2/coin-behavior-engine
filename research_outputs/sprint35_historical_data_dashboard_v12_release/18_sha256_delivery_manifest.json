@@ -1,7 +1,7 @@
 {
   "metadata": {
     "sprint_id": "CBE_SPRINT35_HISTORICAL_DATA_COMPLETION_DASHBOARD_V12_RELEASE_READINESS",
-    "generated_at_utc": "2026-11-15T22:00:40.213716+00:00",
+    "generated_at_utc": "2026-11-15T22:19:02.994109+00:00",
     "target_branch": "research/sprint33-canonical-bridge-market-intelligence",
     "canonical_model": "CBE-0.7.0",
     "model_status": "STRICTLY_FROZEN",
@@ -9,7 +9,7 @@
     "staging_container_id": "fa065f377c81",
     "production_zero_touch_container": "3ec682ef49a4",
     "production_zero_touch_verified": true,
-    "total_artifacts": 22
+    "total_artifacts": 26
   },
   "artifacts": [
     {
@@ -64,8 +64,8 @@
     },
     {
       "filename": "11_release_candidate_manifest.json",
-      "sha256": "ae93bd86125d837c3fd1589aa24c4eeee384fcb1c7c3f81788937a487f1bff88",
-      "size_bytes": 1639
+      "sha256": "720c25141aa8a884ccb06d78c947c4b26dd238130a07ebfeba5bd9313bbe1773",
+      "size_bytes": 1641
     },
     {
       "filename": "12_production_release_plan.md",
@@ -104,18 +104,38 @@
     },
     {
       "filename": "16_staging_deployment_evidence.json",
-      "sha256": "a407eba90d4affbe488a542fb101118e255765e2cae7cae8c08e65ebcf26e746",
-      "size_bytes": 9721
+      "sha256": "7bdc8be0a86db97344f321c8b0fbfae49737cb340f9d51119b91f7c27a7e0b58",
+      "size_bytes": 1219
     },
     {
       "filename": "17_production_zero_touch_evidence.json",
-      "sha256": "60602148757724bfc564d89ef480a9e3613db3e67ed2cbe5b6334658f6a11e19",
-      "size_bytes": 676
+      "sha256": "684ed11550785cde8655c66052f20f1fa90b3b32516edbe71af163778e5ac814",
+      "size_bytes": 515
     },
     {
       "filename": "19_final_acceptance_report.md",
       "sha256": "a00f15298e4854a113492c4c72bdd67b18a1fb13391cec668ce44088ba12cb79",
       "size_bytes": 8733
+    },
+    {
+      "filename": "20_prod_desktop.png",
+      "sha256": "d55783d3d174583999b77b91f9963691897ab1b29790b642f7eadc105c76029c",
+      "size_bytes": 111210
+    },
+    {
+      "filename": "20_prod_mobile.png",
+      "sha256": "6ca047594f4b89ab8e95d8f76348ccdf66f0bfd82ba7ca7d41602ec099e75c2b",
+      "size_bytes": 51542
+    },
+    {
+      "filename": "20_prod_tablet.png",
+      "sha256": "80ba1d486921ee1f91d7b6946c2ef03745306d216855f1939b537287041e508b",
+      "size_bytes": 101252
+    },
+    {
+      "filename": "21_production_release_acceptance_evidence.json",
+      "sha256": "afc10ea96de0e239f69e8bad59a01ec5a443a8af31e88158e77fd3e5b9e4afc4",
+      "size_bytes": 3474
     },
     {
       "filename": "test_server_sprint35.log",

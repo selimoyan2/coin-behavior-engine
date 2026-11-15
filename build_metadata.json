@@ -1,14 +1,14 @@
 {
   "application_version": "CBE-0.7.0 (FROZEN)",
   "canonical_model_version": "CBE-0.7.0",
-  "source_commit_sha": "d06e8b6078eee4e60a649103b67ff60ec64d43fb",
-  "build_commit_sha": "d06e8b6078eee4e60a649103b67ff60ec64d43fb",
-  "git_commit": "d06e8b6078eee4e60a649103b67ff60ec64d43fb",
-  "git_revision": "d06e8b6078eee4e60a649103b67ff60ec64d43fb",
-  "git_revision_short": "d06e8b60",
-  "build_timestamp_utc": "2026-11-09T18:00:00Z",
-  "dataset_manifest_version": "cbe-manifest-v2-73a6212acca3",
-  "dataset_manifest_sha256": "fe6c73326c639ee048012cbeb4d50cb9b25014552411ae7a4ef5a57be448ad97",
-  "environment": "staging",
-  "provenance": "CBE Product Acceleration Build Pipeline Sprint 23 Final Closure"
+  "source_commit_sha": "f342e40546eca538db54d8d32861f6946617dd0b",
+  "build_commit_sha": "f342e40546eca538db54d8d32861f6946617dd0b",
+  "git_commit": "f342e40546eca538db54d8d32861f6946617dd0b",
+  "git_revision": "f342e40546eca538db54d8d32861f6946617dd0b",
+  "git_revision_short": "f342e405",
+  "build_timestamp_utc": "2026-11-15T22:15:00Z",
+  "dataset_manifest_version": "cbe-manifest-v2-3671f192b85a",
+  "dataset_manifest_sha256": "1ff50222c31a486b094a7f2ac9f06d38b1258527e5492acbef5faf9a73c55f14",
+  "environment": "production",
+  "provenance": "CBE Sprint 35 Release Candidate V12 Production Deployment"
 }

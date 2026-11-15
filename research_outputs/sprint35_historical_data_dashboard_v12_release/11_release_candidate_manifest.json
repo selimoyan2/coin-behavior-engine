@@ -1,20 +1,22 @@
 {
   "release_candidate_id": "CBE-RC-SPRINT35-V12",
-  "status": "READY_FOR_OPERATOR_REVIEW",
-  "created_at_utc": "2026-11-15T21:34:00Z",
+  "status": "OPERATOR_APPROVED_FOR_RELEASE",
+  "created_at_utc": "2026-11-16T01:03:00Z",
   "governance": {
     "canonical_model": "CBE-0.7.0",
     "model_status": "STRICTLY_FROZEN",
     "research_mode": "STRICTLY_OFFLINE_RESEARCH",
     "live_trading": "PERMANENTLY_PROHIBITED",
-    "production_zero_touch": "STRICT_ZERO_TOUCH",
-    "coolify_production_action": "NEVER_MERGE_OR_DEPLOY_AUTOMATICALLY"
+    "production_zero_touch": "AUTHORIZED_OPERATOR_RELEASE",
+    "operator_authorization": "APPROVED_BY_OPERATOR"
   },
   "git_provenance": {
     "repository": "selimoyan2/coin-behavior-engine",
     "working_branch": "research/sprint33-canonical-bridge-market-intelligence",
-    "base_starting_commit": "59744f2d6ad376df97383723a4efb348b8b9e7cd",
-    "target_release_branch": "main"
+    "approved_candidate_commit": "f342e40546eca538db54d8d32861f6946617dd0b",
+    "production_baseline_commit": "c9e3907a226cfbe01e73f87c960156afdd874dc4",
+    "target_release_branch": "main",
+    "fast_forward_verified": true
   },
   "data_assets": {
     "symbol": "BTCUSDT",
@@ -29,10 +31,9 @@
     "synthetic_candles_count": 0
   },
   "deliverables": {
-    "dataset_registry": "V2.0 (multi-timeframe aware)",
+    "dataset_registry": "V2.0 (multi-timeframe aware, gap audit, SHA256)",
     "offline_importer": "V2.0 (hardened path traversal & candle physics validation)",
-    "dashboard_ui": "Dashboard V12 (dark mode, multi-viewport, dynamic months)",
+    "dashboard_ui": "Dashboard V12 (dark mode, multi-viewport, dynamic months, gap disclosure)",
     "scientific_reconciliation": "Lag sensitivity documented, MAE phase offset precision corrected, Kruskal-Wallis invariance verified"
-  },
-  "operator_action_required": "Human operator must review evidence artifacts and execute manual fast-forward merge from research branch to main."
+  }
 }

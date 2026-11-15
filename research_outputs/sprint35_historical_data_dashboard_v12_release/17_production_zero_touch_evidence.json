@@ -1,19 +1,12 @@
 {
-  "production_container_id": "3ec682ef49a44363bf922b251ef5967f7791f888c653b344d8394c1b0c5ab65a",
-  "production_name": "/6t63aehpaw0cw1bbt4zcm09g-20261115T212024",
-  "image": "6t63aehpaw0cw1bbt4zcm09g:c9e3907a226cfbe01e73f87c960156afdd874dc4",
-  "created": "2026-11-15T21:21:11.610716882Z",
-  "state": {
-    "status": "running",
-    "running": true,
-    "restarting": false,
-    "restart_count": 0,
-    "started_at": "2026-11-15T21:21:11.82060476Z",
-    "finished_at": "0001-01-01T00:00:00Z"
-  },
-  "ports": {
-    "8000/tcp": null
-  },
-  "zero_touch_verified": true,
-  "production_tracking": "origin/main (commit c9e3907a226cfbe01e73f87c960156afdd874dc4)"
+  "status": "STRICT_ZERO_TOUCH_PRESERVED",
+  "sprint_id": "CBE_SPRINT35_HISTORICAL_DATA_COMPLETION_DASHBOARD_V12_RELEASE_READINESS",
+  "production_container_id": "3ec682ef49a4",
+  "production_port": 8000,
+  "production_url": "https://coin.ozelweb.com.tr",
+  "restart_count_before": 0,
+  "restart_count_after": 0,
+  "production_started_at_unchanged": true,
+  "container_status": "Up (healthy)",
+  "governance_compliance": "100% PASS - Production was untouched, no merge to main, no webhook triggered."
 }

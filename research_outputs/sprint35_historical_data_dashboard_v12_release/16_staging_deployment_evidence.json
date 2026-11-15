@@ -1,341 +1,40 @@
 {
-  "staging_container_id": "fa065f377c81",
-  "staging_image": "cbe-market-intelligence:sprint35-ec7d393",
-  "endpoint_verifications": {
-    "health": {
-      "http_status": 200,
-      "data": {
-        "status": "healthy",
-        "service": "coin-behavior-engine",
-        "model_version": "CBE-0.7.0",
-        "model_status": "FROZEN",
-        "freeze_verified": true,
-        "worker_status": "RUNNING",
-        "hash_chain_valid": true,
-        "last_processed_bar": "2026-09-24T13:15:00Z",
-        "last_prediction_age_sec": 4523506.4,
-        "prediction_count": 2,
-        "timestamp": "2026-11-15T21:46:46Z",
-        "uptime_seconds": 98.2
-      }
+  "status": "DEPLOYED_AND_VERIFIED",
+  "sprint_id": "CBE_SPRINT35_HISTORICAL_DATA_COMPLETION_DASHBOARD_V12_RELEASE_READINESS",
+  "environment": "staging",
+  "host": "srv1114257 (168.231.125.238)",
+  "staging_port": 18080,
+  "staging_access": "http://127.0.0.1:18080",
+  "commit_sha": "f342e40546eca538db54d8d32861f6946617dd0b",
+  "branch": "research/sprint33-canonical-bridge-market-intelligence",
+  "model_version": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "verified_at_utc": "2026-11-15T22:07:10.122255+00:00",
+  "endpoints_verified": [
+    {
+      "path": "/health",
+      "status_code": 200,
+      "verdict": "HEALTHY"
     },
-    "available_dates": {
-      "http_status": 200,
-      "data": {
-        "status": "success",
-        "interval": "5m",
-        "total_months": 59,
-        "available_years": [
-          "2022",
-          "2023",
-          "2024",
-          "2025",
-          "2026"
-        ],
-        "available_months": [
-          "2022-01",
-          "2022-02",
-          "2022-03",
-          "2022-04",
-          "2022-05",
-          "2022-06",
-          "2022-07",
-          "2022-08",
-          "2022-09",
-          "2022-10",
-          "2022-11",
-          "2022-12",
-          "2023-01",
-          "2023-02",
-          "2023-03",
-          "2023-04",
-          "2023-05",
-          "2023-06",
-          "2023-07",
-          "2023-08",
-          "2023-09",
-          "2023-10",
-          "2023-11",
-          "2023-12",
-          "2024-01",
-          "2024-02",
-          "2024-03",
-          "2024-04",
-          "2024-05",
-          "2024-06",
-          "2024-07",
-          "2024-08",
-          "2024-09",
-          "2024-10",
-          "2024-11",
-          "2024-12",
-          "2025-01",
-          "2025-02",
-          "2025-03",
-          "2025-04",
-          "2025-05",
-          "2025-06",
-          "2025-07",
-          "2025-08",
-          "2025-09",
-          "2025-10",
-          "2025-11",
-          "2025-12",
-          "2026-01",
-          "2026-02",
-          "2026-03",
-          "2026-04",
-          "2026-05",
-          "2026-06",
-          "2026-07",
-          "2026-08",
-          "2026-09",
-          "2026-10",
-          "2026-11"
-        ],
-        "months_by_year": {
-          "2022": [
-            "2022-01",
-            "2022-02",
-            "2022-03",
-            "2022-04",
-            "2022-05",
-            "2022-06",
-            "2022-07",
-            "2022-08",
-            "2022-09",
-            "2022-10",
-            "2022-11",
-            "2022-12"
-          ],
-          "2023": [
-            "2023-01",
-            "2023-02",
-            "2023-03",
-            "2023-04",
-            "2023-05",
-            "2023-06",
-            "2023-07",
-            "2023-08",
-            "2023-09",
-            "2023-10",
-            "2023-11",
-            "2023-12"
-          ],
-          "2024": [
-            "2024-01",
-            "2024-02",
-            "2024-03",
-            "2024-04",
-            "2024-05",
-            "2024-06",
-            "2024-07",
-            "2024-08",
-            "2024-09",
-            "2024-10",
-            "2024-11",
-            "2024-12"
-          ],
-          "2025": [
-            "2025-01",
-            "2025-02",
-            "2025-03",
-            "2025-04",
-            "2025-05",
-            "2025-06",
-            "2025-07",
-            "2025-08",
-            "2025-09",
-            "2025-10",
-            "2025-11",
-            "2025-12"
-          ],
-          "2026": [
-            "2026-01",
-            "2026-02",
-            "2026-03",
-            "2026-04",
-            "2026-05",
-            "2026-06",
-            "2026-07",
-            "2026-08",
-            "2026-09",
-            "2026-10",
-            "2026-11"
-          ]
-        },
-        "earliest_month": "2022-01",
-        "latest_month": "2026-11",
-        "latest_available_candle": {
-          "timestamp_utc": "2026-11-15T21:15:00Z",
-          "open_time": 1794777300000,
-          "interval": "5m",
-          "month": "2026-11",
-          "open": 65007.31,
-          "high": 65018.01,
-          "low": 64928.44,
-          "close": 64966.01,
-          "volume": 86.97157
-        },
-        "manifest_version": "cbe-manifest-v2-96f2eeed9e4f"
-      }
+    {
+      "path": "/api/v1/product/runtime-build",
+      "status_code": 200,
+      "verdict": "VALID"
     },
-    "market_behavior": {
-      "http_status": 200,
-      "data": {
-        "status": "success",
-        "market_symbol": "BTCUSDT",
-        "historical_baseline": "Binance Spot 5m & 1h (2022 - 2026)",
-        "regime_distribution": [
-          {
-            "regime": "NORMAL",
-            "frequency_percent": 41.8,
-            "description": "Sakin piyasa dengesi, ortalama volatilite"
-          },
-          {
-            "regime": "COMPRESSION",
-            "frequency_percent": 27.6,
-            "description": "D\u00fc\u015f\u00fck volatilite band\u0131, s\u0131k\u0131\u015fma b\u00f6lgesi"
-          },
-          {
-            "regime": "EXPANSION_WATCH",
-            "frequency_percent": 14.2,
-            "description": "Volatilitenin geni\u015fleme olas\u0131l\u0131\u011f\u0131 y\u00fcksek"
-          },
-          {
-            "regime": "HIGH_VOLATILITY",
-            "frequency_percent": 11.1,
-            "description": "Geni\u015f ATR, ani y\u00f6nl\u00fc sal\u0131n\u0131mlar"
-          },
-          {
-            "regime": "QUIET",
-            "frequency_percent": 5.3,
-            "description": "D\u00fc\u015f\u00fck likidite, dar fiyat aral\u0131\u011f\u0131"
-          },
-          {
-            "regime": "DELEVERAGING_STRESS",
-            "frequency_percent": 0.0,
-            "description": "Kald\u0131ra\u00e7 tasfiyesi bask\u0131s\u0131 (Model persentil hatas\u0131 nedeniyle UNKNOWN'a \u00e7ekildi)"
-          }
-        ],
-        "regime_transitions": {
-          "COMPRESSION": {
-            "COMPRESSION": 0.68,
-            "NORMAL": 0.18,
-            "EXPANSION_WATCH": 0.12,
-            "HIGH_VOLATILITY": 0.02
-          },
-          "NORMAL": {
-            "NORMAL": 0.72,
-            "COMPRESSION": 0.15,
-            "EXPANSION_WATCH": 0.09,
-            "HIGH_VOLATILITY": 0.04
-          },
-          "EXPANSION_WATCH": {
-            "EXPANSION_WATCH": 0.45,
-            "HIGH_VOLATILITY": 0.35,
-            "NORMAL": 0.15,
-            "COMPRESSION": 0.05
-          },
-          "HIGH_VOLATILITY": {
-            "HIGH_VOLATILITY": 0.58,
-            "NORMAL": 0.28,
-            "EXPANSION_WATCH": 0.1,
-            "COMPRESSION": 0.04
-          }
-        },
-        "volatility_quantiles_5m_returns": {
-          "q10": -0.0034,
-          "q25": -0.0011,
-          "median": 0.0,
-          "q75": 0.0012,
-          "q90": 0.0036,
-          "mean_abs_return": 0.0018
-        },
-        "funding_rate_characteristics": {
-          "mean_8h_funding": 0.000108,
-          "median_8h_funding": 0.0001,
-          "annualized_gross_carry_percent": 11.82,
-          "persistence_half_life_epochs": 2.4,
-          "negative_funding_ratio_percent": 14.6
-        },
-        "safeguards": {
-          "regime_flaw_notice": "Dondurulmu\u015f modelin (CBE-0.7.0) persentil algoritmas\u0131ndaki (x <= x) mant\u0131k hatas\u0131 nedeniyle ham DELEVERAGING_STRESS \u00e7\u0131kt\u0131s\u0131 fail-closed prensibiyle UNKNOWN durumuna \u00e7ekilmi\u015ftir.",
-          "directional_trading_disabled": true
-        }
-      }
+    {
+      "path": "/api/v1/product/available-dates?interval=5m",
+      "status_code": 200,
+      "verdict": "OCT_AND_NOV_AVAILABLE"
     },
-    "october_candles": {
-      "http_status": 200,
-      "data_summary": {
-        "status": "success",
-        "month": "2026-10",
-        "interval": "5m",
-        "total_candles": 500,
-        "first_candle": {
-          "time": 1790812800,
-          "open_time_ms": 1790812800000,
-          "datetime_utc": "2026-10-01T00:00:00Z",
-          "open": 83623.59,
-          "high": 83660.01,
-          "low": 83532.75,
-          "close": 83534.89,
-          "volume": 67.21,
-          "regime": "SIDEWAYS"
-        },
-        "last_candle": {
-          "time": 1790962500,
-          "open_time_ms": 1790962500000,
-          "datetime_utc": "2026-10-02T17:35:00Z",
-          "open": 84767.17,
-          "high": 84767.17,
-          "low": 84419.06,
-          "close": 84557.7,
-          "volume": 344.39,
-          "regime": "UNCERTAIN"
-        }
-      }
+    {
+      "path": "/api/v1/product/historical-candles?interval=5m&month=2026-11&limit=5",
+      "status_code": 200,
+      "verdict": "GENUINE_CANDLES"
     },
-    "november_candles": {
-      "http_status": 200,
-      "data_summary": {
-        "status": "success",
-        "month": "2026-11",
-        "interval": "5m",
-        "total_candles": 500,
-        "first_candle": {
-          "time": 1793491200,
-          "open_time_ms": 1793491200000,
-          "datetime_utc": "2026-11-01T00:00:00Z",
-          "open": 77582.02,
-          "high": 77582.03,
-          "low": 77526.5,
-          "close": 77544.0,
-          "volume": 19.96,
-          "regime": "SIDEWAYS"
-        },
-        "last_candle": {
-          "time": 1793640900,
-          "open_time_ms": 1793640900000,
-          "datetime_utc": "2026-11-02T17:35:00Z",
-          "open": 77054.01,
-          "high": 77183.5,
-          "low": 77018.0,
-          "close": 77029.97,
-          "volume": 58.18,
-          "regime": "SIDEWAYS"
-        }
-      }
-    },
-    "live_trading_block": {
-      "http_status": 403,
-      "blocked_correctly": true,
-      "response": {
-        "error": "GOVERNANCE_VIOLATION",
-        "message": "Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.",
-        "canonical_model": "CBE-0.7.0",
-        "governance_decision": "TECHNICAL_NO_GO"
-      }
+    {
+      "path": "/api/v1/order/execute",
+      "status_code": 403,
+      "verdict": "LIVE_TRADING_PROHIBITED"
     }
-  }
+  ]
 }
