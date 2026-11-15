@@ -1,7 +1,8 @@
 {
   "sprint_id": "CBE_SPRINT36_1_FINAL_ACCEPTANCE_CORRECTION",
   "branch": "research/sprint36-dashboard-v13-market-behavior",
-  "timestamp_utc": "2026-11-15T23:53:34.255761+00:00",
+  "commit_sha": "fd72ead5425b511d73258d461a93ff1082a71fbf",
+  "staging_container_id": "4f5f625bd835e044257a3841a83d9156529cb4b7598b2d8cab40a39340213ab4",
   "artifacts": {
     "01_central_coverage_manifest.json": {
       "relative_github_path": "research_outputs/sprint36_dashboard_v13_market_behavior/01_central_coverage_manifest.json",
@@ -145,8 +146,8 @@
     },
     "14_staging_deployment_evidence.json": {
       "relative_github_path": "research_outputs/sprint36_dashboard_v13_market_behavior/14_staging_deployment_evidence.json",
-      "sha256": "2f8bc9d25b02eeb2637bbe6befbd30f53ed3d38f59bcf50242513f4871351f61",
-      "bytes": 3452
+      "sha256": "c5160bb29d00f5960b983aa54fa24541676c70fb55e16741231f0275375f446a",
+      "bytes": 3605
     },
     "16_final_acceptance_report.md": {
       "relative_github_path": "research_outputs/sprint36_dashboard_v13_market_behavior/16_final_acceptance_report.md",
