@@ -1,0 +1,66 @@
+{
+  "status": "success",
+  "timestamp_utc": "2026-11-15T23:17:52.421734+00:00",
+  "endpoints_audited": [
+    {
+      "path": "/api/v1/product/central-coverage",
+      "method": "GET",
+      "auth": "READ_ONLY",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/product/candle-quality-audit",
+      "method": "GET",
+      "auth": "READ_ONLY",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/product/market-behavior",
+      "method": "GET",
+      "auth": "READ_ONLY",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/product/market-behavior/regimes",
+      "method": "GET",
+      "auth": "READ_ONLY",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/product/market-behavior/transitions",
+      "method": "GET",
+      "auth": "READ_ONLY",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/product/market-behavior/annual",
+      "method": "GET",
+      "auth": "READ_ONLY",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/product/market-behavior/risk",
+      "method": "GET",
+      "auth": "READ_ONLY",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/trade/live",
+      "method": "POST",
+      "auth": "PROHIBITED",
+      "status": 403
+    },
+    {
+      "path": "/api/v1/orders/create",
+      "method": "POST",
+      "auth": "PROHIBITED",
+      "status": 403
+    }
+  ],
+  "security_invariants": {
+    "live_trading_permanently_prohibited": true,
+    "synthetic_candles_allowed": false,
+    "read_only_research": true,
+    "fail_closed_on_unauthorized": true
+  }
+}

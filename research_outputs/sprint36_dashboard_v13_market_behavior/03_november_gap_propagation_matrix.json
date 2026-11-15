@@ -1,0 +1,254 @@
+{
+  "symbol": "BTCUSDT",
+  "month": "2026-11",
+  "raw_5m_audit": {
+    "start_utc": "2026-11-01 00:00:00 UTC",
+    "end_utc": "2026-11-15 21:15:00 UTC",
+    "total_span_5m_slots": 4288,
+    "present_candles": 4280,
+    "missing_candles": 8,
+    "missing_minutes": 40,
+    "missing_timestamps_utc": [
+      {
+        "index": 1,
+        "open_time_utc": "2026-11-03 05:15:00 UTC",
+        "open_time_ms": 1793682900000
+      },
+      {
+        "index": 2,
+        "open_time_utc": "2026-11-03 05:20:00 UTC",
+        "open_time_ms": 1793683200000
+      },
+      {
+        "index": 3,
+        "open_time_utc": "2026-11-03 05:25:00 UTC",
+        "open_time_ms": 1793683500000
+      },
+      {
+        "index": 4,
+        "open_time_utc": "2026-11-04 22:00:00 UTC",
+        "open_time_ms": 1793829600000
+      },
+      {
+        "index": 5,
+        "open_time_utc": "2026-11-05 01:35:00 UTC",
+        "open_time_ms": 1793842500000
+      },
+      {
+        "index": 6,
+        "open_time_utc": "2026-11-07 09:00:00 UTC",
+        "open_time_ms": 1794042000000
+      },
+      {
+        "index": 7,
+        "open_time_utc": "2026-11-07 09:05:00 UTC",
+        "open_time_ms": 1794042300000
+      },
+      {
+        "index": 8,
+        "open_time_utc": "2026-11-07 09:10:00 UTC",
+        "open_time_ms": 1794042600000
+      }
+    ]
+  },
+  "higher_timeframe_ripple_propagation": {
+    "15m": {
+      "bars_in_span": 1428,
+      "sub_candles_per_bar": 3,
+      "gap_affected_windows": [
+        {
+          "window_open_utc": "2026-11-03 05:15:00 UTC",
+          "status_in_parquet": "MISSING_FROM_FILE",
+          "missing_sub_bars": 3,
+          "present_sub_bars": 0,
+          "quality_class": "MISSING",
+          "detail": "All three 5m sub-bars (05:15, 05:20, 05:25) missing; bar omitted from 15m parquet"
+        },
+        {
+          "window_open_utc": "2026-11-04 22:00:00 UTC",
+          "status_in_parquet": "MISSING_FROM_FILE",
+          "missing_sub_bars": 1,
+          "present_sub_bars": 2,
+          "quality_class": "MISSING",
+          "detail": "Sub-bar 22:00 missing; bar omitted from 15m parquet"
+        },
+        {
+          "window_open_utc": "2026-11-05 01:30:00 UTC",
+          "status_in_parquet": "PRESENT_IN_FILE",
+          "missing_sub_bars": 1,
+          "present_sub_bars": 2,
+          "quality_class": "GAP_AFFECTED",
+          "detail": "Sub-bar 01:35 missing; bar present in parquet aggregated from 2 sub-bars; MUST NOT be treated as COMPLETE_VERIFIED"
+        },
+        {
+          "window_open_utc": "2026-11-07 09:00:00 UTC",
+          "status_in_parquet": "MISSING_FROM_FILE",
+          "missing_sub_bars": 3,
+          "present_sub_bars": 0,
+          "quality_class": "MISSING",
+          "detail": "All three 5m sub-bars (09:00, 09:05, 09:10) missing; bar omitted from 15m parquet"
+        }
+      ],
+      "incomplete_candles": [
+        {
+          "bar_open_utc": "2026-11-15 21:15:00 UTC",
+          "status_in_parquet": "PRESENT_IN_FILE",
+          "missing_sub_bars": 2,
+          "present_sub_bars": 1,
+          "quality_class": "INCOMPLETE_CANDLE",
+          "detail": "Month-end cutoff candle (contains only 21:15; 21:20 and 21:25 belong to unimported future)"
+        }
+      ]
+    },
+    "1h": {
+      "bars_in_span": 358,
+      "sub_candles_per_bar": 12,
+      "gap_affected_windows": [
+        {
+          "window_open_utc": "2026-11-03 05:00:00 UTC",
+          "status_in_parquet": "PRESENT_IN_FILE",
+          "missing_sub_bars": 3,
+          "present_sub_bars": 9,
+          "quality_class": "GAP_AFFECTED",
+          "detail": "Sub-bars 05:15, 05:20, 05:25 missing; aggregated from 9 sub-bars; MUST NOT be treated as COMPLETE_VERIFIED"
+        },
+        {
+          "window_open_utc": "2026-11-04 22:00:00 UTC",
+          "status_in_parquet": "MISSING_FROM_FILE",
+          "missing_sub_bars": 1,
+          "present_sub_bars": 11,
+          "quality_class": "MISSING",
+          "detail": "Sub-bar 22:00 missing; bar omitted from 1h parquet"
+        },
+        {
+          "window_open_utc": "2026-11-05 01:00:00 UTC",
+          "status_in_parquet": "PRESENT_IN_FILE",
+          "missing_sub_bars": 1,
+          "present_sub_bars": 11,
+          "quality_class": "GAP_AFFECTED",
+          "detail": "Sub-bar 01:35 missing; aggregated from 11 sub-bars; MUST NOT be treated as COMPLETE_VERIFIED"
+        },
+        {
+          "window_open_utc": "2026-11-07 09:00:00 UTC",
+          "status_in_parquet": "MISSING_FROM_FILE",
+          "missing_sub_bars": 3,
+          "present_sub_bars": 9,
+          "quality_class": "MISSING",
+          "detail": "Sub-bars 09:00, 09:05, 09:10 missing; bar omitted from 1h parquet"
+        }
+      ],
+      "incomplete_candles": [
+        {
+          "bar_open_utc": "2026-11-15 21:00:00 UTC",
+          "status_in_parquet": "PRESENT_IN_FILE",
+          "missing_sub_bars": 8,
+          "present_sub_bars": 4,
+          "quality_class": "INCOMPLETE_CANDLE",
+          "detail": "Month-end cutoff candle (contains 21:00, 21:05, 21:10, 21:15; remaining 8 sub-bars belong to future)"
+        }
+      ]
+    },
+    "4h": {
+      "bars_in_span": 90,
+      "sub_candles_per_bar": 48,
+      "gap_affected_windows": [
+        {
+          "window_open_utc": "2026-11-03 04:00:00 UTC",
+          "status_in_parquet": "PRESENT_IN_FILE",
+          "missing_sub_bars": 3,
+          "present_sub_bars": 45,
+          "quality_class": "GAP_AFFECTED",
+          "detail": "Sub-bars 05:15, 05:20, 05:25 missing; aggregated from 45 sub-bars"
+        },
+        {
+          "window_open_utc": "2026-11-04 20:00:00 UTC",
+          "status_in_parquet": "PRESENT_IN_FILE",
+          "missing_sub_bars": 1,
+          "present_sub_bars": 47,
+          "quality_class": "GAP_AFFECTED",
+          "detail": "Sub-bar 22:00 missing; aggregated from 47 sub-bars"
+        },
+        {
+          "window_open_utc": "2026-11-05 00:00:00 UTC",
+          "status_in_parquet": "PRESENT_IN_FILE",
+          "missing_sub_bars": 1,
+          "present_sub_bars": 47,
+          "quality_class": "GAP_AFFECTED",
+          "detail": "Sub-bar 01:35 missing; aggregated from 47 sub-bars"
+        },
+        {
+          "window_open_utc": "2026-11-07 08:00:00 UTC",
+          "status_in_parquet": "PRESENT_IN_FILE",
+          "missing_sub_bars": 3,
+          "present_sub_bars": 45,
+          "quality_class": "GAP_AFFECTED",
+          "detail": "Sub-bars 09:00, 09:05, 09:10 missing; aggregated from 45 sub-bars"
+        }
+      ],
+      "incomplete_candles": [
+        {
+          "bar_open_utc": "2026-11-15 20:00:00 UTC",
+          "status_in_parquet": "PRESENT_IN_FILE",
+          "missing_sub_bars": 32,
+          "present_sub_bars": 16,
+          "quality_class": "INCOMPLETE_CANDLE",
+          "detail": "Month-end cutoff candle (contains 16 of 48 sub-bars)"
+        }
+      ]
+    },
+    "1d": {
+      "bars_in_span": 15,
+      "sub_candles_per_bar": 288,
+      "gap_affected_windows": [
+        {
+          "window_open_utc": "2026-11-03 00:00:00 UTC",
+          "status_in_parquet": "PRESENT_IN_FILE",
+          "missing_sub_bars": 3,
+          "present_sub_bars": 285,
+          "quality_class": "GAP_AFFECTED",
+          "detail": "Sub-bars 05:15, 05:20, 05:25 missing; aggregated from 285 sub-bars"
+        },
+        {
+          "window_open_utc": "2026-11-04 00:00:00 UTC",
+          "status_in_parquet": "PRESENT_IN_FILE",
+          "missing_sub_bars": 1,
+          "present_sub_bars": 287,
+          "quality_class": "GAP_AFFECTED",
+          "detail": "Sub-bar 22:00 missing; aggregated from 287 sub-bars"
+        },
+        {
+          "window_open_utc": "2026-11-05 00:00:00 UTC",
+          "status_in_parquet": "PRESENT_IN_FILE",
+          "missing_sub_bars": 1,
+          "present_sub_bars": 287,
+          "quality_class": "GAP_AFFECTED",
+          "detail": "Sub-bar 01:35 missing; aggregated from 287 sub-bars"
+        },
+        {
+          "window_open_utc": "2026-11-07 00:00:00 UTC",
+          "status_in_parquet": "PRESENT_IN_FILE",
+          "missing_sub_bars": 3,
+          "present_sub_bars": 285,
+          "quality_class": "GAP_AFFECTED",
+          "detail": "Sub-bars 09:00, 09:05, 09:10 missing; aggregated from 285 sub-bars"
+        }
+      ],
+      "incomplete_candles": [
+        {
+          "bar_open_utc": "2026-11-15 00:00:00 UTC",
+          "status_in_parquet": "PRESENT_IN_FILE",
+          "missing_sub_bars": 32,
+          "present_sub_bars": 256,
+          "quality_class": "INCOMPLETE_CANDLE",
+          "detail": "Month-end cutoff candle (contains 256 of 288 sub-bars)"
+        }
+      ]
+    }
+  },
+  "synthetic_candles_policy": {
+    "synthetic_candles_allowed": false,
+    "synthetic_candles_generated": 0,
+    "interpolation_allowed": false,
+    "scientific_integrity_rule": "Gaps are surfaced transparently with strict quality labeling; no fabrication of data."
+  }
+}

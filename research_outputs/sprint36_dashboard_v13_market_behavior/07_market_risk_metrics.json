@@ -1,0 +1,59 @@
+{
+  "status": "success",
+  "timestamp_utc": "2026-11-15T23:17:52.420333+00:00",
+  "market_risk_metrics": {
+    "status": "success",
+    "filter_applied": "ALL",
+    "sample_bars": 42717,
+    "historical_drawdown": {
+      "max_drawdown_pct": -67.38,
+      "mean_drawdown_pct": -28.74,
+      "peak": {
+        "datetime": "2022-03-28 18:00:00+00:00",
+        "price_usdt": 47970.99
+      },
+      "trough": {
+        "datetime": "2022-11-21 21:00:00+00:00",
+        "price_usdt": 15649.52
+      }
+    },
+    "downside_risk": {
+      "annualized_downside_deviation_pct": 39.44,
+      "var_95_1h_pct": 0.76,
+      "var_99_1h_pct": 1.63,
+      "cvar_95_expected_shortfall_pct": 1.3,
+      "cvar_99_expected_shortfall_pct": 2.33
+    },
+    "regime_excursions_24h_mean_pct": {
+      "SIDEWAYS": {
+        "mean_mfe_pct": 1.84,
+        "mean_mae_pct": 1.86
+      },
+      "UNCERTAIN": {
+        "mean_mfe_pct": 1.51,
+        "mean_mae_pct": 1.5
+      },
+      "TRENDING_BULL": {
+        "mean_mfe_pct": 2.16,
+        "mean_mae_pct": 2.22
+      },
+      "TRENDING_BEAR": {
+        "mean_mfe_pct": 2.33,
+        "mean_mae_pct": 2.86
+      },
+      "POSSIBLE_REVERSAL": {
+        "mean_mfe_pct": 2.17,
+        "mean_mae_pct": 2.68
+      },
+      "HIGH_VOLATILITY": {
+        "mean_mfe_pct": 3.26,
+        "mean_mae_pct": 3.03
+      }
+    },
+    "methodology_notes": {
+      "point_in_time": true,
+      "zero_lookahead_guarantee": "Tüm risk metrikleri nedensel geriye dönük pencereler kullanılarak hesaplanmıştır.",
+      "missing_data_policy": "Eksik veriler interpolasyon yapılmadan hariç tutulmuştur."
+    }
+  }
+}
