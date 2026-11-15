@@ -1,6 +1,6 @@
 {
   "sprint_id": "CBE_SPRINT31_SEALED_SHADOW_EVALUATION",
-  "timestamp_utc": "2026-11-15T10:22:37.685112+00:00",
+  "timestamp_utc": "2026-11-15T10:41:01.554112+00:00",
   "canonical_model": "CBE-0.7.0",
   "model_status": "STRICTLY_FROZEN",
   "policy_package_seal": "73a8349dcf340be2360631df4e6307e5cb09ffa3b34ead81d27b9a0215f2ed3c",
@@ -14,8 +14,8 @@
       "byte_size": 16883
     },
     "src/coin_behavior_engine/product/btc_timing_research/sealed_evaluation_engine.py": {
-      "sha256": "1d16ed07d636a8bcaf184403d6b897d15f55481f5d4f172fe8cb5afc2d5eb284",
-      "byte_size": 40840
+      "sha256": "2137aa4f613f09a0d240f2985099735dea1960d5508d4dd3425df38d1ad0505b",
+      "byte_size": 40898
     },
     "src/coin_behavior_engine/product/btc_timing_research/paper_portfolio_engine.py": {
       "sha256": "c01a96db3706abb6c9359c108dc23fb88bbb21fbc9d217c37efcb062b660ec6e",

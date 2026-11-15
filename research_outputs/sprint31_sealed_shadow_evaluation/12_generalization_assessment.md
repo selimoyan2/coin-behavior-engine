@@ -1,7 +1,7 @@
 # 12 — Strategy Generalization & Epistemological Assessment Report
 
 **Sprint ID:** `CBE_SPRINT31_SEALED_SHADOW_EVALUATION`  
-**Execution ID:** `RUN-SEALED-84452AD3E0F7`  
+**Execution ID:** `RUN-SEALED-83AEE202CB22`  
 **Authoritative Verdict:** **`EMPIRICALLY_VERIFIED_NEGATIVE_ALPHA_IN_2025`**  
 
 ---

@@ -1,8 +1,8 @@
 # 10 — Transaction Cost & Accounting Reconciliation Report
 
 **Sprint ID:** `CBE_SPRINT31_SEALED_SHADOW_EVALUATION`  
-**Execution ID:** `RUN-SEALED-84452AD3E0F7`  
-**Reconciliation Date:** `2026-11-15T10:22:46.573203+00:00`  
+**Execution ID:** `RUN-SEALED-83AEE202CB22`  
+**Reconciliation Date:** `2026-11-15T10:41:03.556105+00:00`  
 **Accounting Integrity:** **`EXACT_CASH_AND_SATOSHI_CONSERVATION`**  
 
 ---

@@ -1,9 +1,9 @@
 # 11 — Scientific Hypothesis Evaluation Report
 
 **Sprint ID:** `CBE_SPRINT31_SEALED_SHADOW_EVALUATION`  
-**Execution ID:** `RUN-SEALED-84452AD3E0F7`  
+**Execution ID:** `RUN-SEALED-83AEE202CB22`  
 **Evaluation Standard:** Bonferroni Corrected Alpha: $\alpha_{adj} = 0.05 / 5 = 0.01$  
-**Evaluation Date:** `2026-11-15T10:22:46.598510+00:00`  
+**Evaluation Date:** `2026-11-15T10:41:03.571178+00:00`  
 
 ---
 

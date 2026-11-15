@@ -1,0 +1,10 @@
+{
+  "production_container_id": "fdbdba96e677",
+  "production_coolify_app": "6t63aehpaw0cw1bbt4zcm09g",
+  "production_port": 8000,
+  "zero_touch_enforced": true,
+  "restarts_count": 0,
+  "status": "running",
+  "audited_at_utc": "2026-11-15T10:40:54.178664+00:00",
+  "audit_evidence": "Production container fdbdba96e677 (6t63aehpaw0cw1bbt4zcm09g) confirmed running untouched with 0 restarts."
+}

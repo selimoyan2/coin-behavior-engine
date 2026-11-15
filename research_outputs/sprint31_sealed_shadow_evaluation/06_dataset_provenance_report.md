@@ -3,7 +3,7 @@
 **Sprint ID:** `CBE_SPRINT31_SEALED_SHADOW_EVALUATION`  
 **Dataset ID:** `DS-BTC-1H-2025-SEALED`  
 **Provenance Status:** **`PROVISIONAL_OFFLINE_IMPORT`**  
-**Attestation Timestamp:** `2026-11-15T10:22:37.811840+00:00`  
+**Attestation Timestamp:** `2026-11-15T10:41:01.642189+00:00`  
 
 ---
 

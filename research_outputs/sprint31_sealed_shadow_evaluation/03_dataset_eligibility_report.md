@@ -1,7 +1,7 @@
 # 03 — Dataset Eligibility & Integrity Audit Report
 
 **Sprint ID:** `CBE_SPRINT31_SEALED_SHADOW_EVALUATION`  
-**Audit Timestamp:** `2026-11-15T10:22:37.775038+00:00`  
+**Audit Timestamp:** `2026-11-15T10:41:01.608335+00:00`  
 **Dataset Target:** `data/historical/historical_binance_btcusdt_1h_2025.parquet`  
 **Dataset Identifier:** `DS-BTC-1H-2025-SEALED`  
 **Eligibility Verdict:** **`ELIGIBLE_UNSEEN_HOLDOUT`**  

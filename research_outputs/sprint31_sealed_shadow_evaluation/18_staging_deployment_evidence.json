@@ -1,0 +1,19 @@
+{
+  "sprint_id": "CBE_SPRINT31_SEALED_SHADOW_EVALUATION",
+  "deployment_target": "staging",
+  "remote_host": "srv1114257 (168.231.125.238)",
+  "staging_port": 18080,
+  "commit_sha": "0754e75dfd2b55df6186df87dd9fdacf68e41509",
+  "image_tag": "cbe-market-intelligence:sprint31-0754e75",
+  "ready_http_status": 200,
+  "endpoints_verified": {
+    "/ready": 200,
+    "/api/v1/product/research/btc-timing/sealed-evaluation/readiness": 200,
+    "/api/v1/product/research/btc-timing/sealed-evaluation/results": 200,
+    "/api/v1/product/research/btc-timing/sealed-evaluation/hypotheses": 200,
+    "/api/v1/product/research/btc-timing/overview": 200
+  },
+  "restart_recovery_verified": true,
+  "deployed_at_utc": "2026-11-15T10:40:54.157616+00:00",
+  "stdout": "=== PRE-FLIGHT AUDIT: CHECK PRODUCTION CONTAINER ===\n[OK] Production container fdbdba96e677 is running untouched.\nProduction Container State: Status: running, Restarts: 0\nProduction Container StartedAt: 2026-11-14T18:56:57.442994328Z\n=== 1. PREPARING BUILD CONTEXT FOR SPRINT 31 (0754e75dfd2b55df6186df87dd9fdacf68e41509) ===\nCloned SHA: 0754e75dfd2b55df6186df87dd9fdacf68e41509\n=== 2. INJECTING AUTHORITATIVE BUILD METADATA ===\n=== 3. DOCKER BUILD IMMUTABLE SPRINT 31 IMAGE ===\n=== 4. INSPECTING CREATED IMAGE ===\nIMAGE_ID: sha256:0a7d2ea571124652204795d586ebfce4ebf03996ca2aa7404fe2fe43483dec35\n=== 5. STOPPING OLD STAGING CONTAINER ===\n=== 6. STARTING NEW STAGING CONTAINER FROM IMMUTABLE IMAGE ===\n=== 7. WAITING FOR STAGING READINESS ON PORT 18080 ===\n[OK] Staging is READY (HTTP 200) after 7 seconds.\nNEW_STAGING_CID: fdefaff2bb44\n=== 8. TESTING CONTAINER RESTART RECOVERY ===\nfdefaff2bb44\n[OK] Staging recovered successfully after restart (HTTP 200) after 4 seconds.\n=== 9. VERIFYING SPRINT 31 API ENDPOINTS ON STAGING ===\nReady HTTP Code: 200\nSealed Readiness HTTP Code: 200\nSealed Results HTTP Code: 200\nSealed Hypotheses HTTP Code: 200\nOverview HTTP Code: 200\n[OK] All Sprint 31 API endpoints verified with HTTP 200.\n=== 10. POST-DEPLOYMENT PRODUCTION ZERO-TOUCH VERIFICATION ===\n[VERIFIED] Production container fdbdba96e677 untouched: Status: running, Restarts: 0\nProduction Container StartedAt: 2026-11-14T18:56:57.442994328Z\nDEPLOYMENT_SUCCESS: NEW_STAGING_CID=fdefaff2bb44 IMAGE_TAG=cbe-market-intelligence:sprint31-0754e75 IMAGE_ID=sha256:0a7d2ea571124652204795d586ebfce4ebf03996ca2aa7404fe2fe43483dec35 PROD_STATUS=Status: running, Restarts: 0 PROD_STARTED=2026-11-14T18:56:57.442994328Z\n"
+}

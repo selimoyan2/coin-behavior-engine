@@ -1,6 +1,6 @@
 {
   "schema_version": "CBE-HOLDOUT-LEDGER-V28",
-  "saved_at": "2026-11-15T10:37:40.269170+00:00",
+  "saved_at": "2026-11-15T10:41:01.657514+00:00",
   "holdout_events": [
     {
       "usage_id": "HLD-EVT-0001-4AE05C",
@@ -820,6 +820,19 @@
       "accessed_by": "Test_Runner",
       "access_timestamp": "2026-11-15T10:37:40.269170+00:00",
       "holdout_access_count": 17,
+      "selection_bias_flag": true,
+      "notes": "Subsequent access to holdout."
+    },
+    {
+      "usage_id": "HLD-EVT-0068-D336D6",
+      "holdout_partition_id": "PART-2025-SEALED-HOLDOUT",
+      "dataset_id": "DS-BTC-1H-2025-SEALED",
+      "hypothesis_id": "SPRINT_31_SEALED_EVALUATION",
+      "research_id": "RES-BTC-TIMING-SHADOW-2025",
+      "evaluation_purpose": "SPRINT_31_SEALED_SHADOW_EVALUATION",
+      "accessed_by": "Researcher_Sealed_Shadow_Audit",
+      "access_timestamp": "2026-11-15T10:41:01.657514+00:00",
+      "holdout_access_count": 18,
       "selection_bias_flag": true,
       "notes": "Subsequent access to holdout."
     }
