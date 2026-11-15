@@ -1,6 +1,6 @@
 {
   "schema_version": "CBE-HOLDOUT-LEDGER-V28",
-  "saved_at": "2026-11-15T08:25:36.625108+00:00",
+  "saved_at": "2026-11-15T10:22:37.833246+00:00",
   "holdout_events": [
     {
       "usage_id": "HLD-EVT-0001-4AE05C",
@@ -577,6 +577,43 @@
       "holdout_access_count": 48,
       "selection_bias_flag": true,
       "notes": "Second or subsequent access to holdout set; selection bias risk."
+    },
+    {
+      "usage_id": "HLD-EVT-0049-0DA377",
+      "holdout_partition_id": "PART-2024-HOLD",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "research_id": "RES-STAT-02",
+      "evaluation_purpose": "MODEL_GENERALIZATION_EVAL",
+      "accessed_by": "Researcher_Audit",
+      "access_timestamp": "2026-11-15T10:11:12.714397+00:00",
+      "holdout_access_count": 49,
+      "selection_bias_flag": true,
+      "notes": "Second or subsequent access to holdout set; selection bias risk."
+    },
+    {
+      "usage_id": "HLD-EVT-0050-BA3B00",
+      "holdout_partition_id": "PART-2024-HOLD",
+      "hypothesis_id": "HYP-VOL-PERSIST-001",
+      "research_id": "RES-STAT-02",
+      "evaluation_purpose": "EVAL",
+      "accessed_by": "Audit_Check",
+      "access_timestamp": "2026-11-15T10:11:12.756055+00:00",
+      "holdout_access_count": 50,
+      "selection_bias_flag": true,
+      "notes": "Second or subsequent access to holdout set; selection bias risk."
+    },
+    {
+      "usage_id": "HLD-EVT-0051-B67EE3",
+      "holdout_partition_id": "PART-2025-SEALED-HOLDOUT",
+      "dataset_id": "DS-BTC-1H-2025-SEALED",
+      "hypothesis_id": "SPRINT_31_SEALED_EVALUATION",
+      "research_id": "RES-BTC-TIMING-SHADOW-2025",
+      "evaluation_purpose": "SPRINT_31_SEALED_SHADOW_EVALUATION",
+      "accessed_by": "Researcher_Sealed_Shadow_Audit",
+      "access_timestamp": "2026-11-15T10:22:37.833246+00:00",
+      "holdout_access_count": 1,
+      "selection_bias_flag": false,
+      "notes": "First sealed evaluation access to unseen contiguous 2025 historical dataset."
     }
   ]
 }

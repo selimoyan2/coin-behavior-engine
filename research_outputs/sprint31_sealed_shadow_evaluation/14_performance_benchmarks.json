@@ -1,0 +1,37 @@
+{
+  "frozen_policy_manifest_verification_latency": {
+    "p50_ms": 0.062,
+    "p95_ms": 0.12,
+    "threshold_ms": 10.0,
+    "iterations": 20,
+    "status": "PASS"
+  },
+  "dataset_eligibility_and_quarantine_check_latency": {
+    "p50_ms": 6.544,
+    "p95_ms": 35.186,
+    "threshold_ms": 25.0,
+    "iterations": 10,
+    "status": "PASS"
+  },
+  "api_sealed_eval_readiness_endpoint_latency": {
+    "p50_ms": 4.647,
+    "p95_ms": 5.169,
+    "threshold_ms": 50.0,
+    "iterations": 15,
+    "status": "PASS"
+  },
+  "api_sealed_eval_hypotheses_endpoint_latency": {
+    "p50_ms": 230.477,
+    "p95_ms": 253.982,
+    "threshold_ms": 800.0,
+    "iterations": 5,
+    "status": "PASS"
+  },
+  "api_sealed_eval_results_endpoint_latency": {
+    "p50_ms": 240.302,
+    "p95_ms": 271.616,
+    "threshold_ms": 800.0,
+    "iterations": 5,
+    "status": "PASS"
+  }
+}

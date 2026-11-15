@@ -1,0 +1,27 @@
+{
+  "sprint_id": "CBE_SPRINT31_SEALED_SHADOW_EVALUATION",
+  "timestamp_utc": "2026-11-15T10:22:46.643983+00:00",
+  "ui_version": "Dashboard V9 (BTC Timing Lab - Shadow Evaluation)",
+  "subtab_id": "timing-panel-shadow-eval",
+  "sections_verified": [
+    "Section 1: Evaluation Readiness Card (Readiness, SHA-256 seal, Canonical frozen status)",
+    "Section 2: Manual Offline Dataset Import Card (File path, Symbol, Row count, Validation, Quarantine)",
+    "Section 3: Sealed Evaluation Execution Card (One-way execution trigger, Progress, Ledgers)",
+    "Section 4: Historical Shadow Portfolio & Equity Curve (HTML5 Canvas shadowEquityCanvas, Dynamic Trades)",
+    "Section 5: Benchmark Comparison Matrix (6 Frozen Policies side-by-side with Drawdowns, Costs, Returns)",
+    "Section 6: Scientific Findings & Hypotheses Evaluation Cards (H1-H5 verdicts + Epistemological Notice)"
+  ],
+  "canvas_rendering_engine": "Native HTML5 Canvas 2D (Multi-line Normalized Equity Curve with Legend)",
+  "security_gates_verified": {
+    "live_trading_endpoint": "HTTP 403 Forbidden (/api/v1/orders/execute)",
+    "read_only_research": true,
+    "browser_console_errors": 0,
+    "uncaught_page_errors": 0
+  },
+  "viewports_verified": [
+    "Desktop (1440x900)",
+    "Tablet (768x1024)",
+    "Mobile (390x844)"
+  ],
+  "status": "ACCEPTED"
+}

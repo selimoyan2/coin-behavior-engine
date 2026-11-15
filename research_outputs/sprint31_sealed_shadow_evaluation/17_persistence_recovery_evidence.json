@@ -1,0 +1,26 @@
+{
+  "sprint_id": "CBE_SPRINT31_SEALED_SHADOW_EVALUATION",
+  "timestamp_utc": "2026-11-15T10:22:46.694182+00:00",
+  "tests_conducted": [
+    {
+      "test_name": "container_restart_recovery",
+      "target": "staging (dzzfws54by1whlbq6fk4ywut)",
+      "action": "docker restart container and poll /ready",
+      "recovery_time_seconds": 2.4,
+      "status": "PASS"
+    },
+    {
+      "test_name": "holdout_usage_ledger_reload_persistence",
+      "target": "data/historical/holdout_usage_ledger.json",
+      "action": "serialize to disk, clear cache, re-read and verify execution record",
+      "status": "PASS"
+    },
+    {
+      "test_name": "policy_manifest_tamper_detection_after_reload",
+      "target": "SealedPolicyPackage",
+      "action": "verify hash survives process restart and catches single bit mutations",
+      "status": "PASS"
+    }
+  ],
+  "persistence_verdict": "VERIFIED_PERSISTENCE_RECOVERY_PASSED"
+}

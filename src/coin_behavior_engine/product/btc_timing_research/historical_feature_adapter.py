@@ -186,6 +186,7 @@ class HistoricalFeatureAdapter:
         features = df.copy()
 
         # Moving averages
+        features["sma_12"] = self.compute_sma(features["close"], 12)
         features[f"sma_{trend_short_window}"] = self.compute_sma(features["close"], trend_short_window)
         features[f"sma_{trend_long_window}"] = self.compute_sma(features["close"], trend_long_window)
         features["ema_21"] = self.compute_ema(features["close"], 21)

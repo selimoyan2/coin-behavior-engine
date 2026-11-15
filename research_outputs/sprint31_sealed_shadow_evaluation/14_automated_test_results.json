@@ -1,0 +1,21 @@
+{
+  "sprint_id": "CBE_SPRINT31_SEALED_SHADOW_EVALUATION",
+  "timestamp_utc": "2026-11-15T10:22:46.671147+00:00",
+  "test_file": "tests/test_sprint31_sealed_shadow_evaluation.py",
+  "total_tests": 34,
+  "passed_tests": 34,
+  "failed_tests": 0,
+  "skipped_tests": 0,
+  "pass_rate": "100.0%",
+  "duration_seconds": 173.95,
+  "categories_verified": {
+    "policy_manifest_and_sha256_seal": "PASS",
+    "dataset_eligibility_and_monotonicity": "PASS",
+    "holdout_ledger_and_anti_contamination": "PASS",
+    "offline_importer_quarantine_and_provenance": "PASS",
+    "sealed_evaluation_runner_8_stages": "PASS",
+    "accounting_cash_and_satoshi_conservation": "PASS",
+    "hypotheses_testing_h1_to_h5": "PASS",
+    "dashboard_api_endpoints_and_safety_gate": "PASS"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "sprint_id": "CBE_SPRINT31_SEALED_SHADOW_EVALUATION",
+  "timestamp_utc": "2026-11-15T10:22:37.685112+00:00",
+  "canonical_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "policy_package_seal": "73a8349dcf340be2360631df4e6307e5cb09ffa3b34ead81d27b9a0215f2ed3c",
+  "source_code_fingerprints": {
+    "src/coin_behavior_engine/product/btc_timing_research/timing_policy_engine.py": {
+      "sha256": "8a68343a75708d420c16e1748232b197244d343a80c34490a9c6214976d17e2c",
+      "byte_size": 13108
+    },
+    "src/coin_behavior_engine/product/btc_timing_research/experimental_policies.py": {
+      "sha256": "e21ee3b860184ab43405606544e44739fcaba82916279e72a68c5af2b3b8119f",
+      "byte_size": 16883
+    },
+    "src/coin_behavior_engine/product/btc_timing_research/sealed_evaluation_engine.py": {
+      "sha256": "1d16ed07d636a8bcaf184403d6b897d15f55481f5d4f172fe8cb5afc2d5eb284",
+      "byte_size": 40840
+    },
+    "src/coin_behavior_engine/product/btc_timing_research/paper_portfolio_engine.py": {
+      "sha256": "c01a96db3706abb6c9359c108dc23fb88bbb21fbc9d217c37efcb062b660ec6e",
+      "byte_size": 14179
+    }
+  }
+}

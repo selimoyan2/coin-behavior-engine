@@ -1,0 +1,18 @@
+{
+  "execution_id": "RUN-SEALED-84452AD3E0F7",
+  "timestamp_utc": "2026-11-15T10:22:39.498257+00:00",
+  "stages_executed": [
+    "POLICY_FREEZE",
+    "DATASET_ELIGIBILITY_CHECK",
+    "HOLDOUT_ACCESS_AUTHORIZATION",
+    "FIRST_EVALUATION_ACCESS",
+    "HISTORICAL_SIMULATION",
+    "BENCHMARK_COMPARISON",
+    "EVIDENCE_SEALING",
+    "SCIENTIFIC_REPORT"
+  ],
+  "policy_package_seal": "73a8349dcf340be2360631df4e6307e5cb09ffa3b34ead81d27b9a0215f2ed3c",
+  "dataset_hash": "897351f6fd0cebd8d487236df15a0b4e83439aab196d3a5e8d284f8ba4d584bd",
+  "execution_status": "COMPLETED",
+  "accounting_verified": true
+}

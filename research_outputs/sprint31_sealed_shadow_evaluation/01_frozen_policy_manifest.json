@@ -1,0 +1,89 @@
+{
+  "package_id": "SEALED-PKG-SPRINT31-BTC-TIMING-V1",
+  "sealed_at_utc": "2026-11-15T09:00:00Z",
+  "source_commit": "9e4fa2229ed5c29118052a8052d86289a1589406",
+  "policies": {
+    "POLICY_BUY_AND_HOLD": {
+      "policy_id": "POLICY_BUY_AND_HOLD",
+      "name": "Buy and Hold (Passive Benchmark)",
+      "version": "1.0.0",
+      "parameters": {},
+      "role": "PASSIVE_BENCHMARK",
+      "description": "Passive buy and hold maintaining 100% BTC exposure throughout."
+    },
+    "POLICY_USDT_CASH": {
+      "policy_id": "POLICY_USDT_CASH",
+      "name": "USDT Cash (Capital Preservation Benchmark)",
+      "version": "1.0.0",
+      "parameters": {},
+      "role": "CAPITAL_PRESERVATION_BENCHMARK",
+      "description": "Risk-free capital preservation holding 100% USDT cash (0% BTC)."
+    },
+    "POLICY_SIMPLE_TREND": {
+      "policy_id": "POLICY_SIMPLE_TREND",
+      "name": "Simple Moving Average Trend Filter",
+      "version": "1.0.0",
+      "parameters": {
+        "fast_window": 12,
+        "slow_window": 50,
+        "rule": "PRICE_ABOVE_SLOW"
+      },
+      "role": "ACTIVE_UNCONTROLLED_TREND",
+      "description": "Simple moving average trend filter allocating 100% when close > sma_50 else 0%."
+    },
+    "POLICY_TREND_LOW_TURNOVER": {
+      "policy_id": "POLICY_TREND_LOW_TURNOVER",
+      "name": "Low-Turnover Moving Average Trend Filter with Hysteresis",
+      "version": "1.0.0",
+      "parameters": {
+        "fast_window": 12,
+        "slow_window": 50,
+        "hysteresis_pct": 0.02,
+        "min_holding_period_hours": 72
+      },
+      "role": "TURNOVER_CONTROLLED_TREND",
+      "description": "Trend filter with +/- 2% hysteresis bands and 72-hour minimum holding period constraint."
+    },
+    "POLICY_PERIODIC_REBALANCE": {
+      "policy_id": "POLICY_PERIODIC_REBALANCE",
+      "name": "Weekly Periodic Rebalance Policy",
+      "version": "1.0.0",
+      "parameters": {
+        "rebalance_frequency": "WEEKLY",
+        "slow_window": 50
+      },
+      "role": "DISCRETE_SCHEDULED_REBALANCE",
+      "description": "Evaluates moving average trend filter strictly once per week (Monday 00:00 UTC)."
+    },
+    "POLICY_DERIVED_REGIME_CONFIRMATION": {
+      "policy_id": "POLICY_DERIVED_REGIME_CONFIRMATION",
+      "name": "Derived Regime with Multi-Bar Confirmation",
+      "version": "1.0.0",
+      "parameters": {
+        "confirmation_bars": 3,
+        "min_rebalance_threshold_pct": 0.1
+      },
+      "role": "DERIVED_REGIME_EXPERIMENT",
+      "description": "Derived research regime allocation requiring 3 consecutive hourly bars before transition."
+    }
+  },
+  "assumptions": {
+    "initial_capital_usdt": 10000.0,
+    "execution_convention": "NEXT_CANDLE_OPEN",
+    "cost_profile_id": "BASE_COST",
+    "taker_fee_pct": 0.001,
+    "half_spread_pct": 0.00025,
+    "slippage_pct": 0.0005,
+    "total_round_trip_cost_pct": 0.00175,
+    "leverage_multiplier": 1.0,
+    "short_selling_permitted": false,
+    "margin_permitted": false,
+    "canonical_model_status": "STRICTLY_FROZEN",
+    "canonical_cbe_experiment_status": "NOT_EVALUABLE_CANONICAL_OUTPUT_UNAVAILABLE",
+    "source_commit": "9e4fa2229ed5c29118052a8052d86289a1589406"
+  },
+  "sha256_fingerprint": "73a8349dcf340be2360631df4e6307e5cb09ffa3b34ead81d27b9a0215f2ed3c",
+  "canonical_model_status": "STRICTLY_FROZEN",
+  "canonical_experiment_status": "NOT_EVALUABLE_CANONICAL_OUTPUT_UNAVAILABLE",
+  "verification_status": "VERIFIED_TAMPER_FREE"
+}

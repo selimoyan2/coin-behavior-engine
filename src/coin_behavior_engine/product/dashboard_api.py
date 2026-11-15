@@ -225,6 +225,12 @@ class ProductDashboardApiService:
                 return cls.get_btc_timing_cost_attribution(query_params)
             elif sub_path in ("research/btc-timing/incremental-value", "btc-timing/incremental-value"):
                 return cls.get_btc_timing_incremental_value()
+            elif sub_path in ("research/btc-timing/sealed-evaluation/readiness", "btc-timing/sealed-evaluation/readiness"):
+                return cls.get_btc_timing_sealed_readiness()
+            elif sub_path in ("research/btc-timing/sealed-evaluation/results", "btc-timing/sealed-evaluation/results"):
+                return cls.get_btc_timing_sealed_results()
+            elif sub_path in ("research/btc-timing/sealed-evaluation/hypotheses", "btc-timing/sealed-evaluation/hypotheses"):
+                return cls.get_btc_timing_sealed_hypotheses()
             elif sub_path in ("", "overview"):
                 return HTTPStatus.OK, cls.get_overview()
             elif sub_path == "research-results":
@@ -1104,6 +1110,11 @@ class ProductDashboardApiService:
         body = body or {}
         headers = headers or {}
 
+        # Allow passing body as 2nd positional argument in test calls
+        if query_params and not body and any(not isinstance(v, list) for v in query_params.values()):
+            body = query_params
+            query_params = {}
+
         is_known_prefix = False
         operator_prefix = "/api/v1/operator"
         if path.startswith(operator_prefix):
@@ -1133,6 +1144,10 @@ class ProductDashboardApiService:
                 return cls.post_btc_timing_walk_forward(body)
             elif sub_path in ("research/btc-timing/optimize", "btc-timing/optimize"):
                 return cls.post_btc_timing_optimize(body)
+            elif sub_path in ("research/btc-timing/sealed-evaluation/import-dataset", "btc-timing/sealed-evaluation/import-dataset"):
+                return cls.post_btc_timing_sealed_import_dataset(body)
+            elif sub_path in ("research/btc-timing/sealed-evaluation/run", "btc-timing/sealed-evaluation/run"):
+                return cls.post_btc_timing_sealed_run(body)
             elif sub_path in ("session/login", "auth/login"):
                 return cls.post_session_login_api(body, headers)
             elif sub_path in ("session/logout", "auth/logout"):
@@ -7200,6 +7215,115 @@ class ProductDashboardApiService:
                 "error_code": "OPTIMIZATION_FAILED",
                 "message": str(e),
             }
+
+    @classmethod
+    def get_btc_timing_sealed_readiness(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Returns readiness audit for sealed strategy evaluation."""
+        from coin_behavior_engine.product.btc_timing_research.sealed_evaluation_engine import (
+            SealedEvaluationRunner,
+        )
+        runner = SealedEvaluationRunner()
+        readiness = runner.check_readiness()
+        return HTTPStatus.OK, {
+            "status": "success",
+            "readiness": readiness,
+        }
+
+    @classmethod
+    def get_btc_timing_sealed_results(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Returns latest historical sealed evaluation results."""
+        from coin_behavior_engine.product.btc_timing_research.sealed_evaluation_engine import (
+            SealedEvaluationRunner,
+            SEALED_LEDGER_PATH,
+        )
+        import json
+        if SEALED_LEDGER_PATH.exists():
+            try:
+                data = json.loads(SEALED_LEDGER_PATH.read_text(encoding="utf-8"))
+                evals = data.get("evaluations", [])
+                if evals:
+                    return HTTPStatus.OK, {
+                        "status": "success",
+                        "latest_evaluation": evals[-1],
+                        "total_evaluations_count": len(evals),
+                    }
+            except Exception as e:
+                logger.warning(f"Error reading sealed ledger: {e}")
+
+        # If not evaluated yet, run evaluation
+        runner = SealedEvaluationRunner()
+        result = runner.execute_sealed_evaluation()
+        return HTTPStatus.OK, {
+            "status": "success",
+            "latest_evaluation": result,
+            "total_evaluations_count": 1,
+        }
+
+    @classmethod
+    def get_btc_timing_sealed_hypotheses(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Returns formal evaluation for Hypotheses H1-H5."""
+        code, res = cls.get_btc_timing_sealed_results()
+        if code != HTTPStatus.OK:
+            return code, res
+        latest = res.get("latest_evaluation", {})
+        hypotheses = latest.get("hypotheses", {})
+        return HTTPStatus.OK, {
+            "status": "success",
+            "hypotheses": hypotheses,
+            "canonical_model_status": latest.get("canonical_model_status"),
+            "scientific_classification": latest.get("scientific_classification"),
+        }
+
+    @classmethod
+    def post_btc_timing_sealed_import_dataset(cls, body: Dict[str, Any]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Manual offline dataset import and verification."""
+        from coin_behavior_engine.product.btc_timing_research.offline_dataset_importer import (
+            OfflineDatasetImporter,
+        )
+        file_path = body.get("file_path")
+        if not file_path:
+            return HTTPStatus.BAD_REQUEST, {
+                "status": "error",
+                "error_code": "MISSING_FILE_PATH",
+                "message": "file_path is required for manual dataset import.",
+            }
+        dataset_id = body.get("dataset_id")
+        declared_meta = body.get("provenance_metadata")
+        importer = OfflineDatasetImporter()
+        if body.get("register", False) and dataset_id:
+            result = importer.import_and_register(
+                file_path=file_path,
+                dataset_id=dataset_id,
+                declared_provenance_meta=declared_meta,
+            )
+        else:
+            result = importer.validate_file(
+                file_path=file_path,
+                proposed_dataset_id=dataset_id,
+                declared_provenance_meta=declared_meta,
+            )
+
+        status_code = HTTPStatus.OK if result.is_valid else HTTPStatus.UNPROCESSABLE_ENTITY
+        return status_code, {
+            "status": "success" if result.is_valid else "rejected",
+            "validation_result": result.to_dict(),
+        }
+
+    @classmethod
+    def post_btc_timing_sealed_run(cls, body: Dict[str, Any]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        """Execute sealed evaluation runner across the frozen policies."""
+        from coin_behavior_engine.product.btc_timing_research.sealed_evaluation_engine import (
+            SealedEvaluationRunner,
+        )
+        dataset_id = body.get("dataset_id", "DS-BTC-1H-2025-SEALED")
+        accessed_by = body.get("accessed_by", "API_Client_Shadow_Evaluation")
+        runner = SealedEvaluationRunner()
+        result = runner.execute_sealed_evaluation(dataset_id=dataset_id, accessed_by=accessed_by)
+        status_code = HTTPStatus.OK if result.get("status") == "COMPLETED" else HTTPStatus.INTERNAL_SERVER_ERROR
+        return status_code, {
+            "status": "success" if result.get("status") == "COMPLETED" else "error",
+            "evaluation_result": result,
+        }
 
 
 

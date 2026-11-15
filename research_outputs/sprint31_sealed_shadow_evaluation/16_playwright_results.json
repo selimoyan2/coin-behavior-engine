@@ -1,0 +1,52 @@
+{
+  "sprint_id": "CBE_SPRINT31_SEALED_SHADOW_EVALUATION",
+  "timestamp_utc": "2026-11-15T10:07:37.033814+00:00",
+  "viewports_tested": [
+    "1440x900",
+    "768x1024",
+    "390x844"
+  ],
+  "tests": [
+    {
+      "name": "desktop_module_loaded",
+      "status": "PASS"
+    },
+    {
+      "name": "desktop_shadow_eval_subtab_visible",
+      "status": "PASS"
+    },
+    {
+      "name": "desktop_readiness_cards_verified",
+      "status": "PASS"
+    },
+    {
+      "name": "desktop_benchmark_table_populated",
+      "status": "PASS"
+    },
+    {
+      "name": "desktop_hypotheses_and_canvas_rendered",
+      "status": "PASS"
+    },
+    {
+      "name": "tablet_responsive_layout",
+      "status": "PASS"
+    },
+    {
+      "name": "mobile_responsive_layout",
+      "status": "PASS"
+    },
+    {
+      "name": "safety_live_trading_disabled_http403",
+      "status": "PASS"
+    }
+  ],
+  "screenshots": {
+    "desktop_1440x900": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint31_sealed_shadow_evaluation\\screenshots\\desktop_shadow_eval_1440x900.png",
+    "tablet_768x1024": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint31_sealed_shadow_evaluation\\screenshots\\tablet_shadow_eval_768x1024.png",
+    "mobile_390x844": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint31_sealed_shadow_evaluation\\screenshots\\mobile_shadow_eval_390x844.png"
+  },
+  "console_errors": [],
+  "page_errors": [],
+  "failed_requests": [],
+  "status": "PASS"
+}

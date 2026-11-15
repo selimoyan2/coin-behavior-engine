@@ -56,7 +56,9 @@ class TrendLowTurnoverPolicy(BaseTimingPolicy):
         self.fast_window = int(self.parameters.get("fast_window", 20))
         self.slow_window = int(self.parameters.get("slow_window", 50))
         self.hysteresis_pct = float(self.parameters.get("hysteresis_pct", 0.02))  # 2% default
+        self.min_holding_period_hours = int(self.parameters.get("min_holding_period_hours", 0))
         self._current_target: float = 0.0
+        self._bars_in_position: int = 0
 
     def evaluate(self, current_candle: Dict[str, Any], historical_context: Optional[Any] = None) -> PolicyDecision:
         close = float(current_candle.get("close", 0.0))
@@ -77,14 +79,20 @@ class TrendLowTurnoverPolicy(BaseTimingPolicy):
             # Currently out of market: require breakout above upper band
             if close > upper_band:
                 self._current_target = 1.0
+                self._bars_in_position = 1
                 reason = f"BULLISH_BREAKOUT: close({close:.2f}) > upper_band({upper_band:.2f}) [sma_{self.slow_window}+{self.hysteresis_pct*100:.1f}%]"
             else:
                 reason = f"MAINTAIN_CASH: close({close:.2f}) <= upper_band({upper_band:.2f}) [in band or below]"
         else:
             # Currently invested: require breakdown below lower band
+            self._bars_in_position += 1
             if close < lower_band:
-                self._current_target = 0.0
-                reason = f"BEARISH_BREAKDOWN: close({close:.2f}) < lower_band({lower_band:.2f}) [sma_{self.slow_window}-{self.hysteresis_pct*100:.1f}%]"
+                if self.min_holding_period_hours > 0 and self._bars_in_position < self.min_holding_period_hours:
+                    reason = f"MIN_HOLDING_PERIOD_ACTIVE: {self._bars_in_position}/{self.min_holding_period_hours} hours elapsed. Maintaining exposure."
+                else:
+                    self._current_target = 0.0
+                    self._bars_in_position = 0
+                    reason = f"BEARISH_BREAKDOWN: close({close:.2f}) < lower_band({lower_band:.2f}) [sma_{self.slow_window}-{self.hysteresis_pct*100:.1f}%]"
             else:
                 reason = f"MAINTAIN_EXPOSURE: close({close:.2f}) >= lower_band({lower_band:.2f}) [in band or above]"
 
@@ -97,6 +105,8 @@ class TrendLowTurnoverPolicy(BaseTimingPolicy):
                 "upper_band": round(upper_band, 2),
                 "lower_band": round(lower_band, 2),
                 "hysteresis_pct": self.hysteresis_pct,
+                "min_holding_period_hours": self.min_holding_period_hours,
+                "bars_in_position": self._bars_in_position,
             },
         )
 
@@ -166,6 +176,7 @@ class DerivedRegimeConfirmationPolicy(BaseTimingPolicy):
     def __init__(self, parameters: Optional[Dict[str, Any]] = None):
         super().__init__(parameters)
         self.confirmation_bars = int(self.parameters.get("confirmation_bars", 3))
+        self.min_rebalance_threshold_pct = float(self.parameters.get("min_rebalance_threshold_pct", 0.0))
         self._current_regime: str = "CONSOLIDATION_RANGING"
         self._candidate_regime: Optional[str] = None
         self._candidate_count: int = 0
@@ -196,12 +207,19 @@ class DerivedRegimeConfirmationPolicy(BaseTimingPolicy):
                 self._candidate_count = 1
 
             if self._candidate_count >= self.confirmation_bars:
-                # Confirmed transition!
-                self._current_regime = observed_regime
-                self._current_target = snap_to_tier(regime_map.get(observed_regime, 0.50))
-                self._candidate_regime = None
-                self._candidate_count = 0
-                reason = f"REGIME_TRANSITION_CONFIRMED: {self._current_regime} confirmed after {self.confirmation_bars} consecutive bars -> {self._current_target*100:.0f}% BTC."
+                desired_target = snap_to_tier(regime_map.get(observed_regime, 0.50))
+                if self.min_rebalance_threshold_pct > 0 and abs(desired_target - self._current_target) < self.min_rebalance_threshold_pct:
+                    self._current_regime = observed_regime
+                    self._candidate_regime = None
+                    self._candidate_count = 0
+                    reason = f"REGIME_CONFIRMED_BUFFERED: {observed_regime} confirmed but allocation diff ({abs(desired_target - self._current_target)*100:.1f}%) < threshold ({self.min_rebalance_threshold_pct*100:.1f}%). Maintaining {self._current_target*100:.0f}%."
+                else:
+                    # Confirmed transition!
+                    self._current_regime = observed_regime
+                    self._current_target = desired_target
+                    self._candidate_regime = None
+                    self._candidate_count = 0
+                    reason = f"REGIME_TRANSITION_CONFIRMED: {self._current_regime} confirmed after {self.confirmation_bars} consecutive bars -> {self._current_target*100:.0f}% BTC."
             else:
                 reason = f"UNCONFIRMED_REGIME_CANDIDATE: {observed_regime} ({self._candidate_count}/{self.confirmation_bars} bars), maintaining {self._current_regime} ({self._current_target*100:.0f}%)."
 
@@ -214,6 +232,7 @@ class DerivedRegimeConfirmationPolicy(BaseTimingPolicy):
                 "candidate_regime": self._candidate_regime,
                 "candidate_count": self._candidate_count,
                 "confirmation_bars_required": self.confirmation_bars,
+                "min_rebalance_threshold_pct": self.min_rebalance_threshold_pct,
             },
         )
 

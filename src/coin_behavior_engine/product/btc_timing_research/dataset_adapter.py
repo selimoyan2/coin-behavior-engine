@@ -111,6 +111,19 @@ REGISTERED_BTC_DATASETS: Dict[str, Dict[str, Any]] = {
         "exchange": "BINANCE",
         "market_type": "SPOT",
     },
+    "DS-BTC-1H-2025-SEALED": {
+        "dataset_id": "DS-BTC-1H-2025-SEALED",
+        "relative_path": "data/historical/historical_binance_btcusdt_1h_2025.parquet",
+        "provenance_path": "data/historical/historical_binance_btcusdt_1h_2025_provenance.json",
+        "symbol": "BTCUSDT",
+        "timeframe": "1h",
+        "expected_interval_ms": 3600000,
+        "expected_bars": 8760,
+        "earliest_open_utc": "2025-01-01T00:00:00Z",
+        "latest_open_utc": "2025-12-31T23:00:00Z",
+        "exchange": "BINANCE",
+        "market_type": "SPOT",
+    },
 }
 
 

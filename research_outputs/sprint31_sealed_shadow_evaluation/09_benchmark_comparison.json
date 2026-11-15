@@ -1,0 +1,10 @@
+{
+  "passive_buy_and_hold_net_return": -9.6931,
+  "passive_buy_and_hold_max_drawdown": -34.7414,
+  "passive_buy_and_hold_sharpe": -0.0063,
+  "usdt_cash_net_return": 0.0,
+  "trend_low_turnover_net_return": -28.7964,
+  "trend_low_turnover_max_drawdown": -39.1958,
+  "trend_low_turnover_excess_over_bnh": -19.103299999999997,
+  "trend_low_turnover_cost_reduction_vs_simple": 88.31262372737557
+}

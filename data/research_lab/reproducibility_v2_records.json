@@ -1,6 +1,6 @@
 {
   "schema_version": "CBE-REPRODUCIBILITY-V2",
-  "saved_at": "2026-11-15T08:25:36.912868+00:00",
+  "saved_at": "2026-11-15T10:11:13.309189+00:00",
   "reproduction_records": [
     {
       "reproduction_id": "REP-COMP-VOL-001",
@@ -133,7 +133,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-15T08:25:36.463108+00:00"
+      "created_at": "2026-11-15T10:11:12.479352+00:00"
     },
     {
       "reproduction_id": "REP-IDENTICAL-DICTS",
@@ -167,7 +167,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-15T08:25:36.499469+00:00"
+      "created_at": "2026-11-15T10:11:12.572810+00:00"
     },
     {
       "reproduction_id": "REP-MISSING-ORIG",
@@ -202,7 +202,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-15T08:25:36.522684+00:00"
+      "created_at": "2026-11-15T10:11:12.612806+00:00"
     },
     {
       "reproduction_id": "REP-MISSING-REPRO",
@@ -237,7 +237,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-15T08:25:36.542780+00:00"
+      "created_at": "2026-11-15T10:11:12.641742+00:00"
     },
     {
       "reproduction_id": "REP-SAME-CODE",
@@ -272,7 +272,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-15T08:25:36.561822+00:00"
+      "created_at": "2026-11-15T10:11:12.671068+00:00"
     },
     {
       "reproduction_id": "REP-POS-IMPL",
@@ -305,7 +305,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-15T08:25:36.908468+00:00"
+      "created_at": "2026-11-15T10:11:13.309189+00:00"
     },
     {
       "reproduction_id": "REP-NO-REAL-ART",
@@ -340,7 +340,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-15T08:25:35.712760+00:00"
+      "created_at": "2026-11-15T10:11:10.934587+00:00"
     },
     {
       "reproduction_id": "REP-FORGED-IMPL",
@@ -374,7 +374,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-15T08:25:35.779456+00:00"
+      "created_at": "2026-11-15T10:11:11.052018+00:00"
     },
     {
       "reproduction_id": "REP-SAME-EXCHANGE-PARTITION",
@@ -402,14 +402,14 @@
       "reproduction_verdict": "REPRODUCTION_FAILED",
       "discrepancies": [
         "Shared source lineage: both 'DS-BTC-1H-Q1-2024' and 'DS-BTC-1H-Q3-2024' originate from exchange BINANCE. Distinct non-overlapping temporal partitions do not establish independent sourcing.",
-        "Metric 'raw_p_value' exceeded tolerance: expected=0.0041, actual=0.0048, diff=0.0007, tol=1.41e-06",
-        "Metric 'ks_statistic' exceeded tolerance: expected=0.082, actual=0.076, diff=0.006, tol=9.2e-06"
+        "Metric 'ks_statistic' exceeded tolerance: expected=0.082, actual=0.076, diff=0.006, tol=9.2e-06",
+        "Metric 'raw_p_value' exceeded tolerance: expected=0.0041, actual=0.0048, diff=0.0007, tol=1.41e-06"
       ],
       "metrics": {
         "max_rel_error": 0.17073170727543108,
         "max_abs_error": 0.006000000000000005
       },
-      "created_at": "2026-11-15T08:25:35.805347+00:00"
+      "created_at": "2026-11-15T10:11:11.089434+00:00"
     },
     {
       "reproduction_id": "REP-VALID-COMP-01",
@@ -442,7 +442,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-15T08:25:35.940957+00:00"
+      "created_at": "2026-11-15T10:11:11.475843+00:00"
     },
     {
       "reproduction_id": "REP-SELF-COMP-01",
@@ -477,7 +477,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-15T08:25:35.962148+00:00"
+      "created_at": "2026-11-15T10:11:11.522727+00:00"
     },
     {
       "reproduction_id": "REP-CHECK-PROMOTION",
@@ -511,7 +511,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-15T08:25:35.993480+00:00"
+      "created_at": "2026-11-15T10:11:11.575530+00:00"
     },
     {
       "reproduction_id": "REP-POS-COMP-01",
@@ -544,7 +544,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-15T08:25:36.056716+00:00"
+      "created_at": "2026-11-15T10:11:11.781481+00:00"
     },
     {
       "reproduction_id": "REP-POS-IMPL-02",
@@ -577,7 +577,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-15T08:25:36.076738+00:00"
+      "created_at": "2026-11-15T10:11:11.892142+00:00"
     },
     {
       "reproduction_id": "REP-POS-DATA-03",
@@ -608,7 +608,7 @@
         "max_rel_error": 0.17073170727543108,
         "max_abs_error": 0.006000000000000005
       },
-      "created_at": "2026-11-15T08:25:36.101736+00:00"
+      "created_at": "2026-11-15T10:11:11.947999+00:00"
     },
     {
       "reproduction_id": "REP-UNREG-01",
@@ -643,7 +643,7 @@
         "max_rel_error": 0.0,
         "max_abs_error": 0.0
       },
-      "created_at": "2026-11-15T08:25:36.328580+00:00"
+      "created_at": "2026-11-15T10:11:12.290044+00:00"
     }
   ]
 }
