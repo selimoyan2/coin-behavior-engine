@@ -189,7 +189,7 @@ class ProductDashboardApiService:
 
         # Strict governance rejection on live trading attempts under BTC timing research
         sub_lower = sub_path.lower()
-        if "btc-timing" in sub_lower and any(bad in sub_lower for bad in ("live-trade", "order", "broker-api", "place-order", "trade/execute", "live_order")):
+        if "btc-timing" in sub_lower and any(bad in sub_lower for bad in ("live-trade", "order", "broker-api", "place-order", "trade/execute", "live_order", "execute-live", "live")):
             return HTTPStatus.FORBIDDEN, {
                 "error": "GOVERNANCE_VIOLATION",
                 "message": "Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.",
@@ -231,6 +231,25 @@ class ProductDashboardApiService:
                 return cls.get_btc_timing_sealed_results()
             elif sub_path in ("research/btc-timing/sealed-evaluation/hypotheses", "btc-timing/sealed-evaluation/hypotheses"):
                 return cls.get_btc_timing_sealed_hypotheses()
+            # --- Sprint 32: Investment Research Workspace V10 Endpoints ---
+            elif sub_path in ("research/btc-timing/v10/overview", "btc-timing/v10/overview"):
+                return cls.get_btc_timing_v10_overview()
+            elif sub_path in ("research/btc-timing/v10/comparison", "btc-timing/v10/comparison"):
+                return cls.get_btc_timing_v10_comparison()
+            elif sub_path.startswith("research/btc-timing/v10/strategy/") or sub_path.startswith("btc-timing/v10/strategy/"):
+                pol_key = sub_path.split("/")[-1]
+                return cls.get_btc_timing_v10_strategy(pol_key)
+            elif sub_path.startswith("research/btc-timing/v10/trades/") or sub_path.startswith("btc-timing/v10/trades/"):
+                pol_key = sub_path.split("/")[-1]
+                return cls.get_btc_timing_v10_trades(pol_key, query_params)
+            elif sub_path in ("research/btc-timing/v10/cost-intelligence", "btc-timing/v10/cost-intelligence"):
+                return cls.get_btc_timing_v10_cost_intelligence()
+            elif sub_path in ("research/btc-timing/v10/scientific-evidence", "btc-timing/v10/scientific-evidence"):
+                return cls.get_btc_timing_v10_scientific_evidence()
+            elif sub_path in ("research/btc-timing/v10/timeline", "btc-timing/v10/timeline"):
+                return cls.get_btc_timing_v10_timeline()
+            elif sub_path in ("research/btc-timing/v10/report/download", "btc-timing/v10/report/download"):
+                return cls.get_btc_timing_v10_report_download(query_params)
             elif sub_path in ("", "overview"):
                 return HTTPStatus.OK, cls.get_overview()
             elif sub_path == "research-results":
@@ -1128,7 +1147,7 @@ class ProductDashboardApiService:
 
         # Strict governance rejection on live trading attempts under BTC timing research
         sub_lower = sub_path.lower()
-        if "btc-timing" in sub_lower and any(bad in sub_lower for bad in ("live-trade", "order", "broker-api", "place-order", "trade/execute", "live_order")):
+        if "btc-timing" in sub_lower and any(bad in sub_lower for bad in ("live-trade", "order", "broker-api", "place-order", "trade/execute", "live_order", "execute-live", "live")):
             return HTTPStatus.FORBIDDEN, {
                 "error": "GOVERNANCE_VIOLATION",
                 "message": "Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.",
@@ -7323,6 +7342,81 @@ class ProductDashboardApiService:
         return status_code, {
             "status": "success" if result.get("status") == "COMPLETED" else "error",
             "evaluation_result": result,
+        }
+
+    # -------------------------------------------------------------
+    # SPRINT 32: Investment Research Workspace V10 Endpoints
+    # -------------------------------------------------------------
+    @classmethod
+    def get_btc_timing_v10_overview(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        from coin_behavior_engine.product.btc_timing_research.investment_research_v10 import (
+            InvestmentResearchV10Engine,
+        )
+        return HTTPStatus.OK, InvestmentResearchV10Engine.get_overview()
+
+    @classmethod
+    def get_btc_timing_v10_comparison(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        from coin_behavior_engine.product.btc_timing_research.investment_research_v10 import (
+            InvestmentResearchV10Engine,
+        )
+        return HTTPStatus.OK, InvestmentResearchV10Engine.get_portfolio_comparison()
+
+    @classmethod
+    def get_btc_timing_v10_strategy(cls, policy_key: str) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        from coin_behavior_engine.product.btc_timing_research.investment_research_v10 import (
+            InvestmentResearchV10Engine,
+        )
+        res = InvestmentResearchV10Engine.get_strategy_details(policy_key)
+        if res.get("status") == "error":
+            return HTTPStatus.NOT_FOUND, res
+        return HTTPStatus.OK, res
+
+    @classmethod
+    def get_btc_timing_v10_trades(cls, policy_key: str, query_params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        from coin_behavior_engine.product.btc_timing_research.investment_research_v10 import (
+            InvestmentResearchV10Engine,
+        )
+        page_val = query_params.get("page", ["1"])[0] if query_params else "1"
+        limit_val = query_params.get("limit", ["25"])[0] if query_params else "25"
+        side_val = query_params.get("side", [None])[0] if query_params else None
+        page = int(page_val) if page_val.isdigit() else 1
+        limit = int(limit_val) if limit_val.isdigit() else 25
+        return HTTPStatus.OK, InvestmentResearchV10Engine.get_paginated_trades(policy_key, page=page, limit=limit, side_filter=side_val)
+
+    @classmethod
+    def get_btc_timing_v10_cost_intelligence(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        from coin_behavior_engine.product.btc_timing_research.investment_research_v10 import (
+            InvestmentResearchV10Engine,
+        )
+        return HTTPStatus.OK, InvestmentResearchV10Engine.get_cost_intelligence()
+
+    @classmethod
+    def get_btc_timing_v10_scientific_evidence(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        from coin_behavior_engine.product.btc_timing_research.investment_research_v10 import (
+            InvestmentResearchV10Engine,
+        )
+        return HTTPStatus.OK, InvestmentResearchV10Engine.get_scientific_evidence()
+
+    @classmethod
+    def get_btc_timing_v10_timeline(cls) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        from coin_behavior_engine.product.btc_timing_research.investment_research_v10 import (
+            InvestmentResearchV10Engine,
+        )
+        return HTTPStatus.OK, InvestmentResearchV10Engine.get_research_timeline()
+
+    @classmethod
+    def get_btc_timing_v10_report_download(cls, query_params: Dict[str, List[str]]) -> Tuple[HTTPStatus, Dict[str, Any]]:
+        from coin_behavior_engine.product.btc_timing_research.investment_research_v10 import (
+            InvestmentResearchV10Engine,
+        )
+        fmt = query_params.get("format", ["json"])[0] if query_params else "json"
+        content, media_type, filename = InvestmentResearchV10Engine.generate_report_download(fmt)
+        return HTTPStatus.OK, {
+            "status": "success",
+            "format": fmt,
+            "filename": filename,
+            "media_type": media_type,
+            "content": content,
         }
 
 

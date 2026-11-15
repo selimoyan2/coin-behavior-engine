@@ -1,0 +1,42 @@
+{
+  "sprint_id": "CBE_SPRINT32_SCIENTIFIC_VALIDATION_DASHBOARD_V10",
+  "timestamp_utc": "2026-11-15T11:50:43.402682+00:00",
+  "viewports_tested": [
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "height": 900,
+      "screenshot": "09_dashboard_v10_desktop.png",
+      "status": "PASS"
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "height": 1024,
+      "screenshot": "10_dashboard_v10_tablet.png",
+      "status": "PASS"
+    },
+    {
+      "viewport": "mobile",
+      "width": 390,
+      "height": 844,
+      "screenshot": "11_dashboard_v10_mobile.png",
+      "status": "PASS"
+    }
+  ],
+  "interactive_checks": {
+    "disclaimer_banner_verified": true,
+    "canvas_chart_rendered": true,
+    "equity_drawdown_toggle_verified": true,
+    "trade_ledger_pagination_verified": true,
+    "cost_sensitivity_matrix_rendered": true,
+    "h1_h5_hypothesis_cards_verified": true,
+    "timeline_stages_verified": true,
+    "report_downloads_configured": true
+  },
+  "security_boundary": {
+    "live_trading_execute_status": 403,
+    "live_trading_prohibited": true,
+    "v10_execute_live_status": 403
+  }
+}

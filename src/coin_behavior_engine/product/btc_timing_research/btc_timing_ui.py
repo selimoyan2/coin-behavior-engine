@@ -260,6 +260,9 @@ def render_btc_timing_html() -> str:
           <button class="timing-subnav-btn" id="timing-btn-shadow-eval" onclick="switchTimingSubtab('shadow-eval')">
             <span>🌑</span> Gölge Değerlendirme (V9)
           </button>
+          <button class="timing-subnav-btn" id="timing-btn-v10-workspace" onclick="switchTimingSubtab('v10-workspace')" style="border: 1px solid rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.1);">
+            <span>🏛️</span> Yatırım Araştırma V10
+          </button>
         </div>
 
         <!-- =============================================================== -->
@@ -1031,6 +1034,307 @@ def render_btc_timing_html() -> str:
           </div>
         </div>
 
+        <!-- =============================================================== -->
+        <!-- SUB-PANEL 12: DASHBOARD V10 — INVESTMENT RESEARCH WORKSPACE      -->
+        <!-- =============================================================== -->
+        <div id="timing-panel-v10-workspace" class="timing-panel">
+          
+          <!-- PROMINENT DISCLAIMER BANNER -->
+          <div style="background: rgba(239, 68, 68, 0.12); border: 2px solid #ef4444; border-radius: 8px; padding: 14px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 16px;">
+            <span style="font-size: 28px;">⚠️</span>
+            <div>
+              <div style="color: #ef4444; font-weight: 800; font-size: 16px; letter-spacing: 0.05em;" id="v10-disclaimer-banner">
+                TARİHSEL ARAŞTIRMA — CANLI YATIRIM SİNYALİ DEĞİLDİR
+              </div>
+              <div style="color: #cbd5e1; font-size: 13px; margin-top: 4px;">
+                Bu çalışma alanı, 2025 yılı mühürlü veri seti üzerindeki geriye dönük (retrospective) araştırma ve simülasyon sonuçlarını sunar. Geçmiş performans gelecekteki getirilerin garantisi değildir. Canlı işlem, otomatik emir iletimi ve gerçek sermaye kullanımı kesin olarak yasaktır (CBE-0.7.0).
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION A: RESEARCH OVERVIEW -->
+          <div style="margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 style="font-size: 14px; text-transform: uppercase; color: #38bdf8; letter-spacing: 0.5px; margin: 0;">
+                A. Araştırma Genel Bakış & Epistemolojik Durum
+              </h4>
+              <span class="badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4);" id="v10-readiness-badge">
+                AUDITED_EVIDENCE_READY
+              </span>
+            </div>
+            
+            <div class="timing-kpi-grid">
+              <div class="timing-kpi-card">
+                <div class="timing-kpi-label">Değerlendirme Penceresi</div>
+                <div class="timing-kpi-val" style="color: #f8fafc; font-size: 15px;" id="v10-kpi-period">2025 (8,760 Saat)</div>
+                <div class="timing-kpi-sub">BTC/USDT Spot Saatlik Mumlar</div>
+              </div>
+              <div class="timing-kpi-card">
+                <div class="timing-kpi-label">Veri Seti Orijini</div>
+                <div class="timing-kpi-val" style="color: #fb923c; font-size: 12px; word-break: break-all;" id="v10-kpi-provenance">RESTRICTED_EVIDENCE_UNVERIFIED_PROVENANCE</div>
+                <div class="timing-kpi-sub">12 Aylık Parquet (0 Gaps, 0 Duplicates)</div>
+              </div>
+              <div class="timing-kpi-card">
+                <div class="timing-kpi-label">Dondurulmuş Politika Paketi</div>
+                <div class="timing-kpi-val" style="color: #10b981; font-size: 12px; font-family: monospace;" id="v10-kpi-seal">73a8349d... (Mühürlü)</div>
+                <div class="timing-kpi-sub">Değişmezlik Doğrulandı (Tamper-Free)</div>
+              </div>
+              <div class="timing-kpi-card">
+                <div class="timing-kpi-label">En İyi Tarihsel Benchmark</div>
+                <div class="timing-kpi-val" style="color: #38bdf8; font-size: 15px;" id="v10-kpi-benchmark">Periyodik Dengeleme (-%2.23)</div>
+                <div class="timing-kpi-sub">Buy & Hold: -%9.69 | Aktif: -%28.80</div>
+              </div>
+            </div>
+
+            <!-- Epistemic limitations callout -->
+            <div class="card" style="padding: 14px 18px; margin-top: 12px; background: #0b1120; border: 1px solid #1e293b;">
+              <div style="font-size: 12px; color: #94a3b8; line-height: 1.6;">
+                <strong style="color: #f8fafc;">⚠️ Bilimsel Sınırlar & Metodolojik Uyarı:</strong> 
+                Saatlik finansal getiriler kuvvetli serisel otokorelasyon ve volatilite kümelenmesi sergiler (i.i.d. değildir). 
+                Tekil bir yıllık simülasyon $N=1$ tarihsel patika temsil eder; deterministik farklar istatistiksel keşif olarak adlandırılamaz.
+                Tüm ampirik farklar <strong>DESCRIPTIVE_THRESHOLD_MET</strong> standardında değerlendirilir.
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION B: HISTORICAL PORTFOLIO COMPARISON -->
+          <div style="margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 style="font-size: 14px; text-transform: uppercase; color: #38bdf8; letter-spacing: 0.5px; margin: 0;">
+                B. Tarihsel Portföy Karşılaştırması (6 Politika)
+              </h4>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-secondary" id="v10-btn-chart-equity" onclick="switchV10ChartMode('equity')">Özkaynak Eğrisi</button>
+                <button class="btn btn-secondary" id="v10-btn-chart-drawdown" onclick="switchV10ChartMode('drawdown')">Drawdown Eğrisi</button>
+              </div>
+            </div>
+
+            <!-- Canvas Chart -->
+            <div class="card" style="padding: 18px; margin-bottom: 16px; background: #0f172a; border: 1px solid #1e293b;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span style="font-size: 12px; color: #94a3b8;" id="v10-chart-title">Tarihsel Özkaynak Gelişimi (2025 Tam Yıl - 120 Nokta Örnekleme)</span>
+                <div style="display: flex; gap: 14px; font-size: 11px;">
+                  <span style="color: #fbbf24;">● Buy & Hold</span>
+                  <span style="color: #94a3b8;">● Nakit</span>
+                  <span style="color: #f87171;">● Basit Trend</span>
+                  <span style="color: #38bdf8; font-weight: bold;">● Düşük Devir</span>
+                  <span style="color: #a78bfa;">● Periyodik 50/50</span>
+                  <span style="color: #34d399;">● Rejim Teyitli</span>
+                </div>
+              </div>
+              <canvas id="v10-equity-canvas" width="900" height="280" style="width: 100%; height: 280px; background: #090d16; border-radius: 6px;"></canvas>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="timing-table-box">
+              <table class="timing-table" id="v10-comparison-table">
+                <thead>
+                  <tr>
+                    <th>Politika Adı</th>
+                    <th>Kategori</th>
+                    <th>Başlangıç ($)</th>
+                    <th>Bitiş ($)</th>
+                    <th>Net Getiri</th>
+                    <th>Max DD</th>
+                    <th>Sharpe</th>
+                    <th>İşlem</th>
+                    <th>Maliyet ($)</th>
+                    <th>Piyasada (%)</th>
+                    <th>Muhasebe</th>
+                  </tr>
+                </thead>
+                <tbody id="v10-comparison-tbody">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SECTION C: STRATEGY DETAILS & PAGINATED TRADE LEDGER -->
+          <div style="margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 style="font-size: 14px; text-transform: uppercase; color: #38bdf8; letter-spacing: 0.5px; margin: 0;">
+                C. Strateji Kuralları & Sayfalanmış İşlem Defteri
+              </h4>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <label style="font-size: 12px; color: #94a3b8;">Politika Seç:</label>
+                <select id="v10-strategy-select" onchange="onV10StrategySelectChange()" style="background: #1e293b; color: #f8fafc; border: 1px solid #334155; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                  <option value="POLICY_TREND_LOW_TURNOVER" selected>Düşük Devirli Trend (Histerezis)</option>
+                  <option value="POLICY_BUY_AND_HOLD">Pasif Buy & Hold</option>
+                  <option value="POLICY_USDT_CASH">Nakit (USDT) Rezerv</option>
+                  <option value="POLICY_SIMPLE_TREND">Kısıtlamasız Basit Trend</option>
+                  <option value="POLICY_PERIODIC_REBALANCE">Periyodik Yeniden Dengeleme (50/50)</option>
+                  <option value="POLICY_DERIVED_REGIME_CONFIRMATION">Türetilmiş Rejim Teyitli Trend</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Rules & Parameters Card -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+              <div class="card" style="padding: 14px 18px; background: #0f172a; border: 1px solid #1e293b;">
+                <h5 style="font-size: 13px; color: #38bdf8; margin-bottom: 8px;">📋 Uygulanan Tam Kurallar</h5>
+                <ul id="v10-strategy-rules-list" style="font-size: 12px; color: #cbd5e1; margin: 0; padding-left: 18px; line-height: 1.6;">
+                  <!-- Populated by JS -->
+                </ul>
+              </div>
+              <div class="card" style="padding: 14px 18px; background: #0f172a; border: 1px solid #1e293b;">
+                <h5 style="font-size: 13px; color: #10b981; margin-bottom: 8px;">⚙️ Dondurulmuş Parametreler</h5>
+                <pre id="v10-strategy-params-pre" style="font-size: 11px; color: #94a3b8; background: #090d16; padding: 8px; border-radius: 4px; margin: 0; font-family: monospace; overflow-x: auto;">
+                  <!-- Populated by JS -->
+                </pre>
+              </div>
+            </div>
+
+            <!-- Paginated Trade Ledger Table -->
+            <div class="card" style="padding: 14px 18px; background: #0f172a; border: 1px solid #1e293b;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span style="font-size: 13px; color: #f8fafc; font-weight: 600;">📖 Gerçekleşen Simüle İşlemler</span>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <select id="v10-trade-side-filter" onchange="loadV10TradesCurrentPage()" style="background: #1e293b; color: #cbd5e1; border: 1px solid #334155; padding: 4px 8px; border-radius: 4px; font-size: 11px;">
+                    <option value="">Tüm İşlemler</option>
+                    <option value="BUY">Sadece Alımlar (BUY)</option>
+                    <option value="SELL">Sadece Satışlar (SELL)</option>
+                  </select>
+                  <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px;" id="v10-trade-prev" onclick="prevV10TradesPage()">← Önceki</button>
+                  <span id="v10-trade-page-info" style="font-size: 11px; color: #94a3b8;">Sayfa 1 / 1</span>
+                  <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px;" id="v10-trade-next" onclick="nextV10TradesPage()">Sonraki →</button>
+                </div>
+              </div>
+              <div class="timing-table-box" style="max-height: 320px; overflow-y: auto;">
+                <table class="timing-table">
+                  <thead>
+                    <tr>
+                      <th>İşlem ID</th>
+                      <th>Tarih (UTC)</th>
+                      <th>Yön</th>
+                      <th>Nominal Fiyat</th>
+                      <th>Efektif Fiyat</th>
+                      <th>BTC Miktarı</th>
+                      <th>Komisyon ($)</th>
+                      <th>Spread ($)</th>
+                      <th>Slippage ($)</th>
+                      <th>Toplam Maliyet ($)</th>
+                      <th>Kalan Nakit ($)</th>
+                      <th>Özkaynak ($)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="v10-trades-tbody">
+                    <!-- Populated by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION D: TRANSACTION COST INTELLIGENCE -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 14px; text-transform: uppercase; color: #38bdf8; letter-spacing: 0.5px; margin-bottom: 12px;">
+              D. İşlem Maliyeti Zekası & Kompaund Sürüklenme
+            </h4>
+            
+            <div class="timing-kpi-grid">
+              <div class="timing-kpi-card">
+                <div class="timing-kpi-label">Borsa Komisyonu</div>
+                <div class="timing-kpi-val" style="color: #fb923c;">10.0 bps</div>
+                <div class="timing-kpi-sub">Taker/Maker Nakit Kesintisi</div>
+              </div>
+              <div class="timing-kpi-card">
+                <div class="timing-kpi-label">Half-Spread Sürüklenmesi</div>
+                <div class="timing-kpi-val" style="color: #fb923c;">2.5 bps</div>
+                <div class="timing-kpi-sub">5.0 bps Full Spread'den</div>
+              </div>
+              <div class="timing-kpi-card">
+                <div class="timing-kpi-label">Fiyat Kayması (Slippage)</div>
+                <div class="timing-kpi-val" style="color: #fb923c;">5.0 bps</div>
+                <div class="timing-kpi-sub">Piyasa Etkisi Marjı</div>
+              </div>
+              <div class="timing-kpi-card">
+                <div class="timing-kpi-label">Tek Yönlü / Çift Yönlü Maliyet</div>
+                <div class="timing-kpi-val" style="color: #10b981;">17.5 / 35.0 bps</div>
+                <div class="timing-kpi-sub">Tek İşlem / Tam Tur (Buy+Sell)</div>
+              </div>
+            </div>
+
+            <!-- Compounded Drag Card -->
+            <div class="card" style="padding: 16px 20px; margin-top: 14px; background: #0f172a; border: 1px solid #1e293b;">
+              <h5 style="font-size: 13px; color: #f8fafc; margin-bottom: 6px;">💡 Doğrudan Nakit Maliyeti vs Kompaund Performans Sürüklenmesi</h5>
+              <p style="font-size: 12px; color: #94a3b8; line-height: 1.6; margin-bottom: 12px;" id="v10-compounded-drag-text">
+                Yükleniyor...
+              </p>
+              
+              <h5 style="font-size: 12px; color: #38bdf8; margin-top: 12px; margin-bottom: 8px;">Maliyet Hassasiyeti Stres Matrisi (Simülasyon Senaryoları):</h5>
+              <div class="timing-table-box" style="margin-bottom: 0;">
+                <table class="timing-table">
+                  <thead>
+                    <tr>
+                      <th>Senaryo</th>
+                      <th>Tek Yönlü Sürtünme</th>
+                      <th>Basit Trend Bitiş ($)</th>
+                      <th>Düşük Devir Bitiş ($)</th>
+                      <th>Epistemik Etki</th>
+                    </tr>
+                  </thead>
+                  <tbody id="v10-cost-scenarios-tbody">
+                    <!-- Populated by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION E: SCIENTIFIC EVIDENCE -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 14px; text-transform: uppercase; color: #38bdf8; letter-spacing: 0.5px; margin-bottom: 12px;">
+              E. Bilimsel Kanıt & Düzeltilmiş Hipotez Kararları (H1 - H5)
+            </h4>
+            
+            <div class="timing-kpi-grid" id="v10-hypotheses-grid">
+              <!-- Populated by JS -->
+            </div>
+
+            <!-- Epistemic Warning Banner -->
+            <div class="card" style="padding: 16px 20px; margin-top: 14px; background: #0b1120; border: 1px solid #334155;">
+              <h5 style="font-size: 13px; color: #ef4444; margin-bottom: 6px;">⚖️ Dürüstlük Protokolü: H4 Reddi & Overfitting Ayrımı</h5>
+              <p style="font-size: 12px; color: #cbd5e1; line-height: 1.6; margin: 0;">
+                2025 yılı ampirik değerlendirmesinde <strong>H4 kesin olarak DESTEKLENMEMİŞTİR (UNSUPPORTED)</strong>. 
+                Düşük devirli aktif strateji pasif Buy & Hold'un <strong>19.10 yüzde puan gerisinde kalmıştır</strong>. 
+                Ayrıca strateji, katı 3-katlamalı walk-forward testinde <strong>REJECTED_OVERFITTING</strong> almıştır. 
+                Bu dürüst negatif bulgu, trend takipçisi algoritmaların yatay ve testere rejimlerinde pasif tutmayı yenemediğini gösteren değerli bir bilimsel sonuçtur.
+              </p>
+            </div>
+          </div>
+
+          <!-- SECTION F: RESEARCH TIMELINE -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 14px; text-transform: uppercase; color: #38bdf8; letter-spacing: 0.5px; margin-bottom: 12px;">
+              F. Araştırma Gelişim Zaman Çizelgesi (Sprint 29 -> 32)
+            </h4>
+            <div class="card" style="padding: 18px; background: #0f172a; border: 1px solid #1e293b;">
+              <div id="v10-timeline-container" style="display: flex; flex-direction: column; gap: 14px;">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION G: RESEARCH REPORTS & DOWNLOADS -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 14px; text-transform: uppercase; color: #38bdf8; letter-spacing: 0.5px; margin-bottom: 12px;">
+              G. Araştırma Raporları & Resmi İndirmeler
+            </h4>
+            <div class="card" style="padding: 20px; background: #0f172a; border: 1px solid #1e293b;">
+              <div style="display: flex; gap: 14px; margin-bottom: 16px;">
+                <button class="btn btn-primary" onclick="downloadV10Report('markdown')">📥 Markdown Raporu İndir (.md)</button>
+                <button class="btn btn-secondary" onclick="downloadV10Report('json')">📥 JSON Veri Paketini İndir (.json)</button>
+                <button class="btn btn-secondary" onclick="downloadV10Report('csv')">📥 Portföy Metrikleri CSV (.csv)</button>
+              </div>
+              <div style="font-size: 11px; color: #64748b; line-height: 1.5;">
+                Tüm raporlar SHA-256 imzaları, tam parametre parmak izleri ve bağımsız mutabakat verilerini içerir.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </section>
     """
@@ -1075,6 +1379,8 @@ def render_btc_timing_scripts() -> str:
         loadTimingHistory();
       } else if (subId === "shadow-eval") {
         loadSealedEvaluationDashboard();
+      } else if (subId === "v10-workspace") {
+        loadInvestmentResearchV10();
       }
     }
 
@@ -1907,5 +2213,427 @@ def render_btc_timing_scripts() -> str:
       drawCurve(pBnh, "#fbbf24");      // Buy and hold (Yellow)
       drawCurve(pSimple, "#f87171");   // Simple trend (Red)
       drawCurve(pLow, "#38bdf8");      // Low turnover (Cyan)
+    }
+
+    /* ========================================================================= */
+    /* SPRINT 32: DASHBOARD V10 INVESTMENT RESEARCH WORKSPACE CONTROLLER         */
+    /* ========================================================================= */
+    let v10CachedCurves = null;
+    let v10ChartMode = 'equity';
+    let v10TradesCurrentPage = 1;
+    let v10TradesTotalPages = 1;
+
+    async function loadInvestmentResearchV10() {
+      try {
+        // 1. Overview
+        const ovRes = await fetch("/api/v1/product/research/btc-timing/v10/overview");
+        if (ovRes.ok) {
+          const ov = await ovRes.json();
+          const periodElem = document.getElementById("v10-kpi-period");
+          if (periodElem) periodElem.textContent = (ov.evaluation_period ? ov.evaluation_period.year : "2025") + " (" + (ov.evaluation_period ? ov.evaluation_period.total_hours : 8760) + " Saat)";
+          const provElem = document.getElementById("v10-kpi-provenance");
+          if (provElem) provElem.textContent = ov.provenance_status || "RESTRICTED_EVIDENCE_UNVERIFIED_PROVENANCE";
+          const sealElem = document.getElementById("v10-kpi-seal");
+          if (sealElem && ov.policy_package_status && ov.policy_package_status.seal_sha256) {
+            sealElem.textContent = ov.policy_package_status.seal_sha256.substring(0, 16) + "... (Mühürlü)";
+          }
+          const benchElem = document.getElementById("v10-kpi-benchmark");
+          if (benchElem && ov.best_historical_benchmark) {
+            benchElem.textContent = ov.best_historical_benchmark.display_name + " (%" + ov.best_historical_benchmark.net_return_pct + ")";
+          }
+        }
+
+        // 2. Comparison & Curves
+        const compRes = await fetch("/api/v1/product/research/btc-timing/v10/comparison");
+        if (compRes.ok) {
+          const comp = await compRes.json();
+          v10CachedCurves = comp.equity_curves || {};
+          renderV10ComparisonTable(comp.policies || []);
+          renderV10Chart();
+        }
+
+        // 3. Strategy Details (Initial)
+        await onV10StrategySelectChange();
+
+        // 4. Cost Intelligence
+        const costRes = await fetch("/api/v1/product/research/btc-timing/v10/cost-intelligence");
+        if (costRes.ok) {
+          const costData = await costRes.json();
+          const dragElem = document.getElementById("v10-compounded-drag-text");
+          if (dragElem && costData.compounded_drag_analysis) {
+            dragElem.textContent = costData.compounded_drag_analysis.explanation;
+          }
+          renderV10CostScenarios(costData.cost_sensitivity_scenarios || []);
+        }
+
+        // 5. Scientific Evidence
+        const evRes = await fetch("/api/v1/product/research/btc-timing/v10/scientific-evidence");
+        if (evRes.ok) {
+          const evData = await evRes.json();
+          renderV10Hypotheses(evData.hypotheses || {});
+        }
+
+        // 6. Timeline
+        const tlRes = await fetch("/api/v1/product/research/btc-timing/v10/timeline");
+        if (tlRes.ok) {
+          const tlData = await tlRes.json();
+          renderV10Timeline(tlData.timeline || []);
+        }
+      } catch (err) {
+        console.error("Error loading Investment Research V10:", err);
+      }
+    }
+
+    function renderV10ComparisonTable(policies) {
+      const tbody = document.getElementById("v10-comparison-tbody");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      policies.forEach(p => {
+        const tr = document.createElement("tr");
+        const retColor = p.net_return_pct > 0 ? "#34d399" : (p.net_return_pct === 0 ? "#94a3b8" : "#f87171");
+        const ddColor = p.max_drawdown_pct < -50 ? "#ef4444" : "#fb923c";
+
+        tr.innerHTML = `
+          <td style="font-weight: 600; color: #f8fafc;">${p.display_name}</td>
+          <td><span class="badge" style="font-size: 10px; background: rgba(56, 189, 248, 0.1); color: #38bdf8;">${p.category}</span></td>
+          <td>$${p.initial_capital_usdt.toLocaleString("en-US", {minimumFractionDigits: 2})}</td>
+          <td style="font-weight: bold; color: #f8fafc;">$${p.ending_equity_usdt.toLocaleString("en-US", {minimumFractionDigits: 2})}</td>
+          <td style="color: ${retColor}; font-weight: bold;">${p.net_return_pct > 0 ? "+" : ""}${p.net_return_pct.toFixed(2)}%</td>
+          <td style="color: ${ddColor};">${p.max_drawdown_pct.toFixed(2)}%</td>
+          <td>${p.sharpe_ratio.toFixed(2)}</td>
+          <td>${p.trade_count}</td>
+          <td style="color: #fb923c;">$${p.total_transaction_costs_usdt.toLocaleString("en-US", {minimumFractionDigits: 2})}</td>
+          <td>%${(p.time_invested_pct * 100).toFixed(1)}</td>
+          <td><span class="badge" style="font-size: 10px; background: rgba(16, 185, 129, 0.2); color: #10b981;">0.00 Mutabık</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function switchV10ChartMode(mode) {
+      v10ChartMode = mode;
+      const btnEq = document.getElementById("v10-btn-chart-equity");
+      const btnDd = document.getElementById("v10-btn-chart-drawdown");
+      const title = document.getElementById("v10-chart-title");
+
+      if (mode === 'equity') {
+        if (btnEq) { btnEq.classList.add("btn-primary"); btnEq.classList.remove("btn-secondary"); }
+        if (btnDd) { btnDd.classList.remove("btn-primary"); btnDd.classList.add("btn-secondary"); }
+        if (title) title.textContent = "Tarihsel Özkaynak Gelişimi (2025 Tam Yıl - 120 Nokta Örnekleme)";
+      } else {
+        if (btnDd) { btnDd.classList.add("btn-primary"); btnDd.classList.remove("btn-secondary"); }
+        if (btnEq) { btnEq.classList.remove("btn-primary"); btnEq.classList.add("btn-secondary"); }
+        if (title) title.textContent = "Tarihsel Su Altı Düşüş Eğrisi (Underwater Drawdown %)";
+      }
+      renderV10Chart();
+    }
+
+    function renderV10Chart() {
+      const canvas = document.getElementById("v10-equity-canvas");
+      if (!canvas || !v10CachedCurves) return;
+      const ctx = canvas.getContext("2d");
+      const width = canvas.width;
+      const height = canvas.height;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const padLeft = 60;
+      const padRight = 30;
+      const padTop = 30;
+      const padBottom = 40;
+      const plotW = width - padLeft - padRight;
+      const plotH = height - padTop - padBottom;
+
+      const colors = {
+        "POLICY_BUY_AND_HOLD": "#fbbf24",
+        "POLICY_USDT_CASH": "#94a3b8",
+        "POLICY_SIMPLE_TREND": "#f87171",
+        "POLICY_TREND_LOW_TURNOVER": "#38bdf8",
+        "POLICY_PERIODIC_REBALANCE": "#a78bfa",
+        "POLICY_DERIVED_REGIME_CONFIRMATION": "#34d399",
+      };
+
+      if (v10ChartMode === 'equity') {
+        const minVal = 2000;
+        const maxVal = 14000;
+
+        // Gridlines
+        ctx.strokeStyle = "#1e293b";
+        ctx.lineWidth = 1;
+        const yTicks = [3000, 6000, 9000, 10000, 12000, 14000];
+        ctx.fillStyle = "#64748b";
+        ctx.font = "10px monospace";
+        ctx.textAlign = "right";
+
+        yTicks.forEach(val => {
+          const y = padTop + plotH - ((val - minVal) / (maxVal - minVal)) * plotH;
+          ctx.beginPath();
+          ctx.moveTo(padLeft, y);
+          ctx.lineTo(width - padRight, y);
+          ctx.stroke();
+          ctx.fillText("$" + val.toLocaleString("en-US"), padLeft - 8, y + 3);
+        });
+
+        // $10,000 cash baseline
+        const cashY = padTop + plotH - ((10000 - minVal) / (maxVal - minVal)) * plotH;
+        ctx.strokeStyle = "rgba(148, 163, 184, 0.4)";
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(padLeft, cashY);
+        ctx.lineTo(width - padRight, cashY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Curves
+        Object.keys(colors).forEach(polKey => {
+          const pts = v10CachedCurves[polKey] || [];
+          if (pts.length === 0) return;
+          ctx.strokeStyle = colors[polKey] || "#cbd5e1";
+          ctx.lineWidth = polKey === "POLICY_TREND_LOW_TURNOVER" ? 2.5 : 1.5;
+          ctx.beginPath();
+          pts.forEach((pt, idx) => {
+            const x = padLeft + (idx / (pts.length - 1)) * plotW;
+            const val = Math.max(minVal, Math.min(maxVal, pt.equity));
+            const y = padTop + plotH - ((val - minVal) / (maxVal - minVal)) * plotH;
+            if (idx === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          });
+          ctx.stroke();
+        });
+      } else {
+        // Drawdown Mode (0% down to -70%)
+        const minVal = -70;
+        const maxVal = 0;
+
+        ctx.strokeStyle = "#1e293b";
+        ctx.lineWidth = 1;
+        const yTicks = [0, -15, -30, -45, -60, -70];
+        ctx.fillStyle = "#64748b";
+        ctx.font = "10px monospace";
+        ctx.textAlign = "right";
+
+        yTicks.forEach(val => {
+          const y = padTop + plotH - ((val - minVal) / (maxVal - minVal)) * plotH;
+          ctx.beginPath();
+          ctx.moveTo(padLeft, y);
+          ctx.lineTo(width - padRight, y);
+          ctx.stroke();
+          ctx.fillText(val + "%", padLeft - 8, y + 3);
+        });
+
+        Object.keys(colors).forEach(polKey => {
+          const pts = v10CachedCurves[polKey] || [];
+          if (pts.length === 0) return;
+          ctx.strokeStyle = colors[polKey] || "#cbd5e1";
+          ctx.lineWidth = polKey === "POLICY_TREND_LOW_TURNOVER" ? 2.5 : 1.5;
+          ctx.beginPath();
+          pts.forEach((pt, idx) => {
+            const x = padLeft + (idx / (pts.length - 1)) * plotW;
+            const ddVal = Math.max(minVal, Math.min(maxVal, -Math.abs(pt.drawdown)));
+            const y = padTop + plotH - ((ddVal - minVal) / (maxVal - minVal)) * plotH;
+            if (idx === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          });
+          ctx.stroke();
+        });
+      }
+    }
+
+    async function onV10StrategySelectChange() {
+      const sel = document.getElementById("v10-strategy-select");
+      if (!sel) return;
+      const policyKey = sel.value;
+
+      try {
+        const stratRes = await fetch("/api/v1/product/research/btc-timing/v10/strategy/" + policyKey);
+        if (stratRes.ok) {
+          const strat = await stratRes.json();
+          const rulesUl = document.getElementById("v10-strategy-rules-list");
+          if (rulesUl) {
+            rulesUl.innerHTML = "";
+            (strat.exact_rules || []).forEach(r => {
+              const li = document.createElement("li");
+              li.textContent = r;
+              rulesUl.appendChild(li);
+            });
+          }
+
+          const paramsPre = document.getElementById("v10-strategy-params-pre");
+          if (paramsPre) {
+            paramsPre.textContent = JSON.stringify(strat.frozen_parameters || {}, null, 2);
+          }
+        }
+
+        v10TradesCurrentPage = 1;
+        await loadV10TradesCurrentPage();
+      } catch (err) {
+        console.error("Error loading strategy details:", err);
+      }
+    }
+
+    async function loadV10TradesCurrentPage() {
+      const sel = document.getElementById("v10-strategy-select");
+      if (!sel) return;
+      const policyKey = sel.value;
+
+      const sideFilter = (document.getElementById("v10-trade-side-filter") || {}).value || "";
+      let url = "/api/v1/product/research/btc-timing/v10/trades/" + policyKey + "?page=" + v10TradesCurrentPage + "&limit=15";
+      if (sideFilter) url += "&side=" + sideFilter;
+
+      try {
+        const res = await fetch(url);
+        if (res.ok) {
+          const data = await res.json();
+          v10TradesTotalPages = data.total_pages || 1;
+          const pageInfo = document.getElementById("v10-trade-page-info");
+          if (pageInfo) pageInfo.textContent = "Sayfa " + data.page + " / " + v10TradesTotalPages + " (" + data.total_trades + " İşlem)";
+
+          const prevBtn = document.getElementById("v10-trade-prev");
+          const nextBtn = document.getElementById("v10-trade-next");
+          if (prevBtn) prevBtn.disabled = (data.page <= 1);
+          if (nextBtn) nextBtn.disabled = (data.page >= v10TradesTotalPages);
+
+          const tbody = document.getElementById("v10-trades-tbody");
+          if (!tbody) return;
+          tbody.innerHTML = "";
+
+          if (!data.trades || data.trades.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="12" style="text-align: center; color: #64748b;">Bu politika veya filtre için işlem bulunmuyor.</td></tr>';
+            return;
+          }
+
+          data.trades.forEach(t => {
+            const tr = document.createElement("tr");
+            const sideColor = t.side === "BUY" ? "#34d399" : "#f87171";
+            tr.innerHTML = `
+              <td style="font-family: monospace; font-size: 11px;">${t.trade_id}</td>
+              <td style="font-size: 11px; color: #94a3b8;">${(t.timestamp_iso || "").replace("T", " ").replace("Z", "")}</td>
+              <td><span class="badge" style="font-size: 10px; background: rgba(56, 189, 248, 0.1); color: ${sideColor}; font-weight: bold;">${t.side}</span></td>
+              <td>$${t.nominal_price.toLocaleString("en-US", {minimumFractionDigits: 2})}</td>
+              <td>$${t.effective_price.toLocaleString("en-US", {minimumFractionDigits: 2})}</td>
+              <td>${t.btc_quantity.toFixed(6)}</td>
+              <td>$${t.fee_usdt.toFixed(2)}</td>
+              <td>$${t.spread_cost_usdt.toFixed(2)}</td>
+              <td>$${t.slippage_cost_usdt.toFixed(2)}</td>
+              <td style="color: #fb923c; font-weight: bold;">$${t.total_cost_usdt.toFixed(2)}</td>
+              <td>$${t.usdt_balance_after.toLocaleString("en-US", {minimumFractionDigits: 2})}</td>
+              <td style="font-weight: bold; color: #f8fafc;">$${t.equity_usdt_after.toLocaleString("en-US", {minimumFractionDigits: 2})}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        }
+      } catch (err) {
+        console.error("Error loading trades:", err);
+      }
+    }
+
+    function prevV10TradesPage() {
+      if (v10TradesCurrentPage > 1) {
+        v10TradesCurrentPage--;
+        loadV10TradesCurrentPage();
+      }
+    }
+
+    function nextV10TradesPage() {
+      if (v10TradesCurrentPage < v10TradesTotalPages) {
+        v10TradesCurrentPage++;
+        loadV10TradesCurrentPage();
+      }
+    }
+
+    function renderV10CostScenarios(scenarios) {
+      const tbody = document.getElementById("v10-cost-scenarios-tbody");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      scenarios.forEach(sc => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td style="font-weight: 600; color: #f8fafc;">${sc.scenario}</td>
+          <td><span class="badge" style="background: rgba(251, 146, 60, 0.1); color: #fb923c;">${sc.one_way_bps} bps</span></td>
+          <td style="color: #f87171;">$${sc.simple_trend_equity.toLocaleString("en-US", {minimumFractionDigits: 2})}</td>
+          <td style="color: #38bdf8; font-weight: bold;">$${sc.low_turnover_equity.toLocaleString("en-US", {minimumFractionDigits: 2})}</td>
+          <td style="font-size: 11px; color: #94a3b8;">${sc.impact}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderV10Hypotheses(hypotheses) {
+      const grid = document.getElementById("v10-hypotheses-grid");
+      if (!grid) return;
+      grid.innerHTML = "";
+
+      Object.keys(hypotheses).forEach(hId => {
+        const h = hypotheses[hId];
+        const card = document.createElement("div");
+        card.className = "timing-kpi-card";
+        card.style.background = "#0f172a";
+        card.style.border = "1px solid #1e293b";
+
+        const isMet = h.descriptive_verdict === "DESCRIPTIVE_THRESHOLD_MET";
+        const badgeColor = isMet ? "#10b981" : "#ef4444";
+        const badgeBg = isMet ? "rgba(16, 185, 129, 0.15)" : "rgba(239, 68, 68, 0.15)";
+
+        card.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span style="font-weight: bold; color: #38bdf8;">${hId}</span>
+            <span class="badge" style="font-size: 10px; background: ${badgeBg}; color: ${badgeColor}; border: 1px solid ${badgeColor};">
+              ${h.descriptive_verdict}
+            </span>
+          </div>
+          <div style="font-size: 12px; font-weight: 600; color: #f8fafc; margin-bottom: 4px;">${h.name}</div>
+          <div style="font-size: 11px; color: #94a3b8; line-height: 1.4; margin-bottom: 8px;">${h.effect_size_summary}</div>
+          <div style="font-size: 10px; color: #64748b; background: #090d16; padding: 4px 6px; border-radius: 4px;">
+            İstatistiksel Durum: <strong style="color: #fb923c;">${h.statistical_verdict}</strong>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderV10Timeline(timeline) {
+      const cont = document.getElementById("v10-timeline-container");
+      if (!cont) return;
+      cont.innerHTML = "";
+
+      timeline.forEach(item => {
+        const div = document.createElement("div");
+        div.style.padding = "12px 16px";
+        div.style.background = "#090d16";
+        div.style.borderRadius = "6px";
+        div.style.borderLeft = "3px solid #38bdf8";
+
+        div.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <strong style="color: #38bdf8; font-size: 13px;">${item.sprint_id}: ${item.title}</strong>
+            <span class="badge" style="font-size: 10px; background: rgba(56, 189, 248, 0.1); color: #94a3b8;">${item.dataset}</span>
+          </div>
+          <div style="font-size: 12px; color: #cbd5e1; margin-bottom: 4px;">${item.milestone}</div>
+          <div style="font-size: 11px; color: #64748b;"><strong>Önemli Bulgu:</strong> ${item.key_finding}</div>
+        `;
+        cont.appendChild(div);
+      });
+    }
+
+    async function downloadV10Report(fmt) {
+      try {
+        const res = await fetch("/api/v1/product/research/btc-timing/v10/report/download?format=" + fmt);
+        if (res.ok) {
+          const data = await res.json();
+          const blob = new Blob([data.content], { type: data.media_type || "text/plain" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = data.filename || ("cbe_sprint32_report." + fmt);
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }
+      } catch (err) {
+        alert("Rapor indirilemedi: " + err);
+      }
     }
     """

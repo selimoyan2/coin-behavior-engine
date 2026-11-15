@@ -1,0 +1,29 @@
+{
+  "sprint_id": "CBE_SPRINT32_SCIENTIFIC_VALIDATION_DASHBOARD_V10",
+  "timestamp_utc": "2026-11-15T11:51:30.000000+00:00",
+  "test_file": "tests/test_sprint32_scientific_validation_dashboard_v10.py",
+  "total_tests": 27,
+  "passed_tests": 27,
+  "failed_tests": 0,
+  "skipped_tests": 0,
+  "pass_rate": "100.0%",
+  "duration_seconds": 1.89,
+  "categories_verified": {
+    "dataset_provenance_and_monthly_partitions": "PASS",
+    "raw_to_merged_exact_bitwise_parity": "PASS",
+    "conservative_unverified_provenance_classification": "PASS",
+    "hypotheses_h1_to_h5_statistical_audit": "PASS",
+    "serial_dependence_and_pvalue_revocation": "PASS",
+    "h4_unsupported_honest_effect_size": "PASS",
+    "h5_canonical_model_attribution_disclaimer": "PASS",
+    "transaction_cost_convention_one_way_vs_round_trip": "PASS",
+    "independent_portfolio_trade_reconstruction": "PASS",
+    "compounded_performance_drag_multiplier": "PASS",
+    "policy_package_seal_verified": "PASS",
+    "sealed_evaluation_chronology_audit": "PASS",
+    "v10_dashboard_endpoints_overview_comparison_strategy_trades_cost_evidence_timeline": "PASS",
+    "v10_trade_pagination_and_filtering": "PASS",
+    "live_trading_permanently_prohibited_403": "PASS",
+    "canonical_model_cbe_070_frozen_immutability": "PASS"
+  }
+}
