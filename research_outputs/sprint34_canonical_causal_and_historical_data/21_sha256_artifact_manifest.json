@@ -1,0 +1,159 @@
+{
+  "sprint_id": "CBE_SPRINT34_CANONICAL_EXECUTION_PARITY_CAUSAL_RESEARCH_AND_HISTORICAL_DATA",
+  "timestamp_utc": "2026-11-15T19:17:00Z",
+  "canonical_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "total_artifacts": 26,
+  "artifacts": [
+    {
+      "filename": "01_canonical_inference_parity_audit.md",
+      "size_bytes": 5497,
+      "sha256": "c2459e177d62682263f43ac1f3a775d423449fd1cddf6e6c64e4b59457e6809c",
+      "type": "MD"
+    },
+    {
+      "filename": "02_full_sample_leakage_root_cause_report.md",
+      "size_bytes": 4342,
+      "sha256": "cea69ec7103a9908f36e13a80a4bf47a653e464c85cd3783e49cbfc9bb489ad1",
+      "type": "MD"
+    },
+    {
+      "filename": "03_point_in_time_threshold_correction.md",
+      "size_bytes": 2755,
+      "sha256": "d1c6c5ea902d89e367ffa426f6a8bdcb83e967c7af67107f4030d05fead6fe81",
+      "type": "MD"
+    },
+    {
+      "filename": "04_prefix_invariance_test_evidence.json",
+      "size_bytes": 31165,
+      "sha256": "595bef8bd616f8d57285c012aa62213129fbbfbecb9f36cea65758d10200412e",
+      "type": "JSON"
+    },
+    {
+      "filename": "05_canonical_output_attribution_report.md",
+      "size_bytes": 3769,
+      "sha256": "399e0d559ba53f62f71045196b9766011ab30391d009f4caa8b847cb5f902d63",
+      "type": "MD"
+    },
+    {
+      "filename": "06_corrected_regime_analysis.json",
+      "size_bytes": 4657,
+      "sha256": "47b5c94ae1549e2ae3e4f627567d8bd9a905fd533fe1cfc0e7840376dc41c2a1",
+      "type": "JSON"
+    },
+    {
+      "filename": "07_corrected_forward_return_analysis.json",
+      "size_bytes": 14265,
+      "sha256": "002fefb5c0669e6d0320866c89c0106a7857c8423004af27094fa83348dfc339",
+      "type": "JSON"
+    },
+    {
+      "filename": "08_corrected_incremental_value_assessment.md",
+      "size_bytes": 2651,
+      "sha256": "c6612fa82d5a8bf50839aced6737512cc9d646ffd29c70ff149faf8a9a976b23",
+      "type": "MD"
+    },
+    {
+      "filename": "09_corrected_paper_portfolio_reconciliation.md",
+      "size_bytes": 1925,
+      "sha256": "30346633807f8049d86342305c801c98464687ba64b8a17d5ba43da4801cd598",
+      "type": "MD"
+    },
+    {
+      "filename": "10_october_2026_data_availability_audit.md",
+      "size_bytes": 1271,
+      "sha256": "6e41cf406fe6fd053e05c797fc7ef4aec6eb02a02c821cc22dab926d40cf427e",
+      "type": "MD"
+    },
+    {
+      "filename": "11_november_2026_partial_data_availability_audit.md",
+      "size_bytes": 1303,
+      "sha256": "ab6942dd03ee4fb90b42bb9d8fb78555f81ade5a6a1c403c3ebb9f8fc684d04c",
+      "type": "MD"
+    },
+    {
+      "filename": "12_historical_dataset_import_and_validation_evidence.json",
+      "size_bytes": 3278,
+      "sha256": "89f592401396cc3d19f04aed2bf971571c5a481ea5a785a50684b0baa5dc23d0",
+      "type": "JSON"
+    },
+    {
+      "filename": "13_multi_timeframe_integrity_report.md",
+      "size_bytes": 1785,
+      "sha256": "bb90a17bf915798d6e26ea3360b82ccc789d228a47521c4592dae7c1004f3daa",
+      "type": "MD"
+    },
+    {
+      "filename": "14_historical_dashboard_acceptance_report.md",
+      "size_bytes": 1955,
+      "sha256": "4c8eea5bd0ea003d64f75c332fab6ede9792d167a866a0376b659c1e9948ae6f",
+      "type": "MD"
+    },
+    {
+      "filename": "15_dashboard_v11_1_acceptance_evidence.json",
+      "size_bytes": 1699,
+      "sha256": "e13a91c9f4b1692f7c6842f0ccbddbbe105dc3a923e532f57622060256d6f438",
+      "type": "JSON"
+    },
+    {
+      "filename": "16_automated_test_results.json",
+      "size_bytes": 1389,
+      "sha256": "212eeccc5e4fb8f8354bcd2980c75a67a981c7ab51cd0670744e238dd6bcdc7c",
+      "type": "JSON"
+    },
+    {
+      "filename": "17_full_regression_results.json",
+      "size_bytes": 476,
+      "sha256": "6a437ea8ab2187d0fac75a65a83a3b96f08bb75b4621d7b74746b7da513183d6",
+      "type": "JSON"
+    },
+    {
+      "filename": "18_dashboard_v11_1_desktop.png",
+      "size_bytes": 124434,
+      "sha256": "5f003341286869a71bf35fa11b7f23dff9a35020faad2f4ca1b2827e0d2aafe6",
+      "type": "PNG"
+    },
+    {
+      "filename": "18_dashboard_v11_1_mobile.png",
+      "size_bytes": 45842,
+      "sha256": "2e16e0f913e4666bd6d732d948c774c6c927d4d1d4911ce5f812089e2b43dba2",
+      "type": "PNG"
+    },
+    {
+      "filename": "18_dashboard_v11_1_tablet.png",
+      "size_bytes": 102399,
+      "sha256": "401f16c0620fde2d45213c7f60c75ebd3a0c988ffe28dfa4fa03c3bc72a0fd1d",
+      "type": "PNG"
+    },
+    {
+      "filename": "18_playwright_results.json",
+      "size_bytes": 2610,
+      "sha256": "9fbd61dbe6e326bf4d475d0a291d209a7ed93dfec00f2d0b47d9a59d99fa59aa",
+      "type": "JSON"
+    },
+    {
+      "filename": "19_staging_deployment_evidence.json",
+      "size_bytes": 1400,
+      "sha256": "6f202b3629f0620d5bc96867a8749b707510a5c8a9c54522a88639530b96f300",
+      "type": "JSON"
+    },
+    {
+      "filename": "20_production_isolation_evidence.json",
+      "size_bytes": 952,
+      "sha256": "ab19ba312509a0b12ca9848b5fb1bdc819e94b79c46ec47c4b0dab55d71dfd73",
+      "type": "JSON"
+    },
+    {
+      "filename": "22_final_sprint34_report.md",
+      "size_bytes": 14626,
+      "sha256": "d05954990e2f0e1e1107d36f123261e73be1a2f96251c1291aff1a6f1055cc40",
+      "type": "MD"
+    },
+    {
+      "filename": "test_server_sprint34.log",
+      "size_bytes": 8813,
+      "sha256": "a71e5f269d65c36f0d271b0e34ea38dd3f0977ef29ff5cfa2019054fbd9f891b",
+      "type": "LOG"
+    }
+  ]
+}

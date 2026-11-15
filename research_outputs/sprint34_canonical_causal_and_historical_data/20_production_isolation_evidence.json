@@ -1,0 +1,21 @@
+{
+  "sprint_id": "CBE_SPRINT34_CANONICAL_EXECUTION_PARITY_CAUSAL_RESEARCH_AND_HISTORICAL_DATA",
+  "audit_timestamp_utc": "2026-11-15T16:16:42.232776+00:00",
+  "production_container": {
+    "container_id": "4c6a29b5fbf6",
+    "name": "6t63aehpaw0cw1bbt4zcm09g-20261115T151328",
+    "image": "6t63aehpaw0cw1bbt4zcm09g:c9e3907a226cfbe01e73f87c960156afdd874dc4",
+    "port": 8000,
+    "status": "running",
+    "health": "healthy",
+    "restart_count": 0,
+    "zero_touch_preserved": true
+  },
+  "isolation_controls": {
+    "network_isolation": "Staging runs on 127.0.0.1:18080, production runs on 8000 (coolify-proxy upstream).",
+    "container_isolation": "Distinct container names and network bindings.",
+    "git_guard": "origin/main strictly untouched. Commits pushed only to research branch.",
+    "live_trading_guard": "HTTP 403 Forbidden enforced via middleware."
+  },
+  "verdict": "PRODUCTION_ZERO_TOUCH_100_PERCENT_PRESERVED"
+}

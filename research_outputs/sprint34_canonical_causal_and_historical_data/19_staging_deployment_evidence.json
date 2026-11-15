@@ -1,0 +1,27 @@
+{
+  "sprint_id": "CBE_SPRINT34_CANONICAL_EXECUTION_PARITY_CAUSAL_RESEARCH_AND_HISTORICAL_DATA",
+  "deployment_status": "SUCCESSFUL_AUTHORIZED_STAGING",
+  "target_host": "srv1114257 (168.231.125.238)",
+  "staging_port": 18080,
+  "staging_container_id": "6573abbd05f4",
+  "staging_container_name": "cbe-market-intelligence-staging-dzzfws54by1whlbq6fk4ywut-20261115T161624",
+  "docker_image": "cbe-market-intelligence:sprint34-957e0d3",
+  "docker_image_id": "sha256:e229e53d6135a496b61adbf227b4b7bb19f8633b962f46dc8ffd857744ecb18c",
+  "commit_sha": "957e0d3b9af921c874b4d174738044c471465bf1",
+  "branch": "research/sprint33-canonical-bridge-market-intelligence",
+  "deployment_timestamp_utc": "2026-11-15T16:16:42.224618+00:00",
+  "endpoints_verified": [
+    "/ready",
+    "/api/v1/product/btc-timing/v11/model-status",
+    "/api/v1/product/btc-timing/v11/regime-explorer",
+    "/api/v1/product/btc-timing/v11/risk-intelligence",
+    "/api/v1/product/btc-timing/v11/forward-returns?horizon=24h",
+    "/api/v1/product/btc-timing/v11/model-comparison",
+    "/api/v1/product/btc-timing/v11/evidence-ledger?sprint=34",
+    "/api/v1/product/btc-timing/v11/deployment-safety"
+  ],
+  "security_boundary": "HTTP 403 Forbidden on execute-live",
+  "staging_ready_http_code": 200,
+  "restart_recovery_tested": true,
+  "deployment_gate_mode": "OPTION_3_RESEARCH_BRANCH_STAGING_ISOLATION"
+}
