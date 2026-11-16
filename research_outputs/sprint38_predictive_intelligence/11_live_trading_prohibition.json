@@ -1,0 +1,45 @@
+{
+  "sprint_id": "CBE_SPRINT38_DASHBOARD_V15_EVIDENCE_EXPLORER",
+  "timestamp_utc": "2026-11-16T22:36:20.296024+00:00",
+  "canonical_model": "CBE-0.7.0 (STRICTLY_FROZEN)",
+  "live_trading_capability": "PERMANENTLY_PROHIBITED",
+  "governance_status": "TECHNICAL_NO_GO",
+  "prohibited_endpoints_audited": [
+    {
+      "method": "POST",
+      "path": "/place-order",
+      "expected_status": 403,
+      "actual_status": 403,
+      "passed": true
+    },
+    {
+      "method": "POST",
+      "path": "/live-trade/execute",
+      "expected_status": 403,
+      "actual_status": 403,
+      "passed": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/product/place-order",
+      "expected_status": 403,
+      "actual_status": 403,
+      "passed": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/order/execute",
+      "expected_status": 403,
+      "actual_status": 403,
+      "passed": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/order/execute",
+      "expected_status": 403,
+      "actual_status": 403,
+      "passed": true
+    }
+  ],
+  "all_checks_passed": true
+}

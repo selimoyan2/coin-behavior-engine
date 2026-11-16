@@ -1,0 +1,34 @@
+{
+  "sprint_id": "CBE_SPRINT38_DASHBOARD_V15_EVIDENCE_EXPLORER",
+  "timestamp_utc": "2026-11-16T22:36:20.286192+00:00",
+  "laboratory_name": "Predictive Validity Intelligence & Evidence Explorer (Dashboard V15)",
+  "dataset_coverage": {
+    "period": "October 2021 — August 2026 (59 Months)",
+    "total_bars_1h": 42717,
+    "synthetic_bars": 0,
+    "data_source": "Binance BTCUSDT Historical Archive & Validated Parquet",
+    "manifest_sha256": "1ff50222c31a486b094a7f2ac9f06d38b1258527e5492acbef5faf9a73c55f14"
+  },
+  "market_regimes_evaluated": [
+    "BULL",
+    "BEAR",
+    "SIDEWAYS",
+    "HIGH_VOLATILITY",
+    "ACCUMULATION",
+    "DISTRIBUTION"
+  ],
+  "forward_horizons_evaluated": [
+    "1h",
+    "4h",
+    "24h",
+    "7d",
+    "30d"
+  ],
+  "total_hypotheses": 30,
+  "economic_friction_applied": "30 bps round-trip transaction costs",
+  "statistical_framework": {
+    "confidence_intervals": "Circular Block Bootstrap (B=500)",
+    "standard_errors": "Newey-West Heteroskedasticity & Autocorrelation Consistent (HAC)",
+    "multiple_testing": "Benjamini-Hochberg False Discovery Rate (FDR) & Holm-Bonferroni (FWER)"
+  }
+}

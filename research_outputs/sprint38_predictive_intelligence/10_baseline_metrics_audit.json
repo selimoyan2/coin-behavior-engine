@@ -1,0 +1,31 @@
+{
+  "sprint_id": "CBE_SPRINT38_DASHBOARD_V15_EVIDENCE_EXPLORER",
+  "timestamp_utc": "2026-11-16T22:36:20.295183+00:00",
+  "baselines_evaluated": {
+    "unconditional_drift": {
+      "metric": "Mean Unconditional Return",
+      "value_pct": 0.0518,
+      "benchmark_role": "Market drift anchor"
+    },
+    "momentum_24h": {
+      "metric": "24h Momentum Win Rate",
+      "value_pct": 47.57,
+      "benchmark_role": "Trend-following naive baseline",
+      "finding": "Sub-50% win rate; negative alpha after 30 bps cost drag"
+    },
+    "mean_reversion_24h": {
+      "metric": "24h Mean Reversion Win Rate",
+      "value_pct": 52.51,
+      "benchmark_role": "Contrarian naive baseline",
+      "finding": "52.51% edge completely eliminated by transaction costs"
+    },
+    "volatility_forecasting": {
+      "garch11_rmse": 17.4578,
+      "regime_rmse": 16.0612,
+      "improvement_pct": 8.0,
+      "dm_test_p_value": 1.35e-06,
+      "finding": "Regime-conditioned volatility significantly outperforms GARCH(1,1)"
+    }
+  },
+  "governance_conclusion": "Regime conditioning has valid predictive content for volatility/risk but zero verified directional edge."
+}

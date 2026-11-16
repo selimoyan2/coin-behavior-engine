@@ -1,0 +1,25 @@
+{
+  "sprint_id": "CBE_SPRINT38_DASHBOARD_V15_EVIDENCE_EXPLORER",
+  "timestamp_utc": "2026-11-16T22:36:20.296539+00:00",
+  "disk_cache": {
+    "path": "data/cache/forward_dataset_v37.parquet",
+    "size_bytes": 17531776,
+    "size_mb": 16.72,
+    "rows": 42717,
+    "columns": 49,
+    "load_time_ms": 32.5
+  },
+  "endpoint_latencies_ms": {
+    "/health": 2.1,
+    "/api/v1/product/runtime-build": 1.8,
+    "/api/v1/product/predictive-validity/scorecard": 14.6,
+    "/api/v1/product/predictive-validity/evidence-explorer": 18.2,
+    "/api/v1/product/predictive-validity/volatility-benchmark": 5.4,
+    "/api/v1/product/predictive-validity/regime-persistence": 8.1,
+    "/api/v1/product/predictive-validity/directional-reality": 6.3,
+    "/api/v1/product/predictive-validity/evidence-metadata": 2.4
+  },
+  "memory_footprint_mb": 184.2,
+  "max_latency_threshold_ms": 200,
+  "sla_met": true
+}

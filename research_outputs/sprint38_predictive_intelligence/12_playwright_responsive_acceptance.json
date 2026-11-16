@@ -1,0 +1,113 @@
+{
+  "suite": "Sprint 38 Dashboard V15 Predictive Validity Intelligence Acceptance",
+  "timestamp_utc": "2026-11-16T22:31:48.045580+00:00",
+  "canonical_model": "CBE-0.7.0 (STRICTLY_FROZEN)",
+  "governance_decision": "OFFLINE_HISTORICAL_RESEARCH_PREDICTIVE_VALIDITY_LAB_V15",
+  "viewports": {
+    "desktop": {
+      "width": 1440,
+      "height": 900,
+      "passed": true,
+      "is_pv_visible": true,
+      "kpi_total": "30",
+      "kpi_supported": "4",
+      "evidence_subview_visible": true,
+      "subviews_checked": {
+        "#btn-pv-sub-overview": true,
+        "#btn-pv-sub-evidence": true,
+        "#btn-pv-sub-volatility": true,
+        "#btn-pv-sub-persistence": true,
+        "#btn-pv-sub-directional": true,
+        "#btn-pv-sub-uncertainty": true,
+        "#btn-pv-sub-limitations": true,
+        "#btn-pv-sub-history": true
+      },
+      "reality_check_disclaimer_present": true,
+      "console_errors": [],
+      "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint38_predictive_intelligence\\12_sprint38_desktop_1440x900.png"
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024,
+      "passed": true,
+      "is_pv_visible": true,
+      "kpi_total": "30",
+      "kpi_supported": "4",
+      "evidence_subview_visible": true,
+      "subviews_checked": {
+        "#btn-pv-sub-overview": true,
+        "#btn-pv-sub-evidence": true,
+        "#btn-pv-sub-volatility": true,
+        "#btn-pv-sub-persistence": true,
+        "#btn-pv-sub-directional": true,
+        "#btn-pv-sub-uncertainty": true,
+        "#btn-pv-sub-limitations": true,
+        "#btn-pv-sub-history": true
+      },
+      "reality_check_disclaimer_present": true,
+      "console_errors": [],
+      "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint38_predictive_intelligence\\12_sprint38_tablet_768x1024.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "passed": true,
+      "is_pv_visible": true,
+      "kpi_total": "30",
+      "kpi_supported": "4",
+      "evidence_subview_visible": true,
+      "subviews_checked": {
+        "#btn-pv-sub-overview": true,
+        "#btn-pv-sub-evidence": true,
+        "#btn-pv-sub-volatility": true,
+        "#btn-pv-sub-persistence": true,
+        "#btn-pv-sub-directional": true,
+        "#btn-pv-sub-uncertainty": true,
+        "#btn-pv-sub-limitations": true,
+        "#btn-pv-sub-history": true
+      },
+      "reality_check_disclaimer_present": true,
+      "console_errors": [],
+      "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint38_predictive_intelligence\\12_sprint38_mobile_390x844.png"
+    }
+  },
+  "prohibited_trading_audit": {
+    "POST http://127.0.0.1:18099/place-order": {
+      "status": 403,
+      "expected_status": 403,
+      "passed": true,
+      "response": "{\n  \"error\": \"GOVERNANCE_VIOLATION\",\n  \"message\": \"Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.\",\n  \"canonical_model\": \"CBE-0.7.0\",\n  \"governance_decision\": \"TE"
+    },
+    "POST http://127.0.0.1:18099/live-trade/execute": {
+      "status": 403,
+      "expected_status": 403,
+      "passed": true,
+      "response": "{\n  \"error\": \"GOVERNANCE_VIOLATION\",\n  \"message\": \"Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.\",\n  \"canonical_model\": \"CBE-0.7.0\",\n  \"governance_decision\": \"TE"
+    },
+    "POST http://127.0.0.1:18099/api/v1/product/place-order": {
+      "status": 403,
+      "expected_status": 403,
+      "passed": true,
+      "response": "{\n  \"error\": \"GOVERNANCE_VIOLATION\",\n  \"message\": \"Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.\",\n  \"canonical_model\": \"CBE-0.7.0\",\n  \"governance_decision\": \"TE"
+    },
+    "POST http://127.0.0.1:18099/api/v1/order/execute": {
+      "status": 403,
+      "expected_status": 403,
+      "passed": true,
+      "response": "{\n  \"error\": \"GOVERNANCE_VIOLATION\",\n  \"message\": \"Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.\",\n  \"canonical_model\": \"CBE-0.7.0\",\n  \"governance_decision\": \"TE"
+    },
+    "GET http://127.0.0.1:18099/api/v1/order/execute": {
+      "status": 403,
+      "expected_status": 403,
+      "passed": true,
+      "response": "{\n  \"error\": \"GOVERNANCE_VIOLATION\",\n  \"message\": \"Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.\",\n  \"canonical_model\": \"CBE-0.7.0\",\n  \"governance_decision\": \"TE"
+    }
+  },
+  "modal_inspection": {
+    "inspect_button_found": true,
+    "modal_opened": true,
+    "modal_title": "H_SIDEWAYS_1h"
+  },
+  "console_errors": [],
+  "overall_status": "PASSED"
+}

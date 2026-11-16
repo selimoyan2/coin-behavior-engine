@@ -1,0 +1,111 @@
+{
+  "status": "success",
+  "timestamp_utc": "2026-11-16T22:36:20.291605+00:00",
+  "governance_status": "CANONICAL_PARITY_NOT_ESTABLISHED",
+  "tier_architecture": {
+    "tier_1_canonical_model": {
+      "name": "CBE-0.7.0 Nominal Causal States",
+      "states": [
+        "NORMAL",
+        "COMPRESSION",
+        "EXPANSION_WATCH",
+        "DELEVERAGING_STRESS"
+      ],
+      "status": "STRICTLY_FROZEN",
+      "mutation_allowed": false,
+      "governance_note": "Agirliklar, hiperparametreler ve durum tanimlari kesinlikle dondurulmustur."
+    },
+    "tier_2_derived_research_classifier": {
+      "name": "Derived Offline Research Classifier (6 Regimes)",
+      "classification": "DERIVED_RESEARCH_CLASSIFIER",
+      "regimes": [
+        "SIDEWAYS",
+        "UNCERTAIN",
+        "TRENDING_BULL",
+        "TRENDING_BEAR",
+        "POSSIBLE_REVERSAL",
+        "HIGH_VOLATILITY"
+      ],
+      "status": "DESCRIPTIVE_OFFLINE_RESEARCH",
+      "parity_verdict": "CANONICAL_PARITY_NOT_ESTABLISHED",
+      "governance_note": "Turetilmis rejimler gecmis piyasa davranisini siniflandirmak icin kullanilir; Tier 1 nominal modeli ikame etmez."
+    }
+  },
+  "persistence_metrics": {
+    "SIDEWAYS": {
+      "mean_duration_hours": 18.4,
+      "median_duration_hours": 12.0,
+      "persistence_prob": 0.946,
+      "vol_relation": "Low volatility compression"
+    },
+    "UNCERTAIN": {
+      "mean_duration_hours": 11.2,
+      "median_duration_hours": 7.0,
+      "persistence_prob": 0.911,
+      "vol_relation": "Moderate transition noise"
+    },
+    "TRENDING_BULL": {
+      "mean_duration_hours": 8.6,
+      "median_duration_hours": 5.0,
+      "persistence_prob": 0.884,
+      "vol_relation": "Expansionary positive drift"
+    },
+    "TRENDING_BEAR": {
+      "mean_duration_hours": 7.4,
+      "median_duration_hours": 4.0,
+      "persistence_prob": 0.865,
+      "vol_relation": "Sharp downside expansion"
+    },
+    "POSSIBLE_REVERSAL": {
+      "mean_duration_hours": 4.8,
+      "median_duration_hours": 3.0,
+      "persistence_prob": 0.792,
+      "vol_relation": "Trend exhaustion / fallacy"
+    },
+    "HIGH_VOLATILITY": {
+      "mean_duration_hours": 9.5,
+      "median_duration_hours": 6.0,
+      "persistence_prob": 0.895,
+      "vol_relation": "Persistent volatility clustering"
+    }
+  },
+  "transition_findings": {
+    "high_volatility_elevation": {
+      "hypothesis": "Entering HIGH_VOLATILITY leads to significantly elevated 24h forward realized volatility",
+      "mean_forward_vol_high_vol_pct": 69.97,
+      "mean_forward_vol_sideways_pct": 46.88,
+      "t_statistic": 10.017,
+      "p_value": 0.0,
+      "conclusion": "SUPPORTED"
+    },
+    "trending_bull_directional_validity": {
+      "hypothesis": "Transition to TRENDING_BULL predicts positive forward 24h returns",
+      "sample_size": 459,
+      "mean_return_24h_pct": -0.0012,
+      "hac_p_value": 0.995874,
+      "conclusion": "INCONCLUSIVE"
+    },
+    "trending_bear_directional_validity": {
+      "hypothesis": "Transition to TRENDING_BEAR predicts negative forward 24h returns",
+      "sample_size": 392,
+      "mean_return_24h_pct": 0.0377,
+      "hac_p_value": 0.872059,
+      "conclusion": "INCONCLUSIVE"
+    },
+    "possible_reversal_efficacy": {
+      "hypothesis": "POSSIBLE_REVERSAL reliably precedes a price reversal opposite to trailing 24h trend",
+      "sample_size": 445,
+      "empirical_reversal_rate_pct": 58.2,
+      "baseline_null_pct": 50.0,
+      "binomial_p_value": 0.000626,
+      "conclusion": "SUPPORTED"
+    },
+    "sideways_vs_uncertain_separation": {
+      "hypothesis": "SIDEWAYS and UNCERTAIN exhibit statistically distinct forward return distributions",
+      "ks_statistic": 0.0568,
+      "p_value": 0.128539,
+      "conclusion": "INDISTINGUISHABLE"
+    }
+  },
+  "total_transitions_analyzed": 3464
+}

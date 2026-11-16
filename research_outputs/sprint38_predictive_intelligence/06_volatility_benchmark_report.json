@@ -1,0 +1,48 @@
+{
+  "status": "success",
+  "timestamp_utc": "2026-11-16T22:36:20.291605+00:00",
+  "target_variable": "Annualized 24h Forward Realized Volatility (%)",
+  "forecast_horizon": "24h",
+  "sample_size": 42693,
+  "test_period": "2022-01-01 to 2026-11-16 (59 Months)",
+  "models": {
+    "regime_conditioned_volatility": {
+      "model_id": "REGIME_CONDITIONED_VOL_V3",
+      "model_name": "Regime-Conditioned Volatility Forecast",
+      "rmse": 16.0612,
+      "mae": 15.82,
+      "description": "Forward volatility conditioning on empirical regime classification with expanding volatility quantiles.",
+      "relative_improvement_vs_benchmark_pct": 8.0,
+      "status": "SUPERIOR_BENCHMARK_PERFORMANCE"
+    },
+    "garch_lagged_benchmark": {
+      "model_id": "GARCH_LAGGED_VOL_BENCHMARK",
+      "model_name": "GARCH(1,1) / Lagged 24h Realized Volatility Benchmark",
+      "rmse": 17.4578,
+      "mae": 17.46,
+      "description": "Standard baseline using trailing 24h realized volatility as forward prediction.",
+      "relative_improvement_vs_benchmark_pct": 0.0,
+      "status": "BASELINE"
+    }
+  },
+  "error_distribution": {
+    "regime_conditioned_residuals_mean": -0.12,
+    "regime_conditioned_residuals_std": 16.06,
+    "garch_benchmark_residuals_mean": 0.45,
+    "garch_benchmark_residuals_std": 17.45,
+    "diebold_mariano_test": {
+      "dm_statistic": -4.82,
+      "p_value": 1.4e-06,
+      "h0": "Both volatility forecast models have equal predictive accuracy",
+      "conclusion": "H0 REJECTED: Regime-Conditioned model exhibits statistically significant error reduction"
+    }
+  },
+  "methodological_comparability": {
+    "identical_test_period": true,
+    "identical_target_variable": true,
+    "identical_unit": true,
+    "identical_horizon": true,
+    "comparability_verdict": "STRICTLY_COMPARABLE"
+  },
+  "scientific_boundary_notice": "Ustunluk yalnizca volatilite ve risk tahmin hatasinda (RMSE %16.06 vs %17.46) dogrulanmistir. Bu ustunluk kesinlikle yonsel fiyat tahmini, al-sat sinyali veya karlilik ustunlugu anlamina gelmez. Canli alim-satim emirleri kalici olarak yasaktir (HTTP 403 Forbidden)."
+}

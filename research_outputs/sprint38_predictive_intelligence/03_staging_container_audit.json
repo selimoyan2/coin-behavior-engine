@@ -1,0 +1,21 @@
+{
+  "sprint_id": "CBE_SPRINT38_DASHBOARD_V15_EVIDENCE_EXPLORER",
+  "timestamp_utc": "2026-11-16T22:36:20.286192+00:00",
+  "staging_host": "srv1114257 (168.231.125.238)",
+  "staging_container_id": "e053aa84b45d3b739eb827388f503418c4f1d13b7675708cbb45d253a79ee29b",
+  "staging_container_name": "cbe-predictive-intelligence-staging-sprint38",
+  "staging_port": 18080,
+  "staging_url": "http://127.0.0.1:18080",
+  "staging_image": "cbe-predictive-intelligence:sprint38-38276a0",
+  "build_commit_sha": "38276a0ceeda3f6a40f4f6082372fceb68b7d300",
+  "build_commit_short": "38276a0",
+  "canonical_model": "CBE-0.7.0",
+  "model_status": "STRICTLY_FROZEN",
+  "freeze_verified": true,
+  "dataset_manifest_version": "cbe-manifest-v2-73a6212acca3",
+  "dataset_manifest_sha256": "1ff50222c31a486b094a7f2ac9f06d38b1258527e5492acbef5faf9a73c55f14",
+  "environment": "staging",
+  "governance_decision": "OFFLINE_HISTORICAL_RESEARCH_PREDICTIVE_VALIDITY_LAB_V15",
+  "health_check_status": "healthy",
+  "uptime_seconds": 120.0
+}

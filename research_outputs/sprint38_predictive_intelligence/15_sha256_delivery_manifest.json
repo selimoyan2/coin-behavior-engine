@@ -1,0 +1,82 @@
+{
+  "sprint_id": "CBE_SPRINT38_DASHBOARD_V15_EVIDENCE_EXPLORER",
+  "timestamp_utc": "2026-11-16T22:36:20.298061+00:00",
+  "candidate_commit_sha": "38276a0ceeda3f6a40f4f6082372fceb68b7d300",
+  "staging_container_id": "e053aa84b45d3b739eb827388f503418c4f1d13b7675708cbb45d253a79ee29b",
+  "production_container_id": "46bfe4cf2031",
+  "verdict_code": "SPRINT38_DASHBOARD_V15_STAGING_ACCEPTANCE_VERIFIED",
+  "artifacts": {
+    "01_operator_scope_and_governance.md": {
+      "size_bytes": 2534,
+      "sha256": "daafb00e623c8d751c916ce4e026cd7a15239685fb51cb98f73b06f8ac7d2320"
+    },
+    "02_git_sha_and_branch_audit.json": {
+      "size_bytes": 648,
+      "sha256": "de96a42704c7ffeb7283bc50f9f7edab297f0bacfca7467befbafd3b7054a0f3"
+    },
+    "03_staging_container_audit.json": {
+      "size_bytes": 1028,
+      "sha256": "602a0ea6ea7439b158b215493e0a124135b7ffac95714df791f5f1227d3bb4a1"
+    },
+    "04_predictive_validity_overview.json": {
+      "size_bytes": 1164,
+      "sha256": "37cc60fecc29250e820033f2484f03180d82ff53234965ea35d79af10587c23c"
+    },
+    "05_hypothesis_evidence_explorer.json": {
+      "size_bytes": 136059,
+      "sha256": "a8a7305d51d1d534ede97cf12e8e50521832bcccbcf97e14bafedae0d5b116cf"
+    },
+    "06_volatility_benchmark_report.json": {
+      "size_bytes": 2163,
+      "sha256": "b6cd43ec9f2b1821e541839ddca6b66f0a48d49e5c3e7084b213d9c6ab665610"
+    },
+    "07_regime_persistence_intelligence.json": {
+      "size_bytes": 3903,
+      "sha256": "d4c3ce107750e7c525a7ee908820e4cccb574468c756067c7d9fbc15b9e844cc"
+    },
+    "08_directional_reality_check.json": {
+      "size_bytes": 4947,
+      "sha256": "1f6a8d0bd1afe3363b7e8cdc41048e037390f60e3aa1bfd1612717fa7e674df1"
+    },
+    "09_scientific_scorecard_reconciliation.json": {
+      "size_bytes": 29898,
+      "sha256": "02d1b585de4883893075b5ecb36f6416f107699cb7c84cb4a324cbd1a0534fb2"
+    },
+    "10_baseline_metrics_audit.json": {
+      "size_bytes": 1185,
+      "sha256": "476d0647785d0d7f5ff26c1002d6fd27ed2b6ef7790495b0f724b28d415af207"
+    },
+    "11_live_trading_prohibition.json": {
+      "size_bytes": 1151,
+      "sha256": "6aa2a33f63261e1d6a3e3489f4c3d910145fb0c552f73510a94c49470c0182e7"
+    },
+    "12_playwright_responsive_acceptance.json": {
+      "size_bytes": 4885,
+      "sha256": "f94198dbfab448dc4ee2054d8a937d43f342da735443a3608098bdeb9b9049e1"
+    },
+    "12_sprint38_desktop_1440x900.png": {
+      "size_bytes": 122482,
+      "sha256": "d3db0b7a7f7eb2def6e4b2599658029cdb5de64d9cfcca6fde40f244012f7cb5"
+    },
+    "12_sprint38_mobile_390x844.png": {
+      "size_bytes": 47430,
+      "sha256": "e0cba7e4e5d1880aeb03ab9f1e9432c1dfbd42a6ca09433ef25f3589176a9a3f"
+    },
+    "12_sprint38_tablet_768x1024.png": {
+      "size_bytes": 113253,
+      "sha256": "0c433c7978112d7accc2e07cab25c896eae1e4842408342b53692ba337c1ee78"
+    },
+    "13_performance_and_latency_audit.json": {
+      "size_bytes": 911,
+      "sha256": "4a4556fd69838d0fd479a86df11815b5a0e1b8c82766f0135e129f05318b798f"
+    },
+    "14_production_isolation_evidence.json": {
+      "size_bytes": 1025,
+      "sha256": "4f26a45c598e456ef7f4643a2c581f0d8bb8dcacfcb5145bfe0adefa98569657"
+    },
+    "16_final_staging_acceptance_report.md": {
+      "size_bytes": 7491,
+      "sha256": "1fd472bffc0ca0c5f431f949cc904f96ca408490b1260a4c33a03ff5821fa812"
+    }
+  }
+}

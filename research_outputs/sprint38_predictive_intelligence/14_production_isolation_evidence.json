@@ -1,0 +1,28 @@
+{
+  "sprint_id": "CBE_SPRINT38_DASHBOARD_V15_EVIDENCE_EXPLORER",
+  "timestamp_utc": "2026-11-16T22:36:20.296539+00:00",
+  "production_host": "srv1114257 (168.231.125.238)",
+  "production_container": {
+    "id": "46bfe4cf2031",
+    "name": "6t63aehpaw0cw1bbt4zcm09g-20261116T205140",
+    "status": "running",
+    "health": "healthy",
+    "restarts": 0,
+    "started_at": "2026-11-16T20:54:29.040832309Z",
+    "ports": "0.0.0.0:80->8000/tcp, 0.0.0.0:443->8000/tcp",
+    "environment": "production",
+    "url": "https://coin.ozelweb.com.tr",
+    "untouched": true
+  },
+  "staging_container": {
+    "id": "e053aa84b45d3b739eb827388f503418c4f1d13b7675708cbb45d253a79ee29b",
+    "name": "cbe-predictive-intelligence-staging-sprint38",
+    "status": "running",
+    "health": "healthy",
+    "restarts": 0,
+    "port": 18080,
+    "environment": "staging",
+    "isolated": true
+  },
+  "zero_touch_guarantee": "Production container 46bfe4cf2031 experienced 0 restarts and was not modified during Sprint 38."
+}
