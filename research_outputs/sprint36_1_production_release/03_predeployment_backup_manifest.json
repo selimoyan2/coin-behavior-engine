@@ -1,0 +1,44 @@
+{
+  "backup_timestamp_utc": "2026-11-16T07:09:35Z",
+  "remote_host": "srv1114257 (168.231.125.238)",
+  "backup_directory": "/root/cbe_backups/sprint36_predeploy_20261116_070935",
+  "source_container": {
+    "id": "d20a430d9704999e9b8e25da831772bb034cd69265b3407408810ac94c84bf97",
+    "name": "/6t63aehpaw0cw1bbt4zcm09g-20261115T221312",
+    "image": "6t63aehpaw0cw1bbt4zcm09g:f342e40546eca538db54d8d32861f6946617dd0b",
+    "rollback_image_tag": "cbe-production-rollback-sprint35:f342e40"
+  },
+  "backed_up_components": [
+    {
+      "file": "./prospective/lockbox_manifest.json",
+      "sha256": "b8eb159df41af85b6a9ce35feadc0a0317c67d73831a7b333f37e328b0e57e14"
+    },
+    {
+      "file": "./prospective/outcomes/outcomes.jsonl",
+      "sha256": "36224d2ca80a51e303f4b007f7426e4b93618ec4e94dda4d5283e948f054e59d"
+    },
+    {
+      "file": "./prospective/audit/audit_log.jsonl",
+      "sha256": "8472d015e9a881788ffbd8be19693449ba4ca5a5a46439299296b6f8cac57348"
+    },
+    {
+      "file": "./prospective/sessions.db",
+      "sha256": "cc58d69f73a5c7a05e1b2a223a55273709a8325e4caf6cfce09da14db1ea0700"
+    },
+    {
+      "file": "./prospective/predictions/predictions.jsonl",
+      "sha256": "9a3798d701cfb26aa108015b669211a77092d65ecbbd73736aa7a658234ea2de"
+    },
+    {
+      "file": "./prospective/current_state.json",
+      "sha256": "c1cf9d0ccaf1d1a7be402ff54c163095184355758914cc2797cb74d8e16edba4"
+    },
+    {
+      "file": "./build_metadata_prod.json",
+      "sha256": "de4caead17bd7304283a752bf40fbcdced85a465782d0ec7bf6c99f1b72ac6bb"
+    }
+  ],
+  "total_files": 9,
+  "volume_mount": "6t63aehpaw0cw1bbt4zcm09g-cbe_prospective_data",
+  "readiness_status": "BACKUP_VERIFIED_READABLE_ROLLBACK_TAG_ACTIVE"
+}

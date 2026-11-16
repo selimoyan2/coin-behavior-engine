@@ -1,0 +1,40 @@
+{
+  "status": "success",
+  "base_url": "https://coin.ozelweb.com.tr",
+  "verified_endpoints": {
+    "/api/v1/product/market-behavior/transitions": {
+      "status_code": 200,
+      "total_transitions": 42716,
+      "matrix_shape": "6x6",
+      "read_only": true
+    },
+    "/api/v1/product/market-behavior/annual": {
+      "status_code": 200,
+      "years_covered": [
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "read_only": true
+    },
+    "/api/v1/product/market-behavior/risk": {
+      "status_code": 200,
+      "sample_bars": 42717,
+      "max_drawdown_pct": -67.38,
+      "annualized_downside_deviation_pct": 39.44,
+      "var_95_1h_pct": 0.76,
+      "var_99_1h_pct": 1.63,
+      "cvar_95_expected_shortfall_pct": 1.3,
+      "cvar_99_expected_shortfall_pct": 2.33,
+      "read_only": true
+    },
+    "/api/v1/product/market-behavior/regimes": {
+      "status_code": 200,
+      "regimes_count": 6,
+      "read_only": true
+    }
+  },
+  "verdict": "ALL_MARKET_BEHAVIOR_APIS_ACCEPTED_READ_ONLY"
+}

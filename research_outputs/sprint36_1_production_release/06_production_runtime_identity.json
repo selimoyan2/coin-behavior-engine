@@ -1,0 +1,14 @@
+{
+  "status": "success",
+  "url": "https://coin.ozelweb.com.tr/api/v1/product/runtime-build",
+  "application_version": "CBE-0.7.0 (FROZEN)",
+  "canonical_model_version": "CBE-0.7.0 (FROZEN)",
+  "build_commit": "313fc5ca242e497f1e221002c798fc5910bd6284",
+  "build_commit_short": "313fc5ca",
+  "source_commit_sha": "313fc5ca242e497f1e221002c798fc5910bd6284",
+  "build_timestamp_utc": "2026-11-16T07:15:44Z",
+  "dataset_manifest_version": "cbe-manifest-v2-73a6212acca3",
+  "dataset_manifest_sha256": "1ff50222c31a486b094a7f2ac9f06d38b1258527e5492acbef5faf9a73c55f14",
+  "runtime_identity_verified": true,
+  "verdict": "PRODUCTION_RUNTIME_IDENTITY_AUTHENTICATED"
+}

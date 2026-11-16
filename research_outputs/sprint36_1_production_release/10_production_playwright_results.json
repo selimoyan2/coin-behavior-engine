@@ -1,0 +1,47 @@
+{
+  "production_url": "https://coin.ozelweb.com.tr",
+  "viewports_tested": [
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "height": 900,
+      "http_status": 200,
+      "title": "Coin Behavior Engine | Ara\u015ft\u0131rma Portal\u0131 & Piyasa \u0130stihbarat\u0131 V13",
+      "v13_verified": true,
+      "coverage_verified": true,
+      "lab_v2_tab_visible": false,
+      "screenshot": "10_prod_desktop.png",
+      "console_messages_count": 0,
+      "page_errors": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "height": 1024,
+      "http_status": 200,
+      "title": "Coin Behavior Engine | Ara\u015ft\u0131rma Portal\u0131 & Piyasa \u0130stihbarat\u0131 V13",
+      "v13_verified": true,
+      "coverage_verified": true,
+      "lab_v2_tab_visible": false,
+      "screenshot": "10_prod_tablet.png",
+      "console_messages_count": 0,
+      "page_errors": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 390,
+      "height": 844,
+      "http_status": 200,
+      "title": "Coin Behavior Engine | Ara\u015ft\u0131rma Portal\u0131 & Piyasa \u0130stihbarat\u0131 V13",
+      "v13_verified": true,
+      "coverage_verified": true,
+      "lab_v2_tab_visible": false,
+      "screenshot": "10_prod_mobile.png",
+      "console_messages_count": 0,
+      "page_errors": []
+    }
+  ],
+  "verdict": "ACCEPTED",
+  "console_errors": 0,
+  "page_errors": 0
+}

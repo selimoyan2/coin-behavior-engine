@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "base_url": "https://coin.ozelweb.com.tr",
+  "tested_order_endpoints": [
+    {
+      "endpoint": "/api/v1/product/research/btc-timing/place-order",
+      "method": "POST",
+      "response_http_code": 403,
+      "error_detail": "Live trading is permanently prohibited in Coin Behavior Engine (CBE-0.7.0 STRICTLY_FROZEN).",
+      "verdict": "BLOCKED_FORBIDDEN_403"
+    },
+    {
+      "endpoint": "/api/v1/trade/order",
+      "method": "POST",
+      "response_http_code": 403,
+      "verdict": "BLOCKED_FORBIDDEN_403"
+    }
+  ],
+  "real_exchange_keys_configured": false,
+  "trading_circuit_breaker_active": true,
+  "verdict": "LIVE_TRADING_PERMANENTLY_PROHIBITED_CONFIRMED"
+}

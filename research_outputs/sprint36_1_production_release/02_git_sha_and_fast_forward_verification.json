@@ -1,0 +1,32 @@
+{
+  "sprint_id": "CBE_SPRINT36_1_CONTROLLED_PRODUCTION_RELEASE",
+  "timestamp_utc": "2026-11-16T07:11:30Z",
+  "branches": {
+    "production_branch": "main",
+    "research_branch": "research/sprint36-dashboard-v13-market-behavior"
+  },
+  "commits": {
+    "previous_production_baseline_sha": "d8b59b35203338ca8b4311707632cc204a83a0cc",
+    "previous_verified_app_sha": "f342e40546eca538db54d8d32861f6946617dd0b",
+    "staging_verified_code_sha": "fd72ead5425b511d73258d461a93ff1082a71fbf",
+    "promoted_release_commit_sha": "313fc5ca242e497f1e221002c798fc5910bd6284"
+  },
+  "fast_forward_checks": {
+    "is_ancestor_f342e40": true,
+    "is_ancestor_d8b59b3": true,
+    "merge_type": "--ff-only",
+    "merge_exit_code": 0,
+    "merge_status": "CLEAN_FAST_FORWARD_NO_CONFLICT"
+  },
+  "diff_summary": {
+    "files_changed_total": 60,
+    "insertions": 6150,
+    "deletions": 104,
+    "core_additions": [
+      "src/coin_behavior_engine/product/market_behavior_analytics.py",
+      "tests/test_sprint36_dashboard_v13_and_market_behavior.py",
+      "research_outputs/sprint36_dashboard_v13_market_behavior/"
+    ]
+  },
+  "verdict": "FAST_FORWARD_VERIFIED_SUCCESSFUL"
+}

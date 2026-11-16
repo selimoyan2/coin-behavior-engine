@@ -1,0 +1,25 @@
+{
+  "url": "https://coin.ozelweb.com.tr/api/v1/product/central-coverage",
+  "symbol": "BTCUSDT",
+  "earliest_month": "2022-01",
+  "latest_month": "2026-11",
+  "complete_months": 58,
+  "partial_months": 1,
+  "total_months": 59,
+  "coverage_span_text": "2022-01 \u2014 2026-11 (58 Tam Ay + 1 K\u0131smi Ay)",
+  "total_parquet_files": 295,
+  "latest_verified_candle": {
+    "timestamp_utc": "2026-11-15T21:15:00Z",
+    "open_time": 1794777300000,
+    "interval": "5m",
+    "close": 64966.01,
+    "volume": 86.97157
+  },
+  "missing_candles": {
+    "total_missing_5m": 8,
+    "total_missing_minutes": 40,
+    "synthetic_candles_allowed": false,
+    "synthetic_candles_count": 0
+  },
+  "verdict": "CENTRAL_COVERAGE_VERIFIED_IN_PRODUCTION"
+}

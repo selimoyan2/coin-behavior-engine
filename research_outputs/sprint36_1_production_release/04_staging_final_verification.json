@@ -1,0 +1,23 @@
+{
+  "staging_host": "srv1114257 (168.231.125.238:18080)",
+  "container_id": "4f5f625bd835e044257a3841a83d9156529cb4b7598b2d8cab40a39340213ab4",
+  "verified_checks": {
+    "dashboard_v13_accessible": true,
+    "central_coverage_59_months": true,
+    "october_complete_verified": true,
+    "november_partial_verified": true,
+    "eight_missing_candles_shown": true,
+    "regime_transitions_active": true,
+    "risk_metrics_displayed": true,
+    "date_filters_functional": true,
+    "viewports_responsive": true,
+    "live_trading_prohibition_http_403": true
+  },
+  "regression_suite": {
+    "total_tests": 3655,
+    "passed": 3647,
+    "skipped": 8,
+    "failed": 0
+  },
+  "verdict": "STAGING_VERIFICATION_ALL_PASS"
+}

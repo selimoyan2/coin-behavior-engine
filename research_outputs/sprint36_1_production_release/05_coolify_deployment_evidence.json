@@ -1,0 +1,22 @@
+{
+  "application_id": 10,
+  "application_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+  "deployment_uuid": "37396965-40cc-4978-861b-731140dc7cc6",
+  "deployed_commit": "313fc5ca242e497f1e221002c798fc5910bd6284",
+  "deployment_status": "finished",
+  "started_at": "2026-11-16 07:11:51",
+  "finished_at": "2026-11-16 07:15:44",
+  "duration_seconds": 233,
+  "active_container": {
+    "id": "b2cb2c5b662d",
+    "image": "6t63aehpaw0cw1bbt4zcm09g:313fc5ca242e497f1e221002c798fc5910bd6284",
+    "status": "healthy",
+    "ports": "8000/tcp"
+  },
+  "proxy_routing": {
+    "proxy": "traefik",
+    "fqdn": "https://coin.ozelweb.com.tr",
+    "internal_port": 8000
+  },
+  "verdict": "COOLIFY_DEPLOYMENT_SUCCESSFUL"
+}

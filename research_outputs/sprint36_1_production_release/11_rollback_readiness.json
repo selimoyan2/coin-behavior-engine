@@ -1,0 +1,15 @@
+{
+  "status": "READY",
+  "tested_rollback_target": {
+    "image": "cbe-production-rollback-sprint35:f342e40",
+    "container_name": "6t63aehpaw0cw1bbt4zcm09g-rollback",
+    "backup_volume_source": "/root/cbe_backups/sprint36_predeploy_20261116_070935"
+  },
+  "rollback_procedure": [
+    "1. docker stop b2cb2c5b662d",
+    "2. docker run -d --name rollback-cbe -p 8000:8000 cbe-production-rollback-sprint35:f342e40",
+    "3. traefik routes seamlessly to port 8000"
+  ],
+  "git_revert_plan": "git revert 313fc5ca242e497f1e221002c798fc5910bd6284 -m 'revert to Sprint 35 baseline'",
+  "verdict": "ROLLBACK_CAPABILITY_VERIFIED"
+}
