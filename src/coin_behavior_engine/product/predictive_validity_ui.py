@@ -769,7 +769,7 @@ def render_predictive_validity_html() -> str:
       <!-- SUBVIEW 5: DIRECTIONAL PREDICTABILITY REALITY CHECK (MODÜL 38.5) -->
       <div id="pv-subview-directional" class="pv-subview-panel" style="display: none;">
         <!-- Mandatory Warning Banner -->
-        <div class="pv-reality-check-banner">
+        <div id="pv-reality-check-banner" class="pv-reality-check-banner">
           <div style="display: flex; align-items: center; gap: 12px;">
             <span style="font-size: 28px;">🚨</span>
             <div>
@@ -995,7 +995,7 @@ def render_predictive_validity_html() -> str:
               </div>
               <h3 style="font-size: 17px; color: #fff; margin: 6px 0 0 0; font-family: var(--font-mono);" id="pv-modal-hid">H_REGIME_HORIZON</h3>
             </div>
-            <button class="btn" style="background: #1e293b; color: #94a3b8; padding: 4px 10px;" onclick="closeHypothesisEvidenceModal()">✕ Kapat</button>
+            <button id="pv-modal-close-btn" class="btn" style="background: #1e293b; color: #94a3b8; padding: 4px 10px;" onclick="closeHypothesisEvidenceModal()">✕ Kapat</button>
           </div>
 
           <div style="margin-top: 14px;">
@@ -1241,7 +1241,7 @@ def render_predictive_validity_scripts() -> str:
           <td style="color: #fde047;">${rvStr}</td>
           <td style="text-align: center;"><span class="${badgeClass}">${r.scientific_verdict}</span></td>
           <td style="text-align: center;">
-            <button class="btn" style="padding: 2px 8px; font-size: 10px; background: #1e293b; color: #38bdf8;" onclick="event.stopPropagation(); openHypothesisEvidenceModal('${hid}')">🔍 İncele</button>
+            <button class="btn pv-evidence-inspect-btn" style="padding: 2px 8px; font-size: 10px; background: #1e293b; color: #38bdf8;" onclick="event.stopPropagation(); openHypothesisEvidenceModal('${hid}')">🔍 İncele</button>
           </td>
         </tr>`;
       });
