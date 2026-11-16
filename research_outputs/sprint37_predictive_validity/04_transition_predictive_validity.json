@@ -1,0 +1,58 @@
+{
+  "status": "success",
+  "total_transitions_analyzed": 3464,
+  "volatility_elevation": {
+    "t_stat": 10.017,
+    "p_val": 0.0,
+    "ratio": 1.493,
+    "conclusion": "SUPPORTED"
+  },
+  "reversal_fallacy": {
+    "p_val": 0.000626,
+    "reversal_rate": 0.582,
+    "conclusion": "SUPPORTED"
+  },
+  "ks_test_sideways_uncertain": {
+    "d_stat": 0.0568,
+    "p_val": 0.128539,
+    "conclusion": "NOT_SUPPORTED"
+  },
+  "findings": {
+    "high_volatility_elevation": {
+      "hypothesis": "Entering HIGH_VOLATILITY leads to significantly elevated 24h forward realized volatility",
+      "mean_forward_vol_high_vol_pct": 69.97,
+      "mean_forward_vol_sideways_pct": 46.88,
+      "t_statistic": 10.017,
+      "p_value": 0.0,
+      "conclusion": "SUPPORTED"
+    },
+    "trending_bull_directional_validity": {
+      "hypothesis": "Transition to TRENDING_BULL predicts positive forward 24h returns",
+      "sample_size": 459,
+      "mean_return_24h_pct": -0.0012,
+      "hac_p_value": 0.995874,
+      "conclusion": "INCONCLUSIVE"
+    },
+    "trending_bear_directional_validity": {
+      "hypothesis": "Transition to TRENDING_BEAR predicts negative forward 24h returns",
+      "sample_size": 392,
+      "mean_return_24h_pct": 0.0377,
+      "hac_p_value": 0.872059,
+      "conclusion": "INCONCLUSIVE"
+    },
+    "possible_reversal_efficacy": {
+      "hypothesis": "POSSIBLE_REVERSAL reliably precedes a price reversal opposite to trailing 24h trend",
+      "sample_size": 445,
+      "empirical_reversal_rate_pct": 58.2,
+      "baseline_null_pct": 50.0,
+      "binomial_p_value": 0.000626,
+      "conclusion": "SUPPORTED"
+    },
+    "sideways_vs_uncertain_separation": {
+      "hypothesis": "SIDEWAYS and UNCERTAIN exhibit statistically distinct forward return distributions",
+      "ks_statistic": 0.0568,
+      "p_value": 0.128539,
+      "conclusion": "INDISTINGUISHABLE"
+    }
+  }
+}

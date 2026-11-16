@@ -1,0 +1,342 @@
+{
+  "sprint_id": "CBE_SPRINT37_MARKET_REGIME_PREDICTIVE_VALIDITY_LAB_V3",
+  "timestamp_utc": "2026-11-16T11:17:03.076748+00:00",
+  "total_tests_m": 30,
+  "nominal_alpha": 0.05,
+  "methodologies": {
+    "benjamini_hochberg_fdr": "Controls False Discovery Rate at q < 0.05",
+    "holm_bonferroni": "Controls Family-Wise Error Rate (FWER) step-down"
+  },
+  "hypotheses_corrections": [
+    {
+      "hypothesis_id": "H_SIDEWAYS_1h",
+      "regime": "SIDEWAYS",
+      "horizon": "1h",
+      "raw_p_value": 0.602278,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_SIDEWAYS_4h",
+      "regime": "SIDEWAYS",
+      "horizon": "4h",
+      "raw_p_value": 0.704557,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_SIDEWAYS_12h",
+      "regime": "SIDEWAYS",
+      "horizon": "12h",
+      "raw_p_value": 0.604265,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_SIDEWAYS_24h",
+      "regime": "SIDEWAYS",
+      "horizon": "24h",
+      "raw_p_value": 0.449181,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_SIDEWAYS_72h",
+      "regime": "SIDEWAYS",
+      "horizon": "72h",
+      "raw_p_value": 0.654686,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_UNCERTAIN_1h",
+      "regime": "UNCERTAIN",
+      "horizon": "1h",
+      "raw_p_value": 0.736323,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_UNCERTAIN_4h",
+      "regime": "UNCERTAIN",
+      "horizon": "4h",
+      "raw_p_value": 0.849377,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_UNCERTAIN_12h",
+      "regime": "UNCERTAIN",
+      "horizon": "12h",
+      "raw_p_value": 0.829653,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_UNCERTAIN_24h",
+      "regime": "UNCERTAIN",
+      "horizon": "24h",
+      "raw_p_value": 0.637511,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_UNCERTAIN_72h",
+      "regime": "UNCERTAIN",
+      "horizon": "72h",
+      "raw_p_value": 0.4443,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BULL_1h",
+      "regime": "TRENDING_BULL",
+      "horizon": "1h",
+      "raw_p_value": 0.400743,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BULL_4h",
+      "regime": "TRENDING_BULL",
+      "horizon": "4h",
+      "raw_p_value": 0.498298,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BULL_12h",
+      "regime": "TRENDING_BULL",
+      "horizon": "12h",
+      "raw_p_value": 0.910269,
+      "fdr_q_value": 0.975288,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BULL_24h",
+      "regime": "TRENDING_BULL",
+      "horizon": "24h",
+      "raw_p_value": 0.845436,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BULL_72h",
+      "regime": "TRENDING_BULL",
+      "horizon": "72h",
+      "raw_p_value": 0.315991,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BEAR_1h",
+      "regime": "TRENDING_BEAR",
+      "horizon": "1h",
+      "raw_p_value": 0.863269,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BEAR_4h",
+      "regime": "TRENDING_BEAR",
+      "horizon": "4h",
+      "raw_p_value": 0.831635,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BEAR_12h",
+      "regime": "TRENDING_BEAR",
+      "horizon": "12h",
+      "raw_p_value": 0.976405,
+      "fdr_q_value": 0.98058,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BEAR_24h",
+      "regime": "TRENDING_BEAR",
+      "horizon": "24h",
+      "raw_p_value": 0.390178,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BEAR_72h",
+      "regime": "TRENDING_BEAR",
+      "horizon": "72h",
+      "raw_p_value": 0.633411,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_POSSIBLE_REVERSAL_1h",
+      "regime": "POSSIBLE_REVERSAL",
+      "horizon": "1h",
+      "raw_p_value": 0.431463,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_POSSIBLE_REVERSAL_4h",
+      "regime": "POSSIBLE_REVERSAL",
+      "horizon": "4h",
+      "raw_p_value": 0.438649,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_POSSIBLE_REVERSAL_12h",
+      "regime": "POSSIBLE_REVERSAL",
+      "horizon": "12h",
+      "raw_p_value": 0.304867,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_POSSIBLE_REVERSAL_24h",
+      "regime": "POSSIBLE_REVERSAL",
+      "horizon": "24h",
+      "raw_p_value": 0.360771,
+      "fdr_q_value": 0.959188,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_POSSIBLE_REVERSAL_72h",
+      "regime": "POSSIBLE_REVERSAL",
+      "horizon": "72h",
+      "raw_p_value": 0.98058,
+      "fdr_q_value": 0.98058,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_HIGH_VOLATILITY_1h",
+      "regime": "HIGH_VOLATILITY",
+      "horizon": "1h",
+      "raw_p_value": 0.147009,
+      "fdr_q_value": 0.882054,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_HIGH_VOLATILITY_4h",
+      "regime": "HIGH_VOLATILITY",
+      "horizon": "4h",
+      "raw_p_value": 0.084469,
+      "fdr_q_value": 0.633518,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_HIGH_VOLATILITY_12h",
+      "regime": "HIGH_VOLATILITY",
+      "horizon": "12h",
+      "raw_p_value": 0.055448,
+      "fdr_q_value": 0.633518,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_HIGH_VOLATILITY_24h",
+      "regime": "HIGH_VOLATILITY",
+      "horizon": "24h",
+      "raw_p_value": 0.054178,
+      "fdr_q_value": 0.633518,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    },
+    {
+      "hypothesis_id": "H_HIGH_VOLATILITY_72h",
+      "regime": "HIGH_VOLATILITY",
+      "horizon": "72h",
+      "raw_p_value": 0.065921,
+      "fdr_q_value": 0.633518,
+      "holm_p_value": 1.0,
+      "significant_raw_005": false,
+      "significant_fdr_005": false,
+      "significant_holm_005": false
+    }
+  ]
+}

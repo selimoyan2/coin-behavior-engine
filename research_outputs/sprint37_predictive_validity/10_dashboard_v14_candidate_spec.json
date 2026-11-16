@@ -1,0 +1,43 @@
+{
+  "specification_version": "Dashboard V14 Candidate",
+  "sprint_id": "CBE_SPRINT37_MARKET_REGIME_PREDICTIVE_VALIDITY_LAB_V3",
+  "timestamp_utc": "2026-11-16T11:17:03.084675+00:00",
+  "architecture_tiering": {
+    "tier_1": "CBE-0.7.0 Nominal Models (Strictly Frozen)",
+    "tier_2": "Derived Canonical Regimes Lab V3 (6 Regimes x 5 Horizons)"
+  },
+  "components": {
+    "nav_tab": "#predictive-validity",
+    "module_section": "#module-predictive-validity",
+    "tier_card": ".pv-tier-card",
+    "kpi_cards": [
+      "#pv-kpi-total",
+      "#pv-kpi-supported",
+      "#pv-kpi-not-supported",
+      "#pv-kpi-inconclusive"
+    ],
+    "filter_controls": [
+      "#pv-filter-regime",
+      "#pv-filter-horizon",
+      "#pv-filter-verdict"
+    ],
+    "scorecard_table": "#pv-scorecard-tbody",
+    "analytical_panels": [
+      "Post-Transition Dynamics Panel",
+      "Baseline Comparisons Panel",
+      "Walk-Forward Stability Panel"
+    ]
+  },
+  "api_endpoints": [
+    "/api/v1/product/predictive-validity/scorecard",
+    "/api/v1/product/predictive-validity/forward-returns",
+    "/api/v1/product/predictive-validity/transitions",
+    "/api/v1/product/predictive-validity/baselines",
+    "/api/v1/product/predictive-validity/walk-forward"
+  ],
+  "governance": {
+    "live_trading_prohibited": true,
+    "trading_endpoints_status": 403,
+    "offline_research_only": true
+  }
+}

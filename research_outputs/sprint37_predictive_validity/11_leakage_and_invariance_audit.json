@@ -1,0 +1,23 @@
+{
+  "audit_id": "CBE-S37-LEAKAGE-INVARIANCE",
+  "timestamp_utc": "2026-11-16T11:17:03.086225+00:00",
+  "status": "PASSED",
+  "checks": {
+    "future_data_leakage": {
+      "result": "PASSED",
+      "evidence": "Regimes at bar t are computed using strictly trailing 24h rolling volatility and momentum. Expanding historical quantiles use only bars <= t."
+    },
+    "forward_return_alignment": {
+      "result": "PASSED",
+      "evidence": "Forward return R(t, t+H) = (Close(t+H) - Close(t)) / Close(t). No overlap into feature computation."
+    },
+    "embargo_between_partitions": {
+      "result": "PASSED",
+      "evidence": "72h embargo between annual walk-forward folds prevents forward-return contamination."
+    },
+    "prefix_invariance": {
+      "result": "PASSED",
+      "evidence": "Sub-sampling and chronological truncation preserves exact regime classification for historical prefixes."
+    }
+  }
+}

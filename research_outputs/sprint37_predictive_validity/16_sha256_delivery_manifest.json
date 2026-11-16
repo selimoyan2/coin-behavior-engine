@@ -1,0 +1,84 @@
+{
+  "sprint_id": "CBE_SPRINT37_MARKET_REGIME_PREDICTIVE_VALIDITY_LAB_V3",
+  "timestamp_utc": "2026-11-16T11:18:52.012191+00:00",
+  "hash_algorithm": "SHA-256",
+  "files_count": 19,
+  "manifest": {
+    "01_repository_baseline_and_scope.md": {
+      "sha256": "04e871ace6277ec6a6f6c5c4a30e8d79e688c35211490be1f3e7fa43973f360f",
+      "size_bytes": 1629
+    },
+    "02_regime_provenance_and_point_in_time.json": {
+      "sha256": "b8c800b65d96a919bbebe9646429d4f2186c790fbc17b67b7b6732fa6087c91b",
+      "size_bytes": 1629
+    },
+    "03_forward_return_distributions.json": {
+      "sha256": "a93731ddcbe433178d31cc1cd7ea18ac3c63b4b7ccfa4ff68c765f09c8611aba",
+      "size_bytes": 26937
+    },
+    "04_transition_predictive_validity.json": {
+      "sha256": "2aff96c017964981dec72a2eb591b9fb9e2f97b1c9bd946237da23a738f3e393",
+      "size_bytes": 1931
+    },
+    "05_baseline_comparison.json": {
+      "sha256": "ce7247b04ad87d5fd53d8ce043eeb029bd6cebeb0b8c44dbeb891c4a524e56fb",
+      "size_bytes": 3074
+    },
+    "06_walk_forward_validation.json": {
+      "sha256": "7e8ca9a2186147b4871f893dec855a05c105b8af8a92265dd163e5211995c9f6",
+      "size_bytes": 7274
+    },
+    "07_multiple_testing_correction.json": {
+      "sha256": "2e24c7105d2bb841e5880f6ff137356262d2b904571b15e9897396d9837546c4",
+      "size_bytes": 10058
+    },
+    "08_economic_significance.json": {
+      "sha256": "f86037ff33f15a0476613d647060974557329ff968e612c5b7cba6565253024f",
+      "size_bytes": 9587
+    },
+    "09_scientific_scorecard.json": {
+      "sha256": "a867a2a9a659e29cd2a60eaa83b001e4214c718ba317b3feb9080329e1284ba5",
+      "size_bytes": 29684
+    },
+    "10_dashboard_v14_candidate_spec.json": {
+      "sha256": "2f1e5fb558531657a2b3b5eb28ac4c6d6dc5f17cbbcbc60253e56f363827b299",
+      "size_bytes": 1415
+    },
+    "11_leakage_and_invariance_audit.json": {
+      "sha256": "d49863a5795ffe332e605b872b5d2551631d3f277530b2b6e3d16c76134d9f86",
+      "size_bytes": 933
+    },
+    "12_performance_benchmarks.json": {
+      "sha256": "940ed0cfe44b56ec94e16182bbe2d67e1b0ebbdb439bd546f3d6a81bbc12954f",
+      "size_bytes": 513
+    },
+    "13_targeted_tests.json": {
+      "sha256": "7b3d4fcf0df0b137f4247eb6c594ca3280d308aa8289327a82b3f196eb605e1a",
+      "size_bytes": 2871
+    },
+    "14_full_regression_results.json": {
+      "sha256": "c2854a645d998ba7b7ccde2cc28b1a3d5bc1f4473642facc7f6c1ccc16725288",
+      "size_bytes": 777
+    },
+    "15_desktop_1440x900.png": {
+      "sha256": "22d2d69f0f78da170e931534890a31985dfed5698f46d511cae2f4ac77eff74e",
+      "size_bytes": 279943
+    },
+    "15_mobile_390x844.png": {
+      "sha256": "cabc365cbe6afdd6de4284fa8242d2a0505a6a8549a1858571f9a268c1e30ef8",
+      "size_bytes": 108773
+    },
+    "15_playwright_acceptance.json": {
+      "sha256": "02c78d8a919d42e5305e7c698fae9a2bb3895850befd44b64dd305815e4fe39c",
+      "size_bytes": 2213
+    },
+    "15_tablet_768x1024.png": {
+      "sha256": "21615915eacec056fabb3ff8b21c4fd46909ef19d3c5d0ce6d8e822fdec4c4b1",
+      "size_bytes": 251313
+    },
+    "17_final_acceptance_report.md": {
+      "sha256": "866825953b77e40c29daf4478558acf17bb76a70e09e3ad94d34f00a3d68bfd3",
+      "size_bytes": 11647
+    }
+  }
+}

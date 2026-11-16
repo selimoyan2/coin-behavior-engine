@@ -1,0 +1,73 @@
+{
+  "sprint_id": "CBE_SPRINT37_MARKET_REGIME_PREDICTIVE_VALIDITY_LAB_V3",
+  "timestamp_utc": "2026-11-16T11:15:38.827524+00:00",
+  "base_url": "http://127.0.0.1:18099",
+  "viewports_evaluated": {
+    "desktop": {
+      "width": 1440,
+      "height": 900,
+      "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint37_predictive_validity\\15_desktop_1440x900.png",
+      "has_tab": true,
+      "module_visible": true,
+      "scorecard_rows": 30,
+      "kpis": {
+        "total": "30",
+        "supported": "4",
+        "not_supported": "25"
+      },
+      "has_tier_card": true,
+      "console_errors": [],
+      "page_errors": []
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024,
+      "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint37_predictive_validity\\15_tablet_768x1024.png",
+      "has_tab": true,
+      "module_visible": true,
+      "scorecard_rows": 30,
+      "kpis": {
+        "total": "30",
+        "supported": "4",
+        "not_supported": "25"
+      },
+      "has_tier_card": true,
+      "console_errors": [],
+      "page_errors": []
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint37_predictive_validity\\15_mobile_390x844.png",
+      "has_tab": true,
+      "module_visible": true,
+      "scorecard_rows": 30,
+      "kpis": {
+        "total": "30",
+        "supported": "4",
+        "not_supported": "25"
+      },
+      "has_tier_card": true,
+      "console_errors": [],
+      "page_errors": []
+    }
+  },
+  "elements_verified": {},
+  "console_errors": [],
+  "page_errors": [],
+  "live_trading_prohibition": {
+    "all_prohibited": true,
+    "endpoints": {
+      "/api/v1/product/research/btc-timing/place-order": {
+        "status": 403,
+        "prohibited": true
+      },
+      "/api/v1/product/research/btc-timing/live-trade/execute": {
+        "status": 403,
+        "prohibited": true
+      }
+    },
+    "governance_rule": "PERMANENT_LIVE_TRADING_PROHIBITION_HTTP_403"
+  },
+  "verdict": "SPRINT37_PLAYWRIGHT_ACCEPTED"
+}

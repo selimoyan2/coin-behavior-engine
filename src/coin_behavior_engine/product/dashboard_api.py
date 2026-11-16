@@ -321,6 +321,16 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.get_market_regime_annual_api(query_params)
             elif sub_path in ("market-behavior/risk", "market-risk", "risk/market"):
                 return HTTPStatus.OK, cls.get_market_risk_api(query_params)
+            elif sub_path in ("predictive-validity/scorecard", "validity/scorecard"):
+                return HTTPStatus.OK, cls.get_predictive_validity_scorecard_api(query_params)
+            elif sub_path in ("predictive-validity/forward-returns", "validity/forward-returns"):
+                return HTTPStatus.OK, cls.get_predictive_validity_forward_returns_api(query_params)
+            elif sub_path in ("predictive-validity/transitions", "validity/transitions"):
+                return HTTPStatus.OK, cls.get_predictive_validity_transitions_api(query_params)
+            elif sub_path in ("predictive-validity/baselines", "validity/baselines"):
+                return HTTPStatus.OK, cls.get_predictive_validity_baselines_api(query_params)
+            elif sub_path in ("predictive-validity/walk-forward", "validity/walk-forward"):
+                return HTTPStatus.OK, cls.get_predictive_validity_walk_forward_api(query_params)
             elif sub_path in ("dataset-coverage", "coverage"):
                 return HTTPStatus.OK, cls.get_dataset_coverage(query_params)
             elif sub_path in ("dataset-quality", "quality"):
@@ -2329,6 +2339,49 @@ class ProductDashboardApiService:
         year_val = int(year) if year and year.isdigit() else None
         engine = MarketBehaviorAnalyticsEngine.get_instance()
         return engine.get_market_risk_metrics(year_filter=year_val)
+
+    @classmethod
+    def get_predictive_validity_scorecard_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return scientific predictive validity scorecard across regimes and horizons."""
+        from coin_behavior_engine.product.predictive_validity_analytics import PredictiveValidityAnalyticsEngine
+        engine = PredictiveValidityAnalyticsEngine.get_instance()
+        res = engine.get_scientific_scorecard()
+        if "scorecard" in res and "data" not in res:
+            res["data"] = res["scorecard"]
+        return res
+
+    @classmethod
+    def get_predictive_validity_forward_returns_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return forward return distributions, MAE/MFE, and bootstrap CIs."""
+        from coin_behavior_engine.product.predictive_validity_analytics import PredictiveValidityAnalyticsEngine
+        year = params.get("year", [None])[0]
+        regime = params.get("regime", [None])[0]
+        year_val = int(year) if year and year.isdigit() else None
+        engine = PredictiveValidityAnalyticsEngine.get_instance()
+        return engine.get_forward_return_distributions(year=year_val, regime=regime)
+
+    @classmethod
+    def get_predictive_validity_transitions_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return transition predictive validity findings."""
+        from coin_behavior_engine.product.predictive_validity_analytics import PredictiveValidityAnalyticsEngine
+        engine = PredictiveValidityAnalyticsEngine.get_instance()
+        return engine.get_transition_predictive_validity()
+
+    @classmethod
+    def get_predictive_validity_baselines_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return predictive validity comparisons against unconditional and baseline models."""
+        from coin_behavior_engine.product.predictive_validity_analytics import PredictiveValidityAnalyticsEngine
+        h_str = params.get("horizon", ["24"])[0]
+        h_val = int(h_str) if h_str and h_str.isdigit() else 24
+        engine = PredictiveValidityAnalyticsEngine.get_instance()
+        return engine.get_baseline_comparison(horizon_hours=h_val)
+
+    @classmethod
+    def get_predictive_validity_walk_forward_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return chronological walk-forward validation across 2022-2026."""
+        from coin_behavior_engine.product.predictive_validity_analytics import PredictiveValidityAnalyticsEngine
+        engine = PredictiveValidityAnalyticsEngine.get_instance()
+        return engine.get_walk_forward_validation()
 
     @classmethod
     def get_market_behavior(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:

@@ -1,0 +1,17 @@
+{
+  "benchmark_id": "CBE-S37-PERFORMANCE",
+  "timestamp_utc": "2026-11-16T11:17:03.087757+00:00",
+  "environment": {
+    "python_version": "3.11",
+    "cpu_count": 16,
+    "total_bars": 42717
+  },
+  "timings": {
+    "initial_forward_precomputation_sec": 8.45,
+    "vectorized_circular_block_bootstrap_30_tests_sec": 1.82,
+    "newey_west_hac_standard_errors_sec": 0.35,
+    "full_scorecard_generation_cold_sec": 10.62,
+    "cached_scorecard_query_sec": 8e-05,
+    "api_response_time_ms": 1.2
+  }
+}

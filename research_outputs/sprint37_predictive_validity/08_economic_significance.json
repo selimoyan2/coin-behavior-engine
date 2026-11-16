@@ -1,0 +1,313 @@
+{
+  "sprint_id": "CBE_SPRINT37_MARKET_REGIME_PREDICTIVE_VALIDITY_LAB_V3",
+  "timestamp_utc": "2026-11-16T11:17:03.077459+00:00",
+  "fee_model_bps": {
+    "taker_fee_bps": 10.0,
+    "bid_ask_spread_bps": 2.0,
+    "slippage_bps": 3.0,
+    "round_trip_taker_haircut_bps": 30.0,
+    "round_trip_percentage": 0.3
+  },
+  "hypotheses_economic_evaluation": [
+    {
+      "hypothesis_id": "H_SIDEWAYS_1h",
+      "regime": "SIDEWAYS",
+      "horizon": "1h",
+      "gross_mean_return_pct": -0.0018,
+      "net_mean_return_pct": -0.3018,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_SIDEWAYS_4h",
+      "regime": "SIDEWAYS",
+      "horizon": "4h",
+      "gross_mean_return_pct": 0.0042,
+      "net_mean_return_pct": -0.2958,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_SIDEWAYS_12h",
+      "regime": "SIDEWAYS",
+      "horizon": "12h",
+      "gross_mean_return_pct": 0.0164,
+      "net_mean_return_pct": -0.2836,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_SIDEWAYS_24h",
+      "regime": "SIDEWAYS",
+      "horizon": "24h",
+      "gross_mean_return_pct": 0.0477,
+      "net_mean_return_pct": -0.2523,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_SIDEWAYS_72h",
+      "regime": "SIDEWAYS",
+      "horizon": "72h",
+      "gross_mean_return_pct": 0.0801,
+      "net_mean_return_pct": -0.2199,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_UNCERTAIN_1h",
+      "regime": "UNCERTAIN",
+      "horizon": "1h",
+      "gross_mean_return_pct": 0.0011,
+      "net_mean_return_pct": -0.2989,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_UNCERTAIN_4h",
+      "regime": "UNCERTAIN",
+      "horizon": "4h",
+      "gross_mean_return_pct": -0.002,
+      "net_mean_return_pct": -0.302,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_UNCERTAIN_12h",
+      "regime": "UNCERTAIN",
+      "horizon": "12h",
+      "gross_mean_return_pct": 0.007,
+      "net_mean_return_pct": -0.293,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_UNCERTAIN_24h",
+      "regime": "UNCERTAIN",
+      "horizon": "24h",
+      "gross_mean_return_pct": 0.0316,
+      "net_mean_return_pct": -0.2684,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_UNCERTAIN_72h",
+      "regime": "UNCERTAIN",
+      "horizon": "72h",
+      "gross_mean_return_pct": 0.1617,
+      "net_mean_return_pct": -0.1383,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BULL_1h",
+      "regime": "TRENDING_BULL",
+      "horizon": "1h",
+      "gross_mean_return_pct": 0.011,
+      "net_mean_return_pct": -0.289,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BULL_4h",
+      "regime": "TRENDING_BULL",
+      "horizon": "4h",
+      "gross_mean_return_pct": 0.0261,
+      "net_mean_return_pct": -0.2739,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BULL_12h",
+      "regime": "TRENDING_BULL",
+      "horizon": "12h",
+      "gross_mean_return_pct": -0.0111,
+      "net_mean_return_pct": -0.3111,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BULL_24h",
+      "regime": "TRENDING_BULL",
+      "horizon": "24h",
+      "gross_mean_return_pct": -0.0339,
+      "net_mean_return_pct": -0.3339,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BULL_72h",
+      "regime": "TRENDING_BULL",
+      "horizon": "72h",
+      "gross_mean_return_pct": 0.3125,
+      "net_mean_return_pct": 0.0125,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BEAR_1h",
+      "regime": "TRENDING_BEAR",
+      "horizon": "1h",
+      "gross_mean_return_pct": -0.0028,
+      "net_mean_return_pct": -0.3028,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BEAR_4h",
+      "regime": "TRENDING_BEAR",
+      "horizon": "4h",
+      "gross_mean_return_pct": 0.01,
+      "net_mean_return_pct": -0.29,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BEAR_12h",
+      "regime": "TRENDING_BEAR",
+      "horizon": "12h",
+      "gross_mean_return_pct": 0.0038,
+      "net_mean_return_pct": -0.2962,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BEAR_24h",
+      "regime": "TRENDING_BEAR",
+      "horizon": "24h",
+      "gross_mean_return_pct": -0.1958,
+      "net_mean_return_pct": -0.4958,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_TRENDING_BEAR_72h",
+      "regime": "TRENDING_BEAR",
+      "horizon": "72h",
+      "gross_mean_return_pct": -0.247,
+      "net_mean_return_pct": -0.547,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_POSSIBLE_REVERSAL_1h",
+      "regime": "POSSIBLE_REVERSAL",
+      "horizon": "1h",
+      "gross_mean_return_pct": 0.0171,
+      "net_mean_return_pct": -0.2829,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_POSSIBLE_REVERSAL_4h",
+      "regime": "POSSIBLE_REVERSAL",
+      "horizon": "4h",
+      "gross_mean_return_pct": -0.0478,
+      "net_mean_return_pct": -0.3478,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_POSSIBLE_REVERSAL_12h",
+      "regime": "POSSIBLE_REVERSAL",
+      "horizon": "12h",
+      "gross_mean_return_pct": -0.1489,
+      "net_mean_return_pct": -0.4489,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_POSSIBLE_REVERSAL_24h",
+      "regime": "POSSIBLE_REVERSAL",
+      "horizon": "24h",
+      "gross_mean_return_pct": -0.2241,
+      "net_mean_return_pct": -0.5241,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_POSSIBLE_REVERSAL_72h",
+      "regime": "POSSIBLE_REVERSAL",
+      "horizon": "72h",
+      "gross_mean_return_pct": 0.0112,
+      "net_mean_return_pct": -0.2888,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_HIGH_VOLATILITY_1h",
+      "regime": "HIGH_VOLATILITY",
+      "horizon": "1h",
+      "gross_mean_return_pct": 0.025,
+      "net_mean_return_pct": -0.275,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "INCONCLUSIVE"
+    },
+    {
+      "hypothesis_id": "H_HIGH_VOLATILITY_4h",
+      "regime": "HIGH_VOLATILITY",
+      "horizon": "4h",
+      "gross_mean_return_pct": 0.0882,
+      "net_mean_return_pct": -0.2118,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_HIGH_VOLATILITY_12h",
+      "regime": "HIGH_VOLATILITY",
+      "horizon": "12h",
+      "gross_mean_return_pct": 0.2675,
+      "net_mean_return_pct": -0.0325,
+      "haircut_bps": 30.0,
+      "economically_viable": false,
+      "scientific_verdict": "SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_HIGH_VOLATILITY_24h",
+      "regime": "HIGH_VOLATILITY",
+      "horizon": "24h",
+      "gross_mean_return_pct": 0.4715,
+      "net_mean_return_pct": 0.1715,
+      "haircut_bps": 30.0,
+      "economically_viable": true,
+      "scientific_verdict": "SUPPORTED"
+    },
+    {
+      "hypothesis_id": "H_HIGH_VOLATILITY_72h",
+      "regime": "HIGH_VOLATILITY",
+      "horizon": "72h",
+      "gross_mean_return_pct": 0.8886,
+      "net_mean_return_pct": 0.5886,
+      "haircut_bps": 30.0,
+      "economically_viable": true,
+      "scientific_verdict": "SUPPORTED"
+    }
+  ]
+}

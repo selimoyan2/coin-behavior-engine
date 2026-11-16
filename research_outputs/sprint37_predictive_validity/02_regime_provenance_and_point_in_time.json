@@ -1,0 +1,45 @@
+{
+  "sprint_id": "CBE_SPRINT37_MARKET_REGIME_PREDICTIVE_VALIDITY_LAB_V3",
+  "timestamp_utc": "2026-11-16T11:16:12.702705+00:00",
+  "model_tier_audit": {
+    "tier_1_nominal_model": {
+      "model_identifier": "CBE-0.7.0",
+      "status": "STRICTLY_FROZEN",
+      "nominal_states": [
+        "NORMAL",
+        "COMPRESSION",
+        "EXPANSION_WATCH",
+        "DELEVERAGING_STRESS"
+      ],
+      "governance_rule": "No retraining, reweighting, or threshold adjustments allowed",
+      "live_monitoring_limitation": {
+        "known_bug": "Single-row percentile rank collapse during single-bar live evaluation",
+        "consequence": "DELEVERAGING_STRESS collapses to UNKNOWN in live monitors",
+        "architectural_status": "Documented and segregated from Tier 2 analytics"
+      }
+    },
+    "tier_2_analytical_regimes": {
+      "output_classification": "CANONICAL_COMPATIBLE_DERIVED_OUTPUT",
+      "canonical_regimes": [
+        "SIDEWAYS",
+        "UNCERTAIN",
+        "TRENDING_BULL",
+        "TRENDING_BEAR",
+        "POSSIBLE_REVERSAL",
+        "HIGH_VOLATILITY"
+      ],
+      "derivation_inputs": [
+        "trailing_24h_rolling_volatility",
+        "trailing_24h_momentum"
+      ],
+      "quantiles_policy": "Point-in-time expanding historical quantiles (no lookahead)",
+      "causal_guarantee": "Bar t is classified strictly with data <= t"
+    }
+  },
+  "point_in_time_audit": {
+    "total_bars_evaluated": 42717,
+    "date_range": "2022-01-01 00:00:00 UTC to 2026-11-15 21:00:00 UTC",
+    "lookahead_leakage_detected": false,
+    "prefix_invariance_verified": true
+  }
+}

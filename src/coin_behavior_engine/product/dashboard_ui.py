@@ -4255,6 +4255,7 @@ def render_product_dashboard_html() -> str:
     // Tab Navigation & Category Groups (Phase G)
     const tabGroupsMap = {
       "btc-timing": "market",
+      "predictive-validity": "market",
       "unified-workspace": "market",
       overview: "market",
       behavior: "market",
@@ -4308,6 +4309,7 @@ def render_product_dashboard_html() -> str:
 
     function switchTab(tabId) {
       if (tabId === 'btc-timing') setTimeout(loadBtcTimingTab, 50);
+      if (tabId === 'predictive-validity') setTimeout(loadPredictiveValidity, 50);
       if (tabId === 'research-explorer') setTimeout(loadResearchExplorer, 50);
       if (tabId === 'unified-workspace') setTimeout(loadUnifiedWorkspace, 50);
       if (tabId === 'regimes') setTimeout(loadRegimeTransitionLab, 50);
@@ -9048,6 +9050,12 @@ def render_product_dashboard_html() -> str:
         render_btc_timing_scripts,
         render_btc_timing_styles,
     )
+    from coin_behavior_engine.product.predictive_validity_ui import (
+        render_predictive_validity_html,
+        render_predictive_validity_nav_tab,
+        render_predictive_validity_scripts,
+        render_predictive_validity_styles,
+    )
     # Inject Sprint 19 Explorer styles into <style> block
     html = html.replace("</style>", render_research_explorer_styles() + "\n  </style>", 1)
 
@@ -9065,6 +9073,13 @@ def render_product_dashboard_html() -> str:
     main_hook = "</main>"
     html = html.replace(main_hook, render_btc_timing_html() + "\n  " + main_hook, 1)
     html = html.replace("</script>\n</body>", render_btc_timing_scripts() + "\n</script>\n</body>", 1)
+
+    # Inject Sprint 37 Predictive Validity UI
+    html = html.replace("</style>", render_predictive_validity_styles() + "\n  </style>", 1)
+    pv_nav_hook = '<a href="#regimes"'
+    html = html.replace(pv_nav_hook, render_predictive_validity_nav_tab() + "\n    " + pv_nav_hook, 1)
+    html = html.replace(main_hook, render_predictive_validity_html() + "\n  " + main_hook, 1)
+    html = html.replace("</script>\n</body>", render_predictive_validity_scripts() + "\n</script>\n</body>", 1)
 
     return html
 
