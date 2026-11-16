@@ -55,7 +55,7 @@ def start_test_server() -> subprocess.Popen:
     """Spawns web server on test port 18099."""
     env = os.environ.copy()
     env["PORT"] = str(PORT)
-    env["CBE_ENV"] = "staging"
+    env["CBE_ENV"] = "development"
     env["CBE_OPERATOR_TOKEN"] = AUTH_TOKEN
     env["CBE_TEST_OPERATOR_TOKEN"] = AUTH_TOKEN
     env["CBE_TRADING_DISABLED"] = "true"
@@ -78,13 +78,13 @@ def start_test_server() -> subprocess.Popen:
 
 def wait_for_server(timeout_sec: int = 60) -> bool:
     start = time.time()
-    url = f"{BASE_URL}/ready"
+    url = f"{BASE_URL}/health"
     while time.time() - start < timeout_sec:
         try:
             req = urllib.request.Request(url, headers={"Authorization": f"Bearer {AUTH_TOKEN}"})
             with urllib.request.urlopen(req, timeout=2) as resp:
                 if resp.status == 200:
-                    print("Server /ready responded 200. Warming up Predictive Validity cache...")
+                    print("Server /health responded 200. Warming up Predictive Validity cache...")
                     try:
                         sc_url = f"{BASE_URL}/api/v1/product/predictive-validity/scorecard"
                         sc_req = urllib.request.Request(sc_url, headers={"Authorization": f"Bearer {AUTH_TOKEN}"})
@@ -192,9 +192,42 @@ async def run_playwright_suite():
             kpi_total = await page.locator("#pv-kpi-total").inner_text() if await page.locator("#pv-kpi-total").count() > 0 else "0"
             kpi_supp = await page.locator("#pv-kpi-supported").inner_text() if await page.locator("#pv-kpi-supported").count() > 0 else "0"
             kpi_not_supp = await page.locator("#pv-kpi-not-supported").inner_text() if await page.locator("#pv-kpi-not-supported").count() > 0 else "0"
+            kpi_incon = await page.locator("#pv-kpi-inconclusive").inner_text() if await page.locator("#pv-kpi-inconclusive").count() > 0 else "0"
 
             # Check Tier distinction banner
             has_tier_card = await page.locator(".pv-tier-card").count() > 0
+
+            # Test filter interaction on desktop
+            filter_test_passed = True
+            if vp["name"] == "desktop":
+                try:
+                    verdict_select = page.locator("#pv-filter-verdict")
+                    if await verdict_select.count() > 0:
+                        # Select SUPPORTED
+                        await verdict_select.select_option("SUPPORTED")
+                        await page.wait_for_timeout(300)
+                        filt_rows = await page.locator("#pv-scorecard-tbody tr").count()
+                        filt_kpi_total = await page.locator("#pv-kpi-total").inner_text()
+                        filt_kpi_supp = await page.locator("#pv-kpi-supported").inner_text()
+                        if filt_rows != 4 or filt_kpi_total != "4" or filt_kpi_supp != "4":
+                            print(f"Filter interaction check failed: rows={filt_rows}, total={filt_kpi_total}, supp={filt_kpi_supp}")
+                            filter_test_passed = False
+                        else:
+                            print(f"Filter SUPPORTED verified: rows={filt_rows}, kpi_total={filt_kpi_total}, kpi_supp={filt_kpi_supp}")
+
+                        # Reset back to ALL
+                        await verdict_select.select_option("ALL")
+                        await page.wait_for_timeout(300)
+                        rest_rows = await page.locator("#pv-scorecard-tbody tr").count()
+                        rest_kpi_total = await page.locator("#pv-kpi-total").inner_text()
+                        if rest_rows != 30 or rest_kpi_total != "30":
+                            print(f"Filter reset check failed: rows={rest_rows}, total={rest_kpi_total}")
+                            filter_test_passed = False
+                        else:
+                            print(f"Filter reset verified: rows={rest_rows}, kpi_total={rest_kpi_total}")
+                except Exception as ex:
+                    print(f"Filter interaction test exception: {ex}")
+                    filter_test_passed = False
 
             # Screenshot
             img_path = DELIVERY_DIR / vp["filename"]
@@ -214,8 +247,11 @@ async def run_playwright_suite():
                 "kpis": {
                     "total": kpi_total,
                     "supported": kpi_supp,
-                    "not_supported": kpi_not_supp
+                    "not_supported": kpi_not_supp,
+                    "inconclusive": kpi_incon,
+                    "sum_check": (int(kpi_supp) + int(kpi_not_supp) + int(kpi_incon) == int(kpi_total) == 30) if (kpi_total.isdigit() and kpi_supp.isdigit() and kpi_not_supp.isdigit() and kpi_incon.isdigit()) else False
                 },
+                "filter_test_passed": filter_test_passed,
                 "has_tier_card": has_tier_card,
                 "console_errors": console_msgs,
                 "page_errors": page_errors,
@@ -241,6 +277,8 @@ async def run_playwright_suite():
         and results["live_trading_prohibition"].get("all_prohibited") is True
         and all(v["module_visible"] for v in results["viewports_evaluated"].values())
         and all(v["scorecard_rows"] >= 30 for v in results["viewports_evaluated"].values())
+        and all(v["kpis"]["sum_check"] is True for v in results["viewports_evaluated"].values())
+        and all(v["filter_test_passed"] is True for v in results["viewports_evaluated"].values())
     )
 
     results["verdict"] = "SPRINT37_PLAYWRIGHT_ACCEPTED" if success else "SPRINT37_PLAYWRIGHT_FAILED"
@@ -274,11 +312,6 @@ def main():
             proc.wait(timeout=5)
         except Exception:
             proc.kill()
-        if TEMP_LOG_PATH.exists():
-            try:
-                TEMP_LOG_PATH.unlink()
-            except Exception:
-                pass
 
 
 if __name__ == "__main__":

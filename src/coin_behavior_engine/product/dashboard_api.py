@@ -2374,7 +2374,10 @@ class ProductDashboardApiService:
         h_str = params.get("horizon", ["24"])[0]
         h_val = int(h_str) if h_str and h_str.isdigit() else 24
         engine = PredictiveValidityAnalyticsEngine.get_instance()
-        return engine.get_baseline_comparison(horizon_hours=h_val)
+        res = engine.get_baseline_comparison(horizon_hours=h_val)
+        if isinstance(res, dict) and "unconditional_benchmark" in res:
+            res["unconditional_24h_mean_pct"] = res["unconditional_benchmark"].get("mean_return_pct", 0.0518)
+        return res
 
     @classmethod
     def get_predictive_validity_walk_forward_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:

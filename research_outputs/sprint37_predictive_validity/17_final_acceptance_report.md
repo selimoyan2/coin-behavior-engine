@@ -8,7 +8,7 @@
 **Yürütme Modu:** `STRICTLY_OFFLINE_RESEARCH`  
 **Canlı İşlem (Live Trading):** `PERMANENTLY_PROHIBITED`  
 **Üretim Dağıtımı:** `NOT_AUTHORIZED` (`STRICT_ZERO_TOUCH`)  
-**Nihai Karar (Verdict):** `SPRINT37_STAGING_ACCEPTED`
+**Nihai Karar (Verdict):** `SPRINT37_V14_RELEASE_READY_FOR_OPERATOR_APPROVAL`
 
 ---
 
@@ -23,11 +23,11 @@ Araştırma, **bilimsel dürüstlük ve negatif bulguların şeffaf biçimde rap
    - **Tier 1 (Nominal Dondurulmuş Model CBE-0.7.0):** `NORMAL`, `COMPRESSION`, `EXPANSION_WATCH`, `DELEVERAGING_STRESS` durumları üretmektedir. Tek barlık canlı değerlendirmede yüzdelik sıra çökmesi hatası nedeniyle `DELEVERAGING_STRESS` durumu canlı panellerde `UNKNOWN` olarak bastırılmaktadır. Bu model kesin olarak dondurulmuştur (`STRICTLY_FROZEN`).
    - **Tier 2 (Analitik Türetilmiş Rejimler):** 6 kanonik rejim (`SIDEWAYS`, `UNCERTAIN`, `TRENDING_BULL`, `TRENDING_BEAR`, `POSSIBLE_REVERSAL`, `HIGH_VOLATILITY`) 24h yuvarlanan volatilite ve momentum göstergeleri üzerinden geçmişe dönük genişleyen çeyrekliklerle (expanding quantiles) türetilmektedir. Geleceğe bakış (lookahead) içermez, kesin olarak nedenseldir (point-in-time).
 2. **Volatilite Kümelenmesi ve Risk Tahmini Güçlü Şekilde Desteklenmiştir (`SUPPORTED`):**
-   - `HIGH_VOLATILITY` rejimine geçiş yapıldığında, takip eden 24 saatlik ileri gerçekleşen volatilite ($RV_{t, t+24h}$), `SIDEWAYS` rejimine kıyasla ortalama 2.84 kat daha yüksek kalmaktadır (Welch $t = +14.28$, $p < 10^{-6}$). Volatilite kümelenmesi hipotezi ampirik olarak doğrulanmıştır.
+   - `HIGH_VOLATILITY` rejimine geçiş yapıldığında, takip eden 24 saatlik ileri gerçekleşen volatilite ($RV_{t, t+24h}$), `SIDEWAYS` rejimine kıyasla ortalama 1.49 kat daha yüksek kalmaktadır (Welch $t = +10.02$, $p < 10^{-6}$). Volatilite kümelenmesi ve risk tahmin üstünlüğü ampirik olarak doğrulanmıştır (4h, 12h, 24h, 72h vadelerinde `SUPPORTED`).
 3. **Yönsel Getiri ve Naif Tersine Dönüş Hipotezleri Desteklenmemiştir (`NOT_SUPPORTED`):**
    - `SIDEWAYS` ve `UNCERTAIN` rejimlerinde ileri ortalama getiriler tüm vadelerde %0.00'dan farksızdır ($p > 0.50$, FDR $q > 0.90$).
-   - `POSSIBLE_REVERSAL` rejimi sonrası tersine dönüş oranı %50 yazı-tura olasılığına denktir; trend devamı sıkça yaşanmaktadır.
-   - `TRENDING_BULL` ve `TRENDING_BEAR` rejimlerinde 4h-24h vadelerde görülen hafif yönsel kayma, **30 bps işlem maliyeti kesintisi** ve **Benjamini-Hochberg FDR düzeltmesi** uygulandığında tamamen erimekte ve istatistiksel/ekonomik alfanın sıfır olduğu görülmektedir.
+   - `POSSIBLE_REVERSAL` rejimi sonrası tersine dönüş oranı beklenenin aksine düşüktür; trend devamı (%58.2) istatistiksel olarak baskındır (Binomial test $p = 0.000626$).
+   - `TRENDING_BULL` ve `TRENDING_BEAR` rejimlerinde 4h-24h vadelerde görülen yönsel sapmalar, **30 bps işlem maliyeti kesintisi** ve **Benjamini-Hochberg FDR düzeltmesi** uygulandığında tamamen erimekte ve istatistiksel/ekonomik alfanın sıfır olduğu görülmektedir.
 4. **Örtüşen Veri (Overlapping Sample) Düzeltmesi:**
    - Standart i.i.d. standart hatalarının $\sqrt{H}$ oranında yapay olarak daraldığı ispatlanmış, Newey-West HAC ($H-1$ lag) ve Circular Block Bootstrap (B=500) düzeltmeleriyle gerçek güven aralıklarının sıfırı kestiği kanıtlanmıştır.
 
@@ -56,25 +56,24 @@ Her bar için 5 ileri vade incelenmiştir: 1h, 4h, 12h, 24h, 72h.
 ### Görev D — Rejim Geçişi Sonrası İleri Dinamikler (Transition Dynamics)
 | Test Hipotezi | Test Türü | Test İstatistiği | $p$-değeri | Bilimsel Karar |
 | :--- | :--- | :--- | :--- | :--- |
-| **Volatilite Yükselişi** (`HIGH_VOLATILITY` vs `SIDEWAYS`) | Welch iki örneklem t-testi | $t = +14.28$ | $< 10^{-6}$ | **SUPPORTED** |
-| **Yönsel Boğa Sürüklenmesi** (`TRENDING_BULL` 24h getiri) | Newey-West HAC t-testi | $t = +1.48$ | $p = 0.138$ | **INCONCLUSIVE** |
-| **Yönsel Ayı Sürüklenmesi** (`TRENDING_BEAR` 24h getiri) | Newey-West HAC t-testi | $t = -1.22$ | $p = 0.224$ | **NOT_SUPPORTED** |
-| **Tersine Dönüş Başarısı** (`POSSIBLE_REVERSAL` vs %50) | Binomial Test | $k/n = 58.2\%$ | $p = 0.0006$ | **SUPPORTED (Devam Eğilimi)** |
-| **Dağılım Ayrışması** (`SIDEWAYS` vs `UNCERTAIN`) | Kolmogorov-Smirnov | $D = 0.021$ | $p = 0.612$ | **INDISTINGUISHABLE** |
+| **Volatilite Yükselişi** (`HIGH_VOLATILITY` vs `SIDEWAYS`) | Welch iki örneklem t-testi | $t = +10.02$ | $< 10^{-6}$ | **SUPPORTED** |
+| **Yönsel Boğa Sürüklenmesi** (`TRENDING_BULL` 24h getiri) | Newey-West HAC t-testi | $t = -0.005$ | $p = 0.996$ | **NOT_SUPPORTED** |
+| **Yönsel Ayı Sürüklenmesi** (`TRENDING_BEAR` 24h getiri) | Newey-West HAC t-testi | $t = +0.161$ | $p = 0.872$ | **NOT_SUPPORTED** |
+| **Tersine Dönüş Başarısı** (`POSSIBLE_REVERSAL` vs %50) | Binomial Test | $k/n = 58.2\%$ | $p = 0.000626$ | **NOT_SUPPORTED (Devam Yanılgısı)** |
+| **Dağılım Ayrışması** (`SIDEWAYS` vs `UNCERTAIN`) | Kolmogorov-Smirnov | $D = 0.057$ | $p = 0.129$ | **NOT_SUPPORTED (Farksız Dağılım)** |
 
-*Not:* `POSSIBLE_REVERSAL` rejiminde binomial test, trendin tersine dönmesinden ziyade trend devamının (%58.2) baskın olduğunu göstermiştir. Bu bulgu, piyasadaki "reversal avcılığı" stratejilerinin yüksek riskini ampirik olarak kanıtlamaktadır.
+*Not:* `POSSIBLE_REVERSAL` rejiminde binomial test, trendin tersine dönmesinden ziyade trend devamının (%58.2) istatistiksel olarak baskın olduğunu göstermiştir. Bu bulgu, piyasadaki "reversal avcılığı" stratejilerinin yüksek riskini ve getiri yanılgısını ampirik olarak kanıtlamaktadır.
 
 ### Görev E — Basit Karşılaştırma Modellerine Karşı Üstünlük (Baselines)
-1. **Koşulsuz Getiri (Unconditional Null):** 24 saatlik koşulsuz ortalama getiri $+0.08\%$ düzeyindedir. `SIDEWAYS` ve `UNCERTAIN` rejimlerinin ortalamaları bu değerden farksızdır.
-2. **24h Basit Momentum Modeli:** %51.4 isabet oranı ile rejim tabanlı karmaşık modellerle benzer yönsel tahmin gücü sergilemektedir.
-3. **24h Basit Ortalamaya Dönüş Modeli:** %48.6 isabet oranı vermektedir.
-4. **Volatilite Tahmin Üstünlüğü:** Rejim tabanlı oynaklık tahminleri, basit gecikmeli volatilite modeline kıyasla RMSE bazında %8 daha düşük tahmin hatası sunmaktadır.
+1. **Koşulsuz Getiri (Unconditional Null):** 24 saatlik koşulsuz ortalama getiri $+0.0518\%$ ($+0.05\%$) düzeyindedir (N=42,693, std=2.6064%, pozitif bar frekansı %50.95). `SIDEWAYS` ve `UNCERTAIN` rejimlerinin ortalamaları bu değerden farksızdır.
+2. **24h Basit Momentum Modeli:** %47.57 (%47.6) isabet oranı ile rastlantısal yazı-tura sınırındadır.
+3. **24h Basit Ortalamaya Dönüş Modeli:** %52.51 (%52.5) isabet oranı vermektedir.
+4. **Volatilite Tahmin Üstünlüğü:** Rejim tabanlı oynaklık tahminleri, basit gecikmeli volatilite modeline (Lagged RMSE %17.46) kıyasla Rejim RMSE %16.06 vererek **%8.00 RMSE iyileşmesi** sağlamıştır (`SUPERIOR`).
 
 ### Görev F — Yıllık Walk-Forward Kararlılık (2022 - 2026)
-Yıllar itibarıyla rejimlerin 24h ortalama ileri getirileri incelendiğinde:
-- 2022 (Sert Ayı): `TRENDING_BULL` dahi negatif forward getiri üretmiştir.
-- 2024 (ETF Boğası): Tüm rejimlerin forward getirileri pozitif kaymıştır.
-- Bu durum, rejimlerin mutlak getiri üretmek yerine piyasanın genel rejimine bağımlı olduğunu ve zamansal olarak sabit bir alfa üretmediğini ortaya koymaktadır.
+Yıllar itibarıyla rejimlerin 24h gerçekleşen volatilite ve ileri ortalama getirileri incelendiğinde:
+- `HIGH_VOLATILITY` 24h gerçekleşen forward volatilite her 5 yılda da `SIDEWAYS` rejimini açık ara aşmıştır (2022: %94.06 vs %54.26; 2023: %56.05 vs %36.97; 2024: %65.15 vs %43.23; 2025: %66.87 vs %38.23; 2026: %57.74 vs %36.86).
+- Yönsel getirilerde ise 2022 (Sert Ayı) yılında `TRENDING_BULL` negatif forward getiri üretirken, 2024 (ETF Boğası) yılında tüm rejimler yukarı yönlü sürüklenmiştir. Bu durum yönsel alfanın piyasa döngüsünden bağımsız olmadığını doğrulamıştır.
 
 ### Görev H — Gerçekçi Ekonomik İşlem Maliyeti Kesintisi
 Modelde Binance spot piyasası için standart 30 bps round-trip taker maliyeti uygulanmıştır:
@@ -82,7 +81,7 @@ Modelde Binance spot piyasası için standart 30 bps round-trip taker maliyeti u
 - Alış-Satış Makası (Spread): 2 bps $\times 2 = 4$ bps
 - Kayma (Slippage): 3 bps $\times 2 = 6$ bps
 - **Toplam Round-Trip Maliyet:** 30 bps (%0.30)
-Brüt getirisi pozitif görünen vadelerin (ör. `TRENDING_BULL` 4h brüt $+0.18\%$) net getirisi $-0.12\%$ seviyesine inmekte ve ekonomik olarak anlamsızlaşmaktadır.
+Brüt getirisi pozitif görünen vadelerin dahi net getirisi eksiye inmekte ve ekonomik olarak alfa üretmediği belgelenmektedir.
 
 ---
 
@@ -92,15 +91,18 @@ Brüt getirisi pozitif görünen vadelerin (ör. `TRENDING_BULL` 4h brüt $+0.18
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **SIDEWAYS** | NOT_SUPPORTED | NOT_SUPPORTED | NOT_SUPPORTED | NOT_SUPPORTED | NOT_SUPPORTED |
 | **UNCERTAIN** | NOT_SUPPORTED | NOT_SUPPORTED | NOT_SUPPORTED | NOT_SUPPORTED | NOT_SUPPORTED |
-| **TRENDING_BULL** | NOT_SUPPORTED | INCONCLUSIVE | INCONCLUSIVE | INCONCLUSIVE | NOT_SUPPORTED |
+| **TRENDING_BULL** | NOT_SUPPORTED | NOT_SUPPORTED | NOT_SUPPORTED | NOT_SUPPORTED | NOT_SUPPORTED |
 | **TRENDING_BEAR** | NOT_SUPPORTED | NOT_SUPPORTED | NOT_SUPPORTED | NOT_SUPPORTED | NOT_SUPPORTED |
 | **POSSIBLE_REVERSAL**| NOT_SUPPORTED | NOT_SUPPORTED | NOT_SUPPORTED | NOT_SUPPORTED | NOT_SUPPORTED |
 | **HIGH_VOLATILITY** | INCONCLUSIVE | **SUPPORTED** | **SUPPORTED** | **SUPPORTED** | **SUPPORTED** |
 
-- **Toplam Test:** 30
-- **Desteklenen (SUPPORTED):** 4 (Yalnızca `HIGH_VOLATILITY` oynaklık ve risk öngörüsü)
-- **Desteklenmeyen (NOT_SUPPORTED):** 22 (Yönsel getiri ve tersine dönüş hipotezleri)
-- **Belirsiz (INCONCLUSIVE):** 4 (Marjinal istatistiki sınırda kalanlar)
+- **Toplam Değerlendirilen Hipotez:** 30
+- **Desteklenen (SUPPORTED):** 4 (`HIGH_VOLATILITY` oynaklık ve risk öngörüsü — 4h, 12h, 24h, 72h)
+- **Desteklenmeyen (NOT_SUPPORTED):** 25 (Yönsel getiri ve tersine dönüş hipotezleri)
+- **Belirsiz (INCONCLUSIVE):** 1 (`HIGH_VOLATILITY` 1h vade)
+- **Yetersiz Veri (INSUFFICIENT_DATA):** 0
+- **Sızıntı Bloke (LEAKAGE_BLOCKED):** 0
+- **Matematiksel Toplam Doğrulaması:** $4 + 25 + 1 + 0 + 0 = 30$ (Tam mutabakat)
 
 ---
 
@@ -158,7 +160,7 @@ Dashboard arayüzü yeni modül ile zenginleştirilmiştir:
 
 ## 7. NİHAİ KARAR VE YÖNETİŞİM ONAYI
 
-- **Sprint 37 Kararı:** `SPRINT37_STAGING_ACCEPTED`
+- **Sprint 37 Kararı:** `SPRINT37_V14_RELEASE_READY_FOR_OPERATOR_APPROVAL`
 - **Üretim Dağıtımı:** `NOT_AUTHORIZED` — Operatörün açık onayı olmadan `main` dalına birleştirilmeyecek ve üretim sunucusuna dağıtılmayacaktır.
 - **Canlı İşlem:** `PERMANENTLY_PROHIBITED`
 - **Sprint 38:** Başlatılmayacaktır. Operatör kararı beklenmektedir.

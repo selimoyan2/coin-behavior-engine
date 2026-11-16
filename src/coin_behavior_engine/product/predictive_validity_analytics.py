@@ -211,6 +211,18 @@ class PredictiveValidityAnalyticsEngine:
             if cache_key in self._cache:
                 return self._cache[cache_key]
 
+        if year is None and regime is None:
+            artifact_path = Path("research_outputs/sprint37_predictive_validity/03_forward_return_distributions.json")
+            if artifact_path.exists():
+                try:
+                    with open(artifact_path, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                        with self._cache_lock:
+                            self._cache[cache_key] = data
+                        return data
+                except Exception:
+                    pass
+
         df = self.compute_forward_dataset()
         if df.empty:
             return {"status": "error", "message": "No data available"}
@@ -310,6 +322,18 @@ class PredictiveValidityAnalyticsEngine:
             if cache_key in self._cache:
                 return self._cache[cache_key]
 
+        if horizon_hours == 24:
+            artifact_path = Path("research_outputs/sprint37_predictive_validity/05_baseline_comparison.json")
+            if artifact_path.exists():
+                try:
+                    with open(artifact_path, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                        with self._cache_lock:
+                            self._cache[cache_key] = data
+                        return data
+                except Exception:
+                    pass
+
         df = self.compute_forward_dataset()
         if df.empty:
             return {"status": "error", "message": "No data available"}
@@ -401,6 +425,17 @@ class PredictiveValidityAnalyticsEngine:
         with self._cache_lock:
             if cache_key in self._cache:
                 return self._cache[cache_key]
+
+        artifact_path = Path("research_outputs/sprint37_predictive_validity/04_transition_predictive_validity.json")
+        if artifact_path.exists():
+            try:
+                with open(artifact_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    with self._cache_lock:
+                        self._cache[cache_key] = data
+                    return data
+            except Exception:
+                pass
 
         df = self.compute_forward_dataset()
         if df.empty:
@@ -511,6 +546,17 @@ class PredictiveValidityAnalyticsEngine:
             if cache_key in self._cache:
                 return self._cache[cache_key]
 
+        artifact_path = Path("research_outputs/sprint37_predictive_validity/06_walk_forward_validation.json")
+        if artifact_path.exists():
+            try:
+                with open(artifact_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    with self._cache_lock:
+                        self._cache[cache_key] = data
+                    return data
+            except Exception:
+                pass
+
         df = self.compute_forward_dataset()
         if df.empty:
             return {"status": "error", "message": "No data available"}
@@ -566,6 +612,17 @@ class PredictiveValidityAnalyticsEngine:
         with self._cache_lock:
             if cache_key in self._cache:
                 return self._cache[cache_key]
+
+        artifact_path = Path("research_outputs/sprint37_predictive_validity/09_scientific_scorecard.json")
+        if artifact_path.exists():
+            try:
+                with open(artifact_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    with self._cache_lock:
+                        self._cache[cache_key] = data
+                    return data
+            except Exception:
+                pass
 
         fwd_dist = self.get_forward_return_distributions()
         reg_data = fwd_dist.get("regimes_data", {})

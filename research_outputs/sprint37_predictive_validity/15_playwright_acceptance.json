@@ -1,6 +1,6 @@
 {
   "sprint_id": "CBE_SPRINT37_MARKET_REGIME_PREDICTIVE_VALIDITY_LAB_V3",
-  "timestamp_utc": "2026-11-16T11:15:38.827524+00:00",
+  "timestamp_utc": "2026-11-16T12:41:44.515467+00:00",
   "base_url": "http://127.0.0.1:18099",
   "viewports_evaluated": {
     "desktop": {
@@ -13,8 +13,11 @@
       "kpis": {
         "total": "30",
         "supported": "4",
-        "not_supported": "25"
+        "not_supported": "25",
+        "inconclusive": "1",
+        "sum_check": true
       },
+      "filter_test_passed": true,
       "has_tier_card": true,
       "console_errors": [],
       "page_errors": []
@@ -29,8 +32,11 @@
       "kpis": {
         "total": "30",
         "supported": "4",
-        "not_supported": "25"
+        "not_supported": "25",
+        "inconclusive": "1",
+        "sum_check": true
       },
+      "filter_test_passed": true,
       "has_tier_card": true,
       "console_errors": [],
       "page_errors": []
@@ -45,8 +51,11 @@
       "kpis": {
         "total": "30",
         "supported": "4",
-        "not_supported": "25"
+        "not_supported": "25",
+        "inconclusive": "1",
+        "sum_check": true
       },
+      "filter_test_passed": true,
       "has_tier_card": true,
       "console_errors": [],
       "page_errors": []

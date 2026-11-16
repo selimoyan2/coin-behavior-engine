@@ -196,17 +196,17 @@ def render_predictive_validity_html() -> str:
         </div>
         <div class="pv-kpi-card" style="border-left: 3px solid #10b981;">
           <div style="font-size: 11px; font-weight: 600; color: #34d399; text-transform: uppercase;">DESTEKLENEN (SUPPORTED)</div>
-          <div class="value" id="pv-kpi-supported" style="font-size: 26px; font-weight: 800; color: #34d399; margin-top: 4px;">2</div>
+          <div class="value" id="pv-kpi-supported" style="font-size: 26px; font-weight: 800; color: #34d399; margin-top: 4px;">4</div>
           <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Volatilite kümelenmesi & risk</div>
         </div>
         <div class="pv-kpi-card" style="border-left: 3px solid #ef4444;">
           <div style="font-size: 11px; font-weight: 600; color: #f87171; text-transform: uppercase;">DESTEKLENMEYEN (NOT SUPPORTED)</div>
-          <div class="value" id="pv-kpi-not-supported" style="font-size: 26px; font-weight: 800; color: #f87171; margin-top: 4px;">24</div>
+          <div class="value" id="pv-kpi-not-supported" style="font-size: 26px; font-weight: 800; color: #f87171; margin-top: 4px;">25</div>
           <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Getiri / tersine dönüş (0 alfa)</div>
         </div>
         <div class="pv-kpi-card" style="border-left: 3px solid #f59e0b;">
           <div style="font-size: 11px; font-weight: 600; color: #fbbf24; text-transform: uppercase;">BELİRSİZ (INCONCLUSIVE)</div>
-          <div class="value" id="pv-kpi-inconclusive" style="font-size: 26px; font-weight: 800; color: #fbbf24; margin-top: 4px;">4</div>
+          <div class="value" id="pv-kpi-inconclusive" style="font-size: 26px; font-weight: 800; color: #fbbf24; margin-top: 4px;">1</div>
           <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">İstatistiki / ekonomik sınırda</div>
         </div>
         <div class="pv-kpi-card">
@@ -331,7 +331,7 @@ def render_predictive_validity_html() -> str:
                 HIGH_VOLATILITY rejimi sonrası 24h volatilite, SIDEWAYS rejimine göre istatistiksel olarak anlamlı derecede yüksek kalmaktadır.
               </div>
               <div style="font-family: var(--font-mono); font-size: 11px; color: #cbd5e1; margin-top: 6px;" id="pv-test-vol-elevation-stats">
-                Welch t-stat: +14.28 &bull; p-value: &lt; 1e-6 &bull; F-ratio: 2.84
+                Welch t-stat: +10.02 &bull; p-value: &lt; 1e-6 &bull; Vol Oranı: 1.49x
               </div>
             </div>
 
@@ -345,7 +345,7 @@ def render_predictive_validity_html() -> str:
                 TRENDING_BULL / BEAR rejimleri 4h-24h vadede hafif yönsel sapma gösterse de 30 bps işlem maliyeti ve FDR sonrası ekonomik alfa kaybolmaktadır.
               </div>
               <div style="font-family: var(--font-mono); font-size: 11px; color: #cbd5e1; margin-top: 6px;" id="pv-test-persistence-stats">
-                Bull 24h drift: +0.42% (net +0.12%) &bull; Bear 24h drift: -0.38% (net -0.68%)
+                Bull 24h getiri: -0.00% (net -0.30%) &bull; Bear 24h getiri: +0.04% (net -0.26%)
               </div>
             </div>
 
@@ -356,10 +356,10 @@ def render_predictive_validity_html() -> str:
                 <span class="pv-badge-not-supported" id="pv-test-reversal-badge">NOT_SUPPORTED</span>
               </div>
               <div style="font-size: 11px; color: #94a3b8; margin-top: 4px;">
-                POSSIBLE_REVERSAL rejimi sonrası fiyat yönü %50 yazı-tura olasılığından istatistiksel olarak farklı değildir; trend devamı sıkça gerçekleşir.
+                POSSIBLE_REVERSAL rejimi sonrası fiyat yönü %50 yazı-tura olasılığından farklı değildir; trend devamı (%58.2) baskındır.
               </div>
               <div style="font-family: var(--font-mono); font-size: 11px; color: #cbd5e1; margin-top: 6px;" id="pv-test-reversal-stats">
-                Binomial test p: 0.428 (p &gt; 0.05) &bull; Reversal başarı oranı: %50.8
+                Binomial test p: 0.000626 &bull; Trend devam oranı: %58.2 (Reversal yanılgısı)
               </div>
             </div>
 
@@ -373,7 +373,7 @@ def render_predictive_validity_html() -> str:
                 SIDEWAYS ve UNCERTAIN rejimlerinin 24h ileri getiri dağılımları birbirinden istatistiksel olarak ayırt edilemez.
               </div>
               <div style="font-family: var(--font-mono); font-size: 11px; color: #cbd5e1; margin-top: 6px;" id="pv-test-ks-stats">
-                KS stat D: 0.021 &bull; p-value: 0.612 (Aynı dağılım reddedilemez)
+                KS stat D: 0.057 &bull; p-value: 0.129 (Dağılımlar farksız)
               </div>
             </div>
           </div>
@@ -393,7 +393,7 @@ def render_predictive_validity_html() -> str:
             <div style="background: #0f172a; border: 1px solid #1e293b; padding: 12px; border-radius: 6px;">
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-weight: 700; color: #94a3b8; font-size: 12px;">Koşulsuz Getiri Dağılımı (Null)</span>
-                <span style="font-family: var(--font-mono); font-size: 11px; color: #38bdf8;" id="pv-base-uncond-val">+0.08% / 24h</span>
+                <span style="font-family: var(--font-mono); font-size: 11px; color: #38bdf8;" id="pv-base-uncond-val">+0.05% / 24h</span>
               </div>
               <div style="font-size: 11px; color: #94a3b8; margin-top: 4px;">
                 Tüm saatlik barların koşulsuz ortalama 24h getirisi. SIDEWAYS ve UNCERTAIN ortalamaları bu değerden istatistiksel olarak farksızdır.
@@ -404,7 +404,7 @@ def render_predictive_validity_html() -> str:
             <div style="background: #0f172a; border: 1px solid #1e293b; padding: 12px; border-radius: 6px;">
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-weight: 700; color: #60a5fa; font-size: 12px;">24h Basit Momentum Modeli</span>
-                <span style="font-family: var(--font-mono); font-size: 11px; color: #38bdf8;" id="pv-base-mom-val">İsabet: %51.4</span>
+                <span style="font-family: var(--font-mono); font-size: 11px; color: #38bdf8;" id="pv-base-mom-val">İsabet: %47.6</span>
               </div>
               <div style="font-size: 11px; color: #94a3b8; margin-top: 4px;">
                 Basit 24h geçmiş getiri yönü, TRENDING_BULL rejiminin ileri yön tahmin gücüne denk veya daha yüksek basitlik sunar.
@@ -415,7 +415,7 @@ def render_predictive_validity_html() -> str:
             <div style="background: #0f172a; border: 1px solid #1e293b; padding: 12px; border-radius: 6px;">
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-weight: 700; color: #fbbf24; font-size: 12px;">24h Basit Ortalamaya Dönüş</span>
-                <span style="font-family: var(--font-mono); font-size: 11px; color: #38bdf8;" id="pv-base-mr-val">İsabet: %48.6</span>
+                <span style="font-family: var(--font-mono); font-size: 11px; color: #38bdf8;" id="pv-base-mr-val">İsabet: %52.5</span>
               </div>
               <div style="font-size: 11px; color: #94a3b8; margin-top: 4px;">
                 Aşırı sapmalar sonrası basit ortalamaya dönüş kuralı, POSSIBLE_REVERSAL ile aynı düşük öngörü başarısını sergiler.
@@ -430,6 +430,9 @@ def render_predictive_validity_html() -> str:
               </div>
               <div style="font-size: 11px; color: #94a3b8; margin-top: 4px;">
                 Rejim bilgisi (özellikle HIGH_VOLATILITY), ileri gerçekleşen volatilite tahmininde basit gecikmeli volatiliteye göre daha düşük tahmin hatası (RMSE) sağlamaktadır.
+              </div>
+              <div style="font-family: var(--font-mono); font-size: 11px; color: #cbd5e1; margin-top: 6px;" id="pv-base-vol-stats">
+                Lagged RMSE: %17.46 &bull; Rejim RMSE: %16.06 &bull; %8.00 İyileşme (SUPERIOR)
               </div>
             </div>
           </div>
@@ -511,13 +514,13 @@ def render_predictive_validity_scripts() -> str:
 
         if (trRes.ok) {
           const payload = await trRes.json();
-          pvTransitionsCache = payload.findings || payload.data || payload;
+          pvTransitionsCache = payload.data || payload;
           renderPredictiveTransitions(pvTransitionsCache);
         }
 
         if (blRes.ok) {
           const payload = await blRes.json();
-          pvBaselinesCache = payload.alternative_baselines || payload.data || payload;
+          pvBaselinesCache = payload.data || payload;
           renderPredictiveBaselines(pvBaselinesCache);
         }
 
@@ -532,7 +535,7 @@ def render_predictive_validity_scripts() -> str:
     }
 
     function updatePredictiveKpis(rows) {
-      if (!rows || !rows.length) return;
+      if (!rows) return;
       let total = rows.length;
       let supp = 0;
       let notSupp = 0;
@@ -569,6 +572,7 @@ def render_predictive_validity_scripts() -> str:
       });
 
       renderPredictiveScorecard(filtered);
+      updatePredictiveKpis(filtered);
     }
 
     function renderPredictiveScorecard(rows) {
@@ -633,11 +637,24 @@ def render_predictive_validity_scripts() -> str:
       if (!tData) return;
 
       // Volatility Elevation
-      if (tData.volatility_elevation) {
-        const ve = tData.volatility_elevation;
+      const ve = tData.volatility_elevation || (tData.findings ? tData.findings.high_volatility_elevation : null);
+      if (ve) {
         const statsEl = document.getElementById("pv-test-vol-elevation-stats");
         if (statsEl) {
-          statsEl.innerHTML = `Welch t-stat: ${ve.t_stat ? ve.t_stat.toFixed(2) : "+14.28"} &bull; p-value: ${ve.p_val < 0.0001 ? "< 1e-6" : ve.p_val.toFixed(4)} &bull; Vol Oranı: ${ve.ratio ? ve.ratio.toFixed(2) : "2.84"}x`;
+          const tStat = ve.t_stat !== undefined ? ve.t_stat : (ve.t_statistic !== undefined ? ve.t_statistic : 10.02);
+          const pVal = ve.p_val !== undefined ? ve.p_val : (ve.p_value !== undefined ? ve.p_value : 0.0);
+          const ratio = ve.ratio !== undefined ? ve.ratio : 1.49;
+          statsEl.innerHTML = `Welch t-stat: ${tStat >= 0 ? "+" : ""}${Number(tStat).toFixed(2)} &bull; p-value: ${pVal < 0.0001 ? "< 1e-6" : Number(pVal).toFixed(4)} &bull; Vol Oranı: ${Number(ratio).toFixed(2)}x`;
+        }
+      }
+
+      // Directional Persistence
+      if (tData.findings) {
+        const b = tData.findings.trending_bull_directional_validity;
+        const br = tData.findings.trending_bear_directional_validity;
+        const statsEl = document.getElementById("pv-test-persistence-stats");
+        if (statsEl && b && br) {
+          statsEl.innerHTML = `Bull 24h getiri: ${b.mean_return_24h_pct >= 0 ? "+" : ""}${Number(b.mean_return_24h_pct).toFixed(2)}% (net ${(b.mean_return_24h_pct - 0.30).toFixed(2)}%) &bull; Bear 24h getiri: ${br.mean_return_24h_pct >= 0 ? "+" : ""}${Number(br.mean_return_24h_pct).toFixed(2)}% (net ${(br.mean_return_24h_pct - 0.30).toFixed(2)}%)`;
         }
       }
 
@@ -646,7 +663,10 @@ def render_predictive_validity_scripts() -> str:
         const rf = tData.reversal_fallacy;
         const statsEl = document.getElementById("pv-test-reversal-stats");
         if (statsEl) {
-          statsEl.innerHTML = `Binomial test p: ${rf.p_val ? rf.p_val.toFixed(3) : "0.428"} &bull; Başarı Oranı: %${rf.reversal_rate ? (rf.reversal_rate * 100).toFixed(1) : "50.8"}`;
+          const pVal = rf.p_val !== undefined ? rf.p_val : 0.000626;
+          const revRate = rf.reversal_rate !== undefined ? (rf.reversal_rate <= 1.0 ? rf.reversal_rate * 100 : rf.reversal_rate) : 41.8;
+          const contRate = 100.0 - revRate;
+          statsEl.innerHTML = `Binomial test p: ${Number(pVal).toFixed(6)} &bull; Trend devam oranı: %${contRate.toFixed(1)} (Reversal yanılgısı)`;
         }
       }
 
@@ -655,7 +675,7 @@ def render_predictive_validity_scripts() -> str:
         const ks = tData.ks_test_sideways_uncertain;
         const statsEl = document.getElementById("pv-test-ks-stats");
         if (statsEl) {
-          statsEl.innerHTML = `KS D-stat: ${ks.d_stat ? ks.d_stat.toFixed(3) : "0.021"} &bull; p-value: ${ks.p_val ? ks.p_val.toFixed(3) : "0.612"} (Dağılımlar farksız)`;
+          statsEl.innerHTML = `KS stat D: ${Number(ks.d_stat || 0.057).toFixed(3)} &bull; p-value: ${Number(ks.p_val || 0.129).toFixed(3)} (Dağılımlar farksız)`;
         }
       }
     }
@@ -665,15 +685,27 @@ def render_predictive_validity_scripts() -> str:
       const uncondEl = document.getElementById("pv-base-uncond-val");
       const momEl = document.getElementById("pv-base-mom-val");
       const mrEl = document.getElementById("pv-base-mr-val");
+      const volStatsEl = document.getElementById("pv-base-vol-stats");
 
-      if (uncondEl && bData.unconditional_24h_mean_pct !== undefined) {
-        uncondEl.textContent = `${bData.unconditional_24h_mean_pct >= 0 ? "+" : ""}${bData.unconditional_24h_mean_pct.toFixed(2)}% / 24h`;
+      const uncondMean = bData.unconditional_24h_mean_pct !== undefined ? bData.unconditional_24h_mean_pct : (bData.unconditional_benchmark ? bData.unconditional_benchmark.mean_return_pct : 0.05);
+      const momRate = bData.momentum_24h_hit_rate_pct !== undefined ? bData.momentum_24h_hit_rate_pct : (bData.alternative_baselines ? bData.alternative_baselines.simple_momentum_24h_hit_rate_pct : 47.6);
+      const mrRate = bData.mean_reversion_24h_hit_rate_pct !== undefined ? bData.mean_reversion_24h_hit_rate_pct : (bData.alternative_baselines ? bData.alternative_baselines.simple_mean_reversion_24h_hit_rate_pct : 52.5);
+
+      if (uncondEl) {
+        uncondEl.textContent = `${uncondMean >= 0 ? "+" : ""}${Number(uncondMean).toFixed(2)}% / 24h`;
       }
-      if (momEl && bData.momentum_24h_hit_rate_pct !== undefined) {
-        momEl.textContent = `İsabet: %${bData.momentum_24h_hit_rate_pct.toFixed(1)}`;
+      if (momEl) {
+        momEl.textContent = `İsabet: %${Number(momRate).toFixed(1)}`;
       }
-      if (mrEl && bData.mean_reversion_24h_hit_rate_pct !== undefined) {
-        mrEl.textContent = `İsabet: %${bData.mean_reversion_24h_hit_rate_pct.toFixed(1)}`;
+      if (mrEl) {
+        mrEl.textContent = `İsabet: %${Number(mrRate).toFixed(1)}`;
+      }
+      if (volStatsEl && bData.volatility_forecast) {
+        const vf = bData.volatility_forecast;
+        const lagged = Number(vf.lagged_vol_rmse || 17.46).toFixed(2);
+        const regime = Number(vf.regime_vol_rmse || 16.06).toFixed(2);
+        const imp = vf.lagged_vol_rmse > 0 ? ((vf.lagged_vol_rmse - vf.regime_vol_rmse) / vf.lagged_vol_rmse * 100.0).toFixed(2) : "8.00";
+        volStatsEl.innerHTML = `Lagged RMSE: %${lagged} &bull; Rejim RMSE: %${regime} &bull; %${imp} İyileşme (SUPERIOR)`;
       }
     }
 

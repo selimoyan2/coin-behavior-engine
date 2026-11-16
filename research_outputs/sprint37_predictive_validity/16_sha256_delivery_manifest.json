@@ -1,6 +1,6 @@
 {
   "sprint_id": "CBE_SPRINT37_MARKET_REGIME_PREDICTIVE_VALIDITY_LAB_V3",
-  "timestamp_utc": "2026-11-16T11:25:00.012485+00:00",
+  "timestamp_utc": "2026-11-16T13:42:24.375059+00:00",
   "hash_algorithm": "SHA-256",
   "files_count": 19,
   "manifest": {
@@ -61,24 +61,24 @@
       "size_bytes": 777
     },
     "15_desktop_1440x900.png": {
-      "sha256": "22d2d69f0f78da170e931534890a31985dfed5698f46d511cae2f4ac77eff74e",
-      "size_bytes": 279943
+      "sha256": "68129fd7a4b3cf5fc5de466ef80ab496fcd4aff8823c475e4531694c9f5db495",
+      "size_bytes": 279951
     },
     "15_mobile_390x844.png": {
       "sha256": "cabc365cbe6afdd6de4284fa8242d2a0505a6a8549a1858571f9a268c1e30ef8",
       "size_bytes": 108773
     },
     "15_playwright_acceptance.json": {
-      "sha256": "02c78d8a919d42e5305e7c698fae9a2bb3895850befd44b64dd305815e4fe39c",
-      "size_bytes": 2213
+      "sha256": "732597e5682028e8f7ebcf9d0ee903369aaf67a7117c125a3b1c9ebabffd45a1",
+      "size_bytes": 2492
     },
     "15_tablet_768x1024.png": {
-      "sha256": "21615915eacec056fabb3ff8b21c4fd46909ef19d3c5d0ce6d8e822fdec4c4b1",
-      "size_bytes": 251313
+      "sha256": "77446b2bee99e1935cd3e2411424b5b368e0d45536aa0f15dfb2288ca6c8710c",
+      "size_bytes": 250491
     },
     "17_final_acceptance_report.md": {
-      "sha256": "866825953b77e40c29daf4478558acf17bb76a70e09e3ad94d34f00a3d68bfd3",
-      "size_bytes": 11647
+      "sha256": "af6f55843fb03a18e21d8b6853089e1d58d6bcd1e485128680f59c19199f8483",
+      "size_bytes": 12331
     }
   }
 }
