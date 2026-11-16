@@ -1306,6 +1306,22 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
         parsed_url = urlparse(self.path)
         url_path = parsed_url.path
         query_params = parse_qs(parsed_url.query)
+
+        # Strict governance rejection on live trading attempts
+        path_lower = url_path.lower()
+        prohibited_trading_patterns = (
+            "place-order", "live-trade", "order/execute", "trade/live",
+            "execution/submit", "live_order", "execute-live", "broker-api", "trade/execute",
+        )
+        if any(bad in path_lower for bad in prohibited_trading_patterns) or ("btc-timing" in path_lower and "order" in path_lower):
+            self._send_response_json(HTTPStatus.FORBIDDEN, {
+                "error": "GOVERNANCE_VIOLATION",
+                "message": "Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.",
+                "canonical_model": "CBE-0.7.0",
+                "governance_decision": "TECHNICAL_NO_GO",
+            })
+            return
+
         period = query_params.get("period", ["all"])[0]
         if period not in ("24h", "7d", "30d", "all"):
             period = "all"
@@ -1472,6 +1488,21 @@ class EngineRequestHandler(BaseHTTPRequestHandler):
         parsed_url = urlparse(self.path)
         url_path = parsed_url.path
         query_params = parse_qs(parsed_url.query)
+
+        # Strict governance rejection on live trading attempts
+        path_lower = url_path.lower()
+        prohibited_trading_patterns = (
+            "place-order", "live-trade", "order/execute", "trade/live",
+            "execution/submit", "live_order", "execute-live", "broker-api", "trade/execute",
+        )
+        if any(bad in path_lower for bad in prohibited_trading_patterns) or ("btc-timing" in path_lower and "order" in path_lower):
+            self._send_response_json(HTTPStatus.FORBIDDEN, {
+                "error": "GOVERNANCE_VIOLATION",
+                "message": "Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.",
+                "canonical_model": "CBE-0.7.0",
+                "governance_decision": "TECHNICAL_NO_GO",
+            })
+            return
 
         try:
             content_length = int(self.headers.get("Content-Length", 0))
