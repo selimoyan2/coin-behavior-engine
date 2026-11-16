@@ -189,7 +189,11 @@ class ProductDashboardApiService:
 
         # Strict governance rejection on live trading attempts
         sub_lower = sub_path.lower()
-        if ("btc-timing" in sub_lower and any(bad in sub_lower for bad in ("live-trade", "order", "broker-api", "place-order", "trade/execute", "live_order", "execute-live", "live"))) or any(bad in sub_lower for bad in ("order/execute", "trade/live", "execution/submit", "live-trade")):
+        prohibited_trading_patterns = (
+            "place-order", "live-trade", "order/execute", "trade/live",
+            "execution/submit", "live_order", "execute-live", "broker-api", "trade/execute"
+        )
+        if any(bad in sub_lower for bad in prohibited_trading_patterns) or ("btc-timing" in sub_lower and "order" in sub_lower):
             return HTTPStatus.FORBIDDEN, {
                 "error": "GOVERNANCE_VIOLATION",
                 "message": "Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.",
@@ -323,6 +327,16 @@ class ProductDashboardApiService:
                 return HTTPStatus.OK, cls.get_market_risk_api(query_params)
             elif sub_path in ("predictive-validity/scorecard", "validity/scorecard"):
                 return HTTPStatus.OK, cls.get_predictive_validity_scorecard_api(query_params)
+            elif sub_path in ("predictive-validity/evidence-explorer", "validity/evidence-explorer"):
+                return HTTPStatus.OK, cls.get_predictive_validity_evidence_explorer_api(query_params)
+            elif sub_path in ("predictive-validity/volatility-benchmark", "validity/volatility-benchmark"):
+                return HTTPStatus.OK, cls.get_predictive_validity_volatility_benchmark_api(query_params)
+            elif sub_path in ("predictive-validity/regime-persistence", "validity/regime-persistence"):
+                return HTTPStatus.OK, cls.get_predictive_validity_regime_persistence_api(query_params)
+            elif sub_path in ("predictive-validity/directional-reality", "validity/directional-reality"):
+                return HTTPStatus.OK, cls.get_predictive_validity_directional_reality_api(query_params)
+            elif sub_path in ("predictive-validity/evidence-metadata", "validity/evidence-metadata"):
+                return HTTPStatus.OK, cls.get_predictive_validity_evidence_metadata_api(query_params)
             elif sub_path in ("predictive-validity/forward-returns", "validity/forward-returns"):
                 return HTTPStatus.OK, cls.get_predictive_validity_forward_returns_api(query_params)
             elif sub_path in ("predictive-validity/transitions", "validity/transitions"):
@@ -1184,7 +1198,11 @@ class ProductDashboardApiService:
 
         # Strict governance rejection on live trading attempts
         sub_lower = sub_path.lower()
-        if ("btc-timing" in sub_lower and any(bad in sub_lower for bad in ("live-trade", "order", "broker-api", "place-order", "trade/execute", "live_order", "execute-live", "live"))) or any(bad in sub_lower for bad in ("order/execute", "trade/live", "execution/submit", "live-trade")):
+        prohibited_trading_patterns = (
+            "place-order", "live-trade", "order/execute", "trade/live",
+            "execution/submit", "live_order", "execute-live", "broker-api", "trade/execute"
+        )
+        if any(bad in sub_lower for bad in prohibited_trading_patterns) or ("btc-timing" in sub_lower and "order" in sub_lower):
             return HTTPStatus.FORBIDDEN, {
                 "error": "GOVERNANCE_VIOLATION",
                 "message": "Live order execution and real-money trading are permanently prohibited in CBE-0.7.0.",
@@ -2385,6 +2403,48 @@ class ProductDashboardApiService:
         from coin_behavior_engine.product.predictive_validity_analytics import PredictiveValidityAnalyticsEngine
         engine = PredictiveValidityAnalyticsEngine.get_instance()
         return engine.get_walk_forward_validation()
+
+    @classmethod
+    def get_predictive_validity_evidence_explorer_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return rich scientific evidence explorer profiles across 30 hypotheses."""
+        from coin_behavior_engine.product.predictive_validity_analytics import PredictiveValidityAnalyticsEngine
+        h_id = params.get("hypothesis_id", [None])[0]
+        regime = params.get("regime", [None])[0]
+        horizon = params.get("horizon", [None])[0]
+        verdict = params.get("verdict", [None])[0]
+        category = params.get("category", [None])[0]
+        engine = PredictiveValidityAnalyticsEngine.get_instance()
+        return engine.get_hypothesis_evidence_explorer_data(
+            hypothesis_id=h_id, regime=regime, horizon=horizon, verdict=verdict, category=category
+        )
+
+    @classmethod
+    def get_predictive_validity_volatility_benchmark_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return Volatility Forecast Benchmark Laboratory comparisons."""
+        from coin_behavior_engine.product.predictive_validity_analytics import PredictiveValidityAnalyticsEngine
+        engine = PredictiveValidityAnalyticsEngine.get_instance()
+        return engine.get_volatility_forecast_benchmark_data()
+
+    @classmethod
+    def get_predictive_validity_regime_persistence_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return Market Regime Persistence Intelligence and Model Tier Governance."""
+        from coin_behavior_engine.product.predictive_validity_analytics import PredictiveValidityAnalyticsEngine
+        engine = PredictiveValidityAnalyticsEngine.get_instance()
+        return engine.get_regime_persistence_intelligence()
+
+    @classmethod
+    def get_predictive_validity_directional_reality_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return Directional Predictability Reality Check and Scientific Limitations."""
+        from coin_behavior_engine.product.predictive_validity_analytics import PredictiveValidityAnalyticsEngine
+        engine = PredictiveValidityAnalyticsEngine.get_instance()
+        return engine.get_directional_predictability_data()
+
+    @classmethod
+    def get_predictive_validity_evidence_metadata_api(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
+        """Return complete scientific evidence traceability and reproducibility metadata."""
+        from coin_behavior_engine.product.predictive_validity_analytics import PredictiveValidityAnalyticsEngine
+        engine = PredictiveValidityAnalyticsEngine.get_instance()
+        return engine.get_scientific_evidence_metadata()
 
     @classmethod
     def get_market_behavior(cls, params: Dict[str, List[str]]) -> Dict[str, Any]:
