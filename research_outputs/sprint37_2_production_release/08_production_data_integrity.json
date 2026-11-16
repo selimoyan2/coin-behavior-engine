@@ -1,0 +1,37 @@
+{
+  "central_coverage": {
+    "symbol": "BTCUSDT",
+    "earliest_month": "2022-01",
+    "latest_month": "2026-11",
+    "complete_months": 58,
+    "partial_months": 1,
+    "total_months": 59,
+    "coverage_span_text": "2022-01 \u2014 2026-11 (58 Tam Ay + 1 K\u0131smi Ay)",
+    "supported_intervals": [
+      "5m",
+      "15m",
+      "1h",
+      "4h",
+      "1d"
+    ],
+    "total_parquet_files": 295,
+    "latest_verified_candle": {
+      "timestamp_utc": "2026-11-15T21:15:00Z",
+      "interval": "5m",
+      "month": "2026-11",
+      "close": 64966.01
+    },
+    "missing_candles": {
+      "total_missing_5m": 8,
+      "total_missing_minutes": 40,
+      "affected_month": "2026-11",
+      "synthetic_candles_allowed": false,
+      "synthetic_candles_count": 0
+    },
+    "dataset_manifest_hash": "1ff50222c31a486b094a7f2ac9f06d38b1258527e5492acbef5faf9a73c55f14",
+    "coverage_status": "58_COMPLETE_1_PARTIAL"
+  },
+  "persistent_volume_attached": true,
+  "volume_name": "6t63aehpaw0cw1bbt4zcm09g-cbe_prospective_data",
+  "volume_mount": "/app/data/prospective"
+}

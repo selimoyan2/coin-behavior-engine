@@ -1,0 +1,20 @@
+{
+  "timestamp_utc": "2026-11-16T20:58:38.246434+00:00",
+  "governance_rule": "PERMANENT_LIVE_TRADING_PROHIBITION_HTTP_403",
+  "environment": "production (https://coin.ozelweb.com.tr)",
+  "active_container_id": "46bfe4cf2031",
+  "audited_endpoints": {
+    "/api/v1/product/research/btc-timing/place-order": {
+      "status_code": 403,
+      "response": "Forbidden (Live trading permanently prohibited in research mode)",
+      "prohibited": true
+    },
+    "/api/v1/product/research/btc-timing/live-trade/execute": {
+      "status_code": 403,
+      "response": "Forbidden (Live trading permanently prohibited in research mode)",
+      "prohibited": true
+    }
+  },
+  "all_prohibited": true,
+  "security_verdict": "ZERO_LIVE_TRADING_AUTHORIZATION_VERIFIED"
+}

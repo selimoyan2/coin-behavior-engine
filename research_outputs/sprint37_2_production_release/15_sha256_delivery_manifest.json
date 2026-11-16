@@ -1,0 +1,80 @@
+{
+  "sprint_id": "CBE_SPRINT37_2_PRODUCTION_RELEASE",
+  "timestamp_utc": "2026-11-16T20:58:38.246434+00:00",
+  "hash_algorithm": "SHA-256",
+  "files_count": 18,
+  "manifest": {
+    "01_operator_authorization.md": {
+      "sha256": "eb0d461a5a7015f2baf81af94785791e5eeb6e4ab3b530e937526f4cf85361e0",
+      "size_bytes": 1146
+    },
+    "02_git_sha_and_branch_audit.json": {
+      "sha256": "d126f74a71e3cf2381d7e2cb96a9fdb133c277cc045e1915dd000618a6b659f0",
+      "size_bytes": 1162
+    },
+    "03_predeployment_backup_manifest.json": {
+      "sha256": "570bd1f237439badc048ab6ca028885d59b6c0f460f7b358da6e8b0787c07939",
+      "size_bytes": 1989
+    },
+    "04_staging_final_acceptance.json": {
+      "sha256": "195d398caaf01702b7719ebba412eafa4c3899d935ed0ad7221bd8b41223437b",
+      "size_bytes": 651
+    },
+    "05_main_fast_forward_promotion.json": {
+      "sha256": "71c31d297da138d2acf7285b2d104910f8dd8e49a95ba3c6c1ebc44d242ec94f",
+      "size_bytes": 382
+    },
+    "06_coolify_deployment_evidence.json": {
+      "sha256": "611511865a65894b478a72d7dbde4f3b6a1325d21b1f30710f0360e1d4464447",
+      "size_bytes": 625
+    },
+    "07_production_runtime_identity.json": {
+      "sha256": "ea22ba785a62ec747a7160d1aa3052e9fb9b688a4f0d603057c19ddbda00c45c",
+      "size_bytes": 1177
+    },
+    "08_production_data_integrity.json": {
+      "sha256": "319a458c4e6ce8e070b52123c7ca9f6fa1a649c8ea9d117ca7b908c10397d0a7",
+      "size_bytes": 1101
+    },
+    "09_scientific_scorecard_acceptance.json": {
+      "sha256": "db205d61f46e81eedfa017ea505f4a336a0f89e1d3b1863f12c18f3f2d714402",
+      "size_bytes": 711
+    },
+    "10_baseline_metrics_acceptance.json": {
+      "sha256": "26ba51a949d36314a2c2f144b39f6efa680f03b3725926026cd3af7f46c3d48e",
+      "size_bytes": 647
+    },
+    "11_live_trading_prohibition.json": {
+      "sha256": "6d070cbfbee30088af0c5d548e294bb07fec8c3b235c269316c2923786353c7e",
+      "size_bytes": 776
+    },
+    "12_prod_desktop_1440x900.png": {
+      "sha256": "16a48f5a15dd56886d7f45080c89fc1c2ad0f0afd78aaee28dee68289b479cd8",
+      "size_bytes": 280008
+    },
+    "12_prod_mobile_390x844.png": {
+      "sha256": "6939c797a188c0380324bc7615f52c13c117ea87fabe6678906616839da99d2f",
+      "size_bytes": 108917
+    },
+    "12_prod_tablet_768x1024.png": {
+      "sha256": "06f6a732efaf4a9364defb70d547adcdb2524c3d56025540acf7e05f142b3948",
+      "size_bytes": 251533
+    },
+    "12_production_playwright_results.json": {
+      "sha256": "e195d8470e4d6ef61e5ea9fa1c90bffd21deed2f5f135f721baab35429fb4d05",
+      "size_bytes": 2466
+    },
+    "13_production_performance_report.json": {
+      "sha256": "2e40724b2cd248ec2b010e7d23fc1928df7ebed63b7ff04df3e10109bf1bdd2c",
+      "size_bytes": 1064
+    },
+    "14_rollback_readiness_and_result.json": {
+      "sha256": "337fb7c9b687cd994e3a6069ca0925e324994290813319cf9333c28d2b88235e",
+      "size_bytes": 650
+    },
+    "16_final_production_acceptance_report.md": {
+      "sha256": "8d097039f04ba07297805df43c3cd8907fdc0a09f0b7910b7152dacab5e2bc77",
+      "size_bytes": 6424
+    }
+  }
+}

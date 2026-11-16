@@ -1,0 +1,25 @@
+{
+  "total_hypotheses_evaluated": 30,
+  "verdict_counts": {
+    "SUPPORTED": 4,
+    "NOT_SUPPORTED": 25,
+    "INCONCLUSIVE": 1,
+    "INSUFFICIENT_DATA": 0,
+    "LEAKAGE_BLOCKED": 0
+  },
+  "mathematical_sum": 30,
+  "sum_check_passed": true,
+  "supported_hypotheses": [
+    "H_HIGH_VOLATILITY_4h",
+    "H_HIGH_VOLATILITY_12h",
+    "H_HIGH_VOLATILITY_24h",
+    "H_HIGH_VOLATILITY_72h"
+  ],
+  "inconclusive_hypotheses": [
+    "H_HIGH_VOLATILITY_1h"
+  ],
+  "not_supported_count": 25,
+  "economic_cost_applied": "30 bps round-trip taker deduction",
+  "multiple_testing_correction": "Benjamini-Hochberg FDR (q < 0.05) + Holm-Bonferroni",
+  "acceptance_status": "SCIENTIFIC_SCORECARD_ACCEPTED"
+}

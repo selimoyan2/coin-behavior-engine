@@ -1,0 +1,13 @@
+{
+  "rollback_plan_status": "READY_AND_VERIFIED",
+  "rollback_image_preserved": true,
+  "preserved_image_tag": "6t63aehpaw0cw1bbt4zcm09g:313fc5ca242e497f1e221002c798fc5910bd6284",
+  "preserved_image_id": "sha256:954afeddd0391f5726f31f0529b0b60b4ea1f6036defbdcc16a94f1c8f8581d0",
+  "rollback_alias_tag": "cbe-production-rollback-baseline:sprint36.1",
+  "predeployment_backup_available": true,
+  "backup_location": "/root/cbe_backups/sprint37_2_predeploy",
+  "rollback_required": false,
+  "rollback_triggered": false,
+  "current_operational_state": "ACTIVE_PRODUCTION_RUNNING_V14",
+  "verdict": "ROLLBACK_NOT_TRIGGERED_PRODUCTION_SUCCESS"
+}

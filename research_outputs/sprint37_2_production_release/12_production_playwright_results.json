@@ -1,0 +1,89 @@
+{
+  "sprint_id": "CBE_SPRINT37_2_PRODUCTION_RELEASE",
+  "timestamp_utc": "2026-11-16T20:57:16.216041+00:00",
+  "production_url": "https://coin.ozelweb.com.tr",
+  "viewports_evaluated": {
+    "desktop": {
+      "width": 1440,
+      "height": 900,
+      "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint37_2_production_release\\12_prod_desktop_1440x900.png",
+      "has_tab": true,
+      "module_visible": true,
+      "scorecard_rows": 30,
+      "kpis": {
+        "total": "30",
+        "supported": "4",
+        "not_supported": "25",
+        "inconclusive": "1",
+        "sum_check": true
+      },
+      "has_tier_card": true,
+      "has_dyn_cards": true,
+      "console_errors": [],
+      "page_errors": []
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024,
+      "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint37_2_production_release\\12_prod_tablet_768x1024.png",
+      "has_tab": true,
+      "module_visible": true,
+      "scorecard_rows": 30,
+      "kpis": {
+        "total": "30",
+        "supported": "4",
+        "not_supported": "25",
+        "inconclusive": "1",
+        "sum_check": true
+      },
+      "has_tier_card": true,
+      "has_dyn_cards": true,
+      "console_errors": [],
+      "page_errors": []
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint37_2_production_release\\12_prod_mobile_390x844.png",
+      "has_tab": true,
+      "module_visible": true,
+      "scorecard_rows": 30,
+      "kpis": {
+        "total": "30",
+        "supported": "4",
+        "not_supported": "25",
+        "inconclusive": "1",
+        "sum_check": true
+      },
+      "has_tier_card": true,
+      "has_dyn_cards": true,
+      "console_errors": [],
+      "page_errors": []
+    }
+  },
+  "filter_verifications": {
+    "SUPPORTED": {
+      "rows": 4,
+      "kpi_total": "4",
+      "passed": true
+    },
+    "NOT_SUPPORTED": {
+      "rows": 25,
+      "kpi_total": "25",
+      "passed": true
+    },
+    "INCONCLUSIVE": {
+      "rows": 1,
+      "kpi_total": "1",
+      "passed": true
+    },
+    "ALL": {
+      "rows": 30,
+      "kpi_total": "30",
+      "passed": true
+    }
+  },
+  "console_errors": [],
+  "page_errors": [],
+  "verdict": "SPRINT37_2_PRODUCTION_PLAYWRIGHT_ACCEPTED"
+}

@@ -1,0 +1,39 @@
+{
+  "production_container_id": "46bfe4cf2031",
+  "resource_usage": {
+    "cpu_percent": "0.01%",
+    "memory_usage": "306.8MiB / 7.755GiB",
+    "memory_percent": "3.86%",
+    "network_io": "71.5kB / 3.71MB",
+    "block_io": "241MB / 0B"
+  },
+  "endpoint_latencies_ms": {
+    "/health": {
+      "avg_ms": 302.13,
+      "min_ms": 243.31,
+      "max_ms": 497.41
+    },
+    "/api/v1/product/runtime-build": {
+      "avg_ms": 317.02,
+      "min_ms": 303.36,
+      "max_ms": 337.5
+    },
+    "/api/v1/product/central-coverage": {
+      "avg_ms": 266.58,
+      "min_ms": 253.33,
+      "max_ms": 284.73
+    },
+    "/api/v1/product/predictive-validity/scorecard": {
+      "avg_ms": 434.52,
+      "min_ms": 407.13,
+      "max_ms": 478.88
+    },
+    "/api/v1/product/predictive-validity/baselines": {
+      "avg_ms": 272.21,
+      "min_ms": 268.64,
+      "max_ms": 277.24
+    }
+  },
+  "caching_strategy": "Precomputed point-in-time analytical artifacts with in-memory caching",
+  "performance_verdict": "PRODUCTION_PERFORMANCE_OPTIMAL"
+}

@@ -1,0 +1,28 @@
+{
+  "sprint_id": "CBE_SPRINT37_2_PRODUCTION_RELEASE",
+  "timestamp_utc": "2026-11-16T20:58:38.246434+00:00",
+  "candidate_sha": "057d0af32b9de15a8d54ed9bcf0605727960ea6c",
+  "research_branch": "research/sprint37-predictive-validity",
+  "production_branch": "main",
+  "remote_origin": "https://github.com/selimoyan2/coin-behavior-engine.git",
+  "origin_research_sha": "057d0af32b9de15a8d54ed9bcf0605727960ea6c",
+  "origin_main_pre_sha": "4512791508d562c960a79e25be7a99ef83ed7293",
+  "origin_main_post_sha": "057d0af32b9de15a8d54ed9bcf0605727960ea6c",
+  "fast_forward_applicable": true,
+  "merge_base_is_ancestor": true,
+  "commits_promoted": [
+    {
+      "sha": "27aa724",
+      "summary": "feat(sprint37): Market Regime Predictive Validity & Scientific Research Lab V3 delivery"
+    },
+    {
+      "sha": "aefbb86",
+      "summary": "docs(sprint37): finalize SHA256 manifest and staging deploy script"
+    },
+    {
+      "sha": "057d0af",
+      "summary": "feat(sprint37.1): reconcile scientific scorecard metrics, dynamic dashboard v14 kpis, and verified acceptance artifacts"
+    }
+  ],
+  "verification_status": "GIT_AUDIT_PASSED"
+}

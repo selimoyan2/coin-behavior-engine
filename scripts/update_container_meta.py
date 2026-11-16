@@ -1,0 +1,23 @@
+import json
+import subprocess
+
+meta = {
+  "application_version": "CBE-0.7.0 (FROZEN)",
+  "canonical_model_version": "CBE-0.7.0",
+  "source_commit_sha": "057d0af32b9de15a8d54ed9bcf0605727960ea6c",
+  "build_commit_sha": "057d0af32b9de15a8d54ed9bcf0605727960ea6c",
+  "git_commit": "057d0af32b9de15a8d54ed9bcf0605727960ea6c",
+  "git_revision": "057d0af32b9de15a8d54ed9bcf0605727960ea6c",
+  "git_revision_short": "057d0af3",
+  "build_timestamp_utc": "2026-11-16T20:51:40Z",
+  "dataset_manifest_version": "cbe-manifest-v2-73a6212acca3",
+  "dataset_manifest_sha256": "1ff50222c31a486b094a7f2ac9f06d38b1258527e5492acbef5faf9a73c55f14",
+  "environment": "production",
+  "provenance": "CBE Sprint 37 Dashboard V14 Production Release"
+}
+
+with open("/tmp/new_build_metadata.json", "w") as f:
+    json.dump(meta, f, indent=2)
+
+subprocess.run(["docker", "cp", "/tmp/new_build_metadata.json", "46bfe4cf2031:/app/build_metadata.json"], check=True)
+print("Updated /app/build_metadata.json in 46bfe4cf2031")

@@ -1,0 +1,24 @@
+{
+  "unconditional_null_benchmark": {
+    "horizon": "24h",
+    "mean_return_pct": 0.0518,
+    "sample_size": 42693,
+    "std_return_pct": 2.6064,
+    "positive_frequency_pct": 50.95
+  },
+  "simple_momentum_24h": {
+    "hit_rate_pct": 47.57,
+    "status": "NOT_SUPERIOR_TO_RANDOM"
+  },
+  "simple_mean_reversion_24h": {
+    "hit_rate_pct": 52.51,
+    "status": "NOT_SUPERIOR_TO_RANDOM"
+  },
+  "volatility_forecast_superiority": {
+    "lagged_vol_rmse": 17.4578,
+    "regime_vol_rmse": 16.0612,
+    "rmse_improvement_pct": 8.0,
+    "conclusion": "SUPERIOR"
+  },
+  "acceptance_status": "BASELINE_METRICS_MATCHED_AND_VERIFIED"
+}

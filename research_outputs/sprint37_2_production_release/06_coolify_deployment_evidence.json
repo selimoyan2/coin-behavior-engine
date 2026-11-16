@@ -1,0 +1,15 @@
+{
+  "coolify_application_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+  "coolify_deployment_uuid": "76ddf881-263e-4865-8a52-9011ef55575f",
+  "target_commit": "057d0af32b9de15a8d54ed9bcf0605727960ea6c",
+  "build_duration_sec": 218,
+  "deployment_status": "finished",
+  "new_container_id": "46bfe4cf2031",
+  "new_container_name": "6t63aehpaw0cw1bbt4zcm09g-20261116T205140",
+  "docker_image": "6t63aehpaw0cw1bbt4zcm09g:057d0af32b9de15a8d54ed9bcf0605727960ea6c",
+  "container_state": "running",
+  "container_health": "healthy",
+  "reverse_proxy_routed": true,
+  "routing_host": "coin.ozelweb.com.tr",
+  "service_port": 8000
+}

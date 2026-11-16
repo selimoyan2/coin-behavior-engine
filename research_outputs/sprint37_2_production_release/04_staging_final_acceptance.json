@@ -1,0 +1,24 @@
+{
+  "staging_host": "srv1114257:18080",
+  "staging_container_id": "ae8c507da3d0",
+  "staging_commit_sha": "057d0af32b9de15a8d54ed9bcf0605727960ea6c",
+  "health_status": 200,
+  "model_version": "CBE-0.7.0",
+  "model_status": "FROZEN",
+  "scorecard_total": 30,
+  "scorecard_verdicts": {
+    "SUPPORTED": 4,
+    "NOT_SUPPORTED": 25,
+    "INCONCLUSIVE": 1
+  },
+  "scorecard_sum_check": true,
+  "coverage_months": 59,
+  "live_trading_prohibition_http_403": true,
+  "regression_tests": {
+    "collected": 3675,
+    "passed": 3667,
+    "skipped": 8,
+    "failed": 0
+  },
+  "staging_verdict": "STAGING_ACCEPTED_FOR_PRODUCTION_RELEASE"
+}
