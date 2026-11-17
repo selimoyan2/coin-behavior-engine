@@ -1,0 +1,39 @@
+{
+  "sprint_id": "CBE_SPRINT38_1_DASHBOARD_V15_PRODUCTION_RELEASE",
+  "governance_rule": "LIVE_TRADING_PERMANENTLY_PROHIBITED",
+  "target_url": "https://coin.ozelweb.com.tr",
+  "tested_endpoints": [
+    {
+      "method": "POST",
+      "path": "/place-order",
+      "status_code": 403,
+      "result": "BLOCKED_PASS"
+    },
+    {
+      "method": "POST",
+      "path": "/live-trade/execute",
+      "status_code": 403,
+      "result": "BLOCKED_PASS"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/product/place-order",
+      "status_code": 403,
+      "result": "BLOCKED_PASS"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/order/execute",
+      "status_code": 403,
+      "result": "BLOCKED_PASS"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/order/execute",
+      "status_code": 403,
+      "result": "BLOCKED_PASS"
+    }
+  ],
+  "all_prohibited_endpoints_blocked_403": true,
+  "verdict": "LIVE_TRADING_PROHIBITION_STRICTLY_ENFORCED"
+}

@@ -1,0 +1,23 @@
+{
+  "sprint_id": "CBE_SPRINT38_1_DASHBOARD_V15_PRODUCTION_RELEASE",
+  "volume_name": "6t63aehpaw0cw1bbt4zcm09g-cbe_prospective_data",
+  "volume_path": "/var/lib/docker/volumes/6t63aehpaw0cw1bbt4zcm09g-cbe_prospective_data/_data",
+  "sqlite_database": "sessions.db",
+  "sqlite_integrity_check": "ok",
+  "tables_present": [
+    "sessions"
+  ],
+  "files_verified": [
+    "lockbox_manifest.json",
+    "research_library",
+    "outcomes",
+    "saved_comparisons",
+    "reports",
+    "audit",
+    "sessions.db",
+    "predictions",
+    "current_state.json"
+  ],
+  "zero_data_loss_verified": true,
+  "verdict": "DATA_INTEGRITY_VERIFIED"
+}

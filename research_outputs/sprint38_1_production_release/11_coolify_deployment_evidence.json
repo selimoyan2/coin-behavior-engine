@@ -1,0 +1,14 @@
+{
+  "sprint_id": "CBE_SPRINT38_1_DASHBOARD_V15_PRODUCTION_RELEASE",
+  "coolify_instance": "srv1114257 (168.231.125.238)",
+  "coolify_version": "4.7.5",
+  "application_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+  "deployment_uuid": "83cb3621-724c-4c91-b24e-9c8252ec1fc8",
+  "commit_deployed": "d0d24d63ac756ef8437546f7e257f3c49d053aba",
+  "build_duration_seconds": 194,
+  "deployment_status": "finished",
+  "created_at": "2026-11-17 12:23:33 UTC",
+  "updated_at": "2026-11-17 12:26:45 UTC",
+  "active_container_created": "c8f75c8c59e3",
+  "verdict": "COOLIFY_DEPLOYMENT_SUCCESSFUL"
+}

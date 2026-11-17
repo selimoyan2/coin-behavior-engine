@@ -1,0 +1,159 @@
+{
+  "sprint_id": "CBE_SPRINT38_1_DASHBOARD_V15_PRODUCTION_RELEASE",
+  "navigation_system": "Navigation System V2",
+  "total_modules": 23,
+  "module_registry": [
+    {
+      "id": "overview",
+      "title": "Genel Bak\u0131\u015f",
+      "category": "core",
+      "order": 1
+    },
+    {
+      "id": "regimes",
+      "title": "Piyasa Rejimleri",
+      "category": "core",
+      "order": 2
+    },
+    {
+      "id": "predictive-validity",
+      "title": "Tahmin Ge\u00e7erlili\u011fi",
+      "category": "research",
+      "order": 3
+    },
+    {
+      "id": "quality",
+      "title": "Veri Kalitesi",
+      "category": "core",
+      "order": 4
+    },
+    {
+      "id": "uncertainty",
+      "title": "Belirsizlik",
+      "category": "research",
+      "order": 5
+    },
+    {
+      "id": "volatility",
+      "title": "Volatilite",
+      "category": "analytics",
+      "order": 6
+    },
+    {
+      "id": "signals",
+      "title": "Sinyaller",
+      "category": "analytics",
+      "order": 7
+    },
+    {
+      "id": "comparison",
+      "title": "Kar\u015f\u0131la\u015ft\u0131rma",
+      "category": "analytics",
+      "order": 8
+    },
+    {
+      "id": "events",
+      "title": "Piyasa Olaylar\u0131",
+      "category": "analytics",
+      "order": 9
+    },
+    {
+      "id": "stress-test",
+      "title": "Stres Testi",
+      "category": "risk",
+      "order": 10
+    },
+    {
+      "id": "btc-timing",
+      "title": "BTC Zamanlama",
+      "category": "analytics",
+      "order": 11
+    },
+    {
+      "id": "prospective",
+      "title": "\u0130leriye D\u00f6n\u00fck Takip",
+      "category": "monitoring",
+      "order": 12
+    },
+    {
+      "id": "governance",
+      "title": "Y\u00f6neti\u015fim & G\u00fcvenlik",
+      "category": "governance",
+      "order": 13
+    },
+    {
+      "id": "audit",
+      "title": "Denetim \u0130zi",
+      "category": "governance",
+      "order": 14
+    },
+    {
+      "id": "diagnostics",
+      "title": "Sistem Sa\u011fl\u0131\u011f\u0131",
+      "category": "operations",
+      "order": 15
+    },
+    {
+      "id": "anomalies",
+      "title": "Anomaliler",
+      "category": "risk",
+      "order": 16
+    },
+    {
+      "id": "scenarios",
+      "title": "Senaryo Analizi",
+      "category": "analytics",
+      "order": 17
+    },
+    {
+      "id": "correlations",
+      "title": "Korelasyonlar",
+      "category": "analytics",
+      "order": 18
+    },
+    {
+      "id": "clusters",
+      "title": "K\u00fcmeleme Analizi",
+      "category": "analytics",
+      "order": 19
+    },
+    {
+      "id": "transitions",
+      "title": "Rejim Ge\u00e7i\u015fleri",
+      "category": "research",
+      "order": 20
+    },
+    {
+      "id": "backtest",
+      "title": "Geriye D\u00f6n\u00fck Test",
+      "category": "research",
+      "order": 21
+    },
+    {
+      "id": "methodology",
+      "title": "Metodoloji",
+      "category": "research",
+      "order": 22
+    },
+    {
+      "id": "reports",
+      "title": "Rapor Ar\u015fivi",
+      "category": "governance",
+      "order": 23
+    }
+  ],
+  "categories": [
+    "core",
+    "research",
+    "analytics",
+    "risk",
+    "monitoring",
+    "governance",
+    "operations"
+  ],
+  "dropdown_categorization_enabled": true,
+  "auto_scroll_active_tab_enabled": true,
+  "scroll_arrows_enabled": true,
+  "mobile_touch_swipe_enabled": true,
+  "verdict": "NAVIGATION_REGISTRY_VERIFIED"
+}

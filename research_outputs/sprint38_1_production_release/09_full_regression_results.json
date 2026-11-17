@@ -1,0 +1,17 @@
+{
+  "sprint_id": "CBE_SPRINT38_1_DASHBOARD_V15_PRODUCTION_RELEASE",
+  "test_runner": "pytest 9.0.2",
+  "execution_duration_seconds": 1360.94,
+  "total_collected": 3695,
+  "passed": 3687,
+  "skipped": 8,
+  "failed": 0,
+  "errors": 0,
+  "new_tests_added_in_sprint38": 20,
+  "baseline_reference_sprint37": {
+    "passed": 3667,
+    "skipped": 8,
+    "failed": 0
+  },
+  "verdict": "FULL_REGRESSION_SUITE_PASSED"
+}

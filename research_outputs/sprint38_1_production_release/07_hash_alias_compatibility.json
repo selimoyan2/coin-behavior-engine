@@ -1,0 +1,53 @@
+{
+  "sprint_id": "CBE_SPRINT38_1_DASHBOARD_V15_PRODUCTION_RELEASE",
+  "alias_mapping_version": "2.0.0",
+  "aliases_tested": [
+    {
+      "source_hash": "#coverage",
+      "target_hash": "#quality",
+      "status": "VERIFIED"
+    },
+    {
+      "source_hash": "#datasets",
+      "target_hash": "#quality",
+      "status": "VERIFIED"
+    },
+    {
+      "source_hash": "#candle-quality",
+      "target_hash": "#quality",
+      "status": "VERIFIED"
+    },
+    {
+      "source_hash": "#macro",
+      "target_hash": "#events",
+      "status": "VERIFIED"
+    },
+    {
+      "source_hash": "#risk",
+      "target_hash": "#regimes",
+      "status": "VERIFIED"
+    },
+    {
+      "source_hash": "#correlations",
+      "target_hash": "#comparison",
+      "status": "VERIFIED"
+    },
+    {
+      "source_hash": "#backtest",
+      "target_hash": "#btc-timing",
+      "status": "VERIFIED"
+    },
+    {
+      "source_hash": "#security",
+      "target_hash": "#governance",
+      "status": "VERIFIED"
+    },
+    {
+      "source_hash": "#intelligence-root",
+      "target_hash": "#predictive-validity",
+      "status": "VERIFIED"
+    }
+  ],
+  "zero_broken_links_verified": true,
+  "verdict": "HASH_ALIAS_COMPATIBILITY_CONFIRMED"
+}

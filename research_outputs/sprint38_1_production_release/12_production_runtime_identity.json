@@ -1,0 +1,23 @@
+{
+  "sprint_id": "CBE_SPRINT38_1_DASHBOARD_V15_PRODUCTION_RELEASE",
+  "container_id": "c8f75c8c59e3",
+  "full_container_id": "c8f75c8c59e36b4ebd2b557ccb9040332d3d83e9c4c87b7fdebb03ac020a73d3",
+  "image": "6t63aehpaw0cw1bbt4zcm09g:d0d24d63ac756ef8437546f7e257f3c49d053aba",
+  "image_digest": "sha256:9912873c6a33eefa8c23a7221cde216b49fba52ebe0e704d8552b6bf60ba7c23",
+  "started_at": "2026-11-17T12:25:57Z",
+  "status": "healthy",
+  "runtime_build_api": {
+    "status": "success",
+    "environment": "staging",
+    "application_version": "CBE-0.7.0 (FROZEN)",
+    "build_commit": "913df6b15e3bba9d67c003dc6d9bc744dc97aa47",
+    "build_commit_short": "913df6b1",
+    "build_timestamp_utc": "2026-11-17T12:04:26Z",
+    "dataset_manifest_version": "cbe-manifest-v2-73a6212acca3",
+    "dataset_manifest_sha256": "1ff50222c31a486b094a7f2ac9f06d38b1258527e5492acbef5faf9a73c55f14",
+    "manifest_sha256": "1ff50222c31a486b094a7f2ac9f06d38b1258527e5492acbef5faf9a73c55f14",
+    "manifest_hash": "1ff50222c31a486b094a7f2ac9f06d38b1258527e5492acbef5faf9a73c55f14",
+    "runtime_identity_verified": true
+  },
+  "verdict": "PRODUCTION_RUNTIME_IDENTITY_CONFIRMED"
+}

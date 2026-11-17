@@ -1,0 +1,26 @@
+{
+  "snapshot_timestamp_utc": "2026-11-17T12:15:00Z",
+  "environment": "production",
+  "coolify_application_uuid": "6t63aehpaw0cw1bbt4zcm09g",
+  "container_id": "46bfe4cf2031",
+  "image_id": "sha256:f0709b1e31005a76e93dbe0408544d6c7028dfa32b2a64010ee39f090ce688e1",
+  "image_tag": "6t63aehpaw0cw1bbt4zcm09g:c0951f67f2b6045a1c37c2278e69e4a3d467ffeb",
+  "container_status": "Up 16 hours (healthy)",
+  "ports": [
+    "8000/tcp"
+  ],
+  "networks": [
+    "coolify"
+  ],
+  "volume_mounts": [
+    {
+      "name": "6t63aehpaw0cw1bbt4zcm09g-cbe_prospective_data",
+      "source": "/var/lib/docker/volumes/6t63aehpaw0cw1bbt4zcm09g-cbe_prospective_data/_data",
+      "destination": "/app/data/prospective",
+      "mode": "rw"
+    }
+  ],
+  "model_version": "CBE-0.7.0",
+  "model_status": "FROZEN",
+  "pre_release_verdict": "SNAPSHOT_CAPTURED_AND_SAFE"
+}

@@ -1,0 +1,22 @@
+{
+  "sprint_id": "CBE_SPRINT38_1_DASHBOARD_V15_PRODUCTION_RELEASE",
+  "canonical_model": "CBE-0.7.0 (STRICTLY_FROZEN)",
+  "scientific_scorecard": {
+    "total_hypotheses": 30,
+    "verdict_distribution": {
+      "SUPPORTED": 4,
+      "NOT_SUPPORTED": 25,
+      "INCONCLUSIVE": 1,
+      "INSUFFICIENT_DATA": 0,
+      "LEAKAGE_BLOCKED": 0
+    },
+    "honesty_audit": {
+      "negative_results_disclosed": true,
+      "no_hypothesis_tampering": true,
+      "unconditional_forward_returns_benchmark": "0.0518% (24h)",
+      "directional_reality_check_banner_present": true,
+      "banner_text": "Y\u00f6nsel fiyat tahmininde istatistiksel olarak g\u00fcvenilir bir \u00fcst\u00fcnl\u00fck hen\u00fcz do\u011frulanmam\u0131\u015ft\u0131r."
+    }
+  },
+  "verdict": "SCIENTIFIC_INTEGRITY_ACCEPTED"
+}

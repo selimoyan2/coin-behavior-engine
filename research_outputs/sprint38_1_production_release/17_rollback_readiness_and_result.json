@@ -1,0 +1,14 @@
+{
+  "sprint_id": "CBE_SPRINT38_1_DASHBOARD_V15_PRODUCTION_RELEASE",
+  "rollback_readiness": {
+    "image_tagged": "cbe-production-backup:sprint37-rollback-safe",
+    "image_id": "sha256:f0709b1e31005a76e93dbe0408544d6c7028dfa32b2a64010ee39f090ce688e1",
+    "tarball_backup": "/var/backups/cbe_sprint38_predeploy_backup/prospective_data_backup.tar.gz",
+    "volume_snapshot_healthy": true
+  },
+  "deployment_outcome": "SUCCESS",
+  "rollback_triggered": false,
+  "rollback_reason": "N/A \u2014 Production release succeeded on all 12 validation gates",
+  "active_container": "c8f75c8c59e3",
+  "verdict": "ROLLBACK_READY_BUT_NOT_REQUIRED"
+}

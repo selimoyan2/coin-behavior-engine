@@ -1,0 +1,17 @@
+{
+  "backup_timestamp_utc": "2026-11-17T12:15:30Z",
+  "rollback_image_tag": "cbe-production-backup:sprint37-rollback-safe",
+  "rollback_image_id": "sha256:f0709b1e31005a76e93dbe0408544d6c7028dfa32b2a64010ee39f090ce688e1",
+  "backup_tarball_path": "/var/backups/cbe_sprint38_predeploy_backup/prospective_data_backup.tar.gz",
+  "backup_tarball_size_bytes": 11534336,
+  "backup_tarball_sha256": "017ff50682e7a53d0e68e8f470eae7f3f320a71afec7a91584851caa6f85afd0",
+  "sqlite_database_checked": "/var/lib/docker/volumes/6t63aehpaw0cw1bbt4zcm09g-cbe_prospective_data/_data/sessions.db",
+  "sqlite_integrity_check_result": "ok",
+  "rollback_procedure": [
+    "docker stop <active_container>",
+    "docker run -d --name 6t63aehpaw0cw1bbt4zcm09g-rollback --network coolify -v 6t63aehpaw0cw1bbt4zcm09g-cbe_prospective_data:/app/data/prospective cbe-production-backup:sprint37-rollback-safe",
+    "Update proxy upstream to rollback container if needed",
+    "Restore prospective_data_backup.tar.gz if data corruption occurred"
+  ],
+  "rollback_tested_and_verified": true
+}

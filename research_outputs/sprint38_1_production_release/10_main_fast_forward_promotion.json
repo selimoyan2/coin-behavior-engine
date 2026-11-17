@@ -1,0 +1,11 @@
+{
+  "sprint_id": "CBE_SPRINT38_1_DASHBOARD_V15_PRODUCTION_RELEASE",
+  "promotion_mode": "FAST_FORWARD_CLEAN",
+  "base_branch": "research/sprint38-dashboard-v15-evidence-explorer",
+  "target_branch": "main",
+  "remote": "origin (https://github.com/selimoyan2/coin-behavior-engine)",
+  "promoted_head_commit": "d0d24d63ac756ef8437546f7e257f3c49d053aba",
+  "push_confirmed": true,
+  "github_sync_status": "UP_TO_DATE",
+  "verdict": "MAIN_PROMOTION_SUCCESSFUL"
+}

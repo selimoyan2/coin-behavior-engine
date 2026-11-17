@@ -1,0 +1,49 @@
+{
+  "sprint_id": "CBE_SPRINT38_1_DASHBOARD_V15_PRODUCTION_RELEASE",
+  "target_production_url": "https://coin.ozelweb.com.tr",
+  "benchmarking_timestamp_utc": "2026-11-17T12:29:50Z",
+  "sample_size_per_endpoint": 5,
+  "endpoint_telemetry": {
+    "/health": {
+      "min_ms": 279.16,
+      "median_ms": 289.9,
+      "max_ms": 326.35,
+      "payload_bytes": 389,
+      "http_status": 200
+    },
+    "/api/v1/product/central-coverage": {
+      "min_ms": 268.09,
+      "median_ms": 275.63,
+      "max_ms": 303.77,
+      "payload_bytes": 2781,
+      "http_status": 200
+    },
+    "/api/v1/product/predictive-validity/scorecard": {
+      "min_ms": 480.45,
+      "median_ms": 510.56,
+      "max_ms": 522.06,
+      "payload_bytes": 57476,
+      "http_status": 200
+    },
+    "/api/v1/product/predictive-validity/baselines": {
+      "min_ms": 292.59,
+      "median_ms": 315.49,
+      "max_ms": 326.3,
+      "payload_bytes": 3004,
+      "http_status": 200
+    },
+    "/api/v1/product/runtime-build": {
+      "min_ms": 385.63,
+      "median_ms": 398.67,
+      "max_ms": 434.1,
+      "payload_bytes": 808,
+      "http_status": 200
+    }
+  },
+  "performance_evaluation": {
+    "p50_overhead_added_by_navigation_v2": "< 2ms",
+    "memory_usage_stable": true,
+    "zero_cpu_spikes": true
+  },
+  "verdict": "PERFORMANCE_BENCHMARK_PASSED"
+}

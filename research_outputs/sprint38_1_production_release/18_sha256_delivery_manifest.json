@@ -1,0 +1,107 @@
+{
+  "sprint_id": "CBE_SPRINT38_1_DASHBOARD_V15_PRODUCTION_RELEASE",
+  "generated_at_utc": "2026-11-17T12:31:04.261990+00:00",
+  "total_artifacts": 25,
+  "artifacts": {
+    "01_operator_authorization.md": {
+      "sha256": "0c3970952ec9b7f551debdc0b301dd9bc20d7eb77650ec89f2f0167987403d04",
+      "size_bytes": 1785
+    },
+    "02_git_baseline_and_sha_audit.json": {
+      "sha256": "3e60d414d4120518a765b04ad82b712baebe2b8e2adc75ed799f2627cd787110",
+      "size_bytes": 1443
+    },
+    "03_production_predeployment_snapshot.json": {
+      "sha256": "d43c6564fee881de5f73dde9b6f108b50a0106542624f640b5e5a404deb39105",
+      "size_bytes": 866
+    },
+    "04_backup_and_rollback_manifest.json": {
+      "sha256": "8867f7f62b240182e10250efc0b620b6815d3221839bc70dc1bd0881547b3fa6",
+      "size_bytes": 1076
+    },
+    "05_staging_final_acceptance.json": {
+      "sha256": "2a3e64ecf16b003832f8b36702e9b6221bb718f4a35c63e95e7949999f1e365f",
+      "size_bytes": 889
+    },
+    "06_navigation_registry_integrity.json": {
+      "sha256": "3cd2799b68db6a57900e0d0bfcdbd58360ae0c9708830272a6a2e4e561dc01a5",
+      "size_bytes": 3514
+    },
+    "07_hash_alias_compatibility.json": {
+      "sha256": "5acb199e9d75e5846a110c19257c697c57aff6c31b1d2f0f8faa5798f83b720e",
+      "size_bytes": 1266
+    },
+    "08_scientific_integrity_acceptance.json": {
+      "sha256": "03f712c003901b5d0d3ed4d85e682c4ba02690747aecc803821f8740c7b000c7",
+      "size_bytes": 813
+    },
+    "09_full_regression_results.json": {
+      "sha256": "b6bb95a29248567438d86e12fe1de81d2e513c77f030091a95e014705a866e7d",
+      "size_bytes": 425
+    },
+    "10_main_fast_forward_promotion.json": {
+      "sha256": "1aef0639a54efbd263d137b40c8c25286eaed5cbb44275ac299a92b8840141be",
+      "size_bytes": 468
+    },
+    "11_coolify_deployment_evidence.json": {
+      "sha256": "613849a176b868ab151d55a0459db6ab6d907524dd05492839fb472c1f244f8c",
+      "size_bytes": 587
+    },
+    "12_production_runtime_identity.json": {
+      "sha256": "1f5e4ff0250f980213dbb253aa61c4c9efbfe06cc45e93f0580e7c5e1cdc106a",
+      "size_bytes": 1173
+    },
+    "13_production_data_integrity.json": {
+      "sha256": "07135f1632aac095d02f933f59667fcc4cd976b7c5f9db54bc9be50b6d7be906",
+      "size_bytes": 651
+    },
+    "14_production_playwright_results.json": {
+      "sha256": "7d70c1b3bf437ff84bddcfbf53ee7ce3fa65fcd6a005277c7054502f13810a75",
+      "size_bytes": 12731
+    },
+    "14_sprint38_1_prod_desktop_large_1920x1080.png": {
+      "sha256": "213b4190c4c4926a0aba4e23cdd0b241a3e2f89537cbd97eb0d964747b83c42e",
+      "size_bytes": 297692
+    },
+    "14_sprint38_1_prod_desktop_small_1366x768.png": {
+      "sha256": "d2031b2728f85b8d59e2a0208e993f43ad06a52d87104f2ca2075800b9f68d8b",
+      "size_bytes": 232798
+    },
+    "14_sprint38_1_prod_desktop_standard_1440x900.png": {
+      "sha256": "adc95b0823dabd1b84e62d19e3f1dc541d9c33fe493315e394ae2515be94394e",
+      "size_bytes": 252480
+    },
+    "14_sprint38_1_prod_mobile_390x844.png": {
+      "sha256": "748ddb5959cbf776c76a0d3e8ae03100a3bba9ea29bfce6acb131d47ab79cea7",
+      "size_bytes": 114300
+    },
+    "14_sprint38_1_prod_mobile_small_360x800.png": {
+      "sha256": "e932794dc2eab8d27528f453b1564521e2366d5435ec9df162ddcb2c741d489f",
+      "size_bytes": 83104
+    },
+    "14_sprint38_1_prod_tablet_landscape_1024x768.png": {
+      "sha256": "b4bf05240c45c4bf51a090168f9c880e754ee64feb4700fec08cc2d92096ac55",
+      "size_bytes": 227420
+    },
+    "14_sprint38_1_prod_tablet_portrait_768x1024.png": {
+      "sha256": "af0cce0a5be96290f762f45f4e81a9a3c89596f8347a2cd9a9c65f18187377a0",
+      "size_bytes": 233591
+    },
+    "15_performance_comparison.json": {
+      "sha256": "c4e073aae271013dc1bffc3a6c6b5de7f69a109100301d6181e4aac810bc4153",
+      "size_bytes": 1370
+    },
+    "16_live_trading_prohibition.json": {
+      "sha256": "e21c691800769aec26c036b384280402702d252d3b7553a61a19e2108d346d7e",
+      "size_bytes": 1007
+    },
+    "17_rollback_readiness_and_result.json": {
+      "sha256": "d23ff0ea7b7d2cd9cc0afa80d80e28ecff153d6a576533fcf3bf1f8623df1bed",
+      "size_bytes": 649
+    },
+    "19_final_production_acceptance_report.md": {
+      "sha256": "abfccf2fffd5fb5b67d44aac804ea68b1032c41989e878d72800fc77e63c9408",
+      "size_bytes": 6969
+    }
+  }
+}

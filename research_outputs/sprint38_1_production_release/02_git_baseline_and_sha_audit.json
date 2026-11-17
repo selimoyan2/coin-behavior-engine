@@ -1,0 +1,38 @@
+{
+  "sprint_id": "CBE_SPRINT38_1_DASHBOARD_V15_PRODUCTION_RELEASE",
+  "audit_timestamp_utc": "2026-11-17T12:22:00Z",
+  "repository": "selimoyan2/coin-behavior-engine",
+  "git_state": {
+    "previous_production_main_sha": "c0951f67f2b6045a1c37c2278e69e4a3d467ffeb",
+    "staging_candidate_code_sha": "913df6b15e3bba9d67c003dc6d9bc744dc97aa47",
+    "metadata_sync_commit_sha": "d0d24d63ac756ef8437546f7e257f3c49d053aba",
+    "production_deployed_sha": "d0d24d63ac756ef8437546f7e257f3c49d053aba",
+    "production_branch": "main",
+    "research_branch": "research/sprint38-dashboard-v15-evidence-explorer",
+    "fast_forward_clean": true,
+    "working_directory_clean": true
+  },
+  "commit_chain": [
+    {
+      "sha": "c0951f67f2b6045a1c37c2278e69e4a3d467ffeb",
+      "desc": "Sprint 37.2 production release baseline"
+    },
+    {
+      "sha": "913df6b15e3bba9d67c003dc6d9bc744dc97aa47",
+      "desc": "Sprint 38 Dashboard V15 candidate code & Navigation System V2"
+    },
+    {
+      "sha": "45465d13fe453e1be276f578772370aeef97163f",
+      "desc": "Sprint 38 delivery artifacts & staging acceptance"
+    },
+    {
+      "sha": "61aac9de2fb85a9f3f63aaa8a0df7ac523e119dc",
+      "desc": "Staging task C verification script"
+    },
+    {
+      "sha": "d0d24d63ac756ef8437546f7e257f3c49d053aba",
+      "desc": "Synchronize runtime build metadata to candidate 913df6b"
+    }
+  ],
+  "verdict": "GIT_AUDIT_PASSED"
+}
