@@ -18,8 +18,8 @@ from __future__ import annotations
 def render_predictive_validity_nav_tab() -> str:
     """Render the top navigation tab link for Predictive Validity Lab V3 & Dashboard V15."""
     return """
-    <a href="#predictive-validity" class="nav-tab" id="tab-btn-predictive-validity" onclick="switchTab('predictive-validity')">
-      <span>🎯</span> Tahmin Geçerliliği & Kanıt Gezgini V15 (Sprint 38)
+    <a href="#predictive-validity" class="nav-tab" id="tab-btn-predictive-validity" onclick="switchTab('predictive-validity')" role="tab" aria-selected="false" aria-controls="module-predictive-validity" tabindex="0" title="Piyasa rejimlerinin ileri dönem volatilite, risk ve fiyat davranışıyla ilişkilerini bilimsel olarak inceleyin.">
+      <span>🎯</span> Tahmin Geçerliliği
     </a>
     """
 
@@ -1479,7 +1479,13 @@ def render_predictive_validity_scripts() -> str:
     // Auto-hook into tab switching
     document.addEventListener("DOMContentLoaded", () => {
       if (window.location.hash === "#predictive-validity") {
-        loadPredictiveValidity();
+        setTimeout(() => {
+          if (typeof switchTab === "function") {
+            switchTab("predictive-validity");
+          } else {
+            loadPredictiveValidity();
+          }
+        }, 50);
       }
     });
     """

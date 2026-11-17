@@ -567,73 +567,88 @@ def render_product_dashboard_html() -> str:
     </button>
   </div>
 
-  <!-- Top Navigation Tabs (Grouped Sub-Navigation) -->
-  <nav class="nav-tabs" role="navigation" aria-label="Ürün Modülleri" style="overflow-x: auto; white-space: nowrap; scrollbar-width: thin;">
-    <a href="#research-explorer" class="nav-tab" id="tab-btn-research-explorer" onclick="switchTab('research-explorer')">
-      <span>🔭</span> Araştırma İstihbarat Gezgini V1 & Kütüphane (Sprint 19)
-    </a>
-    <a href="#unified-workspace" class="nav-tab" id="tab-btn-unified-workspace" onclick="switchTab('unified-workspace')">
-      <span>🔬</span> Birleşik Araştırma Alanı V1 (Sprint 18)
-    </a>
-    <a href="#overview" class="nav-tab active" id="tab-btn-overview" onclick="switchTab('overview')">
-      <span>🔬</span> Araştırma Alanı
-    </a>
-    <a href="#behavior" class="nav-tab" id="tab-btn-behavior" onclick="switchTab('behavior')">
-      <span>📈</span> Piyasa Davranışı
-    </a>
-    <a href="#comparison" class="nav-tab" id="tab-btn-comparison" onclick="switchTab('comparison')">
-      <span>⚖️</span> Karşılaştırma Laboratuvarı
-    </a>
-    <a href="#drift" class="nav-tab" id="tab-btn-drift" onclick="switchTab('drift')">
-      <span>🧬</span> Rejim Dağılım & Değişim
-    </a>
-    <a href="#quality" class="nav-tab" id="tab-btn-quality" onclick="switchTab('quality')">
-      <span>🛡️</span> Veri Kapsamı & Kalite
-    </a>
-    <a href="#patterns" class="nav-tab" id="tab-btn-patterns" onclick="switchTab('patterns')">
-      <span>🔍</span> Araştırma Tezgahı V6 & Tarihsel Örüntü Keşfi V2 (Sprint 17)
-    </a>
-    <a href="#studio" class="nav-tab" id="tab-btn-studio" onclick="switchTab('studio')">
-      <span>🔬</span> Rejim Karşılaştırma & Olay Adli İnceleme (Sprint 15)
-    </a>
-    <a href="#regimes" class="nav-tab" id="tab-btn-regimes" onclick="switchTab('regimes')">
-      <span>🏛️</span> Rejim İstihbaratı
-    </a>
-    <a href="#events" class="nav-tab" id="tab-btn-events" onclick="switchTab('events')">
-      <span>📰</span> Makro Olaylar
-    </a>
-    <a href="#scenarios" class="nav-tab" id="tab-btn-scenarios" onclick="switchTab('scenarios')">
-      <span>🧪</span> Senaryo Laboratuvarı
-    </a>
-    <a href="#research" class="nav-tab" id="tab-btn-research" onclick="switchTab('research')">
-      <span>📊</span> Araştırma Bulguları
-    </a>
-    <a href="#governance" class="nav-tab" id="tab-btn-governance" onclick="switchTab('governance')">
-      <span>🔐</span> Yönetişim & Güvenlik
-    </a>
-    <a href="#artifacts" class="nav-tab" id="tab-btn-artifacts" onclick="switchTab('artifacts')">
-      <span>📁</span> Kanıt Arşivi
-    </a>
-    <a href="#operations" class="nav-tab" id="tab-btn-operations" onclick="switchTab('operations')">
-      <span>⚙️</span> Sistem & Operasyon
-    </a>
-    <a href="#reports" class="nav-tab" id="tab-btn-reports" onclick="switchTab('reports')">
-      <span>📑</span> Araştırma Raporları
-    </a>
-    <a href="#builder" class="nav-tab" id="tab-btn-builder" onclick="switchTab('builder')">
-      <span>🛠️</span> Görsel Hipotez Oluşturucu
-    </a>
-    <a href="#distribution" class="nav-tab" id="tab-btn-distribution" onclick="switchTab('distribution')">
-      <span>📊</span> Dağılım Laboratuvarı
-    </a>
-    <a href="#robustness" class="nav-tab" id="tab-btn-robustness" onclick="switchTab('robustness')">
-      <span>📐</span> Dayanıklılık Gezgini
-    </a>
-    <a href="#evidence" class="nav-tab" id="tab-btn-evidence" onclick="switchTab('evidence')">
-      <span>🛡️</span> Kanıt & Çoğaltım Merkezi
-    </a>
-
-  </nav>
+  <!-- Top Navigation Tabs (Navigation System V2: Scroll Controls & More Modules) -->
+  <div class="nav-tabs-wrapper">
+    <button id="nav-scroll-left" class="nav-scroll-btn" onclick="scrollNavTabs('left')" aria-label="Sola Kaydır" title="Sola Kaydır" style="display: none;">
+      ‹
+    </button>
+    <nav id="main-nav-tabs" class="nav-tabs" role="tablist" aria-label="Ürün Modülleri">
+      <a href="#overview" class="nav-tab active" id="tab-btn-overview" onclick="switchTab('overview')" role="tab" aria-selected="true" aria-controls="module-overview" tabindex="0">
+        <span>🔬</span> Araştırma Alanı
+      </a>
+      <a href="#behavior" class="nav-tab" id="tab-btn-behavior" onclick="switchTab('behavior')" role="tab" aria-selected="false" aria-controls="module-behavior" tabindex="0">
+        <span>📈</span> Piyasa Davranışı
+      </a>
+      <a href="#comparison" class="nav-tab" id="tab-btn-comparison" onclick="switchTab('comparison')" role="tab" aria-selected="false" aria-controls="module-comparison" tabindex="0">
+        <span>⚖️</span> Karşılaştırma Laboratuvarı
+      </a>
+      <a href="#drift" class="nav-tab" id="tab-btn-drift" onclick="switchTab('drift')" role="tab" aria-selected="false" aria-controls="module-drift" tabindex="0">
+        <span>🧬</span> Rejim Dağılım & Değişim
+      </a>
+      <a href="#regimes" class="nav-tab" id="tab-btn-regimes" onclick="switchTab('regimes')" role="tab" aria-selected="false" aria-controls="module-regimes" tabindex="0">
+        <span>🏛️</span> Rejim İstihbaratı
+      </a>
+      <a href="#research-explorer" class="nav-tab" id="tab-btn-research-explorer" onclick="switchTab('research-explorer')" role="tab" aria-selected="false" aria-controls="module-research-explorer" tabindex="0">
+        <span>🔭</span> Araştırma İstihbarat Gezgini V1 & Kütüphane (Sprint 19)
+      </a>
+      <a href="#unified-workspace" class="nav-tab" id="tab-btn-unified-workspace" onclick="switchTab('unified-workspace')" role="tab" aria-selected="false" aria-controls="module-unified-workspace" tabindex="0">
+        <span>🔬</span> Birleşik Araştırma Alanı V1 (Sprint 18)
+      </a>
+      <a href="#patterns" class="nav-tab" id="tab-btn-patterns" onclick="switchTab('patterns')" role="tab" aria-selected="false" aria-controls="module-patterns" tabindex="0">
+        <span>🔍</span> Araştırma Tezgahı V6 & Tarihsel Örüntü Keşfi V2 (Sprint 17)
+      </a>
+      <a href="#studio" class="nav-tab" id="tab-btn-studio" onclick="switchTab('studio')" role="tab" aria-selected="false" aria-controls="module-studio" tabindex="0">
+        <span>🔬</span> Rejim Karşılaştırma & Olay Adli İnceleme (Sprint 15)
+      </a>
+      <a href="#events" class="nav-tab" id="tab-btn-events" onclick="switchTab('events')" role="tab" aria-selected="false" aria-controls="module-events" tabindex="0">
+        <span>📰</span> Makro Olaylar
+      </a>
+      <a href="#scenarios" class="nav-tab" id="tab-btn-scenarios" onclick="switchTab('scenarios')" role="tab" aria-selected="false" aria-controls="module-scenarios" tabindex="0">
+        <span>🧪</span> Senaryo Laboratuvarı
+      </a>
+      <a href="#quality" class="nav-tab" id="tab-btn-quality" onclick="switchTab('quality')" role="tab" aria-selected="false" aria-controls="module-quality" tabindex="0">
+        <span>🛡️</span> Veri Kapsamı & Kalite
+      </a>
+      <a href="#research" class="nav-tab" id="tab-btn-research" onclick="switchTab('research')" role="tab" aria-selected="false" aria-controls="module-research" tabindex="0">
+        <span>📊</span> Araştırma Bulguları
+      </a>
+      <a href="#governance" class="nav-tab" id="tab-btn-governance" onclick="switchTab('governance')" role="tab" aria-selected="false" aria-controls="module-governance" tabindex="0">
+        <span>🔐</span> Yönetişim & Güvenlik
+      </a>
+      <a href="#artifacts" class="nav-tab" id="tab-btn-artifacts" onclick="switchTab('artifacts')" role="tab" aria-selected="false" aria-controls="module-artifacts" tabindex="0">
+        <span>📁</span> Kanıt Arşivi
+      </a>
+      <a href="#operations" class="nav-tab" id="tab-btn-operations" onclick="switchTab('operations')" role="tab" aria-selected="false" aria-controls="module-operations" tabindex="0">
+        <span>⚙️</span> Sistem & Operasyon
+      </a>
+      <a href="#reports" class="nav-tab" id="tab-btn-reports" onclick="switchTab('reports')" role="tab" aria-selected="false" aria-controls="module-reports" tabindex="0">
+        <span>📑</span> Araştırma Raporları
+      </a>
+      <a href="#builder" class="nav-tab" id="tab-btn-builder" onclick="switchTab('builder')" role="tab" aria-selected="false" aria-controls="module-builder" tabindex="0">
+        <span>🛠️</span> Görsel Hipotez Oluşturucu
+      </a>
+      <a href="#distribution" class="nav-tab" id="tab-btn-distribution" onclick="switchTab('distribution')" role="tab" aria-selected="false" aria-controls="module-distribution" tabindex="0">
+        <span>📊</span> Dağılım Laboratuvarı
+      </a>
+      <a href="#robustness" class="nav-tab" id="tab-btn-robustness" onclick="switchTab('robustness')" role="tab" aria-selected="false" aria-controls="module-robustness" tabindex="0">
+        <span>📐</span> Dayanıklılık Gezgini
+      </a>
+      <a href="#evidence" class="nav-tab" id="tab-btn-evidence" onclick="switchTab('evidence')" role="tab" aria-selected="false" aria-controls="module-evidence" tabindex="0">
+        <span>🛡️</span> Kanıt & Çoğaltım Merkezi
+      </a>
+    </nav>
+    <button id="nav-scroll-right" class="nav-scroll-btn" onclick="scrollNavTabs('right')" aria-label="Sağa Kaydır" title="Sağa Kaydır" style="display: none;">
+      ›
+    </button>
+    <div class="nav-more-wrapper">
+      <button id="btn-more-modules" class="nav-more-btn" onclick="toggleMoreModulesMenu(event)" aria-haspopup="true" aria-expanded="false" title="Tüm Modülleri Listele">
+        <span class="nav-more-icon">☰</span> <span class="nav-more-text">Diğer Modüller</span> <span class="nav-more-arrow">▾</span>
+      </button>
+      <div id="menu-more-modules" class="nav-more-dropdown" role="menu" aria-label="Tüm Modüller Listesi">
+        <!-- populated from render_more_modules_dropdown_html() -->
+      </div>
+    </div>
+  </div>
 
   <!-- Main Work Area -->
   <main class="container" role="main">
@@ -4316,11 +4331,27 @@ def render_product_dashboard_html() -> str:
       if (tabId === 'patterns') setTimeout(loadSprint16Patterns, 50);
       if (tabId === 'studio') setTimeout(loadSprint15Studio, 50);
       currentTab = tabId;
-      document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".nav-tab").forEach(t => {
+        t.classList.remove("active");
+        t.setAttribute("aria-selected", "false");
+      });
       document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
 
       const tabBtn = document.getElementById("tab-btn-" + tabId);
-      if (tabBtn) tabBtn.classList.add("active");
+      if (tabBtn) {
+        tabBtn.classList.add("active");
+        tabBtn.setAttribute("aria-selected", "true");
+        if (typeof scrollTabIntoView === "function") {
+          scrollTabIntoView(tabBtn);
+        }
+      }
+
+      // Sync active state in Diğer Modüller dropdown
+      document.querySelectorAll(".nav-dropdown-item").forEach(item => {
+        item.classList.remove("active");
+      });
+      const dropdownItem = document.getElementById("dropdown-item-" + tabId);
+      if (dropdownItem) dropdownItem.classList.add("active");
 
       const mod = document.getElementById("module-" + tabId);
       if (mod) mod.classList.add("active");
@@ -6691,7 +6722,15 @@ def render_product_dashboard_html() -> str:
       populateDayDropdowns();
       populateYearDropdowns();
       const hash = window.location.hash.replace("#", "");
-      if (hash && ["overview", "research", "behavior", "comparison", "drift", "quality", "regimes", "events", "scenarios", "governance", "artifacts", "operations", "research-explorer", "unified-workspace", "reports"].includes(hash)) {
+      const validModuleIds = (typeof window.MODULE_REGISTRY !== "undefined" && window.MODULE_REGISTRY.length)
+        ? window.MODULE_REGISTRY.map(m => m.id)
+        : [
+            "overview", "predictive-validity", "behavior", "comparison", "drift", "quality",
+            "regimes", "events", "scenarios", "governance", "artifacts", "operations",
+            "research-explorer", "unified-workspace", "reports", "btc-timing", "builder",
+            "distribution", "robustness", "evidence", "patterns", "studio", "research"
+          ];
+      if (hash && validModuleIds.includes(hash)) {
         switchTab(hash);
       } else {
         switchTab("overview");
@@ -9056,6 +9095,16 @@ def render_product_dashboard_html() -> str:
         render_predictive_validity_scripts,
         render_predictive_validity_styles,
     )
+    from coin_behavior_engine.product.navigation_v2 import (
+        render_navigation_system_v2_styles,
+        render_navigation_system_v2_scripts,
+        render_more_modules_dropdown_html,
+    )
+
+    # Inject Navigation System V2 styles and dropdown contents
+    html = html.replace("</style>", render_navigation_system_v2_styles() + "\n  </style>", 1)
+    html = html.replace("<!-- populated from render_more_modules_dropdown_html() -->", render_more_modules_dropdown_html(), 1)
+
     # Inject Sprint 19 Explorer styles into <style> block
     html = html.replace("</style>", render_research_explorer_styles() + "\n  </style>", 1)
 
@@ -9074,12 +9123,15 @@ def render_product_dashboard_html() -> str:
     html = html.replace(main_hook, render_btc_timing_html() + "\n  " + main_hook, 1)
     html = html.replace("</script>\n</body>", render_btc_timing_scripts() + "\n</script>\n</body>", 1)
 
-    # Inject Sprint 37 Predictive Validity UI
+    # Inject Sprint 37 & 38 Predictive Validity UI
     html = html.replace("</style>", render_predictive_validity_styles() + "\n  </style>", 1)
-    pv_nav_hook = '<a href="#regimes"'
+    pv_nav_hook = '<a href="#behavior"'
     html = html.replace(pv_nav_hook, render_predictive_validity_nav_tab() + "\n    " + pv_nav_hook, 1)
     html = html.replace(main_hook, render_predictive_validity_html() + "\n  " + main_hook, 1)
     html = html.replace("</script>\n</body>", render_predictive_validity_scripts() + "\n</script>\n</body>", 1)
+
+    # Inject Navigation System V2 scripts
+    html = html.replace("</script>\n</body>", render_navigation_system_v2_scripts() + "\n</script>\n</body>", 1)
 
     return html
 
