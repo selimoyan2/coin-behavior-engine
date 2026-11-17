@@ -4323,6 +4323,9 @@ def render_product_dashboard_html() -> str:
     }
 
     function switchTab(tabId) {
+      if (typeof window.HASH_ALIASES !== "undefined" && window.HASH_ALIASES[tabId]) {
+        tabId = window.HASH_ALIASES[tabId];
+      }
       if (tabId === 'btc-timing') setTimeout(loadBtcTimingTab, 50);
       if (tabId === 'predictive-validity') setTimeout(loadPredictiveValidity, 50);
       if (tabId === 'research-explorer') setTimeout(loadResearchExplorer, 50);
@@ -6721,7 +6724,8 @@ def render_product_dashboard_html() -> str:
     window.addEventListener("DOMContentLoaded", () => {
       populateDayDropdowns();
       populateYearDropdowns();
-      const hash = window.location.hash.replace("#", "");
+      const rawHash = window.location.hash.replace("#", "");
+      const hash = (typeof window.HASH_ALIASES !== "undefined" && window.HASH_ALIASES[rawHash]) ? window.HASH_ALIASES[rawHash] : rawHash;
       const validModuleIds = (typeof window.MODULE_REGISTRY !== "undefined" && window.MODULE_REGISTRY.length)
         ? window.MODULE_REGISTRY.map(m => m.id)
         : [

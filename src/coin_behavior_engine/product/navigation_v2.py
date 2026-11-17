@@ -214,7 +214,8 @@ MODULE_REGISTRY: List[Dict[str, Any]] = [
         "enabled": True,
         "auth_required": False,
         "order": 300,
-        "description": "59 aylık Parquet veri seti bütünlüğü, mum kalitesi ve boşluk denetimi.",
+        "description": "Ocak 2022 – Kasım 2026 arası 59 aylık (58 tam + 1 kısmi ay) doğrulanmış veri kapsamı, mum kalitesi ve boşluk denetimi.",
+        "aliases": ["coverage", "dataset-coverage", "datasets", "candle-quality"],
     },
     {
         "id": "research",
@@ -305,9 +306,60 @@ MODULE_REGISTRY: List[Dict[str, Any]] = [
 ]
 
 
+HASH_ALIASES: Dict[str, str] = {
+    "coverage": "quality",
+    "dataset-coverage": "quality",
+    "datasets": "quality",
+    "candle-quality": "quality",
+    "macro": "events",
+    "risk": "regimes",
+    "correlations": "comparison",
+    "backtest": "btc-timing",
+    "audit": "reports",
+    "export": "artifacts",
+    "system": "operations",
+    "runtime": "operations",
+    "telemetry": "operations",
+    "security": "governance",
+    "help": "operations",
+    "intelligence-root": "predictive-validity",
+}
+
+
+def get_canonical_coverage_description() -> str:
+    """Dynamically build coverage description from Central Coverage Registry and Manifesto."""
+    try:
+        from coin_behavior_engine.product.dataset_registry import HistoricalDatasetRegistry
+        cov = HistoricalDatasetRegistry().get_central_coverage()
+        earliest = cov.get("earliest_month", "2022-01")
+        latest = cov.get("latest_month", "2026-11")
+        total = cov.get("total_months", 59)
+        complete = cov.get("complete_months", 58)
+        partial = cov.get("partial_months", 1)
+        months_tr = {
+            "01": "Ocak", "02": "Şubat", "03": "Mart", "04": "Nisan", "05": "Mayıs", "06": "Haziran",
+            "07": "Temmuz", "08": "Ağustos", "09": "Eylül", "10": "Ekim", "11": "Kasım", "12": "Aralık"
+        }
+        e_y, e_m = earliest.split("-")
+        l_y, l_m = latest.split("-")
+        e_name = months_tr.get(e_m, e_m)
+        l_name = months_tr.get(l_m, l_m)
+        return f"{e_name} {e_y} – {l_name} {l_y} arası {total} aylık ({complete} tam + {partial} kısmi ay) doğrulanmış veri kapsamı, mum kalitesi ve boşluk denetimi."
+    except Exception:
+        return "Ocak 2022 – Kasım 2026 arası 59 aylık (58 tam + 1 kısmi ay) doğrulanmış veri kapsamı, mum kalitesi ve boşluk denetimi."
+
+
 def get_module_registry() -> List[Dict[str, Any]]:
-    """Return the official registered list of CBE modules."""
-    return sorted(MODULE_REGISTRY, key=lambda m: m["order"])
+    """Return the official registered list of CBE modules with dynamic descriptions."""
+    registry = []
+    dynamic_coverage_desc = get_canonical_coverage_description()
+    for m in MODULE_REGISTRY:
+        item = dict(m)
+        if item["id"] == "quality":
+            item["description"] = dynamic_coverage_desc
+            item["aliases"] = ["coverage", "dataset-coverage", "datasets", "candle-quality"]
+        registry.append(item)
+    return sorted(registry, key=lambda m: m["order"])
 
 
 def render_navigation_system_v2_styles() -> str:
@@ -570,11 +622,13 @@ def render_more_modules_dropdown_html() -> str:
 def render_navigation_system_v2_scripts() -> str:
     """Render JavaScript runtime for Navigation System V2."""
     registry_json = json.dumps(get_module_registry(), ensure_ascii=False)
+    aliases_json = json.dumps(HASH_ALIASES, ensure_ascii=False)
     return f"""
     // =========================================================================
     // NAVIGATION SYSTEM V2 RUNTIME JAVASCRIPT
     // =========================================================================
     window.MODULE_REGISTRY = {registry_json};
+    window.HASH_ALIASES = {aliases_json};
 
     function updateNavScrollArrows() {{
       const nav = document.getElementById("main-nav-tabs") || document.querySelector(".nav-tabs");
@@ -660,7 +714,15 @@ def render_navigation_system_v2_scripts() -> str:
       if (btn) btn.setAttribute("aria-expanded", "false");
     }}
 
+    function resolveTabAlias(tabId) {{
+      if (window.HASH_ALIASES && window.HASH_ALIASES[tabId]) {{
+        return window.HASH_ALIASES[tabId];
+      }}
+      return tabId;
+    }}
+
     function navigateFromMenu(modId) {{
+      modId = resolveTabAlias(modId);
       closeMoreModulesMenu();
       if (typeof switchTab === "function") {{
         switchTab(modId);
@@ -685,6 +747,7 @@ def render_navigation_system_v2_scripts() -> str:
     // Enhance switchTab to support Navigation System V2
     const _originalSwitchTab = window.switchTab;
     window.switchTab = function(tabId) {{
+      tabId = resolveTabAlias(tabId);
       // Call original switchTab if present
       if (typeof _originalSwitchTab === "function") {{
         _originalSwitchTab(tabId);
