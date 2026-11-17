@@ -5,14 +5,14 @@
 **Sprint ID:** `CBE_SPRINT38_DASHBOARD_V15_EVIDENCE_EXPLORER`  
 **Repository:** `selimoyan2/coin-behavior-engine`  
 **Research Branch:** `research/sprint38-dashboard-v15-evidence-explorer`  
-**Aday Commit SHA:** `51cb27697814164983ade0016b5260709c68a33e` (`51cb276`)  
+**Aday Commit SHA:** `913df6b15e3bba9d67c003dc6d9bc744dc97aa47` (`913df6b`)  
 **Üretim Tabanı (Production Baseline SHA):** `c0951f67f2b6045a1c37c2278e69e4a3d467ffeb`  
 **Staging Host:** `srv1114257 (168.231.125.238:18080)`  
-**Staging Konteyner ID:** `938a3070cd1b` (`cbe-predictive-intelligence-staging-sprint38`)  
+**Staging Konteyner ID:** `4513d6cea0f1` (`cbe-predictive-intelligence-staging-sprint38`)  
 **Production Konteyner ID:** `46bfe4cf2031` (`https://coin.ozelweb.com.tr` — STRICT ZERO-TOUCH)  
 **Kanonik Model:** `CBE-0.7.0` (`STRICTLY_FROZEN`)  
 **Canlı Ticaret Yetkisi:** `PERMANENTLY_PROHIBITED` (HTTP 403 Forbidden)  
-**Nihai Karar Kodu:** `SPRINT38_DASHBOARD_V15_STAGING_ACCEPTANCE_VERIFIED`  
+**Nihai Karar Kodu:** `SPRINT38_V15_FINAL_STAGING_ACCEPTED`  
 
 ---
 
@@ -55,7 +55,7 @@ Tüm 22 modülün meta verileri, Türkçe isimleri ve araştırma sınırları a
 | 130 | `studio` | 🔬 **Olay Adli İnceleme** | Piyasa Araştırması | `#studio` | Özel piyasa olaylarının adli mikro-analizi. |
 | 200 | `events` | 📰 **Makro Olaylar** | Makro ve Senaryo | `#events` | Makroekonomik duyurular ve piyasa tepki dinamikleri. |
 | 210 | `scenarios` | 🧪 **Senaryo Laboratuvarı** | Makro ve Senaryo | `#scenarios` | Stres testi senaryoları ve simüle edilmiş şok tepkileri. |
-| 300 | `quality` | 🛡️ **Veri Kapsamı & Kalite** | Veri ve Raporlar | `#quality` | 59 aylık Parquet veri seti bütünlüğü, mum kalitesi ve boşluk denetimi. |
+| 300 | `quality` | 🛡️ **Veri Kapsamı & Kalite** | Veri ve Raporlar | `#quality` | Ocak 2022 – Kasım 2026 arası 59 aylık (58 tam + 1 kısmi ay) doğrulanmış veri kapsamı, mum kalitesi ve boşluk denetimi. |
 | 310 | `research` | 📊 **Araştırma Bulguları** | Veri ve Raporlar | `#research` | Yürütülen araştırma döngülerinin ampirik özetleri. |
 | 320 | `reports` | 📑 **Araştırma Raporları** | Veri ve Raporlar | `#reports` | Resmi araştırma kabul raporları ve PDF çıktıları. |
 | 330 | `robustness` | 📐 **Dayanıklılık Gezgini** | Veri ve Raporlar | `#robustness` | Model duyarlılığı ve parametre dayanıklılık matrisi. |
@@ -132,10 +132,13 @@ Tüm 7 farklı cihaz ve çözünürlük profilinde `scripts/run_playwright_sprin
 
 ## 9. REGRESSION RESULTS
 
-- **Mevcut Dashboard V14 & V15 Testleri:**
-  - `tests/test_sprint37_predictive_validity.py`: 20/20 PASSED
-  - `tests/test_sprint38_predictive_intelligence.py`: 20/20 PASSED
-  - Toplam Regresyon Testi: **40/40 PASSED (0 hata, 0 atlama)**
+- **Tüm Repository Regresyon Test Süiti (Sprint 01 - Sprint 38):**
+  - Toplanan Test Sayısı: **3.695 items**
+  - Başarılı Test Sayısı: **3.687 PASSED**
+  - Atlanan Test Sayısı: **8 SKIPPED**
+  - Başarısız Test Sayısı: **0 FAILED** (Gizlenen veya başarısız olan hiçbir test yoktur)
+  - Önceki Referans (Sprint 37): 3.667 passed, 8 skipped
+  - Sprint 38 Farkı: `3.667 + 20 (Sprint 38 testleri) = 3.687 passed` (Matematiksel olarak tam mutabakat)
 - **Veri Tutarlılığı ve Hipotez Sayımı:**
   - Toplam Hipotez: 30
   - SUPPORTED: 4 | NOT_SUPPORTED: 25 | INCONCLUSIVE: 1 | INSUFFICIENT_DATA: 0 | LEAKAGE_BLOCKED: 0
