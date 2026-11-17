@@ -3,7 +3,7 @@
 **Sprint ID:** `CBE_SPRINT38_DASHBOARD_V15_EVIDENCE_EXPLORER`  
 **Repository:** `selimoyan2/coin-behavior-engine`  
 **Research Branch:** `research/sprint38-dashboard-v15-evidence-explorer`  
-**Candidate Commit SHA:** `38276a0ceeda3f6a40f4f6082372fceb68b7d300`  
+**Candidate Commit SHA:** `51cb27697814164983ade0016b5260709c68a33e`  
 **Production Baseline SHA:** `c0951f67f2b6045a1c37c2278e69e4a3d467ffeb`  
 **Operator Authorization:** RESEARCH & STAGING READINESS ONLY  
 **Production Deployment:** OPERATOR_APPROVAL_REQUIRED (STRICT ZERO-TOUCH)  

@@ -40,7 +40,7 @@ COMMIT_SHA = get_commit_sha()
 SHORT_SHA = COMMIT_SHA[:7]
 PRODUCTION_BASELINE_SHA = "c0951f67f2b6045a1c37c2278e69e4a3d467ffeb"
 PROD_CID = "46bfe4cf2031"
-STAGING_CID = "e053aa84b45d3b739eb827388f503418c4f1d13b7675708cbb45d253a79ee29b"
+STAGING_CID = "938a3070cd1bc602fbf9854bdee21fa84a76e0787b28e9e60bdf9b1adcc93fd2"
 STAGING_IMAGE = f"cbe-predictive-intelligence:sprint38-{SHORT_SHA}"
 DATASET_MANIFEST_SHA256 = "1ff50222c31a486b094a7f2ac9f06d38b1258527e5492acbef5faf9a73c55f14"
 
@@ -465,7 +465,12 @@ Tüm 7 farklı cihaz ve çözünürlük profilinde `scripts/run_playwright_sprin
         "artifacts": {},
     }
 
-    delivery_files = sorted([f for f in DELIVERY_DIR.iterdir() if f.name != "15_sha256_delivery_manifest.json" and f.is_file()])
+    delivery_files = sorted([
+        f for f in DELIVERY_DIR.iterdir() 
+        if f.name != "15_sha256_delivery_manifest.json" 
+        and f.is_file() 
+        and not f.name.endswith(".log")
+    ])
     for f in delivery_files:
         content = f.read_bytes()
         sha = hashlib.sha256(content).hexdigest()

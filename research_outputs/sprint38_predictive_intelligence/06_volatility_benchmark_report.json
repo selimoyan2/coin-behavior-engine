@@ -1,6 +1,6 @@
 {
   "status": "success",
-  "timestamp_utc": "2026-11-16T22:36:20.291605+00:00",
+  "timestamp_utc": "2026-11-17T11:34:53.843461+00:00",
   "target_variable": "Annualized 24h Forward Realized Volatility (%)",
   "forecast_horizon": "24h",
   "sample_size": 42693,

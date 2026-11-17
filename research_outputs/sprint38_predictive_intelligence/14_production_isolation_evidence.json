@@ -1,6 +1,6 @@
 {
   "sprint_id": "CBE_SPRINT38_DASHBOARD_V15_EVIDENCE_EXPLORER",
-  "timestamp_utc": "2026-11-16T22:36:20.296539+00:00",
+  "timestamp_utc": "2026-11-17T11:34:53.848745+00:00",
   "production_host": "srv1114257 (168.231.125.238)",
   "production_container": {
     "id": "46bfe4cf2031",
@@ -15,7 +15,7 @@
     "untouched": true
   },
   "staging_container": {
-    "id": "e053aa84b45d3b739eb827388f503418c4f1d13b7675708cbb45d253a79ee29b",
+    "id": "938a3070cd1bc602fbf9854bdee21fa84a76e0787b28e9e60bdf9b1adcc93fd2",
     "name": "cbe-predictive-intelligence-staging-sprint38",
     "status": "running",
     "health": "healthy",

@@ -1,75 +1,282 @@
 {
-  "suite": "Sprint 38 Dashboard V15 Predictive Validity Intelligence Acceptance",
-  "timestamp_utc": "2026-11-16T22:31:48.045580+00:00",
+  "suite": "Sprint 38 Navigation System V2 & Predictive Validity Intelligence Acceptance",
+  "timestamp_utc": "2026-11-17T11:29:33.747340+00:00",
   "canonical_model": "CBE-0.7.0 (STRICTLY_FROZEN)",
   "governance_decision": "OFFLINE_HISTORICAL_RESEARCH_PREDICTIVE_VALIDITY_LAB_V15",
-  "viewports": {
-    "desktop": {
+  "viewports_tested": {
+    "desktop_1920x1080": {
+      "width": 1920,
+      "height": 1080,
+      "passed": true,
+      "is_pv_module_active": true,
+      "tab_info": {
+        "exists": true,
+        "text": "🎯\nTahmin Geçerliliği",
+        "isActive": true,
+        "ariaSelected": "true",
+        "isHorizontallyVisible": true,
+        "offsetLeft": 196,
+        "navScrollLeft": 0,
+        "navScrollWidth": 4897,
+        "navClientWidth": 1685
+      },
+      "more_menu_info": {
+        "btnExists": true,
+        "menuExists": true,
+        "pvItemExists": true,
+        "pvItemText": "🎯\n                Tahmin Geçerliliği\n              \n              Piyasa rejimlerinin ileri dönem volatilite, risk ve fiyat davranışıyla ilişkilerini bilimsel olarak inceleyin."
+      },
+      "dropdown_toggle_verified": true,
+      "arrows_info": {
+        "hasOverflow": true,
+        "leftVisible": true,
+        "rightVisible": true,
+        "leftDisabled": true,
+        "rightDisabled": false
+      },
+      "kpi_total": "30",
+      "kpi_supported": "4",
+      "back_nav_passed": true,
+      "reality_disclaimer_present": true,
+      "console_errors": [],
+      "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint38_predictive_intelligence\\12_sprint38_desktop_1920x1080.png"
+    },
+    "desktop_1440x900": {
       "width": 1440,
       "height": 900,
       "passed": true,
-      "is_pv_visible": true,
+      "is_pv_module_active": true,
+      "tab_info": {
+        "exists": true,
+        "text": "🎯\nTahmin Geçerliliği",
+        "isActive": true,
+        "ariaSelected": "true",
+        "isHorizontallyVisible": true,
+        "offsetLeft": 196,
+        "navScrollLeft": 0,
+        "navScrollWidth": 4897,
+        "navClientWidth": 1205
+      },
+      "more_menu_info": {
+        "btnExists": true,
+        "menuExists": true,
+        "pvItemExists": true,
+        "pvItemText": "🎯\n                Tahmin Geçerliliği\n              \n              Piyasa rejimlerinin ileri dönem volatilite, risk ve fiyat davranışıyla ilişkilerini bilimsel olarak inceleyin."
+      },
+      "dropdown_toggle_verified": true,
+      "arrows_info": {
+        "hasOverflow": true,
+        "leftVisible": true,
+        "rightVisible": true,
+        "leftDisabled": true,
+        "rightDisabled": false
+      },
       "kpi_total": "30",
       "kpi_supported": "4",
-      "evidence_subview_visible": true,
-      "subviews_checked": {
-        "#btn-pv-sub-overview": true,
-        "#btn-pv-sub-evidence": true,
-        "#btn-pv-sub-volatility": true,
-        "#btn-pv-sub-persistence": true,
-        "#btn-pv-sub-directional": true,
-        "#btn-pv-sub-uncertainty": true,
-        "#btn-pv-sub-limitations": true,
-        "#btn-pv-sub-history": true
-      },
-      "reality_check_disclaimer_present": true,
+      "back_nav_passed": true,
+      "reality_disclaimer_present": true,
       "console_errors": [],
       "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint38_predictive_intelligence\\12_sprint38_desktop_1440x900.png"
     },
-    "tablet": {
+    "laptop_1366x768": {
+      "width": 1366,
+      "height": 768,
+      "passed": true,
+      "is_pv_module_active": true,
+      "tab_info": {
+        "exists": true,
+        "text": "🎯\nTahmin Geçerliliği",
+        "isActive": true,
+        "ariaSelected": "true",
+        "isHorizontallyVisible": true,
+        "offsetLeft": 196,
+        "navScrollLeft": 0,
+        "navScrollWidth": 4897,
+        "navClientWidth": 1131
+      },
+      "more_menu_info": {
+        "btnExists": true,
+        "menuExists": true,
+        "pvItemExists": true,
+        "pvItemText": "🎯\n                Tahmin Geçerliliği\n              \n              Piyasa rejimlerinin ileri dönem volatilite, risk ve fiyat davranışıyla ilişkilerini bilimsel olarak inceleyin."
+      },
+      "dropdown_toggle_verified": true,
+      "arrows_info": {
+        "hasOverflow": true,
+        "leftVisible": true,
+        "rightVisible": true,
+        "leftDisabled": true,
+        "rightDisabled": false
+      },
+      "kpi_total": "30",
+      "kpi_supported": "4",
+      "back_nav_passed": true,
+      "reality_disclaimer_present": true,
+      "console_errors": [],
+      "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint38_predictive_intelligence\\12_sprint38_laptop_1366x768.png"
+    },
+    "tablet_landscape_1024x768": {
+      "width": 1024,
+      "height": 768,
+      "passed": true,
+      "is_pv_module_active": true,
+      "tab_info": {
+        "exists": true,
+        "text": "🎯\nTahmin Geçerliliği",
+        "isActive": true,
+        "ariaSelected": "true",
+        "isHorizontallyVisible": true,
+        "offsetLeft": 196,
+        "navScrollLeft": 0,
+        "navScrollWidth": 4897,
+        "navClientWidth": 789
+      },
+      "more_menu_info": {
+        "btnExists": true,
+        "menuExists": true,
+        "pvItemExists": true,
+        "pvItemText": "🎯\n                Tahmin Geçerliliği\n              \n              Piyasa rejimlerinin ileri dönem volatilite, risk ve fiyat davranışıyla ilişkilerini bilimsel olarak inceleyin."
+      },
+      "dropdown_toggle_verified": true,
+      "arrows_info": {
+        "hasOverflow": true,
+        "leftVisible": true,
+        "rightVisible": true,
+        "leftDisabled": true,
+        "rightDisabled": false
+      },
+      "kpi_total": "30",
+      "kpi_supported": "4",
+      "back_nav_passed": true,
+      "reality_disclaimer_present": true,
+      "console_errors": [],
+      "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint38_predictive_intelligence\\12_sprint38_tablet_landscape_1024x768.png"
+    },
+    "tablet_portrait_768x1024": {
       "width": 768,
       "height": 1024,
       "passed": true,
-      "is_pv_visible": true,
+      "is_pv_module_active": true,
+      "tab_info": {
+        "exists": true,
+        "text": "🎯\nTahmin Geçerliliği",
+        "isActive": true,
+        "ariaSelected": "true",
+        "isHorizontallyVisible": true,
+        "offsetLeft": 158,
+        "navScrollLeft": 0,
+        "navScrollWidth": 4011,
+        "navClientWidth": 658
+      },
+      "more_menu_info": {
+        "btnExists": true,
+        "menuExists": true,
+        "pvItemExists": true,
+        "pvItemText": "🎯\n                Tahmin Geçerliliği\n              \n              Piyasa rejimlerinin ileri dönem volatilite, risk ve fiyat davranışıyla ilişkilerini bilimsel olarak inceleyin."
+      },
+      "dropdown_toggle_verified": true,
+      "arrows_info": {
+        "hasOverflow": true,
+        "leftVisible": true,
+        "rightVisible": true,
+        "leftDisabled": true,
+        "rightDisabled": false
+      },
       "kpi_total": "30",
       "kpi_supported": "4",
-      "evidence_subview_visible": true,
-      "subviews_checked": {
-        "#btn-pv-sub-overview": true,
-        "#btn-pv-sub-evidence": true,
-        "#btn-pv-sub-volatility": true,
-        "#btn-pv-sub-persistence": true,
-        "#btn-pv-sub-directional": true,
-        "#btn-pv-sub-uncertainty": true,
-        "#btn-pv-sub-limitations": true,
-        "#btn-pv-sub-history": true
-      },
-      "reality_check_disclaimer_present": true,
+      "back_nav_passed": true,
+      "reality_disclaimer_present": true,
       "console_errors": [],
-      "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint38_predictive_intelligence\\12_sprint38_tablet_768x1024.png"
+      "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint38_predictive_intelligence\\12_sprint38_tablet_portrait_768x1024.png"
     },
-    "mobile": {
+    "mobile_390x844": {
       "width": 390,
       "height": 844,
       "passed": true,
-      "is_pv_visible": true,
+      "is_pv_module_active": true,
+      "tab_info": {
+        "exists": true,
+        "text": "🎯\nTahmin Geçerliliği",
+        "isActive": true,
+        "ariaSelected": "true",
+        "isHorizontallyVisible": true,
+        "offsetLeft": 158,
+        "navScrollLeft": 84,
+        "navScrollWidth": 4011,
+        "navClientWidth": 280
+      },
+      "more_menu_info": {
+        "btnExists": true,
+        "menuExists": true,
+        "pvItemExists": true,
+        "pvItemText": "🎯\n                Tahmin Geçerliliği\n              \n              Piyasa rejimlerinin ileri dönem volatilite, risk ve fiyat davranışıyla ilişkilerini bilimsel olarak inceleyin."
+      },
+      "dropdown_toggle_verified": true,
+      "arrows_info": {
+        "hasOverflow": true,
+        "leftVisible": true,
+        "rightVisible": true,
+        "leftDisabled": false,
+        "rightDisabled": false
+      },
       "kpi_total": "30",
       "kpi_supported": "4",
-      "evidence_subview_visible": true,
-      "subviews_checked": {
-        "#btn-pv-sub-overview": true,
-        "#btn-pv-sub-evidence": true,
-        "#btn-pv-sub-volatility": true,
-        "#btn-pv-sub-persistence": true,
-        "#btn-pv-sub-directional": true,
-        "#btn-pv-sub-uncertainty": true,
-        "#btn-pv-sub-limitations": true,
-        "#btn-pv-sub-history": true
-      },
-      "reality_check_disclaimer_present": true,
+      "back_nav_passed": true,
+      "reality_disclaimer_present": true,
       "console_errors": [],
       "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint38_predictive_intelligence\\12_sprint38_mobile_390x844.png"
+    },
+    "mobile_small_360x800": {
+      "width": 360,
+      "height": 800,
+      "passed": true,
+      "is_pv_module_active": true,
+      "tab_info": {
+        "exists": true,
+        "text": "🎯\nTahmin Geçerliliği",
+        "isActive": true,
+        "ariaSelected": "true",
+        "isHorizontallyVisible": true,
+        "offsetLeft": 158,
+        "navScrollLeft": 39,
+        "navScrollWidth": 4011,
+        "navClientWidth": 250
+      },
+      "more_menu_info": {
+        "btnExists": true,
+        "menuExists": true,
+        "pvItemExists": true,
+        "pvItemText": "🎯\n                Tahmin Geçerliliği\n              \n              Piyasa rejimlerinin ileri dönem volatilite, risk ve fiyat davranışıyla ilişkilerini bilimsel olarak inceleyin."
+      },
+      "dropdown_toggle_verified": true,
+      "arrows_info": {
+        "hasOverflow": true,
+        "leftVisible": true,
+        "rightVisible": true,
+        "leftDisabled": false,
+        "rightDisabled": false
+      },
+      "kpi_total": "30",
+      "kpi_supported": "4",
+      "back_nav_passed": true,
+      "reality_disclaimer_present": true,
+      "console_errors": [],
+      "screenshot": "D:\\Projeler\\Antigravity\\coin-davranis-motoru\\research_outputs\\sprint38_predictive_intelligence\\12_sprint38_mobile_small_360x800.png"
     }
+  },
+  "scenarios_tested": {
+    "1_all_modules_accessible": true,
+    "2_predictive_validity_tab_found": true,
+    "3_hash_link_activates_module": true,
+    "4_active_tab_auto_scrolled_visible": true,
+    "5_scroll_arrows_functional": true,
+    "6_more_modules_dropdown_functional": true,
+    "7_mobile_touch_swipe_supported": true,
+    "8_browser_history_back_forward_preserved": true,
+    "9_page_refresh_preserves_module": true,
+    "10_keyboard_accessibility_supported": true,
+    "11_module_content_integrity_preserved": true,
+    "12_zero_console_errors": true
   },
   "prohibited_trading_audit": {
     "POST http://127.0.0.1:18099/place-order": {

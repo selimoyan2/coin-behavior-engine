@@ -1,82 +1,98 @@
 {
   "sprint_id": "CBE_SPRINT38_DASHBOARD_V15_EVIDENCE_EXPLORER",
-  "timestamp_utc": "2026-11-16T22:36:20.298061+00:00",
-  "candidate_commit_sha": "38276a0ceeda3f6a40f4f6082372fceb68b7d300",
-  "staging_container_id": "e053aa84b45d3b739eb827388f503418c4f1d13b7675708cbb45d253a79ee29b",
+  "timestamp_utc": "2026-11-17T11:34:53.851294+00:00",
+  "candidate_commit_sha": "51cb27697814164983ade0016b5260709c68a33e",
+  "staging_container_id": "938a3070cd1bc602fbf9854bdee21fa84a76e0787b28e9e60bdf9b1adcc93fd2",
   "production_container_id": "46bfe4cf2031",
   "verdict_code": "SPRINT38_DASHBOARD_V15_STAGING_ACCEPTANCE_VERIFIED",
   "artifacts": {
     "01_operator_scope_and_governance.md": {
       "size_bytes": 2534,
-      "sha256": "daafb00e623c8d751c916ce4e026cd7a15239685fb51cb98f73b06f8ac7d2320"
+      "sha256": "c0c3cb1afa79869fad2c7c47f99732ae8505c20b61760a157dc92bcd8570a744"
     },
     "02_git_sha_and_branch_audit.json": {
       "size_bytes": 648,
-      "sha256": "de96a42704c7ffeb7283bc50f9f7edab297f0bacfca7467befbafd3b7054a0f3"
+      "sha256": "8f452899339f603a2766b9f300a9a56855826c10cb9a1b6c7217b3c5aa8e922b"
     },
     "03_staging_container_audit.json": {
       "size_bytes": 1028,
-      "sha256": "602a0ea6ea7439b158b215493e0a124135b7ffac95714df791f5f1227d3bb4a1"
+      "sha256": "4e7ff99fc3137655329ee3bcebaa4beecf742d8e5507915cd50c3ec2ac891059"
     },
     "04_predictive_validity_overview.json": {
       "size_bytes": 1164,
-      "sha256": "37cc60fecc29250e820033f2484f03180d82ff53234965ea35d79af10587c23c"
+      "sha256": "55c9642217bbb7ed15192f48ada4bcf40bd68a3d7bad5d1bb35676b2fd035355"
     },
     "05_hypothesis_evidence_explorer.json": {
       "size_bytes": 136059,
-      "sha256": "a8a7305d51d1d534ede97cf12e8e50521832bcccbcf97e14bafedae0d5b116cf"
+      "sha256": "390692700308ef35300b81bbe89541c664bdfb0fda0d002e7dadb9e8496577cc"
     },
     "06_volatility_benchmark_report.json": {
       "size_bytes": 2163,
-      "sha256": "b6cd43ec9f2b1821e541839ddca6b66f0a48d49e5c3e7084b213d9c6ab665610"
+      "sha256": "87e0885ee420aad587176752ac9d34846ac2d8181bf58189a65ea7a3b1552a7d"
     },
     "07_regime_persistence_intelligence.json": {
       "size_bytes": 3903,
-      "sha256": "d4c3ce107750e7c525a7ee908820e4cccb574468c756067c7d9fbc15b9e844cc"
+      "sha256": "4b27dec28b0e12ce921de0f4de9dd3ce00c91bba479e2f68a29d8710219320f3"
     },
     "08_directional_reality_check.json": {
       "size_bytes": 4947,
-      "sha256": "1f6a8d0bd1afe3363b7e8cdc41048e037390f60e3aa1bfd1612717fa7e674df1"
+      "sha256": "4419c13a577b1616acb8c5e546615960baea36985364c3bb011d1115d731677e"
     },
     "09_scientific_scorecard_reconciliation.json": {
       "size_bytes": 29898,
-      "sha256": "02d1b585de4883893075b5ecb36f6416f107699cb7c84cb4a324cbd1a0534fb2"
+      "sha256": "2d91f244689f1598bdc8139d3726e82caaae8d8595a01ecebf6da8000d783831"
     },
     "10_baseline_metrics_audit.json": {
       "size_bytes": 1185,
-      "sha256": "476d0647785d0d7f5ff26c1002d6fd27ed2b6ef7790495b0f724b28d415af207"
+      "sha256": "618b4f50ca163e5ed77080c60ebe02a742ac0332835a6bf51e6df7e20d5366ed"
     },
     "11_live_trading_prohibition.json": {
       "size_bytes": 1151,
-      "sha256": "6aa2a33f63261e1d6a3e3489f4c3d910145fb0c552f73510a94c49470c0182e7"
+      "sha256": "cf8d85bc572e57f0687d807c10e00c0dd877475da00ee9833a94b254a563d235"
     },
     "12_playwright_responsive_acceptance.json": {
-      "size_bytes": 4885,
-      "sha256": "f94198dbfab448dc4ee2054d8a937d43f342da735443a3608098bdeb9b9049e1"
+      "size_bytes": 12511,
+      "sha256": "07ca0fdfecf7121e16e840c3850bba72788a237b3ece28efb4a336e99465eed3"
     },
     "12_sprint38_desktop_1440x900.png": {
-      "size_bytes": 122482,
-      "sha256": "d3db0b7a7f7eb2def6e4b2599658029cdb5de64d9cfcca6fde40f244012f7cb5"
+      "size_bytes": 251718,
+      "sha256": "00a8a8671c02318520db38a612bec012e2f639fdef609f71315a32d8da36c4f8"
+    },
+    "12_sprint38_desktop_1920x1080.png": {
+      "size_bytes": 296928,
+      "sha256": "71abb854714c09db03ce30cb6a5577748babc017f75c228a6371576b977bdb69"
+    },
+    "12_sprint38_laptop_1366x768.png": {
+      "size_bytes": 232955,
+      "sha256": "d4128409ec0387c9dc89abb102aa82e9e8cb4772e4f7cf394e89d0dabea20a0e"
     },
     "12_sprint38_mobile_390x844.png": {
-      "size_bytes": 47430,
-      "sha256": "e0cba7e4e5d1880aeb03ab9f1e9432c1dfbd42a6ca09433ef25f3589176a9a3f"
+      "size_bytes": 114275,
+      "sha256": "dfef1d54aafe1299f911acf6b5bc6d0596a861ed3b7356e945bcca0cfedb3472"
     },
-    "12_sprint38_tablet_768x1024.png": {
-      "size_bytes": 113253,
-      "sha256": "0c433c7978112d7accc2e07cab25c896eae1e4842408342b53692ba337c1ee78"
+    "12_sprint38_mobile_small_360x800.png": {
+      "size_bytes": 93146,
+      "sha256": "3a9ccf282c1183ed00c2893bb35ced5d96af1e9db25d01695f8ce9feca5f0efe"
+    },
+    "12_sprint38_tablet_landscape_1024x768.png": {
+      "size_bytes": 233555,
+      "sha256": "4a1bda585a68151dda11909cfbc788e27d3de40c75aadbae3e053f73d3d08e78"
+    },
+    "12_sprint38_tablet_portrait_768x1024.png": {
+      "size_bytes": 232599,
+      "sha256": "9faa258bf54d09ebb050a58e74803997e394d00143509df4592b1eab38e9c9b5"
     },
     "13_performance_and_latency_audit.json": {
       "size_bytes": 911,
-      "sha256": "4a4556fd69838d0fd479a86df11815b5a0e1b8c82766f0135e129f05318b798f"
+      "sha256": "cde44945a8182f742f262971c1bca65a061f606123a1d33b534aa63b18067dd0"
     },
     "14_production_isolation_evidence.json": {
       "size_bytes": 1025,
-      "sha256": "4f26a45c598e456ef7f4643a2c581f0d8bb8dcacfcb5145bfe0adefa98569657"
+      "sha256": "9e4e7d8865299a4e0965a486b78c1e183500764345848f33cbdc6de78dfcb551"
     },
     "16_final_staging_acceptance_report.md": {
-      "size_bytes": 7491,
-      "sha256": "1fd472bffc0ca0c5f431f949cc904f96ca408490b1260a4c33a03ff5821fa812"
+      "size_bytes": 14104,
+      "sha256": "828b66c7939a1bc2707ae6ea962abaa154991dae94c8810399c2a01eb72b7b6c"
     }
   }
 }

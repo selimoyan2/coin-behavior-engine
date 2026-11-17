@@ -1,9 +1,9 @@
 {
   "sprint_id": "CBE_SPRINT38_DASHBOARD_V15_EVIDENCE_EXPLORER",
-  "timestamp_utc": "2026-11-16T22:36:20.286192+00:00",
+  "timestamp_utc": "2026-11-17T11:34:53.837653+00:00",
   "research_branch": "research/sprint38-dashboard-v15-evidence-explorer",
-  "candidate_commit_sha": "38276a0ceeda3f6a40f4f6082372fceb68b7d300",
-  "candidate_commit_short": "38276a0",
+  "candidate_commit_sha": "51cb27697814164983ade0016b5260709c68a33e",
+  "candidate_commit_short": "51cb276",
   "production_branch": "main",
   "production_baseline_sha": "c0951f67f2b6045a1c37c2278e69e4a3d467ffeb",
   "fast_forward_ancestry_verified": true,

@@ -1,6 +1,6 @@
 {
   "sprint_id": "CBE_SPRINT38_DASHBOARD_V15_EVIDENCE_EXPLORER",
-  "timestamp_utc": "2026-11-16T22:36:20.296539+00:00",
+  "timestamp_utc": "2026-11-17T11:34:53.848003+00:00",
   "disk_cache": {
     "path": "data/cache/forward_dataset_v37.parquet",
     "size_bytes": 17531776,
