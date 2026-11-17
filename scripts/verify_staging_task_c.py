@@ -1,28 +1,56 @@
-import subprocess
 import json
+import urllib.request
 
-cmd = """
-set -e
-echo "=== 1. READY & HEALTH ==="
-curl -s http://127.0.0.1:18080/ready
+STAGING_URL = "http://127.0.0.1:18080"
+AUTH_TOKEN = "cbe-super-secret-token-v1"
 
-echo "\n=== 2. CENTRAL COVERAGE (59 MONTHS) ==="
-curl -s http://127.0.0.1:18080/api/v1/product/central-coverage
+def fetch_json(endpoint):
+    req = urllib.request.Request(f"{STAGING_URL}{endpoint}")
+    req.add_header("Authorization", f"Bearer {AUTH_TOKEN}")
+    with urllib.request.urlopen(req, timeout=10) as r:
+        return r.status, json.loads(r.read().decode("utf-8"))
 
-echo "\n=== 3. OCTOBER & NOVEMBER AUDIT ==="
-curl -s http://127.0.0.1:18080/api/v1/product/candle-quality-audit
+def fetch_status(method, endpoint):
+    req = urllib.request.Request(f"{STAGING_URL}{endpoint}", method=method)
+    req.add_header("Authorization", f"Bearer {AUTH_TOKEN}")
+    req.add_header("Content-Type", "application/json")
+    try:
+        with urllib.request.urlopen(req, data=b"{}", timeout=10) as r:
+            return r.status
+    except urllib.error.HTTPError as e:
+        return e.code
 
-echo "\n=== 4. REGIME TRANSITIONS ==="
-curl -s http://127.0.0.1:18080/api/v1/product/market-behavior/transitions | head -c 300
+print("=== 1. RUNTIME BUILD ===")
+st, rb = fetch_json("/api/v1/product/runtime-build")
+print(f"Status: {st}, Build Commit: {rb.get('build_commit')}, Canonical: {rb.get('application_version')}")
 
-echo "\n=== 5. RISK METRICS ==="
-curl -s http://127.0.0.1:18080/api/v1/product/market-behavior/risk
+print("=== 2. SCORECARD ===")
+st, sc = fetch_json("/api/v1/product/predictive-validity/scorecard")
+hypotheses = sc.get("scorecard", [])
+if hypotheses:
+    print("Keys in scorecard item:", list(hypotheses[0].keys()))
+counts = {}
+for h in hypotheses:
+    v = h.get("verdict") or h.get("scientific_verdict") or h.get("status")
+    counts[v] = counts.get(v, 0) + 1
+print(f"Total hypotheses: {len(hypotheses)}, Counts: {counts}")
 
-echo "\n=== 6. LIVE TRADING PROHIBITION (HTTP 403) ==="
-curl -s -o /dev/null -w "STATUS:%{http_code}\n" -X POST http://127.0.0.1:18080/api/v1/product/research/btc-timing/place-order
-"""
+print("=== 3. BASELINES ===")
+st, bl = fetch_json("/api/v1/product/predictive-validity/baselines")
+print(f"Baselines: {json.dumps(bl, indent=2)[:300]}...")
 
-p = subprocess.run(['ssh', '-o', 'StrictHostKeyChecking=no', 'root@168.231.125.238', cmd], capture_output=True, text=True)
-print(p.stdout)
-if p.stderr:
-    print("ERR:", p.stderr)
+print("=== 4. CENTRAL COVERAGE ===")
+st, cov = fetch_json("/api/v1/product/central-coverage")
+print(f"Span: {cov.get('coverage_span_text')}, Earliest: {cov.get('earliest_month')}, Latest: {cov.get('latest_month')}, Total: {cov.get('total_months')}")
+
+print("=== 5. PROHIBITED TRADING (5/5) ===")
+prohibited = [
+    ("POST", "/place-order"),
+    ("POST", "/live-trade/execute"),
+    ("POST", "/api/v1/product/place-order"),
+    ("POST", "/api/v1/order/execute"),
+    ("GET", "/api/v1/order/execute"),
+]
+for method, path in prohibited:
+    code = fetch_status(method, path)
+    print(f"{method} {path} -> HTTP {code} ({'PASS' if code == 403 else 'FAIL'})")
